@@ -93,8 +93,8 @@ For example, it specifies how the header preamble should look like (see quote be
 >* Superseded-By:    <BIP number>
 >```
 
-Continue by reading BIP123 which discusses BIP classification matters.
-Wrap up your BIP experience with this bitcoinwiki article about BIPs.
+Continue by reading [BIP123](https://github.com/bitcoin/bips/blob/master/bip-0123.mediawikia) which discusses BIP classification matters.
+Wrap up your BIP experience with [this bitcoinwiki article](https://bitcoinwiki.org/wiki/bitcoin-improvement-proposals) about BIPs.
 
 The primary source for BIP documents is the [BIP catalog on GitHub](https://github.com/bitcoin/bips).
 In case you don't want to navigate on GitHub all the time, note that there exist other sites for browsing BIPs.

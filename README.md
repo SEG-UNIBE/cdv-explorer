@@ -101,7 +101,7 @@ The primary source for BIP documents is the [BIP catalog on GitHub](https://gith
 In case you don't want to navigate on GitHub all the time, note that there exist other sites for browsing BIPs.
 For example, [bips.dev](https://bips.dev/) wraps a nicer user-interface around it.
 The way how bips.dev is developed might be also interesting for you (check out its [repo](https://github.com/nickmonad/bips.dev)).
-Yet another (probably bit wacky) way to explore BIPs is the [`en.bitcoin.it/wiki](https://en.bitcoin.it/wiki/Category:BIP).
+Yet another (probably bit wacky) way to explore BIPs is the [`en.bitcoin.it/wiki`](https://en.bitcoin.it/wiki/Category:BIP).
 You see, the *«Bitcoin idea»* is recorded in several locations throughout the internet.
 
 In case you want to dig deeper into Bitcoin from a user perspective (which is not particularly needed for this seminar though), I recommend *«[A Security Focused Outline on Bitcoin Wallets](https://eprints.ost.ch/id/eprint/1103/1/Boegli_FP1_ASecurityFocusedOutlineOnBitcoinWallets.pdf)»*.

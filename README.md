@@ -66,9 +66,10 @@ Familiarize yourself with the BIP world.
 Start by reading [BIP2](https://github.com/bitcoin/bips/blob/master/bip-0002.mediawiki), a BIP that specifies the BIP workflow.
 For example, it specifies how the header preamble should look like (see quote below).
 
-> Each BIP must begin with an RFC 822 style header preamble.
-> The headers must appear in the following order. Headers marked with "*" are optional and are described below.
-> All other headers are required.
+> *Each BIP must begin with an RFC 822 style header preamble.
+> The headers must appear in the following order.
+> Headers marked with "*" are optional and are described below.
+> All other headers are required.*
 >
 >```text
 >   BIP:              <BIP number, or "?" before being assigned>
@@ -123,4 +124,5 @@ So-called NoSQL DBMS like MongoDB may be a great option for this use case.
 But also validate the suitability of graph-based DBMS like [Neo4j](https://neo4j.com/product/neo4j-graph-database/).
 
 **Fourth👉**
-We talk again. Meeting invite is coming.
+We talk again.
+Meeting invite is coming.

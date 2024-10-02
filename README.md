@@ -110,10 +110,10 @@ If so, it is important to find these works and analyse (1) what they do, (2) how
 
 **Third👉**
 Think about system architecture of your crawler application.
-Use this repo ([SEG-UNIBE/bipng](https://github.com/SEG-UNIBE/bipng)) for both your code and documentation/presentation.
+Use this repo ([`SEG-UNIBE/bipng`](https://github.com/SEG-UNIBE/bipng)) for both your code and documentation/presentation.
 As inspiration how this could look like, see [a seminar project that I once did](https://github.com/RomanBoegli/godbbench).
 
-As discussed, your crawler shall focus on the primary source of BIP documents i.e. `github.com/bitcoin/bips`.
+As discussed, your crawler shall focus on the primary source of BIP documents i.e. [`github.com/bitcoin/bips`](https://github.com/bitcoin/bips).
 Investigate into possibilities how you could deploy e.g. a Python script using *GitHub Actions* to some sever (e.g. [Heroku](https://www.heroku.com/), [Railway](https://railway.app/new), [Render](https://render.com/), [Fly.io](https://fly.io/), ...).
 Also think about suitable database management systems to archive the crawled data.
 So-called NoSQL DBMS like MongoDB may be a great option for this use case.

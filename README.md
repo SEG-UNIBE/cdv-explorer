@@ -101,7 +101,10 @@ In case you don't want to navigate on GitHub all the time, note that there exist
 For example, [bips.dev](https://bips.dev/) wraps a nicer user-interface around it.
 The way how bips.dev is developed might be also interesting for you (check out its [repo](https://github.com/nickmonad/bips.dev)).
 Yet another (probably bit wacky) way to explore BIPs is the [en.bitcoin.it/wiki](https://en.bitcoin.it/wiki/Category:BIP).
-You see, the *Bitcoin idea* is recorded in several locations throughout the internet.
+You see, the *«Bitcoin idea»* is recorded in several locations throughout the internet.
+
+In case you want to dig deeper into Bitcoin from a user perspective (which is not particularly needed for this seminar though), I recommend *«[A Security Focused Outline on Bitcoin Wallets](https://eprints.ost.ch/id/eprint/1103/1/Boegli_FP1_ASecurityFocusedOutlineOnBitcoinWallets.pdf)»*.
+Particularly chapter *2.2 Bitcoin Terms* might be helpful to you for broader overall understanding.
 
 **Second👉**
 Do some desk research on BIP graph visualizations.

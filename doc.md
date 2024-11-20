@@ -78,3 +78,24 @@ Adds metadata and insights about each BIP to the corresponding JSON file. For th
 - [ ] Improve wordlist function and adjust stop word list
 ### visualization.py
 - [ ] Create a dynamic html file with the bips as content (plotly.js)
+
+## Meeting notes 20.11.2024 (What to show in the presentation)
+- What's a BIP
+- Visualizations 
+- Insights (Show why we actually did all the scraping, so we can then analyze it) 3 insights
+  - preamble violations
+  - docstructure not correct
+  - wordclouds
+  - file formats (md or mediawiki)
+- Future work
+  - Extend meta (google trend index)
+  - extend insights (via llm) 
+    - (dependency tree)
+      - Preamble dependencies & in-text referneces on required bips
+        - Can be shown that even when we have requirements in preamble, some don't seem to care and just write it in text
+  - Chronical evolution
+    - If we run the pipeline for a long time, then we can track on how things run (based on git history)
+  - extend search space ( Github, .., lightning/LIPS, SLIPs (Satoshi Lab improvement proposals))
+  - Backup slides
+    - Screenshots of pipeline (Code)
+    - Painpoints/lessons learned

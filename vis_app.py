@@ -1,6 +1,5 @@
 import os
 import json
-from collections import Counter
 import networkx as nx
 import plotly.graph_objects as go
 from wordcloud import WordCloud

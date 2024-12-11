@@ -16,13 +16,13 @@ def main():
 
     if not os.path.exists(input_directory):
         print("BIP directory not found. Downloading BIPs...")
-        #download_bips()
+        download_bips()
     else:
         print("BIP directory already exists. Skipping download step.")
 
     # Process files and extract preamble
     print("Starting preamble extraction...")
-    #process_files_and_save_json(input_directory, output_directory)
+    process_files_and_save_json(input_directory, output_directory)
 
 
     # Process the metadata and insigths

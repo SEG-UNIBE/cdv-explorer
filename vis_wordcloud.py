@@ -4,7 +4,7 @@ from collections import Counter
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 
-# Funktion, um Wörter aus allen BIPs zu extrahieren
+# Extracts all words from all the bip_xxxx.json's
 def extract_word_frequencies(folder_path):
     word_counter = Counter()
     for file in os.listdir(folder_path):
@@ -16,22 +16,22 @@ def extract_word_frequencies(folder_path):
                 word_counter.update(word_list)
     return word_counter
 
-# Pfad zu den BIP JSON-Dateien
+# path to all json's
 folder_path = "bips_json"
 
-# Extrahiere die Wordfrequenzen
+# extract word frequencies
 word_frequencies = extract_word_frequencies(folder_path)
 
-# Erstelle eine Wordcloud
+# create wordcloud
 wordcloud = WordCloud(
     width=800, height=400,
     background_color="white",
     max_words=100
 ).generate_from_frequencies(word_frequencies)
 
-# Visualisiere die Wordcloud
+# visualize wordcloud
 plt.figure(figsize=(10, 5))
 plt.imshow(wordcloud, interpolation="bilinear")
 plt.axis("off")
-plt.title("Wordcloud über alle BIPs hinweg", fontsize=16)
+plt.title("", fontsize=16)
 plt.show()

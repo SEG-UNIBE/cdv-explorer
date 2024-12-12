@@ -60,16 +60,26 @@ def create_graph(bip_data, selected_status, size_scale):
         if preamble.get("requires"):
             for required in preamble["requires"].split(","):
                 required = required.strip()
+                # Normalize the required field by removing "BIP-" prefix if it exists
+                if required.lower().startswith("bip-"):
+                    required = required[4:]  # Remove the first 4 characters ("BIP-")
                 if required:
                     G.add_edge(required, bip_id, relation="requires")
+
         if preamble.get("replaces"):
             for replaced in preamble["replaces"].split(","):
                 replaced = replaced.strip()
+                # Normalize the required field by removing "BIP-" prefix if it exists
+                if replaced.lower().startswith("bip-"):
+                    replaced = replaced[4:]  # Remove the first 4 characters ("BIP-")
                 if replaced:
                     G.add_edge(replaced, bip_id, relation="replaces")
         if preamble.get("superseded_by"):
             for superseded in preamble["superseded_by"].split(","):
                 superseded = superseded.strip()
+                # Normalize the required field by removing "BIP-" prefix if it exists
+                if superseded.lower().startswith("bip-"):
+                    superseded = superseded[4:]  # Remove the first 4 characters ("BIP-")
                 if superseded:
                     G.add_edge(bip_id, superseded, relation="superseded_by")
 

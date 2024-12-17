@@ -1,10 +1,14 @@
 # Documentation
 
 ## Requirements
-- **`github_token.txt`**: Just paste a github token inside this file
+- **`github_token.txt`**: Just paste a github token from your account inside this file
 
 ## Main.py
-Manages all the logic
+Manages all the logic. Once you added the github token, you can run ```main.py```. It will 
+- download all the BIPs and the corresponding files
+- extract the preamble
+- get metadata and creates insights
+- adds all these datapoints to the corresponding JSON files
 
 ## Download.py
 Downloads all BIP's as *.md or *.mediawiki files & also downloads all associated files for each BIP. 
@@ -41,6 +45,12 @@ Adds metadata and insights about each BIP to the corresponding JSON file. For th
 #### Word List Section
 - **`word_list`**: A dictionary of words extracted from the raw content of the BIP file (excluding stop words). Each word is a key, and its frequency is the value, sorted in descending order of frequency.
 
+## viz_app.py
+Once you downloaded ```main.py```, you can run ```viz_app.py```. It will create a dash app, which you can look at in your browser through the IP ```http://127.0.0.1:8050/```. 
+It creates a visualization of all the BIPs and color-codes the status of each BIP. The sizes correspond to the amount of unique contributors, the more contributors, the larger the dot.
+You can filter for different statuses, enlargen the relative size of all the dots, hover over all the dots to see some more specifications.
+At the bottom of the page, you can look at a wordcloud of all the displayed BIPs.
+
 # Todo
 ### General
 - [ ] Required / Used BIPS might also appear in the text of the BIP instead of the intended field in the preamble. Search via LLM through content of bips for such cases.
@@ -50,10 +60,7 @@ Adds metadata and insights about each BIP to the corresponding JSON file. For th
   - [x] Put preamble into Raw section
 ### bip_processor.py --> section metadata
 - [ ] Add these datapoints to metadata
-  - [x] Last commit (yyyy_mm_dd_hh_mm_ss or same timestamp as in preamble)  (currently done in get_commit_info())
-  - [x] Total amount of commits
-  - [x] Metadata last updated
-  - [x] Git history (list of [commit_hash, date, author])
+  - [ ] Correct the contributors (Also add authors of the BIP to list of unique authors; Currently only authors of commits counted)
   - [ ] Google Trend index 
   
 ### bip_processor.py --> section insights
@@ -74,124 +81,12 @@ Adds metadata and insights about each BIP to the corresponding JSON file. For th
 - [ ] Create function which checks the bips structure (ambivalent for .md/.mediawiki)
   - [ ] Save doc structure in section 'raw/docstruct' in a useful/informative way
     - [ ] Figure out best structure to save docstruct
-- [x] Create function which creates wordmap of each BIP and places it into section 'raw/wordmap'
+- [ ] Automatically link all the dots to either github.com/bitcoin/bips/corresponding_BIP or to bips.dev/xxxx, so if you want to look into one, you can click on the dot on the visualization.
 - [ ] Improve wordlist function and adjust stop word list
 ### visualization.py
 - [ ] Create a dynamic html file with the bips as content (plotly.js)
 
-## Meeting notes 20.11.2024 (What to show in the presentation)
-- What's a BIP
-- Visualizations 
-- Insights (Show why we actually did all the scraping, so we can then analyze it) 3 insights
-  - preamble violations
-  - docstructure not correct
-  - wordclouds
-  - file formats (md or mediawiki)
-- Future work
-  - Extend meta (google trend index)
-  - extend insights (via llm) 
-    - (dependency tree)
-      - Preamble dependencies & in-text referneces on required bips
-        - Can be shown that even when we have requirements in preamble, some don't seem to care and just write it in text
-  - Chronical evolution
-    - If we run the pipeline for a long time, then we can track on how things run (based on git history)
-  - extend search space ( Github, .., lightning/LIPS, SLIPs (Satoshi Lab improvement proposals))
-  - Backup slides
-    - Screenshots of pipeline (Code)
-    - Painpoints/lessons learned
+### Bugs to solve
+- [x] Solve bug about title problem
+  - [x] BIP 372 has in preamble in required BIP-174 instead of just 174, which leads to the display problem
 
-[ ] Löse Bug mit Titel problem
-  - BIP 372 has in preamble in required BIP-174 instead of just 174, which leads to the display problem
-
-[x] Überprüfe alle required links (ob vollständig)
-  - Actually all are correct and there are just not more of them
-
-[ ] Vervollständige requirements.txt vom venv
-      pip3 freeze > requirements.txt
-
-[ ] extend documentation on what commands to run
-
-
-
-## Präsi
-
-### Whats a BIP? (5min)
-- Bitcoin is just code
-  - Basic description of Bitcoin
-    - Distributed and decentralized system
-    - No king, big community
-  - Needs to be organised in some way or another
-    - How is this done?
-- BIPS!
-  - Show Github and bips.dev page to show how much data there is 
-  - We have different kinds of BIPs 
-    - Standard Track Bips
-      - Consensus
-      - Peer Service
-      - API/RCP
-      - Application
-      - Example BIP 141 SegWit
-    - Informational BIPs
-      - Not directly change protocol, but rather provide useful information, new ideas, concepts, methodologies
-      - Example Bip 39 Mnemonic phrase to deterministically generate wallets
-    - Process BIPs
-      - Describes changes or improvements to the process by which Bitcoin software and protocol upgrades are developed, tested & implemented
-      - Example BIP 2 How to write a BIP
-
-### Talk about BIP 2 (2.5min)
-- What does BIP 2 say?
-  - It predefines how to write a BIP with all the steps you need to go through with the editors etc. but it also specifies a multitude of standards
-  - Specifications
-    - Preamble
-    - Abstract
-    - Copyright
-    - Specifications
-    - Motivations
-    - Rationale
-    - Backwards Compatibility
-    - Reference Implementation
-  - Preamble is important for us
-    - Look at all the possible fields in the preamble, with required and optional ones, show possible states of certain fields etc. e.g. x requires y, x supersedes y etc.
-  - (Talking about this all makes sense, once we go to the next slide where we now visualize the whole data points we just talked about)
-
-### Visualisation (ca. 3min)
-- Live demo of dash app
-  - Show how it looks
-  - Shortly describe what you see. All BIPs on one page where you can easily hover over everything
-  - Explain arrows and lines, zoom in to show it a bit more clearly
-  - Show colors and how you can filter for certain statuses
-  - Explain node scaling
-  - Show wordcloud (if I can fix it until presentation)
-  - Shortly show BIP 173 and 350 where 350 replaces 173, but 173 is still final and not replaced in its status and now go over to insights and make the bridge with this example to be able to have certain insights with such a data visualization
-
-### Insights (length?)
-- Shortly explain what was done to achieve such a visualization
-  - Pipeline setup
-    - Scraping everything and processing it into JSON
-    - Create insights, metadata and more
-    - Show JSON
-- What can now be done with this data?
-  - Preamble violations
-    - Check to see if all the standards are met in the BIPs according to BIP 2 and BIP 123
-    - Show some examples
-      - Titles too long
-      - No licences --> Mostly just with BIPs which have been withdrawn
-  - Analyze doc structure
-    - Check if all the headlines are in the right order and according to standards
-  - Wordcloud
-  - File formats
-  - Was just a showcase, could be extended however people like. The idea of this whole scraping and data aggregation is to provide it to other people, so they can then work with the data however they like
-
-### Future work (length??)
-- Shortly talk about setup of data pipeline and how it is easy extendable with other functions which feed data into JSON
-- But then show some more concrete examples of possible future work
-  - Extend metadata with google trend index, which could be plotted to see which BIPs were prominent for a short time, which ones for a long time/continuously
-  - Extend insights via LLMs
-    - Use LLMs to go through text and find required BIPs which are just mentioned in the text instead of preamble
-  - Extend search space for Improvement proposals to other souces next to BIPs. There are similare things like LIPs and SLIPs
-
-### Backup slides
-- Make a data pipeline diagram where whole schematic is shown 
-- Make a short overview to display how easy it is to download everything with basically just a click of a button
-- Pain points
-  - 

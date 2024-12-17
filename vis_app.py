@@ -11,9 +11,12 @@ import base64
 
 
 # Funktion zum Laden der BIP-Daten
+from collections import Counter
+
 def load_bip_data(folder_path):
     bip_data = {}
-    unique_statuses = set()  # Set, um alle Status zu sammeln
+    unique_statuses = set()
+    aggregated_word_counter = Counter()  # To store combined word counts
 
     for file in os.listdir(folder_path):
         if file.endswith(".json"):
@@ -22,10 +25,11 @@ def load_bip_data(folder_path):
                 data = json.load(f)
                 raw = data.get("raw", {}).get("preamble", {})
                 metadata = data.get("metadata", {})
+                insights = data.get("insights", {})
 
-                # Status und Contributors laden
+                # Extract BIP data
                 status = raw.get("status", "Unknown")
-                contributors = metadata.get("contributors", 0)  # Direktes Zählen ohne len()
+                contributors = metadata.get("contributors", 0)
 
                 bip_id = raw.get("bip", "Unknown")
                 bip_data[bip_id] = {
@@ -37,10 +41,15 @@ def load_bip_data(folder_path):
                     "superseded_by": raw.get("superseded_by", ""),
                 }
 
-                # Status sammeln
+                # Update statuses
                 unique_statuses.add(status)
 
-    return bip_data, sorted(unique_statuses)  # Status sortiert zurückgeben
+                # Aggregate word counts
+                word_list = insights.get("word_list", {})
+                aggregated_word_counter.update(word_list)
+
+    return bip_data, sorted(unique_statuses), dict(aggregated_word_counter)
+
 
 
 
@@ -240,7 +249,7 @@ def create_wordcloud(word_counter):
 
 # Lade BIP-Daten und Wortliste
 folder_path = "bips_json"
-bip_data, word_counter = load_bip_data(folder_path)
+bip_data, statuses, word_counter = load_bip_data(folder_path)
 
 # Starte Dash App
 app = dash.Dash(__name__)
@@ -289,10 +298,10 @@ def update_graph(selected_status, size_scale):
 
 @app.callback(
     Output("wordcloud-image", "src"),
-    [Input("status-filter", "value")]  # Füge einen existierenden Input hinzu
+    [Input("status-filter", "value")]  # Status filter input
 )
 def update_wordcloud(selected_status):
-    # Die Wordcloud bleibt gleich, da sie unabhängig vom Status-Filter ist
+    # For now, Word Cloud remains static and ignores the filter.
     return create_wordcloud(word_counter)
 
 @app.callback(

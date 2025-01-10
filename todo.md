@@ -85,8 +85,3 @@ At the bottom of the page, you can look at a wordcloud of all the displayed BIPs
 - [ ] Improve wordlist function and adjust stop word list
 ### visualization.py
 - [ ] Create a dynamic html file with the bips as content (plotly.js)
-
-### Bugs to solve
-- [x] Solve bug about title problem
-  - [x] BIP 372 has in preamble in required BIP-174 instead of just 174, which leads to the display problem
-

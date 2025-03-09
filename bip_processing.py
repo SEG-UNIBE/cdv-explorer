@@ -156,6 +156,10 @@ def process_bip_files(input_dir: str, output_dir: str, github_token: str):
         if not preamble:
             print(f"No preamble found in {json_file}")
             continue
+        
+        if not preamble.get("bip", ""):
+            print(f"No preamble found in {json_file}")
+            continue
 
         bip_number = preamble.get("bip", "").zfill(4)
         bip_file_path = find_bip_file(bip_number, 'bips_downloaded')

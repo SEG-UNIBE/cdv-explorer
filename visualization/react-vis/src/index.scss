@@ -1,0 +1,52 @@
+/* You can add global styles to this file, and also import other style files */
+
+// primeReact component styles and icons
+@import "primereact/resources/themes/lara-light-blue/theme.css";
+@import "primereact/resources/primereact.css";
+@import "primeicons/primeicons.css";
+@import "primeflex/primeflex.scss";
+
+
+
+@font-face {
+  font-family: "Nova Round";
+  src: local("Nova Round"),
+    url(./fonts/NovaRound-Regular.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: local("Roboto"),
+    url(./fonts/Roboto-Regular.ttf) format("truetype");
+}
+
+body {
+  background-color: #fbfbfb;
+  background-image: radial-gradient(rgba(0, 0, 0, 0.1) 5%, transparent 0);
+  background-size: 30px 30px;
+}
+
+h1,
+h2,
+h3 {
+  font-family: "Nova Round", Sans-serif;
+}
+
+h1 {
+  font-size: 3rem;
+
+  @media screen and (max-width: 768px) {
+    font-size: 2rem;
+  }
+}
+
+p {
+  font-family: Roboto, sans-serif;
+  line-height: 25px;
+}
+
+p-card {
+  h2 {
+    margin-top: 0;
+  }
+}

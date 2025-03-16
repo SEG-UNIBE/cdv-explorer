@@ -1,0 +1,12 @@
+.content {
+  margin-top: 100px; /* Ensure this is enough to push content below the navbar */
+  margin-left: 20px;
+  margin-right: 20px;
+  max-width: 1400px;
+  min-height: calc(100vh - 150px); /* 100px for navbar + 50px for footer */
+  
+  @media screen and (min-width: 1400px) {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

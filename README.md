@@ -3,18 +3,17 @@
 ![thumb](./assets/t0004-bip-mining.png)
 
 ## Table of Contents
-- [Introduction](#introduction)
 - [Documentation](#documentation)
   - [Requirements](#requirements)
   - [Main.py](#mainpy)
   - [Download.py](#downloadpy)
-  - [preamble_extraction.py](#preamble_extractionpy)
-  - [bip_processor.py](#bip_processorpy)
+  - [preamble\_extraction.py](#preamble_extractionpy)
+  - [bip\_processor.py](#bip_processorpy)
     - [Metadata](#metadata)
     - [Insights](#insights)
       - [Compliance Section](#compliance-section)
       - [Word List Section](#word-list-section)
-  - [viz_app.py](#vizappy)
+  - [viz\_app.py](#viz_apppy)
 
 
 ## Introduction
@@ -26,22 +25,23 @@ Through graph-based visualizations and analysis, we seek to enable a more intera
 # Documentation
 
 ## Requirements
-- **`github_token.txt`**: Just paste a github token from your account inside this file
+- Git: The script requires Git to clone and update the BIP repository.
 
 ## Main.py
 Manages all the logic. Once you added the github token, you can run ```main.py```. It will 
-- download all the BIPs and the corresponding files
-- extract the preamble
-- get metadata and creates insights
-- adds all these datapoints to the corresponding JSON files
+- Clone the BIP repository if it’s not already present or update it if it is.
+- Extract metadata from the Git history.
+- Extract the preamble from each BIP document.
+- Generate insights from the BIP contents.
+- Store all extracted data into JSON files.
 
 ## Download.py
-Downloads all BIP's as *.md or *.mediawiki files & also downloads all associated files for each BIP. 
-All files are saved into __bips_downloaded__. 
-Associated files are saved into the corresponding __bips_downloaded/bips_xxxx__ folder.
+Clones all BIP's as *.md or *.mediawiki files & also downloads all associated files for each BIP. 
+All files are saved into __bips_cloned__. 
+Associated files are saved into the corresponding __bips_cloned/bips_xxxx__ folder.
 
 ## preamble_extraction.py
-The <code>< pre>...< /pre></code> block gets extracted out of every .md/.mediawiki files inside the __bips_downloaded__ folder.
+The <code>< pre>...< /pre></code> block gets extracted out of every .md/.mediawiki files inside the __bips_cloned__ folder.
 It differentiates between the required fields and the optional fields.
 If you have multi-line fields as they often appear in 'author' and 'licences', it adds a list to the corresponding key.
 The extracted information inside the preamble gets placed in the __preamble__ section inside the JSON file.

@@ -73,6 +73,6 @@ def process_bips(num_threads=5):
         t.join()
 
 
-if __name__ == "__main__":
+def download_bips():
     clone_or_update_repo()
     process_bips()

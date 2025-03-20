@@ -1,7 +1,8 @@
 from install_dependencies import install_requirements
 from download import download_bips
 from preamble_extraction import process_files_and_save_json
-from bip_processing import process_bip_files, load_github_token
+from bip_processing import process_bip_files
+from pathlib import Path
 import os
 
 
@@ -11,7 +12,7 @@ def main():
     install_requirements()
 
     # Check if the BIP download directory exists
-    input_directory = 'bips_downloaded'
+    input_directory = 'bips_cloned'
     output_directory = 'bips_json'
 
     if not os.path.exists(input_directory):
@@ -22,12 +23,10 @@ def main():
 
     # Process files and extract preamble
     print("Starting preamble extraction...")
-    process_files_and_save_json(input_directory, output_directory)
-
+    process_files_and_save_json(Path(input_directory), Path(output_directory))
 
     # Process the metadata and insigths
-    github_token = load_github_token('github_token.txt')
-    process_bip_files(output_directory, output_directory, github_token)
+    process_bip_files(Path(output_directory), Path(output_directory))
 
 if __name__ == "__main__":
     main()

@@ -1,46 +1,52 @@
-// Data for nodes and links
-const data = {
-    nodes: [
-      { id: 'Myriel', group: 'team1' },
-      { id: 'Anne', group: 'team1' },
-      { id: 'Gabriel', group: 'team1' },
-      { id: 'Mel', group: 'team1' },
-      { id: 'Yan', group: 'team2' },
-      { id: 'Tom', group: 'team2' },
-      { id: 'Cyril', group: 'team2' },
-      { id: 'Tuck', group: 'team2' },
-      { id: 'Antoine', group: 'team3' },
-      { id: 'Rob', group: 'team3' },
-      { id: 'Napoleon', group: 'team3' },
-      { id: 'Toto', group: 'team4' },
-      { id: 'Tutu', group: 'team4' },
-      { id: 'Titi', group: 'team4' },
-      { id: 'Tata', group: 'team4' },
-      { id: 'Turlututu', group: 'team4' },
-      { id: 'Tita', group: 'team4' },
-    ],
-    links: [
-      { source: 'Anne', target: 'Myriel', value: 1 },
-      { source: 'Napoleon', target: 'Myriel', value: 1 },
-      { source: 'Gabriel', target: 'Myriel', value: 1 },
-      { source: 'Mel', target: 'Myriel', value: 1 },
-      { source: 'Yan', target: 'Tom', value: 1 },
-      { source: 'Tom', target: 'Cyril', value: 1 },
-      { source: 'Tuck', target: 'Myriel', value: 1 },
-      { source: 'Tuck', target: 'Mel', value: 1 },
-      { source: 'Tuck', target: 'Myriel', value: 1 },
-      { source: 'Mel', target: 'Myriel', value: 1 },
-      { source: 'Rob', target: 'Antoine', value: 1 },
-      { source: 'Tata', target: 'Tutu', value: 1 },
-      { source: 'Tata', target: 'Titi', value: 1 },
-      { source: 'Tata', target: 'Toto', value: 1 },
-      { source: 'Tata', target: 'Tita', value: 1 },
-      { source: 'Tita', target: 'Toto', value: 1 },
-      { source: 'Tita', target: 'Titi', value: 1 },
-      { source: 'Tita', target: 'Turlututu', value: 1 },
-      { source: 'Rob', target: 'Turlututu', value: 1 },
-    ],
-  };
-  
-  export default data;
-  
+// Step 1: Create a context to load all the JSON files from the 'bips_json' folder
+const context = require.context('../../../bips_json', false, /\.json$/); // Match all JSON files
+
+// Step 2: Get the first three file names from the context
+const firstThreeFiles = context.keys().slice(0, 500); // Slice to get the first 3 files
+
+// Step 3: Load the data for the first three files dynamically
+const bipData = firstThreeFiles.map(filename => {
+  const bip = context(filename); // Dynamically import the JSON data
+  return bip;
+});
+
+console.log('Loaded BIP Data:', bipData);
+
+// Step 4: Initialize nodes and links (edges) for the network diagram
+let nodes = [];
+let links = [];
+
+// Step 5: Create nodes and links based on the loaded BIP data
+bipData.forEach(bip => {
+  if (bip) {
+    const normalizedBipId = bip.raw.bip; // Normalize the BIP ID
+    
+    // Add node to the nodes array
+    nodes.push({ id: normalizedBipId, group: 'bipGroup' });
+
+    // Create edges based on the 'requires' field in the preamble
+    if (bip.raw.preamble && bip.raw.preamble.requires) {
+      const requiresArray = typeof bip.raw.preamble.requires === 'string'
+      ? bip.raw.preamble.requires.split(',').map(dep => dep.trim())  // Split and trim each dependency
+      : bip.raw.preamble.requires;   // Leave it as-is if it's already an array
+    
+    // Now loop through the array
+    requiresArray.forEach(dep => {
+      const normalizedDepId = dep.replace(/^BIP-/, ''); // Normalize the dependency ID
+      links.push({ source: normalizedBipId, target: normalizedDepId, value: 1 });
+    });
+    
+    }else {
+        console.warn('require field is empty');
+      }
+  } else {
+    console.warn('Malformed or missing bip data:', bip);
+  }
+});
+
+// Step 6: Return the network data for visualization
+const data = { nodes, links };
+
+console.log('Network Diagram Data:', data);
+
+export default data;

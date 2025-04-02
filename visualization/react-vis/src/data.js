@@ -15,14 +15,18 @@ console.log('Loaded BIP Data:', bipData);
 // Step 4: Initialize nodes and links (edges) for the network diagram
 let nodes = [];
 let links = [];
+let nodeIds = new Set(); // Track existing nodes
 
 // Step 5: Create nodes and links based on the loaded BIP data
 bipData.forEach(bip => {
   if (bip) {
     const normalizedBipId = bip.raw.bip; // Normalize the BIP ID
     
-    // Add node to the nodes array
-    nodes.push({ id: normalizedBipId, group: 'bipGroup' });
+    // Add node to the nodes array if it doesn't exist
+    if (!nodeIds.has(normalizedBipId)) {
+      nodes.push({ id: normalizedBipId, group: 'bipGroup' });
+      nodeIds.add(normalizedBipId);
+    }
 
     // Create edges based on the 'requires' field in the preamble
     if (bip.raw.preamble && bip.raw.preamble.requires) {
@@ -33,7 +37,11 @@ bipData.forEach(bip => {
       // Now loop through the array
       requiresArray.forEach(dep => {
         const normalizedDepId = dep.replace(/^BIP-/, ''); // Normalize the dependency ID
-        links.push({ source: normalizedBipId, target: normalizedDepId, value: 1 });
+        
+        // Only create edge if the dependency node exists
+        if (nodeIds.has(normalizedDepId)) {
+          links.push({ source: normalizedBipId, target: normalizedDepId, value: 1 });
+        }
       });
     } else {
       console.warn('require field is empty');

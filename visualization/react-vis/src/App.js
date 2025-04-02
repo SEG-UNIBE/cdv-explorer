@@ -8,7 +8,7 @@ function App() {
   return (
     <div className="App">
        <Navbar />
-       <section class="content">
+       <section className="content">
        <NetworkDiagram data={data} width={400} height={400} />
        </section>
     </div>

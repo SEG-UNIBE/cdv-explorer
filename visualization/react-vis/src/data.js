@@ -1,11 +1,11 @@
 // Step 1: Create a context to load all the JSON files from the 'bips_json' folder
 const context = require.context('../../../bips_json', false, /\.json$/); // Match all JSON files
 
-// Step 2: Get the first three file names from the context
-const firstThreeFiles = context.keys().slice(0, 500); // Slice to get the first 3 files
+// Step 2: Get all file names from the context
+const allFiles = context.keys();
 
-// Step 3: Load the data for the first three files dynamically
-const bipData = firstThreeFiles.map(filename => {
+// Step 3: Load the data for all files dynamically
+const bipData = allFiles.map(filename => {
   const bip = context(filename); // Dynamically import the JSON data
   return bip;
 });
@@ -27,18 +27,17 @@ bipData.forEach(bip => {
     // Create edges based on the 'requires' field in the preamble
     if (bip.raw.preamble && bip.raw.preamble.requires) {
       const requiresArray = typeof bip.raw.preamble.requires === 'string'
-      ? bip.raw.preamble.requires.split(',').map(dep => dep.trim())  // Split and trim each dependency
-      : bip.raw.preamble.requires;   // Leave it as-is if it's already an array
+        ? bip.raw.preamble.requires.split(',').map(dep => dep.trim())  // Split and trim each dependency
+        : bip.raw.preamble.requires;   // Leave it as-is if it's already an array
     
-    // Now loop through the array
-    requiresArray.forEach(dep => {
-      const normalizedDepId = dep.replace(/^BIP-/, ''); // Normalize the dependency ID
-      links.push({ source: normalizedBipId, target: normalizedDepId, value: 1 });
-    });
-    
-    }else {
-        console.warn('require field is empty');
-      }
+      // Now loop through the array
+      requiresArray.forEach(dep => {
+        const normalizedDepId = dep.replace(/^BIP-/, ''); // Normalize the dependency ID
+        links.push({ source: normalizedBipId, target: normalizedDepId, value: 1 });
+      });
+    } else {
+      console.warn('require field is empty');
+    }
   } else {
     console.warn('Malformed or missing bip data:', bip);
   }

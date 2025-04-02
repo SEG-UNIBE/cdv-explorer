@@ -83,12 +83,12 @@ def create_word_list(raw_content: str) -> Dict[str, int]:
 
 
 def create_bip_list(raw_content: str) -> List[str]:
-    # Extract BIP references (e.g., BIP-32, BIP 39, BIP#42)
+    # Extract BIP references (e.g., BIP-0032, BIP 39, BIP#042)
     bip_pattern = r"\bBIP[-#\s]?(\d+)\b"
     bip_references = re.findall(bip_pattern, raw_content)
 
-    # Normalize BIP references to "BIP XX" format and remove duplicates
-    return sorted(set(f"BIP {num}" for num in bip_references))
+    # Normalize BIP references, removing leading zeros
+    return sorted(set(f"BIP {int(num)}" for num in bip_references))
 
 def update_insights(json_data: Dict[str, any], bip_file_path: Path):
     """Generate insights for a BIP file."""

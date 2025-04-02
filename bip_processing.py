@@ -81,11 +81,21 @@ def create_word_list(raw_content: str) -> Dict[str, int]:
     filtered_words = [word for word in words if word not in STOP_WORDS]
     return dict(Counter(filtered_words).most_common())
 
+
+def create_bip_list(raw_content: str) -> List[str]:
+    # Extract BIP references (e.g., BIP-32, BIP 39, BIP#42)
+    bip_pattern = r"\bBIP[-#\s]?(\d+)\b"
+    bip_references = re.findall(bip_pattern, raw_content)
+
+    # Normalize BIP references to "BIP XX" format
+    return [f"BIP {num}" for num in bip_references]
+
 def update_insights(json_data: Dict[str, any], bip_file_path: Path):
     """Generate insights for a BIP file."""
     raw_content = load_bip_content(bip_file_path)
     json_data.setdefault("insights", {})
     json_data["insights"]["word_list"] = create_word_list(raw_content)
+    json_data["insights"]["bip_references"] = create_bip_list(raw_content)
 
 def process_bip_files(input_dir: Path, output_dir: Path):
     """Process all BIP JSON files and update metadata & insights."""

@@ -87,8 +87,8 @@ def create_bip_list(raw_content: str) -> List[str]:
     bip_pattern = r"\bBIP[-#\s]?(\d+)\b"
     bip_references = re.findall(bip_pattern, raw_content)
 
-    # Normalize BIP references to "BIP XX" format
-    return [f"BIP {num}" for num in bip_references]
+    # Normalize BIP references to "BIP XX" format and remove duplicates
+    return sorted(set(f"BIP {num}" for num in bip_references))
 
 def update_insights(json_data: Dict[str, any], bip_file_path: Path):
     """Generate insights for a BIP file."""

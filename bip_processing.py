@@ -6,6 +6,9 @@ from datetime import datetime
 from collections import Counter
 from pathlib import Path
 from typing import Dict, List, Tuple
+import spacy
+
+
 
 # --- Constants ---
 LOCAL_REPO_DIR = Path("bips_cloned")  # Path to the cloned repository
@@ -90,12 +93,53 @@ def create_bip_list(raw_content: str) -> List[str]:
     # Normalize BIP references, removing leading zeros
     return sorted(set(f"BIP {int(num)}" for num in bip_references))
 
+def normalize_bip(bip_string):
+    num = re.search(r'\d+', bip_string)
+    return f"BIP {int(num.group())}" if num else bip_string
+
+def is_dependency_relation(doc, bip_string):
+    DEPENDENCY_TRIGGERS = {"depend", "require", "rely", "use", "build", "extend", "supersede", "replace"}
+    bip_tokens = [token for token in doc if bip_string in token.text]
+    for token in doc:
+        if token.lemma_ in DEPENDENCY_TRIGGERS and token.pos_ == "VERB":
+            for child in token.subtree:
+                if any(bip in child.text for bip in bip_tokens):
+                    return True, token.lemma_, normalize_bip(bip_string)
+    return False, None, None
+
+def analyze_bip_dependencies(text):
+    results = []
+    all_bips = create_bip_list(text)
+    nlp = spacy.load("en_core_web_sm")
+    for sent in text.split('\n'):
+        if not sent.strip():
+            continue
+        doc = nlp(sent)
+        for bip in all_bips:
+            if bip in sent:
+                dep_found, verb, target_bip = is_dependency_relation(doc, bip)
+                if dep_found:
+                    results.append({
+                        "sentence": sent.strip(),
+                        "verb": verb,
+                        "target_bip": target_bip
+                    })
+    return results
+
 def update_insights(json_data: Dict[str, any], bip_file_path: Path):
     """Generate insights for a BIP file."""
     raw_content = load_bip_content(bip_file_path)
     json_data.setdefault("insights", {})
+    # Generate insights
     json_data["insights"]["word_list"] = create_word_list(raw_content)
     json_data["insights"]["bip_references"] = create_bip_list(raw_content)
+    json_data["insights"]["dependencies"] = analyze_bip_dependencies(raw_content)
+
+    # Remove reference to the BIP itself
+    bip_number = str(int(json_data["raw"]["preamble"]["bip"]))  # Remove leading zeros
+    json_data["insights"]["bip_references"] = [
+        bip for bip in json_data["insights"]["bip_references"] if bip != f"BIP {bip_number}"
+    ]
 
 def process_bip_files(input_dir: Path, output_dir: Path):
     """Process all BIP JSON files and update metadata & insights."""

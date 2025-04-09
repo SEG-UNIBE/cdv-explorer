@@ -7,6 +7,8 @@ from collections import Counter
 from pathlib import Path
 from typing import Dict, List, Tuple
 import spacy
+import subprocess
+import json
 
 
 
@@ -126,6 +128,62 @@ def analyze_bip_dependencies(text):
                     })
     return results
 
+def run_ollama(prompt):
+    OLLAMA_MODEL = "mistral:instruct"
+    try:
+        result = subprocess.run(
+            ["ollama", "run", OLLAMA_MODEL],
+            input=prompt.encode('utf-8'),
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE
+        )
+        output = result.stdout.decode('utf-8').strip()
+
+        try:
+            json_output = json.loads(output.split('```json')[-1].split('```')[0] if '```json' in output else output)
+            return json_output
+        except Exception as e:
+            print("[!] JSON parse error:", e)
+            print("Raw output:", output)
+            return None
+    except Exception as e:
+        print("[!] Ollama execution failed:", e)
+        return None
+
+def llm_bip_dependencies(text, current_bip_number=None):
+    all_bips = create_bip_list(text)
+
+    if current_bip_number:
+        all_bips = [b for b in all_bips if b != current_bip_number]
+
+    prompt = f"""
+You are analyzing the text of Bitcoin Improvement Proposal (BIP){f" {current_bip_number}" if current_bip_number else ""}.
+
+The goal is to identify any dependencies to other BIPs from this list:
+{', '.join(all_bips)}
+
+Respond with a plain JSON array of BIP numbers that this BIP depends on. For example:
+["BIP 32","BIP 327","BIP 328","BIP 380"]
+
+If there are no dependencies, return an empty list.
+
+No text, no explanation, no formatting. Only the JSON list.
+
+Here is the BIP text:
+
+\"\"\"{text}\"\"\"
+"""
+
+    response = run_ollama(prompt)
+
+    if isinstance(response, list):
+        return response
+    elif isinstance(response, dict) and "dependencies" in response:
+        return [dep.get("target_bip") for dep in response["dependencies"] if "target_bip" in dep]
+    else:
+        return []
+
+
 def update_insights(json_data: Dict[str, any], bip_file_path: Path):
     """Generate insights for a BIP file."""
     raw_content = load_bip_content(bip_file_path)
@@ -133,7 +191,7 @@ def update_insights(json_data: Dict[str, any], bip_file_path: Path):
     # Generate insights
     json_data["insights"]["word_list"] = create_word_list(raw_content)
     json_data["insights"]["bip_references"] = create_bip_list(raw_content)
-    json_data["insights"]["dependencies"] = analyze_bip_dependencies(raw_content)
+    json_data["insights"]["dependencies"] = llm_bip_dependencies(raw_content,str(int(json_data["raw"]["preamble"]["bip"])))
 
     # Remove reference to the BIP itself
     bip_number = str(int(json_data["raw"]["preamble"]["bip"]))  # Remove leading zeros

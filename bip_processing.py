@@ -141,6 +141,7 @@ def run_ollama(prompt):
 
         try:
             json_output = json.loads(output.split('```json')[-1].split('```')[0] if '```json' in output else output)
+            print(json_output)
             return json_output
         except Exception as e:
             print("[!] JSON parse error:", e)
@@ -151,16 +152,23 @@ def run_ollama(prompt):
         return None
 
 def llm_bip_dependencies(text, current_bip_number=None):
-    all_bips = create_bip_list(text)
-
-    if current_bip_number:
-        all_bips = [b for b in all_bips if b != current_bip_number]
 
     prompt = f"""
 You are analyzing the text of Bitcoin Improvement Proposal (BIP){f" {current_bip_number}" if current_bip_number else ""}.
 
-The goal is to identify any dependencies to other BIPs from this list:
-{', '.join(all_bips)}
+The goal is to identify any dependencies to other BIPs
+
+Example 1:
+Text: This BIP proposes a change to the key format. It depends on BIP 32 and BIP 39.
+Dependencies: [32, 39]
+
+Example 2:
+Text: This proposal builds upon BIP 174 for partially signed transactions.
+Dependencies: [174]
+
+Example 3:
+Text: This BIP does not depend on any other BIPs.
+Dependencies: []
 
 Respond with a plain JSON array of BIP numbers that this BIP depends on. For example:
 ["BIP 32","BIP 327","BIP 328","BIP 380"]

@@ -9,7 +9,8 @@ from typing import Dict, List, Tuple
 import spacy
 import subprocess
 import json
-
+from openai import OpenAI
+from pathlib import Path
 
 
 # --- Constants ---
@@ -95,62 +96,6 @@ def create_bip_list(raw_content: str) -> List[str]:
     # Normalize BIP references, removing leading zeros
     return sorted(set(f"BIP {int(num)}" for num in bip_references))
 
-def normalize_bip(bip_string):
-    num = re.search(r'\d+', bip_string)
-    return f"BIP {int(num.group())}" if num else bip_string
-
-def is_dependency_relation(doc, bip_string):
-    DEPENDENCY_TRIGGERS = {"depend", "require", "rely", "use", "build", "extend", "supersede", "replace"}
-    bip_tokens = [token for token in doc if bip_string in token.text]
-    for token in doc:
-        if token.lemma_ in DEPENDENCY_TRIGGERS and token.pos_ == "VERB":
-            for child in token.subtree:
-                if any(bip in child.text for bip in bip_tokens):
-                    return True, token.lemma_, normalize_bip(bip_string)
-    return False, None, None
-
-def analyze_bip_dependencies(text):
-    results = []
-    all_bips = create_bip_list(text)
-    nlp = spacy.load("en_core_web_sm")
-    for sent in text.split('\n'):
-        if not sent.strip():
-            continue
-        doc = nlp(sent)
-        for bip in all_bips:
-            if bip in sent:
-                dep_found, verb, target_bip = is_dependency_relation(doc, bip)
-                if dep_found:
-                    results.append({
-                        "sentence": sent.strip(),
-                        "verb": verb,
-                        "target_bip": target_bip
-                    })
-    return results
-
-def run_ollama(prompt):
-    OLLAMA_MODEL = "mistral:instruct"
-    try:
-        result = subprocess.run(
-            ["ollama", "run", OLLAMA_MODEL],
-            input=prompt.encode('utf-8'),
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE
-        )
-        output = result.stdout.decode('utf-8').strip()
-
-        try:
-            json_output = json.loads(output.split('```json')[-1].split('```')[0] if '```json' in output else output)
-            print(json_output)
-            return json_output
-        except Exception as e:
-            print("[!] JSON parse error:", e)
-            print("Raw output:", output)
-            return None
-    except Exception as e:
-        print("[!] Ollama execution failed:", e)
-        return None
-
 def llm_bip_dependencies(text, current_bip_number=None):
 
     prompt = f"""
@@ -160,11 +105,11 @@ The goal is to identify any dependencies to other BIPs
 
 Example 1:
 Text: This BIP proposes a change to the key format. It depends on BIP 32 and BIP 39.
-Dependencies: [32, 39]
+Dependencies: ["BIP 32", "BIP 39"]
 
 Example 2:
-Text: This proposal builds upon BIP 174 for partially signed transactions.
-Dependencies: [174]
+Text: This proposal builds upon BIP-0016 for partially signed transactions.
+Dependencies: ["BIP 16"]
 
 Example 3:
 Text: This BIP does not depend on any other BIPs.
@@ -181,16 +126,23 @@ Here is the BIP text:
 
 \"\"\"{text}\"\"\"
 """
+    
+    model="gpt-4-turbo"
+    api_key = os.getenv("OPENAI_API_KEY")
+    client = OpenAI(api_key=api_key)
+    try:
+        response = client.chat.completions.create(
+            model=model,
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.2,
+        )
+        print(response.choices[0].message.content.strip())
+        return json.loads(response.choices[0].message.content.strip())
+    except Exception as e:
+        print(f"[!] Error: {e}")
+        return ["error"]
 
-    response = run_ollama(prompt)
-
-    if isinstance(response, list):
-        return response
-    elif isinstance(response, dict) and "dependencies" in response:
-        return [dep.get("target_bip") for dep in response["dependencies"] if "target_bip" in dep]
-    else:
-        return []
-
+    
 
 def update_insights(json_data: Dict[str, any], bip_file_path: Path):
     """Generate insights for a BIP file."""

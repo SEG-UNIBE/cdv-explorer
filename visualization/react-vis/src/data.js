@@ -20,31 +20,30 @@ let nodeIds = new Set(); // Track existing nodes
 // Step 5: Create nodes and links based on the loaded BIP data
 bipData.forEach(bip => {
   if (bip) {
-    const normalizedBipId = bip.raw.bip; // Normalize the BIP ID
-    
+    const normalizedBipId = bip.raw.preamble.bip; // Normalize the BIP ID
     // Add node to the nodes array if it doesn't exist
     if (!nodeIds.has(normalizedBipId)) {
       nodes.push({ id: normalizedBipId, group: 'bipGroup' });
       nodeIds.add(normalizedBipId);
     }
 
-    // Create edges based on the 'requires' field in the preamble
-    if (bip.raw.preamble && bip.raw.preamble.requires) {
-      const requiresArray = typeof bip.raw.preamble.requires === 'string'
-        ? bip.raw.preamble.requires.split(',').map(dep => dep.trim())  // Split and trim each dependency
-        : bip.raw.preamble.requires;   // Leave it as-is if it's already an array
+    // Create edges based on the 'references' field in the preamble
+    if (bip.raw.preamble && bip.insights.bip_references) {
+      const referencesArray = typeof bip.insights.bip_references === 'string'
+        ? bip.insights.bip_references.split(',').map(dep => dep.trim())  // Split and trim each dependency
+        : bip.insights.bip_references;   // Leave it as-is if it's already an array
     
       // Now loop through the array
-      requiresArray.forEach(dep => {
-        const normalizedDepId = dep.replace(/^BIP-/, ''); // Normalize the dependency ID
-        
+      referencesArray.forEach(dep => {
+        const normalizedDepId = dep.replace(/^BIP /, ''); // Normalize the dependency ID
+        console.log(normalizedDepId)
         // Only create edge if the dependency node exists
         if (nodeIds.has(normalizedDepId)) {
           links.push({ source: normalizedBipId, target: normalizedDepId, value: 1 });
         }
       });
     } else {
-      console.warn('require field is empty');
+      console.warn('references field is empty');
     }
   } else {
     console.warn('Malformed or missing bip data:', bip);

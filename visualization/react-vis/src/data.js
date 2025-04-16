@@ -23,7 +23,7 @@ bipData.forEach(bip => {
     const normalizedBipId = bip.raw.preamble.bip; // Normalize the BIP ID
     // Add node to the nodes array if it doesn't exist
     if (!nodeIds.has(normalizedBipId)) {
-      nodes.push({ id: normalizedBipId, group: 'bipGroup' });
+      nodes.push({ id: normalizedBipId, group: bip.raw.preamble.layer });
       nodeIds.add(normalizedBipId);
     }
 
@@ -36,7 +36,6 @@ bipData.forEach(bip => {
       // Now loop through the array
       referencesArray.forEach(dep => {
         const normalizedDepId = dep.replace(/^BIP /, ''); // Normalize the dependency ID
-        console.log(normalizedDepId)
         // Only create edge if the dependency node exists
         if (nodeIds.has(normalizedDepId)) {
           links.push({ source: normalizedBipId, target: normalizedDepId, value: 1 });

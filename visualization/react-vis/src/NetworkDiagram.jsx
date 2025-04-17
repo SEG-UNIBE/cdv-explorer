@@ -23,6 +23,20 @@ export const NetworkDiagram = ({ width, height, data }) => {
     const links = data.links.map(d => ({ ...d }));
     const nodes = data.nodes.map(d => ({ ...d }));
 
+    // Tooltip div
+    const tooltip = d3.select("body")
+      .append("div")
+      .style("position", "absolute")
+      .style("padding", "8px 12px")
+      .style("background", "#1a1a1a")
+      .style("color", "#f0f0f0")
+      .style("border", "1px solid #555")
+      .style("border-radius", "6px")
+      .style("box-shadow", "0px 2px 6px rgba(0,0,0,0.4)")
+      .style("font-size", "13px")
+      .style("pointer-events", "none")
+      .style("opacity", 0);
+
     const simulation = d3.forceSimulation(nodes)
       .force("link", d3.forceLink(links).id(d => d.id))
       .force("charge", d3.forceManyBody())
@@ -45,6 +59,18 @@ export const NetworkDiagram = ({ width, height, data }) => {
       .join("circle")
       .attr("r", 5)
       .attr("fill", d => color(d.group))
+      .on("mouseover", (event, d) => {
+        tooltip.transition().duration(200).style("opacity", 1);
+        tooltip.html(`<strong>BIP-</strong>${d.id}`);
+      })
+      .on("mousemove", (event) => {
+        tooltip
+          .style("left", `${event.pageX + 10}px`)
+          .style("top", `${event.pageY - 30}px`);
+      })
+      .on("mouseout", () => {
+        tooltip.transition().duration(200).style("opacity", 0);
+      })
       .call(d3.drag()
         .on("start", dragstarted)
         .on("drag", dragged)
@@ -81,7 +107,10 @@ export const NetworkDiagram = ({ width, height, data }) => {
       d.fy = null;
     }
 
-    return () => simulation.stop(); // cleanup
+    return () => {
+      simulation.stop();
+      tooltip.remove();
+    };
   }, []);
 
   return <svg ref={ref}></svg>;

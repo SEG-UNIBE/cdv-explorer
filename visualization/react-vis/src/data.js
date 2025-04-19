@@ -1,10 +1,7 @@
-// Step 1: Create a context to load all the JSON files from the 'bips_json' folder
 const context = require.context('../../../bips_json', false, /\.json$/); // Match all JSON files
 
-// Step 2: Get all file names from the context
 const allFiles = context.keys();
 
-// Step 3: Load the data for all files dynamically
 const bipData = allFiles.map(filename => {
   const bip = context(filename); // Dynamically import the JSON data
   return bip;
@@ -12,12 +9,10 @@ const bipData = allFiles.map(filename => {
 
 console.log('Loaded BIP Data:', bipData);
 
-// Step 4: Initialize nodes and links (edges) for the network diagram
 let nodes = [];
 let links = [];
 let nodeIds = new Set(); // Track existing nodes
 
-// Step 5: Create nodes and links based on the loaded BIP data
 bipData.forEach(bip => {
   if (bip) {
     const normalizedBipId = bip.raw.preamble.bip; // Normalize the BIP ID
@@ -49,7 +44,6 @@ bipData.forEach(bip => {
   }
 });
 
-// Step 6: Return the network data for visualization
 const data = { nodes, links };
 
 console.log('Network Diagram Data:', data);

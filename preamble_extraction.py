@@ -3,6 +3,8 @@ import re
 import json
 from typing import Dict
 from collections import OrderedDict
+import mistune
+
 
 # Separate required and optional fields based on your instructions
 REQUIRED_FIELDS = [
@@ -94,49 +96,28 @@ def check_required_fields(preamble: Dict[str, str], file_name: str):
         
 def check_headlines(file_content: str, file_name: str):
     """
-    Parses Markdown content and checks for:
-      - Missing required section headings
-      - Extra/unexpected headings
-      - Incorrect heading depth (e.g., `#` instead of `##`)
+    Check if all expected section headings are present with correct levels.
+    Log missing or incorrectly-leveled headings as warnings.
     """
-    headline_pattern = re.compile(r'^(#{1,6})\s+(.*)', re.MULTILINE)
-    found_headlines = []
+    pattern = r'^(={2,6})\s*(.+?)\s*\1$'
+    matches = re.findall(pattern, file_content, re.MULTILINE)
 
-    for match in headline_pattern.finditer(file_content):
-        hashes, title = match.groups()
-        level = len(hashes)
-        normalized_title = title.strip().lower()
-        found_headlines.append((normalized_title, level))
+    # Normalize headings from file
+    found_headings = {
+        heading.strip().lower(): len(eq)
+        for eq, heading in matches
+    }
 
-    # Build lookup
-    found_map = {title: level for title, level in found_headlines}
+    missing_or_wrong = []
+    for expected_heading, expected_level in EXPECTED_HEADLINES.items():
+        actual_level = found_headings.get(expected_heading)
+        if actual_level is None:
+            missing_or_wrong.append(expected_heading)
+        elif actual_level != expected_level:
+            missing_or_wrong.append(f"{expected_heading} (expected level {expected_level}, found level {actual_level})")
 
-    missing_headlines = []
-    extra_headlines = []
-    wrong_depth = []
-
-    # Check for missing or mis-leveled expected headlines
-    for expected_title, expected_level in EXPECTED_HEADLINES.items():
-        if expected_title not in found_map:
-            missing_headlines.append(expected_title)
-        elif found_map[expected_title] != expected_level:
-            wrong_depth.append((expected_title, found_map[expected_title], expected_level))
-
-    # Check for unexpected headlines
-    for title, level in found_headlines:
-        if title not in EXPECTED_HEADLINES:
-            extra_headlines.append(title)
-
-    # Log results
-    if missing_headlines:
-        print(f"[{file_name}] ❌ Missing required sections: {missing_headlines}")
-    if extra_headlines:
-        print(f"[{file_name}] ⚠️ Extra/unexpected sections: {extra_headlines}")
-    if wrong_depth:
-        print(f"[{file_name}] ⚠️ Headings with incorrect depth:")
-        for title, actual, expected in wrong_depth:
-            print(f"    - '{title}' has level {actual}, expected {expected}")
-
+    if missing_or_wrong:
+        print(f"Warning: Issues with headings in {file_name}: {missing_or_wrong}")
 
 
 def add_missing_optional_fields(preamble: Dict[str, str]):

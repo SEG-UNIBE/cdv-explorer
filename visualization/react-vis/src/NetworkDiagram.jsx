@@ -1,8 +1,21 @@
 import * as d3 from 'd3';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+
+const data1 = {
+  nodes: [{ id: "A" }, { id: "B" }],
+  links: [{ source: "A", target: "B" }]
+};
+
+const data2 = {
+  nodes: [{ id: "X" }, { id: "Y" }, { id: "Z" }],
+  links: [{ source: "X", target: "Y" }, { source: "Y", target: "Z" }]
+};
 
 export const NetworkDiagram = ({ width, height, data }) => {
   const ref = useRef();
+  const [selectedData, setSelectedData] = useState("data1");
+
+  const getCurrentData = () => (selectedData === "data1" ? data1 : data2);
 
   useEffect(() => {
     const width = 928;
@@ -20,8 +33,9 @@ export const NetworkDiagram = ({ width, height, data }) => {
     svg.selectAll("*").remove(); // clear previous render
 
     const color = d3.scaleOrdinal(d3.schemeCategory10);
-    const links = data.links.map(d => ({ ...d }));
-    const nodes = data.nodes.map(d => ({ ...d }));
+    const { nodes, links } = getCurrentData();
+    //const links = data.links.map(d => ({ ...d }));
+    //const nodes = data.nodes.map(d => ({ ...d }));
 
     // Tooltip div
     const tooltip = d3.select("body")
@@ -111,7 +125,31 @@ export const NetworkDiagram = ({ width, height, data }) => {
       simulation.stop();
       tooltip.remove();
     };
-  }, []);
-
-  return <svg ref={ref}></svg>;
+  }, [selectedData]);
+  
+  return (
+    <div>
+  <div className="mb-4">
+    <label>
+      <input
+        type="radio"
+        value="data1"
+        checked={selectedData === "data1"}
+        onChange={() => setSelectedData("data1")}
+      />
+      Data 1
+    </label>
+    <label className="ml-4">
+      <input
+        type="radio"
+        value="data2"
+        checked={selectedData === "data2"}
+        onChange={() => setSelectedData("data2")}
+      />
+      Data 2
+    </label>
+  </div>
+  <svg ref={ref}></svg>
+  </div>
+  );
 };

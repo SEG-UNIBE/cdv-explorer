@@ -14,6 +14,18 @@ OPTIONAL_FIELDS = [
     'requires', 'replaces', 'superseded_by'
 ]
 
+EXPECTED_HEADLINES = {
+    "abstract": 2,
+    "motivation": 2,
+    "specification": 2,
+    "rationale": 2,
+    "backwards compatibility": 2,
+    "reference implementation": 2,
+    "security considerations": 2,
+    "copyright": 2,
+    "references": 2,
+}
+
 
 def extract_preamble_from_pre_block(file_content: str) -> Dict[str, str]:
     """
@@ -79,6 +91,53 @@ def check_required_fields(preamble: Dict[str, str], file_name: str):
     if missing_required_fields:
         print(f"Warning: Missing required fields in {file_name}: {missing_required_fields}")
 
+        
+def check_headlines(file_content: str, file_name: str):
+    """
+    Parses Markdown content and checks for:
+      - Missing required section headings
+      - Extra/unexpected headings
+      - Incorrect heading depth (e.g., `#` instead of `##`)
+    """
+    headline_pattern = re.compile(r'^(#{1,6})\s+(.*)', re.MULTILINE)
+    found_headlines = []
+
+    for match in headline_pattern.finditer(file_content):
+        hashes, title = match.groups()
+        level = len(hashes)
+        normalized_title = title.strip().lower()
+        found_headlines.append((normalized_title, level))
+
+    # Build lookup
+    found_map = {title: level for title, level in found_headlines}
+
+    missing_headlines = []
+    extra_headlines = []
+    wrong_depth = []
+
+    # Check for missing or mis-leveled expected headlines
+    for expected_title, expected_level in EXPECTED_HEADLINES.items():
+        if expected_title not in found_map:
+            missing_headlines.append(expected_title)
+        elif found_map[expected_title] != expected_level:
+            wrong_depth.append((expected_title, found_map[expected_title], expected_level))
+
+    # Check for unexpected headlines
+    for title, level in found_headlines:
+        if title not in EXPECTED_HEADLINES:
+            extra_headlines.append(title)
+
+    # Log results
+    if missing_headlines:
+        print(f"[{file_name}] ❌ Missing required sections: {missing_headlines}")
+    if extra_headlines:
+        print(f"[{file_name}] ⚠️ Extra/unexpected sections: {extra_headlines}")
+    if wrong_depth:
+        print(f"[{file_name}] ⚠️ Headings with incorrect depth:")
+        for title, actual, expected in wrong_depth:
+            print(f"    - '{title}' has level {actual}, expected {expected}")
+
+
 
 def add_missing_optional_fields(preamble: Dict[str, str]):
     """
@@ -142,6 +201,9 @@ def process_files_and_save_json(input_dir: str, output_dir: str):
 
         # Check required fields and print the preamble
         check_required_fields(preamble, bip_file)
+
+        # Checkk headlines
+        check_headlines(content, bip_file)
 
         # Add missing optional fields with a default value
         add_missing_optional_fields(preamble)

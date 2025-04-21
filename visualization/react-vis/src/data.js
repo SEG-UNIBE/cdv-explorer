@@ -18,7 +18,7 @@ bipData.forEach(bip => {
     const normalizedBipId = bip.raw.preamble.bip; // Normalize the BIP ID
     // Add node to the nodes array if it doesn't exist
     if (!nodeIds.has(normalizedBipId)) {
-      nodes.push({ id: normalizedBipId, group: bip.raw.preamble.layer, compliance:  bip.raw.preamble.comnpliance_score});
+      nodes.push({ id: normalizedBipId, group: bip.raw.preamble.layer, compliance_score:  bip.raw.preamble.compliance_score});
       nodeIds.add(normalizedBipId);
     }
 

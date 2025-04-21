@@ -1,27 +1,24 @@
 import * as d3 from 'd3';
 import { useEffect, useRef, useState } from 'react';
 
-const data1 = {
-  nodes: [{ id: "A" }, { id: "B" }],
-  links: [{ source: "A", target: "B" }]
-};
-
-const data2 = {
-  nodes: [{ id: "X" }, { id: "Y" }, { id: "Z" }],
-  links: [{ source: "X", target: "Y" }, { source: "Y", target: "Z" }]
-};
-
 export const NetworkDiagram = ({ width, height, data }) => {
   const ref = useRef();
   const [colorBy, setColorBy] = useState("group");
 
   const { nodes, links } = data;
-
+  console.log("Nodes:", nodes);
   useEffect(() => {
     const width = 928;
     const height = 600;
 
-    
+    let color;
+    if (colorBy === "compliance_score") {
+      color = d3.scaleSequential()
+        .domain([50, 100])
+        .interpolator(d3.interpolateOranges);
+    } else {
+      color = d3.scaleOrdinal(d3.schemeCategory10);
+    }
 
     const svg = d3.select(ref.current)
       .attr("width", width)
@@ -32,8 +29,7 @@ export const NetworkDiagram = ({ width, height, data }) => {
 
     svg.selectAll("*").remove(); // clear previous render
 
-    const color = d3.scaleOrdinal(d3.schemeCategory10);
-    const { nodes, links } = getCurrentData();
+    const { nodes, links } = data;
     //const links = data.links.map(d => ({ ...d }));
     //const nodes = data.nodes.map(d => ({ ...d }));
 
@@ -142,9 +138,9 @@ export const NetworkDiagram = ({ width, height, data }) => {
   <label className="ml-4">
     <input
       type="radio"
-      value="compliance"
-      checked={colorBy === "compliance"}
-      onChange={() => setColorBy("compliance")}
+      value="compliance_score"
+      checked={colorBy === "compliance_score"}
+      onChange={() => setColorBy("compliance_score")}
     />
     Color by Compliance
   </label>

@@ -127,7 +127,7 @@ Here is the BIP text:
 \"\"\"{text}\"\"\"
 """
     
-    model="gpt-4-turbo"
+    model="gpt-3.5-turbo"
     api_key = os.getenv("OPENAI_API_KEY")
     client = OpenAI(api_key=api_key)
     try:

@@ -1,7 +1,7 @@
 import os
 import re
 import json
-from typing import Dict
+from typing import Dict, List
 from collections import OrderedDict
 import mistune
 
@@ -85,39 +85,48 @@ def format_value(key: str, value: str):
     return value.strip()
 
 
-def check_required_fields(preamble: Dict[str, str], file_name: str):
+def check_required_fields(preamble: Dict[str, str], file_name: str) -> List[str]:
     """
-    Check if all required BIP fields are present. Log missing required fields as warnings.
+    Return list of missing required fields.
     """
     missing_required_fields = [field for field in REQUIRED_FIELDS if field not in preamble]
-    if missing_required_fields:
-        print(f"Warning: Missing required fields in {file_name}: {missing_required_fields}")
+    return missing_required_fields
 
-        
-def check_headlines(file_content: str, file_name: str):
+def check_headlines(file_content: str, file_name: str) -> List[str]:
     """
-    Check if all expected section headings are present with correct levels.
-    Log missing or incorrectly-leveled headings as warnings.
+    Return list of missing or incorrect headline entries.
     """
     pattern = r'^(={2,6})\s*(.+?)\s*\1$'
     matches = re.findall(pattern, file_content, re.MULTILINE)
 
-    # Normalize headings from file
     found_headings = {
         heading.strip().lower(): len(eq)
         for eq, heading in matches
     }
 
-    missing_or_wrong = []
+    issues = []
     for expected_heading, expected_level in EXPECTED_HEADLINES.items():
         actual_level = found_headings.get(expected_heading)
         if actual_level is None:
-            missing_or_wrong.append(expected_heading)
+            issues.append(f"Missing: {expected_heading}")
         elif actual_level != expected_level:
-            missing_or_wrong.append(f"{expected_heading} (expected level {expected_level}, found level {actual_level})")
+            issues.append(f"Wrong level for {expected_heading}: expected {expected_level}, found {actual_level}")
 
-    if missing_or_wrong:
-        print(f"Warning: Issues with headings in {file_name}: {missing_or_wrong}")
+    return issues
+
+def calculate_compliance_score(preamble: Dict[str, str], file_content: str, file_name: str) -> float:
+    """
+    Calculates a compliance score based on missing required fields and incorrect/missing headings.
+    """
+    required_issues = check_required_fields(preamble, file_name)
+    headline_issues = check_headlines(file_content, file_name)
+
+    total_checks = len(REQUIRED_FIELDS) + len(EXPECTED_HEADLINES)
+    failed_checks = len(required_issues) + len(headline_issues)
+    passed_checks = total_checks - failed_checks
+
+    score = (passed_checks / total_checks) * 100
+    preamble["Compliance Score"] = round(score, 2)
 
 
 def add_missing_optional_fields(preamble: Dict[str, str]):
@@ -147,6 +156,9 @@ def save_preamble_to_json(preamble: Dict[str, str], output_dir: str, file_name: 
     ordered_preamble = OrderedDict()
     for field in REQUIRED_FIELDS + OPTIONAL_FIELDS:
         ordered_preamble[field] = preamble.get(field, None)
+    
+    if "Compliance Score" in preamble:
+        ordered_preamble["Compliance Score"] = preamble["Compliance Score"]
 
     # Structure the JSON data with a "raw" section
     json_data = {
@@ -183,11 +195,11 @@ def process_files_and_save_json(input_dir: str, output_dir: str):
         # Check required fields and print the preamble
         check_required_fields(preamble, bip_file)
 
-        # Checkk headlines
-        check_headlines(content, bip_file)
-
         # Add missing optional fields with a default value
         add_missing_optional_fields(preamble)
+
+        #Add compliance score
+        calculate_compliance_score(preamble, content, bip_file)
 
         # Save the preamble to a JSON file
         save_preamble_to_json(preamble, output_dir, bip_file)

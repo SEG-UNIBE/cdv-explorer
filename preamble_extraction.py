@@ -158,7 +158,7 @@ def save_preamble_to_json(preamble: Dict[str, str], output_dir: str, file_name: 
         ordered_preamble[field] = preamble.get(field, None)
     
     if "Compliance Score" in preamble:
-        ordered_preamble["Compliance Score"] = preamble["Compliance Score"]
+        ordered_preamble["compliance_score"] = preamble["Compliance Score"]
 
     # Structure the JSON data with a "raw" section
     json_data = {

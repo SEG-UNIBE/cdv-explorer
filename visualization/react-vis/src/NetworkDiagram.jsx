@@ -13,9 +13,9 @@ const data2 = {
 
 export const NetworkDiagram = ({ width, height, data }) => {
   const ref = useRef();
-  const [selectedData, setSelectedData] = useState("data1");
+  const [colorBy, setColorBy] = useState("group");
 
-  const getCurrentData = () => (selectedData === "data1" ? data1 : data2);
+  const { nodes, links } = data;
 
   useEffect(() => {
     const width = 928;
@@ -72,7 +72,7 @@ export const NetworkDiagram = ({ width, height, data }) => {
       .data(nodes)
       .join("circle")
       .attr("r", 5)
-      .attr("fill", d => color(d.group))
+      .attr("fill", d => color(d[colorBy] ?? 'default'))
       .on("mouseover", (event, d) => {
         tooltip.transition().duration(200).style("opacity", 1);
         tooltip.html(`<strong>BIP-</strong>${d.id}`);
@@ -125,30 +125,30 @@ export const NetworkDiagram = ({ width, height, data }) => {
       simulation.stop();
       tooltip.remove();
     };
-  }, [selectedData]);
+  }, [colorBy, data]);
   
   return (
     <div>
   <div className="mb-4">
-    <label>
-      <input
-        type="radio"
-        value="data1"
-        checked={selectedData === "data1"}
-        onChange={() => setSelectedData("data1")}
-      />
-      Data 1
-    </label>
-    <label className="ml-4">
-      <input
-        type="radio"
-        value="data2"
-        checked={selectedData === "data2"}
-        onChange={() => setSelectedData("data2")}
-      />
-      Data 2
-    </label>
-  </div>
+  <label>
+    <input
+      type="radio"
+      value="group"
+      checked={colorBy === "group"}
+      onChange={() => setColorBy("group")}
+    />
+    Color by Group
+  </label>
+  <label className="ml-4">
+    <input
+      type="radio"
+      value="compliance"
+      checked={colorBy === "compliance"}
+      onChange={() => setColorBy("compliance")}
+    />
+    Color by Compliance
+  </label>
+</div>
   <svg ref={ref}></svg>
   </div>
   );

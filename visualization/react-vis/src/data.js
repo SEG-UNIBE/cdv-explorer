@@ -10,42 +10,60 @@ const bipData = allFiles.map(filename => {
 console.log('Loaded BIP Data:', bipData);
 
 let nodes = [];
-let links = [];
+let referenceLinks = [];
+let dependencyLinks = [];
 let nodeIds = new Set(); // Track existing nodes
 
 bipData.forEach(bip => {
   if (bip) {
-    const normalizedBipId = bip.raw.preamble.bip; // Normalize the BIP ID
-    // Add node to the nodes array if it doesn't exist
+    const normalizedBipId = bip.raw.preamble.bip;
+
+    // Create node
     if (!nodeIds.has(normalizedBipId)) {
-      nodes.push({ id: normalizedBipId, group: bip.raw.preamble.layer, compliance_score:  bip.raw.preamble.compliance_score});
+      nodes.push({
+        id: normalizedBipId,
+        group: bip.raw.preamble.layer,
+        compliance_score: bip.raw.preamble.compliance_score
+      });
       nodeIds.add(normalizedBipId);
     }
 
-    // Create edges based on the 'references' field in the preamble
-    if (bip.raw.preamble && bip.insights.bip_references) {
-      const referencesArray = typeof bip.insights.bip_references === 'string'
-        ? bip.insights.bip_references.split(',').map(dep => dep.trim())  // Split and trim each dependency
-        : bip.insights.bip_references;   // Leave it as-is if it's already an array
-    
-      // Now loop through the array
-      referencesArray.forEach(dep => {
-        const normalizedDepId = dep.replace(/^BIP /, ''); // Normalize the dependency ID
-        // Only create edge if the dependency node exists
-        if (nodeIds.has(normalizedDepId)) {
-          links.push({ source: normalizedBipId, target: normalizedDepId, value: 1 });
-        }
-      });
-    } else {
-      console.warn('references field is empty');
-    }
-  } else {
-    console.warn('Malformed or missing bip data:', bip);
+    // --- Reference Links ---
+    const referencesArray = Array.isArray(bip.insights?.bip_references)
+      ? bip.insights.bip_references
+      : [];
+
+    referencesArray.forEach(dep => {
+      const normalizedDepId = dep.replace(/^BIP /, '');
+      if (nodeIds.has(normalizedDepId)) {
+        referenceLinks.push({ source: normalizedBipId, target: normalizedDepId, value: 1 });
+      }
+    });
+
+    // --- Dependency Links ---
+    const dependenciesArray = Array.isArray(bip.insights?.dependencies)
+      ? bip.insights.dependencies
+      : [];
+
+    dependenciesArray.forEach(dep => {
+      const normalizedDepId = dep.replace(/^BIP /, '');
+      if (nodeIds.has(normalizedDepId)) {
+        dependencyLinks.push({ source: normalizedBipId, target: normalizedDepId, value: 1 });
+      }
+    });
   }
 });
 
-const data = { nodes, links };
 
-console.log('Network Diagram Data:', data);
+const data = {
+  nodes,
+  links: {
+    references: referenceLinks,
+    dependencies: dependencyLinks
+  }
+};
 
 export default data;
+
+
+console.log('Network Diagram Data:', data);

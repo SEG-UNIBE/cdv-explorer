@@ -4,9 +4,11 @@ import { useEffect, useRef, useState } from 'react';
 export const NetworkDiagram = ({ width, height, data }) => {
   const ref = useRef();
   const [colorBy, setColorBy] = useState("group");
+  const [linkType, setLinkType] = useState("references");
 
-  const { nodes, links } = data;
-  console.log("Nodes:", nodes);
+  const nodes = data.nodes;
+  const links = data.links[linkType];
+
   useEffect(() => {
     const width = 928;
     const height = 600;
@@ -28,10 +30,6 @@ export const NetworkDiagram = ({ width, height, data }) => {
       .style("height", "auto");
 
     svg.selectAll("*").remove(); // clear previous render
-
-    const { nodes, links } = data;
-    //const links = data.links.map(d => ({ ...d }));
-    //const nodes = data.nodes.map(d => ({ ...d }));
 
     // Tooltip div
     const tooltip = d3.select("body")
@@ -121,7 +119,7 @@ export const NetworkDiagram = ({ width, height, data }) => {
       simulation.stop();
       tooltip.remove();
     };
-  }, [colorBy, data]);
+  }, [colorBy,linkType, data]);
   
   return (
     <div>
@@ -143,6 +141,26 @@ export const NetworkDiagram = ({ width, height, data }) => {
       onChange={() => setColorBy("compliance_score")}
     />
     Color by Compliance
+  </label>
+</div>
+<div className="mb-4">
+  <label>
+    <input
+      type="radio"
+      value="references"
+      checked={linkType === "references"}
+      onChange={() => setLinkType("references")}
+    />
+    Show References
+  </label>
+  <label className="ml-4">
+    <input
+      type="radio"
+      value="dependencies"
+      checked={linkType === "dependencies"}
+      onChange={() => setLinkType("dependencies")}
+    />
+    Show Dependencies
   </label>
 </div>
   <svg ref={ref}></svg>

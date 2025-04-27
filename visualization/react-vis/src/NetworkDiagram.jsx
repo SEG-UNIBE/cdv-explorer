@@ -49,6 +49,8 @@ export const NetworkDiagram = ({ width, height, data }) => {
       .force("link", d3.forceLink(links).id(d => d.id))
       .force("charge", d3.forceManyBody())
       .force("center", d3.forceCenter(width / 2, height / 2))
+      .force("x", d3.forceX(width / 2).strength(0.05))
+      .force("y", d3.forceY(height / 2).strength(0.05))
       .on("tick", ticked);
 
     const link = svg.append("g")
@@ -94,8 +96,8 @@ export const NetworkDiagram = ({ width, height, data }) => {
         .attr("y2", d => d.target.y);
 
       node
-        .attr("cx", d => d.x)
-        .attr("cy", d => d.y);
+        .attr("cx", d => d.x = Math.max(5, Math.min(width - 5, d.x)))
+        .attr("cy", d => d.y = Math.max(5, Math.min(height - 5, d.y)));
     }
 
     function dragstarted(event, d) {

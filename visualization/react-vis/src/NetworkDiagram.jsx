@@ -10,8 +10,8 @@ export const NetworkDiagram = ({ width, height, data }) => {
   const links = data.links[linkType];
 
   useEffect(() => {
-    const width = 928;
-    const height = 600;
+    const width = 1500;
+    const height = 750;
 
     let color;
     if (colorBy === "compliance_score") {

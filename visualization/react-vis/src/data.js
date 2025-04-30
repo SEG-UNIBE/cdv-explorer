@@ -23,7 +23,8 @@ bipData.forEach(bip => {
       nodes.push({
         id: normalizedBipId,
         group: bip.raw.preamble.layer,
-        compliance_score: bip.raw.preamble.compliance_score
+        compliance_score: bip.raw.preamble.compliance_score,
+        created: bip.raw.preamble.created
       });
       nodeIds.add(normalizedBipId);
     }

@@ -3,6 +3,7 @@ import Navbar from './Navbar';
 import data from './data';
 import { NetworkDiagram } from './NetworkDiagram';
 import { BipTimelineChart } from './BipTimelineChart';
+import { TopAuthorsChart } from './TopAuthorsChart';
 import './App.scss';
 import * as d3 from 'd3';
 
@@ -23,6 +24,9 @@ function App() {
     <div className="App">
       <Navbar />
       <section className="content">
+        <h2>Top 10 BIP Authors</h2>
+        <TopAuthorsChart data={data} />
+
         <h2>BIPs Over Time</h2>
         <BipTimelineChart data={yearData} width={700} height={300} />
         

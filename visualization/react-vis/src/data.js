@@ -24,7 +24,8 @@ bipData.forEach(bip => {
         id: normalizedBipId,
         group: bip.raw.preamble.layer,
         compliance_score: bip.raw.preamble.compliance_score,
-        created: bip.raw.preamble.created
+        created: bip.raw.preamble.created,
+        author: bip.raw.preamble.author
       });
       nodeIds.add(normalizedBipId);
     }

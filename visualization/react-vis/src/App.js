@@ -5,6 +5,7 @@ import { NetworkDiagram } from './NetworkDiagram';
 import { BipTimelineChart } from './BipTimelineChart';
 import { TopAuthorsChart } from './TopAuthorsChart';
 import { WordCloud } from './WordCloud';
+import { BipSankeyChart }  from './BipSankeyChart';
 import './App.scss';
 import * as d3 from 'd3';
 
@@ -36,18 +37,43 @@ function App() {
     .sort((a, b) => b.count - a.count)
     .slice(0, 10);
     
-  const myWords = [
-      { word: "Hello" },
-      { word: "Everybody" },
-      { word: "How" },
-      { word: "Are" },
-      { word: "You" },
-      { word: "Today" },
-      { word: "Lovely" },
-      { word: "Day" },
-      { word: "Love" },
-      { word: "Coding" }
-    ];
+    const sankeyNodes = new Set();
+    const sankeyLinks = {};
+    
+    data.nodes.forEach(bip => {
+      const layerRaw = bip.group ?? bip.raw?.preamble?.layer ?? "Unknown Layer";
+      const statusRaw = bip.status ?? bip.raw?.preamble?.status ?? "Unknown Status";
+      const typeRaw = bip.raw?.preamble?.type ?? "Unknown Type";
+    
+      // Clean strings (trim whitespace, fallback if still invalid)
+      const layer = String(layerRaw).trim() || "Unknown Layer";
+      const status = String(statusRaw).trim() || "Unknown Status";
+      const type = String(typeRaw).trim() || "Unknown Type";
+    
+      // Debug logging
+      if (layer === "Unknown Layer" || status === "Unknown Status" || type === "Unknown Type") {
+        console.warn("Missing or invalid data:", { layer, status, type, bip });
+      }
+    
+      sankeyNodes.add(layer);
+      sankeyNodes.add(status);
+      sankeyNodes.add(type);
+    
+      const link1 = `${layer}--${status}`;
+      const link2 = `${status}--${type}`;
+    
+      sankeyLinks[link1] = (sankeyLinks[link1] || 0) + 1;
+      sankeyLinks[link2] = (sankeyLinks[link2] || 0) + 1;
+    });
+    
+    const sankeyData = {
+      nodes: Array.from(sankeyNodes).map(id => ({ id })),
+      links: Object.entries(sankeyLinks).map(([key, value]) => {
+        const [source, target] = key.split('--');
+        return { source, target, value };
+      })
+    };
+    console.log(sankeyData)
   
   return (
     <div className="App">
@@ -64,6 +90,9 @@ function App() {
 
         <h2>Word Cloud of BIP Text</h2>
         <WordCloud words={wordCloudData} width={700} height={400} />
+
+        <h2>Sankey Diagram BIP Layer - Status - Type</h2>
+        
       </section>
     </div>
   );

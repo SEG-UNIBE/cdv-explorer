@@ -79,14 +79,21 @@ function App() {
     <div className="App">
       <Navbar />
       <section className="content">
+      <h1>Bitcoin Improvement Protocols and their context</h1>
+      <p>Bitcoin Improvement Proposals (BIPs) are key instruments for the ongoing development of the Bitcoin network. The proposals documented here provide a valuable foundation for understanding technical progress and for assessing the potential impact of new features or changes—whether for developers, businesses, miners, or regulatory institutions. The interaction between different BIPs (e.g., in the areas of scalability, security, or privacy) makes it possible to identify complex technical dependencies and to make informed decisions in strategic and technical planning. Of course, BIPs should not be viewed in isolation; their significance and effect only fully emerge in conjunction with existing standards, ongoing developments, and the active participation of the community.
+      </p>
+      <div className="chart-card">
+      <h2>BIP Dependency Network</h2>
+      <p>  This graph visualizes dependencies and relationships between various Bitcoin Improvement Proposals (BIPs). Nodes represent individual BIPs, and links show how proposals build on or reference each other. Use this network to explore how Bitcoin's protocol evolution is interconnected.</p>
+      <NetworkDiagram data={data} width={700} height={500} />
+      </div>
         <h2>Top 10 BIP Authors</h2>
         <TopAuthorsChart data={data} />
 
         <h2>BIPs Over Time</h2>
         <BipTimelineChart data={yearData} width={700} height={300} />
         
-        <h2 className="mt-8">BIP Dependency Network</h2>
-        <NetworkDiagram data={data} width={700} height={500} />
+        
 
         <h2>Word Cloud of BIP Text</h2>
         <WordCloud words={wordCloudData} width={700} height={400} />

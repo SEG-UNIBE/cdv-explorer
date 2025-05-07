@@ -125,46 +125,48 @@ export const NetworkDiagram = ({ width, height, data }) => {
   
   return (
     <div>
-  <div className="mb-4">
-  <label>
+  <div className="radio-group">
+  <label className="radio-option">
     <input
       type="radio"
       value="group"
       checked={colorBy === "group"}
       onChange={() => setColorBy("group")}
     />
-    Color by Group
+    <span>Color by Group</span>
   </label>
-  <label className="ml-4">
+  <label className="radio-option">
     <input
       type="radio"
       value="compliance_score"
       checked={colorBy === "compliance_score"}
       onChange={() => setColorBy("compliance_score")}
     />
-    Color by Compliance
+    <span>Color by Compliance</span>
   </label>
 </div>
-<div className="mb-4">
-  <label>
+<br></br>
+<div className="radio-group">
+  <label className="radio-option">
     <input
       type="radio"
       value="references"
       checked={linkType === "references"}
       onChange={() => setLinkType("references")}
     />
-    Show References
+    <span>Show References</span>
   </label>
-  <label className="ml-4">
+  <label className="radio-option">
     <input
       type="radio"
       value="dependencies"
       checked={linkType === "dependencies"}
       onChange={() => setLinkType("dependencies")}
     />
-    Show Dependencies
+    <span>Show Dependencies</span>
   </label>
 </div>
+
   <svg ref={ref}></svg>
   </div>
   );

@@ -1,17 +1,13 @@
-import os
 import json
+import os
 import re
 import subprocess
-from datetime import datetime
 from collections import Counter
+from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Tuple
-import spacy
-import subprocess
-import json
-from openai import OpenAI
-from pathlib import Path
 
+from openai import OpenAI
 
 # --- Constants ---
 LOCAL_REPO_DIR = Path("bips_cloned")  # Path to the cloned repository

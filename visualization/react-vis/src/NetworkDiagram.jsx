@@ -1,5 +1,7 @@
 import * as d3 from 'd3';
 import { useEffect, useRef, useState } from 'react';
+import { Dropdown } from 'primereact/dropdown';
+import { RadioButton } from 'primereact/radiobutton';
 
 export const NetworkDiagram = ({ width, height, data }) => {
   const ref = useRef();
@@ -16,10 +18,14 @@ export const NetworkDiagram = ({ width, height, data }) => {
     let color;
     if (colorBy === "compliance_score") {
       color = d3.scaleSequential()
-        .domain([50, 100])
-        .interpolator(d3.interpolateOranges);
+    .domain([50, 100]) // or use d3.extent(nodes, d => d.compliance_score)
+    .interpolator(d3.interpolateBlues);
     } else {
-      color = d3.scaleOrdinal(d3.schemeCategory10);
+      const uniqueGroups = [...new Set(nodes.map(d => d[colorBy]))];
+
+color = d3.scaleOrdinal()
+  .domain(uniqueGroups)
+  .range(d3.quantize(d3.interpolateBlues, uniqueGroups.length + 1).slice(1));
     }
 
     const svg = d3.select(ref.current)
@@ -125,47 +131,47 @@ export const NetworkDiagram = ({ width, height, data }) => {
   
   return (
     <div>
-  <div className="radio-group">
-  <label className="radio-option">
-    <input
-      type="radio"
+      <div style={{ display: 'flex', gap: '2rem', alignItems: 'center', marginBottom: '1.5rem' }}>
+  <Dropdown
+    inputId="linkType"
+    value={linkType}
+    options={[
+      { label: 'Regex Interrelations', value: 'references' },
+      { label: 'LLM Interrelations', value: 'dependencies' },
+      { label: 'Preamble Requires', value: 'requires' },
+      { label: 'Preamble Replaces', value: 'replaces' },
+      { label: 'Preamble Superseded By', value: 'superseded_by' }
+    ]}
+    onChange={(e) => setLinkType(e.value)}
+    placeholder="Link Type"
+    className="w-full md:w-14rem"
+    style={{ width: '125px' }}
+  />
+
+<div className="radio-group" style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
+  <div className="radio-option" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+    <RadioButton
+      inputId="color-group"
+      name="colorBy"
       value="group"
-      checked={colorBy === "group"}
-      onChange={() => setColorBy("group")}
+      onChange={(e) => setColorBy(e.value)}
+      checked={colorBy === 'group'}
     />
-    <span>Color by Group</span>
-  </label>
-  <label className="radio-option">
-    <input
-      type="radio"
+    <label htmlFor="color-group">Color by Layer</label>
+  </div>
+  <div className="radio-option" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+    <RadioButton
+      inputId="color-compliance"
+      name="colorBy"
       value="compliance_score"
-      checked={colorBy === "compliance_score"}
-      onChange={() => setColorBy("compliance_score")}
+      onChange={(e) => setColorBy(e.value)}
+      checked={colorBy === 'compliance_score'}
     />
-    <span>Color by Compliance</span>
-  </label>
+    <label htmlFor="color-compliance">Color by Compliance</label>
+  </div>
+  </div>
 </div>
-<br></br>
-<div className="radio-group">
-  <label className="radio-option">
-    <input
-      type="radio"
-      value="references"
-      checked={linkType === "references"}
-      onChange={() => setLinkType("references")}
-    />
-    <span>Show References</span>
-  </label>
-  <label className="radio-option">
-    <input
-      type="radio"
-      value="dependencies"
-      checked={linkType === "dependencies"}
-      onChange={() => setLinkType("dependencies")}
-    />
-    <span>Show Dependencies</span>
-  </label>
-</div>
+
 
   <svg ref={ref}></svg>
   </div>

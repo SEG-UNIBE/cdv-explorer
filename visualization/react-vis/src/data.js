@@ -12,6 +12,9 @@ console.log('Loaded BIP Data:', bipData);
 let nodes = [];
 let referenceLinks = [];
 let dependencyLinks = [];
+let requiresLinks = [];
+let replacesLinks = [];
+let supersedesLinks = [];
 let nodeIds = new Set(); // Track existing nodes
 
 bipData.forEach(bip => {
@@ -55,6 +58,46 @@ bipData.forEach(bip => {
       if (nodeIds.has(normalizedDepId)) {
         dependencyLinks.push({ source: normalizedBipId, target: normalizedDepId, value: 1 });
       }
+
+      // --- Require Links ---
+      const requiresField = bip.raw.preamble?.requires;
+      const requiresArray = Array.isArray(requiresField)
+        ? requiresField
+        : requiresField ? [requiresField] : [];
+  
+      requiresArray.forEach(req => {
+        const normalizedReqId = req.replace(/^BIP /, '');
+        if (nodeIds.has(normalizedReqId)) {
+          requiresLinks.push({ source: normalizedBipId, target: normalizedReqId, value: 1 });
+        }
+      });
+
+      // --- Replaces Links ---
+      const replacesField = bip.raw.preamble?.replaces;
+      const replacesArray = Array.isArray(replacesField)
+        ? replacesField
+        : replacesField ? [replacesField] : [];
+
+      replacesArray.forEach(rep => {
+        const normalizedRepId = rep.replace(/^BIP /, '');
+        if (nodeIds.has(normalizedRepId)) {
+          replacesLinks.push({ source: normalizedBipId, target: normalizedRepId, value: 1 });
+        }
+      });
+
+      // --- Superseded By Links ---
+      const supersededByField = bip.raw.preamble?.superseded_by;
+      const supersededArray = Array.isArray(supersededByField)
+        ? supersededByField
+        : supersededByField ? [supersededByField] : [];
+
+      supersededArray.forEach(sup => {
+        const normalizedSupId = sup.replace(/^BIP /, '');
+        if (nodeIds.has(normalizedSupId)) {
+          supersedesLinks.push({ source: normalizedBipId, target: normalizedSupId, value: 1 });
+        }
+      });
+    
     });
   }
 });
@@ -64,7 +107,10 @@ const data = {
   nodes,
   links: {
     references: referenceLinks,
-    dependencies: dependencyLinks
+    dependencies: dependencyLinks,
+    requires: requiresLinks,
+    replaces: replacesLinks,
+    superseded_by: supersedesLinks
   }
 };
 

@@ -6,6 +6,7 @@ import { BipTimelineChart } from './BipTimelineChart';
 import { TopAuthorsChart } from './TopAuthorsChart';
 import { WordCloud } from './WordCloud';
 import { BipSankeyChart }  from './BipSankeyChart';
+import { Card } from 'primereact/card';
 import './App.scss';
 import * as d3 from 'd3';
 
@@ -82,11 +83,11 @@ function App() {
       <h1>Bitcoin Improvement Protocols and their context</h1>
       <p>Bitcoin Improvement Proposals (BIPs) are key instruments for the ongoing development of the Bitcoin network. The proposals documented here provide a valuable foundation for understanding technical progress and for assessing the potential impact of new features or changes—whether for developers, businesses, miners, or regulatory institutions. The interaction between different BIPs (e.g., in the areas of scalability, security, or privacy) makes it possible to identify complex technical dependencies and to make informed decisions in strategic and technical planning. Of course, BIPs should not be viewed in isolation; their significance and effect only fully emerge in conjunction with existing standards, ongoing developments, and the active participation of the community.
       </p>
-      <div className="chart-card">
+      <Card className="mb-4">
       <h2>BIP Dependency Network</h2>
       <p>  This graph visualizes dependencies and relationships between various Bitcoin Improvement Proposals (BIPs). Nodes represent individual BIPs, and links show how proposals build on or reference each other. Use this network to explore how Bitcoin's protocol evolution is interconnected.</p>
       <NetworkDiagram data={data} width={700} height={500} />
-      </div>
+      </Card>
         <h2>Top 10 BIP Authors</h2>
         <TopAuthorsChart data={data} />
 

@@ -89,7 +89,7 @@ export const NetworkDiagram = ({ width, height, data }) => {
       .selectAll("circle")
       .data(nodes)
       .join("circle")
-      .attr("r", 5)
+      .attr("r", 10)
       .attr("fill", d => color(d[colorBy] ?? 'default'))
       .attr("class", "node")
       .on("mouseover", (event, d) => {
@@ -128,7 +128,7 @@ export const NetworkDiagram = ({ width, height, data }) => {
         link
           .attr("stroke", "#999")
           .attr("stroke-opacity", 0.6)
-          .attr("stroke-width", l => Math.sqrt(l.value));
+          .attr("stroke-width", 1);
       })
       .call(d3.drag()
         .on("start", dragstarted)

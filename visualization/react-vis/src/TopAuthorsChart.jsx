@@ -2,7 +2,7 @@
 import * as d3 from 'd3';
 import { useEffect, useRef } from 'react';
 
-export const TopAuthorsChart = ({ data, width = 700, height = 400 }) => {
+export const TopAuthorsChart = ({ data, width = 600, height = 400 }) => {
   const ref = useRef();
 
   useEffect(() => {

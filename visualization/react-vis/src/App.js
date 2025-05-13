@@ -121,12 +121,16 @@ function App() {
           <WordCloud words={wordCloudData} width={1250} height={650} />
         </Card>
 
-
-        <h2>Top 10 BIP Authors</h2>
-        <TopAuthorsChart data={data} />
-
-        <h2>BIPs Over Time</h2>
-        <BipTimelineChart data={yearData} width={700} height={300} />
+        <div className="chart-grid" style={{ display: 'flex', gap: '2rem', height: '100%' }}>
+  <Card className="mb-4" style={{ flex: 1 }}>
+    <h2>Top 10 BIP Authors</h2>
+    <TopAuthorsChart data={data} />
+  </Card>
+  <Card className="mb-4" style={{ flex: 1 }}>
+    <h2>BIPs Over Time</h2>
+    <BipTimelineChart data={yearData} width={600} height={400} />
+  </Card>
+</div>
 
 
 

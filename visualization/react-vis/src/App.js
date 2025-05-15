@@ -45,14 +45,14 @@ function App() {
     'bit', 'bytes', 'byte', 'message', 'comments', 'data', 'value',
     'type', 'size', 'set', 'path', 'ref', 'org', 'p', 'n',
     'github', 'mediawiki', 'sub', 'script', 'public', 'one', 'number', 'keys', 'other', 'first',
-  'following', 'implementation', 'string', 'case', 'node', 'private',
-  'master', 'does', 'specification', 'two', 'change',
-  'valid', 'where', 'after', 'return', 'e', 'g', 'without', 'standard',
-  'user', 'order', 't', 'index', 'b', 'example', 'nodes', 'non', 'style',
-  'format', 'bits', 'so', 'license', 'some', 'field', 'length',
-  'messages', 'defined', 'being', 'uri', 'created', 'k', 'required',
-  'possible', 'both', 'see', 'let', 'however', 'list', 'wiki', 'into', 'based',
-  'them', 'blob', 'stack', 'sup', 'been', 'name', "c", "do", "r","5", "8", "up", "make", "since","given", "per", "while"
+    'following', 'implementation', 'string', 'case', 'node', 'private',
+    'master', 'does', 'specification', 'two', 'change',
+    'valid', 'where', 'after', 'return', 'e', 'g', 'without', 'standard',
+    'user', 'order', 't', 'index', 'b', 'example', 'nodes', 'non', 'style',
+    'format', 'bits', 'so', 'license', 'some', 'field', 'length',
+    'messages', 'defined', 'being', 'uri', 'created', 'k', 'required',
+    'possible', 'both', 'see', 'let', 'however', 'list', 'wiki', 'into', 'based',
+    'them', 'blob', 'stack', 'sup', 'been', 'name', "c", "do", "r", "5", "8", "up", "make", "since", "given", "per", "while"
   ]);
 
 
@@ -62,44 +62,63 @@ function App() {
     .sort((a, b) => b.count - a.count)
     .slice(0, 100);
 
-  console.log(wordCloudData)
-  const sankeyNodes = new Set();
-  const sankeyLinks = {};
-
-  data.nodes.forEach(bip => {
-    const layerRaw = bip.group ?? bip.raw?.preamble?.layer ?? "Unknown Layer";
-    const statusRaw = bip.status ?? bip.raw?.preamble?.status ?? "Unknown Status";
-    const typeRaw = bip.raw?.preamble?.type ?? "Unknown Type";
-
-    // Clean strings (trim whitespace, fallback if still invalid)
-    const layer = String(layerRaw).trim() || "Unknown Layer";
-    const status = String(statusRaw).trim() || "Unknown Status";
-    const type = String(typeRaw).trim() || "Unknown Type";
-
-    // Debug logging
-    if (layer === "Unknown Layer" || status === "Unknown Status" || type === "Unknown Type") {
-      console.warn("Missing or invalid data:", { layer, status, type, bip });
-    }
-
-    sankeyNodes.add(layer);
-    sankeyNodes.add(status);
-    sankeyNodes.add(type);
-
-    const link1 = `${layer}--${status}`;
-    const link2 = `${status}--${type}`;
-
-    sankeyLinks[link1] = (sankeyLinks[link1] || 0) + 1;
-    sankeyLinks[link2] = (sankeyLinks[link2] || 0) + 1;
-  });
-
-  const sankeyData = {
-    nodes: Array.from(sankeyNodes).map(id => ({ id })),
-    links: Object.entries(sankeyLinks).map(([key, value]) => {
-      const [source, target] = key.split('--');
-      return { source, target, value };
-    })
-  };
-  console.log(sankeyData)
+    const sankeyNodes = new Set();
+    const sankeyLinks = {};
+    
+    // Step 1: Build sets of unique node names and track link counts
+    data.nodes.forEach(bip => {
+      const layerRaw = bip.group ?? bip.raw?.preamble?.layer ?? "Unknown Layer";
+      const statusRaw = bip.status ?? bip.raw?.preamble?.status ?? "Unknown Status";
+      const typeRaw = bip.type ?? bip.raw?.preamble?.type ?? "Unknown Type";
+    
+      // Clean strings
+      const layer = String(layerRaw).trim() || "Unknown Layer";
+      const status = String(statusRaw).trim() || "Unknown Status";
+      const type = String(typeRaw).trim() || "Unknown Type";
+    
+      // Skip if any are unknown
+      if (
+        layer.includes("Unknown") ||
+        status.includes("Unknown") ||
+        type.includes("Unknown")
+      ) {
+        console.warn("Skipping node due to unknown values:", { layer, status, type, bip });
+        return;
+      }
+    
+      sankeyNodes.add(layer);
+      sankeyNodes.add(status);
+      sankeyNodes.add(type);
+    
+      const link1 = `${layer}--${status}`;
+      const link2 = `${status}--${type}`;
+    
+      sankeyLinks[link1] = (sankeyLinks[link1] || 0) + 1;
+      sankeyLinks[link2] = (sankeyLinks[link2] || 0) + 1;
+    });
+    
+    // Step 2: Map node names to numeric IDs
+    const nodeList = Array.from(sankeyNodes);
+    const nodeIdMap = new Map(nodeList.map((label, index) => [label, index]));
+    
+    // Step 3: Create nodes and links using numeric IDs
+    const sankeyData = {
+      nodes: nodeList.map(label => ({
+        id: nodeIdMap.get(label), // numeric ID
+        name: label               // display name
+      })),
+      links: Object.entries(sankeyLinks).map(([key, value]) => {
+        const [sourceLabel, targetLabel] = key.split('--');
+        return {
+          source: nodeIdMap.get(sourceLabel),
+          target: nodeIdMap.get(targetLabel),
+          value
+        };
+      })
+    };
+    
+    console.log('Sankey Data:', sankeyData);
+    
 
   return (
     <div className="App">
@@ -120,24 +139,23 @@ function App() {
           <p>This word cloud highlights the most frequently occurring terms across the Bitcoin Improvement Proposals (BIPs). Each word’s size corresponds to how often it appears, offering a quick visual summary of key topics and recurring themes. Use this visualization to identify dominant concepts and explore the language shaping Bitcoin's protocol development.</p>
           <WordCloud words={wordCloudData} width={1250} height={650} />
         </Card>
-
+        <br></br>
         <div className="chart-grid" style={{ display: 'flex', gap: '2rem', height: '100%' }}>
-  <Card className="mb-4" style={{ flex: 1 }}>
-    <h2>Top 10 BIP Authors</h2>
-    <TopAuthorsChart data={data} />
-  </Card>
-  <Card className="mb-4" style={{ flex: 1 }}>
-    <h2>BIPs Over Time</h2>
-    <BipTimelineChart data={yearData} width={600} height={400} />
-  </Card>
-</div>
-
-
-
-
-
-        <h2>Sankey Diagram BIP Layer - Status - Type</h2>
-
+          <Card className="mb-4" style={{ flex: 1 }}>
+            <h2>Top 10 BIP Authors</h2>
+            <p>This bar chart showcases the ten most prolific contributors to the Bitcoin Improvement Proposals (BIPs). Each bar represents an author, with its length corresponding to the number of BIPs they’ve authored or co-authored. The visualization highlights the individuals who have played key roles in shaping Bitcoin’s technical evolution, offering insight into the community’s most active voices over time.</p>
+            <TopAuthorsChart data={data} />
+          </Card>
+          <Card className="mb-4" style={{ flex: 1 }}>
+            <h2>BIPs Over Time</h2>
+            <p>This timeline chart illustrates the annual number of Bitcoin Improvement Proposals (BIPs) introduced since inception. Each bar represents a year, with its height indicating how many BIPs were proposed in that period. The visualization provides a historical perspective on development activity within the Bitcoin ecosystem, helping identify periods of innovation, debate, and protocol growth over time.</p>
+            <BipTimelineChart data={yearData} width={600} height={400} />
+          </Card>
+        </div>
+        <Card className="mb-4" style={{ flex: 1 }}>
+          <h2>Sankey Diagram BIP Layer - Status - Type</h2>
+          <BipSankeyChart data={sankeyData} width={600} height={400} />
+        </Card>
       </section>
     </div>
   );

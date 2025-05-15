@@ -1,4 +1,3 @@
-// BipSankeyChart.jsx
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import { sankey, sankeyLinkHorizontal } from 'd3-sankey';
@@ -16,14 +15,15 @@ export const BipSankeyChart = ({ data, width = 700, height = 500 }) => {
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
 
-    // Create Sankey layout
+    // Sankey layout
     const sankeyGenerator = sankey()
       .nodeWidth(20)
       .nodePadding(10)
       .extent([[0, 0], [innerWidth, innerHeight]]);
 
+    // Use the IDs for internal layout, but keep 'name' for rendering
     const { nodes, links } = sankeyGenerator({
-      nodes: data.nodes.map(d => ({ ...d })),
+      nodes: data.nodes.map(d => ({ ...d })), // each should have: id (number), name (string)
       links: data.links.map(d => ({ ...d })),
     });
 
@@ -41,7 +41,7 @@ export const BipSankeyChart = ({ data, width = 700, height = 500 }) => {
       .data(links)
       .join('path')
       .attr('d', sankeyLinkHorizontal())
-      .attr('stroke', d => color(d.source.id))
+      .attr('stroke', d => color(d.source.name))
       .attr('stroke-width', d => Math.max(1, d.width))
       .attr('fill', 'none')
       .attr('opacity', 0.5);
@@ -57,14 +57,14 @@ export const BipSankeyChart = ({ data, width = 700, height = 500 }) => {
       .attr('y', d => d.y0)
       .attr('height', d => d.y1 - d.y0)
       .attr('width', d => d.x1 - d.x0)
-      .attr('fill', d => color(d.id));
+      .attr('fill', d => color(d.name));
 
     node.append('text')
       .attr('x', d => d.x0 - 6)
       .attr('y', d => (d.y1 + d.y0) / 2)
       .attr('dy', '0.35em')
       .attr('text-anchor', 'end')
-      .text(d => d.id)
+      .text(d => d.name)
       .filter(d => d.x0 < width / 2)
       .attr('x', d => d.x1 + 6)
       .attr('text-anchor', 'start');
@@ -72,4 +72,3 @@ export const BipSankeyChart = ({ data, width = 700, height = 500 }) => {
 
   return <svg ref={svgRef}></svg>;
 };
-

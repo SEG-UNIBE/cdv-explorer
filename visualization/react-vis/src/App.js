@@ -62,63 +62,63 @@ function App() {
     .sort((a, b) => b.count - a.count)
     .slice(0, 100);
 
-    const sankeyNodes = new Set();
-    const sankeyLinks = {};
-    
-    // Step 1: Build sets of unique node names and track link counts
-    data.nodes.forEach(bip => {
-      const layerRaw = bip.group ?? bip.raw?.preamble?.layer ?? "Unknown Layer";
-      const statusRaw = bip.status ?? bip.raw?.preamble?.status ?? "Unknown Status";
-      const typeRaw = bip.type ?? bip.raw?.preamble?.type ?? "Unknown Type";
-    
-      // Clean strings
-      const layer = String(layerRaw).trim() || "Unknown Layer";
-      const status = String(statusRaw).trim() || "Unknown Status";
-      const type = String(typeRaw).trim() || "Unknown Type";
-    
-      // Skip if any are unknown
-      if (
-        layer.includes("Unknown") ||
-        status.includes("Unknown") ||
-        type.includes("Unknown")
-      ) {
-        console.warn("Skipping node due to unknown values:", { layer, status, type, bip });
-        return;
-      }
-    
-      sankeyNodes.add(layer);
-      sankeyNodes.add(status);
-      sankeyNodes.add(type);
-    
-      const link1 = `${layer}--${status}`;
-      const link2 = `${status}--${type}`;
-    
-      sankeyLinks[link1] = (sankeyLinks[link1] || 0) + 1;
-      sankeyLinks[link2] = (sankeyLinks[link2] || 0) + 1;
-    });
-    
-    // Step 2: Map node names to numeric IDs
-    const nodeList = Array.from(sankeyNodes);
-    const nodeIdMap = new Map(nodeList.map((label, index) => [label, index]));
-    
-    // Step 3: Create nodes and links using numeric IDs
-    const sankeyData = {
-      nodes: nodeList.map(label => ({
-        id: nodeIdMap.get(label), // numeric ID
-        name: label               // display name
-      })),
-      links: Object.entries(sankeyLinks).map(([key, value]) => {
-        const [sourceLabel, targetLabel] = key.split('--');
-        return {
-          source: nodeIdMap.get(sourceLabel),
-          target: nodeIdMap.get(targetLabel),
-          value
-        };
-      })
-    };
-    
-    console.log('Sankey Data:', sankeyData);
-    
+  const sankeyNodes = new Set();
+  const sankeyLinks = {};
+
+  // Step 1: Build sets of unique node names and track link counts
+  data.nodes.forEach(bip => {
+    const layerRaw = bip.group ?? bip.raw?.preamble?.layer ?? "Unknown Layer";
+    const statusRaw = bip.status ?? bip.raw?.preamble?.status ?? "Unknown Status";
+    const typeRaw = bip.type ?? bip.raw?.preamble?.type ?? "Unknown Type";
+
+    // Clean strings
+    const layer = String(layerRaw).trim() || "Unknown Layer";
+    const status = String(statusRaw).trim() || "Unknown Status";
+    const type = String(typeRaw).trim() || "Unknown Type";
+
+    // Skip if any are unknown
+    if (
+      layer.includes("Unknown") ||
+      status.includes("Unknown") ||
+      type.includes("Unknown")
+    ) {
+      console.warn("Skipping node due to unknown values:", { layer, status, type, bip });
+      return;
+    }
+
+    sankeyNodes.add(layer);
+    sankeyNodes.add(status);
+    sankeyNodes.add(type);
+
+    const link1 = `${layer}--${status}`;
+    const link2 = `${status}--${type}`;
+
+    sankeyLinks[link1] = (sankeyLinks[link1] || 0) + 1;
+    sankeyLinks[link2] = (sankeyLinks[link2] || 0) + 1;
+  });
+
+  // Step 2: Map node names to numeric IDs
+  const nodeList = Array.from(sankeyNodes);
+  const nodeIdMap = new Map(nodeList.map((label, index) => [label, index]));
+
+  // Step 3: Create nodes and links using numeric IDs
+  const sankeyData = {
+    nodes: nodeList.map(label => ({
+      id: nodeIdMap.get(label), // numeric ID
+      name: label               // display name
+    })),
+    links: Object.entries(sankeyLinks).map(([key, value]) => {
+      const [sourceLabel, targetLabel] = key.split('--');
+      return {
+        source: nodeIdMap.get(sourceLabel),
+        target: nodeIdMap.get(targetLabel),
+        value
+      };
+    })
+  };
+
+  console.log('Sankey Data:', sankeyData);
+
 
   return (
     <div className="App">
@@ -134,6 +134,13 @@ function App() {
         </Card>
         <h1>BIP Layer Overview</h1>
         <BipKpiOverview data={data} />
+        <Card className="mb-4" style={{ flex: 1 }}>
+          <h2>Sankey Diagram</h2>
+          <p>This Sankey diagram visualizes the flow and relationships between key categories and elements within the Bitcoin Improvement Proposals (BIPs). Each link represents the connection and relative volume between sources and targets—such as proposal types, affected components, or authorship trends—providing insight into how ideas and efforts are distributed across the protocol. Use this diagram to trace the progression of contributions and understand the structural dynamics behind Bitcoin’s technical evolution.</p>
+
+            <BipSankeyChart data={sankeyData} width={1200} height={600} />
+        </Card>
+        <br></br>
         <Card className="mb-4">
           <h2>Word Cloud of BIP Text</h2>
           <p>This word cloud highlights the most frequently occurring terms across the Bitcoin Improvement Proposals (BIPs). Each word’s size corresponds to how often it appears, offering a quick visual summary of key topics and recurring themes. Use this visualization to identify dominant concepts and explore the language shaping Bitcoin's protocol development.</p>
@@ -152,10 +159,7 @@ function App() {
             <BipTimelineChart data={yearData} width={600} height={400} />
           </Card>
         </div>
-        <Card className="mb-4" style={{ flex: 1 }}>
-          <h2>Sankey Diagram BIP Layer - Status - Type</h2>
-          <BipSankeyChart data={sankeyData} width={600} height={400} />
-        </Card>
+
       </section>
     </div>
   );

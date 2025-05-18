@@ -1,4 +1,4 @@
-import BIPNo from "./BIPNo";
+
 import Navbar from './Navbar';
 import data from './data';
 import { NetworkDiagram } from './NetworkDiagram';
@@ -10,7 +10,7 @@ import { Card } from 'primereact/card';
 import './App.scss';
 import * as d3 from 'd3';
 import { BipKpiOverview } from "./BipKpiOverview";
-import { removeStopwords } from 'stopword';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 
 function App() {
@@ -121,8 +121,12 @@ function App() {
 
 
   return (
+    <Router>
     <div className="App">
       <Navbar />
+      <Routes>
+          {/* Home Page Route */}
+          <Route path="/" element={
       <section className="content">
         <h1>Bitcoin Improvement Protocols and their context</h1>
         <p>Bitcoin Improvement Proposals (BIPs) are key instruments for the ongoing development of the Bitcoin network. The proposals documented here provide a valuable foundation for understanding technical progress and for assessing the potential impact of new features or changes—whether for developers, businesses, miners, or regulatory institutions. The interaction between different BIPs (e.g., in the areas of scalability, security, or privacy) makes it possible to identify complex technical dependencies and to make informed decisions in strategic and technical planning. Of course, BIPs should not be viewed in isolation; their significance and effect only fully emerge in conjunction with existing standards, ongoing developments, and the active participation of the community.
@@ -161,7 +165,21 @@ function App() {
         </div>
 
       </section>
+      } />
+      {/* About Page Route */}
+      <Route path="/about" element={
+            <section className="content" style={{ padding: '2rem' }}>
+              <h1>About This Project</h1>
+              <p>
+                This app provides visual analytics for Bitcoin Improvement Proposals (BIPs), helping users understand dependencies,
+                authorship, status distribution, and language patterns in the BIP ecosystem.
+              </p>
+            </section>
+          } />
+        </Routes>
+
     </div>
+    </Router>
   );
 }
 

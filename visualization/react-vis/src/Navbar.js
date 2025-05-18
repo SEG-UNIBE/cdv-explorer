@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import './Navbar.scss';
+import logo from './logo.png';
 
 const Navbar = () => {
   // State for controlling mobile menu visibility
@@ -10,8 +11,7 @@ const Navbar = () => {
   // Sample navbar items
   const items = [
     { label: 'Home', url: '/' },
-    { label: 'About', url: '/about' },
-    { label: 'Contact', url: '/contact' },
+    { label: 'About', url: '/about' }
   ];
 
   // Function to toggle mobile menu visibility
@@ -22,8 +22,7 @@ const Navbar = () => {
   return (
     <div className="nav-bar">
       <div className="nav-logo">
-        {/* TODO: Add your logo here */}
-        <h2>Logo</h2>
+      <img src={logo} alt="Logo" style={{ height: '40px' }} />
       </div>
 
       <div className="nav-items">

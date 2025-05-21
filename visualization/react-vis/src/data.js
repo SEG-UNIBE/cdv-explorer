@@ -7,8 +7,22 @@ const bipData = allFiles.map(filename => {
   return bip;
 });
 
-console.log('Loaded BIP Data:', bipData);
+// Utility: Normalize "BIP 123", "BIP-123", "123, 124" => ["123", "124"]
+function normalizeBipIds(field) {
+  if (!field) return [];
 
+  const rawItems = Array.isArray(field)
+    ? field
+    : String(field).split(',');
+
+  return rawItems
+    .map(item => String(item).trim())
+    .filter(item => item.length > 0)
+    .map(item => item.replace(/^BIP[-\s]*/i, ''))
+    .filter(id => /^\d+$/.test(id)); // only numeric strings
+}
+
+// Main data structures
 let nodes = [];
 let referenceLinks = [];
 let dependencyLinks = [];
@@ -19,90 +33,71 @@ let nodeIds = new Set(); // Track existing nodes
 
 bipData.forEach(bip => {
   if (bip) {
-    const normalizedBipId = bip.raw.preamble.bip;
+    const preamble = bip.raw?.preamble;
+    const insights = bip.insights || {};
+    const normalizedBipId = preamble?.bip;
 
-    // Create node
+    // Skip if invalid
+    if (!normalizedBipId) return;
+
+    // --- Add Node ---
     if (!nodeIds.has(normalizedBipId)) {
       nodes.push({
         id: normalizedBipId,
-        group: bip.raw.preamble.layer,
-        compliance_score: bip.raw.preamble.compliance_score,
-        created: bip.raw.preamble.created,
-        author: bip.raw.preamble.author,
-        word_list: bip.insights.word_list,
-        status: bip.raw.preamble.status,
-        type: bip.raw.preamble.type
+        group: preamble.layer,
+        compliance_score: preamble.compliance_score,
+        created: preamble.created,
+        author: preamble.author,
+        word_list: insights.word_list,
+        status: preamble.status,
+        type: preamble.type
       });
       nodeIds.add(normalizedBipId);
     }
 
-    // --- Reference Links ---
-    const referencesArray = Array.isArray(bip.insights?.bip_references)
-      ? bip.insights.bip_references
-      : [];
-
-    referencesArray.forEach(dep => {
-      const normalizedDepId = dep.replace(/^BIP /, '');
-      if (nodeIds.has(normalizedDepId)) {
-        referenceLinks.push({ source: normalizedBipId, target: normalizedDepId, value: 1 });
+    // --- References (LLM / pattern matched) ---
+    const referencesArray = normalizeBipIds(insights.bip_references);
+    referencesArray.forEach(refId => {
+      if (nodeIds.has(refId)) {
+        referenceLinks.push({ source: normalizedBipId, target: refId, value: 1 });
       }
     });
 
-    // --- Dependency Links ---
-    const dependenciesArray = Array.isArray(bip.insights?.dependencies)
-      ? bip.insights.dependencies
-      : [];
-
-    dependenciesArray.forEach(dep => {
-      const normalizedDepId = dep.replace(/^BIP /, '');
-      if (nodeIds.has(normalizedDepId)) {
-        dependencyLinks.push({ source: normalizedBipId, target: normalizedDepId, value: 1 });
+    // --- Dependencies (LLM or other logic) ---
+    const dependenciesArray = normalizeBipIds(insights.dependencies);
+    dependenciesArray.forEach(depId => {
+      if (nodeIds.has(depId)) {
+        dependencyLinks.push({ source: normalizedBipId, target: depId, value: 1 });
       }
+    });
 
-      // --- Require Links ---
-      const requiresField = bip.raw.preamble?.requires;
-      const requiresArray = Array.isArray(requiresField)
-        ? requiresField
-        : requiresField ? [requiresField] : [];
-  
-      requiresArray.forEach(req => {
-        const normalizedReqId = req.replace(/^BIP /, '');
-        if (nodeIds.has(normalizedReqId)) {
-          requiresLinks.push({ source: normalizedBipId, target: normalizedReqId, value: 1 });
-        }
-      });
+    // --- Requires Links ---
+    const requiresArray = normalizeBipIds(preamble.requires);
+    requiresArray.forEach(reqId => {
+      if (nodeIds.has(reqId)) {
+        requiresLinks.push({ source: normalizedBipId, target: reqId, value: 1 });
+      }
+    });
 
-      // --- Replaces Links ---
-      const replacesField = bip.raw.preamble?.replaces;
-      const replacesArray = Array.isArray(replacesField)
-        ? replacesField
-        : replacesField ? [replacesField] : [];
+    // --- Replaces Links ---
+    const replacesArray = normalizeBipIds(preamble.replaces);
+    replacesArray.forEach(repId => {
+      if (nodeIds.has(repId)) {
+        replacesLinks.push({ source: normalizedBipId, target: repId, value: 1 });
+      }
+    });
 
-      replacesArray.forEach(rep => {
-        const normalizedRepId = rep.replace(/^BIP /, '');
-        if (nodeIds.has(normalizedRepId)) {
-          replacesLinks.push({ source: normalizedBipId, target: normalizedRepId, value: 1 });
-        }
-      });
-
-      // --- Superseded By Links ---
-      const supersededByField = bip.raw.preamble?.superseded_by;
-      const supersededArray = Array.isArray(supersededByField)
-        ? supersededByField
-        : supersededByField ? [supersededByField] : [];
-
-      supersededArray.forEach(sup => {
-        const normalizedSupId = sup.replace(/^BIP /, '');
-        if (nodeIds.has(normalizedSupId)) {
-          supersedesLinks.push({ source: normalizedBipId, target: normalizedSupId, value: 1 });
-        }
-      });
-    
+    // --- Superseded By Links ---
+    const supersededArray = normalizeBipIds(preamble.superseded_by);
+    supersededArray.forEach(supId => {
+      if (nodeIds.has(supId)) {
+        supersedesLinks.push({ source: normalizedBipId, target: supId, value: 1 });
+      }
     });
   }
 });
 
-
+// Final network structure
 const data = {
   nodes,
   links: {
@@ -116,5 +111,4 @@ const data = {
 
 export default data;
 
-
-console.log('Network Diagram Data:', data);
+console.log('✅ Network Diagram Data:', data);

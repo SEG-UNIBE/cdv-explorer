@@ -113,6 +113,10 @@ export const NetworkDiagram = ({ width, height, data }) => {
           .attr("stroke-opacity", 1)
           .attr("stroke-width", 3);
       })
+      .on("click", (event, d) => {
+        const url = `https://github.com/bitcoin/bips/blob/master/bip-${String(d.id).padStart(4, '0')}.mediawiki`;
+        window.open(url, '_blank');
+      })
       .on("mousemove", (event) => {
         tooltip
           .style("left", `${event.pageX + 10}px`)

@@ -4,6 +4,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from collections import Counter
 import matplotlib.cm as cm
+import scipy
 import numpy as np
 from matplotlib.colors import ListedColormap # Import ListedColormap
 
@@ -20,7 +21,7 @@ except ImportError:
     print("PyGraphviz not found. Graphviz layouts (dot, neato, fdp) will be skipped.")
 # --- End Graphviz setup ---
 
-def draw_static_network_with_layouts(network_data, link_type='references', color_by='group'):
+def draw_static_network_with_layouts(network_data, link_type='references', color_by='group', bips_to_show=None):
     """
     Draws static network plots using various layout algorithms.
 
@@ -29,19 +30,54 @@ def draw_static_network_with_layouts(network_data, link_type='references', color
         link_type (str): The type of links to visualize (e.g., 'references').
         color_by (str): Attribute to color nodes by ('group' or 'compliance_score').
     """
+    # Determine the final set of nodes to display based on bips_to_show and their neighbors
+    nodes_to_display_set = None
+
+    if bips_to_show is not None:
+        # 1. Start with the explicitly chosen BIPs
+        core_bips_set = set(bips_to_show)
+        nodes_to_display_set = set(core_bips_set) # Initialize with core BIPs
+
+        # 2. Iterate through ALL links in the network data to find connected nodes
+        # This ensures neighbors are found regardless of the specific 'link_type' chosen for the plot
+        for current_link_type_key in network_data['links']: # Iterate through 'references', 'required', etc.
+            for link_data in network_data['links'][current_link_type_key]: # Renamed link to link_data
+                source_id = int(link_data['source']) # Cast to int, as per your basis
+                target_id = int(link_data['target']) # Cast to int, as per your basis
+
+                # If either end of the link is in our core set, include the other end
+                if source_id in core_bips_set:
+                    nodes_to_display_set.add(target_id)
+                if target_id in core_bips_set:
+                    nodes_to_display_set.add(source_id)
+
+        # At this point, nodes_to_display_set contains core BIPs + all their immediate neighbors
+        # from any link type.
+
+    # Initialize the graph
     G = nx.DiGraph()
 
-    # Add nodes with attributes
-    for node in network_data['nodes']:
-        G.add_node(
-            node['id'],
-            group=node.get('group', '(not specified)') or '(not specified)',
-            compliance_score=node.get('compliance_score', 0)
-        )
+    # Add nodes with attributes, applying the filter based on nodes_to_display_set
+    for node_data in network_data['nodes']: # Renamed 'node' to 'node_data' for clarity
+        node_id = int(node_data['id']) # Cast to int, as per your basis
 
-    # Add edges for the selected link type
-    for link in network_data['links'].get(link_type, []):
-        G.add_edge(link['source'], link['target'])
+        # Only add the node if it's in the determined nodes_to_display_set (or if no filter is active)
+        if nodes_to_display_set is None or node_id in nodes_to_display_set:
+            G.add_node(
+                node_id, # Use the integer ID directly
+                group=node_data.get('group', '(not specified)') or '(not specified)',
+                compliance_score=node_data.get('compliance_score', 0)
+            )
+
+    # Add edges for the selected link type, ensuring both source and target nodes exist in the graph
+    # This loop MUST run AFTER all nodes have been potentially added to G.
+    for link_data in network_data['links'].get(link_type, []): # Use the specific link_type for this plot
+        source_id = int(link_data['source']) # Cast to int, as per your basis
+        target_id = int(link_data['target']) # Cast to int, as per your basis
+
+        # Only add the edge if both its source and target nodes have been successfully added to G
+        if G.has_node(source_id) and G.has_node(target_id):
+            G.add_edge(source_id, target_id)
 
     # Prepare coloring information (done once outside the loop for efficiency)
     group_attr = nx.get_node_attributes(G, 'group')
@@ -91,9 +127,11 @@ def draw_static_network_with_layouts(network_data, link_type='references', color
     layout_configs = [
         {'name': 'spring_default', 'algo': 'spring', 'params': {'k': 0.5, 'iterations': 100, 'seed': 42}},
         {'name': 'spring_spread', 'algo': 'spring', 'params': {'k': 0.9, 'iterations': 100, 'seed': 42}},
-        {'name': 'kamada_kawai', 'algo': 'kamada_kawai', 'params': {}},
         {'name': 'spectral', 'algo': 'spectral', 'params': {}},
-        {'name': 'circular', 'algo': 'circular', 'params': {}},
+        {'name': 'kamada_kawai', 'algo': 'kamada_kawai', 'params': {}},
+        {'name': 'spiral', 'algo': 'spiral', 'params': {}},
+        {'name': 'random', 'algo': 'random', 'params': {}},
+        {'name': 'planar', 'algo': 'planar', 'params': {}},
         {'name': 'shell', 'algo': 'shell', 'params': {}},
     ]
 
@@ -115,12 +153,18 @@ def draw_static_network_with_layouts(network_data, link_type='references', color
                 pos = nx.spring_layout(G, **config['params'])
             elif config['algo'] == 'kamada_kawai':
                 pos = nx.kamada_kawai_layout(G, **config['params'])
+            elif config['algo'] == 'shell':
+                pos = nx.shell_layout(G, **config['params'])
+            elif config['algo'] == 'spiral':
+                pos = nx.spiral_layout(G, **config['params'])
+            elif config['algo'] == 'planar':
+                pos = nx.planar_layout(G, **config['params'])  # Requires G to be planar
+            elif config['algo'] == 'random':
+                pos = nx.random_layout(G, **config['params'])
             elif config['algo'] == 'spectral':
                 pos = nx.spectral_layout(G, **config['params'])
             elif config['algo'] == 'circular':
                 pos = nx.circular_layout(G, **config['params'])
-            elif config['algo'] == 'shell':
-                pos = nx.shell_layout(G, **config['params'])
             elif config['algo'] == 'graphviz':
                 # For Graphviz, ensure G is converted to AGraph if necessary, though graphviz_layout handles it
                 pos = graphviz_layout(G, prog=config['prog'])
@@ -301,7 +345,14 @@ def draw_static_network(network_data, link_type='references', color_by='group'):
 with open('./../network_data.pkl', 'rb') as f:
     data = pickle.load(f)
 
+bips_known_explicit = []
+my_bips_of_interest = [374, 375, 372,174,352,370,342,118,340, 341, 342, 151, 324, 142, 173, 350, 1, 2, 135, 9, 32,
+                       44, 141,]
+
 # Generate the plots
-draw_static_network_with_layouts(data, link_type='references', color_by='group')
-draw_static_network_with_layouts(data, link_type='requires', color_by='group')
-draw_static_network_with_layouts(data, link_type='dependencies', color_by='group')
+draw_static_network_with_layouts(data, link_type='references', color_by='group',
+                                 bips_to_show=my_bips_of_interest)
+draw_static_network_with_layouts(data, link_type='requires', color_by='group',
+                                 bips_to_show=my_bips_of_interest)
+#draw_static_network_with_layouts(data, link_type='dependencies', color_by='group',
+                                 #bips_to_show=my_bips_of_interest)

@@ -54,6 +54,15 @@ def resolve_near_overlaps(pos, threshold=0.02, max_iterations=10):
         if not made_adjustments:
             break  # Done!
 
+
+def relocate_manually(pos, node_id, relative_x=0.0, relative_y=0.0):
+    if node_id in pos:
+        current_x, current_y = pos[node_id]
+        pos[node_id] = (current_x + relative_x, current_y + relative_y)
+    else:
+        raise KeyError(f"Node ID {node_id} not found in position dictionary.")
+
+
 def draw_static_network_with_layouts(network_data, link_type=['references'], color_by='group', bips_to_show=None,
                                      bips_to_exclude=None,
                                      full_title='Plot', edge_type_styles=None):
@@ -66,7 +75,7 @@ def draw_static_network_with_layouts(network_data, link_type=['references'], col
                 'label': 'LLM-detected reference'
             },
             'references': {
-                'color': 'black', 'style': 'solid', 'alpha': 0.6,
+                'color': 'black', 'style': 'dashed', 'alpha': 0.6,
                 'label': 'regex reference'
             },
             'requires': {
@@ -144,8 +153,9 @@ def draw_static_network_with_layouts(network_data, link_type=['references'], col
 
     if color_by == 'group':
         default_colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
+        sorted_group_names = sorted(set(group_attr.values()))
         group_to_index_map = {group: i for i, group in enumerate(sorted_group_names)}
-        node_colors_data = [group_to_index_map[group_attr[node]] for node in G.nodes()]
+        cmap = plt.get_cmap("tab10")
 
         if len(sorted_group_names) > len(default_colors):
             extended_colors = [default_colors[i % len(default_colors)] for i in range(len(sorted_group_names))]
@@ -155,6 +165,7 @@ def draw_static_network_with_layouts(network_data, link_type=['references'], col
 
         vmin_for_plot = 0
         vmax_for_plot = len(sorted_group_names) - 1
+        node_colors_data = [group_to_index_map[group_attr[n]] for n in G.nodes()]  # ✅ ADD THIS
 
         for i, group in enumerate(sorted_group_names):
             count = group_counts[group]
@@ -164,7 +175,6 @@ def draw_static_network_with_layouts(network_data, link_type=['references'], col
                 plt.Line2D([], [], marker='o', color='w', label=label_with_count,
                            markerfacecolor=color_for_legend, markersize=10)
             )
-
     elif color_by == 'compliance_score':
         compliance_scores = nx.get_node_attributes(G, 'compliance_score')
         node_colors_data = [compliance_scores[node] for node in G.nodes()]
@@ -179,7 +189,7 @@ def draw_static_network_with_layouts(network_data, link_type=['references'], col
         {'name': 'spring_default', 'algo': 'spring', 'params': {'k': 0.3, 'iterations': 100, 'seed': 41}},
         {'name': 'spring_spread', 'algo': 'spring', 'params': {'k': 3, 'iterations': 200, 'seed': 41}},
         # {'name': 'spectral', 'algo': 'spectral', 'params': {}},
-        {'name': 'kamada_kawai', 'algo': 'kamada_kawai', 'params': {'scale': 1}},
+        {'name': 'kamada_kawai', 'algo': 'kamada_kawai', 'params': {'scale': 0.8}},
         # {'name': 'spiral', 'algo': 'spiral', 'params': {}},
         # {'name': 'random', 'algo': 'random', 'params': {}},
         # {'name': 'planar', 'algo': 'planar', 'params': {}},
@@ -205,6 +215,8 @@ def draw_static_network_with_layouts(network_data, link_type=['references'], col
             elif config['algo'] == 'kamada_kawai':
                 pos = nx.kamada_kawai_layout(G, **config['params'])
                 resolve_near_overlaps(pos, threshold=0.1)
+                relocate_manually(pos, node_id=142, relative_x=-0.5, relative_y=-0.45)
+                relocate_manually(pos, node_id=173, relative_x=0.05, relative_y=-0.1)
             elif config['algo'] == 'shell':
                 pos = nx.shell_layout(G, **config['params'])
             elif config['algo'] == 'spiral':
@@ -229,7 +241,7 @@ def draw_static_network_with_layouts(network_data, link_type=['references'], col
             continue # Skip this configuration if layout generation fails
 
         # Draw figure for the current layout
-        plt.figure(figsize=(8, 12))
+        plt.figure(figsize=(7, 10))
         nodes_plot = nx.draw_networkx_nodes(
             G, pos,
             node_size=350,
@@ -249,16 +261,28 @@ def draw_static_network_with_layouts(network_data, link_type=['references'], col
             color = style_info.get('color', 'black')
             linestyle = style_info.get('style', 'solid')
             alpha = style_info.get('alpha', 1.0)
+            edgelist = edges_by_type[lt]
+
+            if color == 'outgoing-color':
+                edge_color_indices = []
+                for (src, tgt) in edgelist:
+                    group = group_attr.get(src, '(not specified)')
+                    group_index = group_to_index_map.get(group, 0)
+                    edge_color_indices.append(group_index)
+                edge_colors = [cmap(i) for i in edge_color_indices]  # map index to actual RGBA color
+            else:
+                edge_colors = color
+
             nx.draw_networkx_edges(
                 G, pos,
-                edgelist=edges_by_type[lt],
-                edge_color=color,
+                edgelist=edgelist,
+                edge_color=edge_colors,
                 style=linestyle,
                 width=1.2,
                 alpha=alpha,
                 arrows=True,
                 arrowstyle='-|>',
-                connectionstyle='arc3,rad=0.2',  # <<< curve
+                connectionstyle='arc3,rad=0.2',
                 min_source_margin=10,
                 min_target_margin=10
             )
@@ -285,7 +309,7 @@ def draw_static_network_with_layouts(network_data, link_type=['references'], col
             style_info = edge_type_styles.get(lt, {})
             if style_info.get('alpha', 1.0) == 0.0:
                 continue  # Skip legend entry for invisible edge type
-            color = style_info.get('color', 'black')
+            color = 'gray' if style_info.get('color', 'black') == 'outgoing-color' else style_info.get('color', 'black')
             linestyle = style_info.get('style', 'solid')
             label = style_info.get('label', lt)  # <<< use custom label if provided
             base_label = style_info.get('label', lt)
@@ -449,13 +473,13 @@ my_bips_of_interest = [
 my_bips_to_exclude = [
     13, 16, 30, 34, 38, 39, 47, 50, 65, 66, 68, 70, 78, 80, 81,  132, 144, 150, 151, 324, 353, 85, 91, 72, 347, 113,
     152, 300 , 330 , 124, 109, 8, 371, 75, 152, 380, 90, 339, 49, 86, 45, 48, 46, 329, 390, 157, 60, 117, 116, 136,
-    119, 31, 37, 74, 112,141,143,145,147,43,44,87, 158,114,320,351,121,149,115,111,120,127,175,388,325
+    119, 31, 37, 74, 112,141,143,145,147,43,44,87, 158,114,320,351,121,149,115,111,120,127,175,388,325,88,148, 93,62
 ]
 
 
 edge_type_styles = {
     'references': {
-        'color': 'black', 'style': 'solid', 'alpha': 0.6,
+        'color': 'outgoing-color', 'style': 'dashed', 'alpha': 0.8,
         'label': 'regex reference'
     },
     'requires': {

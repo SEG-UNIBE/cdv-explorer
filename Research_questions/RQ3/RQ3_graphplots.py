@@ -7,7 +7,7 @@ import matplotlib.cm as cm
 import scipy
 import numpy as np
 from matplotlib.colors import ListedColormap # Import ListedColormap
-
+from matplotlib.lines import Line2D
 
 # --- Graphviz / PyGraphviz setup ---
 # Make sure you have pygraphviz installed: pip install pygraphviz
@@ -21,7 +21,8 @@ except ImportError:
     print("PyGraphviz not found. Graphviz layouts (dot, neato, fdp) will be skipped.")
 # --- End Graphviz setup ---
 
-def draw_static_network_with_layouts(network_data, link_type='references', color_by='group', bips_to_show=None):
+def draw_static_network_with_layouts(network_data, link_type=['references'], color_by='group', bips_to_show=None,
+                                     full_title='Plot', edge_type_styles=None):
     """
     Draws static network plots using various layout algorithms.
 
@@ -30,56 +31,51 @@ def draw_static_network_with_layouts(network_data, link_type='references', color
         link_type (str): The type of links to visualize (e.g., 'references').
         color_by (str): Attribute to color nodes by ('group' or 'compliance_score').
     """
-    # Determine the final set of nodes to display based on bips_to_show and their neighbors
+
+    # Define color and style for each link type  # <<< added
+    if edge_type_styles is None:
+        edge_type_styles = {
+            'dependencies': {'color': 'gray', 'style': 'solid'}, # LLM
+            'references': {'color': 'black', 'style': 'solid'}, # regex
+            'requires': {'color': 'red', 'style': 'solid'},
+            'replaces': {'color': 'blue', 'style': 'solid'},
+            'superseded_by': {'color': 'green', 'style': 'solid'},
+        }
+
     nodes_to_display_set = None
-
     if bips_to_show is not None:
-        # 1. Start with the explicitly chosen BIPs
         core_bips_set = set(bips_to_show)
-        nodes_to_display_set = set(core_bips_set) # Initialize with core BIPs
-
-        # 2. Iterate through ALL links in the network data to find connected nodes
-        # This ensures neighbors are found regardless of the specific 'link_type' chosen for the plot
-        for current_link_type_key in network_data['links']: # Iterate through 'references', 'required', etc.
-            for link_data in network_data['links'][current_link_type_key]: # Renamed link to link_data
-                source_id = int(link_data['source']) # Cast to int, as per your basis
-                target_id = int(link_data['target']) # Cast to int, as per your basis
-
-                # If either end of the link is in our core set, include the other end
+        nodes_to_display_set = set(core_bips_set)
+        for current_link_type_key in network_data['links']:
+            for link_data in network_data['links'][current_link_type_key]:
+                source_id = int(link_data['source'])
+                target_id = int(link_data['target'])
                 if source_id in core_bips_set:
                     nodes_to_display_set.add(target_id)
-                if target_id in core_bips_set:
-                    nodes_to_display_set.add(source_id)
+                # if target_id in core_bips_set:
+                #     nodes_to_display_set.add(source_id)
 
-        # At this point, nodes_to_display_set contains core BIPs + all their immediate neighbors
-        # from any link type.
-
-    # Initialize the graph
     G = nx.DiGraph()
 
-    # Add nodes with attributes, applying the filter based on nodes_to_display_set
-    for node_data in network_data['nodes']: # Renamed 'node' to 'node_data' for clarity
-        node_id = int(node_data['id']) # Cast to int, as per your basis
-
-        # Only add the node if it's in the determined nodes_to_display_set (or if no filter is active)
+    for node_data in network_data['nodes']:
+        node_id = int(node_data['id'])
         if nodes_to_display_set is None or node_id in nodes_to_display_set:
             G.add_node(
-                node_id, # Use the integer ID directly
+                node_id,
                 group=node_data.get('group', '(not specified)') or '(not specified)',
                 compliance_score=node_data.get('compliance_score', 0)
             )
 
-    # Add edges for the selected link type, ensuring both source and target nodes exist in the graph
-    # This loop MUST run AFTER all nodes have been potentially added to G.
-    for link_data in network_data['links'].get(link_type, []): # Use the specific link_type for this plot
-        source_id = int(link_data['source']) # Cast to int, as per your basis
-        target_id = int(link_data['target']) # Cast to int, as per your basis
+    # Collect edges by type  # <<< added
+    edges_by_type = {lt: [] for lt in link_type}
+    for lt in link_type:
+        for link_data in network_data['links'].get(lt, []):
+            source_id = int(link_data['source'])
+            target_id = int(link_data['target'])
+            if G.has_node(source_id) and G.has_node(target_id):
+                G.add_edge(source_id, target_id)
+                edges_by_type[lt].append((source_id, target_id))
 
-        # Only add the edge if both its source and target nodes have been successfully added to G
-        if G.has_node(source_id) and G.has_node(target_id):
-            G.add_edge(source_id, target_id)
-
-    # Prepare coloring information (done once outside the loop for efficiency)
     group_attr = nx.get_node_attributes(G, 'group')
     group_counts = Counter(group_attr.values())
     sorted_groups = sorted(group_counts.items(), key=lambda item: item[1], reverse=True)
@@ -179,53 +175,83 @@ def draw_static_network_with_layouts(network_data, link_type='references', color
         # Draw figure for the current layout
         plt.figure(figsize=(12, 8))
         nodes_plot = nx.draw_networkx_nodes(
-            G, pos, node_size=300, node_color=node_colors_data, cmap=cmap_for_plot, alpha=0.85,
-            vmin=vmin_for_plot, vmax=vmax_for_plot, edgecolors='black', linewidths=1.5
+            G, pos,
+            node_size=350,
+            node_color=node_colors_data,
+            cmap=cmap_for_plot,
+            alpha=0.85,
+            vmin=vmin_for_plot,
+            vmax=vmax_for_plot,
+            edgecolors='black',
+            linewidths=0.9
         )
-        nx.draw_networkx_edges(
-            G, pos, alpha=0.4, arrows=True, arrowstyle='-|>', min_source_margin=10, min_target_margin=10
-        )
-        nx.draw_networkx_labels(
-            G, pos, font_size=8, font_color="black", font_weight='bold'
-        )
 
-        # Determine the dynamic part of the title based on link_type
-        if link_type == 'requires':
-            dependency_description = "explicit dependencies declared in preamble"
-        elif link_type == 'references':
-            dependency_description = "implicit dependencies found using regex in entire document"
-        elif link_type == 'dependencies': # Assuming 'dependey' is a typo and should be 'dependency' or similar
-            dependency_description = "implicit dependencies extracted using LLM in entire document"
-        else:
-            dependency_description = f"dependencies of type '{link_type}'" # Fallback for unknown types
+        # Draw edges by type  # <<< modified
+        for lt in link_type:
+            style_info = edge_type_styles.get(lt, {})
+            color = style_info.get('color', 'black')
+            linestyle = style_info.get('style', 'solid')
+            alpha = style_info.get('alpha', 1.0)
+            nx.draw_networkx_edges(
+                G, pos,
+                edgelist=edges_by_type[lt],
+                edge_color=color,
+                style=linestyle,
+                width=1.2,
+                alpha=alpha,
+                arrows=True,
+                arrowstyle='-|>',
+                connectionstyle='arc3,rad=0.2',  # <<< curve
+                min_source_margin=10,
+                min_target_margin=10
+            )
 
-        # Construct the full title
-        full_title = f"BIP Catalog with {dependency_description}"
-        # Set the main plot title
-        plt.title(full_title,
-                  pad=50,
-                  y=1.02
-                  ) # Increased 'y' to position it higher, giving more room for legend below it
+        nx.draw_networkx_labels(G, pos,
+                                font_size=7,
+                                font_color="black",
+                                font_weight='bold',
+                                font_family='monospace'
+                                )
 
+        plt.title(full_title, pad=50, y=1.02)
 
-        # Optional legend for groups or colorbar for compliance_score
-        if color_by == 'group' and legend_handles:
-            # Calculate ncol to roughly create two rows
-            num_legend_items = len(legend_handles)
-            legend_ncol = math.ceil(num_legend_items / 2) # Half the items per row, rounded up
+        # Combine node and edge legends
+        edge_legend_handles = []
+        for lt in link_type:
+            style_info = edge_type_styles.get(lt, {})
+            if style_info.get('alpha', 1.0) == 0.0:
+                continue  # Skip legend entry for invisible edge type
+            color = style_info.get('color', 'black')
+            linestyle = style_info.get('style', 'solid')
 
-            # Place the legend horizontally, below the title
-            plt.legend(handles=legend_handles,
+            arrow_line = Line2D(
+                [1], [0],
+                color=color,
+                linestyle=linestyle,
+                linewidth=1.2,
+                # marker='>',
+                # markersize=5,
+                # markeredgecolor=color,
+                # markerfacecolor=color,
+                label=lt
+            )
+            edge_legend_handles.append(arrow_line)
+
+        all_legend_handles = legend_handles + edge_legend_handles
+        if all_legend_handles:
+            ncol = math.ceil(len(all_legend_handles) / 2)
+            plt.legend(handles=all_legend_handles,
                        loc='lower center',
-                       bbox_to_anchor=(0.5, 1.00), # Still good for placing just above plot
-                       ncol=legend_ncol,         # Set to create two rows
-                       title="BIP Layer",
+                       bbox_to_anchor=(0.5, 1.00),
+                       ncol=ncol,
+                       title="Legend",
                        fancybox=True,
                        shadow=True,
                        columnspacing=1.0,
                        handletextpad=0.5,
                        labelspacing=0.2
                        )
+
         elif color_by == 'compliance_score' and nodes_plot:
             cbar = plt.colorbar(nodes_plot, ax=plt.gca(), orientation='vertical', pad=0.02)
             cbar.set_label('Compliance Score')
@@ -346,13 +372,55 @@ with open('./../network_data.pkl', 'rb') as f:
     data = pickle.load(f)
 
 bips_known_explicit = []
-my_bips_of_interest = [374, 375, 372,174,352,370,342,118,340, 341, 342, 151, 324, 142, 173, 350, 1, 2, 135, 9, 32,
-                       44, 141,]
+
+my_bips_of_interest = [
+    9, 32, 44, 118, 135, 141, 142, 151, 173, 174, 324,
+    340, 341, 342, 350, 352, 370, 372, 374, 375
+]
+
+
+edge_type_styles = {
+    'references': {'color': 'black', 'style': 'solid', 'alpha': 0.6},  # invisible
+    'requires': {'color': 'red', 'style': 'solid', 'alpha': 1.0},
+    'replaces': {'color': 'blue', 'style': 'solid', 'alpha': 1.0},
+    'superseded_by': {'color': 'green', 'style': 'solid', 'alpha': 1.0},
+}
 
 # Generate the plots
-draw_static_network_with_layouts(data, link_type='references', color_by='group',
-                                 bips_to_show=my_bips_of_interest)
-draw_static_network_with_layouts(data, link_type='requires', color_by='group',
-                                 bips_to_show=my_bips_of_interest)
-#draw_static_network_with_layouts(data, link_type='dependencies', color_by='group',
-                                 #bips_to_show=my_bips_of_interest)
+draw_static_network_with_layouts(data,
+                                 link_type=['references', 'requires', 'replaces', 'superseded_by'],
+                                 color_by='group',
+                                 bips_to_show=my_bips_of_interest,
+                                 full_title='Selected BIPs with Implicit Interdependencies found through regex search',
+                                 edge_type_styles=edge_type_styles)
+
+edge_type_styles = {
+    'references': {'color': 'black', 'style': 'solid', 'alpha': 0.0},  # invisible
+    'requires': {'color': 'red', 'style': 'solid', 'alpha': 1.0},
+    'replaces': {'color': 'blue', 'style': 'solid', 'alpha': 1.0},
+    'superseded_by': {'color': 'green', 'style': 'solid', 'alpha': 1.0},
+}
+
+draw_static_network_with_layouts(data,
+                                 link_type=['requires', 'replaces', 'superseded_by','references'],
+                                 color_by='group',
+                                 bips_to_show=my_bips_of_interest,
+                                 full_title='Selected BIPs with Explicit Interdependencies according to Preamble',
+                                 edge_type_styles=edge_type_styles)
+
+
+
+draw_static_network_with_layouts(data,
+                                 link_type=['references'],
+                                 color_by='group',
+                                 bips_to_show=my_bips_of_interest,
+                                 full_title='Selected BIPs with Implicit Interdependencies found through regex search',
+                                 edge_type_styles=None)
+
+
+draw_static_network_with_layouts(data,
+                                 link_type=['requires', 'replaces', 'superseded_by'],
+                                 color_by='group',
+                                 bips_to_show=my_bips_of_interest,
+                                 full_title='Selected BIPs with Explicit Interdependencies according to Preamble',
+                                 edge_type_styles=None)

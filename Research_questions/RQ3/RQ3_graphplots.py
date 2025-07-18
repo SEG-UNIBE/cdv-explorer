@@ -55,17 +55,10 @@ def resolve_near_overlaps(pos, threshold=0.02, max_iterations=10):
             break  # Done!
 
 def draw_static_network_with_layouts(network_data, link_type=['references'], color_by='group', bips_to_show=None,
+                                     bips_to_exclude=None,
                                      full_title='Plot', edge_type_styles=None):
-    """
-    Draws static network plots using various layout algorithms.
 
-    Args:
-        network_data (dict): Dictionary containing 'nodes' and 'links' data.
-        link_type (str): The type of links to visualize (e.g., 'references').
-        color_by (str): Attribute to color nodes by ('group' or 'compliance_score').
-    """
-
-    # Define color and style for each link type  # <<< added
+    # Define color and style for each link type
     if edge_type_styles is None:
         edge_type_styles = {
             'dependencies': {
@@ -100,8 +93,13 @@ def draw_static_network_with_layouts(network_data, link_type=['references'], col
                 target_id = int(link_data['target'])
                 if source_id in core_bips_set:
                     nodes_to_display_set.add(target_id)
-                # if target_id in core_bips_set:
-                #     nodes_to_display_set.add(source_id)
+                if target_id in core_bips_set:
+                    nodes_to_display_set.add(source_id)
+
+    # Apply exclusions directly to the set
+    if bips_to_exclude is not None:
+        nodes_to_display_set = nodes_to_display_set - set(bips_to_exclude)
+
 
     G = nx.DiGraph()
 
@@ -131,6 +129,7 @@ def draw_static_network_with_layouts(network_data, link_type=['references'], col
             if G.has_node(source_id) and G.has_node(target_id):
                 G.add_edge(source_id, target_id)
                 edges_by_type[lt].append((source_id, target_id))
+
 
     group_attr = nx.get_node_attributes(G, 'group')
     group_counts = Counter(group_attr.values())
@@ -205,7 +204,7 @@ def draw_static_network_with_layouts(network_data, link_type=['references'], col
                 pos = nx.spring_layout(G, **config['params'])
             elif config['algo'] == 'kamada_kawai':
                 pos = nx.kamada_kawai_layout(G, **config['params'])
-                resolve_near_overlaps(pos, threshold=0.04)
+                resolve_near_overlaps(pos, threshold=0.1)
             elif config['algo'] == 'shell':
                 pos = nx.shell_layout(G, **config['params'])
             elif config['algo'] == 'spiral':
@@ -443,8 +442,14 @@ with open('./../network_data.pkl', 'rb') as f:
 bips_known_explicit = []
 
 my_bips_of_interest = [
-    1, 2, 9, 32, 44, 118, 135, 141, 142, 151, 173, 174, 324,
-    340, 341, 342, 350, 352, 370, 372, 374, 375
+    9, 20, 21, 32, 37, 60, 74, 84, 118, 141, 142, 151, 173, 174, 324,
+    342, 350, 352, 370, 372, 374, 375,
+]
+
+my_bips_to_exclude = [
+    13, 16, 30, 34, 38, 39, 47, 50, 65, 66, 68, 70, 78, 80, 81,  132, 144, 150, 151, 324, 353, 85, 91, 72, 347, 113,
+    152, 300 , 330 , 124, 109, 8, 371, 75, 152, 380, 90, 339, 49, 86, 45, 48, 46, 329, 390, 157, 60, 117, 116, 136,
+    119, 31, 37, 74, 112,141,143,145,147,43,44,87, 158,114,320,351,121,149,115,111,120,127,175,388,325
 ]
 
 
@@ -472,6 +477,7 @@ draw_static_network_with_layouts(data,
                                  link_type=['references', 'requires', 'replaces', 'superseded_by'],
                                  color_by='group',
                                  bips_to_show=my_bips_of_interest,
+                                 bips_to_exclude=my_bips_to_exclude,
                                  full_title='Selected BIPs with Implicit Interdependencies found through regex search',
                                  edge_type_styles=edge_type_styles)
 
@@ -486,6 +492,7 @@ draw_static_network_with_layouts(data,
                                  link_type=['requires', 'replaces', 'superseded_by','references'],
                                  color_by='group',
                                  bips_to_show=my_bips_of_interest,
+                                 bips_to_exclude=my_bips_to_exclude,
                                  full_title='Selected BIPs with Explicit Interdependencies according to Preamble',
                                  edge_type_styles=edge_type_styles)
 
@@ -494,22 +501,16 @@ draw_static_network_with_layouts(data,
 draw_static_network_with_layouts(data,
                                  link_type=['references'],
                                  color_by='group',
-                                 bips_to_show=my_bips_of_interest,
+                                 bips_to_show=None,
+                                 bips_to_exclude=None,
                                  full_title='Selected BIPs with Implicit Interdependencies found through regex search',
                                  edge_type_styles=None)
 
 
 draw_static_network_with_layouts(data,
-                                 link_type=['requires', 'replaces', 'superseded_by'],
-                                 color_by='group',
-                                 bips_to_show=my_bips_of_interest,
-                                 full_title='Selected BIPs with Explicit Interdependencies according to Preamble',
-                                 edge_type_styles=None)
-
-
-draw_static_network_with_layouts(data,
-                                 link_type=['requires', 'replaces', 'superseded_by'],
+                                 link_type=[ 'references', 'requires', 'replaces', 'superseded_by'],
                                  color_by='group',
                                  bips_to_show=None,
+                                 bips_to_exclude=None,
                                  full_title='Selected BIPs with Explicit Interdependencies according to Preamble',
                                  edge_type_styles=None)

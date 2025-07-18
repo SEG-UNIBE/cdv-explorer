@@ -35,11 +35,26 @@ def draw_static_network_with_layouts(network_data, link_type=['references'], col
     # Define color and style for each link type  # <<< added
     if edge_type_styles is None:
         edge_type_styles = {
-            'dependencies': {'color': 'gray', 'style': 'solid'}, # LLM
-            'references': {'color': 'black', 'style': 'solid'}, # regex
-            'requires': {'color': 'red', 'style': 'solid'},
-            'replaces': {'color': 'blue', 'style': 'solid'},
-            'superseded_by': {'color': 'green', 'style': 'solid'},
+            'dependencies': {
+                'color': 'gray', 'style': 'solid', 'alpha': 0.6,
+                'label': 'LLM-detected reference'
+            },
+            'references': {
+                'color': 'black', 'style': 'solid', 'alpha': 0.6,
+                'label': 'regex reference'
+            },
+            'requires': {
+                'color': 'red', 'style': 'solid', 'alpha': 1.0,
+                'label': 'requires (preamble)'
+            },
+            'replaces': {
+                'color': 'blue', 'style': 'solid', 'alpha': 1.0,
+                'label': 'replaces (preamble)'
+            },
+            'superseded_by': {
+                'color': 'green', 'style': 'solid', 'alpha': 1.0,
+                'label': 'superseded (preamble)'
+            }
         }
 
     nodes_to_display_set = None
@@ -66,7 +81,7 @@ def draw_static_network_with_layouts(network_data, link_type=['references'], col
                 compliance_score=node_data.get('compliance_score', 0)
             )
 
-    # Collect edges by type  # <<< added
+    # Collect edges by type
     edges_by_type = {lt: [] for lt in link_type}
     for lt in link_type:
         for link_data in network_data['links'].get(lt, []):
@@ -173,7 +188,7 @@ def draw_static_network_with_layouts(network_data, link_type=['references'], col
             continue # Skip this configuration if layout generation fails
 
         # Draw figure for the current layout
-        plt.figure(figsize=(12, 8))
+        plt.figure(figsize=(8, 12))
         nodes_plot = nx.draw_networkx_nodes(
             G, pos,
             node_size=350,
@@ -223,6 +238,8 @@ def draw_static_network_with_layouts(network_data, link_type=['references'], col
                 continue  # Skip legend entry for invisible edge type
             color = style_info.get('color', 'black')
             linestyle = style_info.get('style', 'solid')
+            label = style_info.get('label', lt)  # <<< use custom label if provided
+
 
             arrow_line = Line2D(
                 [1], [0],
@@ -233,7 +250,7 @@ def draw_static_network_with_layouts(network_data, link_type=['references'], col
                 # markersize=5,
                 # markeredgecolor=color,
                 # markerfacecolor=color,
-                label=lt
+                label=label
             )
             edge_legend_handles.append(arrow_line)
 
@@ -244,12 +261,12 @@ def draw_static_network_with_layouts(network_data, link_type=['references'], col
                        loc='lower center',
                        bbox_to_anchor=(0.5, 1.00),
                        ncol=ncol,
-                       title="Legend",
                        fancybox=True,
                        shadow=True,
+                       fontsize=8,
                        columnspacing=1.0,
-                       handletextpad=0.5,
-                       labelspacing=0.2
+                       handletextpad=0.2,
+                       labelspacing=0.6
                        )
 
         elif color_by == 'compliance_score' and nodes_plot:
@@ -257,7 +274,7 @@ def draw_static_network_with_layouts(network_data, link_type=['references'], col
             cbar.set_label('Compliance Score')
 
         plt.axis('off')
-        plt.tight_layout(rect=[0, 0, 1, 0.95]) # Adjust rect to make space at the top for title and legend
+        plt.tight_layout(rect=[0, 0, 1, 0.97]) # Adjust rect to make space at the top for title and legend
 
         # Save as PDF with layout name appended
         filename = f"network_{link_type}_{color_by}_{layout_name}.pdf"
@@ -338,7 +355,7 @@ def draw_static_network(network_data, link_type='references', color_by='group'):
         node_colors = ['grey'] * len(G.nodes())
 
     # Draw figure
-    plt.figure(figsize=(12, 8))
+    plt.figure(figsize=(11, 9))
     nodes = nx.draw_networkx_nodes(
         G, pos, node_size=300, node_color=node_colors, cmap=cmap, alpha=0.85, vmin=vmin, vmax=vmax,
         edgecolors='black', linewidths=1.5
@@ -380,10 +397,22 @@ my_bips_of_interest = [
 
 
 edge_type_styles = {
-    'references': {'color': 'black', 'style': 'solid', 'alpha': 0.6},  # invisible
-    'requires': {'color': 'red', 'style': 'solid', 'alpha': 1.0},
-    'replaces': {'color': 'blue', 'style': 'solid', 'alpha': 1.0},
-    'superseded_by': {'color': 'green', 'style': 'solid', 'alpha': 1.0},
+    'references': {
+        'color': 'black', 'style': 'solid', 'alpha': 0.7,
+        'label': 'regex reference'  # <<< custom legend label
+    },
+    'requires': {
+        'color': 'red', 'style': 'solid', 'alpha': 0.0,
+        'label': 'requires (preamble)'
+    },
+    'replaces': {
+        'color': 'blue', 'style': 'solid', 'alpha': 0.0,
+        'label': 'replaces (preamble)'
+    },
+    'superseded_by': {
+        'color': 'green', 'style': 'solid', 'alpha': 0.0,
+        'label': 'superseded (preamble)'
+    }
 }
 
 # Generate the plots

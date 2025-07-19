@@ -215,8 +215,10 @@ def draw_static_network_with_layouts(network_data, link_type=['references'], col
             elif config['algo'] == 'kamada_kawai':
                 pos = nx.kamada_kawai_layout(G, **config['params'])
                 resolve_near_overlaps(pos, threshold=0.1)
-                relocate_manually(pos, node_id=142, relative_x=-0.5, relative_y=-0.45)
-                relocate_manually(pos, node_id=173, relative_x=0.05, relative_y=-0.1)
+                relocate_manually(pos, node_id=142, relative_x=0.049, relative_y=-0.58)
+                relocate_manually(pos, node_id=173, relative_x=-0.04, relative_y=-0.14)
+                relocate_manually(pos, node_id=83, relative_x=0.05, relative_y=0.08)
+                relocate_manually(pos, node_id=146, relative_x=0, relative_y=0.12)
             elif config['algo'] == 'shell':
                 pos = nx.shell_layout(G, **config['params'])
             elif config['algo'] == 'spiral':
@@ -241,7 +243,7 @@ def draw_static_network_with_layouts(network_data, link_type=['references'], col
             continue # Skip this configuration if layout generation fails
 
         # Draw figure for the current layout
-        plt.figure(figsize=(7, 10))
+        plt.figure(figsize=(10, 6))
         nodes_plot = nx.draw_networkx_nodes(
             G, pos,
             node_size=350,
@@ -301,7 +303,7 @@ def draw_static_network_with_layouts(network_data, link_type=['references'], col
                 url=url                      # <<< makes the label clickable in PDF
             )
 
-        plt.title(full_title, pad=10, y=1.0)
+        plt.title(full_title, pad=25, y=1.0)
 
         # Combine node and edge legends
         edge_legend_handles = []
@@ -334,7 +336,7 @@ def draw_static_network_with_layouts(network_data, link_type=['references'], col
             ncol = math.ceil(len(all_legend_handles) / 2)
             plt.legend(handles=all_legend_handles,
                        loc='lower center',
-                       bbox_to_anchor=(0.5, 0.94),
+                       bbox_to_anchor=(0.5, 0.95),
                        ncol=ncol,
                        fancybox=True,
                        shadow=True,

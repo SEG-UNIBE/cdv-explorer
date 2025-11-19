@@ -5,7 +5,6 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from collections import Counter
 import matplotlib.cm as cm
-import scipy
 import numpy as np
 from matplotlib.colors import ListedColormap # Import ListedColormap
 from matplotlib.lines import Line2D

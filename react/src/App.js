@@ -36,7 +36,13 @@ function buildDashboardData(dataset) {
     ? (authorship.bips_per_year || [])
     : Array.from(
         d3.rollup(
-          dataset.nodes,
+          dataset.nodes.filter((node) => {
+            if (!node?.created) {
+              return false;
+            }
+            const year = new Date(node.created).getFullYear();
+            return Number.isFinite(year) && year > 1900;
+          }),
           (values) => values.length,
           (node) => new Date(node.created).getFullYear()
         ),

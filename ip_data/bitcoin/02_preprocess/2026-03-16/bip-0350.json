@@ -3,11 +3,13 @@
     "preamble": {
       "bip": "350",
       "title": "Bech32m format for v1+ witness addresses",
-      "author": null,
+      "author": [
+        "Pieter Wuille <pieter@wuille.net>"
+      ],
       "comments_uri": null,
       "status": "Deployed",
       "type": "Specification",
-      "created": null,
+      "created": "2020-12-16",
       "license": [
         "BSD-2-Clause"
       ],
@@ -19,13 +21,13 @@
       "requires": null,
       "replaces": "173",
       "superseded_by": null,
-      "compliance_score": 35.29
+      "compliance_score": 47.06
     }
   },
   "metadata": {
     "last_commit": "Wed Oct 8 14:59:36 2025 -0700",
     "total_commits": 16,
-    "metadata_last_updated": "2026-03-16T20:18:34",
+    "metadata_last_updated": "2026-03-16T21:44:09",
     "git_history": [
       [
         "24e96e870fffaa257b465ce1f0370c14aac588e8",
@@ -1029,14 +1031,13 @@
       "around": 1,
       "intentionally": 1
     },
-    "references": [
+    "implicit_dependencies": [],
+    "explicit_references": [
       "BIP 141",
       "BIP 173"
     ],
-    "bip_references": [
-      "BIP 141",
+    "explicit_dependencies": [
       "BIP 173"
-    ],
-    "dependencies": []
+    ]
   }
 }

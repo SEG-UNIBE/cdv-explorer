@@ -21,6 +21,12 @@ export const TopAuthorsChart = ({ data, width = 600, height = 400 }) => {
             const name = author.split('<')[0].trim();
             authorCounts[name] = (authorCounts[name] || 0) + 1;
           });
+          return;
+        }
+
+        if (typeof proposal.author === 'string' && proposal.author.trim()) {
+          const name = proposal.author.split('<')[0].trim();
+          authorCounts[name] = (authorCounts[name] || 0) + 1;
         }
       });
 

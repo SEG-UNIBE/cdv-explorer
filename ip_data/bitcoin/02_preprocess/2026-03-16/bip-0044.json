@@ -3,11 +3,14 @@
     "preamble": {
       "bip": "44",
       "title": "Multi-Account Hierarchy for Deterministic Wallets",
-      "author": null,
+      "author": [
+        "Marek Palatinus <slush@satoshilabs.com>",
+        "Pavol Rusnak <stick@satoshilabs.com>"
+      ],
       "comments_uri": "https://github.com/bitcoin/bips/wiki/Comments:BIP-0044",
       "status": "Deployed",
       "type": "Specification",
-      "created": null,
+      "created": "2014-04-24",
       "license": null,
       "layer": "Applications",
       "discussions_to": null,
@@ -17,13 +20,13 @@
       "requires": "32, 43",
       "replaces": null,
       "superseded_by": null,
-      "compliance_score": 41.18
+      "compliance_score": 52.94
     }
   },
   "metadata": {
     "last_commit": "Fri Feb 27 23:52:53 2026 +0100",
     "total_commits": 33,
-    "metadata_last_updated": "2026-03-16T20:18:36",
+    "metadata_last_updated": "2026-03-16T21:44:11",
     "git_history": [
       [
         "53dac1ba297a2e452f38f677f1041858eeaa90fb",
@@ -489,14 +492,14 @@
       "hierarchical": 1,
       "field": 1
     },
-    "references": [
+    "implicit_dependencies": [],
+    "explicit_references": [
       "BIP 32",
       "BIP 43"
     ],
-    "bip_references": [
+    "explicit_dependencies": [
       "BIP 32",
       "BIP 43"
-    ],
-    "dependencies": []
+    ]
   }
 }

@@ -34,6 +34,13 @@ EXPECTED_HEADLINES = {
 }
 
 
+FIELD_ALIASES = {
+    "authors": "author",
+    "assigned": "created",
+    "proposed_replacement": "superseded_by",
+}
+
+
 def extract_preamble_from_pre_block(file_content: str) -> Dict[str, str]:
     """
     Extracts the preamble from the content of a file, recognizing the structure inside <pre> blocks
@@ -88,6 +95,29 @@ def format_value(key: str, value: str):
     if key == 'author' or key == 'license':  # Convert multi-line fields to a list
         return [line.strip() for line in value.split('\n') if line.strip()]
     return value.strip()
+
+
+def normalize_preamble_fields(preamble: Dict[str, str]) -> Dict[str, str]:
+    """Normalize source-specific preamble keys to canonical keys used across the pipeline."""
+    normalized = dict(preamble)
+
+    for source_key, canonical_key in FIELD_ALIASES.items():
+        if canonical_key in normalized:
+            continue
+        if source_key not in normalized:
+            continue
+        normalized[canonical_key] = normalized[source_key]
+
+    # Ensure author/license remain list-valued even when aliases provided a scalar.
+    for list_field in ("author", "license"):
+        value = normalized.get(list_field)
+        if value is None:
+            continue
+        if isinstance(value, list):
+            continue
+        normalized[list_field] = [part.strip() for part in str(value).split("\n") if part.strip()]
+
+    return normalized
 
 
 def check_required_fields(preamble: Dict[str, str], _file_name: str) -> List[str]:
@@ -184,7 +214,7 @@ def process_files_and_save_json(
             content = f.read()
 
         # Extract preamble from the file
-        preamble = extract_preamble_from_pre_block(content)
+        preamble = normalize_preamble_fields(extract_preamble_from_pre_block(content))
 
         # Check required fields and print the preamble
         check_required_fields(preamble, proposal_file)

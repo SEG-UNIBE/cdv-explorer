@@ -3,11 +3,14 @@
     "preamble": {
       "bip": "347",
       "title": "OP_CAT in Tapscript",
-      "author": null,
+      "author": [
+        "Ethan Heilman <ethan.r.heilman@gmail.com>",
+        "Armin Sabouri <arminsdev@gmail.com>"
+      ],
       "comments_uri": null,
       "status": "Complete",
       "type": "Specification",
-      "created": null,
+      "created": "2023-12-11",
       "license": [
         "BSD-3-Clause"
       ],
@@ -19,13 +22,13 @@
       "requires": "340, 341, 342",
       "replaces": null,
       "superseded_by": null,
-      "compliance_score": 76.47
+      "compliance_score": 88.24
     }
   },
   "metadata": {
     "last_commit": "Mon Mar 2 10:34:26 2026 -0500",
     "total_commits": 26,
-    "metadata_last_updated": "2026-03-16T20:18:35",
+    "metadata_last_updated": "2026-03-16T21:44:10",
     "git_history": [
       [
         "9fb88a11b75bc83e1953b4b5c50cbb04085524cc",
@@ -846,16 +849,16 @@
       "helpful": 1,
       "comments": 1
     },
-    "references": [
+    "implicit_dependencies": [],
+    "explicit_references": [
       "BIP 3",
       "BIP 341",
       "BIP 342"
     ],
-    "bip_references": [
-      "BIP 3",
+    "explicit_dependencies": [
+      "BIP 340",
       "BIP 341",
       "BIP 342"
-    ],
-    "dependencies": []
+    ]
   }
 }

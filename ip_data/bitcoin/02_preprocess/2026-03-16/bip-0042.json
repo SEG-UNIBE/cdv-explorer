@@ -3,11 +3,13 @@
     "preamble": {
       "bip": "42",
       "title": "A finite monetary supply for Bitcoin",
-      "author": null,
+      "author": [
+        "Pieter Wuille <pieter.wuille@gmail.com>"
+      ],
       "comments_uri": "https://github.com/bitcoin/bips/wiki/Comments:BIP-0042",
       "status": "Deployed",
       "type": "Specification",
-      "created": null,
+      "created": "2014-04-01",
       "license": [
         "PD"
       ],
@@ -19,13 +21,13 @@
       "requires": null,
       "replaces": null,
       "superseded_by": null,
-      "compliance_score": 47.06
+      "compliance_score": 58.82
     }
   },
   "metadata": {
     "last_commit": "Wed Oct 8 14:59:36 2025 -0700",
     "total_commits": 14,
-    "metadata_last_updated": "2026-03-16T20:18:35",
+    "metadata_last_updated": "2026-03-16T21:44:10",
     "git_history": [
       [
         "24e96e870fffaa257b465ce1f0370c14aac588e8",
@@ -479,16 +481,12 @@
       "public": 1,
       "domain": 1
     },
-    "references": [
+    "implicit_dependencies": [],
+    "explicit_references": [
       "BIP 16",
       "BIP 34",
       "BIP 62"
     ],
-    "bip_references": [
-      "BIP 16",
-      "BIP 34",
-      "BIP 62"
-    ],
-    "dependencies": []
+    "explicit_dependencies": []
   }
 }

@@ -3,11 +3,13 @@
     "preamble": {
       "bip": "2",
       "title": "BIP process, revised",
-      "author": null,
+      "author": [
+        "Luke Dashjr <luke+bip@dashjr.org>"
+      ],
       "comments_uri": null,
       "status": "Closed",
       "type": "Process",
-      "created": null,
+      "created": "2016-02-03",
       "license": [
         "BSD-2-Clause OR OPUBL-1.0"
       ],
@@ -18,14 +20,14 @@
       "post_history": null,
       "requires": null,
       "replaces": "1",
-      "superseded_by": null,
-      "compliance_score": 41.18
+      "superseded_by": "3",
+      "compliance_score": 52.94
     }
   },
   "metadata": {
     "last_commit": "Wed Oct 22 21:32:52 2025 +0200",
     "total_commits": 72,
-    "metadata_last_updated": "2026-03-16T20:18:34",
+    "metadata_last_updated": "2026-03-16T21:44:09",
     "git_history": [
       [
         "8586c32fa26de94b6a8a91b30a9e3d93f8ee0555",
@@ -1593,16 +1595,15 @@
       "7282": 1,
       "humming": 1
     },
-    "references": [
+    "implicit_dependencies": [],
+    "explicit_references": [
       "BIP 1",
       "BIP 123",
       "BIP 9"
     ],
-    "bip_references": [
+    "explicit_dependencies": [
       "BIP 1",
-      "BIP 123",
-      "BIP 9"
-    ],
-    "dependencies": []
+      "BIP 3"
+    ]
   }
 }

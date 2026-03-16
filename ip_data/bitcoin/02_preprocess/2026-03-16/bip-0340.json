@@ -3,11 +3,15 @@
     "preamble": {
       "bip": "340",
       "title": "Schnorr Signatures for secp256k1",
-      "author": null,
+      "author": [
+        "Pieter Wuille <pieter.wuille@gmail.com>",
+        "Jonas Nick <jonasd.nick@gmail.com>",
+        "Tim Ruffing <crypto@timruffing.de>"
+      ],
       "comments_uri": "https://github.com/bitcoin/bips/wiki/Comments:BIP-0340",
       "status": "Deployed",
       "type": "Specification",
-      "created": null,
+      "created": "2020-01-19",
       "license": [
         "BSD-2-Clause"
       ],
@@ -19,13 +23,13 @@
       "requires": null,
       "replaces": null,
       "superseded_by": null,
-      "compliance_score": 35.29
+      "compliance_score": 47.06
     }
   },
   "metadata": {
     "last_commit": "Wed Oct 22 20:02:57 2025 +1000",
     "total_commits": 60,
-    "metadata_last_updated": "2026-03-16T20:18:36",
+    "metadata_last_updated": "2026-03-16T21:44:11",
     "git_history": [
       [
         "2885f13d3f37890e328683166dbcbc60b488d13a",
@@ -1650,7 +1654,8 @@
       "review": 1,
       "structured": 1
     },
-    "references": [
+    "implicit_dependencies": [],
+    "explicit_references": [
       "BIP 118",
       "BIP 146",
       "BIP 32",
@@ -1659,15 +1664,6 @@
       "BIP 62",
       "BIP 66"
     ],
-    "bip_references": [
-      "BIP 118",
-      "BIP 146",
-      "BIP 32",
-      "BIP 327",
-      "BIP 341",
-      "BIP 62",
-      "BIP 66"
-    ],
-    "dependencies": []
+    "explicit_dependencies": []
   }
 }

@@ -3,11 +3,14 @@
     "preamble": {
       "bip": "173",
       "title": "Base32 address format for native v0-16 witness outputs",
-      "author": null,
+      "author": [
+        "Pieter Wuille <pieter.wuille@gmail.com>",
+        "Greg Maxwell <greg@xiph.org>"
+      ],
       "comments_uri": "https://github.com/bitcoin/bips/wiki/Comments:BIP-0173",
       "status": "Deployed",
       "type": "Informational",
-      "created": null,
+      "created": "2017-03-20",
       "license": [
         "BSD-2-Clause"
       ],
@@ -18,14 +21,14 @@
       "post_history": null,
       "requires": null,
       "replaces": "142",
-      "superseded_by": null,
-      "compliance_score": 47.06
+      "superseded_by": "350",
+      "compliance_score": 58.82
     }
   },
   "metadata": {
     "last_commit": "Wed Oct 8 14:59:36 2025 -0700",
     "total_commits": 20,
-    "metadata_last_updated": "2026-03-16T20:18:33",
+    "metadata_last_updated": "2026-03-16T21:44:08",
     "git_history": [
       [
         "24e96e870fffaa257b465ce1f0370c14aac588e8",
@@ -1000,20 +1003,17 @@
       "0350": 1,
       "described": 1
     },
-    "references": [
+    "implicit_dependencies": [],
+    "explicit_references": [
       "BIP 13",
       "BIP 141",
       "BIP 142",
       "BIP 143",
       "BIP 350"
     ],
-    "bip_references": [
-      "BIP 13",
-      "BIP 141",
+    "explicit_dependencies": [
       "BIP 142",
-      "BIP 143",
       "BIP 350"
-    ],
-    "dependencies": []
+    ]
   }
 }

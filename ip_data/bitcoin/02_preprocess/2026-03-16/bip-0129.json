@@ -3,11 +3,17 @@
     "preamble": {
       "bip": "129",
       "title": "Bitcoin Secure Multisig Setup (BSMS)",
-      "author": null,
+      "author": [
+        "Hugo Nguyen <hugo@nunchuk.io>",
+        "Peter Gray <peter@coinkite.com>",
+        "Marko Bencun <marko@shiftcrypto.ch>",
+        "Aaron Chen <aarondongchen@gmail.com>",
+        "Rodolfo Novak <rodolfo@coinkite.com>"
+      ],
       "comments_uri": null,
       "status": "Complete",
       "type": "Specification",
-      "created": null,
+      "created": "2020-11-10",
       "license": [
         "BSD-2-Clause"
       ],
@@ -19,13 +25,13 @@
       "requires": "32, 174, 322, 380, 381, 382, 383",
       "replaces": null,
       "superseded_by": null,
-      "compliance_score": 41.18
+      "compliance_score": 52.94
     }
   },
   "metadata": {
     "last_commit": "Fri Feb 27 15:18:38 2026 -0800",
     "total_commits": 13,
-    "metadata_last_updated": "2026-03-16T20:18:33",
+    "metadata_last_updated": "2026-03-16T21:44:09",
     "git_history": [
       [
         "0780663be123aa3db6547c1624b4ab68b87f18dd",
@@ -860,7 +866,8 @@
       "april": 1,
       "018732": 1
     },
-    "references": [
+    "implicit_dependencies": [],
+    "explicit_references": [
       "BIP 174",
       "BIP 32",
       "BIP 322",
@@ -871,17 +878,14 @@
       "BIP 39",
       "BIP 44"
     ],
-    "bip_references": [
+    "explicit_dependencies": [
       "BIP 174",
       "BIP 32",
       "BIP 322",
       "BIP 380",
       "BIP 381",
       "BIP 382",
-      "BIP 383",
-      "BIP 39",
-      "BIP 44"
-    ],
-    "dependencies": []
+      "BIP 383"
+    ]
   }
 }

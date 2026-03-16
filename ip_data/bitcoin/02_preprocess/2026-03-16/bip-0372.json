@@ -3,11 +3,13 @@
     "preamble": {
       "bip": "372",
       "title": "Pay-to-contract tweak fields for PSBT",
-      "author": null,
+      "author": [
+        "Maxim Orlovsky <orlovsky@lnp-bp.org>"
+      ],
       "comments_uri": null,
       "status": "Draft",
       "type": "Specification",
-      "created": null,
+      "created": "2022-01-16",
       "license": [
         "BSD-2-Clause"
       ],
@@ -19,13 +21,13 @@
       "requires": "BIP-174",
       "replaces": null,
       "superseded_by": null,
-      "compliance_score": 58.82
+      "compliance_score": 70.59
     }
   },
   "metadata": {
     "last_commit": "Wed Oct 8 14:59:36 2025 -0700",
     "total_commits": 14,
-    "metadata_last_updated": "2026-03-16T20:18:33",
+    "metadata_last_updated": "2026-03-16T21:44:08",
     "git_history": [
       [
         "24e96e870fffaa257b465ce1f0370c14aac588e8",
@@ -513,18 +515,15 @@
       "0001": 1,
       "0008": 1
     },
-    "references": [
+    "implicit_dependencies": [],
+    "explicit_references": [
       "BIP 174",
       "BIP 32",
       "BIP 340",
       "BIP 370"
     ],
-    "bip_references": [
-      "BIP 174",
-      "BIP 32",
-      "BIP 340",
-      "BIP 370"
-    ],
-    "dependencies": []
+    "explicit_dependencies": [
+      "BIP 174"
+    ]
   }
 }

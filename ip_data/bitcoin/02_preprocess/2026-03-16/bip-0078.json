@@ -3,11 +3,13 @@
     "preamble": {
       "bip": "78",
       "title": "A Simple Payjoin Proposal",
-      "author": null,
+      "author": [
+        "Nicolas Dorier <nicolas.dorier@gmail.com>"
+      ],
       "comments_uri": null,
       "status": "Draft",
       "type": "Specification",
-      "created": null,
+      "created": "2019-05-01",
       "license": [
         "BSD-2-Clause"
       ],
@@ -19,13 +21,13 @@
       "requires": null,
       "replaces": "79",
       "superseded_by": null,
-      "compliance_score": 41.18
+      "compliance_score": 52.94
     }
   },
   "metadata": {
     "last_commit": "Wed Oct 8 14:59:36 2025 -0700",
     "total_commits": 51,
-    "metadata_last_updated": "2026-03-16T20:18:35",
+    "metadata_last_updated": "2026-03-16T21:44:10",
     "git_history": [
       [
         "24e96e870fffaa257b465ce1f0370c14aac588e8",
@@ -1221,14 +1223,13 @@
       "starting": 1,
       "point": 1
     },
-    "references": [
+    "implicit_dependencies": [],
+    "explicit_references": [
       "BIP 21",
       "BIP 79"
     ],
-    "bip_references": [
-      "BIP 21",
+    "explicit_dependencies": [
       "BIP 79"
-    ],
-    "dependencies": []
+    ]
   }
 }

@@ -3,11 +3,13 @@
     "preamble": {
       "bip": "390",
       "title": "musig() Descriptor Key Expression",
-      "author": null,
+      "author": [
+        "Ava Chow <me@achow101.com>"
+      ],
       "comments_uri": null,
       "status": "Draft",
       "type": "Informational",
-      "created": null,
+      "created": "2024-06-04",
       "license": [
         "CC0-1.0"
       ],
@@ -19,13 +21,13 @@
       "requires": "380, 328",
       "replaces": null,
       "superseded_by": null,
-      "compliance_score": 70.59
+      "compliance_score": 82.35
     }
   },
   "metadata": {
     "last_commit": "Thu Mar 5 18:02:52 2026 +0200",
     "total_commits": 16,
-    "metadata_last_updated": "2026-03-16T20:18:33",
+    "metadata_last_updated": "2026-03-16T21:44:09",
     "git_history": [
       [
         "41f99576308d192526093a39718fff842692d13c",
@@ -399,20 +401,17 @@
       "discussions": 1,
       "topic": 1
     },
-    "references": [
+    "implicit_dependencies": [],
+    "explicit_references": [
       "BIP 32",
       "BIP 327",
       "BIP 328",
       "BIP 380",
       "BIP 389"
     ],
-    "bip_references": [
-      "BIP 32",
-      "BIP 327",
+    "explicit_dependencies": [
       "BIP 328",
-      "BIP 380",
-      "BIP 389"
-    ],
-    "dependencies": []
+      "BIP 380"
+    ]
   }
 }

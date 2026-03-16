@@ -3,11 +3,14 @@
     "preamble": {
       "bip": "118",
       "title": "SIGHASH_ANYPREVOUT for Taproot Scripts",
-      "author": null,
+      "author": [
+        "Christian Decker <decker.christian@gmail.com>",
+        "Anthony Towns <aj@erisian.com.au>"
+      ],
       "comments_uri": "https://github.com/bitcoin/bips/wiki/Comments:BIP-0118",
       "status": "Draft",
       "type": "Specification",
-      "created": null,
+      "created": "2017-02-28",
       "license": [
         "BSD-3-Clause"
       ],
@@ -19,13 +22,13 @@
       "requires": "340, 341, 342",
       "replaces": null,
       "superseded_by": null,
-      "compliance_score": 52.94
+      "compliance_score": 64.71
     }
   },
   "metadata": {
     "last_commit": "Wed Oct 8 14:59:36 2025 -0700",
     "total_commits": 14,
-    "metadata_last_updated": "2026-03-16T20:18:31",
+    "metadata_last_updated": "2026-03-16T21:44:07",
     "git_history": [
       [
         "24e96e870fffaa257b465ce1f0370c14aac588e8",
@@ -830,7 +833,8 @@
       "wuille": 1,
       "others": 1
     },
-    "references": [
+    "implicit_dependencies": [],
+    "explicit_references": [
       "BIP 112",
       "BIP 141",
       "BIP 30",
@@ -840,16 +844,10 @@
       "BIP 350",
       "BIP 68"
     ],
-    "bip_references": [
-      "BIP 112",
-      "BIP 141",
-      "BIP 30",
+    "explicit_dependencies": [
       "BIP 340",
       "BIP 341",
-      "BIP 342",
-      "BIP 350",
-      "BIP 68"
-    ],
-    "dependencies": []
+      "BIP 342"
+    ]
   }
 }

@@ -3,11 +3,13 @@
     "preamble": {
       "bip": "389",
       "title": "Multipath Descriptor Key Expressions",
-      "author": null,
+      "author": [
+        "Ava Chow <me@achow101.com>"
+      ],
       "comments_uri": null,
       "status": "Draft",
       "type": "Informational",
-      "created": null,
+      "created": "2022-07-26",
       "license": [
         "BSD-2-Clause"
       ],
@@ -19,13 +21,13 @@
       "requires": "380",
       "replaces": null,
       "superseded_by": null,
-      "compliance_score": 64.71
+      "compliance_score": 76.47
     }
   },
   "metadata": {
     "last_commit": "Wed Oct 8 14:59:36 2025 -0700",
     "total_commits": 9,
-    "metadata_last_updated": "2026-03-16T20:18:34",
+    "metadata_last_updated": "2026-03-16T21:44:09",
     "git_history": [
       [
         "24e96e870fffaa257b465ce1f0370c14aac588e8",
@@ -353,16 +355,14 @@
       "pull": 1,
       "22838": 1
     },
-    "references": [
+    "implicit_dependencies": [],
+    "explicit_references": [
       "BIP 32",
       "BIP 380",
       "BIP 88"
     ],
-    "bip_references": [
-      "BIP 32",
-      "BIP 380",
-      "BIP 88"
-    ],
-    "dependencies": []
+    "explicit_dependencies": [
+      "BIP 380"
+    ]
   }
 }

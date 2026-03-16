@@ -3,11 +3,13 @@
     "preamble": {
       "bip": "13",
       "title": "Address Format for pay-to-script-hash",
-      "author": null,
+      "author": [
+        "Gavin Andresen <gavinandresen@gmail.com>"
+      ],
       "comments_uri": null,
       "status": "Deployed",
       "type": "Specification",
-      "created": null,
+      "created": "2011-10-18",
       "license": null,
       "layer": "Applications",
       "discussions_to": null,
@@ -17,13 +19,13 @@
       "requires": null,
       "replaces": null,
       "superseded_by": null,
-      "compliance_score": 58.82
+      "compliance_score": 70.59
     }
   },
   "metadata": {
     "last_commit": "Wed Oct 8 14:59:36 2025 -0700",
     "total_commits": 15,
-    "metadata_last_updated": "2026-03-16T20:18:36",
+    "metadata_last_updated": "2026-03-16T21:44:11",
     "git_history": [
       [
         "24e96e870fffaa257b465ce1f0370c14aac588e8",
@@ -356,16 +358,12 @@
       "17": 1,
       "op_checkhashverify": 1
     },
-    "references": [
+    "implicit_dependencies": [],
+    "explicit_references": [
       "BIP 12",
       "BIP 16",
       "BIP 17"
     ],
-    "bip_references": [
-      "BIP 12",
-      "BIP 16",
-      "BIP 17"
-    ],
-    "dependencies": []
+    "explicit_dependencies": []
   }
 }

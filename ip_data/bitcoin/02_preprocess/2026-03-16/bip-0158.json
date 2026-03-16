@@ -3,11 +3,14 @@
     "preamble": {
       "bip": "158",
       "title": "Compact Block Filters for Light Clients",
-      "author": null,
+      "author": [
+        "Olaoluwa Osuntokun <laolu32@gmail.com>",
+        "Alex Akselrod <alex@akselrod.org>"
+      ],
       "comments_uri": null,
       "status": "Deployed",
       "type": "Specification",
-      "created": null,
+      "created": "2017-05-24",
       "license": [
         "CC0-1.0"
       ],
@@ -19,13 +22,13 @@
       "requires": "157",
       "replaces": null,
       "superseded_by": null,
-      "compliance_score": 64.71
+      "compliance_score": 76.47
     }
   },
   "metadata": {
     "last_commit": "Wed Oct 8 14:59:36 2025 -0700",
     "total_commits": 38,
-    "metadata_last_updated": "2026-03-16T20:18:32",
+    "metadata_last_updated": "2026-03-16T21:44:07",
     "git_history": [
       [
         "24e96e870fffaa257b465ce1f0370c14aac588e8",
@@ -899,14 +902,13 @@
       "commons": 1,
       "universal": 1
     },
-    "references": [
+    "implicit_dependencies": [],
+    "explicit_references": [
       "BIP 157",
       "BIP 37"
     ],
-    "bip_references": [
-      "BIP 157",
-      "BIP 37"
-    ],
-    "dependencies": []
+    "explicit_dependencies": [
+      "BIP 157"
+    ]
   }
 }

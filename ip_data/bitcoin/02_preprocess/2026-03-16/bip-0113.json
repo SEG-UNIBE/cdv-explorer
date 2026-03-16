@@ -3,11 +3,14 @@
     "preamble": {
       "bip": "113",
       "title": "Median time-past as endpoint for lock-time calculations",
-      "author": null,
+      "author": [
+        "Thomas Kerin <me@thomaskerin.io>",
+        "Mark Friedenbach <mark@friedenbach.org>"
+      ],
       "comments_uri": null,
       "status": "Deployed",
       "type": "Specification",
-      "created": null,
+      "created": "2015-08-10",
       "license": [
         "PD"
       ],
@@ -19,13 +22,13 @@
       "requires": null,
       "replaces": null,
       "superseded_by": null,
-      "compliance_score": 58.82
+      "compliance_score": 70.59
     }
   },
   "metadata": {
     "last_commit": "Wed Oct 8 14:59:36 2025 -0700",
     "total_commits": 17,
-    "metadata_last_updated": "2026-03-16T20:18:33",
+    "metadata_last_updated": "2026-03-16T21:44:09",
     "git_history": [
       [
         "24e96e870fffaa257b465ce1f0370c14aac588e8",
@@ -394,18 +397,13 @@
       "public": 1,
       "domain": 1
     },
-    "references": [
+    "implicit_dependencies": [],
+    "explicit_references": [
       "BIP 112",
       "BIP 65",
       "BIP 68",
       "BIP 9"
     ],
-    "bip_references": [
-      "BIP 112",
-      "BIP 65",
-      "BIP 68",
-      "BIP 9"
-    ],
-    "dependencies": []
+    "explicit_dependencies": []
   }
 }

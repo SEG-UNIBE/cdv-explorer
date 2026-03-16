@@ -3,11 +3,14 @@
     "preamble": {
       "bip": "89",
       "title": "Chain Code Delegation",
-      "author": null,
+      "author": [
+        "Jesse Posner <jesse@vora.io>",
+        "Jurvis Tan <jurvis@block.xyz>"
+      ],
       "comments_uri": "https://github.com/bitcoin/bips/wiki/Comments:BIP-0089",
       "status": "Draft",
       "type": "Specification",
-      "created": null,
+      "created": "2025-12-03",
       "license": [
         "BSD-3-Clause"
       ],
@@ -19,13 +22,13 @@
       "requires": "32, 340, 341",
       "replaces": null,
       "superseded_by": null,
-      "compliance_score": 64.71
+      "compliance_score": 76.47
     }
   },
   "metadata": {
     "last_commit": "Thu Feb 5 04:58:08 2026 +0800",
     "total_commits": 1,
-    "metadata_last_updated": "2026-03-16T20:18:32",
+    "metadata_last_updated": "2026-03-16T21:44:08",
     "git_history": [
       [
         "57869d524abb9143ba96aa9f53fab906ec309383",
@@ -939,18 +942,17 @@
       "copyright": 1,
       "licensed": 1
     },
-    "references": [
+    "implicit_dependencies": [],
+    "explicit_references": [
       "BIP 3",
       "BIP 32",
       "BIP 340",
       "BIP 341"
     ],
-    "bip_references": [
-      "BIP 3",
+    "explicit_dependencies": [
       "BIP 32",
       "BIP 340",
       "BIP 341"
-    ],
-    "dependencies": []
+    ]
   }
 }

@@ -4,6 +4,14 @@ import re
 from pathlib import Path
 from typing import Any, Dict, Iterable, List
 
+from ecosystem_config import ACTIVE_ECOSYSTEM
+
+
+CLASSIFICATION_CONFIG = ACTIVE_ECOSYSTEM.get("classification", {})
+LAYER_ALIASES = CLASSIFICATION_CONFIG.get("layer_aliases", {})
+STATUS_ALIASES = CLASSIFICATION_CONFIG.get("status_aliases", {})
+TYPE_ALIASES = CLASSIFICATION_CONFIG.get("type_aliases", {})
+
 
 def _aggregate_explicit_dependencies(explicit_dependencies: Dict[str, List[Dict[str, Any]]]) -> List[Dict[str, Any]]:
     seen = set()
@@ -43,6 +51,12 @@ def normalize_proposal_ids(field: Any, proposal_label: str = "IP") -> List[str]:
             normalized = re.sub(rf"(?i)^\s*{label}[-\s]*", "", text).strip()
             result.append(normalized)
     return result
+
+
+def _apply_alias(value: Any, aliases: Dict[str, str]) -> Any:
+    if value is None:
+        return None
+    return aliases.get(value, value)
 
 
 def load_proposal_json_documents(source_dir: Path) -> List[Dict[str, Any]]:
@@ -85,13 +99,13 @@ def build_network_data(
             nodes.append(
                 {
                     "id": proposal_id,
-                    "layer": preamble.get("layer"),
+                    "layer": _apply_alias(preamble.get("layer"), LAYER_ALIASES),
                     "compliance_score": preamble.get("compliance_score"),
                     "created": preamble.get("created"),
                     "author": preamble.get("author"),
                     "word_list": insights.get("word_list"),
-                    "status": preamble.get("status"),
-                    "type": preamble.get("type"),
+                    "status": _apply_alias(preamble.get("status"), STATUS_ALIASES),
+                    "type": _apply_alias(preamble.get("type"), TYPE_ALIASES),
                 }
             )
             node_ids.add(proposal_id)

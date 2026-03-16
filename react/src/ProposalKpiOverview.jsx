@@ -18,17 +18,25 @@ export const ProposalKpiOverview = ({ data, totalLabel = 'Total Proposals' }) =>
 
   const nodes = data.nodes;
   const totalCount = nodes.length;
+  const maxLayerCards = 5;
 
   const iconSize = '6em';
   const valueStyle = { fontSize: '4rem', fontWeight: 'bold', marginTop: '0.5rem' };
   const labelStyle = { fontSize: '2rem', color: '#555' };
   const cardStyle = { flex: '1 1 200px', textAlign: 'center' };
 
-  const applicationCount = nodes.filter((node) => node.layer === 'Applications').length;
-  const softForkCount = nodes.filter((node) => node.layer === 'Consensus (soft fork)').length;
-  const peerServicesCount = nodes.filter((node) => node.layer === 'Peer Services').length;
-  const apiRpcCount = nodes.filter((node) => node.layer === 'API/RPC').length;
-  const hardForkCount = nodes.filter((node) => node.layer === 'Consensus (hard fork)').length;
+  const layerCountMap = nodes.reduce((acc, node) => {
+    const layer = (node.layer || 'Unknown').trim() || 'Unknown';
+    acc[layer] = (acc[layer] || 0) + 1;
+    return acc;
+  }, {});
+
+  const topLayers = Object.entries(layerCountMap)
+    .map(([layer, count]) => ({ layer, count }))
+    .sort((a, b) => b.count - a.count || a.layer.localeCompare(b.layer))
+    .slice(0, maxLayerCards);
+
+  const layerIcons = [FaCogs, FaLock, FaHandshake, FaNetworkWired, FaBolt];
 
   return (
     <div>
@@ -38,36 +46,16 @@ export const ProposalKpiOverview = ({ data, totalLabel = 'Total Proposals' }) =>
           <div className="value" style={valueStyle}>{totalCount}</div>
           <div className="label" style={labelStyle}>{totalLabel}</div>
         </Card>
-        <Card style={cardStyle}>
-          <FaCogs size={iconSize} />
-          <div className="value" style={valueStyle}>{applicationCount}</div>
-          <div className="label" style={labelStyle}>Applications</div>
-        </Card>
-        <Card style={cardStyle}>
-          <FaLock size={iconSize} />
-          <div className="value" style={valueStyle}>{softForkCount}</div>
-          <div className="label" style={labelStyle}>Consensus (soft fork)</div>
-        </Card>
-      </div>
-
-      <br /><br />
-
-      <div className="kpi" style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem', alignItems: 'center' }}>
-        <Card style={cardStyle}>
-          <FaHandshake size={iconSize} />
-          <div className="value" style={valueStyle}>{peerServicesCount}</div>
-          <div className="label" style={labelStyle}>Peer Services</div>
-        </Card>
-        <Card style={cardStyle}>
-          <FaNetworkWired size={iconSize} />
-          <div className="value" style={valueStyle}>{apiRpcCount}</div>
-          <div className="label" style={labelStyle}>API/RPC</div>
-        </Card>
-        <Card style={cardStyle}>
-          <FaBolt size={iconSize} />
-          <div className="value" style={valueStyle}>{hardForkCount}</div>
-          <div className="label" style={labelStyle}>Consensus (hard fork)</div>
-        </Card>
+        {topLayers.map((entry, index) => {
+          const Icon = layerIcons[index % layerIcons.length];
+          return (
+            <Card key={entry.layer} style={cardStyle}>
+              <Icon size={iconSize} />
+              <div className="value" style={valueStyle}>{entry.count}</div>
+              <div className="label" style={labelStyle}>{entry.layer}</div>
+            </Card>
+          );
+        })}
       </div>
 
       <br /><br />

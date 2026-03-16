@@ -85,7 +85,7 @@ def build_status_over_time(nodes: List[Dict[str, Any]]) -> Dict[str, Dict[str, i
         year = _extract_year(node.get("created"))
         if year is None:
             continue
-        status = _clean_base(node.get("status"), "Unknown")
+        status = _apply_alias(_clean_base(node.get("status"), "Unknown"), STATUS_ALIASES)
         yearly[year][status] += 1
 
     out: Dict[str, Dict[str, int]] = {}

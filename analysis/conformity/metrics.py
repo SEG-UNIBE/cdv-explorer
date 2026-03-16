@@ -1,6 +1,17 @@
 from collections import Counter, defaultdict
 from typing import Any, Dict, List
 
+from ecosystem_config import ACTIVE_ECOSYSTEM
+
+
+CLASSIFICATION_CONFIG = ACTIVE_ECOSYSTEM.get("classification", {})
+STATUS_ALIASES = CLASSIFICATION_CONFIG.get("status_aliases", {})
+
+
+def _apply_status_alias(status: Any) -> str:
+    value = status or "Unknown"
+    return STATUS_ALIASES.get(value, value)
+
 
 def extract_conformity_metrics(proposal_data: List[Dict[str, Any]], id_field: str = "id") -> Dict[str, Any]:
     per_proposal = []
@@ -14,7 +25,7 @@ def extract_conformity_metrics(proposal_data: List[Dict[str, Any]], id_field: st
             continue
 
         score = preamble.get("compliance_score")
-        status = preamble.get("status") or "Unknown"
+        status = _apply_status_alias(preamble.get("status"))
 
         entry = {
             "id": str(proposal_id),

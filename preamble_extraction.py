@@ -9,36 +9,16 @@ from analysis.conformity.compliance import (
     check_headlines as conformity_check_headlines,
     check_required_fields as conformity_check_required_fields,
 )
+from ecosystem_config import ACTIVE_ECOSYSTEM
 
 
-# Separate required and optional fields based on your instructions
-REQUIRED_FIELDS = [
-    'bip', 'title', 'author', 'comments_uri', 'status', 'type', 'created', 'license'
-]
+PREAMBLE_CONFIG = ACTIVE_ECOSYSTEM["preamble"]
+REQUIRED_FIELDS = PREAMBLE_CONFIG["required_fields"]
+OPTIONAL_FIELDS = PREAMBLE_CONFIG["optional_fields"]
+FIELD_ALIASES = PREAMBLE_CONFIG.get("field_aliases", {})
+EXPECTED_HEADLINES = PREAMBLE_CONFIG["expected_headlines"]
+LIST_VALUED_FIELDS = set(PREAMBLE_CONFIG.get("list_valued_fields", []))
 
-OPTIONAL_FIELDS = [
-    'layer', 'discussions_to', 'comments_summary', 'license_code', 'post_history',
-    'requires', 'replaces', 'superseded_by'
-]
-
-EXPECTED_HEADLINES = {
-    "abstract": 2,
-    "motivation": 2,
-    "specification": 2,
-    "rationale": 2,
-    "backwards compatibility": 2,
-    "reference implementation": 2,
-    "security considerations": 2,
-    "copyright": 2,
-    "references": 2,
-}
-
-
-FIELD_ALIASES = {
-    "authors": "author",
-    "assigned": "created",
-    "proposed_replacement": "superseded_by",
-}
 
 
 def extract_preamble_from_pre_block(file_content: str) -> Dict[str, str]:
@@ -92,7 +72,7 @@ def format_value(key: str, value: str):
     Formats the value based on the key. For multi-line values (e.g., 'author'),
     returns them as a list. Otherwise, returns the string value.
     """
-    if key == 'author' or key == 'license':  # Convert multi-line fields to a list
+    if key in LIST_VALUED_FIELDS:  # Convert configured multi-line fields to a list
         return [line.strip() for line in value.split('\n') if line.strip()]
     return value.strip()
 
@@ -109,7 +89,7 @@ def normalize_preamble_fields(preamble: Dict[str, str]) -> Dict[str, str]:
         normalized[canonical_key] = normalized[source_key]
 
     # Ensure author/license remain list-valued even when aliases provided a scalar.
-    for list_field in ("author", "license"):
+    for list_field in LIST_VALUED_FIELDS:
         value = normalized.get(list_field)
         if value is None:
             continue
@@ -136,7 +116,7 @@ def calculate_compliance_score(preamble: Dict[str, str], file_content: str, _fil
     """
     Calculates a compliance score based on missing required fields and incorrect/missing headings.
     """
-    conformity_calculate_compliance_score(
+    return conformity_calculate_compliance_score(
         preamble,
         file_content,
         required_fields=REQUIRED_FIELDS,

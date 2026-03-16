@@ -1,19 +1,16 @@
-ACTIVE_ECOSYSTEM = {
-    "slug": "bitcoin",
-    "display_name": "Bitcoin",
-    "proposal_term_singular": "Bitcoin Improvement Proposal",
-    "proposal_term_plural": "Bitcoin Improvement Proposals",
-    "proposal_acronym": "BIP",
-    "repository_owner": "bitcoin",
-    "repository_name": "bips",
-    "data_root": "ip_data/bitcoin",
-    "harvest": "ip_data/bitcoin/01_harvest",
-    "preprocess": "ip_data/bitcoin/02_preprocess",
-    "analysis": "ip_data/bitcoin/03_analysis",
-    "postprocess": "ip_data/bitcoin/04_postprocess",
-    "document_prefix": "bip",
-    "primary_id_field": "bip",
-    "document_file_pattern": r"^bip-\d{4}\.(mediawiki|md|rst)$",
-    "document_dir_pattern": r"^bip-\d{4}$",
-    "reference_pattern": r"\bBIP[-#\s]?(\d+)\b",
-}
+from ecosystems import ECOSYSTEM_REGISTRY
+
+
+ACTIVE_ECOSYSTEM_SLUG = "bitcoin"
+
+
+def _load_active_ecosystem() -> dict:
+    slug = ACTIVE_ECOSYSTEM_SLUG
+    ecosystem = ECOSYSTEM_REGISTRY.get(slug)
+    if ecosystem is None:
+        available = ", ".join(sorted(ECOSYSTEM_REGISTRY.keys()))
+        raise ValueError(f"Unknown ecosystem slug '{slug}'. Available: {available}")
+    return ecosystem
+
+
+ACTIVE_ECOSYSTEM = _load_active_ecosystem()

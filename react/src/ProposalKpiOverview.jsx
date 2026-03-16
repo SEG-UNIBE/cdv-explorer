@@ -1,17 +1,17 @@
 import React from 'react';
 import { Card } from 'primereact/card';
 import {
-  FaFileAlt,        // For "Total BIPs"
-  FaCogs,           // For "Applications"
-  FaLock,           // For "Consensus (soft fork)"
-  FaHandshake,      // For "Peer Services"
-  FaNetworkWired,   // For "API/RPC"
-  FaBolt            // For "Consensus (hard fork)"
+  FaFileAlt,
+  FaCogs,
+  FaLock,
+  FaHandshake,
+  FaNetworkWired,
+  FaBolt
 } from 'react-icons/fa';
 
 import 'primeicons/primeicons.css';
 
-export const BipKpiOverview = ({ data, totalLabel = "Total Proposals" }) => {
+export const ProposalKpiOverview = ({ data, totalLabel = 'Total Proposals' }) => {
   if (!data || !data.nodes || data.nodes.length === 0) {
     return <p>No proposal data available.</p>;
   }
@@ -19,17 +19,16 @@ export const BipKpiOverview = ({ data, totalLabel = "Total Proposals" }) => {
   const nodes = data.nodes;
   const totalCount = nodes.length;
 
-  const iconSize = "6em";
+  const iconSize = '6em';
   const valueStyle = { fontSize: '4rem', fontWeight: 'bold', marginTop: '0.5rem' };
   const labelStyle = { fontSize: '2rem', color: '#555' };
   const cardStyle = { flex: '1 1 200px', textAlign: 'center' };
 
-  const applicationCount = nodes.filter(node => node.group === 'Applications').length;
-  const softForkCount = nodes.filter(node => node.group === 'Consensus (soft fork)').length;
-const peerServicesCount = nodes.filter(node => node.group === 'Peer Services').length;
-const apiRpcCount = nodes.filter(node => node.group === 'API/RPC').length;
-const hardForkCount = nodes.filter(node => node.group === 'Consensus (hard fork)').length;
-
+  const applicationCount = nodes.filter((node) => node.group === 'Applications').length;
+  const softForkCount = nodes.filter((node) => node.group === 'Consensus (soft fork)').length;
+  const peerServicesCount = nodes.filter((node) => node.group === 'Peer Services').length;
+  const apiRpcCount = nodes.filter((node) => node.group === 'API/RPC').length;
+  const hardForkCount = nodes.filter((node) => node.group === 'Consensus (hard fork)').length;
 
   return (
     <div>

@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react';
 import Navbar from './Navbar';
 import { NetworkDiagram } from './NetworkDiagram';
-import { BipTimelineChart } from './BipTimelineChart';
+import { ProposalTimelineChart } from './ProposalTimelineChart';
 import { TopAuthorsChart } from './TopAuthorsChart';
 import { WordCloud } from './WordCloud';
-import { BipSankeyChart } from './BipSankeyChart';
+import { ProposalSankeyChart } from './ProposalSankeyChart';
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
 import { Tag } from 'primereact/tag';
 import { Dropdown } from 'primereact/dropdown';
 import './App.scss';
 import * as d3 from 'd3';
-import { BipKpiOverview } from "./BipKpiOverview";
+import { ProposalKpiOverview } from './ProposalKpiOverview';
 import { HashRouter as Router, Routes, Route, useNavigate, useParams, Link } from 'react-router-dom';
 import { ecosystems, ecosystemsById } from './ecosystems';
 import { getAvailableStichtage, getDatasetForSelection } from './data';
@@ -189,7 +189,7 @@ function EcosystemDashboard() {
 
   useEffect(() => {
     setSelectedStichtag(availableStichtage[0] ?? null);
-  }, [ecosystemId]);
+  }, [ecosystemId, availableStichtage]);
 
   if (!ecosystem) {
     return (
@@ -292,11 +292,11 @@ function EcosystemDashboard() {
         </div>
       </Card>
       <h1>Proposal Category Overview</h1>
-      <BipKpiOverview data={selectedDataset} totalLabel={`Total ${ecosystem.proposalShortPlural}`} />
+      <ProposalKpiOverview data={selectedDataset} totalLabel={`Total ${ecosystem.proposalShortPlural}`} />
       <Card className="mb-4" style={{ flex: 1 }}>
         <h2>Sankey Diagram</h2>
         <p>This Sankey diagram visualizes the flow between categories in the selected proposal ecosystem.</p>
-        <BipSankeyChart data={sankeyData} width={1200} height={600} />
+        <ProposalSankeyChart data={sankeyData} width={1200} height={600} />
       </Card>
       <br></br>
       <Card className="mb-4">
@@ -314,7 +314,7 @@ function EcosystemDashboard() {
         <Card className="mb-4" style={{ flex: 1 }}>
           <h2>Proposals Over Time</h2>
           <p>This timeline chart shows how many proposals entered the selected ecosystem per year.</p>
-          <BipTimelineChart data={yearData} width={600} height={400} />
+          <ProposalTimelineChart data={yearData} width={600} height={400} />
         </Card>
       </div>
       <div className="chart-grid" style={{ display: 'flex', gap: '2rem', marginTop: '2rem', height: '100%' }}>
@@ -372,7 +372,7 @@ function AboutPage() {
       <p>
         This app is evolving from a Bitcoin-focused explorer into a more general proposal-analysis frontend.
         Bitcoin is the first implemented ecosystem, but the repo is now being organized so other ecosystems
-        such as Ethereum EIPs or Tor proposals can be added behind the same navigation model.
+        such as Nostr NIPs or Tor proposals can be added behind the same navigation model.
       </p>
     </section>
   );

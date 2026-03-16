@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import { sankey, sankeyLinkHorizontal } from 'd3-sankey';
 
-export const BipSankeyChart = ({ data, width = 700, height = 500 }) => {
+export const ProposalSankeyChart = ({ data, width = 700, height = 500 }) => {
   const svgRef = useRef();
   const tooltipRef = useRef();
   const hasRenderableData = Boolean(data?.nodes?.length && data?.links?.length);
@@ -14,7 +14,7 @@ export const BipSankeyChart = ({ data, width = 700, height = 500 }) => {
     }
 
     const svg = d3.select(svgRef.current);
-    svg.selectAll('*').remove(); // clear previous render
+    svg.selectAll('*').remove();
 
     const tooltip = d3.select(tooltipRef.current);
 
@@ -31,8 +31,8 @@ export const BipSankeyChart = ({ data, width = 700, height = 500 }) => {
     let links = [];
     try {
       ({ nodes, links } = sankeyGenerator({
-        nodes: data.nodes.map(d => ({ ...d })),
-        links: data.links.map(d => ({ ...d })),
+        nodes: data.nodes.map((d) => ({ ...d })),
+        links: data.links.map((d) => ({ ...d })),
       }));
     } catch (error) {
       console.error('Failed to render sankey data', error);
@@ -44,7 +44,7 @@ export const BipSankeyChart = ({ data, width = 700, height = 500 }) => {
     const mediumBlue = '#4292c6';
     const lightBlue = '#deebf7';
 
-    const getNodeColor = d => {
+    const getNodeColor = (d) => {
       const midX = innerWidth / 2;
       if (d.x0 < midX * 0.6) return darkBlue;
       if (d.x0 > midX * 1.4) return lightBlue;
@@ -52,7 +52,7 @@ export const BipSankeyChart = ({ data, width = 700, height = 500 }) => {
     };
 
     const nodeColorMap = {};
-    nodes.forEach(d => {
+    nodes.forEach((d) => {
       nodeColorMap[d.name] = getNodeColor(d);
     });
 
@@ -86,14 +86,13 @@ export const BipSankeyChart = ({ data, width = 700, height = 500 }) => {
         .attr('stop-color', targetColor);
     });
 
-    // Render links with tooltip and hover effects
     g.append('g')
       .selectAll('path')
       .data(links)
       .join('path')
       .attr('d', sankeyLinkHorizontal())
       .attr('stroke', (d, i) => `url(#gradient-${i})`)
-      .attr('stroke-width', d => Math.max(1, d.width))
+      .attr('stroke-width', (d) => Math.max(1, d.width))
       .attr('fill', 'none')
       .attr('opacity', 0.7)
       .on('mouseover', function (event, d) {
@@ -109,36 +108,33 @@ export const BipSankeyChart = ({ data, width = 700, height = 500 }) => {
           .style('left', `${event.pageX + 10}px`);
       })
       .on('mouseout', function () {
-        d3.select(this).attr('opacity', 0.7).attr('stroke-width', d => Math.max(1, d.width));
+        d3.select(this).attr('opacity', 0.7).attr('stroke-width', (d) => Math.max(1, d.width));
         tooltip.style('visibility', 'hidden');
       });
 
-    // Render nodes
     const node = g.append('g')
       .selectAll('g')
       .data(nodes)
       .join('g');
 
     node.append('rect')
-      .attr('x', d => d.x0)
-      .attr('y', d => d.y0)
-      .attr('height', d => d.y1 - d.y0)
-      .attr('width', d => d.x1 - d.x0)
-      .attr('fill', d => nodeColorMap[d.name]);
+      .attr('x', (d) => d.x0)
+      .attr('y', (d) => d.y0)
+      .attr('height', (d) => d.y1 - d.y0)
+      .attr('width', (d) => d.x1 - d.x0)
+      .attr('fill', (d) => nodeColorMap[d.name]);
 
-    // Labels with position-aware coloring
     node.append('text')
-      .attr('x', d => d.x0 - 6)
-      .attr('y', d => (d.y1 + d.y0) / 2)
+      .attr('x', (d) => d.x0 - 6)
+      .attr('y', (d) => (d.y1 + d.y0) / 2)
       .attr('dy', '0.35em')
       .attr('text-anchor', 'end')
-      .text(d => d.name)
+      .text((d) => d.name)
       .attr('fill', '#666')
-      .filter(d => d.x0 < width / 2)
-      .attr('x', d => d.x1 + 6)
+      .filter((d) => d.x0 < width / 2)
+      .attr('x', (d) => d.x1 + 6)
       .attr('text-anchor', 'start')
-      .attr('fill', d => d3.color(nodeColorMap[d.name]).darker(1).toString());
-
+      .attr('fill', (d) => d3.color(nodeColorMap[d.name]).darker(1).toString());
   }, [data, width, height, hasRenderableData]);
 
   return (

@@ -2,7 +2,7 @@ from collections import Counter, defaultdict
 from typing import Any, Dict, List
 
 
-def extract_conformity_metrics(proposal_data: List[Dict[str, Any]], id_field: str = "bip") -> Dict[str, Any]:
+def extract_conformity_metrics(proposal_data: List[Dict[str, Any]], id_field: str = "id") -> Dict[str, Any]:
     per_proposal = []
     score_values = []
     by_status = defaultdict(list)

@@ -11,7 +11,7 @@ REPO = ACTIVE_ECOSYSTEM["repository_name"]
 REPO_URL = f'https://github.com/{OWNER}/{REPO}.git'
 
 # Local directory to save the repository
-CLONE_ROOT = Path(ACTIVE_ECOSYSTEM["clone_directory"])
+HARVEST_ROOT = Path(ACTIVE_ECOSYSTEM["harvest"])
 
 # Queue for multithreading
 file_queue = queue.Queue()
@@ -85,10 +85,10 @@ def process_directory(directory: Path):
         if item.is_file() and PROPOSAL_FILE_PATTERN.match(item.name):
             file_queue.put(item)
         elif item.is_dir() and PROPOSAL_DIR_PATTERN.match(item.name):
-            process_bip_directory(item)
+            process_proposal_directory(item)
 
 
-def process_bip_directory(directory: Path):
+def process_proposal_directory(directory: Path):
     """Recursively process proposal directories and queue files for processing."""
     for item in directory.rglob("*"):
         if item.is_file():
@@ -105,7 +105,7 @@ def worker():
         file_queue.task_done()
 
 
-def process_bips(local_dir: Path, num_threads=5):
+def process_proposals(local_dir: Path, num_threads=5):
     """Main function to process all proposal files and associated directories."""
     threads = [threading.Thread(target=worker) for _ in range(num_threads)]
     for t in threads:
@@ -121,9 +121,15 @@ def process_bips(local_dir: Path, num_threads=5):
         t.join()
 
 
-def download_bips(stichtag: str, local_dir: Path | None = None):
-    local_dir = local_dir or CLONE_ROOT
+def download_ips(stichtag: str, local_dir: Path | None = None):
+    local_dir = local_dir or HARVEST_ROOT
     clone_or_update_repo(local_dir)
     checkout_stichtag(local_dir, stichtag)
-    process_bips(local_dir)
+    process_proposals(local_dir)
     return local_dir
+
+
+# Backward-compatible aliases for callers that still use legacy names.
+process_bip_directory = process_proposal_directory
+process_bips = process_proposals
+download_bips = download_ips

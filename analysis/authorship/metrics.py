@@ -99,3 +99,60 @@ def extract_authorship_metrics(nodes: List[Dict[str, Any]]) -> Dict[str, Any]:
             "edges": collab_edges,
         },
     }
+
+
+def compute_centrality_scores(graph: nx.Graph) -> List[Dict[str, Any]]:
+    degree = nx.degree_centrality(graph)
+    betweenness = nx.betweenness_centrality(graph)
+    closeness = nx.closeness_centrality(graph)
+
+    try:
+        eigenvector = nx.eigenvector_centrality(graph, max_iter=1000)
+    except nx.NetworkXException:
+        eigenvector = {node: 0.0 for node in graph.nodes()}
+
+    centrality_data: List[Dict[str, Any]] = []
+    for node in graph.nodes():
+        centrality_data.append(
+            {
+                "author": node,
+                "degree": float(degree.get(node, 0.0)),
+                "betweenness": float(betweenness.get(node, 0.0)),
+                "closeness": float(closeness.get(node, 0.0)),
+                "eigenvector": float(eigenvector.get(node, 0.0)),
+            }
+        )
+
+    return sorted(centrality_data, key=lambda x: x["eigenvector"], reverse=True)
+
+
+def prepare_authorship_payload(network_data: Dict[str, Any]) -> Dict[str, Any]:
+    nodes = network_data.get("nodes", [])
+    authorship = extract_authorship_metrics(nodes)
+
+    return {
+        "meta": {
+            "node_count": len(nodes),
+            "author_count": authorship["author_count"],
+            "generated_metrics": [
+                "top_authors",
+                "bips_per_year",
+                "author_contribution_histogram",
+                "top_10_share",
+                "collaboration_network",
+                "collaboration_centrality",
+            ],
+        },
+        "top_authors": authorship["top_authors"],
+        "bips_per_year": authorship["proposals_per_year"],
+        "author_contribution_histogram": authorship["author_contribution_histogram"],
+        "top_10_share": {
+            "total_bips": authorship["top_10_share"]["total_proposals"],
+            "bips_by_top_10_authors": authorship["top_10_share"]["proposals_by_top_10_authors"],
+            "percentage": authorship["top_10_share"]["percentage"],
+        },
+        "collaboration_network": authorship["collaboration_network"],
+        "collaboration_centrality": compute_centrality_scores(
+            build_collaboration_network(nodes)
+        ),
+    }

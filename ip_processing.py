@@ -129,6 +129,10 @@ Here is the proposal text:
     
     model="gpt-5-mini"
     api_key = load_api_key()
+    if not api_key:
+        print("OpenAI API key not found; skipping LLM dependency extraction.")
+        return []
+
     client = OpenAI(api_key=api_key)
     try:
         response = client.chat.completions.create(
@@ -137,16 +141,21 @@ Here is the proposal text:
         )
         print(response.choices[0].message.content.strip())
         return json.loads(response.choices[0].message.content.strip())
-    except (JSONDecodeError, TypeError, ValueError, KeyError) as e:
+    except (JSONDecodeError, TypeError, ValueError, KeyError, OSError, TimeoutError, ConnectionError) as e:
         print(f"[!] Error: {e}")
-        return ["error"]
+        return []
 
 def load_api_key():
     key = os.getenv("OPENAI_API_KEY")
     if key:
         return key
-    with open("apikey.secret", encoding="utf-8") as f:
-        return f.read().strip()
+
+    secret_file = Path("apikey.secret")
+    if secret_file.exists():
+        with secret_file.open(encoding="utf-8") as f:
+            return f.read().strip()
+
+    return None
 
 def update_insights(
     json_data: Dict[str, any],
@@ -175,7 +184,7 @@ def update_insights(
     json_data["insights"]["references"] = filtered_references
     json_data["insights"]["bip_references"] = filtered_references
 
-def process_bip_files(
+def process_ip_files(
     input_dir: Path,
     output_dir: Path,
     repo_dir: Path,
@@ -205,3 +214,7 @@ def process_bip_files(
             json.dump(json_data, f, ensure_ascii=False, indent=2)
         
         print(f"Processed {json_file.name}")
+
+
+# Backward-compatible alias for older call sites.
+process_bip_files = process_ip_files

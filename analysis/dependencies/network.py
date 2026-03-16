@@ -1,11 +1,11 @@
 import json
-import pickle
+import csv
 import re
 from pathlib import Path
 from typing import Any, Dict, Iterable, List
 
 
-def normalize_proposal_ids(field: Any, proposal_label: str = "BIP") -> List[str]:
+def normalize_proposal_ids(field: Any, proposal_label: str = "IP") -> List[str]:
     if not field:
         return []
 
@@ -39,8 +39,8 @@ def load_proposal_json_documents(source_dir: Path) -> List[Dict[str, Any]]:
 
 def build_network_data(
     proposal_data: Iterable[Dict[str, Any]],
-    id_field: str = "bip",
-    proposal_label: str = "BIP",
+    id_field: str = "id",
+    proposal_label: str = "IP",
 ) -> Dict[str, Any]:
     nodes = []
     reference_links = []
@@ -92,7 +92,10 @@ def build_network_data(
         if proposal_id not in node_ids:
             continue
 
-        references_field = insights.get("references", insights.get("bip_references"))
+        references_field = insights.get(
+            "references",
+            insights.get("proposal_references", insights.get("bip_references")),
+        )
 
         for ref_id in normalize_proposal_ids(references_field, proposal_label=proposal_label):
             if ref_id in node_ids:
@@ -130,13 +133,34 @@ def save_network_data_artifacts(network_data: Dict[str, Any], output_stem: Path)
     output_stem.parent.mkdir(parents=True, exist_ok=True)
 
     json_path = output_stem.with_suffix(".json")
-    pkl_path = output_stem.with_suffix(".pkl")
 
     with json_path.open("w", encoding="utf-8") as handle:
         json.dump(network_data, handle, ensure_ascii=False, indent=2)
 
-    with pkl_path.open("wb") as handle:
-        pickle.dump(network_data, handle)
+    nodes_csv_path = output_stem.parent / f"{output_stem.name}_nodes.csv"
+    with nodes_csv_path.open("w", encoding="utf-8", newline="") as handle:
+        fieldnames = ["id", "group", "compliance_score", "created", "author", "status", "type"]
+        writer = csv.DictWriter(handle, fieldnames=fieldnames)
+        writer.writeheader()
+        for node in network_data.get("nodes", []):
+            row = {k: node.get(k) for k in fieldnames}
+            if isinstance(row.get("author"), list):
+                row["author"] = " | ".join(str(a) for a in row["author"])
+            writer.writerow(row)
+
+    for link_type, links in network_data.get("links", {}).items():
+        links_csv_path = output_stem.parent / f"{output_stem.name}_{link_type}_edges.csv"
+        with links_csv_path.open("w", encoding="utf-8", newline="") as handle:
+            writer = csv.DictWriter(handle, fieldnames=["source", "target", "value"])
+            writer.writeheader()
+            for link in links:
+                writer.writerow(
+                    {
+                        "source": link.get("source"),
+                        "target": link.get("target"),
+                        "value": link.get("value", 1),
+                    }
+                )
 
     print(f"Saved JSON artifact: {json_path}")
-    print(f"Saved PKL artifact: {pkl_path}")
+    print(f"Saved CSV artifact: {nodes_csv_path}")

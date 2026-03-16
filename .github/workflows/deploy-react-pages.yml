@@ -8,7 +8,10 @@ on:
     paths:
       - '.github/workflows/deploy-react-pages.yml'
       - 'visualization/react-vis/**'
-      - 'bips_json/**'
+      - 'ip_data/**/01_harvest/**'
+      - 'ip_data/**/02_preprocess/**'
+      - 'ip_data/**/03_analysis/**'
+      - 'ip_data/**/04_postprocess/**'
   workflow_dispatch:
 
 permissions:

@@ -3,7 +3,6 @@ import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import { Link } from 'react-router-dom'; // ✅ Import Link
 import './Navbar.scss';
-import logo from './logo.png';
 
 const Navbar = () => {
   const [mobileMenuVisible, setMobileMenuVisible] = useState(false);
@@ -20,9 +19,7 @@ const Navbar = () => {
   return (
     <div className="nav-bar">
       <div className="nav-logo">
-        <Link to="/">
-          <img src={logo} alt="Logo" style={{ height: '40px' }} />
-        </Link>
+        <Link to="/" className="nav-brand">Proposal Explorer</Link>
       </div>
 
       <div className="nav-items">

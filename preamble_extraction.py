@@ -138,7 +138,13 @@ def add_missing_optional_fields(preamble: Dict[str, str]):
             preamble[field] = None
 
 
-def save_preamble_to_json(preamble: Dict[str, str], output_dir: str, file_name: str):
+def save_preamble_to_json(
+    preamble: Dict[str, str],
+    output_dir: str,
+    file_name: str,
+    file_prefix: str = "bip",
+    id_field: str = "bip",
+):
     """
     Saves the given preamble to a JSON file in the specified output directory.
     The preamble is saved under a "raw" section in the JSON, with a "preamble" subsection.
@@ -146,10 +152,10 @@ def save_preamble_to_json(preamble: Dict[str, str], output_dir: str, file_name: 
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
-    # Determine the BIP number and format it with leading zeros (e.g., '0002')
-    bip_number = preamble.get('bip', 'unknown_bip')
-    bip_number_str = f"{int(bip_number):04d}" if bip_number.isdigit() else 'unknown_bip'
-    json_file_name = f"bip-{bip_number_str}.json"
+    # Determine the proposal number and format it with leading zeros (e.g., '0002').
+    proposal_number = str(preamble.get(id_field, f"unknown_{file_prefix}"))
+    proposal_number_str = f"{int(proposal_number):04d}" if proposal_number.isdigit() else f"unknown_{file_prefix}"
+    json_file_name = f"{file_prefix}-{proposal_number_str}.json"
     output_path = os.path.join(output_dir, json_file_name)
 
     # Order the keys (required fields first, then optional fields)
@@ -175,14 +181,19 @@ def save_preamble_to_json(preamble: Dict[str, str], output_dir: str, file_name: 
     print(f"Saved preamble to {output_path}")
 
 
-def process_files_and_save_json(input_dir: str, output_dir: str):
+def process_files_and_save_json(
+    input_dir: str,
+    output_dir: str,
+    file_prefix: str = "bip",
+    id_field: str = "bip",
+):
     """
     Processes all .mediawiki and .md files in the directory.
     Extracts the preamble and saves it as a JSON file in the specified output directory.
     """
-    bip_files = [f for f in os.listdir(input_dir) if f.endswith(('.mediawiki', '.md'))]
-    for bip_file in bip_files:
-        file_path = os.path.join(input_dir, bip_file)
+    proposal_files = [f for f in os.listdir(input_dir) if f.endswith(('.mediawiki', '.md'))]
+    for proposal_file in proposal_files:
+        file_path = os.path.join(input_dir, proposal_file)
         print(f"Processing {file_path}")
 
         # Open and read the content of the file
@@ -193,13 +204,19 @@ def process_files_and_save_json(input_dir: str, output_dir: str):
         preamble = extract_preamble_from_pre_block(content)
 
         # Check required fields and print the preamble
-        check_required_fields(preamble, bip_file)
+        check_required_fields(preamble, proposal_file)
 
         # Add missing optional fields with a default value
         add_missing_optional_fields(preamble)
 
         #Add compliance score
-        calculate_compliance_score(preamble, content, bip_file)
+        calculate_compliance_score(preamble, content, proposal_file)
 
         # Save the preamble to a JSON file
-        save_preamble_to_json(preamble, output_dir, bip_file)
+        save_preamble_to_json(
+            preamble,
+            output_dir,
+            proposal_file,
+            file_prefix=file_prefix,
+            id_field=id_field,
+        )

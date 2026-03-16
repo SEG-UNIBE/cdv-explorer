@@ -71,7 +71,7 @@ export const BipTimelineChart = ({ data, width = 600, height = 300 }) => {
 
         tooltip
           .style("opacity", 1)
-          .html(`<strong>${d.year}</strong><br/>Total BIPs: ${d.count}`);
+          .html(`<strong>${d.year}</strong><br/>Total proposals: ${d.count}`);
       })
       .on("mousemove", function (event) {
         tooltip

@@ -8,9 +8,14 @@ from pathlib import Path
 from typing import Dict, List, Tuple
 
 from openai import OpenAI
+from ecosystem_config import ACTIVE_ECOSYSTEM
 
-# --- Constants ---
-LOCAL_REPO_DIR = Path("bips_cloned")  # Path to the cloned repository
+PROPOSAL_LABEL = ACTIVE_ECOSYSTEM["proposal_acronym"]
+PROPOSAL_SINGULAR = ACTIVE_ECOSYSTEM["proposal_term_singular"]
+PRIMARY_ID_FIELD = ACTIVE_ECOSYSTEM["primary_id_field"]
+DOCUMENT_PREFIX = ACTIVE_ECOSYSTEM["document_prefix"]
+REFERENCE_PATTERN = ACTIVE_ECOSYSTEM["reference_pattern"]
+
 STOP_WORDS = {"a", "an", "and", "are", "as", "at", "be", "by", "for", "from",
               "has", "he", "in", "is", "it", "its", "of", "on", "that", "the",
               "to", "was", "were", "will", "with", "you", "your", "this", "or"}
@@ -24,9 +29,9 @@ def load_bip_content(file_path: Path) -> str:
         print(f"Error: File {file_path} not found.")
         return ""
 
-def find_bip_file(bip_number: str) -> Path:
-    bip_file_md = LOCAL_REPO_DIR / f"bip-{bip_number}.md"
-    bip_file_mediawiki = LOCAL_REPO_DIR / f"bip-{bip_number}.mediawiki"
+def find_bip_file(repo_dir: Path, bip_number: str, file_prefix: str = DOCUMENT_PREFIX) -> Path:
+    bip_file_md = repo_dir / f"{file_prefix}-{bip_number}.md"
+    bip_file_mediawiki = repo_dir / f"{file_prefix}-{bip_number}.mediawiki"
     
     if bip_file_md.exists():
         return bip_file_md
@@ -34,11 +39,12 @@ def find_bip_file(bip_number: str) -> Path:
         return bip_file_mediawiki
     return None
 
-def get_git_history(file_path: Path) -> List[Tuple[str, str, str]]:
+def get_git_history(repo_dir: Path, file_path: Path) -> List[Tuple[str, str, str]]:
     """Retrieve commit history for a file using local Git."""
     try:
+        relative_file_path = file_path.relative_to(repo_dir)
         result = subprocess.run(
-            ["git", "-C", str(LOCAL_REPO_DIR), "log", "--pretty=format:%H|%ad|%an", "--", str(file_path)],
+            ["git", "-C", str(repo_dir), "log", "--pretty=format:%H|%ad|%an", "--", str(relative_file_path)],
             capture_output=True, text=True, check=True
         )
         commits = [line.split('|') for line in result.stdout.strip().split('\n') if line]
@@ -50,7 +56,7 @@ def get_git_history(file_path: Path) -> List[Tuple[str, str, str]]:
 def get_unique_authors(history: List[Tuple[str, str, str]]) -> int:
     return len(set(commit[2] for commit in history))
 
-def update_metadata(json_data: Dict[str, any], bip_file_path: Path):
+def update_metadata(json_data: Dict[str, any], bip_file_path: Path, repo_dir: Path):
     """Update metadata section with Git commit history."""
     if "metadata" not in json_data:
         json_data["metadata"] = {
@@ -61,7 +67,7 @@ def update_metadata(json_data: Dict[str, any], bip_file_path: Path):
             "contributors": None,
         }
     
-    commit_info = get_git_history(bip_file_path)
+    commit_info = get_git_history(repo_dir, bip_file_path)
     if commit_info:
         last_commit_date = commit_info[0][1]
         contributors = get_unique_authors(commit_info)
@@ -84,35 +90,32 @@ def create_word_list(raw_content: str) -> Dict[str, int]:
     return dict(Counter(filtered_words).most_common())
 
 
-def create_bip_list(raw_content: str) -> List[str]:
-    # Extract BIP references (e.g., BIP-0032, BIP 39, BIP#042)
-    bip_pattern = r"\bBIP[-#\s]?(\d+)\b"
-    bip_references = re.findall(bip_pattern, raw_content)
+def create_bip_list(raw_content: str, proposal_label: str = PROPOSAL_LABEL) -> List[str]:
+    bip_references = re.findall(REFERENCE_PATTERN, raw_content)
 
-    # Normalize BIP references, removing leading zeros
-    return sorted(set(f"BIP {int(num)}" for num in bip_references))
+    return sorted(set(f"{proposal_label} {int(num)}" for num in bip_references))
 
-def llm_bip_dependencies(text, current_bip_number=None):
+def llm_bip_dependencies(text, current_bip_number=None, proposal_label: str = PROPOSAL_LABEL):
 
     prompt = f"""
-You are analyzing the text of Bitcoin Improvement Proposal (BIP){f" {current_bip_number}" if current_bip_number else ""}.
+You are analyzing the text of {PROPOSAL_SINGULAR} ({proposal_label}){f" {current_bip_number}" if current_bip_number else ""}.
 
-The goal is to identify any dependencies to other BIPs
+The goal is to identify any dependencies to other {proposal_label}s
 
 Example 1:
-Text: This BIP proposes a change to the key format. It depends on BIP 32 and BIP 39.
-Dependencies: ["BIP 32", "BIP 39"]
+Text: This proposal proposes a change to the key format. It depends on {proposal_label} 32 and {proposal_label} 39.
+Dependencies: ["{proposal_label} 32", "{proposal_label} 39"]
 
 Example 2:
-Text: This proposal builds upon BIP-0016 for partially signed transactions.
-Dependencies: ["BIP 16"]
+Text: This proposal builds upon {proposal_label}-0016 for partially signed transactions.
+Dependencies: ["{proposal_label} 16"]
 
 Example 3:
-Text: This BIP does not depend on any other BIPs.
+Text: This proposal does not depend on any other {proposal_label}s.
 Dependencies: []
 
-Respond with a plain JSON array of BIP numbers that this BIP depends on. For example:
-["BIP 32","BIP 327","BIP 328","BIP 380"]
+Respond with a plain JSON array of proposal numbers that this proposal depends on. For example:
+["{proposal_label} 32","{proposal_label} 327","{proposal_label} 328","{proposal_label} 380"]
 
 If there are no dependencies, return an empty list.
 
@@ -123,14 +126,13 @@ Here is the BIP text:
 \"\"\"{text}\"\"\"
 """
     
-    model="gpt-3.5-turbo"
-    api_key = os.getenv("OPENAI_API_KEY")
+    model="gpt-5-mini"
+    api_key = load_api_key()
     client = OpenAI(api_key=api_key)
     try:
         response = client.chat.completions.create(
             model=model,
             messages=[{"role": "user", "content": prompt}],
-            temperature=0.2,
         )
         print(response.choices[0].message.content.strip())
         return json.loads(response.choices[0].message.content.strip())
@@ -138,24 +140,44 @@ Here is the BIP text:
         print(f"[!] Error: {e}")
         return ["error"]
 
-    
+def load_api_key():
+    key = os.getenv("OPENAI_API_KEY")
+    if key:
+        return key
+    with open("apikey.secret") as f:
+        return f.read().strip()
 
-def update_insights(json_data: Dict[str, any], bip_file_path: Path):
+def update_insights(
+    json_data: Dict[str, any],
+    bip_file_path: Path,
+    proposal_label: str = PROPOSAL_LABEL,
+    id_field: str = PRIMARY_ID_FIELD,
+):
     """Generate insights for a BIP file."""
     raw_content = load_bip_content(bip_file_path)
     json_data.setdefault("insights", {})
     # Generate insights
     json_data["insights"]["word_list"] = create_word_list(raw_content)
-    json_data["insights"]["bip_references"] = create_bip_list(raw_content)
-    json_data["insights"]["dependencies"] = llm_bip_dependencies(raw_content,str(int(json_data["raw"]["preamble"]["bip"])))
+    json_data["insights"]["bip_references"] = create_bip_list(raw_content, proposal_label=proposal_label)
+    json_data["insights"]["dependencies"] = llm_bip_dependencies(
+        raw_content,
+        str(int(json_data["raw"]["preamble"][id_field])),
+        proposal_label=proposal_label,
+    )
 
-    # Remove reference to the BIP itself
-    bip_number = str(int(json_data["raw"]["preamble"]["bip"]))  # Remove leading zeros
+    bip_number = str(int(json_data["raw"]["preamble"][id_field]))
     json_data["insights"]["bip_references"] = [
-        bip for bip in json_data["insights"]["bip_references"] if bip != f"BIP {bip_number}"
+        bip for bip in json_data["insights"]["bip_references"] if bip != f"{proposal_label} {bip_number}"
     ]
 
-def process_bip_files(input_dir: Path, output_dir: Path):
+def process_bip_files(
+    input_dir: Path,
+    output_dir: Path,
+    repo_dir: Path,
+    file_prefix: str = DOCUMENT_PREFIX,
+    proposal_label: str = PROPOSAL_LABEL,
+    id_field: str = PRIMARY_ID_FIELD,
+):
     """Process all BIP JSON files and update metadata & insights."""
     json_files = [f for f in input_dir.iterdir() if f.suffix == '.json']
     for json_file in json_files:
@@ -163,15 +185,15 @@ def process_bip_files(input_dir: Path, output_dir: Path):
             json_data = json.load(f)
         
         preamble = json_data.get("raw", {}).get("preamble", {})
-        bip_number = str(preamble.get("bip", "")).zfill(4)
-        bip_file_path = find_bip_file(bip_number)
+        bip_number = str(preamble.get(id_field, "")).zfill(4)
+        bip_file_path = find_bip_file(repo_dir, bip_number, file_prefix=file_prefix)
         
         if not bip_file_path:
-            print(f"No file found for BIP-{bip_number}")
+            print(f"No file found for {proposal_label}-{bip_number}")
             continue
         
-        json_data = update_metadata(json_data, bip_file_path)
-        update_insights(json_data, bip_file_path)
+        json_data = update_metadata(json_data, bip_file_path, repo_dir)
+        update_insights(json_data, bip_file_path, proposal_label=proposal_label, id_field=id_field)
         
         output_path = output_dir / json_file.name
         with output_path.open('w', encoding='utf-8') as f:

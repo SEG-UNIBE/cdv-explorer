@@ -18,3 +18,95 @@
 .p-card h2 {
   margin-top: 0;
 }
+
+.ecosystem-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.ecosystem-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 260px;
+}
+
+.ecosystem-card--muted {
+  opacity: 0.62;
+}
+
+.ecosystem-card--muted .p-button {
+  opacity: 0.9;
+}
+
+.ecosystem-card-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: left;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.ecosystem-card-header h2 {
+  margin: 0;
+  line-height: 1;
+}
+
+.ecosystem-logo {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+
+.ecosystem-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  color: #5f6b76;
+}
+
+.ecosystem-actions {
+  margin-top: 1.5rem;
+}
+
+.dashboard-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.dashboard-toolbar__copy {
+  flex: 1 1 420px;
+}
+
+.dashboard-toolbar__controls {
+  min-width: 220px;
+}
+
+.dashboard-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-bottom: 0.75rem;
+}
+
+.dashboard-title-row h1 {
+  margin: 0;
+}
+
+.dashboard-title-logo {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+  flex: 0 0 auto;
+}

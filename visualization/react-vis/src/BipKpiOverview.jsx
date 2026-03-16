@@ -11,9 +11,9 @@ import {
 
 import 'primeicons/primeicons.css';
 
-export const BipKpiOverview = ({ data }) => {
+export const BipKpiOverview = ({ data, totalLabel = "Total Proposals" }) => {
   if (!data || !data.nodes || data.nodes.length === 0) {
-    return <p>No BIP data available.</p>;
+    return <p>No proposal data available.</p>;
   }
 
   const nodes = data.nodes;
@@ -37,7 +37,7 @@ const hardForkCount = nodes.filter(node => node.group === 'Consensus (hard fork)
         <Card style={cardStyle}>
           <FaFileAlt size={iconSize} />
           <div className="value" style={valueStyle}>{totalCount}</div>
-          <div className="label" style={labelStyle}>Total BIPs</div>
+          <div className="label" style={labelStyle}>{totalLabel}</div>
         </Card>
         <Card style={cardStyle}>
           <FaCogs size={iconSize} />

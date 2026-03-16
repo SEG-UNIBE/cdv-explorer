@@ -1,4 +1,4 @@
-# Bitcoin Improvement Proposal Network Graph <!-- omit from toc -->
+# Proposal Network Graph <!-- omit from toc -->
 
 ![thumb](./assets/t0004-bip-mining.png)
 
@@ -18,9 +18,8 @@
 
 ## Introduction
 
-Bitcoin Improvement Proposals (BIPs) are essential to the evolution of the Bitcoin protocol, characterized by both their individual attributes (e.g., status, categories) and interrelationships (e.g., dependencies, succession).
-This project aims to mine and structure BIP data, archiving it in a browsable format that captures both these characteristics and connections.
-Through graph-based visualizations and analysis, we seek to enable a more interactive exploration of the BIP landscape, enhancing both understanding and insight into the proposals and their roles within the ecosystem.
+This repository started with Bitcoin Improvement Proposals (BIPs) as its first implemented dataset, but the broader goal is an ecosystem-agnostic proposal-analysis pipeline.
+Bitcoin is currently the active adapter. Over time, the same repository should support additional ecosystems such as Ethereum EIPs or Tor proposals through the same extraction and visualization flow.
 
 # Documentation
 
@@ -28,38 +27,37 @@ Through graph-based visualizations and analysis, we seek to enable a more intera
 - Git: The script requires Git to clone and update the BIP repository.
 
 ## Main.py
-Manages all the logic. Once you added the github token and OpenAI API Key, you can run ```main.py```. It will 
-- Clone the BIP repository if it’s not already present or update it if it is.
+Manages all the logic. Once you added the github token and OpenAI API Key, you can run ```main.py```. The active ecosystem is configured in `ecosystem_config.py`. It will
+- Clone the active proposal repository if it’s not already present or update it if it is.
 - Extract metadata from the Git history.
-- Extract the preamble from each BIP document.
-- Generate insights from the BIP contents.
+- Extract the preamble from each proposal document.
+- Generate insights from the proposal contents.
 - Store all extracted data into JSON files.
 
 ## Download.py
-Clones all BIP's as *.md or *.mediawiki files & also downloads all associated files for each BIP. 
-All files are saved into __bips_cloned__. 
-Associated files are saved into the corresponding __bips_cloned/bips_xxxx__ folder.
+Clones the active proposal repository as *.md or *.mediawiki files and also downloads all associated files.
+For the current Bitcoin adapter, all files are saved into __bips_cloned__.
 
 ## preamble_extraction.py
-The <code>< pre>...< /pre></code> block gets extracted out of every .md/.mediawiki files inside the __bips_cloned__ folder.
+The <code>< pre>...< /pre></code> block gets extracted out of every .md/.mediawiki file inside the active clone folder.
 It differentiates between the required fields and the optional fields.
 If you have multi-line fields as they often appear in 'author' and 'licences', it adds a list to the corresponding key.
 The extracted information inside the preamble gets placed in the __preamble__ section inside the JSON file.
-All JSON files get saved in __bips_json__.
+For the current Bitcoin adapter, all JSON files get saved in __bips_json__.
 
 ## bip_processor.py
-Adds metadata and insights about each BIP to the corresponding JSON file. For the metadata, it adds
+Adds metadata and insights about each proposal to the corresponding JSON file. For the metadata, it adds
 ### Metadata
-- **`last_commit`**: The date of the most recent commit for the BIP file (ISO 8601 format).
-- **`total_commits`**: The total number of commits made to the BIP file.
+- **`last_commit`**: The date of the most recent commit for the proposal file (ISO 8601 format).
+- **`total_commits`**: The total number of commits made to the proposal file.
 - **`metadata_last_updated`**: The timestamp (ISO 8601 format) indicating when the metadata was last updated.
-- **`git_history`**: A list of tuples containing the Git commit hash, date, and author for each commit in the BIP's history.
-- **`contributors`**: The total number of unique contributors to the BIP file.
+- **`git_history`**: A list of tuples containing the Git commit hash, date, and author for each commit in the proposal's history.
+- **`contributors`**: The total number of unique contributors to the proposal file.
 - **`google_trend_index`**: Placeholder for storing Google Trends data (not implemented yet).
 ### Insights
 #### Compliance Section
-- **`title_length_respected`**: Indicates whether the BIP title length adheres to the 44-character limit (`true`/`false`).
-- **`title_length`**: The actual length of the BIP title in characters.
+- **`title_length_respected`**: Indicates whether the proposal title length adheres to the active rule set (`true`/`false`).
+- **`title_length`**: The actual length of the proposal title in characters.
 - **`abstract_length_respected`**: Indicates whether the word count of the "Abstract" section is within the limit of 200 words (`true`/`false`).
 - **`abstract_word_count`**: The total word count of the "Abstract" section.
 - **`created_date_format_correct`**: Indicates whether the `created` field in the preamble follows the ISO 8601 date format (`true`/`false`).
@@ -68,8 +66,9 @@ Adds metadata and insights about each BIP to the corresponding JSON file. For th
 - **`layer_valid`**: Indicates whether the `layer` field in the preamble contains a valid value (`true`/`false`).
 
 #### Word List Section
-- **`word_list`**: A dictionary of words extracted from the raw content of the BIP file (excluding stop words). Each word is a key, and its frequency is the value, sorted in descending order of frequency.
+- **`word_list`**: A dictionary of words extracted from the raw content of the proposal file (excluding stop words). Each word is a key, and its frequency is the value, sorted in descending order of frequency.
 
 ## visualization/react-vis
-Once you downloaded ```main.py```, you can run ```npm install``` and then ```npm start```. It will start the react server, which you can look at in your browser through the IP ```http://localhost:3000/```. 
+Once you downloaded ```main.py```, you can run ```npm install``` and then ```npm start```. It will start the react server, which you can look at in your browser through the IP ```http://localhost:3000/```.
+The landing page now begins with ecosystem selection, with Bitcoin as the currently available dashboard.
 Alternatively, a not yet final version of the app is hosted on Github under the the following: ```https://MohammadEglil.github.io/BIPng-Website-```. Just click on Home if the screen only shows the navigation. 

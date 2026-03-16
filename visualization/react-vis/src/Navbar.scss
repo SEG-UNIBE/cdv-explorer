@@ -12,7 +12,21 @@
   z-index: 1000; /* Ensure the navbar stays on top of other elements */
 
   .nav-logo {
-    /* Add styles for logo if needed */
+    position: absolute;
+    left: 24px;
+
+    .nav-brand {
+      text-decoration: none;
+      font-family: Roboto, sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: #1b2838;
+      letter-spacing: 0.02em;
+    }
+
+    @media screen and (max-width: 768px) {
+      left: 20px;
+    }
   }
 
   .nav-items {

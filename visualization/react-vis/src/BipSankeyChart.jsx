@@ -5,9 +5,13 @@ import { sankey, sankeyLinkHorizontal } from 'd3-sankey';
 export const BipSankeyChart = ({ data, width = 700, height = 500 }) => {
   const svgRef = useRef();
   const tooltipRef = useRef();
+  const hasRenderableData = Boolean(data?.nodes?.length && data?.links?.length);
 
   useEffect(() => {
-    if (!data || !data.nodes || !data.links) return;
+    if (!hasRenderableData) {
+      d3.select(svgRef.current).selectAll('*').remove();
+      return;
+    }
 
     const svg = d3.select(svgRef.current);
     svg.selectAll('*').remove(); // clear previous render
@@ -23,10 +27,18 @@ export const BipSankeyChart = ({ data, width = 700, height = 500 }) => {
       .nodePadding(30)
       .extent([[0, 0], [innerWidth, innerHeight]]);
 
-    const { nodes, links } = sankeyGenerator({
-      nodes: data.nodes.map(d => ({ ...d })),
-      links: data.links.map(d => ({ ...d })),
-    });
+    let nodes = [];
+    let links = [];
+    try {
+      ({ nodes, links } = sankeyGenerator({
+        nodes: data.nodes.map(d => ({ ...d })),
+        links: data.links.map(d => ({ ...d })),
+      }));
+    } catch (error) {
+      console.error('Failed to render sankey data', error);
+      svg.selectAll('*').remove();
+      return;
+    }
 
     const darkBlue = '#08306b';
     const mediumBlue = '#4292c6';
@@ -127,10 +139,15 @@ export const BipSankeyChart = ({ data, width = 700, height = 500 }) => {
       .attr('text-anchor', 'start')
       .attr('fill', d => d3.color(nodeColorMap[d.name]).darker(1).toString());
 
-  }, [data, width, height]);
+  }, [data, width, height, hasRenderableData]);
 
   return (
     <div style={{ position: 'relative' }}>
+      {!hasRenderableData && (
+        <div style={{ padding: '1rem 0', color: '#666' }}>
+          No sankey data available for the current dataset.
+        </div>
+      )}
       <svg ref={svgRef}></svg>
       <div
         ref={tooltipRef}

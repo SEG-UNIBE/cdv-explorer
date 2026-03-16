@@ -74,7 +74,7 @@ export const TopAuthorsChart = ({ data, width = 600, height = 400 }) => {
 
         tooltip
           .style("opacity", 1)
-          .html(`<strong>${d.author}</strong><br/>BIPs: ${d.count}`);
+          .html(`<strong>${d.author}</strong><br/>Proposals: ${d.count}`);
       })
       .on("mousemove", function (event) {
         tooltip

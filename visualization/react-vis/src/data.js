@@ -1,11 +1,16 @@
-const context = require.context('../../../bips_json', false, /\.json$/); // Match all JSON files
-
+const context = require.context('../../../bips_json', true, /\.json$/);
 const allFiles = context.keys();
 
-const bipData = allFiles.map(filename => {
-  const bip = context(filename); // Dynamically import the JSON data
-  return bip;
-});
+const EMPTY_DATASET = {
+  nodes: [],
+  links: {
+    references: [],
+    dependencies: [],
+    requires: [],
+    replaces: [],
+    superseded_by: []
+  }
+};
 
 // Utility: Normalize "BIP 123", "BIP-123", "123, 124" => ["123", "124"]
 function normalizeBipIds(field) {
@@ -22,93 +27,139 @@ function normalizeBipIds(field) {
     .filter(id => /^\d+$/.test(id)); // only numeric strings
 }
 
-// Main data structures
-let nodes = [];
-let referenceLinks = [];
-let dependencyLinks = [];
-let requiresLinks = [];
-let replacesLinks = [];
-let supersedesLinks = [];
-let nodeIds = new Set(); // Track existing nodes
+function extractStichtag(filename) {
+  const cleanPath = filename.replace(/^\.\//, '');
+  const [firstSegment] = cleanPath.split('/');
+  return /^\d{4}-\d{2}-\d{2}$/.test(firstSegment) ? firstSegment : 'current';
+}
 
-bipData.forEach(bip => {
-  if (bip) {
-    const preamble = bip.raw?.preamble;
-    const insights = bip.insights || {};
-    const normalizedBipId = preamble?.bip;
+function buildNetworkData(snapshotEntries) {
+  if (!snapshotEntries.length) {
+    return EMPTY_DATASET;
+  }
 
-    // Skip if invalid
-    if (!normalizedBipId) return;
+  const nodes = [];
+  const nodeIds = new Set();
+  const referenceLinks = [];
+  const dependencyLinks = [];
+  const requiresLinks = [];
+  const replacesLinks = [];
+  const supersedesLinks = [];
 
-    // --- Add Node ---
-    if (!nodeIds.has(normalizedBipId)) {
-      nodes.push({
-        id: normalizedBipId,
-        group: preamble.layer,
-        compliance_score: preamble.compliance_score,
-        created: preamble.created,
-        author: preamble.author,
-        word_list: insights.word_list,
-        status: preamble.status,
-        type: preamble.type
-      });
-      nodeIds.add(normalizedBipId);
+  snapshotEntries.forEach((bip) => {
+    const preamble = bip?.raw?.preamble;
+    const insights = bip?.insights || {};
+    const normalizedBipId = String(preamble?.bip ?? '').trim();
+
+    if (!normalizedBipId || nodeIds.has(normalizedBipId)) {
+      return;
     }
 
-    // --- References (LLM / pattern matched) ---
-    const referencesArray = normalizeBipIds(insights.bip_references);
-    referencesArray.forEach(refId => {
-      if (nodeIds.has(refId)) {
-        referenceLinks.push({ source: normalizedBipId, target: refId, value: 1 });
+    nodes.push({
+      id: normalizedBipId,
+      group: preamble.layer,
+      compliance_score: preamble.compliance_score,
+      created: preamble.created,
+      author: preamble.author,
+      word_list: insights.word_list,
+      status: preamble.status,
+      type: preamble.type
+    });
+    nodeIds.add(normalizedBipId);
+  });
+
+  snapshotEntries.forEach((bip) => {
+    const preamble = bip?.raw?.preamble;
+    const insights = bip?.insights || {};
+    const sourceId = String(preamble?.bip ?? '').trim();
+
+    if (!sourceId || !nodeIds.has(sourceId)) {
+      return;
+    }
+
+    normalizeBipIds(insights.bip_references).forEach((targetId) => {
+      if (nodeIds.has(targetId)) {
+        referenceLinks.push({ source: sourceId, target: targetId, value: 1 });
       }
     });
 
-    // --- Dependencies (LLM or other logic) ---
-    const dependenciesArray = normalizeBipIds(insights.dependencies);
-    dependenciesArray.forEach(depId => {
-      if (nodeIds.has(depId)) {
-        dependencyLinks.push({ source: normalizedBipId, target: depId, value: 1 });
+    normalizeBipIds(insights.dependencies).forEach((targetId) => {
+      if (nodeIds.has(targetId)) {
+        dependencyLinks.push({ source: sourceId, target: targetId, value: 1 });
       }
     });
 
-    // --- Requires Links ---
-    const requiresArray = normalizeBipIds(preamble.requires);
-    requiresArray.forEach(reqId => {
-      if (nodeIds.has(reqId)) {
-        requiresLinks.push({ source: normalizedBipId, target: reqId, value: 1 });
+    normalizeBipIds(preamble.requires).forEach((targetId) => {
+      if (nodeIds.has(targetId)) {
+        requiresLinks.push({ source: sourceId, target: targetId, value: 1 });
       }
     });
 
-    // --- Replaces Links ---
-    const replacesArray = normalizeBipIds(preamble.replaces);
-    replacesArray.forEach(repId => {
-      if (nodeIds.has(repId)) {
-        replacesLinks.push({ source: normalizedBipId, target: repId, value: 1 });
+    normalizeBipIds(preamble.replaces).forEach((targetId) => {
+      if (nodeIds.has(targetId)) {
+        replacesLinks.push({ source: sourceId, target: targetId, value: 1 });
       }
     });
 
-    // --- Superseded By Links ---
-    const supersededArray = normalizeBipIds(preamble.superseded_by);
-    supersededArray.forEach(supId => {
-      if (nodeIds.has(supId)) {
-        supersedesLinks.push({ source: normalizedBipId, target: supId, value: 1 });
+    normalizeBipIds(preamble.superseded_by).forEach((targetId) => {
+      if (nodeIds.has(targetId)) {
+        supersedesLinks.push({ source: sourceId, target: targetId, value: 1 });
       }
     });
+  });
+
+  return {
+    nodes,
+    links: {
+      references: referenceLinks,
+      dependencies: dependencyLinks,
+      requires: requiresLinks,
+      replaces: replacesLinks,
+      superseded_by: supersedesLinks
+    }
+  };
+}
+
+const bitcoinSnapshots = allFiles.reduce((accumulator, filename) => {
+  const snapshotKey = extractStichtag(filename);
+  const moduleData = context(filename);
+  const snapshotEntries = accumulator[snapshotKey] || [];
+  snapshotEntries.push(moduleData.default || moduleData);
+  accumulator[snapshotKey] = snapshotEntries;
+  return accumulator;
+}, {});
+
+const bitcoinSnapshotDatasets = Object.fromEntries(
+  Object.entries(bitcoinSnapshots).map(([stichtag, entries]) => [stichtag, buildNetworkData(entries)])
+);
+
+export function getAvailableStichtage(ecosystemId) {
+  if (ecosystemId !== 'bitcoin') {
+    return [];
   }
-});
 
-// Final network structure
-const data = {
-  nodes,
-  links: {
-    references: referenceLinks,
-    dependencies: dependencyLinks,
-    requires: requiresLinks,
-    replaces: replacesLinks,
-    superseded_by: supersedesLinks
+  const datedEntries = Object.keys(bitcoinSnapshotDatasets)
+    .filter((stichtag) => stichtag !== 'current')
+    .sort((left, right) => right.localeCompare(left));
+
+  if (datedEntries.length > 0) {
+    return datedEntries;
   }
-};
 
-export default data;
+  return bitcoinSnapshotDatasets.current ? ['current'] : [];
+}
 
-console.log('✅ Network Diagram Data:', data);
+export function getDatasetForSelection(ecosystemId, stichtag) {
+  if (ecosystemId !== 'bitcoin') {
+    return EMPTY_DATASET;
+  }
+
+  if (stichtag && bitcoinSnapshotDatasets[stichtag]) {
+    return bitcoinSnapshotDatasets[stichtag];
+  }
+
+  const fallbackStichtag = getAvailableStichtage(ecosystemId)[0];
+  return fallbackStichtag ? bitcoinSnapshotDatasets[fallbackStichtag] : EMPTY_DATASET;
+}
+
+export default getDatasetForSelection('bitcoin');

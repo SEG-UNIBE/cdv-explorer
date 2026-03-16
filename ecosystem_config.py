@@ -1,0 +1,16 @@
+ACTIVE_ECOSYSTEM = {
+    "slug": "bitcoin",
+    "display_name": "Bitcoin",
+    "proposal_term_singular": "Bitcoin Improvement Proposal",
+    "proposal_term_plural": "Bitcoin Improvement Proposals",
+    "proposal_acronym": "BIP",
+    "repository_owner": "bitcoin",
+    "repository_name": "bips",
+    "clone_directory": "bips_cloned",
+    "json_directory": "bips_json",
+    "document_prefix": "bip",
+    "primary_id_field": "bip",
+    "document_file_pattern": r"^bip-\d{4}\.(mediawiki|md|rst)$",
+    "document_dir_pattern": r"^bip-\d{4}$",
+    "reference_pattern": r"\bBIP[-#\s]?(\d+)\b",
+}

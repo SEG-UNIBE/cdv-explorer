@@ -7,7 +7,7 @@ on:
       - master
     paths:
       - '.github/workflows/deploy-react-pages.yml'
-      - 'visualization/react-vis/**'
+      - 'react/**'
       - 'ip_data/**/01_harvest/**'
       - 'ip_data/**/02_preprocess/**'
       - 'ip_data/**/03_analysis/**'
@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: visualization/react-vis
+        working-directory: react
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -41,7 +41,7 @@ jobs:
         with:
           node-version: 22
           cache: npm
-          cache-dependency-path: visualization/react-vis/package-lock.json
+          cache-dependency-path: react/package-lock.json
 
       - name: Install dependencies
         run: npm ci
@@ -55,7 +55,7 @@ jobs:
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4
         with:
-          path: visualization/react-vis/build
+          path: react/build
 
   deploy:
     environment:

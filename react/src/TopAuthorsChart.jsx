@@ -5,21 +5,36 @@ export const TopAuthorsChart = ({ data, width = 600, height = 400 }) => {
   const ref = useRef();
 
   useEffect(() => {
-    const authorCounts = {};
+    let sortedAuthors = [];
 
-    data.nodes.forEach(bip => {
-      if (Array.isArray(bip.author)) {
-        bip.author.forEach(author => {
-          const name = author.split('<')[0].trim();
-          authorCounts[name] = (authorCounts[name] || 0) + 1;
-        });
-      }
-    });
+    if (Array.isArray(data?.topAuthors) && data.topAuthors.length > 0) {
+      sortedAuthors = data.topAuthors
+        .map((entry) => ({ author: entry.author, count: Number(entry.count || 0) }))
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 10);
+    } else {
+      const authorCounts = {};
 
-    const sortedAuthors = Object.entries(authorCounts)
-      .map(([author, count]) => ({ author, count }))
-      .sort((a, b) => b.count - a.count)
-      .slice(0, 10);
+      (data?.nodes || []).forEach((proposal) => {
+        if (Array.isArray(proposal.author)) {
+          proposal.author.forEach((author) => {
+            const name = author.split('<')[0].trim();
+            authorCounts[name] = (authorCounts[name] || 0) + 1;
+          });
+        }
+      });
+
+      sortedAuthors = Object.entries(authorCounts)
+        .map(([author, count]) => ({ author, count }))
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 10);
+    }
+
+    if (sortedAuthors.length === 0) {
+      const svg = d3.select(ref.current);
+      svg.selectAll("*").remove();
+      return;
+    }
 
     const svg = d3.select(ref.current);
     svg.selectAll("*").remove();

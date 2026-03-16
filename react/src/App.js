@@ -17,14 +17,20 @@ import { ecosystems, ecosystemsById } from './ecosystems';
 import { getAvailableStichtage, getDatasetForSelection } from './data';
 
 function buildDashboardData(dataset) {
-  const proposalsPerYear = d3.rollup(
-    dataset.nodes,
-    (values) => values.length,
-    (node) => new Date(node.created).getFullYear()
-  );
+  const authorship = dataset.authorship || {};
+  const classification = dataset.classification || {};
+  const conformity = dataset.conformity || {};
 
-  const yearData = Array.from(proposalsPerYear, ([year, count]) => ({ year, count }))
-    .sort((a, b) => a.year - b.year);
+  const yearData = (authorship.bips_per_year || []).length
+    ? (authorship.bips_per_year || [])
+    : Array.from(
+        d3.rollup(
+          dataset.nodes,
+          (values) => values.length,
+          (node) => new Date(node.created).getFullYear()
+        ),
+        ([year, count]) => ({ year, count })
+      ).sort((a, b) => a.year - b.year);
 
   const wordCounts = {};
   for (const node of dataset.nodes) {
@@ -64,61 +70,48 @@ function buildDashboardData(dataset) {
     .sort((a, b) => b.count - a.count)
     .slice(0, 100);
 
-  const sankeyNodes = new Map();
-  const sankeyLinks = {};
-
-  function ensureSankeyNode(column, label) {
-    const key = `${column}:${label}`;
-    if (!sankeyNodes.has(key)) {
-      sankeyNodes.set(key, { key, label, column });
-    }
-    return key;
-  }
-
-  dataset.nodes.forEach((proposal) => {
-    const layerRaw = proposal.group ?? proposal.raw?.preamble?.layer ?? "Unknown Layer";
-    const statusRaw = proposal.status ?? proposal.raw?.preamble?.status ?? "Unknown Status";
-    const typeRaw = proposal.type ?? proposal.raw?.preamble?.type ?? "Unknown Type";
-
-    const layer = String(layerRaw).trim() || "Unknown Layer";
-    const status = String(statusRaw).trim() || "Unknown Status";
-    const type = String(typeRaw).trim() || "Unknown Type";
-
-    if (layer.includes("Unknown") || status.includes("Unknown") || type.includes("Unknown")) {
-      return;
-    }
-
-    const layerKey = ensureSankeyNode('layer', layer);
-    const statusKey = ensureSankeyNode('status', status);
-    const typeKey = ensureSankeyNode('type', type);
-
-    const link1 = `${layerKey}--${statusKey}`;
-    const link2 = `${statusKey}--${typeKey}`;
-
-    sankeyLinks[link1] = (sankeyLinks[link1] || 0) + 1;
-    sankeyLinks[link2] = (sankeyLinks[link2] || 0) + 1;
-  });
-
-  const nodeList = Array.from(sankeyNodes.values());
-  const nodeIdMap = new Map(nodeList.map((node, index) => [node.key, index]));
+  const groupedLinks = classification?.sankey_grouped?.links || [];
+  const nodeLabels = Array.from(new Set(groupedLinks.flatMap((item) => [item.source, item.target])));
+  const nodeIdMap = new Map(nodeLabels.map((label, index) => [label, index]));
 
   const sankeyData = {
-    nodes: nodeList.map((node) => ({
-      id: nodeIdMap.get(node.key),
-      name: node.label,
-      column: node.column
+    nodes: nodeLabels.map((label, index) => ({
+      id: index,
+      name: label,
+      column: 'grouped',
     })),
-    links: Object.entries(sankeyLinks).map(([key, value]) => {
-      const [sourceLabel, targetLabel] = key.split('--');
-      return {
-        source: nodeIdMap.get(sourceLabel),
-        target: nodeIdMap.get(targetLabel),
-        value
-      };
-    })
+    links: groupedLinks.map((link) => ({
+      source: nodeIdMap.get(link.source),
+      target: nodeIdMap.get(link.target),
+      value: link.count,
+    })),
   };
 
-  return { yearData, wordCloudData, sankeyData };
+  const statusByLayerRows = Object.entries(classification.status_distribution_by_layer || {}).map(
+    ([layer, statuses]) => ({
+      layer,
+      total: Object.values(statuses).reduce((sum, count) => sum + Number(count || 0), 0),
+      topStatus: Object.entries(statuses).sort((a, b) => b[1] - a[1])[0]?.[0] || 'n/a',
+    })
+  );
+
+  const conformityStatusRows = Object.entries(conformity.average_score_by_status || {}).map(
+    ([status, score]) => ({ status, score })
+  );
+
+  const topAuthors = authorship.top_authors || [];
+  const top10Share = authorship.top_10_share || {};
+
+  return {
+    yearData,
+    wordCloudData,
+    sankeyData,
+    statusByLayerRows,
+    conformityStatusRows,
+    topAuthors,
+    top10Share,
+    overallConformity: conformity.overall_average_score,
+  };
 }
 
 function EcosystemLanding() {
@@ -202,7 +195,16 @@ function EcosystemDashboard() {
   }
 
   const selectedDataset = getDatasetForSelection(ecosystemId, selectedStichtag);
-  const { yearData, wordCloudData, sankeyData } = buildDashboardData(selectedDataset);
+  const {
+    yearData,
+    wordCloudData,
+    sankeyData,
+    statusByLayerRows,
+    conformityStatusRows,
+    topAuthors,
+    top10Share,
+    overallConformity,
+  } = buildDashboardData(selectedDataset);
   const stichtagOptions = availableStichtage.map((stichtag) => ({
     label: stichtag === 'current' ? 'Current' : stichtag,
     value: stichtag,
@@ -242,6 +244,35 @@ function EcosystemDashboard() {
         <p>This graph visualizes dependencies and relationships between proposals in the selected ecosystem.</p>
         <NetworkDiagram data={selectedDataset} width={700} height={500} />
       </Card>
+      <Card className="mb-4">
+        <h2>Analysis Submodule Summary</h2>
+        <div className="analysis-grid">
+          <div className="analysis-stat">
+            <h3>Dependencies</h3>
+            <p><strong>Nodes:</strong> {selectedDataset.meta?.node_count ?? selectedDataset.nodes.length}</p>
+            <p>
+              <strong>Edges:</strong> {
+                Object.values(selectedDataset.links || {}).reduce((sum, items) => sum + (items?.length || 0), 0)
+              }
+            </p>
+          </div>
+          <div className="analysis-stat">
+            <h3>Authorship</h3>
+            <p><strong>Top authors tracked:</strong> {topAuthors.length}</p>
+            <p><strong>Top 10 share:</strong> {top10Share.percentage ?? 'n/a'}%</p>
+          </div>
+          <div className="analysis-stat">
+            <h3>Classification</h3>
+            <p><strong>Layer groups:</strong> {statusByLayerRows.length}</p>
+            <p><strong>Sankey links:</strong> {sankeyData.links.length}</p>
+          </div>
+          <div className="analysis-stat">
+            <h3>Conformity</h3>
+            <p><strong>Average score:</strong> {overallConformity ?? 'n/a'}</p>
+            <p><strong>Status buckets:</strong> {conformityStatusRows.length}</p>
+          </div>
+        </div>
+      </Card>
       <h1>Proposal Category Overview</h1>
       <BipKpiOverview data={selectedDataset} totalLabel={`Total ${ecosystem.proposalShortPlural}`} />
       <Card className="mb-4" style={{ flex: 1 }}>
@@ -260,12 +291,56 @@ function EcosystemDashboard() {
         <Card className="mb-4" style={{ flex: 1 }}>
           <h2>Top 10 Proposal Authors</h2>
           <p>This chart shows the most prolific contributors in the selected ecosystem, based on proposal authorship counts.</p>
-          <TopAuthorsChart data={selectedDataset} />
+          <TopAuthorsChart data={{ topAuthors }} />
         </Card>
         <Card className="mb-4" style={{ flex: 1 }}>
           <h2>Proposals Over Time</h2>
           <p>This timeline chart shows how many proposals entered the selected ecosystem per year.</p>
           <BipTimelineChart data={yearData} width={600} height={400} />
+        </Card>
+      </div>
+      <div className="chart-grid" style={{ display: 'flex', gap: '2rem', marginTop: '2rem', height: '100%' }}>
+        <Card className="mb-4" style={{ flex: 1 }}>
+          <h2>Classification by Layer</h2>
+          <p>Top status per layer from the classification submodule output.</p>
+          <table className="analysis-table">
+            <thead>
+              <tr>
+                <th>Layer</th>
+                <th>Top Status</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {statusByLayerRows.map((row) => (
+                <tr key={row.layer}>
+                  <td>{row.layer}</td>
+                  <td>{row.topStatus}</td>
+                  <td>{row.total}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </Card>
+        <Card className="mb-4" style={{ flex: 1 }}>
+          <h2>Conformity by Status</h2>
+          <p>Average compliance score by proposal status from the conformity submodule output.</p>
+          <table className="analysis-table">
+            <thead>
+              <tr>
+                <th>Status</th>
+                <th>Average Score</th>
+              </tr>
+            </thead>
+            <tbody>
+              {conformityStatusRows.map((row) => (
+                <tr key={row.status}>
+                  <td>{row.status}</td>
+                  <td>{row.score}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </Card>
       </div>
     </section>

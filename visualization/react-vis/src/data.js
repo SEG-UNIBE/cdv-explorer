@@ -1,4 +1,4 @@
-const context = require.context('../../../bips_json', true, /\.json$/);
+const context = require.context('../../../ip_data/bitcoin/02_preprocess', true, /\.json$/);
 const allFiles = context.keys();
 
 const EMPTY_DATASET = {

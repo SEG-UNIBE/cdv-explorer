@@ -3,7 +3,7 @@ import { Dropdown } from "primereact/dropdown";
 import './BIPNo.scss';
 
 
-const context = require.context('../../../bips_json', false, /\.json$/); // Adjust path as needed
+const context = require.context('../../../ip_data/bitcoin/02_preprocess', true, /\.json$/);
 
 export default function BIPNo() {
   const [selectedBIPNo, setSelectedBIPNo] = useState(null);
@@ -26,7 +26,7 @@ export default function BIPNo() {
     setSelectedBIPNo(selectedBIP);
 
     // Handle loading the selected JSON file
-    import(`../../../bips_json/${selectedBIP.code}.json`)
+    import(`../../../ip_data/bitcoin/02_preprocess/${selectedBIP.code}.json`)
       .then((module) => {
         setBipData(module);
       })

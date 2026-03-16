@@ -1,31 +1,21 @@
 from collections import Counter, defaultdict
 from datetime import datetime
 from typing import Any, Dict, List, Tuple
+from ecosystem_config import ACTIVE_ECOSYSTEM
 
-STATUS_GROUP_MAP = {
-    "Draft": "In Progress",
-    "Review": "In Progress",
-    "Proposed": "In Progress",
-    "Obsolete": "Inactive",
-    "Final": "Completed",
-    "Active": "Completed",
-    "Rejected": "Inactive",
-    "Withdrawn": "Inactive",
-    "Deferred": "Inactive",
-    "Replaced": "Inactive",
-}
-
-TYPE_CLEAN_MAP = {
-    "Standard": "Standards Track",
-    "Standards": "Standards Track",
-    "Standard Track": "Standards Track",
-    "Standards-Track": "Standards Track",
-}
+CLASSIFICATION_CONFIG = ACTIVE_ECOSYSTEM.get("classification", {})
+LAYER_ALIASES = CLASSIFICATION_CONFIG.get("layer_aliases", {})
+STATUS_ALIASES = CLASSIFICATION_CONFIG.get("status_aliases", {})
+TYPE_ALIASES = CLASSIFICATION_CONFIG.get("type_aliases", {})
 
 
 def _clean_base(value: Any, fallback: str) -> str:
     text = str(value).strip() if value is not None else ""
     return text or fallback
+
+
+def _apply_alias(value: str, aliases: Dict[str, str]) -> str:
+    return aliases.get(value, value)
 
 
 def _base_status(status_text: str) -> str:
@@ -42,9 +32,9 @@ def _extract_year(date_text: Any) -> int | None:
 
 
 def _node_triplet(node: Dict[str, Any]) -> Tuple[str, str, str]:
-    layer = _clean_base(node.get("group"), "Unknown Layer")
-    status = _clean_base(node.get("status"), "Unknown Status")
-    kind = _clean_base(node.get("type"), "Unknown Type")
+    layer = _apply_alias(_clean_base(node.get("layer"), "Unknown Layer"), LAYER_ALIASES)
+    status = _apply_alias(_clean_base(node.get("status"), "Unknown Status"), STATUS_ALIASES)
+    kind = _apply_alias(_clean_base(node.get("type"), "Unknown Type"), TYPE_ALIASES)
     return layer, status, kind
 
 
@@ -55,8 +45,7 @@ def build_sankey_links(nodes: List[Dict[str, Any]], grouped_status: bool) -> Lis
         layer, status, kind = _node_triplet(node)
 
         if grouped_status:
-            status = STATUS_GROUP_MAP.get(_base_status(status), _base_status(status))
-            kind = TYPE_CLEAN_MAP.get(kind, kind)
+            status = _base_status(status)
             if "Unknown" in layer:
                 layer = "Other"
             if "Unknown" in status:
@@ -79,8 +68,8 @@ def build_sankey_links(nodes: List[Dict[str, Any]], grouped_status: bool) -> Lis
 def build_status_distribution_by_layer(nodes: List[Dict[str, Any]]) -> Dict[str, Dict[str, int]]:
     grouped = defaultdict(Counter)
     for node in nodes:
-        layer = _clean_base(node.get("group"), "Unknown")
-        status = _clean_base(node.get("status"), "Unknown")
+        layer = _apply_alias(_clean_base(node.get("layer"), "Unknown"), LAYER_ALIASES)
+        status = _apply_alias(_clean_base(node.get("status"), "Unknown"), STATUS_ALIASES)
         grouped[layer][status] += 1
 
     out: Dict[str, Dict[str, int]] = {}

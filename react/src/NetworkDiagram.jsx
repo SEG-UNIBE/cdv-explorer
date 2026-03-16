@@ -6,7 +6,7 @@ import { RadioButton } from 'primereact/radiobutton';
 export const NetworkDiagram = ({ width, height, data }) => {
   const ref = useRef();
   const legendRef = useRef();
-  const [colorBy, setColorBy] = useState("group");
+  const [colorBy, setColorBy] = useState("layer");
   const [linkType, setLinkType] = useState("explicit_references");
 
   const nodes = data.nodes;
@@ -97,7 +97,7 @@ export const NetworkDiagram = ({ width, height, data }) => {
         tooltip.html(`
           <div><strong>BIP-${d.id}</strong> </div>
           <div><strong>Compliance Score:</strong> ${d.compliance_score ?? 'N/A'}</div>
-          <div><strong>Layer:</strong> ${d.group ?? 'N/A'}</div>
+          <div><strong>Layer:</strong> ${d.layer ?? 'N/A'}</div>
         `);
         
 
@@ -172,7 +172,7 @@ export const NetworkDiagram = ({ width, height, data }) => {
 
     d3.select(legendRef.current).selectAll("*").remove();
 
-    if (colorBy === "group") {
+    if (colorBy === "layer") {
       let entries = color.domain();
 entries = entries.filter(group => group !== 'default'); // remove 'default'
 entries = entries.slice(1); // remove the first item
@@ -281,9 +281,9 @@ entries = entries.slice(1); // remove the first item
             <RadioButton
               inputId="color-group"
               name="colorBy"
-              value="group"
+              value="layer"
               onChange={(e) => setColorBy(e.value)}
-              checked={colorBy === 'group'}
+              checked={colorBy === 'layer'}
             />
             <label htmlFor="color-group">Color by Layer</label>
           </div>

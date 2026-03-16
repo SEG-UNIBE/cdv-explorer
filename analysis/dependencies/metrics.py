@@ -31,7 +31,7 @@ def build_graph(network_data: Dict[str, Any], link_type: str = "explicit_referen
     for node in network_data.get("nodes", []):
         graph.add_node(
             str(node["id"]),
-            group=node.get("group"),
+            layer=node.get("layer"),
             compliance_score=node.get("compliance_score", 0),
         )
 

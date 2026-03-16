@@ -55,4 +55,16 @@ BITCOIN_ECOSYSTEM = {
         },
         "list_valued_fields": ["author", "license"],
     },
+    "classification": {
+        "layer_aliases": {},
+        "status_aliases": {
+            "Draft (Some confusion applies: The announcements for this never made it to the list, so it hasn't had public discussion)" : "Draft"
+            },
+        "type_aliases": {
+            "Standard": "Standards Track",
+            "Standards": "Standards Track",
+            "Standard Track": "Standards Track",
+            "Standards-Track": "Standards Track",
+        },
+    },
 }

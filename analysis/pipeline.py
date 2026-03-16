@@ -69,7 +69,7 @@ def _save_react_ready_exports(
         flat_nodes.append(
             {
                 "id": node.get("id"),
-                "group": node.get("group"),
+                "layer": node.get("layer"),
                 "status": node.get("status"),
                 "type": node.get("type"),
                 "created": node.get("created"),
@@ -136,7 +136,7 @@ def _save_react_ready_exports(
     _save_csv_rows(
         flat_nodes,
         nodes_csv,
-        fieldnames=["id", "group", "status", "type", "created", "compliance_score", "author"],
+        fieldnames=["id", "layer", "status", "type", "created", "compliance_score", "author"],
     )
     _save_csv_rows(
         flat_edges,

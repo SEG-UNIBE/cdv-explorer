@@ -40,7 +40,7 @@ export const drawNetwork = (svg, width, height, nodes, links) => {
     .enter()
     .append("circle")
     .attr("r", RADIUS)
-    .attr("fill", d => colorScale(d.group));
+    .attr("fill", d => colorScale(d.layer));
 
   // Add titles to nodes (optional, shows the node id on hover)
   node.append("title")

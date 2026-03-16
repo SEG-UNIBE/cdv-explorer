@@ -24,11 +24,11 @@ export const ProposalKpiOverview = ({ data, totalLabel = 'Total Proposals' }) =>
   const labelStyle = { fontSize: '2rem', color: '#555' };
   const cardStyle = { flex: '1 1 200px', textAlign: 'center' };
 
-  const applicationCount = nodes.filter((node) => node.group === 'Applications').length;
-  const softForkCount = nodes.filter((node) => node.group === 'Consensus (soft fork)').length;
-  const peerServicesCount = nodes.filter((node) => node.group === 'Peer Services').length;
-  const apiRpcCount = nodes.filter((node) => node.group === 'API/RPC').length;
-  const hardForkCount = nodes.filter((node) => node.group === 'Consensus (hard fork)').length;
+  const applicationCount = nodes.filter((node) => node.layer === 'Applications').length;
+  const softForkCount = nodes.filter((node) => node.layer === 'Consensus (soft fork)').length;
+  const peerServicesCount = nodes.filter((node) => node.layer === 'Peer Services').length;
+  const apiRpcCount = nodes.filter((node) => node.layer === 'API/RPC').length;
+  const hardForkCount = nodes.filter((node) => node.layer === 'Consensus (hard fork)').length;
 
   return (
     <div>

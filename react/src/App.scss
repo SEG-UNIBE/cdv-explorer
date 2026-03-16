@@ -89,8 +89,26 @@
   flex: 1 1 420px;
 }
 
-.dashboard-toolbar__controls {
-  min-width: 220px;
+.dashboard-sticky-controls {
+  width: min(280px, 100%);
+  margin-left: auto;
+  margin-bottom: 1.5rem;
+  position: sticky;
+  top: 92px;
+  z-index: 50;
+  background: #ffffff;
+  border: 1px solid #dfe8f2;
+  border-radius: 0.75rem;
+  padding: 0.8rem;
+}
+
+@media (max-width: 900px) {
+  .dashboard-sticky-controls {
+    position: static;
+    border: none;
+    padding: 0;
+    background: transparent;
+  }
 }
 
 .dashboard-title-row {

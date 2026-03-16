@@ -85,7 +85,7 @@ def build_network_data(
             nodes.append(
                 {
                     "id": proposal_id,
-                    "group": preamble.get("layer"),
+                    "layer": preamble.get("layer"),
                     "compliance_score": preamble.get("compliance_score"),
                     "created": preamble.get("created"),
                     "author": preamble.get("author"),
@@ -159,7 +159,7 @@ def save_network_data_artifacts(network_data: Dict[str, Any], output_stem: Path)
 
     nodes_csv_path = output_stem.parent / f"{output_stem.name}_nodes.csv"
     with nodes_csv_path.open("w", encoding="utf-8", newline="") as handle:
-        fieldnames = ["id", "group", "compliance_score", "created", "author", "status", "type"]
+        fieldnames = ["id", "layer", "compliance_score", "created", "author", "status", "type"]
         writer = csv.DictWriter(handle, fieldnames=fieldnames)
         writer.writeheader()
         for node in network_data.get("nodes", []):

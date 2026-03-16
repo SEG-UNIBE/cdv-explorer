@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Navbar from './Navbar';
 import { NetworkDiagram } from './NetworkDiagram';
 import { ProposalTimelineChart } from './ProposalTimelineChart';
@@ -184,11 +184,16 @@ function EcosystemLanding() {
 function EcosystemDashboard() {
   const { ecosystemId } = useParams();
   const ecosystem = ecosystemsById[ecosystemId];
-  const availableStichtage = getAvailableStichtage(ecosystemId);
+  const availableStichtage = useMemo(() => getAvailableStichtage(ecosystemId), [ecosystemId]);
   const [selectedStichtag, setSelectedStichtag] = useState(availableStichtage[0] ?? null);
 
   useEffect(() => {
-    setSelectedStichtag(availableStichtage[0] ?? null);
+    setSelectedStichtag((current) => {
+      if (current && availableStichtage.includes(current)) {
+        return current;
+      }
+      return availableStichtage[0] ?? null;
+    });
   }, [ecosystemId, availableStichtage]);
 
   if (!ecosystem) {
@@ -242,19 +247,19 @@ function EcosystemDashboard() {
             authorship, temporal activity, and text-derived themes.
           </p>
         </div>
-        <div className="dashboard-toolbar__controls">
-          <label htmlFor="stichtag-select" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>
-            STICHTAG
-          </label>
-          <Dropdown
-            inputId="stichtag-select"
-            value={selectedStichtag}
-            options={stichtagOptions}
-            onChange={(event) => setSelectedStichtag(event.value)}
-            placeholder="Select snapshot date"
-            className="w-full"
-          />
-        </div>
+      </div>
+      <div className="dashboard-sticky-controls">
+        <label htmlFor="stichtag-select" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>
+          STICHTAG
+        </label>
+        <Dropdown
+          inputId="stichtag-select"
+          value={selectedStichtag}
+          options={stichtagOptions}
+          onChange={(event) => setSelectedStichtag(event.value)}
+          placeholder="Select snapshot date"
+          className="w-full"
+        />
       </div>
       <Card className="mb-4">
         <h2>{ecosystem.acronym} Relationship Network</h2>

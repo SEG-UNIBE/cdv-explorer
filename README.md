@@ -72,3 +72,24 @@ Adds metadata and insights about each proposal to the corresponding JSON file. F
 Once you downloaded ```main.py```, you can run ```npm install``` and then ```npm start```. It will start the react server, which you can look at in your browser through the IP ```http://localhost:3000/```.
 The landing page now begins with ecosystem selection, with Bitcoin as the currently available dashboard.
 Alternatively, a not yet final version of the app is hosted on Github under the the following: ```https://MohammadEglil.github.io/BIPng-Website-```. Just click on Home if the screen only shows the navigation. 
+
+## Deployment
+The React app does not need to be built locally for deployment. GitHub Actions can build and deploy it for you.
+
+The repository now includes a GitHub Pages workflow in `.github/workflows/deploy-react-pages.yml`. On every push to `main` or `master`, GitHub will:
+- install the frontend dependencies in `visualization/react-vis`
+- run `npm run build`
+- publish the generated site to GitHub Pages
+
+Recommended workflow:
+- test locally with `npm start`
+- optionally run `npm run build` locally as a sanity check
+- push to GitHub
+- let GitHub Actions build and deploy the site
+
+To enable deployment on GitHub:
+- open the repository settings
+- go to `Settings > Pages`
+- set the source to `GitHub Actions`
+
+Because the app uses static hosting, all data that should appear on the website must already be present in the repository, for example the generated `bips_json/<STICHTAG>/...` snapshot folders.

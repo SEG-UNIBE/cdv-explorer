@@ -12,7 +12,7 @@ import { Dropdown } from 'primereact/dropdown';
 import './App.scss';
 import * as d3 from 'd3';
 import { BipKpiOverview } from "./BipKpiOverview";
-import { BrowserRouter as Router, Routes, Route, useNavigate, useParams, Link } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, useNavigate, useParams, Link } from 'react-router-dom';
 import { ecosystems, ecosystemsById } from './ecosystems';
 import { getAvailableStichtage, getDatasetForSelection } from './data';
 

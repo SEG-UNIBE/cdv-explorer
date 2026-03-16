@@ -1,4 +1,4 @@
-import bitcoinLogo from './logo.png';
+import bitcoinLogo from './bitcoin-logo.png';
 import ethereumLogo from './ethereum-logo.svg';
 import torLogo from './tor-logo.svg';
 

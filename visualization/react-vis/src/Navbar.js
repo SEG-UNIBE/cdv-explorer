@@ -19,7 +19,7 @@ const Navbar = () => {
   return (
     <div className="nav-bar">
       <div className="nav-logo">
-        <Link to="/" className="nav-brand">Proposal Explorer</Link>
+        <Link to="/" className="nav-brand">CDV Explorer</Link>
       </div>
 
       <div className="nav-items">

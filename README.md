@@ -1,161 +1,158 @@
-# Proposal Network Graph <!-- omit from toc -->
+# CDV Explorer
 
-![thumb](./assets/t0004-bip-mining.png)
+## Overview
 
-## Table of Contents
-- [Documentation](#documentation)
-  - [Requirements](#requirements)
-  - [Main.py](#mainpy)
-  - [Download.py](#downloadpy)
-  - [preamble\_extraction.py](#preamble_extractionpy)
-  - [bip\_processor.py](#bip_processorpy)
-    - [Metadata](#metadata)
-    - [Insights](#insights)
-      - [Compliance Section](#compliance-section)
-      - [Word List Section](#word-list-section)
-  - [visualization/react-vis](#visualizationreact-vis)
+CDV Explorer is an ecosystem-agnostic proposal analysis pipeline.
 
+Bitcoin is the first implemented adapter, using the BIP repository as source.
+The same architecture is intended to support additional ecosystems later.
 
-## Introduction
+The project produces:
 
-This repository started with Bitcoin Improvement Proposals (BIPs) as its first implemented dataset, but the broader goal is an ecosystem-agnostic proposal-analysis pipeline.
-Bitcoin is currently the active adapter. Over time, the same repository should support additional ecosystems such as Ethereum EIPs or Tor proposals through the same extraction and visualization flow.
+- preprocessed proposal JSON snapshots by STICHTAG
+- analysis artifacts for dependencies, authorship, classification, and conformity
+- postprocessed React-ready datasets for the frontend and publication workflows
 
-Data is now organized under `ip_data/<ecosystem>/...` and analysis logic under the root `analysis/` module:
-- `analysis/authorship`
-- `analysis/conformity`
+## Repository Layout
+
+### Core scripts
+
+- `main.py`: runs the full pipeline for a selected STICHTAG
+- `download.py`: clones or updates the source repository and checks out a snapshot
+- `preamble_extraction.py`: extracts proposal preambles into JSON
+- `ip_processing.py`: enriches JSON with metadata and insights
+- `ecosystem_config.py`: active ecosystem configuration
+
+### Analysis module
+
 - `analysis/dependencies`
+- `analysis/authorship`
+- `analysis/classification`
+- `analysis/conformity`
+- `analysis/pipeline.py`: orchestrates analysis and postprocess exports
 
-# Documentation
+### Data outputs
+
+All outputs are written under:
+
+- `ip_data/<ecosystem>/01_harvest`
+- `ip_data/<ecosystem>/02_preprocess/<STICHTAG>`
+- `ip_data/<ecosystem>/03_analysis/<STICHTAG>/<submodule>`
+- `ip_data/<ecosystem>/04_postprocess/<STICHTAG>/react`
+
+### Frontend
+
+- `react/`: React app consuming snapshot and analysis outputs
 
 ## Requirements
-- Git: The script requires Git to clone and update the BIP repository.
 
-## Main.py
-Manages all the logic. Once you added the github token and OpenAI API Key, you can run ```main.py```. The active ecosystem is configured in `ecosystem_config.py`. It will
-- Clone the active proposal repository if it’s not already present or update it if it is.
-- Extract metadata from the Git history.
-- Extract the preamble from each proposal document.
-- Generate insights from the proposal contents.
-- Store all extracted data into JSON files.
+- Python 3.10+
+- Git
+- Node.js 20+ (for frontend)
+- npm
 
-## Download.py
-Clones the active proposal repository as *.md or *.mediawiki files and also downloads all associated files.
-For the current Bitcoin adapter, all files are saved into __ip_data/bitcoin/cloned__.
+Optional:
 
-## preamble_extraction.py
-The <code>< pre>...< /pre></code> block gets extracted out of every .md/.mediawiki file inside the active clone folder.
-It differentiates between the required fields and the optional fields.
-If you have multi-line fields as they often appear in 'author' and 'licences', it adds a list to the corresponding key.
-The extracted information inside the preamble gets placed in the __preamble__ section inside the JSON file.
-For the current Bitcoin adapter, all JSON files get saved in __ip_data/bitcoin/json__.
+- OpenAI API key (`OPENAI_API_KEY` or `apikey.secret`) for LLM dependency extraction
 
-## bip_processor.py
-Adds metadata and insights about each proposal to the corresponding JSON file. For the metadata, it adds
-### Metadata
-- **`last_commit`**: The date of the most recent commit for the proposal file (ISO 8601 format).
-- **`total_commits`**: The total number of commits made to the proposal file.
-- **`metadata_last_updated`**: The timestamp (ISO 8601 format) indicating when the metadata was last updated.
-- **`git_history`**: A list of tuples containing the Git commit hash, date, and author for each commit in the proposal's history.
-- **`contributors`**: The total number of unique contributors to the proposal file.
-- **`google_trend_index`**: Placeholder for storing Google Trends data (not implemented yet).
-### Insights
-#### Compliance Section
-- **`title_length_respected`**: Indicates whether the proposal title length adheres to the active rule set (`true`/`false`).
-- **`title_length`**: The actual length of the proposal title in characters.
-- **`abstract_length_respected`**: Indicates whether the word count of the "Abstract" section is within the limit of 200 words (`true`/`false`).
-- **`abstract_word_count`**: The total word count of the "Abstract" section.
-- **`created_date_format_correct`**: Indicates whether the `created` field in the preamble follows the ISO 8601 date format (`true`/`false`).
-- **`required_fields_present`**: Indicates whether all required fields in the preamble are present and non-null (`true`/`false`).
-- **`missing_fields`**: A list of required fields that are missing or null.
-- **`layer_valid`**: Indicates whether the `layer` field in the preamble contains a valid value (`true`/`false`).
+## Pipeline Usage
 
-#### Word List Section
-- **`word_list`**: A dictionary of words extracted from the raw content of the proposal file (excluding stop words). Each word is a key, and its frequency is the value, sorted in descending order of frequency.
+Run the full pipeline for a specific STICHTAG:
 
-## visualization/react-vis
-Once you downloaded ```main.py```, you can run ```npm install``` and then ```npm start```. It will start the react server, which you can look at in your browser through the IP ```http://localhost:3000/```.
-The landing page now begins with ecosystem selection, with Bitcoin as the currently available dashboard.
-Alternatively, a not yet final version of the app is hosted on Github under the the following: ```https://MohammadEglil.github.io/BIPng-Website-```. Just click on Home if the screen only shows the navigation. 
+```bash
+python main.py --stichtag 2025-12-31
+```
 
-## Deployment
-The React app does not need to be built locally for deployment. GitHub Actions can build and deploy it for you.
+What this does:
 
-The repository now includes a GitHub Pages workflow in `.github/workflows/deploy-react-pages.yml`. On every push to `main` or `master`, GitHub will:
-- install the frontend dependencies in `visualization/react-vis`
-- run `npm run build`
-- publish the generated site to GitHub Pages
+1. prepares Python dependencies
+2. fetches the source proposal repository at the snapshot date
+3. extracts preamble data to preprocess JSON
+4. enriches metadata and insights
+5. builds analysis artifacts in `03_analysis`
+6. builds React-ready exports in `04_postprocess`
 
-Recommended workflow:
-- test locally with `npm start`
-- optionally run `npm run build` locally as a sanity check
-- push to GitHub
-- let GitHub Actions build and deploy the site
+## Analysis Submodule Commands
 
-To enable deployment on GitHub:
-- open the repository settings
-- go to `Settings > Pages`
-- set the source to `GitHub Actions`
+You can run submodules directly if needed.
 
-Because the app uses static hosting, all data that should appear on the website must already be present in the repository, for example the generated `ip_data/<ecosystem>/...` snapshot artifacts.
+Build dependency network artifacts:
 
-## Research Question Pipelines (Notebook-Free)
-The repository now includes a script-based preprocessing path for network artifacts, so you do not need notebooks to prepare shared RQ data.
+```bash
+python -m analysis.dependencies.build_snapshot --stichtag 2025-12-31
+```
 
-Main pipeline output is now ecosystem-scoped under `ip_data/<ecosystem>/artifacts/`:
-- `dependencies/network_data_<STICHTAG>.json|.pkl`
-- `authorship/authorship_<STICHTAG>.json`
-- `conformity/conformity_<STICHTAG>.json`
+Generate dependency plots:
 
-### Build Snapshot Artifacts
-Run this to build both JSON and PKL for a specific STICHTAG snapshot:
+```bash
+python -m analysis.dependencies.plotting --stichtag 2025-12-31
+```
 
-`python Research_questions/build_network_data.py --stichtag 2025-12-31`
+Prepare authorship payload:
 
-Outputs:
-- `ip_data/bitcoin/artifacts/dependencies/network_data_2025-12-31.json`
-- `ip_data/bitcoin/artifacts/dependencies/network_data_2025-12-31.pkl`
+```bash
+python -m analysis.authorship.prepare --stichtag 2025-12-31
+```
 
-Notes:
-- JSON artifact is suitable for React/web visualizations.
-- PKL artifact is convenient for Python plotting scripts.
-- If `--stichtag` is omitted, the script reads from the active ecosystem JSON root and writes `network_data_latest.*`.
+Prepare classification payload:
 
-### Run RQ3 Plots Against a Snapshot
-`python Research_questions/RQ3/RQ3_graphplots.py --stichtag 2025-12-31`
+```bash
+python -m analysis.classification.prepare --stichtag 2025-12-31
+```
 
-Load order in RQ3 is now:
-1. `ip_data/<ecosystem>/artifacts/dependencies/network_data_<STICHTAG>.pkl` (if provided)
-2. `ip_data/<ecosystem>/artifacts/dependencies/network_data_latest.pkl`
-3. legacy fallbacks (`Research_questions/network_data.pkl`, repo-root `network_data.pkl`)
+## React App
 
-### Prepare RQ1 Data (Notebook-Free)
-`python Research_questions/RQ1/rq1_prepare.py --stichtag 2025-12-31`
+Install dependencies:
 
-Output:
-- `Research_questions/artifacts/rq1/rq1_2025-12-31.json`
+```bash
+cd react
+npm install
+```
 
-Contains reusable datasets for:
-- top authors
-- BIPs per year
-- author contribution histogram
-- top-10 author share
-- collaboration network (nodes + weighted edges)
+Start dev server:
 
-### Prepare RQ2 Data (Notebook-Free)
-`python Research_questions/RQ2/rq2_prepare.py --stichtag 2025-12-31`
+```bash
+npm start
+```
 
-Output:
-- `Research_questions/artifacts/rq2/rq2_2025-12-31.json`
+Create production build:
 
-Contains reusable datasets for:
-- full sankey links (Layer → Status → Type)
-- grouped-status sankey links
-- status distribution by layer
-- status-over-time summary
+```bash
+npm run build
+```
 
-### Suggested Workflow
-1. Run `main.py` with your chosen `STICHTAG`.
-2. Commit the generated ecosystem outputs under `ip_data/<ecosystem>/json/<STICHTAG>/` and `ip_data/<ecosystem>/artifacts/...`.
-3. Run `rq1_prepare.py`, `rq2_prepare.py`, and RQ3 plotting with the same `--stichtag` if you need RQ-specific outputs.
-4. Use JSON artifacts for React visualizations and Python/PDF pipelines for publication figures.
+The app supports snapshot selection by STICHTAG and consumes generated
+analysis artifacts for:
+
+- dependency network
+- authorship
+- classification
+- conformity
+
+## GitHub Pages Deployment
+
+Deployment is configured in:
+
+- `.github/workflows/deploy-react-pages.yml`
+
+On push to `main` or `master`, GitHub Actions:
+
+1. installs dependencies in `react/`
+2. builds the app
+3. publishes to GitHub Pages
+
+Workflow trigger paths include:
+
+- `react/**`
+- `ip_data/**/01_harvest/**`
+- `ip_data/**/02_preprocess/**`
+- `ip_data/**/03_analysis/**`
+- `ip_data/**/04_postprocess/**`
+
+To enable Pages:
+
+1. open repository settings
+2. go to `Settings > Pages`
+3. set source to `GitHub Actions`
+
+

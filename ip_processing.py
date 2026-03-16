@@ -96,29 +96,52 @@ def create_reference_list(raw_content: str, proposal_label: str = PROPOSAL_LABEL
 
     return sorted(set(f"{proposal_label} {int(num)}" for num in proposal_references))
 
-def llm_bip_dependencies(text, current_bip_number=None, proposal_label: str = PROPOSAL_LABEL):
+
+def create_explicit_dependency_list(
+    preamble: Dict[str, any],
+    proposal_label: str = PROPOSAL_LABEL,
+) -> List[str]:
+    dependency_fields = ["requires", "replaces", "superseded_by"]
+    label = re.escape(proposal_label)
+    id_pattern = re.compile(rf"(?i)(?:{label}[-\s]*)?(\d+)")
+    dependency_ids = set()
+
+    for field in dependency_fields:
+        value = preamble.get(field)
+        if not value:
+            continue
+
+        raw_items = value if isinstance(value, list) else str(value).split(",")
+        for item in raw_items:
+            for proposal_id in id_pattern.findall(str(item)):
+                dependency_ids.add(f"{proposal_label} {int(proposal_id)}")
+
+    return sorted(dependency_ids)
+
+
+def llm_extract_implicit_dependencies(text, current_bip_number=None, proposal_label: str = PROPOSAL_LABEL):
 
     prompt = f"""
 You are analyzing the text of {PROPOSAL_SINGULAR} ({proposal_label}){f" {current_bip_number}" if current_bip_number else ""}.
 
-The goal is to identify any dependencies to other {proposal_label}s
+The goal is to identify implicit dependencies to other {proposal_label}s from the prose.
 
 Example 1:
 Text: This proposal proposes a change to the key format. It depends on {proposal_label} 32 and {proposal_label} 39.
-Dependencies: ["{proposal_label} 32", "{proposal_label} 39"]
+Implicit dependencies: ["{proposal_label} 32", "{proposal_label} 39"]
 
 Example 2:
 Text: This proposal builds upon {proposal_label}-0016 for partially signed transactions.
-Dependencies: ["{proposal_label} 16"]
+Implicit dependencies: ["{proposal_label} 16"]
 
 Example 3:
 Text: This proposal does not depend on any other {proposal_label}s.
-Dependencies: []
+Implicit dependencies: []
 
-Respond with a plain JSON array of proposal numbers that this proposal depends on. For example:
+Respond with a plain JSON array of proposal numbers that this proposal implicitly depends on. For example:
 ["{proposal_label} 32","{proposal_label} 327","{proposal_label} 328","{proposal_label} 380"]
 
-If there are no dependencies, return an empty list.
+If there are no implicit dependencies, return an empty list.
 
 No text, no explanation, no formatting. Only the JSON list.
 
@@ -165,24 +188,27 @@ def update_insights(
 ):
     """Generate insights for a BIP file."""
     raw_content = load_bip_content(bip_file_path)
+    preamble = json_data.get("raw", {}).get("preamble", {})
     json_data.setdefault("insights", {})
     # Generate insights
     json_data["insights"]["word_list"] = create_word_list(raw_content)
     references = create_reference_list(raw_content, proposal_label=proposal_label)
-    json_data["insights"]["references"] = references
-    json_data["insights"]["bip_references"] = references
-    json_data["insights"]["dependencies"] = llm_bip_dependencies(
+    json_data["insights"]["implicit_dependencies"] = llm_extract_implicit_dependencies(
         raw_content,
         str(int(json_data["raw"]["preamble"][id_field])),
         proposal_label=proposal_label,
     )
+    explicit_dependencies = create_explicit_dependency_list(preamble, proposal_label=proposal_label)
 
     bip_number = str(int(json_data["raw"]["preamble"][id_field]))
     filtered_references = [
         bip for bip in references if bip != f"{proposal_label} {bip_number}"
     ]
-    json_data["insights"]["references"] = filtered_references
-    json_data["insights"]["bip_references"] = filtered_references
+    filtered_explicit_dependencies = [
+        bip for bip in explicit_dependencies if bip != f"{proposal_label} {bip_number}"
+    ]
+    json_data["insights"]["explicit_references"] = filtered_references
+    json_data["insights"]["explicit_dependencies"] = filtered_explicit_dependencies
 
 def process_ip_files(
     input_dir: Path,
@@ -216,5 +242,3 @@ def process_ip_files(
         print(f"Processed {json_file.name}")
 
 
-# Backward-compatible alias for older call sites.
-process_bip_files = process_ip_files

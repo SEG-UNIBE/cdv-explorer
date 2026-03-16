@@ -5,13 +5,28 @@ const EMPTY_DATASET = {
   stichtag: null,
   nodes: [],
   links: {
-    references: [],
-    dependencies: [],
+    explicit_references: [],
+    explicit_dependencies: {
+      requires: [],
+      replaces: [],
+      superseded_by: [],
+    },
     requires: [],
     replaces: [],
-    superseded_by: []
+    superseded_by: [],
+    implicit_dependencies: []
   },
-  network: { nodes: [], links: { references: [], dependencies: [], requires: [], replaces: [], superseded_by: [] } },
+  network: {
+    nodes: [],
+    links: {
+      explicit_references: [],
+      explicit_dependencies: [],
+      requires: [],
+      replaces: [],
+      superseded_by: [],
+      implicit_dependencies: [],
+    },
+  },
   authorship: { meta: {}, top_authors: [], bips_per_year: [], top_10_share: {} },
   classification: { meta: {}, sankey_grouped: { links: [] }, status_distribution_by_layer: {}, status_over_time: {} },
   conformity: { overall_average_score: null, score_distribution: [], average_score_by_status: {} }
@@ -24,24 +39,50 @@ function extractStichtag(filename) {
 }
 
 function countAllLinks(linksByType) {
-  return Object.values(linksByType || {}).reduce((sum, items) => sum + (items?.length || 0), 0);
+  const links = linksByType || {};
+  const explicit = links.explicit_dependencies || {};
+  return (
+    (links.explicit_references?.length || 0)
+    + (links.implicit_dependencies?.length || 0)
+    + (explicit.requires?.length || links.requires?.length || 0)
+    + (explicit.replaces?.length || links.replaces?.length || 0)
+    + (explicit.superseded_by?.length || links.superseded_by?.length || 0)
+  );
+}
+
+function normalizeLinks(rawLinks) {
+  const links = rawLinks || {};
+  const explicitDependencies = links.explicit_dependencies || {};
+  const requires = explicitDependencies.requires || links.requires || [];
+  const replaces = explicitDependencies.replaces || links.replaces || [];
+  const supersededBy = explicitDependencies.superseded_by || links.superseded_by || [];
+
+  return {
+    explicit_references: links.explicit_references || [],
+    explicit_dependencies: {
+      requires,
+      replaces,
+      superseded_by: supersededBy,
+    },
+    requires,
+    replaces,
+    superseded_by: supersededBy,
+    implicit_dependencies: links.implicit_dependencies || [],
+  };
 }
 
 function ensureSnapshotShape(stichtag, snapshot) {
   const network = snapshot.network || EMPTY_DATASET.network;
-  const links = network.links || EMPTY_DATASET.links;
+  const links = normalizeLinks(network.links || EMPTY_DATASET.links);
 
   return {
     stichtag,
     nodes: network.nodes || [],
-    links: {
-      references: links.references || [],
-      dependencies: links.dependencies || [],
-      requires: links.requires || [],
-      replaces: links.replaces || [],
-      superseded_by: links.superseded_by || [],
+    links,
+    network: {
+      ...network,
+      links,
     },
-    network,
     authorship: snapshot.authorship || EMPTY_DATASET.authorship,
     classification: snapshot.classification || EMPTY_DATASET.classification,
     conformity: snapshot.conformity || EMPTY_DATASET.conformity,

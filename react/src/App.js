@@ -16,6 +16,17 @@ import { HashRouter as Router, Routes, Route, useNavigate, useParams, Link } fro
 import { ecosystems, ecosystemsById } from './ecosystems';
 import { getAvailableStichtage, getDatasetForSelection } from './data';
 
+function countDisplayedEdges(links) {
+  const byType = links || {};
+  return (
+    (byType.explicit_references?.length || 0)
+    + (byType.requires?.length || 0)
+    + (byType.replaces?.length || 0)
+    + (byType.superseded_by?.length || 0)
+    + (byType.implicit_dependencies?.length || 0)
+  );
+}
+
 function buildDashboardData(dataset) {
   const authorship = dataset.authorship || {};
   const classification = dataset.classification || {};
@@ -240,20 +251,21 @@ function EcosystemDashboard() {
         </div>
       </div>
       <Card className="mb-4">
-        <h2>{ecosystem.acronym} Dependency Network</h2>
-        <p>This graph visualizes dependencies and relationships between proposals in the selected ecosystem.</p>
+        <h2>{ecosystem.acronym} Relationship Network</h2>
+        <p>
+          This graph visualizes three relationship-extraction approaches in the selected ecosystem:
+          explicit dependencies (preamble), explicit references (regex), and implicit dependencies (LLM).
+        </p>
         <NetworkDiagram data={selectedDataset} width={700} height={500} />
       </Card>
       <Card className="mb-4">
         <h2>Analysis Submodule Summary</h2>
         <div className="analysis-grid">
           <div className="analysis-stat">
-            <h3>Dependencies</h3>
+            <h3>Relationship Network</h3>
             <p><strong>Nodes:</strong> {selectedDataset.meta?.node_count ?? selectedDataset.nodes.length}</p>
             <p>
-              <strong>Edges:</strong> {
-                Object.values(selectedDataset.links || {}).reduce((sum, items) => sum + (items?.length || 0), 0)
-              }
+              <strong>Edges:</strong> {countDisplayedEdges(selectedDataset.links)}
             </p>
           </div>
           <div className="analysis-stat">

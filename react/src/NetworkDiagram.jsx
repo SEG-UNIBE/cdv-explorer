@@ -7,7 +7,7 @@ export const NetworkDiagram = ({ width, height, data }) => {
   const ref = useRef();
   const legendRef = useRef();
   const [colorBy, setColorBy] = useState("group");
-  const [linkType, setLinkType] = useState("references");
+  const [linkType, setLinkType] = useState("explicit_references");
 
   const nodes = data.nodes;
   const links = data.links[linkType];
@@ -264,11 +264,11 @@ entries = entries.slice(1); // remove the first item
           inputId="linkType"
           value={linkType}
           options={[
-            { label: 'Regex Interrelations', value: 'references' },
-            { label: 'LLM Interrelations', value: 'dependencies' },
-            { label: 'Preamble Requires', value: 'requires' },
-            { label: 'Preamble Replaces', value: 'replaces' },
-            { label: 'Preamble Superseded By', value: 'superseded_by' }
+            { label: 'Explicit References (Regex)', value: 'explicit_references' },
+            { label: 'Requires (Preamble)', value: 'requires' },
+            { label: 'Replaces (Preamble)', value: 'replaces' },
+            { label: 'Superseded By (Preamble)', value: 'superseded_by' },
+            { label: 'Implicit Dependencies (LLM)', value: 'implicit_dependencies' }
           ]}
           onChange={(e) => setLinkType(e.value)}
           placeholder="Link Type"

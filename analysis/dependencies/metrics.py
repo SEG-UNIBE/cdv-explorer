@@ -3,7 +3,29 @@ from typing import Any, Dict, Iterable, List
 import networkx as nx
 
 
-def build_graph(network_data: Dict[str, Any], link_type: str = "references") -> nx.DiGraph:
+def _links_for_type(network_data: Dict[str, Any], link_type: str) -> List[Dict[str, Any]]:
+    links = network_data.get("links", {})
+    explicit = links.get("explicit_dependencies", {})
+
+    if link_type in {"requires", "replaces", "superseded_by"}:
+        return explicit.get(link_type, [])
+
+    if link_type == "explicit_dependencies":
+        seen = set()
+        merged: List[Dict[str, Any]] = []
+        for subtype in ("requires", "replaces", "superseded_by"):
+            for link in explicit.get(subtype, []):
+                key = (str(link.get("source")), str(link.get("target")))
+                if key in seen:
+                    continue
+                seen.add(key)
+                merged.append(link)
+        return merged
+
+    return links.get(link_type, [])
+
+
+def build_graph(network_data: Dict[str, Any], link_type: str = "explicit_references") -> nx.DiGraph:
     graph = nx.DiGraph()
 
     for node in network_data.get("nodes", []):
@@ -13,7 +35,7 @@ def build_graph(network_data: Dict[str, Any], link_type: str = "references") -> 
             compliance_score=node.get("compliance_score", 0),
         )
 
-    for link in network_data.get("links", {}).get(link_type, []):
+    for link in _links_for_type(network_data, link_type):
         graph.add_edge(str(link["source"]), str(link["target"]))
 
     return graph
@@ -46,6 +68,6 @@ def compute_graph_depth(graph: nx.DiGraph) -> int:
     return longest_path_length
 
 
-def find_circular_dependencies(network_data: Dict[str, Any], link_type: str = "references") -> List[List[str]]:
+def find_circular_dependencies(network_data: Dict[str, Any], link_type: str = "explicit_references") -> List[List[str]]:
     graph = build_graph(network_data, link_type=link_type)
     return [list(cycle) for cycle in nx.simple_cycles(graph)]

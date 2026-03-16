@@ -23,6 +23,35 @@ except ImportError:
     print("PyGraphviz not found. Graphviz layouts (dot, neato, fdp) will be skipped.")
 
 
+def get_links_by_type(network_links, link_type):
+    explicit = network_links.get("explicit_dependencies", {})
+    if link_type in {"requires", "replaces", "superseded_by"}:
+        return explicit.get(link_type, [])
+    if link_type == "explicit_dependencies":
+        seen = set()
+        merged = []
+        for subtype in ("requires", "replaces", "superseded_by"):
+            for link in explicit.get(subtype, []):
+                key = (link.get("source"), link.get("target"))
+                if key in seen:
+                    continue
+                seen.add(key)
+                merged.append(link)
+        return merged
+    return network_links.get(link_type, [])
+
+
+def iter_all_links(network_links):
+    for link_type, links in network_links.items():
+        if link_type == "explicit_dependencies" and isinstance(links, dict):
+            for subtype_links in links.values():
+                for link in subtype_links:
+                    yield link
+            continue
+        for link in links:
+            yield link
+
+
 def resolve_near_overlaps(pos, threshold=0.02, max_iterations=10):
     def pair_seed(a, b):
         key = f"{min(a, b)}-{max(a, b)}"
@@ -75,21 +104,21 @@ def draw_static_network_with_layouts(
     output_dir.mkdir(parents=True, exist_ok=True)
 
     if link_type is None:
-        link_type = ["references"]
+        link_type = ["explicit_references"]
 
     if edge_type_styles is None:
         edge_type_styles = {
-            "dependencies": {
+            "implicit_dependencies": {
                 "color": "gray",
                 "style": "solid",
                 "alpha": 0.6,
-                "label": "LLM-detected reference",
+                "label": "implicit dependencies (LLM)",
             },
-            "references": {
+            "explicit_references": {
                 "color": "black",
                 "style": "dashed",
                 "alpha": 0.6,
-                "label": "regex reference",
+                "label": "explicit references (regex)",
             },
             "requires": {"color": "red", "style": "solid", "alpha": 1.0, "label": "requires"},
             "replaces": {"color": "blue", "style": "solid", "alpha": 1.0, "label": "replaces"},
@@ -97,7 +126,7 @@ def draw_static_network_with_layouts(
                 "color": "green",
                 "style": "solid",
                 "alpha": 1.0,
-                "label": "superseded",
+                "label": "superseded by",
             },
         }
 
@@ -105,14 +134,13 @@ def draw_static_network_with_layouts(
     if bips_to_show is not None:
         core_bips_set = set(bips_to_show)
         nodes_to_display_set = set(core_bips_set)
-        for current_link_type_key in network_data["links"]:
-            for link_data in network_data["links"][current_link_type_key]:
-                source_id = int(link_data["source"])
-                target_id = int(link_data["target"])
-                if source_id in core_bips_set:
-                    nodes_to_display_set.add(target_id)
-                if target_id in core_bips_set:
-                    nodes_to_display_set.add(source_id)
+        for link_data in iter_all_links(network_data["links"]):
+            source_id = int(link_data["source"])
+            target_id = int(link_data["target"])
+            if source_id in core_bips_set:
+                nodes_to_display_set.add(target_id)
+            if target_id in core_bips_set:
+                nodes_to_display_set.add(source_id)
 
     if bips_to_exclude is not None and nodes_to_display_set is not None:
         nodes_to_display_set = nodes_to_display_set - set(bips_to_exclude)
@@ -132,7 +160,7 @@ def draw_static_network_with_layouts(
 
     edges_by_type = {lt: [] for lt in link_type}
     for lt in link_type:
-        for link_data in network_data["links"].get(lt, []):
+        for link_data in get_links_by_type(network_data["links"], lt):
             source_id = int(link_data["source"])
             target_id = int(link_data["target"])
             if graph.has_node(source_id) and graph.has_node(target_id):
@@ -329,7 +357,7 @@ def main() -> None:
         or f"{ACTIVE_ECOSYSTEM['postprocess']}/{snapshot_label}/dependencies/plots"
     )
 
-    data = load_network_data(stichtag=args.stichtag, prefer_json=True)
+    data = load_network_data(stichtag=args.stichtag)
 
     my_bips_of_interest = [
         9,
@@ -439,60 +467,109 @@ def main() -> None:
     ]
 
     edge_type_styles = {
-        "references": {"color": "outgoing-color", "style": "dashed", "alpha": 0.8, "label": "regex reference"},
-        "requires": {"color": "red", "style": "solid", "alpha": 0.0, "label": "requires"},
-        "replaces": {"color": "blue", "style": "solid", "alpha": 0.0, "label": "replaces"},
-        "superseded_by": {"color": "green", "style": "solid", "alpha": 0.0, "label": "superseded"},
+        "explicit_references": {
+            "color": "outgoing-color",
+            "style": "dashed",
+            "alpha": 0.8,
+            "label": "explicit references (regex)",
+        },
+        "requires": {
+            "color": "red",
+            "style": "solid",
+            "alpha": 0.0,
+            "label": "requires",
+        },
+        "replaces": {
+            "color": "blue",
+            "style": "solid",
+            "alpha": 0.0,
+            "label": "replaces",
+        },
+        "superseded_by": {
+            "color": "green",
+            "style": "solid",
+            "alpha": 0.0,
+            "label": "superseded by",
+        },
     }
 
     draw_static_network_with_layouts(
         data,
         output_dir=output_dir,
-        link_type=["references", "requires", "replaces", "superseded_by"],
+        link_type=["explicit_references", "requires", "replaces", "superseded_by"],
         color_by="group",
         bips_to_show=my_bips_of_interest,
         bips_to_exclude=my_bips_to_exclude,
-        full_title="Selected BIPs with Implicit Interdependencies found through regex search",
+        full_title="Selected proposals with explicit references (regex extraction)",
         edge_type_styles=edge_type_styles,
     )
 
     edge_type_styles = {
-        "references": {"color": "black", "style": "solid", "alpha": 0.0, "label": "regex reference"},
-        "requires": {"color": "red", "style": "solid", "alpha": 1.0},
-        "replaces": {"color": "blue", "style": "solid", "alpha": 1.0},
-        "superseded_by": {"color": "green", "style": "solid", "alpha": 1.0, "label": "superseded"},
+        "explicit_references": {
+            "color": "black",
+            "style": "solid",
+            "alpha": 0.0,
+            "label": "explicit references (regex)",
+        },
+        "requires": {
+            "color": "red",
+            "style": "solid",
+            "alpha": 1.0,
+            "label": "requires",
+        },
+        "replaces": {
+            "color": "blue",
+            "style": "solid",
+            "alpha": 1.0,
+            "label": "replaces",
+        },
+        "superseded_by": {
+            "color": "green",
+            "style": "solid",
+            "alpha": 1.0,
+            "label": "superseded by",
+        },
     }
 
     draw_static_network_with_layouts(
         data,
         output_dir=output_dir,
-        link_type=["requires", "replaces", "superseded_by", "references"],
+        link_type=["requires", "replaces", "superseded_by", "explicit_references"],
         color_by="group",
         bips_to_show=my_bips_of_interest,
         bips_to_exclude=my_bips_to_exclude,
-        full_title="Selected BIPs with Explicit Interdependencies according to Preamble",
+        full_title="Selected proposals with explicit dependencies (preamble fields)",
+        edge_type_styles=edge_type_styles,
+    )
+
+    edge_type_styles = {
+        "implicit_dependencies": {
+            "color": "gray",
+            "style": "solid",
+            "alpha": 1.0,
+            "label": "implicit dependencies (LLM)",
+        }
+    }
+
+    draw_static_network_with_layouts(
+        data,
+        output_dir=output_dir,
+        link_type=["implicit_dependencies"],
+        color_by="group",
+        bips_to_show=None,
+        bips_to_exclude=None,
+        full_title="Selected proposals with implicit dependencies (LLM extraction)",
         edge_type_styles=edge_type_styles,
     )
 
     draw_static_network_with_layouts(
         data,
         output_dir=output_dir,
-        link_type=["references"],
+        link_type=["explicit_references", "requires", "replaces", "superseded_by", "implicit_dependencies"],
         color_by="group",
         bips_to_show=None,
         bips_to_exclude=None,
-        full_title="Selected BIPs with Implicit Interdependencies found through regex search",
-        edge_type_styles=None,
-    )
-
-    draw_static_network_with_layouts(
-        data,
-        output_dir=output_dir,
-        link_type=["references", "requires", "replaces", "superseded_by"],
-        color_by="group",
-        bips_to_show=None,
-        bips_to_exclude=None,
-        full_title="Selected BIPs with Explicit Interdependencies according to Preamble",
+        full_title="Selected proposals: explicit references, explicit dependencies, and implicit dependencies",
         edge_type_styles=None,
     )
 

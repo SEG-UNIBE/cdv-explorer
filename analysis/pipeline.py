@@ -80,6 +80,19 @@ def _save_react_ready_exports(
 
     flat_edges: List[Dict[str, Any]] = []
     for link_type, links in network_data.get("links", {}).items():
+        if link_type == "explicit_dependencies" and isinstance(links, dict):
+            for subtype, subtype_links in links.items():
+                for link in subtype_links:
+                    flat_edges.append(
+                        {
+                            "edge_type": subtype,
+                            "source": link.get("source"),
+                            "target": link.get("target"),
+                            "value": link.get("value", 1),
+                        }
+                    )
+            continue
+
         for link in links:
             flat_edges.append(
                 {

@@ -26,7 +26,7 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    data = load_network_data(stichtag=args.stichtag, prefer_json=True)
+    data = load_network_data(stichtag=args.stichtag)
     payload = prepare_classification_payload(data)
 
     snapshot_label = args.stichtag or "latest"

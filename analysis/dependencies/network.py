@@ -5,6 +5,25 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, List
 
 
+def _aggregate_explicit_dependencies(explicit_dependencies: Dict[str, List[Dict[str, Any]]]) -> List[Dict[str, Any]]:
+    seen = set()
+    aggregated: List[Dict[str, Any]] = []
+    for subtype_links in explicit_dependencies.values():
+        for link in subtype_links:
+            key = (str(link.get("source")), str(link.get("target")))
+            if key in seen:
+                continue
+            seen.add(key)
+            aggregated.append(
+                {
+                    "source": str(link.get("source")),
+                    "target": str(link.get("target")),
+                    "value": link.get("value", 1),
+                }
+            )
+    return aggregated
+
+
 def normalize_proposal_ids(field: Any, proposal_label: str = "IP") -> List[str]:
     if not field:
         return []
@@ -43,8 +62,8 @@ def build_network_data(
     proposal_label: str = "IP",
 ) -> Dict[str, Any]:
     nodes = []
-    reference_links = []
-    dependency_links = []
+    explicit_reference_links = []
+    implicit_dependency_links = []
     requires_links = []
     replaces_links = []
     superseded_by_links = []
@@ -92,18 +111,15 @@ def build_network_data(
         if proposal_id not in node_ids:
             continue
 
-        references_field = insights.get(
-            "references",
-            insights.get("proposal_references", insights.get("bip_references")),
-        )
+        references_field = insights.get("explicit_references")
 
         for ref_id in normalize_proposal_ids(references_field, proposal_label=proposal_label):
             if ref_id in node_ids:
-                reference_links.append({"source": proposal_id, "target": ref_id, "value": 1})
+                explicit_reference_links.append({"source": proposal_id, "target": ref_id, "value": 1})
 
-        for dep_id in normalize_proposal_ids(insights.get("dependencies"), proposal_label=proposal_label):
+        for dep_id in normalize_proposal_ids(insights.get("implicit_dependencies"), proposal_label=proposal_label):
             if dep_id in node_ids:
-                dependency_links.append({"source": proposal_id, "target": dep_id, "value": 1})
+                implicit_dependency_links.append({"source": proposal_id, "target": dep_id, "value": 1})
 
         for req_id in normalize_proposal_ids(preamble.get("requires"), proposal_label=proposal_label):
             if req_id in node_ids:
@@ -117,14 +133,18 @@ def build_network_data(
             if sup_id in node_ids:
                 superseded_by_links.append({"source": proposal_id, "target": sup_id, "value": 1})
 
+    explicit_dependency_links = {
+        "requires": requires_links,
+        "replaces": replaces_links,
+        "superseded_by": superseded_by_links,
+    }
+
     return {
         "nodes": nodes,
         "links": {
-            "references": reference_links,
-            "dependencies": dependency_links,
-            "requires": requires_links,
-            "replaces": replaces_links,
-            "superseded_by": superseded_by_links,
+            "explicit_references": explicit_reference_links,
+            "explicit_dependencies": explicit_dependency_links,
+            "implicit_dependencies": implicit_dependency_links,
         },
     }
 
@@ -148,7 +168,32 @@ def save_network_data_artifacts(network_data: Dict[str, Any], output_stem: Path)
                 row["author"] = " | ".join(str(a) for a in row["author"])
             writer.writerow(row)
 
-    for link_type, links in network_data.get("links", {}).items():
+    links_by_type = network_data.get("links", {})
+    for link_type, links in links_by_type.items():
+        if link_type == "explicit_dependencies" and isinstance(links, dict):
+            aggregate_links = _aggregate_explicit_dependencies(links)
+            aggregate_path = output_stem.parent / f"{output_stem.name}_{link_type}_edges.csv"
+            with aggregate_path.open("w", encoding="utf-8", newline="") as handle:
+                writer = csv.DictWriter(handle, fieldnames=["source", "target", "value"])
+                writer.writeheader()
+                for link in aggregate_links:
+                    writer.writerow(link)
+
+            for subtype, subtype_links in links.items():
+                links_csv_path = output_stem.parent / f"{output_stem.name}_{link_type}_{subtype}_edges.csv"
+                with links_csv_path.open("w", encoding="utf-8", newline="") as handle:
+                    writer = csv.DictWriter(handle, fieldnames=["source", "target", "value"])
+                    writer.writeheader()
+                    for link in subtype_links:
+                        writer.writerow(
+                            {
+                                "source": link.get("source"),
+                                "target": link.get("target"),
+                                "value": link.get("value", 1),
+                            }
+                        )
+            continue
+
         links_csv_path = output_stem.parent / f"{output_stem.name}_{link_type}_edges.csv"
         with links_csv_path.open("w", encoding="utf-8", newline="") as handle:
             writer = csv.DictWriter(handle, fieldnames=["source", "target", "value"])

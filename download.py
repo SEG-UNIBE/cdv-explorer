@@ -127,9 +127,3 @@ def download_ips(stichtag: str, local_dir: Path | None = None):
     checkout_stichtag(local_dir, stichtag)
     process_proposals(local_dir)
     return local_dir
-
-
-# Backward-compatible aliases for callers that still use legacy names.
-process_bip_directory = process_proposal_directory
-process_bips = process_proposals
-download_bips = download_ips

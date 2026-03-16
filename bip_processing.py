@@ -4,6 +4,7 @@ import re
 import subprocess
 from collections import Counter
 from datetime import datetime
+from json import JSONDecodeError
 from pathlib import Path
 from typing import Dict, List, Tuple
 
@@ -90,10 +91,10 @@ def create_word_list(raw_content: str) -> Dict[str, int]:
     return dict(Counter(filtered_words).most_common())
 
 
-def create_bip_list(raw_content: str, proposal_label: str = PROPOSAL_LABEL) -> List[str]:
-    bip_references = re.findall(REFERENCE_PATTERN, raw_content)
+def create_reference_list(raw_content: str, proposal_label: str = PROPOSAL_LABEL) -> List[str]:
+    proposal_references = re.findall(REFERENCE_PATTERN, raw_content)
 
-    return sorted(set(f"{proposal_label} {int(num)}" for num in bip_references))
+    return sorted(set(f"{proposal_label} {int(num)}" for num in proposal_references))
 
 def llm_bip_dependencies(text, current_bip_number=None, proposal_label: str = PROPOSAL_LABEL):
 
@@ -121,7 +122,7 @@ If there are no dependencies, return an empty list.
 
 No text, no explanation, no formatting. Only the JSON list.
 
-Here is the BIP text:
+Here is the proposal text:
 
 \"\"\"{text}\"\"\"
 """
@@ -136,7 +137,7 @@ Here is the BIP text:
         )
         print(response.choices[0].message.content.strip())
         return json.loads(response.choices[0].message.content.strip())
-    except Exception as e:
+    except (JSONDecodeError, TypeError, ValueError, KeyError) as e:
         print(f"[!] Error: {e}")
         return ["error"]
 
@@ -144,7 +145,7 @@ def load_api_key():
     key = os.getenv("OPENAI_API_KEY")
     if key:
         return key
-    with open("apikey.secret") as f:
+    with open("apikey.secret", encoding="utf-8") as f:
         return f.read().strip()
 
 def update_insights(
@@ -158,7 +159,9 @@ def update_insights(
     json_data.setdefault("insights", {})
     # Generate insights
     json_data["insights"]["word_list"] = create_word_list(raw_content)
-    json_data["insights"]["bip_references"] = create_bip_list(raw_content, proposal_label=proposal_label)
+    references = create_reference_list(raw_content, proposal_label=proposal_label)
+    json_data["insights"]["references"] = references
+    json_data["insights"]["bip_references"] = references
     json_data["insights"]["dependencies"] = llm_bip_dependencies(
         raw_content,
         str(int(json_data["raw"]["preamble"][id_field])),
@@ -166,9 +169,11 @@ def update_insights(
     )
 
     bip_number = str(int(json_data["raw"]["preamble"][id_field]))
-    json_data["insights"]["bip_references"] = [
-        bip for bip in json_data["insights"]["bip_references"] if bip != f"{proposal_label} {bip_number}"
+    filtered_references = [
+        bip for bip in references if bip != f"{proposal_label} {bip_number}"
     ]
+    json_data["insights"]["references"] = filtered_references
+    json_data["insights"]["bip_references"] = filtered_references
 
 def process_bip_files(
     input_dir: Path,

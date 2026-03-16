@@ -1,6 +1,8 @@
 import hashlib
+import argparse
 import math
 import pickle
+from pathlib import Path
 import networkx as nx
 import matplotlib.pyplot as plt
 from collections import Counter
@@ -460,9 +462,48 @@ def draw_static_network(network_data, link_type='references', color_by='group'):
     plt.savefig(filename, format='pdf')
     plt.close()
 
-# Load the pickle file
-with open('./../network_data.pkl', 'rb') as f:
+def _resolve_network_data_path(stichtag: str | None = None) -> Path:
+    script_dir = Path(__file__).resolve().parent
+    repo_root = script_dir.parents[1]
+
+    candidates = []
+
+    if stichtag:
+        candidates.append(
+            script_dir.parent / "artifacts" / "network_data" / f"network_data_{stichtag}.pkl"
+        )
+
+    candidates.extend(
+        [
+            script_dir.parent / "artifacts" / "network_data" / "network_data_latest.pkl",
+            script_dir.parent / "network_data.pkl",  # legacy: Research_questions/network_data.pkl
+            repo_root / "network_data.pkl",          # legacy: repository root
+            Path.cwd() / "network_data.pkl",         # legacy: launch directory
+        ]
+    )
+
+    for candidate in candidates:
+        if candidate.exists():
+            return candidate
+
+    tried = "\n".join(f"- {c}" for c in candidates)
+    raise FileNotFoundError(
+        f"Could not find network_data.pkl. Tried:\n{tried}"
+    )
+
+
+parser = argparse.ArgumentParser(description="Render RQ3 network plots.")
+parser.add_argument(
+    "--stichtag",
+    help="Load a specific snapshot artifact from Research_questions/artifacts/network_data/",
+)
+args = parser.parse_args()
+
+# Load the pickle file in a launch-directory-independent way
+network_data_path = _resolve_network_data_path(stichtag=args.stichtag)
+with network_data_path.open('rb') as f:
     data = pickle.load(f)
+print(f"Loaded network data from: {network_data_path}")
 
 bips_known_explicit = []
 

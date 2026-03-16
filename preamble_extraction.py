@@ -3,7 +3,12 @@ import re
 import json
 from typing import Dict, List
 from collections import OrderedDict
-import mistune
+from analysis.conformity.compliance import (
+    add_missing_optional_fields as conformity_add_missing_optional_fields,
+    calculate_compliance_score as conformity_calculate_compliance_score,
+    check_headlines as conformity_check_headlines,
+    check_required_fields as conformity_check_required_fields,
+)
 
 
 # Separate required and optional fields based on your instructions
@@ -85,63 +90,41 @@ def format_value(key: str, value: str):
     return value.strip()
 
 
-def check_required_fields(preamble: Dict[str, str], file_name: str) -> List[str]:
+def check_required_fields(preamble: Dict[str, str], _file_name: str) -> List[str]:
     """
     Return list of missing required fields.
     """
-    missing_required_fields = [field for field in REQUIRED_FIELDS if field not in preamble]
-    return missing_required_fields
+    return conformity_check_required_fields(preamble, REQUIRED_FIELDS)
 
-def check_headlines(file_content: str, file_name: str) -> List[str]:
+def check_headlines(file_content: str, _file_name: str) -> List[str]:
     """
     Return list of missing or incorrect headline entries.
     """
-    pattern = r'^(={2,6})\s*(.+?)\s*\1$'
-    matches = re.findall(pattern, file_content, re.MULTILINE)
+    return conformity_check_headlines(file_content, EXPECTED_HEADLINES)
 
-    found_headings = {
-        heading.strip().lower(): len(eq)
-        for eq, heading in matches
-    }
-
-    issues = []
-    for expected_heading, expected_level in EXPECTED_HEADLINES.items():
-        actual_level = found_headings.get(expected_heading)
-        if actual_level is None:
-            issues.append(f"Missing: {expected_heading}")
-        elif actual_level != expected_level:
-            issues.append(f"Wrong level for {expected_heading}: expected {expected_level}, found {actual_level}")
-
-    return issues
-
-def calculate_compliance_score(preamble: Dict[str, str], file_content: str, file_name: str) -> float:
+def calculate_compliance_score(preamble: Dict[str, str], file_content: str, _file_name: str) -> float:
     """
     Calculates a compliance score based on missing required fields and incorrect/missing headings.
     """
-    required_issues = check_required_fields(preamble, file_name)
-    headline_issues = check_headlines(file_content, file_name)
-
-    total_checks = len(REQUIRED_FIELDS) + len(EXPECTED_HEADLINES)
-    failed_checks = len(required_issues) + len(headline_issues)
-    passed_checks = total_checks - failed_checks
-
-    score = (passed_checks / total_checks) * 100
-    preamble["Compliance Score"] = round(score, 2)
+    conformity_calculate_compliance_score(
+        preamble,
+        file_content,
+        required_fields=REQUIRED_FIELDS,
+        expected_headlines=EXPECTED_HEADLINES,
+    )
 
 
 def add_missing_optional_fields(preamble: Dict[str, str]):
     """
     Adds missing optional fields to the preamble with a default value of None (null in JSON).
     """
-    for field in OPTIONAL_FIELDS:
-        if field not in preamble:
-            preamble[field] = None
+    conformity_add_missing_optional_fields(preamble, OPTIONAL_FIELDS)
 
 
 def save_preamble_to_json(
     preamble: Dict[str, str],
     output_dir: str,
-    file_name: str,
+    _file_name: str,
     file_prefix: str = "bip",
     id_field: str = "bip",
 ):

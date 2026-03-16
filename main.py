@@ -5,11 +5,13 @@ from bip_processing import process_bip_files
 from ecosystem_config import ACTIVE_ECOSYSTEM
 from datetime import date
 from pathlib import Path
+from analysis.pipeline import prepare_ecosystem_artifacts
 
 
 STICHTAG = "2025-12-31"
 CLONE_DIRECTORY = Path(ACTIVE_ECOSYSTEM["clone_directory"])
 JSON_ROOT = Path(ACTIVE_ECOSYSTEM["json_directory"])
+ARTIFACT_ROOT = Path(ACTIVE_ECOSYSTEM["artifact_directory"])
 
 
 def main():
@@ -44,6 +46,15 @@ def main():
         file_prefix=ACTIVE_ECOSYSTEM["document_prefix"],
         proposal_label=ACTIVE_ECOSYSTEM["proposal_acronym"],
         id_field=ACTIVE_ECOSYSTEM["primary_id_field"],
+    )
+
+    # Build ecosystem artifacts for visualization consumers.
+    prepare_ecosystem_artifacts(
+        proposal_json_dir=output_directory,
+        artifact_root=ARTIFACT_ROOT,
+        stichtag=STICHTAG,
+        id_field=ACTIVE_ECOSYSTEM["primary_id_field"],
+        proposal_label=ACTIVE_ECOSYSTEM["proposal_acronym"],
     )
 
 if __name__ == "__main__":

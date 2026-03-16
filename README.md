@@ -21,6 +21,11 @@
 This repository started with Bitcoin Improvement Proposals (BIPs) as its first implemented dataset, but the broader goal is an ecosystem-agnostic proposal-analysis pipeline.
 Bitcoin is currently the active adapter. Over time, the same repository should support additional ecosystems such as Ethereum EIPs or Tor proposals through the same extraction and visualization flow.
 
+Data is now organized under `ip_data/<ecosystem>/...` and analysis logic under the root `analysis/` module:
+- `analysis/authorship`
+- `analysis/conformity`
+- `analysis/dependencies`
+
 # Documentation
 
 ## Requirements
@@ -36,14 +41,14 @@ Manages all the logic. Once you added the github token and OpenAI API Key, you c
 
 ## Download.py
 Clones the active proposal repository as *.md or *.mediawiki files and also downloads all associated files.
-For the current Bitcoin adapter, all files are saved into __bips_cloned__.
+For the current Bitcoin adapter, all files are saved into __ip_data/bitcoin/cloned__.
 
 ## preamble_extraction.py
 The <code>< pre>...< /pre></code> block gets extracted out of every .md/.mediawiki file inside the active clone folder.
 It differentiates between the required fields and the optional fields.
 If you have multi-line fields as they often appear in 'author' and 'licences', it adds a list to the corresponding key.
 The extracted information inside the preamble gets placed in the __preamble__ section inside the JSON file.
-For the current Bitcoin adapter, all JSON files get saved in __bips_json__.
+For the current Bitcoin adapter, all JSON files get saved in __ip_data/bitcoin/json__.
 
 ## bip_processor.py
 Adds metadata and insights about each proposal to the corresponding JSON file. For the metadata, it adds
@@ -92,4 +97,65 @@ To enable deployment on GitHub:
 - go to `Settings > Pages`
 - set the source to `GitHub Actions`
 
-Because the app uses static hosting, all data that should appear on the website must already be present in the repository, for example the generated `bips_json/<STICHTAG>/...` snapshot folders.
+Because the app uses static hosting, all data that should appear on the website must already be present in the repository, for example the generated `ip_data/<ecosystem>/...` snapshot artifacts.
+
+## Research Question Pipelines (Notebook-Free)
+The repository now includes a script-based preprocessing path for network artifacts, so you do not need notebooks to prepare shared RQ data.
+
+Main pipeline output is now ecosystem-scoped under `ip_data/<ecosystem>/artifacts/`:
+- `dependencies/network_data_<STICHTAG>.json|.pkl`
+- `authorship/authorship_<STICHTAG>.json`
+- `conformity/conformity_<STICHTAG>.json`
+
+### Build Snapshot Artifacts
+Run this to build both JSON and PKL for a specific STICHTAG snapshot:
+
+`python Research_questions/build_network_data.py --stichtag 2025-12-31`
+
+Outputs:
+- `ip_data/bitcoin/artifacts/dependencies/network_data_2025-12-31.json`
+- `ip_data/bitcoin/artifacts/dependencies/network_data_2025-12-31.pkl`
+
+Notes:
+- JSON artifact is suitable for React/web visualizations.
+- PKL artifact is convenient for Python plotting scripts.
+- If `--stichtag` is omitted, the script reads from the active ecosystem JSON root and writes `network_data_latest.*`.
+
+### Run RQ3 Plots Against a Snapshot
+`python Research_questions/RQ3/RQ3_graphplots.py --stichtag 2025-12-31`
+
+Load order in RQ3 is now:
+1. `ip_data/<ecosystem>/artifacts/dependencies/network_data_<STICHTAG>.pkl` (if provided)
+2. `ip_data/<ecosystem>/artifacts/dependencies/network_data_latest.pkl`
+3. legacy fallbacks (`Research_questions/network_data.pkl`, repo-root `network_data.pkl`)
+
+### Prepare RQ1 Data (Notebook-Free)
+`python Research_questions/RQ1/rq1_prepare.py --stichtag 2025-12-31`
+
+Output:
+- `Research_questions/artifacts/rq1/rq1_2025-12-31.json`
+
+Contains reusable datasets for:
+- top authors
+- BIPs per year
+- author contribution histogram
+- top-10 author share
+- collaboration network (nodes + weighted edges)
+
+### Prepare RQ2 Data (Notebook-Free)
+`python Research_questions/RQ2/rq2_prepare.py --stichtag 2025-12-31`
+
+Output:
+- `Research_questions/artifacts/rq2/rq2_2025-12-31.json`
+
+Contains reusable datasets for:
+- full sankey links (Layer → Status → Type)
+- grouped-status sankey links
+- status distribution by layer
+- status-over-time summary
+
+### Suggested Workflow
+1. Run `main.py` with your chosen `STICHTAG`.
+2. Commit the generated ecosystem outputs under `ip_data/<ecosystem>/json/<STICHTAG>/` and `ip_data/<ecosystem>/artifacts/...`.
+3. Run `rq1_prepare.py`, `rq2_prepare.py`, and RQ3 plotting with the same `--stichtag` if you need RQ-specific outputs.
+4. Use JSON artifacts for React visualizations and Python/PDF pipelines for publication figures.

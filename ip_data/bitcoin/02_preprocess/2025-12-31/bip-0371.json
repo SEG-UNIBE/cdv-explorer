@@ -27,7 +27,7 @@
   "metadata": {
     "last_commit": "Sat Oct 18 22:28:16 2025 +0300",
     "total_commits": 17,
-    "metadata_last_updated": "2026-03-16T11:58:48",
+    "metadata_last_updated": "2026-03-17T00:52:52",
     "git_history": [
       [
         "2bdb5ec72f567ae5d0f6f66767f28d8edf7d5c6e",
@@ -574,20 +574,21 @@
       "acknowledgements": 1,
       "tbd": 1
     },
-    "bip_references": [
+    "implicit_dependencies": [
+      "BIP 32",
+      "BIP 174",
+      "BIP 340",
+      "BIP 341",
+      "BIP 342",
+      "BIP 370"
+    ],
+    "explicit_references": [
       "BIP 174",
       "BIP 32",
       "BIP 340",
       "BIP 341",
       "BIP 370"
     ],
-    "dependencies": [
-      "BIP 174",
-      "BIP 370",
-      "BIP 340",
-      "BIP 341",
-      "BIP 342",
-      "BIP 32"
-    ]
+    "explicit_dependencies": []
   }
 }

@@ -7,6 +7,7 @@ from datetime import datetime
 from json import JSONDecodeError
 from pathlib import Path
 from typing import Dict, List, Tuple
+from tqdm import tqdm
 
 from openai import OpenAI
 from ecosystem_config import ACTIVE_ECOSYSTEM
@@ -219,8 +220,10 @@ def process_ip_files(
     id_field: str = PRIMARY_ID_FIELD,
 ):
     """Process all BIP JSON files and update metadata & insights."""
-    json_files = [f for f in input_dir.iterdir() if f.suffix == '.json']
-    for json_file in json_files:
+    json_files = sorted([f for f in input_dir.iterdir() if f.suffix == '.json'])
+    progress = tqdm(json_files, desc="Metadata and insights", unit="ip", leave=False)
+    for json_file in progress:
+        progress.set_postfix_str(json_file.name)
         with json_file.open('r', encoding='utf-8') as f:
             json_data = json.load(f)
         
@@ -239,6 +242,6 @@ def process_ip_files(
         with output_path.open('w', encoding='utf-8') as f:
             json.dump(json_data, f, ensure_ascii=False, indent=2)
         
-        print(f"Processed {json_file.name}")
+    progress.close()
 
 

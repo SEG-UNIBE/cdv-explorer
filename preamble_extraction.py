@@ -3,6 +3,7 @@ import re
 import json
 from typing import Dict, List
 from collections import OrderedDict
+from tqdm import tqdm
 from analysis.conformity.compliance import (
     add_missing_optional_fields as conformity_add_missing_optional_fields,
     calculate_compliance_score as conformity_calculate_compliance_score,
@@ -196,10 +197,11 @@ def process_files_and_save_json(
     Processes all .mediawiki and .md files in the directory.
     Extracts the preamble and saves it as a JSON file in the specified output directory.
     """
-    proposal_files = [f for f in os.listdir(input_dir) if f.endswith(('.mediawiki', '.md'))]
-    for proposal_file in proposal_files:
+    proposal_files = sorted([f for f in os.listdir(input_dir) if f.endswith(('.mediawiki', '.md'))])
+    progress = tqdm(proposal_files, desc="Preamble extraction", unit="ip", leave=False)
+    for proposal_file in progress:
         file_path = os.path.join(input_dir, proposal_file)
-        print(f"Processing {file_path}")
+        progress.set_postfix_str(proposal_file)
 
         # Open and read the content of the file
         with open(file_path, 'r', encoding='utf-8') as f:
@@ -225,3 +227,4 @@ def process_files_and_save_json(
             file_prefix=file_prefix,
             id_field=id_field,
         )
+    progress.close()

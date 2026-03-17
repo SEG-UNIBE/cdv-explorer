@@ -29,7 +29,7 @@
   "metadata": {
     "last_commit": "Thu Jul 10 02:24:55 2025 +0200",
     "total_commits": 52,
-    "metadata_last_updated": "2026-03-16T12:04:07",
+    "metadata_last_updated": "2026-03-17T00:49:08",
     "git_history": [
       [
         "cd19d89e58b8c9b84f18efb5659220d4755fff0b",
@@ -1735,7 +1735,15 @@
       "ajtowns": 1,
       "structured": 1
     },
-    "bip_references": [
+    "implicit_dependencies": [
+      "BIP 340",
+      "BIP 141",
+      "BIP 143",
+      "BIP 342",
+      "BIP 350",
+      "BIP 9"
+    ],
+    "explicit_references": [
       "BIP 114",
       "BIP 117",
       "BIP 118",
@@ -1747,13 +1755,8 @@
       "BIP 9",
       "BIP 98"
     ],
-    "dependencies": [
-      "BIP 340",
-      "BIP 342",
-      "BIP 141",
-      "BIP 143",
-      "BIP 9",
-      "BIP 350"
+    "explicit_dependencies": [
+      "BIP 340"
     ]
   }
 }

@@ -8,8 +8,8 @@ import { AuthorCollaborationNetwork } from './AuthorCollaborationNetwork';
 import { AuthorCentralityTable } from './AuthorCentralityTable';
 import { ClassificationPieChart } from './ClassificationPieChart';
 import { ClassificationStackedTimelineChart } from './ClassificationStackedTimelineChart';
+import { ClassificationChordDiagram } from './ClassificationChordDiagram';
 import { WordCloud } from './WordCloud';
-import { ProposalSankeyChart } from './ProposalSankeyChart';
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
 import { Tag } from 'primereact/tag';
@@ -68,18 +68,18 @@ function normalizeProposalFilterValue(value) {
   return match ? match[1] : text;
 }
 
-function normalizeSankeyLayer(value) {
+function normalizeChordLayer(value) {
   const text = String(value || '').trim() || 'Unknown Layer';
   return text.includes('Unknown') ? 'Other' : text;
 }
 
-function normalizeSankeyStatus(value) {
+function normalizeChordStatus(value) {
   const text = String(value || '').trim() || 'Unknown Status';
   const base = text.split('(')[0].trim() || 'Unknown Status';
   return base.includes('Unknown') ? 'Unknown Status' : base;
 }
 
-function normalizeSankeyType(value) {
+function normalizeChordType(value) {
   const text = String(value || '').trim() || 'Unknown Type';
   const aliases = {
     Standard: 'Standards Track',
@@ -437,6 +437,83 @@ function buildWordCloudData(nodes, selectedProposalIds = []) {
     .slice(0, 100);
 }
 
+function buildClassificationChordData(nodes, categoryDomains = {}) {
+  const groupKeys = [];
+  const groups = [];
+  const groupIndexByKey = new Map();
+  const pairCounts = new Map();
+  const pairBips = new Map();
+
+  CLASSIFICATION_DIMENSIONS.forEach(({ field, label }) => {
+    const categories = Array.isArray(categoryDomains[field]) ? categoryDomains[field] : [];
+    categories.forEach((category) => {
+      const key = `${field}|||${category}`;
+      groupIndexByKey.set(key, groups.length);
+      groupKeys.push(key);
+      groups.push({
+        id: key,
+        label: `${label}: ${category}`,
+        dimension: field,
+        category,
+      });
+    });
+  });
+
+  (nodes || []).forEach((node) => {
+    const bipId = node?.id != null ? String(node.id) : null;
+    const values = {
+      layer: normalizeChordLayer(node?.layer),
+      status: normalizeChordStatus(node?.status),
+      type: normalizeChordType(node?.type),
+    };
+
+    const pairs = [
+      ['layer', 'status'],
+      ['layer', 'type'],
+      ['status', 'type'],
+    ];
+
+    pairs.forEach(([leftField, rightField]) => {
+      const leftKey = `${leftField}|||${values[leftField]}`;
+      const rightKey = `${rightField}|||${values[rightField]}`;
+      const leftIndex = groupIndexByKey.get(leftKey);
+      const rightIndex = groupIndexByKey.get(rightKey);
+
+      if (leftIndex == null || rightIndex == null) {
+        return;
+      }
+
+      const pairKey = [leftIndex, rightIndex].sort((left, right) => left - right).join('|||');
+      pairCounts.set(pairKey, (pairCounts.get(pairKey) || 0) + 1);
+
+      if (bipId) {
+        if (!pairBips.has(pairKey)) {
+          pairBips.set(pairKey, new Set());
+        }
+        pairBips.get(pairKey).add(bipId);
+      }
+    });
+  });
+
+  const matrix = Array.from({ length: groups.length }, () => Array(groups.length).fill(0));
+  pairCounts.forEach((count, key) => {
+    const [leftIndex, rightIndex] = key.split('|||').map(Number);
+    matrix[leftIndex][rightIndex] = count;
+    matrix[rightIndex][leftIndex] = count;
+  });
+
+  return {
+    groups,
+    matrix,
+    pairBips: Object.fromEntries(
+      Array.from(pairBips.entries()).map(([key, bipSet]) => [
+        key,
+        Array.from(bipSet).sort((left, right) => Number(left) - Number(right)),
+      ])
+    ),
+  };
+}
+
 function buildDashboardData(dataset) {
   const authorship = dataset.authorship || {};
   const classification = dataset.classification || {};
@@ -498,50 +575,6 @@ function buildDashboardData(dataset) {
 
   const wordCloudData = buildWordCloudData(dataset.nodes);
 
-  const groupedLinks = classification?.sankey_grouped?.links || [];
-  const sankeyBipsByTransition = new Map();
-
-  dataset.nodes.forEach((node) => {
-    const bipId = node?.id != null ? String(node.id) : null;
-    if (!bipId) {
-      return;
-    }
-
-    const layer = normalizeSankeyLayer(node?.layer);
-    const status = normalizeSankeyStatus(node?.status);
-    const kind = normalizeSankeyType(node?.type);
-    const transitions = [
-      [layer, status],
-      [status, kind],
-    ];
-
-    transitions.forEach(([source, target]) => {
-      const key = `${source}|||${target}`;
-      if (!sankeyBipsByTransition.has(key)) {
-        sankeyBipsByTransition.set(key, new Set());
-      }
-      sankeyBipsByTransition.get(key).add(bipId);
-    });
-  });
-
-  const nodeLabels = Array.from(new Set(groupedLinks.flatMap((item) => [item.source, item.target])));
-  const nodeIdMap = new Map(nodeLabels.map((label, index) => [label, index]));
-
-  const sankeyData = {
-    nodes: nodeLabels.map((label, index) => ({
-      id: index,
-      name: label,
-      column: 'grouped',
-    })),
-    links: groupedLinks.map((link) => ({
-      source: nodeIdMap.get(link.source),
-      target: nodeIdMap.get(link.target),
-      value: link.count,
-      bips: Array.from(sankeyBipsByTransition.get(`${link.source}|||${link.target}`) || [])
-        .sort((left, right) => Number(left) - Number(right)),
-    })),
-  };
-
   const statusByLayerRows = Object.entries(classification.status_distribution_by_layer || {}).map(
     ([layer, statuses]) => ({
       layer,
@@ -574,6 +607,7 @@ function buildDashboardData(dataset) {
       ],
     ])
   );
+  const classificationChordData = buildClassificationChordData(dataset.nodes, classificationCategoryDomains);
 
   const topAuthors = (authorship.top_authors || []).map((entry) => ({
     ...entry,
@@ -625,12 +659,12 @@ function buildDashboardData(dataset) {
   return {
     yearData,
     wordCloudData,
-    sankeyData,
     statusByLayerRows,
     conformityStatusRows,
     classificationDistributions,
     classificationTimeline,
     classificationCategoryDomains,
+    classificationChordData,
     topAuthors,
     authorContributionHistogram,
     collaborationNetwork,
@@ -723,12 +757,12 @@ function EcosystemDashboard() {
   const {
     yearData,
     wordCloudData,
-    sankeyData,
     statusByLayerRows,
     conformityStatusRows,
     classificationDistributions,
     classificationTimeline,
     classificationCategoryDomains,
+    classificationChordData,
     topAuthors,
     authorContributionHistogram,
     collaborationNetwork,
@@ -984,9 +1018,9 @@ function EcosystemDashboard() {
         </Card>
       ))}
       <Card className="mb-4" style={{ flex: 1 }}>
-        <h3>Combined Classification Dimensions</h3>
-        <p>This Sankey diagram visualizes the flow between categories in the selected proposal ecosystem.</p>
-        <ProposalSankeyChart data={sankeyData} width={1200} height={600} />
+        <h3>Pairwise Classification Chord Diagram</h3>
+        <p>This chord diagram connects layer, status, and type categories across all pairwise combinations.</p>
+        <ClassificationChordDiagram data={classificationChordData} width={1000} height={800} />
       </Card>
       </section>
       <section className="dashboard-section">
@@ -1019,7 +1053,7 @@ function EcosystemDashboard() {
           <div className="analysis-stat">
             <h4>Classification</h4>
             <p><strong>Layer groups:</strong> {statusByLayerRows.length}</p>
-            <p><strong>Sankey links:</strong> {sankeyData.links.length}</p>
+            <p><strong>Chord categories:</strong> {classificationChordData.groups.length}</p>
           </div>
           <div className="analysis-stat">
             <h4>Conformity</h4>

@@ -129,6 +129,148 @@
   flex: 0 0 auto;
 }
 
+.dashboard-section {
+  margin: 2.5rem 0;
+}
+
+.dashboard-section__header {
+  margin-bottom: 1rem;
+}
+
+.dashboard-section__header h1 {
+  margin-bottom: 0.35rem;
+}
+
+.dashboard-section__header p {
+  max-width: 900px;
+  margin: 0;
+  color: #52606d;
+}
+
+.dashboard-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.dashboard-grid--two-up {
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+
+.network-finder {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.network-finder__copy {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  min-width: 0;
+}
+
+.network-finder__copy span {
+  color: #52606d;
+  font-size: 0.95rem;
+}
+
+.network-finder__controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+.network-finder__controls .p-inputtext {
+  width: 320px;
+}
+
+.network-layout-picker {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.network-layout-picker__label {
+  font-weight: 600;
+}
+
+.network-layout-picker__options {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.network-layout-picker__option {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  cursor: pointer;
+}
+
+.author-network-tooltip a,
+.author-tooltip a,
+.proposal-tooltip a {
+  color: #9bd1ff;
+  text-decoration: underline;
+}
+
+@media (max-width: 900px) {
+  .network-finder {
+    grid-template-columns: 1fr;
+  }
+
+  .network-finder__copy {
+    flex-wrap: wrap;
+  }
+
+  .network-finder__controls {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .network-finder__controls .p-inputtext {
+    width: min(320px, 100%);
+  }
+}
+
+.centrality-table__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.centrality-table__header h2 {
+  margin-bottom: 0.35rem;
+}
+
+.centrality-table__header p {
+  margin: 0;
+  color: #52606d;
+  max-width: 40rem;
+}
+
+.centrality-table__filter .p-inputtext {
+  width: min(260px, 100%);
+}
+
+.centrality-table .p-datatable-header {
+  background: transparent;
+  border: none;
+  padding: 0 0 1rem 0;
+}
+
+.centrality-table .p-datatable-thead > tr > th {
+  background: #f3f8fe;
+}
+
 .analysis-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));

@@ -9,7 +9,11 @@ export const TopAuthorsChart = ({ data, width = 600, height = 400 }) => {
 
     if (Array.isArray(data?.topAuthors) && data.topAuthors.length > 0) {
       sortedAuthors = data.topAuthors
-        .map((entry) => ({ author: entry.author, count: Number(entry.count || 0) }))
+        .map((entry) => ({
+          author: entry.author,
+          count: Number(entry.count || 0),
+          bips: Array.isArray(entry.bips) ? entry.bips : [],
+        }))
         .sort((a, b) => b.count - a.count)
         .slice(0, 10);
     } else {
@@ -31,7 +35,7 @@ export const TopAuthorsChart = ({ data, width = 600, height = 400 }) => {
       });
 
       sortedAuthors = Object.entries(authorCounts)
-        .map(([author, count]) => ({ author, count }))
+        .map(([author, count]) => ({ author, count, bips: [] }))
         .sort((a, b) => b.count - a.count)
         .slice(0, 10);
     }
@@ -44,6 +48,10 @@ export const TopAuthorsChart = ({ data, width = 600, height = 400 }) => {
 
     const svg = d3.select(ref.current);
     svg.selectAll("*").remove();
+    svg
+      .attr('viewBox', `0 0 ${width} ${height}`)
+      .style('width', '100%')
+      .style('height', 'auto');
     d3.select('body').selectAll('.author-tooltip').remove(); // Clean up old tooltips
 
     // Tooltip setup
@@ -57,7 +65,31 @@ export const TopAuthorsChart = ({ data, width = 600, height = 400 }) => {
       .style('border-radius', '4px')
       .style('font-size', '12px')
       .style('pointer-events', 'none')
+      .style('max-width', '360px')
+      .style('line-height', '1.45')
       .style('opacity', 0);
+
+    let pinnedAuthor = null;
+
+    const renderTooltipHtml = (entry) => {
+      const bipLinks = entry.bips.length
+        ? entry.bips
+          .map((bip) => `<a href="https://bips.dev/${bip}/" target="_blank" rel="noreferrer">BIP ${bip}</a>`)
+          .join(', ')
+        : 'No BIP list available.';
+
+      return (
+        `<strong>${entry.author}</strong><br/>` +
+        `BIPs: ${entry.count}<br/>` +
+        `${entry.bips.length ? `List: ${bipLinks}` : bipLinks}`
+      );
+    };
+
+    const setTooltipPosition = (pageX, pageY) => {
+      tooltip
+        .style('left', `${pageX + 10}px`)
+        .style('top', `${pageY - 28}px`);
+    };
 
     const margin = { top: 20, right: 20, bottom: 80, left: 100 };
     const innerWidth = width - margin.left - margin.right;
@@ -78,6 +110,11 @@ export const TopAuthorsChart = ({ data, width = 600, height = 400 }) => {
       .append("g")
       .attr("transform", `translate(${margin.left},${margin.top})`);
 
+    const resetBarStyles = () => {
+      g.selectAll('rect')
+        .attr('fill', '#ADD8E6');
+    };
+
     g.append("g").call(d3.axisLeft(y));
 
     g.selectAll("rect")
@@ -89,25 +126,46 @@ export const TopAuthorsChart = ({ data, width = 600, height = 400 }) => {
       .attr("height", y.bandwidth())
       .attr("fill", "#ADD8E6")
       .on("mouseover", function (event, d) {
+        if (pinnedAuthor) {
+          return;
+        }
+
         d3.select(this)
           .transition().duration(200)
           .attr("fill", "#5fa6d8"); // darker on hover
 
         tooltip
           .style("opacity", 1)
-          .html(`<strong>${d.author}</strong><br/>Proposals: ${d.count}`);
+          .style('pointer-events', 'none')
+          .html(renderTooltipHtml(d));
       })
       .on("mousemove", function (event) {
-        tooltip
-          .style("left", `${event.pageX + 10}px`)
-          .style("top", `${event.pageY - 28}px`);
+        if (pinnedAuthor) {
+          return;
+        }
+        setTooltipPosition(event.pageX, event.pageY);
       })
       .on("mouseout", function () {
+        if (pinnedAuthor) {
+          return;
+        }
+
         d3.select(this)
           .transition().duration(200)
           .attr("fill", "#ADD8E6");
 
         tooltip.style("opacity", 0);
+      })
+      .on('click', function (event, d) {
+        event.stopPropagation();
+        pinnedAuthor = d.author;
+        resetBarStyles();
+        d3.select(this).attr('fill', '#5fa6d8');
+        tooltip
+          .style('opacity', 1)
+          .style('pointer-events', 'auto')
+          .html(renderTooltipHtml(d));
+        setTooltipPosition(event.pageX, event.pageY);
       });
 
     g.selectAll("text.count")
@@ -125,6 +183,14 @@ export const TopAuthorsChart = ({ data, width = 600, height = 400 }) => {
       .call(d3.axisBottom(x).ticks(5))
       .style("display", "none");
 
+    svg.on('click', () => {
+      pinnedAuthor = null;
+      resetBarStyles();
+      tooltip
+        .style('opacity', 0)
+        .style('pointer-events', 'none');
+    });
+
     // Cleanup
     return () => {
       svg.selectAll("*").remove();
@@ -133,5 +199,5 @@ export const TopAuthorsChart = ({ data, width = 600, height = 400 }) => {
 
   }, [data, width, height]);
 
-  return <svg ref={ref} />;
+  return <svg ref={ref} role="img" aria-label="Top proposal authors chart" />;
 };

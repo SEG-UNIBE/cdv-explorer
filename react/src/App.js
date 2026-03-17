@@ -3,18 +3,33 @@ import Navbar from './Navbar';
 import { NetworkDiagram } from './NetworkDiagram';
 import { ProposalTimelineChart } from './ProposalTimelineChart';
 import { TopAuthorsChart } from './TopAuthorsChart';
+import { AuthorContributionHistogram } from './AuthorContributionHistogram';
+import { AuthorCollaborationNetwork } from './AuthorCollaborationNetwork';
+import { AuthorCentralityTable } from './AuthorCentralityTable';
 import { WordCloud } from './WordCloud';
 import { ProposalSankeyChart } from './ProposalSankeyChart';
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
 import { Tag } from 'primereact/tag';
 import { Dropdown } from 'primereact/dropdown';
+import { InputText } from 'primereact/inputtext';
+import { RadioButton } from 'primereact/radiobutton';
 import './App.scss';
 import * as d3 from 'd3';
 import { ProposalKpiOverview } from './ProposalKpiOverview';
 import { HashRouter as Router, Routes, Route, useNavigate, useParams, Link } from 'react-router-dom';
 import { ecosystems, ecosystemsById } from './ecosystems';
 import { getAvailableStichtage, getDatasetForSelection } from './data';
+
+const COLLABORATION_LAYOUT_OPTIONS = [
+  { label: 'Balanced', value: 'balanced' },
+  { label: 'Clustered', value: 'clustered' },
+  { label: 'Spread', value: 'spread' },
+];
+
+function cleanAuthorName(author) {
+  return String(author || '').split('<')[0].trim();
+}
 
 function countDisplayedEdges(links) {
   const byType = links || {};
@@ -27,13 +42,222 @@ function countDisplayedEdges(links) {
   );
 }
 
+function computeWeightedEigenvectorCentrality(nodeIds, adjacency, maxIterations = 1000, tolerance = 1e-6) {
+  const authorIds = Array.from(new Set((nodeIds || []).map((id) => String(id))));
+  const nodeCount = authorIds.length;
+
+  if (nodeCount === 0) {
+    return new Map();
+  }
+
+  const values = new Map(authorIds.map((id) => [id, 1 / Math.sqrt(nodeCount)]));
+
+  for (let iteration = 0; iteration < maxIterations; iteration += 1) {
+    const nextValues = new Map(authorIds.map((id) => [id, 0]));
+
+    authorIds.forEach((id) => {
+      const neighbors = adjacency.get(id) || [];
+      neighbors.forEach(({ id: neighborId, weight }) => {
+        nextValues.set(id, nextValues.get(id) + Number(weight || 0) * (values.get(neighborId) || 0));
+      });
+    });
+
+    const norm = Math.sqrt(
+      Array.from(nextValues.values()).reduce((sum, value) => sum + value ** 2, 0)
+    );
+
+    if (norm === 0) {
+      return new Map(authorIds.map((id) => [id, 0]));
+    }
+
+    let delta = 0;
+    authorIds.forEach((id) => {
+      const normalizedValue = nextValues.get(id) / norm;
+      delta += Math.abs(normalizedValue - (values.get(id) || 0));
+      values.set(id, normalizedValue);
+    });
+
+    if (delta < nodeCount * tolerance) {
+      break;
+    }
+  }
+
+  return values;
+}
+
+function buildCollaborationDerivedData(collaborationNetwork, collaborationCentrality) {
+  const rawNodes = collaborationNetwork?.nodes || [];
+  const rawEdges = collaborationNetwork?.edges || [];
+  const nodeIds = rawNodes.map((node) => String(node.id)).filter(Boolean);
+  const adjacency = new Map(nodeIds.map((id) => [id, []]));
+  const weightedDegreeByAuthor = new Map(nodeIds.map((id) => [id, 0]));
+
+  rawEdges.forEach((edge) => {
+    const source = String(edge.source);
+    const target = String(edge.target);
+    const weight = Number(edge.weight || 1);
+
+    if (!adjacency.has(source)) {
+      adjacency.set(source, []);
+      weightedDegreeByAuthor.set(source, 0);
+    }
+    if (!adjacency.has(target)) {
+      adjacency.set(target, []);
+      weightedDegreeByAuthor.set(target, 0);
+    }
+
+    adjacency.get(source).push({ id: target, weight });
+    adjacency.get(target).push({ id: source, weight });
+    weightedDegreeByAuthor.set(source, (weightedDegreeByAuthor.get(source) || 0) + weight);
+    weightedDegreeByAuthor.set(target, (weightedDegreeByAuthor.get(target) || 0) + weight);
+  });
+
+  const visited = new Set();
+  const components = [];
+  nodeIds.forEach((id) => {
+    if (visited.has(id)) {
+      return;
+    }
+
+    const queue = [id];
+    const members = [];
+    visited.add(id);
+
+    while (queue.length > 0) {
+      const current = queue.shift();
+      members.push(current);
+
+      (adjacency.get(current) || []).forEach(({ id: neighborId }) => {
+        if (visited.has(neighborId)) {
+          return;
+        }
+        visited.add(neighborId);
+        queue.push(neighborId);
+      });
+    }
+
+    components.push(members);
+  });
+
+  components.sort((left, right) => right.length - left.length);
+
+  const clusterMetaByAuthor = new Map();
+  components.forEach((members, index) => {
+    members.forEach((author) => {
+      clusterMetaByAuthor.set(author, {
+        clusterId: index + 1,
+        clusterSize: members.length,
+      });
+    });
+  });
+
+  const centralityByAuthor = new Map(
+    (collaborationCentrality || []).map((entry) => [String(entry.author), entry])
+  );
+  const weightedEigenvectorByAuthor = computeWeightedEigenvectorCentrality(nodeIds, adjacency);
+
+  const degreeRows = rawNodes
+    .map((node) => {
+      const author = String(node.id);
+      const clusterMeta = clusterMetaByAuthor.get(author) || { clusterId: null, clusterSize: 1 };
+      const centrality = centralityByAuthor.get(author) || {};
+
+      return {
+        author,
+        clusterId: clusterMeta.clusterId,
+        clusterSize: clusterMeta.clusterSize,
+        rawDegree: Number(node.degree || 0),
+        weightedDegree: Number(weightedDegreeByAuthor.get(author) || 0),
+        normalizedDegree: Number(centrality.degree || 0),
+      };
+    })
+    .sort((left, right) => {
+      if (right.rawDegree !== left.rawDegree) {
+        return right.rawDegree - left.rawDegree;
+      }
+      return left.author.localeCompare(right.author);
+    });
+
+  const eigenvectorRows = nodeIds
+    .map((author) => {
+      const clusterMeta = clusterMetaByAuthor.get(author) || { clusterId: null, clusterSize: 1 };
+      const centrality = centralityByAuthor.get(author) || {};
+
+      return {
+        author,
+        clusterId: clusterMeta.clusterId,
+        clusterSize: clusterMeta.clusterSize,
+        eigenvector: Number(centrality.eigenvector || 0),
+        weightedEigenvector: Number(weightedEigenvectorByAuthor.get(author) || 0),
+      };
+    })
+    .sort((left, right) => {
+      if (right.eigenvector !== left.eigenvector) {
+        return right.eigenvector - left.eigenvector;
+      }
+      return left.author.localeCompare(right.author);
+    });
+
+  const eigenvectorByAuthor = new Map(
+    eigenvectorRows.map((row) => [row.author, row])
+  );
+  const metricsRows = degreeRows.map((row) => {
+    const eigenvectorRow = eigenvectorByAuthor.get(row.author) || {};
+
+    return {
+      ...row,
+      eigenvector: Number(eigenvectorRow.eigenvector || 0),
+      weightedEigenvector: Number(eigenvectorRow.weightedEigenvector || 0),
+    };
+  });
+
+  return {
+    degreeRows,
+    eigenvectorRows,
+    metricsRows,
+  };
+}
+
 function buildDashboardData(dataset) {
   const authorship = dataset.authorship || {};
   const classification = dataset.classification || {};
   const conformity = dataset.conformity || {};
+  const authorBipsByAuthor = new Map();
+  const bipsByYear = new Map();
+
+  dataset.nodes.forEach((node) => {
+    const bipId = node?.id != null ? String(node.id) : null;
+    if (!bipId) {
+      return;
+    }
+
+    const authors = Array.isArray(node.author)
+      ? node.author.map(cleanAuthorName).filter(Boolean)
+      : [];
+
+    authors.forEach((author) => {
+      if (!authorBipsByAuthor.has(author)) {
+        authorBipsByAuthor.set(author, new Set());
+      }
+      authorBipsByAuthor.get(author).add(bipId);
+    });
+
+    if (node?.created) {
+      const year = new Date(node.created).getFullYear();
+      if (Number.isFinite(year) && year > 1900) {
+        if (!bipsByYear.has(year)) {
+          bipsByYear.set(year, new Set());
+        }
+        bipsByYear.get(year).add(bipId);
+      }
+    }
+  });
 
   const yearData = (authorship.bips_per_year || []).length
-    ? (authorship.bips_per_year || [])
+    ? (authorship.bips_per_year || []).map((entry) => ({
+        ...entry,
+        bips: Array.from(bipsByYear.get(Number(entry.year)) || []).sort((left, right) => Number(left) - Number(right)),
+      }))
     : Array.from(
         d3.rollup(
           dataset.nodes.filter((node) => {
@@ -46,7 +270,11 @@ function buildDashboardData(dataset) {
           (values) => values.length,
           (node) => new Date(node.created).getFullYear()
         ),
-        ([year, count]) => ({ year, count })
+        ([year, count]) => ({
+          year,
+          count,
+          bips: Array.from(bipsByYear.get(Number(year)) || []).sort((left, right) => Number(left) - Number(right)),
+        })
       ).sort((a, b) => a.year - b.year);
 
   const wordCounts = {};
@@ -116,7 +344,51 @@ function buildDashboardData(dataset) {
     ([status, score]) => ({ status, score })
   );
 
-  const topAuthors = authorship.top_authors || [];
+  const topAuthors = (authorship.top_authors || []).map((entry) => ({
+    ...entry,
+    bips: Array.from(authorBipsByAuthor.get(entry.author) || []).sort((left, right) => Number(left) - Number(right)),
+  }));
+  const authorContributionHistogram = authorship.author_contribution_histogram || [];
+  const sharedBipsByAuthorPair = new Map();
+  dataset.nodes.forEach((node) => {
+    const authors = Array.isArray(node.author)
+      ? node.author.map(cleanAuthorName).filter(Boolean)
+      : [];
+    const uniqueAuthors = Array.from(new Set(authors));
+
+    if (!node.id || uniqueAuthors.length < 2) {
+      return;
+    }
+
+    for (let i = 0; i < uniqueAuthors.length; i += 1) {
+      for (let j = i + 1; j < uniqueAuthors.length; j += 1) {
+        const pairKey = [uniqueAuthors[i], uniqueAuthors[j]].sort().join('|||');
+        if (!sharedBipsByAuthorPair.has(pairKey)) {
+          sharedBipsByAuthorPair.set(pairKey, new Set());
+        }
+        sharedBipsByAuthorPair.get(pairKey).add(String(node.id));
+      }
+    }
+  });
+
+  const rawCollaborationNetwork = authorship.collaboration_network || { nodes: [], edges: [] };
+  const collaborationNetwork = {
+    ...rawCollaborationNetwork,
+    edges: (rawCollaborationNetwork.edges || []).map((edge) => {
+      const pairKey = [edge.source, edge.target].sort().join('|||');
+      const bips = Array.from(sharedBipsByAuthorPair.get(pairKey) || [])
+        .sort((left, right) => Number(left) - Number(right));
+
+      return {
+        ...edge,
+        bips,
+      };
+    }),
+  };
+  const collaborationCentrality = authorship.collaboration_centrality || [];
+  const {
+    metricsRows: collaborationMetricsRows,
+  } = buildCollaborationDerivedData(collaborationNetwork, collaborationCentrality);
   const top10Share = authorship.top_10_share || {};
 
   return {
@@ -126,6 +398,10 @@ function buildDashboardData(dataset) {
     statusByLayerRows,
     conformityStatusRows,
     topAuthors,
+    authorContributionHistogram,
+    collaborationNetwork,
+    collaborationCentrality,
+    collaborationMetricsRows,
     top10Share,
     overallConformity: conformity.overall_average_score,
   };
@@ -186,6 +462,8 @@ function EcosystemDashboard() {
   const ecosystem = ecosystemsById[ecosystemId];
   const availableStichtage = useMemo(() => getAvailableStichtage(ecosystemId), [ecosystemId]);
   const [selectedStichtag, setSelectedStichtag] = useState(availableStichtage[0] ?? null);
+  const [highlightedAuthor, setHighlightedAuthor] = useState('');
+  const [collaborationLayoutMode, setCollaborationLayoutMode] = useState('balanced');
 
   useEffect(() => {
     setSelectedStichtag((current) => {
@@ -224,9 +502,16 @@ function EcosystemDashboard() {
     statusByLayerRows,
     conformityStatusRows,
     topAuthors,
+    authorContributionHistogram,
+    collaborationNetwork,
+    collaborationMetricsRows,
     top10Share,
     overallConformity,
   } = buildDashboardData(selectedDataset);
+  const collaborationAuthorOptions = collaborationNetwork.nodes
+    .map((node) => String(node.id || ''))
+    .filter(Boolean)
+    .sort((left, right) => left.localeCompare(right));
   const stichtagOptions = availableStichtage.map((stichtag) => ({
     label: stichtag === 'current' ? 'Current' : stichtag,
     value: stichtag,
@@ -296,6 +581,113 @@ function EcosystemDashboard() {
           </div>
         </div>
       </Card>
+      <section className="dashboard-section">
+        <div className="dashboard-section__header">
+          <h1>Authorship Patterns</h1>
+          <p>
+            These charts summarize who writes {ecosystem.proposalShortPlural}, how concentrated authorship is,
+            when new {ecosystem.proposalShortPlural} appear, and which authors are most central in the observed
+            collaboration graph.
+          </p>
+        </div>
+        <div className="dashboard-grid dashboard-grid--two-up">
+          <Card className="mb-4" style={{ flex: 1 }}>
+            <h2>Top 10 Authors by {ecosystem.acronym} Count</h2>
+            <p>
+              Preamble authorship counts for the most prolific contributors in the selected snapshot.
+            </p>
+            <TopAuthorsChart data={{ topAuthors }} width={640} height={420} />
+          </Card>
+          <Card className="mb-4" style={{ flex: 1 }}>
+            <h2>Authorship Tail Distribution</h2>
+            <p>
+              Number of authors who have written a given number of {ecosystem.proposalShortPlural}.
+            </p>
+            <AuthorContributionHistogram data={authorContributionHistogram} width={640} height={420} />
+          </Card>
+        </div>
+        <Card className="mb-4">
+          <h2>{ecosystem.proposalPlural} Over Time</h2>
+          <p>
+            Annual counts are shown as bars; the line tracks the cumulative total on a secondary axis.
+          </p>
+          <ProposalTimelineChart data={yearData} width={1200} height={420} />
+        </Card>
+        <Card className="mb-4">
+          <h2>Author Collaboration Network</h2>
+          <p>
+            The existing collaboration graph derived from co-authorship within the selected snapshot.
+          </p>
+          <div className="network-finder">
+            <div className="network-finder__copy">
+              <strong>Find author.</strong>
+              <span>Search an author to highlight and center their node in the network.</span>
+            </div>
+            <div className="network-finder__controls">
+              <InputText
+                value={highlightedAuthor}
+                onChange={(event) => setHighlightedAuthor(event.target.value)}
+                placeholder="Type an author name"
+                list="author-collaboration-options"
+              />
+              <datalist id="author-collaboration-options">
+                {collaborationAuthorOptions.map((author) => (
+                  <option key={author} value={author} />
+                ))}
+              </datalist>
+              <Button
+                type="button"
+                label="Clear"
+                severity="secondary"
+                text
+                onClick={() => setHighlightedAuthor('')}
+                disabled={!highlightedAuthor.trim()}
+              />
+            </div>
+          </div>
+          <div className="network-layout-picker">
+            <div className="network-layout-picker__label">Layout</div>
+            <div className="network-layout-picker__options">
+              {COLLABORATION_LAYOUT_OPTIONS.map((option) => (
+                <label key={option.value} className="network-layout-picker__option">
+                  <RadioButton
+                    inputId={`collaboration-layout-${option.value}`}
+                    name="collaboration-layout"
+                    value={option.value}
+                    onChange={(event) => setCollaborationLayoutMode(event.value)}
+                    checked={collaborationLayoutMode === option.value}
+                  />
+                  <span>{option.label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+          <AuthorCollaborationNetwork
+            data={collaborationNetwork}
+            width={1200}
+            height={700}
+            highlightAuthor={highlightedAuthor}
+            layoutMode={collaborationLayoutMode}
+          />
+        </Card>
+        <Card className="mb-4">
+          <AuthorCentralityTable
+            title="Author Collaboration Metrics"
+            description="All authors, sortable and filterable. Cluster IDs refer to connected components, not overlapping maximal cliques."
+            rows={collaborationMetricsRows}
+            defaultSortField="eigenvector"
+            columns={[
+              { field: 'clusterId', header: 'Cluster', format: 'integer' },
+              { field: 'clusterSize', header: 'Cluster Size', format: 'integer' },
+              { field: 'rawDegree', header: 'Degree', format: 'integer' },
+              { field: 'weightedDegree', header: 'Weighted Degree', format: 'integer' },
+              { field: 'normalizedDegree', header: 'Normalized Degree', digits: 4 },
+              { field: 'eigenvector', header: 'Eigenvector Centrality', digits: 6 },
+              { field: 'weightedEigenvector', header: 'Weighted Eigenvector', digits: 6 },
+            ]}
+          />
+        </Card>
+      </section>
       <h1>Proposal Category Overview</h1>
       <ProposalKpiOverview data={selectedDataset} totalLabel={`Total ${ecosystem.proposalShortPlural}`} />
       <Card className="mb-4" style={{ flex: 1 }}>
@@ -310,18 +702,6 @@ function EcosystemDashboard() {
         <WordCloud words={wordCloudData} width={1250} height={650} />
       </Card>
       <br></br>
-      <div className="chart-grid" style={{ display: 'flex', gap: '2rem', height: '100%' }}>
-        <Card className="mb-4" style={{ flex: 1 }}>
-          <h2>Top 10 Proposal Authors</h2>
-          <p>This chart shows the most prolific contributors in the selected ecosystem, based on proposal authorship counts.</p>
-          <TopAuthorsChart data={{ topAuthors }} />
-        </Card>
-        <Card className="mb-4" style={{ flex: 1 }}>
-          <h2>Proposals Over Time</h2>
-          <p>This timeline chart shows how many proposals entered the selected ecosystem per year.</p>
-          <ProposalTimelineChart data={yearData} width={600} height={400} />
-        </Card>
-      </div>
       <div className="chart-grid" style={{ display: 'flex', gap: '2rem', marginTop: '2rem', height: '100%' }}>
         <Card className="mb-4" style={{ flex: 1 }}>
           <h2>Classification by Layer</h2>

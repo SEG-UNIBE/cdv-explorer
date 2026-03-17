@@ -66,7 +66,7 @@ def load_proposal_json_documents(source_dir: Path) -> List[Dict[str, Any]]:
             with file_path.open("r", encoding="utf-8") as handle:
                 documents.append(json.load(handle))
         except json.JSONDecodeError:
-            print(f"Warning: failed to parse {file_path.name}")
+            continue
     return documents
 
 
@@ -220,6 +220,3 @@ def save_network_data_artifacts(network_data: Dict[str, Any], output_stem: Path)
                         "value": link.get("value", 1),
                     }
                 )
-
-    print(f"Saved JSON artifact: {json_path}")
-    print(f"Saved CSV artifact: {nodes_csv_path}")

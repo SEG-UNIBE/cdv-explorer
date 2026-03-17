@@ -17,10 +17,8 @@ try:
     from networkx.drawing.nx_agraph import graphviz_layout
 
     graphviz_available = True
-    print("PyGraphviz detected. Graphviz layouts will be attempted.")
 except ImportError:
     graphviz_available = False
-    print("PyGraphviz not found. Graphviz layouts (dot, neato, fdp) will be skipped.")
 
 
 def get_links_by_type(network_links, link_type):
@@ -226,7 +224,6 @@ def draw_static_network_with_layouts(
 
     for config in layout_configs:
         layout_name = config["name"]
-        print(f"Generating plot with layout: {layout_name}")
         pos = None
 
         try:
@@ -243,7 +240,6 @@ def draw_static_network_with_layouts(
             else:
                 continue
         except (nx.NetworkXException, RuntimeError, ValueError, TypeError) as error:
-            print(f"Failed to generate layout '{layout_name}': {error}. Skipping this layout.")
             continue
 
         plt.figure(figsize=(10, 6))
@@ -337,7 +333,6 @@ def draw_static_network_with_layouts(
         output_path = output_dir / filename
         plt.savefig(output_path, format="pdf")
         plt.close()
-        print(f"Saved {output_path}")
 
 
 def main() -> None:

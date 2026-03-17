@@ -13,7 +13,6 @@ def save_payload(payload: Dict[str, Any], output_path: Path) -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     with output_path.open("w", encoding="utf-8") as handle:
         json.dump(payload, handle, ensure_ascii=False, indent=2)
-    print(f"Saved classification artifact: {output_path}")
 
 
 def main() -> None:

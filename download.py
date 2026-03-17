@@ -27,12 +27,10 @@ def clone_or_update_repo(local_dir: Path):
         if not (local_dir / ".git").exists():
             raise ValueError(f"{local_dir} exists but is not a git repository.")
 
-        print(f"Repository already exists in {local_dir}. Fetching latest changes...")
         subprocess.run(['git', '-C', str(local_dir), 'fetch', '--all', '--prune'], check=True)
         return
 
     local_dir.parent.mkdir(parents=True, exist_ok=True)
-    print(f"Cloning repository into {local_dir}...")
     subprocess.run(['git', 'clone', REPO_URL, str(local_dir)], check=True)
 
 
@@ -75,7 +73,6 @@ def checkout_stichtag(local_dir: Path, stichtag: str):
     if not commit_hash:
         raise ValueError(f"No commit found on or before {stichtag}.")
 
-    print(f"Checking out commit {commit_hash} for STICHTAG {stichtag}...")
     subprocess.run(['git', '-C', str(local_dir), 'checkout', '--detach', commit_hash], check=True)
 
 
@@ -101,7 +98,6 @@ def worker():
         file = file_queue.get()
         if file is None:
             break
-        print(f"Processing: {file}")
         file_queue.task_done()
 
 
@@ -121,9 +117,43 @@ def process_proposals(local_dir: Path, num_threads=5):
         t.join()
 
 
-def download_ips(stichtag: str, local_dir: Path | None = None):
+def _emit_progress(progress_callback=None, status_callback=None, message=None, advance=0):
+    if progress_callback is not None:
+        progress_callback(message, advance)
+        return
+    if status_callback is not None and message is not None:
+        status_callback(message)
+
+
+def download_ips(stichtag: str, local_dir: Path | None = None, status_callback=None, progress_callback=None):
     local_dir = local_dir or HARVEST_ROOT
+    repo_state = "Fetching repository updates" if local_dir.exists() else "Cloning repository"
+    _emit_progress(
+        progress_callback=progress_callback,
+        status_callback=status_callback,
+        message=repo_state,
+    )
     clone_or_update_repo(local_dir)
+
+    _emit_progress(
+        progress_callback=progress_callback,
+        status_callback=status_callback,
+        message=f"Checking out snapshot for {stichtag}",
+        advance=1,
+    )
     checkout_stichtag(local_dir, stichtag)
+
+    _emit_progress(
+        progress_callback=progress_callback,
+        status_callback=status_callback,
+        message="Scanning proposal files",
+        advance=1,
+    )
     process_proposals(local_dir)
+    _emit_progress(
+        progress_callback=progress_callback,
+        status_callback=status_callback,
+        message="Completed",
+        advance=1,
+    )
     return local_dir

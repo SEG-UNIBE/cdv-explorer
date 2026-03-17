@@ -32,5 +32,4 @@ def load_network_data(stichtag: str | None = None) -> Dict[str, Any]:
     with artifact_path.open("r", encoding="utf-8") as handle:
         data = json.load(handle)
 
-    print(f"Loaded network data from: {artifact_path}")
     return data

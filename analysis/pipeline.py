@@ -18,7 +18,6 @@ def _save_json(payload: Dict[str, Any], output_path: Path) -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     with output_path.open("w", encoding="utf-8") as handle:
         json.dump(payload, handle, ensure_ascii=False, indent=2)
-    print(f"Saved artifact: {output_path}")
 
 
 def _save_csv_rows(rows: List[Dict[str, Any]], output_path: Path, fieldnames: List[str] | None = None) -> None:
@@ -29,7 +28,6 @@ def _save_csv_rows(rows: List[Dict[str, Any]], output_path: Path, fieldnames: Li
             writer = csv.DictWriter(handle, fieldnames=fields)
             if fields:
                 writer.writeheader()
-        print(f"Saved artifact: {output_path}")
         return
 
     fields = fieldnames or sorted({k for row in rows for k in row.keys()})
@@ -37,7 +35,6 @@ def _save_csv_rows(rows: List[Dict[str, Any]], output_path: Path, fieldnames: Li
         writer = csv.DictWriter(handle, fieldnames=fields)
         writer.writeheader()
         writer.writerows(rows)
-    print(f"Saved artifact: {output_path}")
 
 
 def _save_status_map_csv(status_map: Dict[str, Dict[str, int]], output_path: Path, index_name: str) -> None:
@@ -205,9 +202,20 @@ def prepare_ecosystem_artifacts(
     stichtag: str,
     id_field: str,
     proposal_label: str,
+    status_callback=None,
+    progress_callback=None,
 ) -> Dict[str, Path]:
+    def emit(message: str, advance: int = 0) -> None:
+        if progress_callback is not None:
+            progress_callback(message, advance)
+            return
+        if status_callback is not None:
+            status_callback(message)
+
+    emit("Loading proposal JSON")
     proposal_data: List[Dict[str, Any]] = load_proposal_json_documents(proposal_json_dir)
 
+    emit("Building dependency network", advance=1)
     network_data = build_network_data(
         proposal_data,
         id_field=id_field,
@@ -218,6 +226,7 @@ def prepare_ecosystem_artifacts(
     network_stem = snapshot_root / "dependencies" / "network_data"
     save_network_data_artifacts(network_data, network_stem)
 
+    emit("Preparing authorship artifacts", advance=1)
     authorship_metrics = extract_authorship_metrics(network_data.get("nodes", []))
     authorship_path = snapshot_root / "authorship" / "authorship_metrics.json"
     _save_json(authorship_metrics, authorship_path)
@@ -246,6 +255,7 @@ def prepare_ecosystem_artifacts(
         fieldnames=["author", "degree", "betweenness", "closeness", "eigenvector"],
     )
 
+    emit("Preparing classification artifacts", advance=1)
     classification_payload = prepare_classification_payload(network_data)
     classification_payload_path = snapshot_root / "classification" / "classification_payload.json"
     _save_json(classification_payload, classification_payload_path)
@@ -265,6 +275,7 @@ def prepare_ecosystem_artifacts(
         index_name="year",
     )
 
+    emit("Preparing conformity artifacts", advance=1)
     conformity_metrics = extract_conformity_metrics(proposal_data, id_field=id_field)
     conformity_path = snapshot_root / "conformity" / "conformity_metrics.json"
     _save_json(conformity_metrics, conformity_path)
@@ -296,6 +307,7 @@ def prepare_ecosystem_artifacts(
     }
 
     if postprocess_root is not None:
+        emit("Writing react exports", advance=1)
         saved_paths.update(
             _save_react_ready_exports(
                 postprocess_root=postprocess_root,
@@ -306,5 +318,8 @@ def prepare_ecosystem_artifacts(
                 conformity_metrics=conformity_metrics,
             )
         )
+        emit("Completed", advance=1)
+    else:
+        emit("Completed", advance=2)
 
     return saved_paths

@@ -2,6 +2,7 @@ import json
 import os
 import re
 import subprocess
+import sys
 from collections import Counter
 from datetime import datetime
 from json import JSONDecodeError
@@ -28,7 +29,6 @@ def load_bip_content(file_path: Path) -> str:
         with file_path.open('r', encoding='utf-8') as f:
             return f.read()
     except FileNotFoundError:
-        print(f"Error: File {file_path} not found.")
         return ""
 
 def find_bip_file(repo_dir: Path, bip_number: str, file_prefix: str = DOCUMENT_PREFIX) -> Path:
@@ -52,7 +52,6 @@ def get_git_history(repo_dir: Path, file_path: Path) -> List[Tuple[str, str, str
         commits = [line.split('|') for line in result.stdout.strip().split('\n') if line]
         return [(commit[0], commit[1], commit[2]) for commit in commits]
     except subprocess.CalledProcessError:
-        print(f"Error retrieving commit history for {file_path}")
         return []
 
 def get_unique_authors(history: List[Tuple[str, str, str]]) -> int:
@@ -154,7 +153,6 @@ Here is the proposal text:
     model="gpt-5-nano"
     api_key = load_api_key()
     if not api_key:
-        print("OpenAI API key not found; skipping LLM dependency extraction.")
         return []
 
     client = OpenAI(api_key=api_key)
@@ -163,10 +161,8 @@ Here is the proposal text:
             model=model,
             messages=[{"role": "user", "content": prompt}],
         )
-        print(response.choices[0].message.content.strip())
         return json.loads(response.choices[0].message.content.strip())
     except (JSONDecodeError, TypeError, ValueError, KeyError, OSError, TimeoutError, ConnectionError) as e:
-        print(f"[!] Error: {e}")
         return []
 
 def load_api_key():
@@ -218,12 +214,28 @@ def process_ip_files(
     file_prefix: str = DOCUMENT_PREFIX,
     proposal_label: str = PROPOSAL_LABEL,
     id_field: str = PRIMARY_ID_FIELD,
+    progress_callback=None,
 ):
     """Process all BIP JSON files and update metadata & insights."""
     json_files = sorted([f for f in input_dir.iterdir() if f.suffix == '.json'])
-    progress = tqdm(json_files, desc="Metadata and insights", unit="ip", leave=False)
+    live_progress = sys.stdout.isatty()
+    render_local_progress = progress_callback is None and live_progress
+    progress = tqdm(
+        json_files,
+        desc="Metadata and insights",
+        unit="ip",
+        leave=False,
+        position=1,
+        dynamic_ncols=render_local_progress,
+        file=sys.stdout,
+        disable=not render_local_progress,
+        mininterval=0.5,
+    )
     for json_file in progress:
-        progress.set_postfix_str(json_file.name)
+        if render_local_progress:
+            progress.set_postfix_str(json_file.name, refresh=False)
+        if progress_callback is not None:
+            progress_callback(json_file.name, 0)
         with json_file.open('r', encoding='utf-8') as f:
             json_data = json.load(f)
         
@@ -232,7 +244,6 @@ def process_ip_files(
         bip_file_path = find_bip_file(repo_dir, bip_number, file_prefix=file_prefix)
         
         if not bip_file_path:
-            print(f"No file found for {proposal_label}-{bip_number}")
             continue
         
         json_data = update_metadata(json_data, bip_file_path, repo_dir)
@@ -241,7 +252,7 @@ def process_ip_files(
         output_path = output_dir / json_file.name
         with output_path.open('w', encoding='utf-8') as f:
             json.dump(json_data, f, ensure_ascii=False, indent=2)
-        
+        if progress_callback is not None:
+            progress_callback(json_file.name, 1)
+
     progress.close()
-
-

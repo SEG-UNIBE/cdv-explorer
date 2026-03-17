@@ -1,6 +1,7 @@
 import os
 import re
 import json
+import sys
 from typing import Dict, List
 from collections import OrderedDict
 from tqdm import tqdm
@@ -35,7 +36,6 @@ def extract_preamble_from_pre_block(file_content: str) -> Dict[str, str]:
     pre_block_match = pre_block_pattern.search(file_content)
 
     if not pre_block_match:
-        print("Error: No <pre> block found.")
         return {}
 
     pre_block = pre_block_match.group(1)
@@ -184,24 +184,37 @@ def save_preamble_to_json(
     with open(output_path, 'w', encoding='utf-8') as json_file:
         json.dump(json_data, json_file, ensure_ascii=False, indent=2)
 
-    print(f"Saved preamble to {output_path}")
-
-
 def process_files_and_save_json(
     input_dir: str,
     output_dir: str,
     file_prefix: str = "bip",
     id_field: str = "bip",
+    progress_callback=None,
 ):
     """
     Processes all .mediawiki and .md files in the directory.
     Extracts the preamble and saves it as a JSON file in the specified output directory.
     """
     proposal_files = sorted([f for f in os.listdir(input_dir) if f.endswith(('.mediawiki', '.md'))])
-    progress = tqdm(proposal_files, desc="Preamble extraction", unit="ip", leave=False)
+    live_progress = sys.stdout.isatty()
+    render_local_progress = progress_callback is None and live_progress
+    progress = tqdm(
+        proposal_files,
+        desc="Preamble extraction",
+        unit="ip",
+        leave=False,
+        position=1,
+        dynamic_ncols=render_local_progress,
+        file=sys.stdout,
+        disable=not render_local_progress,
+        mininterval=0.5,
+    )
     for proposal_file in progress:
         file_path = os.path.join(input_dir, proposal_file)
-        progress.set_postfix_str(proposal_file)
+        if render_local_progress:
+            progress.set_postfix_str(proposal_file, refresh=False)
+        if progress_callback is not None:
+            progress_callback(proposal_file, 0)
 
         # Open and read the content of the file
         with open(file_path, 'r', encoding='utf-8') as f:
@@ -227,4 +240,6 @@ def process_files_and_save_json(
             file_prefix=file_prefix,
             id_field=id_field,
         )
+        if progress_callback is not None:
+            progress_callback(proposal_file, 1)
     progress.close()

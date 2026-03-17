@@ -1,24 +1,45 @@
 import subprocess
 import sys
 
-def install_requirements(requirements_file='requirements.txt'):
+
+def _emit_progress(progress_callback=None, status_callback=None, message=None, advance=0):
+    if progress_callback is not None:
+        progress_callback(message, advance)
+        return
+    if status_callback is not None and message is not None:
+        status_callback(message)
+
+
+def install_requirements(requirements_file='requirements.txt', status_callback=None, progress_callback=None):
     """
     Installs required libraries listed in the requirements.txt file,
     but only upgrades/install if needed (won't reinstall if they're already correct).
     """
     try:
-        print("Upgrading pip (optional step)...")
+        _emit_progress(
+            progress_callback=progress_callback,
+            status_callback=status_callback,
+            message="Upgrading pip",
+        )
         subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", "pip"])
 
-        print(f"Installing/Upgrading requirements from {requirements_file} only if needed...")
+        _emit_progress(
+            progress_callback=progress_callback,
+            status_callback=status_callback,
+            message="Installing requirements",
+            advance=1,
+        )
         subprocess.check_call([
             sys.executable, "-m", "pip", "install",
             "--upgrade",
             "--upgrade-strategy", "only-if-needed",
             "-r", requirements_file
         ])
-
-        print("All required libraries have been installed or were already up-to-date.")
+        _emit_progress(
+            progress_callback=progress_callback,
+            status_callback=status_callback,
+            message="Completed",
+            advance=1,
+        )
     except subprocess.CalledProcessError as e:
-        print(f"Error occurred during installation: {e}")
-        sys.exit(1)
+        raise SystemExit(1) from e

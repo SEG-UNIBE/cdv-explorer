@@ -1,5 +1,6 @@
 import * as d3 from 'd3';
 import { useEffect, useRef } from 'react';
+import { renderBipListHtml } from './bipTooltipContent';
 
 export const ProposalTimelineChart = ({ data, width = 600, height = 300 }) => {
   const ref = useRef();
@@ -47,17 +48,11 @@ export const ProposalTimelineChart = ({ data, width = 600, height = 300 }) => {
     let pinnedYear = null;
 
     const renderTooltipHtml = (entry) => {
-      const bipLinks = entry.bips.length
-        ? entry.bips
-          .map((bip) => `<a href="https://bips.dev/${bip}/" target="_blank" rel="noreferrer">BIP ${bip}</a>`)
-          .join(', ')
-        : 'No BIP list available.';
-
       return (
         `<strong>${entry.year}</strong><br/>` +
         `New proposals: ${entry.count}<br/>` +
         `Cumulative proposals: ${entry.cumulative}<br/>` +
-        `${entry.bips.length ? `List: ${bipLinks}` : bipLinks}`
+        renderBipListHtml(entry.bips)
       );
     };
 

@@ -1,5 +1,6 @@
 import * as d3 from 'd3';
 import { useEffect, useRef } from 'react';
+import { renderBipListHtml } from './bipTooltipContent';
 
 export const TopAuthorsChart = ({ data, width = 600, height = 400 }) => {
   const ref = useRef();
@@ -72,16 +73,10 @@ export const TopAuthorsChart = ({ data, width = 600, height = 400 }) => {
     let pinnedAuthor = null;
 
     const renderTooltipHtml = (entry) => {
-      const bipLinks = entry.bips.length
-        ? entry.bips
-          .map((bip) => `<a href="https://bips.dev/${bip}/" target="_blank" rel="noreferrer">BIP${bip}</a>`)
-          .join(', ')
-        : 'No BIP list available.';
-
       return (
         `<strong>${entry.author}</strong><br/>` +
         `BIPs: ${entry.count}<br/>` +
-        `${entry.bips.length ? `List: ${bipLinks}` : bipLinks}`
+        renderBipListHtml(entry.bips)
       );
     };
 

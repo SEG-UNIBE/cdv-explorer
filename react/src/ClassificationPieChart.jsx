@@ -1,5 +1,6 @@
 import * as d3 from 'd3';
 import { useEffect, useRef } from 'react';
+import { renderBipListHtml } from './bipTooltipContent';
 import { getClassificationColorMap } from './classificationColors';
 
 export const ClassificationPieChart = ({ dimension, colorDomain, data, width = 360, height = 320 }) => {
@@ -42,17 +43,11 @@ export const ClassificationPieChart = ({ dimension, colorDomain, data, width = 3
     let pinnedCategory = null;
 
     const renderTooltipHtml = (entry) => {
-      const bipLinks = Array.isArray(entry.bips) && entry.bips.length
-        ? entry.bips
-          .map((bip) => `<a href="https://bips.dev/${bip}/" target="_blank" rel="noreferrer">BIP ${bip}</a>`)
-          .join(', ')
-        : 'No BIP list available.';
-
       return (
         `<strong>${entry.id}</strong><br/>` +
         `Count: ${entry.value}<br/>` +
         `Share: ${((entry.value / total) * 100).toFixed(1)}%<br/>` +
-        `${entry.bips?.length ? `List: ${bipLinks}` : bipLinks}`
+        renderBipListHtml(entry.bips)
       );
     };
 

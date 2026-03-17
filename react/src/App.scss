@@ -292,11 +292,25 @@
   cursor: pointer;
 }
 
+.author-network-tooltip,
+.author-tooltip,
+.proposal-tooltip,
+.classification-pie-tooltip,
+.classification-timeline-tooltip,
+.proposal-sankey-tooltip,
+.author-histogram-tooltip,
+.wordcloud-tooltip {
+  width: min(320px, calc(100vw - 32px));
+  box-sizing: border-box;
+  overflow-wrap: anywhere;
+}
+
 .author-network-tooltip a,
 .author-tooltip a,
 .proposal-tooltip a,
 .classification-pie-tooltip a,
-.classification-timeline-tooltip a {
+.classification-timeline-tooltip a,
+.proposal-sankey-tooltip a {
   color: #9bd1ff;
   text-decoration: underline;
 }

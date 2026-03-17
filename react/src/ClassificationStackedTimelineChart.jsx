@@ -1,5 +1,6 @@
 import * as d3 from 'd3';
 import { useEffect, useRef } from 'react';
+import { renderBipListHtml } from './bipTooltipContent';
 import { getClassificationColorMap } from './classificationColors';
 
 export const ClassificationStackedTimelineChart = ({
@@ -130,18 +131,13 @@ export const ClassificationStackedTimelineChart = ({
         const bipList = Array.isArray(segment.data?.bips?.[segment.key])
           ? segment.data.bips[segment.key]
           : [];
-        const bipLinks = bipList.length
-          ? bipList
-            .map((bip) => `<a href="https://bips.dev/${bip}/" target="_blank" rel="noreferrer">BIP ${bip}</a>`)
-            .join(', ')
-          : 'No BIP list available.';
 
         return (
           `<strong>${config?.label || field}</strong><br/>` +
           `Year: ${segment.data.year}<br/>` +
           `Category: ${segment.key}<br/>` +
           `Count: ${segment.data[segment.key]}<br/>` +
-          `${bipList.length ? `List: ${bipLinks}` : bipLinks}`
+          renderBipListHtml(bipList)
         );
       };
 

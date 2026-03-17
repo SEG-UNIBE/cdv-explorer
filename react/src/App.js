@@ -68,6 +68,29 @@ function normalizeProposalFilterValue(value) {
   return match ? match[1] : text;
 }
 
+function normalizeSankeyLayer(value) {
+  const text = String(value || '').trim() || 'Unknown Layer';
+  return text.includes('Unknown') ? 'Other' : text;
+}
+
+function normalizeSankeyStatus(value) {
+  const text = String(value || '').trim() || 'Unknown Status';
+  const base = text.split('(')[0].trim() || 'Unknown Status';
+  return base.includes('Unknown') ? 'Unknown Status' : base;
+}
+
+function normalizeSankeyType(value) {
+  const text = String(value || '').trim() || 'Unknown Type';
+  const aliases = {
+    Standard: 'Standards Track',
+    Standards: 'Standards Track',
+    'Standard Track': 'Standards Track',
+    'Standards-Track': 'Standards Track',
+  };
+  const normalized = aliases[text] || text;
+  return normalized.includes('Unknown') ? 'Unknown Type' : normalized;
+}
+
 function parseProposalFilterExpression(text, availableProposalIds = []) {
   const availableSet = new Set((availableProposalIds || []).map(normalizeProposalFilterValue));
   const selected = new Set();
@@ -476,6 +499,31 @@ function buildDashboardData(dataset) {
   const wordCloudData = buildWordCloudData(dataset.nodes);
 
   const groupedLinks = classification?.sankey_grouped?.links || [];
+  const sankeyBipsByTransition = new Map();
+
+  dataset.nodes.forEach((node) => {
+    const bipId = node?.id != null ? String(node.id) : null;
+    if (!bipId) {
+      return;
+    }
+
+    const layer = normalizeSankeyLayer(node?.layer);
+    const status = normalizeSankeyStatus(node?.status);
+    const kind = normalizeSankeyType(node?.type);
+    const transitions = [
+      [layer, status],
+      [status, kind],
+    ];
+
+    transitions.forEach(([source, target]) => {
+      const key = `${source}|||${target}`;
+      if (!sankeyBipsByTransition.has(key)) {
+        sankeyBipsByTransition.set(key, new Set());
+      }
+      sankeyBipsByTransition.get(key).add(bipId);
+    });
+  });
+
   const nodeLabels = Array.from(new Set(groupedLinks.flatMap((item) => [item.source, item.target])));
   const nodeIdMap = new Map(nodeLabels.map((label, index) => [label, index]));
 
@@ -489,6 +537,8 @@ function buildDashboardData(dataset) {
       source: nodeIdMap.get(link.source),
       target: nodeIdMap.get(link.target),
       value: link.count,
+      bips: Array.from(sankeyBipsByTransition.get(`${link.source}|||${link.target}`) || [])
+        .sort((left, right) => Number(left) - Number(right)),
     })),
   };
 
@@ -934,7 +984,7 @@ function EcosystemDashboard() {
         </Card>
       ))}
       <Card className="mb-4" style={{ flex: 1 }}>
-        <h3>Sankey Diagram</h3>
+        <h3>Combined Classification Dimensions</h3>
         <p>This Sankey diagram visualizes the flow between categories in the selected proposal ecosystem.</p>
         <ProposalSankeyChart data={sankeyData} width={1200} height={600} />
       </Card>

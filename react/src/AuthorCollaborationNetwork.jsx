@@ -1,5 +1,6 @@
 import * as d3 from 'd3';
 import { useEffect, useRef } from 'react';
+import { renderBipListHtml } from './bipTooltipContent';
 
 export const AuthorCollaborationNetwork = ({
   data,
@@ -135,15 +136,10 @@ export const AuthorCollaborationNetwork = ({
 
     const renderEdgeTooltip = (edge) => {
       const sharedBips = Array.isArray(edge.bips) ? edge.bips : [];
-      const bipLinks = sharedBips.length
-        ? sharedBips
-          .map((bip) => `<a href="https://bips.dev/${bip}/" target="_blank" rel="noreferrer">BIP${bip}</a>`)
-          .join(', ')
-        : 'No shared BIPs available.';
       return (
         `<strong>${getEdgeSourceId(edge)}</strong> x <strong>${getEdgeTargetId(edge)}</strong><br/>` +
         `Shared BIPs: ${sharedBips.length}<br/>` +
-        `${sharedBips.length ? `List: ${bipLinks}` : bipLinks}`
+        renderBipListHtml(sharedBips, { emptyText: 'No shared BIPs available.' })
       );
     };
 

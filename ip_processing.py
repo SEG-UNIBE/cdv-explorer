@@ -150,7 +150,7 @@ Here is the proposal text:
 \"\"\"{text}\"\"\"
 """
     
-    model="gpt-5-mini"
+    model="gpt-5-nano"
     api_key = load_api_key()
     if not api_key:
         print("OpenAI API key not found; skipping LLM dependency extraction.")

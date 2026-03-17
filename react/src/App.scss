@@ -1,0 +1,169 @@
+.content {
+  margin-top: 100px; /* Ensure this is enough to push content below the navbar */
+  margin-left: 20px;
+  margin-right: 20px;
+  max-width: 1400px;
+  min-height: calc(100vh - 150px); /* 100px for navbar + 50px for footer */
+  
+  @media screen and (min-width: 1400px) {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+.p-card {
+  border-radius: 1.25rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.p-card h2 {
+  margin-top: 0;
+}
+
+.ecosystem-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.ecosystem-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 260px;
+}
+
+.ecosystem-card--muted {
+  opacity: 0.62;
+}
+
+.ecosystem-card--muted .p-button {
+  opacity: 0.9;
+}
+
+.ecosystem-card-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: left;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.ecosystem-card-header h2 {
+  margin: 0;
+  line-height: 1;
+}
+
+.ecosystem-logo {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+
+.ecosystem-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  color: #5f6b76;
+}
+
+.ecosystem-actions {
+  margin-top: 1.5rem;
+}
+
+.dashboard-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.dashboard-toolbar__copy {
+  flex: 1 1 420px;
+}
+
+.dashboard-sticky-controls {
+  width: min(280px, 100%);
+  margin-left: auto;
+  margin-bottom: 1.5rem;
+  position: sticky;
+  top: 92px;
+  z-index: 50;
+  background: #ffffff;
+  border: 1px solid #dfe8f2;
+  border-radius: 0.75rem;
+  padding: 0.8rem;
+}
+
+@media (max-width: 900px) {
+  .dashboard-sticky-controls {
+    position: static;
+    border: none;
+    padding: 0;
+    background: transparent;
+  }
+}
+
+.dashboard-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-bottom: 0.75rem;
+}
+
+.dashboard-title-row h1 {
+  margin: 0;
+}
+
+.dashboard-title-logo {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+
+.analysis-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.analysis-stat {
+  background: #f8fbff;
+  border: 1px solid #d6e6f7;
+  border-radius: 0.85rem;
+  padding: 0.9rem 1rem;
+}
+
+.analysis-stat h3 {
+  margin-top: 0;
+  margin-bottom: 0.55rem;
+}
+
+.analysis-stat p {
+  margin: 0.25rem 0;
+}
+
+.analysis-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.analysis-table th,
+.analysis-table td {
+  text-align: left;
+  padding: 0.55rem;
+  border-bottom: 1px solid #e4edf6;
+  vertical-align: top;
+}
+
+.analysis-table thead th {
+  background: #f3f8fe;
+}

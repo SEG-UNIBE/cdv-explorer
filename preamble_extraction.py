@@ -3,30 +3,27 @@ import re
 import json
 from typing import Dict, List
 from collections import OrderedDict
-import mistune
+from tqdm import tqdm
+from analysis.conformity.compliance import (
+    add_missing_optional_fields as conformity_add_missing_optional_fields,
+    calculate_compliance_score as conformity_calculate_compliance_score,
+    check_headlines as conformity_check_headlines,
+    check_required_fields as conformity_check_required_fields,
+)
+from ecosystem_config import ACTIVE_ECOSYSTEM
 
 
-# Separate required and optional fields based on your instructions
-REQUIRED_FIELDS = [
-    'bip', 'title', 'author', 'comments_uri', 'status', 'type', 'created', 'license'
-]
+PREAMBLE_CONFIG = ACTIVE_ECOSYSTEM["preamble"]
+REQUIRED_FIELDS = PREAMBLE_CONFIG["required_fields"]
+OPTIONAL_FIELDS = PREAMBLE_CONFIG["optional_fields"]
+FIELD_ALIASES = PREAMBLE_CONFIG.get("field_aliases", {})
+EXPECTED_HEADLINES = PREAMBLE_CONFIG["expected_headlines"]
+LIST_VALUED_FIELDS = set(PREAMBLE_CONFIG.get("list_valued_fields", []))
+CLASSIFICATION_CONFIG = ACTIVE_ECOSYSTEM.get("classification", {})
+LAYER_ALIASES = CLASSIFICATION_CONFIG.get("layer_aliases", {})
+STATUS_ALIASES = CLASSIFICATION_CONFIG.get("status_aliases", {})
+TYPE_ALIASES = CLASSIFICATION_CONFIG.get("type_aliases", {})
 
-OPTIONAL_FIELDS = [
-    'layer', 'discussions_to', 'comments_summary', 'license_code', 'post_history',
-    'requires', 'replaces', 'superseded_by'
-]
-
-EXPECTED_HEADLINES = {
-    "abstract": 2,
-    "motivation": 2,
-    "specification": 2,
-    "rationale": 2,
-    "backwards compatibility": 2,
-    "reference implementation": 2,
-    "security considerations": 2,
-    "copyright": 2,
-    "references": 2,
-}
 
 
 def extract_preamble_from_pre_block(file_content: str) -> Dict[str, str]:
@@ -80,65 +77,80 @@ def format_value(key: str, value: str):
     Formats the value based on the key. For multi-line values (e.g., 'author'),
     returns them as a list. Otherwise, returns the string value.
     """
-    if key == 'author' or key == 'license':  # Convert multi-line fields to a list
+    if key in LIST_VALUED_FIELDS:  # Convert configured multi-line fields to a list
         return [line.strip() for line in value.split('\n') if line.strip()]
     return value.strip()
 
 
-def check_required_fields(preamble: Dict[str, str], file_name: str) -> List[str]:
+def normalize_preamble_fields(preamble: Dict[str, str]) -> Dict[str, str]:
+    """Normalize source-specific preamble keys to canonical keys used across the pipeline."""
+    normalized = dict(preamble)
+
+    for source_key, canonical_key in FIELD_ALIASES.items():
+        if canonical_key in normalized:
+            continue
+        if source_key not in normalized:
+            continue
+        normalized[canonical_key] = normalized[source_key]
+
+    # Normalize ecosystem-specific categorical values to canonical values.
+    if normalized.get("layer") is not None:
+        normalized["layer"] = LAYER_ALIASES.get(normalized["layer"], normalized["layer"])
+    if normalized.get("status") is not None:
+        normalized["status"] = STATUS_ALIASES.get(normalized["status"], normalized["status"])
+    if normalized.get("type") is not None:
+        normalized["type"] = TYPE_ALIASES.get(normalized["type"], normalized["type"])
+
+    # Ensure author/license remain list-valued even when aliases provided a scalar.
+    for list_field in LIST_VALUED_FIELDS:
+        value = normalized.get(list_field)
+        if value is None:
+            continue
+        if isinstance(value, list):
+            continue
+        normalized[list_field] = [part.strip() for part in str(value).split("\n") if part.strip()]
+
+    return normalized
+
+
+def check_required_fields(preamble: Dict[str, str], _file_name: str) -> List[str]:
     """
     Return list of missing required fields.
     """
-    missing_required_fields = [field for field in REQUIRED_FIELDS if field not in preamble]
-    return missing_required_fields
+    return conformity_check_required_fields(preamble, REQUIRED_FIELDS)
 
-def check_headlines(file_content: str, file_name: str) -> List[str]:
+def check_headlines(file_content: str, _file_name: str) -> List[str]:
     """
     Return list of missing or incorrect headline entries.
     """
-    pattern = r'^(={2,6})\s*(.+?)\s*\1$'
-    matches = re.findall(pattern, file_content, re.MULTILINE)
+    return conformity_check_headlines(file_content, EXPECTED_HEADLINES)
 
-    found_headings = {
-        heading.strip().lower(): len(eq)
-        for eq, heading in matches
-    }
-
-    issues = []
-    for expected_heading, expected_level in EXPECTED_HEADLINES.items():
-        actual_level = found_headings.get(expected_heading)
-        if actual_level is None:
-            issues.append(f"Missing: {expected_heading}")
-        elif actual_level != expected_level:
-            issues.append(f"Wrong level for {expected_heading}: expected {expected_level}, found {actual_level}")
-
-    return issues
-
-def calculate_compliance_score(preamble: Dict[str, str], file_content: str, file_name: str) -> float:
+def calculate_compliance_score(preamble: Dict[str, str], file_content: str, _file_name: str) -> float:
     """
     Calculates a compliance score based on missing required fields and incorrect/missing headings.
     """
-    required_issues = check_required_fields(preamble, file_name)
-    headline_issues = check_headlines(file_content, file_name)
-
-    total_checks = len(REQUIRED_FIELDS) + len(EXPECTED_HEADLINES)
-    failed_checks = len(required_issues) + len(headline_issues)
-    passed_checks = total_checks - failed_checks
-
-    score = (passed_checks / total_checks) * 100
-    preamble["Compliance Score"] = round(score, 2)
+    return conformity_calculate_compliance_score(
+        preamble,
+        file_content,
+        required_fields=REQUIRED_FIELDS,
+        expected_headlines=EXPECTED_HEADLINES,
+    )
 
 
 def add_missing_optional_fields(preamble: Dict[str, str]):
     """
     Adds missing optional fields to the preamble with a default value of None (null in JSON).
     """
-    for field in OPTIONAL_FIELDS:
-        if field not in preamble:
-            preamble[field] = None
+    conformity_add_missing_optional_fields(preamble, OPTIONAL_FIELDS)
 
 
-def save_preamble_to_json(preamble: Dict[str, str], output_dir: str, file_name: str):
+def save_preamble_to_json(
+    preamble: Dict[str, str],
+    output_dir: str,
+    _file_name: str,
+    file_prefix: str = "bip",
+    id_field: str = "bip",
+):
     """
     Saves the given preamble to a JSON file in the specified output directory.
     The preamble is saved under a "raw" section in the JSON, with a "preamble" subsection.
@@ -146,10 +158,10 @@ def save_preamble_to_json(preamble: Dict[str, str], output_dir: str, file_name: 
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
-    # Determine the BIP number and format it with leading zeros (e.g., '0002')
-    bip_number = preamble.get('bip', 'unknown_bip')
-    bip_number_str = f"{int(bip_number):04d}" if bip_number.isdigit() else 'unknown_bip'
-    json_file_name = f"bip-{bip_number_str}.json"
+    # Determine the proposal number and format it with leading zeros (e.g., '0002').
+    proposal_number = str(preamble.get(id_field, f"unknown_{file_prefix}"))
+    proposal_number_str = f"{int(proposal_number):04d}" if proposal_number.isdigit() else f"unknown_{file_prefix}"
+    json_file_name = f"{file_prefix}-{proposal_number_str}.json"
     output_path = os.path.join(output_dir, json_file_name)
 
     # Order the keys (required fields first, then optional fields)
@@ -175,31 +187,44 @@ def save_preamble_to_json(preamble: Dict[str, str], output_dir: str, file_name: 
     print(f"Saved preamble to {output_path}")
 
 
-def process_files_and_save_json(input_dir: str, output_dir: str):
+def process_files_and_save_json(
+    input_dir: str,
+    output_dir: str,
+    file_prefix: str = "bip",
+    id_field: str = "bip",
+):
     """
     Processes all .mediawiki and .md files in the directory.
     Extracts the preamble and saves it as a JSON file in the specified output directory.
     """
-    bip_files = [f for f in os.listdir(input_dir) if f.endswith(('.mediawiki', '.md'))]
-    for bip_file in bip_files:
-        file_path = os.path.join(input_dir, bip_file)
-        print(f"Processing {file_path}")
+    proposal_files = sorted([f for f in os.listdir(input_dir) if f.endswith(('.mediawiki', '.md'))])
+    progress = tqdm(proposal_files, desc="Preamble extraction", unit="ip", leave=False)
+    for proposal_file in progress:
+        file_path = os.path.join(input_dir, proposal_file)
+        progress.set_postfix_str(proposal_file)
 
         # Open and read the content of the file
         with open(file_path, 'r', encoding='utf-8') as f:
             content = f.read()
 
         # Extract preamble from the file
-        preamble = extract_preamble_from_pre_block(content)
+        preamble = normalize_preamble_fields(extract_preamble_from_pre_block(content))
 
         # Check required fields and print the preamble
-        check_required_fields(preamble, bip_file)
+        check_required_fields(preamble, proposal_file)
 
         # Add missing optional fields with a default value
         add_missing_optional_fields(preamble)
 
         #Add compliance score
-        calculate_compliance_score(preamble, content, bip_file)
+        calculate_compliance_score(preamble, content, proposal_file)
 
         # Save the preamble to a JSON file
-        save_preamble_to_json(preamble, output_dir, bip_file)
+        save_preamble_to_json(
+            preamble,
+            output_dir,
+            proposal_file,
+            file_prefix=file_prefix,
+            id_field=id_field,
+        )
+    progress.close()

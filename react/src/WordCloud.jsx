@@ -6,10 +6,12 @@ export const WordCloud = ({ words, width = 1250, height = 750 }) => {
   const svgRef = useRef();
 
   useEffect(() => {
+    const svgElement = svgRef.current;
+
     if (!words || words.length === 0) return;
 
     // Clear previous word cloud
-    d3.select(svgRef.current).selectAll('*').remove();
+    d3.select(svgElement).selectAll('*').remove();
     d3.select('body').selectAll('.wordcloud-tooltip').remove(); // clean any previous tooltips
 
     const maxCount = d3.max(words, d => d.count);
@@ -51,7 +53,7 @@ export const WordCloud = ({ words, width = 1250, height = 750 }) => {
         .style('pointer-events', 'none')
         .style('opacity', 0);
 
-      const svg = d3.select(svgRef.current)
+      const svg = d3.select(svgElement)
         .attr('width', width)
         .attr('height', height)
         .attr('viewBox', `0 0 ${width} ${height}`)
@@ -98,7 +100,7 @@ export const WordCloud = ({ words, width = 1250, height = 750 }) => {
 
     // Clean up
     return () => {
-      d3.select(svgRef.current).selectAll('*').remove();
+      d3.select(svgElement).selectAll('*').remove();
       d3.select('body').selectAll('.wordcloud-tooltip').remove();
     };
   }, [words, width, height]);

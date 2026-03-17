@@ -131,7 +131,7 @@ export const TopAuthorsChart = ({ data, width = 600, height = 400 }) => {
       d3.select('body').selectAll('.author-tooltip').remove();
     };
 
-  }, [data]);
+  }, [data, width, height]);
 
   return <svg ref={ref} />;
 };

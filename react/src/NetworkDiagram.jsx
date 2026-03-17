@@ -255,7 +255,7 @@ entries = entries.slice(1); // remove the first item
       tooltip.remove();
     };
 
-  }, [colorBy, linkType, data]);
+  }, [colorBy, linkType, data, nodes, links]);
 
   return (
     <div>

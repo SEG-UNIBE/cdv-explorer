@@ -14,7 +14,7 @@ export const drawNetwork = (svg, width, height, nodes, links) => {
      .attr("height", height);
 
   // Run the D3 force simulation to calculate node positions
-  const simulation = d3.forceSimulation(nodes)
+  d3.forceSimulation(nodes)
     .force('link', d3.forceLink(links).id(d => d.id).distance(100))  // Apply a link force
     .force('collide', d3.forceCollide().radius(RADIUS + 5))           // Apply collision force
     .force('charge', d3.forceManyBody())                              // Apply repulsion between nodes

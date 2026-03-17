@@ -292,7 +292,69 @@
   cursor: pointer;
 }
 
+.dependency-edge-legend {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.dependency-node-legend {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.25rem;
+}
+
+.dependency-edge-legend__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #52606d;
+  font-size: 0.95rem;
+}
+
+.dependency-edge-legend__line {
+  width: 36px;
+  height: 12px;
+  flex: 0 0 auto;
+}
+
+.dependency-node-legend__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #52606d;
+  font-size: 0.95rem;
+}
+
+.dependency-node-legend__swatch {
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.15);
+  flex: 0 0 auto;
+}
+
+.dependency-filter-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: #52606d;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.dependency-filter-checkbox input {
+  margin: 0;
+}
+
 .author-network-tooltip,
+.dependency-network-tooltip,
 .author-tooltip,
 .proposal-tooltip,
 .classification-pie-tooltip,
@@ -307,6 +369,7 @@
 }
 
 .author-network-tooltip a,
+.dependency-network-tooltip a,
 .author-tooltip a,
 .proposal-tooltip a,
 .classification-pie-tooltip a,

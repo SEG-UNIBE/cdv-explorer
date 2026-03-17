@@ -740,6 +740,10 @@ function EcosystemDashboard() {
   const [selectedStichtag, setSelectedStichtag] = useState(availableStichtage[0] ?? null);
   const [highlightedAuthor, setHighlightedAuthor] = useState('');
   const [collaborationLayoutMode, setCollaborationLayoutMode] = useState('balanced');
+  const [highlightedDependencyProposal, setHighlightedDependencyProposal] = useState('');
+  const [dependencyFilterText, setDependencyFilterText] = useState('');
+  const [dependencyIncludeConnections, setDependencyIncludeConnections] = useState(true);
+  const [dependencyLayoutMode, setDependencyLayoutMode] = useState('balanced');
   const [wordCloudFilterText, setWordCloudFilterText] = useState('');
 
   useEffect(() => {
@@ -781,14 +785,30 @@ function EcosystemDashboard() {
     () => parseProposalFilterExpression(wordCloudFilterText, availableProposalIds),
     [availableProposalIds, wordCloudFilterText]
   );
+  const selectedDependencyProposalIds = useMemo(
+    () => parseProposalFilterExpression(dependencyFilterText, availableProposalIds),
+    [availableProposalIds, dependencyFilterText]
+  );
   const filteredWordCloudData = useMemo(
     () => buildWordCloudData(selectedDataset?.nodes || [], selectedWordCloudProposalIds),
     [selectedDataset, selectedWordCloudProposalIds]
   );
   const hasWordCloudFilter = wordCloudFilterText.trim().length > 0;
+  const hasDependencyFilter = dependencyFilterText.trim().length > 0;
 
   useEffect(() => {
     setWordCloudFilterText((current) => {
+      if (!current.trim()) {
+        return current;
+      }
+
+      const normalized = parseProposalFilterExpression(current, availableProposalIds);
+      return normalized.length ? current : '';
+    });
+  }, [availableProposalIds]);
+
+  useEffect(() => {
+    setDependencyFilterText((current) => {
       if (!current.trim()) {
         return current;
       }
@@ -821,6 +841,7 @@ function EcosystemDashboard() {
     .map((node) => String(node.id || ''))
     .filter(Boolean)
     .sort((left, right) => left.localeCompare(right));
+  const dependencyProposalOptions = availableProposalIds;
   const stichtagOptions = availableStichtage.map((stichtag) => ({
     label: stichtag === 'current' ? 'Current' : stichtag,
     value: stichtag,
@@ -1033,7 +1054,88 @@ function EcosystemDashboard() {
           This graph visualizes three relationship-extraction approaches in the selected ecosystem:
           explicit dependencies (preamble), explicit references (regex), and implicit dependencies (LLM).
         </p>
-        <NetworkDiagram data={selectedDataset} width={700} height={500} />
+        <div className="network-finder">
+          <div className="network-finder__copy">
+            <strong>Find proposal.</strong>
+            <span>Search a proposal ID to highlight and center its node in the network.</span>
+          </div>
+          <div className="network-finder__controls">
+            <InputText
+              value={highlightedDependencyProposal}
+              onChange={(event) => setHighlightedDependencyProposal(event.target.value)}
+              placeholder="Type a proposal ID"
+              list="dependency-proposal-options"
+            />
+            <datalist id="dependency-proposal-options">
+              {dependencyProposalOptions.map((proposalId) => (
+                <option key={proposalId} value={proposalId} />
+              ))}
+            </datalist>
+            <Button
+              type="button"
+              label="Clear"
+              severity="secondary"
+              text
+              onClick={() => setHighlightedDependencyProposal('')}
+              disabled={!highlightedDependencyProposal.trim()}
+            />
+          </div>
+        </div>
+        <div className="wordcloud-filter">
+          <div className="wordcloud-filter__copy">
+            <strong>Filter proposals.</strong>
+            <span>Use comma-separated IDs or ranges like `2,4,30-35,99`.</span>
+          </div>
+          <div className="wordcloud-filter__controls">
+            <InputText
+              value={dependencyFilterText}
+              onChange={(event) => setDependencyFilterText(event.target.value)}
+              placeholder="e.g. 2,4,30-35,99"
+            />
+            <label className="dependency-filter-checkbox">
+              <input
+                type="checkbox"
+                checked={dependencyIncludeConnections}
+                onChange={(event) => setDependencyIncludeConnections(event.target.checked)}
+              />
+              <span>incl. connections</span>
+            </label>
+            <Button
+              type="button"
+              label="Clear"
+              severity="secondary"
+              text
+              onClick={() => setDependencyFilterText('')}
+              disabled={!hasDependencyFilter}
+            />
+          </div>
+        </div>
+        <div className="network-layout-picker">
+          <div className="network-layout-picker__label">Layout</div>
+          <div className="network-layout-picker__options">
+            {COLLABORATION_LAYOUT_OPTIONS.map((option) => (
+              <label key={option.value} className="network-layout-picker__option">
+                <RadioButton
+                  inputId={`dependency-layout-${option.value}`}
+                  name="dependency-layout"
+                  value={option.value}
+                  onChange={(event) => setDependencyLayoutMode(event.value)}
+                  checked={dependencyLayoutMode === option.value}
+                />
+                <span>{option.label}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+        <NetworkDiagram
+          data={selectedDataset}
+          width={1200}
+          height={700}
+          highlightProposal={highlightedDependencyProposal}
+          proposalFilterIds={selectedDependencyProposalIds}
+          includeConnections={dependencyIncludeConnections}
+          layoutMode={dependencyLayoutMode}
+        />
       </Card>
       <Card className="mb-4">
         <h3>Analysis Submodule Summary</h3>

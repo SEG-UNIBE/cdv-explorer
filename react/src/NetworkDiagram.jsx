@@ -1,308 +1,739 @@
 import * as d3 from 'd3';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Dropdown } from 'primereact/dropdown';
-import { RadioButton } from 'primereact/radiobutton';
+import { getClassificationColorMap } from './classificationColors';
 
-export const NetworkDiagram = ({ width, height, data }) => {
+const LINK_TYPE_OPTIONS = [
+  { label: 'Explicit Dependencies (Preamble)', value: 'explicit_dependencies' },
+  { label: 'Explicit References (Regex)', value: 'explicit_references' },
+  { label: 'Implicit Dependencies (LLM)', value: 'implicit_dependencies' },
+];
+
+const COLOR_BY_OPTIONS = [
+  { label: 'Layer', value: 'layer' },
+  { label: 'Status', value: 'status' },
+  { label: 'Type', value: 'type' },
+];
+
+const EXPLICIT_DEPENDENCY_COLORS = {
+  requires: '#667085',
+  replaces: '#667085',
+  superseded_by: '#667085',
+};
+
+const DEFAULT_EDGE_COLORS = {
+  explicit_references: '#607d8b',
+  implicit_dependencies: '#7b2cbf',
+};
+
+const EXPLICIT_DEPENDENCY_STYLES = {
+  requires: null,
+  replaces: '8 5',
+  superseded_by: '2.5 4',
+};
+
+function normalizeProposalId(value) {
+  const text = String(value ?? '').trim();
+  if (!text) {
+    return '';
+  }
+
+  const match = text.match(/^(?:bip\s*[- ]*)?0*(\d+)$/i);
+  return match ? String(Number(match[1])) : text.toLowerCase();
+}
+
+function getProposalLabel(id) {
+  const normalized = normalizeProposalId(id);
+  return normalized ? `BIP ${normalized}` : String(id ?? '');
+}
+
+function getProposalUrl(id) {
+  const normalized = normalizeProposalId(id);
+  return normalized ? `https://bips.dev/${normalized}/` : '#';
+}
+
+function buildDisplayedLinks(linksByType, linkType) {
+  if (linkType === 'explicit_dependencies') {
+    return ['requires', 'replaces', 'superseded_by']
+      .flatMap((relationType) => (linksByType?.[relationType] || []).map((edge, index) => ({
+        ...edge,
+        relationType,
+        key: `${relationType}-${edge.source}-${edge.target}-${index}`,
+      })));
+  }
+
+  return (linksByType?.[linkType] || []).map((edge, index) => ({
+    ...edge,
+    relationType: linkType,
+    key: `${linkType}-${edge.source}-${edge.target}-${index}`,
+  }));
+}
+
+function normalizeCategory(value, fallbackLabel) {
+  const text = String(value ?? '').trim();
+  return text || fallbackLabel;
+}
+
+export const NetworkDiagram = ({
+  width = 1200,
+  height = 800,
+  data,
+  highlightProposal = '',
+  proposalFilterIds = [],
+  includeConnections = true,
+  layoutMode = 'balanced',
+}) => {
   const ref = useRef();
   const legendRef = useRef();
-  const [colorBy, setColorBy] = useState("layer");
-  const [linkType, setLinkType] = useState("explicit_references");
+  const [colorBy, setColorBy] = useState('layer');
+  const [linkType, setLinkType] = useState('explicit_dependencies');
 
-  const nodes = data.nodes;
-  const links = data.links[linkType];
+  const nodes = useMemo(
+    () => (Array.isArray(data?.nodes) ? data.nodes.map((node) => ({ ...node })) : []),
+    [data]
+  );
+
+  const links = useMemo(
+    () => buildDisplayedLinks(data?.links || {}, linkType),
+    [data, linkType]
+  );
 
   useEffect(() => {
-    const width = 1500;
-    const height = 750;
+    const svg = d3.select(ref.current);
+    svg.selectAll('*').remove();
+    d3.select('body').selectAll('.dependency-network-tooltip').remove();
 
-    let color;
-    if (colorBy === "compliance_score") {
-      color = d3.scaleSequential()
-        .domain([50, 100])
-        .interpolator(d3.interpolateBlues);
-    } else {
-      const uniqueGroups = [...new Set(nodes.map(d => d[colorBy]))];
-      color = d3.scaleOrdinal()
-        .domain(uniqueGroups)
-        .range(d3.quantize(d3.interpolateBlues, uniqueGroups.length + 1).slice(1));
+    if (nodes.length === 0) {
+      return;
     }
 
-    const svg = d3.select(ref.current)
-      .attr("width", width)
-      .attr("height", height)
-      .attr("viewBox", [0, 0, width, height])
-      .style("maxWidth", "100%")
-      .style("height", "auto");
+    const allNodes = nodes.map((node) => ({ ...node }));
+    const nodeById = new Map(allNodes.map((node) => [String(node.id), node]));
+    const allLinks = links
+      .filter((edge) => nodeById.has(String(edge.source)) && nodeById.has(String(edge.target)))
+      .map((edge) => ({
+        ...edge,
+        source: String(edge.source),
+        target: String(edge.target),
+      }));
 
-    svg.selectAll("*").remove();
+    const requestedIds = new Set((proposalFilterIds || []).map((value) => String(value)));
+    const hasFilter = requestedIds.size > 0;
+    let displayedNodeIds = new Set(allNodes.map((node) => String(node.id)));
+    let localLinks = allLinks;
 
-    // Define arrowhead marker
-    svg.append("defs").append("marker")
-      .attr("id", "arrowhead")
-      .attr("viewBox", "-0 -5 10 10")
-      .attr("refX", 15)
-      .attr("refY", 0)
-      .attr("orient", "auto")
-      .attr("markerWidth", 6)
-      .attr("markerHeight", 6)
-      .attr("xoverflow", "visible")
-      .append("svg:path")
-      .attr("d", "M 0,-5 L 10,0 L 0,5")
-      .attr("fill", "#999")
-      .style("stroke", "none");
+    if (hasFilter) {
+      const matchedFilterNodeIds = new Set(
+        allNodes
+          .filter((node) => requestedIds.has(normalizeProposalId(node.id)) || requestedIds.has(String(node.id)))
+          .map((node) => String(node.id))
+      );
 
-    const tooltip = d3.select("body")
-      .append("div")
-      .style("position", "absolute")
-      .style("padding", "8px 12px")
-      .style("background", "#1a1a1a")
-      .style("color", "#f0f0f0")
-      .style("border", "1px solid #555")
-      .style("border-radius", "6px")
-      .style("box-shadow", "0px 2px 6px rgba(0,0,0,0.4)")
-      .style("font-size", "13px")
-      .style("pointer-events", "none")
-      .style("opacity", 0);
+      if (includeConnections) {
+        displayedNodeIds = new Set(matchedFilterNodeIds);
+        localLinks = allLinks.filter((edge) => {
+          const sourceIncluded = matchedFilterNodeIds.has(String(edge.source));
+          const targetIncluded = matchedFilterNodeIds.has(String(edge.target));
+          if (sourceIncluded || targetIncluded) {
+            displayedNodeIds.add(String(edge.source));
+            displayedNodeIds.add(String(edge.target));
+            return true;
+          }
+          return false;
+        });
+      } else {
+        displayedNodeIds = matchedFilterNodeIds;
+        localLinks = allLinks.filter((edge) => (
+          displayedNodeIds.has(String(edge.source)) && displayedNodeIds.has(String(edge.target))
+        ));
+      }
+    }
 
-    const simulation = d3.forceSimulation(nodes)
-      .force("link", d3.forceLink(links).id(d => d.id))
-      .force("charge", d3.forceManyBody())
-      .force("center", d3.forceCenter(width / 2, height / 2))
-      .force("x", d3.forceX(width / 2).strength(0.05))
-      .force("y", d3.forceY(height / 2).strength(0.05))
-      .on("tick", ticked);
+    const localNodes = allNodes.filter((node) => displayedNodeIds.has(String(node.id)));
 
-    const link = svg.append("g")
-      .attr("stroke", "#999")
-      .attr("stroke-opacity", 0.6)
-      .selectAll("line")
-      .data(links)
-      .join("line")
-      .attr("stroke-width", d => Math.sqrt(d.value))
-      .attr("marker-end", "url(#arrowhead)")
-      .attr("class", "link");
+    if (localNodes.length === 0) {
+      return;
+    }
 
-    const node = svg.append("g")
-      .attr("stroke", "#fff")
-      .attr("stroke-width", 1.5)
-      .selectAll("circle")
-      .data(nodes)
-      .join("circle")
-      .attr("r", 10)
-      .attr("fill", d => color(d[colorBy] ?? 'default'))
-      .attr("class", "node")
-      .on("mouseover", (event, d) => {
-        tooltip.transition().duration(200).style("opacity", 1);
-        tooltip.html(`
-          <div><strong>BIP-${d.id}</strong> </div>
-          <div><strong>Compliance Score:</strong> ${d.compliance_score ?? 'N/A'}</div>
-          <div><strong>Layer:</strong> ${d.layer ?? 'N/A'}</div>
-        `);
-        
+    const adjacency = new Map(localNodes.map((node) => [String(node.id), new Set()]));
+    const degreeById = new Map(localNodes.map((node) => [String(node.id), 0]));
+    const incomingById = new Map(localNodes.map((node) => [String(node.id), 0]));
+    const outgoingById = new Map(localNodes.map((node) => [String(node.id), 0]));
 
-        // Highlight node
-        d3.select(event.currentTarget)
-          .attr("stroke", "#003f5c")
-          .attr("stroke-width", 3);
+    localLinks.forEach((edge) => {
+      const sourceId = String(edge.source);
+      const targetId = String(edge.target);
+      adjacency.get(sourceId)?.add(targetId);
+      adjacency.get(targetId)?.add(sourceId);
+      degreeById.set(sourceId, (degreeById.get(sourceId) || 0) + 1);
+      degreeById.set(targetId, (degreeById.get(targetId) || 0) + 1);
+      outgoingById.set(sourceId, (outgoingById.get(sourceId) || 0) + 1);
+      incomingById.set(targetId, (incomingById.get(targetId) || 0) + 1);
+    });
 
-        // Highlight connected links
-        link
-          .filter(l => l.source.id === d.id || l.target.id === d.id)
-          .attr("stroke", "#003f5c")
-          .attr("stroke-opacity", 1)
-          .attr("stroke-width", 3);
-      })
-      .on("click", (event, d) => {
-        const url = `https://github.com/bitcoin/bips/blob/master/bip-${String(d.id).padStart(4, '0')}.mediawiki`;
-        window.open(url, '_blank');
-      })
-      .on("mousemove", (event) => {
-        tooltip
-          .style("left", `${event.pageX + 10}px`)
-          .style("top", `${event.pageY - 30}px`);
-      })
-      .on("mouseout", (event, d) => {
-        tooltip.transition().duration(200).style("opacity", 0);
+    localNodes.forEach((node) => {
+      const nodeId = String(node.id);
+      node.degree = degreeById.get(nodeId) || 0;
+      node.incomingDegree = incomingById.get(nodeId) || 0;
+      node.outgoingDegree = outgoingById.get(nodeId) || 0;
+    });
 
-        d3.select(event.currentTarget)
-          .attr("stroke", "#fff")
-          .attr("stroke-width", 1.5);
+    const normalizedHighlight = normalizeProposalId(highlightProposal);
+    const searchMatchedIds = normalizedHighlight
+      ? new Set(
+        localNodes
+          .filter((node) => normalizeProposalId(node.id) === normalizedHighlight)
+          .map((node) => String(node.id))
+      )
+      : new Set();
 
-        link
-          .attr("stroke", "#999")
-          .attr("stroke-opacity", 0.6)
-          .attr("stroke-width", 1);
-      })
-      .call(d3.drag()
-        .on("start", dragstarted)
-        .on("drag", dragged)
-        .on("end", dragended));
+    const getEdgeSourceId = (edge) => (typeof edge.source === 'object' ? String(edge.source.id) : String(edge.source));
+    const getEdgeTargetId = (edge) => (typeof edge.target === 'object' ? String(edge.target.id) : String(edge.target));
 
-    node.append("title").text(d => d.id);
+    const fallbackLabel = `Unknown ${colorBy.charAt(0).toUpperCase()}${colorBy.slice(1)}`;
+    const allGroups = Array.from(
+      new Set(allNodes.map((node) => normalizeCategory(node[colorBy], fallbackLabel)))
+    );
+    const colorMap = getClassificationColorMap(colorBy, allGroups);
+    const color = d3.scaleOrdinal()
+      .domain(allGroups)
+      .range(allGroups.map((group) => colorMap[group]));
 
-    function ticked() {
+    localNodes.forEach((node) => {
+      node.colorGroup = normalizeCategory(node[colorBy], fallbackLabel);
+    });
+
+    const getEdgeColor = (edge) => {
+      if (linkType === 'explicit_dependencies') {
+        return EXPLICIT_DEPENDENCY_COLORS[edge.relationType] || '#667085';
+      }
+      return DEFAULT_EDGE_COLORS[edge.relationType] || '#607d8b';
+    };
+
+    const getEdgeDasharray = (edge) => {
+      if (linkType !== 'explicit_dependencies') {
+        return null;
+      }
+      return EXPLICIT_DEPENDENCY_STYLES[edge.relationType] || null;
+    };
+
+    svg
+      .attr('viewBox', `0 0 ${width} ${height}`)
+      .style('width', '100%')
+      .style('height', 'auto');
+
+    const defs = svg.append('defs');
+    const markerTypes = Array.from(new Set(localLinks.map((edge) => edge.relationType)));
+    markerTypes.forEach((relationType) => {
+      defs
+        .append('marker')
+        .attr('id', `dependency-arrow-${relationType}`)
+        .attr('viewBox', '0 -5 10 10')
+        .attr('refX', 14)
+        .attr('refY', 0)
+        .attr('orient', 'auto')
+        .attr('markerWidth', 4.5)
+        .attr('markerHeight', 4.5)
+        .append('path')
+        .attr('d', 'M 0,-5 L 10,0 L 0,5')
+        .attr('fill', linkType === 'explicit_dependencies'
+          ? EXPLICIT_DEPENDENCY_COLORS[relationType] || '#667085'
+          : DEFAULT_EDGE_COLORS[relationType] || '#607d8b');
+    });
+
+    const tooltip = d3.select('body')
+      .append('div')
+      .attr('class', 'dependency-network-tooltip')
+      .style('position', 'absolute')
+      .style('padding', '8px 12px')
+      .style('background', '#1a1a1a')
+      .style('color', '#f0f0f0')
+      .style('border', '1px solid #555')
+      .style('border-radius', '6px')
+      .style('box-shadow', '0px 2px 6px rgba(0,0,0,0.4)')
+      .style('font-size', '13px')
+      .style('pointer-events', 'none')
+      .style('line-height', '1.45')
+      .style('opacity', 0);
+
+    const setTooltipPosition = (pageX, pageY) => {
+      tooltip
+        .style('left', `${pageX + 10}px`)
+        .style('top', `${pageY - 28}px`);
+    };
+
+    const renderNodeTooltip = (entry) => (
+      `<strong><a href="${getProposalUrl(entry.id)}" target="_blank" rel="noreferrer">${getProposalLabel(entry.id)}</a></strong><br/>` +
+      `Outgoing: ${entry.outgoingDegree}<br/>` +
+      `Incoming: ${entry.incomingDegree}<br/>` +
+      `Layer: ${entry.layer || 'Unknown'}<br/>` +
+      `Status: ${entry.status || 'Unknown'}<br/>` +
+      `Type: ${entry.type || 'Unknown'}<br/>` +
+      `Compliance Score: ${entry.compliance_score ?? 'N/A'}`
+    );
+
+    const relationLabel = {
+      explicit_references: 'Explicit Reference',
+      implicit_dependencies: 'Implicit Dependency',
+      requires: 'Requires',
+      replaces: 'Replaces',
+      superseded_by: 'Superseded By',
+    };
+
+    const renderEdgeTooltip = (edge) => (
+      `<strong><a href="${getProposalUrl(getEdgeSourceId(edge))}" target="_blank" rel="noreferrer">${getProposalLabel(getEdgeSourceId(edge))}</a></strong>` +
+      ` &rarr; ` +
+      `<strong><a href="${getProposalUrl(getEdgeTargetId(edge))}" target="_blank" rel="noreferrer">${getProposalLabel(getEdgeTargetId(edge))}</a></strong><br/>` +
+      `Type: ${relationLabel[edge.relationType] || edge.relationType}`
+    );
+
+    const degreeExtent = d3.extent(localNodes, (node) => Number(node.degree || 0));
+    const radius = d3.scaleSqrt()
+      .domain([degreeExtent[0] || 0, degreeExtent[1] || 1])
+      .range([7, 16]);
+    const getNodeRadius = (entry) => (
+      searchMatchedIds.has(String(entry.id))
+        ? radius(Number(entry.degree || 0)) + 5
+        : radius(Number(entry.degree || 0))
+    );
+
+    const groupAnchors = new Map();
+    const anchorRadius = Math.min(width, height) * 0.24;
+    allGroups.forEach((group, index) => {
+      const angle = ((Math.PI * 2 * index) / Math.max(allGroups.length, 1)) - (Math.PI / 2);
+      groupAnchors.set(group, {
+        x: width / 2 + Math.cos(angle) * anchorRadius,
+        y: height / 2 + Math.sin(angle) * anchorRadius,
+      });
+    });
+
+    const linkForce = d3.forceLink(localLinks).id((node) => String(node.id));
+    const chargeForce = d3.forceManyBody();
+    const collisionForce = d3.forceCollide().radius((node) => radius(Number(node.degree || 0)) + 10);
+    const centerForce = d3.forceCenter(width / 2, height / 2);
+    const xForce = d3.forceX(width / 2).strength(0.05);
+    const yForce = d3.forceY(height / 2).strength(0.05);
+
+    if (layoutMode === 'clustered') {
+      linkForce.distance(92).strength(0.28);
+      chargeForce.strength(-220);
+      xForce
+        .x((node) => groupAnchors.get(node.colorGroup)?.x ?? width / 2)
+        .strength(0.22);
+      yForce
+        .y((node) => groupAnchors.get(node.colorGroup)?.y ?? height / 2)
+        .strength(0.22);
+    } else if (layoutMode === 'spread') {
+      linkForce.distance(155).strength(0.22);
+      chargeForce.strength(-360);
+      xForce.x(width / 2).strength(0.03);
+      yForce.y(height / 2).strength(0.03);
+    } else {
+      linkForce.distance(108).strength(0.26);
+      chargeForce.strength(-250);
+      xForce.x(width / 2).strength(0.05);
+      yForce.y(height / 2).strength(0.05);
+    }
+
+    const simulation = d3.forceSimulation(localNodes)
+      .force('link', linkForce)
+      .force('charge', chargeForce)
+      .force('center', centerForce)
+      .force('x', xForce)
+      .force('y', yForce)
+      .force('collision', collisionForce);
+
+    const root = svg
+      .attr('width', width)
+      .attr('height', height)
+      .append('g');
+
+    const zoomBehavior = d3.zoom()
+      .scaleExtent([0.5, 3])
+      .on('zoom', (event) => {
+        root.attr('transform', event.transform);
+      });
+
+    svg.call(zoomBehavior);
+
+    let pinnedInteraction = null;
+    let link;
+    let node;
+
+    const applyDefaultLinkStyles = () => {
       link
-        .attr("x1", d => d.source.x)
-        .attr("y1", d => d.source.y)
-        .attr("x2", d => d.target.x)
-        .attr("y2", d => d.target.y);
+        .attr('stroke', (edge) => getEdgeColor(edge))
+        .attr('stroke-opacity', (edge) => {
+          if (searchMatchedIds.size === 0) {
+            return 0.72;
+          }
+          return searchMatchedIds.has(getEdgeSourceId(edge)) || searchMatchedIds.has(getEdgeTargetId(edge)) ? 0.95 : 0.08;
+        })
+        .attr('stroke-width', 2.2)
+        .attr('stroke-dasharray', (edge) => getEdgeDasharray(edge));
+    };
+
+    const applyDefaultNodeStyles = () => {
+      node
+        .attr('stroke', (entry) => (searchMatchedIds.has(String(entry.id)) ? '#f4a261' : '#fff'))
+        .attr('stroke-width', (entry) => (searchMatchedIds.has(String(entry.id)) ? 3 : 1.5))
+        .attr('fill-opacity', (entry) => {
+          if (searchMatchedIds.size === 0) {
+            return 0.95;
+          }
+          return searchMatchedIds.has(String(entry.id)) ? 1 : 0.18;
+        });
+    };
+
+    const applyPinnedNodeStyles = (entry) => {
+      node
+        .attr('stroke', (candidate) => (String(candidate.id) === String(entry.id) ? '#f4a261' : '#fff'))
+        .attr('stroke-width', (candidate) => (String(candidate.id) === String(entry.id) ? 3.5 : 1.5))
+        .attr('fill-opacity', (candidate) => (String(candidate.id) === String(entry.id) ? 1 : 0.18));
+
+      link
+        .attr('stroke-opacity', (edge) => (
+          getEdgeSourceId(edge) === String(entry.id) || getEdgeTargetId(edge) === String(entry.id) ? 0.95 : 0.1
+        ))
+        .attr('stroke-width', (edge) => (
+          getEdgeSourceId(edge) === String(entry.id) || getEdgeTargetId(edge) === String(entry.id) ? 3.2 : 2.2
+        ));
+    };
+
+    const applyPinnedEdgeStyles = (selectedEdge) => {
+      link
+        .attr('stroke-opacity', (edge) => (edge.key === selectedEdge.key ? 1 : 0.08))
+        .attr('stroke-width', (edge) => (edge.key === selectedEdge.key ? 3.4 : 2.2));
 
       node
-        .attr("cx", d => d.x = Math.max(5, Math.min(width - 5, d.x)))
-        .attr("cy", d => d.y = Math.max(5, Math.min(height - 5, d.y)));
-    }
+        .attr('fill-opacity', (entry) => (
+          String(entry.id) === getEdgeSourceId(selectedEdge) || String(entry.id) === getEdgeTargetId(selectedEdge) ? 1 : 0.18
+        ))
+        .attr('stroke', (entry) => (
+          String(entry.id) === getEdgeSourceId(selectedEdge) || String(entry.id) === getEdgeTargetId(selectedEdge) ? '#f4a261' : '#fff'
+        ))
+        .attr('stroke-width', (entry) => (
+          String(entry.id) === getEdgeSourceId(selectedEdge) || String(entry.id) === getEdgeTargetId(selectedEdge) ? 3 : 1.5
+        ));
+    };
 
-    function dragstarted(event, d) {
-      if (!event.active) simulation.alphaTarget(0.3).restart();
-      d.fx = d.x;
-      d.fy = d.y;
-    }
+    const clearPinnedInteraction = () => {
+      pinnedInteraction = null;
+      tooltip
+        .style('opacity', 0)
+        .style('pointer-events', 'none');
+      applyDefaultNodeStyles();
+      applyDefaultLinkStyles();
+    };
 
-    function dragged(event, d) {
-      d.fx = event.x;
-      d.fy = event.y;
-    }
+    link = root.append('g')
+      .selectAll('path')
+      .data(localLinks)
+      .join('path')
+      .attr('fill', 'none')
+      .attr('stroke', (edge) => getEdgeColor(edge))
+      .attr('stroke-opacity', 0.72)
+      .attr('stroke-width', 2.2)
+      .attr('stroke-dasharray', (edge) => getEdgeDasharray(edge))
+      .attr('marker-end', (edge) => `url(#dependency-arrow-${edge.relationType})`)
+      .on('mouseover', function (event, edge) {
+        if (pinnedInteraction) {
+          return;
+        }
 
-    function dragended(event, d) {
-      if (!event.active) simulation.alphaTarget(0);
-      d.fx = null;
-      d.fy = null;
-    }
+        d3.select(this)
+          .attr('stroke-opacity', 1)
+          .attr('stroke-width', 3.4);
 
-    d3.select(legendRef.current).selectAll("*").remove();
+        tooltip
+          .style('opacity', 1)
+          .style('pointer-events', 'none')
+          .html(renderEdgeTooltip(edge));
+      })
+      .on('mousemove', function (event) {
+        if (pinnedInteraction) {
+          return;
+        }
+        setTooltipPosition(event.pageX, event.pageY);
+      })
+      .on('mouseout', function () {
+        if (pinnedInteraction) {
+          return;
+        }
 
-    if (colorBy === "layer") {
-      let entries = color.domain();
-entries = entries.filter(group => group !== 'default'); // remove 'default'
-entries = entries.slice(1); // remove the first item
-
-      const blockSize = 18;
-      const padding = 5;
-    
-      const svgLegend = d3.select(legendRef.current)
-        .append("svg")
-        .attr("width", 200)
-        .attr("height", entries.length * (blockSize + padding));
-    
-      entries.forEach((group, i) => {
-        // Color box
-        svgLegend.append("rect")
-          .attr("x", 0)
-          .attr("y", i * (blockSize + padding))
-          .attr("width", blockSize)
-          .attr("height", blockSize)
-          .style("fill", color(group));
-    
-        // Text label
-        svgLegend.append("text")
-          .attr("x", blockSize + 8)
-          .attr("y", i * (blockSize + padding) + blockSize / 1.5)
-          .text(group)
-          .style("font-size", "13px")
-          .style("alignment-baseline", "middle");
+        applyDefaultLinkStyles();
+        tooltip.style('opacity', 0);
+      })
+      .on('click', function (event, edge) {
+        event.stopPropagation();
+        pinnedInteraction = { type: 'edge', edge };
+        applyDefaultNodeStyles();
+        applyDefaultLinkStyles();
+        applyPinnedEdgeStyles(edge);
+        tooltip
+          .style('opacity', 1)
+          .style('pointer-events', 'auto')
+          .html(renderEdgeTooltip(edge));
+        setTooltipPosition(event.pageX, event.pageY);
       });
-    }
-    
 
-    if (colorBy === "compliance_score") {
-      const values = d3.range(0, 1.01, 0.1);
-      const size = 20;
-      const spacing = 2;
+    node = root.append('g')
+      .selectAll('circle')
+      .data(localNodes)
+      .join('circle')
+      .attr('r', (entry) => getNodeRadius(entry))
+      .attr('fill', (entry) => colorBy === 'compliance_score'
+        ? color(Number(entry.compliance_score ?? 50))
+        : color(normalizeCategory(entry[colorBy], fallbackLabel)))
+      .attr('fill-opacity', (entry) => {
+        if (searchMatchedIds.size === 0) {
+          return 0.95;
+        }
+        return searchMatchedIds.has(String(entry.id)) ? 1 : 0.18;
+      })
+      .attr('stroke', (entry) => (searchMatchedIds.has(String(entry.id)) ? '#f4a261' : '#fff'))
+      .attr('stroke-width', (entry) => (searchMatchedIds.has(String(entry.id)) ? 3 : 1.5))
+      .on('mouseover', function (event, entry) {
+        if (pinnedInteraction) {
+          return;
+        }
 
-      const scale = d3.scaleSequential()
-        .domain([0, 1])
-        .interpolator(d3.interpolateBlues);
+        d3.select(this)
+          .attr('stroke', '#f4a261')
+          .attr('stroke-width', 3);
 
-      const svgLegend = d3.select(legendRef.current)
-        .append("svg")
-        .attr("width", values.length * (size + spacing))
-        .attr("height", 70);
+        link
+          .attr('stroke-opacity', (edge) => (
+            getEdgeSourceId(edge) === String(entry.id) || getEdgeTargetId(edge) === String(entry.id) ? 0.95 : 0.1
+          ))
+          .attr('stroke-width', (edge) => (
+            getEdgeSourceId(edge) === String(entry.id) || getEdgeTargetId(edge) === String(entry.id) ? 3.2 : 2.2
+          ));
 
-      svgLegend.append("text")
-        .attr("x", 0)
-        .attr("y", 14)
-        .text("Compliance Score")
-        .style("font-family", "sans-serif")
-        .style("font-size", "14px");
+        tooltip
+          .style('opacity', 1)
+          .style('pointer-events', 'none')
+          .html(renderNodeTooltip(entry));
+      })
+      .on('mousemove', function (event) {
+        if (pinnedInteraction) {
+          return;
+        }
+        setTooltipPosition(event.pageX, event.pageY);
+      })
+      .on('mouseout', function () {
+        if (pinnedInteraction) {
+          return;
+        }
 
-      svgLegend.selectAll("rect")
-        .data(values)
-        .enter()
-        .append("rect")
-        .attr("x", (d, i) => i * (size + spacing))
-        .attr("y", 20)
-        .attr("width", size)
-        .attr("height", size)
-        .style("fill", d => scale(d));
+        applyDefaultNodeStyles();
+        applyDefaultLinkStyles();
+        tooltip.style('opacity', 0);
+      })
+      .on('click', function (event, entry) {
+        event.stopPropagation();
+        pinnedInteraction = { type: 'node', entry };
+        applyDefaultNodeStyles();
+        applyDefaultLinkStyles();
+        applyPinnedNodeStyles(entry);
+        tooltip
+          .style('opacity', 1)
+          .style('pointer-events', 'auto')
+          .html(renderNodeTooltip(entry));
+        setTooltipPosition(event.pageX, event.pageY);
+      })
+      .call(
+        d3.drag()
+          .on('start', (event, entry) => {
+            if (!event.active) {
+              simulation.alphaTarget(0.3).restart();
+            }
+            entry.fx = entry.x;
+            entry.fy = entry.y;
+          })
+          .on('drag', (event, entry) => {
+            entry.fx = event.x;
+            entry.fy = event.y;
+          })
+          .on('end', (event, entry) => {
+            if (!event.active) {
+              simulation.alphaTarget(0);
+            }
+            entry.fx = null;
+            entry.fy = null;
+          })
+      );
 
-      svgLegend.append("text")
-        .attr("x", 0)
-        .attr("y", 60)
-        .text("50")
-        .style("font-size", "12px");
+    const labeledNodeIds = new Set(
+      localNodes
+        .slice()
+        .sort((left, right) => Number(right.degree || 0) - Number(left.degree || 0))
+        .slice(0, 16)
+        .map((entry) => String(entry.id))
+    );
 
-      svgLegend.append("text")
-        .attr("x", (values.length - 1) * (size + spacing))
-        .attr("y", 60)
-        .attr("text-anchor", "end")
-        .text("100")
-        .style("font-size", "12px");
+    const labels = root.append('g')
+      .selectAll('text')
+      .data(localNodes.filter((entry) => labeledNodeIds.has(String(entry.id)) || searchMatchedIds.has(String(entry.id))))
+      .join('text')
+      .text((entry) => getProposalLabel(entry.id))
+      .style('font-size', '10.5px')
+      .style('fill', '#1f2933')
+      .style('font-weight', (entry) => (searchMatchedIds.has(String(entry.id)) ? 700 : 400))
+      .style('opacity', (entry) => {
+        if (searchMatchedIds.size > 0) {
+          return searchMatchedIds.has(String(entry.id)) ? 1 : 0.22;
+        }
+        return 1;
+      })
+      .style('paint-order', 'stroke')
+      .style('stroke', '#ffffff')
+      .style('stroke-width', 3)
+      .style('stroke-linecap', 'round')
+      .style('stroke-linejoin', 'round');
+
+    svg.on('click', () => {
+      clearPinnedInteraction();
+    });
+
+    simulation.on('tick', () => {
+      link
+        .attr('d', (edge) => {
+          const rawSourceX = edge.source.x;
+          const rawSourceY = edge.source.y;
+          const rawTargetX = edge.target.x;
+          const rawTargetY = edge.target.y;
+          const dx = rawTargetX - rawSourceX;
+          const dy = rawTargetY - rawSourceY;
+          const distance = Math.sqrt((dx * dx) + (dy * dy)) || 1;
+          const unitX = dx / distance;
+          const unitY = dy / distance;
+          const sourcePadding = getNodeRadius(edge.source) + 1;
+          const targetPadding = getNodeRadius(edge.target) -5;
+          const sourceX = rawSourceX + (unitX * sourcePadding);
+          const sourceY = rawSourceY + (unitY * sourcePadding);
+          const targetX = rawTargetX - (unitX * targetPadding);
+          const targetY = rawTargetY - (unitY * targetPadding);
+          const adjustedDx = targetX - sourceX;
+          const adjustedDy = targetY - sourceY;
+          const adjustedDistance = Math.sqrt((adjustedDx * adjustedDx) + (adjustedDy * adjustedDy)) || 1;
+          const midpointX = (sourceX + targetX) / 2;
+          const midpointY = (sourceY + targetY) / 2;
+          const normalX = -adjustedDy / adjustedDistance;
+          const normalY = adjustedDx / adjustedDistance;
+          const curveOffset = Math.min(28, Math.max(10, adjustedDistance * 0.08));
+          const controlX = midpointX + (normalX * curveOffset);
+          const controlY = midpointY + (normalY * curveOffset);
+          return `M ${sourceX},${sourceY} Q ${controlX},${controlY} ${targetX},${targetY}`;
+        });
+
+      node
+        .attr('cx', (entry) => entry.x = Math.max(24, Math.min(width - 24, entry.x)))
+        .attr('cy', (entry) => entry.y = Math.max(24, Math.min(height - 24, entry.y)));
+
+      labels
+        .attr('x', (entry) => entry.x + getNodeRadius(entry) + 5)
+        .attr('y', (entry) => entry.y + 3);
+    });
+
+    const legend = d3.select(legendRef.current);
+    legend.selectAll('*').remove();
+
+    const entries = color.domain().filter(Boolean);
+    if (entries.length > 0) {
+      const container = legend
+        .append('div')
+        .attr('class', 'dependency-node-legend');
+
+      entries.forEach((group) => {
+        const item = container
+          .append('div')
+          .attr('class', 'dependency-node-legend__item');
+
+        item
+          .append('span')
+          .attr('class', 'dependency-node-legend__swatch')
+          .style('background-color', color(group));
+
+        item
+          .append('span')
+          .text(group);
+      });
     }
 
     return () => {
       simulation.stop();
-      tooltip.remove();
+      svg.selectAll('*').remove();
+      d3.select('body').selectAll('.dependency-network-tooltip').remove();
     };
+  }, [colorBy, data, height, highlightProposal, includeConnections, layoutMode, linkType, links, nodes, proposalFilterIds, width]);
 
-  }, [colorBy, linkType, data, nodes, links]);
+  const explicitLegendItems = [
+    { label: 'Requires', dasharray: EXPLICIT_DEPENDENCY_STYLES.requires },
+    { label: 'Replaces', dasharray: EXPLICIT_DEPENDENCY_STYLES.replaces },
+    { label: 'Superseded By', dasharray: EXPLICIT_DEPENDENCY_STYLES.superseded_by },
+  ];
+  const edgeLegendItems = linkType === 'explicit_dependencies'
+    ? explicitLegendItems
+    : [
+      {
+        label: linkType === 'explicit_references' ? 'Explicit References (Regex)' : 'Implicit Dependencies (LLM)',
+        dasharray: null,
+      },
+    ];
 
   return (
     <div>
-      <div style={{ display: 'flex', gap: '2rem', alignItems: 'center', marginBottom: '1.5rem' }}>
-        <Dropdown
-          inputId="linkType"
-          value={linkType}
-          options={[
-            { label: 'Explicit References (Regex)', value: 'explicit_references' },
-            { label: 'Requires (Preamble)', value: 'requires' },
-            { label: 'Replaces (Preamble)', value: 'replaces' },
-            { label: 'Superseded By (Preamble)', value: 'superseded_by' },
-            { label: 'Implicit Dependencies (LLM)', value: 'implicit_dependencies' }
-          ]}
-          onChange={(e) => setLinkType(e.value)}
-          placeholder="Link Type"
-          className="w-full md:w-14rem"
-          style={{ width: '125px' }}
-        />
+      <div style={{ display: 'flex', gap: '2rem', alignItems: 'flex-start', marginBottom: '1rem', flexWrap: 'wrap' }}>
+        <div className="network-layout-picker">
+          <div className="network-layout-picker__label">Edges</div>
+          <Dropdown
+            inputId="linkType"
+            value={linkType}
+            options={LINK_TYPE_OPTIONS}
+            onChange={(event) => setLinkType(event.value)}
+            placeholder="Link Type"
+            className="w-full md:w-18rem"
+            style={{ minWidth: '260px' }}
+          />
+        </div>
 
-        <div className="radio-group" style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
-          <div className="radio-option" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <RadioButton
-              inputId="color-group"
-              name="colorBy"
-              value="layer"
-              onChange={(e) => setColorBy(e.value)}
-              checked={colorBy === 'layer'}
-            />
-            <label htmlFor="color-group">Color by Layer</label>
-          </div>
-          <div className="radio-option" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <RadioButton
-              inputId="color-compliance"
-              name="colorBy"
-              value="compliance_score"
-              onChange={(e) => setColorBy(e.value)}
-              checked={colorBy === 'compliance_score'}
-            />
-            <label htmlFor="color-compliance">Color by Compliance</label>
-          </div>
-          <div ref={legendRef} style={{ marginTop: '1rem' }}></div>
+        <div className="network-layout-picker">
+          <div className="network-layout-picker__label">Coloring</div>
+          <Dropdown
+            inputId="dependency-colorBy"
+            value={colorBy}
+            options={COLOR_BY_OPTIONS}
+            onChange={(event) => setColorBy(event.value)}
+            placeholder="Coloring"
+            className="w-full md:w-14rem"
+            style={{ minWidth: '180px' }}
+          />
         </div>
       </div>
 
-      <svg ref={ref}></svg>
-      <div ref={legendRef} style={{ marginTop: '1rem' }}></div>
+      <div className="dependency-edge-legend">
+        {edgeLegendItems.map((item) => (
+          <div key={item.label} className="dependency-edge-legend__item">
+            <svg className="dependency-edge-legend__line" viewBox="0 0 36 12" aria-hidden="true">
+              <line
+                x1="2"
+                y1="6"
+                x2="34"
+                y2="6"
+                stroke={linkType === 'explicit_dependencies' ? '#667085' : (DEFAULT_EDGE_COLORS[linkType] || '#667085')}
+                strokeWidth="2.5"
+                strokeDasharray={item.dasharray || undefined}
+                strokeLinecap="round"
+              />
+            </svg>
+            <span>{item.label}</span>
+          </div>
+        ))}
+      </div>
+
+      <div ref={legendRef} style={{ marginBottom: '1rem' }} />
+      <svg ref={ref} role="img" />
     </div>
   );
 };

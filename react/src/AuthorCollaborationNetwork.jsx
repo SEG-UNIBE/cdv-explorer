@@ -290,9 +290,10 @@ export const AuthorCollaborationNetwork = ({
     link = root.append('g')
       .attr('stroke', '#90a4ae')
       .attr('stroke-opacity', 0.55)
-      .selectAll('line')
+      .selectAll('path')
       .data(links)
-      .join('line')
+      .join('path')
+      .attr('fill', 'none')
       .attr('stroke', (edge) => clusterColor(clusterByNodeId.get(getEdgeSourceId(edge))?.clusterId ?? 0))
       .attr('stroke-opacity', (edge) => {
         if (!normalizedHighlight) {
@@ -486,10 +487,23 @@ export const AuthorCollaborationNetwork = ({
     let hasFocusedHighlight = false;
     simulation.on('tick', () => {
       link
-        .attr('x1', (edge) => edge.source.x)
-        .attr('y1', (edge) => edge.source.y)
-        .attr('x2', (edge) => edge.target.x)
-        .attr('y2', (edge) => edge.target.y);
+        .attr('d', (edge) => {
+          const sourceX = edge.source.x;
+          const sourceY = edge.source.y;
+          const targetX = edge.target.x;
+          const targetY = edge.target.y;
+          const dx = targetX - sourceX;
+          const dy = targetY - sourceY;
+          const distance = Math.sqrt((dx * dx) + (dy * dy)) || 1;
+          const midpointX = (sourceX + targetX) / 2;
+          const midpointY = (sourceY + targetY) / 2;
+          const normalX = -dy / distance;
+          const normalY = dx / distance;
+          const curveOffset = Math.min(24, Math.max(8, distance * 0.07));
+          const controlX = midpointX + (normalX * curveOffset);
+          const controlY = midpointY + (normalY * curveOffset);
+          return `M ${sourceX},${sourceY} Q ${controlX},${controlY} ${targetX},${targetY}`;
+        });
 
       node
         .attr('cx', (entry) => entry.x = Math.max(24, Math.min(width - 24, entry.x)))

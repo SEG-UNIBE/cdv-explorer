@@ -15,6 +15,11 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
+.p-card .p-card-body {
+  padding-top: 0.4rem;
+  padding-bottom: 0.4rem;
+}
+
 .p-card h2 {
   margin-top: 0;
 }
@@ -130,15 +135,25 @@
 }
 
 .dashboard-section {
-  margin: 2.5rem 0;
+  margin: 4rem 0 4rem;
 }
 
 .dashboard-section__header {
   margin-bottom: 1rem;
 }
 
-.dashboard-section__header h1 {
-  margin-bottom: 0.35rem;
+.dashboard-section__title {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin: 0 0 0.35rem 0;
+}
+
+.dashboard-section__title::after {
+  content: '';
+  flex: 1 1 auto;
+  height: 1px;
+  background: #d9e4ef;
 }
 
 .dashboard-section__header p {
@@ -154,6 +169,70 @@
 
 .dashboard-grid--two-up {
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+
+.dashboard-grid--classification {
+  grid-template-columns: minmax(300px, 0.35fr) minmax(420px, 0.65fr);
+}
+
+.classification-card__grid {
+  align-items: start;
+}
+
+.classification-card__panel h4 {
+  margin: 0 0 0.5rem;
+  color: #52606d;
+}
+
+.wordcloud-filter {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.wordcloud-filter__copy {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  min-width: 0;
+  flex-wrap: wrap;
+}
+
+.wordcloud-filter__copy span {
+  color: #52606d;
+  font-size: 0.95rem;
+}
+
+.wordcloud-filter__controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+.wordcloud-filter__controls .p-inputtext {
+  width: min(420px, 100%);
+}
+
+@media (max-width: 960px) {
+  .dashboard-grid--classification {
+    grid-template-columns: 1fr;
+  }
+
+  .wordcloud-filter {
+    grid-template-columns: 1fr;
+  }
+
+  .wordcloud-filter__controls {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .wordcloud-filter__controls .p-inputtext {
+    width: min(420px, 100%);
+  }
 }
 
 .network-finder {
@@ -215,7 +294,9 @@
 
 .author-network-tooltip a,
 .author-tooltip a,
-.proposal-tooltip a {
+.proposal-tooltip a,
+.classification-pie-tooltip a,
+.classification-timeline-tooltip a {
   color: #9bd1ff;
   text-decoration: underline;
 }

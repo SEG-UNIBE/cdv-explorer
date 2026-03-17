@@ -11,7 +11,8 @@ export const WordCloud = ({ words, width = 1250, height = 750 }) => {
     if (!words || words.length === 0) return;
 
     // Clear previous word cloud
-    d3.select(svgElement).selectAll('*').remove();
+    const svgRoot = d3.select(svgElement);
+    svgRoot.selectAll('*').remove();
     d3.select('body').selectAll('.wordcloud-tooltip').remove(); // clean any previous tooltips
 
     const maxCount = d3.max(words, d => d.count);
@@ -53,14 +54,46 @@ export const WordCloud = ({ words, width = 1250, height = 750 }) => {
         .style('pointer-events', 'none')
         .style('opacity', 0);
 
-      const svg = d3.select(svgElement)
+      const svg = svgRoot
         .attr('width', width)
         .attr('height', height)
-        .attr('viewBox', `0 0 ${width} ${height}`)
+        .attr('viewBox', `0 0 ${width} ${height}`);
+
+      svg.append('rect')
+        .attr('width', width)
+        .attr('height', height)
+        .attr('fill', 'transparent')
+        .style('cursor', 'grab');
+
+      const viewport = svg.append('g');
+
+      const cloudGroup = viewport
         .append('g')
         .attr('transform', `translate(${width / 2}, ${height / 2})`);
 
-      svg.selectAll('text')
+      const zoom = d3.zoom()
+        .scaleExtent([0.6, 4])
+        .on('start', () => {
+          svg.style('cursor', 'grabbing');
+        })
+        .on('zoom', (event) => {
+          viewport.attr('transform', event.transform);
+        })
+        .on('end', () => {
+          svg.style('cursor', 'grab');
+        });
+
+      svg.call(zoom)
+        .on('dblclick.zoom', null);
+
+      svg.call(
+        zoom.transform,
+        d3.zoomIdentity
+          .translate(width * 0.08, height * 0.04)
+          .scale(1)
+      );
+
+      cloudGroup.selectAll('text')
         .data(words)
         .enter()
         .append('text')
@@ -100,7 +133,7 @@ export const WordCloud = ({ words, width = 1250, height = 750 }) => {
 
     // Clean up
     return () => {
-      d3.select(svgElement).selectAll('*').remove();
+      svgRoot.selectAll('*').remove();
       d3.select('body').selectAll('.wordcloud-tooltip').remove();
     };
   }, [words, width, height]);

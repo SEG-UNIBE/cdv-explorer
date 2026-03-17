@@ -137,7 +137,7 @@ export const AuthorCollaborationNetwork = ({
       const sharedBips = Array.isArray(edge.bips) ? edge.bips : [];
       const bipLinks = sharedBips.length
         ? sharedBips
-          .map((bip) => `<a href="https://bips.dev/${bip}/" target="_blank" rel="noreferrer">BIP ${bip}</a>`)
+          .map((bip) => `<a href="https://bips.dev/${bip}/" target="_blank" rel="noreferrer">BIP${bip}</a>`)
           .join(', ')
         : 'No shared BIPs available.';
       return (
@@ -529,5 +529,5 @@ export const AuthorCollaborationNetwork = ({
     };
   }, [data, width, height, highlightAuthor, layoutMode]);
 
-  return <svg ref={ref} role="img" aria-label="Author collaboration network" />;
+  return <svg ref={ref} role="img"  />;
 };

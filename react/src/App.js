@@ -6,6 +6,8 @@ import { TopAuthorsChart } from './TopAuthorsChart';
 import { AuthorContributionHistogram } from './AuthorContributionHistogram';
 import { AuthorCollaborationNetwork } from './AuthorCollaborationNetwork';
 import { AuthorCentralityTable } from './AuthorCentralityTable';
+import { ClassificationPieChart } from './ClassificationPieChart';
+import { ClassificationStackedTimelineChart } from './ClassificationStackedTimelineChart';
 import { WordCloud } from './WordCloud';
 import { ProposalSankeyChart } from './ProposalSankeyChart';
 import { Card } from 'primereact/card';
@@ -16,7 +18,6 @@ import { InputText } from 'primereact/inputtext';
 import { RadioButton } from 'primereact/radiobutton';
 import './App.scss';
 import * as d3 from 'd3';
-import { ProposalKpiOverview } from './ProposalKpiOverview';
 import { HashRouter as Router, Routes, Route, useNavigate, useParams, Link } from 'react-router-dom';
 import { ecosystems, ecosystemsById } from './ecosystems';
 import { getAvailableStichtage, getDatasetForSelection } from './data';
@@ -27,8 +28,79 @@ const COLLABORATION_LAYOUT_OPTIONS = [
   { label: 'Spread', value: 'spread' },
 ];
 
+const CLASSIFICATION_DIMENSIONS = [
+  { field: 'layer', label: 'Layer' },
+  { field: 'type', label: 'Type' },
+  { field: 'status', label: 'Status' },
+];
+
+const WORD_CLOUD_STOPWORDS = new Set([
+  'code', 'tt', '0', '1', '2', '3', '4', '32', 'x',
+  'key', 'not', 'if', 'can', 'pre', 'must', 'which', 's',
+  'https', 'com', 'should', 'may', 'have', 'new', 'any', 'no',
+  'using', 'use', 'only', 'used', 'all', 'we', 'they', 'when',
+  'each', 'time', 'i', 'but', 'would', 'than', 'same', 'm',
+  'their', 'more', 'also', 'such', 'there', 'then', 'these',
+  'bit', 'bytes', 'byte', 'message', 'comments', 'data', 'value',
+  'type', 'size', 'set', 'path', 'ref', 'org', 'p', 'n',
+  'github', 'mediawiki', 'sub', 'script', 'public', 'one', 'number', 'keys', 'other', 'first',
+  'following', 'implementation', 'string', 'case', 'node', 'private',
+  'master', 'does', 'specification', 'two', 'change',
+  'valid', 'where', 'after', 'return', 'e', 'g', 'without', 'standard',
+  'user', 'order', 't', 'index', 'b', 'example', 'nodes', 'non', 'style',
+  'format', 'bits', 'so', 'license', 'some', 'field', 'length',
+  'messages', 'defined', 'being', 'uri', 'created', 'k', 'required',
+  'possible', 'both', 'see', 'let', 'however', 'list', 'wiki', 'into', 'based',
+  'them', 'blob', 'stack', 'sup', 'been', 'name', 'c', 'do', 'r', '5', '8', 'up', 'make', 'since', 'given', 'per', 'while'
+]);
+
 function cleanAuthorName(author) {
   return String(author || '').split('<')[0].trim();
+}
+
+function normalizeProposalFilterValue(value) {
+  const text = String(value || '').trim();
+  if (!text) {
+    return '';
+  }
+
+  const match = text.match(/^(?:bip\s*[- ]*)?0*(\d+)$/i);
+  return match ? match[1] : text;
+}
+
+function parseProposalFilterExpression(text, availableProposalIds = []) {
+  const availableSet = new Set((availableProposalIds || []).map(normalizeProposalFilterValue));
+  const selected = new Set();
+
+  String(text || '')
+    .split(',')
+    .map((token) => token.trim())
+    .filter(Boolean)
+    .forEach((token) => {
+      const rangeMatch = token.match(/^(?:bip\s*[- ]*)?0*(\d+)\s*-\s*(?:bip\s*[- ]*)?0*(\d+)$/i);
+
+      if (rangeMatch) {
+        const start = Number(rangeMatch[1]);
+        const end = Number(rangeMatch[2]);
+        const lower = Math.min(start, end);
+        const upper = Math.max(start, end);
+
+        for (let value = lower; value <= upper; value += 1) {
+          const normalized = String(value);
+          if (availableSet.has(normalized)) {
+            selected.add(normalized);
+          }
+        }
+        return;
+      }
+
+      const normalized = normalizeProposalFilterValue(token);
+      if (availableSet.has(normalized)) {
+        selected.add(normalized);
+      }
+    });
+
+  return Array.from(selected).sort((left, right) => Number(left) - Number(right));
 }
 
 function countDisplayedEdges(links) {
@@ -218,6 +290,130 @@ function buildCollaborationDerivedData(collaborationNetwork, collaborationCentra
   };
 }
 
+function normalizeCategoryValue(value) {
+  const text = String(value || '').trim();
+  return text || 'Unspecified';
+}
+
+function buildFacetDistribution(nodes, field) {
+  const counts = new Map();
+  const bipsByCategory = new Map();
+
+  (nodes || []).forEach((node) => {
+    const category = normalizeCategoryValue(node?.[field]);
+    counts.set(category, (counts.get(category) || 0) + 1);
+
+    if (node?.id != null) {
+      if (!bipsByCategory.has(category)) {
+        bipsByCategory.set(category, new Set());
+      }
+      bipsByCategory.get(category).add(String(node.id));
+    }
+  });
+
+  return Array.from(counts.entries())
+    .map(([id, value]) => ({
+      id,
+      value,
+      bips: Array.from(bipsByCategory.get(id) || []).sort((left, right) => Number(left) - Number(right)),
+    }))
+    .sort((left, right) => right.value - left.value || left.id.localeCompare(right.id));
+}
+
+function buildFacetTimeline(nodes, field) {
+  const countsByYear = new Map();
+  const bipsByYear = new Map();
+  const allCategories = new Set();
+
+  (nodes || []).forEach((node) => {
+    if (!node?.created) {
+      return;
+    }
+
+    const year = new Date(node.created).getFullYear();
+    if (!Number.isFinite(year) || year <= 1900) {
+      return;
+    }
+
+    const category = normalizeCategoryValue(node?.[field]);
+    allCategories.add(category);
+    const bipId = node?.id != null ? String(node.id) : null;
+
+    if (!countsByYear.has(year)) {
+      countsByYear.set(year, new Map());
+    }
+    if (!bipsByYear.has(year)) {
+      bipsByYear.set(year, new Map());
+    }
+
+    const yearMap = countsByYear.get(year);
+    yearMap.set(category, (yearMap.get(category) || 0) + 1);
+
+    if (bipId) {
+      const yearBipsMap = bipsByYear.get(year);
+      if (!yearBipsMap.has(category)) {
+        yearBipsMap.set(category, new Set());
+      }
+      yearBipsMap.get(category).add(bipId);
+    }
+  });
+
+  const categories = Array.from(allCategories).sort((left, right) => left.localeCompare(right));
+  const rows = Array.from(countsByYear.entries())
+    .sort((left, right) => left[0] - right[0])
+    .map(([year, categoryMap]) => {
+      const values = {};
+      const bips = {};
+      const yearBipsMap = bipsByYear.get(year) || new Map();
+      categories.forEach((category) => {
+        values[category] = categoryMap.get(category) || 0;
+        bips[category] = Array.from(yearBipsMap.get(category) || []).sort(
+          (left, right) => Number(left) - Number(right)
+        );
+      });
+
+      return {
+        year: String(year),
+        values,
+        bips,
+      };
+    });
+
+  return {
+    categories,
+    rows,
+  };
+}
+
+function buildWordCloudData(nodes, selectedProposalIds = []) {
+  const selectedSet = new Set(
+    (selectedProposalIds || []).map(normalizeProposalFilterValue).filter(Boolean)
+  );
+  const wordCounts = {};
+
+  (nodes || []).forEach((node) => {
+    const proposalId = normalizeProposalFilterValue(node?.id);
+    if (selectedSet.size > 0 && !selectedSet.has(proposalId)) {
+      return;
+    }
+
+    const wordList = node?.word_list;
+    if (!wordList) {
+      return;
+    }
+
+    Object.entries(wordList).forEach(([word, count]) => {
+      wordCounts[word] = (wordCounts[word] || 0) + count;
+    });
+  });
+
+  return Object.entries(wordCounts)
+    .filter(([word]) => !WORD_CLOUD_STOPWORDS.has(word.toLowerCase()))
+    .map(([word, count]) => ({ word, count }))
+    .sort((left, right) => right.count - left.count)
+    .slice(0, 100);
+}
+
 function buildDashboardData(dataset) {
   const authorship = dataset.authorship || {};
   const classification = dataset.classification || {};
@@ -277,43 +473,7 @@ function buildDashboardData(dataset) {
         })
       ).sort((a, b) => a.year - b.year);
 
-  const wordCounts = {};
-  for (const node of dataset.nodes) {
-    const wordList = node.word_list;
-    if (!wordList) continue;
-
-    for (const word in wordList) {
-      if (Object.prototype.hasOwnProperty.call(wordList, word)) {
-        wordCounts[word] = (wordCounts[word] || 0) + wordList[word];
-      }
-    }
-  }
-
-  const customStopwords = new Set([
-    'code', 'tt', '0', '1', '2', '3', '4', '32', 'x',
-    'key', 'not', 'if', 'can', 'pre', 'must', 'which', 's',
-    'https', 'com', 'should', 'may', 'have', 'new', 'any', 'no',
-    'using', 'use', 'only', 'used', 'all', 'we', 'they', 'when',
-    'each', 'time', 'i', 'but', 'would', 'than', 'same', 'm',
-    'their', 'more', 'also', 'such', 'there', 'then', 'these',
-    'bit', 'bytes', 'byte', 'message', 'comments', 'data', 'value',
-    'type', 'size', 'set', 'path', 'ref', 'org', 'p', 'n',
-    'github', 'mediawiki', 'sub', 'script', 'public', 'one', 'number', 'keys', 'other', 'first',
-    'following', 'implementation', 'string', 'case', 'node', 'private',
-    'master', 'does', 'specification', 'two', 'change',
-    'valid', 'where', 'after', 'return', 'e', 'g', 'without', 'standard',
-    'user', 'order', 't', 'index', 'b', 'example', 'nodes', 'non', 'style',
-    'format', 'bits', 'so', 'license', 'some', 'field', 'length',
-    'messages', 'defined', 'being', 'uri', 'created', 'k', 'required',
-    'possible', 'both', 'see', 'let', 'however', 'list', 'wiki', 'into', 'based',
-    'them', 'blob', 'stack', 'sup', 'been', 'name', 'c', 'do', 'r', '5', '8', 'up', 'make', 'since', 'given', 'per', 'while'
-  ]);
-
-  const wordCloudData = Object.entries(wordCounts)
-    .filter(([word]) => !customStopwords.has(word.toLowerCase()))
-    .map(([word, count]) => ({ word, count }))
-    .sort((a, b) => b.count - a.count)
-    .slice(0, 100);
+  const wordCloudData = buildWordCloudData(dataset.nodes);
 
   const groupedLinks = classification?.sankey_grouped?.links || [];
   const nodeLabels = Array.from(new Set(groupedLinks.flatMap((item) => [item.source, item.target])));
@@ -342,6 +502,27 @@ function buildDashboardData(dataset) {
 
   const conformityStatusRows = Object.entries(conformity.average_score_by_status || {}).map(
     ([status, score]) => ({ status, score })
+  );
+  const classificationDistributions = {
+    layer: buildFacetDistribution(dataset.nodes, 'layer'),
+    type: buildFacetDistribution(dataset.nodes, 'type'),
+    status: buildFacetDistribution(dataset.nodes, 'status'),
+  };
+  const classificationTimeline = {
+    layer: buildFacetTimeline(dataset.nodes, 'layer'),
+    type: buildFacetTimeline(dataset.nodes, 'type'),
+    status: buildFacetTimeline(dataset.nodes, 'status'),
+  };
+  const classificationCategoryDomains = Object.fromEntries(
+    CLASSIFICATION_DIMENSIONS.map(({ field }) => [
+      field,
+      [
+        ...classificationDistributions[field].map((entry) => entry.id),
+        ...classificationTimeline[field].categories.filter(
+          (category) => !classificationDistributions[field].some((entry) => entry.id === category)
+        ),
+      ],
+    ])
   );
 
   const topAuthors = (authorship.top_authors || []).map((entry) => ({
@@ -397,6 +578,9 @@ function buildDashboardData(dataset) {
     sankeyData,
     statusByLayerRows,
     conformityStatusRows,
+    classificationDistributions,
+    classificationTimeline,
+    classificationCategoryDomains,
     topAuthors,
     authorContributionHistogram,
     collaborationNetwork,
@@ -460,10 +644,19 @@ function EcosystemLanding() {
 function EcosystemDashboard() {
   const { ecosystemId } = useParams();
   const ecosystem = ecosystemsById[ecosystemId];
+  const emptyDataset = useMemo(() => ({
+    nodes: [],
+    links: {},
+    authorship: {},
+    classification: {},
+    conformity: {},
+    meta: {},
+  }), []);
   const availableStichtage = useMemo(() => getAvailableStichtage(ecosystemId), [ecosystemId]);
   const [selectedStichtag, setSelectedStichtag] = useState(availableStichtage[0] ?? null);
   const [highlightedAuthor, setHighlightedAuthor] = useState('');
   const [collaborationLayoutMode, setCollaborationLayoutMode] = useState('balanced');
+  const [wordCloudFilterText, setWordCloudFilterText] = useState('');
 
   useEffect(() => {
     setSelectedStichtag((current) => {
@@ -473,6 +666,53 @@ function EcosystemDashboard() {
       return availableStichtage[0] ?? null;
     });
   }, [ecosystemId, availableStichtage]);
+
+  const selectedDataset = ecosystem?.status === 'available'
+    ? getDatasetForSelection(ecosystemId, selectedStichtag)
+    : emptyDataset;
+  const {
+    yearData,
+    wordCloudData,
+    sankeyData,
+    statusByLayerRows,
+    conformityStatusRows,
+    classificationDistributions,
+    classificationTimeline,
+    classificationCategoryDomains,
+    topAuthors,
+    authorContributionHistogram,
+    collaborationNetwork,
+    collaborationMetricsRows,
+    top10Share,
+    overallConformity,
+  } = buildDashboardData(selectedDataset);
+  const availableProposalIds = useMemo(
+    () => (selectedDataset?.nodes || [])
+      .map((node) => normalizeProposalFilterValue(node?.id))
+      .filter(Boolean)
+      .sort((left, right) => Number(left) - Number(right)),
+    [selectedDataset]
+  );
+  const selectedWordCloudProposalIds = useMemo(
+    () => parseProposalFilterExpression(wordCloudFilterText, availableProposalIds),
+    [availableProposalIds, wordCloudFilterText]
+  );
+  const filteredWordCloudData = useMemo(
+    () => buildWordCloudData(selectedDataset?.nodes || [], selectedWordCloudProposalIds),
+    [selectedDataset, selectedWordCloudProposalIds]
+  );
+  const hasWordCloudFilter = wordCloudFilterText.trim().length > 0;
+
+  useEffect(() => {
+    setWordCloudFilterText((current) => {
+      if (!current.trim()) {
+        return current;
+      }
+
+      const normalized = parseProposalFilterExpression(current, availableProposalIds);
+      return normalized.length ? current : '';
+    });
+  }, [availableProposalIds]);
 
   if (!ecosystem) {
     return (
@@ -493,21 +733,6 @@ function EcosystemDashboard() {
       </section>
     );
   }
-
-  const selectedDataset = getDatasetForSelection(ecosystemId, selectedStichtag);
-  const {
-    yearData,
-    wordCloudData,
-    sankeyData,
-    statusByLayerRows,
-    conformityStatusRows,
-    topAuthors,
-    authorContributionHistogram,
-    collaborationNetwork,
-    collaborationMetricsRows,
-    top10Share,
-    overallConformity,
-  } = buildDashboardData(selectedDataset);
   const collaborationAuthorOptions = collaborationNetwork.nodes
     .map((node) => String(node.id || ''))
     .filter(Boolean)
@@ -546,75 +771,36 @@ function EcosystemDashboard() {
           className="w-full"
         />
       </div>
-      <Card className="mb-4">
-        <h2>{ecosystem.acronym} Relationship Network</h2>
-        <p>
-          This graph visualizes three relationship-extraction approaches in the selected ecosystem:
-          explicit dependencies (preamble), explicit references (regex), and implicit dependencies (LLM).
-        </p>
-        <NetworkDiagram data={selectedDataset} width={700} height={500} />
-      </Card>
-      <Card className="mb-4">
-        <h2>Analysis Submodule Summary</h2>
-        <div className="analysis-grid">
-          <div className="analysis-stat">
-            <h3>Relationship Network</h3>
-            <p><strong>Nodes:</strong> {selectedDataset.meta?.node_count ?? selectedDataset.nodes.length}</p>
-            <p>
-              <strong>Edges:</strong> {countDisplayedEdges(selectedDataset.links)}
-            </p>
-          </div>
-          <div className="analysis-stat">
-            <h3>Authorship</h3>
-            <p><strong>Top authors tracked:</strong> {topAuthors.length}</p>
-            <p><strong>Top 10 share:</strong> {top10Share.percentage ?? 'n/a'}%</p>
-          </div>
-          <div className="analysis-stat">
-            <h3>Classification</h3>
-            <p><strong>Layer groups:</strong> {statusByLayerRows.length}</p>
-            <p><strong>Sankey links:</strong> {sankeyData.links.length}</p>
-          </div>
-          <div className="analysis-stat">
-            <h3>Conformity</h3>
-            <p><strong>Average score:</strong> {overallConformity ?? 'n/a'}</p>
-            <p><strong>Status buckets:</strong> {conformityStatusRows.length}</p>
-          </div>
-        </div>
-      </Card>
       <section className="dashboard-section">
         <div className="dashboard-section__header">
-          <h1>Authorship Patterns</h1>
-          <p>
-            These charts summarize who writes {ecosystem.proposalShortPlural}, how concentrated authorship is,
-            when new {ecosystem.proposalShortPlural} appear, and which authors are most central in the observed
-            collaboration graph.
-          </p>
+          <h2 className="dashboard-section__title">Authorship Patterns</h2>
         </div>
+        <Card className="mb-4">
+          <h3>{ecosystem.acronym} Creation Over Time</h3>
+          <p>
+            Annual counts are shown as bars; the line tracks the cumulative total on a secondary axis.
+          </p>
+          <ProposalTimelineChart data={yearData} width={1200} height={420} />
+        </Card>
         <div className="dashboard-grid dashboard-grid--two-up">
           <Card className="mb-4" style={{ flex: 1 }}>
-            <h2>Top 10 Authors by {ecosystem.acronym} Count</h2>
+            <h3>Top 10 Authors by {ecosystem.acronym} Count</h3>
             <p>
               Preamble authorship counts for the most prolific contributors in the selected snapshot.
             </p>
             <TopAuthorsChart data={{ topAuthors }} width={640} height={420} />
           </Card>
           <Card className="mb-4" style={{ flex: 1 }}>
-            <h2>Authorship Tail Distribution</h2>
+            <h3>Authorship Distribution</h3>
             <p>
               Number of authors who have written a given number of {ecosystem.proposalShortPlural}.
             </p>
             <AuthorContributionHistogram data={authorContributionHistogram} width={640} height={420} />
           </Card>
         </div>
+        
         <Card className="mb-4">
-          <h2>{ecosystem.proposalPlural} Over Time</h2>
-          <p>
-            Annual counts are shown as bars; the line tracks the cumulative total on a secondary axis.
-          </p>
-          <ProposalTimelineChart data={yearData} width={1200} height={420} />
-        </Card>
-        <Card className="mb-4">
-          <h2>Author Collaboration Network</h2>
+          <h3>Collaboration Network</h3>
           <p>
             The existing collaboration graph derived from co-authorship within the selected snapshot.
           </p>
@@ -671,9 +857,9 @@ function EcosystemDashboard() {
           />
         </Card>
         <Card className="mb-4">
+          <h3>Collaboration Metrics</h3>
+           <p>All authors, sortable and filterable. Cluster IDs refer to connected components, not overlapping maximal cliques.</p>
           <AuthorCentralityTable
-            title="Author Collaboration Metrics"
-            description="All authors, sortable and filterable. Cluster IDs refer to connected components, not overlapping maximal cliques."
             rows={collaborationMetricsRows}
             defaultSortField="eigenvector"
             columns={[
@@ -682,29 +868,119 @@ function EcosystemDashboard() {
               { field: 'rawDegree', header: 'Degree', format: 'integer' },
               { field: 'weightedDegree', header: 'Weighted Degree', format: 'integer' },
               { field: 'normalizedDegree', header: 'Normalized Degree', digits: 4 },
-              { field: 'eigenvector', header: 'Eigenvector Centrality', digits: 6 },
-              { field: 'weightedEigenvector', header: 'Weighted Eigenvector', digits: 6 },
+              { field: 'eigenvector', header: 'Eigenvector Centrality', digits: 4 },
+              { field: 'weightedEigenvector', header: 'Weighted Eigenvector', digits: 4 },
             ]}
           />
         </Card>
+        <Card className="mb-4">
+          <h3>Word Cloud of Proposal Text</h3>
+          <p>
+            This word cloud highlights the most frequent terms across the selected proposal corpus.
+            Add one or more {ecosystem.proposalShortPlural} to restrict the cloud to that subset.
+          </p>
+          <div className="wordcloud-filter">
+            <div className="wordcloud-filter__copy">
+              <strong>Filter proposals.</strong>
+              <span>Use comma-separated IDs or ranges like `2,4,30-35,99`.</span>
+            </div>
+            <div className="wordcloud-filter__controls">
+              <InputText
+                value={wordCloudFilterText}
+                onChange={(event) => setWordCloudFilterText(event.target.value)}
+                placeholder="e.g. 2,4,30-35,99"
+              />
+              <Button
+                type="button"
+                label="Clear"
+                severity="secondary"
+                text
+                onClick={() => setWordCloudFilterText('')}
+                disabled={!hasWordCloudFilter}
+              />
+            </div>
+          </div>
+          <WordCloud words={hasWordCloudFilter ? filteredWordCloudData : wordCloudData} width={1250} height={650} />
+        </Card>
       </section>
-      <h1>Proposal Category Overview</h1>
-      <ProposalKpiOverview data={selectedDataset} totalLabel={`Total ${ecosystem.proposalShortPlural}`} />
+      <section className="dashboard-section">
+      <div className="dashboard-section__header">
+        <h2 className="dashboard-section__title">Classification</h2>
+      </div>
+      {CLASSIFICATION_DIMENSIONS.map((dimension) => (
+        <Card key={dimension.field} className="mb-4">
+          <h3>{ecosystem.proposalShortPlural} by {dimension.label}</h3>
+          <div className="dashboard-grid dashboard-grid--classification classification-card__grid">
+            <div className="classification-card__panel">
+              <ClassificationPieChart
+                dimension={dimension.field}
+                colorDomain={classificationCategoryDomains[dimension.field]}
+                data={classificationDistributions[dimension.field]}
+                width={400}
+                height={250}
+              />
+            </div>
+            <div className="classification-card__panel">
+              <ClassificationStackedTimelineChart
+                categoryDomains={classificationCategoryDomains}
+                dimensions={CLASSIFICATION_DIMENSIONS}
+                selectedDimensions={[dimension.field]}
+                timelineData={classificationTimeline}
+                width={700}
+                height={250}
+              />
+            </div>
+          </div>
+        </Card>
+      ))}
       <Card className="mb-4" style={{ flex: 1 }}>
-        <h2>Sankey Diagram</h2>
+        <h3>Sankey Diagram</h3>
         <p>This Sankey diagram visualizes the flow between categories in the selected proposal ecosystem.</p>
         <ProposalSankeyChart data={sankeyData} width={1200} height={600} />
       </Card>
-      <br></br>
+      </section>
+      <section className="dashboard-section">
+      <div className="dashboard-section__header">
+        <h2 className="dashboard-section__title">Dependencies</h2>
+      </div>
       <Card className="mb-4">
-        <h2>Word Cloud of Proposal Text</h2>
-        <p>This word cloud highlights the most frequent terms across the selected proposal corpus.</p>
-        <WordCloud words={wordCloudData} width={1250} height={650} />
+        <h3>{ecosystem.acronym} Relationship Network</h3>
+        <p>
+          This graph visualizes three relationship-extraction approaches in the selected ecosystem:
+          explicit dependencies (preamble), explicit references (regex), and implicit dependencies (LLM).
+        </p>
+        <NetworkDiagram data={selectedDataset} width={700} height={500} />
       </Card>
-      <br></br>
+      <Card className="mb-4">
+        <h3>Analysis Submodule Summary</h3>
+        <div className="analysis-grid">
+          <div className="analysis-stat">
+            <h4>Relationship Network</h4>
+            <p><strong>Nodes:</strong> {selectedDataset.meta?.node_count ?? selectedDataset.nodes.length}</p>
+            <p>
+              <strong>Edges:</strong> {countDisplayedEdges(selectedDataset.links)}
+            </p>
+          </div>
+          <div className="analysis-stat">
+            <h4>Authorship</h4>
+            <p><strong>Top authors tracked:</strong> {topAuthors.length}</p>
+            <p><strong>Top 10 share:</strong> {top10Share.percentage ?? 'n/a'}%</p>
+          </div>
+          <div className="analysis-stat">
+            <h4>Classification</h4>
+            <p><strong>Layer groups:</strong> {statusByLayerRows.length}</p>
+            <p><strong>Sankey links:</strong> {sankeyData.links.length}</p>
+          </div>
+          <div className="analysis-stat">
+            <h4>Conformity</h4>
+            <p><strong>Average score:</strong> {overallConformity ?? 'n/a'}</p>
+            <p><strong>Status buckets:</strong> {conformityStatusRows.length}</p>
+          </div>
+        </div>
+      </Card>
       <div className="chart-grid" style={{ display: 'flex', gap: '2rem', marginTop: '2rem', height: '100%' }}>
         <Card className="mb-4" style={{ flex: 1 }}>
-          <h2>Classification by Layer</h2>
+          <h3>Classification by Layer</h3>
           <p>Top status per layer from the classification submodule output.</p>
           <table className="analysis-table">
             <thead>
@@ -726,7 +1002,7 @@ function EcosystemDashboard() {
           </table>
         </Card>
         <Card className="mb-4" style={{ flex: 1 }}>
-          <h2>Conformity by Status</h2>
+          <h3>Conformity by Status</h3>
           <p>Average compliance score by proposal status from the conformity submodule output.</p>
           <table className="analysis-table">
             <thead>
@@ -744,8 +1020,9 @@ function EcosystemDashboard() {
               ))}
             </tbody>
           </table>
-        </Card>
-      </div>
+          </Card>
+        </div>
+      </section>
     </section>
   );
 }

@@ -74,7 +74,7 @@ export const TopAuthorsChart = ({ data, width = 600, height = 400 }) => {
     const renderTooltipHtml = (entry) => {
       const bipLinks = entry.bips.length
         ? entry.bips
-          .map((bip) => `<a href="https://bips.dev/${bip}/" target="_blank" rel="noreferrer">BIP ${bip}</a>`)
+          .map((bip) => `<a href="https://bips.dev/${bip}/" target="_blank" rel="noreferrer">BIP${bip}</a>`)
           .join(', ')
         : 'No BIP list available.';
 

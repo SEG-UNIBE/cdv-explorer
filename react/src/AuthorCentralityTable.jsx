@@ -4,12 +4,12 @@ import { Column } from 'primereact/column';
 import { InputText } from 'primereact/inputtext';
 
 function formatNumber(value, digits = 4) {
-  return Number(value || 0).toFixed(digits);
+  return Number(value || 0)
+    .toFixed(digits)
+    .replace(/\.?0+$/, '');
 }
 
 export const AuthorCentralityTable = ({
-  title,
-  description,
   rows,
   columns,
   defaultSortField,
@@ -28,10 +28,6 @@ export const AuthorCentralityTable = ({
 
   const header = (
     <div className="centrality-table__header">
-      <div>
-        <h2>{title}</h2>
-        <p>{description}</p>
-      </div>
       <span className="p-input-icon-left centrality-table__filter">
         <InputText
           value={globalFilter}

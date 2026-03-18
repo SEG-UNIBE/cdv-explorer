@@ -58,6 +58,17 @@ function cleanAuthorName(author) {
   return String(author || '').split('<')[0].trim();
 }
 
+function getSourceRepositoryHref(repository) {
+  const text = String(repository || '').trim();
+  const githubMatch = text.match(/^github\/([^/]+)\/([^/]+)$/i);
+
+  if (githubMatch) {
+    return `https://github.com/${githubMatch[1]}/${githubMatch[2]}`;
+  }
+
+  return null;
+}
+
 function normalizeProposalFilterValue(value) {
   const text = String(value || '').trim();
   if (!text) {
@@ -639,6 +650,10 @@ function buildDashboardData(dataset) {
   const rawCollaborationNetwork = authorship.collaboration_network || { nodes: [], edges: [] };
   const collaborationNetwork = {
     ...rawCollaborationNetwork,
+    nodes: (rawCollaborationNetwork.nodes || []).map((node) => ({
+      ...node,
+      bips: Array.from(authorBipsByAuthor.get(node.id) || []).sort((left, right) => Number(left) - Number(right)),
+    })),
     edges: (rawCollaborationNetwork.edges || []).map((edge) => {
       const pairKey = [edge.source, edge.target].sort().join('|||');
       const bips = Array.from(sharedBipsByAuthorPair.get(pairKey) || [])
@@ -846,6 +861,7 @@ function EcosystemDashboard() {
     label: stichtag === 'current' ? 'Current' : stichtag,
     value: stichtag,
   }));
+  const sourceRepositories = ecosystem.sourceRepositories || [];
 
   return (
     <section className="content">
@@ -861,6 +877,21 @@ function EcosystemDashboard() {
             For now, this dashboard lets you inspect the Bitcoin implementation across network structure, category flows,
             authorship, temporal activity, and text-derived themes.
           </p>
+          <ul>
+            {sourceRepositories.map((repository) => {
+              const href = getSourceRepositoryHref(repository);
+
+              return (
+                <li key={repository}>
+                  {href ? (
+                    <a href={href} target="_blank" rel="noreferrer">
+                      {repository}
+                    </a>
+                  ) : repository}
+                </li>
+              );
+            })}
+          </ul>
         </div>
       </div>
       <div className="dashboard-sticky-controls">
@@ -877,337 +908,337 @@ function EcosystemDashboard() {
         />
       </div>
       <section className="dashboard-section">
-        <div className="dashboard-section__header">
-          <h2 className="dashboard-section__title">Authorship Patterns</h2>
-        </div>
-        <Card className="mb-4">
-          <h3>{ecosystem.acronym} Creation Over Time</h3>
-          <p>
-            Annual counts are shown as bars; the line tracks the cumulative total on a secondary axis.
-          </p>
-          <ProposalTimelineChart data={yearData} width={1200} height={420} />
-        </Card>
-        <div className="dashboard-grid dashboard-grid--two-up">
-          <Card className="mb-4" style={{ flex: 1 }}>
-            <h3>Top 10 Authors by {ecosystem.acronym} Count</h3>
-            <p>
-              Preamble authorship counts for the most prolific contributors in the selected snapshot.
-            </p>
-            <TopAuthorsChart data={{ topAuthors }} width={640} height={420} />
-          </Card>
-          <Card className="mb-4" style={{ flex: 1 }}>
-            <h3>Authorship Distribution</h3>
-            <p>
-              Number of authors who have written a given number of {ecosystem.proposalShortPlural}.
-            </p>
-            <AuthorContributionHistogram data={authorContributionHistogram} width={640} height={420} />
-          </Card>
-        </div>
-        
-        <Card className="mb-4">
-          <h3>Collaboration Network</h3>
-          <p>
-            The existing collaboration graph derived from co-authorship within the selected snapshot.
-          </p>
-          <div className="network-finder">
-            <div className="network-finder__copy">
-              <strong>Find author.</strong>
-              <span>Search an author to highlight and center their node in the network.</span>
+            <div className="dashboard-section__header">
+              <h2 className="dashboard-section__title">Authorship Patterns</h2>
             </div>
-            <div className="network-finder__controls">
-              <InputText
-                value={highlightedAuthor}
-                onChange={(event) => setHighlightedAuthor(event.target.value)}
-                placeholder="Type an author name"
-                list="author-collaboration-options"
-              />
-              <datalist id="author-collaboration-options">
-                {collaborationAuthorOptions.map((author) => (
-                  <option key={author} value={author} />
-                ))}
-              </datalist>
-              <Button
-                type="button"
-                label="Clear"
-                severity="secondary"
-                text
-                onClick={() => setHighlightedAuthor('')}
-                disabled={!highlightedAuthor.trim()}
-              />
+            <Card className="mb-4">
+              <h3>{ecosystem.acronym} Creation Over Time</h3>
+              <p>
+                Annual counts are shown as bars; the line tracks the cumulative total on a secondary axis.
+              </p>
+              <ProposalTimelineChart data={yearData} width={1200} height={420} />
+            </Card>
+            <div className="dashboard-grid dashboard-grid--two-up">
+              <Card className="mb-4" style={{ flex: 1 }}>
+                <h3>Top 10 Authors by {ecosystem.acronym} Count</h3>
+                <p>
+                  Preamble authorship counts for the most prolific contributors in the selected snapshot.
+                </p>
+                <TopAuthorsChart data={{ topAuthors }} width={640} height={420} />
+              </Card>
+              <Card className="mb-4" style={{ flex: 1 }}>
+                <h3>Authorship Distribution</h3>
+                <p>
+                  Number of authors who have written a given number of {ecosystem.proposalShortPlural}.
+                </p>
+                <AuthorContributionHistogram data={authorContributionHistogram} width={640} height={420} />
+              </Card>
             </div>
-          </div>
-          <div className="network-layout-picker">
-            <div className="network-layout-picker__label">Layout</div>
-            <div className="network-layout-picker__options">
-              {COLLABORATION_LAYOUT_OPTIONS.map((option) => (
-                <label key={option.value} className="network-layout-picker__option">
-                  <RadioButton
-                    inputId={`collaboration-layout-${option.value}`}
-                    name="collaboration-layout"
-                    value={option.value}
-                    onChange={(event) => setCollaborationLayoutMode(event.value)}
-                    checked={collaborationLayoutMode === option.value}
+            
+            <Card className="mb-4">
+              <h3>Collaboration Network</h3>
+              <p>
+                The existing collaboration graph derived from co-authorship within the selected snapshot.
+              </p>
+              <div className="network-finder">
+                <div className="network-finder__copy">
+                  <strong>Find author.</strong>
+                  <span>Search an author to highlight and center their node in the network.</span>
+                </div>
+                <div className="network-finder__controls">
+                  <InputText
+                    value={highlightedAuthor}
+                    onChange={(event) => setHighlightedAuthor(event.target.value)}
+                    placeholder="Type an author name"
+                    list="author-collaboration-options"
                   />
-                  <span>{option.label}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-          <AuthorCollaborationNetwork
-            data={collaborationNetwork}
-            width={1200}
-            height={700}
-            highlightAuthor={highlightedAuthor}
-            layoutMode={collaborationLayoutMode}
-          />
-        </Card>
-        <Card className="mb-4">
-          <h3>Collaboration Metrics</h3>
-           <p>All authors, sortable and filterable. Cluster IDs refer to connected components, not overlapping maximal cliques.</p>
-          <AuthorCentralityTable
-            rows={collaborationMetricsRows}
-            defaultSortField="eigenvector"
-            columns={[
-              { field: 'clusterId', header: 'Cluster', format: 'integer' },
-              { field: 'clusterSize', header: 'Cluster Size', format: 'integer' },
-              { field: 'rawDegree', header: 'Degree', format: 'integer' },
-              { field: 'weightedDegree', header: 'Weighted Degree', format: 'integer' },
-              { field: 'normalizedDegree', header: 'Normalized Degree', digits: 4 },
-              { field: 'eigenvector', header: 'Eigenvector Centrality', digits: 4 },
-              { field: 'weightedEigenvector', header: 'Weighted Eigenvector', digits: 4 },
-            ]}
-          />
-        </Card>
-        <Card className="mb-4">
-          <h3>Word Cloud of Proposal Text</h3>
-          <p>
-            This word cloud highlights the most frequent terms across the selected proposal corpus.
-            Add one or more {ecosystem.proposalShortPlural} to restrict the cloud to that subset.
-          </p>
-          <div className="wordcloud-filter">
-            <div className="wordcloud-filter__copy">
-              <strong>Filter proposals.</strong>
-              <span>Use comma-separated IDs or ranges like `2,4,30-35,99`.</span>
-            </div>
-            <div className="wordcloud-filter__controls">
-              <InputText
-                value={wordCloudFilterText}
-                onChange={(event) => setWordCloudFilterText(event.target.value)}
-                placeholder="e.g. 2,4,30-35,99"
+                  <datalist id="author-collaboration-options">
+                    {collaborationAuthorOptions.map((author) => (
+                      <option key={author} value={author} />
+                    ))}
+                  </datalist>
+                  <Button
+                    type="button"
+                    label="Clear"
+                    severity="secondary"
+                    text
+                    onClick={() => setHighlightedAuthor('')}
+                    disabled={!highlightedAuthor.trim()}
+                  />
+                </div>
+              </div>
+              <div className="network-layout-picker">
+                <div className="network-layout-picker__label">Layout</div>
+                <div className="network-layout-picker__options">
+                  {COLLABORATION_LAYOUT_OPTIONS.map((option) => (
+                    <label key={option.value} className="network-layout-picker__option">
+                      <RadioButton
+                        inputId={`collaboration-layout-${option.value}`}
+                        name="collaboration-layout"
+                        value={option.value}
+                        onChange={(event) => setCollaborationLayoutMode(event.value)}
+                        checked={collaborationLayoutMode === option.value}
+                      />
+                      <span>{option.label}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+              <AuthorCollaborationNetwork
+                data={collaborationNetwork}
+                width={1200}
+                height={700}
+                highlightAuthor={highlightedAuthor}
+                layoutMode={collaborationLayoutMode}
               />
-              <Button
-                type="button"
-                label="Clear"
-                severity="secondary"
-                text
-                onClick={() => setWordCloudFilterText('')}
-                disabled={!hasWordCloudFilter}
+            </Card>
+            <Card className="mb-4">
+              <h3>Collaboration Metrics</h3>
+               <p>All authors, sortable and filterable. Cluster IDs refer to connected components, not overlapping maximal cliques.</p>
+              <AuthorCentralityTable
+                rows={collaborationMetricsRows}
+                defaultSortField="eigenvector"
+                columns={[
+                  { field: 'clusterId', header: 'Cluster', format: 'integer' },
+                  { field: 'clusterSize', header: 'Cluster Size', format: 'integer' },
+                  { field: 'rawDegree', header: 'Degree', format: 'integer' },
+                  { field: 'weightedDegree', header: 'Weighted Degree', format: 'integer' },
+                  { field: 'normalizedDegree', header: 'Normalized Degree', digits: 4 },
+                  { field: 'eigenvector', header: 'Eigenvector Centrality', digits: 4 },
+                  { field: 'weightedEigenvector', header: 'Weighted Eigenvector', digits: 4 },
+                ]}
               />
-            </div>
+            </Card>
+            <Card className="mb-4">
+              <h3>Word Cloud of Proposal Text</h3>
+              <p>
+                This word cloud highlights the most frequent terms across the selected proposal corpus.
+                Add one or more {ecosystem.proposalShortPlural} to restrict the cloud to that subset.
+              </p>
+              <div className="wordcloud-filter">
+                <div className="wordcloud-filter__copy">
+                  <strong>Filter proposals.</strong>
+                  <span>Use comma-separated IDs or ranges like `2,4,30-35,99`.</span>
+                </div>
+                <div className="wordcloud-filter__controls">
+                  <InputText
+                    value={wordCloudFilterText}
+                    onChange={(event) => setWordCloudFilterText(event.target.value)}
+                    placeholder="e.g. 2,4,30-35,99"
+                  />
+                  <Button
+                    type="button"
+                    label="Clear"
+                    severity="secondary"
+                    text
+                    onClick={() => setWordCloudFilterText('')}
+                    disabled={!hasWordCloudFilter}
+                  />
+                </div>
+              </div>
+              <WordCloud words={hasWordCloudFilter ? filteredWordCloudData : wordCloudData} width={1250} height={600} />
+            </Card>
+          </section>
+          <section className="dashboard-section">
+          <div className="dashboard-section__header">
+            <h2 className="dashboard-section__title">Classification</h2>
           </div>
-          <WordCloud words={hasWordCloudFilter ? filteredWordCloudData : wordCloudData} width={1250} height={600} />
-        </Card>
-      </section>
-      <section className="dashboard-section">
-      <div className="dashboard-section__header">
-        <h2 className="dashboard-section__title">Classification</h2>
-      </div>
-      {CLASSIFICATION_DIMENSIONS.map((dimension) => (
-        <Card key={dimension.field} className="mb-4">
-          <h3>{ecosystem.proposalShortPlural} by {dimension.label}</h3>
-          <div className="dashboard-grid dashboard-grid--classification classification-card__grid">
-            <div className="classification-card__panel">
-              <ClassificationPieChart
-                dimension={dimension.field}
-                colorDomain={classificationCategoryDomains[dimension.field]}
-                data={classificationDistributions[dimension.field]}
-                width={400}
-                height={250}
-              />
-            </div>
-            <div className="classification-card__panel">
-              <ClassificationStackedTimelineChart
-                categoryDomains={classificationCategoryDomains}
-                dimensions={CLASSIFICATION_DIMENSIONS}
-                selectedDimensions={[dimension.field]}
-                timelineData={classificationTimeline}
-                width={700}
-                height={250}
-              />
-            </div>
-          </div>
-        </Card>
-      ))}
-      <Card className="mb-4" style={{ flex: 1 }}>
-        <h3>Pairwise Classification Chord Diagram</h3>
-        <p>This chord diagram connects layer, status, and type categories across all pairwise combinations.</p>
-        <ClassificationChordDiagram data={classificationChordData} width={1000} height={800} />
-      </Card>
-      </section>
-      <section className="dashboard-section">
-      <div className="dashboard-section__header">
-        <h2 className="dashboard-section__title">Dependencies</h2>
-      </div>
-      <Card className="mb-4">
-        <h3>{ecosystem.acronym} Relationship Network</h3>
-        <p>
-          This graph visualizes three relationship-extraction approaches in the selected ecosystem:
-          explicit dependencies (preamble), explicit references (regex), and implicit dependencies (LLM).
-        </p>
-        <div className="network-finder">
-          <div className="network-finder__copy">
-            <strong>Find proposal.</strong>
-            <span>Search a proposal ID to highlight and center its node in the network.</span>
-          </div>
-          <div className="network-finder__controls">
-            <InputText
-              value={highlightedDependencyProposal}
-              onChange={(event) => setHighlightedDependencyProposal(event.target.value)}
-              placeholder="Type a proposal ID"
-              list="dependency-proposal-options"
-            />
-            <datalist id="dependency-proposal-options">
-              {dependencyProposalOptions.map((proposalId) => (
-                <option key={proposalId} value={proposalId} />
-              ))}
-            </datalist>
-            <Button
-              type="button"
-              label="Clear"
-              severity="secondary"
-              text
-              onClick={() => setHighlightedDependencyProposal('')}
-              disabled={!highlightedDependencyProposal.trim()}
-            />
-          </div>
-        </div>
-        <div className="wordcloud-filter">
-          <div className="wordcloud-filter__copy">
-            <strong>Filter proposals.</strong>
-            <span>Use comma-separated IDs or ranges like `2,4,30-35,99`.</span>
-          </div>
-          <div className="wordcloud-filter__controls">
-            <InputText
-              value={dependencyFilterText}
-              onChange={(event) => setDependencyFilterText(event.target.value)}
-              placeholder="e.g. 2,4,30-35,99"
-            />
-            <label className="dependency-filter-checkbox">
-              <input
-                type="checkbox"
-                checked={dependencyIncludeConnections}
-                onChange={(event) => setDependencyIncludeConnections(event.target.checked)}
-              />
-              <span>incl. connections</span>
-            </label>
-            <Button
-              type="button"
-              label="Clear"
-              severity="secondary"
-              text
-              onClick={() => setDependencyFilterText('')}
-              disabled={!hasDependencyFilter}
-            />
-          </div>
-        </div>
-        <div className="network-layout-picker">
-          <div className="network-layout-picker__label">Layout</div>
-          <div className="network-layout-picker__options">
-            {COLLABORATION_LAYOUT_OPTIONS.map((option) => (
-              <label key={option.value} className="network-layout-picker__option">
-                <RadioButton
-                  inputId={`dependency-layout-${option.value}`}
-                  name="dependency-layout"
-                  value={option.value}
-                  onChange={(event) => setDependencyLayoutMode(event.value)}
-                  checked={dependencyLayoutMode === option.value}
-                />
-                <span>{option.label}</span>
-              </label>
-            ))}
-          </div>
-        </div>
-        <NetworkDiagram
-          data={selectedDataset}
-          width={1200}
-          height={700}
-          highlightProposal={highlightedDependencyProposal}
-          proposalFilterIds={selectedDependencyProposalIds}
-          includeConnections={dependencyIncludeConnections}
-          layoutMode={dependencyLayoutMode}
-        />
-      </Card>
-      <Card className="mb-4">
-        <h3>Analysis Submodule Summary</h3>
-        <div className="analysis-grid">
-          <div className="analysis-stat">
-            <h4>Relationship Network</h4>
-            <p><strong>Nodes:</strong> {selectedDataset.meta?.node_count ?? selectedDataset.nodes.length}</p>
-            <p>
-              <strong>Edges:</strong> {countDisplayedEdges(selectedDataset.links)}
-            </p>
-          </div>
-          <div className="analysis-stat">
-            <h4>Authorship</h4>
-            <p><strong>Top authors tracked:</strong> {topAuthors.length}</p>
-            <p><strong>Top 10 share:</strong> {top10Share.percentage ?? 'n/a'}%</p>
-          </div>
-          <div className="analysis-stat">
-            <h4>Classification</h4>
-            <p><strong>Layer groups:</strong> {statusByLayerRows.length}</p>
-            <p><strong>Chord categories:</strong> {classificationChordData.groups.length}</p>
-          </div>
-          <div className="analysis-stat">
-            <h4>Conformity</h4>
-            <p><strong>Average score:</strong> {overallConformity ?? 'n/a'}</p>
-            <p><strong>Status buckets:</strong> {conformityStatusRows.length}</p>
-          </div>
-        </div>
-      </Card>
-      <div className="chart-grid" style={{ display: 'flex', gap: '2rem', marginTop: '2rem', height: '100%' }}>
-        <Card className="mb-4" style={{ flex: 1 }}>
-          <h3>Classification by Layer</h3>
-          <p>Top status per layer from the classification submodule output.</p>
-          <table className="analysis-table">
-            <thead>
-              <tr>
-                <th>Layer</th>
-                <th>Top Status</th>
-                <th>Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              {statusByLayerRows.map((row) => (
-                <tr key={row.layer}>
-                  <td>{row.layer}</td>
-                  <td>{row.topStatus}</td>
-                  <td>{row.total}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </Card>
-        <Card className="mb-4" style={{ flex: 1 }}>
-          <h3>Conformity by Status</h3>
-          <p>Average compliance score by proposal status from the conformity submodule output.</p>
-          <table className="analysis-table">
-            <thead>
-              <tr>
-                <th>Status</th>
-                <th>Average Score</th>
-              </tr>
-            </thead>
-            <tbody>
-              {conformityStatusRows.map((row) => (
-                <tr key={row.status}>
-                  <td>{row.status}</td>
-                  <td>{row.score}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          {CLASSIFICATION_DIMENSIONS.map((dimension) => (
+            <Card key={dimension.field} className="mb-4">
+              <h3>{ecosystem.proposalShortPlural} by {dimension.label}</h3>
+              <div className="dashboard-grid dashboard-grid--classification classification-card__grid">
+                <div className="classification-card__panel">
+                  <ClassificationPieChart
+                    dimension={dimension.field}
+                    colorDomain={classificationCategoryDomains[dimension.field]}
+                    data={classificationDistributions[dimension.field]}
+                    width={400}
+                    height={250}
+                  />
+                </div>
+                <div className="classification-card__panel">
+                  <ClassificationStackedTimelineChart
+                    categoryDomains={classificationCategoryDomains}
+                    dimensions={CLASSIFICATION_DIMENSIONS}
+                    selectedDimensions={[dimension.field]}
+                    timelineData={classificationTimeline}
+                    width={700}
+                    height={250}
+                  />
+                </div>
+              </div>
+            </Card>
+          ))}
+          <Card className="mb-4" style={{ flex: 1 }}>
+            <h3>Pairwise Classification Chord Diagram</h3>
+            <p>This chord diagram connects layer, status, and type categories across all pairwise combinations.</p>
+            <ClassificationChordDiagram data={classificationChordData} width={1000} height={800} />
           </Card>
-        </div>
+          </section>
+          <section className="dashboard-section">
+          <div className="dashboard-section__header">
+            <h2 className="dashboard-section__title">Dependencies</h2>
+          </div>
+          <Card className="mb-4">
+            <h3>{ecosystem.acronym} Relationship Network</h3>
+            <p>
+              This graph visualizes three relationship-extraction approaches in the selected ecosystem:
+              explicit dependencies (preamble), explicit references (regex), and implicit dependencies (LLM).
+            </p>
+            <div className="network-finder">
+              <div className="network-finder__copy">
+                <strong>Find proposal.</strong>
+                <span>Search a proposal ID to highlight and center its node in the network.</span>
+              </div>
+              <div className="network-finder__controls">
+                <InputText
+                  value={highlightedDependencyProposal}
+                  onChange={(event) => setHighlightedDependencyProposal(event.target.value)}
+                  placeholder="Type a proposal ID"
+                  list="dependency-proposal-options"
+                />
+                <datalist id="dependency-proposal-options">
+                  {dependencyProposalOptions.map((proposalId) => (
+                    <option key={proposalId} value={proposalId} />
+                  ))}
+                </datalist>
+                <Button
+                  type="button"
+                  label="Clear"
+                  severity="secondary"
+                  text
+                  onClick={() => setHighlightedDependencyProposal('')}
+                  disabled={!highlightedDependencyProposal.trim()}
+                />
+              </div>
+            </div>
+            <div className="wordcloud-filter">
+              <div className="wordcloud-filter__copy">
+                <strong>Filter proposals.</strong>
+                <span>Use comma-separated IDs or ranges like `2,4,30-35,99`.</span>
+              </div>
+              <div className="wordcloud-filter__controls">
+                <InputText
+                  value={dependencyFilterText}
+                  onChange={(event) => setDependencyFilterText(event.target.value)}
+                  placeholder="e.g. 2,4,30-35,99"
+                />
+                <label className="dependency-filter-checkbox">
+                  <input
+                    type="checkbox"
+                    checked={dependencyIncludeConnections}
+                    onChange={(event) => setDependencyIncludeConnections(event.target.checked)}
+                  />
+                  <span>incl. connections</span>
+                </label>
+                <Button
+                  type="button"
+                  label="Clear"
+                  severity="secondary"
+                  text
+                  onClick={() => setDependencyFilterText('')}
+                  disabled={!hasDependencyFilter}
+                />
+              </div>
+            </div>
+            <div className="network-layout-picker">
+              <div className="network-layout-picker__label">Layout</div>
+              <div className="network-layout-picker__options">
+                {COLLABORATION_LAYOUT_OPTIONS.map((option) => (
+                  <label key={option.value} className="network-layout-picker__option">
+                    <RadioButton
+                      inputId={`dependency-layout-${option.value}`}
+                      name="dependency-layout"
+                      value={option.value}
+                      onChange={(event) => setDependencyLayoutMode(event.value)}
+                      checked={dependencyLayoutMode === option.value}
+                    />
+                    <span>{option.label}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+            <NetworkDiagram
+              data={selectedDataset}
+              width={1200}
+              height={700}
+              highlightProposal={highlightedDependencyProposal}
+              proposalFilterIds={selectedDependencyProposalIds}
+              includeConnections={dependencyIncludeConnections}
+              layoutMode={dependencyLayoutMode}
+            />
+          </Card>
+          <Card className="mb-4">
+            <h3>Analysis Submodule Summary</h3>
+            <div className="analysis-grid">
+              <div className="analysis-stat">
+                <h4>Relationship Network</h4>
+                <p><strong>Nodes:</strong> {selectedDataset.meta?.node_count ?? selectedDataset.nodes.length}</p>
+                <p>
+                  <strong>Edges:</strong> {countDisplayedEdges(selectedDataset.links)}
+                </p>
+              </div>
+              <div className="analysis-stat">
+                <h4>Authorship</h4>
+                <p><strong>Top authors tracked:</strong> {topAuthors.length}</p>
+                <p><strong>Top 10 share:</strong> {top10Share.percentage ?? 'n/a'}%</p>
+              </div>
+              <div className="analysis-stat">
+                <h4>Classification</h4>
+                <p><strong>Layer groups:</strong> {statusByLayerRows.length}</p>
+                <p><strong>Chord categories:</strong> {classificationChordData.groups.length}</p>
+              </div>
+              <div className="analysis-stat">
+                <h4>Conformity</h4>
+                <p><strong>Average score:</strong> {overallConformity ?? 'n/a'}</p>
+                <p><strong>Status buckets:</strong> {conformityStatusRows.length}</p>
+              </div>
+            </div>
+          </Card>
+          <div className="chart-grid" style={{ display: 'flex', gap: '2rem', marginTop: '2rem', height: '100%' }}>
+            <Card className="mb-4" style={{ flex: 1 }}>
+              <h3>Classification by Layer</h3>
+              <p>Top status per layer from the classification submodule output.</p>
+              <table className="analysis-table">
+                <thead>
+                  <tr>
+                    <th>Layer</th>
+                    <th>Top Status</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {statusByLayerRows.map((row) => (
+                    <tr key={row.layer}>
+                      <td>{row.layer}</td>
+                      <td>{row.topStatus}</td>
+                      <td>{row.total}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </Card>
+            <Card className="mb-4" style={{ flex: 1 }}>
+              <h3>Conformity by Status</h3>
+              <p>Average compliance score by proposal status from the conformity submodule output.</p>
+              <table className="analysis-table">
+                <thead>
+                  <tr>
+                    <th>Status</th>
+                    <th>Average Score</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {conformityStatusRows.map((row) => (
+                    <tr key={row.status}>
+                      <td>{row.status}</td>
+                      <td>{row.score}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              </Card>
+            </div>
       </section>
     </section>
   );

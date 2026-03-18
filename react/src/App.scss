@@ -94,10 +94,32 @@
   flex: 1 1 420px;
 }
 
+.dashboard-meta-row {
+  margin-bottom: 1.5rem;
+}
+
+.dashboard-source-note {
+  max-width: 960px;
+  color: #52606d;
+  font-size: 0.98rem;
+}
+
+.dashboard-source-note p {
+  margin: 0 0 0.55rem 0;
+}
+
+.dashboard-source-note ul {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.dashboard-source-note li {
+  margin: 0;
+}
+
 .dashboard-sticky-controls {
   width: min(280px, 100%);
   margin-left: auto;
-  margin-bottom: 1.5rem;
   position: sticky;
   top: 92px;
   z-index: 50;
@@ -108,6 +130,10 @@
 }
 
 @media (max-width: 900px) {
+  .dashboard-source-note {
+    max-width: none;
+  }
+
   .dashboard-sticky-controls {
     position: static;
     border: none;

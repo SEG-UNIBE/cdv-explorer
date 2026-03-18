@@ -130,9 +130,16 @@ export const AuthorCollaborationNetwork = ({
       .style('line-height', '1.45')
       .style('opacity', 0);
 
-    const renderNodeTooltip = (entry) => (
-      `<strong>${entry.id}</strong><br/>Collaborators: ${entry.degree}<br/>Cluster size: ${entry.clusterSize}`
-    );
+    const renderNodeTooltip = (entry) => {
+      const authoredBips = Array.isArray(entry.bips) ? entry.bips : [];
+      return (
+        `<strong>${entry.id}</strong><br/>` +
+        `Collaborators: ${entry.degree}<br/>` +
+        `Cluster size: ${entry.clusterSize}<br/>` +
+        `Authored BIPs: ${authoredBips.length}<br/>` +
+        renderBipListHtml(authoredBips, { emptyText: 'No authored BIPs available.' })
+      );
+    };
 
     const renderEdgeTooltip = (edge) => {
       const sharedBips = Array.isArray(edge.bips) ? edge.bips : [];

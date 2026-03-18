@@ -9,6 +9,7 @@ const bitcoinEcosystem = {
   proposalShortPlural: 'BIPs',
   status: 'available',
   description: 'Bitcoin Improvement Proposals (BIPs)',
+  sourceRepositories: ['github/bitcoin/bips'],
 };
 
 export default bitcoinEcosystem;

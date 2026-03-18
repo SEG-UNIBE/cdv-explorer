@@ -13,7 +13,7 @@ from analysis.pipeline import prepare_ecosystem_artifacts
 from tqdm import tqdm
 
 
-DEFAULT_STICHTAG = "2025-12-31"
+DEFAULT_SNAPSHOT = "2025-12-31"
 HARVEST_ROOT = Path(ACTIVE_ECOSYSTEM["harvest"])
 PREPROCESS_ROOT = Path(ACTIVE_ECOSYSTEM["preprocess"])
 ANALYSIS_ROOT = Path(ACTIVE_ECOSYSTEM["analysis"])
@@ -45,10 +45,10 @@ def run_stage(stage_name: str, total: int, unit: str, runner) -> None:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Run the full ecosystem pipeline for a specific STICHTAG.")
+    parser = argparse.ArgumentParser(description="Run the full ecosystem pipeline for a specific snapshot.")
     parser.add_argument(
-        "--stichtag",
-        default=DEFAULT_STICHTAG,
+        "--snapshot",
+        default=DEFAULT_SNAPSHOT,
         help="Snapshot date in YYYY-MM-DD format.",
     )
     parser.add_argument(
@@ -57,9 +57,9 @@ def main():
         help="Skip LLM-based implicit dependency extraction and preserve any existing implicit dependencies.",
     )
     args = parser.parse_args()
-    stichtag = args.stichtag
+    snapshot = args.snapshot
 
-    date.fromisoformat(stichtag)
+    date.fromisoformat(snapshot)
 
     run_started = time.monotonic()
 
@@ -72,14 +72,14 @@ def main():
     )
 
     input_directory = HARVEST_ROOT
-    output_directory = PREPROCESS_ROOT / stichtag
+    output_directory = PREPROCESS_ROOT / snapshot
 
     run_stage(
         "Download repository snapshot",
         total=3,
         unit="step",
         runner=lambda update: download_ips(
-            stichtag=stichtag,
+            snapshot=snapshot,
             local_dir=input_directory,
             progress_callback=update,
         ),
@@ -129,7 +129,7 @@ def main():
             proposal_json_dir=output_directory,
             artifact_root=ANALYSIS_ROOT,
             postprocess_root=POSTPROCESS_ROOT,
-            stichtag=stichtag,
+            snapshot=snapshot,
             id_field=ACTIVE_ECOSYSTEM["primary_id_field"],
             proposal_label=ACTIVE_ECOSYSTEM["proposal_acronym"],
             progress_callback=update,

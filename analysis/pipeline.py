@@ -65,14 +65,14 @@ def _flatten_conformity_rows(rows: List[Dict[str, Any]]) -> List[Dict[str, Any]]
 
 def _save_react_ready_exports(
     postprocess_root: Path,
-    stichtag: str,
+    snapshot: str,
     network_data: Dict[str, Any],
     dependency_metrics: Dict[str, Any],
     authorship_payload: Dict[str, Any],
     classification_payload: Dict[str, Any],
     conformity_metrics: Dict[str, Any],
 ) -> Dict[str, Path]:
-    react_root = postprocess_root / stichtag / "react"
+    react_root = postprocess_root / snapshot / "react"
 
     flat_nodes: List[Dict[str, Any]] = []
     for node in network_data.get("nodes", []):
@@ -170,7 +170,7 @@ def _save_react_ready_exports(
     index_json = react_root / "dataset_index.json"
     _save_json(
         {
-            "stichtag": stichtag,
+            "snapshot": snapshot,
             "files": {
                 "network_nodes": nodes_csv.name,
                 "network_edges": edges_csv.name,
@@ -200,7 +200,7 @@ def prepare_ecosystem_artifacts(
     proposal_json_dir: Path,
     artifact_root: Path,
     postprocess_root: Path | None,
-    stichtag: str,
+    snapshot: str,
     id_field: str,
     proposal_label: str,
     status_callback=None,
@@ -222,7 +222,7 @@ def prepare_ecosystem_artifacts(
         id_field=id_field,
         proposal_label=proposal_label,
     )
-    snapshot_root = artifact_root / stichtag
+    snapshot_root = artifact_root / snapshot
 
     network_stem = snapshot_root / "dependencies" / "network_data"
     save_network_data_artifacts(network_data, network_stem)
@@ -315,7 +315,7 @@ def prepare_ecosystem_artifacts(
         saved_paths.update(
             _save_react_ready_exports(
                 postprocess_root=postprocess_root,
-                stichtag=stichtag,
+                snapshot=snapshot,
                 network_data=network_data,
                 dependency_metrics=dependency_metrics,
                 authorship_payload=authorship_payload,

@@ -23,7 +23,7 @@ import './App.scss';
 import * as d3 from 'd3';
 import { HashRouter as Router, Routes, Route, useNavigate, useParams, Link } from 'react-router-dom';
 import { ecosystems, ecosystemsById } from './ecosystems';
-import { getAvailableStichtage, getDatasetForSelection } from './data';
+import { getAvailableSnapshots, getDatasetForSelection } from './data';
 
 const COLLABORATION_LAYOUT_OPTIONS = [
   { label: 'Balanced', value: 'balanced' },
@@ -735,8 +735,8 @@ function EcosystemDashboard() {
     conformity: {},
     meta: {},
   }), []);
-  const availableStichtage = useMemo(() => getAvailableStichtage(ecosystemId), [ecosystemId]);
-  const [selectedStichtag, setSelectedStichtag] = useState(availableStichtage[0] ?? null);
+  const availableSnapshots = useMemo(() => getAvailableSnapshots(ecosystemId), [ecosystemId]);
+  const [selectedSnapshot, setSelectedSnapshot] = useState(availableSnapshots[0] ?? null);
   const [highlightedAuthor, setHighlightedAuthor] = useState('');
   const [collaborationLayoutMode, setCollaborationLayoutMode] = useState('balanced');
   const [highlightedDependencyProposal, setHighlightedDependencyProposal] = useState('');
@@ -747,16 +747,16 @@ function EcosystemDashboard() {
   const [highlightedConformityProposal, setHighlightedConformityProposal] = useState('');
 
   useEffect(() => {
-    setSelectedStichtag((current) => {
-      if (current && availableStichtage.includes(current)) {
+    setSelectedSnapshot((current) => {
+      if (current && availableSnapshots.includes(current)) {
         return current;
       }
-      return availableStichtage[0] ?? null;
+      return availableSnapshots[0] ?? null;
     });
-  }, [ecosystemId, availableStichtage]);
+  }, [ecosystemId, availableSnapshots]);
 
   const selectedDataset = ecosystem?.status === 'available'
-    ? getDatasetForSelection(ecosystemId, selectedStichtag)
+    ? getDatasetForSelection(ecosystemId, selectedSnapshot)
     : emptyDataset;
   const {
     yearData,
@@ -872,9 +872,9 @@ function EcosystemDashboard() {
     .filter(Boolean)
     .sort((left, right) => left.localeCompare(right));
   const dependencyProposalOptions = availableProposalIds;
-  const stichtagOptions = availableStichtage.map((stichtag) => ({
-    label: stichtag === 'current' ? 'Current' : stichtag,
-    value: stichtag,
+  const snapshotOptions = availableSnapshots.map((snapshot) => ({
+    label: snapshot === 'current' ? 'Current' : snapshot,
+    value: snapshot,
   }));
   const sourceRepositories = ecosystem.sourceRepositories || [];
 
@@ -910,14 +910,14 @@ function EcosystemDashboard() {
         </div>
       </div>
       <div className="dashboard-sticky-controls">
-        <label htmlFor="stichtag-select" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>
-          STICHTAG
+        <label htmlFor="snapshot-select" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>
+          SNAPSHOT
         </label>
         <Dropdown
-          inputId="stichtag-select"
-          value={selectedStichtag}
-          options={stichtagOptions}
-          onChange={(event) => setSelectedStichtag(event.value)}
+          inputId="snapshot-select"
+          value={selectedSnapshot}
+          options={snapshotOptions}
+          onChange={(event) => setSelectedSnapshot(event.value)}
           placeholder="Select snapshot date"
           className="w-full"
         />

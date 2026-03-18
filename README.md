@@ -9,7 +9,7 @@ The same architecture is intended to support additional ecosystems later.
 
 The project produces:
 
-- preprocessed proposal JSON snapshots by STICHTAG
+- preprocessed proposal JSON snapshots by snapshot date
 - analysis artifacts for dependencies, authorship, classification, and conformity
 - postprocessed React-ready datasets for the frontend and publication workflows
 
@@ -17,7 +17,7 @@ The project produces:
 
 ### Core scripts
 
-- `main.py`: runs the full pipeline for a selected STICHTAG
+- `main.py`: runs the full pipeline for a selected snapshot
 - `download.py`: clones or updates the source repository and checks out a snapshot
 - `preamble_extraction.py`: extracts proposal preambles into JSON
 - `ip_processing.py`: enriches JSON with metadata and insights
@@ -36,9 +36,9 @@ The project produces:
 All outputs are written under:
 
 - `ip_data/<ecosystem>/01_harvest`
-- `ip_data/<ecosystem>/02_preprocess/<STICHTAG>`
-- `ip_data/<ecosystem>/03_analysis/<STICHTAG>/<submodule>`
-- `ip_data/<ecosystem>/04_postprocess/<STICHTAG>/react`
+- `ip_data/<ecosystem>/02_preprocess/<SNAPSHOT>`
+- `ip_data/<ecosystem>/03_analysis/<SNAPSHOT>/<submodule>`
+- `ip_data/<ecosystem>/04_postprocess/<SNAPSHOT>/react`
 
 ### Frontend
 
@@ -57,10 +57,10 @@ Optional:
 
 ## Pipeline Usage
 
-Run the full pipeline for a specific STICHTAG:
+Run the full pipeline for a specific snapshot:
 
 ```bash
-python main.py --stichtag 2025-12-31
+python main.py --snapshot 2025-12-31
 ```
 
 What this does:
@@ -79,25 +79,25 @@ You can run submodules directly if needed.
 Build dependency network artifacts:
 
 ```bash
-python -m analysis.dependencies.build_snapshot --stichtag 2025-12-31
+python -m analysis.dependencies.build_snapshot --snapshot 2025-12-31
 ```
 
 Generate dependency plots:
 
 ```bash
-python -m analysis.dependencies.plotting --stichtag 2025-12-31
+python -m analysis.dependencies.plotting --snapshot 2025-12-31
 ```
 
 Prepare authorship payload:
 
 ```bash
-python -m analysis.authorship.prepare --stichtag 2025-12-31
+python -m analysis.authorship.prepare --snapshot 2025-12-31
 ```
 
 Prepare classification payload:
 
 ```bash
-python -m analysis.classification.prepare --stichtag 2025-12-31
+python -m analysis.classification.prepare --snapshot 2025-12-31
 ```
 
 ## React App
@@ -121,7 +121,7 @@ Create production build:
 npm run build
 ```
 
-The app supports snapshot selection by STICHTAG and consumes generated
+The app supports snapshot selection by snapshot date and consumes generated
 analysis artifacts for:
 
 - dependency network
@@ -154,5 +154,4 @@ To enable Pages:
 1. open repository settings
 2. go to `Settings > Pages`
 3. set source to `GitHub Actions`
-
 

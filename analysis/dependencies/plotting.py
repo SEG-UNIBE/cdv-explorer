@@ -337,7 +337,7 @@ def draw_static_network_with_layouts(
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Render dependency network plots.")
-    parser.add_argument("--stichtag", help="Load a specific snapshot artifact by date (YYYY-MM-DD).")
+    parser.add_argument("--snapshot", help="Load a specific snapshot artifact by date (YYYY-MM-DD).")
     parser.add_argument(
         "--output-dir",
         default=None,
@@ -346,13 +346,13 @@ def main() -> None:
     args = parser.parse_args()
 
     repo_root = Path(__file__).resolve().parents[2]
-    snapshot_label = args.stichtag or "latest"
+    snapshot_label = args.snapshot or "latest"
     output_dir = repo_root / (
         args.output_dir
         or f"{ACTIVE_ECOSYSTEM['postprocess']}/{snapshot_label}/dependencies/plots"
     )
 
-    data = load_network_data(stichtag=args.stichtag)
+    data = load_network_data(snapshot=args.snapshot)
 
     my_bips_of_interest = [
         9,

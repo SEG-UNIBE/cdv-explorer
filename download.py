@@ -60,18 +60,18 @@ def get_default_branch_ref(local_dir: Path) -> str:
     raise RuntimeError("Could not determine the repository default branch.")
 
 
-def checkout_stichtag(local_dir: Path, stichtag: str):
-    """Check out the latest commit on or before the given STICHTAG date."""
+def checkout_snapshot(local_dir: Path, snapshot: str):
+    """Check out the latest commit on or before the given snapshot date."""
     branch_ref = get_default_branch_ref(local_dir)
     result = subprocess.run(
-        ['git', '-C', str(local_dir), 'rev-list', '-1', f'--before={stichtag} 23:59:59', branch_ref],
+        ['git', '-C', str(local_dir), 'rev-list', '-1', f'--before={snapshot} 23:59:59', branch_ref],
         capture_output=True,
         text=True,
         check=True,
     )
     commit_hash = result.stdout.strip()
     if not commit_hash:
-        raise ValueError(f"No commit found on or before {stichtag}.")
+        raise ValueError(f"No commit found on or before {snapshot}.")
 
     subprocess.run(['git', '-C', str(local_dir), 'checkout', '--detach', commit_hash], check=True)
 
@@ -125,7 +125,7 @@ def _emit_progress(progress_callback=None, status_callback=None, message=None, a
         status_callback(message)
 
 
-def download_ips(stichtag: str, local_dir: Path | None = None, status_callback=None, progress_callback=None):
+def download_ips(snapshot: str, local_dir: Path | None = None, status_callback=None, progress_callback=None):
     local_dir = local_dir or HARVEST_ROOT
     repo_state = "Fetching repository updates" if local_dir.exists() else "Cloning repository"
     _emit_progress(
@@ -138,10 +138,10 @@ def download_ips(stichtag: str, local_dir: Path | None = None, status_callback=N
     _emit_progress(
         progress_callback=progress_callback,
         status_callback=status_callback,
-        message=f"Checking out snapshot for {stichtag}",
+        message=f"Checking out snapshot for {snapshot}",
         advance=1,
     )
-    checkout_stichtag(local_dir, stichtag)
+    checkout_snapshot(local_dir, snapshot)
 
     _emit_progress(
         progress_callback=progress_callback,

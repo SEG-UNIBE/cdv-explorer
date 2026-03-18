@@ -17,18 +17,18 @@ def save_payload(payload: Dict[str, Any], output_path: Path) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Prepare classification artifact from network_data.")
-    parser.add_argument("--stichtag", help="Snapshot label YYYY-MM-DD.")
+    parser.add_argument("--snapshot", help="Snapshot label YYYY-MM-DD.")
     parser.add_argument(
         "--output-dir",
         default=f"{ACTIVE_ECOSYSTEM['analysis']}",
-        help="Root analysis directory where <stichtag>/classification/classification_payload.json is written.",
+        help="Root analysis directory where <snapshot>/classification/classification_payload.json is written.",
     )
     args = parser.parse_args()
 
-    data = load_network_data(stichtag=args.stichtag)
+    data = load_network_data(snapshot=args.snapshot)
     payload = prepare_classification_payload(data)
 
-    snapshot_label = args.stichtag or "latest"
+    snapshot_label = args.snapshot or "latest"
     repo_root = Path(__file__).resolve().parents[2]
     out_path = repo_root / args.output_dir / snapshot_label / "classification" / "classification_payload.json"
     save_payload(payload, out_path)

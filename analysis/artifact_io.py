@@ -5,13 +5,13 @@ from typing import Any, Dict
 from ecosystem_config import ACTIVE_ECOSYSTEM
 
 
-def resolve_network_data_artifact(stichtag: str | None = None) -> Path:
+def resolve_network_data_artifact(snapshot: str | None = None) -> Path:
     repo_root = Path(__file__).resolve().parents[1]
     artifact_root = repo_root / ACTIVE_ECOSYSTEM["analysis"]
 
     candidates = []
-    if stichtag:
-        candidates.append(artifact_root / stichtag / "dependencies" / "network_data.json")
+    if snapshot:
+        candidates.append(artifact_root / snapshot / "dependencies" / "network_data.json")
 
     candidates.append(artifact_root / "latest" / "dependencies" / "network_data.json")
 
@@ -23,8 +23,8 @@ def resolve_network_data_artifact(stichtag: str | None = None) -> Path:
     raise FileNotFoundError(f"Could not find a network_data artifact. Tried:\n{tried}")
 
 
-def load_network_data(stichtag: str | None = None) -> Dict[str, Any]:
-    artifact_path = resolve_network_data_artifact(stichtag=stichtag)
+def load_network_data(snapshot: str | None = None) -> Dict[str, Any]:
+    artifact_path = resolve_network_data_artifact(snapshot=snapshot)
 
     if artifact_path.suffix != ".json":
         raise ValueError(f"Unsupported artifact extension: {artifact_path.suffix}")

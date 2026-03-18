@@ -2,11 +2,12 @@ import os
 import re
 import json
 import sys
-from typing import Dict, List
+from typing import Any, Dict, List, Optional
 from collections import OrderedDict
 from tqdm import tqdm
 from analysis.conformity.compliance import (
     add_missing_optional_fields as conformity_add_missing_optional_fields,
+    assess_compliance as conformity_assess_compliance,
     calculate_compliance_score as conformity_calculate_compliance_score,
     check_headlines as conformity_check_headlines,
     check_required_fields as conformity_check_required_fields,
@@ -128,6 +129,20 @@ def calculate_compliance_score(preamble: Dict[str, str], file_content: str, _fil
     )
 
 
+def assess_compliance(preamble: Dict[str, Any], file_content: str, _file_name: str) -> Dict[str, Any]:
+    """
+    Builds the structured compliance payload used by downstream analysis artifacts.
+    """
+    compliance = conformity_assess_compliance(
+        preamble,
+        file_content,
+        required_fields=REQUIRED_FIELDS,
+        expected_headlines=EXPECTED_HEADLINES,
+    )
+    preamble["Compliance Score"] = compliance["score"]
+    return compliance
+
+
 def add_missing_optional_fields(preamble: Dict[str, str]):
     """
     Adds missing optional fields to the preamble with a default value of None (null in JSON).
@@ -141,6 +156,7 @@ def save_preamble_to_json(
     _file_name: str,
     file_prefix: str = "bip",
     id_field: str = "bip",
+    compliance_payload: Optional[Dict[str, Any]] = None,
 ):
     """
     Saves the given preamble to a JSON file in the specified output directory.
@@ -154,22 +170,49 @@ def save_preamble_to_json(
     proposal_number_str = f"{int(proposal_number):04d}" if proposal_number.isdigit() else f"unknown_{file_prefix}"
     json_file_name = f"{file_prefix}-{proposal_number_str}.json"
     output_path = os.path.join(output_dir, json_file_name)
+    existing_json: Dict[str, Any] = {}
+
+    if os.path.exists(output_path):
+        try:
+            with open(output_path, 'r', encoding='utf-8') as json_file:
+                loaded_json = json.load(json_file)
+            if isinstance(loaded_json, dict):
+                existing_json = loaded_json
+        except (json.JSONDecodeError, OSError):
+            existing_json = {}
 
     # Order the keys (required fields first, then optional fields)
     ordered_preamble = OrderedDict()
     for field in REQUIRED_FIELDS + OPTIONAL_FIELDS:
         ordered_preamble[field] = preamble.get(field, None)
-    
-    if "Compliance Score" in preamble:
-        ordered_preamble["compliance_score"] = preamble["Compliance Score"]
 
-    # Structure the JSON data with a "raw" section
+    # Structure the JSON data with stable top-level key order.
     json_data = {
         "raw": {
             "preamble": ordered_preamble,
             # Add other sections to "raw" here in the future
-        }
+        },
+        "metadata": {
+            "last_commit": None,
+            "total_commits": None,
+            "metadata_last_updated": None,
+            "git_history": [],
+            "contributors": None,
+        },
+        "compliance": compliance_payload or {},
     }
+
+    existing_metadata = existing_json.get("metadata")
+    if isinstance(existing_metadata, dict):
+        json_data["metadata"].update(existing_metadata)
+
+    existing_insights = existing_json.get("insights")
+    if isinstance(existing_insights, dict):
+        json_data["insights"] = existing_insights
+
+    for key, value in existing_json.items():
+        if key not in json_data:
+            json_data[key] = value
 
     # Save the JSON data to a file
     with open(output_path, 'w', encoding='utf-8') as json_file:
@@ -220,8 +263,8 @@ def process_files_and_save_json(
         # Add missing optional fields with a default value
         add_missing_optional_fields(preamble)
 
-        #Add compliance score
-        calculate_compliance_score(preamble, content, proposal_file)
+        # Add structured compliance checks and retain the legacy scalar score.
+        compliance_payload = assess_compliance(preamble, content, proposal_file)
 
         # Save the preamble to a JSON file
         save_preamble_to_json(
@@ -230,6 +273,7 @@ def process_files_and_save_json(
             proposal_file,
             file_prefix=file_prefix,
             id_field=id_field,
+            compliance_payload=compliance_payload,
         )
         if progress_callback is not None:
             progress_callback(proposal_file, 1)

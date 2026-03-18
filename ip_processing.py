@@ -4,7 +4,7 @@ import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from collections import Counter
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Tuple
 from tqdm import tqdm
 
 from analysis.authorship.mining import update_metadata_from_git
@@ -108,6 +108,7 @@ def process_ip_files(
     file_prefix: str = DOCUMENT_PREFIX,
     proposal_label: str = PROPOSAL_LABEL,
     id_field: str = PRIMARY_ID_FIELD,
+    skip_llm: bool = False,
     progress_callback=None,
 ):
     """Process all BIP JSON files and update metadata & insights."""
@@ -125,9 +126,9 @@ def process_ip_files(
         disable=not render_local_progress,
         mininterval=0.5,
     )
-    api_key = load_api_key()
+    api_key = None if skip_llm else load_api_key()
     max_workers = max(1, LLM_MAX_CONCURRENCY)
-    llm_enabled = bool(api_key)
+    llm_enabled = bool(api_key) and not skip_llm
     pending_futures: Dict[object, Dict[str, any]] = {}
     submitted_llm_jobs = 0
     completed_llm_jobs = 0
@@ -203,7 +204,10 @@ def process_ip_files(
             output_path = output_dir / json_file.name
 
             if not llm_enabled or executor is None:
-                json_data["insights"]["implicit_dependencies"] = []
+                existing_implicit_dependencies = json_data["insights"].get("implicit_dependencies")
+                if not isinstance(existing_implicit_dependencies, list):
+                    existing_implicit_dependencies = []
+                json_data["insights"]["implicit_dependencies"] = existing_implicit_dependencies
                 write_record(output_path, json_data, output_path.name)
                 continue
 

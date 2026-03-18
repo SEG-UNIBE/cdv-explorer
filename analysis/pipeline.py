@@ -49,6 +49,19 @@ def _save_status_map_csv(status_map: Dict[str, Dict[str, int]], output_path: Pat
     _save_csv_rows(rows, output_path, fieldnames=[index_name] + all_statuses)
 
 
+def _flatten_conformity_rows(rows: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    return [
+        {
+            "id": row.get("id"),
+            "status": row.get("status"),
+            "compliance_score": row.get("compliance_score"),
+            "bip2_score": row.get("bip2_score"),
+            "bip3_score": row.get("bip3_score"),
+        }
+        for row in rows
+    ]
+
+
 def _save_react_ready_exports(
     postprocess_root: Path,
     stichtag: str,
@@ -162,9 +175,9 @@ def _save_react_ready_exports(
         fieldnames=["year", "status", "count"],
     )
     _save_csv_rows(
-        conformity_metrics.get("per_proposal", []),
+        _flatten_conformity_rows(conformity_metrics.get("per_proposal", [])),
         conformity_csv,
-        fieldnames=["id", "status", "compliance_score"],
+        fieldnames=["id", "status", "compliance_score", "bip2_score", "bip3_score"],
     )
 
     index_json = react_root / "dataset_index.json"
@@ -281,9 +294,9 @@ def prepare_ecosystem_artifacts(
     conformity_path = snapshot_root / "conformity" / "conformity_metrics.json"
     _save_json(conformity_metrics, conformity_path)
     _save_csv_rows(
-        conformity_metrics.get("per_proposal", []),
+        _flatten_conformity_rows(conformity_metrics.get("per_proposal", [])),
         snapshot_root / "conformity" / "per_proposal.csv",
-        fieldnames=["id", "status", "compliance_score"],
+        fieldnames=["id", "status", "compliance_score", "bip2_score", "bip3_score"],
     )
     _save_csv_rows(
         conformity_metrics.get("score_distribution", []),

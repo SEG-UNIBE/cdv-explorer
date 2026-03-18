@@ -88,6 +88,7 @@ def build_network_data(
             continue
 
         preamble = proposal.get("raw", {}).get("preamble", {})
+        compliance = proposal.get("compliance", {}) or proposal.get("raw", {}).get("compliance", {})
         insights = proposal.get("insights", {})
         proposal_id = preamble.get(id_field)
 
@@ -100,7 +101,7 @@ def build_network_data(
                 {
                     "id": proposal_id,
                     "layer": _apply_alias(preamble.get("layer"), LAYER_ALIASES),
-                    "compliance_score": preamble.get("compliance_score"),
+                    "compliance_score": compliance.get("score", preamble.get("compliance_score")),
                     "created": preamble.get("created"),
                     "author": preamble.get("author"),
                     "word_list": insights.get("word_list"),

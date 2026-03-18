@@ -51,6 +51,11 @@ def main():
         default=DEFAULT_STICHTAG,
         help="Snapshot date in YYYY-MM-DD format.",
     )
+    parser.add_argument(
+        "--skipllm",
+        action="store_true",
+        help="Skip LLM-based implicit dependency extraction and preserve any existing implicit dependencies.",
+    )
     args = parser.parse_args()
     stichtag = args.stichtag
 
@@ -110,6 +115,7 @@ def main():
             file_prefix=ACTIVE_ECOSYSTEM["document_prefix"],
             proposal_label=ACTIVE_ECOSYSTEM["proposal_acronym"],
             id_field=ACTIVE_ECOSYSTEM["primary_id_field"],
+            skip_llm=args.skipllm,
             progress_callback=update,
         ),
     )

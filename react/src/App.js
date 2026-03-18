@@ -7,6 +7,7 @@ import { AuthorContributionHistogram } from './AuthorContributionHistogram';
 import { AuthorCollaborationNetwork } from './AuthorCollaborationNetwork';
 import { AuthorCentralityTable } from './AuthorCentralityTable';
 import { ProposalGraphMetricsTable } from './ProposalGraphMetricsTable';
+import { DependencyComparisonHeatmaps } from './DependencyComparisonHeatmaps';
 import { ClassificationPieChart } from './ClassificationPieChart';
 import { ClassificationStackedTimelineChart } from './ClassificationStackedTimelineChart';
 import { ClassificationChordDiagram } from './ClassificationChordDiagram';
@@ -1173,6 +1174,12 @@ function EcosystemDashboard() {
               highlightProposal={highlightedDependencyProposal}
               proposalFilterIds={selectedDependencyProposalIds}
               includeConnections={dependencyIncludeConnections}
+            />
+          </Card>
+          <Card className="mb-4">
+            <DependencyComparisonHeatmaps
+              pairwiseComparisons={dependencyMetrics?.pairwise_comparisons || {}}
+              proposalShortLabel={ecosystem.acronym || 'BIP'}
             />
           </Card>
           <Card className="mb-4">

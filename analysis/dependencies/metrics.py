@@ -86,12 +86,86 @@ def _safe_betweenness(graph: nx.DiGraph) -> Dict[str, float]:
     return {str(node): float(score) for node, score in nx.betweenness_centrality(graph).items()}
 
 
-def extract_dependency_metrics(network_data: Dict[str, Any]) -> Dict[str, Any]:
-    approaches = {
-        "explicit_dependencies": "Explicit Dependencies",
-        "explicit_references": "Explicit References",
-        "implicit_dependencies": "Implicit Dependencies",
+def _approach_labels() -> Dict[str, str]:
+    return {
+        "explicit_dependencies": "Explicit Dependencies (Preamble)",
+        "explicit_references": "Explicit References (Regex)",
+        "implicit_dependencies": "Implicit Dependencies (LLM)",
     }
+
+
+def _build_pairwise_comparisons(network_data: Dict[str, Any]) -> Dict[str, Any]:
+    nodes_by_id = {
+        str(node.get("id")): node
+        for node in network_data.get("nodes", [])
+        if node.get("id") is not None
+    }
+    approach_labels = _approach_labels()
+    pairwise: Dict[str, Any] = {}
+
+    for approach_key, approach_label in approach_labels.items():
+        approach_links = _links_for_type(network_data, approach_key)
+        approach_edge_keys = {
+            (str(link.get("source")), str(link.get("target")))
+            for link in approach_links
+        }
+
+        for baseline_key, baseline_label in approach_labels.items():
+            baseline_links = _links_for_type(network_data, baseline_key)
+            baseline_edge_keys = {
+                (str(link.get("source")), str(link.get("target")))
+                for link in baseline_links
+            }
+            overlap_keys = approach_edge_keys & baseline_edge_keys
+            approach_only_keys = approach_edge_keys - baseline_edge_keys
+            baseline_only_keys = baseline_edge_keys - approach_edge_keys
+            baseline_total = len(baseline_edge_keys)
+
+            def _edge_rows(keys: set[tuple[str, str]], status: str) -> List[Dict[str, Any]]:
+                return [
+                    {
+                        "source": source,
+                        "target": target,
+                        "source_title": nodes_by_id.get(source, {}).get("title"),
+                        "target_title": nodes_by_id.get(target, {}).get("title"),
+                        "status": status,
+                    }
+                    for source, target in sorted(keys, key=lambda item: (
+                        int(item[0]) if item[0].isdigit() else float("inf"),
+                        int(item[1]) if item[1].isdigit() else float("inf"),
+                        item[0],
+                        item[1],
+                    ))
+                ]
+
+            comparison_key = f"{approach_key}__vs__{baseline_key}"
+            pairwise[comparison_key] = {
+                "approach": approach_key,
+                "approach_label": approach_label,
+                "baseline": baseline_key,
+                "baseline_label": baseline_label,
+                "summary": {
+                    "approach_only": len(approach_only_keys),
+                    "overlap": len(overlap_keys),
+                    "baseline_only": len(baseline_only_keys),
+                    "approach_total": len(approach_edge_keys),
+                    "baseline_total": baseline_total,
+                    "union_total": len(approach_edge_keys | baseline_edge_keys),
+                    "hit_rate": float(len(overlap_keys) / baseline_total) if baseline_total else 0.0,
+                    "missed_rate": float(len(baseline_only_keys) / baseline_total) if baseline_total else 0.0,
+                },
+                "edges": (
+                    _edge_rows(overlap_keys, "overlap")
+                    + _edge_rows(approach_only_keys, "approach_only")
+                    + _edge_rows(baseline_only_keys, "baseline_only")
+                ),
+            }
+
+    return pairwise
+
+
+def extract_dependency_metrics(network_data: Dict[str, Any]) -> Dict[str, Any]:
+    approaches = _approach_labels()
     by_approach: Dict[str, Dict[str, Any]] = {}
 
     for approach_key, approach_label in approaches.items():
@@ -127,4 +201,7 @@ def extract_dependency_metrics(network_data: Dict[str, Any]) -> Dict[str, Any]:
             "per_bip": per_bip,
         }
 
-    return {"by_approach": by_approach}
+    return {
+        "by_approach": by_approach,
+        "pairwise_comparisons": _build_pairwise_comparisons(network_data),
+    }

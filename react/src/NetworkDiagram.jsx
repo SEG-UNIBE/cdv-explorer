@@ -9,8 +9,10 @@ export const LINK_TYPE_OPTIONS = [
   { label: 'Implicit Dependencies (LLM)', value: 'implicit_dependencies' },
 ];
 
+const BASELINE_NONE_VALUE = '__none__';
+
 const BASELINE_OPTIONS = [
-  { label: '(none)', value: '' },
+  { label: '(none)', value: BASELINE_NONE_VALUE },
   ...LINK_TYPE_OPTIONS,
 ];
 
@@ -153,9 +155,9 @@ export const NetworkDiagram = ({
   const legendRef = useRef();
   const [colorBy, setColorBy] = useState('layer');
   const [linkType, setLinkType] = useState('explicit_dependencies');
-  const [baselineType, setBaselineType] = useState('');
+  const [baselineType, setBaselineType] = useState(BASELINE_NONE_VALUE);
   const [layoutMode, setLayoutMode] = useState('balanced');
-  const isDifferentialMode = Boolean(baselineType);
+  const isDifferentialMode = baselineType !== BASELINE_NONE_VALUE;
 
   const nodes = useMemo(
     () => (Array.isArray(data?.nodes) ? data.nodes.map((node) => ({ ...node })) : []),

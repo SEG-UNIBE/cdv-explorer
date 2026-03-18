@@ -1,6 +1,5 @@
 from .metrics import (
     build_sankey_links,
-    build_status_distribution_by_layer,
     build_status_over_time,
     prepare_classification_payload,
 )

@@ -65,19 +65,6 @@ def build_sankey_links(nodes: List[Dict[str, Any]], grouped_status: bool) -> Lis
     ]
 
 
-def build_status_distribution_by_layer(nodes: List[Dict[str, Any]]) -> Dict[str, Dict[str, int]]:
-    grouped = defaultdict(Counter)
-    for node in nodes:
-        layer = _apply_alias(_clean_base(node.get("layer"), "Unknown"), LAYER_ALIASES)
-        status = _apply_alias(_clean_base(node.get("status"), "Unknown"), STATUS_ALIASES)
-        grouped[layer][status] += 1
-
-    out: Dict[str, Dict[str, int]] = {}
-    for layer in sorted(grouped.keys()):
-        out[layer] = dict(sorted(grouped[layer].items(), key=lambda x: x[0]))
-    return out
-
-
 def build_status_over_time(nodes: List[Dict[str, Any]]) -> Dict[str, Dict[str, int]]:
     yearly = defaultdict(Counter)
 
@@ -103,7 +90,6 @@ def prepare_classification_payload(network_data: Dict[str, Any]) -> Dict[str, An
             "generated_metrics": [
                 "sankey_full",
                 "sankey_grouped",
-                "status_distribution_by_layer",
                 "status_over_time",
             ],
         },
@@ -113,6 +99,5 @@ def prepare_classification_payload(network_data: Dict[str, Any]) -> Dict[str, An
         "sankey_grouped": {
             "links": build_sankey_links(nodes, grouped_status=True),
         },
-        "status_distribution_by_layer": build_status_distribution_by_layer(nodes),
         "status_over_time": build_status_over_time(nodes),
     }

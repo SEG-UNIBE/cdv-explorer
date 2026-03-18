@@ -304,12 +304,6 @@ export function DependencyComparisonHeatmaps({
 
   return (
     <div>
-      <h3>Pairwise Extraction Comparison</h3>
-      <p>
-        These heatmaps compare each extraction approach against each possible baseline. The first matrix combines
-        hits and missed baseline coverage in one cell; the second shows edges found only by the selected approach.
-      </p>
-
       <div className="dependency-heatmap-grid">
         <HeatmapTable
           title="Hits / Missed"
@@ -338,9 +332,9 @@ export function DependencyComparisonHeatmaps({
           <div className="dependency-comparison-detail__header">
             <div>
               <h4>{selectedComparison.approach_label} vs {selectedComparison.baseline_label}</h4>
-              <p>
+              <div className="dependency-comparison-detail__summary">
                 Hits: {selectedComparison.summary.overlap} ({formatPercent(selectedComparison.summary.hit_rate)}) | Missed: {selectedComparison.summary.baseline_only} ({formatPercent(selectedComparison.summary.missed_rate)}) | Approach only: {selectedComparison.summary.approach_only}
-              </p>
+              </div>
             </div>
             <div className="dependency-comparison-detail__filters">
               <Dropdown

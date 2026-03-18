@@ -116,17 +116,6 @@ def _save_react_ready_exports(
                 }
             )
 
-    layer_status_long: List[Dict[str, Any]] = []
-    for layer, statuses in classification_payload.get("status_distribution_by_layer", {}).items():
-        for status, count in statuses.items():
-            layer_status_long.append(
-                {
-                    "layer": layer,
-                    "status": status,
-                    "count": count,
-                }
-            )
-
     status_over_time_long: List[Dict[str, Any]] = []
     for year, statuses in classification_payload.get("status_over_time", {}).items():
         for status, count in statuses.items():
@@ -142,7 +131,6 @@ def _save_react_ready_exports(
     edges_csv = react_root / "network_edges.csv"
     top_authors_csv = react_root / "top_authors.csv"
     sankey_grouped_csv = react_root / "sankey_grouped_links.csv"
-    status_by_layer_csv = react_root / "status_by_layer_long.csv"
     status_over_time_csv = react_root / "status_over_time_long.csv"
     conformity_csv = react_root / "conformity_per_proposal.csv"
     dependency_metrics_json = react_root / "dependency_metrics.json"
@@ -168,11 +156,6 @@ def _save_react_ready_exports(
         fieldnames=["source", "target", "count"],
     )
     _save_csv_rows(
-        layer_status_long,
-        status_by_layer_csv,
-        fieldnames=["layer", "status", "count"],
-    )
-    _save_csv_rows(
         status_over_time_long,
         status_over_time_csv,
         fieldnames=["year", "status", "count"],
@@ -193,7 +176,6 @@ def _save_react_ready_exports(
                 "network_edges": edges_csv.name,
                 "top_authors": top_authors_csv.name,
                 "sankey_grouped_links": sankey_grouped_csv.name,
-                "status_by_layer_long": status_by_layer_csv.name,
                 "status_over_time_long": status_over_time_csv.name,
                 "conformity_per_proposal": conformity_csv.name,
                 "dependency_metrics": dependency_metrics_json.name,
@@ -207,7 +189,6 @@ def _save_react_ready_exports(
         "react_edges_csv": edges_csv,
         "react_top_authors_csv": top_authors_csv,
         "react_sankey_grouped_csv": sankey_grouped_csv,
-        "react_status_by_layer_csv": status_by_layer_csv,
         "react_status_over_time_csv": status_over_time_csv,
         "react_conformity_csv": conformity_csv,
         "react_dependency_metrics_json": dependency_metrics_json,
@@ -290,11 +271,6 @@ def prepare_ecosystem_artifacts(
         fieldnames=["source", "target", "count"],
     )
     _save_status_map_csv(
-        classification_payload.get("status_distribution_by_layer", {}),
-        snapshot_root / "classification" / "status_distribution_by_layer.csv",
-        index_name="layer",
-    )
-    _save_status_map_csv(
         classification_payload.get("status_over_time", {}),
         snapshot_root / "classification" / "status_over_time.csv",
         index_name="year",
@@ -309,20 +285,6 @@ def prepare_ecosystem_artifacts(
         snapshot_root / "conformity" / "per_proposal.csv",
         fieldnames=["id", "status", "compliance_score", "bip2_score", "bip3_score"],
     )
-    _save_csv_rows(
-        conformity_metrics.get("score_distribution", []),
-        snapshot_root / "conformity" / "score_distribution.csv",
-        fieldnames=["bucket", "count"],
-    )
-    _save_csv_rows(
-        [
-            {"status": status, "average_score": score}
-            for status, score in conformity_metrics.get("average_score_by_status", {}).items()
-        ],
-        snapshot_root / "conformity" / "average_score_by_status.csv",
-        fieldnames=["status", "average_score"],
-    )
-
     emit("Preparing wordcloud artifacts", advance=1)
     wordcloud_metrics = extract_wordcloud_metrics(proposal_data, id_field=id_field)
     wordcloud_path = snapshot_root / "wordcloud" / "wordcloud_metrics.json"

@@ -29,8 +29,8 @@ const EMPTY_DATASET = {
   },
   dependencyMetrics: { by_approach: {}, pairwise_comparisons: {} },
   authorship: { meta: {}, top_authors: [], bips_per_year: [], top_10_share: {} },
-  classification: { meta: {}, sankey_grouped: { links: [] }, status_distribution_by_layer: {}, status_over_time: {} },
-  conformity: { overall_average_score: null, score_distribution: [], average_score_by_status: {} }
+  classification: { meta: {}, sankey_grouped: { links: [] }, status_over_time: {} },
+  conformity: { per_proposal: [] }
 };
 
 function extractStichtag(filename) {

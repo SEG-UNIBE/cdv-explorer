@@ -1,4 +1,4 @@
-from collections import Counter, defaultdict
+from collections import defaultdict
 from typing import Any, Dict, List
 
 from ecosystem_config import ACTIVE_ECOSYSTEM
@@ -16,7 +16,6 @@ def _apply_status_alias(status: Any) -> str:
 def extract_conformity_metrics(proposal_data: List[Dict[str, Any]], id_field: str = "id") -> Dict[str, Any]:
     per_proposal = []
     score_values = []
-    by_status = defaultdict(list)
     by_standard = defaultdict(list)
     check_summary: Dict[str, Dict[str, Any]] = {}
 
@@ -46,7 +45,6 @@ def extract_conformity_metrics(proposal_data: List[Dict[str, Any]], id_field: st
 
         if isinstance(score, (int, float)):
             score_values.append(float(score))
-            by_status[status].append(float(score))
 
         for standard_key, standard_score in (("bip2", bip2_score), ("bip3", bip3_score)):
             if isinstance(standard_score, (int, float)):
@@ -80,17 +78,6 @@ def extract_conformity_metrics(proposal_data: List[Dict[str, Any]], id_field: st
                 else:
                     summary["skip_count"] += 1
 
-    histogram = Counter(int(v // 10) * 10 for v in score_values)
-    histogram_payload = [
-        {"bucket": f"{bucket}-{bucket + 9}", "count": count}
-        for bucket, count in sorted(histogram.items())
-    ]
-
-    by_status_avg = {
-        status: round(sum(values) / len(values), 2)
-        for status, values in sorted(by_status.items())
-        if values
-    }
     by_standard_avg = {
         standard: round(sum(values) / len(values), 2)
         for standard, values in sorted(by_standard.items())
@@ -107,13 +94,8 @@ def extract_conformity_metrics(proposal_data: List[Dict[str, Any]], id_field: st
             }
         )
 
-    overall_avg = round(sum(score_values) / len(score_values), 2) if score_values else None
-
     return {
-        "overall_average_score": overall_avg,
         "average_score_by_standard": by_standard_avg,
-        "score_distribution": histogram_payload,
-        "average_score_by_status": by_status_avg,
         "check_summary": check_summary_payload,
         "per_proposal": per_proposal,
     }

@@ -11,6 +11,7 @@ import { DependencyComparisonHeatmaps } from './DependencyComparisonHeatmaps';
 import { ClassificationPieChart } from './ClassificationPieChart';
 import { ClassificationStackedTimelineChart } from './ClassificationStackedTimelineChart';
 import { ClassificationChordDiagram } from './ClassificationChordDiagram';
+import { FormalConformitySwarmPlot } from './FormalConformitySwarmPlot';
 import { WordCloud } from './WordCloud';
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
@@ -137,17 +138,6 @@ function parseProposalFilterExpression(text, availableProposalIds = []) {
     });
 
   return Array.from(selected).sort((left, right) => Number(left) - Number(right));
-}
-
-function countDisplayedEdges(links) {
-  const byType = links || {};
-  return (
-    (byType.explicit_references?.length || 0)
-    + (byType.requires?.length || 0)
-    + (byType.replaces?.length || 0)
-    + (byType.superseded_by?.length || 0)
-    + (byType.implicit_dependencies?.length || 0)
-  );
 }
 
 function computeWeightedEigenvectorCentrality(nodeIds, adjacency, maxIterations = 1000, tolerance = 1e-6) {
@@ -529,9 +519,8 @@ function buildClassificationChordData(nodes, categoryDomains = {}) {
 
 function buildDashboardData(dataset) {
   const authorship = dataset.authorship || {};
-  const classification = dataset.classification || {};
-  const conformity = dataset.conformity || {};
   const dependencyMetrics = dataset.dependencyMetrics || { by_approach: {} };
+  const conformity = dataset.conformity || {};
   const authorBipsByAuthor = new Map();
   const bipsByYear = new Map();
 
@@ -588,18 +577,13 @@ function buildDashboardData(dataset) {
       ).sort((a, b) => a.year - b.year);
 
   const wordCloudData = buildWordCloudData(dataset.nodes);
-
-  const statusByLayerRows = Object.entries(classification.status_distribution_by_layer || {}).map(
-    ([layer, statuses]) => ({
-      layer,
-      total: Object.values(statuses).reduce((sum, count) => sum + Number(count || 0), 0),
-      topStatus: Object.entries(statuses).sort((a, b) => b[1] - a[1])[0]?.[0] || 'n/a',
-    })
-  );
-
-  const conformityStatusRows = Object.entries(conformity.average_score_by_status || {}).map(
-    ([status, score]) => ({ status, score })
-  );
+  const conformityRows = (conformity.per_proposal || [])
+    .filter((entry) => typeof entry?.compliance_score === 'number')
+    .map((entry) => ({
+      ...entry,
+      id: String(entry.id),
+    }))
+    .sort((left, right) => Number(left.id) - Number(right.id));
   const classificationDistributions = {
     layer: buildFacetDistribution(dataset.nodes, 'layer'),
     type: buildFacetDistribution(dataset.nodes, 'type'),
@@ -672,13 +656,11 @@ function buildDashboardData(dataset) {
   const {
     metricsRows: collaborationMetricsRows,
   } = buildCollaborationDerivedData(collaborationNetwork, collaborationCentrality);
-  const top10Share = authorship.top_10_share || {};
 
   return {
     yearData,
     wordCloudData,
-    statusByLayerRows,
-    conformityStatusRows,
+    conformityRows,
     classificationDistributions,
     classificationTimeline,
     classificationCategoryDomains,
@@ -688,8 +670,6 @@ function buildDashboardData(dataset) {
     collaborationNetwork,
     collaborationCentrality,
     collaborationMetricsRows,
-    top10Share,
-    overallConformity: conformity.overall_average_score,
     dependencyMetrics,
   };
 }
@@ -764,6 +744,7 @@ function EcosystemDashboard() {
   const [dependencyIncludeConnections, setDependencyIncludeConnections] = useState(true);
   const [selectedDependencyMetricsApproach, setSelectedDependencyMetricsApproach] = useState('explicit_dependencies');
   const [wordCloudFilterText, setWordCloudFilterText] = useState('');
+  const [highlightedConformityProposal, setHighlightedConformityProposal] = useState('');
 
   useEffect(() => {
     setSelectedStichtag((current) => {
@@ -780,8 +761,7 @@ function EcosystemDashboard() {
   const {
     yearData,
     wordCloudData,
-    statusByLayerRows,
-    conformityStatusRows,
+    conformityRows,
     classificationDistributions,
     classificationTimeline,
     classificationCategoryDomains,
@@ -790,8 +770,6 @@ function EcosystemDashboard() {
     authorContributionHistogram,
     collaborationNetwork,
     collaborationMetricsRows,
-    top10Share,
-    overallConformity,
     dependencyMetrics,
   } = buildDashboardData(selectedDataset);
   const dependencyMetricsApproachOptions = useMemo(
@@ -850,6 +828,17 @@ function EcosystemDashboard() {
 
       const normalized = parseProposalFilterExpression(current, availableProposalIds);
       return normalized.length ? current : '';
+    });
+  }, [availableProposalIds]);
+
+  useEffect(() => {
+    setHighlightedConformityProposal((current) => {
+      if (!current.trim()) {
+        return current;
+      }
+
+      const normalized = normalizeProposalFilterValue(current);
+      return availableProposalIds.includes(normalized) ? current : '';
     });
   }, [availableProposalIds]);
 
@@ -1064,6 +1053,48 @@ function EcosystemDashboard() {
               </div>
               <WordCloud words={hasWordCloudFilter ? filteredWordCloudData : wordCloudData} width={1250} height={600} />
             </Card>
+            <Card className="mb-4">
+              <h3>Formal Conformity</h3>
+              <p>
+                Each bubble represents one {ecosystem.acronym} positioned by its aggregated formal conformity score.
+                The horizontal axis runs from low to high compliance, while the vertical spread is only used to pack
+                the proposals into a beeswarm.
+              </p>
+              <div className="network-finder">
+                <div className="network-finder__copy">
+                  <strong>Find proposal.</strong>
+                  <span>Search a proposal ID to highlight its bubble in the swarm.</span>
+                </div>
+                <div className="network-finder__controls">
+                  <InputText
+                    value={highlightedConformityProposal}
+                    onChange={(event) => setHighlightedConformityProposal(event.target.value)}
+                    placeholder="Type a proposal ID"
+                    list="conformity-proposal-options"
+                  />
+                  <datalist id="conformity-proposal-options">
+                    {dependencyProposalOptions.map((proposalId) => (
+                      <option key={proposalId} value={proposalId} />
+                    ))}
+                  </datalist>
+                  <Button
+                    type="button"
+                    label="Clear"
+                    severity="secondary"
+                    text
+                    onClick={() => setHighlightedConformityProposal('')}
+                    disabled={!highlightedConformityProposal.trim()}
+                  />
+                </div>
+              </div>
+              <FormalConformitySwarmPlot
+                rows={conformityRows}
+                proposalShortLabel={ecosystem.acronym || 'IP'}
+                highlightProposal={highlightedConformityProposal}
+                width={1250}
+                height={360}
+              />
+            </Card>
           </section>
           <section className="dashboard-section">
           <div className="dashboard-section__header">
@@ -1177,13 +1208,7 @@ function EcosystemDashboard() {
             />
           </Card>
           <Card className="mb-4">
-            <DependencyComparisonHeatmaps
-              pairwiseComparisons={dependencyMetrics?.pairwise_comparisons || {}}
-              proposalShortLabel={ecosystem.acronym || 'BIP'}
-            />
-          </Card>
-          <Card className="mb-4">
-            <h3>Dependency Graph Metrics</h3>
+            <h3>Relationship Graph Metrics</h3>
             <p>
               Compare simple graph-level structure and per-{ecosystem.proposalShort} centrality measures across
               explicit dependencies, explicit references, and implicit dependencies.
@@ -1231,76 +1256,16 @@ function EcosystemDashboard() {
             />
           </Card>
           <Card className="mb-4">
-            <h3>Analysis Submodule Summary</h3>
-            <div className="analysis-grid">
-              <div className="analysis-stat">
-                <h4>Relationship Network</h4>
-                <p><strong>Nodes:</strong> {selectedDataset.meta?.node_count ?? selectedDataset.nodes.length}</p>
-                <p>
-                  <strong>Edges:</strong> {countDisplayedEdges(selectedDataset.links)}
-                </p>
-              </div>
-              <div className="analysis-stat">
-                <h4>Authorship</h4>
-                <p><strong>Top authors tracked:</strong> {topAuthors.length}</p>
-                <p><strong>Top 10 share:</strong> {top10Share.percentage ?? 'n/a'}%</p>
-              </div>
-              <div className="analysis-stat">
-                <h4>Classification</h4>
-                <p><strong>Layer groups:</strong> {statusByLayerRows.length}</p>
-                <p><strong>Chord categories:</strong> {classificationChordData.groups.length}</p>
-              </div>
-              <div className="analysis-stat">
-                <h4>Conformity</h4>
-                <p><strong>Average score:</strong> {overallConformity ?? 'n/a'}</p>
-                <p><strong>Status buckets:</strong> {conformityStatusRows.length}</p>
-              </div>
-            </div>
+            <h3>Comparison of Pairwise Relationship Extraction Approach</h3>
+            <p>
+              These heatmaps compare each extraction approach against each possible baseline. The first matrix combines
+              hits and missed baseline coverage in one cell; the second shows edges found only by the selected approach.
+            </p>
+            <DependencyComparisonHeatmaps
+              pairwiseComparisons={dependencyMetrics?.pairwise_comparisons || {}}
+              proposalShortLabel={ecosystem.acronym || 'BIP'}
+            />
           </Card>
-          <div className="chart-grid" style={{ display: 'flex', gap: '2rem', marginTop: '2rem', height: '100%' }}>
-            <Card className="mb-4" style={{ flex: 1 }}>
-              <h3>Classification by Layer</h3>
-              <p>Top status per layer from the classification submodule output.</p>
-              <table className="analysis-table">
-                <thead>
-                  <tr>
-                    <th>Layer</th>
-                    <th>Top Status</th>
-                    <th>Total</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {statusByLayerRows.map((row) => (
-                    <tr key={row.layer}>
-                      <td>{row.layer}</td>
-                      <td>{row.topStatus}</td>
-                      <td>{row.total}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </Card>
-            <Card className="mb-4" style={{ flex: 1 }}>
-              <h3>Conformity by Status</h3>
-              <p>Average compliance score by proposal status from the conformity submodule output.</p>
-              <table className="analysis-table">
-                <thead>
-                  <tr>
-                    <th>Status</th>
-                    <th>Average Score</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {conformityStatusRows.map((row) => (
-                    <tr key={row.status}>
-                      <td>{row.status}</td>
-                      <td>{row.score}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              </Card>
-            </div>
       </section>
     </section>
   );

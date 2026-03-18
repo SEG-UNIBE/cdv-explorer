@@ -300,8 +300,26 @@
   margin-bottom: 1rem;
 }
 
+.network-control-grid {
+  display: grid;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
+}
+
+.network-control-row {
+  display: grid;
+  grid-template-columns: minmax(260px, auto) minmax(0, 1fr);
+  gap: 1.25rem;
+  align-items: center;
+}
+
+.network-control-grid__legend {
+  min-height: 1.5rem;
+}
+
 .network-layout-picker__label {
   font-weight: 600;
+  min-width: 88px;
 }
 
 .network-layout-picker__options {
@@ -379,6 +397,11 @@
   margin: 0;
 }
 
+.network-layout-picker__option input[type='radio'] {
+  margin: 0;
+  accent-color: #3b82f6;
+}
+
 .dependency-metrics-toolbar {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
@@ -451,6 +474,11 @@
 
   .network-finder__controls .p-inputtext {
     width: min(320px, 100%);
+  }
+
+  .network-control-row {
+    grid-template-columns: 1fr;
+    align-items: flex-start;
   }
 
   .dependency-metrics-toolbar {

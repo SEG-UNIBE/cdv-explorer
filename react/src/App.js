@@ -761,7 +761,6 @@ function EcosystemDashboard() {
   const [highlightedDependencyProposal, setHighlightedDependencyProposal] = useState('');
   const [dependencyFilterText, setDependencyFilterText] = useState('');
   const [dependencyIncludeConnections, setDependencyIncludeConnections] = useState(true);
-  const [dependencyLayoutMode, setDependencyLayoutMode] = useState('balanced');
   const [selectedDependencyMetricsApproach, setSelectedDependencyMetricsApproach] = useState('explicit_dependencies');
   const [wordCloudFilterText, setWordCloudFilterText] = useState('');
 
@@ -1167,23 +1166,6 @@ function EcosystemDashboard() {
                 />
               </div>
             </div>
-            <div className="network-layout-picker">
-              <div className="network-layout-picker__label">Layout</div>
-              <div className="network-layout-picker__options">
-                {COLLABORATION_LAYOUT_OPTIONS.map((option) => (
-                  <label key={option.value} className="network-layout-picker__option">
-                    <RadioButton
-                      inputId={`dependency-layout-${option.value}`}
-                      name="dependency-layout"
-                      value={option.value}
-                      onChange={(event) => setDependencyLayoutMode(event.value)}
-                      checked={dependencyLayoutMode === option.value}
-                    />
-                    <span>{option.label}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
             <NetworkDiagram
               data={selectedDataset}
               width={1200}
@@ -1191,7 +1173,6 @@ function EcosystemDashboard() {
               highlightProposal={highlightedDependencyProposal}
               proposalFilterIds={selectedDependencyProposalIds}
               includeConnections={dependencyIncludeConnections}
-              layoutMode={dependencyLayoutMode}
             />
           </Card>
           <Card className="mb-4">

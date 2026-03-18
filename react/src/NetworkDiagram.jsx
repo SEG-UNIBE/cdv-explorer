@@ -9,6 +9,17 @@ export const LINK_TYPE_OPTIONS = [
   { label: 'Implicit Dependencies (LLM)', value: 'implicit_dependencies' },
 ];
 
+const BASELINE_OPTIONS = [
+  { label: '(none)', value: '' },
+  ...LINK_TYPE_OPTIONS,
+];
+
+const LAYOUT_OPTIONS = [
+  { label: 'Balanced', value: 'balanced' },
+  { label: 'Clustered', value: 'clustered' },
+  { label: 'Spread', value: 'spread' },
+];
+
 const COLOR_BY_OPTIONS = [
   { label: 'Layer', value: 'layer' },
   { label: 'Status', value: 'status' },
@@ -24,6 +35,12 @@ const EXPLICIT_DEPENDENCY_COLORS = {
 const DEFAULT_EDGE_COLORS = {
   explicit_references: '#607d8b',
   implicit_dependencies: '#7b2cbf',
+};
+
+const DIFFERENTIAL_EDGE_COLORS = {
+  approach_only: '#98a2b3',
+  overlap: '#2f9e44',
+  baseline_only: '#d94841',
 };
 
 const EXPLICIT_DEPENDENCY_STYLES = {
@@ -52,6 +69,19 @@ function getProposalUrl(id) {
   return normalized ? `https://bips.dev/${normalized}/` : '#';
 }
 
+function getLinkTypeLabel(linkType) {
+  return LINK_TYPE_OPTIONS.find((option) => option.value === linkType)?.label || linkType;
+}
+
+function buildEdgeKey(source, target) {
+  return `${String(source)}->${String(target)}`;
+}
+
+function normalizeCategory(value, fallbackLabel) {
+  const text = String(value ?? '').trim();
+  return text || fallbackLabel;
+}
+
 function buildDisplayedLinks(linksByType, linkType) {
   if (linkType === 'explicit_dependencies') {
     return ['requires', 'replaces', 'superseded_by']
@@ -69,9 +99,46 @@ function buildDisplayedLinks(linksByType, linkType) {
   }));
 }
 
-function normalizeCategory(value, fallbackLabel) {
-  const text = String(value ?? '').trim();
-  return text || fallbackLabel;
+function getLinkSetForType(linksByType, linkType) {
+  if (linkType === 'explicit_dependencies') {
+    return ['requires', 'replaces', 'superseded_by']
+      .flatMap((relationType) => (linksByType?.[relationType] || []).map((edge) => ({
+        source: String(edge.source),
+        target: String(edge.target),
+      })));
+  }
+
+  return (linksByType?.[linkType] || []).map((edge) => ({
+    source: String(edge.source),
+    target: String(edge.target),
+  }));
+}
+
+function buildComparisonLinks(linksByType, approachType, baselineType) {
+  const approachEdges = getLinkSetForType(linksByType, approachType);
+  const baselineEdges = getLinkSetForType(linksByType, baselineType);
+  const approachKeys = new Set(approachEdges.map((edge) => buildEdgeKey(edge.source, edge.target)));
+  const baselineKeys = new Set(baselineEdges.map((edge) => buildEdgeKey(edge.source, edge.target)));
+  const combinedKeys = new Set([...approachKeys, ...baselineKeys]);
+
+  return Array.from(combinedKeys).map((edgeKey, index) => {
+    const [source, target] = edgeKey.split('->');
+    let comparisonStatus = 'approach_only';
+
+    if (approachKeys.has(edgeKey) && baselineKeys.has(edgeKey)) {
+      comparisonStatus = 'overlap';
+    } else if (baselineKeys.has(edgeKey)) {
+      comparisonStatus = 'baseline_only';
+    }
+
+    return {
+      source,
+      target,
+      relationType: approachType,
+      comparisonStatus,
+      key: `${approachType}-${baselineType}-${comparisonStatus}-${source}-${target}-${index}`,
+    };
+  });
 }
 
 export const NetworkDiagram = ({
@@ -81,22 +148,30 @@ export const NetworkDiagram = ({
   highlightProposal = '',
   proposalFilterIds = [],
   includeConnections = true,
-  layoutMode = 'balanced',
 }) => {
   const ref = useRef();
   const legendRef = useRef();
   const [colorBy, setColorBy] = useState('layer');
   const [linkType, setLinkType] = useState('explicit_dependencies');
+  const [baselineType, setBaselineType] = useState('');
+  const [layoutMode, setLayoutMode] = useState('balanced');
+  const isDifferentialMode = Boolean(baselineType);
 
   const nodes = useMemo(
     () => (Array.isArray(data?.nodes) ? data.nodes.map((node) => ({ ...node })) : []),
     [data]
   );
 
-  const links = useMemo(
-    () => buildDisplayedLinks(data?.links || {}, linkType),
-    [data, linkType]
-  );
+  const links = useMemo(() => {
+    if (isDifferentialMode) {
+      return buildComparisonLinks(data?.links || {}, linkType, baselineType);
+    }
+
+    return buildDisplayedLinks(data?.links || {}, linkType).map((edge) => ({
+      ...edge,
+      comparisonStatus: 'approach_only',
+    }));
+  }, [baselineType, data, isDifferentialMode, linkType]);
 
   useEffect(() => {
     const svg = d3.select(ref.current);
@@ -134,6 +209,7 @@ export const NetworkDiagram = ({
         localLinks = allLinks.filter((edge) => {
           const sourceIncluded = matchedFilterNodeIds.has(String(edge.source));
           const targetIncluded = matchedFilterNodeIds.has(String(edge.target));
+
           if (sourceIncluded || targetIncluded) {
             displayedNodeIds.add(String(edge.source));
             displayedNodeIds.add(String(edge.target));
@@ -150,7 +226,6 @@ export const NetworkDiagram = ({
     }
 
     const localNodes = allNodes.filter((node) => displayedNodeIds.has(String(node.id)));
-
     if (localNodes.length === 0) {
       return;
     }
@@ -191,9 +266,7 @@ export const NetworkDiagram = ({
     const getEdgeTargetId = (edge) => (typeof edge.target === 'object' ? String(edge.target.id) : String(edge.target));
 
     const fallbackLabel = `Unknown ${colorBy.charAt(0).toUpperCase()}${colorBy.slice(1)}`;
-    const allGroups = Array.from(
-      new Set(allNodes.map((node) => normalizeCategory(node[colorBy], fallbackLabel)))
-    );
+    const allGroups = Array.from(new Set(allNodes.map((node) => normalizeCategory(node[colorBy], fallbackLabel))));
     const colorMap = getClassificationColorMap(colorBy, allGroups);
     const color = d3.scaleOrdinal()
       .domain(allGroups)
@@ -204,13 +277,27 @@ export const NetworkDiagram = ({
     });
 
     const getEdgeColor = (edge) => {
-      if (linkType === 'explicit_dependencies') {
-        return EXPLICIT_DEPENDENCY_COLORS[edge.relationType] || '#667085';
+      if (!isDifferentialMode) {
+        if (linkType === 'explicit_dependencies') {
+          return EXPLICIT_DEPENDENCY_COLORS[edge.relationType] || '#667085';
+        }
+        return DEFAULT_EDGE_COLORS[edge.relationType] || '#607d8b';
       }
-      return DEFAULT_EDGE_COLORS[edge.relationType] || '#607d8b';
+
+      return DIFFERENTIAL_EDGE_COLORS[edge.comparisonStatus] || DIFFERENTIAL_EDGE_COLORS.approach_only;
+    };
+
+    const getEdgeMarkerId = (edge) => {
+      if (!isDifferentialMode) {
+        return `dependency-arrow-${edge.relationType}`;
+      }
+      return `dependency-arrow-${edge.comparisonStatus}`;
     };
 
     const getEdgeDasharray = (edge) => {
+      if (isDifferentialMode) {
+        return edge.comparisonStatus === 'baseline_only' ? '7 5' : null;
+      }
       if (linkType !== 'explicit_dependencies') {
         return null;
       }
@@ -223,11 +310,13 @@ export const NetworkDiagram = ({
       .style('height', 'auto');
 
     const defs = svg.append('defs');
-    const markerTypes = Array.from(new Set(localLinks.map((edge) => edge.relationType)));
-    markerTypes.forEach((relationType) => {
+    const markerDefinitions = Array.from(
+      new Map(localLinks.map((edge) => [getEdgeMarkerId(edge), getEdgeColor(edge)])).entries()
+    );
+    markerDefinitions.forEach(([markerId, fillColor]) => {
       defs
         .append('marker')
-        .attr('id', `dependency-arrow-${relationType}`)
+        .attr('id', markerId)
         .attr('viewBox', '0 -5 10 10')
         .attr('refX', 14)
         .attr('refY', 0)
@@ -236,9 +325,7 @@ export const NetworkDiagram = ({
         .attr('markerHeight', 4.5)
         .append('path')
         .attr('d', 'M 0,-5 L 10,0 L 0,5')
-        .attr('fill', linkType === 'explicit_dependencies'
-          ? EXPLICIT_DEPENDENCY_COLORS[relationType] || '#667085'
-          : DEFAULT_EDGE_COLORS[relationType] || '#607d8b');
+        .attr('fill', fillColor);
     });
 
     const tooltip = d3.select('body')
@@ -284,7 +371,28 @@ export const NetworkDiagram = ({
       `<strong><a href="${getProposalUrl(getEdgeSourceId(edge))}" target="_blank" rel="noreferrer">${getProposalLabel(getEdgeSourceId(edge))}</a></strong>` +
       ` &rarr; ` +
       `<strong><a href="${getProposalUrl(getEdgeTargetId(edge))}" target="_blank" rel="noreferrer">${getProposalLabel(getEdgeTargetId(edge))}</a></strong><br/>` +
-      `Type: ${relationLabel[edge.relationType] || edge.relationType}`
+      `Type: ${
+        !isDifferentialMode
+          ? (relationLabel[edge.relationType] || edge.relationType)
+          : (
+            edge.comparisonStatus === 'overlap'
+              ? `${getLinkTypeLabel(linkType)} + ${getLinkTypeLabel(baselineType)}`
+              : edge.comparisonStatus === 'baseline_only'
+                ? `${getLinkTypeLabel(baselineType)} only`
+                : `${getLinkTypeLabel(linkType)} only`
+          )
+      }` +
+      (
+        !isDifferentialMode
+          ? ''
+          : `<br/>Comparison: ${
+            edge.comparisonStatus === 'overlap'
+              ? `Exists in baseline (${getLinkTypeLabel(baselineType)})`
+              : edge.comparisonStatus === 'baseline_only'
+                ? `Missing from ${getLinkTypeLabel(linkType)}`
+                : `Only in ${getLinkTypeLabel(linkType)}`
+          }`
+      )
     );
 
     const degreeExtent = d3.extent(localNodes, (node) => Number(node.degree || 0));
@@ -435,7 +543,7 @@ export const NetworkDiagram = ({
       .attr('stroke-opacity', 0.72)
       .attr('stroke-width', 2.2)
       .attr('stroke-dasharray', (edge) => getEdgeDasharray(edge))
-      .attr('marker-end', (edge) => `url(#dependency-arrow-${edge.relationType})`)
+      .attr('marker-end', (edge) => `url(#${getEdgeMarkerId(edge)})`)
       .on('mouseover', function (event, edge) {
         if (pinnedInteraction) {
           return;
@@ -482,9 +590,7 @@ export const NetworkDiagram = ({
       .data(localNodes)
       .join('circle')
       .attr('r', (entry) => getNodeRadius(entry))
-      .attr('fill', (entry) => colorBy === 'compliance_score'
-        ? color(Number(entry.compliance_score ?? 50))
-        : color(normalizeCategory(entry[colorBy], fallbackLabel)))
+      .attr('fill', (entry) => color(normalizeCategory(entry[colorBy], fallbackLabel)))
       .attr('fill-opacity', (entry) => {
         if (searchMatchedIds.size === 0) {
           return 0.95;
@@ -609,7 +715,7 @@ export const NetworkDiagram = ({
           const unitX = dx / distance;
           const unitY = dy / distance;
           const sourcePadding = getNodeRadius(edge.source) + 1;
-          const targetPadding = getNodeRadius(edge.target) -5;
+          const targetPadding = getNodeRadius(edge.target) - 5;
           const sourceX = rawSourceX + (unitX * sourcePadding);
           const sourceY = rawSourceY + (unitY * sourcePadding);
           const targetX = rawTargetX - (unitX * targetPadding);
@@ -666,73 +772,175 @@ export const NetworkDiagram = ({
       svg.selectAll('*').remove();
       d3.select('body').selectAll('.dependency-network-tooltip').remove();
     };
-  }, [colorBy, data, height, highlightProposal, includeConnections, layoutMode, linkType, links, nodes, proposalFilterIds, width]);
+  }, [baselineType, colorBy, data, height, highlightProposal, includeConnections, isDifferentialMode, layoutMode, linkType, links, nodes, proposalFilterIds, width]);
 
   const explicitLegendItems = [
-    { label: 'Requires', dasharray: EXPLICIT_DEPENDENCY_STYLES.requires },
-    { label: 'Replaces', dasharray: EXPLICIT_DEPENDENCY_STYLES.replaces },
-    { label: 'Superseded By', dasharray: EXPLICIT_DEPENDENCY_STYLES.superseded_by },
+    { label: 'Requires', dasharray: EXPLICIT_DEPENDENCY_STYLES.requires, stroke: '#667085' },
+    { label: 'Replaces', dasharray: EXPLICIT_DEPENDENCY_STYLES.replaces, stroke: '#667085' },
+    { label: 'Superseded By', dasharray: EXPLICIT_DEPENDENCY_STYLES.superseded_by, stroke: '#667085' },
   ];
-  const edgeLegendItems = linkType === 'explicit_dependencies'
-    ? explicitLegendItems
-    : [
+
+  const edgeLegendItems = isDifferentialMode
+    ? [
       {
-        label: linkType === 'explicit_references' ? 'Explicit References (Regex)' : 'Implicit Dependencies (LLM)',
+        label: getLinkTypeLabel(linkType),
         dasharray: null,
+        stroke: DIFFERENTIAL_EDGE_COLORS.approach_only,
       },
-    ];
+      {
+        label: `Also in ${getLinkTypeLabel(baselineType)}`,
+        dasharray: null,
+        stroke: DIFFERENTIAL_EDGE_COLORS.overlap,
+      },
+      {
+        label: `Missing from ${getLinkTypeLabel(linkType)}`,
+        dasharray: '7 5',
+        stroke: DIFFERENTIAL_EDGE_COLORS.baseline_only,
+      },
+    ]
+    : linkType === 'explicit_dependencies'
+      ? explicitLegendItems
+      : [
+        {
+          label: getLinkTypeLabel(linkType),
+          dasharray: null,
+          stroke: DEFAULT_EDGE_COLORS[linkType] || '#667085',
+        },
+      ];
+
+  const approachLegendItems = isDifferentialMode
+    ? [
+      {
+        label: getLinkTypeLabel(linkType),
+        dasharray: null,
+        stroke: DIFFERENTIAL_EDGE_COLORS.approach_only,
+      },
+    ]
+    : edgeLegendItems;
+
+  const baselineLegendItems = isDifferentialMode
+    ? [
+      {
+        label: `Also in ${getLinkTypeLabel(baselineType)}`,
+        dasharray: null,
+        stroke: DIFFERENTIAL_EDGE_COLORS.overlap,
+      },
+      {
+        label: `Missing from ${getLinkTypeLabel(linkType)}`,
+        dasharray: '7 5',
+        stroke: DIFFERENTIAL_EDGE_COLORS.baseline_only,
+      },
+    ]
+    : [];
 
   return (
     <div>
-      <div style={{ display: 'flex', gap: '2rem', alignItems: 'flex-start', marginBottom: '1rem', flexWrap: 'wrap' }}>
-        <div className="network-layout-picker">
-          <div className="network-layout-picker__label">Edges</div>
-          <Dropdown
-            inputId="linkType"
-            value={linkType}
-            options={LINK_TYPE_OPTIONS}
-            onChange={(event) => setLinkType(event.value)}
-            placeholder="Link Type"
-            className="w-full md:w-18rem"
-            style={{ minWidth: '260px' }}
-          />
-        </div>
-
-        <div className="network-layout-picker">
-          <div className="network-layout-picker__label">Coloring</div>
-          <Dropdown
-            inputId="dependency-colorBy"
-            value={colorBy}
-            options={COLOR_BY_OPTIONS}
-            onChange={(event) => setColorBy(event.value)}
-            placeholder="Coloring"
-            className="w-full md:w-14rem"
-            style={{ minWidth: '180px' }}
-          />
-        </div>
-      </div>
-
-      <div className="dependency-edge-legend">
-        {edgeLegendItems.map((item) => (
-          <div key={item.label} className="dependency-edge-legend__item">
-            <svg className="dependency-edge-legend__line" viewBox="0 0 36 12" aria-hidden="true">
-              <line
-                x1="2"
-                y1="6"
-                x2="34"
-                y2="6"
-                stroke={linkType === 'explicit_dependencies' ? '#667085' : (DEFAULT_EDGE_COLORS[linkType] || '#667085')}
-                strokeWidth="2.5"
-                strokeDasharray={item.dasharray || undefined}
-                strokeLinecap="round"
-              />
-            </svg>
-            <span>{item.label}</span>
+      <div className="network-control-grid">
+        <div className="network-control-row">
+          <div className="network-layout-picker">
+            <div className="network-layout-picker__label">Coloring</div>
+            <Dropdown
+              inputId="dependency-colorBy"
+              value={colorBy}
+              options={COLOR_BY_OPTIONS}
+              onChange={(event) => setColorBy(event.value)}
+              placeholder="Coloring"
+              className="w-full md:w-14rem"
+              style={{ minWidth: '180px' }}
+            />
           </div>
-        ))}
+          <div ref={legendRef} className="network-control-grid__legend" />
+        </div>
+
+        <div className="network-control-row">
+          <div className="network-layout-picker">
+            <div className="network-layout-picker__label">Approach</div>
+            <Dropdown
+              inputId="linkType"
+              value={linkType}
+              options={LINK_TYPE_OPTIONS}
+              onChange={(event) => setLinkType(event.value)}
+              placeholder="Approach"
+              className="w-full md:w-18rem"
+              style={{ minWidth: '260px' }}
+            />
+          </div>
+          <div className="dependency-edge-legend">
+            {approachLegendItems.map((item) => (
+              <div key={item.label} className="dependency-edge-legend__item">
+                <svg className="dependency-edge-legend__line" viewBox="0 0 36 12" aria-hidden="true">
+                  <line
+                    x1="2"
+                    y1="6"
+                    x2="34"
+                    y2="6"
+                    stroke={item.stroke}
+                    strokeWidth="2.5"
+                    strokeDasharray={item.dasharray || undefined}
+                    strokeLinecap="round"
+                  />
+                </svg>
+                <span>{item.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="network-control-row">
+          <div className="network-layout-picker">
+            <div className="network-layout-picker__label">Baseline</div>
+            <Dropdown
+              inputId="baselineType"
+              value={baselineType}
+              options={BASELINE_OPTIONS}
+              onChange={(event) => setBaselineType(event.value)}
+              placeholder="Baseline"
+              className="w-full md:w-18rem"
+              style={{ minWidth: '260px' }}
+            />
+          </div>
+          {baselineLegendItems.length > 0 ? (
+            <div className="dependency-edge-legend">
+              {baselineLegendItems.map((item) => (
+                <div key={item.label} className="dependency-edge-legend__item">
+                  <svg className="dependency-edge-legend__line" viewBox="0 0 36 12" aria-hidden="true">
+                    <line
+                      x1="2"
+                      y1="6"
+                      x2="34"
+                      y2="6"
+                      stroke={item.stroke}
+                      strokeWidth="2.5"
+                      strokeDasharray={item.dasharray || undefined}
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                  <span>{item.label}</span>
+                </div>
+              ))}
+            </div>
+          ) : null}
+        </div>
+
+        <div className="network-layout-picker">
+          <div className="network-layout-picker__label">Layout</div>
+          <div className="network-layout-picker__options">
+            {LAYOUT_OPTIONS.map((option) => (
+              <label key={option.value} className="network-layout-picker__option">
+                <input
+                  type="radio"
+                  name="dependency-layout"
+                  value={option.value}
+                  checked={layoutMode === option.value}
+                  onChange={() => setLayoutMode(option.value)}
+                />
+                <span>{option.label}</span>
+              </label>
+            ))}
+          </div>
+        </div>
       </div>
 
-      <div ref={legendRef} style={{ marginBottom: '1rem' }} />
       <svg ref={ref} role="img" />
     </div>
   );

@@ -20,14 +20,13 @@
       "post_history": null,
       "requires": null,
       "replaces": null,
-      "superseded_by": null,
-      "compliance_score": 82.35
+      "superseded_by": null
     }
   },
   "metadata": {
     "last_commit": "Thu Jul 25 18:35:39 2024 +0300",
     "total_commits": 8,
-    "metadata_last_updated": "2026-03-17T00:33:02",
+    "metadata_last_updated": "2026-03-18T15:52:12",
     "git_history": [
       [
         "9a56d3544eac1f949a747c251810f7a440d63fb9",
@@ -72,6 +71,399 @@
     ],
     "contributors": 4
   },
+  "compliance": {
+    "score": 79.41,
+    "passed_checks": 27,
+    "failed_checks": 7,
+    "skipped_checks": 12,
+    "total_checks": 34,
+    "bip2": {
+      "score": 82.35,
+      "passed_checks": 14,
+      "failed_checks": 3,
+      "skipped_checks": 0,
+      "total_checks": 17,
+      "checks": [
+        {
+          "id": "bip2.required_field.bip",
+          "label": "Required field 'bip' is present",
+          "category": "required_field",
+          "standard": "bip2",
+          "passed": true,
+          "details": null
+        },
+        {
+          "id": "bip2.required_field.title",
+          "label": "Required field 'title' is present",
+          "category": "required_field",
+          "standard": "bip2",
+          "passed": true,
+          "details": null
+        },
+        {
+          "id": "bip2.required_field.author",
+          "label": "Required field 'author' is present",
+          "category": "required_field",
+          "standard": "bip2",
+          "passed": true,
+          "details": null
+        },
+        {
+          "id": "bip2.required_field.comments_uri",
+          "label": "Required field 'comments_uri' is present",
+          "category": "required_field",
+          "standard": "bip2",
+          "passed": true,
+          "details": null
+        },
+        {
+          "id": "bip2.required_field.status",
+          "label": "Required field 'status' is present",
+          "category": "required_field",
+          "standard": "bip2",
+          "passed": true,
+          "details": null
+        },
+        {
+          "id": "bip2.required_field.type",
+          "label": "Required field 'type' is present",
+          "category": "required_field",
+          "standard": "bip2",
+          "passed": true,
+          "details": null
+        },
+        {
+          "id": "bip2.required_field.created",
+          "label": "Required field 'created' is present",
+          "category": "required_field",
+          "standard": "bip2",
+          "passed": true,
+          "details": null
+        },
+        {
+          "id": "bip2.required_field.license",
+          "label": "Required field 'license' is present",
+          "category": "required_field",
+          "standard": "bip2",
+          "passed": true,
+          "details": null
+        },
+        {
+          "id": "bip2.heading.abstract",
+          "label": "Heading 'abstract' exists at level 2",
+          "category": "heading",
+          "standard": "bip2",
+          "passed": true,
+          "details": null
+        },
+        {
+          "id": "bip2.heading.motivation",
+          "label": "Heading 'motivation' exists at level 2",
+          "category": "heading",
+          "standard": "bip2",
+          "passed": true,
+          "details": null
+        },
+        {
+          "id": "bip2.heading.specification",
+          "label": "Heading 'specification' exists at level 2",
+          "category": "heading",
+          "standard": "bip2",
+          "passed": true,
+          "details": null
+        },
+        {
+          "id": "bip2.heading.rationale",
+          "label": "Heading 'rationale' exists at level 2",
+          "category": "heading",
+          "standard": "bip2",
+          "passed": true,
+          "details": null
+        },
+        {
+          "id": "bip2.heading.backwards_compatibility",
+          "label": "Heading 'backwards compatibility' exists at level 2",
+          "category": "heading",
+          "standard": "bip2",
+          "passed": false,
+          "details": "Missing heading 'backwards compatibility'"
+        },
+        {
+          "id": "bip2.heading.reference_implementation",
+          "label": "Heading 'reference implementation' exists at level 2",
+          "category": "heading",
+          "standard": "bip2",
+          "passed": false,
+          "details": "Missing heading 'reference implementation'"
+        },
+        {
+          "id": "bip2.heading.security_considerations",
+          "label": "Heading 'security considerations' exists at level 2",
+          "category": "heading",
+          "standard": "bip2",
+          "passed": false,
+          "details": "Missing heading 'security considerations'"
+        },
+        {
+          "id": "bip2.heading.copyright",
+          "label": "Heading 'copyright' exists at level 2",
+          "category": "heading",
+          "standard": "bip2",
+          "passed": true,
+          "details": null
+        },
+        {
+          "id": "bip2.heading.references",
+          "label": "Heading 'references' exists at level 2",
+          "category": "heading",
+          "standard": "bip2",
+          "passed": true,
+          "details": null
+        }
+      ]
+    },
+    "bip3": {
+      "score": 76.47,
+      "passed_checks": 13,
+      "failed_checks": 4,
+      "skipped_checks": 12,
+      "total_checks": 17,
+      "checks": [
+        {
+          "id": "bip3.preamble.top_rfc822",
+          "label": "Preamble exists as RFC-822-style metadata at the top",
+          "category": "preamble",
+          "standard": "bip3",
+          "passed": true,
+          "details": null
+        },
+        {
+          "id": "bip3.required_header.bip",
+          "label": "Required header 'bip' is present",
+          "category": "required_header",
+          "standard": "bip3",
+          "passed": true,
+          "details": null
+        },
+        {
+          "id": "bip3.required_header.title",
+          "label": "Required header 'title' is present",
+          "category": "required_header",
+          "standard": "bip3",
+          "passed": true,
+          "details": null
+        },
+        {
+          "id": "bip3.required_header.authors",
+          "label": "Required header 'authors' is present",
+          "category": "required_header",
+          "standard": "bip3",
+          "passed": false,
+          "details": "Missing required header 'authors'"
+        },
+        {
+          "id": "bip3.required_header.status",
+          "label": "Required header 'status' is present",
+          "category": "required_header",
+          "standard": "bip3",
+          "passed": true,
+          "details": null
+        },
+        {
+          "id": "bip3.required_header.type",
+          "label": "Required header 'type' is present",
+          "category": "required_header",
+          "standard": "bip3",
+          "passed": true,
+          "details": null
+        },
+        {
+          "id": "bip3.required_header.assigned",
+          "label": "Required header 'assigned' is present",
+          "category": "required_header",
+          "standard": "bip3",
+          "passed": false,
+          "details": "Missing required header 'assigned'"
+        },
+        {
+          "id": "bip3.required_header.license",
+          "label": "Required header 'license' is present",
+          "category": "required_header",
+          "standard": "bip3",
+          "passed": true,
+          "details": null
+        },
+        {
+          "id": "bip3.header_order",
+          "label": "Headers appear in the expected BIP3 order",
+          "category": "header_order",
+          "standard": "bip3",
+          "passed": true,
+          "details": null
+        },
+        {
+          "id": "bip3.header_value.bip",
+          "label": "Header 'BIP' is an integer without leading zeros or '?'",
+          "category": "header_value",
+          "standard": "bip3",
+          "passed": true,
+          "details": null
+        },
+        {
+          "id": "bip3.header_value.title",
+          "label": "Header 'Title' is 50 characters or fewer",
+          "category": "header_value",
+          "standard": "bip3",
+          "passed": true,
+          "details": null
+        },
+        {
+          "id": "bip3.header_value.authors",
+          "label": "Header 'authors' uses 'Name <email>' entries",
+          "category": "header_value",
+          "standard": "bip3",
+          "passed": null,
+          "details": null
+        },
+        {
+          "id": "bip3.header_value.deputies",
+          "label": "Header 'deputies' uses 'Name <email>' entries",
+          "category": "header_value",
+          "standard": "bip3",
+          "passed": null,
+          "details": null
+        },
+        {
+          "id": "bip3.header_value.status",
+          "label": "Header 'Status' is one of Draft, Complete, Deployed, Closed",
+          "category": "header_value",
+          "standard": "bip3",
+          "passed": false,
+          "details": "Invalid Status 'Rejected'"
+        },
+        {
+          "id": "bip3.header_value.type",
+          "label": "Header 'Type' is one of Specification, Informational, Process",
+          "category": "header_value",
+          "standard": "bip3",
+          "passed": false,
+          "details": "Invalid Type 'Standards Track'"
+        },
+        {
+          "id": "bip3.header_value.assigned",
+          "label": "Header 'Assigned' is yyyy-mm-dd or '?'",
+          "category": "header_value",
+          "standard": "bip3",
+          "passed": null,
+          "details": null
+        },
+        {
+          "id": "bip3.header_value.license",
+          "label": "Header 'License' is non-empty",
+          "category": "header_value",
+          "standard": "bip3",
+          "passed": true,
+          "details": null
+        },
+        {
+          "id": "bip3.header_value.discussion",
+          "label": "Header 'Discussion' uses 'yyyy-mm-dd: URL' lines",
+          "category": "header_value",
+          "standard": "bip3",
+          "passed": null,
+          "details": null
+        },
+        {
+          "id": "bip3.header_value.version",
+          "label": "Header 'Version' uses MAJOR.MINOR.PATCH",
+          "category": "header_value",
+          "standard": "bip3",
+          "passed": null,
+          "details": null
+        },
+        {
+          "id": "bip3.header_value.requires",
+          "label": "Header 'requires' uses comma+space separated BIP numbers",
+          "category": "header_value",
+          "standard": "bip3",
+          "passed": null,
+          "details": null
+        },
+        {
+          "id": "bip3.header_value.replaces",
+          "label": "Header 'replaces' uses comma+space separated BIP numbers",
+          "category": "header_value",
+          "standard": "bip3",
+          "passed": null,
+          "details": null
+        },
+        {
+          "id": "bip3.header_value.proposed_replacement",
+          "label": "Header 'proposed_replacement' uses comma+space separated BIP numbers",
+          "category": "header_value",
+          "standard": "bip3",
+          "passed": null,
+          "details": null
+        },
+        {
+          "id": "bip3.required_section.abstract",
+          "label": "Required section 'abstract' is present",
+          "category": "required_section",
+          "standard": "bip3",
+          "passed": true,
+          "details": null
+        },
+        {
+          "id": "bip3.required_section.motivation",
+          "label": "Required section 'motivation' is present",
+          "category": "required_section",
+          "standard": "bip3",
+          "passed": true,
+          "details": null
+        },
+        {
+          "id": "bip3.required_section.copyright",
+          "label": "Required section 'copyright' is present",
+          "category": "required_section",
+          "standard": "bip3",
+          "passed": true,
+          "details": null
+        },
+        {
+          "id": "bip3.type_specific.specification_section",
+          "label": "Type 'Specification' includes a 'Specification' section",
+          "category": "type_specific",
+          "standard": "bip3",
+          "passed": null,
+          "details": null
+        },
+        {
+          "id": "bip3.changelog.changelog_section",
+          "label": "Complete/Deployed proposals include a 'Changelog' section",
+          "category": "changelog",
+          "standard": "bip3",
+          "passed": null,
+          "details": null
+        },
+        {
+          "id": "bip3.changelog.version_header",
+          "label": "Complete/Deployed proposals include a 'Version' header",
+          "category": "changelog",
+          "standard": "bip3",
+          "passed": null,
+          "details": null
+        },
+        {
+          "id": "bip3.changelog.version_matches",
+          "label": "Latest changelog version matches the 'Version' header",
+          "category": "changelog",
+          "standard": "bip3",
+          "passed": null,
+          "details": null
+        }
+      ]
+    }
+  },
   "insights": {
     "word_list": {
       "block": 21,
@@ -88,23 +480,14 @@
       "consensus": 4,
       "based": 4,
       "comments": 4,
-      "no": 4,
       "bitcoin": 4,
-      "because": 4,
-      "they": 4,
       "cost": 4,
       "vote": 4,
       "2016": 4,
       "bip": 3,
       "hard": 3,
       "rejected": 3,
-      "using": 3,
-      "if": 3,
-      "over": 3,
-      "next": 3,
       "hash": 3,
-      "not": 3,
-      "than": 3,
       "meet": 3,
       "pre": 2,
       "fork": 2,
@@ -113,40 +496,28 @@
       "method": 2,
       "maximum": 2,
       "protocol": 2,
-      "there": 2,
-      "cannot": 2,
       "easily": 2,
       "respond": 2,
       "time": 2,
-      "could": 2,
-      "have": 2,
       "introducing": 2,
       "mining": 2,
       "attack": 2,
       "ways": 2,
       "fixed": 2,
-      "also": 2,
       "power": 2,
       "free": 2,
       "voting": 2,
-      "their": 2,
       "manipulate": 2,
       "pools": 2,
       "ensures": 2,
-      "only": 2,
-      "when": 2,
       "reduce": 2,
-      "can": 2,
       "control": 2,
       "upper": 2,
       "required": 2,
-      "full": 2,
       "nodes": 2,
       "1mb": 2,
       "miner": 2,
-      "may": 2,
       "current": 2,
-      "every": 2,
       "coinbase": 2,
       "transaction": 2,
       "scriptsig": 2,
@@ -157,7 +528,6 @@
       "op_pushdata1": 2,
       "constant": 2,
       "0x80": 2,
-      "must": 2,
       "invalid": 2,
       "base": 2,
       "105": 1,
@@ -168,7 +538,6 @@
       "author": 1,
       "gmail": 1,
       "summary": 1,
-      "yet": 1,
       "uri": 1,
       "https": 1,
       "github": 1,
@@ -194,7 +563,6 @@
       "raising": 1,
       "popularity": 1,
       "suddenly": 1,
-      "due": 1,
       "mass": 1,
       "adoption": 1,
       "curve": 1,
@@ -202,11 +570,9 @@
       "ordinating": 1,
       "takes": 1,
       "considerable": 1,
-      "being": 1,
       "unable": 1,
       "timely": 1,
       "manner": 1,
-      "would": 1,
       "irreparably": 1,
       "harm": 1,
       "credibility": 1,
@@ -217,7 +583,6 @@
       "attempt": 1,
       "predict": 1,
       "future": 1,
-      "too": 1,
       "large": 1,
       "unintended": 1,
       "consequences": 1,
@@ -234,12 +599,10 @@
       "years": 1,
       "exacerbating": 1,
       "vectors": 1,
-      "somehow": 1,
       "affect": 1,
       "network": 1,
       "unknown": 1,
       "unpredicted": 1,
-      "since": 1,
       "changes": 1,
       "deploy": 1,
       "damage": 1,
@@ -253,14 +616,12 @@
       "bip100": 1,
       "allows": 1,
       "sell": 1,
-      "out": 1,
       "band": 1,
       "risk": 1,
       "enable": 1,
       "sponsor": 1,
       "ability": 1,
       "provides": 1,
-      "such": 1,
       "disadvantage": 1,
       "smaller": 1,
       "rationale": 1,
@@ -271,16 +632,13 @@
       "unnecessary": 1,
       "force": 1,
       "wishes": 1,
-      "so": 1,
       "pay": 1,
       "extra": 1,
-      "then": 1,
       "downvoted": 1,
       "objecting": 1,
       "penalty": 1,
       "better": 1,
       "bitcoins": 1,
-      "less": 1,
       "predictable": 1,
       "order": 1,
       "prevent": 1,
@@ -291,22 +649,17 @@
       "retain": 1,
       "remembering": 1,
       "mechanism": 1,
-      "keep": 1,
       "honest": 1,
       "specification": 1,
       "initial": 1,
       "shall": 1,
-      "each": 1,
       "creates": 1,
       "decrease": 1,
       "10": 1,
-      "these": 1,
-      "used": 1,
       "recalculate": 1,
       "new": 1,
       "cast": 1,
       "s": 1,
-      "per": 1,
       "starts": 1,
       "height": 1,
       "little": 1,
@@ -324,32 +677,24 @@
       "0x98": 1,
       "0x00": 1,
       "10mb": 1,
-      "which": 1,
       "proportionally": 1,
       "standard": 1,
       "percentage": 1,
       "voted": 1,
       "proposing": 1,
       "decreasing": 1,
-      "do": 1,
       "need": 1,
       "higher": 1,
       "change": 1,
       "valid": 1,
       "blockhash": 1,
-      "otherwise": 1,
       "recalculated": 1,
       "median": 1,
-      "all": 1,
-      "last": 1,
       "redefine": 1,
       "calculated": 1,
-      "below": 1,
-      "above": 1,
       "8mb": 1,
       "exact": 1,
       "requires": 1,
-      "further": 1,
       "discussion": 1,
       "acknowledgements": 1,
       "proposal": 1,
@@ -371,8 +716,8 @@
       "domain": 1
     },
     "implicit_dependencies": [
-      "BIP 34",
-      "BIP 100"
+      "BIP 100",
+      "BIP 34"
     ],
     "explicit_references": [
       "BIP 100",

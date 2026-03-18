@@ -122,31 +122,46 @@ def create_explicit_dependency_list(
 def llm_extract_implicit_dependencies(text, current_bip_number=None, proposal_label: str = PROPOSAL_LABEL):
 
     prompt = f"""
-You are analyzing the text of {PROPOSAL_SINGULAR} ({proposal_label}){f" {current_bip_number}" if current_bip_number else ""}.
+Analyze {PROPOSAL_SINGULAR} {proposal_label}{f" {current_bip_number}" if current_bip_number else ""}.
 
-The goal is to identify implicit dependencies to other {proposal_label}s from the prose.
+Task:
+Return only the other {proposal_label}s that this proposal materially depends on.
 
-Example 1:
-Text: This proposal proposes a change to the key format. It depends on {proposal_label} 32 and {proposal_label} 39.
-Implicit dependencies: ["{proposal_label} 32", "{proposal_label} 39"]
+Dependencies may be explicit or implicit.
+Count another {proposal_label} as a dependency when the proposal materially builds on, requires, extends, constrains, amends, specializes, or otherwise substantively relies on concepts, mechanisms, formats, semantics, activation rules, or assumptions introduced by that {proposal_label}, even if the text does not say "depends on" directly.
 
-Example 2:
+Do not include:
+- mere mentions or citations
+- history or background
+- comparisons to alternative approaches
+- examples
+- topical relatedness
+- speculation
+- self-references
+
+Judge the technical context, not just surface mentions.
+Be conservative. If the text does not provide strong evidence that another {proposal_label} is a real dependency, do not include it.
+
+Output requirements:
+- Return only a JSON array
+- No explanation
+- No markdown
+- Deduplicate results
+- Normalize identifiers to "{proposal_label} N" (for example "{proposal_label}-0016" -> "{proposal_label} 16")
+- Exclude {proposal_label} {current_bip_number} if present
+- Return [] if there are no real dependencies
+
+Examples:
+Text: This proposal depends on {proposal_label} 32 and {proposal_label} 39.
+Output: ["{proposal_label} 32", "{proposal_label} 39"]
+
 Text: This proposal builds upon {proposal_label}-0016 for partially signed transactions.
-Implicit dependencies: ["{proposal_label} 16"]
+Output: ["{proposal_label} 16"]
 
-Example 3:
-Text: This proposal does not depend on any other {proposal_label}s.
-Implicit dependencies: []
+Text: Since {proposal_label} 44 introduced a privacy concern, this proposal suggests a new hashing function to address that issue.
+Output: []
 
-Respond with a plain JSON array of proposal numbers that this proposal implicitly depends on. For example:
-["{proposal_label} 32","{proposal_label} 327","{proposal_label} 328","{proposal_label} 380"]
-
-If there are no implicit dependencies, return an empty list.
-
-No text, no explanation, no formatting. Only the JSON list.
-
-Here is the proposal text:
-
+Text:
 \"\"\"{text}\"\"\"
 """
     

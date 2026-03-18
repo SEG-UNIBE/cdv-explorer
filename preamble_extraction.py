@@ -23,22 +23,33 @@ FIELD_ALIASES = PREAMBLE_CONFIG.get("field_aliases", {})
 EXPECTED_HEADLINES = PREAMBLE_CONFIG["expected_headlines"]
 LIST_VALUED_FIELDS = set(PREAMBLE_CONFIG.get("list_valued_fields", []))
 
+def _extract_raw_preamble_block(file_content: str) -> str:
+    """
+    Extract the raw preamble block from either legacy <pre> markup or a top-level fenced code block.
+    """
+    pre_block_pattern = re.compile(r'<pre>(.*?)</pre>', re.DOTALL | re.IGNORECASE)
+    pre_block_match = pre_block_pattern.search(file_content)
+    if pre_block_match:
+        return pre_block_match.group(1)
+
+    fenced_block_pattern = re.compile(r'^\s*```[^\n]*\n(.*?)\n```\s*(?:\n|$)', re.DOTALL)
+    fenced_block_match = fenced_block_pattern.search(file_content)
+    if fenced_block_match:
+        return fenced_block_match.group(1)
+
+    return ""
 
 
 def extract_preamble_from_pre_block(file_content: str) -> Dict[str, str]:
     """
-    Extracts the preamble from the content of a file, recognizing the structure inside <pre> blocks
-    with lines starting with at least two spaces.
+    Extract the RFC-822 style preamble from either a legacy <pre> block or a fenced markdown block.
     """
-    pre_block_pattern = re.compile(r'<pre>(.*?)</pre>', re.DOTALL)
-    pre_block_match = pre_block_pattern.search(file_content)
-
-    if not pre_block_match:
+    pre_block = _extract_raw_preamble_block(file_content)
+    if not pre_block:
         return {}
 
-    pre_block = pre_block_match.group(1)
     preamble = {}
-    preamble_pattern = re.compile(r'^\s{2}(\w+(?:-\w+)*):\s*(.*)')  # Match fields with at least two spaces at the start
+    preamble_pattern = re.compile(r'^\s{0,2}(\w+(?:-\w+)*):\s*(.*)')
     lines = pre_block.splitlines()
     idx = 0
 
@@ -58,7 +69,7 @@ def extract_preamble_from_pre_block(file_content: str) -> Dict[str, str]:
             current_value = match.group(2).strip()
         else:
             # Continuation of a multi-line value
-            if current_key and line.startswith(' ' * 4):  # Continuation lines have 4 spaces
+            if current_key and (line.startswith(' ' * 4) or line.startswith('\t')):
                 current_value += '\n' + line.strip()
 
         idx += 1

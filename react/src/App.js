@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 import Navbar from './Navbar';
-import { NetworkDiagram } from './NetworkDiagram';
+import { LINK_TYPE_OPTIONS, NetworkDiagram } from './NetworkDiagram';
 import { ProposalTimelineChart } from './ProposalTimelineChart';
 import { TopAuthorsChart } from './TopAuthorsChart';
 import { AuthorContributionHistogram } from './AuthorContributionHistogram';
 import { AuthorCollaborationNetwork } from './AuthorCollaborationNetwork';
 import { AuthorCentralityTable } from './AuthorCentralityTable';
+import { ProposalGraphMetricsTable } from './ProposalGraphMetricsTable';
 import { ClassificationPieChart } from './ClassificationPieChart';
 import { ClassificationStackedTimelineChart } from './ClassificationStackedTimelineChart';
 import { ClassificationChordDiagram } from './ClassificationChordDiagram';
@@ -529,6 +530,7 @@ function buildDashboardData(dataset) {
   const authorship = dataset.authorship || {};
   const classification = dataset.classification || {};
   const conformity = dataset.conformity || {};
+  const dependencyMetrics = dataset.dependencyMetrics || { by_approach: {} };
   const authorBipsByAuthor = new Map();
   const bipsByYear = new Map();
 
@@ -687,6 +689,7 @@ function buildDashboardData(dataset) {
     collaborationMetricsRows,
     top10Share,
     overallConformity: conformity.overall_average_score,
+    dependencyMetrics,
   };
 }
 
@@ -759,6 +762,7 @@ function EcosystemDashboard() {
   const [dependencyFilterText, setDependencyFilterText] = useState('');
   const [dependencyIncludeConnections, setDependencyIncludeConnections] = useState(true);
   const [dependencyLayoutMode, setDependencyLayoutMode] = useState('balanced');
+  const [selectedDependencyMetricsApproach, setSelectedDependencyMetricsApproach] = useState('explicit_dependencies');
   const [wordCloudFilterText, setWordCloudFilterText] = useState('');
 
   useEffect(() => {
@@ -788,7 +792,23 @@ function EcosystemDashboard() {
     collaborationMetricsRows,
     top10Share,
     overallConformity,
+    dependencyMetrics,
   } = buildDashboardData(selectedDataset);
+  const dependencyMetricsApproachOptions = useMemo(
+    () => LINK_TYPE_OPTIONS.filter(
+      (option) => dependencyMetrics?.by_approach?.[option.value]
+    ),
+    [dependencyMetrics]
+  );
+  const activeDependencyMetricsApproach = dependencyMetricsApproachOptions.some(
+    (option) => option.value === selectedDependencyMetricsApproach
+  )
+    ? selectedDependencyMetricsApproach
+    : (dependencyMetricsApproachOptions[0]?.value || 'explicit_dependencies');
+  const activeDependencyMetrics = dependencyMetrics?.by_approach?.[activeDependencyMetricsApproach] || {
+    summary: {},
+    per_bip: [],
+  };
   const availableProposalIds = useMemo(
     () => (selectedDataset?.nodes || [])
       .map((node) => normalizeProposalFilterValue(node?.id))
@@ -832,6 +852,12 @@ function EcosystemDashboard() {
       return normalized.length ? current : '';
     });
   }, [availableProposalIds]);
+
+  useEffect(() => {
+    if (!dependencyMetricsApproachOptions.some((option) => option.value === selectedDependencyMetricsApproach)) {
+      setSelectedDependencyMetricsApproach(dependencyMetricsApproachOptions[0]?.value || 'explicit_dependencies');
+    }
+  }, [dependencyMetricsApproachOptions, selectedDependencyMetricsApproach]);
 
   if (!ecosystem) {
     return (
@@ -1166,6 +1192,54 @@ function EcosystemDashboard() {
               proposalFilterIds={selectedDependencyProposalIds}
               includeConnections={dependencyIncludeConnections}
               layoutMode={dependencyLayoutMode}
+            />
+          </Card>
+          <Card className="mb-4">
+            <h3>Dependency Graph Metrics</h3>
+            <p>
+              Compare simple graph-level structure and per-{ecosystem.proposalShort} centrality measures across
+              explicit dependencies, explicit references, and implicit dependencies.
+            </p>
+            <div className="dependency-metrics-toolbar">
+              <div className="dependency-metrics-toolbar__copy">
+                <strong>Reference approach.</strong>
+                <span>Select which extracted relationship set should drive the metrics below.</span>
+              </div>
+              <Dropdown
+                value={activeDependencyMetricsApproach}
+                options={dependencyMetricsApproachOptions}
+                onChange={(event) => setSelectedDependencyMetricsApproach(event.value)}
+                placeholder="Select approach"
+                className="dependency-metrics-toolbar__dropdown"
+              />
+            </div>
+            <div className="analysis-grid dependency-metrics-summary">
+              <div className="analysis-stat">
+                <h4>Nodes</h4>
+                <p>{activeDependencyMetrics.summary?.node_count ?? 0}</p>
+              </div>
+              <div className="analysis-stat">
+                <h4>Edges</h4>
+                <p>{activeDependencyMetrics.summary?.edge_count ?? 0}</p>
+              </div>
+              <div className="analysis-stat">
+                <h4>Isolated Nodes</h4>
+                <p>{activeDependencyMetrics.summary?.isolated_node_count ?? 0}</p>
+              </div>
+              <div className="analysis-stat">
+                <h4>Circular Dependencies</h4>
+                <p>{activeDependencyMetrics.summary?.circular_dependency_count ?? 0}</p>
+              </div>
+              <div className="analysis-stat">
+                <h4>Density</h4>
+                <p>{Number(activeDependencyMetrics.summary?.density || 0).toFixed(4).replace(/\.?0+$/, '')}</p>
+              </div>
+            </div>
+            <ProposalGraphMetricsTable
+              rows={activeDependencyMetrics.per_bip || []}
+              proposalShortLabel={ecosystem.acronym || 'IP'}
+              defaultSortField="pagerank"
+              defaultSortOrder={-1}
             />
           </Card>
           <Card className="mb-4">

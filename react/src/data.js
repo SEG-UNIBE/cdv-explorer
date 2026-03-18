@@ -27,6 +27,7 @@ const EMPTY_DATASET = {
       implicit_dependencies: [],
     },
   },
+  dependencyMetrics: { by_approach: {} },
   authorship: { meta: {}, top_authors: [], bips_per_year: [], top_10_share: {} },
   classification: { meta: {}, sankey_grouped: { links: [] }, status_distribution_by_layer: {}, status_over_time: {} },
   conformity: { overall_average_score: null, score_distribution: [], average_score_by_status: {} }
@@ -83,6 +84,7 @@ function ensureSnapshotShape(stichtag, snapshot) {
       ...network,
       links,
     },
+    dependencyMetrics: snapshot.dependencyMetrics || EMPTY_DATASET.dependencyMetrics,
     authorship: snapshot.authorship || EMPTY_DATASET.authorship,
     classification: snapshot.classification || EMPTY_DATASET.classification,
     conformity: snapshot.conformity || EMPTY_DATASET.conformity,
@@ -110,6 +112,7 @@ function collectBitcoinAnalysisSnapshots() {
     if (!snapshots[stichtag]) {
       snapshots[stichtag] = {
         network: null,
+        dependencyMetrics: null,
         authorship: null,
         classification: null,
         conformity: null,
@@ -120,6 +123,10 @@ function collectBitcoinAnalysisSnapshots() {
     if (submodule === 'dependencies' && artifactName === 'network_data.json') {
       snapshots[stichtag].network = payload;
       snapshots[stichtag].meta.node_count = payload?.nodes?.length || 0;
+    }
+
+    if (submodule === 'dependencies' && artifactName === 'dependency_metrics.json') {
+      snapshots[stichtag].dependencyMetrics = payload;
     }
 
     if (submodule === 'authorship' && artifactName === 'authorship_payload.json') {

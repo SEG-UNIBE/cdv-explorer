@@ -3,7 +3,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Dropdown } from 'primereact/dropdown';
 import { getClassificationColorMap } from './classificationColors';
 
-const LINK_TYPE_OPTIONS = [
+export const LINK_TYPE_OPTIONS = [
   { label: 'Explicit Dependencies (Preamble)', value: 'explicit_dependencies' },
   { label: 'Explicit References (Regex)', value: 'explicit_references' },
   { label: 'Implicit Dependencies (LLM)', value: 'implicit_dependencies' },

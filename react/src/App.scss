@@ -379,6 +379,35 @@
   margin: 0;
 }
 
+.dependency-metrics-toolbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.dependency-metrics-toolbar__copy {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  min-width: 0;
+  flex-wrap: wrap;
+}
+
+.dependency-metrics-toolbar__copy span {
+  color: #52606d;
+  font-size: 0.95rem;
+}
+
+.dependency-metrics-toolbar__dropdown {
+  min-width: 260px;
+}
+
+.dependency-metrics-summary {
+  margin-bottom: 1rem;
+}
+
 .author-network-tooltip,
 .dependency-network-tooltip,
 .author-tooltip,
@@ -422,6 +451,14 @@
 
   .network-finder__controls .p-inputtext {
     width: min(320px, 100%);
+  }
+
+  .dependency-metrics-toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .dependency-metrics-toolbar__dropdown {
+    min-width: 0;
   }
 }
 
@@ -467,7 +504,7 @@
   background: #f8fbff;
   border: 1px solid #d6e6f7;
   border-radius: 0.85rem;
-  padding: 0.9rem 1rem;
+  padding: 0rem 0rem 0.5rem 1rem;
 }
 
 .analysis-stat h3 {

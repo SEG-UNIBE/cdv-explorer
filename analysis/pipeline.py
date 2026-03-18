@@ -9,6 +9,7 @@ from analysis.classification import prepare_classification_payload
 from analysis.conformity import extract_conformity_metrics
 from analysis.dependencies import (
     build_network_data,
+    extract_dependency_metrics,
     load_proposal_json_documents,
     save_network_data_artifacts,
 )
@@ -66,6 +67,7 @@ def _save_react_ready_exports(
     postprocess_root: Path,
     stichtag: str,
     network_data: Dict[str, Any],
+    dependency_metrics: Dict[str, Any],
     authorship_payload: Dict[str, Any],
     classification_payload: Dict[str, Any],
     conformity_metrics: Dict[str, Any],
@@ -143,6 +145,7 @@ def _save_react_ready_exports(
     status_by_layer_csv = react_root / "status_by_layer_long.csv"
     status_over_time_csv = react_root / "status_over_time_long.csv"
     conformity_csv = react_root / "conformity_per_proposal.csv"
+    dependency_metrics_json = react_root / "dependency_metrics.json"
 
     _save_csv_rows(
         flat_nodes,
@@ -179,6 +182,7 @@ def _save_react_ready_exports(
         conformity_csv,
         fieldnames=["id", "status", "compliance_score", "bip2_score", "bip3_score"],
     )
+    _save_json(dependency_metrics, dependency_metrics_json)
 
     index_json = react_root / "dataset_index.json"
     _save_json(
@@ -192,6 +196,7 @@ def _save_react_ready_exports(
                 "status_by_layer_long": status_by_layer_csv.name,
                 "status_over_time_long": status_over_time_csv.name,
                 "conformity_per_proposal": conformity_csv.name,
+                "dependency_metrics": dependency_metrics_json.name,
             },
         },
         index_json,
@@ -205,6 +210,7 @@ def _save_react_ready_exports(
         "react_status_by_layer_csv": status_by_layer_csv,
         "react_status_over_time_csv": status_over_time_csv,
         "react_conformity_csv": conformity_csv,
+        "react_dependency_metrics_json": dependency_metrics_json,
         "react_index_json": index_json,
     }
 
@@ -269,6 +275,11 @@ def prepare_ecosystem_artifacts(
         fieldnames=["author", "degree", "betweenness", "closeness", "eigenvector"],
     )
 
+    emit("Preparing dependency metrics artifacts", advance=1)
+    dependency_metrics = extract_dependency_metrics(network_data)
+    dependency_metrics_path = snapshot_root / "dependencies" / "dependency_metrics.json"
+    _save_json(dependency_metrics, dependency_metrics_path)
+
     emit("Preparing classification artifacts", advance=1)
     classification_payload = prepare_classification_payload(network_data)
     classification_payload_path = snapshot_root / "classification" / "classification_payload.json"
@@ -329,6 +340,7 @@ def prepare_ecosystem_artifacts(
 
     saved_paths: Dict[str, Path] = {
         "network_json": network_stem.with_suffix(".json"),
+        "dependency_metrics_json": dependency_metrics_path,
         "authorship_json": authorship_path,
         "authorship_payload_json": authorship_payload_path,
         "classification_json": classification_payload_path,
@@ -343,6 +355,7 @@ def prepare_ecosystem_artifacts(
                 postprocess_root=postprocess_root,
                 stichtag=stichtag,
                 network_data=network_data,
+                dependency_metrics=dependency_metrics,
                 authorship_payload=authorship_payload,
                 classification_payload=classification_payload,
                 conformity_metrics=conformity_metrics,

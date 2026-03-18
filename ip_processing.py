@@ -3,6 +3,7 @@ import os
 import re
 import subprocess
 import sys
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from collections import Counter
 from datetime import datetime
 from json import JSONDecodeError
@@ -22,6 +23,7 @@ REFERENCE_PATTERN = ACTIVE_ECOSYSTEM["reference_pattern"]
 STOP_WORDS = {"a", "an", "and", "are", "as", "at", "be", "by", "for", "from",
               "has", "he", "in", "is", "it", "its", "of", "on", "that", "the",
               "to", "was", "were", "will", "with", "you", "your", "this", "or"}
+LLM_MAX_CONCURRENCY = 3
 
 # --- Utility Functions ---
 def load_bip_content(file_path: Path) -> str:
@@ -119,7 +121,12 @@ def create_explicit_dependency_list(
     return sorted(dependency_ids)
 
 
-def llm_extract_implicit_dependencies(text, current_bip_number=None, proposal_label: str = PROPOSAL_LABEL):
+def llm_extract_implicit_dependencies(
+    text,
+    current_bip_number=None,
+    proposal_label: str = PROPOSAL_LABEL,
+    api_key: str | None = None,
+):
 
     prompt = f"""
 Analyze {PROPOSAL_SINGULAR} {proposal_label}{f" {current_bip_number}" if current_bip_number else ""}.
@@ -166,11 +173,11 @@ Text:
 """
     
     model="gpt-5-nano"
-    api_key = load_api_key()
-    if not api_key:
+    resolved_api_key = api_key or load_api_key()
+    if not resolved_api_key:
         return []
 
-    client = OpenAI(api_key=api_key)
+    client = OpenAI(api_key=resolved_api_key)
     try:
         response = client.chat.completions.create(
             model=model,
@@ -192,35 +199,83 @@ def load_api_key():
 
     return None
 
-def update_insights(
+
+def extract_implicit_dependencies_parallel(
+    llm_jobs: List[Dict[str, str]],
+    proposal_label: str = PROPOSAL_LABEL,
+    completion_callback=None,
+) -> Dict[str, List[str]]:
+    if not llm_jobs:
+        return {}
+
+    api_key = load_api_key()
+    if not api_key:
+        return {job["job_id"]: [] for job in llm_jobs}
+
+    total_jobs = len(llm_jobs)
+    max_workers = min(max(1, LLM_MAX_CONCURRENCY), total_jobs)
+    implicit_dependencies_by_job: Dict[str, List[str]] = {}
+    completed_jobs = 0
+
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        futures = {
+            executor.submit(
+                llm_extract_implicit_dependencies,
+                job["raw_content"],
+                job["proposal_number"],
+                proposal_label,
+                api_key,
+            ): job["job_id"]
+            for job in llm_jobs
+        }
+
+        for future in as_completed(futures):
+            job_id = futures[future]
+            try:
+                result = future.result()
+            except Exception:
+                result = []
+
+            implicit_dependencies_by_job[job_id] = result if isinstance(result, list) else []
+            completed_jobs += 1
+
+            if completion_callback is not None:
+                completion_callback(completed_jobs, total_jobs, max_workers, job_id)
+
+    for job in llm_jobs:
+        implicit_dependencies_by_job.setdefault(job["job_id"], [])
+
+    return implicit_dependencies_by_job
+
+
+def build_base_insights(
     json_data: Dict[str, any],
     bip_file_path: Path,
     proposal_label: str = PROPOSAL_LABEL,
     id_field: str = PRIMARY_ID_FIELD,
-):
-    """Generate insights for a BIP file."""
+) -> Tuple[Dict[str, any], str, str]:
     raw_content = load_bip_content(bip_file_path)
     preamble = json_data.get("raw", {}).get("preamble", {})
-    json_data.setdefault("insights", {})
-    # Generate insights
-    json_data["insights"]["word_list"] = create_word_list(raw_content)
     references = create_reference_list(raw_content, proposal_label=proposal_label)
-    json_data["insights"]["implicit_dependencies"] = llm_extract_implicit_dependencies(
-        raw_content,
-        str(int(json_data["raw"]["preamble"][id_field])),
-        proposal_label=proposal_label,
-    )
     explicit_dependencies = create_explicit_dependency_list(preamble, proposal_label=proposal_label)
+    proposal_number = str(int(json_data["raw"]["preamble"][id_field]))
 
-    bip_number = str(int(json_data["raw"]["preamble"][id_field]))
     filtered_references = [
-        bip for bip in references if bip != f"{proposal_label} {bip_number}"
+        proposal for proposal in references if proposal != f"{proposal_label} {proposal_number}"
     ]
     filtered_explicit_dependencies = [
-        bip for bip in explicit_dependencies if bip != f"{proposal_label} {bip_number}"
+        proposal for proposal in explicit_dependencies if proposal != f"{proposal_label} {proposal_number}"
     ]
-    json_data["insights"]["explicit_references"] = filtered_references
-    json_data["insights"]["explicit_dependencies"] = filtered_explicit_dependencies
+
+    return (
+        {
+            "word_list": create_word_list(raw_content),
+            "explicit_references": filtered_references,
+            "explicit_dependencies": filtered_explicit_dependencies,
+        },
+        raw_content,
+        proposal_number,
+    )
 
 def process_ip_files(
     input_dir: Path,
@@ -236,7 +291,7 @@ def process_ip_files(
     live_progress = sys.stdout.isatty()
     render_local_progress = progress_callback is None and live_progress
     progress = tqdm(
-        json_files,
+        total=len(json_files),
         desc="Metadata and insights",
         unit="ip",
         leave=False,
@@ -246,7 +301,10 @@ def process_ip_files(
         disable=not render_local_progress,
         mininterval=0.5,
     )
-    for json_file in progress:
+    prepared_records = []
+    llm_jobs: List[Dict[str, str]] = []
+
+    for json_file in json_files:
         if render_local_progress:
             progress.set_postfix_str(json_file.name, refresh=False)
         if progress_callback is not None:
@@ -259,15 +317,101 @@ def process_ip_files(
         bip_file_path = find_bip_file(repo_dir, bip_number, file_prefix=file_prefix)
         
         if not bip_file_path:
+            if progress_callback is not None:
+                progress_callback(json_file.name, 1)
+            if render_local_progress:
+                progress.update(1)
             continue
         
         json_data = update_metadata(json_data, bip_file_path, repo_dir)
-        update_insights(json_data, bip_file_path, proposal_label=proposal_label, id_field=id_field)
-        
-        output_path = output_dir / json_file.name
+
+        base_insights, raw_content, proposal_number = build_base_insights(
+            json_data,
+            bip_file_path,
+            proposal_label=proposal_label,
+            id_field=id_field,
+        )
+        json_data.setdefault("insights", {})
+        json_data["insights"].update(base_insights)
+
+        job_id = json_file.name
+        llm_jobs.append(
+            {
+                "job_id": job_id,
+                "raw_content": raw_content,
+                "proposal_number": proposal_number,
+            }
+        )
+        prepared_records.append(
+            {
+                "job_id": job_id,
+                "json_data": json_data,
+                "output_path": output_dir / json_file.name,
+            }
+        )
+
+    if render_local_progress and llm_jobs:
+        progress.set_postfix_str(
+            f"LLM dependencies (parallel, max={min(max(1, LLM_MAX_CONCURRENCY), len(llm_jobs))})",
+            refresh=False,
+        )
+
+    llm_progress = None
+    if render_local_progress and llm_jobs:
+        worker_count = min(max(1, LLM_MAX_CONCURRENCY), len(llm_jobs))
+        llm_progress = tqdm(
+            total=len(llm_jobs),
+            desc=f"LLM dependencies ({worker_count} workers)",
+            unit="ip",
+            leave=False,
+            position=2,
+            dynamic_ncols=render_local_progress,
+            file=sys.stdout,
+            disable=not render_local_progress,
+            mininterval=0.2,
+        )
+
+    def on_llm_job_completion(
+        completed_jobs: int,
+        total_jobs: int,
+        worker_count: int,
+        job_id: str,
+    ):
+        message = f"LLM jobs {completed_jobs}/{total_jobs}"
+
+        if llm_progress is not None:
+            llm_progress.update(completed_jobs - llm_progress.n)
+            llm_progress.set_postfix_str(message, refresh=False)
+
+        if render_local_progress:
+            progress.set_postfix_str(message, refresh=False)
+
+        should_emit_status = completed_jobs == total_jobs or completed_jobs % worker_count == 0
+        if progress_callback is not None and should_emit_status:
+            progress_callback(f"{message} (latest: {job_id})", 0)
+
+    implicit_dependencies_by_job = extract_implicit_dependencies_parallel(
+        llm_jobs,
+        proposal_label=proposal_label,
+        completion_callback=on_llm_job_completion,
+    )
+
+    if llm_progress is not None:
+        llm_progress.close()
+
+    for record in prepared_records:
+        json_data = record["json_data"]
+        job_id = record["job_id"]
+        json_data.setdefault("insights", {})
+        json_data["insights"]["implicit_dependencies"] = implicit_dependencies_by_job.get(job_id, [])
+
+        output_path = record["output_path"]
         with output_path.open('w', encoding='utf-8') as f:
             json.dump(json_data, f, ensure_ascii=False, indent=2)
+
         if progress_callback is not None:
-            progress_callback(json_file.name, 1)
+            progress_callback(output_path.name, 1)
+        if render_local_progress:
+            progress.update(1)
 
     progress.close()

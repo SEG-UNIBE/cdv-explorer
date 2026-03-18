@@ -1,13 +1,13 @@
 {
-  "author_count": 140,
+  "author_count": 147,
   "top_authors": [
     {
       "author": "Pieter Wuille",
-      "count": 26
+      "count": 27
     },
     {
       "author": "Ava Chow",
-      "count": 17
+      "count": 18
     },
     {
       "author": "Luke Dashjr",
@@ -18,12 +18,12 @@
       "count": 12
     },
     {
-      "author": "BtcDrak",
+      "author": "Matt Corallo",
       "count": 7
     },
     {
-      "author": "Matt Corallo",
-      "count": 6
+      "author": "BtcDrak",
+      "count": 7
     },
     {
       "author": "Mark Friedenbach",
@@ -42,6 +42,10 @@
       "count": 5
     },
     {
+      "author": "Anthony Towns",
+      "count": 5
+    },
+    {
       "author": "Jonas Schnelli",
       "count": 5
     },
@@ -55,10 +59,6 @@
     },
     {
       "author": "Pavol Rusnak",
-      "count": 4
-    },
-    {
-      "author": "Suhas Daftuar",
       "count": 4
     }
   ],
@@ -113,33 +113,33 @@
     },
     {
       "year": 2023,
-      "count": 4
+      "count": 6
     },
     {
       "year": 2024,
-      "count": 11
+      "count": 15
     },
     {
       "year": 2025,
-      "count": 8
+      "count": 10
     },
     {
       "year": 2026,
-      "count": 2
+      "count": 3
     }
   ],
   "author_contribution_histogram": [
     {
       "bips_written": 1,
-      "authors": 94
+      "authors": 96
     },
     {
       "bips_written": 2,
-      "authors": 20
+      "authors": 23
     },
     {
       "bips_written": 3,
-      "authors": 8
+      "authors": 9
     },
     {
       "bips_written": 4,
@@ -147,15 +147,15 @@
     },
     {
       "bips_written": 5,
-      "authors": 2
+      "authors": 3
     },
     {
       "bips_written": 6,
-      "authors": 4
+      "authors": 3
     },
     {
       "bips_written": 7,
-      "authors": 1
+      "authors": 2
     },
     {
       "bips_written": 12,
@@ -166,18 +166,18 @@
       "authors": 1
     },
     {
-      "bips_written": 17,
+      "bips_written": 18,
       "authors": 1
     },
     {
-      "bips_written": 26,
+      "bips_written": 27,
       "authors": 1
     }
   ],
   "top_10_share": {
-    "total_proposals": 188,
-    "proposals_by_top_10_authors": 104,
-    "percentage": 55.32
+    "total_proposals": 197,
+    "proposals_by_top_10_authors": 107,
+    "percentage": 54.31
   },
   "collaboration_network": {
     "nodes": [
@@ -195,7 +195,7 @@
       },
       {
         "id": "Pieter Wuille",
-        "degree": 12
+        "degree": 15
       },
       {
         "id": "Greg Maxwell",
@@ -215,7 +215,7 @@
       },
       {
         "id": "Matt Corallo",
-        "degree": 4
+        "degree": 5
       },
       {
         "id": "Nils Schneider",
@@ -274,6 +274,10 @@
         "degree": 1
       },
       {
+        "id": "Antoine Poinsot",
+        "degree": 5
+      },
+      {
         "id": "Jean-Pierre Rupp",
         "degree": 2
       },
@@ -318,6 +322,14 @@
         "degree": 3
       },
       {
+        "id": "Dan Gould",
+        "degree": 1
+      },
+      {
+        "id": "Yuval Kogman",
+        "degree": 1
+      },
+      {
         "id": "Jimmy Song",
         "degree": 1
       },
@@ -343,7 +355,7 @@
       },
       {
         "id": "Andrew Poelstra",
-        "degree": 1
+        "degree": 5
       },
       {
         "id": "Leon Olsson Curr and Pearlwort Sneed",
@@ -538,12 +550,24 @@
         "degree": 1
       },
       {
+        "id": "Brandon Black",
+        "degree": 3
+      },
+      {
+        "id": "Steven Roose",
+        "degree": 1
+      },
+      {
         "id": "Armin Sabouri",
         "degree": 1
       },
       {
         "id": "Ethan Heilman",
         "degree": 3
+      },
+      {
+        "id": "Jeremy Rubin",
+        "degree": 1
       },
       {
         "id": "Alfred Hodler",
@@ -583,7 +607,15 @@
       },
       {
         "id": "Ava Chow",
-        "degree": 3
+        "degree": 6
+      },
+      {
+        "id": "Sanket Kanjalkar",
+        "degree": 4
+      },
+      {
+        "id": "moonsettler",
+        "degree": 1
       }
     ],
     "edges": [
@@ -674,8 +706,23 @@
       },
       {
         "source": "Pieter Wuille",
+        "target": "Andrew Poelstra",
+        "weight": 1
+      },
+      {
+        "source": "Pieter Wuille",
+        "target": "Sanket Kanjalkar",
+        "weight": 1
+      },
+      {
+        "source": "Pieter Wuille",
+        "target": "Antoine Poinsot",
+        "weight": 1
+      },
+      {
+        "source": "Pieter Wuille",
         "target": "Ava Chow",
-        "weight": 8
+        "weight": 9
       },
       {
         "source": "Greg Maxwell",
@@ -695,6 +742,11 @@
       {
         "source": "Matt Corallo",
         "target": "Mike Hearn",
+        "weight": 1
+      },
+      {
+        "source": "Matt Corallo",
+        "target": "Antoine Poinsot",
         "weight": 1
       },
       {
@@ -788,6 +840,21 @@
         "weight": 1
       },
       {
+        "source": "Antoine Poinsot",
+        "target": "Andrew Poelstra",
+        "weight": 1
+      },
+      {
+        "source": "Antoine Poinsot",
+        "target": "Sanket Kanjalkar",
+        "weight": 1
+      },
+      {
+        "source": "Antoine Poinsot",
+        "target": "Ava Chow",
+        "weight": 1
+      },
+      {
         "source": "Jean-Pierre Rupp",
         "target": "Thomas Kerin",
         "weight": 1
@@ -873,6 +940,11 @@
         "weight": 1
       },
       {
+        "source": "Dan Gould",
+        "target": "Yuval Kogman",
+        "weight": 1
+      },
+      {
         "source": "Jimmy Song",
         "target": "Justus Ranvier",
         "weight": 2
@@ -890,6 +962,16 @@
       {
         "source": "Andrew Poelstra",
         "target": "Leon Olsson Curr and Pearlwort Sneed",
+        "weight": 1
+      },
+      {
+        "source": "Andrew Poelstra",
+        "target": "Sanket Kanjalkar",
+        "weight": 1
+      },
+      {
+        "source": "Andrew Poelstra",
+        "target": "Ava Chow",
         "weight": 1
       },
       {
@@ -1148,6 +1230,21 @@
         "weight": 1
       },
       {
+        "source": "Brandon Black",
+        "target": "Steven Roose",
+        "weight": 1
+      },
+      {
+        "source": "Brandon Black",
+        "target": "Jeremy Rubin",
+        "weight": 2
+      },
+      {
+        "source": "Brandon Black",
+        "target": "moonsettler",
+        "weight": 1
+      },
+      {
         "source": "Armin Sabouri",
         "target": "Ethan Heilman",
         "weight": 1
@@ -1210,6 +1307,11 @@
       {
         "source": "Andrew Toth",
         "target": "Ava Chow",
+        "weight": 1
+      },
+      {
+        "source": "Ava Chow",
+        "target": "Sanket Kanjalkar",
         "weight": 1
       }
     ]

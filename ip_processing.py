@@ -20,6 +20,7 @@ PROPOSAL_LABEL = ACTIVE_ECOSYSTEM["proposal_acronym"]
 PRIMARY_ID_FIELD = ACTIVE_ECOSYSTEM["primary_id_field"]
 DOCUMENT_PREFIX = ACTIVE_ECOSYSTEM["document_prefix"]
 STOP_WORDS_FILE = ACTIVE_ECOSYSTEM.get("stop_words_file")
+MIN_WORD_OCCURRENCE = 2
 
 LLM_MAX_CONCURRENCY = 5
 
@@ -69,7 +70,12 @@ def build_word_list(raw_content: str) -> Dict[str, int]:
 
     words = re.findall(r"\b\w+\b", raw_content.lower())
     filtered_words = [word for word in words if word not in STOP_WORDS]
-    return dict(Counter(filtered_words).most_common())
+    counts = Counter(filtered_words)
+    return {
+        word: count
+        for word, count in counts.most_common()
+        if count >= MIN_WORD_OCCURRENCE
+    }
 
 
 def build_base_insights(

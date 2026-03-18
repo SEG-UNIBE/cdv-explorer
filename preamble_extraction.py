@@ -11,6 +11,7 @@ from analysis.conformity.compliance import (
     check_headlines as conformity_check_headlines,
     check_required_fields as conformity_check_required_fields,
 )
+from analysis.classification.preprocess import normalize_classification_fields
 from ecosystem_config import ACTIVE_ECOSYSTEM
 
 
@@ -20,10 +21,6 @@ OPTIONAL_FIELDS = PREAMBLE_CONFIG["optional_fields"]
 FIELD_ALIASES = PREAMBLE_CONFIG.get("field_aliases", {})
 EXPECTED_HEADLINES = PREAMBLE_CONFIG["expected_headlines"]
 LIST_VALUED_FIELDS = set(PREAMBLE_CONFIG.get("list_valued_fields", []))
-CLASSIFICATION_CONFIG = ACTIVE_ECOSYSTEM.get("classification", {})
-LAYER_ALIASES = CLASSIFICATION_CONFIG.get("layer_aliases", {})
-STATUS_ALIASES = CLASSIFICATION_CONFIG.get("status_aliases", {})
-TYPE_ALIASES = CLASSIFICATION_CONFIG.get("type_aliases", {})
 
 
 
@@ -93,13 +90,7 @@ def normalize_preamble_fields(preamble: Dict[str, str]) -> Dict[str, str]:
             continue
         normalized[canonical_key] = normalized[source_key]
 
-    # Normalize ecosystem-specific categorical values to canonical values.
-    if normalized.get("layer") is not None:
-        normalized["layer"] = LAYER_ALIASES.get(normalized["layer"], normalized["layer"])
-    if normalized.get("status") is not None:
-        normalized["status"] = STATUS_ALIASES.get(normalized["status"], normalized["status"])
-    if normalized.get("type") is not None:
-        normalized["type"] = TYPE_ALIASES.get(normalized["type"], normalized["type"])
+    normalized = normalize_classification_fields(normalized)
 
     # Ensure author/license remain list-valued even when aliases provided a scalar.
     for list_field in LIST_VALUED_FIELDS:

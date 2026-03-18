@@ -12,6 +12,7 @@ from analysis.dependencies import (
     load_proposal_json_documents,
     save_network_data_artifacts,
 )
+from analysis.wordcloud import extract_wordcloud_metrics
 
 
 def _save_json(payload: Dict[str, Any], output_path: Path) -> None:
@@ -298,12 +299,28 @@ def prepare_ecosystem_artifacts(
         fieldnames=["status", "average_score"],
     )
 
+    emit("Preparing wordcloud artifacts", advance=1)
+    wordcloud_metrics = extract_wordcloud_metrics(proposal_data, id_field=id_field)
+    wordcloud_path = snapshot_root / "wordcloud" / "wordcloud_metrics.json"
+    _save_json(wordcloud_metrics, wordcloud_path)
+    _save_csv_rows(
+        wordcloud_metrics.get("top_words", []),
+        snapshot_root / "wordcloud" / "top_words.csv",
+        fieldnames=["word", "count"],
+    )
+    _save_csv_rows(
+        wordcloud_metrics.get("per_proposal", []),
+        snapshot_root / "wordcloud" / "per_proposal.csv",
+        fieldnames=["id", "unique_terms", "total_terms"],
+    )
+
     saved_paths: Dict[str, Path] = {
         "network_json": network_stem.with_suffix(".json"),
         "authorship_json": authorship_path,
         "authorship_payload_json": authorship_payload_path,
         "classification_json": classification_payload_path,
         "conformity_json": conformity_path,
+        "wordcloud_json": wordcloud_path,
     }
 
     if postprocess_root is not None:

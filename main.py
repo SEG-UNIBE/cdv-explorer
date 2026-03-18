@@ -117,7 +117,7 @@ def main():
     # Build ecosystem artifacts for visualization consumers.
     run_stage(
         "Build analysis and postprocess artifacts",
-        total=6,
+        total=7,
         unit="step",
         runner=lambda update: prepare_ecosystem_artifacts(
             proposal_json_dir=output_directory,

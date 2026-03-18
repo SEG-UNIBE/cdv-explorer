@@ -4,3 +4,4 @@ from .metrics import (
     build_status_over_time,
     prepare_classification_payload,
 )
+from .preprocess import normalize_classification_fields

@@ -4,3 +4,4 @@ from .metrics import (
     extract_authorship_metrics,
     prepare_authorship_payload,
 )
+from .mining import update_metadata_from_git

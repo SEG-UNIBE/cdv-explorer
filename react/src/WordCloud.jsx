@@ -1,12 +1,39 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import cloud from 'd3-cloud';
 
 export const WordCloud = ({ words, width = 1250, height = 750 }) => {
+  const containerRef = useRef();
   const svgRef = useRef();
+  const [containerWidth, setContainerWidth] = useState(width);
+
+  useEffect(() => {
+    const element = containerRef.current;
+
+    if (!element) {
+      return undefined;
+    }
+
+    const updateWidth = () => {
+      const nextWidth = element.clientWidth || width;
+      setContainerWidth(nextWidth);
+    };
+
+    updateWidth();
+
+    const observer = new ResizeObserver(updateWidth);
+    observer.observe(element);
+
+    return () => observer.disconnect();
+  }, [width]);
 
   useEffect(() => {
     const svgElement = svgRef.current;
+    const layoutWidth = Math.min(width, Math.max(containerWidth, 280));
+    const layoutHeight = layoutWidth < 640
+      ? Math.max(320, Math.round(layoutWidth * 0.72))
+      : height;
+    const isCompact = layoutWidth < 640;
 
     if (!words || words.length === 0) return;
 
@@ -18,7 +45,7 @@ export const WordCloud = ({ words, width = 1250, height = 750 }) => {
     const maxCount = d3.max(words, d => d.count);
     const sizeScale = d3.scaleLinear()
       .domain([0, maxCount])
-      .range([15, 60]); // font size range
+      .range(isCompact ? [11, 34] : [15, 60]); // font size range
 
     // Assign consistent blue shades to each word
     const coloredWords = words.map(d => ({
@@ -30,10 +57,10 @@ export const WordCloud = ({ words, width = 1250, height = 750 }) => {
 
     // Layout
     const layout = cloud()
-      .size([width, height])
+      .size([layoutWidth, layoutHeight])
       .words(coloredWords)
-      .padding(5)
-      .rotate(() => (Math.random() > 0.5 ? 0 : 90))
+      .padding(isCompact ? 2 : 5)
+      .rotate(() => (isCompact ? 0 : (Math.random() > 0.5 ? 0 : 90)))
       .font('Impact')
       .fontSize(d => d.size)
       .on('end', draw);
@@ -55,13 +82,16 @@ export const WordCloud = ({ words, width = 1250, height = 750 }) => {
         .style('opacity', 0);
 
       const svg = svgRoot
-        .attr('width', width)
-        .attr('height', height)
-        .attr('viewBox', `0 0 ${width} ${height}`);
+        .attr('width', layoutWidth)
+        .attr('height', layoutHeight)
+        .attr('viewBox', `0 0 ${layoutWidth} ${layoutHeight}`)
+        .style('width', '100%')
+        .style('height', 'auto')
+        .style('display', 'block');
 
       svg.append('rect')
-        .attr('width', width)
-        .attr('height', height)
+        .attr('width', layoutWidth)
+        .attr('height', layoutHeight)
         .attr('fill', 'transparent')
         .style('cursor', 'grab');
 
@@ -69,7 +99,7 @@ export const WordCloud = ({ words, width = 1250, height = 750 }) => {
 
       const cloudGroup = viewport
         .append('g')
-        .attr('transform', `translate(${width / 2}, ${height / 2})`);
+        .attr('transform', `translate(${layoutWidth / 2}, ${layoutHeight / 2})`);
 
       const zoom = d3.zoom()
         .scaleExtent([0.6, 4])
@@ -89,7 +119,7 @@ export const WordCloud = ({ words, width = 1250, height = 750 }) => {
       svg.call(
         zoom.transform,
         d3.zoomIdentity
-          .translate(width * 0.08, height * 0.04)
+          .translate(isCompact ? layoutWidth * 0.08 : 0, isCompact ? layoutHeight * 0.04 : 0)
           .scale(1)
       );
 
@@ -136,7 +166,11 @@ export const WordCloud = ({ words, width = 1250, height = 750 }) => {
       svgRoot.selectAll('*').remove();
       d3.select('body').selectAll('.wordcloud-tooltip').remove();
     };
-  }, [words, width, height]);
+  }, [words, width, height, containerWidth]);
 
-  return <svg ref={svgRef}></svg>;
+  return (
+    <div ref={containerRef} style={{ width: '100%' }}>
+      <svg ref={svgRef}></svg>
+    </div>
+  );
 };

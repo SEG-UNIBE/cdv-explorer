@@ -1005,7 +1005,7 @@ function EcosystemDashboard() {
               />
             </div>
           </div>
-          <WordCloud words={hasWordCloudFilter ? filteredWordCloudData : wordCloudData} width={1250} height={650} />
+          <WordCloud words={hasWordCloudFilter ? filteredWordCloudData : wordCloudData} width={1250} height={600} />
         </Card>
       </section>
       <section className="dashboard-section">

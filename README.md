@@ -1,3 +1,23 @@
+<div align="center">
+  <h1>🚨🚨 TEMPORARILY STALE REPOSITORY 🚨🚨</h1>
+  <p><strong>This repository is temporarily stale.</strong></p>
+  <p>
+    Active development is currently continuing in
+    <a href="https://github.com/ranonymousse/cdv-explorer">ranonymousse/cdv-explorer</a>
+    due to double-blind paper submission policies.
+  </p>
+  <p><strong>Please use that repository for the latest changes until development returns here.</strong></p>
+</div>
+
+
+</br>
+
+---
+
+</br>
+</br>
+</br>
+
 # CDV Explorer
 
 ## Overview
@@ -154,4 +174,3 @@ To enable Pages:
 1. open repository settings
 2. go to `Settings > Pages`
 3. set source to `GitHub Actions`
-

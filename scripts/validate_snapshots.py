@@ -26,6 +26,7 @@ COLUMN_LABELS: dict[str, str] = {
     "conformity/conformity_metrics.json":          "conformity",
 }
 
+
 OK = "✅"
 FAIL = "❌"
 

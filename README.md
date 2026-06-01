@@ -64,9 +64,11 @@ CDV-Explorer was applied in an empirical study of the Bitcoin ecosystem, which h
 
 ### Requirements
 
-- **Python** 3.12+
-- **Node.js** 22+ (npm is bundled)
-- **Git**
+| Tool | Version | macOS using [`brew`](https://brew.sh) | Linux | Windows using [`winget`](https://learn.microsoft.com/windows/package-manager/winget/) |
+|------|---------|-------|-------|---------|
+| **Python** | 3.12+ | `brew install python` | `sudo apt install python3` | `winget install Python.Python.3` |
+| **Node.js** | 22+ (npm bundled) | `brew install node` | `sudo apt install nodejs npm` | `winget install OpenJS.NodeJS` |
+| **Git** | any | `brew install git` | `sudo apt install git` | `winget install Git.Git` |
 
 ### 1 - Clone the repository
 
@@ -82,7 +84,13 @@ python -m venv .venv
 source .venv/bin/activate        # Windows: .venv\Scripts\activate
 ```
 
-### 3 - Run the pipeline
+### 3 - Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 4 - Run the pipeline
 
 The `run` command clones/updates the source repository, extracts and enriches proposal data, builds analysis artifacts, and produces React-ready exports -- all in one step.
 
@@ -103,7 +111,7 @@ python main.py run -e nostr -s 2026-03-16 --skipllm
 
 > **Snapshot date:** `-s` is required. The pipeline resolves to the last commit whose committer timestamp falls on or before `YYYY-MM-DD 23:59:59` and checks out the repository at that point.
 
-### 4 - Start the React app
+### 5 - Start the React app
 
 ```bash
 cd react

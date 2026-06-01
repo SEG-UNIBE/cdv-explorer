@@ -1,0 +1,128 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "7D",
+      "title": "Forum Threads",
+      "author": [
+        "hodlbod"
+      ],
+      "created": "2024-11-21",
+      "status": "Draft",
+      "type": "Optional",
+      "layer": null,
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Thu May 28 17:14:47 2026 -0300",
+    "total_commits": 3,
+    "git_history": [
+      [
+        "861675be8c7fc2578ee503a029a77f8e3697c3f3",
+        "Thu May 28 17:14:47 2026 -0300",
+        "fiatjaf"
+      ],
+      [
+        "951aaa8ba1af4962a75987b63be72da43c36e77e",
+        "Thu Apr 17 17:15:37 2025 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "1e47fd75572704b84cf484ce52394fc7ea7d4067",
+        "Thu Nov 21 06:55:23 2024 -0800",
+        "hodlbod"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "kind": 6,
+      "11": 5,
+      "nip": 2,
+      "threads": 2,
+      "event": 2,
+      "title": 2,
+      "json": 2,
+      "content": 2,
+      "tags": 2,
+      "replies": 2,
+      "22": 2,
+      "1111": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "1e47fd75572704b84cf484ce52394fc7ea7d4067",
+        "timestamp": "2024-11-21T11:55:23-03:00",
+        "date": "2024-11-21",
+        "author": "hodlbod",
+        "path": "7D.md",
+        "status": "Draft",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        "NIP 7",
+        "NIP 22"
+      ],
+      "body_extracted_llm": []
+    }
+  }
+}

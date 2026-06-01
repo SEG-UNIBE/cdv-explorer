@@ -1,0 +1,458 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "11",
+      "title": "Relay Information Document",
+      "author": [
+        "fiatjaf"
+      ],
+      "created": "2022-05-01",
+      "status": "Draft",
+      "type": "Optional",
+      "layer": "Relay",
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Mon Mar 2 01:14:48 2026 +0300",
+    "total_commits": 35,
+    "git_history": [
+      [
+        "1a4e0988eb6c7b726be9faf8456492a144ff4df8",
+        "Mon Mar 2 01:14:48 2026 +0300",
+        "Awiteb"
+      ],
+      [
+        "b914aeffd8d0e1593a1e1cc27e3c70da19a27f13",
+        "Sat Feb 14 22:15:29 2026 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "f5a15ea27e06ce8f5635117931f06318f532a713",
+        "Wed Dec 24 02:53:38 2025 +0900",
+        "mattn"
+      ],
+      [
+        "c45f504537326121a2cf8d6fd7d6558185c4e98d",
+        "Mon Nov 17 10:50:04 2025 -0800",
+        "hodlbod"
+      ],
+      [
+        "90fcf4a44e659af0f79a6bfec5b5f018fe0bd4ff",
+        "Fri Sep 19 20:55:42 2025 +0900",
+        "Yoji Shidara"
+      ],
+      [
+        "8c45ff5d964d6d9bf329c72713e43c89c060de09",
+        "Tue Sep 2 20:39:19 2025 -0500",
+        "Alex Gleason"
+      ],
+      [
+        "4ba28112e6b80740ef15615f8a06ac914ebef37d",
+        "Mon Apr 21 13:56:43 2025 -0500",
+        "alltheseas"
+      ],
+      [
+        "611b6351863e128f470576586f0e2b9a75f19039",
+        "Sun Apr 13 20:45:24 2025 +0330",
+        "k."
+      ],
+      [
+        "f3244a0903b1fedbd8aa89596c658c9529e19ea6",
+        "Mon Nov 18 02:33:29 2024 +0900",
+        "hakkadaikon"
+      ],
+      [
+        "4c0f9632925eb0ffe94453e45a7bed77c0ab1e6b",
+        "Mon Nov 4 20:34:24 2024 -0600",
+        "alltheseas"
+      ],
+      [
+        "e6552476aa2e5ca7256be572a9aa226ec8a022ee",
+        "Tue Sep 3 20:41:31 2024 +0330",
+        "kehiy"
+      ],
+      [
+        "b4a2561df7325b8624bc5ffad154ec946ade2f1e",
+        "Mon Sep 2 20:33:45 2024 +0330",
+        "kehiy"
+      ],
+      [
+        "df30012430c88d49fb5b124992b04d5c61b6338b",
+        "Wed Apr 24 15:31:45 2024 -0400",
+        "Vitor Pamplona"
+      ],
+      [
+        "d67988e64ee3c0a0df859ad557aa26fb7844f11e",
+        "Fri Dec 1 13:54:12 2023 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "438812d0a4a9afa5b4985e07771ae2919765b514",
+        "Sun Nov 19 10:17:57 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "50d20123e2271e2d33323105414b01a0a69559d5",
+        "Sat Nov 18 09:36:59 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "5dcfe85306434f21ecb1e7a47edd92b2e3e64f9a",
+        "Sat Nov 18 09:13:12 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "b5b46b629fb1b4dae4780d8d165bddd68d4cda68",
+        "Sat Nov 18 08:21:15 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "37f6cbb775126b386414220f783ca0f5f85e7614",
+        "Wed Nov 15 21:42:51 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "d784820309dba0447d6a0a351ad0230ba6c5c5fb",
+        "Wed Aug 30 18:30:41 2023 -0500",
+        "SnazzyBytes"
+      ],
+      [
+        "89915e0251ec4e5ce3fc00e2f2dfd9106a359b79",
+        "Sun Aug 20 14:27:03 2023 +0200",
+        "Viktor Vsk"
+      ],
+      [
+        "72bb8a128b2d7d3c2c654644cd68d0d0fe58a3b1",
+        "Sun Aug 13 13:47:45 2023 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "83cbd3e17a12bbc2b63799fe8f53883f80f70809",
+        "Sat Jun 17 16:01:03 2023 -0500",
+        "Suhail Saqan"
+      ],
+      [
+        "89b308d5402d7b4c4e8daabdaa9f28a45cc2a829",
+        "Thu Jun 8 11:48:03 2023 -0500",
+        "Suhail Saqan"
+      ],
+      [
+        "d70aa87f076f8609950fc96e4e66d86c711c66ac",
+        "Tue May 9 22:09:45 2023 +0900",
+        "Asai Toshiya"
+      ],
+      [
+        "d7c189d70bd1f9489a388920bc325576bd9cf8e4",
+        "Tue May 2 09:41:59 2023 -0500",
+        "Robert C. Martin"
+      ],
+      [
+        "c7711aa8027b064b14236343dc9f287a5ecd3b2f",
+        "Sat Apr 8 14:13:18 2023 +1200",
+        "Mike Dilger"
+      ],
+      [
+        "3cec80d99ebbee6b72aae31f1856181d04971244",
+        "Fri Apr 7 17:38:03 2023 +0530",
+        "vivganes"
+      ],
+      [
+        "2394e5cc630741e036e6d0554e59a6611a123030",
+        "Sat Mar 18 18:57:02 2023 -0400",
+        "nostr-wine"
+      ],
+      [
+        "92a41a284a55371e13f7155be0ba8a9ab4225561",
+        "Sat Mar 18 18:53:54 2023 -0400",
+        "nostr-wine"
+      ],
+      [
+        "f7b57e3735fc95482d9485d21c4439b9d21851ac",
+        "Sat Mar 18 18:44:31 2023 -0400",
+        "nostr-wine"
+      ],
+      [
+        "8b18e7818e0c2fcbd8bc82e0660f8b6ba23af50d",
+        "Sat Jan 14 09:59:19 2023 +1300",
+        "Mike Dilger"
+      ],
+      [
+        "0c7b732867ea55527a6ec7562e92c091bb329476",
+        "Fri Dec 16 08:17:38 2022 -0600",
+        "Drewry Pope"
+      ],
+      [
+        "cf5eaf63607805fb7fa7262de160eacf105c0ffe",
+        "Wed Nov 23 12:46:25 2022 -0800",
+        "Jon Staab"
+      ],
+      [
+        "f25c7e672c23ca5463fa5c0fcb5e5f424d956862",
+        "Sun May 1 07:48:57 2022 -0300",
+        "fiatjaf"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "relay": 40,
+      "nostr": 25,
+      "https": 13,
+      "contact": 10,
+      "nip": 9,
+      "s": 9,
+      "string": 9,
+      "pubkey": 9,
+      "icon": 8,
+      "software": 8,
+      "number": 8,
+      "json": 7,
+      "version": 7,
+      "field": 7,
+      "events": 7,
+      "true": 7,
+      "maximum": 7,
+      "wine": 7,
+      "relays": 6,
+      "server": 6,
+      "clients": 6,
+      "description": 6,
+      "accept": 5,
+      "fields": 5,
+      "client": 5,
+      "characters": 5,
+      "max_message_length": 5,
+      "payment_required": 5,
+      "unit": 5,
+      "msats": 5,
+      "land": 5,
+      "document": 4,
+      "administrative": 4,
+      "websocket": 4,
+      "banner": 4,
+      "link": 4,
+      "image": 4,
+      "jpg": 4,
+      "png": 4,
+      "format": 4,
+      "use": 4,
+      "recommended": 4,
+      "limitations": 4,
+      "build": 4,
+      "key": 4,
+      "1": 4,
+      "terms": 4,
+      "max_subscriptions": 4,
+      "max_event_tags": 4,
+      "min_pow_difficulty": 4,
+      "auth_required": 4,
+      "3": 4,
+      "subscription": 4,
+      "filter": 4,
+      "limit": 4,
+      "42": 4,
+      "0": 4,
+      "11": 3,
+      "information": 3,
+      "uri": 3,
+      "application": 3,
+      "self": 3,
+      "supported_nips": 3,
+      "list": 3,
+      "url": 3,
+      "terms_of_service": 3,
+      "text": 3,
+      "service": 3,
+      "requests": 3,
+      "access": 3,
+      "control": 3,
+      "allow": 3,
+      "30": 3,
+      "users": 3,
+      "example": 3,
+      "jsonc": 3,
+      "listed": 3,
+      "32": 3,
+      "public": 3,
+      "send": 3,
+      "direct": 3,
+      "17": 3,
+      "md": 3,
+      "content": 3,
+      "specific": 3,
+      "9": 3,
+      "limitation": 3,
+      "max_limit": 3,
+      "max_subid_length": 3,
+      "100": 3,
+      "restricted_writes": 3,
+      "created_at_lower_limit": 3,
+      "created_at_upper_limit": 3,
+      "bytes": 3,
+      "value": 3,
+      "event": 3,
+      "2": 3,
+      "connection": 3,
+      "new": 3,
+      "13": 3,
+      "requires": 3,
+      "false": 3,
+      "payments_url": 3,
+      "fees": 3,
+      "4": 3,
+      "nfdb": 3,
+      "provide": 2,
+      "available": 2,
+      "http": 2,
+      "request": 2,
+      "identifying": 2,
+      "detailed": 2,
+      "e": 2,
+      "g": 2,
+      "supported": 2,
+      "identifier": 2,
+      "file": 2,
+      "additional": 2,
+      "headers": 2,
+      "length": 2,
+      "user": 2,
+      "communicate": 2,
+      "non": 2,
+      "technical": 2,
+      "visual": 2,
+      "representation": 2,
+      "damus": 2,
+      "view": 2,
+      "limited": 2,
+      "byte": 2,
+      "hex": 2,
+      "address": 2,
+      "messages": 2,
+      "administrator": 2,
+      "expected": 2,
+      "respond": 2,
+      "message": 2,
+      "means": 2,
+      "nips": 2,
+      "examples": 2,
+      "01": 2,
+      "implementation": 2,
+      "attribute": 2,
+      "choose": 2,
+      "defined": 2,
+      "rejected": 2,
+      "300": 2,
+      "max_content_length": 2,
+      "default_limit": 2,
+      "subscriptions": 2,
+      "limits": 2,
+      "size": 2,
+      "8": 2,
+      "unicode": 2,
+      "single": 2,
+      "paid": 2,
+      "know": 2,
+      "require": 2,
+      "based": 2,
+      "authentication": 2,
+      "perform": 2,
+      "action": 2,
+      "set": 2,
+      "kind": 2,
+      "created_at": 2,
+      "payments": 2,
+      "admission": 2,
+      "period": 2,
+      "2592000": 2,
+      "curl": 2,
+      "h": 2,
+      "jq": 2,
+      "71": 2,
+      "50": 2,
+      "40": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "f25c7e672c23ca5463fa5c0fcb5e5f424d956862",
+        "timestamp": "2022-05-01T07:48:57-03:00",
+        "date": "2022-05-01",
+        "author": "fiatjaf",
+        "path": "11.md",
+        "status": "Draft",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        "NIP 1",
+        "NIP 9",
+        "NIP 13",
+        "NIP 17",
+        "NIP 42"
+      ],
+      "body_extracted_llm": [
+        "NIP 1",
+        "NIP 13",
+        "NIP 42"
+      ]
+    }
+  }
+}

@@ -1,0 +1,340 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "55",
+      "title": "Android Signer Application",
+      "author": [
+        "fiatjaf"
+      ],
+      "created": "2024-06-05",
+      "status": "Draft",
+      "type": "Optional",
+      "layer": null,
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Fri Feb 13 13:56:59 2026 +0100",
+    "total_commits": 17,
+    "git_history": [
+      [
+        "5d232e65254100d543ebd1936d966085e9820dae",
+        "Fri Feb 13 13:56:59 2026 +0100",
+        "Danny M"
+      ],
+      [
+        "d7db75fc691a5b182d133d72fb3692b57cf2aeca",
+        "Mon Jan 5 10:57:34 2026 -0300",
+        "greenart7c3"
+      ],
+      [
+        "7cafdbb0cf115db81c6edd5a4846921085108ff7",
+        "Thu Dec 18 10:18:54 2025 -0300",
+        "greenart7c3"
+      ],
+      [
+        "d54c4267091987f035819ff4714910e388f5d701",
+        "Mon Oct 13 15:21:07 2025 -0300",
+        "greenart7c3"
+      ],
+      [
+        "b1720f4fdc2680db845fae1870981fc29b2a99b4",
+        "Tue Aug 19 02:17:27 2025 +0900",
+        "Yoji Shidara"
+      ],
+      [
+        "0e911333207cb6865d43e76d746e30650c413f23",
+        "Wed Aug 13 21:26:30 2025 +0900",
+        "Yoji Shidara"
+      ],
+      [
+        "84c3d14afa4dcea609452a0ae1e359dbdef6bc6d",
+        "Fri Feb 28 20:55:35 2025 -0300",
+        "greenart7c3"
+      ],
+      [
+        "330de34c7cc8fc6f34e3dec076f20ceb1af94927",
+        "Mon Feb 17 15:09:37 2025 -0300",
+        "greenart7c3"
+      ],
+      [
+        "81908b6e3fbc852181de9ed21cf244f525ff60af",
+        "Thu Feb 13 23:46:56 2025 -0300",
+        "greenart7c3"
+      ],
+      [
+        "57c84cc87a75e8598004530556fc5988dfc26c49",
+        "Fri Feb 7 16:21:19 2025 -0300",
+        "greenart7c3"
+      ],
+      [
+        "03a555beb58296bef326f6469bbcf2b73ea144f6",
+        "Fri Nov 1 08:24:52 2024 -0300",
+        "greenart7c3"
+      ],
+      [
+        "93e6c3880beb3818b47d22c07fd11aa5f1356c41",
+        "Fri Nov 1 08:16:06 2024 -0300",
+        "greenart7c3"
+      ],
+      [
+        "061d2ac47d79819e0efa938f231f2511ac40b419",
+        "Fri Nov 1 08:03:10 2024 -0300",
+        "greenart7c3"
+      ],
+      [
+        "30f39d35d18f49adc86c483c34b232560772d75c",
+        "Fri Oct 11 07:29:54 2024 -0300",
+        "greenart7c3"
+      ],
+      [
+        "7bb8997be5f8cbe1004e7c75724feaa56ccd08de",
+        "Tue Jul 2 16:02:31 2024 +0800",
+        "DASHU"
+      ],
+      [
+        "b4a2561df7325b8624bc5ffad154ec946ade2f1e",
+        "Mon Sep 2 20:33:45 2024 +0330",
+        "kehiy"
+      ],
+      [
+        "a6dfc7b5e513ea3070abcded3608b28e4d4a1512",
+        "Wed Jun 5 15:24:43 2024 -0300",
+        "fiatjaf"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "intent": 108,
+      "result": 83,
+      "val": 50,
+      "signer": 38,
+      "kotlin": 36,
+      "pubkey": 34,
+      "id": 32,
+      "return": 29,
+      "putextra": 25,
+      "null": 25,
+      "params": 23,
+      "event": 23,
+      "data": 22,
+      "example": 22,
+      "application": 21,
+      "user": 21,
+      "com": 21,
+      "nostrsigner": 19,
+      "type": 19,
+      "context": 17,
+      "send": 17,
+      "android": 16,
+      "getstringextra": 16,
+      "uri": 15,
+      "parse": 15,
+      "getcolumnindex": 13,
+      "content": 12,
+      "package": 12,
+      "signature": 12,
+      "encryptedtext": 12,
+      "index": 12,
+      "returntype": 10,
+      "action_view": 9,
+      "sign_event": 9,
+      "eventjson": 9,
+      "compressiontype": 9,
+      "window": 9,
+      "href": 9,
+      "rejected": 8,
+      "get_public_key": 8,
+      "listof": 8,
+      "json": 8,
+      "plaintext": 8,
+      "contentresolver": 8,
+      "column": 8,
+      "1": 8,
+      "hex_pub_key": 8,
+      "js": 8,
+      "callbackurl": 8,
+      "https": 8,
+      "client": 7,
+      "permissions": 7,
+      "nip44_decrypt": 7,
+      "startactivity": 7,
+      "approved": 7,
+      "logged": 7,
+      "query": 7,
+      "getstring": 7,
+      "url": 7,
+      "intents": 6,
+      "sending": 6,
+      "waiting": 6,
+      "current": 6,
+      "current_user": 6,
+      "fields": 6,
+      "sent": 6,
+      "nip04_encrypt": 6,
+      "nip44_encrypt": 6,
+      "nip04_decrypt": 6,
+      "decrypt_zap_event": 6,
+      "logged_in_user_pubkey": 6,
+      "movetofirst": 6,
+      "web": 5,
+      "applications": 5,
+      "use": 5,
+      "results": 5,
+      "control": 5,
+      "case": 5,
+      "some_id": 5,
+      "account": 5,
+      "keypair": 5,
+      "add": 4,
+      "check": 4,
+      "framework": 4,
+      "packagename": 4,
+      "methods": 4,
+      "hex": 4,
+      "var": 4,
+      "newanchor": 4,
+      "nip": 3,
+      "reject": 3,
+      "xml": 3,
+      "action": 3,
+      "0": 3,
+      "sign": 3,
+      "multiple": 3,
+      "t": 3,
+      "callback": 3,
+      "html": 3,
+      "document": 3,
+      "body": 3,
+      "param1": 3,
+      "method": 2,
+      "nostr": 2,
+      "usage": 2,
+      "accept": 2,
+      "resolvers": 2,
+      "background": 2,
+      "androidmanifest": 2,
+      "queries": 2,
+      "category": 2,
+      "scheme": 2,
+      "function": 2,
+      "s": 2,
+      "infos": 2,
+      "rememberlauncherforactivityresult": 2,
+      "documentation": 2,
+      "party": 2,
+      "library": 2,
+      "launcher": 2,
+      "toast": 2,
+      "create": 2,
+      "receive": 2,
+      "flags": 2,
+      "clients": 2,
+      "tojson": 2,
+      "permission": 2,
+      "kind": 2,
+      "field": 2,
+      "encrypting": 2,
+      "decrypting": 2,
+      "returns": 2,
+      "columns": 2,
+      "open": 2,
+      "indexjson": 2,
+      "consider": 2,
+      "46": 2,
+      "parameter": 2,
+      "gzip": 2,
+      "head": 2,
+      "meta": 2,
+      "width": 2,
+      "title": 2,
+      "h1": 2,
+      "test": 2,
+      "script": 2,
+      "let": 2,
+      "encodedjson": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "a6dfc7b5e513ea3070abcded3608b28e4d4a1512",
+        "timestamp": "2024-06-05T15:24:43-03:00",
+        "date": "2024-06-05",
+        "author": "fiatjaf",
+        "path": "55.md",
+        "status": "Draft",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        "NIP 4",
+        "NIP 44",
+        "NIP 46"
+      ],
+      "body_extracted_llm": [
+        "NIP 1",
+        "NIP 4",
+        "NIP 44",
+        "NIP 57"
+      ]
+    }
+  }
+}

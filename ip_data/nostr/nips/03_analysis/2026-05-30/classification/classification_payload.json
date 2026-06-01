@@ -1,0 +1,130 @@
+{
+  "meta": {
+    "node_count": 97,
+    "generated_metrics": [
+      "sankey_full",
+      "sankey_grouped",
+      "status_over_time"
+    ]
+  },
+  "sankey_full": {
+    "links": [
+      {
+        "source": "Relay",
+        "target": "Draft",
+        "count": 16
+      },
+      {
+        "source": "Draft",
+        "target": "Optional",
+        "count": 15
+      },
+      {
+        "source": "Draft",
+        "target": "Mandatory",
+        "count": 1
+      },
+      {
+        "source": "Relay",
+        "target": "Final",
+        "count": 1
+      },
+      {
+        "source": "Final",
+        "target": "Optional",
+        "count": 1
+      }
+    ]
+  },
+  "sankey_grouped": {
+    "links": [
+      {
+        "source": "Draft",
+        "target": "Optional",
+        "count": 81
+      },
+      {
+        "source": "Other",
+        "target": "Draft",
+        "count": 67
+      },
+      {
+        "source": "Relay",
+        "target": "Draft",
+        "count": 16
+      },
+      {
+        "source": "Other",
+        "target": "Final",
+        "count": 8
+      },
+      {
+        "source": "Final",
+        "target": "Optional",
+        "count": 5
+      },
+      {
+        "source": "Final",
+        "target": "Mandatory",
+        "count": 4
+      },
+      {
+        "source": "Other",
+        "target": "Unknown Status",
+        "count": 4
+      },
+      {
+        "source": "Unknown Status",
+        "target": "Optional",
+        "count": 3
+      },
+      {
+        "source": "Unknown Status",
+        "target": "Unknown Type",
+        "count": 2
+      },
+      {
+        "source": "Draft",
+        "target": "Mandatory",
+        "count": 1
+      },
+      {
+        "source": "Relay",
+        "target": "Final",
+        "count": 1
+      },
+      {
+        "source": "Relay",
+        "target": "Unknown Status",
+        "count": 1
+      },
+      {
+        "source": "Draft",
+        "target": "Unknown Type",
+        "count": 1
+      }
+    ]
+  },
+  "status_over_time": {
+    "2022": {
+      "Draft": 19,
+      "Final": 7
+    },
+    "2023": {
+      "Draft": 33,
+      "Final": 1,
+      "Unknown": 4
+    },
+    "2024": {
+      "Draft": 16,
+      "Unknown": 1
+    },
+    "2025": {
+      "Draft": 11,
+      "Final": 1
+    },
+    "2026": {
+      "Draft": 4
+    }
+  }
+}

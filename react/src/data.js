@@ -1,80 +1,66 @@
-const analysisContext = require.context('../../ip_data/bitcoin/03_analysis', true, /\.json$/);
-const analysisFiles = analysisContext.keys();
+import {
+  BODY_EXTRACTED_LLM,
+  BODY_EXTRACTED_REGEX,
+  PREAMBLE_EXTRACTED,
+  normalizeDependencyLinks,
+} from './dependencyApproaches';
+import { ecosystemsById } from './ecosystems';
+
+// Available snapshots per ecosystem, newest-first.
+// Add a new entry here when a snapshot is published.
+const ECOSYSTEM_SNAPSHOTS = {
+  bitcoin: ['2026-05-28', '2026-03-16', '2025-01-01', '2021-01-01'],
+  nostr: ['2026-05-30'],
+};
 
 const EMPTY_DATASET = {
   snapshot: null,
   nodes: [],
   links: {
-    explicit_references: [],
-    explicit_dependencies: {
+    [BODY_EXTRACTED_REGEX]: [],
+    [PREAMBLE_EXTRACTED]: {
       requires: [],
       replaces: [],
-      superseded_by: [],
+      proposed_replacement: [],
     },
     requires: [],
     replaces: [],
-    superseded_by: [],
-    implicit_dependencies: []
+    proposed_replacement: [],
+    [BODY_EXTRACTED_LLM]: []
   },
   network: {
     nodes: [],
     links: {
-      explicit_references: [],
-      explicit_dependencies: [],
+      [BODY_EXTRACTED_REGEX]: [],
+      [PREAMBLE_EXTRACTED]: [],
       requires: [],
       replaces: [],
-      superseded_by: [],
-      implicit_dependencies: [],
+      proposed_replacement: [],
+      [BODY_EXTRACTED_LLM]: [],
     },
   },
   dependencyMetrics: { by_approach: {}, pairwise_comparisons: {} },
   authorship: { meta: {}, top_authors: [], bips_per_year: [], top_10_share: {} },
   classification: { meta: {}, sankey_grouped: { links: [] }, status_over_time: {} },
+  evolution: { meta: {}, status_evolution: { categories: [], rows: [] } },
   conformity: { per_proposal: [] }
 };
 
-function extractSnapshotLabel(filename) {
-  const cleanPath = filename.replace(/^\.\//, '');
-  const [firstSegment] = cleanPath.split('/');
-  return /^\d{4}-\d{2}-\d{2}$/.test(firstSegment) ? firstSegment : 'current';
-}
-
 function countAllLinks(linksByType) {
   const links = linksByType || {};
-  const explicit = links.explicit_dependencies || {};
+  const explicit = links[PREAMBLE_EXTRACTED] || {};
   return (
-    (links.explicit_references?.length || 0)
-    + (links.implicit_dependencies?.length || 0)
+    (links[BODY_EXTRACTED_REGEX]?.length || 0)
+    + (links[BODY_EXTRACTED_LLM]?.length || 0)
     + (explicit.requires?.length || links.requires?.length || 0)
     + (explicit.replaces?.length || links.replaces?.length || 0)
-    + (explicit.superseded_by?.length || links.superseded_by?.length || 0)
+    + (explicit.proposed_replacement?.length || links.proposed_replacement?.length || 0)
   );
-}
-
-function normalizeLinks(rawLinks) {
-  const links = rawLinks || {};
-  const explicitDependencies = links.explicit_dependencies || {};
-  const requires = explicitDependencies.requires || links.requires || [];
-  const replaces = explicitDependencies.replaces || links.replaces || [];
-  const supersededBy = explicitDependencies.superseded_by || links.superseded_by || [];
-
-  return {
-    explicit_references: links.explicit_references || [],
-    explicit_dependencies: {
-      requires,
-      replaces,
-      superseded_by: supersededBy,
-    },
-    requires,
-    replaces,
-    superseded_by: supersededBy,
-    implicit_dependencies: links.implicit_dependencies || [],
-  };
 }
 
 function ensureSnapshotShape(snapshotLabel, snapshotData) {
   const network = snapshotData.network || EMPTY_DATASET.network;
-  const links = normalizeLinks(network.links || EMPTY_DATASET.links);
+  const links = normalizeDependencyLinks(network.links || EMPTY_DATASET.links);
 
   return {
     snapshot: snapshotLabel,
@@ -87,6 +73,7 @@ function ensureSnapshotShape(snapshotLabel, snapshotData) {
     dependencyMetrics: snapshotData.dependencyMetrics || EMPTY_DATASET.dependencyMetrics,
     authorship: snapshotData.authorship || EMPTY_DATASET.authorship,
     classification: snapshotData.classification || EMPTY_DATASET.classification,
+    evolution: snapshotData.evolution || EMPTY_DATASET.evolution,
     conformity: snapshotData.conformity || EMPTY_DATASET.conformity,
     meta: {
       node_count: network.nodes?.length || 0,
@@ -96,91 +83,50 @@ function ensureSnapshotShape(snapshotLabel, snapshotData) {
   };
 }
 
-function collectBitcoinAnalysisSnapshots() {
-  const snapshots = {};
-
-  analysisFiles.forEach((filename) => {
-    const moduleData = analysisContext(filename);
-    const payload = moduleData.default || moduleData;
-
-    const cleanPath = filename.replace(/^\.\//, '');
-    const segments = cleanPath.split('/');
-    const snapshotLabel = extractSnapshotLabel(filename);
-    const submodule = segments[1];
-    const artifactName = segments[2];
-
-    if (!snapshots[snapshotLabel]) {
-      snapshots[snapshotLabel] = {
-        network: null,
-        dependencyMetrics: null,
-        authorship: null,
-        classification: null,
-        conformity: null,
-        meta: {},
-      };
-    }
-
-    if (submodule === 'dependencies' && artifactName === 'network_data.json') {
-      snapshots[snapshotLabel].network = payload;
-      snapshots[snapshotLabel].meta.node_count = payload?.nodes?.length || 0;
-    }
-
-    if (submodule === 'dependencies' && artifactName === 'dependency_metrics.json') {
-      snapshots[snapshotLabel].dependencyMetrics = payload;
-    }
-
-    if (submodule === 'authorship' && artifactName === 'authorship_payload.json') {
-      snapshots[snapshotLabel].authorship = payload;
-      snapshots[snapshotLabel].meta.author_count = payload?.meta?.author_count || 0;
-    }
-
-    if (submodule === 'classification' && artifactName === 'classification_payload.json') {
-      snapshots[snapshotLabel].classification = payload;
-    }
-
-    if (submodule === 'conformity' && artifactName === 'conformity_metrics.json') {
-      snapshots[snapshotLabel].conformity = payload;
-    }
+function fetchJson(url) {
+  return fetch(url).then((res) => {
+    if (!res.ok) throw new Error(`HTTP ${res.status}: ${url}`);
+    return res.json();
   });
-
-  return Object.fromEntries(
-    Object.entries(snapshots).map(([snapshotLabel, snapshotData]) => [
-      snapshotLabel,
-      ensureSnapshotShape(snapshotLabel, snapshotData),
-    ])
-  );
 }
 
-const bitcoinSnapshotDatasets = collectBitcoinAnalysisSnapshots();
+// In-memory cache: "<ecosystemId>/<snapshot>" → Promise<dataset>
+// Promises are stored directly — awaiting a resolved promise is instant,
+// so cache hits on already-loaded snapshots cost nothing.
+const fetchCache = new Map();
+
+export function isDatasetCached(ecosystemId, snapshot) {
+  return fetchCache.has(`${ecosystemId}/${snapshot}`);
+}
 
 export function getAvailableSnapshots(ecosystemId) {
-  if (ecosystemId !== 'bitcoin') {
-    return [];
-  }
-
-  const datedEntries = Object.keys(bitcoinSnapshotDatasets)
-    .filter((snapshot) => snapshot !== 'current')
-    .sort((left, right) => right.localeCompare(left));
-
-  if (datedEntries.length > 0) {
-    return datedEntries;
-  }
-
-  return bitcoinSnapshotDatasets.current ? ['current'] : [];
+  return ECOSYSTEM_SNAPSHOTS[ecosystemId] || [];
 }
 
-export function getDatasetForSelection(ecosystemId, snapshot) {
-  if (ecosystemId !== 'bitcoin') {
-    return EMPTY_DATASET;
+export function fetchDatasetForSelection(ecosystemId, snapshot) {
+  const ecosystem = ecosystemsById[ecosystemId];
+  if (!ecosystem || ecosystem.status !== 'available' || !ecosystem.dataPath || !snapshot) {
+    return Promise.resolve(EMPTY_DATASET);
   }
 
-  if (snapshot && bitcoinSnapshotDatasets[snapshot]) {
-    return bitcoinSnapshotDatasets[snapshot];
-  }
+  const key = `${ecosystemId}/${snapshot}`;
+  if (fetchCache.has(key)) return fetchCache.get(key);
 
-  const fallbackSnapshot = getAvailableSnapshots(ecosystemId)[0];
-  return fallbackSnapshot ? bitcoinSnapshotDatasets[fallbackSnapshot] : EMPTY_DATASET;
+  const base = `./${ecosystem.dataPath}/${snapshot}`;
+  const promise = Promise.all([
+    fetchJson(`${base}/dependencies/network_data.json`),
+    fetchJson(`${base}/dependencies/dependency_metrics.json`),
+    fetchJson(`${base}/authorship/authorship_payload.json`),
+    fetchJson(`${base}/classification/classification_payload.json`),
+    fetchJson(`${base}/evolution/evolution_payload.json`),
+    fetchJson(`${base}/conformity/conformity_metrics.json`),
+  ]).then(([network, dependencyMetrics, authorship, classification, evolution, conformity]) =>
+    ensureSnapshotShape(snapshot, { network, dependencyMetrics, authorship, classification, evolution, conformity })
+  ).catch((err) => {
+    fetchCache.delete(key); // don't cache failures — allow retry on next attempt
+    throw err;
+  });
+
+  fetchCache.set(key, promise);
+  return promise;
 }
-
-export const data = getDatasetForSelection('bitcoin');
-export default getDatasetForSelection('bitcoin');

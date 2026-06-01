@@ -1,0 +1,148 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "92",
+      "title": "Media Attachments Metadata",
+      "author": [
+        "fiatjaf"
+      ],
+      "created": "2024-02-01",
+      "status": "Unknown",
+      "type": null,
+      "layer": null,
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Thu May 28 17:14:47 2026 -0300",
+    "total_commits": 5,
+    "git_history": [
+      [
+        "861675be8c7fc2578ee503a029a77f8e3697c3f3",
+        "Thu May 28 17:14:47 2026 -0300",
+        "fiatjaf"
+      ],
+      [
+        "70db801bb7fb258c10f4b2ec58056ef74df25549",
+        "Tue Jan 28 14:37:54 2025 +0000",
+        "Kieran"
+      ],
+      [
+        "84236acdd9fa84206beb27a4c7353a191393bf41",
+        "Fri Feb 23 22:48:42 2024 +0900",
+        "Asai Toshiya"
+      ],
+      [
+        "6de5ee32f411a91f5001a7d300931a7b1ec9adca",
+        "Sat Feb 3 10:28:57 2024 +0900",
+        "Asai Toshiya"
+      ],
+      [
+        "5196ac196a9e19cfbb9c6cd16d8081dd137e3572",
+        "Thu Feb 1 20:59:37 2024 -0300",
+        "fiatjaf"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 60.0,
+      "passed_checks": 3,
+      "failed_checks": 2,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 60.0,
+        "passed_checks": 3,
+        "failed_checks": 2,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": false,
+            "details": "Tag 'type' not found"
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "imeta": 10,
+      "url": 6,
+      "metadata": 5,
+      "content": 5,
+      "tag": 5,
+      "event": 4,
+      "image": 4,
+      "https": 4,
+      "jpg": 4,
+      "post": 4,
+      "nip": 3,
+      "media": 3,
+      "tags": 3,
+      "urls": 3,
+      "94": 3,
+      "client": 3,
+      "attachments": 2,
+      "files": 2,
+      "add": 2,
+      "match": 2,
+      "clients": 2,
+      "field": 2,
+      "include": 2,
+      "specified": 2,
+      "nostr": 2,
+      "build": 2,
+      "m": 2,
+      "fallback": 2,
+      "alt1": 2,
+      "file": 2
+    },
+    "changes_in_status": [],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        "NIP 94"
+      ],
+      "body_extracted_llm": [
+        "NIP 1",
+        "NIP 94"
+      ]
+    }
+  }
+}

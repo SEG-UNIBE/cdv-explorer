@@ -1,0 +1,189 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "88",
+      "title": "Polls",
+      "author": [
+        "fiatjaf",
+        "Alex Gleason"
+      ],
+      "created": "2024-09-17",
+      "status": "Draft",
+      "type": "Optional",
+      "layer": null,
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Tue Dec 30 19:04:37 2025 +0100",
+    "total_commits": 6,
+    "git_history": [
+      [
+        "2f71cf74ae3e9bc78d4b599d8ba350cb8df95921",
+        "Tue Dec 30 19:04:37 2025 +0100",
+        "Vincenzo Imperati"
+      ],
+      [
+        "4f09333ab538de527f693dd18f14726a879bc594",
+        "Wed Apr 23 21:57:55 2025 +0300",
+        "Awiteb"
+      ],
+      [
+        "0782ebe0bcd31b6f7ad860fb85788a62b4c83c20",
+        "Tue Jan 14 05:55:30 2025 +0530",
+        "abhay-raizada"
+      ],
+      [
+        "6cd598d02cceec76f6c4df6e061c4135ca3e3fd3",
+        "Tue Sep 17 18:56:50 2024 -0300",
+        "fiatjaf"
+      ],
+      [
+        "3d8bf682b6f6f961a4c3609f9447907abaad9d0e",
+        "Tue Sep 17 09:22:40 2024 -0500",
+        "Alex Gleason"
+      ],
+      [
+        "d534bade7184966df7335a8867b97cd879ee58cd",
+        "Tue Sep 17 11:03:56 2024 -0300",
+        "fiatjaf"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "event": 22,
+      "poll": 15,
+      "response": 13,
+      "kind": 8,
+      "tags": 8,
+      "events": 7,
+      "pubkey": 7,
+      "option": 6,
+      "polltype": 6,
+      "results": 6,
+      "relay": 5,
+      "id": 5,
+      "1018": 5,
+      "relays": 5,
+      "eventmap": 5,
+      "polls": 4,
+      "singlechoice": 4,
+      "considered": 4,
+      "example": 4,
+      "created_at": 4,
+      "tag": 4,
+      "resultfilter": 4,
+      "content": 3,
+      "followed": 3,
+      "multiple": 3,
+      "timestamp": 3,
+      "e": 3,
+      "fetching": 3,
+      "const": 3,
+      "filterpubkeys": 3,
+      "nip": 2,
+      "1068": 2,
+      "label": 2,
+      "field": 2,
+      "multiplechoice": 2,
+      "endsat": 2,
+      "unix": 2,
+      "meant": 2,
+      "json": 2,
+      "sig": 2,
+      "gga6cdnqj": 2,
+      "responses": 2,
+      "contains": 2,
+      "specified": 2,
+      "actual": 2,
+      "order": 2,
+      "vote": 2,
+      "ts": 2,
+      "string": 2,
+      "authors": 2,
+      "pollexpiration": 2,
+      "onevoteperpubkey": 2,
+      "set": 2,
+      "curation": 2,
+      "clients": 2,
+      "follow": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "d534bade7184966df7335a8867b97cd879ee58cd",
+        "timestamp": "2024-09-17T11:04:01-03:00",
+        "date": "2024-09-17",
+        "author": "fiatjaf",
+        "path": "88.md",
+        "status": "Draft",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [],
+      "body_extracted_llm": [
+        "NIP 1",
+        "NIP 9",
+        "NIP 51"
+      ]
+    }
+  }
+}

@@ -1,17 +1,31 @@
-export function renderBipListHtml(bips, options = {}) {
-  const {
-    emptyText = 'No BIP list available.',
-    label = 'List:',
-  } = options;
+import { formatProposalReference, getProposalUrl } from './proposalLinks';
 
-  const bipIds = Array.isArray(bips) ? bips : [];
-  if (bipIds.length === 0) {
+export function renderProposalListHtml(proposals, snapshotOrOptions = null, options = {}) {
+  const snapshotLabel = typeof snapshotOrOptions === 'string' || snapshotOrOptions == null
+    ? snapshotOrOptions
+    : null;
+  const {
+    emptyText = 'No proposal list available.',
+    label = 'List:',
+    linkMode = 'history',
+    ecosystem = null,
+  } = snapshotLabel == null && snapshotOrOptions && typeof snapshotOrOptions === 'object'
+    ? snapshotOrOptions
+    : options;
+
+  const proposalIds = Array.isArray(proposals) ? proposals : [];
+  if (proposalIds.length === 0) {
     return emptyText;
   }
 
-  const bipLinks = bipIds
-    .map((bip) => `<a href="https://bips.dev/${bip}/" target="_blank" rel="noreferrer">BIP${bip}</a>`)
+  const proposalLinks = proposalIds
+    .map((proposalId) => (
+      `<a href="${getProposalUrl(proposalId, snapshotLabel, { linkMode }, ecosystem)}" target="_blank" rel="noreferrer">` +
+      `${formatProposalReference(proposalId, ecosystem)}</a>`
+    ))
     .join(', ');
 
-  return `${label} ${bipLinks}`;
+  return `${label} ${proposalLinks}`;
 }
+
+export const renderBipListHtml = renderProposalListHtml;

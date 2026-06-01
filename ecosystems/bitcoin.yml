@@ -1,0 +1,103 @@
+slug: bitcoin
+display_name: Bitcoin
+
+sources:
+  bips:
+    display_name: Bitcoin Improvement Proposals
+    proposal_acronym: BIP
+    proposal_term_singular: Bitcoin Improvement Proposal
+    proposal_term_plural: Bitcoin Improvement Proposals
+
+    source_type: github_repo
+    harvester: github_repo
+    preprocessor: rfc_preamble
+    compliance_checker: bip
+    repository_owner: bitcoin
+    repository_name: bips
+
+    # Local data paths — kept at ecosystem root level for backward compatibility
+    # with existing snapshots and the validate_snapshots script.
+    harvest: ip_data/bitcoin/01_harvest
+    preprocess: ip_data/bitcoin/02_preprocess
+    analysis: ip_data/bitcoin/03_analysis
+    postprocess: ip_data/bitcoin/04_postprocess
+
+    document_prefix: bip
+    primary_id_field: bip
+    document_file_pattern: '^bip-\d{4}\.(mediawiki|md|rst)$'
+    document_dir_pattern: '^bip-\d{4}$'
+    reference_pattern: '\bBIP[-#\s]?(\d+)\b'
+    max_proposal_id: 999
+    stop_words_file: assets/stopwords/en_basic.txt
+
+    preamble:
+      required_fields:
+        - bip
+        - title
+        - author
+        - comments_uri
+        - status
+        - type
+        - created
+        - license
+      optional_fields:
+        - layer
+        - discussions_to
+        - comments_summary
+        - license_code
+        - post_history
+        - requires
+        - replaces
+        - proposed_replacement
+      field_aliases:
+        authors: author
+        assigned: created
+        superseded_by: proposed_replacement
+      expected_headlines:
+        abstract: 2
+        motivation: 2
+        specification: 2
+        copyright: 2
+      list_valued_fields:
+        - author
+        - license
+
+    classification:
+      # Each named dimension maps to the corresponding preamble field.
+      # aliases: normalise messy raw values to canonical ones before analysis.
+      dimensions:
+        status:
+          aliases:
+            "Draft (Some confusion applies: The announcements for this never made it to the list, so it hasn't had public discussion)": Draft
+        type:
+          aliases:
+            Standard: Standards Track
+            Standards: Standards Track
+            Standard Track: Standards Track
+            Standards-Track: Standards Track
+        layer:
+          aliases: {}
+
+      # Regimes capture periods where a different classification standard applies.
+      # Use valid_from / valid_until (both optional) to bound each period.
+      # status_order drives display ordering in paper figures.
+      regimes:
+        - valid_until: "2026-01-11"
+          standard: bip2
+          status_order:
+            - Draft
+            - Proposed
+            - Rejected
+            - Withdrawn
+            - Deferred
+            - Final
+            - Active
+            - Replaced
+            - Obsolete
+        - valid_from: "2026-01-12"
+          standard: bip3
+          status_order:
+            - Draft
+            - Complete
+            - Deployed
+            - Closed

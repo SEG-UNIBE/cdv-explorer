@@ -1,7 +1,7 @@
 import argparse
 from pathlib import Path
 
-from ecosystem_config import ACTIVE_ECOSYSTEM
+from pipeline.ecosystem_config import ACTIVE_ECOSYSTEM
 
 from analysis.dependencies import (
     build_network_data,

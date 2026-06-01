@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 from typing import Any, Dict
 
-from ecosystem_config import ACTIVE_ECOSYSTEM
+from pipeline.ecosystem_config import ACTIVE_ECOSYSTEM
 
 from analysis.artifact_io import load_network_data
 from analysis.authorship import prepare_authorship_payload

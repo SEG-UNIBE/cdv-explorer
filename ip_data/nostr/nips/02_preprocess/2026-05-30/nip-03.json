@@ -1,0 +1,160 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "03",
+      "title": "OpenTimestamps Attestations for Events",
+      "author": [
+        "fiatjaf"
+      ],
+      "created": "2022-05-01",
+      "status": "Draft",
+      "type": "Optional",
+      "layer": null,
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Mon Aug 4 17:31:37 2025 -0300",
+    "total_commits": 7,
+    "git_history": [
+      [
+        "b224b0ecb8782f381dd25c8ffd36f3b73d34069e",
+        "Mon Aug 4 17:31:37 2025 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "7aa751be46d515d7612998a4da88285cb0957cd3",
+        "Sat Nov 18 08:22:42 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "37f6cbb775126b386414220f783ca0f5f85e7614",
+        "Wed Nov 15 21:42:51 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "cf672b764bdcb6c33361203c206d5d52270c22ec",
+        "Tue Oct 17 07:38:53 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "09ffb951c69343312486aaff2726dca04bc42f6e",
+        "Wed Oct 11 10:17:43 2023 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "8b18e7818e0c2fcbd8bc82e0660f8b6ba23af50d",
+        "Sat Jan 14 09:59:19 2023 +1300",
+        "Mike Dilger"
+      ],
+      [
+        "f25c7e672c23ca5463fa5c0fcb5e5f424d956862",
+        "Sun May 1 07:48:57 2022 -0300",
+        "fiatjaf"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "opentimestamps": 5,
+      "event": 5,
+      "https": 5,
+      "ots": 5,
+      "content": 4,
+      "kind": 3,
+      "proof": 3,
+      "file": 3,
+      "attestation": 3,
+      "nak": 3,
+      "github": 3,
+      "jq": 3,
+      "nip": 2,
+      "attestations": 2,
+      "1040": 2,
+      "contain": 2,
+      "e": 2,
+      "target": 2,
+      "id": 2,
+      "bitcoin": 2,
+      "valid": 2,
+      "com": 2,
+      "fiatjaf": 2,
+      "block": 2,
+      "810391": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "f25c7e672c23ca5463fa5c0fcb5e5f424d956862",
+        "timestamp": "2022-05-01T07:48:57-03:00",
+        "date": "2022-05-01",
+        "author": "fiatjaf",
+        "path": "03.md",
+        "status": "Draft",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [],
+      "body_extracted_llm": [
+        "NIP 1"
+      ]
+    }
+  }
+}

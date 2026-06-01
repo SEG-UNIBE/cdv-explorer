@@ -1,0 +1,373 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "96",
+      "title": "HTTP File Storage Integration",
+      "author": [
+        "arthurfranca"
+      ],
+      "created": "2024-01-08",
+      "status": "Draft",
+      "type": "Optional",
+      "layer": null,
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Tue Sep 9 18:24:13 2025 -0400",
+    "total_commits": 16,
+    "git_history": [
+      [
+        "c3f92ca5775ab5046e826a681a41c9e2bac96655",
+        "Tue Sep 9 18:24:13 2025 -0400",
+        "Vitor Pamplona"
+      ],
+      [
+        "f3244a0903b1fedbd8aa89596c658c9529e19ea6",
+        "Mon Nov 18 02:33:29 2024 +0900",
+        "hakkadaikon"
+      ],
+      [
+        "4e73e94d417f16fa3451e58ef921cb3b512c6f8e",
+        "Sun Sep 22 19:17:39 2024 +0930",
+        "Lux"
+      ],
+      [
+        "c8dc1eadffe0ff894ec39e291c5b28bb18e6db9e",
+        "Tue Sep 3 23:47:11 2024 +0330",
+        "K"
+      ],
+      [
+        "e6552476aa2e5ca7256be572a9aa226ec8a022ee",
+        "Tue Sep 3 20:41:31 2024 +0330",
+        "kehiy"
+      ],
+      [
+        "b4a2561df7325b8624bc5ffad154ec946ade2f1e",
+        "Mon Sep 2 20:33:45 2024 +0330",
+        "kehiy"
+      ],
+      [
+        "3451f5a0c86f3ddcd3cbbbd3f534c606bbc60885",
+        "Mon Jul 22 22:55:51 2024 +0900",
+        "Yasuhiro Matsumoto"
+      ],
+      [
+        "7bf5e327f7c0fef06173b10c3300767acd20d884",
+        "Wed May 29 14:26:00 2024 +0100",
+        "kieran"
+      ],
+      [
+        "17593a41ab7ca51305db07cbfe1866f88e790206",
+        "Mon May 27 14:52:49 2024 +0100",
+        "Kieran"
+      ],
+      [
+        "bd9c7a1b8e372b3c8e518861b1f4ea5c92ef1888",
+        "Mon May 20 21:38:36 2024 +0100",
+        "kieran"
+      ],
+      [
+        "8d6d58871542dfcbb3f9d5d610a13a1e17358e58",
+        "Tue May 14 13:59:59 2024 +0100",
+        "kieran"
+      ],
+      [
+        "de71f998289a829ac4b2c0b0e601b02a2bf755b6",
+        "Wed Mar 13 12:46:16 2024 +0900",
+        "Asai Toshiya"
+      ],
+      [
+        "9b39fd5ef51eefc85af99b5aefac1a109bc17de3",
+        "Wed Jan 17 16:09:50 2024 +0800",
+        "Thabokani"
+      ],
+      [
+        "20d33785fc2e2884f28bece04e4fab679b621ec8",
+        "Sat Jan 13 03:46:59 2024 +0900",
+        "Asai Toshiya"
+      ],
+      [
+        "4d32f3a1dbdf056172023df71d18dacd8e804e4b",
+        "Tue Jan 9 12:35:41 2024 +0900",
+        "Asai Toshiya"
+      ],
+      [
+        "b0e6c01321633f5e0de6ebf6676f018a218459a9",
+        "Mon Jan 8 14:05:01 2024 -0300",
+        "arthurfranca"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "file": 92,
+      "server": 54,
+      "hash": 26,
+      "nostr": 20,
+      "upload": 20,
+      "processing": 20,
+      "url": 19,
+      "optional": 17,
+      "tags": 17,
+      "servers": 16,
+      "nip": 14,
+      "field": 14,
+      "original": 14,
+      "api_url": 13,
+      "clients": 13,
+      "json": 12,
+      "response": 12,
+      "nip94_event": 12,
+      "required": 11,
+      "s": 11,
+      "storage": 10,
+      "use": 10,
+      "https": 10,
+      "example": 10,
+      "image": 10,
+      "fields": 10,
+      "value": 10,
+      "http": 9,
+      "page": 9,
+      "256": 9,
+      "t": 9,
+      "metadata": 9,
+      "known": 8,
+      "note": 8,
+      "sha": 8,
+      "transformations": 8,
+      "files": 7,
+      "nip96": 7,
+      "absent": 7,
+      "string": 7,
+      "size": 7,
+      "download": 7,
+      "successful": 7,
+      "94": 7,
+      "ox": 7,
+      "png": 7,
+      "extension": 7,
+      "users": 6,
+      "0": 6,
+      "recommended": 6,
+      "type": 6,
+      "uploaded": 6,
+      "delete": 6,
+      "jsonc": 5,
+      "download_url": 5,
+      "free": 5,
+      "expiration": 5,
+      "list": 5,
+      "isn": 5,
+      "user": 5,
+      "status": 5,
+      "processing_url": 5,
+      "x": 5,
+      "content": 5,
+      "sha256": 5,
+      "api": 4,
+      "data": 4,
+      "available": 4,
+      "custom": 4,
+      "path": 4,
+      "meant": 4,
+      "set": 4,
+      "relay": 4,
+      "case": 4,
+      "section": 4,
+      "auth": 4,
+      "tag": 4,
+      "form": 4,
+      "store": 4,
+      "pubkey": 4,
+      "delayed": 4,
+      "success": 4,
+      "message": 4,
+      "event": 4,
+      "719171db19525d9d08dd69cb716a18158a249b7b3b3ec4bbdec5698dca104b7b": 4,
+      "downloading": 4,
+      "transformation": 4,
+      "client": 4,
+      "count": 4,
+      "number": 4,
+      "md": 3,
+      "96": 3,
+      "later": 3,
+      "regular": 3,
+      "deletion": 3,
+      "downloads": 3,
+      "plans": 3,
+      "true": 3,
+      "support": 3,
+      "98": 3,
+      "uploads": 3,
+      "early": 3,
+      "header": 3,
+      "optionally": 3,
+      "payload": 3,
+      "request": 3,
+      "reject": 3,
+      "no_transform": 3,
+      "serve": 3,
+      "identify": 3,
+      "check": 3,
+      "200": 3,
+      "ok": 3,
+      "like": 3,
+      "wants": 3,
+      "transformed": 3,
+      "saved": 3,
+      "webp": 3,
+      "ext": 3,
+      "media": 3,
+      "query": 3,
+      "1": 3,
+      "b7": 2,
+      "events": 2,
+      "requesting": 2,
+      "learn": 2,
+      "relays": 2,
+      "served": 2,
+      "redirect": 2,
+      "delegated_to_url": 2,
+      "jpeg": 2,
+      "plan": 2,
+      "allow": 2,
+      "days": 2,
+      "7": 2,
+      "means": 2,
+      "resizing": 2,
+      "adding": 2,
+      "instead": 2,
+      "supporting": 2,
+      "add": 2,
+      "authorization": 2,
+      "encoded": 2,
+      "caption": 2,
+      "description": 2,
+      "timestamp": 2,
+      "exceeds": 2,
+      "alt": 2,
+      "text": 2,
+      "avatar": 2,
+      "banner": 2,
+      "mime": 2,
+      "supported": 2,
+      "uniquely": 2,
+      "link": 2,
+      "multiple": 2,
+      "selecting": 2,
+      "201": 2,
+      "created": 2,
+      "403": 2,
+      "forbidden": 2,
+      "payment": 2,
+      "error": 2,
+      "need": 2,
+      "created_at": 2,
+      "appended": 2,
+      "try": 2,
+      "helping": 2,
+      "know": 2,
+      "m": 2,
+      "send": 2,
+      "including": 2,
+      "percentage": 2,
+      "mentioned": 2,
+      "compression": 2,
+      "standard": 2,
+      "respond": 2,
+      "went": 2,
+      "needed": 2,
+      "w": 2,
+      "parameter": 2,
+      "width": 2,
+      "variant": 2,
+      "total": 2,
+      "meme": 2,
+      "developers": 2,
+      "kind": 2,
+      "10096": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "b0e6c01321633f5e0de6ebf6676f018a218459a9",
+        "timestamp": "2024-01-08T14:05:01-03:00",
+        "date": "2024-01-08",
+        "author": "arthurfranca",
+        "path": "96.md",
+        "status": "Draft",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        "NIP 94",
+        "NIP 98"
+      ],
+      "body_extracted_llm": [
+        "NIP 16",
+        "NIP 94",
+        "NIP 98"
+      ]
+    }
+  }
+}

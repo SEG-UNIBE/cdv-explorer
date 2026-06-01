@@ -1,0 +1,239 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "66",
+      "title": "Relay Liveness Monitoring",
+      "author": [
+        "Sandwich"
+      ],
+      "created": "2025-03-03",
+      "status": "Draft",
+      "type": "Optional",
+      "layer": "Relay",
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Thu May 28 17:14:47 2026 -0300",
+    "total_commits": 10,
+    "git_history": [
+      [
+        "861675be8c7fc2578ee503a029a77f8e3697c3f3",
+        "Thu May 28 17:14:47 2026 -0300",
+        "fiatjaf"
+      ],
+      [
+        "1f9988ff9bd905505a81140d1b0144e3cc144057",
+        "Sat Mar 7 08:44:06 2026 -0600",
+        "alltheseas"
+      ],
+      [
+        "2f71cf74ae3e9bc78d4b599d8ba350cb8df95921",
+        "Tue Dec 30 19:04:37 2025 +0100",
+        "Vincenzo Imperati"
+      ],
+      [
+        "f5a15ea27e06ce8f5635117931f06318f532a713",
+        "Wed Dec 24 02:53:38 2025 +0900",
+        "mattn"
+      ],
+      [
+        "179e42101150616c07884a321a70c6d889285202",
+        "Mon Oct 13 14:26:14 2025 +0200",
+        "Sandwich"
+      ],
+      [
+        "b516adbf423a120045e07adf5358ae69f190f3c8",
+        "Sat Sep 20 12:39:40 2025 +0200",
+        "Sandwich"
+      ],
+      [
+        "0b45265a9385b83b8b78ca4d4fc4e83513d56983",
+        "Mon Aug 4 15:47:20 2025 +0000",
+        "hodlbod"
+      ],
+      [
+        "8cdfe98e7497716b3b211641e7137437212d193b",
+        "Wed Apr 23 19:31:08 2025 +0300",
+        "Awiteb"
+      ],
+      [
+        "d662d97c66da015b96eabf1cff691d6278297582",
+        "Tue Mar 4 19:00:26 2025 +0900",
+        "AsaiToshiya"
+      ],
+      [
+        "89fac599f68643cbd60b2ca14a53ef6582e4d475",
+        "Mon Mar 3 18:03:10 2025 +0100",
+        "Sandwich"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "relay": 24,
+      "s": 13,
+      "nip": 9,
+      "monitor": 9,
+      "timeout": 9,
+      "events": 7,
+      "11": 7,
+      "https": 6,
+      "nips": 6,
+      "t": 6,
+      "c": 6,
+      "monitors": 5,
+      "30166": 5,
+      "document": 5,
+      "github": 5,
+      "com": 5,
+      "nostr": 5,
+      "protocol": 5,
+      "values": 5,
+      "include": 5,
+      "pubkey": 5,
+      "tags": 5,
+      "open": 5,
+      "n": 5,
+      "g": 5,
+      "optional": 4,
+      "blob": 4,
+      "master": 4,
+      "md": 4,
+      "tag": 4,
+      "rtt": 4,
+      "milliseconds": 4,
+      "read": 4,
+      "write": 4,
+      "auth": 4,
+      "example": 4,
+      "52": 4,
+      "created_at": 4,
+      "signature": 4,
+      "kind": 4,
+      "frequency": 4,
+      "monitoring": 3,
+      "discovery": 3,
+      "content": 3,
+      "json": 3,
+      "round": 3,
+      "trip": 3,
+      "time": 3,
+      "type": 3,
+      "r": 3,
+      "publish": 3,
+      "index": 3,
+      "nip11": 3,
+      "3000": 3,
+      "inferred": 2,
+      "corresponding": 2,
+      "d": 2,
+      "url": 2,
+      "relays": 2,
+      "clearnet": 2,
+      "payment": 2,
+      "false": 2,
+      "geohash": 2,
+      "single": 2,
+      "cats": 2,
+      "dogs": 2,
+      "id": 2,
+      "eventid": 2,
+      "recent": 2,
+      "date": 2,
+      "ww8p1r4t8": 2,
+      "1": 2,
+      "announcements": 2,
+      "intent": 2,
+      "event": 2,
+      "checks": 2,
+      "conducted": 2,
+      "2": 2,
+      "provided": 2,
+      "dns": 2,
+      "geo": 2,
+      "clients": 2,
+      "trust": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "8cdfe98e7497716b3b211641e7137437212d193b",
+        "timestamp": "2025-04-23T09:31:08-07:00",
+        "date": "2025-04-23",
+        "author": "Awiteb",
+        "path": "66.md",
+        "status": "Draft",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        "NIP 11",
+        "NIP 52"
+      ],
+      "body_extracted_llm": [
+        "NIP 11",
+        "NIP 33",
+        "NIP 52",
+        "NIP 65"
+      ]
+    }
+  }
+}

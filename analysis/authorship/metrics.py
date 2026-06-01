@@ -33,6 +33,9 @@ def build_collaboration_network(nodes: List[Dict[str, Any]]) -> nx.Graph:
     graph = nx.Graph()
     edge_weights: Dict[Tuple[str, str], int] = defaultdict(int)
 
+    for author in _iter_authors(nodes):
+        graph.add_node(author)
+
     for node in nodes:
         authors = node.get("author")
         if not isinstance(authors, list):
@@ -72,6 +75,20 @@ def extract_authorship_metrics(nodes: List[Dict[str, Any]]) -> Dict[str, Any]:
         for k in sorted(contribution_distribution.keys())
     ]
 
+    bip_author_counts = Counter()
+    for node in nodes:
+        authors = node.get("author")
+        if isinstance(authors, list):
+            n = len([_clean_author_name(str(a)) for a in authors if _clean_author_name(str(a))])
+            bip_author_counts[n] += 1
+        else:
+            bip_author_counts[0] += 1
+    bip_author_count_histogram = [
+        {"author_count": k, "bip_count": bip_author_counts[k]}
+        for k in sorted(bip_author_counts.keys())
+        if k > 0
+    ]
+
     total_proposals = len({str(n.get("id")) for n in nodes if n.get("id") is not None})
     top_10 = author_counts.most_common(10)
     proposals_by_top_10 = sum(count for _, count in top_10)
@@ -89,6 +106,7 @@ def extract_authorship_metrics(nodes: List[Dict[str, Any]]) -> Dict[str, Any]:
         "top_authors": top_authors,
         "proposals_per_year": bips_per_year,
         "author_contribution_histogram": author_histogram,
+        "bip_author_count_histogram": bip_author_count_histogram,
         "top_10_share": {
             "total_proposals": total_proposals,
             "proposals_by_top_10_authors": proposals_by_top_10,
@@ -146,6 +164,7 @@ def prepare_authorship_payload(network_data: Dict[str, Any]) -> Dict[str, Any]:
         "top_authors": authorship["top_authors"],
         "bips_per_year": authorship["proposals_per_year"],
         "author_contribution_histogram": authorship["author_contribution_histogram"],
+        "bip_author_count_histogram": authorship["bip_author_count_histogram"],
         "top_10_share": {
             "total_bips": authorship["top_10_share"]["total_proposals"],
             "bips_by_top_10_authors": authorship["top_10_share"]["proposals_by_top_10_authors"],

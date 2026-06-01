@@ -1,35 +1,150 @@
-/* You can add global styles to this file, and also import other style files */
-
-// primeReact component styles and icons
 @import "primereact/resources/themes/lara-light-blue/theme.css";
 @import "primereact/resources/primereact.css";
 @import "primeicons/primeicons.css";
 @import "primeflex/primeflex.scss";
 
-
-
 @font-face {
   font-family: "Nova Round";
+  font-display: swap;
   src: local("Nova Round"),
     url(./fonts/NovaRound-Regular.ttf) format("truetype");
 }
 
 @font-face {
   font-family: "Roboto";
+  font-display: swap;
   src: local("Roboto"),
     url(./fonts/Roboto-Regular.ttf) format("truetype");
 }
 
+:root {
+  color-scheme: light;
+  --app-bg: #f2f5f9;
+  --app-dot: rgba(15, 23, 42, 0.08);
+  --app-text: #1b2838;
+  --app-text-muted: #52606d;
+  --app-surface: #ffffff;
+  --app-surface-subtle: #edf4fb;
+  --app-surface-elevated: #f6faff;
+  --app-border: #d3deea;
+  --app-shadow: 0 10px 30px rgba(15, 23, 42, 0.1);
+  --app-shadow-color: rgba(15, 23, 42, 0.14);
+  --app-shadow-spread: 12px;
+  --link-color: #2563eb;
+  --nav-bg: rgba(251, 251, 251, 0.92);
+  --nav-border: #e1e1e1;
+  --nav-brand: #1b2838;
+  --nav-link: var(--link-color);
+  --chart-text: #1f2933;
+  --chart-muted: #475467;
+  --chart-grid: #d7dee8;
+  --chart-axis: #cbd5e1;
+  --chart-contrast: #ffffff;
+  --chart-focus: #0f172a;
+  --chart-outline: #ffffff;
+  --chart-accent-blue: #4c78a8;
+  --chart-accent-blue-hover: #003f5c;
+  --chart-accent-orange: #f08c00;
+  --chart-accent-orange-hover: #e67700;
+  --tooltip-bg: #0f172a;
+  --tooltip-text: #ffffff;
+  --tooltip-border: rgba(100, 116, 139, 0.6);
+  --tooltip-shadow: 0 10px 24px rgba(15, 23, 42, 0.28);
+  --tooltip-link: #9bd1ff;
+  --wordcloud-hover: #003f5c;
+  --sk-shine: rgba(255, 255, 255, 0.72);
+}
+
+html[data-theme='dark'] {
+  color-scheme: dark;
+  --app-bg: #06101a;
+  --app-dot: rgba(148, 163, 184, 0.18);
+  --app-text: #e5edf5;
+  --app-text-muted: #9fb2c6;
+  --app-surface: #13202d;
+  --app-surface-subtle: #182736;
+  --app-surface-elevated: #1d2d3c;
+  --app-border: #31465d;
+  --app-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06), 0 18px 42px rgba(255, 255, 255, 0.04);
+  --app-shadow-color: rgba(255, 255, 255, 0.12);
+  --app-shadow-spread: 6px;
+  --nav-bg: rgba(8, 17, 27, 0.9);
+  --nav-border: #1d2c3c;
+  --nav-brand: #f3f8ff;
+  --link-color: #8ec5ff;
+  --nav-link: var(--link-color);
+  --chart-text: #e5edf5;
+  --chart-muted: #bac7d6;
+  --chart-grid: rgba(148, 163, 184, 0.3);
+  --chart-axis: #60758b;
+  --chart-contrast: #dbe7f3;
+  --chart-focus: #f8fafc;
+  --chart-outline: #08111b;
+  --chart-accent-blue: #8ec5ff;
+  --chart-accent-blue-hover: #bfdbfe;
+  --chart-accent-orange: #f4a261;
+  --chart-accent-orange-hover: #f6b26b;
+  --tooltip-bg: #0d1724;
+  --tooltip-text: #f8fafc;
+  --tooltip-border: rgba(148, 163, 184, 0.46);
+  --tooltip-shadow: 0 18px 40px rgba(2, 8, 23, 0.48);
+  --tooltip-link: #9bd1ff;
+  --wordcloud-hover: #bfdbfe;
+  --sk-shine: rgba(255, 255, 255, 0.04);
+  --surface-a: #13202d;
+  --surface-b: #0b1520;
+  --surface-c: #182736;
+  --surface-d: #27405a;
+  --surface-e: #1d2d3c;
+  --surface-f: #0b1520;
+  --surface-ground: #08111b;
+  --surface-section: #08111b;
+  --surface-card: #13202d;
+  --surface-overlay: #1d2d3c;
+  --surface-border: #31465d;
+  --surface-hover: rgba(142, 197, 255, 0.08);
+  --maskbg: rgba(2, 8, 23, 0.7);
+  --focus-ring: 0 0 0 0.2rem rgba(142, 197, 255, 0.2);
+  --text-color: #e5edf5;
+  --text-color-secondary: #9fb2c6;
+  --primary-color: #8ec5ff;
+  --primary-color-text: #08111b;
+  --highlight-bg: rgba(142, 197, 255, 0.18);
+  --highlight-text-color: #eff6ff;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
 body {
-  background-color: #fbfbfb;
-  background-image: radial-gradient(rgba(0, 0, 0, 0.1) 5%, transparent 0);
+  margin: 0;
+  background-color: var(--app-bg);
+  background-image: radial-gradient(var(--app-dot) 5%, transparent 0);
   background-size: 30px 30px;
+  color: var(--app-text);
+  transition: background-color 160ms ease, color 160ms ease;
+}
+
+body,
+button,
+input,
+select,
+textarea {
+  font-family: Roboto, sans-serif;
+}
+
+a {
+  color: var(--link-color);
 }
 
 h1,
 h2,
 h3 {
-  font-family: "Nova Round", Sans-serif;
+  font-family: "Nova Round", sans-serif;
+  color: var(--app-text);
 }
 
 h1 {
@@ -40,23 +155,11 @@ h1 {
   }
 }
 
-p {
-  font-family: Roboto, sans-serif;
-  line-height: 25px;
-  font-size: 1.2rem;
-}
-
-p-card {
-  h2 {
-    margin-top: 0;
-  }
-}
-
 h2 {
   font-size: 2rem;
   margin-top: 1rem;
   margin-bottom: 0.75rem;
-  
+
   @media screen and (max-width: 768px) {
     font-size: 1rem;
   }
@@ -64,11 +167,213 @@ h2 {
 
 h3 {
   font-size: 1.6rem;
-  margin-top: 0.0rem;
+  margin-top: 0;
   margin-bottom: 0.75rem;
   line-height: 1.2;
 
   @media screen and (max-width: 768px) {
     font-size: 1.15rem;
+  }
+}
+
+p {
+  font-size: 1.2rem;
+  line-height: 25px;
+  color: var(--app-text);
+}
+
+.App {
+  min-height: 100vh;
+  color: var(--app-text);
+}
+
+.p-card,
+.p-dialog,
+.p-dropdown-panel,
+.p-tooltip,
+.p-datatable .p-datatable-wrapper,
+.p-inputtext,
+.p-dropdown,
+.p-button {
+  transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease, box-shadow 160ms ease;
+}
+
+.p-dialog .p-dialog-content,
+.p-dialog .p-dialog-header {
+  background: var(--app-surface);
+  color: var(--app-text);
+}
+
+.p-dialog .p-dialog-header {
+  border-bottom: 1px solid var(--app-border);
+}
+
+.p-dialog .p-dialog-header .p-dialog-header-icon {
+  color: var(--app-text-muted);
+}
+
+.p-inputtext,
+.p-dropdown {
+  background: var(--app-surface);
+  border-color: var(--app-border);
+  color: var(--app-text);
+}
+
+.p-inputtext::placeholder,
+.p-dropdown .p-dropdown-label.p-placeholder {
+  color: var(--app-text-muted);
+}
+
+.p-inputtext:enabled:hover,
+.p-dropdown:not(.p-disabled):hover {
+  border-color: var(--primary-color);
+}
+
+.p-inputtext:enabled:focus,
+.p-dropdown:not(.p-disabled).p-focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--primary-color) 30%, transparent);
+}
+
+.p-dropdown .p-dropdown-label,
+.p-dropdown .p-dropdown-trigger {
+  color: var(--app-text);
+}
+
+.p-dropdown-panel {
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
+  box-shadow: var(--app-shadow);
+}
+
+.p-dropdown-panel .p-dropdown-items {
+  padding: 0.35rem;
+}
+
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item {
+  color: var(--app-text);
+  border-radius: 0.6rem;
+}
+
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight,
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-focus,
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item:hover {
+  background: var(--highlight-bg);
+  color: var(--app-text);
+}
+
+.p-datatable {
+  color: var(--app-text);
+}
+
+.p-datatable .p-datatable-header,
+.p-datatable .p-datatable-footer {
+  background: transparent;
+  color: var(--app-text);
+  border-color: var(--app-border);
+}
+
+.p-datatable .p-datatable-thead > tr > th {
+  background: var(--app-surface-subtle);
+  color: var(--app-text);
+  border-color: var(--app-border);
+}
+
+.p-datatable .p-sortable-column .p-sortable-column-icon,
+.p-datatable .p-sortable-column .p-column-title {
+  color: inherit;
+}
+
+.p-datatable .p-datatable-tbody > tr {
+  background: var(--app-surface);
+  color: var(--app-text);
+  transition: background-color 140ms ease, color 140ms ease;
+}
+
+.p-datatable .p-datatable-tbody > tr > td {
+  border-color: var(--app-border);
+}
+
+.p-datatable .p-datatable-tbody > tr:hover {
+  background: var(--app-surface-subtle);
+}
+
+.p-datatable .p-datatable-tbody > tr.p-highlight {
+  background: var(--highlight-bg);
+  color: var(--app-text);
+}
+
+.p-card svg text {
+  fill: var(--chart-text);
+}
+
+.p-card svg .domain,
+.p-card svg .tick line {
+  stroke: var(--chart-grid);
+}
+
+/* ── Dark theme: PrimeReact component overrides ─────────────────────── */
+html[data-theme='dark'] {
+  /* InputSwitch — off-state track is hardcoded #d1d5db in lara-light-blue */
+  .p-inputswitch .p-inputswitch-slider {
+    background: var(--surface-d);
+  }
+
+  .p-inputswitch:not(.p-disabled):has(.p-inputswitch-input:hover) .p-inputswitch-slider {
+    background: color-mix(in srgb, var(--surface-d) 80%, var(--primary-color) 20%);
+  }
+
+  .p-inputswitch.p-highlight .p-inputswitch-slider {
+    background: var(--primary-color);
+  }
+
+  .p-inputswitch:not(.p-disabled):has(.p-inputswitch-input:hover).p-highlight .p-inputswitch-slider {
+    background: color-mix(in srgb, var(--primary-color) 85%, white 15%);
+  }
+
+  /* Tags — severity backgrounds are hardcoded saturated colors */
+  .p-tag {
+    background: color-mix(in srgb, var(--primary-color) 22%, var(--app-surface-elevated));
+    color: var(--primary-color);
+  }
+
+  .p-tag.p-tag-success {
+    background: color-mix(in srgb, #22c55e 18%, var(--app-surface-elevated));
+    color: #86efac;
+  }
+
+  .p-tag.p-tag-warning {
+    background: color-mix(in srgb, #f97316 18%, var(--app-surface-elevated));
+    color: #fdba74;
+  }
+
+  .p-tag.p-tag-info {
+    background: color-mix(in srgb, #0ea5e9 18%, var(--app-surface-elevated));
+    color: #7dd3fc;
+  }
+
+  .p-tag.p-tag-danger {
+    background: color-mix(in srgb, #ef4444 18%, var(--app-surface-elevated));
+    color: #fca5a5;
+  }
+
+  .p-tag.p-tag-secondary {
+    background: var(--surface-d);
+    color: var(--app-text-muted);
+  }
+
+  /* Secondary text buttons — hardcoded color: #64748b is invisible in dark */
+  .p-button.p-button-secondary.p-button-text,
+  .p-button.p-button-secondary.p-button-text:not(:disabled):hover,
+  .p-button.p-button-secondary.p-button-text:not(:disabled):active {
+    color: var(--app-text-muted);
+  }
+
+  .p-button.p-button-secondary.p-button-text:not(:disabled):hover {
+    background: var(--surface-hover);
+  }
+
+  .p-button.p-button-secondary.p-button-text:not(:disabled):active {
+    background: color-mix(in srgb, var(--surface-hover) 200%, transparent);
   }
 }

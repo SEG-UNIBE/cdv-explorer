@@ -584,28 +584,25 @@ def assess_bip3_compliance(_preamble: Dict[str, Any], file_content: str) -> Dict
     return _summarize_checks(checks)
 
 
-def assess_compliance(
-    preamble: Dict[str, Any],
-    file_content: str,
-    *,
-    required_fields: List[str],
-    expected_headlines: Dict[str, int],
-) -> Dict[str, Any]:
-    bip2 = assess_bip2_compliance(
-        preamble,
-        file_content,
-        required_fields=required_fields,
-        expected_headlines=expected_headlines,
-    )
-    bip3 = assess_bip3_compliance(preamble, file_content)
-    combined_summary = _summarize_checks([*bip2["checks"], *bip3["checks"]])
+def build_compliance_payload(checks: List[Dict[str, Any]]) -> Dict[str, Any]:
+    """Turn a flat list of check dicts into a scored compliance payload.
 
-    return {
-        "score": combined_summary["score"],
-        "passed_checks": combined_summary["passed_checks"],
-        "failed_checks": combined_summary["failed_checks"],
-        "skipped_checks": combined_summary["skipped_checks"],
-        "total_checks": combined_summary["total_checks"],
-        "bip2": bip2,
-        "bip3": bip3,
+    Groups checks by their 'standard' field, summarizes each group, and
+    computes an overall score across all checks.  The result is stored in
+    insights.formal_compliance in each proposal JSON.
+    """
+    by_standard: Dict[str, List[Dict[str, Any]]] = {}
+    for check in checks:
+        by_standard.setdefault(check.get("standard", ""), []).append(check)
+
+    overall = _summarize_checks(checks)
+    payload: Dict[str, Any] = {
+        "score": overall["score"],
+        "passed_checks": overall["passed_checks"],
+        "failed_checks": overall["failed_checks"],
+        "skipped_checks": overall["skipped_checks"],
+        "total_checks": overall["total_checks"],
     }
+    for standard, std_checks in sorted(by_standard.items()):
+        payload[standard] = _summarize_checks(std_checks)
+    return payload

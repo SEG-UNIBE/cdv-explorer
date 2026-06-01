@@ -1,0 +1,157 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "86",
+      "title": "Relay Management API",
+      "author": [
+        "fiatjaf_"
+      ],
+      "created": "2024-11-25",
+      "status": "Draft",
+      "type": "Optional",
+      "layer": null,
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Thu Feb 26 16:52:35 2026 -0800",
+    "total_commits": 2,
+    "git_history": [
+      [
+        "d2f7c9f2ab113d42a92978ebf692490965b0f3f9",
+        "Thu Feb 26 16:52:35 2026 -0800",
+        "hodlbod"
+      ],
+      [
+        "73f65133fcdcbf9f4d27cc7097963797c6250cd7",
+        "Mon Nov 25 13:21:47 2024 -0300",
+        "fiatjaf_"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "true": 26,
+      "params": 21,
+      "result": 21,
+      "reason": 17,
+      "optional": 14,
+      "boolean": 13,
+      "set": 13,
+      "32": 10,
+      "byte": 10,
+      "hex": 10,
+      "array": 8,
+      "json": 5,
+      "objects": 5,
+      "relay": 4,
+      "request": 4,
+      "method": 4,
+      "public": 4,
+      "key": 4,
+      "id": 4,
+      "ip": 4,
+      "response": 3,
+      "event": 3,
+      "new": 3,
+      "kind": 3,
+      "number": 3,
+      "address": 3,
+      "authorization": 3,
+      "nip": 2,
+      "management": 2,
+      "api": 2,
+      "rpc": 2,
+      "http": 2,
+      "uri": 2,
+      "s": 2,
+      "websocket": 2,
+      "header": 2,
+      "return": 2,
+      "error": 2,
+      "methods": 2,
+      "supported": 2,
+      "pubkey": 2,
+      "url": 2,
+      "98": 2,
+      "tag": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "73f65133fcdcbf9f4d27cc7097963797c6250cd7",
+        "timestamp": "2024-11-25T13:21:47-03:00",
+        "date": "2024-11-25",
+        "author": "fiatjaf_",
+        "path": "86.md",
+        "status": "Draft",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        "NIP 98"
+      ],
+      "body_extracted_llm": [
+        "NIP 1",
+        "NIP 98"
+      ]
+    }
+  }
+}

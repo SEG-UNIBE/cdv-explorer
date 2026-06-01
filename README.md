@@ -163,7 +163,7 @@ python main.py ecosystems add-source bitcoin  # add a second IP catalog to an ec
 The pipeline transforms raw IP corpora into versioned, frontend-ready datasets in four stages: **Harvest** → **Preprocess** → **Analysis** → **Postprocess**.
 Ecosystem-specific logic is confined to the first two stages, keeping the analysis and frontend layers fully reusable across ecosystems.
 
-![CDV-Explorer pipeline](./architecture_mining_pipeline_ext.png)
+![CDV-Explorer pipeline](./assets/architecture_mining_pipeline_ext.png)
 
 ### Project structure
 

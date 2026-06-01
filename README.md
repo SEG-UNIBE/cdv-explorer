@@ -1,10 +1,11 @@
-# **CDV Explorer**
+# **CDV-Explorer**
 
 _Modern decentralized software ecosystems evolve through crowdsourced improvement proposals (IPs) that are continuously shaped and autonomously implemented by independent actors. As a result, these ecosystems exhibit so-called **Community-Driven Variability (CDV)** [^1], a novel paradigm that extends beyond traditional variability-intensive systems. This tool allows to explore the proposal space of such ecosystems by providing interactive visualizations and insights about their evolution, authorship, classification, conformity, and inter-proposal relationships._
 
+
 <div align="center">
-  <a href="https://ranonymousse.github.io/cdv-explorer/#/">
-    <img width="100%" src="./assets/thumb.png" alt="CDV Explorer" />
+  <a href="https://seg-unibe.github.io/cdv-explorer/#/">
+    <img width="100%" src="./assets/thumb.png" alt="CDV-Explorer" />
   </a>
 </div>
 
@@ -22,10 +23,10 @@ _Modern decentralized software ecosystems evolve through crowdsourced improvemen
 </br>
 
 <div align="center">
-  <a href="https://github.com/ranonymousse/cdv-explorer/actions/workflows/deploy-react-pages.yml">
-    <img src="https://img.shields.io/github/actions/workflow/status/ranonymousse/cdv-explorer/deploy-react-pages.yml?style=flat&label=deploy&logo=githubactions&logoColor=white" alt="Deploy" />
+  <a href="https://github.com/SEG-UNIBE/cdv-explorer/actions/workflows/deploy-react-pages.yml">
+    <img src="https://img.shields.io/github/actions/workflow/status/SEG-UNIBE/cdv-explorer/deploy-react-pages.yml?style=flat&label=deploy&logo=githubactions&logoColor=white" alt="Deploy" />
   </a>
-  <a href="https://ranonymousse.github.io/cdv-explorer/#/">
+  <a href="https://seg-unibe.github.io/cdv-explorer/#/">
     <img src="https://img.shields.io/badge/GitHub%20Pages-live-brightgreen?style=flat&logo=githubpages&logoColor=white" alt="Live Demo" />
   </a>
   <a href="./LICENSE">
@@ -38,6 +39,7 @@ _Modern decentralized software ecosystems evolve through crowdsourced improvemen
   <img src="https://img.shields.io/badge/React-18-3776AB?style=flat&logo=react&logoColor=white" alt="React 18" />
   <img src="https://img.shields.io/badge/Node.js-22%2B-3776AB?style=flat&logo=nodedotjs&logoColor=white" alt="Node.js 22+" />
   <img src="https://img.shields.io/badge/D3.js-v7-3776AB?style=flat&logo=d3dotjs&logoColor=white" alt="D3.js" />
+  <a href="https://youtu.be/-YdBPHsyymU"><img src="https://img.shields.io/badge/Demo-Video-red.svg?logo=youtube&logoColor=white" alt="Demo Video" /></a>
 </div>
 
 </br>
@@ -45,7 +47,7 @@ _Modern decentralized software ecosystems evolve through crowdsourced improvemen
 
 ## Introduction
 
-CDV Explorer is an ecosystem-agnostic pipeline for mining and analysing improvement proposals (IPs).
+CDV-Explorer is an ecosystem-agnostic pipeline for mining and analysing improvement proposals (IPs).
 As of now, two CDV-exhibiting ecosystems are integrated:
 
 | Ecosystem | Proposals | Source repository |
@@ -53,7 +55,8 @@ As of now, two CDV-exhibiting ecosystems are integrated:
 | **Bitcoin** | Bitcoin Improvement Proposals (BIPs) | [bitcoin/bips](https://github.com/bitcoin/bips) |
 | **Nostr** | Nostr Implementation Possibilities (NIPs) | [nostr-protocol/nips](https://github.com/nostr-protocol/nips) |
 
-The live demo is deployed at [ranonymousse.github.io/cdv-explorer](https://ranonymousse.github.io/cdv-explorer/#/).
+The live site is available at [seg-unibe.github.io/cdv-explorer](https://seg-unibe.github.io/cdv-explorer/#/), with a demo video on [YouTube](https://youtu.be/-YdBPHsyymU).
+CDV-Explorer was applied in an empirical study of the Bitcoin ecosystem, which has been accepted for publication [^2].
 
 </br>
 
@@ -68,7 +71,7 @@ The live demo is deployed at [ranonymousse.github.io/cdv-explorer](https://ranon
 ### 1 - Clone the repository
 
 ```bash
-git clone https://github.com/ranonymousse/cdv-explorer.git
+git clone https://github.com/SEG-UNIBE/cdv-explorer.git
 cd cdv-explorer
 ```
 
@@ -120,7 +123,7 @@ npm run build
 
 ## CLI Reference
 
-CDV Explorer is driven by a [Typer](https://typer.tiangolo.com/) CLI.
+CDV-Explorer is driven by a [Typer](https://typer.tiangolo.com/) CLI.
 Run `python main.py --help` for a full overview.
 
 ### `run` - execute the full pipeline
@@ -160,7 +163,7 @@ python main.py ecosystems add-source bitcoin  # add a second IP catalog to an ec
 The pipeline transforms raw IP corpora into versioned, frontend-ready datasets in four stages: **Harvest** → **Preprocess** → **Analysis** → **Postprocess**.
 Ecosystem-specific logic is confined to the first two stages, keeping the analysis and frontend layers fully reusable across ecosystems.
 
-![CDV Explorer pipeline](./architecture_mining_pipeline_ext.png)
+![CDV-Explorer pipeline](./architecture_mining_pipeline_ext.png)
 
 ### Project structure
 
@@ -258,4 +261,6 @@ cd .. && rm -rf cdv-explorer
 </br>
 </br>
 
-[^1]: Bögli, R. et al. _Community-driven variability: characterizing a new software variability paradigm._ Autom Softw Eng **33**, 67 (2026). https://doi.org/10.1007/s10515-026-00594-0
+[^1]: Bögli, R. et al. _Community-driven variability: characterizing a new software variability paradigm._ Autom Softw Eng **33**, 67 (2026). [10.1007/s10515-026-00594-0](https://doi.org/10.1007/s10515-026-00594-0)
+
+[^2]: Bögli, R., Boll, A., Kehrer, T. _Exploring Crowdsourced Feature Specifications: The Bitcoin Case._ VARIABILITY (2026). Accepted for publication. [Preprint](https://romanboegli.ch/assets/pdf/xxxxxxxxx.pdf)

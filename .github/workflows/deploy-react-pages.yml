@@ -1,4 +1,4 @@
-name: Deploy React App to GitHub Pages
+name: CI / Deploy React App to GitHub Pages
 
 on:
   push:
@@ -8,11 +8,24 @@ on:
     paths:
       - '.github/workflows/deploy-react-pages.yml'
       - 'react/**'
-      - 'scripts/validate_snapshots.py'
+      - 'main.py'
+      - 'scripts/**'
+      - 'tests/**'
+      - 'requirements.txt'
+      - 'pytest.ini'
       - 'ip_data/**/01_harvest/**'
       - 'ip_data/**/02_preprocess/**'
       - 'ip_data/**/03_analysis/**'
       - 'ip_data/**/04_postprocess/**'
+  pull_request:
+    branches:
+      - main
+      - master
+    paths:
+      - '**.py'
+      - 'requirements.txt'
+      - 'pytest.ini'
+      - 'react/**'
   workflow_dispatch:
 
 permissions:
@@ -25,6 +38,22 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt pytest
+
+      - name: Run tests
+        run: python -m pytest tests/ -v
+
   validate:
     runs-on: ubuntu-latest
     steps:
@@ -38,16 +67,14 @@ jobs:
         run: python scripts/validate_snapshots.py
 
   build:
-    needs: validate
+    needs: [test, validate]
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: react
     steps:
       - uses: actions/checkout@v5
 
       - name: Setup Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
         with:
           enablement: true
 
@@ -59,12 +86,14 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+        working-directory: react
 
       - name: Build app
         run: npm run build
+        working-directory: react
 
       - name: Prevent Jekyll processing
-        run: touch build/.nojekyll
+        run: touch react/build/.nojekyll
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4

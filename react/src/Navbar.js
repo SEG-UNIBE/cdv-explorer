@@ -6,7 +6,7 @@ import { FaGithub } from 'react-icons/fa';
 import { useTheme } from './theme';
 import './Navbar.scss';
 
-const REPOSITORY_URL = 'https://github.com/ranonymousse/cdv-explorer';
+const REPOSITORY_URL = 'https://github.com/SEG-UNIBE/cdv-explorer';
 
 const Navbar = () => {
   const [mobileMenuVisible, setMobileMenuVisible] = useState(false);

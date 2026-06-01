@@ -1,0 +1,636 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "51",
+      "title": "Lists",
+      "author": [
+        "fiatjaf",
+        "monlovesmango"
+      ],
+      "created": "2023-03-09",
+      "status": "Draft",
+      "type": "Optional",
+      "layer": null,
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Thu May 28 16:51:13 2026 -0300",
+    "total_commits": 65,
+    "git_history": [
+      [
+        "06cccbca3b190304650ac2efb0caff0325486348",
+        "Thu May 28 16:51:13 2026 -0300",
+        "fiatjaf"
+      ],
+      [
+        "407625bf771fe4cdfa67342b68333485c9549c7e",
+        "Mon May 18 11:10:57 2026 +0300",
+        "Pablo Fernandez"
+      ],
+      [
+        "59c046fd42aabe7574304c687dae80f50edda662",
+        "Wed Apr 22 12:01:43 2026 -0300",
+        "fiatjaf"
+      ],
+      [
+        "420f0b181434c348e487c6ffaa8fea6111c10210",
+        "Wed Apr 1 14:17:44 2026 -0500",
+        "Alex Gleason"
+      ],
+      [
+        "ad8f29090795c03ad68c0b29e8e1af906c0e614d",
+        "Tue Mar 31 10:24:51 2026 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "90a60bd210670787afb1f14caab8fd8d70028ea6",
+        "Tue Feb 3 22:22:08 2026 +0900",
+        "mattn"
+      ],
+      [
+        "3afdad183e25ab1559f05802eaab253dbbd5ec28",
+        "Sun Dec 21 16:49:43 2025 +0100",
+        "SondreB"
+      ],
+      [
+        "f310614122866297d1e9438b37e327f0189410e8",
+        "Tue Dec 2 01:12:23 2025 +0000",
+        "KotlinGeekDev"
+      ],
+      [
+        "844c6fe15c07362d56233192dc3a49b66a709166",
+        "Fri Nov 21 18:04:54 2025 -0500",
+        "Vitor Pamplona"
+      ],
+      [
+        "8b541fe8cd79d58d65e26b63cdb832ecbc29ae7d",
+        "Wed Sep 10 18:32:39 2025 +0800",
+        "RΞDKAZ⚡"
+      ],
+      [
+        "1f4d6d1c46dd9886e939fb511788870d80b7420e",
+        "Mon Aug 25 12:09:44 2025 -0400",
+        "Vitor Pamplona"
+      ],
+      [
+        "9afca6c4dcd3a95f1e05b8452eb3000e50de5e7b",
+        "Thu Jul 3 19:45:38 2025 -0300",
+        "fiatjaf"
+      ],
+      [
+        "1c61ac29aafcb71ffd40e1ea32f664990231eb6e",
+        "Sat May 17 20:05:06 2025 +0200",
+        "Paulo Cunha"
+      ],
+      [
+        "553c1c77c004329206a3ba851f3a68367d9edc9a",
+        "Wed May 14 09:27:59 2025 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "564814ac7dccf7f7f9ad3af63fbc5a89fd7397eb",
+        "Thu May 8 22:51:09 2025 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "ccd02f2612292825e7f7caf0edb41dfc5f33f91e",
+        "Fri May 9 09:50:12 2025 +0800",
+        "Cody Tseng"
+      ],
+      [
+        "8e6f2c06c3ec88a6c478a783825ff1b07e1972fa",
+        "Fri Feb 14 11:14:43 2025 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "6a4b125ad771ac9da4a1347a1ed41185e30ad0cf",
+        "Thu Jan 30 23:21:37 2025 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "2561566af79e6cd6dd82c4980a711847f27dba3f",
+        "Wed Jan 8 20:28:46 2025 +0900",
+        "Asai Toshiya"
+      ],
+      [
+        "c91098af862630418aeaa1e94752d2ddb03dccdb",
+        "Thu Jan 2 21:04:36 2025 +0000",
+        "Pablo Fernandez"
+      ],
+      [
+        "a1ca7a194b6d8f249b7437c0082682c2a7c074ab",
+        "Tue Dec 10 14:11:43 2024 -0800",
+        "Jon Staab"
+      ],
+      [
+        "ed128aef46306dc390b9dfb8efc2e7ea9815d344",
+        "Tue Dec 10 15:02:54 2024 -0300",
+        "franzap"
+      ],
+      [
+        "624b989f9f3b0c07d338ec42765351c24f2123cf",
+        "Mon Dec 9 10:00:04 2024 -0500",
+        "Josh Brown"
+      ],
+      [
+        "64624a62eac4b2ee3e6b9da34c1aa77a33e20852",
+        "Fri Nov 22 13:58:49 2024 -0800",
+        "Jon Staab"
+      ],
+      [
+        "e6552476aa2e5ca7256be572a9aa226ec8a022ee",
+        "Tue Sep 3 20:41:31 2024 +0330",
+        "kehiy"
+      ],
+      [
+        "ca3c52e3e74f0a4679f1c6c0d9ac6461ea748d2d",
+        "Tue Aug 20 12:56:05 2024 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "61d251b3a49cb7a1fcc7524855b760f369696471",
+        "Tue Aug 20 19:28:17 2024 +0900",
+        "Asai Toshiya"
+      ],
+      [
+        "428a4779d7c4f4c2ff53815e8958e7cf99d69d26",
+        "Mon Aug 5 10:43:24 2024 -0300",
+        "fiatjaf"
+      ],
+      [
+        "218fbb1cc7ac900fd256f666cb6add590cabb24a",
+        "Thu May 2 11:04:55 2024 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "e97df1410391dd04fdbf9695932275a9d763940c",
+        "Sat Apr 13 12:39:24 2024 +0900",
+        "雪猫"
+      ],
+      [
+        "5b2461eb01f784d546f77cfc21af26bf7e4b6670",
+        "Wed Feb 28 11:50:54 2024 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "3f13eb34bf21f693ee7a8ddaba19229600fd323e",
+        "Tue Feb 13 12:40:57 2024 +0000",
+        "franzap"
+      ],
+      [
+        "d8d75d9b19e6c66f7d75c771e784cd9dee4d2320",
+        "Tue Jan 16 23:28:23 2024 +0900",
+        "Asai Toshiya"
+      ],
+      [
+        "884ea3d8b87fc9c1e0059045aa69f35648dd3593",
+        "Tue Jan 9 18:20:21 2024 -0500",
+        "Vitor Pamplona"
+      ],
+      [
+        "ad40fbdab3c01be0fe553d8da41ff60863b9c4f0",
+        "Sun Jan 7 20:00:04 2024 +0000",
+        "zmeyer44"
+      ],
+      [
+        "13c9202ba39e351a08d034db6cd9194d7c989949",
+        "Sun Jan 7 15:32:03 2024 +0000",
+        "zmeyer44"
+      ],
+      [
+        "3d8652ea147facb07adb51031e6b21f7e663dc10",
+        "Mon Jan 1 12:21:50 2024 -0600",
+        "Alex Gleason"
+      ],
+      [
+        "7822a8b12670312aff104ddc03066425882f739d",
+        "Sun Nov 19 14:47:02 2023 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "33a719f34507bf2cbc6717eb5e4b9464daaad23a",
+        "Sun Nov 19 07:17:11 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "5e6e7a2bc85de7d251b2d7d111c355a9e5ddd0e4",
+        "Sat Nov 18 11:36:20 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "2d678bcd5a1beb56097fb9af037e1fe2b2598c5e",
+        "Sat Nov 18 11:35:32 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "4a77fc5c402ec6c4cbdb574f9260e62fd2fc7bf4",
+        "Thu Nov 16 15:50:39 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "2a0b701ff77d4ffd686661d829b7b7091e29589b",
+        "Thu Nov 16 12:26:50 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "37f6cbb775126b386414220f783ca0f5f85e7614",
+        "Wed Nov 15 21:42:51 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "31382e57a1fabea855300461e7ef2dc751aaba61",
+        "Wed Nov 15 20:52:10 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "6c3eebf510cd7adb5db6a2598ffb5796693fc4dd",
+        "Wed Nov 15 20:06:49 2023 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "cd598bad5b90eba56eea67bfa512038112fb1ac8",
+        "Wed Nov 15 20:06:00 2023 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "804ee187c2c18d6896ff2ef4e001eb55bd1e7af6",
+        "Wed Nov 15 15:39:23 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "4db99145d7ae9df84f3d99681fa2df8320702a75",
+        "Wed Nov 15 15:34:46 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "61b736574cde8e954efe70da3c8c9116297cebf0",
+        "Wed Nov 15 15:32:22 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "54befcc09a3fdd804ee3f98a8a670c582cd101cc",
+        "Wed Nov 15 15:32:09 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "cf1b17280f5ba97c7f3bf1f699494f1551de8064",
+        "Wed Nov 15 08:24:46 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "1bbd87c42fe6ca6caa7582fdb89a355b6dfc70f4",
+        "Wed Nov 15 07:33:26 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "da05b5d9150200cec5a498ac180b6391abeddd69",
+        "Wed Nov 15 00:47:15 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "5dc6071978bc7c2dcee807d16ef085192971ac27",
+        "Wed Nov 15 00:22:09 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "f1433e0f0cb28d17102b530081b48d47e0ee38ac",
+        "Tue Nov 14 18:38:48 2023 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "867132ce9ac889258cdb46cf73531e8892f46ec4",
+        "Thu Aug 17 16:21:21 2023 +0200",
+        "gzuuus"
+      ],
+      [
+        "50b63c26c83ffe892c8698e9ea2eed88a3e6b9a0",
+        "Thu Aug 17 13:45:44 2023 +0200",
+        "gzuuus"
+      ],
+      [
+        "2ba0eca44344a770b5ad24f20e749864cddf3518",
+        "Tue Aug 15 18:32:30 2023 +0200",
+        "gzuuus"
+      ],
+      [
+        "72bb8a128b2d7d3c2c654644cd68d0d0fe58a3b1",
+        "Sun Aug 13 13:47:45 2023 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "97b58ccc36a8360a099e4f905fc9bc616bc03f31",
+        "Fri Apr 14 21:24:25 2023 +0900",
+        "Yasuhiro Matsumoto"
+      ],
+      [
+        "3cec80d99ebbee6b72aae31f1856181d04971244",
+        "Fri Apr 7 17:38:03 2023 +0530",
+        "vivganes"
+      ],
+      [
+        "8b70e83b377d835b5ae570c14b697da2881d40d9",
+        "Mon Mar 13 11:53:06 2023 +0900",
+        "jiftechnify"
+      ],
+      [
+        "92d087bbc3883eec1962146f016f12649f6baf9b",
+        "Thu Mar 9 15:56:17 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "30daaedbdb48c7583843a12d3496ced311b9986a",
+        "Thu Mar 9 11:16:57 2023 -0600",
+        "monlovesmango"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "kind": 36,
+      "nip": 26,
+      "relay": 23,
+      "md": 22,
+      "user": 18,
+      "sets": 17,
+      "e": 16,
+      "p": 14,
+      "relays": 13,
+      "pubkeys": 12,
+      "lists": 11,
+      "list": 10,
+      "event": 10,
+      "groups": 10,
+      "users": 9,
+      "clients": 8,
+      "items": 7,
+      "tags": 7,
+      "example": 7,
+      "notes": 7,
+      "set": 7,
+      "d": 7,
+      "public": 6,
+      "content": 6,
+      "standard": 6,
+      "list_": 6,
+      "1": 6,
+      "30023": 6,
+      "articles": 6,
+      "urls": 6,
+      "badge": 6,
+      "emoji": 6,
+      "optional": 5,
+      "events": 5,
+      "t": 5,
+      "tag": 5,
+      "follow": 5,
+      "id": 5,
+      "curation": 5,
+      "software": 5,
+      "app": 5,
+      "json": 4,
+      "use": 4,
+      "description": 4,
+      "mute": 4,
+      "hashtags": 4,
+      "definitions": 4,
+      "58": 4,
+      "29": 4,
+      "group": 4,
+      "30": 4,
+      "17": 4,
+      "authors": 4,
+      "54": 4,
+      "podcasts": 4,
+      "f4": 4,
+      "categorized": 4,
+      "pubkey": 4,
+      "created_at": 4,
+      "sig": 4,
+      "com": 4,
+      "32267": 4,
+      "draft": 3,
+      "things": 3,
+      "references": 3,
+      "private": 3,
+      "array": 3,
+      "encrypted": 3,
+      "44": 3,
+      "04": 3,
+      "meaning": 3,
+      "profile": 3,
+      "_mute": 3,
+      "feeds": 3,
+      "expected": 3,
+      "hint": 3,
+      "petname": 3,
+      "10000": 3,
+      "bookmarks": 3,
+      "communities": 3,
+      "badges": 3,
+      "url": 3,
+      "topics": 3,
+      "interest": 3,
+      "wiki": 3,
+      "34": 3,
+      "bookmark": 3,
+      "podcast": 3,
+      "defined": 3,
+      "ui": 3,
+      "different": 3,
+      "picked": 3,
+      "interesting": 3,
+      "belonging": 3,
+      "category": 3,
+      "release": 3,
+      "application": 3,
+      "30001": 3,
+      "set_": 3,
+      "d6dc95542e18b8b7aec2f14610f55c335abebec76f3db9e58c254661d0593a0c": 3,
+      "contain": 2,
+      "specified": 2,
+      "shared": 2,
+      "key": 2,
+      "s": 2,
+      "stored": 2,
+      "deprecated": 2,
+      "encryption": 2,
+      "iv": 2,
+      "rely": 2,
+      "want": 2,
+      "receive": 2,
+      "02": 2,
+      "string": 2,
+      "10001": 2,
+      "showcase": 2,
+      "read": 2,
+      "65": 2,
+      "10003": 2,
+      "wants": 2,
+      "10004": 2,
+      "72": 2,
+      "28": 2,
+      "40": 2,
+      "search": 2,
+      "30009": 2,
+      "8": 2,
+      "awards": 2,
+      "30008": 2,
+      "favorite": 2,
+      "30002": 2,
+      "nip44": 2,
+      "37": 2,
+      "pointers": 2,
+      "30015": 2,
+      "media": 2,
+      "multimedia": 2,
+      "photos": 2,
+      "short": 2,
+      "video": 2,
+      "emojis": 2,
+      "30030": 2,
+      "servers": 2,
+      "b7": 2,
+      "good": 2,
+      "git": 2,
+      "code": 2,
+      "repositories": 2,
+      "followed": 2,
+      "enhance": 2,
+      "identifier": 2,
+      "sets_": 2,
+      "_curation": 2,
+      "title": 2,
+      "image": 2,
+      "30000": 2,
+      "choose": 2,
+      "30004": 2,
+      "videos": 2,
+      "pictures": 2,
+      "artifact": 2,
+      "30063": 2,
+      "30267": 2,
+      "calendar": 2,
+      "starter": 2,
+      "packs": 2,
+      "07caba282f76441955b695551c3c5c742e5b9202a3784780f8086fdcdc1da3a9": 2,
+      "a55c15f5e41d5aebd236eca5e0142789c5385703f1a7485aa4b38d94fd18dcc4": 2,
+      "yaks": 2,
+      "567b41fc9060c758c4216fe5f8d3df7c57daad7ae757fa4606f0c39d4dd220ef": 2,
+      "1695327657": 2,
+      "yak": 2,
+      "ox": 2,
+      "cattle": 2,
+      "d78ba0d5dce22bfff9db0a9e996c9ef27e2c91051de0c4e1da340e0326b4941e": 2,
+      "a9a4e2192eede77e6c9d24ddfab95ba3ff7c03fbd07ad011fff245abea431fb4d3787c2d04aad001cb039cb8de91d83ce30e9a94f82ac3c5a2372aa1294a96bd": 2,
+      "jsonc": 2,
+      "0": 2,
+      "nostr": 2,
+      "val": 2,
+      "private_items": 2,
+      "base64blob": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "30daaedbdb48c7583843a12d3496ced311b9986a",
+        "timestamp": "2023-03-09T14:16:57-03:00",
+        "date": "2023-03-09",
+        "author": "monlovesmango",
+        "path": "51.md",
+        "status": "Draft",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        "NIP 2",
+        "NIP 4",
+        "NIP 17",
+        "NIP 28",
+        "NIP 29",
+        "NIP 30",
+        "NIP 34",
+        "NIP 37",
+        "NIP 44",
+        "NIP 54",
+        "NIP 58",
+        "NIP 65",
+        "NIP 72"
+      ],
+      "body_extracted_llm": [
+        "NIP 2",
+        "NIP 16",
+        "NIP 17",
+        "NIP 28",
+        "NIP 29",
+        "NIP 30",
+        "NIP 33",
+        "NIP 34",
+        "NIP 37",
+        "NIP 44",
+        "NIP 54",
+        "NIP 58",
+        "NIP 65",
+        "NIP 72",
+        "NIP 94"
+      ]
+    }
+  }
+}

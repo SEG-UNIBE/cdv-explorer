@@ -1,0 +1,188 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "38",
+      "title": "User Statuses",
+      "author": [
+        "fiatjaf"
+      ],
+      "created": "2023-08-25",
+      "status": "Draft",
+      "type": "Optional",
+      "layer": null,
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Wed Aug 13 22:52:51 2025 +0900",
+    "total_commits": 10,
+    "git_history": [
+      [
+        "15a49873ea3618da3926232248d4b5b8e307e32d",
+        "Wed Aug 13 22:52:51 2025 +0900",
+        "Yoji Shidara"
+      ],
+      [
+        "a736e629be5c4c9125d98bdb4965851d8110c483",
+        "Sat Sep 28 12:26:48 2024 -0300",
+        "fiatjaf"
+      ],
+      [
+        "e6552476aa2e5ca7256be572a9aa226ec8a022ee",
+        "Tue Sep 3 20:41:31 2024 +0330",
+        "kehiy"
+      ],
+      [
+        "b4a2561df7325b8624bc5ffad154ec946ade2f1e",
+        "Mon Sep 2 20:33:45 2024 +0330",
+        "kehiy"
+      ],
+      [
+        "ca3c52e3e74f0a4679f1c6c0d9ac6461ea748d2d",
+        "Tue Aug 20 12:56:05 2024 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "5c796c19fd6330628a0b328bfcf5270cb2bc3aff",
+        "Wed May 29 13:08:31 2024 +0900",
+        "Asai Toshiya"
+      ],
+      [
+        "37f6cbb775126b386414220f783ca0f5f85e7614",
+        "Wed Nov 15 21:42:51 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "1aa9301a4a993cf7122ebb7761945d94dc4eadba",
+        "Mon Aug 28 21:10:07 2023 +0900",
+        "Yasuhiro Matsumoto"
+      ],
+      [
+        "acafcc774d571867bde615423c758c51dba64fca",
+        "Mon Aug 28 16:25:43 2023 +0900",
+        "Yasuhiro Matsumoto"
+      ],
+      [
+        "7dc1f02fa70a5b9da7b3867e3faa37f48571d5e1",
+        "Fri Aug 25 08:41:26 2023 -0300",
+        "fiatjaf"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "status": 14,
+      "music": 9,
+      "general": 6,
+      "update": 5,
+      "nip": 4,
+      "statuses": 4,
+      "live": 4,
+      "listening": 4,
+      "content": 4,
+      "nostr": 4,
+      "user": 3,
+      "kind": 3,
+      "30315": 3,
+      "defined": 3,
+      "d": 3,
+      "r": 3,
+      "currently": 2,
+      "etc": 2,
+      "event": 2,
+      "tag": 2,
+      "json": 2,
+      "tags": 2,
+      "intergalatic": 2,
+      "types": 2,
+      "streaming": 2,
+      "playing": 2,
+      "include": 2,
+      "emoji": 2,
+      "s": 2,
+      "30": 2,
+      "client": 2,
+      "clients": 2,
+      "use": 2,
+      "apps": 2,
+      "link": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "7dc1f02fa70a5b9da7b3867e3faa37f48571d5e1",
+        "timestamp": "2023-08-25T08:42:49-03:00",
+        "date": "2023-08-25",
+        "author": "fiatjaf",
+        "path": "38.md",
+        "status": "Draft",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        "NIP 30"
+      ],
+      "body_extracted_llm": [
+        "NIP 33",
+        "NIP 40"
+      ]
+    }
+  }
+}

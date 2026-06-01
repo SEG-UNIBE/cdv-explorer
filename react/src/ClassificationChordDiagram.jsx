@@ -1,9 +1,63 @@
 import * as d3 from 'd3';
 import { useEffect, useRef } from 'react';
-import { renderBipListHtml } from './bipTooltipContent';
+import { renderProposalListHtml } from './bipTooltipContent';
+import { useDashboardEcosystem, useDashboardLinkMode, useDashboardSnapshot } from './dashboard/DashboardSnapshotContext';
 
-export const ClassificationChordDiagram = ({ data, width = 1200, height = 760 }) => {
+const CHORD_DIMENSION_ORDER = ['type', 'layer', 'status'];
+const CHORD_GLOBAL_ROTATION_DEGREES = 3;
+const CHORD_SPACER_FACTOR = 20;
+const CHORD_MIN_SPACER_COUNT = 4;
+const CHORD_BOTTOM_MARGIN = 12;
+const CHORD_CATEGORY_LABEL_OUTSET = -10;
+const DIMENSION_BADGE_OFFSETS = {
+  type: { x: 40, y: 26 },
+  layer: { x: 40, y: -10 },
+  status: { x: -40, y: 26 },
+};
+
+function clamp(value, min, max) {
+  return Math.max(min, Math.min(max, value));
+}
+
+function normalizeAngle(angle) {
+  const fullTurn = Math.PI * 2;
+  return ((angle % fullTurn) + fullTurn) % fullTurn;
+}
+
+function wrapChordLabel(label, maxLineLength = 10, maxLines = 2) {
+  const words = String(label || '').trim().split(/\s+/).filter(Boolean);
+  if (!words.length) {
+    return [''];
+  }
+
+  const lines = [];
+  let currentLine = words[0];
+
+  for (let index = 1; index < words.length; index += 1) {
+    const candidate = `${currentLine} ${words[index]}`;
+    if (candidate.length <= maxLineLength) {
+      currentLine = candidate;
+      continue;
+    }
+
+    lines.push(currentLine);
+    currentLine = words[index];
+
+    if (lines.length === maxLines - 1) {
+      currentLine = [currentLine, ...words.slice(index + 1)].join(' ');
+      break;
+    }
+  }
+
+  lines.push(currentLine);
+  return lines.slice(0, maxLines);
+}
+
+export const ClassificationChordDiagram = ({ data, width = 1000, height = 700 }) => {
   const ref = useRef();
+  const snapshotLabel = useDashboardSnapshot();
+  const linkMode = useDashboardLinkMode();
+  const ecosystem = useDashboardEcosystem();
 
   useEffect(() => {
     const svg = d3.select(ref.current);
@@ -22,9 +76,25 @@ export const ClassificationChordDiagram = ({ data, width = 1200, height = 760 })
       .style('width', '100%')
       .style('height', 'auto');
 
-    const framePadding = 60;
-    const contentWidth = width - framePadding * 2;
-    const contentHeight = height - framePadding * 2;
+    const minDimension = Math.min(width, height);
+    const framePaddingX = clamp(width * 0.02, 8, 20);
+    const framePaddingTop = clamp(height * 0.05, 20, 120);
+    const framePaddingBottom = clamp(height * 0.05, 110, 250);
+    const contentWidth = width - framePaddingX * 2;
+    const contentHeight = height - framePaddingTop - framePaddingBottom;
+    const ringThickness = clamp(minDimension * 0.03, 18, 24);
+    const categoryLabelOffset = clamp(minDimension * 0.02, 14, 18);
+    const categoryLabelFontSize = clamp(minDimension * 0.015, 11, 13);
+    const categoryLabelMaxLineLength = width <= 820 ? 10 : 12;
+    const categoryLabelMaxLines = height <= 760 ? 2 : 3;
+    const dimensionLabelRadius = outerRadius => outerRadius + clamp(minDimension * 0.078, 52, 64);
+    const dimensionBadgeWidth = clamp(minDimension * 0.11, 76, 88);
+    const dimensionBadgeHeight = clamp(minDimension * 0.04, 30, 34);
+    const dimensionBadgeRadius = clamp(dimensionBadgeHeight * 0.28, 8, 10);
+    const dimensionBadgeFontSize = clamp(minDimension * 0.02, 14, 16);
+    const arcStrokeWidth = clamp(minDimension * 0.002, 1.1, 1.5);
+    const arcHoverStrokeWidth = clamp(arcStrokeWidth + 1, 2.2, 2.6);
+    const ribbonHoverStrokeWidth = clamp(minDimension * 0.0016, 1, 1.25);
 
     const tooltipNode = document.createElement('div');
     document.body.appendChild(tooltipNode);
@@ -32,17 +102,23 @@ export const ClassificationChordDiagram = ({ data, width = 1200, height = 760 })
     const tooltip = d3.select(tooltipNode)
       .attr('class', 'classification-chord-tooltip')
       .style('position', 'absolute')
-      .style('background', '#1a1a1a')
-      .style('color', '#fff')
+      .style('background', 'var(--tooltip-bg)')
+      .style('color', 'var(--tooltip-text)')
       .style('padding', '8px 12px')
       .style('border-radius', '6px')
+      .style('border', '1px solid var(--tooltip-border)')
+      .style('box-shadow', 'var(--tooltip-shadow)')
       .style('font-size', '12px')
       .style('pointer-events', 'none')
       .style('line-height', '1.45')
       .style('opacity', 0);
 
-    const orderedDimensions = Array.from(new Set(groups.map((group) => group.dimension)));
-    const spacerCount = Math.max(4, Math.ceil(15 / Math.max(orderedDimensions.length, 1)));
+    const availableDimensions = Array.from(new Set(groups.map((group) => group.dimension)));
+    const orderedDimensions = CHORD_DIMENSION_ORDER.filter((dimension) => availableDimensions.includes(dimension));
+    const spacerCount = Math.max(
+      CHORD_MIN_SPACER_COUNT,
+      Math.ceil(CHORD_SPACER_FACTOR / Math.max(orderedDimensions.length, 1))
+    );
     const dimensionInterpolators = {
       layer: d3.interpolateBlues,
       status: d3.interpolateOranges,
@@ -133,12 +209,15 @@ export const ClassificationChordDiagram = ({ data, width = 1200, height = 760 })
       .sortSubgroups(d3.descending)
       .sortChords(d3.descending);
 
+    const globalRotationRadians = (CHORD_GLOBAL_ROTATION_DEGREES * Math.PI) / 180;
     const chords = chord(displayMatrix);
-    const outerRadius = Math.min(contentWidth, contentHeight) * 0.37;
-    const innerRadius = outerRadius - 24;
+    const outerRadius = Math.min(contentWidth * 0.42, contentHeight * 0.49);
+    const innerRadius = outerRadius - ringThickness;
+    const baseTranslateX = framePaddingX + (contentWidth / 2);
+    const baseTranslateY = framePaddingTop + (contentHeight / 2);
 
     const root = svg.append('g')
-      .attr('transform', `translate(${width / 2}, ${height / 2})`);
+      .attr('transform', `translate(${baseTranslateX}, ${baseTranslateY}) rotate(${CHORD_GLOBAL_ROTATION_DEGREES})`);
 
     const arc = d3.arc()
       .innerRadius(innerRadius)
@@ -176,7 +255,7 @@ export const ClassificationChordDiagram = ({ data, width = 1200, height = 760 })
       return (
         `<strong>${source.label}</strong> × <strong>${target.label}</strong><br/>` +
         `Count: ${Math.round(chordDatum.source.value)}<br/>` +
-        renderBipListHtml(bips)
+        renderProposalListHtml(bips, snapshotLabel, { ecosystem, linkMode })
       );
     };
 
@@ -187,7 +266,7 @@ export const ClassificationChordDiagram = ({ data, width = 1200, height = 760 })
 
       root.selectAll('path.classification-chord-arc')
         .attr('opacity', 1)
-        .attr('stroke-width', 1.5);
+        .attr('stroke-width', arcStrokeWidth);
     };
 
     const visibleGroups = chords.groups.filter((entry) => !displayGroups[entry.index].spacer);
@@ -201,14 +280,14 @@ export const ClassificationChordDiagram = ({ data, width = 1200, height = 760 })
       .attr('class', 'classification-chord-arc')
       .attr('d', arc)
       .attr('fill', (entry) => getGroupColor(displayGroups[entry.index]))
-      .attr('stroke', '#fff')
-      .attr('stroke-width', 1.5)
+      .attr('stroke', 'var(--chart-contrast)')
+      .attr('stroke-width', arcStrokeWidth)
       .on('mouseover', function (event, entry) {
         if (pinnedKey) {
           return;
         }
 
-        d3.select(this).attr('opacity', 0.9).attr('stroke-width', 2.5);
+        d3.select(this).attr('opacity', 0.9).attr('stroke-width', arcHoverStrokeWidth);
         tooltip
           .style('opacity', 1)
           .style('pointer-events', 'none')
@@ -226,14 +305,14 @@ export const ClassificationChordDiagram = ({ data, width = 1200, height = 760 })
           return;
         }
 
-        d3.select(this).attr('opacity', 1).attr('stroke-width', 1.5);
+        d3.select(this).attr('opacity', 1).attr('stroke-width', arcStrokeWidth);
         tooltip.style('opacity', 0);
       })
       .on('click', function (event, entry) {
         event.stopPropagation();
         pinnedKey = `group|||${entry.index}`;
         resetStyles();
-        d3.select(this).attr('opacity', 0.9).attr('stroke-width', 2.5);
+        d3.select(this).attr('opacity', 0.9).attr('stroke-width', arcHoverStrokeWidth);
         tooltip
           .style('opacity', 1)
           .style('pointer-events', 'none')
@@ -244,17 +323,33 @@ export const ClassificationChordDiagram = ({ data, width = 1200, height = 760 })
     group.append('text')
       .each((entry) => {
         entry.angle = (entry.startAngle + entry.endAngle) / 2;
+        entry.displayAngle = normalizeAngle(entry.angle + globalRotationRadians);
       })
-      .attr('dy', '0.35em')
       .attr('transform', (entry) => `
         rotate(${(entry.angle * 180 / Math.PI) - 90})
-        translate(${outerRadius + 16})
-        ${entry.angle > Math.PI ? 'rotate(180)' : ''}
+        translate(${outerRadius + categoryLabelOffset + CHORD_CATEGORY_LABEL_OUTSET})
+        ${entry.displayAngle > Math.PI ? 'rotate(180)' : ''}
       `)
-      .attr('text-anchor', (entry) => (entry.angle > Math.PI ? 'end' : 'start'))
-      .style('font-size', '12px')
-      .style('fill', '#475569')
-      .text((entry) => displayGroups[entry.index].category);
+      .attr('text-anchor', (entry) => (entry.displayAngle > Math.PI ? 'end' : 'start'))
+      .attr('dominant-baseline', 'middle')
+      .style('font-size', `${categoryLabelFontSize}px`)
+      .style('fill', 'var(--chart-muted)')
+      .each(function (entry) {
+        const text = d3.select(this);
+        const lines = wrapChordLabel(
+          displayGroups[entry.index].category,
+          categoryLabelMaxLineLength,
+          categoryLabelMaxLines
+        );
+        const startDy = -((lines.length - 1) * 0.55);
+
+        text.selectAll('tspan')
+          .data(lines)
+          .join('tspan')
+          .attr('x', 0)
+          .attr('dy', (_, lineIndex) => (lineIndex === 0 ? `${startDy}em` : '1.1em'))
+          .text((line) => line);
+      });
 
     const dimensionHeaders = orderedDimensions.map((dimension) => {
       const dimensionGroups = visibleGroups.filter(
@@ -270,40 +365,37 @@ export const ClassificationChordDiagram = ({ data, width = 1200, height = 760 })
       };
     });
 
-    const dimensionLabelRadius = outerRadius + 62;
     const dimensionLabelGroup = root.append('g')
       .selectAll('g')
       .data(dimensionHeaders)
       .join('g')
       .attr('transform', (entry) => {
         const angle = (entry.startAngle + entry.endAngle) / 2;
-        const degrees = (angle * 180 / Math.PI) - 90;
-        const flip = angle > Math.PI ? 'rotate(180)' : '';
-        return `rotate(${degrees}) translate(${dimensionLabelRadius}) ${flip}`;
+        const badgeOffset = {
+        ...(DIMENSION_BADGE_OFFSETS[entry.dimension] || { x: 0, y: 0 }),
+        ...(ecosystem?.classificationChordBadgeOffsets?.[entry.dimension] || {}),
+      };
+        const x = (Math.cos(angle - (Math.PI / 2)) * dimensionLabelRadius(outerRadius)) + badgeOffset.x;
+        const y = (Math.sin(angle - (Math.PI / 2)) * dimensionLabelRadius(outerRadius)) + badgeOffset.y;
+        return `translate(${x}, ${y}) rotate(${-CHORD_GLOBAL_ROTATION_DEGREES})`;
       });
 
     dimensionLabelGroup.append('rect')
-      .attr('x', (entry) => {
-        const angle = (entry.startAngle + entry.endAngle) / 2;
-        return angle > Math.PI ? -84 : 0;
-      })
-      .attr('y', -16)
-      .attr('width', 84)
-      .attr('height', 32)
-      .attr('rx', 9)
+      .attr('x', -(dimensionBadgeWidth / 2))
+      .attr('y', -(dimensionBadgeHeight / 2))
+      .attr('width', dimensionBadgeWidth)
+      .attr('height', dimensionBadgeHeight)
+      .attr('rx', dimensionBadgeRadius)
       .attr('fill', (entry) => dimensionBadgeColors[entry.dimension]?.fill || '#475569')
-      .attr('stroke', 'rgba(255,255,255,0.75)')
+      .attr('stroke', 'var(--chart-contrast)')
       .attr('stroke-width', 1);
 
     dimensionLabelGroup.append('text')
-      .attr('x', (entry) => {
-        const angle = (entry.startAngle + entry.endAngle) / 2;
-        return angle > Math.PI ? -42 : 42;
-      })
+      .attr('x', 0)
       .attr('y', 1)
       .attr('text-anchor', 'middle')
       .attr('dominant-baseline', 'middle')
-      .style('font-size', '16px')
+      .style('font-size', `${dimensionBadgeFontSize}px`)
       .style('font-weight', 600)
       .style('fill', (entry) => dimensionBadgeColors[entry.dimension]?.text || '#ffffff')
       .text((entry) => entry.label);
@@ -319,7 +411,7 @@ export const ClassificationChordDiagram = ({ data, width = 1200, height = 760 })
       .join('path')
       .attr('class', 'classification-chord-ribbon')
       .attr('d', ribbon)
-      .attr('fill', '#cbd5e1')
+      .attr('fill', 'var(--chart-axis)')
       .attr('stroke', 'none')
       .attr('opacity', 0.72)
       .on('mouseover', function (event, entry) {
@@ -327,7 +419,7 @@ export const ClassificationChordDiagram = ({ data, width = 1200, height = 760 })
           return;
         }
 
-        d3.select(this).attr('opacity', 0.95).attr('stroke', '#0f172a').attr('stroke-width', 1.25);
+        d3.select(this).attr('opacity', 0.95).attr('stroke', 'var(--chart-focus)').attr('stroke-width', ribbonHoverStrokeWidth);
         tooltip
           .style('opacity', 1)
           .style('pointer-events', 'none')
@@ -354,7 +446,7 @@ export const ClassificationChordDiagram = ({ data, width = 1200, height = 760 })
         resetStyles();
         d3.select(this)
           .attr('opacity', 0.95)
-          .attr('stroke', '#0f172a')
+          .attr('stroke', 'var(--chart-focus)')
           .attr('stroke-width', 1.25);
         tooltip
           .style('opacity', 1)
@@ -371,11 +463,34 @@ export const ClassificationChordDiagram = ({ data, width = 1200, height = 760 })
         .style('pointer-events', 'none');
     });
 
+    const svgNode = ref.current;
+    const rootNode = root.node();
+    if (svgNode && rootNode) {
+      const svgRect = svgNode.getBoundingClientRect();
+      const rootRect = rootNode.getBoundingClientRect();
+
+      if (svgRect.width > 0 && svgRect.height > 0 && rootRect.width > 0 && rootRect.height > 0) {
+        const scaleX = width / svgRect.width;
+        const scaleY = height / svgRect.height;
+        const targetCenterX = framePaddingX + (contentWidth / 2);
+        const targetBottomY = height - CHORD_BOTTOM_MARGIN;
+        const renderedCenterX = ((rootRect.left - svgRect.left) + (rootRect.width / 2)) * scaleX;
+        const renderedBottomY = ((rootRect.top - svgRect.top) + rootRect.height) * scaleY;
+        const deltaX = targetCenterX - renderedCenterX;
+        const deltaY = targetBottomY - renderedBottomY;
+
+        root.attr(
+          'transform',
+          `translate(${baseTranslateX + deltaX}, ${baseTranslateY + deltaY}) rotate(${CHORD_GLOBAL_ROTATION_DEGREES})`
+        );
+      }
+    }
+
     return () => {
       svg.selectAll('*').remove();
       tooltip.remove();
     };
-  }, [data, width, height]);
+  }, [data, ecosystem, height, linkMode, snapshotLabel, width]);
 
   return <svg ref={ref} role="img" aria-label="Classification chord diagram" />;
 };

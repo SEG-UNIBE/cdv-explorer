@@ -1,9 +1,13 @@
 import * as d3 from 'd3';
 import { useEffect, useRef } from 'react';
-import { renderBipListHtml } from './bipTooltipContent';
+import { renderProposalListHtml } from './bipTooltipContent';
+import { useDashboardEcosystem, useDashboardLinkMode, useDashboardSnapshot } from './dashboard/DashboardSnapshotContext';
 
 export const ProposalTimelineChart = ({ data, width = 600, height = 300 }) => {
   const ref = useRef();
+  const snapshotLabel = useDashboardSnapshot();
+  const linkMode = useDashboardLinkMode();
+  const ecosystem = useDashboardEcosystem();
 
   useEffect(() => {
     const svg = d3.select(ref.current);
@@ -14,7 +18,7 @@ export const ProposalTimelineChart = ({ data, width = 600, height = 300 }) => {
       return;
     }
 
-    const series = [];
+const series = [];
     let cumulative = 0;
     data.forEach((entry) => {
       cumulative += Number(entry.count || 0);
@@ -35,10 +39,12 @@ export const ProposalTimelineChart = ({ data, width = 600, height = 300 }) => {
       .append('div')
       .attr('class', 'proposal-tooltip')
       .style('position', 'absolute')
-      .style('background', '#1a1a1a')
-      .style('color', '#fff')
+      .style('background', 'var(--tooltip-bg)')
+      .style('color', 'var(--tooltip-text)')
       .style('padding', '6px 10px')
       .style('border-radius', '4px')
+      .style('border', '1px solid var(--tooltip-border)')
+      .style('box-shadow', 'var(--tooltip-shadow)')
       .style('font-size', '12px')
       .style('pointer-events', 'none')
       .style('max-width', '360px')
@@ -52,7 +58,7 @@ export const ProposalTimelineChart = ({ data, width = 600, height = 300 }) => {
         `<strong>${entry.year}</strong><br/>` +
         `New proposals: ${entry.count}<br/>` +
         `Cumulative proposals: ${entry.cumulative}<br/>` +
-        renderBipListHtml(entry.bips)
+        renderProposalListHtml(entry.bips, snapshotLabel, { ecosystem, linkMode })
       );
     };
 
@@ -62,7 +68,7 @@ export const ProposalTimelineChart = ({ data, width = 600, height = 300 }) => {
         .style('top', `${pageY - 28}px`);
     };
 
-    const margin = { top: 24, right: 60, bottom: 60, left: 56 };
+    const margin = { top: 24, right: 60, bottom: 36, left: 56 };
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
 
@@ -110,12 +116,12 @@ export const ProposalTimelineChart = ({ data, width = 600, height = 300 }) => {
       .call((axis) => axis.select('.domain').attr('stroke', '#e45756'))
       .call((axis) => axis.selectAll('text').attr('fill', '#e45756'));
 
+    const everyOtherYear = series.filter((_, i) => i % 2 === 0).map((d) => d.year);
     g.append('g')
       .attr('transform', `translate(0,${innerHeight})`)
-      .call(d3.axisBottom(x))
+      .call(d3.axisBottom(x).tickValues(everyOtherYear))
       .selectAll('text')
-      .attr('transform', 'rotate(-45)')
-      .style('text-anchor', 'end');
+      .style('font-size', '13px');
 
     g.selectAll('rect')
       .data(series)
@@ -172,6 +178,19 @@ export const ProposalTimelineChart = ({ data, width = 600, height = 300 }) => {
         setTooltipPosition(event.pageX, event.pageY);
       });
 
+    g.selectAll('text.bar-label')
+      .data(series.filter((d) => d.count > 0))
+      .enter()
+      .append('text')
+      .attr('class', 'bar-label')
+      .attr('x', (d) => x(d.year) + x.bandwidth() / 2)
+      .attr('y', (d) => yBars(d.count) - 4)
+      .attr('text-anchor', 'middle')
+      .style('font-size', '11px')
+      .style('fill', 'var(--chart-text)')
+      .style('pointer-events', 'none')
+      .text((d) => d.count);
+
     const line = d3.line()
       .x((d) => x(d.year) + x.bandwidth() / 2)
       .y((d) => yLine(d.cumulative))
@@ -193,7 +212,7 @@ export const ProposalTimelineChart = ({ data, width = 600, height = 300 }) => {
       .attr('cy', (d) => yLine(d.cumulative))
       .attr('r', 4)
       .attr('fill', '#e45756')
-      .attr('stroke', '#fff')
+      .attr('stroke', 'var(--chart-contrast)')
       .attr('stroke-width', 1.5)
       .on('mouseover', function (event, d) {
         if (pinnedYear) {
@@ -263,7 +282,7 @@ export const ProposalTimelineChart = ({ data, width = 600, height = 300 }) => {
       svg.selectAll('*').remove();
       d3.select('body').selectAll('.proposal-tooltip').remove();
     };
-  }, [data, width, height]);
+  }, [data, ecosystem, height, linkMode, snapshotLabel, width]);
 
   return <svg ref={ref} role="img" aria-label="Proposal timeline chart" />;
 };

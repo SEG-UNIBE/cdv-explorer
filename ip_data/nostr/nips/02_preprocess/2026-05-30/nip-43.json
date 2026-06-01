@@ -1,0 +1,184 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "43",
+      "title": "Relay Access Metadata and Requests",
+      "author": [
+        "hodlbod"
+      ],
+      "created": "2025-10-30",
+      "status": "Draft",
+      "type": "Optional",
+      "layer": "Relay",
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Wed Dec 24 02:53:38 2025 +0900",
+    "total_commits": 2,
+    "git_history": [
+      [
+        "f5a15ea27e06ce8f5635117931f06318f532a713",
+        "Wed Dec 24 02:53:38 2025 +0900",
+        "mattn"
+      ],
+      [
+        "8054526b874a90a83aca2dc6c9c5cd17682f8703",
+        "Thu Oct 30 03:44:48 2025 -0700",
+        "hodlbod"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "kind": 20,
+      "event": 18,
+      "relay": 17,
+      "member": 14,
+      "nip": 13,
+      "pubkey": 13,
+      "relays": 10,
+      "request": 10,
+      "11": 10,
+      "md": 9,
+      "tags": 9,
+      "self": 8,
+      "s": 8,
+      "70": 8,
+      "tag": 8,
+      "claim": 7,
+      "jsonc": 6,
+      "fields": 6,
+      "invite": 6,
+      "publish": 5,
+      "13534": 5,
+      "specified": 5,
+      "document": 5,
+      "user": 5,
+      "code": 5,
+      "ok": 5,
+      "signed": 4,
+      "field": 4,
+      "nip11": 4,
+      "p": 4,
+      "claims": 4,
+      "id": 4,
+      "events": 4,
+      "access": 3,
+      "membership": 3,
+      "users": 3,
+      "following": 3,
+      "required": 3,
+      "hex": 3,
+      "list": 3,
+      "example": 3,
+      "c308e1f882c1f1dff2a43d4294239ddeec04e575f2d1aad1fa21ea7684e61fb5": 3,
+      "8000": 3,
+      "8001": 3,
+      "send": 3,
+      "28934": 3,
+      "restricted": 3,
+      "28935": 3,
+      "lists": 2,
+      "clients": 2,
+      "admission": 2,
+      "containing": 2,
+      "add": 2,
+      "indicating": 2,
+      "remove": 2,
+      "order": 2,
+      "created_at": 2,
+      "plus": 2,
+      "minus": 2,
+      "minutes": 2,
+      "update": 2,
+      "false": 2,
+      "true": 2,
+      "issuing": 2,
+      "28936": 2,
+      "include": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "8054526b874a90a83aca2dc6c9c5cd17682f8703",
+        "timestamp": "2025-10-30T07:44:48-03:00",
+        "date": "2025-10-30",
+        "author": "hodlbod",
+        "path": "43.md",
+        "status": "Draft",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        "NIP 11",
+        "NIP 42",
+        "NIP 70"
+      ],
+      "body_extracted_llm": [
+        "NIP 11",
+        "NIP 16",
+        "NIP 20",
+        "NIP 42",
+        "NIP 70"
+      ]
+    }
+  }
+}

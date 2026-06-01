@@ -1,12 +1,12 @@
 from typing import Any, Dict
 
-from ecosystem_config import ACTIVE_ECOSYSTEM
+from pipeline.ecosystem_config import ACTIVE_ECOSYSTEM
 
 
-CLASSIFICATION_CONFIG = ACTIVE_ECOSYSTEM.get("classification", {})
-LAYER_ALIASES = CLASSIFICATION_CONFIG.get("layer_aliases", {})
-STATUS_ALIASES = CLASSIFICATION_CONFIG.get("status_aliases", {})
-TYPE_ALIASES = CLASSIFICATION_CONFIG.get("type_aliases", {})
+_DIMS = ACTIVE_ECOSYSTEM.get("classification", {}).get("dimensions", {})
+LAYER_ALIASES = _DIMS.get("layer", {}).get("aliases", {})
+STATUS_ALIASES = _DIMS.get("status", {}).get("aliases", {})
+TYPE_ALIASES = _DIMS.get("type", {}).get("aliases", {})
 
 
 def normalize_classification_fields(

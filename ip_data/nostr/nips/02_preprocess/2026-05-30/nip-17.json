@@ -1,0 +1,337 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "17",
+      "title": "Private Direct Messages",
+      "author": [
+        "Semisol"
+      ],
+      "created": "2023-08-09",
+      "status": "Draft",
+      "type": "Optional",
+      "layer": "Relay",
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Thu May 28 13:47:14 2026 -0700",
+    "total_commits": 18,
+    "git_history": [
+      [
+        "3b73d29e94a1ea2d5e56c9a8b7b801304aa91350",
+        "Thu May 28 13:47:14 2026 -0700",
+        "hodlbod"
+      ],
+      [
+        "90cafcdd49425174ec35120c5c567cabfeaf243f",
+        "Thu May 28 16:38:31 2026 -0300",
+        "fiatjaf"
+      ],
+      [
+        "05d3f198c61c2732ccf15ba8005299365dabb8e0",
+        "Tue Apr 28 21:23:12 2026 -0300",
+        "fiatjaf"
+      ],
+      [
+        "f5a15ea27e06ce8f5635117931f06318f532a713",
+        "Wed Dec 24 02:53:38 2025 +0900",
+        "mattn"
+      ],
+      [
+        "3ec830cd2331ba0ed3113fc05a44c87deb9785be",
+        "Thu Oct 30 12:53:24 2025 -0700",
+        "hodlbod"
+      ],
+      [
+        "520b9016291b087497323e37364d1b8853817852",
+        "Tue Oct 28 09:49:19 2025 -0500",
+        "alltheseas"
+      ],
+      [
+        "86f0da716f15b1f1a5a19a9f900ace499c7bc4e2",
+        "Mon May 5 09:36:20 2025 -0400",
+        "Vitor Pamplona"
+      ],
+      [
+        "0619f370bca3485bb9c5870bc2defa03c7c3d10e",
+        "Thu Mar 13 09:23:35 2025 -0400",
+        "Vitor Pamplona"
+      ],
+      [
+        "a3cd55fb332fcde424e8895b10e0ce02834efcb7",
+        "Wed Feb 26 20:14:45 2025 -0500",
+        "Vitor Pamplona"
+      ],
+      [
+        "6e7a618e7f873bb91e743caacc3b09edab7796a0",
+        "Wed Feb 12 01:28:17 2025 +0800",
+        "water"
+      ],
+      [
+        "e942427f8fcf316f4ade52838005910a650270af",
+        "Mon Dec 9 15:13:59 2024 +0000",
+        "Jesus Christ"
+      ],
+      [
+        "f3244a0903b1fedbd8aa89596c658c9529e19ea6",
+        "Mon Nov 18 02:33:29 2024 +0900",
+        "hakkadaikon"
+      ],
+      [
+        "e6552476aa2e5ca7256be572a9aa226ec8a022ee",
+        "Tue Sep 3 20:41:31 2024 +0330",
+        "kehiy"
+      ],
+      [
+        "27c67f0c71397ca9e8ea85eee0264b8aa83e2999",
+        "Sun Aug 25 22:55:25 2024 +0200",
+        "Tomas Bezouska"
+      ],
+      [
+        "7dfb11b435a903c703bc38216eca805cefa494d4",
+        "Wed Apr 24 17:20:45 2024 -0300",
+        "fiatjaf"
+      ],
+      [
+        "df30012430c88d49fb5b124992b04d5c61b6338b",
+        "Wed Apr 24 15:31:45 2024 -0400",
+        "Vitor Pamplona"
+      ],
+      [
+        "ce7e6b2100918648ec4341c5fe517d076e8d225c",
+        "Wed Aug 9 00:56:48 2023 +0200",
+        "Semisol"
+      ],
+      [
+        "77b626d74871fb195dfd7b211a75af97753333dd",
+        "Wed Aug 9 00:55:21 2023 +0200",
+        "Semisol"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "kind": 28,
+      "file": 20,
+      "pubkey": 20,
+      "messages": 16,
+      "tags": 16,
+      "p": 14,
+      "nip": 13,
+      "relay": 13,
+      "event": 13,
+      "url": 13,
+      "message": 12,
+      "encrypted": 11,
+      "gift": 11,
+      "receiver": 11,
+      "clients": 11,
+      "md": 10,
+      "59": 10,
+      "id": 10,
+      "content": 10,
+      "key": 10,
+      "relays": 10,
+      "optional": 9,
+      "chat": 9,
+      "created_at": 9,
+      "encryption": 8,
+      "decryption": 8,
+      "s": 8,
+      "14": 7,
+      "subject": 7,
+      "1059": 7,
+      "public": 7,
+      "recipient": 6,
+      "sender": 6,
+      "conversation": 6,
+      "tag": 6,
+      "nonce": 6,
+      "wrap": 6,
+      "spam": 6,
+      "algorithm": 5,
+      "room": 5,
+      "users": 5,
+      "44": 4,
+      "usual": 4,
+      "hash": 4,
+      "current": 4,
+      "1": 4,
+      "e": 4,
+      "events": 4,
+      "type": 4,
+      "13": 4,
+      "sig": 4,
+      "10050": 4,
+      "group": 4,
+      "private": 3,
+      "direct": 3,
+      "defines": 3,
+      "wraps": 3,
+      "signed": 3,
+      "case": 3,
+      "15": 3,
+      "jsonc": 3,
+      "time": 3,
+      "2": 3,
+      "reply": 3,
+      "json": 3,
+      "x": 3,
+      "sha": 3,
+      "256": 3,
+      "hexencoded": 3,
+      "string": 3,
+      "indicates": 3,
+      "size": 3,
+      "thumbhash": 3,
+      "client": 3,
+      "blurhash": 3,
+      "new": 3,
+      "wrapped": 3,
+      "receiverpublickey": 3,
+      "seal": 3,
+      "metadata": 3,
+      "receive": 3,
+      "user": 3,
+      "delete": 3,
+      "deleted": 3,
+      "privacy": 3,
+      "scheme": 2,
+      "uses": 2,
+      "sent": 2,
+      "described": 2,
+      "7": 2,
+      "receivers": 2,
+      "title": 2,
+      "rest": 2,
+      "plain": 2,
+      "text": 2,
+      "fields": 2,
+      "required": 2,
+      "q": 2,
+      "21": 2,
+      "mime": 2,
+      "sending": 2,
+      "encrypting": 2,
+      "decrypt": 2,
+      "containing": 2,
+      "https": 2,
+      "github": 2,
+      "loading": 2,
+      "com": 2,
+      "fallback": 2,
+      "created": 2,
+      "topic": 2,
+      "simply": 2,
+      "send": 2,
+      "following": 2,
+      "unsigned": 2,
+      "sealed": 2,
+      "randomtimeupto2daysinthepast": 2,
+      "nip44encrypt": 2,
+      "senderprivatekey": 2,
+      "randomprivatekey": 2,
+      "t": 2,
+      "main": 2,
+      "dms": 2,
+      "disappearing": 2,
+      "publishing": 2,
+      "wss": 2,
+      "tagged": 2,
+      "42": 2,
+      "3": 2,
+      "edit": 2,
+      "5": 2,
+      "leak": 2,
+      "shared": 2,
+      "known": 2,
+      "fully": 2,
+      "recoverable": 2,
+      "opt": 2,
+      "separate": 2,
+      "approach": 2,
+      "messaging": 2,
+      "protection": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "df30012430c88d49fb5b124992b04d5c61b6338b",
+        "timestamp": "2024-04-24T16:31:45-03:00",
+        "date": "2024-04-24",
+        "author": "Vitor Pamplona",
+        "path": "17.md",
+        "status": "Draft",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        "NIP 21",
+        "NIP 42",
+        "NIP 44",
+        "NIP 59"
+      ],
+      "body_extracted_llm": [
+        "NIP 44",
+        "NIP 59"
+      ]
+    }
+  }
+}

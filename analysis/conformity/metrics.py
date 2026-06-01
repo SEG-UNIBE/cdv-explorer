@@ -1,11 +1,11 @@
 from collections import defaultdict
 from typing import Any, Dict, List
 
-from ecosystem_config import ACTIVE_ECOSYSTEM
+from analysis.proposal_schema import get_formal_compliance
+from pipeline.ecosystem_config import ACTIVE_ECOSYSTEM
 
 
-CLASSIFICATION_CONFIG = ACTIVE_ECOSYSTEM.get("classification", {})
-STATUS_ALIASES = CLASSIFICATION_CONFIG.get("status_aliases", {})
+STATUS_ALIASES = ACTIVE_ECOSYSTEM.get("classification", {}).get("dimensions", {}).get("status", {}).get("aliases", {})
 
 
 def _apply_status_alias(status: Any) -> str:
@@ -21,37 +21,44 @@ def extract_conformity_metrics(proposal_data: List[Dict[str, Any]], id_field: st
 
     for proposal in proposal_data:
         preamble = proposal.get("raw", {}).get("preamble", {})
-        compliance = proposal.get("compliance", {}) or proposal.get("raw", {}).get("compliance", {})
+        formal_compliance = get_formal_compliance(proposal)
         proposal_id = preamble.get(id_field)
         if proposal_id is None:
             continue
 
-        score = compliance.get("score")
+        score = formal_compliance.get("score")
         if score is None:
             score = preamble.get("compliance_score")
         status = _apply_status_alias(preamble.get("status"))
-        bip2_score = (compliance.get("bip2") or {}).get("score")
-        bip3_score = (compliance.get("bip3") or {}).get("score")
+
+        # Discover which standard sub-assessments are present (e.g. bip2, bip3, nip).
+        standard_keys = [
+            k for k, v in formal_compliance.items()
+            if isinstance(v, dict) and "checks" in v
+        ]
+        standard_scores = {k: (formal_compliance[k] or {}).get("score") for k in standard_keys}
 
         entry = {
             "id": str(proposal_id),
             "status": status,
             "compliance_score": score,
-            "bip2_score": bip2_score,
-            "bip3_score": bip3_score,
-            "compliance": compliance,
+            # Backward-compat fields - null for ecosystems that don't use BIP standards.
+            "bip2_score": standard_scores.get("bip2"),
+            "bip3_score": standard_scores.get("bip3"),
+            "standard_scores": standard_scores,
+            "formal_compliance": formal_compliance,
         }
         per_proposal.append(entry)
 
         if isinstance(score, (int, float)):
             score_values.append(float(score))
 
-        for standard_key, standard_score in (("bip2", bip2_score), ("bip3", bip3_score)):
+        for standard_key, standard_score in standard_scores.items():
             if isinstance(standard_score, (int, float)):
                 by_standard[standard_key].append(float(standard_score))
 
-        for standard_key in ("bip2", "bip3"):
-            assessment = compliance.get(standard_key) or {}
+        for standard_key in standard_keys:
+            assessment = formal_compliance.get(standard_key) or {}
             for check in assessment.get("checks", []):
                 check_id = check.get("id")
                 if not check_id:

@@ -2,18 +2,27 @@ from typing import Any, Dict, Iterable, List
 
 import networkx as nx
 
+from analysis.dependencies.constants import (
+    BODY_EXTRACTED_REGEX,
+    DEPENDENCY_APPROACH_LABELS,
+    DEPENDENCY_APPROACH_ORDER,
+    LEGACY_APPROACH_ALIASES,
+    PREAMBLE_DEPENDENCY_SUBTYPES,
+    PREAMBLE_EXTRACTED,
+)
+
 
 def _links_for_type(network_data: Dict[str, Any], link_type: str) -> List[Dict[str, Any]]:
     links = network_data.get("links", {})
-    explicit = links.get("explicit_dependencies", {})
+    explicit = links.get(PREAMBLE_EXTRACTED, {}) or links.get(LEGACY_APPROACH_ALIASES[PREAMBLE_EXTRACTED], {})
 
-    if link_type in {"requires", "replaces", "superseded_by"}:
+    if link_type in PREAMBLE_DEPENDENCY_SUBTYPES:
         return explicit.get(link_type, [])
 
-    if link_type == "explicit_dependencies":
+    if link_type == PREAMBLE_EXTRACTED:
         seen = set()
         merged: List[Dict[str, Any]] = []
-        for subtype in ("requires", "replaces", "superseded_by"):
+        for subtype in PREAMBLE_DEPENDENCY_SUBTYPES:
             for link in explicit.get(subtype, []):
                 key = (str(link.get("source")), str(link.get("target")))
                 if key in seen:
@@ -22,10 +31,10 @@ def _links_for_type(network_data: Dict[str, Any], link_type: str) -> List[Dict[s
                 merged.append(link)
         return merged
 
-    return links.get(link_type, [])
+    return links.get(link_type, links.get(LEGACY_APPROACH_ALIASES.get(link_type, ""), []))
 
 
-def build_graph(network_data: Dict[str, Any], link_type: str = "explicit_references") -> nx.DiGraph:
+def build_graph(network_data: Dict[str, Any], link_type: str = BODY_EXTRACTED_REGEX) -> nx.DiGraph:
     graph = nx.DiGraph()
 
     for node in network_data.get("nodes", []):
@@ -69,7 +78,7 @@ def compute_graph_depth(graph: nx.DiGraph) -> int:
     return longest_path_length
 
 
-def find_circular_dependencies(network_data: Dict[str, Any], link_type: str = "explicit_references") -> List[List[str]]:
+def find_circular_dependencies(network_data: Dict[str, Any], link_type: str = BODY_EXTRACTED_REGEX) -> List[List[str]]:
     graph = build_graph(network_data, link_type=link_type)
     return [list(cycle) for cycle in nx.simple_cycles(graph)]
 
@@ -86,12 +95,52 @@ def _safe_betweenness(graph: nx.DiGraph) -> Dict[str, float]:
     return {str(node): float(score) for node, score in nx.betweenness_centrality(graph).items()}
 
 
+def _safe_weighted_eigenvector(graph: nx.DiGraph, max_iter: int = 1000, tol: float = 1e-6) -> Dict[str, float]:
+    """Directed weighted eigenvector centrality via power iteration on incoming adjacency.
+
+    Each node's score is the normalised weighted sum of its predecessors' scores -
+    matching the algorithm used in the React front-end
+    (computeDirectedWeightedEigenvectorCentrality in dashboardData.js).
+    Edge weight equals the number of parallel edges between the same pair; because
+    the underlying DiGraph already deduplicates edges this is always 1, but the
+    formula is kept general for correctness.
+    """
+    node_ids = [str(n) for n in graph.nodes]
+    n = len(node_ids)
+    if n == 0:
+        return {}
+
+    import math
+
+    # Build incoming adjacency with weights (count of parallel edges).
+    # DiGraph.in_edges returns unique edges; weight defaults to 1 when absent.
+    incoming: Dict[str, List[tuple]] = {nid: [] for nid in node_ids}
+    for src, tgt, data in graph.edges(data=True):
+        w = float(data.get("weight", 1))
+        incoming[str(tgt)].append((str(src), w))
+
+    values = {nid: 1.0 / math.sqrt(n) for nid in node_ids}
+
+    for _ in range(max_iter):
+        next_v = {nid: 0.0 for nid in node_ids}
+        for nid in node_ids:
+            for pred, w in incoming[nid]:
+                next_v[nid] += w * values.get(pred, 0.0)
+
+        norm = math.sqrt(sum(v ** 2 for v in next_v.values()))
+        if norm == 0:
+            return {nid: 0.0 for nid in node_ids}
+
+        delta = sum(abs(next_v[nid] / norm - values[nid]) for nid in node_ids)
+        values = {nid: next_v[nid] / norm for nid in node_ids}
+        if delta < n * tol:
+            break
+
+    return values
+
+
 def _approach_labels() -> Dict[str, str]:
-    return {
-        "explicit_dependencies": "Explicit Dependencies (Preamble)",
-        "explicit_references": "Explicit References (Regex)",
-        "implicit_dependencies": "Implicit Dependencies (LLM)",
-    }
+    return dict(DEPENDENCY_APPROACH_LABELS)
 
 
 def _build_pairwise_comparisons(network_data: Dict[str, Any]) -> Dict[str, Any]:
@@ -168,11 +217,13 @@ def extract_dependency_metrics(network_data: Dict[str, Any]) -> Dict[str, Any]:
     approaches = _approach_labels()
     by_approach: Dict[str, Dict[str, Any]] = {}
 
-    for approach_key, approach_label in approaches.items():
+    for approach_key in DEPENDENCY_APPROACH_ORDER:
+        approach_label = approaches[approach_key]
         graph = build_graph(network_data, link_type=approach_key)
         cycles = find_circular_dependencies(network_data, link_type=approach_key)
         betweenness = _safe_betweenness(graph)
         pagerank = _safe_pagerank(graph)
+        weighted_eigenvector = _safe_weighted_eigenvector(graph)
 
         per_bip = sorted(
             [
@@ -183,6 +234,7 @@ def extract_dependency_metrics(network_data: Dict[str, Any]) -> Dict[str, Any]:
                     "out_degree": int(graph.out_degree(node)),
                     "betweenness": float(betweenness.get(str(node), 0.0)),
                     "pagerank": float(pagerank.get(str(node), 0.0)),
+                    "weighted_eigenvector": float(weighted_eigenvector.get(str(node), 0.0)),
                 }
                 for node in graph.nodes
             ],

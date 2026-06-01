@@ -1,10 +1,14 @@
 import * as d3 from 'd3';
 import { useEffect, useRef } from 'react';
-import { renderBipListHtml } from './bipTooltipContent';
+import { renderProposalListHtml } from './bipTooltipContent';
 import { getClassificationColorMap } from './classificationColors';
+import { useDashboardEcosystem, useDashboardLinkMode, useDashboardSnapshot } from './dashboard/DashboardSnapshotContext';
 
 export const ClassificationPieChart = ({ dimension, colorDomain, data, width = 360, height = 320 }) => {
   const ref = useRef();
+  const snapshotLabel = useDashboardSnapshot();
+  const linkMode = useDashboardLinkMode();
+  const ecosystem = useDashboardEcosystem();
 
   useEffect(() => {
     const svg = d3.select(ref.current);
@@ -30,10 +34,12 @@ export const ClassificationPieChart = ({ dimension, colorDomain, data, width = 3
     const tooltip = d3.select(tooltipNode)
       .attr('class', 'classification-pie-tooltip')
       .style('position', 'absolute')
-      .style('background', '#1a1a1a')
-      .style('color', '#fff')
+      .style('background', 'var(--tooltip-bg)')
+      .style('color', 'var(--tooltip-text)')
       .style('padding', '6px 10px')
       .style('border-radius', '4px')
+      .style('border', '1px solid var(--tooltip-border)')
+      .style('box-shadow', 'var(--tooltip-shadow)')
       .style('font-size', '12px')
       .style('pointer-events', 'none')
       .style('max-width', '360px')
@@ -47,7 +53,7 @@ export const ClassificationPieChart = ({ dimension, colorDomain, data, width = 3
         `<strong>${entry.id}</strong><br/>` +
         `Count: ${entry.value}<br/>` +
         `Share: ${((entry.value / total) * 100).toFixed(1)}%<br/>` +
-        renderBipListHtml(entry.bips)
+        renderProposalListHtml(entry.bips, snapshotLabel, { ecosystem, linkMode })
       );
     };
 
@@ -77,10 +83,10 @@ export const ClassificationPieChart = ({ dimension, colorDomain, data, width = 3
       .innerRadius(radius * 0.38)
       .outerRadius(radius);
 
-    const resetSliceStyles = () => {
+      const resetSliceStyles = () => {
       g.selectAll('path')
         .attr('opacity', 1)
-        .attr('stroke', '#fff')
+        .attr('stroke', 'var(--chart-contrast)')
         .attr('stroke-width', 1.5);
     };
 
@@ -93,7 +99,7 @@ export const ClassificationPieChart = ({ dimension, colorDomain, data, width = 3
       .append('path')
       .attr('d', arc)
       .attr('fill', (entry) => color(entry.data.id))
-      .attr('stroke', '#fff')
+      .attr('stroke', 'var(--chart-contrast)')
       .attr('stroke-width', 1.5)
       .on('mouseover', function (event, entry) {
         if (pinnedCategory) {
@@ -125,7 +131,7 @@ export const ClassificationPieChart = ({ dimension, colorDomain, data, width = 3
         resetSliceStyles();
         d3.select(this)
           .attr('opacity', 0.9)
-          .attr('stroke', '#0f172a')
+          .attr('stroke', 'var(--chart-focus)')
           .attr('stroke-width', 2.5);
         tooltip
           .style('opacity', 1)
@@ -146,7 +152,7 @@ export const ClassificationPieChart = ({ dimension, colorDomain, data, width = 3
       svg.selectAll('*').remove();
       tooltip.remove();
     };
-  }, [data, dimension, colorDomain, width, height]);
+  }, [colorDomain, data, dimension, ecosystem, height, linkMode, snapshotLabel, width]);
 
   return <svg ref={ref} role="img" aria-label="Classification distribution pie chart" />;
 };

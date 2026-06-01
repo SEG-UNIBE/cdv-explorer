@@ -1,0 +1,453 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "46",
+      "title": "Nostr Remote Signing",
+      "author": [
+        "Marco Argentieri"
+      ],
+      "created": "2023-02-20",
+      "status": "Unknown",
+      "type": null,
+      "layer": null,
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Mon Jan 26 23:48:18 2026 -0300",
+    "total_commits": 40,
+    "git_history": [
+      [
+        "acf74f8c2988b0f27f80d84b2c7b3b238e29c699",
+        "Mon Jan 26 23:48:18 2026 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "2f71cf74ae3e9bc78d4b599d8ba350cb8df95921",
+        "Tue Dec 30 19:04:37 2025 +0100",
+        "Vincenzo Imperati"
+      ],
+      [
+        "aa30111d2f73f2f6f503b720b2bbf05299dcf141",
+        "Mon Dec 29 21:53:31 2025 +0900",
+        "mattn"
+      ],
+      [
+        "f5a15ea27e06ce8f5635117931f06318f532a713",
+        "Wed Dec 24 02:53:38 2025 +0900",
+        "mattn"
+      ],
+      [
+        "81908b6e3fbc852181de9ed21cf244f525ff60af",
+        "Thu Feb 13 23:46:56 2025 -0300",
+        "greenart7c3"
+      ],
+      [
+        "6d16019e9e98807b23b7ae1faf5edeead7ddee7a",
+        "Thu Dec 5 16:59:18 2024 -0300",
+        "fiatjaf"
+      ],
+      [
+        "2ffd8ec36360512c5f5087519b667434b4dc7832",
+        "Fri Nov 29 14:40:11 2024 +0000",
+        "小原晴太"
+      ],
+      [
+        "7976f8ab777a2bb6359ed64171309b4a0663bdf4",
+        "Thu Nov 21 08:48:32 2024 -0800",
+        "Jon Staab"
+      ],
+      [
+        "f3244a0903b1fedbd8aa89596c658c9529e19ea6",
+        "Mon Nov 18 02:33:29 2024 +0900",
+        "hakkadaikon"
+      ],
+      [
+        "926a51e72206dfa71b9950a0ce58b54a7422aad2",
+        "Tue Nov 12 01:35:42 2024 +0100",
+        "Nostr.Band"
+      ],
+      [
+        "f1e8d2c4f764d66996c0c1fb2eeabfbc0c7b2528",
+        "Thu Oct 24 20:59:15 2024 -0300",
+        "fiatjaf"
+      ],
+      [
+        "e6552476aa2e5ca7256be572a9aa226ec8a022ee",
+        "Tue Sep 3 20:41:31 2024 +0330",
+        "kehiy"
+      ],
+      [
+        "b4a2561df7325b8624bc5ffad154ec946ade2f1e",
+        "Mon Sep 2 20:33:45 2024 +0330",
+        "kehiy"
+      ],
+      [
+        "6c89e929ba445235e45ab2bb970c012827cf35b1",
+        "Sun Jul 28 15:19:39 2024 -0400",
+        "randymcmillan"
+      ],
+      [
+        "8b5c9d8cf20899d6189f05d1d2f9f520677ce12b",
+        "Sat Jul 20 21:19:05 2024 +0300",
+        "Alexander Lopatin"
+      ],
+      [
+        "2e85b89bcbc2b6dea07d988c3b4e4372614f254d",
+        "Sun Jul 21 02:05:46 2024 +0800",
+        "Alexander Lopatin"
+      ],
+      [
+        "cb9bddb8dfd11972286215d9bdee7434764ccf7b",
+        "Sat May 11 11:52:32 2024 -0500",
+        "Adam Shannon"
+      ],
+      [
+        "243b2865826edff22eebe5ec6e893c711802c7e5",
+        "Thu Apr 25 18:03:38 2024 -0300",
+        "fiatjaf"
+      ],
+      [
+        "6071f3489eabe50eea748a2585a73c02a23d96cf",
+        "Thu Apr 25 06:38:36 2024 -0500",
+        "Alex Gleason"
+      ],
+      [
+        "b765b3c0301958d46115b834872bbd0c8bac588c",
+        "Tue Apr 9 11:25:05 2024 -0500",
+        "kuiperanon"
+      ],
+      [
+        "4b79bc67c471f77061d62704538e5fdd6ac28ae8",
+        "Fri Mar 22 08:01:37 2024 +0100",
+        "Nostr.Band"
+      ],
+      [
+        "4313fbf7a5c1d7d2c29e414ed68104641f3286fa",
+        "Thu Feb 22 12:30:18 2024 +0900",
+        "Asai Toshiya"
+      ],
+      [
+        "f1f992e95ee369c766d486807ad208c0769532dd",
+        "Wed Feb 21 08:17:42 2024 -0800",
+        "Jon Staab"
+      ],
+      [
+        "0045106dd1d08c38006d9a1c089081202078496e",
+        "Wed Feb 21 10:03:33 2024 -0600",
+        "monlovesmango"
+      ],
+      [
+        "ff39f492e1aebdb401100b3e6f848ca0600ef9b1",
+        "Tue Feb 20 16:29:01 2024 -0600",
+        "monlovesmango"
+      ],
+      [
+        "9c7ae62e53e6e423d301575546581c700b6f9d9f",
+        "Tue Feb 20 16:17:40 2024 -0600",
+        "monlovesmango"
+      ],
+      [
+        "c6cd655c1cba483fa9932b76e5ec62bafc56bc33",
+        "Tue Feb 20 21:56:17 2024 +0100",
+        "JeffG"
+      ],
+      [
+        "d3dad114e60cb45bb04f2088a68ebd16cf6837df",
+        "Tue Feb 6 20:29:33 2024 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "cfc8dfce8936867826bbf2cb79c3a8c8b21789fe",
+        "Mon Jan 8 13:50:52 2024 +0800",
+        "vuittont60"
+      ],
+      [
+        "822b70a565678222706dd6284eb7abcaadfc5115",
+        "Wed Dec 20 13:22:02 2023 +0100",
+        "Paul Miller"
+      ],
+      [
+        "d0aef4c1581807a046b00396f67f3dd03cf599e8",
+        "Thu Dec 7 17:01:25 2023 +0000",
+        "Pablo Fernandez"
+      ],
+      [
+        "3983a52d3bb720852090ee02911f56ee2701dd73",
+        "Sat Dec 2 14:45:10 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "6c35537ca425f154ca1c92897ab0eac599a80c87",
+        "Tue Nov 21 22:31:13 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "e4bddbee7b90b701ea2041532c88935f5176850e",
+        "Tue Nov 21 22:25:19 2023 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "c5c2d86a479d1ca52065b50faddc72220c3896cf",
+        "Tue Nov 21 20:49:35 2023 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "cb37a9320e10fcc4d8c064571461311ca613a1d5",
+        "Wed Oct 18 11:48:18 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "37f6cbb775126b386414220f783ca0f5f85e7614",
+        "Wed Nov 15 21:42:51 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "4bb393735ea501f0bac3e2cb255ae9a3caab6a68",
+        "Wed Mar 15 20:17:44 2023 +0100",
+        "Marco Argentieri"
+      ],
+      [
+        "d70959aee6f8e6e2f2bff02898c0281a64c53a8d",
+        "Mon Feb 27 18:22:46 2023 +0100",
+        "Marco Argentieri"
+      ],
+      [
+        "b1a5ad355a8b376170471a41817d8722ba7443b1",
+        "Mon Feb 20 20:26:13 2023 +0100",
+        "Marco Argentieri"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 60.0,
+      "passed_checks": 3,
+      "failed_checks": 2,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 60.0,
+        "passed_checks": 3,
+        "failed_checks": 2,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": false,
+            "details": "Tag 'type' not found"
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "pubkey": 31,
+      "_remote": 28,
+      "signer_": 26,
+      "_client_": 25,
+      "remote": 24,
+      "signer": 24,
+      "client": 17,
+      "connection": 14,
+      "response": 13,
+      "relay": 13,
+      "kind": 13,
+      "id": 13,
+      "nip": 12,
+      "relays": 12,
+      "content": 11,
+      "request": 11,
+      "user": 10,
+      "tags": 10,
+      "nostr": 9,
+      "connect": 9,
+      "example": 9,
+      "secret": 9,
+      "string": 9,
+      "event": 9,
+      "p": 8,
+      "nostrconnect": 8,
+      "json": 8,
+      "signing": 7,
+      "method": 7,
+      "requests": 7,
+      "keypair": 7,
+      "s": 7,
+      "optional": 7,
+      "24133": 7,
+      "url": 6,
+      "_user_": 6,
+      "sign_event": 6,
+      "wss": 6,
+      "result": 6,
+      "error": 6,
+      "keys": 5,
+      "events": 5,
+      "application": 5,
+      "send": 5,
+      "field": 5,
+      "jsonc": 5,
+      "params": 5,
+      "89": 5,
+      "token": 4,
+      "new": 4,
+      "list": 4,
+      "permissions": 4,
+      "nip44_encrypt": 4,
+      "nip44": 4,
+      "44": 4,
+      "md": 4,
+      "following": 4,
+      "third_party_pubkey": 4,
+      "fa984bd7dbb282f07e16e7ae87b26a2a7b9b90b7246a44771f0cf5ae58018f52": 4,
+      "auth": 4,
+      "nostrconnect_url": 4,
+      "bunker": 3,
+      "get_public_key": 3,
+      "possible": 3,
+      "specified": 3,
+      "4": 3,
+      "initiated": 3,
+      "form": 3,
+      "value": 3,
+      "sends": 3,
+      "parameters": 3,
+      "required": 3,
+      "perms": 3,
+      "2csign_event": 3,
+      "random_string": 3,
+      "methods": 3,
+      "created_at": 3,
+      "json_stringified": 3,
+      "metadata": 3,
+      "immediately": 3,
+      "eff37350d839ce3707332348af4549a96051bd695d3223af4aabce4993531d86": 3,
+      "https": 3,
+      "challenge": 3,
+      "05": 3,
+      "_": 3,
+      "app": 3,
+      "31990": 3,
+      "passed": 2,
+      "clients": 2,
+      "systems": 2,
+      "2": 2,
+      "known": 2,
+      "encrypt": 2,
+      "communicate": 2,
+      "actual": 2,
+      "representing": 2,
+      "control": 2,
+      "format": 2,
+      "1": 2,
+      "doesn": 2,
+      "t": 2,
+      "established": 2,
+      "learns": 2,
+      "tagging": 2,
+      "encrypting": 2,
+      "direct": 2,
+      "provides": 2,
+      "passes": 2,
+      "old": 2,
+      "random": 2,
+      "return": 2,
+      "comma": 2,
+      "separated": 2,
+      "image": 2,
+      "3a": 2,
+      "2f": 2,
+      "com": 2,
+      "author": 2,
+      "provided": 2,
+      "rpc": 2,
+      "like": 2,
+      "message": 2,
+      "encrypted": 2,
+      "structure": 2,
+      "sent": 2,
+      "command": 2,
+      "optional_requested_perms": 2,
+      "plaintext_to_encrypt": 2,
+      "plaintext": 2,
+      "switch_relays": 2,
+      "null": 2,
+      "case": 2,
+      "receiving": 2,
+      "updated": 2,
+      "request_id": 2,
+      "object": 2,
+      "flow": 2,
+      "build": 2,
+      "png": 2,
+      "authenticate": 2,
+      "publish": 2,
+      "domain": 2,
+      "verify": 2,
+      "tag": 2,
+      "include": 2,
+      "signers_": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "b1a5ad355a8b376170471a41817d8722ba7443b1",
+        "timestamp": "2023-02-20T16:26:13-03:00",
+        "date": "2023-02-20",
+        "author": "Marco Argentieri",
+        "path": "46.md",
+        "status": "Draft",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        "NIP 4",
+        "NIP 5",
+        "NIP 44",
+        "NIP 89"
+      ],
+      "body_extracted_llm": [
+        "NIP 1",
+        "NIP 4",
+        "NIP 44"
+      ]
+    }
+  }
+}

@@ -1,7 +1,11 @@
 import subprocess
-from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Optional, Tuple
+
+from analysis.proposal_schema import normalize_proposal_document
+from analysis.utils import parse_date_ymd as _parse_date_ymd
+
+_GIT_BOTS = {"github-actions[bot]", "dependabot[bot]", "web-flow", "GitHub"}
 
 
 def get_git_history(repo_dir: Path, file_path: Path) -> List[Tuple[str, str, str]]:
@@ -20,8 +24,50 @@ def get_git_history(repo_dir: Path, file_path: Path) -> List[Tuple[str, str, str
         return []
 
 
-def get_unique_authors(history: List[Tuple[str, str, str]]) -> int:
-    return len(set(commit[2] for commit in history))
+def get_git_authors_on_first_day(git_history: List) -> List[str]:
+    """Unique non-bot committers who touched the file on its first calendar day."""
+    history = list(git_history or [])
+    first_day: Optional[str] = None
+
+    for entry in reversed(history):
+        if len(entry) >= 2:
+            first_day = _parse_date_ymd(entry[1])
+            if first_day:
+                break
+
+    if not first_day:
+        return []
+
+    seen: set = set()
+    authors: List[str] = []
+    for entry in history:
+        if len(entry) < 3:
+            continue
+        author = entry[2]
+        if not author or author in _GIT_BOTS:
+            continue
+        if _parse_date_ymd(entry[1]) != first_day:
+            continue
+        if author not in seen:
+            seen.add(author)
+            authors.append(author)
+    return authors
+
+
+def _insert_after(d: Dict[str, Any], after_key: str, key: str, value: Any) -> None:
+    """Insert key into dict immediately after after_key (in-place, no-op if key exists)."""
+    if key in d:
+        return
+    items = list(d.items())
+    d.clear()
+    inserted = False
+    for k, v in items:
+        d[k] = v
+        if k == after_key and not inserted:
+            d[key] = value
+            inserted = True
+    if not inserted:
+        d[key] = value
 
 
 def update_metadata_from_git(
@@ -30,31 +76,31 @@ def update_metadata_from_git(
     repo_dir: Path,
 ) -> Dict[str, Any]:
     """Populate metadata from Git history in-place and return payload."""
-    if "metadata" not in json_data:
-        json_data["metadata"] = {
-            "last_commit": None,
-            "total_commits": None,
-            "metadata_last_updated": None,
-            "git_history": [],
-            "contributors": None,
-        }
+    json_data = normalize_proposal_document(json_data)
 
     commit_info = get_git_history(repo_dir, proposal_file_path)
-    if commit_info:
-        last_commit_date = commit_info[0][1]
-        contributors = get_unique_authors(commit_info)
-    else:
-        last_commit_date = None
-        contributors = 0
+    last_commit_date = commit_info[0][1] if commit_info else None
 
-    json_data["metadata"].update(
+    json_data["meta"].update(
         {
             "last_commit": last_commit_date,
             "total_commits": len(commit_info),
-            "metadata_last_updated": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S"),
             "git_history": commit_info,
-            "contributors": contributors,
         }
     )
-    return json_data
 
+    preamble: Dict[str, Any] = json_data.get("raw", {}).get("preamble", {})
+
+    # Backfill author from committers present on the file's first day (e.g. NIPs)
+    if not preamble.get("author") and commit_info:
+        authors = get_git_authors_on_first_day(commit_info)
+        if authors:
+            _insert_after(preamble, after_key="title", key="author", value=authors)
+
+    # Backfill created date from oldest commit when the preamble has none
+    if not preamble.get("created") and commit_info:
+        ymd = _parse_date_ymd(commit_info[-1][1])  # history is newest-first
+        if ymd:
+            _insert_after(preamble, after_key="author", key="created", value=ymd)
+
+    return json_data

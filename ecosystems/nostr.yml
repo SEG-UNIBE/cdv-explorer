@@ -1,0 +1,77 @@
+slug: nostr
+display_name: Nostr
+
+sources:
+  nips:
+    display_name: Nostr Implementation Possibilities
+    proposal_acronym: NIP
+    proposal_term_singular: Nostr Implementation Possibility
+    proposal_term_plural: Nostr Implementation Possibilities
+
+    source_type: github_repo
+    harvester: github_repo
+    preprocessor: nip_tags
+    compliance_checker: nip
+    repository_owner: nostr-protocol
+    repository_name: nips
+
+    harvest: ip_data/nostr/nips/01_harvest
+    preprocess: ip_data/nostr/nips/02_preprocess
+    analysis: ip_data/nostr/nips/03_analysis
+    postprocess: ip_data/nostr/nips/04_postprocess
+
+    # NIP files are named as bare 2-3 character hex identifiers, no prefix:
+    # 01.md, 02.md, 50.md, 5A.md, A0.md, CC.md …
+    document_prefix: nip
+    primary_id_field: nip
+    document_file_pattern: '^[0-9A-Fa-f]{2,3}\.md$'
+    document_dir_pattern: '^[0-9A-Fa-f]{2,3}$'
+    reference_pattern: '\bNIP-([0-9A-Fa-f]{1,3})\b'
+    max_proposal_id: 255
+    stop_words_file: assets/stopwords/en_basic.txt
+
+    # NIPs do NOT use RFC-style key:value preambles.  Metadata is expressed as
+    # backtick-tagged tokens on the first content line after the title, e.g.:
+    #
+    #   NIP-01
+    #   ======
+    #   Basic protocol flow description
+    #   --------------------------------
+    #   `draft` `mandatory` `relay`
+    #
+    # The pipeline preamble extractor needs a custom handler for this format;
+    # the fields below describe the logical schema once parsed.
+    preamble:
+      required_fields:
+        - nip
+        - title
+        - status
+      optional_fields:
+        - type
+        - layer
+        - kind
+      field_aliases:
+        optionality: type
+      expected_headlines:
+        abstract: 2
+      list_valued_fields: []
+
+    classification:
+      dimensions:
+        status:
+          aliases:
+            final: Final
+            draft: Draft
+        type:
+          aliases:
+            mandatory: Mandatory
+            optional: Optional
+        layer:
+          aliases:
+            relay: Relay
+            client: Client
+            server: Server
+            wallet: Wallet
+      # No regime changes known yet; add entries here if the NIP process ever
+      # introduces a new classification standard with a hard cutover date.
+      regimes: []

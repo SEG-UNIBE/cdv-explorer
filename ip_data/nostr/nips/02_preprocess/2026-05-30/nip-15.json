@@ -1,0 +1,446 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "15",
+      "title": "Nostr Marketplace",
+      "author": [
+        "Semisol"
+      ],
+      "created": "2022-05-26",
+      "status": "Draft",
+      "type": "Optional",
+      "layer": null,
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Tue Sep 3 20:41:31 2024 +0330",
+    "total_commits": 25,
+    "git_history": [
+      [
+        "e6552476aa2e5ca7256be572a9aa226ec8a022ee",
+        "Tue Sep 3 20:41:31 2024 +0330",
+        "kehiy"
+      ],
+      [
+        "ca3c52e3e74f0a4679f1c6c0d9ac6461ea748d2d",
+        "Tue Aug 20 12:56:05 2024 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "b8fe261ce4ff33142ce6ea71126969dfce0f7d7e",
+        "Sun Jul 28 15:08:13 2024 -0400",
+        "randymcmillan"
+      ],
+      [
+        "d8d75d9b19e6c66f7d75c771e784cd9dee4d2320",
+        "Tue Jan 16 23:28:23 2024 +0900",
+        "Asai Toshiya"
+      ],
+      [
+        "56610771b6b0c61b2269fc16f163a004b585f726",
+        "Tue Jan 9 13:35:40 2024 +0200",
+        "Ioan Bizău"
+      ],
+      [
+        "45e65e9bee4425c0fd7cb9f27a48df0eb1e4783a",
+        "Thu Nov 30 21:21:42 2023 -0800",
+        "Scott Weldon"
+      ],
+      [
+        "5dcfe85306434f21ecb1e7a47edd92b2e3e64f9a",
+        "Sat Nov 18 09:13:12 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "37f6cbb775126b386414220f783ca0f5f85e7614",
+        "Wed Nov 15 21:42:51 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "a328831a07defcd11924c2330b5aaf4f65ec40aa",
+        "Tue Oct 31 15:48:04 2023 +0200",
+        "Ioan Bizău"
+      ],
+      [
+        "c567f2e4d6fa4e79585e83b6e6d9313217295582",
+        "Fri Sep 8 13:10:59 2023 +0100",
+        "Tiago Vasconcelos"
+      ],
+      [
+        "88ee873c9e4824125d3f2e38d16c39ccf73ddf16",
+        "Tue Aug 15 17:02:54 2023 +0300",
+        "Ioan Bizău"
+      ],
+      [
+        "a4666e8b2a2e74678c7668e52efc037da8deb884",
+        "Mon Aug 14 17:39:34 2023 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "72bb8a128b2d7d3c2c654644cd68d0d0fe58a3b1",
+        "Sun Aug 13 13:47:45 2023 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "b7faf8a4fec78d3504989117944b77a893a56d32",
+        "Thu Aug 10 16:17:45 2023 +0200",
+        "ktecho"
+      ],
+      [
+        "e5a6c2c698bcfca4d9d135343fabf8846214314a",
+        "Thu Aug 10 00:16:35 2023 +0200",
+        "ktecho"
+      ],
+      [
+        "d9caf9d7b4ca5c3341b1262d5460a2e23630da5c",
+        "Mon May 15 08:15:53 2023 -0400",
+        "jimbojw"
+      ],
+      [
+        "97b58ccc36a8360a099e4f905fc9bc616bc03f31",
+        "Fri Apr 14 21:24:25 2023 +0900",
+        "Yasuhiro Matsumoto"
+      ],
+      [
+        "ebf94668dbafe7fd2f52a77aabbd1f35bdf86bb6",
+        "Fri Apr 14 10:47:36 2023 +0200",
+        "Luis Miguel"
+      ],
+      [
+        "bf0a0da6a48b96467172414d8e41dc72b0ca379c",
+        "Thu Apr 13 11:13:04 2023 +0100",
+        "Arc"
+      ],
+      [
+        "fb5b7c739ff92cec4962990aa99c54fac9f5de81",
+        "Sun Apr 9 08:50:24 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "743e43a8d4bf4a37022e3b6551524b12e7cc54a0",
+        "Tue Nov 22 08:59:10 2022 -0300",
+        "fiatjaf"
+      ],
+      [
+        "12f6e9ee625ae2743e10dec16c7eec85e5a8f150",
+        "Fri May 27 19:43:15 2022 +0300",
+        "Semisol"
+      ],
+      [
+        "f49f26fbe23372feb1e45d425d0f605e29d79809",
+        "Fri May 27 17:54:38 2022 +0300",
+        "Semisol"
+      ],
+      [
+        "3374869b3f447066ce8fae138be347788c8d8946",
+        "Thu May 26 20:26:34 2022 +0300",
+        "Semisol"
+      ],
+      [
+        "a787093c528a6c2727d90b98d44ff0b17ee77c33",
+        "Thu May 26 20:21:23 2022 +0300",
+        "Semisol"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "string": 53,
+      "merchant": 30,
+      "id": 30,
+      "shipping": 28,
+      "product": 26,
+      "optional": 25,
+      "event": 24,
+      "stall": 19,
+      "customer": 18,
+      "json": 18,
+      "auction": 18,
+      "bid": 16,
+      "cost": 15,
+      "marketplace": 14,
+      "type": 13,
+      "content": 12,
+      "message": 11,
+      "description": 11,
+      "nostr": 10,
+      "market": 10,
+      "products": 10,
+      "zone": 10,
+      "04": 10,
+      "events": 9,
+      "tags": 9,
+      "currency": 8,
+      "payment": 8,
+      "date": 8,
+      "bids": 8,
+      "nip": 7,
+      "create": 7,
+      "update": 7,
+      "defined": 7,
+      "int": 7,
+      "url": 7,
+      "key": 6,
+      "0": 6,
+      "fields": 6,
+      "array": 6,
+      "value": 6,
+      "specified": 6,
+      "items": 6,
+      "field": 6,
+      "order": 6,
+      "option": 6,
+      "md": 6,
+      "address": 6,
+      "different": 5,
+      "generated": 5,
+      "1": 5,
+      "2": 5,
+      "base": 5,
+      "zones": 5,
+      "costs": 5,
+      "spec": 5,
+      "start_date": 5,
+      "duration": 5,
+      "pending": 5,
+      "https": 4,
+      "com": 4,
+      "stalls": 4,
+      "merchants": 4,
+      "checkout": 4,
+      "float": 4,
+      "sent": 4,
+      "jsonc": 4,
+      "d": 4,
+      "tag": 4,
+      "extra": 4,
+      "user": 4,
+      "t": 4,
+      "etc": 4,
+      "btc": 4,
+      "ln": 4,
+      "invoice": 4,
+      "uuid": 4,
+      "start": 4,
+      "number": 4,
+      "seconds": 4,
+      "confirmation": 4,
+      "rejected": 4,
+      "github": 3,
+      "lnbits": 3,
+      "nostrmarket": 3,
+      "pair": 3,
+      "clientside": 3,
+      "software": 3,
+      "clients": 3,
+      "communication": 3,
+      "client": 3,
+      "include": 3,
+      "support": 3,
+      "kind": 3,
+      "sequential": 3,
+      "ids": 3,
+      "discouraged": 3,
+      "level": 3,
+      "s": 3,
+      "required": 3,
+      "image": 3,
+      "quantity": 3,
+      "specs": 3,
+      "match": 3,
+      "allows": 3,
+      "ui": 3,
+      "c": 3,
+      "new": 3,
+      "status": 3,
+      "step": 3,
+      "goes": 3,
+      "pubkey": 3,
+      "bitcoin": 3,
+      "link": 3,
+      "shipped": 3,
+      "received": 3,
+      "bool": 3,
+      "experience": 3,
+      "naddr": 3,
+      "metadata": 3,
+      "set": 3,
+      "logo": 3,
+      "banner": 3,
+      "happen": 3,
+      "edited": 3,
+      "actual": 3,
+      "e": 3,
+      "duration_extended": 3,
+      "bidder": 3,
+      "additional": 3,
+      "diagon": 2,
+      "alley": 2,
+      "plebeian": 2,
+      "multiple": 2,
+      "admin": 2,
+      "purely": 2,
+      "public": 2,
+      "searchable": 2,
+      "like": 2,
+      "similar": 2,
+      "30017": 2,
+      "30018": 2,
+      "4": 2,
+      "messages": 2,
+      "delete": 2,
+      "regions": 2,
+      "self": 2,
+      "explanatory": 2,
+      "possible": 2,
+      "choose": 2,
+      "goods": 2,
+      "digital": 2,
+      "stall_id": 2,
+      "belong": 2,
+      "images": 2,
+      "urls": 2,
+      "price": 2,
+      "null": 2,
+      "present": 2,
+      "structure": 2,
+      "_open_": 2,
+      "result": 2,
+      "category": 2,
+      "represents": 2,
+      "request": 2,
+      "contact": 2,
+      "phone": 2,
+      "wants": 2,
+      "contacted": 2,
+      "email": 2,
+      "valid": 2,
+      "check": 2,
+      "payment_options": 2,
+      "lnurl": 2,
+      "19": 2,
+      "sharing": 2,
+      "customization": 2,
+      "unique": 2,
+      "theme": 2,
+      "auctions": 2,
+      "sold": 2,
+      "note": 2,
+      "later": 2,
+      "initial": 2,
+      "1021": 2,
+      "reference": 2,
+      "version": 2,
+      "1022": 2,
+      "winner": 2,
+      "confirmed": 2,
+      "addition": 2,
+      "winning": 2,
+      "marked": 2,
+      "sufficient": 2,
+      "approved": 2,
+      "end": 2,
+      "models": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "a787093c528a6c2727d90b98d44ff0b17ee77c33",
+        "timestamp": "2022-05-26T20:21:23+03:00",
+        "date": "2022-05-26",
+        "author": "Semisol",
+        "path": "15.md",
+        "status": "Draft",
+        "standard": ""
+      },
+      {
+        "commit": "743e43a8d4bf4a37022e3b6551524b12e7cc54a0",
+        "timestamp": "2022-11-22T14:52:34-03:00",
+        "date": "2022-11-22",
+        "author": "fiatjaf",
+        "path": "15.md",
+        "status": "Final",
+        "standard": ""
+      },
+      {
+        "commit": "bf0a0da6a48b96467172414d8e41dc72b0ca379c",
+        "timestamp": "2023-04-13T07:13:04-03:00",
+        "date": "2023-04-13",
+        "author": "Arc",
+        "path": "15.md",
+        "status": "Draft",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        "NIP 4",
+        "NIP 19"
+      ],
+      "body_extracted_llm": [
+        "NIP 1",
+        "NIP 4",
+        "NIP 9",
+        "NIP 19",
+        "NIP 33"
+      ]
+    }
+  }
+}

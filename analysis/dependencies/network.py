@@ -2,15 +2,36 @@ import json
 import csv
 import re
 from pathlib import Path
-from typing import Any, Dict, Iterable, List
+from typing import Any, Dict, Iterable, List, Optional
 
-from ecosystem_config import ACTIVE_ECOSYSTEM
+from analysis.dependencies.constants import (
+    BODY_EXTRACTED_LLM,
+    BODY_EXTRACTED_REGEX,
+    PREAMBLE_EXTRACTED,
+)
+from analysis.authorship.mining import get_git_authors_on_first_day
+from analysis.proposal_schema import (
+    get_formal_compliance,
+    get_interrelations,
+    get_preamble_interrelations,
+    normalize_proposal_document,
+)
+from pipeline.ecosystem_config import ACTIVE_ECOSYSTEM
+from analysis.utils import parse_date_ymd as _parse_date_ymd
 
 
-CLASSIFICATION_CONFIG = ACTIVE_ECOSYSTEM.get("classification", {})
-LAYER_ALIASES = CLASSIFICATION_CONFIG.get("layer_aliases", {})
-STATUS_ALIASES = CLASSIFICATION_CONFIG.get("status_aliases", {})
-TYPE_ALIASES = CLASSIFICATION_CONFIG.get("type_aliases", {})
+_DIMS = ACTIVE_ECOSYSTEM.get("classification", {}).get("dimensions", {})
+LAYER_ALIASES = _DIMS.get("layer", {}).get("aliases", {})
+STATUS_ALIASES = _DIMS.get("status", {}).get("aliases", {})
+TYPE_ALIASES = _DIMS.get("type", {}).get("aliases", {})
+
+# All classification dimension fields defined in the ecosystem config.
+# These are included as node attributes so the React frontend can use them.
+_CLASSIFICATION_FIELDS: List[str] = list(_DIMS.keys())
+_CLASSIFICATION_ALIASES: Dict[str, Dict[str, str]] = {
+    field: (_DIMS[field].get("aliases") or {})
+    for field in _CLASSIFICATION_FIELDS
+}
 
 
 def _aggregate_explicit_dependencies(explicit_dependencies: Dict[str, List[Dict[str, Any]]]) -> List[Dict[str, Any]]:
@@ -43,13 +64,13 @@ def normalize_proposal_ids(field: Any, proposal_label: str = "IP") -> List[str]:
 
     result = []
     label = re.escape(proposal_label)
-    id_pattern = re.compile(rf"^\s*(?:{label}[-\s]*)?\d+\s*$", re.IGNORECASE)
+    id_pattern = re.compile(rf"^\s*(?:{label}[-\s]*)?[0-9A-Fa-f]+\s*$", re.IGNORECASE)
 
     for item in raw_items:
         text = str(item)
         if id_pattern.match(text):
             normalized = re.sub(rf"(?i)^\s*{label}[-\s]*", "", text).strip()
-            result.append(normalized)
+            result.append(normalized.upper())
     return result
 
 
@@ -64,7 +85,7 @@ def load_proposal_json_documents(source_dir: Path) -> List[Dict[str, Any]]:
     for file_path in sorted(source_dir.glob("*.json")):
         try:
             with file_path.open("r", encoding="utf-8") as handle:
-                documents.append(json.load(handle))
+                documents.append(normalize_proposal_document(json.load(handle)))
         except json.JSONDecodeError:
             continue
     return documents
@@ -80,7 +101,7 @@ def build_network_data(
     implicit_dependency_links = []
     requires_links = []
     replaces_links = []
-    superseded_by_links = []
+    proposed_replacement_links = []
     node_ids = set()
 
     for proposal in proposal_data:
@@ -88,7 +109,7 @@ def build_network_data(
             continue
 
         preamble = proposal.get("raw", {}).get("preamble", {})
-        compliance = proposal.get("compliance", {}) or proposal.get("raw", {}).get("compliance", {})
+        formal_compliance = get_formal_compliance(proposal)
         insights = proposal.get("insights", {})
         proposal_id = preamble.get(id_field)
 
@@ -97,19 +118,36 @@ def build_network_data(
 
         proposal_id = str(proposal_id)
         if proposal_id not in node_ids:
-            nodes.append(
-                {
-                    "id": proposal_id,
-                    "title": preamble.get("title"),
-                    "layer": _apply_alias(preamble.get("layer"), LAYER_ALIASES),
-                    "compliance_score": compliance.get("score", preamble.get("compliance_score")),
-                    "created": preamble.get("created"),
-                    "author": preamble.get("author"),
-                    "word_list": insights.get("word_list"),
-                    "status": _apply_alias(preamble.get("status"), STATUS_ALIASES),
-                    "type": _apply_alias(preamble.get("type"), TYPE_ALIASES),
-                }
-            )
+            git_history = proposal.get("meta", {}).get("git_history", [])
+            node: Dict[str, Any] = {
+                "id": proposal_id,
+                "title": preamble.get("title"),
+                "compliance_score": formal_compliance.get("score", preamble.get("compliance_score")),
+                "created": preamble.get("created"),
+                "author": preamble.get("author"),
+                "word_list": insights.get("word_list"),
+            }
+
+            # Derive author from committers present on the file's first day (e.g. NIPs)
+            if not node.get("author"):
+                first_day_authors = get_git_authors_on_first_day(git_history)
+                if first_day_authors:
+                    node["author"] = first_day_authors
+
+            # Derive created date from oldest git commit when preamble has none
+            if not node.get("created") and git_history:
+                _oldest = git_history[-1]  # history is newest-first
+                if len(_oldest) >= 2:
+                    _ymd = _parse_date_ymd(_oldest[1])
+                    if _ymd:
+                        node["created"] = _ymd
+            for field in _CLASSIFICATION_FIELDS:
+                node[field] = _apply_alias(preamble.get(field), _CLASSIFICATION_ALIASES[field])
+            # Backward-compat aliases for ecosystems that don't define layer/type/status explicitly.
+            node.setdefault("layer", _apply_alias(preamble.get("layer"), LAYER_ALIASES))
+            node.setdefault("status", _apply_alias(preamble.get("status"), STATUS_ALIASES))
+            node.setdefault("type", _apply_alias(preamble.get("type"), TYPE_ALIASES))
+            nodes.append(node)
             node_ids.add(proposal_id)
 
     for proposal in proposal_data:
@@ -117,7 +155,7 @@ def build_network_data(
             continue
 
         preamble = proposal.get("raw", {}).get("preamble", {})
-        insights = proposal.get("insights", {})
+        interrelations = get_interrelations(proposal)
         proposal_id = preamble.get(id_field)
 
         if not proposal_id:
@@ -127,40 +165,45 @@ def build_network_data(
         if proposal_id not in node_ids:
             continue
 
-        references_field = insights.get("explicit_references")
+        references_field = interrelations.get(BODY_EXTRACTED_REGEX)
 
         for ref_id in normalize_proposal_ids(references_field, proposal_label=proposal_label):
             if ref_id in node_ids:
                 explicit_reference_links.append({"source": proposal_id, "target": ref_id, "value": 1})
 
-        for dep_id in normalize_proposal_ids(insights.get("implicit_dependencies"), proposal_label=proposal_label):
+        for dep_id in normalize_proposal_ids(interrelations.get(BODY_EXTRACTED_LLM), proposal_label=proposal_label):
             if dep_id in node_ids:
                 implicit_dependency_links.append({"source": proposal_id, "target": dep_id, "value": 1})
 
-        for req_id in normalize_proposal_ids(preamble.get("requires"), proposal_label=proposal_label):
+        preamble_interrelations = get_preamble_interrelations(preamble)
+
+        for req_id in normalize_proposal_ids(preamble_interrelations.get("requires"), proposal_label=proposal_label):
             if req_id in node_ids:
                 requires_links.append({"source": proposal_id, "target": req_id, "value": 1})
 
-        for rep_id in normalize_proposal_ids(preamble.get("replaces"), proposal_label=proposal_label):
+        for rep_id in normalize_proposal_ids(preamble_interrelations.get("replaces"), proposal_label=proposal_label):
             if rep_id in node_ids:
                 replaces_links.append({"source": proposal_id, "target": rep_id, "value": 1})
 
-        for sup_id in normalize_proposal_ids(preamble.get("superseded_by"), proposal_label=proposal_label):
+        for sup_id in normalize_proposal_ids(
+            preamble_interrelations.get("proposed_replacement"),
+            proposal_label=proposal_label,
+        ):
             if sup_id in node_ids:
-                superseded_by_links.append({"source": proposal_id, "target": sup_id, "value": 1})
+                proposed_replacement_links.append({"source": proposal_id, "target": sup_id, "value": 1})
 
     explicit_dependency_links = {
         "requires": requires_links,
         "replaces": replaces_links,
-        "superseded_by": superseded_by_links,
+        "proposed_replacement": proposed_replacement_links,
     }
 
     return {
         "nodes": nodes,
         "links": {
-            "explicit_references": explicit_reference_links,
-            "explicit_dependencies": explicit_dependency_links,
-            "implicit_dependencies": implicit_dependency_links,
+            BODY_EXTRACTED_REGEX: explicit_reference_links,
+            PREAMBLE_EXTRACTED: explicit_dependency_links,
+            BODY_EXTRACTED_LLM: implicit_dependency_links,
         },
     }
 
@@ -175,7 +218,9 @@ def save_network_data_artifacts(network_data: Dict[str, Any], output_stem: Path)
 
     nodes_csv_path = output_stem.parent / f"{output_stem.name}_nodes.csv"
     with nodes_csv_path.open("w", encoding="utf-8", newline="") as handle:
-        fieldnames = ["id", "title", "layer", "compliance_score", "created", "author", "status", "type"]
+        _base = ["id", "title", "compliance_score", "created", "author"]
+        _class = sorted({f for f in _CLASSIFICATION_FIELDS} | {"layer", "status", "type"})
+        fieldnames = _base + _class
         writer = csv.DictWriter(handle, fieldnames=fieldnames)
         writer.writeheader()
         for node in network_data.get("nodes", []):
@@ -186,7 +231,7 @@ def save_network_data_artifacts(network_data: Dict[str, Any], output_stem: Path)
 
     links_by_type = network_data.get("links", {})
     for link_type, links in links_by_type.items():
-        if link_type == "explicit_dependencies" and isinstance(links, dict):
+        if link_type == PREAMBLE_EXTRACTED and isinstance(links, dict):
             aggregate_links = _aggregate_explicit_dependencies(links)
             aggregate_path = output_stem.parent / f"{output_stem.name}_{link_type}_edges.csv"
             with aggregate_path.open("w", encoding="utf-8", newline="") as handle:

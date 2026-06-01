@@ -1,0 +1,32 @@
+{%
+    \newcommand\mydots{\hbox to 1em{.\hss.\hss.}}%
+    \setlength{\abovetopsep}{0pt}%
+    \setlength{\belowbottomsep}{0pt}%
+    \setlength{\aboverulesep}{0pt}%
+    \setlength{\belowrulesep}{0pt}%
+    \setlength{\tabcolsep}{4pt}%
+    \renewcommand{\arraystretch}{1.15}%
+    \begin{tabular}{c@{\;}c|l@{\,}l@{\quad}r|l@{\,}l@{\quad}r|l@{\,}l@{\quad}r|l@{\,}l@{\quad}r}
+        \toprule
+        \multicolumn{2}{c|}{\textbf{Approach}} & \multicolumn{3}{c|}{\textbf{In Deg.}} & \multicolumn{3}{c|}{\textbf{W. EV}} & \multicolumn{3}{c|}{\textbf{PageRank}} & \multicolumn{3}{c}{\textbf{BC}} \\
+        \midrule%
+        \multirow{5}{*}{\textbf{Preamble}} & \textit{\textcolor{gray}{(1)}} & \BIPC{380}{red!70!black} & \textcolor{red!70!black}{Output\mydots} & 12 & \BIPC{20}{black} & URI Sch\mydots & 0.507 & \BIPC{21}{orange!80!black} & \textcolor{orange!80!black}{URI Sch\mydots} & 0.036 & \BIPC{21}{orange!80!black} & \textcolor{orange!80!black}{URI Sch\mydots} & 0.0001 \\
+         & \textit{\textcolor{gray}{(2)}} & \BIPC{340}{black} & Schnorr\mydots & 6 & \BIPC{321}{black} & URI Sch\mydots & 0.507 & \BIPC{380}{red!70!black} & \textcolor{red!70!black}{Output\mydots} & 0.034 & \BIPC{173}{black} & Base32\mydots & 0.0001 \\
+         & \textit{\textcolor{gray}{(3)}} & \BIPC{341}{black} & Taproot\mydots & 6 & \BIPC{1}{black} & BIP Pur\mydots & 0.338 & \BIPC{78}{black} & A Simpl\mydots & 0.026 & \BIPC{2}{blue!70!black} & \textcolor{blue!70!black}{BIP pro\mydots} & 0.0001 \\
+         & \textit{\textcolor{gray}{(4)}} & \BIPC{32}{black} & Hierarc\mydots & 4 & \BIPC{2}{blue!70!black} & \textcolor{blue!70!black}{BIP pro\mydots} & 0.338 & \BIPC{79}{black} & Bustapa\mydots & 0.025 & \BIPC{3}{teal} & \textcolor{teal}{Updated\mydots} & 0.0001 \\
+         & \textit{\textcolor{gray}{(5)}} & \BIPC{174}{black} & Partial\mydots & 4 & \BIPC{3}{teal} & \textcolor{teal}{Updated\mydots} & 0.338 & \BIPC{151}{black} & Peer-to\mydots & 0.023 & \BIPC{350}{black} & Bech32m\mydots & 0.0001 \\
+        \midrule%
+        \multirow{5}{*}{\textbf{Regex}} & \textit{\textcolor{gray}{(1)}} & \BIPC{32}{red!70!black} & \textcolor{red!70!black}{Hierarc\mydots} & 38 & \BIPC{9}{teal} & \textcolor{teal}{Version\mydots} & 0.457 & \BIPC{32}{red!70!black} & \textcolor{red!70!black}{Hierarc\mydots} & 0.113 & \BIPC{141}{blue!70!black} & \textcolor{blue!70!black}{Segrega\mydots} & 0.0952 \\
+         & \textit{\textcolor{gray}{(2)}} & \BIPC{141}{blue!70!black} & \textcolor{blue!70!black}{Segrega\mydots} & 31 & \BIPC{112}{black} & CHECK\mydots & 0.368 & \BIPC{39}{black} & Mnemoni\mydots & 0.100 & \BIPC{321}{black} & URI Sch\mydots & 0.0671 \\
+         & \textit{\textcolor{gray}{(3)}} & \BIPC{9}{teal} & \textcolor{teal}{Version\mydots} & 24 & \BIPC{68}{black} & Relativ\mydots & 0.367 & \BIPC{9}{teal} & \textcolor{teal}{Version\mydots} & 0.036 & \BIPC{21}{black} & URI Sch\mydots & 0.0669 \\
+         & \textit{\textcolor{gray}{(4)}} & \BIPC{16}{black} & Pay to\mydots & 24 & \BIPC{65}{black} & OP\_CH\mydots & 0.366 & \BIPC{34}{black} & Block v\mydots & 0.033 & \BIPC{70}{black} & Payment\mydots & 0.0589 \\
+         & \textit{\textcolor{gray}{(5)}} & \BIPC{341}{black} & Taproot\mydots & 24 & \BIPC{113}{black} & Median\mydots & 0.318 & \BIPC{141}{blue!70!black} & \textcolor{blue!70!black}{Segrega\mydots} & 0.030 & \BIPC{72}{black} & bitcoin\mydots & 0.0545 \\
+        \midrule%
+        \multirow{5}{*}{\textbf{LLM}} & \textit{\textcolor{gray}{(1)}} & \BIPC{141}{red!70!black} & \textcolor{red!70!black}{Segrega\mydots} & 41 & \BIPC{9}{violet} & \textcolor{violet}{Version\mydots} & 0.608 & \BIPC{141}{red!70!black} & \textcolor{red!70!black}{Segrega\mydots} & 0.084 & \BIPC{141}{red!70!black} & \textcolor{red!70!black}{Segrega\mydots} & 0.0079 \\
+         & \textit{\textcolor{gray}{(2)}} & \BIPC{32}{blue!70!black} & \textcolor{blue!70!black}{Hierarc\mydots} & 35 & \BIPC{113}{black} & Median\mydots & 0.405 & \BIPC{16}{orange!80!black} & \textcolor{orange!80!black}{Pay to\mydots} & 0.052 & \BIPC{341}{teal} & \textcolor{teal}{Taproot\mydots} & 0.0056 \\
+         & \textit{\textcolor{gray}{(3)}} & \BIPC{341}{teal} & \textcolor{teal}{Taproot\mydots} & 25 & \BIPC{68}{black} & Relativ\mydots & 0.405 & \BIPC{22}{green!55!black} & \textcolor{green!55!black}{getbloc\mydots} & 0.046 & \BIPC{342}{black} & Validat\mydots & 0.0053 \\
+         & \textit{\textcolor{gray}{(4)}} & \BIPC{340}{black} & Schnorr\mydots & 20 & \BIPC{112}{black} & CHECK\mydots & 0.405 & \BIPC{9}{violet} & \textcolor{violet}{Version\mydots} & 0.046 & \BIPC{9}{violet} & \textcolor{violet}{Version\mydots} & 0.0042 \\
+         & \textit{\textcolor{gray}{(5)}} & \BIPC{16}{orange!80!black} & \textcolor{orange!80!black}{Pay to\mydots} & 19 & \BIPC{22}{green!55!black} & \textcolor{green!55!black}{getbloc\mydots} & 0.304 & \BIPC{32}{blue!70!black} & \textcolor{blue!70!black}{Hierarc\mydots} & 0.045 & \BIPC{22}{green!55!black} & \textcolor{green!55!black}{getbloc\mydots} & 0.0024 \\
+        \bottomrule
+    \end{tabular}%
+}

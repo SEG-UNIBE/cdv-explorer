@@ -1,0 +1,208 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "BE",
+      "title": "Nostr BLE Communications Protocol",
+      "author": [
+        "KoalaSat"
+      ],
+      "created": "2025-11-11",
+      "status": "Draft",
+      "type": "Optional",
+      "layer": null,
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Tue Nov 11 14:05:09 2025 +0000",
+    "total_commits": 1,
+    "git_history": [
+      [
+        "a47c460415bf46635d6ae83aac40e6c4db8a9ca1",
+        "Tue Nov 11 14:05:09 2025 +0000",
+        "KoalaSat"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "client": 28,
+      "message": 20,
+      "server": 18,
+      "1": 14,
+      "2": 13,
+      "bytearray": 12,
+      "device": 11,
+      "messages": 11,
+      "size": 11,
+      "chunk": 11,
+      "read": 10,
+      "devices": 9,
+      "val": 9,
+      "relay": 8,
+      "array": 8,
+      "ble": 7,
+      "uuid": 7,
+      "chunks": 7,
+      "reassembledbytearray": 7,
+      "event": 7,
+      "0000": 6,
+      "write": 6,
+      "byte": 6,
+      "0": 6,
+      "chunkwithindex": 6,
+      "sends": 6,
+      "missing": 6,
+      "nip": 5,
+      "service": 5,
+      "gatt": 5,
+      "chunksize": 5,
+      "connected": 5,
+      "s": 4,
+      "md": 4,
+      "bytes": 4,
+      "numchunks": 4,
+      "chunkdata": 4,
+      "77": 4,
+      "writes": 4,
+      "responds": 4,
+      "structure": 3,
+      "1000": 3,
+      "8000": 3,
+      "00805f9b34fb": 3,
+      "following": 3,
+      "characteristic": 3,
+      "notify": 3,
+      "role": 3,
+      "ffff": 3,
+      "4": 3,
+      "case": 3,
+      "batch": 3,
+      "index": 3,
+      "var": 3,
+      "chunkindex": 3,
+      "send": 3,
+      "synchronization": 3,
+      "half": 3,
+      "duplex": 3,
+      "success": 3,
+      "subsequent": 3,
+      "synchronized": 3,
+      "peer": 3,
+      "nostr": 2,
+      "protocol": 2,
+      "use": 2,
+      "limitations": 2,
+      "data": 2,
+      "properties": 2,
+      "communication": 2,
+      "proceed": 2,
+      "connection": 2,
+      "single": 2,
+      "01": 2,
+      "given": 2,
+      "split": 2,
+      "number": 2,
+      "batches": 2,
+      "join": 2,
+      "decompress": 2,
+      "function": 2,
+      "initial": 2,
+      "fun": 2,
+      "define": 2,
+      "start": 2,
+      "end": 2,
+      "copyofrange": 2,
+      "tobyte": 2,
+      "copyinto": 2,
+      "return": 2,
+      "sortedchunks": 2,
+      "receives": 2,
+      "new": 2,
+      "workflow": 2,
+      "neg": 2,
+      "3": 2,
+      "5": 2,
+      "doesn": 2,
+      "t": 2,
+      "eose": 2,
+      "notes": 2,
+      "peers": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "a47c460415bf46635d6ae83aac40e6c4db8a9ca1",
+        "timestamp": "2025-11-11T11:05:09-03:00",
+        "date": "2025-11-11",
+        "author": "KoalaSat",
+        "path": "BE.md",
+        "status": "Draft",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        "NIP 1",
+        "NIP 77"
+      ],
+      "body_extracted_llm": []
+    }
+  }
+}

@@ -1,13 +1,19 @@
 import * as d3 from 'd3';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Dropdown } from 'primereact/dropdown';
+import { InputText } from 'primereact/inputtext';
 import { getClassificationColorMap } from './classificationColors';
+import {
+  BODY_EXTRACTED_LLM,
+  BODY_EXTRACTED_REGEX,
+  DEFAULT_DEPENDENCY_APPROACH,
+  LINK_TYPE_OPTIONS as DEPENDENCY_LINK_TYPE_OPTIONS,
+  PREAMBLE_EXTRACTED,
+} from './dependencyApproaches';
+import { useDashboardEcosystem, useDashboardLinkMode, useDashboardSnapshot } from './dashboard/DashboardSnapshotContext';
+import { formatProposalReference, getProposalUrl, normalizeProposalId } from './proposalLinks';
 
-export const LINK_TYPE_OPTIONS = [
-  { label: 'Explicit Dependencies (Preamble)', value: 'explicit_dependencies' },
-  { label: 'Explicit References (Regex)', value: 'explicit_references' },
-  { label: 'Implicit Dependencies (LLM)', value: 'implicit_dependencies' },
-];
+export const LINK_TYPE_OPTIONS = DEPENDENCY_LINK_TYPE_OPTIONS;
 
 const BASELINE_NONE_VALUE = '__none__';
 
@@ -28,48 +34,36 @@ const COLOR_BY_OPTIONS = [
   { label: 'Type', value: 'type' },
 ];
 
+const COLOR_BY_OPTION_VALUES = new Set(COLOR_BY_OPTIONS.map((option) => option.value));
+const LAYOUT_OPTION_VALUES = new Set(LAYOUT_OPTIONS.map((option) => option.value));
+const LINK_TYPE_OPTION_VALUES = new Set(LINK_TYPE_OPTIONS.map((option) => option.value));
+
 const EXPLICIT_DEPENDENCY_COLORS = {
   requires: '#667085',
   replaces: '#667085',
-  superseded_by: '#667085',
+  proposed_replacement: '#667085',
 };
 
 const DEFAULT_EDGE_COLORS = {
-  explicit_references: '#607d8b',
-  implicit_dependencies: '#7b2cbf',
+  [BODY_EXTRACTED_REGEX]: '#939AA9',
+  [BODY_EXTRACTED_LLM]: '#939AA9',
 };
 
 const DIFFERENTIAL_EDGE_COLORS = {
-  approach_only: '#98a2b3',
+  approach_only: '#b8c0cc',
   overlap: '#2f9e44',
   baseline_only: '#d94841',
 };
 
+const DEFAULT_LINK_WIDTH = 1.8;
+const ACTIVE_LINK_WIDTH = 2.8;
+const PINNED_LINK_WIDTH = 2.6;
+
 const EXPLICIT_DEPENDENCY_STYLES = {
   requires: null,
   replaces: '8 5',
-  superseded_by: '2.5 4',
+  proposed_replacement: '2.5 4',
 };
-
-function normalizeProposalId(value) {
-  const text = String(value ?? '').trim();
-  if (!text) {
-    return '';
-  }
-
-  const match = text.match(/^(?:bip\s*[- ]*)?0*(\d+)$/i);
-  return match ? String(Number(match[1])) : text.toLowerCase();
-}
-
-function getProposalLabel(id) {
-  const normalized = normalizeProposalId(id);
-  return normalized ? `BIP ${normalized}` : String(id ?? '');
-}
-
-function getProposalUrl(id) {
-  const normalized = normalizeProposalId(id);
-  return normalized ? `https://bips.dev/${normalized}/` : '#';
-}
 
 function getLinkTypeLabel(linkType) {
   return LINK_TYPE_OPTIONS.find((option) => option.value === linkType)?.label || linkType;
@@ -84,9 +78,68 @@ function normalizeCategory(value, fallbackLabel) {
   return text || fallbackLabel;
 }
 
+function sanitizeFilePart(value, fallback = 'unknown') {
+  const text = String(value ?? '')
+    .trim()
+    .replace(/[^a-z0-9._-]+/gi, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+  return text || fallback;
+}
+
+function formatSnapshotFilePart(value) {
+  const text = String(value ?? '').trim();
+  const match = text.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (match) {
+    return `${match[1].slice(2)}${match[2]}${match[3]}`;
+  }
+  return sanitizeFilePart(text, 'snapshot');
+}
+
+function normalizeImportedPositions(payload) {
+  const normalizedPositions = {};
+  const rawPositions = payload?.positions;
+
+  if (rawPositions && typeof rawPositions === 'object' && !Array.isArray(rawPositions)) {
+    Object.entries(rawPositions).forEach(([nodeId, coords]) => {
+      if (!Array.isArray(coords) || coords.length < 2) {
+        return;
+      }
+
+      const xCoord = Number(coords[0]);
+      const yCoord = Number(coords[1]);
+      if (!Number.isFinite(xCoord) || !Number.isFinite(yCoord)) {
+        return;
+      }
+
+      normalizedPositions[String(nodeId)] = [xCoord, yCoord];
+    });
+  }
+
+  if (Object.keys(normalizedPositions).length > 0) {
+    return normalizedPositions;
+  }
+
+  if (Array.isArray(payload?.nodes)) {
+    payload.nodes.forEach((node) => {
+      const nodeId = node?.id;
+      const xCoord = Number(node?.x);
+      const yCoord = Number(node?.y);
+
+      if (nodeId == null || !Number.isFinite(xCoord) || !Number.isFinite(yCoord)) {
+        return;
+      }
+
+      normalizedPositions[String(nodeId)] = [xCoord, yCoord];
+    });
+  }
+
+  return normalizedPositions;
+}
+
 function buildDisplayedLinks(linksByType, linkType) {
-  if (linkType === 'explicit_dependencies') {
-    return ['requires', 'replaces', 'superseded_by']
+  if (linkType === PREAMBLE_EXTRACTED) {
+    return ['requires', 'replaces', 'proposed_replacement']
       .flatMap((relationType) => (linksByType?.[relationType] || []).map((edge, index) => ({
         ...edge,
         relationType,
@@ -102,8 +155,8 @@ function buildDisplayedLinks(linksByType, linkType) {
 }
 
 function getLinkSetForType(linksByType, linkType) {
-  if (linkType === 'explicit_dependencies') {
-    return ['requires', 'replaces', 'superseded_by']
+  if (linkType === PREAMBLE_EXTRACTED) {
+    return ['requires', 'replaces', 'proposed_replacement']
       .flatMap((relationType) => (linksByType?.[relationType] || []).map((edge) => ({
         source: String(edge.source),
         target: String(edge.target),
@@ -148,16 +201,131 @@ export const NetworkDiagram = ({
   height = 800,
   data,
   highlightProposal = '',
+  proposalShortPlural = 'IPs',
+  minRelations = '0',
+  setMinRelations,
   proposalFilterIds = [],
+  setProposalFilterText,
   includeConnections = true,
+  setIncludeConnections,
+  includeThresholdConnections = false,
+  setIncludeThresholdConnections,
 }) => {
   const ref = useRef();
   const legendRef = useRef();
+  const importInputRef = useRef(null);
+  const exportPayloadRef = useRef(null);
+  const simulationRef = useRef(null);
+  const redrawGraphRef = useRef(() => {});
+  const updateExportPayloadRef = useRef(() => {});
+  const physicsEnabledRef = useRef(true);
+  const snapshotLabel = useDashboardSnapshot();
+  const linkMode = useDashboardLinkMode();
+  const ecosystem = useDashboardEcosystem();
   const [colorBy, setColorBy] = useState('layer');
-  const [linkType, setLinkType] = useState('explicit_dependencies');
+  const [linkType, setLinkType] = useState(DEFAULT_DEPENDENCY_APPROACH);
   const [baselineType, setBaselineType] = useState(BASELINE_NONE_VALUE);
   const [layoutMode, setLayoutMode] = useState('balanced');
+  const [physicsEnabled, setPhysicsEnabled] = useState(true);
+  const [importedLayout, setImportedLayout] = useState(null);
   const isDifferentialMode = baselineType !== BASELINE_NONE_VALUE;
+
+  const handleLayoutExport = () => {
+    if (!exportPayloadRef.current) {
+      return;
+    }
+
+    const focusSuffix = (proposalFilterIds || [])
+      .map((value) => normalizeProposalId(value, ecosystem))
+      .filter(Boolean)
+      .sort((left, right) => left.localeCompare(right, undefined, { numeric: true }))
+      .join('_') || 'all';
+    const snapshotSlug = formatSnapshotFilePart(snapshotLabel);
+    const fileName = `dependency_layout_${snapshotSlug}_${focusSuffix}.json`;
+    const blob = new Blob([`${JSON.stringify(exportPayloadRef.current, null, 2)}\n`], { type: 'application/json' });
+    const url = window.URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = fileName;
+    document.body.appendChild(anchor);
+    anchor.click();
+    document.body.removeChild(anchor);
+    window.URL.revokeObjectURL(url);
+  };
+
+  const handlePhysicsToggle = () => {
+    setPhysicsEnabled((current) => !current);
+  };
+
+  const handleLayoutImportClick = () => {
+    importInputRef.current?.click();
+  };
+
+  const handleLayoutImport = async (event) => {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+
+    if (!file) {
+      return;
+    }
+
+    try {
+      const payload = JSON.parse(await file.text());
+      const importedPositions = normalizeImportedPositions(payload);
+
+      if (Object.keys(importedPositions).length === 0) {
+        throw new Error('The selected file does not contain any layout positions.');
+      }
+
+      if (COLOR_BY_OPTION_VALUES.has(payload?.color_by)) {
+        setColorBy(payload.color_by);
+      }
+
+      if (LINK_TYPE_OPTION_VALUES.has(payload?.link_type)) {
+        setLinkType(payload.link_type);
+      }
+
+      const importedBaselineType = payload?.baseline_type;
+      if (importedBaselineType == null || importedBaselineType === BASELINE_NONE_VALUE) {
+        setBaselineType(BASELINE_NONE_VALUE);
+      } else if (LINK_TYPE_OPTION_VALUES.has(importedBaselineType)) {
+        setBaselineType(importedBaselineType);
+      }
+
+      if (LAYOUT_OPTION_VALUES.has(payload?.layout_mode)) {
+        setLayoutMode(payload.layout_mode);
+      }
+
+      const importedMinRelations = payload?.filter?.min_relations;
+      if (importedMinRelations != null && setMinRelations) {
+        setMinRelations(String(Math.max(0, Number(importedMinRelations) || 0)));
+      }
+
+      if (typeof payload?.filter?.include_threshold_connections === 'boolean') {
+        setIncludeThresholdConnections?.(payload.filter.include_threshold_connections);
+      }
+
+      if (typeof payload?.filter?.include_connections === 'boolean') {
+        setIncludeConnections?.(payload.filter.include_connections);
+      }
+
+      if (Array.isArray(payload?.filter?.proposal_ids)) {
+        setProposalFilterText?.(payload.filter.proposal_ids.map((value) => String(value)).join(','));
+      }
+
+      setImportedLayout({
+        fileName: file.name,
+        positions: importedPositions,
+      });
+      setPhysicsEnabled(false);
+    } catch (error) {
+      window.alert(
+        error instanceof Error
+          ? `Could not import layout JSON: ${error.message}`
+          : 'Could not import layout JSON.'
+      );
+    }
+  };
 
   const nodes = useMemo(
     () => (Array.isArray(data?.nodes) ? data.nodes.map((node) => ({ ...node })) : []),
@@ -176,9 +344,32 @@ export const NetworkDiagram = ({
   }, [baselineType, data, isDifferentialMode, linkType]);
 
   useEffect(() => {
+    physicsEnabledRef.current = physicsEnabled;
+
+    const simulation = simulationRef.current;
+    if (!simulation) {
+      return;
+    }
+
+    if (physicsEnabled) {
+      simulation.alpha(0.35).alphaTarget(0).restart();
+      return;
+    }
+
+    simulation.alphaTarget(0);
+    simulation.stop();
+    redrawGraphRef.current();
+    updateExportPayloadRef.current();
+  }, [physicsEnabled]);
+
+  useEffect(() => {
     const svg = d3.select(ref.current);
     svg.selectAll('*').remove();
     d3.select('body').selectAll('.dependency-network-tooltip').remove();
+    exportPayloadRef.current = null;
+    simulationRef.current = null;
+    redrawGraphRef.current = () => {};
+    updateExportPayloadRef.current = () => {};
 
     if (nodes.length === 0) {
       return;
@@ -202,7 +393,16 @@ export const NetworkDiagram = ({
     if (hasFilter) {
       const matchedFilterNodeIds = new Set(
         allNodes
-          .filter((node) => requestedIds.has(normalizeProposalId(node.id)) || requestedIds.has(String(node.id)))
+          .filter((node) => {
+            const rawNodeId = String(node.id);
+            const normalizedNodeId = normalizeProposalId(node.id, ecosystem);
+            const unpaddedNumericNodeId = /^\d+$/.test(rawNodeId) ? String(Number(rawNodeId)) : rawNodeId;
+            return (
+              requestedIds.has(normalizedNodeId)
+              || requestedIds.has(rawNodeId)
+              || requestedIds.has(unpaddedNumericNodeId)
+            );
+          })
           .map((node) => String(node.id))
       );
 
@@ -255,11 +455,68 @@ export const NetworkDiagram = ({
       node.outgoingDegree = outgoingById.get(nodeId) || 0;
     });
 
-    const normalizedHighlight = normalizeProposalId(highlightProposal);
+    const relationThreshold = Math.max(0, Number(String(minRelations).trim() || '0') || 0);
+    const thresholdMatchedNodeIds = new Set(
+      localNodes
+        .filter((node) => Number(node.degree || 0) >= relationThreshold)
+        .map((node) => String(node.id))
+    );
+    let relationFilteredNodeIds = thresholdMatchedNodeIds;
+    let filteredLinks = localLinks.filter((edge) => (
+      relationFilteredNodeIds.has(String(edge.source)) && relationFilteredNodeIds.has(String(edge.target))
+    ));
+
+    if (includeThresholdConnections && thresholdMatchedNodeIds.size > 0) {
+      relationFilteredNodeIds = new Set(thresholdMatchedNodeIds);
+      filteredLinks = localLinks.filter((edge) => {
+        const sourceMatched = thresholdMatchedNodeIds.has(String(edge.source));
+        const targetMatched = thresholdMatchedNodeIds.has(String(edge.target));
+
+        if (sourceMatched || targetMatched) {
+          relationFilteredNodeIds.add(String(edge.source));
+          relationFilteredNodeIds.add(String(edge.target));
+          return true;
+        }
+
+        return false;
+      });
+    }
+
+    const filteredNodes = localNodes.filter((node) => relationFilteredNodeIds.has(String(node.id)));
+
+    if (filteredNodes.length === 0) {
+      exportPayloadRef.current = null;
+      svg
+        .attr('width', width)
+        .attr('height', height)
+        .append('text')
+        .attr('x', width / 2)
+        .attr('y', height / 2)
+        .attr('text-anchor', 'middle')
+        .attr('fill', 'var(--app-text-muted)')
+        .style('font-size', '14px')
+        .text('No proposals match the current relations filter.');
+      return;
+    }
+
+    const importedPositions = importedLayout?.positions || null;
+    let importedPositionedNodeCount = 0;
+    filteredNodes.forEach((node) => {
+      const coords = importedPositions?.[String(node.id)];
+      if (!coords) {
+        return;
+      }
+
+      node.x = coords[0];
+      node.y = coords[1];
+      importedPositionedNodeCount += 1;
+    });
+
+    const normalizedHighlight = normalizeProposalId(highlightProposal, ecosystem);
     const searchMatchedIds = normalizedHighlight
       ? new Set(
-        localNodes
-          .filter((node) => normalizeProposalId(node.id) === normalizedHighlight)
+        filteredNodes
+          .filter((node) => normalizeProposalId(node.id, ecosystem) === normalizedHighlight)
           .map((node) => String(node.id))
       )
       : new Set();
@@ -274,13 +531,13 @@ export const NetworkDiagram = ({
       .domain(allGroups)
       .range(allGroups.map((group) => colorMap[group]));
 
-    localNodes.forEach((node) => {
+    filteredNodes.forEach((node) => {
       node.colorGroup = normalizeCategory(node[colorBy], fallbackLabel);
     });
 
     const getEdgeColor = (edge) => {
       if (!isDifferentialMode) {
-        if (linkType === 'explicit_dependencies') {
+        if (linkType === PREAMBLE_EXTRACTED) {
           return EXPLICIT_DEPENDENCY_COLORS[edge.relationType] || '#667085';
         }
         return DEFAULT_EDGE_COLORS[edge.relationType] || '#607d8b';
@@ -300,10 +557,53 @@ export const NetworkDiagram = ({
       if (isDifferentialMode) {
         return edge.comparisonStatus === 'baseline_only' ? '7 5' : null;
       }
-      if (linkType !== 'explicit_dependencies') {
+      if (linkType !== PREAMBLE_EXTRACTED) {
         return null;
       }
       return EXPLICIT_DEPENDENCY_STYLES[edge.relationType] || null;
+    };
+
+    const updateExportPayload = () => {
+      const exportedNodes = filteredNodes.map((entry) => ({
+        id: String(entry.id),
+        x: Number(entry.x || 0),
+        y: Number(entry.y || 0),
+        degree: Number(entry.degree || 0),
+        incomingDegree: Number(entry.incomingDegree || 0),
+        outgoingDegree: Number(entry.outgoingDegree || 0),
+        group: String(entry.colorGroup || ''),
+        layer: entry.layer || null,
+        status: entry.status || null,
+        type: entry.type || null,
+      }));
+
+      exportPayloadRef.current = {
+        snapshot: snapshotLabel || null,
+        exported_at: new Date().toISOString(),
+        width,
+        height,
+        color_by: colorBy,
+        link_type: linkType,
+        baseline_type: isDifferentialMode ? baselineType : null,
+        layout_mode: layoutMode,
+        is_differential_mode: isDifferentialMode,
+        filter: {
+          proposal_ids: (proposalFilterIds || []).map((value) => String(value)),
+          include_connections: Boolean(includeConnections),
+          min_relations: relationThreshold,
+          include_threshold_connections: Boolean(includeThresholdConnections),
+        },
+        nodes: exportedNodes,
+        links: filteredLinks.map((edge) => ({
+          source: getEdgeSourceId(edge),
+          target: getEdgeTargetId(edge),
+          relation_type: edge.relationType || null,
+          comparison_status: edge.comparisonStatus || 'approach_only',
+        })),
+        positions: Object.fromEntries(
+          exportedNodes.map((entry) => [String(entry.id), [entry.x, entry.y]])
+        ),
+      };
     };
 
     svg
@@ -313,7 +613,7 @@ export const NetworkDiagram = ({
 
     const defs = svg.append('defs');
     const markerDefinitions = Array.from(
-      new Map(localLinks.map((edge) => [getEdgeMarkerId(edge), getEdgeColor(edge)])).entries()
+      new Map(filteredLinks.map((edge) => [getEdgeMarkerId(edge), getEdgeColor(edge)])).entries()
     );
     markerDefinitions.forEach(([markerId, fillColor]) => {
       defs
@@ -335,11 +635,11 @@ export const NetworkDiagram = ({
       .attr('class', 'dependency-network-tooltip')
       .style('position', 'absolute')
       .style('padding', '8px 12px')
-      .style('background', '#1a1a1a')
-      .style('color', '#f0f0f0')
-      .style('border', '1px solid #555')
+      .style('background', 'var(--tooltip-bg)')
+      .style('color', 'var(--tooltip-text)')
+      .style('border', '1px solid var(--tooltip-border)')
       .style('border-radius', '6px')
-      .style('box-shadow', '0px 2px 6px rgba(0,0,0,0.4)')
+      .style('box-shadow', 'var(--tooltip-shadow)')
       .style('font-size', '13px')
       .style('pointer-events', 'none')
       .style('line-height', '1.45')
@@ -352,27 +652,26 @@ export const NetworkDiagram = ({
     };
 
     const renderNodeTooltip = (entry) => (
-      `<strong><a href="${getProposalUrl(entry.id)}" target="_blank" rel="noreferrer">${getProposalLabel(entry.id)}</a></strong><br/>` +
+      `<strong><a href="${getProposalUrl(entry.id, snapshotLabel, { linkMode }, ecosystem)}" target="_blank" rel="noreferrer">${formatProposalReference(entry.id, ecosystem)}</a></strong><br/>` +
       `Outgoing: ${entry.outgoingDegree}<br/>` +
       `Incoming: ${entry.incomingDegree}<br/>` +
       `Layer: ${entry.layer || 'Unknown'}<br/>` +
       `Status: ${entry.status || 'Unknown'}<br/>` +
-      `Type: ${entry.type || 'Unknown'}<br/>` +
-      `Compliance Score: ${entry.compliance_score ?? 'N/A'}`
+      `Type: ${entry.type || 'Unknown'}`
     );
 
     const relationLabel = {
-      explicit_references: 'Explicit Reference',
-      implicit_dependencies: 'Implicit Dependency',
+      [BODY_EXTRACTED_REGEX]: 'Regex-Extracted Dependency',
+      [BODY_EXTRACTED_LLM]: 'LLM-Extracted Dependency',
       requires: 'Requires',
       replaces: 'Replaces',
-      superseded_by: 'Superseded By',
+      proposed_replacement: 'Proposed Replacement',
     };
 
     const renderEdgeTooltip = (edge) => (
-      `<strong><a href="${getProposalUrl(getEdgeSourceId(edge))}" target="_blank" rel="noreferrer">${getProposalLabel(getEdgeSourceId(edge))}</a></strong>` +
+      `<strong><a href="${getProposalUrl(getEdgeSourceId(edge), snapshotLabel, { linkMode }, ecosystem)}" target="_blank" rel="noreferrer">${formatProposalReference(getEdgeSourceId(edge), ecosystem)}</a></strong>` +
       ` &rarr; ` +
-      `<strong><a href="${getProposalUrl(getEdgeTargetId(edge))}" target="_blank" rel="noreferrer">${getProposalLabel(getEdgeTargetId(edge))}</a></strong><br/>` +
+      `<strong><a href="${getProposalUrl(getEdgeTargetId(edge), snapshotLabel, { linkMode }, ecosystem)}" target="_blank" rel="noreferrer">${formatProposalReference(getEdgeTargetId(edge), ecosystem)}</a></strong><br/>` +
       `Type: ${
         !isDifferentialMode
           ? (relationLabel[edge.relationType] || edge.relationType)
@@ -397,14 +696,19 @@ export const NetworkDiagram = ({
       )
     );
 
-    const degreeExtent = d3.extent(localNodes, (node) => Number(node.degree || 0));
+    const getWordCount = (node) => {
+      const wl = node.word_list;
+      if (!wl || typeof wl !== 'object') return 0;
+      return Object.values(wl).reduce((sum, count) => sum + Number(count || 0), 0);
+    };
+    const wordCountExtent = d3.extent(filteredNodes, getWordCount);
     const radius = d3.scaleSqrt()
-      .domain([degreeExtent[0] || 0, degreeExtent[1] || 1])
-      .range([7, 16]);
+      .domain([wordCountExtent[0] || 0, wordCountExtent[1] || 1])
+      .range([7, 20]);
     const getNodeRadius = (entry) => (
       searchMatchedIds.has(String(entry.id))
-        ? radius(Number(entry.degree || 0)) + 5
-        : radius(Number(entry.degree || 0))
+        ? radius(getWordCount(entry)) + 5
+        : radius(getWordCount(entry))
     );
 
     const groupAnchors = new Map();
@@ -417,7 +721,7 @@ export const NetworkDiagram = ({
       });
     });
 
-    const linkForce = d3.forceLink(localLinks).id((node) => String(node.id));
+    const linkForce = d3.forceLink(filteredLinks).id((node) => String(node.id));
     const chargeForce = d3.forceManyBody();
     const collisionForce = d3.forceCollide().radius((node) => radius(Number(node.degree || 0)) + 10);
     const centerForce = d3.forceCenter(width / 2, height / 2);
@@ -445,7 +749,7 @@ export const NetworkDiagram = ({
       yForce.y(height / 2).strength(0.05);
     }
 
-    const simulation = d3.forceSimulation(localNodes)
+    const simulation = d3.forceSimulation(filteredNodes)
       .force('link', linkForce)
       .force('charge', chargeForce)
       .force('center', centerForce)
@@ -469,6 +773,8 @@ export const NetworkDiagram = ({
     let pinnedInteraction = null;
     let link;
     let node;
+    let labels;
+    let renderGraph = () => {};
 
     const applyDefaultLinkStyles = () => {
       link
@@ -479,7 +785,7 @@ export const NetworkDiagram = ({
           }
           return searchMatchedIds.has(getEdgeSourceId(edge)) || searchMatchedIds.has(getEdgeTargetId(edge)) ? 0.95 : 0.08;
         })
-        .attr('stroke-width', 2.2)
+        .attr('stroke-width', DEFAULT_LINK_WIDTH)
         .attr('stroke-dasharray', (edge) => getEdgeDasharray(edge));
     };
 
@@ -506,14 +812,14 @@ export const NetworkDiagram = ({
           getEdgeSourceId(edge) === String(entry.id) || getEdgeTargetId(edge) === String(entry.id) ? 0.95 : 0.1
         ))
         .attr('stroke-width', (edge) => (
-          getEdgeSourceId(edge) === String(entry.id) || getEdgeTargetId(edge) === String(entry.id) ? 3.2 : 2.2
+          getEdgeSourceId(edge) === String(entry.id) || getEdgeTargetId(edge) === String(entry.id) ? ACTIVE_LINK_WIDTH : DEFAULT_LINK_WIDTH
         ));
     };
 
     const applyPinnedEdgeStyles = (selectedEdge) => {
       link
         .attr('stroke-opacity', (edge) => (edge.key === selectedEdge.key ? 1 : 0.08))
-        .attr('stroke-width', (edge) => (edge.key === selectedEdge.key ? 3.4 : 2.2));
+        .attr('stroke-width', (edge) => (edge.key === selectedEdge.key ? PINNED_LINK_WIDTH : DEFAULT_LINK_WIDTH));
 
       node
         .attr('fill-opacity', (entry) => (
@@ -538,12 +844,12 @@ export const NetworkDiagram = ({
 
     link = root.append('g')
       .selectAll('path')
-      .data(localLinks)
+      .data(filteredLinks)
       .join('path')
       .attr('fill', 'none')
       .attr('stroke', (edge) => getEdgeColor(edge))
       .attr('stroke-opacity', 0.72)
-      .attr('stroke-width', 2.2)
+      .attr('stroke-width', DEFAULT_LINK_WIDTH)
       .attr('stroke-dasharray', (edge) => getEdgeDasharray(edge))
       .attr('marker-end', (edge) => `url(#${getEdgeMarkerId(edge)})`)
       .on('mouseover', function (event, edge) {
@@ -553,7 +859,7 @@ export const NetworkDiagram = ({
 
         d3.select(this)
           .attr('stroke-opacity', 1)
-          .attr('stroke-width', 3.4);
+          .attr('stroke-width', PINNED_LINK_WIDTH);
 
         tooltip
           .style('opacity', 1)
@@ -589,7 +895,7 @@ export const NetworkDiagram = ({
 
     node = root.append('g')
       .selectAll('circle')
-      .data(localNodes)
+      .data(filteredNodes)
       .join('circle')
       .attr('r', (entry) => getNodeRadius(entry))
       .attr('fill', (entry) => color(normalizeCategory(entry[colorBy], fallbackLabel)))
@@ -653,7 +959,7 @@ export const NetworkDiagram = ({
       .call(
         d3.drag()
           .on('start', (event, entry) => {
-            if (!event.active) {
+            if (physicsEnabledRef.current && !event.active) {
               simulation.alphaTarget(0.3).restart();
             }
             entry.fx = entry.x;
@@ -662,31 +968,36 @@ export const NetworkDiagram = ({
           .on('drag', (event, entry) => {
             entry.fx = event.x;
             entry.fy = event.y;
+            entry.x = event.x;
+            entry.y = event.y;
+            renderGraph();
           })
           .on('end', (event, entry) => {
-            if (!event.active) {
+            if (physicsEnabledRef.current && !event.active) {
               simulation.alphaTarget(0);
             }
             entry.fx = null;
             entry.fy = null;
+            renderGraph();
           })
       );
 
     const labeledNodeIds = new Set(
       localNodes
+        .filter((entry) => relationFilteredNodeIds.has(String(entry.id)))
         .slice()
         .sort((left, right) => Number(right.degree || 0) - Number(left.degree || 0))
         .slice(0, 16)
         .map((entry) => String(entry.id))
     );
 
-    const labels = root.append('g')
+    labels = root.append('g')
       .selectAll('text')
-      .data(localNodes.filter((entry) => labeledNodeIds.has(String(entry.id)) || searchMatchedIds.has(String(entry.id))))
+      .data(filteredNodes.filter((entry) => labeledNodeIds.has(String(entry.id)) || searchMatchedIds.has(String(entry.id))))
       .join('text')
-      .text((entry) => getProposalLabel(entry.id))
+      .text((entry) => formatProposalReference(entry.id, ecosystem))
       .style('font-size', '10.5px')
-      .style('fill', '#1f2933')
+      .style('fill', 'var(--chart-text)')
       .style('font-weight', (entry) => (searchMatchedIds.has(String(entry.id)) ? 700 : 400))
       .style('opacity', (entry) => {
         if (searchMatchedIds.size > 0) {
@@ -695,22 +1006,18 @@ export const NetworkDiagram = ({
         return 1;
       })
       .style('paint-order', 'stroke')
-      .style('stroke', '#ffffff')
+      .style('stroke', 'var(--chart-outline)')
       .style('stroke-width', 3)
       .style('stroke-linecap', 'round')
       .style('stroke-linejoin', 'round');
 
-    svg.on('click', () => {
-      clearPinnedInteraction();
-    });
-
-    simulation.on('tick', () => {
+    renderGraph = () => {
       link
         .attr('d', (edge) => {
-          const rawSourceX = edge.source.x;
-          const rawSourceY = edge.source.y;
-          const rawTargetX = edge.target.x;
-          const rawTargetY = edge.target.y;
+          const rawSourceX = edge.source.x ?? (width / 2);
+          const rawSourceY = edge.source.y ?? (height / 2);
+          const rawTargetX = edge.target.x ?? (width / 2);
+          const rawTargetY = edge.target.y ?? (height / 2);
           const dx = rawTargetX - rawSourceX;
           const dy = rawTargetY - rawSourceY;
           const distance = Math.sqrt((dx * dx) + (dy * dy)) || 1;
@@ -736,13 +1043,56 @@ export const NetworkDiagram = ({
         });
 
       node
-        .attr('cx', (entry) => entry.x = Math.max(24, Math.min(width - 24, entry.x)))
-        .attr('cy', (entry) => entry.y = Math.max(24, Math.min(height - 24, entry.y)));
+        .attr('cx', (entry) => entry.x = Math.max(24, Math.min(width - 24, entry.x ?? (width / 2))))
+        .attr('cy', (entry) => entry.y = Math.max(24, Math.min(height - 24, entry.y ?? (height / 2))));
 
       labels
         .attr('x', (entry) => entry.x + getNodeRadius(entry) + 5)
         .attr('y', (entry) => entry.y + 3);
+
+      updateExportPayload();
+    };
+
+    simulationRef.current = simulation;
+    redrawGraphRef.current = renderGraph;
+    updateExportPayloadRef.current = updateExportPayload;
+
+    svg.on('click', () => {
+      clearPinnedInteraction();
     });
+
+    simulation.on('tick', renderGraph);
+    if (physicsEnabledRef.current) {
+      renderGraph();
+    } else {
+      if (importedPositions && importedPositionedNodeCount > 0 && importedPositionedNodeCount < filteredNodes.length) {
+        filteredNodes.forEach((entry) => {
+          const coords = importedPositions[String(entry.id)];
+          if (!coords) {
+            return;
+          }
+          entry.fx = coords[0];
+          entry.fy = coords[1];
+        });
+      }
+
+      if (!(importedPositions && importedPositionedNodeCount === filteredNodes.length)) {
+        for (let iteration = 0; iteration < 140; iteration += 1) {
+          simulation.tick();
+        }
+      }
+
+      filteredNodes.forEach((entry) => {
+        if (!importedPositions?.[String(entry.id)]) {
+          return;
+        }
+        entry.fx = null;
+        entry.fy = null;
+      });
+      renderGraph();
+      simulation.alphaTarget(0);
+      simulation.stop();
+    }
 
     const legend = d3.select(legendRef.current);
     legend.selectAll('*').remove();
@@ -770,16 +1120,22 @@ export const NetworkDiagram = ({
     }
 
     return () => {
+      exportPayloadRef.current = null;
+      if (simulationRef.current === simulation) {
+        simulationRef.current = null;
+      }
+      redrawGraphRef.current = () => {};
+      updateExportPayloadRef.current = () => {};
       simulation.stop();
       svg.selectAll('*').remove();
       d3.select('body').selectAll('.dependency-network-tooltip').remove();
     };
-  }, [baselineType, colorBy, data, height, highlightProposal, includeConnections, isDifferentialMode, layoutMode, linkType, links, nodes, proposalFilterIds, width]);
+  }, [baselineType, colorBy, data, ecosystem, height, highlightProposal, importedLayout, includeConnections, includeThresholdConnections, isDifferentialMode, layoutMode, linkMode, linkType, links, minRelations, nodes, proposalFilterIds, snapshotLabel, width]);
 
   const explicitLegendItems = [
     { label: 'Requires', dasharray: EXPLICIT_DEPENDENCY_STYLES.requires, stroke: '#667085' },
     { label: 'Replaces', dasharray: EXPLICIT_DEPENDENCY_STYLES.replaces, stroke: '#667085' },
-    { label: 'Superseded By', dasharray: EXPLICIT_DEPENDENCY_STYLES.superseded_by, stroke: '#667085' },
+    { label: 'Proposed Replacement', dasharray: EXPLICIT_DEPENDENCY_STYLES.proposed_replacement, stroke: '#667085' },
   ];
 
   const edgeLegendItems = isDifferentialMode
@@ -800,7 +1156,7 @@ export const NetworkDiagram = ({
         stroke: DIFFERENTIAL_EDGE_COLORS.baseline_only,
       },
     ]
-    : linkType === 'explicit_dependencies'
+    : linkType === PREAMBLE_EXTRACTED
       ? explicitLegendItems
       : [
         {
@@ -840,7 +1196,7 @@ export const NetworkDiagram = ({
       <div className="network-control-grid">
         <div className="network-control-row">
           <div className="network-layout-picker">
-            <div className="network-layout-picker__label">Coloring</div>
+            <label className="network-layout-picker__label" htmlFor="dependency-colorBy">Coloring</label>
             <Dropdown
               inputId="dependency-colorBy"
               value={colorBy}
@@ -856,7 +1212,7 @@ export const NetworkDiagram = ({
 
         <div className="network-control-row">
           <div className="network-layout-picker">
-            <div className="network-layout-picker__label">Approach</div>
+            <label className="network-layout-picker__label" htmlFor="linkType">Approach</label>
             <Dropdown
               inputId="linkType"
               value={linkType}
@@ -890,7 +1246,7 @@ export const NetworkDiagram = ({
 
         <div className="network-control-row">
           <div className="network-layout-picker">
-            <div className="network-layout-picker__label">Baseline</div>
+            <label className="network-layout-picker__label" htmlFor="baselineType">Baseline</label>
             <Dropdown
               inputId="baselineType"
               value={baselineType}
@@ -924,21 +1280,90 @@ export const NetworkDiagram = ({
           ) : null}
         </div>
 
-        <div className="network-layout-picker">
-          <div className="network-layout-picker__label">Layout</div>
-          <div className="network-layout-picker__options">
-            {LAYOUT_OPTIONS.map((option) => (
-              <label key={option.value} className="network-layout-picker__option">
+        <div className="network-layout-controls">
+          <div className="network-layout-picker">
+            <div className="network-layout-picker__label">Layout</div>
+            <div className="network-layout-picker__options network-layout-picker__options--with-actions">
+              <input
+                ref={importInputRef}
+                type="file"
+                accept="application/json,.json"
+                onChange={handleLayoutImport}
+                hidden
+              />
+              {LAYOUT_OPTIONS.map((option) => (
+                <label key={option.value} className="network-layout-picker__option">
+                  <input
+                    type="radio"
+                    name="dependency-layout"
+                    value={option.value}
+                    checked={layoutMode === option.value}
+                    onChange={() => setLayoutMode(option.value)}
+                  />
+                  <span>{option.label}</span>
+                </label>
+              ))}
+              <button
+                type="button"
+                className={`network-layout-action-button ${physicsEnabled ? '' : 'network-layout-action-button--active'}`.trim()}
+                onClick={handlePhysicsToggle}
+                title={physicsEnabled
+                  ? 'Pause the force simulation so you can manually adjust node positions before exporting the layout.'
+                  : 'Resume the force simulation for the relationship graph.'}
+                aria-label={physicsEnabled
+                  ? 'Pause network physics for manual layout adjustments'
+                  : 'Resume network physics'}
+                aria-pressed={!physicsEnabled}
+                disabled={nodes.length === 0}
+                  >
+                    {physicsEnabled ? 'freeze physics' : 'resume physics'}
+                  </button>
+                  <button
+                    type="button"
+                    className={`network-layout-action-button ${importedLayout ? 'network-layout-action-button--active' : ''}`.trim()}
+                    onClick={handleLayoutImportClick}
+                    title={importedLayout
+                      ? `Upload a layout JSON to replace the active imported layout. Current import: ${importedLayout.fileName}.`
+                      : 'Upload a layout JSON export and apply its graph construction to the current card.'}
+                    aria-label="Upload network layout JSON"
+                    disabled={nodes.length === 0}
+                  >
+                    import layout
+                  </button>
+              <button
+                type="button"
+                className="network-layout-action-button"
+                onClick={handleLayoutExport}
+                title="Download the current visible network layout as JSON."
+                aria-label="Download current network layout as JSON"
+                disabled={nodes.length === 0}
+              >
+                export layout
+              </button>
+            </div>
+          </div>
+          <div className="network-layout-picker network-layout-picker--filter">
+            <div className="network-layout-picker__label">Filter</div>
+            <div className="network-layout-threshold">
+              <span className="network-layout-threshold__copy">Only show {proposalShortPlural} with</span>
+              <InputText
+                value={minRelations}
+                onChange={(event) => setMinRelations?.(event.target.value.replace(/[^\d]/g, ''))}
+                placeholder="0"
+                inputMode="numeric"
+                aria-label={`Minimum relations threshold for ${proposalShortPlural}`}
+                className="network-layout-threshold__input"
+              />
+              <span className="network-layout-threshold__suffix">or more relations.</span>
+              <label className="dependency-filter-checkbox">
                 <input
-                  type="radio"
-                  name="dependency-layout"
-                  value={option.value}
-                  checked={layoutMode === option.value}
-                  onChange={() => setLayoutMode(option.value)}
+                  type="checkbox"
+                  checked={includeThresholdConnections}
+                  onChange={(event) => setIncludeThresholdConnections?.(event.target.checked)}
                 />
-                <span>{option.label}</span>
+                <span>transient</span>
               </label>
-            ))}
+            </div>
           </div>
         </div>
       </div>

@@ -1,0 +1,247 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "89",
+      "title": "Recommended Application Handlers",
+      "author": [
+        "Pablo Fernandez"
+      ],
+      "created": "2023-06-07",
+      "status": "Draft",
+      "type": "Optional",
+      "layer": null,
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Wed Aug 20 01:11:47 2025 +0900",
+    "total_commits": 11,
+    "git_history": [
+      [
+        "38bc891e671fab9603e5129b01158bda844271df",
+        "Wed Aug 20 01:11:47 2025 +0900",
+        "Yoji Shidara"
+      ],
+      [
+        "e6552476aa2e5ca7256be572a9aa226ec8a022ee",
+        "Tue Sep 3 20:41:31 2024 +0330",
+        "kehiy"
+      ],
+      [
+        "a551c5b69337021f83f7886ecfd211915737a771",
+        "Wed Jun 26 00:12:58 2024 +0900",
+        "Asai Toshiya"
+      ],
+      [
+        "6de35f9e6a50cd5bf88c0a350ef369919ac27f06",
+        "Mon Nov 27 06:22:15 2023 -0800",
+        "Jon Staab"
+      ],
+      [
+        "5ae5a6d0553e34afc3cf19e96043f7e0e2b349ef",
+        "Fri Nov 24 02:44:12 2023 +0900",
+        "Asai Toshiya"
+      ],
+      [
+        "5dcfe85306434f21ecb1e7a47edd92b2e3e64f9a",
+        "Sat Nov 18 09:13:12 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "010b322fa14eba673a1b1e6489f6109507d6df2c",
+        "Thu Nov 16 22:03:13 2023 +0200",
+        "Pablo Fernandez"
+      ],
+      [
+        "7f27800e27c437ce17d223799f37631105d1ae5f",
+        "Thu Nov 16 05:43:28 2023 -0800",
+        "Jon Staab"
+      ],
+      [
+        "37f6cbb775126b386414220f783ca0f5f85e7614",
+        "Wed Nov 15 21:42:51 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "50945f7150c8b100f92fdfdffba32894ba5a831f",
+        "Fri Aug 25 23:17:05 2023 +0900",
+        "Asai Toshiya"
+      ],
+      [
+        "867c8bb334b0d9bb22a6af5c16ce6d186852af5a",
+        "Wed Jun 7 21:56:17 2023 +0200",
+        "Pablo Fernandez"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "kind": 47,
+      "event": 27,
+      "user": 23,
+      "31990": 13,
+      "client": 12,
+      "tag": 12,
+      "handler": 12,
+      "application": 11,
+      "pubkey": 11,
+      "31989": 10,
+      "d": 9,
+      "31337": 9,
+      "nip": 8,
+      "b": 8,
+      "tags": 8,
+      "s": 7,
+      "web": 6,
+      "clients": 5,
+      "app": 5,
+      "value": 5,
+      "k": 5,
+      "bech32": 5,
+      "e": 5,
+      "users": 5,
+      "handle": 4,
+      "events": 4,
+      "specific": 4,
+      "entity": 4,
+      "jsonc": 4,
+      "supported": 4,
+      "fields": 4,
+      "multiple": 4,
+      "information": 4,
+      "content": 4,
+      "g": 4,
+      "url": 4,
+      "optional": 3,
+      "unknown": 3,
+      "kinds": 3,
+      "nostr": 3,
+      "handles": 3,
+      "publishes": 3,
+      "recommendation": 3,
+      "queries": 3,
+      "identifier": 3,
+      "wss": 3,
+      "second": 3,
+      "relay": 3,
+      "id": 3,
+      "https": 3,
+      "19": 3,
+      "1": 3,
+      "centric": 3,
+      "sees": 3,
+      "query": 3,
+      "zapstr": 3,
+      "handlers": 2,
+      "way": 2,
+      "discover": 2,
+      "applications": 2,
+      "provides": 2,
+      "cross": 2,
+      "note": 2,
+      "apps": 2,
+      "redirect": 2,
+      "recommends": 2,
+      "app1": 2,
+      "relay1": 2,
+      "ios": 2,
+      "recommending": 2,
+      "hint": 2,
+      "0": 2,
+      "metadata": 2,
+      "described": 2,
+      "display": 2,
+      "different": 2,
+      "replaced": 2,
+      "array": 2,
+      "identifying": 2,
+      "allow": 2,
+      "choose": 2,
+      "follows": 2,
+      "req": 2,
+      "authors": 2,
+      "desired": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "867c8bb334b0d9bb22a6af5c16ce6d186852af5a",
+        "timestamp": "2023-06-07T16:56:17-03:00",
+        "date": "2023-06-07",
+        "author": "Pablo Fernandez",
+        "path": "89.md",
+        "status": "Draft",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        "NIP 1",
+        "NIP 19",
+        "NIP 31"
+      ],
+      "body_extracted_llm": [
+        "NIP 1",
+        "NIP 12",
+        "NIP 19",
+        "NIP 33"
+      ]
+    }
+  }
+}

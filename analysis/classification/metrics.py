@@ -1,12 +1,12 @@
 from collections import Counter, defaultdict
 from datetime import datetime
 from typing import Any, Dict, List, Tuple
-from ecosystem_config import ACTIVE_ECOSYSTEM
+from pipeline.ecosystem_config import ACTIVE_ECOSYSTEM
 
-CLASSIFICATION_CONFIG = ACTIVE_ECOSYSTEM.get("classification", {})
-LAYER_ALIASES = CLASSIFICATION_CONFIG.get("layer_aliases", {})
-STATUS_ALIASES = CLASSIFICATION_CONFIG.get("status_aliases", {})
-TYPE_ALIASES = CLASSIFICATION_CONFIG.get("type_aliases", {})
+_DIMS = ACTIVE_ECOSYSTEM.get("classification", {}).get("dimensions", {})
+LAYER_ALIASES = _DIMS.get("layer", {}).get("aliases", {})
+STATUS_ALIASES = _DIMS.get("status", {}).get("aliases", {})
+TYPE_ALIASES = _DIMS.get("type", {}).get("aliases", {})
 
 
 def _clean_base(value: Any, fallback: str) -> str:
@@ -74,6 +74,22 @@ def build_status_over_time(nodes: List[Dict[str, Any]]) -> Dict[str, Dict[str, i
             continue
         status = _apply_alias(_clean_base(node.get("status"), "Unknown"), STATUS_ALIASES)
         yearly[year][status] += 1
+
+    out: Dict[str, Dict[str, int]] = {}
+    for year in sorted(yearly.keys()):
+        out[str(year)] = dict(sorted(yearly[year].items(), key=lambda x: x[0]))
+    return out
+
+
+def build_type_over_time(nodes: List[Dict[str, Any]]) -> Dict[str, Dict[str, int]]:
+    yearly = defaultdict(Counter)
+
+    for node in nodes:
+        year = _extract_year(node.get("created"))
+        if year is None:
+            continue
+        kind = _apply_alias(_clean_base(node.get("type"), "Unknown Type"), TYPE_ALIASES)
+        yearly[year][kind] += 1
 
     out: Dict[str, Dict[str, int]] = {}
     for year in sorted(yearly.keys()):

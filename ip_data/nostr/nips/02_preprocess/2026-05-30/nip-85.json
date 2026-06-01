@@ -1,0 +1,240 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "85",
+      "title": "Trusted Assertions",
+      "author": [
+        "Vitor Pamplona"
+      ],
+      "created": "2026-01-22",
+      "status": "Draft",
+      "type": "Optional",
+      "layer": null,
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Thu May 28 16:52:38 2026 -0400",
+    "total_commits": 4,
+    "git_history": [
+      [
+        "9c9846e11d93498d1c33842bc848e7b2f54768b7",
+        "Thu May 28 16:52:38 2026 -0400",
+        "Vitor Pamplona"
+      ],
+      [
+        "6df3a218c9e374bd869b926cb71c7c9e46195a39",
+        "Tue Feb 17 05:41:06 2026 -0500",
+        "Vitor Pamplona"
+      ],
+      [
+        "d33bcbac7c05bdd529afa6aa86f703bd87f52859",
+        "Mon Jan 26 22:25:04 2026 +0900",
+        "AsaiToshiya"
+      ],
+      [
+        "b58a6048b12e6cbbb64250664a9e78ee85579ff0",
+        "Thu Jan 22 11:47:55 2026 -0500",
+        "Vitor Pamplona"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "int": 32,
+      "tag": 17,
+      "kind": 17,
+      "count": 17,
+      "service": 16,
+      "event": 14,
+      "providers": 13,
+      "rank": 13,
+      "user": 12,
+      "events": 11,
+      "s": 10,
+      "0": 10,
+      "zap": 10,
+      "tags": 9,
+      "key": 9,
+      "nip": 7,
+      "subject": 7,
+      "pubkey": 7,
+      "address": 7,
+      "trusted": 6,
+      "value": 6,
+      "30382": 6,
+      "algorithm": 6,
+      "view": 6,
+      "result": 6,
+      "sats": 6,
+      "provider": 6,
+      "users": 5,
+      "type": 5,
+      "point": 5,
+      "relay": 5,
+      "wss": 5,
+      "nostr": 5,
+      "trust": 4,
+      "assertion": 4,
+      "addressable": 4,
+      "d": 4,
+      "73": 4,
+      "content": 4,
+      "keys": 4,
+      "format": 4,
+      "norm": 4,
+      "100": 4,
+      "sent": 4,
+      "4fd5e210530e4f6b2cb083795834bfe5108324f1ed9f00ab73b9e8fcfe5f12fe": 4,
+      "nip85": 4,
+      "band": 4,
+      "assertions": 3,
+      "calculations": 3,
+      "clients": 3,
+      "30383": 3,
+      "30384": 3,
+      "settings": 3,
+      "following": 3,
+      "received": 3,
+      "reports": 3,
+      "information": 3,
+      "rate": 3,
+      "comment": 3,
+      "comment_cnt": 3,
+      "reaction": 3,
+      "reaction_cnt": 3,
+      "10040": 3,
+      "relays": 3,
+      "list": 3,
+      "hint": 3,
+      "website": 3,
+      "access": 2,
+      "declared": 2,
+      "client": 2,
+      "distinct": 2,
+      "target": 2,
+      "identifiers": 2,
+      "identifier": 2,
+      "30385": 2,
+      "results": 2,
+      "web": 2,
+      "score": 2,
+      "89": 2,
+      "jsonc": 2,
+      "public": 2,
+      "use": 2,
+      "algorithms": 2,
+      "including": 2,
+      "personalized": 2,
+      "follower": 2,
+      "post": 2,
+      "zap_amt_sent": 2,
+      "number": 2,
+      "avg": 2,
+      "day": 2,
+      "generally": 2,
+      "active": 2,
+      "24": 2,
+      "utc": 2,
+      "offer": 2,
+      "preferred": 2,
+      "quote": 2,
+      "quote_cnt": 2,
+      "repost": 2,
+      "repost_cnt": 2,
+      "zap_cnt": 2,
+      "zap_amount": 2,
+      "multiple": 2,
+      "json": 2,
+      "examples": 2,
+      "points": 2,
+      "listed": 2,
+      "1": 2,
+      "vitor": 2,
+      "https": 2,
+      "brainstorm": 2,
+      "com": 2,
+      "download": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "b58a6048b12e6cbbb64250664a9e78ee85579ff0",
+        "timestamp": "2026-01-22T13:47:55-03:00",
+        "date": "2026-01-22",
+        "author": "Vitor Pamplona",
+        "path": "85.md",
+        "status": "Draft",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        "NIP 44",
+        "NIP 73"
+      ],
+      "body_extracted_llm": [
+        "NIP 16",
+        "NIP 33",
+        "NIP 44",
+        "NIP 73"
+      ]
+    }
+  }
+}

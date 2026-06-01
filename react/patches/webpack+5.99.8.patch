@@ -1,0 +1,19 @@
+diff --git a/node_modules/webpack/lib/ConcatenationScope.js b/node_modules/webpack/lib/ConcatenationScope.js
+index 5c7bb6f..8121cfe 100644
+--- a/node_modules/webpack/lib/ConcatenationScope.js
++++ b/node_modules/webpack/lib/ConcatenationScope.js
+@@ -126,10 +126,10 @@ class ConcatenationScope {
+ 		const asiSafe = match[5];
+ 		return {
+ 			index,
+-			ids:
+-				match[2] === "ns"
+-					? []
+-					: JSON.parse(Buffer.from(match[2], "hex").toString("utf-8")),
++			ids: (() => {
++				if (match[2] === "ns" || !match[2]) return [];
++				try { return JSON.parse(Buffer.from(match[2], "hex").toString("utf-8")); } catch(e) { return []; }
++			})(),
+ 			call: Boolean(match[3]),
+ 			directImport: Boolean(match[4]),
+ 			asiSafe: asiSafe ? asiSafe === "1" : undefined

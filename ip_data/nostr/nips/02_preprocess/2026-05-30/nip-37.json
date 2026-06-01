@@ -1,0 +1,167 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "37",
+      "title": "Draft Wraps",
+      "author": [
+        "Vitor Pamplona"
+      ],
+      "created": "2024-05-30",
+      "status": "Draft",
+      "type": "Optional",
+      "layer": null,
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Mon May 18 11:10:57 2026 +0300",
+    "total_commits": 3,
+    "git_history": [
+      [
+        "407625bf771fe4cdfa67342b68333485c9549c7e",
+        "Mon May 18 11:10:57 2026 +0300",
+        "Pablo Fernandez"
+      ],
+      [
+        "7b24bf803f99e6bfe7a34b22f74f8a0942fca158",
+        "Wed Oct 15 16:09:36 2025 -0400",
+        "Vitor Pamplona"
+      ],
+      [
+        "48674e563865b1cb7bb3c5c7869d20055446f408",
+        "Thu May 30 15:31:33 2024 -0400",
+        "Vitor Pamplona"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "kind": 13,
+      "draft": 8,
+      "content": 7,
+      "tags": 7,
+      "nip": 5,
+      "31234": 5,
+      "events": 5,
+      "json": 5,
+      "md": 5,
+      "s": 5,
+      "event": 5,
+      "private": 5,
+      "relays": 4,
+      "10013": 4,
+      "encrypted": 3,
+      "js": 3,
+      "recommended": 3,
+      "nip44encrypt": 3,
+      "stringify": 3,
+      "relay": 3,
+      "wraps": 2,
+      "defines": 2,
+      "storage": 2,
+      "stringified": 2,
+      "nip44": 2,
+      "44": 2,
+      "signer": 2,
+      "placed": 2,
+      "inside": 2,
+      "k": 2,
+      "identifier": 2,
+      "expiration": 2,
+      "draft_event": 2,
+      "fields": 2,
+      "40": 2,
+      "clients": 2,
+      "publish": 2,
+      "checkpoints": 2,
+      "1234": 2,
+      "parent": 2,
+      "list": 2,
+      "user": 2,
+      "42": 2,
+      "authed": 2,
+      "65": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "48674e563865b1cb7bb3c5c7869d20055446f408",
+        "timestamp": "2024-05-30T15:31:33-04:00",
+        "date": "2024-05-30",
+        "author": "Vitor Pamplona",
+        "path": "37.md",
+        "status": "Draft",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        "NIP 40",
+        "NIP 42",
+        "NIP 44",
+        "NIP 65"
+      ],
+      "body_extracted_llm": [
+        "NIP 33",
+        "NIP 44",
+        "NIP 65"
+      ]
+    }
+  }
+}

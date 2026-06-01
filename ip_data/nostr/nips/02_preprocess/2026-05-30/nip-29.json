@@ -1,0 +1,482 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "29",
+      "title": "Relay-based Groups",
+      "author": [
+        "Jon Staab"
+      ],
+      "created": "2023-11-27",
+      "status": "Draft",
+      "type": "Optional",
+      "layer": "Relay",
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Thu May 28 16:50:51 2026 -0300",
+    "total_commits": 36,
+    "git_history": [
+      [
+        "4a65981b215ff18567d4ba6ade06fb96910a2266",
+        "Thu May 28 16:50:51 2026 -0300",
+        "fiatjaf"
+      ],
+      [
+        "175ad95111b2c669c3dc74f4fa577f42ba6c5ff4",
+        "Wed May 20 10:56:50 2026 -0300",
+        "fiatjaf"
+      ],
+      [
+        "6735a229bcf0a75bf32f3e4f429ecd7675929356",
+        "Mon Mar 30 08:58:57 2026 -0300",
+        "fiatjaf"
+      ],
+      [
+        "d3cbc8cb5d3626683eefdf3d740410406c02a294",
+        "Tue Feb 24 17:54:19 2026 -0300",
+        "fiatjaf"
+      ],
+      [
+        "f461065c29f469b34ebd9d111d6ea9123e5292e7",
+        "Mon Jan 19 09:40:17 2026 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "eb252ccfc479bf1f99c273b52c678aa97084e203",
+        "Mon Jan 19 09:39:55 2026 -0300",
+        "fiatjaf"
+      ],
+      [
+        "f5a15ea27e06ce8f5635117931f06318f532a713",
+        "Wed Dec 24 02:53:38 2025 +0900",
+        "mattn"
+      ],
+      [
+        "fb18d4c74f5d1054c673fa9aa1e0778f3f70c8cc",
+        "Fri Dec 19 05:50:19 2025 -0800",
+        "hodlbod"
+      ],
+      [
+        "561059ff85c171b87a12b8381b724b4afc569a97",
+        "Thu Dec 12 21:20:59 2024 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "a1ca7a194b6d8f249b7437c0082682c2a7c074ab",
+        "Tue Dec 10 14:11:43 2024 -0800",
+        "Jon Staab"
+      ],
+      [
+        "43767e1e531de51874889b4eab905409192c404e",
+        "Fri Nov 22 13:55:23 2024 -0800",
+        "Jon Staab"
+      ],
+      [
+        "4d47b38dbc0c2e09d235972f59a4338a7bb37cc0",
+        "Sat Nov 23 07:09:25 2024 -0800",
+        "Jon Staab"
+      ],
+      [
+        "d09b51246d7d5757b5e78ef1cc18e8925561d42f",
+        "Fri Nov 22 14:09:12 2024 -0800",
+        "Jon Staab"
+      ],
+      [
+        "1e47fd75572704b84cf484ce52394fc7ea7d4067",
+        "Thu Nov 21 06:55:23 2024 -0800",
+        "hodlbod"
+      ],
+      [
+        "f3244a0903b1fedbd8aa89596c658c9529e19ea6",
+        "Mon Nov 18 02:33:29 2024 +0900",
+        "hakkadaikon"
+      ],
+      [
+        "8794be6775a6264a82ed8044b14f3c5e4eb01122",
+        "Fri Nov 15 11:14:19 2024 -0500",
+        "Josh Brown"
+      ],
+      [
+        "18bdc0ce8c80b68cd8e2c30c0dfd12c43e8b8bc0",
+        "Sat Nov 9 15:41:25 2024 -0300",
+        "fiatjaf"
+      ],
+      [
+        "b58f02925e7ea05e9f104041cb6e42d146ab4c54",
+        "Sat Nov 9 08:56:43 2024 -0300",
+        "fiatjaf"
+      ],
+      [
+        "39154346bb691191a1fc734e53d5eda08a1eec79",
+        "Sat Nov 9 08:56:29 2024 -0300",
+        "fiatjaf"
+      ],
+      [
+        "29696eb364d8a0cd609efa85b450c174c5806eda",
+        "Sat Nov 9 08:53:01 2024 -0300",
+        "fiatjaf"
+      ],
+      [
+        "690e1b065ca789b04edce220d23bf6e39f6891bd",
+        "Wed Nov 6 22:40:46 2024 +0900",
+        "Asai Toshiya"
+      ],
+      [
+        "d4d040ee715a1f742a19e2c3a9e8697387725e46",
+        "Tue Oct 22 09:55:42 2024 -0300",
+        "fiatjaf"
+      ],
+      [
+        "e3cf02840d382360a604a7506e1b9608c63c4002",
+        "Mon Oct 21 13:45:51 2024 -0300",
+        "fiatjaf"
+      ],
+      [
+        "765daceaa1a25a0324864668cf977cbdcb30bbd4",
+        "Wed Sep 18 22:27:03 2024 -0300",
+        "fiatjaf"
+      ],
+      [
+        "e61651ac06c662b43817f85581b50e4254efbd7b",
+        "Fri Sep 13 08:07:38 2024 -0300",
+        "fiatjaf"
+      ],
+      [
+        "e6552476aa2e5ca7256be572a9aa226ec8a022ee",
+        "Tue Sep 3 20:41:31 2024 +0330",
+        "kehiy"
+      ],
+      [
+        "ca3c52e3e74f0a4679f1c6c0d9ac6461ea748d2d",
+        "Tue Aug 20 12:56:05 2024 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "62ac522333d374f9c8bab95f08413f13cf648038",
+        "Sun Aug 18 14:57:50 2024 +0330",
+        "sepehr-safari"
+      ],
+      [
+        "055101786bb4570f00a14f347c22545833922414",
+        "Sun Aug 18 14:54:21 2024 +0330",
+        "sepehr-safari"
+      ],
+      [
+        "c60ca888efbdc9b8fa4bbfbace372409d0b2161a",
+        "Thu Jul 4 09:57:40 2024 -0300",
+        "fiatjaf"
+      ],
+      [
+        "5b2461eb01f784d546f77cfc21af26bf7e4b6670",
+        "Wed Feb 28 11:50:54 2024 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "5196ac196a9e19cfbb9c6cd16d8081dd137e3572",
+        "Thu Feb 1 20:59:37 2024 -0300",
+        "fiatjaf"
+      ],
+      [
+        "5e14fd7f0851779cda2adbb8fd8bac4547570b15",
+        "Thu Feb 1 15:52:52 2024 -0600",
+        "Alex Gleason"
+      ],
+      [
+        "eee64fedb2c81a284fa98e09da57abd06d98dec0",
+        "Thu Feb 1 15:51:22 2024 -0600",
+        "Alex Gleason"
+      ],
+      [
+        "716234149a2544cd59c7f4d04608e71b4fc7aab3",
+        "Thu Feb 1 15:47:51 2024 -0600",
+        "Alex Gleason"
+      ],
+      [
+        "2c016b0659a8f29ad2420a4cd844a2dca4956407",
+        "Mon Nov 27 14:47:04 2023 -0800",
+        "Jon Staab"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "group": 80,
+      "relay": 36,
+      "kind": 36,
+      "events": 28,
+      "event": 22,
+      "relays": 21,
+      "tag": 19,
+      "user": 19,
+      "roles": 17,
+      "livekit": 17,
+      "optional": 15,
+      "users": 14,
+      "groups": 13,
+      "id": 13,
+      "clients": 13,
+      "messages": 11,
+      "metadata": 11,
+      "tags": 11,
+      "h": 9,
+      "role": 9,
+      "indicates": 9,
+      "members": 9,
+      "d": 8,
+      "moderation": 8,
+      "p": 8,
+      "av": 8,
+      "content": 8,
+      "list": 8,
+      "nip": 7,
+      "code": 7,
+      "contain": 7,
+      "s": 7,
+      "hex": 7,
+      "request": 7,
+      "set": 6,
+      "key": 6,
+      "expected": 6,
+      "39003": 6,
+      "9000": 6,
+      "pubkey": 6,
+      "member": 6,
+      "supported": 6,
+      "support": 6,
+      "join": 6,
+      "jsonc": 6,
+      "fields": 6,
+      "pizza": 6,
+      "public": 5,
+      "create": 5,
+      "sent": 5,
+      "different": 5,
+      "references": 5,
+      "order": 5,
+      "defined": 5,
+      "live": 5,
+      "https": 5,
+      "send": 5,
+      "admin": 5,
+      "closed": 4,
+      "_id_": 4,
+      "choose": 4,
+      "admins": 4,
+      "39000": 4,
+      "text": 4,
+      "previous": 4,
+      "description": 4,
+      "multiple": 4,
+      "display": 4,
+      "9021": 4,
+      "invite": 4,
+      "kinds": 4,
+      "delete": 4,
+      "omitting": 4,
+      "pubkeys": 4,
+      "based": 3,
+      "identified": 3,
+      "specific": 3,
+      "signed": 3,
+      "identifier": 3,
+      "chat": 3,
+      "characters": 3,
+      "reject": 3,
+      "found": 3,
+      "published": 3,
+      "issued": 3,
+      "accept": 3,
+      "39001": 3,
+      "audio": 3,
+      "video": 3,
+      "supported_kinds": 3,
+      "t": 3,
+      "style": 3,
+      "rooms": 3,
+      "known": 3,
+      "nip29": 3,
+      "md": 3,
+      "jwt": 3,
+      "reason": 3,
+      "9001": 3,
+      "state": 3,
+      "action": 3,
+      "picture": 3,
+      "11": 3,
+      "lovers": 3,
+      "requests": 3,
+      "case": 3,
+      "participant": 3,
+      "29": 2,
+      "defines": 2,
+      "standard": 2,
+      "external": 2,
+      "random": 2,
+      "rules": 2,
+      "ids": 2,
+      "serve": 2,
+      "generated": 2,
+      "generate": 2,
+      "self": 2,
+      "etc": 2,
+      "timeline": 2,
+      "context": 2,
+      "seen": 2,
+      "number": 2,
+      "including": 2,
+      "zero": 2,
+      "include": 2,
+      "enforce": 2,
+      "prevent": 2,
+      "check": 2,
+      "late": 2,
+      "publication": 2,
+      "forked": 2,
+      "management": 2,
+      "access": 2,
+      "arbitrarily": 2,
+      "capable": 2,
+      "policy": 2,
+      "assigned": 2,
+      "long": 2,
+      "updated": 2,
+      "having": 2,
+      "special": 2,
+      "privilege": 2,
+      "docs": 2,
+      "io": 2,
+      "server": 2,
+      "allows": 2,
+      "single": 2,
+      "endpoint": 2,
+      "98": 2,
+      "authorization": 2,
+      "tld": 2,
+      "time": 2,
+      "according": 2,
+      "64": 2,
+      "lowercase": 2,
+      "room": 2,
+      "times": 2,
+      "created": 2,
+      "require": 2,
+      "error": 2,
+      "message": 2,
+      "relevant": 2,
+      "e": 2,
+      "json": 2,
+      "9009": 2,
+      "9022": 2,
+      "automatically": 2,
+      "removed": 2,
+      "master": 2,
+      "given": 2,
+      "internal": 2,
+      "remove": 2,
+      "edit": 2,
+      "allowed": 2,
+      "instead": 2,
+      "exist": 2,
+      "latest": 2,
+      "private": 2,
+      "honored": 2,
+      "supports": 2,
+      "specified": 2,
+      "assumed": 2,
+      "example": 2,
+      "pubkey1": 2,
+      "ceo": 2,
+      "pubkey2": 2,
+      "secretary": 2,
+      "39002": 2,
+      "present": 2,
+      "informing": 2,
+      "moderator": 2,
+      "participants": 2,
+      "39004": 2,
+      "51": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "5b2461eb01f784d546f77cfc21af26bf7e4b6670",
+        "timestamp": "2024-02-28T11:50:54-03:00",
+        "date": "2024-02-28",
+        "author": "fiatjaf_",
+        "path": "29.md",
+        "status": "Draft",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        "NIP 11",
+        "NIP 51",
+        "NIP 98"
+      ],
+      "body_extracted_llm": [
+        "NIP 11",
+        "NIP 19",
+        "NIP 33",
+        "NIP 98"
+      ]
+    }
+  }
+}

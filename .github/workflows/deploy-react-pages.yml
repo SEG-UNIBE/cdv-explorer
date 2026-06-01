@@ -8,6 +8,7 @@ on:
     paths:
       - '.github/workflows/deploy-react-pages.yml'
       - 'react/**'
+      - 'scripts/validate_snapshots.py'
       - 'ip_data/**/01_harvest/**'
       - 'ip_data/**/02_preprocess/**'
       - 'ip_data/**/03_analysis/**'
@@ -24,22 +25,33 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Validate snapshot artifacts
+        run: python scripts/validate_snapshots.py
+
   build:
+    needs: validate
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: react
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v5
+      - uses: actions/checkout@v5
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
         with:
           enablement: true
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
+      - uses: actions/setup-node@v6
         with:
           node-version: 22
           cache: npm
@@ -60,11 +72,11 @@ jobs:
           path: react/build
 
   deploy:
+    needs: build
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    needs: build
     steps:
       - name: Deploy to GitHub Pages
         id: deployment

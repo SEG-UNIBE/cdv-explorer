@@ -7,12 +7,14 @@ from analysis.authorship import extract_authorship_metrics
 from analysis.authorship import prepare_authorship_payload
 from analysis.classification import prepare_classification_payload
 from analysis.conformity import extract_conformity_metrics
+from analysis.dependencies.constants import PREAMBLE_EXTRACTED
 from analysis.dependencies import (
     build_network_data,
     extract_dependency_metrics,
     load_proposal_json_documents,
     save_network_data_artifacts,
 )
+from analysis.evolution import prepare_evolution_payload
 from analysis.wordcloud import extract_wordcloud_metrics
 
 
@@ -70,6 +72,7 @@ def _save_react_ready_exports(
     dependency_metrics: Dict[str, Any],
     authorship_payload: Dict[str, Any],
     classification_payload: Dict[str, Any],
+    evolution_payload: Dict[str, Any],
     conformity_metrics: Dict[str, Any],
 ) -> Dict[str, Path]:
     react_root = postprocess_root / snapshot / "react"
@@ -93,7 +96,7 @@ def _save_react_ready_exports(
 
     flat_edges: List[Dict[str, Any]] = []
     for link_type, links in network_data.get("links", {}).items():
-        if link_type == "explicit_dependencies" and isinstance(links, dict):
+        if link_type == PREAMBLE_EXTRACTED and isinstance(links, dict):
             for subtype, subtype_links in links.items():
                 for link in subtype_links:
                     flat_edges.append(
@@ -203,6 +206,8 @@ def prepare_ecosystem_artifacts(
     snapshot: str,
     id_field: str,
     proposal_label: str,
+    repo_dir: Path | None = None,
+    file_prefix: str = "bip",
     status_callback=None,
     progress_callback=None,
 ) -> Dict[str, Path]:
@@ -276,6 +281,17 @@ def prepare_ecosystem_artifacts(
         index_name="year",
     )
 
+    emit("Preparing evolution artifacts", advance=1)
+    evolution_payload = prepare_evolution_payload(
+        proposal_data,
+        snapshot_label=snapshot,
+        id_field=id_field,
+        repo_dir=repo_dir,
+        file_prefix=file_prefix,
+    )
+    evolution_payload_path = snapshot_root / "evolution" / "evolution_payload.json"
+    _save_json(evolution_payload, evolution_payload_path)
+
     emit("Preparing conformity artifacts", advance=1)
     conformity_metrics = extract_conformity_metrics(proposal_data, id_field=id_field)
     conformity_path = snapshot_root / "conformity" / "conformity_metrics.json"
@@ -306,6 +322,7 @@ def prepare_ecosystem_artifacts(
         "authorship_json": authorship_path,
         "authorship_payload_json": authorship_payload_path,
         "classification_json": classification_payload_path,
+        "evolution_json": evolution_payload_path,
         "conformity_json": conformity_path,
         "wordcloud_json": wordcloud_path,
     }
@@ -320,6 +337,7 @@ def prepare_ecosystem_artifacts(
                 dependency_metrics=dependency_metrics,
                 authorship_payload=authorship_payload,
                 classification_payload=classification_payload,
+                evolution_payload=evolution_payload,
                 conformity_metrics=conformity_metrics,
             )
         )

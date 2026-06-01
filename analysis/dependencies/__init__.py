@@ -4,6 +4,14 @@ from .network import (
     normalize_proposal_ids,
     save_network_data_artifacts,
 )
+from .constants import (
+    BODY_EXTRACTED_LLM,
+    BODY_EXTRACTED_REGEX,
+    DEPENDENCY_APPROACH_LABELS,
+    DEPENDENCY_APPROACH_ORDER,
+    DEPENDENCY_APPROACH_SHORT_LABELS,
+    PREAMBLE_EXTRACTED,
+)
 from .metrics import (
     build_graph,
     compute_graph_depth,

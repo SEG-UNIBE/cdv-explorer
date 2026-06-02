@@ -39,7 +39,7 @@ _Modern decentralized software ecosystems evolve through crowdsourced improvemen
   <img src="https://img.shields.io/badge/React-18-3776AB?style=flat&logo=react&logoColor=white" alt="React 18" />
   <img src="https://img.shields.io/badge/Node.js-22%2B-3776AB?style=flat&logo=nodedotjs&logoColor=white" alt="Node.js 22+" />
   <img src="https://img.shields.io/badge/D3.js-v7-3776AB?style=flat&logo=d3dotjs&logoColor=white" alt="D3.js" />
-  <a href="https://youtu.be/-YdBPHsyymU"><img src="https://img.shields.io/badge/Demo-Video-red.svg?logo=youtube&logoColor=white" alt="Demo Video" /></a>
+  <a href="https://youtu.be/56GKRexRuoI"><img src="https://img.shields.io/badge/Demo-Video-red.svg?logo=youtube&logoColor=white" alt="Demo Video" /></a>
 </div>
 
 </br>
@@ -55,8 +55,7 @@ As of now, two CDV-exhibiting ecosystems are integrated:
 | **Bitcoin** | Bitcoin Improvement Proposals (BIPs) | [bitcoin/bips](https://github.com/bitcoin/bips) |
 | **Nostr** | Nostr Implementation Possibilities (NIPs) | [nostr-protocol/nips](https://github.com/nostr-protocol/nips) |
 
-The live site is available at [seg-unibe.github.io/cdv-explorer](https://seg-unibe.github.io/cdv-explorer/#/), with a demo video on [YouTube](https://youtu.be/-YdBPHsyymU).
-CDV-Explorer was applied in an empirical study of the Bitcoin ecosystem, which has been accepted for publication [^2].
+The live site is available at [seg-unibe.github.io/cdv-explorer](https://seg-unibe.github.io/cdv-explorer/#/), with a demo video on [YouTube](https://youtu.be/56GKRexRuoI).
 
 </br>
 
@@ -270,5 +269,3 @@ cd .. && rm -rf cdv-explorer
 </br>
 
 [^1]: Bögli, R. et al. _Community-driven variability: characterizing a new software variability paradigm._ Autom Softw Eng **33**, 67 (2026). [10.1007/s10515-026-00594-0](https://doi.org/10.1007/s10515-026-00594-0)
-
-[^2]: Bögli, R., Boll, A., Kehrer, T. _Exploring Crowdsourced Feature Specifications: The Bitcoin Case._ VARIABILITY (2026). Accepted for publication. [Preprint](https://romanboegli.ch/assets/pdf/xxxxxxxxx.pdf)

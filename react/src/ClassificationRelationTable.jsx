@@ -3,8 +3,45 @@ import { Column } from 'primereact/column';
 import { useDashboardEcosystem, useDashboardLinkMode, useDashboardSnapshot } from './dashboard/DashboardSnapshotContext';
 import { formatProposalLabel, getProposalUrl } from './proposalLinks';
 
-function buildProposalUrl(id, snapshotLabel, linkMode, ecosystem) {
-  return getProposalUrl(id, snapshotLabel, { linkMode }, ecosystem);
+function isProposalRef(value) {
+  return value && typeof value === 'object' && 'id' in value;
+}
+
+function getSourceScopedEcosystem(ecosystem, sourceId) {
+  const source = ecosystem?.sources?.[sourceId];
+  return source ? { ...ecosystem, ...source } : ecosystem;
+}
+
+function getProposalRefKey(proposal) {
+  return isProposalRef(proposal)
+    ? `${proposal.source || ''}|${proposal.id}`
+    : String(proposal);
+}
+
+function getProposalRefId(proposal) {
+  return isProposalRef(proposal) ? proposal.id : proposal;
+}
+
+function getProposalRefEcosystem(proposal, ecosystem) {
+  return isProposalRef(proposal)
+    ? getSourceScopedEcosystem(ecosystem, proposal.source)
+    : ecosystem;
+}
+
+export function buildClassificationRelationProposalUrl(proposal, snapshotLabel, linkMode, ecosystem) {
+  return getProposalUrl(
+    getProposalRefId(proposal),
+    snapshotLabel,
+    { linkMode },
+    getProposalRefEcosystem(proposal, ecosystem)
+  );
+}
+
+export function buildClassificationRelationProposalLabel(proposal, ecosystem) {
+  return formatProposalLabel(
+    getProposalRefId(proposal),
+    getProposalRefEcosystem(proposal, ecosystem)
+  );
 }
 
 export const ClassificationRelationTable = ({
@@ -44,15 +81,15 @@ export const ClassificationRelationTable = ({
         body={(row) => (
           <span>
             {(row.bips || []).map((bip, index) => (
-              <span key={bip}>
+              <span key={getProposalRefKey(bip)}>
                 {index > 0 ? ', ' : ''}
                 <a
-                  href={buildProposalUrl(bip, snapshotLabel, linkMode, ecosystem)}
+                  href={buildClassificationRelationProposalUrl(bip, snapshotLabel, linkMode, ecosystem)}
                   target="_blank"
                   rel="noreferrer"
                   style={{ whiteSpace: 'nowrap' }}
                 >
-                  {formatProposalLabel(bip, ecosystem)}
+                  {buildClassificationRelationProposalLabel(bip, ecosystem)}
                 </a>
               </span>
             ))}

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Dropdown } from 'primereact/dropdown';
 import { InputSwitch } from 'primereact/inputswitch';
+import { MultiSelect } from 'primereact/multiselect';
 import { Link, useParams } from 'react-router-dom';
 import { DEFAULT_DEPENDENCY_APPROACH } from '../dependencyApproaches';
 import { LINK_TYPE_OPTIONS } from '../NetworkDiagram';
@@ -31,6 +32,14 @@ function getSourceRepositoryHref(repository) {
   return null;
 }
 
+function formatProposalOption(node, ecosystem) {
+  const source = ecosystem?.sources?.[node?.source] || ecosystem;
+  if (typeof source?.formatProposalReference === 'function') {
+    return source.formatProposalReference(node?.id);
+  }
+  return normalizeProposalFilterValue(node?.id);
+}
+
 export function EcosystemDashboard() {
   const { ecosystemId } = useParams();
   const ecosystem = ecosystemsById[ecosystemId];
@@ -42,7 +51,34 @@ export function EcosystemDashboard() {
     conformity: {},
     meta: {},
   }), []);
-  const availableSnapshots = useMemo(() => getAvailableSnapshots(ecosystemId), [ecosystemId]);
+  const sourceOptions = useMemo(
+    () => (ecosystem?.sourceOrder || [])
+      .map((sourceId) => ecosystem?.sources?.[sourceId])
+      .filter(Boolean),
+    [ecosystem],
+  );
+  const defaultSelectedSourceIds = useMemo(
+    () => (ecosystem?.defaultSourceId ? [ecosystem.defaultSourceId] : []),
+    [ecosystem],
+  );
+  const [selectedSourceIds, setSelectedSourceIds] = useState(defaultSelectedSourceIds);
+  const orderedSelectedSourceIds = useMemo(
+    () => (ecosystem?.sourceOrder || []).filter((id) => selectedSourceIds.includes(id)),
+    [ecosystem, selectedSourceIds],
+  );
+  const primarySourceId = orderedSelectedSourceIds[0] || null;
+  const activeSource = useMemo(
+    () => (primarySourceId ? ecosystem?.sources?.[primarySourceId] || null : null),
+    [ecosystem, primarySourceId],
+  );
+  const activeEcosystem = useMemo(
+    () => (activeSource ? { ...ecosystem, ...activeSource } : ecosystem),
+    [ecosystem, activeSource],
+  );
+  const availableSnapshots = useMemo(
+    () => getAvailableSnapshots(ecosystemId, orderedSelectedSourceIds),
+    [ecosystemId, orderedSelectedSourceIds],
+  );
   const [selectedSnapshot, setSelectedSnapshot] = useState(availableSnapshots[0] ?? null);
   const [highlightedAuthor, setHighlightedAuthor] = useState('');
   const [collaborationLayoutMode, setCollaborationLayoutMode] = useState('balanced');
@@ -56,6 +92,14 @@ export function EcosystemDashboard() {
   const [wordCloudFilterText, setWordCloudFilterText] = useState('');
   const [highlightedConformityProposal, setHighlightedConformityProposal] = useState('');
   const [linkMode, setLinkMode] = useState('history');
+
+  useEffect(() => {
+    setSelectedSourceIds((current) => {
+      const valid = current.filter((id) => ecosystem?.sources?.[id]);
+      if (valid.length > 0) return valid;
+      return defaultSelectedSourceIds;
+    });
+  }, [ecosystem, defaultSelectedSourceIds]);
 
   useEffect(() => {
     setSelectedSnapshot((current) => {
@@ -73,19 +117,19 @@ export function EcosystemDashboard() {
   const [contentEntered, setContentEntered] = useState(false);
 
   useEffect(() => {
-    if (!ecosystem || ecosystem.status !== 'available' || !selectedSnapshot) {
+    if (!ecosystem || ecosystem.status !== 'available' || !selectedSnapshot || orderedSelectedSourceIds.length === 0) {
       setSelectedDataset(emptyDataset);
       setDataLoading(false);
       return undefined;
     }
-    if (!isDatasetCached(ecosystemId, selectedSnapshot)) {
+    if (!isDatasetCached(ecosystemId, selectedSnapshot, orderedSelectedSourceIds)) {
       setDataReady(false);
       setSkeletonActive(true);
       setContentEntered(false);
     }
     let cancelled = false;
     setDataLoading(true);
-    fetchDatasetForSelection(ecosystemId, selectedSnapshot)
+    fetchDatasetForSelection(ecosystemId, selectedSnapshot, orderedSelectedSourceIds)
       .then((dataset) => {
         if (!cancelled) {
           setSelectedDataset(dataset);
@@ -101,7 +145,7 @@ export function EcosystemDashboard() {
         }
       });
     return () => { cancelled = true; };
-  }, [ecosystemId, selectedSnapshot, ecosystem, emptyDataset]);
+  }, [ecosystemId, orderedSelectedSourceIds, selectedSnapshot, ecosystem, emptyDataset]);
   const {
     yearData,
     wordCloudData,
@@ -122,7 +166,18 @@ export function EcosystemDashboard() {
     collaborationClusterSizeDistribution,
     collaborationDegreeDistribution,
     dependencyMetrics,
-  } = useMemo(() => buildDashboardData(selectedDataset, ecosystem), [selectedDataset, ecosystem]);
+  } = useMemo(() => buildDashboardData(selectedDataset, activeEcosystem), [selectedDataset, activeEcosystem]);
+  const perSourceDashboardData = useMemo(() => {
+    const bySource = selectedDataset?.bySource || {};
+    return orderedSelectedSourceIds.reduce((acc, sourceId) => {
+      const sourceDataset = bySource[sourceId];
+      const source = ecosystem?.sources?.[sourceId];
+      if (sourceDataset && source) {
+        acc[sourceId] = buildDashboardData(sourceDataset, { ...ecosystem, ...source });
+      }
+      return acc;
+    }, {});
+  }, [selectedDataset, ecosystem, orderedSelectedSourceIds]);
   const dependencyMetricsApproachOptions = useMemo(
     () => LINK_TYPE_OPTIONS.filter(
       (option) => dependencyMetrics?.by_approach?.[option.value]
@@ -138,6 +193,11 @@ export function EcosystemDashboard() {
     summary: {},
     per_bip: [],
   };
+  const availableProposalNodes = useMemo(
+    () => (selectedDataset?.nodes || [])
+      .filter((node) => node?.id != null),
+    [selectedDataset]
+  );
   const availableProposalIds = useMemo(
     () => (selectedDataset?.nodes || [])
       .map((node) => normalizeProposalFilterValue(node?.id))
@@ -146,16 +206,16 @@ export function EcosystemDashboard() {
     [selectedDataset]
   );
   const selectedWordCloudProposalIds = useMemo(
-    () => parseProposalFilterExpression(wordCloudFilterText, availableProposalIds),
-    [availableProposalIds, wordCloudFilterText]
+    () => parseProposalFilterExpression(wordCloudFilterText, availableProposalNodes, ecosystem),
+    [availableProposalNodes, ecosystem, wordCloudFilterText]
   );
   const selectedDependencyProposalIds = useMemo(
-    () => parseProposalFilterExpression(dependencyFilterText, availableProposalIds),
-    [availableProposalIds, dependencyFilterText]
+    () => parseProposalFilterExpression(dependencyFilterText, availableProposalNodes, ecosystem),
+    [availableProposalNodes, dependencyFilterText, ecosystem]
   );
   const filteredWordCloudData = useMemo(
-    () => buildWordCloudData(selectedDataset?.nodes || [], selectedWordCloudProposalIds),
-    [selectedDataset, selectedWordCloudProposalIds]
+    () => buildWordCloudData(selectedDataset?.nodes || [], selectedWordCloudProposalIds, ecosystem),
+    [ecosystem, selectedDataset, selectedWordCloudProposalIds]
   );
   const hasWordCloudFilter = wordCloudFilterText.trim().length > 0;
   const hasDependencyFilter = dependencyFilterText.trim().length > 0;
@@ -166,10 +226,10 @@ export function EcosystemDashboard() {
         return current;
       }
 
-      const normalized = parseProposalFilterExpression(current, availableProposalIds);
+      const normalized = parseProposalFilterExpression(current, availableProposalNodes, ecosystem);
       return normalized.length ? current : '';
     });
-  }, [availableProposalIds]);
+  }, [availableProposalNodes, ecosystem]);
 
   useEffect(() => {
     setDependencyFilterText((current) => {
@@ -177,10 +237,10 @@ export function EcosystemDashboard() {
         return current;
       }
 
-      const normalized = parseProposalFilterExpression(current, availableProposalIds);
+      const normalized = parseProposalFilterExpression(current, availableProposalNodes, ecosystem);
       return normalized.length ? current : '';
     });
-  }, [availableProposalIds]);
+  }, [availableProposalNodes, ecosystem]);
 
   useEffect(() => {
     setHighlightedConformityProposal((current) => {
@@ -223,18 +283,33 @@ export function EcosystemDashboard() {
     .map((node) => String(node.id || ''))
     .filter(Boolean)
     .sort((left, right) => left.localeCompare(right));
-  const dependencyProposalOptions = availableProposalIds;
+  const dependencyProposalOptions = availableProposalNodes
+    .map((node) => formatProposalOption(node, ecosystem))
+    .filter(Boolean)
+    .sort((left, right) => left.localeCompare(right, undefined, { numeric: true }));
   const snapshotOptions = availableSnapshots.map((snapshot) => ({
     label: snapshot === 'current' ? 'Current' : snapshot,
     value: snapshot,
   }));
-  const sourceRepositories = ecosystem.sourceRepositories || [];
+  const selectedSources = orderedSelectedSourceIds
+    .map((id) => ecosystem.sources?.[id])
+    .filter(Boolean);
+  const sourceRepositories = Array.from(
+    new Set(selectedSources.flatMap((s) => s.sourceRepositories || [])),
+  );
+  const sourcePickerOptions = sourceOptions.map((source) => ({
+    label: source.shortLabel || source.acronym,
+    value: source.sourceId,
+  }));
+  const showSourcePicker = sourcePickerOptions.length > 1;
+  const dashboardTitle = `${ecosystem.name} Ecosystem`;
+  const dashboardDescription = ecosystem.ecosystemDescription;
 
   return (
     <DashboardSnapshotProvider
       snapshot={selectedDataset?.snapshot || selectedSnapshot}
       linkMode={linkMode}
-      ecosystem={ecosystem}
+      ecosystem={activeEcosystem}
     >
       <section className="content">
       {dataLoading && <div className="dashboard-loading-bar" />}
@@ -242,10 +317,10 @@ export function EcosystemDashboard() {
         <div className="dashboard-toolbar__copy">
           <div className="dashboard-title-row">
             <img className="dashboard-title-logo" src={ecosystem.logo} alt={`${ecosystem.name} logo`} />
-            <h1>{ecosystem.proposalPlural}</h1>
+            <h1>{dashboardTitle}</h1>
           </div>
-          {ecosystem.dashboardDescription && (
-            <p>{ecosystem.dashboardDescription}</p>
+          {dashboardDescription && (
+            <p>{dashboardDescription}</p>
           )}
           <ul>
             {sourceRepositories.map((repository) => {
@@ -269,6 +344,27 @@ export function EcosystemDashboard() {
           <i className="pi pi-sliders-h" />
         </span>
         <div className="dashboard-sticky-controls__panel">
+          {showSourcePicker && (
+            <div className="dashboard-sticky-controls__source-row">
+              <label htmlFor="source-select" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>
+                SOURCES
+              </label>
+              <MultiSelect
+                inputId="source-select"
+                value={selectedSourceIds}
+                options={sourcePickerOptions}
+                onChange={(event) => {
+                  if (Array.isArray(event.value) && event.value.length > 0) {
+                    setSelectedSourceIds(event.value);
+                  }
+                }}
+                display="chip"
+                placeholder="Select sources"
+                className="dashboard-source-picker w-full"
+                maxSelectedLabels={sourcePickerOptions.length}
+              />
+            </div>
+          )}
           <label htmlFor="snapshot-select" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>
             SNAPSHOT
           </label>
@@ -314,7 +410,7 @@ export function EcosystemDashboard() {
             onAnimationEnd={(e) => e.animationName === 'sk-fade-in' && setContentEntered(true)}
           >
             <AuthorshipSection
-              ecosystem={ecosystem}
+              ecosystem={activeEcosystem}
               yearData={yearData}
               topAuthors={topAuthors}
               authorContributionHistogram={authorContributionHistogram}
@@ -338,7 +434,10 @@ export function EcosystemDashboard() {
               wordCloudData={wordCloudData}
             />
             <ClassificationSection
-              ecosystem={ecosystem}
+              ecosystem={activeEcosystem}
+              ecosystemBase={ecosystem}
+              selectedSourceIds={orderedSelectedSourceIds}
+              perSourceDashboardData={perSourceDashboardData}
               classificationCategoryDomains={classificationCategoryDomains}
               classificationDistributions={classificationDistributions}
               classificationTimeline={classificationTimeline}
@@ -346,11 +445,14 @@ export function EcosystemDashboard() {
               classificationRelationRows={classificationRelationRows}
             />
             <EvolutionSection
-              ecosystem={ecosystem}
+              ecosystem={activeEcosystem}
+              ecosystemBase={ecosystem}
+              selectedSourceIds={orderedSelectedSourceIds}
+              perSourceDashboardData={perSourceDashboardData}
               evolutionPayload={evolutionPayload}
             />
             <DependenciesSection
-              ecosystem={ecosystem}
+              ecosystem={activeEcosystem}
               selectedDataset={selectedDataset}
               highlightedDependencyProposal={highlightedDependencyProposal}
               setHighlightedDependencyProposal={setHighlightedDependencyProposal}
@@ -372,7 +474,10 @@ export function EcosystemDashboard() {
               dependencyMetrics={dependencyMetrics}
             />
             <ConformitySection
-              ecosystem={ecosystem}
+              ecosystem={activeEcosystem}
+              ecosystemBase={ecosystem}
+              selectedSourceIds={orderedSelectedSourceIds}
+              perSourceDashboardData={perSourceDashboardData}
               dependencyProposalOptions={dependencyProposalOptions}
               highlightedConformityProposal={highlightedConformityProposal}
               setHighlightedConformityProposal={setHighlightedConformityProposal}

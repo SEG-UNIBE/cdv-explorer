@@ -24,9 +24,10 @@ export const ClassificationPieChart = ({ dimension, colorDomain, data, width = 3
     }
 
     svg
-      .attr('viewBox', `0 0 ${width} ${height}`)
       .style('width', '100%')
-      .style('height', 'auto');
+      .style('max-width', '260px')
+      .style('height', 'auto')
+      .style('display', 'block');
 
     const tooltipNode = document.createElement('div');
     document.body.appendChild(tooltipNode);
@@ -65,6 +66,11 @@ export const ClassificationPieChart = ({ dimension, colorDomain, data, width = 3
 
     const total = d3.sum(chartData, (entry) => Number(entry.value || 0));
     const radius = Math.min(width * 0.4, height * 0.48);
+    const padding = 4;
+    // Tight viewBox around the pie itself — no built-in empty space — so when
+    // the SVG scales to its column the pie scales with it 1:1.
+    const viewBoxSize = radius * 2 + padding * 2;
+    svg.attr('viewBox', `0 0 ${viewBoxSize} ${viewBoxSize}`);
     const colorMap = getClassificationColorMap(
       dimension,
       Array.isArray(colorDomain) && colorDomain.length
@@ -91,7 +97,7 @@ export const ClassificationPieChart = ({ dimension, colorDomain, data, width = 3
     };
 
     const g = svg.append('g')
-      .attr('transform', `translate(${width * 0.5}, ${height * 0.5})`);
+      .attr('transform', `translate(${viewBoxSize / 2}, ${viewBoxSize / 2})`);
 
     g.selectAll('path')
       .data(pie(chartData))

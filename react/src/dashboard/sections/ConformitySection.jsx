@@ -2,30 +2,98 @@ import { Button } from 'primereact/button';
 import { Card } from 'primereact/card';
 import { InputText } from 'primereact/inputtext';
 import { Tag } from 'primereact/tag';
+import { TabView, TabPanel } from 'primereact/tabview';
 import { FormalConformitySwarmPlot } from '../../FormalConformitySwarmPlot';
 import { ConformityFailedChecksHistogram } from '../../ConformityFailedChecksHistogram';
 import { ExportableCard } from '../ExportableCard';
 
+function ConformityContent({
+  ecosystem,
+  highlightedConformityProposal,
+  conformityRows,
+  conformityFailedChecks,
+}) {
+  const standards = ecosystem.complianceStandards || [];
+  if (standards.length === 0) {
+    return (
+      <Card className="mb-4">
+        <p>No conformity checks defined for {ecosystem.proposalShortPlural}.</p>
+      </Card>
+    );
+  }
+
+  return (
+    <>
+      {standards.map((standard) => (
+        <div key={standard.key} className="dashboard-grid dashboard-grid--two-up mb-4">
+          <ExportableCard
+            style={{ flex: 1 }}
+            exportTitle={`${standard.label} Swarm Plot`}
+          >
+            <h3>{standard.label}</h3>
+            <p>Distribution of proposal-level conformity scores under {standard.label}.</p>
+            <div>
+              <FormalConformitySwarmPlot
+                rows={conformityRows}
+                highlightProposal={highlightedConformityProposal}
+                standardKey={standard.key}
+                width={620}
+                height={420}
+              />
+            </div>
+          </ExportableCard>
+          <ExportableCard
+            style={{ flex: 1 }}
+            exportTitle={`Most Failed ${standard.label} Checks`}
+          >
+            <h3>Most Failed {standard.label} Checks</h3>
+            <p>Frequency of failed formal checks under {standard.label} across the selected snapshot.</p>
+            <div>
+              <ConformityFailedChecksHistogram
+                data={conformityFailedChecks[standard.key] || []}
+                proposalShortLabel={ecosystem.acronym || 'IP'}
+                width={620}
+                height={390}
+                {...(standard.color && { barColor: standard.color })}
+                {...(standard.hoverColor && { barHoverColor: standard.hoverColor })}
+                ariaLabel={`Most failed ${standard.label} conformity checks`}
+              />
+            </div>
+          </ExportableCard>
+        </div>
+      ))}
+    </>
+  );
+}
+
 export function ConformitySection({
   ecosystem,
+  ecosystemBase,
+  selectedSourceIds = [],
+  perSourceDashboardData = {},
   dependencyProposalOptions,
   highlightedConformityProposal,
   setHighlightedConformityProposal,
   conformityRows,
   conformityFailedChecks,
 }) {
-  const standards = ecosystem.complianceStandards || [];
+  const isMultiSource = selectedSourceIds.length > 1;
+  const sourcesWithStandards = isMultiSource
+    ? selectedSourceIds.filter((sourceId) => (
+      (ecosystemBase?.sources?.[sourceId]?.complianceStandards || []).length > 0
+    ))
+    : [];
+
+  // Hide the section entirely when no selected source defines compliance standards.
+  if (!isMultiSource && (ecosystem.complianceStandards || []).length === 0) return null;
+  if (isMultiSource && sourcesWithStandards.length === 0) return null;
 
   return (
     <section className="dashboard-section">
       <div className="dashboard-section__header">
         <h2 className="dashboard-section__title">
           Formal Conformity
-          <Tag
-            className="dashboard-section__tag"
-            severity="warning"
-            value="Experimental"
-          />
+          <Tag className="dashboard-section__tag" severity="warning" value="Experimental" />
         </h2>
       </div>
       <Card className="mb-4">
@@ -61,48 +129,32 @@ export function ConformitySection({
           </div>
         </div>
       </Card>
-      {standards.map((standard) => (
-          <div key={standard.key} className="dashboard-grid dashboard-grid--two-up mb-4">
-            <ExportableCard
-              style={{ flex: 1 }}
-              exportTitle={`${standard.label} Swarm Plot`}
-            >
-              <h3>{standard.label}</h3>
-              <p>
-                Distribution of proposal-level conformity scores under {standard.label}.
-              </p>
-              <div>
-                <FormalConformitySwarmPlot
-                  rows={conformityRows}
-                  highlightProposal={highlightedConformityProposal}
-                  standardKey={standard.key}
-                  width={620}
-                  height={420}
+      {isMultiSource ? (
+        <TabView className="dashboard-source-tabs">
+          {sourcesWithStandards.map((sourceId) => {
+            const source = ecosystemBase?.sources?.[sourceId];
+            const data = perSourceDashboardData?.[sourceId];
+            if (!source || !data) return null;
+            return (
+              <TabPanel key={sourceId} header={source.shortLabel || source.acronym}>
+                <ConformityContent
+                  ecosystem={{ ...ecosystemBase, ...source }}
+                  highlightedConformityProposal={highlightedConformityProposal}
+                  conformityRows={data.conformityRows}
+                  conformityFailedChecks={data.conformityFailedChecks}
                 />
-              </div>
-            </ExportableCard>
-            <ExportableCard
-              style={{ flex: 1 }}
-              exportTitle={`Most Failed ${standard.label} Checks`}
-            >
-              <h3>Most Failed {standard.label} Checks</h3>
-              <p>
-                Frequency of failed formal checks under {standard.label} across the selected snapshot.
-              </p>
-              <div>
-                <ConformityFailedChecksHistogram
-                  data={conformityFailedChecks[standard.key] || []}
-                  proposalShortLabel={ecosystem.acronym || 'IP'}
-                  width={620}
-                  height={390}
-                  {...(standard.color && { barColor: standard.color })}
-                  {...(standard.hoverColor && { barHoverColor: standard.hoverColor })}
-                  ariaLabel={`Most failed ${standard.label} conformity checks`}
-                />
-              </div>
-            </ExportableCard>
-          </div>
-      ))}
+              </TabPanel>
+            );
+          })}
+        </TabView>
+      ) : (
+        <ConformityContent
+          ecosystem={ecosystem}
+          highlightedConformityProposal={highlightedConformityProposal}
+          conformityRows={conformityRows}
+          conformityFailedChecks={conformityFailedChecks}
+        />
+      )}
     </section>
   );
 }

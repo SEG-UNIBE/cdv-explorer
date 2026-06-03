@@ -1,12 +1,14 @@
 import { useState } from 'react';
+import { TabView, TabPanel } from 'primereact/tabview';
 import { ClassificationPieChart } from '../../ClassificationPieChart';
 import { ClassificationStackedTimelineChart } from '../../ClassificationStackedTimelineChart';
 import { ClassificationChordDiagram } from '../../ClassificationChordDiagram';
+import { ClassificationLegend } from '../../ClassificationLegend';
 import { ClassificationRelationTable } from '../../ClassificationRelationTable';
 import { ExportableCard } from '../ExportableCard';
 import { CLASSIFICATION_DIMENSIONS } from '../constants';
 
-export function ClassificationSection({
+function ClassificationContent({
   ecosystem,
   classificationCategoryDomains,
   classificationDistributions,
@@ -17,7 +19,6 @@ export function ClassificationSection({
   const [includeThirdDim, setIncludeThirdDim] = useState(false);
   const dimensions = ecosystem.classificationDimensions || CLASSIFICATION_DIMENSIONS;
 
-  // Chord diagram only shows when every dimension has at least one non-trivial category
   const hasChordData = dimensions.length >= 2 &&
     dimensions.every(({ field }) => {
       const domain = classificationCategoryDomains[field] || [];
@@ -36,10 +37,7 @@ export function ClassificationSection({
   const dimLabels = dimensions.map((d) => d.label).join(', ');
 
   return (
-    <section className="dashboard-section">
-      <div className="dashboard-section__header">
-        <h2 className="dashboard-section__title">Classification</h2>
-      </div>
+    <>
       {dimensions.map((dimension) => (
         <ExportableCard
           key={dimension.field}
@@ -55,6 +53,13 @@ export function ClassificationSection({
                 data={classificationDistributions[dimension.field]}
                 width={400}
                 height={250}
+              />
+            </div>
+            <div className="classification-card__panel classification-card__panel--legend">
+              <ClassificationLegend
+                dimension={dimension.field}
+                colorDomain={classificationCategoryDomains[dimension.field]}
+                data={classificationDistributions[dimension.field]}
               />
             </div>
             <div className="classification-card__panel">
@@ -103,6 +108,58 @@ export function ClassificationSection({
           proposalShortLabel={ecosystem.acronym || 'IP'}
         />
       </ExportableCard>
+    </>
+  );
+}
+
+export function ClassificationSection({
+  ecosystem,
+  ecosystemBase,
+  selectedSourceIds = [],
+  perSourceDashboardData = {},
+  classificationCategoryDomains,
+  classificationDistributions,
+  classificationTimeline,
+  classificationChordData,
+  classificationRelationRows,
+}) {
+  const isMultiSource = selectedSourceIds.length > 1;
+
+  return (
+    <section className="dashboard-section">
+      <div className="dashboard-section__header">
+        <h2 className="dashboard-section__title">Classification</h2>
+      </div>
+      {isMultiSource ? (
+        <TabView className="dashboard-source-tabs">
+          {selectedSourceIds.map((sourceId) => {
+            const source = ecosystemBase?.sources?.[sourceId];
+            const data = perSourceDashboardData?.[sourceId];
+            if (!source || !data) return null;
+            return (
+              <TabPanel key={sourceId} header={source.shortLabel || source.acronym}>
+                <ClassificationContent
+                  ecosystem={{ ...ecosystemBase, ...source }}
+                  classificationCategoryDomains={data.classificationCategoryDomains}
+                  classificationDistributions={data.classificationDistributions}
+                  classificationTimeline={data.classificationTimeline}
+                  classificationChordData={data.classificationChordData}
+                  classificationRelationRows={data.classificationRelationRows}
+                />
+              </TabPanel>
+            );
+          })}
+        </TabView>
+      ) : (
+        <ClassificationContent
+          ecosystem={ecosystem}
+          classificationCategoryDomains={classificationCategoryDomains}
+          classificationDistributions={classificationDistributions}
+          classificationTimeline={classificationTimeline}
+          classificationChordData={classificationChordData}
+          classificationRelationRows={classificationRelationRows}
+        />
+      )}
     </section>
   );
 }

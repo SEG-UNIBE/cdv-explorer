@@ -1,16 +1,14 @@
 import logo from './logo.png';
 import { getNipCommitUrl, getNipUrl, normalizeNipId } from '../../nipLinks';
 
-const nostrEcosystem = {
-  id: 'nostr',
-  name: 'Nostr',
+const nipSource = {
+  sourceId: 'nip',
+  sourceSlug: 'nips',
   acronym: 'NIP',
-  logo,
+  label: 'Nostr Implementation Possibilities',
+  shortLabel: 'NIPs',
   proposalPlural: 'Nostr Implementation Possibilities (NIPs)',
   proposalShortPlural: 'NIPs',
-  status: 'available',
-  description: 'Nostr Implementation Possibilities (NIPs)',
-  dashboardDescription: 'Nostr is a decentralized messaging protocol built on relays and clients — together forming a social layer analogous to an OSI layer. Nostr Implementation Possibilities (NIPs) define the rules of this protocol, specifying message formats, event kinds, and relay behaviors. The NIPs are maintained as a collection of Markdown documents on GitHub.',
   sourceRepositories: ['github/nostr-protocol/nips'],
   dataPath: 'ip_data/nostr/nips/03_analysis',
   classificationDimensions: [
@@ -35,6 +33,19 @@ const nostrEcosystem = {
   },
   getProposalUrl: (id, snapshotLabel, options) => getNipUrl(id, snapshotLabel, options),
   getProposalCommitUrl: (commitHash, options) => getNipCommitUrl(commitHash, options),
+};
+
+const nostrEcosystem = {
+  id: 'nostr',
+  name: 'Nostr',
+  logo,
+  status: 'available',
+  description: 'Improvement proposals across the Nostr ecosystem',
+  ecosystemDescription: 'Nostr is a decentralized messaging protocol built on relays and clients. NIPs (Nostr Implementation Possibilities) define the rules of this protocol, specifying message formats, event kinds, and relay behaviors.',
+  sources: { nip: nipSource },
+  sourceOrder: ['nip'],
+  defaultSourceId: 'nip',
+  ...nipSource,
 };
 
 export default nostrEcosystem;

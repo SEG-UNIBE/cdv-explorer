@@ -12,6 +12,7 @@ import { CollaborationClusterSizeDistribution } from '../../CollaborationCluster
 import { CollaborationDegreeDistribution } from '../../CollaborationDegreeDistribution';
 import { AuthorCentralityTable } from '../../AuthorCentralityTable';
 import { WordCloud } from '../../WordCloud';
+import { ProposalFilterControl } from '../../ProposalFilterControl';
 import { useAnalysisMetricTooltip } from '../../useAnalysisMetricTooltip';
 import { ExportableCard } from '../ExportableCard';
 
@@ -81,9 +82,9 @@ export function AuthorshipSection({
         <ExportableCard className="mb-4" exportTitle="Creation Over Time">
           <h3>Creation Timeline</h3>
           <p>
-            Creation date of {ecosystem.proposalShortPlural} according to date provided in preamble.
+            Creation date of proposals according to date provided in preamble.
           </p>
-          <ProposalTimelineChart data={yearData} width={800} height={320} />
+          <ProposalTimelineChart data={yearData} width={800} height={380} />
         </ExportableCard>
         <ExportableCard className="mb-4" exportTitle="Top 10 Authors">
           <h3>Top 10 Authors</h3>
@@ -91,24 +92,24 @@ export function AuthorshipSection({
             Preamble authorship counts for the most mentioned contributors.
           </p>
           <div>
-            <TopAuthorsChart data={{ topAuthors }} width={340} height={300} />
+            <TopAuthorsChart data={{ topAuthors }} width={340} height={325} />
           </div>
         </ExportableCard>
       </div>
       <div className="dashboard-grid dashboard-grid--two-up">
-        <ExportableCard className="mb-4" exportTitle={`${ecosystem.proposalShortPlural} per Author`}>
-          <h3>{ecosystem.proposalShortPlural} per Author</h3>
+        <ExportableCard className="mb-4" exportTitle="Proposals per Author">
+          <h3>Proposals per Author</h3>
           <p>
-            Number of preamble authors who have written a given number of {ecosystem.proposalShortPlural}.
+            Number of preamble authors who have written a given number of proposals.
           </p>
           <div>
             <AuthorContributionHistogram data={authorContributionHistogram} width={640} height={380} />
           </div>
         </ExportableCard>
-        <ExportableCard className="mb-4" exportTitle={`Authors per ${ecosystem.acronym}`}>
-          <h3>Authors per {ecosystem.acronym}</h3>
+        <ExportableCard className="mb-4" exportTitle="Authors per Proposal">
+          <h3>Authors per Proposal</h3>
           <p>
-            Distribution of {ecosystem.proposalShortPlural} by their preamble author count.
+            Distribution of proposals by their preamble author count.
           </p>
           <div>
             <BipAuthorCountHistogram data={bipAuthorCountHistogram} width={640} height={380} />
@@ -119,7 +120,7 @@ export function AuthorshipSection({
       <ExportableCard className="mb-4" exportTitle="Author Collaboration Graph">
         <h3>Author Collaboration Graph</h3>
         <p>
-          {ecosystem.acronym} co-authorship based on preambles, shown as a collaboration graph. Larger nodes indicate authors of more {ecosystem.proposalShortPlural}, while thicker edges indicate more co-authored BIPs. Colors encode connected components, while authors without collaborations are grouped into one shared component.
+          Co-authorship across the selected proposal corpus, shown as a collaboration graph. Larger nodes indicate authors of more proposals, while thicker edges indicate more co-authored proposals. Colors encode connected components, while authors without collaborations are grouped into one shared component.
         </p>
         <div className="network-finder">
           <div className="network-finder__copy">
@@ -164,8 +165,8 @@ export function AuthorshipSection({
       <Card className="mb-4">
         <h3>Author Collaboration Metrics</h3>
         <p>
-          {ecosystem.acronym} co-authorship according to preamble. 
-          Author names marked with <strong><code>*</code></strong> are in the top 10 by authored {ecosystem.proposalShortPlural}. <strong>Cluster</strong>
+          Co-authorship according to preamble across the selected proposal corpus.
+          Author names marked with <strong><code>*</code></strong> are in the top 10 by authored proposals. <strong>Cluster</strong>
           {' '}and <strong>Cluster Size</strong> show the connected co-authorship group an author belongs to and how large
           that group is. Authors with no co-authorship links are grouped into one shared display cluster for readability.{' '} 
           <strong>Degree</strong> measures how many different co-authors an author has. 
@@ -254,11 +255,12 @@ export function AuthorshipSection({
             <strong>Filter proposals:</strong>
           </div>
           <div className="wordcloud-filter__controls">
-            <InputText
+            <ProposalFilterControl
               value={wordCloudFilterText}
-              onChange={(event) => setWordCloudFilterText(event.target.value)}
-              placeholder="e.g. 2,4,30-35,99"
-              aria-label="Filter proposals by ID for word cloud (e.g. 2,4,30-35,99)"
+              onChange={setWordCloudFilterText}
+              ecosystem={ecosystem}
+              placeholder="Type BIP, then 2,3-5 and press Enter"
+              aria-label="Filter proposals by ID for word cloud (e.g. BIP32, SLIP44, BIP30-BIP35)"
             />
             <Button
               type="button"

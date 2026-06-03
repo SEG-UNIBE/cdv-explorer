@@ -23,16 +23,19 @@ function listSnapshots(analysisRoot) {
     .sort((left, right) => right.localeCompare(left));
 }
 
-function findAnalysisRoots(ecosystemDir) {
+function findSourceAnalysisRoots(ecosystemDir, ecosystemId) {
   const directRoot = path.join(ecosystemDir, '03_analysis');
   if (fs.existsSync(directRoot)) {
-    return [directRoot];
+    return [{ sourceSlug: ecosystemId, analysisRoot: directRoot }];
   }
 
   return fs.readdirSync(ecosystemDir, { withFileTypes: true })
     .filter((entry) => entry.isDirectory())
-    .map((entry) => path.join(ecosystemDir, entry.name, '03_analysis'))
-    .filter((analysisRoot) => fs.existsSync(analysisRoot));
+    .map((entry) => ({
+      sourceSlug: entry.name,
+      analysisRoot: path.join(ecosystemDir, entry.name, '03_analysis'),
+    }))
+    .filter(({ analysisRoot }) => fs.existsSync(analysisRoot));
 }
 
 function buildSnapshotIndex() {
@@ -46,14 +49,17 @@ function buildSnapshotIndex() {
     .forEach((entry) => {
       const ecosystemId = entry.name;
       const ecosystemDir = path.join(ipDataRoot, ecosystemId);
-      const snapshots = new Set();
+      const bySource = {};
 
-      findAnalysisRoots(ecosystemDir).forEach((analysisRoot) => {
-        listSnapshots(analysisRoot).forEach((snapshot) => snapshots.add(snapshot));
+      findSourceAnalysisRoots(ecosystemDir, ecosystemId).forEach(({ sourceSlug, analysisRoot }) => {
+        const snapshots = listSnapshots(analysisRoot);
+        if (snapshots.length > 0) {
+          bySource[sourceSlug] = snapshots;
+        }
       });
 
-      if (snapshots.size > 0) {
-        index[ecosystemId] = Array.from(snapshots).sort((left, right) => right.localeCompare(left));
+      if (Object.keys(bySource).length > 0) {
+        index[ecosystemId] = bySource;
       }
     });
 

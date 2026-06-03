@@ -105,7 +105,7 @@ export const AuthorContributionHistogram = ({ data, width = 600, height = 400 })
           .html(
             `There ${entry.authors === 1 ? 'is' : 'are'} <strong>${entry.authors}</strong> ` +
             `author${entry.authors === 1 ? '' : 's'} that authored <strong>${entry.bipsWritten}</strong> ` +
-            `BIP${entry.bipsWritten === 1 ? '' : 's'}.`
+            `proposal${entry.bipsWritten === 1 ? '' : 's'}.`
           );
       })
       .on('mousemove', function (event) {
@@ -135,7 +135,7 @@ export const AuthorContributionHistogram = ({ data, width = 600, height = 400 })
       .attr('y', innerHeight + 44)
       .attr('text-anchor', 'middle')
       .style('font-size', '14px')
-      .text('BIPs written per author');
+      .text('Proposals written per author');
 
     g.append('text')
       .attr('transform', 'rotate(-90)')

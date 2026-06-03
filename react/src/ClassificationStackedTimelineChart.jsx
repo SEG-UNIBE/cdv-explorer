@@ -93,16 +93,6 @@ export const ClassificationStackedTimelineChart = ({
         ...categories.filter((category) => !colorDomain.includes(category)),
       ];
       const colorMap = getClassificationColorMap(field, colorDomain);
-      const totalCount = rows.reduce(
-        (sum, row) => sum + orderedCategories.reduce((rowSum, category) => rowSum + Number(row?.values?.[category] || 0), 0),
-        0
-      );
-      const totalByCategory = Object.fromEntries(
-        orderedCategories.map((category) => [
-          category,
-          rows.reduce((sum, row) => sum + Number(row?.values?.[category] || 0), 0),
-        ])
-      );
       const rowMap = new Map(rows.map((row) => [row.year, row]));
       const normalizedRows = allYears.map((year) => {
         const sourceRow = rowMap.get(year) || {};
@@ -206,28 +196,8 @@ export const ClassificationStackedTimelineChart = ({
           setTooltipPosition(event.pageX, event.pageY);
         });
 
-      const legend = panel.append('g')
-        .attr('transform', `translate(${innerWidth - 180}, 0)`);
-
-      orderedCategories.slice(0, 6).forEach((category, index) => {
-        const row = legend.append('g')
-          .attr('transform', `translate(0, ${index * 18})`);
-
-        row.append('rect')
-          .attr('width', 10)
-          .attr('height', 10)
-          .attr('rx', 2)
-          .attr('fill', color(category));
-
-        row.append('text')
-          .attr('x', 16)
-          .attr('y', 9)
-          .style('font-size', '11px')
-          .style('fill', 'var(--chart-muted)')
-          .text(
-            `${category} (${totalByCategory[category] || 0}, ${Math.round(((totalByCategory[category] || 0) / (totalCount || 1)) * 100)}%)`
-          );
-      });
+      // Legend now lives outside the chart, between the pie and the timeline
+      // (see ClassificationLegend.jsx + ClassificationSection.jsx).
 
       if (panelIndex === activeDimensions.length - 1) {
         panel.append('g')

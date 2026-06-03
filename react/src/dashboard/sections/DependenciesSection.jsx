@@ -6,6 +6,7 @@ import { InputText } from 'primereact/inputtext';
 import { NetworkDiagram } from '../../NetworkDiagram';
 import { ProposalGraphMetricsTable } from '../../ProposalGraphMetricsTable';
 import { DependencyComparisonHeatmaps } from '../../DependencyComparisonHeatmaps';
+import { ProposalFilterControl } from '../../ProposalFilterControl';
 import { useAnalysisMetricTooltip } from '../../useAnalysisMetricTooltip';
 import { ExportableCard } from '../ExportableCard';
 
@@ -41,39 +42,39 @@ export function DependenciesSection({
     {
       label: 'Nodes',
       value: activeDependencyMetrics.summary?.node_count ?? 0,
-      description: `Total number of distinct ${ecosystem.proposalShortPlural} represented as nodes in the selected interrelation graph.`,
+      description: 'Total number of distinct proposals represented as nodes in the selected interrelation graph.',
     },
     {
       label: 'Edges',
       value: activeDependencyMetrics.summary?.edge_count ?? 0,
-      description: `Total number of directed relationships between ${ecosystem.proposalShortPlural} in the selected extraction approach.`,
+      description: 'Total number of directed relationships between proposals in the selected extraction approach.',
     },
     {
       label: 'Isolated Nodes',
       value: activeDependencyMetrics.summary?.isolated_node_count ?? 0,
-      description: `Number of ${ecosystem.proposalShortPlural} with neither incoming nor outgoing relationships in the selected graph.`,
+      description: 'Number of proposals with neither incoming nor outgoing relationships in the selected graph.',
     },
     {
       label: 'Circular Dependencies',
       value: activeDependencyMetrics.summary?.circular_dependency_count ?? 0,
-      description: `Number of dependency cycles detected in the selected interrelation graph.`,
+      description: 'Number of dependency cycles detected in the selected interrelation graph.',
     },
     {
       label: 'Density',
       value: Number(activeDependencyMetrics.summary?.density || 0).toFixed(4).replace(/\.?0+$/, ''),
-      description: `Share of all possible directed ${ecosystem.acronym}-to-${ecosystem.acronym} links that actually exist. Higher density means a more interconnected graph.`,
+      description: 'Share of all possible directed proposal-to-proposal links that actually exist. Higher density means a more interconnected graph.',
     },
-  ]), [activeDependencyMetrics.summary, ecosystem.acronym, ecosystem.proposalShortPlural]);
+  ]), [activeDependencyMetrics.summary]);
 
   return (
     <section className="dashboard-section">
       <div className="dashboard-section__header">
         <h2 className="dashboard-section__title">Dependencies</h2>
       </div>
-      <ExportableCard className="mb-4" exportTitle={`${ecosystem.acronym} Interrelation Graph`}>
-        <h3>{ecosystem.acronym} Interrelation Graph</h3>
+      <ExportableCard className="mb-4" exportTitle="Proposal Interrelation Graph">
+        <h3>Proposal Interrelation Graph</h3>
         <p>
-          Three {ecosystem.acronym} relationship-extraction approaches visualized as a directed graph. Node size reflects document length (word count) and edges represent relationships between {ecosystem.proposalShortPlural}. <strong>Preamble</strong> extracts explicitly stated dependencies from the preamble. <strong>Regex</strong> captures explicit {ecosystem.acronym} references via pattern matching. <strong>LLM</strong> infers implicit dependencies using a language model.
+          Three relationship-extraction approaches visualized as a directed graph. Node size reflects document length (word count) and edges represent relationships between proposals. <strong>Preamble</strong> extracts explicitly stated dependencies from the preamble. <strong>Regex</strong> captures explicit proposal references via pattern matching. <strong>LLM</strong> infers implicit dependencies using a language model.
         </p>
         <div className="network-finder">
           <div className="network-finder__copy">
@@ -84,7 +85,7 @@ export function DependenciesSection({
             <InputText
               value={highlightedDependencyProposal}
               onChange={(event) => setHighlightedDependencyProposal(event.target.value)}
-              placeholder="Type a proposal ID"
+              placeholder="Type a proposal ID, e.g. BIP32"
               aria-label="Find proposal: search by ID to highlight its node"
               list="dependency-proposal-options"
             />
@@ -108,11 +109,12 @@ export function DependenciesSection({
             <strong>Filter proposals.</strong>
           </div>
           <div className="wordcloud-filter__controls">
-            <InputText
+            <ProposalFilterControl
               value={dependencyFilterText}
-              onChange={(event) => setDependencyFilterText(event.target.value)}
-              placeholder="e.g. 2,4,30-35,99"
-              aria-label="Filter proposals by ID (e.g. 2,4,30-35,99)"
+              onChange={setDependencyFilterText}
+              ecosystem={ecosystem}
+              placeholder="Type BIP, then 2,3-5 and press Enter"
+              aria-label="Filter proposals by ID (e.g. BIP32, SLIP44, BIP30-BIP35)"
             />
             <label className="dependency-filter-checkbox">
               <input
@@ -149,12 +151,12 @@ export function DependenciesSection({
         />
       </ExportableCard>
       <Card className="mb-4">
-        <h3>{ecosystem.acronym} Interrelation Metrics</h3>
+        <h3>Proposal Interrelation Metrics</h3>
         <p>
-          Compare simple graph-level structure and per-{ecosystem.acronym} centrality measures across
-          {' '}Preamble, Regex, and LLM.{' '} 
-          <strong>In Degree</strong> measures how many other {ecosystem.proposalShortPlural} refer to a given one (incoming relation).{' '}
-          <strong>Out Degree</strong> measures how many other {ecosystem.proposalShortPlural} a given one refers to (outgoing relation).{' '}
+          Compare simple graph-level structure and per-proposal centrality measures across
+          {' '}Preamble, Regex, and LLM.{' '}
+          <strong>In Degree</strong> measures how many other proposals refer to a given one (incoming relation).{' '}
+          <strong>Out Degree</strong> measures how many other proposals a given one refers to (outgoing relation).{' '}
           <strong>Weighted Eigenvector</strong> measures how central a proposal is by considering how well-connected the ones it is linked to are.{' '}
           <strong>PageRank</strong> is similar, but additionally accounts for direction and distributes importance across outgoing links.{' '}
           <strong>Betweenness</strong> measures how often a proposal lies on the shortest paths between others, indicating its role in connecting otherwise separate parts of the dependency graph. 

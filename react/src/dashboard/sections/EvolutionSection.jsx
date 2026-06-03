@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Dropdown } from 'primereact/dropdown';
 import { RadioButton } from 'primereact/radiobutton';
+import { TabView, TabPanel } from 'primereact/tabview';
 import { EvolutionStatusStackedBarChart } from '../../EvolutionStatusStackedBarChart';
 import { ProposalEventTimeline } from '../../ProposalEventTimeline';
 import { ExportableCard } from '../ExportableCard';
@@ -11,10 +12,7 @@ function hasPositiveValues(series) {
   ));
 }
 
-export function EvolutionSection({
-  ecosystem,
-  evolutionPayload,
-}) {
+function EvolutionContent({ ecosystem, evolutionPayload }) {
   const [chartMode, setChartMode] = useState('absolute');
   const [selectedProposalId, setSelectedProposalId] = useState('');
   const overallEvolution = evolutionPayload?.status_evolution_segmented
@@ -57,10 +55,7 @@ export function EvolutionSection({
   }
 
   return (
-    <section className="dashboard-section">
-      <div className="dashboard-section__header">
-        <h2 className="dashboard-section__title">Evolution</h2>
-      </div>
+    <>
       <ExportableCard className="mb-4" exportTitle={`${ecosystem.acronym} Status Evolution`}>
         <h3>{ecosystem.acronym} Status Evolution</h3>
         <p>
@@ -79,8 +74,8 @@ export function EvolutionSection({
               ].map((option) => (
                 <label key={option.value} className="network-layout-picker__option">
                   <RadioButton
-                    inputId={`evolution-mode-${option.value}`}
-                    name="evolution-mode"
+                    inputId={`evolution-mode-${ecosystem.sourceId || 'default'}-${option.value}`}
+                    name={`evolution-mode-${ecosystem.sourceId || 'default'}`}
                     value={option.value}
                     onChange={(event) => setChartMode(event.value)}
                     checked={chartMode === option.value}
@@ -130,6 +125,52 @@ export function EvolutionSection({
           />
         </ExportableCard>
       ) : null}
+    </>
+  );
+}
+
+export function EvolutionSection({
+  ecosystem,
+  ecosystemBase,
+  selectedSourceIds = [],
+  perSourceDashboardData = {},
+  evolutionPayload,
+}) {
+  const isMultiSource = selectedSourceIds.length > 1;
+
+  if (!isMultiSource) {
+    const overall = evolutionPayload?.status_evolution_segmented || evolutionPayload?.status_evolution;
+    if (!hasPositiveValues(overall)) return null;
+    return (
+      <section className="dashboard-section">
+        <div className="dashboard-section__header">
+          <h2 className="dashboard-section__title">Evolution</h2>
+        </div>
+        <EvolutionContent ecosystem={ecosystem} evolutionPayload={evolutionPayload} />
+      </section>
+    );
+  }
+
+  return (
+    <section className="dashboard-section">
+      <div className="dashboard-section__header">
+        <h2 className="dashboard-section__title">Evolution</h2>
+      </div>
+      <TabView className="dashboard-source-tabs">
+        {selectedSourceIds.map((sourceId) => {
+          const source = ecosystemBase?.sources?.[sourceId];
+          const data = perSourceDashboardData?.[sourceId];
+          if (!source || !data) return null;
+          return (
+            <TabPanel key={sourceId} header={source.shortLabel || source.acronym}>
+              <EvolutionContent
+                ecosystem={{ ...ecosystemBase, ...source }}
+                evolutionPayload={data.evolutionPayload}
+              />
+            </TabPanel>
+          );
+        })}
+      </TabView>
     </section>
   );
 }

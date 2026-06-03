@@ -11,6 +11,7 @@ import {
   PREAMBLE_EXTRACTED,
 } from './dependencyApproaches';
 import { useDashboardEcosystem, useDashboardLinkMode, useDashboardSnapshot } from './dashboard/DashboardSnapshotContext';
+import { buildProposalRefKeySet, nodeRefKey } from './dashboard/dashboardData';
 import { formatProposalReference, getProposalUrl, normalizeProposalId } from './proposalLinks';
 
 export const LINK_TYPE_OPTIONS = DEPENDENCY_LINK_TYPE_OPTIONS;
@@ -76,6 +77,21 @@ function buildEdgeKey(source, target) {
 function normalizeCategory(value, fallbackLabel) {
   const text = String(value ?? '').trim();
   return text || fallbackLabel;
+}
+
+function getSourceScopedEcosystem(ecosystem, sourceId) {
+  const source = ecosystem?.sources?.[sourceId];
+  return source ? { ...ecosystem, ...source } : ecosystem;
+}
+
+function formatProposalFilterValue(value, ecosystem) {
+  if (value && typeof value === 'object') {
+    return formatProposalReference(
+      value.id,
+      getSourceScopedEcosystem(ecosystem, value.source)
+    );
+  }
+  return formatProposalReference(value, ecosystem);
 }
 
 function sanitizeFilePart(value, fallback = 'unknown') {
@@ -236,7 +252,11 @@ export const NetworkDiagram = ({
     }
 
     const focusSuffix = (proposalFilterIds || [])
-      .map((value) => normalizeProposalId(value, ecosystem))
+      .map((value) => (
+        value && typeof value === 'object'
+          ? formatProposalFilterValue(value, ecosystem)
+          : normalizeProposalId(value, ecosystem)
+      ))
       .filter(Boolean)
       .sort((left, right) => left.localeCompare(right, undefined, { numeric: true }))
       .join('_') || 'all';
@@ -385,8 +405,14 @@ export const NetworkDiagram = ({
         target: String(edge.target),
       }));
 
-    const requestedIds = new Set((proposalFilterIds || []).map((value) => String(value)));
-    const hasFilter = requestedIds.size > 0;
+    const requestedRefs = (proposalFilterIds || []).filter((value) => value && typeof value === 'object');
+    const requestedRefKeys = buildProposalRefKeySet(requestedRefs);
+    const requestedIds = new Set(
+      (proposalFilterIds || [])
+        .filter((value) => !value || typeof value !== 'object')
+        .map((value) => String(value))
+    );
+    const hasFilter = requestedRefKeys.size > 0 || requestedIds.size > 0;
     let displayedNodeIds = new Set(allNodes.map((node) => String(node.id)));
     let localLinks = allLinks;
 
@@ -398,7 +424,8 @@ export const NetworkDiagram = ({
             const normalizedNodeId = normalizeProposalId(node.id, ecosystem);
             const unpaddedNumericNodeId = /^\d+$/.test(rawNodeId) ? String(Number(rawNodeId)) : rawNodeId;
             return (
-              requestedIds.has(normalizedNodeId)
+              requestedRefKeys.has(nodeRefKey(node, ecosystem))
+              || requestedIds.has(normalizedNodeId)
               || requestedIds.has(rawNodeId)
               || requestedIds.has(unpaddedNumericNodeId)
             );
@@ -512,11 +539,14 @@ export const NetworkDiagram = ({
       importedPositionedNodeCount += 1;
     });
 
-    const normalizedHighlight = normalizeProposalId(highlightProposal, ecosystem);
-    const searchMatchedIds = normalizedHighlight
+    const highlightText = String(highlightProposal || '').trim();
+    const searchMatchedIds = highlightText
       ? new Set(
         filteredNodes
-          .filter((node) => normalizeProposalId(node.id, ecosystem) === normalizedHighlight)
+          .filter((node) => {
+            const nodeEcosystem = getSourceScopedEcosystem(ecosystem, node.source);
+            return normalizeProposalId(node.id, nodeEcosystem) === normalizeProposalId(highlightText, nodeEcosystem);
+          })
           .map((node) => String(node.id))
       )
       : new Set();
@@ -588,7 +618,7 @@ export const NetworkDiagram = ({
         layout_mode: layoutMode,
         is_differential_mode: isDifferentialMode,
         filter: {
-          proposal_ids: (proposalFilterIds || []).map((value) => String(value)),
+          proposal_ids: (proposalFilterIds || []).map((value) => formatProposalFilterValue(value, ecosystem)),
           include_connections: Boolean(includeConnections),
           min_relations: relationThreshold,
           include_threshold_connections: Boolean(includeThresholdConnections),

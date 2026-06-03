@@ -140,7 +140,7 @@ def _save_json(
     required_fields: List[str],
     optional_fields: List[str],
     compliance_payload: Optional[Dict[str, Any]],
-) -> None:
+) -> Path:
     output_dir.mkdir(parents=True, exist_ok=True)
     nip_id = str(preamble.get(id_field, "unknown")).upper()
     json_filename = f"{file_prefix}-{nip_id}.json"
@@ -166,6 +166,7 @@ def _save_json(
             json_data[key] = value
 
     output_path.write_text(json.dumps(json_data, ensure_ascii=False, indent=2), encoding="utf-8")
+    return output_path
 
 
 def extract(
@@ -201,6 +202,8 @@ def extract(
         mininterval=0.5,
     )
 
+    written_paths: set[Path] = set()
+
     for proposal_file in progress:
         if local_progress:
             progress.set_postfix_str(proposal_file.name, refresh=False)
@@ -215,12 +218,16 @@ def extract(
         checker = get_checker(src_config.get("compliance_checker", "nip"))
         compliance_payload = build_compliance_payload(checker(preamble, content, src_config))
         preamble["Compliance Score"] = compliance_payload["score"]
-        _save_json(
+        written_paths.add(_save_json(
             preamble, output_dir, file_prefix, id_field,
             required_fields, optional_fields, compliance_payload,
-        )
+        ))
 
         if progress_callback is not None:
             progress_callback(proposal_file.name, 1)
 
     progress.close()
+
+    for stale_path in output_dir.glob(f"{file_prefix}-*.json"):
+        if stale_path not in written_paths:
+            stale_path.unlink()

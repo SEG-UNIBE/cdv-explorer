@@ -225,7 +225,7 @@ function buildSourceIndex(ecosystemId, source, existingSourceIndex = {}) {
     files,
     snapshotCommits,
     snapshotFiles,
-    currentBaseUrl: ecosystemId === 'bitcoin' ? externalLinks.bipsDevBaseUrl : '',
+    currentBaseUrl: source.current_base_url || '',
   };
 }
 
@@ -243,11 +243,21 @@ function buildIndex() {
       return;
     }
 
-    const [sourceSlug, source] = sourceEntries[0];
-    index[ecosystem.slug] = buildSourceIndex(ecosystem.slug, {
-      ...source,
-      sourceSlug,
-    }, existingIndex[ecosystem.slug] || {});
+    const defaultSourceSlug = sourceEntries[0][0];
+    const existingSources = existingIndex[ecosystem.slug]?.sources || {};
+    const sources = {};
+
+    sourceEntries.forEach(([sourceSlug, source]) => {
+      sources[sourceSlug] = buildSourceIndex(ecosystem.slug, {
+        ...source,
+        sourceSlug,
+      }, existingSources[sourceSlug] || {});
+    });
+
+    index[ecosystem.slug] = {
+      defaultSource: defaultSourceSlug,
+      sources,
+    };
   });
 
   return index;

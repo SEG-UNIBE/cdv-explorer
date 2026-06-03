@@ -9,6 +9,7 @@ import {
 import { getBipCommitUrl, getBipUrl } from './bipLinks';
 import { getClassificationColorMap } from './classificationColors';
 import { getNipCommitUrl, getNipUrl } from './nipLinks';
+import { getRepositoryCommitUrl, getRepositoryProposalUrl } from './proposalLinkResolver';
 import proposalLinkIndex from './generated/proposalLinkIndex.json';
 
 test('dependency link options default to the canonical preamble approach', () => {
@@ -62,6 +63,48 @@ describe('proposal link resolution', () => {
     );
   });
 
+  test('uses the snapshot commit and .md extension for historic SLIP links', () => {
+    expect(getRepositoryProposalUrl('bitcoin', 32, '2026-05-28', {
+      linkMode: 'history',
+      sourceSlug: 'slips',
+    })).toBe(
+      'https://github.com/satoshilabs/slips/blob/a83ecb73bca0a0837e701664bdcbbb803023eab1/slip-0032.md'
+    );
+  });
+
+  test('normalizes prefixed SLIP ids for historic links', () => {
+    expect(getRepositoryProposalUrl('bitcoin', 'SLIP-0032', '2026-05-28', {
+      linkMode: 'history',
+      sourceSlug: 'slips',
+    })).toBe(
+      'https://github.com/satoshilabs/slips/blob/a83ecb73bca0a0837e701664bdcbbb803023eab1/slip-0032.md'
+    );
+  });
+
+  test('uses the repository default branch for current SLIP links without bips.dev', () => {
+    expect(getRepositoryProposalUrl('bitcoin', 'SLIP-0032', '2026-05-28', {
+      linkMode: 'current',
+      sourceSlug: 'slips',
+    })).toBe(
+      `https://github.com/satoshilabs/slips/blob/${proposalLinkIndex.bitcoin.sources.slips.defaultBranch}/slip-0032.md`
+    );
+  });
+
+  test('falls back to the latest known SLIP file when a historic snapshot file lookup misses', () => {
+    expect(getRepositoryProposalUrl('bitcoin', 32, '2021-01-01', {
+      linkMode: 'history',
+      sourceSlug: 'slips',
+    })).toBe(
+      `https://github.com/satoshilabs/slips/blob/${proposalLinkIndex.bitcoin.sources.slips.defaultBranch}/slip-0032.md`
+    );
+  });
+
+  test('builds SLIP commit links against the SLIP repository', () => {
+    expect(getRepositoryCommitUrl('bitcoin', 'a83ecb73bca0a0837e701664bdcbbb803023eab1', '#', 'slips')).toBe(
+      'https://github.com/satoshilabs/slips/commit/a83ecb73bca0a0837e701664bdcbbb803023eab1'
+    );
+  });
+
   test('uses the snapshot commit for historic NIP links and normalizes numeric NIP ids', () => {
     expect(getNipUrl('1', '2026-05-30', { linkMode: 'history' })).toBe(
       'https://github.com/nostr-protocol/nips/blob/0731968ee9f61de993e43f8bd865439e19a7b655/01.md'
@@ -76,7 +119,7 @@ describe('proposal link resolution', () => {
 
   test('uses the repository default branch for current NIP links', () => {
     expect(getNipUrl('F4', '2026-05-30', { linkMode: 'current' })).toBe(
-      `https://github.com/nostr-protocol/nips/blob/${proposalLinkIndex.nostr.defaultBranch}/F4.md`
+      `https://github.com/nostr-protocol/nips/blob/${proposalLinkIndex.nostr.sources.nips.defaultBranch}/F4.md`
     );
   });
 });

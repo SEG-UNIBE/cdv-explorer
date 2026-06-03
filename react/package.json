@@ -26,9 +26,9 @@
   },
   "scripts": {
     "postinstall": "patch-package",
-    "prestart": "node scripts/generateSnapshotIndex.js && node scripts/generateBipLinkIndex.js && node scripts/generateNipLinkIndex.js",
+    "prestart": "node scripts/generateSnapshotIndex.js && node scripts/generateProposalLinkIndex.js",
     "start": "react-scripts start",
-    "prebuild": "node scripts/generateSnapshotIndex.js && node scripts/generateBipLinkIndex.js && node scripts/generateNipLinkIndex.js",
+    "prebuild": "node scripts/generateSnapshotIndex.js && node scripts/generateProposalLinkIndex.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

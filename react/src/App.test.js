@@ -9,7 +9,7 @@ import {
 import { getBipCommitUrl, getBipUrl } from './bipLinks';
 import { getClassificationColorMap } from './classificationColors';
 import { getNipCommitUrl, getNipUrl } from './nipLinks';
-import nipLinkIndex from './generated/nipLinkIndex.json';
+import proposalLinkIndex from './generated/proposalLinkIndex.json';
 
 test('dependency link options default to the canonical preamble approach', () => {
   expect(DEFAULT_DEPENDENCY_APPROACH).toBe(PREAMBLE_EXTRACTED);
@@ -37,33 +37,53 @@ test('normalizes legacy dependency link keys into canonical keys', () => {
   expect(normalized[BODY_EXTRACTED_LLM]).toHaveLength(1);
 });
 
-test('uses the snapshot commit for historic BIP links when the file exists in that snapshot', () => {
-  expect(getBipUrl(2, '2026-03-16', { linkMode: 'history' })).toBe(
-    'https://github.com/bitcoin/bips/blob/351ceef2747e46078efaa073246fce54d52e665d/bip-0002.mediawiki'
-  );
-});
+describe('proposal link resolution', () => {
+  test('uses the snapshot commit and .mediawiki extension for historic BIP links', () => {
+    expect(getBipUrl(2, '2026-03-16', { linkMode: 'history' })).toBe(
+      'https://github.com/bitcoin/bips/blob/351ceef2747e46078efaa073246fce54d52e665d/bip-0002.mediawiki'
+    );
+  });
 
-test('falls back to the latest repository file when a historic snapshot file lookup misses', () => {
-  expect(getBipUrl(3, '2021-01-01', { linkMode: 'history' })).toBe(
-    'https://github.com/bitcoin/bips/blob/master/bip-0003.md'
-  );
+  test('uses the snapshot commit and .md extension for historic BIP links when the BIP file is Markdown', () => {
+    expect(getBipUrl(379, '2026-05-28', { linkMode: 'history' })).toBe(
+      'https://github.com/bitcoin/bips/blob/7f9434c9c81bb49825200a5be5ddb1ae53fd6dcc/bip-0379.md'
+    );
+  });
+
+  test('falls back to the latest known BIP file extension when a historic snapshot file lookup misses', () => {
+    expect(getBipUrl(3, '2021-01-01', { linkMode: 'history' })).toBe(
+      'https://github.com/bitcoin/bips/blob/master/bip-0003.md'
+    );
+  });
+
+  test('uses bips.dev for current BIP links', () => {
+    expect(getBipUrl('BIP-0379', '2026-05-28', { linkMode: 'current' })).toBe(
+      'https://bips.dev/379/'
+    );
+  });
+
+  test('uses the snapshot commit for historic NIP links and normalizes numeric NIP ids', () => {
+    expect(getNipUrl('1', '2026-05-30', { linkMode: 'history' })).toBe(
+      'https://github.com/nostr-protocol/nips/blob/0731968ee9f61de993e43f8bd865439e19a7b655/01.md'
+    );
+  });
+
+  test('uses the snapshot commit for historic hex NIP links', () => {
+    expect(getNipUrl('nip-f4', '2026-05-30', { linkMode: 'history' })).toBe(
+      'https://github.com/nostr-protocol/nips/blob/0731968ee9f61de993e43f8bd865439e19a7b655/F4.md'
+    );
+  });
+
+  test('uses the repository default branch for current NIP links', () => {
+    expect(getNipUrl('F4', '2026-05-30', { linkMode: 'current' })).toBe(
+      `https://github.com/nostr-protocol/nips/blob/${proposalLinkIndex.nostr.defaultBranch}/F4.md`
+    );
+  });
 });
 
 test('builds GitHub commit links for proposal event timeline markers', () => {
   expect(getBipCommitUrl('76132ec28493c690034771c9b2289df1e37d99a6')).toBe(
     'https://github.com/bitcoin/bips/commit/76132ec28493c690034771c9b2289df1e37d99a6'
-  );
-});
-
-test('uses the snapshot commit for historic NIP links when the file exists in that snapshot', () => {
-  expect(getNipUrl('1', '2026-05-30', { linkMode: 'history' })).toBe(
-    'https://github.com/nostr-protocol/nips/blob/0731968ee9f61de993e43f8bd865439e19a7b655/01.md'
-  );
-});
-
-test('uses the repository default branch for current NIP links', () => {
-  expect(getNipUrl('F4', '2026-05-30', { linkMode: 'current' })).toBe(
-    `https://github.com/nostr-protocol/nips/blob/${nipLinkIndex.defaultBranch}/F4.md`
   );
 });
 

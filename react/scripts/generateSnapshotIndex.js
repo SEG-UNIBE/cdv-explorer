@@ -6,7 +6,7 @@ const repoRoot = path.resolve(reactRoot, '..');
 const ipDataRoot = path.join(repoRoot, 'ip_data');
 const outputDir = path.join(reactRoot, 'src', 'generated');
 const outputPath = path.join(outputDir, 'snapshotIndex.json');
-const tempOutputPath = path.join(outputDir, 'snapshotIndex.json.tmp');
+const tempOutputPath = path.join(outputDir, `snapshotIndex.json.${process.pid}.tmp`);
 
 function isSnapshotDirectoryName(name) {
   return /^\d{4}-\d{2}-\d{2}$/.test(name);

@@ -117,7 +117,7 @@ npm install
 npm start        # dev server at http://localhost:3000
 ```
 
-`npm start` also regenerates the proposal link indexes (BIP and NIP) automatically before launching the dev server.
+`npm start` also regenerates the snapshot index and generic proposal link index automatically before launching the dev server.
 
 For a production build:
 

@@ -37,8 +37,32 @@ jobs:
       - name: Validate snapshot artifacts
         run: python scripts/validate_snapshots.py
 
+  frontend-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: react/package-lock.json
+
+      - name: Install frontend dependencies
+        run: npm ci
+        working-directory: react
+
+      - name: Generate frontend indexes
+        run: npm run prebuild
+        working-directory: react
+
+      - name: Run frontend tests
+        run: npm test -- --watchAll=false
+        working-directory: react
+
   build:
-    needs: validate
+    needs: [test, validate, frontend-test]
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     defaults:
       run:

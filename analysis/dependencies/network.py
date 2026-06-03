@@ -65,12 +65,20 @@ def normalize_proposal_ids(field: Any, proposal_label: str = "IP") -> List[str]:
     result = []
     label = re.escape(proposal_label)
     id_pattern = re.compile(rf"^\s*(?:{label}[-\s]*)?[0-9A-Fa-f]+\s*$", re.IGNORECASE)
+    uses_hex_ids = proposal_label.upper() == "NIP"
 
     for item in raw_items:
         text = str(item)
         if id_pattern.match(text):
             normalized = re.sub(rf"(?i)^\s*{label}[-\s]*", "", text).strip()
-            result.append(normalized.upper())
+            if uses_hex_ids:
+                normalized = normalized.upper()
+                result.append(normalized.zfill(2) if len(normalized) == 1 else normalized)
+            else:
+                try:
+                    result.append(str(int(normalized)))
+                except ValueError:
+                    result.append(normalized.upper())
     return result
 
 

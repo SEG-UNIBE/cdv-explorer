@@ -65,6 +65,14 @@ class NormalizeDependencyOutputTests(unittest.TestCase):
         result = normalize_dependency_output(["BIP 999", "BIP 1000"], proposal_label="BIP")
         self.assertEqual(result, ["BIP 999"])
 
+    def test_hex_nip_ids_preserve_width_and_exclude_current_proposal(self):
+        result = normalize_dependency_output(
+            ["NIP 1", "NIP-01", "NIP F4"],
+            proposal_label="NIP",
+            current_proposal_number="F4",
+        )
+        self.assertEqual(result, ["NIP 01"])
+
 
 class CreateReferenceListTests(unittest.TestCase):
     def test_detects_single_inline_reference(self):
@@ -85,6 +93,14 @@ class CreateReferenceListTests(unittest.TestCase):
     def test_output_is_sorted_numerically(self):
         result = create_reference_list("BIP 100 and BIP 5 are relevant.")
         self.assertLess(result.index("BIP 5"), result.index("BIP 100"))
+
+    def test_detects_hex_nip_references(self):
+        result = create_reference_list(
+            "This builds on NIP-01 and NIP-F4.",
+            proposal_label="NIP",
+            reference_pattern=r"\bNIP-([0-9A-Fa-f]{1,3})\b",
+        )
+        self.assertEqual(result, ["NIP 01", "NIP F4"])
 
 
 class PrepareLlmDependencyTextTests(unittest.TestCase):

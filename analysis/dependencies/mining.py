@@ -23,6 +23,9 @@ MAX_REFERENCE_DIGITS = 6
 REFERENCE_LIST_PATTERN = re.compile(
     rf"(?i)\b{re.escape(PROPOSAL_LABEL)}s?[-#\s]*(\d{{1,{MAX_REFERENCE_DIGITS}}}(?!\d)(?:\s*(?:,|/|and|or)\s*\d{{1,{MAX_REFERENCE_DIGITS}}}(?!\d))*)"
 )
+HEX_REFERENCE_LIST_PATTERN = re.compile(
+    rf"(?i)\b{re.escape(PROPOSAL_LABEL)}s?[-#\s]*([0-9A-Fa-f]{{1,{MAX_REFERENCE_DIGITS}}}(?![0-9A-Fa-f])(?:\s*(?:,|/|and|or)\s*[0-9A-Fa-f]{{1,{MAX_REFERENCE_DIGITS}}}(?![0-9A-Fa-f]))*)"
+)
 
 
 def _strip_top_preamble_block(text: str) -> str:
@@ -53,6 +56,41 @@ def _normalize_reference_number(value: Any) -> int | None:
     return number
 
 
+def _uses_hex_proposal_ids(proposal_label: str = PROPOSAL_LABEL, reference_pattern: str = REFERENCE_PATTERN) -> bool:
+    return proposal_label.upper() == "NIP" or "A-F" in reference_pattern or "a-f" in reference_pattern
+
+
+def _normalize_reference_id(
+    value: Any,
+    proposal_label: str = PROPOSAL_LABEL,
+    reference_pattern: str = REFERENCE_PATTERN,
+) -> str | None:
+    text = str(value).strip()
+    if not text:
+        return None
+
+    if _uses_hex_proposal_ids(proposal_label, reference_pattern):
+        if not re.fullmatch(rf"[0-9A-Fa-f]{{1,{MAX_REFERENCE_DIGITS}}}", text):
+            return None
+        number = int(text, 16)
+        if MAX_PROPOSAL_ID is not None and number > int(MAX_PROPOSAL_ID):
+            return None
+        normalized = text.upper()
+        return normalized.zfill(2) if len(normalized) == 1 else normalized
+
+    normalized_num = _normalize_reference_number(text)
+    return None if normalized_num is None else str(normalized_num)
+
+
+def _reference_sort_key(value: str, proposal_label: str = PROPOSAL_LABEL) -> tuple[int, str]:
+    suffix = value.split()[-1]
+    try:
+        base = 16 if _uses_hex_proposal_ids(proposal_label) else 10
+        return (int(suffix, base), suffix)
+    except ValueError:
+        return (10**12, suffix)
+
+
 def create_reference_list(
     raw_content: str,
     proposal_label: str = PROPOSAL_LABEL,
@@ -61,20 +99,22 @@ def create_reference_list(
     normalized_reference_pattern = reference_pattern.replace(r"\d+", rf"\d{{1,{MAX_REFERENCE_DIGITS}}}")
     single_reference_pattern = re.compile(normalized_reference_pattern, re.IGNORECASE)
     proposal_references = {
-        f"{proposal_label} {normalized_num}"
+        f"{proposal_label} {normalized_id}"
         for num in single_reference_pattern.findall(raw_content)
-        for normalized_num in [_normalize_reference_number(num)]
-        if normalized_num is not None
+        for normalized_id in [_normalize_reference_id(num, proposal_label, reference_pattern)]
+        if normalized_id is not None
     }
 
     if proposal_label == PROPOSAL_LABEL:
-        for match in REFERENCE_LIST_PATTERN.findall(raw_content):
-            for num in re.findall(r"\d+", match):
-                normalized_num = _normalize_reference_number(num)
-                if normalized_num is not None:
-                    proposal_references.add(f"{proposal_label} {normalized_num}")
+        list_pattern = HEX_REFERENCE_LIST_PATTERN if _uses_hex_proposal_ids(proposal_label, reference_pattern) else REFERENCE_LIST_PATTERN
+        token_pattern = r"[0-9A-Fa-f]+" if _uses_hex_proposal_ids(proposal_label, reference_pattern) else r"\d+"
+        for match in list_pattern.findall(raw_content):
+            for raw_id in re.findall(token_pattern, match):
+                normalized_id = _normalize_reference_id(raw_id, proposal_label, reference_pattern)
+                if normalized_id is not None:
+                    proposal_references.add(f"{proposal_label} {normalized_id}")
 
-    return sorted(proposal_references, key=lambda value: int(value.split()[-1]))
+    return sorted(proposal_references, key=lambda value: _reference_sort_key(value, proposal_label))
 
 
 def create_explicit_dependency_list(
@@ -82,7 +122,8 @@ def create_explicit_dependency_list(
     proposal_label: str = PROPOSAL_LABEL,
 ) -> List[str]:
     label = re.escape(proposal_label)
-    id_pattern = re.compile(rf"(?i)(?:{label}[-\s]*)?(\d+)")
+    id_chars = r"[0-9A-Fa-f]" if _uses_hex_proposal_ids(proposal_label) else r"\d"
+    id_pattern = re.compile(rf"(?i)(?:{label}[-\s]*)?({id_chars}+)")
     dependency_ids = set()
     preamble_interrelations = get_preamble_interrelations(preamble)
 
@@ -93,11 +134,11 @@ def create_explicit_dependency_list(
         raw_items = value if isinstance(value, list) else str(value).split(",")
         for item in raw_items:
             for proposal_id in id_pattern.findall(str(item)):
-                normalized_num = _normalize_reference_number(proposal_id)
-                if normalized_num is not None:
-                    dependency_ids.add(f"{proposal_label} {normalized_num}")
+                normalized_id = _normalize_reference_id(proposal_id, proposal_label)
+                if normalized_id is not None:
+                    dependency_ids.add(f"{proposal_label} {normalized_id}")
 
-    return sorted(dependency_ids)
+    return sorted(dependency_ids, key=lambda value: _reference_sort_key(value, proposal_label))
 
 
 def load_api_key() -> str | None:
@@ -122,23 +163,25 @@ def normalize_dependency_output(
         return []
 
     label = re.escape(proposal_label)
-    id_pattern = re.compile(rf"(?i)^\s*(?:{label}[-\s]*)?0*(\d+)\s*$")
-    current_normalized = None if current_proposal_number is None else f"{proposal_label} {int(current_proposal_number)}"
+    id_chars = r"[0-9A-Fa-f]" if _uses_hex_proposal_ids(proposal_label) else r"\d"
+    id_pattern = re.compile(rf"(?i)^\s*(?:{label}[-\s]*)?({id_chars}+)\s*$")
+    current_id = None if current_proposal_number is None else _normalize_reference_id(current_proposal_number, proposal_label)
+    current_normalized = None if current_id is None else f"{proposal_label} {current_id}"
     normalized_ids = set()
 
     for item in payload:
         match = id_pattern.match(str(item))
         if not match:
             continue
-        normalized_num = _normalize_reference_number(match.group(1))
-        if normalized_num is None:
+        normalized_id = _normalize_reference_id(match.group(1), proposal_label)
+        if normalized_id is None:
             continue
-        normalized = f"{proposal_label} {normalized_num}"
+        normalized = f"{proposal_label} {normalized_id}"
         if normalized == current_normalized:
             continue
         normalized_ids.add(normalized)
 
-    return sorted(normalized_ids, key=lambda value: int(value.split()[-1]))
+    return sorted(normalized_ids, key=lambda value: _reference_sort_key(value, proposal_label))
 
 
 def llm_extract_implicit_dependencies(
@@ -168,8 +211,9 @@ Do not include:
 
 Output policy:
 - Return JSON only, with no explanation and no markdown.
-- Return a normalized, sorted, distinct list of {proposal_label}s in the form "{proposal_label} N".
-- Sort ascending by numeric {proposal_label} identifier.
+- Return a normalized, sorted, distinct list of {proposal_label}s in the form "{proposal_label} ID".
+- Preserve hexadecimal identifiers and leading zeroes when the ecosystem uses them.
+- Sort ascending by {proposal_label} identifier.
 - Exclude {proposal_label} {current_proposal_number} if present.
 - Return an empty list when there are no real dependencies.
 """.strip()

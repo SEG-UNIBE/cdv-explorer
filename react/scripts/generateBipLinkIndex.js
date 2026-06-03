@@ -94,6 +94,7 @@ function listBipFilesForCommit(localDir, commitHash) {
 
 function buildIndex() {
   const externalLinks = fs.existsSync(externalLinksPath) ? readJson(externalLinksPath) : {};
+  const existingIndex = fs.existsSync(outputPath) ? readJson(outputPath) : {};
   const branchRef = getDefaultBranchRef(harvestRoot);
   const defaultBranch = (branchRef || externalLinks.bitcoinBipsDefaultBranch || 'master')
     .replace(/^refs\/remotes\/origin\//, '')
@@ -123,6 +124,7 @@ function buildIndex() {
   // Build bipFiles from the current HEAD so fallback links to master use the correct file names.
   // Building from snapshots is wrong: it uses the oldest known name per BIP, causing renamed
   // files (e.g. .mediawiki → .md) or BIPs added after all snapshots to resolve incorrectly.
+  Object.assign(bipFiles, existingIndex.bipFiles || {});
   const headCommit = branchRef ? runGit(['-C', harvestRoot, 'rev-parse', branchRef]) : '';
   Object.assign(bipFiles, listBipFilesForCommit(harvestRoot, headCommit));
 

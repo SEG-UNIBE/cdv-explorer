@@ -123,6 +123,10 @@ function buildIndex() {
 
   const headCommit = branchRef ? runGit(['-C', harvestRoot, 'rev-parse', branchRef]) : '';
   Object.assign(nipFiles, listNipFilesForCommit(harvestRoot, headCommit));
+  if (Object.keys(nipFiles).length === 0) {
+    const newestSnapshot = snapshotLabels[snapshotLabels.length - 1];
+    Object.assign(nipFiles, snapshotFiles[newestSnapshot] || {});
+  }
 
   return {
     repositoryUrl: 'https://github.com/nostr-protocol/nips',

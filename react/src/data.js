@@ -5,13 +5,7 @@ import {
   normalizeDependencyLinks,
 } from './dependencyApproaches';
 import { ecosystemsById } from './ecosystems';
-
-// Available snapshots per ecosystem, newest-first.
-// Add a new entry here when a snapshot is published.
-const ECOSYSTEM_SNAPSHOTS = {
-  bitcoin: ['2026-05-28', '2026-03-16', '2025-01-01', '2021-01-01'],
-  nostr: ['2026-05-30'],
-};
+import snapshotIndex from './generated/snapshotIndex.json';
 
 const EMPTY_DATASET = {
   snapshot: null,
@@ -100,7 +94,7 @@ export function isDatasetCached(ecosystemId, snapshot) {
 }
 
 export function getAvailableSnapshots(ecosystemId) {
-  return ECOSYSTEM_SNAPSHOTS[ecosystemId] || [];
+  return snapshotIndex[ecosystemId] || [];
 }
 
 export function fetchDatasetForSelection(ecosystemId, snapshot) {

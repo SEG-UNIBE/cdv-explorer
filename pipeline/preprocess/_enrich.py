@@ -103,13 +103,18 @@ def _build_base_insights(
     references = create_reference_list(body_content, proposal_label=proposal_label, reference_pattern=reference_pattern)
     explicit_deps = create_explicit_dependency_list(preamble, proposal_label=proposal_label)
 
-    self_ref = f"{proposal_label} {proposal_number}"
+    raw_proposal_id = str(preamble.get(id_field, "")).strip()
+    self_refs = {f"{proposal_label} {proposal_number}"}
+    if raw_proposal_id:
+        self_refs.add(f"{proposal_label} {raw_proposal_id.upper()}")
+        if proposal_label.upper() == "NIP":
+            self_refs.add(f"{proposal_label} {raw_proposal_id.upper().zfill(2)}")
     return (
         {
             "word_list": _build_word_list(raw_content, stop_words),
             "interrelations": {
-                PREAMBLE_EXTRACTED: [r for r in explicit_deps if r != self_ref],
-                BODY_EXTRACTED_REGEX: [r for r in references if r != self_ref],
+                PREAMBLE_EXTRACTED: [r for r in explicit_deps if r not in self_refs],
+                BODY_EXTRACTED_REGEX: [r for r in references if r not in self_refs],
             },
         },
         body_content,

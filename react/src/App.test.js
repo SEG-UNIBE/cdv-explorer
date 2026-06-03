@@ -9,6 +9,7 @@ import {
 import { getBipCommitUrl, getBipUrl } from './bipLinks';
 import { getClassificationColorMap } from './classificationColors';
 import { getNipCommitUrl, getNipUrl } from './nipLinks';
+import nipLinkIndex from './generated/nipLinkIndex.json';
 
 test('dependency link options default to the canonical preamble approach', () => {
   expect(DEFAULT_DEPENDENCY_APPROACH).toBe(PREAMBLE_EXTRACTED);
@@ -62,7 +63,7 @@ test('uses the snapshot commit for historic NIP links when the file exists in th
 
 test('uses the repository default branch for current NIP links', () => {
   expect(getNipUrl('F4', '2026-05-30', { linkMode: 'current' })).toBe(
-    'https://github.com/nostr-protocol/nips/blob/master/F4.md'
+    `https://github.com/nostr-protocol/nips/blob/${nipLinkIndex.defaultBranch}/F4.md`
   );
 });
 

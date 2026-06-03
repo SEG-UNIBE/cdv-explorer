@@ -7,6 +7,9 @@ from pathlib import Path
 
 def _clone_or_update(repo_url: str, local_dir: Path) -> None:
     if local_dir.exists():
+        if not any(local_dir.iterdir()):
+            subprocess.run(["git", "clone", repo_url, str(local_dir)], check=True)
+            return
         if not (local_dir / ".git").exists():
             raise ValueError(f"{local_dir} exists but is not a git repository.")
         subprocess.run(["git", "-C", str(local_dir), "fetch", "--all", "--prune"], check=True)

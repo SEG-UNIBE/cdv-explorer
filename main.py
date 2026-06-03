@@ -36,9 +36,11 @@ if _src:
 
 import json
 import re
+import shutil
 import subprocess
 import time
 from datetime import date
+from importlib import metadata
 from pathlib import Path
 from typing import Annotated, Optional
 
@@ -69,6 +71,7 @@ app = typer.Typer(
         "[green]python main.py run -e bitcoin -s 2026-03-16 --skipllm[/green]\n\n"
         "[green]python main.py run -e nostr -s 2026-03-16 --skipllm[/green]\n\n"
         "[green]python main.py snapshots[/green]\n\n"
+        "[green]python main.py doctor[/green]\n\n"
         "[green]python main.py ecosystems list[/green]\n\n"
         "[green]python main.py ecosystems show bitcoin[/green]\n\n"
         "[green]python main.py ecosystems add[/green]  "
@@ -153,10 +156,67 @@ def _build_file_manifest(harvest_root: Path, src: dict) -> dict:
     return files
 
 
+def _iter_configured_sources() -> list[tuple[str, str, dict]]:
+    rows: list[tuple[str, str, dict]] = []
+    for eco_slug, eco in sorted(ECOSYSTEM_REGISTRY.items()):
+        for src_slug, src in sorted((eco.get("sources") or {}).items()):
+            rows.append((eco_slug, src_slug, src))
+    return rows
+
+
+def _command_version(command: str, *args: str) -> str | None:
+    executable = shutil.which(command)
+    if executable is None:
+        return None
+    try:
+        result = subprocess.run(
+            [executable, *args],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+    except OSError:
+        return executable
+    output = (result.stdout or result.stderr).strip().splitlines()
+    return output[0] if output else executable
+
+
+def _latest_snapshot_labels(analysis_root: Path) -> list[str]:
+    if not analysis_root.is_dir():
+        return []
+    return sorted(
+        (p.name for p in analysis_root.iterdir() if p.is_dir() and re.match(r"^\d{4}-\d{2}-\d{2}$", p.name)),
+        reverse=True,
+    )
+
+
+def _doctor_row(table: Table, status: str, check: str, details: str) -> bool:
+    styles = {
+        "OK": "[green]OK[/green]",
+        "WARN": "[yellow]WARN[/yellow]",
+        "FAIL": "[red]FAIL[/red]",
+    }
+    table.add_row(styles.get(status, status), check, details)
+    return status != "FAIL"
+
+
+def _load_requirements(requirements_path: Path) -> list[str]:
+    if not requirements_path.exists():
+        return []
+    packages: list[str] = []
+    for raw_line in requirements_path.read_text(encoding="utf-8").splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#"):
+            continue
+        name = re.split(r"[<>=!~;\[]", line, maxsplit=1)[0].strip()
+        if name:
+            packages.append(name)
+    return packages
+
+
 def _run_source_pipeline(eco_slug: str, src_slug: str, src: dict, snapshot: str, skipllm: bool) -> None:
     """Run the full pipeline for one source. Imports are lazy so the env vars
     set at startup are already in place when pipeline modules are first loaded."""
-    from pipeline.install_dependencies import install_requirements
     from pipeline.harvest import get_harvester
     from pipeline.preprocess import get_extractor, get_enricher
     from analysis.pipeline import prepare_ecosystem_artifacts
@@ -171,9 +231,6 @@ def _run_source_pipeline(eco_slug: str, src_slug: str, src: dict, snapshot: str,
     harvester = get_harvester(src.get("harvester", "github_repo"))
     extractor = get_extractor(src.get("preprocessor", "rfc_preamble"))
     enricher = get_enricher()
-
-    _run_stage("Install dependencies", 2, "step",
-               lambda u: install_requirements(progress_callback=u))
 
     _run_stage("Download repository snapshot", 3, "step",
                lambda u: harvester(src_config=src, snapshot=snapshot, local_dir=harvest_root, progress_callback=u))
@@ -221,11 +278,174 @@ def _run_source_pipeline(eco_slug: str, src_slug: str, src: dict, snapshot: str,
 # run
 # ---------------------------------------------------------------------------
 
+@app.command(rich_help_panel="Discovery")
+def doctor() -> None:
+    """Check local tools, dependencies, configs, and snapshot artifacts without changing files."""
+    table = Table("Status", "Check", "Details", title="CDV-Explorer Doctor")
+    ok = True
+
+    ok &= _doctor_row(
+        table,
+        "OK" if sys.version_info >= (3, 12) else "FAIL",
+        "Python",
+        f"{sys.version.split()[0]} at {sys.executable}",
+    )
+
+    missing_packages: list[str] = []
+    installed_count = 0
+    for package in _load_requirements(Path("requirements.txt")):
+        try:
+            metadata.version(package)
+            installed_count += 1
+        except metadata.PackageNotFoundError:
+            missing_packages.append(package)
+    ok &= _doctor_row(
+        table,
+        "FAIL" if missing_packages else "OK",
+        "Python packages",
+        f"Missing: {', '.join(missing_packages)}" if missing_packages else f"{installed_count} packages installed",
+    )
+
+    git_version = _command_version("git", "--version")
+    ok &= _doctor_row(
+        table,
+        "OK" if git_version else "FAIL",
+        "Git",
+        git_version or "git not found on PATH",
+    )
+
+    node_version = _command_version("node", "--version")
+    ok &= _doctor_row(
+        table,
+        "OK" if node_version else "FAIL",
+        "Node.js",
+        node_version or "node not found on PATH",
+    )
+
+    npm_version = _command_version("npm", "--version")
+    ok &= _doctor_row(
+        table,
+        "OK" if npm_version else "FAIL",
+        "npm",
+        npm_version or "npm not found on PATH",
+    )
+
+    react_node_modules = Path("react/node_modules")
+    ok &= _doctor_row(
+        table,
+        "OK" if react_node_modules.is_dir() else "WARN",
+        "React dependencies",
+        "react/node_modules present" if react_node_modules.is_dir() else "Run `cd react && npm install` before frontend work",
+    )
+
+    sources = _iter_configured_sources()
+    ok &= _doctor_row(
+        table,
+        "OK" if sources else "FAIL",
+        "Ecosystem configs",
+        f"{len(ECOSYSTEM_REGISTRY)} ecosystems, {len(sources)} sources",
+    )
+
+    required_source_keys = {
+        "proposal_acronym",
+        "harvest",
+        "preprocess",
+        "analysis",
+        "postprocess",
+        "document_prefix",
+        "primary_id_field",
+        "document_file_pattern",
+        "reference_pattern",
+    }
+    config_errors: list[str] = []
+    snapshot_details: list[str] = []
+    harvest_warnings: list[str] = []
+    for eco_slug, src_slug, src in sources:
+        missing = sorted(required_source_keys - set(src))
+        if missing:
+            config_errors.append(f"{eco_slug}/{src_slug}: missing {', '.join(missing)}")
+
+        harvest_root = Path(src.get("harvest", ""))
+        if not (harvest_root / ".git").is_dir():
+            harvest_warnings.append(f"{eco_slug}/{src_slug}")
+
+        snapshots_for_source = _latest_snapshot_labels(Path(src.get("analysis", "")))
+        if snapshots_for_source:
+            snapshot_details.append(f"{eco_slug}/{src_slug}: {snapshots_for_source[0]}")
+        else:
+            snapshot_details.append(f"{eco_slug}/{src_slug}: none")
+
+    ok &= _doctor_row(
+        table,
+        "FAIL" if config_errors else "OK",
+        "Source config schema",
+        "; ".join(config_errors) if config_errors else "required source keys present",
+    )
+    ok &= _doctor_row(
+        table,
+        "WARN" if harvest_warnings else "OK",
+        "Harvest repos",
+        f"Not cloned yet: {', '.join(harvest_warnings)}" if harvest_warnings else "all configured harvest repos are git clones",
+    )
+    ok &= _doctor_row(
+        table,
+        "OK" if any(": none" not in detail for detail in snapshot_details) else "WARN",
+        "Snapshots",
+        "; ".join(snapshot_details) if snapshot_details else "no configured sources",
+    )
+
+    validate_script = Path("scripts/validate_snapshots.py")
+    if validate_script.exists():
+        result = subprocess.run(
+            [sys.executable, str(validate_script)],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        ok &= _doctor_row(
+            table,
+            "OK" if result.returncode == 0 else "FAIL",
+            "Snapshot artifacts",
+            "validation passed" if result.returncode == 0 else "validation failed; run `python3 scripts/validate_snapshots.py`",
+        )
+    else:
+        ok &= _doctor_row(table, "WARN", "Snapshot artifacts", "scripts/validate_snapshots.py not found")
+
+    generated_files = [
+        Path("react/src/generated/snapshotIndex.json"),
+        Path("react/src/generated/bipLinkIndex.json"),
+        Path("react/src/generated/nipLinkIndex.json"),
+    ]
+    missing_generated = [str(path) for path in generated_files if not path.exists()]
+    ok &= _doctor_row(
+        table,
+        "WARN" if missing_generated else "OK",
+        "React generated assets",
+        f"Missing: {', '.join(missing_generated)}; run `cd react && npm run prebuild`" if missing_generated else "generated indexes present",
+    )
+
+    api_key_present = bool(os.getenv("OPENAI_API_KEY")) or Path("apikey.secret").exists()
+    ok &= _doctor_row(
+        table,
+        "OK" if api_key_present else "WARN",
+        "OpenAI key",
+        "available for LLM extraction" if api_key_present else "not set; `run --skipllm` still works",
+    )
+
+    console.print(table)
+    if ok:
+        console.print("[green]Doctor completed: no blocking issues found.[/green]")
+        return
+
+    console.print("[red]Doctor found blocking issues.[/red]")
+    raise typer.Exit(1)
+
+
 @app.command(rich_help_panel="Pipeline")
 def run(
     ecosystem: Annotated[Optional[str], typer.Option("--ecosystem", "-e", help="Ecosystem slug (default: first registered).")] = None,
     source: Annotated[Optional[str], typer.Option("--source", help="Source slug (default: all sources).")] = None,
-    snapshot: Annotated[str, typer.Option("--snapshot", "-s", help="Snapshot date (YYYY-MM-DD). Required.")],
+    snapshot: Annotated[str, typer.Option("--snapshot", "-s", help="Snapshot date (YYYY-MM-DD). Required.")] = ...,
     skipllm: Annotated[bool, typer.Option("--skipllm", help="Skip LLM-based extraction.")] = False,
 ) -> None:
     """Run the full pipeline for a snapshot. Runs all sources unless --source is given."""

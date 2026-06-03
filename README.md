@@ -79,7 +79,16 @@ python -m venv .venv
 source .venv/bin/activate        # Windows: .venv\Scripts\activate
 ```
 
-### 3 - Run the pipeline
+### 3 - Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+> [!NOTE]
+> Use `python main.py doctor` to verify your local setup.
+
+### 4 - Run the pipeline
 
 The `run` command clones/updates the source repository, extracts and enriches proposal data, builds analysis artifacts, and produces React-ready exports -- all in one step.
 
@@ -100,7 +109,7 @@ python main.py run -e nostr -s 2026-03-16 --skipllm
 
 > **Snapshot date:** `-s` is required. The pipeline resolves to the last commit whose committer timestamp falls on or before `YYYY-MM-DD 23:59:59` and checks out the repository at that point.
 
-### 4 - Start the React app
+### 5 - Start the React app
 
 ```bash
 cd react
@@ -141,6 +150,14 @@ Options:
 python main.py snapshots
 python main.py snapshots -e bitcoin
 ```
+
+### `doctor` - check the local environment
+
+```bash
+python main.py doctor
+```
+
+Runs read-only checks for required tooling, installed Python packages, configured ecosystem sources, snapshot artifacts, generated frontend indexes, and optional LLM credentials.
 
 ### `ecosystems` - manage ecosystem configs
 

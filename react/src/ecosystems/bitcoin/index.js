@@ -12,7 +12,7 @@ const bitcoinEcosystem = {
   description: 'Bitcoin Improvement Proposals (BIPs)',
   dashboardDescription: 'Bitcoin Improvement Proposals (BIPs) are the main specification documents of the Bitcoin ecosystem, defining features, behavior, and processual or informational aspects. The catalog is maintained on GitHub and serves as the primary data source for the analyses below.',
   sourceRepositories: ['github/bitcoin/bips'],
-  dataPath: 'ip_data/bitcoin/03_analysis',
+  dataPath: 'ip_data/bitcoin/bips/03_analysis',
   classificationDimensions: [
     { field: 'status', label: 'Status' },
     { field: 'type', label: 'Type' },

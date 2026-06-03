@@ -231,7 +231,7 @@ The schema has three top-level blocks: **`raw`** (verbatim preamble), **`meta`**
 }
 ```
 
-Concrete examples: [`bip-0340.json`](ip_data/bitcoin/02_preprocess/2026-03-16/bip-0340.json) (Schnorr Signatures) · [`nip-10.json`](ip_data/nostr/nips/02_preprocess/2026-05-30/nip-10.json) (Text Notes and Threads)
+Concrete examples: [`bip-0340.json`](ip_data/bitcoin/bips/02_preprocess/2026-03-16/bip-0340.json) (Schnorr Signatures) · [`nip-10.json`](ip_data/nostr/nips/02_preprocess/2026-05-30/nip-10.json) (Text Notes and Threads)
 
 ### Adding a new ecosystem
 

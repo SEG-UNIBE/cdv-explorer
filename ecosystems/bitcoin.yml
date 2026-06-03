@@ -15,12 +15,10 @@ sources:
     repository_owner: bitcoin
     repository_name: bips
 
-    # Local data paths — kept at ecosystem root level for backward compatibility
-    # with existing snapshots and the validate_snapshots script.
-    harvest: ip_data/bitcoin/01_harvest
-    preprocess: ip_data/bitcoin/02_preprocess
-    analysis: ip_data/bitcoin/03_analysis
-    postprocess: ip_data/bitcoin/04_postprocess
+    harvest: ip_data/bitcoin/bips/01_harvest
+    preprocess: ip_data/bitcoin/bips/02_preprocess
+    analysis: ip_data/bitcoin/bips/03_analysis
+    postprocess: ip_data/bitcoin/bips/04_postprocess
 
     document_prefix: bip
     primary_id_field: bip

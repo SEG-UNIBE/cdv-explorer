@@ -430,8 +430,7 @@ def doctor() -> None:
 
     generated_files = [
         Path("react/src/generated/snapshotIndex.json"),
-        Path("react/src/generated/bipLinkIndex.json"),
-        Path("react/src/generated/nipLinkIndex.json"),
+        Path("react/src/generated/proposalLinkIndex.json"),
     ]
     missing_generated = [str(path) for path in generated_files if not path.exists()]
     ok &= _doctor_row(

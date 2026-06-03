@@ -190,6 +190,23 @@ def _latest_snapshot_labels(analysis_root: Path) -> list[str]:
     )
 
 
+def _analysis_dirs_for_ecosystem(eco_dir: Path, eco_config: dict | None = None) -> list[tuple[str | None, Path]]:
+    direct = eco_dir / "03_analysis"
+    if direct.is_dir():
+        matched_source = None
+        for source_slug, source in sorted((eco_config or {}).get("sources", {}).items()):
+            if Path(source.get("analysis", "")) == direct:
+                matched_source = source_slug
+                break
+        return [(matched_source, direct)]
+
+    return [
+        (source_dir.name, source_dir / "03_analysis")
+        for source_dir in sorted(eco_dir.iterdir())
+        if source_dir.is_dir() and (source_dir / "03_analysis").is_dir()
+    ]
+
+
 def _doctor_row(table: Table, status: str, check: str, details: str) -> bool:
     styles = {
         "OK": "[green]OK[/green]",
@@ -510,7 +527,7 @@ def snapshots(
         console.print("[yellow]No ip_data directory found.[/yellow]")
         raise typer.Exit(0)
 
-    table = Table("Ecosystem", "Snapshot", "Path", title="Available Snapshots")
+    table = Table("Ecosystem", "Source", "Snapshot", "Path", title="Available Snapshots")
     found = False
 
     for eco_dir in sorted(ip_root.iterdir()):
@@ -519,13 +536,11 @@ def snapshots(
         slug = eco_dir.name
         if ecosystem and slug != ecosystem:
             continue
-        analysis_dir = eco_dir / "03_analysis"
-        if not analysis_dir.is_dir():
-            continue
-        for snap_dir in sorted(analysis_dir.iterdir(), reverse=True):
-            if snap_dir.is_dir():
-                table.add_row(slug, snap_dir.name, str(snap_dir))
-                found = True
+        for source_slug, analysis_dir in _analysis_dirs_for_ecosystem(eco_dir, ECOSYSTEM_REGISTRY.get(slug)):
+            for snap_dir in sorted(analysis_dir.iterdir(), reverse=True):
+                if snap_dir.is_dir():
+                    table.add_row(slug, source_slug or "—", snap_dir.name, str(snap_dir))
+                    found = True
 
     if found:
         console.print(table)

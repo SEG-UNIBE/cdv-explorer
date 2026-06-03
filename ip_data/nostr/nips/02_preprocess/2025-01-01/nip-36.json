@@ -1,0 +1,141 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "36",
+      "title": "Sensitive Content / Content Warning",
+      "author": [
+        "Fernando López Guevara"
+      ],
+      "created": "2022-12-01",
+      "status": "Draft",
+      "type": "Optional",
+      "layer": null,
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Sat Nov 18 09:13:12 2023 -0300",
+    "total_commits": 5,
+    "git_history": [
+      [
+        "5dcfe85306434f21ecb1e7a47edd92b2e3e64f9a",
+        "Sat Nov 18 09:13:12 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "37f6cbb775126b386414220f783ca0f5f85e7614",
+        "Wed Nov 15 21:42:51 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "92ce49dda0acce1f661868316a9858521d4bc974",
+        "Wed Jun 7 16:09:26 2023 -0700",
+        "Jonathan Staab"
+      ],
+      [
+        "363d112e335c13f4fa1c113e2418db1102c58ed5",
+        "Wed Jun 7 16:03:05 2023 -0700",
+        "Jonathan Staab"
+      ],
+      [
+        "27c6652e0e682dade7b1ae6b3e329c365a35ea91",
+        "Thu Dec 1 20:41:15 2022 -0300",
+        "Fernando López Guevara"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "content": 12,
+      "warning": 7,
+      "l": 6,
+      "optional": 3,
+      "reason": 3,
+      "nip": 2,
+      "sensitive": 2,
+      "tag": 2,
+      "event": 2,
+      "tags": 2,
+      "32": 2,
+      "hastag": 2,
+      "social": 2,
+      "nos": 2,
+      "ontology": 2,
+      "id": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "27c6652e0e682dade7b1ae6b3e329c365a35ea91",
+        "timestamp": "2022-12-01T20:41:15-03:00",
+        "date": "2022-12-01",
+        "author": "Fernando López Guevara",
+        "path": "36.md",
+        "status": "Draft",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        "NIP 32"
+      ],
+      "body_extracted_llm": []
+    }
+  }
+}

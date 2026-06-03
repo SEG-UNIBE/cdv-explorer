@@ -1,0 +1,161 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "20",
+      "title": "Command Results",
+      "author": [
+        "William Casarin"
+      ],
+      "created": "2022-11-10",
+      "status": "Final",
+      "type": "Mandatory",
+      "layer": null,
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Wed Nov 15 21:42:51 2023 -0300",
+    "total_commits": 10,
+    "git_history": [
+      [
+        "37f6cbb775126b386414220f783ca0f5f85e7614",
+        "Wed Nov 15 21:42:51 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "72bb8a128b2d7d3c2c654644cd68d0d0fe58a3b1",
+        "Sun Aug 13 13:47:45 2023 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "ab6308c29aa8cc10c06addc9fd26c90f8dac9c6a",
+        "Thu Mar 2 21:27:50 2023 +0100",
+        "ennmichael"
+      ],
+      [
+        "da6a7d0ee3dd492c87132caa7e4b005cd58b73b1",
+        "Fri Dec 16 22:27:29 2022 -0800",
+        "sgmoore"
+      ],
+      [
+        "c510e646d0fd5bfa56a044756182cc10ad7e494d",
+        "Thu Nov 10 13:14:23 2022 -0800",
+        "William Casarin"
+      ],
+      [
+        "ff26b959f8fd9ae9d72ed0f1ebf6ecc67d1fa65a",
+        "Thu Nov 10 12:55:28 2022 -0800",
+        "William Casarin"
+      ],
+      [
+        "7569773ad6e162333155905f9f1ea620c732ff71",
+        "Thu Nov 10 12:14:18 2022 -0800",
+        "William Casarin"
+      ],
+      [
+        "e7f74d21c48e255181d93eda317f36f9702a14ad",
+        "Thu Nov 10 12:02:14 2022 -0800",
+        "William Casarin"
+      ],
+      [
+        "a0b0a021a86b3433f8ce331e85091b6d8c90b4ef",
+        "Thu Nov 10 11:57:13 2022 -0800",
+        "William Casarin"
+      ],
+      [
+        "15514283f3a5c51e21e596ff413da2ccc4a70b6e",
+        "Thu Nov 10 10:07:13 2022 -0800",
+        "William Casarin"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "nip": 2,
+      "01": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "15514283f3a5c51e21e596ff413da2ccc4a70b6e",
+        "timestamp": "2022-11-10T10:29:11-08:00",
+        "date": "2022-11-10",
+        "author": "William Casarin",
+        "path": "20.md",
+        "status": "Draft",
+        "standard": ""
+      },
+      {
+        "commit": "72bb8a128b2d7d3c2c654644cd68d0d0fe58a3b1",
+        "timestamp": "2023-08-13T13:47:45-03:00",
+        "date": "2023-08-13",
+        "author": "fiatjaf_",
+        "path": "20.md",
+        "status": "Final",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        "NIP 01"
+      ],
+      "body_extracted_llm": []
+    }
+  }
+}

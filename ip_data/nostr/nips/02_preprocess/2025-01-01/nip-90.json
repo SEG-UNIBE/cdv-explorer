@@ -1,0 +1,338 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "90",
+      "title": "Data Vending Machine",
+      "author": [
+        "pablof7z"
+      ],
+      "created": "2023-07-25",
+      "status": "Draft",
+      "type": "Optional",
+      "layer": null,
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Sun Dec 8 12:34:34 2024 +0000",
+    "total_commits": 18,
+    "git_history": [
+      [
+        "b04922586ead1a0009716b86cc97d4790a5657d0",
+        "Sun Dec 8 12:34:34 2024 +0000",
+        "Jesus Christ"
+      ],
+      [
+        "e6552476aa2e5ca7256be572a9aa226ec8a022ee",
+        "Tue Sep 3 20:41:31 2024 +0330",
+        "kehiy"
+      ],
+      [
+        "c2d9b40d5bcf2d04cd04c19b42065e5158ecbab8",
+        "Sat May 11 12:38:01 2024 -0500",
+        "Adam Shannon"
+      ],
+      [
+        "cb9bddb8dfd11972286215d9bdee7434764ccf7b",
+        "Sat May 11 11:52:32 2024 -0500",
+        "Adam Shannon"
+      ],
+      [
+        "8aba861bdf530f9e15b8d371ab3ce4f1ace61fef",
+        "Mon Dec 4 16:08:09 2023 +0800",
+        "xiaolou86"
+      ],
+      [
+        "5dcfe85306434f21ecb1e7a47edd92b2e3e64f9a",
+        "Sat Nov 18 09:13:12 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "e7e64af04aaf57461392acf117438038c4613eb0",
+        "Fri Nov 17 12:22:43 2023 +0900",
+        "Yasuhiro Matsumoto"
+      ],
+      [
+        "37f6cbb775126b386414220f783ca0f5f85e7614",
+        "Wed Nov 15 21:42:51 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "8e2f3aa60a293dd65d5c42e9d61b9fb9114f2717",
+        "Sat Nov 11 18:27:13 2023 +0200",
+        "Pablo Fernandez"
+      ],
+      [
+        "7e3b7cd90c6e5c4ccba94b58231312aaac421551",
+        "Mon Nov 6 17:22:50 2023 -0500",
+        "starbuilder"
+      ],
+      [
+        "56dbb7722c3d1a2c759277391960f41ba6948dcd",
+        "Mon Nov 6 16:31:37 2023 -0500",
+        "starbuilder"
+      ],
+      [
+        "c2020929fbbcd667caa8ac67b706844512d19d7c",
+        "Mon Nov 6 10:56:24 2023 -0500",
+        "starbuilder"
+      ],
+      [
+        "4b9f13d983245e4dd166f102308afc28b8bb1603",
+        "Tue Oct 31 00:21:53 2023 +0300",
+        "Semisol"
+      ],
+      [
+        "9f4a4cf9d2f0a626fc2a341cff6d7f66d73c12e4",
+        "Sun Oct 15 14:59:13 2023 -0400",
+        "starbuilder"
+      ],
+      [
+        "142cb8d655d411628517b44a1cbafdc8c1fbcc68",
+        "Sun Oct 15 10:44:07 2023 -0400",
+        "starbuilder"
+      ],
+      [
+        "d9400e1e7b08225aedb6c78b522c5ad07b5198b4",
+        "Sat Oct 14 16:14:24 2023 +0300",
+        "Pablo Fernandez"
+      ],
+      [
+        "9fa9045d19b93f4cbac231bff39558108a6e82ae",
+        "Tue Jul 25 17:31:31 2023 +0300",
+        "pablof7z"
+      ],
+      [
+        "948ee24775fe89e779efe7680ca6a27dc5a6207f",
+        "Tue Jul 25 17:20:24 2023 +0300",
+        "pablof7z"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "job": 66,
+      "service": 39,
+      "request": 27,
+      "providers": 22,
+      "kind": 22,
+      "event": 17,
+      "provider": 17,
+      "data": 15,
+      "result": 15,
+      "content": 15,
+      "input": 15,
+      "payment": 15,
+      "encrypted": 15,
+      "e": 14,
+      "output": 12,
+      "customer": 12,
+      "feedback": 11,
+      "results": 11,
+      "g": 11,
+      "tag": 11,
+      "s": 11,
+      "tags": 10,
+      "param": 10,
+      "pubkey": 10,
+      "nip": 9,
+      "p": 9,
+      "status": 9,
+      "optional": 8,
+      "use": 7,
+      "id": 7,
+      "bolt11": 7,
+      "processing": 6,
+      "processed": 6,
+      "1": 6,
+      "jsonc": 6,
+      "relay": 6,
+      "fields": 6,
+      "field": 6,
+      "choose": 6,
+      "required": 6,
+      "customers": 5,
+      "5000": 5,
+      "7000": 5,
+      "6999": 5,
+      "text": 5,
+      "user": 5,
+      "pay": 5,
+      "type": 5,
+      "argument": 5,
+      "zap": 5,
+      "vending": 4,
+      "defines": 4,
+      "kinds": 4,
+      "6000": 4,
+      "nostr": 4,
+      "protocol": 4,
+      "t": 4,
+      "flow": 4,
+      "bitcoin": 4,
+      "payload": 4,
+      "partial": 4,
+      "include": 4,
+      "5999": 3,
+      "jobs": 3,
+      "etc": 3,
+      "process": 3,
+      "published": 3,
+      "relays": 3,
+      "value": 3,
+      "different": 3,
+      "key": 3,
+      "params": 3,
+      "add": 3,
+      "hint": 3,
+      "requested": 3,
+      "requesting": 3,
+      "invoice": 3,
+      "extra": 3,
+      "sample": 3,
+      "risk": 3,
+      "transcription": 3,
+      "machine": 2,
+      "interaction": 2,
+      "range": 2,
+      "description": 2,
+      "higher": 2,
+      "defined": 2,
+      "https": 2,
+      "github": 2,
+      "com": 2,
+      "machines": 2,
+      "master": 2,
+      "marketplace": 2,
+      "speech": 2,
+      "summarization": 2,
+      "fulfill": 2,
+      "best": 2,
+      "way": 2,
+      "possible": 2,
+      "actors": 2,
+      "described": 2,
+      "npubs": 2,
+      "interested": 2,
+      "marker": 2,
+      "bid": 2,
+      "interpreted": 2,
+      "url": 2,
+      "specified": 2,
+      "decide": 2,
+      "waiting": 2,
+      "precisely": 2,
+      "parameters": 2,
+      "millisats": 2,
+      "publish": 2,
+      "secret": 2,
+      "encryption": 2,
+      "private": 2,
+      "04": 2,
+      "json": 2,
+      "model": 2,
+      "2": 2,
+      "0": 2,
+      "5": 2,
+      "k": 2,
+      "added": 2,
+      "original": 2,
+      "6xxx": 2,
+      "paid": 2,
+      "kind6000": 2,
+      "section": 2,
+      "requires": 2,
+      "error": 2,
+      "publishes": 2,
+      "submit": 2,
+      "events": 2,
+      "included": 2,
+      "sent": 2,
+      "flexibility": 2,
+      "behavior": 2,
+      "based": 2,
+      "serve": 2,
+      "publishing": 2,
+      "appendix": 2,
+      "wait": 2,
+      "89": 2,
+      "translating": 2,
+      "dvm": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "ce552554a08bb5b9878621abfdde3207d54cae62",
+        "timestamp": "2023-07-05T11:14:50+02:00",
+        "date": "2023-07-05",
+        "author": "pablof7z",
+        "path": "vending-machine.md",
+        "status": "Draft",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        "NIP 04",
+        "NIP 89"
+      ],
+      "body_extracted_llm": []
+    }
+  }
+}

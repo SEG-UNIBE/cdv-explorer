@@ -1,0 +1,710 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "01",
+      "title": "Basic protocol flow description",
+      "author": [
+        "fiatjaf"
+      ],
+      "created": "2022-05-01",
+      "status": "Draft",
+      "type": "Mandatory",
+      "layer": null,
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Mon Sep 30 09:17:22 2024 -0700",
+    "total_commits": 84,
+    "git_history": [
+      [
+        "ce2234e0baac9d64f7044ec1c4a5cc7210fd2fc2",
+        "Mon Sep 30 09:17:22 2024 -0700",
+        "Jon Staab"
+      ],
+      [
+        "a736e629be5c4c9125d98bdb4965851d8110c483",
+        "Sat Sep 28 12:26:48 2024 -0300",
+        "fiatjaf"
+      ],
+      [
+        "24e97c25390baa7d492d7ef71517e8f14e0e9a65",
+        "Sat Aug 31 06:45:41 2024 -0700",
+        "hodlbod"
+      ],
+      [
+        "ca3c52e3e74f0a4679f1c6c0d9ac6461ea748d2d",
+        "Tue Aug 20 12:56:05 2024 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "9c54549f1842245b842d8a66f3bade744da24189",
+        "Thu Jul 18 22:16:45 2024 -0500",
+        "Alex Gleason"
+      ],
+      [
+        "8c47577ecb6b3ae6ad840e5b4d187a3f3a6b97c8",
+        "Fri Jul 5 09:31:23 2024 -0700",
+        "Cody Casterline"
+      ],
+      [
+        "f6b08429a270fbae71f0ae1689a5adf8fa91c543",
+        "Thu Jun 27 17:00:16 2024 -0700",
+        "Jon Staab"
+      ],
+      [
+        "4aa18e329a8858ed46727b970c28652c5a0f7b43",
+        "Sun Jun 23 02:40:57 2024 +0200",
+        "Arjen Stens"
+      ],
+      [
+        "1728f93d17fe399fa6e0911e7bb69d2e159ca572",
+        "Mon Jun 17 12:38:57 2024 -0300",
+        "fiatjaf"
+      ],
+      [
+        "747f634004a918d712c32307ac58184fc11bca80",
+        "Mon Jun 17 08:36:42 2024 -0700",
+        "hodlbod"
+      ],
+      [
+        "c576737ba42772a561c6ebfd9faf0baae6d19b17",
+        "Mon Jun 17 05:33:49 2024 +1000",
+        "Arman The Parman"
+      ],
+      [
+        "a52d170c8cc5c99cf658d184922dcfe4e8177660",
+        "Sun Jun 16 19:20:00 2024 +1000",
+        "Arman The Parman"
+      ],
+      [
+        "2a8597b32dccd9b57f4a698b479e808a0625f69e",
+        "Sat Jun 15 19:34:47 2024 +1000",
+        "Arman The Parman"
+      ],
+      [
+        "092da0a4635523c0888b59c2229baa9c2e951115",
+        "Fri May 24 13:19:31 2024 -0700",
+        "hodlbod"
+      ],
+      [
+        "ca6dddde808be705785aa84dbe1fbe93adf9462c",
+        "Fri May 24 15:04:45 2024 -0300",
+        "P. Reis"
+      ],
+      [
+        "88246c27414d11983dced414462b2be2d010fad8",
+        "Wed Apr 24 12:18:27 2024 -0400",
+        "Leo Wandersleb"
+      ],
+      [
+        "9971db355164815c986251f8f89d1c7c70ec9e53",
+        "Sat Mar 30 22:33:24 2024 -0300",
+        "arthurfranca"
+      ],
+      [
+        "a46338bd6a183f17a292ea578ee69ff15ea6723f",
+        "Thu Feb 8 00:03:32 2024 +0100",
+        "Thebora Kompanioni"
+      ],
+      [
+        "6dd003508567dd780f3d8da12f0f9a62449cb992",
+        "Tue Jan 23 18:36:38 2024 +0200",
+        "Ioan Bizău"
+      ],
+      [
+        "d0812229a5569372a6cd1bdb8d148beb1820585d",
+        "Sun Jan 21 16:08:45 2024 -0300",
+        "fiatjaf"
+      ],
+      [
+        "402c330ce9d7d0d4aadb6e73acbc8c9375e04594",
+        "Fri Jan 5 11:59:49 2024 +0800",
+        "GoodDaisy"
+      ],
+      [
+        "000c51ef44c3ff1e0842139ada3859ba0a9b540f",
+        "Fri Dec 29 18:15:21 2023 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "8e5a275f991c8fe31aba9db0ea0dac2586d50ca3",
+        "Tue Dec 26 21:57:04 2023 +0100",
+        "Josua Schmid"
+      ],
+      [
+        "3b065c3c0467def35f5d38a688a1adf98d944183",
+        "Tue Dec 26 20:54:06 2023 +0100",
+        "Josua Schmid"
+      ],
+      [
+        "d30f03316f0b3ab56faba94b0abfcb9041b81764",
+        "Fri Dec 22 14:54:17 2023 +0100",
+        "Josua Schmid"
+      ],
+      [
+        "2bd4bf784112aabff9d0fc2dd90fed9107aa5cde",
+        "Wed Dec 6 12:01:27 2023 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "0ba4589550858bb86ed533f90054bfc642aa5350",
+        "Sat Dec 2 15:05:59 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "da19c078ab892b578a5c35968443205c9e8ac27f",
+        "Sun Nov 19 01:45:41 2023 +0100",
+        "Semisol"
+      ],
+      [
+        "4d709d1804de45bab3739ce814d4b0c0b211c273",
+        "Fri Nov 17 18:12:47 2023 +0300",
+        "Semisol"
+      ],
+      [
+        "37f6cbb775126b386414220f783ca0f5f85e7614",
+        "Wed Nov 15 21:42:51 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "108b7f16f9f75157cffde590a55077e4dfe7c955",
+        "Mon Nov 6 13:18:11 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "b14b9d2120ea7fd287eb44249ce5910df7ad45d2",
+        "Thu Nov 2 19:46:35 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "b33409c099b4d08278c95beda0f42ba76f55c32c",
+        "Fri Sep 29 15:47:04 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "ea8fa91c8058c8d74aff8b011196d504a2683fe9",
+        "Mon Sep 4 14:25:04 2023 +0300",
+        "Semisol"
+      ],
+      [
+        "c7191fc2f518aa85b6437c001c1fdcadaa0b38a3",
+        "Sat Sep 2 14:34:39 2023 +0300",
+        "Semisol"
+      ],
+      [
+        "e50bf508d9014cfb19bfa8a5c4ec88dc4788d490",
+        "Tue Aug 29 23:49:59 2023 +0900",
+        "jiftechnify"
+      ],
+      [
+        "d1d438bf1458fc0f59a191631d10c0bde35353be",
+        "Tue Aug 29 00:45:45 2023 +0900",
+        "Yasuhiro Matsumoto"
+      ],
+      [
+        "c5a8b75abd9ad5c0b2a680f71ae2c91beda37d5a",
+        "Sun Aug 20 04:04:55 2023 +0200",
+        "Viktor Vsk"
+      ],
+      [
+        "37c4375e297166df8350c8a7d119d33c0757228b",
+        "Sat Aug 19 23:03:19 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "72bb8a128b2d7d3c2c654644cd68d0d0fe58a3b1",
+        "Sun Aug 13 13:47:45 2023 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "9e0be8467d9e803c5f0dd8da0d41a762502786df",
+        "Wed Jul 26 15:59:57 2023 +0200",
+        "Jesper L. Nielsen"
+      ],
+      [
+        "b503f8a92b22be3037b8115fe3e644865a4fa155",
+        "Wed Jul 19 12:34:07 2023 +0900",
+        "Asai Toshiya"
+      ],
+      [
+        "d1814405beac7a936fa0dedc08359d70b5a9ab48",
+        "Sun Jul 9 17:31:08 2023 +0900",
+        "jiftechnify"
+      ],
+      [
+        "0b08cf545b50b4799000e90aa4c5ada2cb73ca62",
+        "Thu Jul 13 14:14:36 2023 +0900",
+        "Yoji Shidara"
+      ],
+      [
+        "52edccbbe380eeadb7622fc9eb255928dcff6178",
+        "Sun Jul 9 12:45:16 2023 +0900",
+        "jiftechnify"
+      ],
+      [
+        "3a32c0fd781bb1b6e2d23eb83da9f0b56e4a233e",
+        "Sun Jul 9 12:32:26 2023 +0900",
+        "jiftechnify"
+      ],
+      [
+        "21d71791c89f41fb93f84b69d6db253bb7b403c4",
+        "Tue Jul 4 13:55:15 2023 +0300",
+        "Semisol"
+      ],
+      [
+        "3f8658ecc11e593f85a6a8d7de109d0b8f3254df",
+        "Tue Jul 4 13:49:52 2023 +0300",
+        "Semisol"
+      ],
+      [
+        "b5a7b67d78ad2b8ea52d81704be6b71a9cc80dac",
+        "Mon Jul 3 18:02:15 2023 +0300",
+        "Semisol"
+      ],
+      [
+        "e0fc913719aae2ed1b10884e80f085218738f65d",
+        "Sun Jul 2 11:57:27 2023 +0100",
+        "tcheeric"
+      ],
+      [
+        "36e9fd59e93730c2d2002ec7aac58a53e58143a3",
+        "Sat Jun 17 15:49:52 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "2b34e9f4177216ea42ea32daafb3384521d94f32",
+        "Mon Jun 12 17:46:01 2023 +0900",
+        "Memory-of-Snow"
+      ],
+      [
+        "2e842b496a740f89ad80bf8257c37535d538ba54",
+        "Sat Jun 10 17:52:25 2023 +0900",
+        "Asai Toshiya"
+      ],
+      [
+        "d435ffc39cacf485662cea5c98aaa4af5af3b447",
+        "Fri Jun 9 14:13:42 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "3a38583c068369f55249429ebefe6b09f3a243d5",
+        "Wed May 31 12:35:51 2023 +0900",
+        "Asai Toshiya"
+      ],
+      [
+        "60aa6ae168e8d71e4fd247e49f8ba70fbe511fda",
+        "Tue May 9 10:17:15 2023 -0500",
+        "Robert C. Martin"
+      ],
+      [
+        "89a7aa0ea0197b478e96d2a281ac4d096c44caad",
+        "Mon May 8 11:05:58 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "ee018ef8a4af08dcf8f4c090bb3815ee13f4c627",
+        "Sun May 7 21:53:35 2023 +0200",
+        "Josua Schmid"
+      ],
+      [
+        "c5f43a8f9047184258f0e59f3e1fcd759acca4e2",
+        "Fri Apr 21 09:04:20 2023 -0400",
+        "michaelhall923"
+      ],
+      [
+        "4b44453626dccd928952392fa8c6e7807b39a8ba",
+        "Tue Apr 11 13:48:58 2023 +0900",
+        "Yoji Shidara"
+      ],
+      [
+        "fb5b7c739ff92cec4962990aa99c54fac9f5de81",
+        "Sun Apr 9 08:50:24 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "dbbf7902d9e11f3515961ff026daf961cd0d10bd",
+        "Wed Mar 15 15:14:46 2023 +0330",
+        "Sepehr Safari"
+      ],
+      [
+        "b24eb78e048fad09233527cf62c6adf3628ded0d",
+        "Thu Mar 16 20:18:59 2023 +0300",
+        "Semisol"
+      ],
+      [
+        "88009bea8509d004672551be7346a03c373491d0",
+        "Thu Mar 16 15:49:14 2023 +0100",
+        "pablof7z"
+      ],
+      [
+        "c74f11b7a921276849f4d0eebc3a90a6a3edf2c1",
+        "Fri Mar 3 22:29:39 2023 +0100",
+        "Josua Schmid"
+      ],
+      [
+        "5a80a906d41a2d756a01addb50f6bead0061fb29",
+        "Sat Feb 25 07:02:48 2023 +0100",
+        "Mike O'Bank"
+      ],
+      [
+        "379252f992c2528e287bc4ce7faee5631aa3f73c",
+        "Sat Feb 25 13:54:27 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "a9dd1ce7710bd801bdc0d09c233d087ca2d3c10d",
+        "Wed Feb 8 23:21:40 2023 +0400",
+        "Jimmy Song"
+      ],
+      [
+        "8362ff8f79d913ac1dfded9668cd31dcc8c73f22",
+        "Wed Jan 25 17:10:03 2023 +0000",
+        "Ben Franks"
+      ],
+      [
+        "69685588f0d60e73ac0148181472e1ceaea4f767",
+        "Sat Jan 21 07:36:44 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "cee42f806e4a2ff8408f47189801fcc9c25348be",
+        "Wed Dec 14 07:56:06 2022 -0800",
+        "sgmoore"
+      ],
+      [
+        "e79c84aecc2f9455380e14724315858272d825d7",
+        "Sun Dec 25 00:34:33 2022 +0100",
+        "Hampus Sjöberg"
+      ],
+      [
+        "5ef3b9c9985018ceb4aba28e775ea8c621471c17",
+        "Thu Dec 15 06:34:29 2022 -0800",
+        "Jon Staab"
+      ],
+      [
+        "67c021ae9718e423f1ac6ba691dc277440096e65",
+        "Thu Dec 8 09:21:09 2022 -0800",
+        "Jonathan Staab"
+      ],
+      [
+        "5d292e0cbe04fb60250c74e131c2f21d0d435718",
+        "Fri Dec 2 19:54:00 2022 -0300",
+        "fiatjaf"
+      ],
+      [
+        "c274c65856afb00c05796c87ed2b3f6ab4704f09",
+        "Wed Nov 16 07:26:34 2022 +1300",
+        "Mike Dilger"
+      ],
+      [
+        "79bb56c2f44cc51e8b6fa16450c268daa0d2a8b4",
+        "Fri Nov 4 09:55:32 2022 -0400",
+        "w3irdrobot"
+      ],
+      [
+        "6d86133118c75a1f6e3e9297893600d22d1cd43f",
+        "Fri Oct 7 22:20:03 2022 +0200",
+        "DZ"
+      ],
+      [
+        "c8a95a0968acb4ba463b6395d93bc667ca022705",
+        "Fri Oct 7 22:16:17 2022 +0200",
+        "DZ"
+      ],
+      [
+        "5980907797231b3efb7fc1c43c4206fd11fbd947",
+        "Mon Jun 20 22:08:36 2022 -0300",
+        "emeceve"
+      ],
+      [
+        "4d19ef128e9e1bacc7ea102dd314afd41e20fc69",
+        "Thu Jun 9 15:29:46 2022 -0300",
+        "fiatjaf"
+      ],
+      [
+        "f367d820d48b79f42770496087f79b0d60691ebd",
+        "Sun Jun 5 14:32:01 2022 -0500",
+        "Robert C. Martin"
+      ],
+      [
+        "a4aea5337fe6b93e55f9dae1974ead962c1997e8",
+        "Sun May 8 21:31:29 2022 -0300",
+        "fiatjaf"
+      ],
+      [
+        "f25c7e672c23ca5463fa5c0fcb5e5f424d956862",
+        "Sun May 1 07:48:57 2022 -0300",
+        "fiatjaf"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "event": 46,
+      "events": 29,
+      "kind": 17,
+      "tag": 17,
+      "n": 16,
+      "relay": 16,
+      "filter": 13,
+      "ok": 13,
+      "e": 12,
+      "relays": 12,
+      "messages": 11,
+      "pubkey": 11,
+      "lowercase": 10,
+      "hex": 10,
+      "string": 10,
+      "json": 10,
+      "clients": 10,
+      "subscription_id": 10,
+      "message": 10,
+      "subscription": 9,
+      "sent": 9,
+      "b1a649ebe8": 9,
+      "id": 8,
+      "created_at": 8,
+      "content": 8,
+      "use": 8,
+      "kinds": 8,
+      "false": 8,
+      "new": 7,
+      "following": 7,
+      "bytes": 7,
+      "set": 7,
+      "req": 7,
+      "list": 7,
+      "closed": 7,
+      "nip": 6,
+      "32": 6,
+      "0": 6,
+      "tags": 6,
+      "return": 6,
+      "stored": 6,
+      "values": 6,
+      "match": 6,
+      "true": 6,
+      "readable": 6,
+      "optional": 5,
+      "user": 5,
+      "integer": 5,
+      "arrays": 5,
+      "example": 5,
+      "p": 5,
+      "meaning": 5,
+      "url": 5,
+      "replaceable": 5,
+      "case": 5,
+      "authors": 5,
+      "limit": 5,
+      "client": 5,
+      "ids": 5,
+      "error": 5,
+      "defines": 4,
+      "key": 4,
+      "serialized": 4,
+      "timestamp": 4,
+      "number": 4,
+      "5c83da77af1dec6d7289834998ad7aafbd9e2191396d75ec3cc27f5a77226f36": 4,
+      "recommended": 4,
+      "value": 4,
+      "single": 4,
+      "expected": 4,
+      "query": 4,
+      "means": 4,
+      "websocket": 4,
+      "connection": 4,
+      "send": 4,
+      "attributes": 4,
+      "filters": 4,
+      "multiple": 4,
+      "conditions": 4,
+      "basic": 3,
+      "fields": 3,
+      "signatures": 3,
+      "according": 3,
+      "object": 3,
+      "sha256": 3,
+      "data": 3,
+      "unix": 3,
+      "seconds": 3,
+      "arbitrary": 3,
+      "64": 3,
+      "field": 3,
+      "array": 3,
+      "t": 3,
+      "com": 3,
+      "3": 3,
+      "refer": 3,
+      "addressable": 3,
+      "d": 3,
+      "z": 3,
+      "1": 3,
+      "defined": 3,
+      "older": 3,
+      "latest": 3,
+      "discarded": 3,
+      "connect": 3,
+      "subscriptions": 3,
+      "close": 3,
+      "pass": 3,
+      "initial": 3,
+      "received": 3,
+      "time": 3,
+      "returned": 3,
+      "property": 3,
+      "indicate": 3,
+      "human": 3,
+      "machine": 3,
+      "pow": 3,
+      "blocked": 3,
+      "sub1": 3,
+      "protocol": 2,
+      "mandatory": 2,
+      "described": 2,
+      "public": 2,
+      "standard": 2,
+      "https": 2,
+      "jsonc": 2,
+      "encoded": 2,
+      "utf": 2,
+      "8": 2,
+      "non": 2,
+      "strings": 2,
+      "implementation": 2,
+      "creating": 2,
+      "different": 2,
+      "rules": 2,
+      "followed": 2,
+      "line": 2,
+      "included": 2,
+      "characters": 2,
+      "r": 2,
+      "character": 2,
+      "conventions": 2,
+      "wss": 2,
+      "nostr": 2,
+      "f7234bd4c1394dda46d09f35bd384dd30cc552ad5541990f98844fb06676e9ca": 2,
+      "alt": 2,
+      "reply": 2,
+      "second": 2,
+      "elements": 2,
+      "convention": 2,
+      "letter": 2,
+      "indexed": 2,
+      "subscribe": 2,
+      "specify": 2,
+      "metadata": 2,
+      "created": 2,
+      "24": 2,
+      "note": 2,
+      "10000": 2,
+      "20000": 2,
+      "combination": 2,
+      "versions": 2,
+      "30000": 2,
+      "lowest": 2,
+      "lexical": 2,
+      "order": 2,
+      "etc": 2,
+      "sending": 2,
+      "types": 2,
+      "patterns": 2,
+      "s": 2,
+      "pubkeys": 2,
+      "lists": 2,
+      "condition": 2,
+      "considered": 2,
+      "contain": 2,
+      "equal": 2,
+      "interpreted": 2,
+      "present": 2,
+      "requested": 2,
+      "notice": 2,
+      "response": 2,
+      "3rd": 2,
+      "parameter": 2,
+      "prefix": 2,
+      "examples": 2,
+      "difficulty": 2,
+      "duplicate": 2,
+      "rate": 2,
+      "limited": 2,
+      "invalid": 2,
+      "database": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "f25c7e672c23ca5463fa5c0fcb5e5f424d956862",
+        "timestamp": "2022-05-01T07:48:57-03:00",
+        "date": "2022-05-01",
+        "author": "fiatjaf",
+        "path": "01.md",
+        "status": "Draft",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [],
+      "body_extracted_llm": []
+    }
+  }
+}

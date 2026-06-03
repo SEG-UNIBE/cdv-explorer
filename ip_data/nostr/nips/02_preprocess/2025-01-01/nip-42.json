@@ -1,0 +1,216 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "42",
+      "title": "Authentication of clients to relays",
+      "author": [
+        "fiatjaf"
+      ],
+      "created": "2023-01-02",
+      "status": "Draft",
+      "type": "Optional",
+      "layer": null,
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Tue Sep 3 20:41:31 2024 +0330",
+    "total_commits": 10,
+    "git_history": [
+      [
+        "e6552476aa2e5ca7256be572a9aa226ec8a022ee",
+        "Tue Sep 3 20:41:31 2024 +0330",
+        "kehiy"
+      ],
+      [
+        "ef106ecccad2f764f80cae85f2bc666a419f9e20",
+        "Thu Dec 7 21:18:45 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "2bd4bf784112aabff9d0fc2dd90fed9107aa5cde",
+        "Wed Dec 6 12:01:27 2023 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "5dcfe85306434f21ecb1e7a47edd92b2e3e64f9a",
+        "Sat Nov 18 09:13:12 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "37f6cbb775126b386414220f783ca0f5f85e7614",
+        "Wed Nov 15 21:42:51 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "60741160535de8137fb7a74bd6561adef974b884",
+        "Wed Jan 11 00:05:15 2023 -0300",
+        "Leo Wandersleb"
+      ],
+      [
+        "6a70967f0eb6e7b00fc811e34631f8db046d6e1f",
+        "Sat Jan 7 19:53:42 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "50faceef0965042714e7f50a45b102f35c5231ca",
+        "Wed Jan 4 10:24:37 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "4a5202646a86ce63a85a50b560d1a2fbce277df6",
+        "Mon Jan 2 17:26:41 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "c80be21cd44aa74efa42ead23a12343bf33ade34",
+        "Mon Jan 2 16:49:37 2023 -0300",
+        "fiatjaf"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "relay": 30,
+      "event": 20,
+      "auth": 20,
+      "client": 15,
+      "message": 11,
+      "challenge": 11,
+      "clients": 10,
+      "sent": 8,
+      "ok": 8,
+      "relays": 7,
+      "kind": 7,
+      "sub_1": 7,
+      "authentication": 6,
+      "closed": 6,
+      "required": 6,
+      "nip": 5,
+      "events": 5,
+      "response": 5,
+      "require": 4,
+      "signed": 4,
+      "users": 4,
+      "send": 4,
+      "22242": 4,
+      "req": 4,
+      "id": 4,
+      "abcdef": 4,
+      "012345": 4,
+      "defines": 3,
+      "authenticate": 3,
+      "example": 3,
+      "4": 3,
+      "new": 3,
+      "messages": 3,
+      "url": 3,
+      "write": 3,
+      "valid": 3,
+      "true": 3,
+      "ephemeral": 2,
+      "want": 2,
+      "access": 2,
+      "restricted": 2,
+      "whitelisted": 2,
+      "key": 2,
+      "accept": 2,
+      "published": 2,
+      "authenticated": 2,
+      "limit": 2,
+      "dms": 2,
+      "query": 2,
+      "subscriptions": 2,
+      "protocol": 2,
+      "following": 2,
+      "form": 2,
+      "string": 2,
+      "like": 2,
+      "tags": 2,
+      "created_at": 2,
+      "current": 2,
+      "time": 2,
+      "prefixes": 2,
+      "performed": 2,
+      "perform": 2,
+      "flow": 2,
+      "duration": 2,
+      "connection": 2,
+      "kinds": 2,
+      "tag": 2,
+      "matches": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "c80be21cd44aa74efa42ead23a12343bf33ade34",
+        "timestamp": "2023-01-02T16:56:44-03:00",
+        "date": "2023-01-02",
+        "author": "fiatjaf",
+        "path": "42.md",
+        "status": "Draft",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [],
+      "body_extracted_llm": []
+    }
+  }
+}

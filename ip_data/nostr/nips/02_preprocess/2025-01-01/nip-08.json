@@ -1,0 +1,176 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "08",
+      "title": "Handling Mentions",
+      "author": [
+        "fiatjaf"
+      ],
+      "created": "2022-05-01",
+      "status": "Final",
+      "type": "Optional",
+      "layer": null,
+      "kind": "unrecommended"
+    }
+  },
+  "meta": {
+    "last_commit": "Wed Nov 15 21:42:51 2023 -0300",
+    "total_commits": 8,
+    "git_history": [
+      [
+        "37f6cbb775126b386414220f783ca0f5f85e7614",
+        "Wed Nov 15 21:42:51 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "b315d1adb7acb0a7465c5a5d9fefc8c2db45dfa6",
+        "Wed Apr 19 22:32:08 2023 +0900",
+        "Asai Toshiya"
+      ],
+      [
+        "9b575b151467b9eba055585820a4fa56822c6d64",
+        "Sat Mar 25 21:59:01 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "9764a3b510c11719c76ec86240c67049981b8b45",
+        "Wed Mar 22 19:50:03 2023 -0300",
+        "arthurfranca"
+      ],
+      [
+        "8b158e92279c08af812307ed7294378ddb8abbdd",
+        "Tue Mar 21 15:24:05 2023 -0300",
+        "arthurfranca"
+      ],
+      [
+        "b8e657bb3764af8bec952a6e3d5d8d3319abccf9",
+        "Sun Mar 5 20:49:57 2023 +0000",
+        "shafemtol"
+      ],
+      [
+        "743e43a8d4bf4a37022e3b6551524b12e7cc54a0",
+        "Tue Nov 22 08:59:10 2022 -0300",
+        "fiatjaf"
+      ],
+      [
+        "f25c7e672c23ca5463fa5c0fcb5e5f424d956862",
+        "Sun May 1 07:48:57 2022 -0300",
+        "fiatjaf"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "index": 6,
+      "mentions": 5,
+      "tag": 5,
+      "pubkey": 4,
+      "tags": 4,
+      "event": 4,
+      "clients": 3,
+      "content": 3,
+      "example": 3,
+      "client": 3,
+      "array": 3,
+      "unrecommended": 2,
+      "nip": 2,
+      "27": 2,
+      "inside": 2,
+      "text_note": 2,
+      "mention": 2,
+      "normal": 2,
+      "text": 2,
+      "p": 2,
+      "replace": 2,
+      "notation": 2,
+      "process": 2,
+      "actual": 2,
+      "contents": 2,
+      "mentioned": 2,
+      "augmentation": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "f25c7e672c23ca5463fa5c0fcb5e5f424d956862",
+        "timestamp": "2022-05-01T07:48:57-03:00",
+        "date": "2022-05-01",
+        "author": "fiatjaf",
+        "path": "08.md",
+        "status": "Draft",
+        "standard": ""
+      },
+      {
+        "commit": "743e43a8d4bf4a37022e3b6551524b12e7cc54a0",
+        "timestamp": "2022-11-22T14:52:34-03:00",
+        "date": "2022-11-22",
+        "author": "fiatjaf",
+        "path": "08.md",
+        "status": "Final",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        "NIP 27"
+      ],
+      "body_extracted_llm": []
+    }
+  }
+}

@@ -1,0 +1,189 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "61",
+      "title": "Nut Zaps",
+      "author": [
+        "Pablo Fernandez"
+      ],
+      "created": "2024-10-25",
+      "status": "Unknown",
+      "type": null,
+      "layer": null,
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Fri Oct 25 17:54:49 2024 +0100",
+    "total_commits": 1,
+    "git_history": [
+      [
+        "ba46b23d95b186c9a8fedabf8324af2ae40e8ce4",
+        "Fri Oct 25 17:54:49 2024 +0100",
+        "Pablo Fernandez"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 60.0,
+      "passed_checks": 3,
+      "failed_checks": 2,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 60.0,
+        "passed_checks": 3,
+        "failed_checks": 2,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": false,
+            "details": "Tag 'type' not found"
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "event": 28,
+      "kind": 26,
+      "pubkey": 24,
+      "recipient": 16,
+      "mint": 15,
+      "10019": 14,
+      "clients": 14,
+      "p2pk": 13,
+      "nutzap": 13,
+      "user": 12,
+      "1": 11,
+      "nut": 10,
+      "bob": 9,
+      "mints": 9,
+      "nip": 8,
+      "token": 8,
+      "9321": 8,
+      "s": 8,
+      "sender": 8,
+      "e": 7,
+      "zap": 6,
+      "cashu": 6,
+      "relays": 6,
+      "p": 6,
+      "wallet": 6,
+      "relay": 6,
+      "sat": 5,
+      "id": 5,
+      "nutzaps": 5,
+      "listed": 5,
+      "use": 5,
+      "receiving": 5,
+      "7376": 5,
+      "zaps": 4,
+      "2": 4,
+      "locked": 4,
+      "client": 4,
+      "events": 4,
+      "money": 4,
+      "content": 4,
+      "u": 4,
+      "alice": 3,
+      "fetches": 3,
+      "swaps": 3,
+      "tokens": 3,
+      "tagging": 3,
+      "jsonc": 3,
+      "tags": 3,
+      "https": 3,
+      "send": 3,
+      "outputs": 3,
+      "t": 3,
+      "unit": 3,
+      "proof": 3,
+      "hint": 3,
+      "specified": 3,
+      "ecash": 3,
+      "filtering": 3,
+      "created": 3,
+      "tag": 3,
+      "redeemed": 3,
+      "65": 3,
+      "private": 3,
+      "key": 3,
+      "wants": 2,
+      "3": 2,
+      "indicated": 2,
+      "proofs": 2,
+      "minted": 2,
+      "wss": 2,
+      "explicitly": 2,
+      "receive": 2,
+      "markers": 2,
+      "base": 2,
+      "lock": 2,
+      "appendix": 2,
+      "published": 2,
+      "optional": 2,
+      "exactly": 2,
+      "possible": 2,
+      "choose": 2,
+      "kinds": 2,
+      "new": 2,
+      "sent": 2,
+      "37375": 2,
+      "check": 2,
+      "avoid": 2,
+      "07": 2,
+      "46": 2,
+      "sign": 2
+    },
+    "changes_in_status": [],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        "NIP 07",
+        "NIP 44",
+        "NIP 46",
+        "NIP 60",
+        "NIP 65"
+      ],
+      "body_extracted_llm": []
+    }
+  }
+}

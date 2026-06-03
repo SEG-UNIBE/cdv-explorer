@@ -1,0 +1,274 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "55",
+      "title": "Android Signer Application",
+      "author": [
+        "fiatjaf"
+      ],
+      "created": "2024-06-05",
+      "status": "Draft",
+      "type": "Optional",
+      "layer": null,
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Fri Nov 1 08:24:52 2024 -0300",
+    "total_commits": 7,
+    "git_history": [
+      [
+        "03a555beb58296bef326f6469bbcf2b73ea144f6",
+        "Fri Nov 1 08:24:52 2024 -0300",
+        "greenart7c3"
+      ],
+      [
+        "93e6c3880beb3818b47d22c07fd11aa5f1356c41",
+        "Fri Nov 1 08:16:06 2024 -0300",
+        "greenart7c3"
+      ],
+      [
+        "061d2ac47d79819e0efa938f231f2511ac40b419",
+        "Fri Nov 1 08:03:10 2024 -0300",
+        "greenart7c3"
+      ],
+      [
+        "30f39d35d18f49adc86c483c34b232560772d75c",
+        "Fri Oct 11 07:29:54 2024 -0300",
+        "greenart7c3"
+      ],
+      [
+        "7bb8997be5f8cbe1004e7c75724feaa56ccd08de",
+        "Tue Jul 2 16:02:31 2024 +0800",
+        "DASHU"
+      ],
+      [
+        "b4a2561df7325b8624bc5ffad154ec946ade2f1e",
+        "Mon Sep 2 20:33:45 2024 +0330",
+        "kehiy"
+      ],
+      [
+        "a6dfc7b5e513ea3070abcded3608b28e4d4a1512",
+        "Wed Jun 5 15:24:43 2024 -0300",
+        "fiatjaf"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "intent": 120,
+      "result": 98,
+      "val": 59,
+      "kotlin": 42,
+      "signer": 39,
+      "id": 37,
+      "pubkey": 35,
+      "null": 33,
+      "return": 29,
+      "putextra": 28,
+      "example": 27,
+      "params": 27,
+      "com": 26,
+      "data": 24,
+      "event": 23,
+      "application": 22,
+      "nostrsigner": 21,
+      "type": 21,
+      "context": 20,
+      "uri": 18,
+      "parse": 18,
+      "getstringextra": 18,
+      "user": 18,
+      "index": 17,
+      "android": 16,
+      "send": 16,
+      "signature": 15,
+      "content": 13,
+      "package": 13,
+      "encryptedtext": 12,
+      "returntype": 11,
+      "action_view": 10,
+      "listof": 10,
+      "contentresolver": 10,
+      "column": 10,
+      "compressiontype": 10,
+      "window": 10,
+      "href": 10,
+      "sign_event": 9,
+      "eventjson": 9,
+      "query": 9,
+      "getcolumnindex": 9,
+      "getstring": 9,
+      "js": 9,
+      "callbackurl": 9,
+      "https": 9,
+      "json": 8,
+      "startactivity": 8,
+      "approved": 8,
+      "plaintext": 8,
+      "movetofirst": 8,
+      "hex_pub_key": 8,
+      "sending": 7,
+      "waiting": 7,
+      "current": 7,
+      "logged": 7,
+      "current_user": 7,
+      "fields": 7,
+      "sent": 7,
+      "nip04_decrypt": 7,
+      "logged_in_user_pubkey": 7,
+      "url": 7,
+      "get_public_key": 6,
+      "nip44_decrypt": 6,
+      "nip04_encrypt": 6,
+      "control": 6,
+      "case": 6,
+      "some_id": 6,
+      "account": 6,
+      "keypair": 6,
+      "nip44_encrypt": 6,
+      "get_relays": 6,
+      "decrypt_zap_event": 6,
+      "intents": 5,
+      "use": 5,
+      "permissions": 5,
+      "results": 5,
+      "applications": 4,
+      "add": 4,
+      "check": 4,
+      "0": 4,
+      "framework": 4,
+      "hex": 4,
+      "var": 4,
+      "newanchor": 4,
+      "client": 3,
+      "web": 3,
+      "xml": 3,
+      "action": 3,
+      "multiple": 3,
+      "methods": 3,
+      "callback": 3,
+      "html": 3,
+      "document": 3,
+      "body": 3,
+      "param1": 3,
+      "nip": 2,
+      "usage": 2,
+      "androidmanifest": 2,
+      "queries": 2,
+      "category": 2,
+      "scheme": 2,
+      "function": 2,
+      "infos": 2,
+      "rememberlauncherforactivityresult": 2,
+      "documentation": 2,
+      "party": 2,
+      "library": 2,
+      "launcher": 2,
+      "toast": 2,
+      "sign": 2,
+      "rejected": 2,
+      "create": 2,
+      "flags": 2,
+      "tojson": 2,
+      "permission": 2,
+      "kind": 2,
+      "encrypting": 2,
+      "decrypting": 2,
+      "relayjsontext": 2,
+      "returns": 2,
+      "columns": 2,
+      "open": 2,
+      "indexjson": 2,
+      "t": 2,
+      "parameter": 2,
+      "gzip": 2,
+      "head": 2,
+      "meta": 2,
+      "width": 2,
+      "1": 2,
+      "title": 2,
+      "h1": 2,
+      "test": 2,
+      "script": 2,
+      "let": 2,
+      "encodedjson": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "a6dfc7b5e513ea3070abcded3608b28e4d4a1512",
+        "timestamp": "2024-06-05T15:24:43-03:00",
+        "date": "2024-06-05",
+        "author": "fiatjaf",
+        "path": "55.md",
+        "status": "Draft",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        "NIP 04",
+        "NIP 44",
+        "NIP DE"
+      ],
+      "body_extracted_llm": []
+    }
+  }
+}

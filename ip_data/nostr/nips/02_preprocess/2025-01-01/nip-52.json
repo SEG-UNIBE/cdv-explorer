@@ -1,0 +1,348 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "52",
+      "title": "Calendar Events",
+      "author": [
+        "Terry Yiu"
+      ],
+      "created": "2023-06-10",
+      "status": "Draft",
+      "type": "Optional",
+      "layer": null,
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Sat Sep 28 12:26:48 2024 -0300",
+    "total_commits": 16,
+    "git_history": [
+      [
+        "a736e629be5c4c9125d98bdb4965851d8110c483",
+        "Sat Sep 28 12:26:48 2024 -0300",
+        "fiatjaf"
+      ],
+      [
+        "ca3c52e3e74f0a4679f1c6c0d9ac6461ea748d2d",
+        "Tue Aug 20 12:56:05 2024 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "ec1f0fcadaa7b62cc17633cc5a86686e85ebe7a6",
+        "Sun Aug 11 15:50:39 2024 -0400",
+        "Terry Yiu"
+      ],
+      [
+        "d36b24c82a07ad9769d5ff9aa2e01cfa65ca0614",
+        "Thu Aug 8 01:04:25 2024 -0400",
+        "Terry Yiu"
+      ],
+      [
+        "8d451b3dc3ac5c0ccd7d6bdab4a7a5b7a420900d",
+        "Wed Aug 7 23:44:28 2024 -0400",
+        "Terry Yiu"
+      ],
+      [
+        "6de688f4594aa2c22b348669bdca6a503a6bf568",
+        "Wed Aug 7 08:45:21 2024 +0000",
+        "Vic"
+      ],
+      [
+        "dea4bebf4b1bf36feeb8a066bccf62b9b1aeb5c5",
+        "Tue Aug 6 23:55:47 2024 -0400",
+        "Terry Yiu"
+      ],
+      [
+        "d0812229a5569372a6cd1bdb8d148beb1820585d",
+        "Sun Jan 21 16:08:45 2024 -0300",
+        "fiatjaf"
+      ],
+      [
+        "8331354947f2d577e13eb5da4a56133071cb1019",
+        "Wed Jan 10 10:43:30 2024 -0300",
+        "fiatjaf"
+      ],
+      [
+        "ec08d65665fd533be685702501b69fe9ce7bdd24",
+        "Fri Dec 8 09:59:44 2023 -0800",
+        "Terry Yiu"
+      ],
+      [
+        "b8308a9a040005c7a06369d6f71a6f2db6ee9c92",
+        "Sun Dec 3 10:29:59 2023 +0000",
+        "Terry Yiu"
+      ],
+      [
+        "37f6cbb775126b386414220f783ca0f5f85e7614",
+        "Wed Nov 15 21:42:51 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "08d3eff350d11657160eca78459da34d9254252b",
+        "Sat Nov 4 16:55:28 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "12238ebe2b234b7438864b521c0886471aa351a8",
+        "Mon Sep 11 13:03:32 2023 +0900",
+        "Asai Toshiya"
+      ],
+      [
+        "72bb8a128b2d7d3c2c654644cd68d0d0fe58a3b1",
+        "Sun Aug 13 13:47:45 2023 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "b4cdc1a73d415c79c35655fa02f5e55cd1f2a60c",
+        "Sat Jun 10 20:57:57 2023 -0400",
+        "Terry Yiu"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "calendar": 83,
+      "event": 76,
+      "optional": 33,
+      "events": 20,
+      "kind": 16,
+      "pubkey": 16,
+      "url": 16,
+      "required": 15,
+      "hex": 15,
+      "time": 14,
+      "title": 14,
+      "32": 14,
+      "bytes": 14,
+      "d": 13,
+      "e": 12,
+      "location": 12,
+      "timestamp": 12,
+      "g": 11,
+      "tags": 11,
+      "end": 11,
+      "relay": 11,
+      "tag": 11,
+      "rsvp": 11,
+      "format": 10,
+      "31922": 10,
+      "start": 10,
+      "repeated": 10,
+      "31923": 10,
+      "zone": 9,
+      "identifier": 9,
+      "p": 9,
+      "recommended": 9,
+      "content": 8,
+      "description": 8,
+      "lowercase": 8,
+      "encoded": 8,
+      "unix": 8,
+      "seconds": 8,
+      "user": 8,
+      "date": 7,
+      "id": 7,
+      "creator": 7,
+      "nip": 6,
+      "list": 6,
+      "uuid": 6,
+      "geohash": 6,
+      "role": 6,
+      "t": 6,
+      "r": 6,
+      "author": 6,
+      "clients": 6,
+      "public": 5,
+      "specific": 4,
+      "based": 4,
+      "use": 4,
+      "uses": 4,
+      "string": 4,
+      "universally": 4,
+      "unique": 4,
+      "generated": 4,
+      "client": 4,
+      "creating": 4,
+      "yyyy": 4,
+      "mm": 4,
+      "dd": 4,
+      "omitted": 4,
+      "coordinates": 4,
+      "meeting": 4,
+      "video": 4,
+      "participant": 4,
+      "links": 4,
+      "sha": 4,
+      "256": 4,
+      "serialized": 4,
+      "data": 4,
+      "key": 4,
+      "created_at": 4,
+      "iana": 4,
+      "database": 4,
+      "image": 4,
+      "cornychat": 4,
+      "com": 4,
+      "responded": 4,
+      "response": 4,
+      "intentionally": 4,
+      "free": 4,
+      "status": 4,
+      "recurring": 4,
+      "ends": 3,
+      "_addressable": 3,
+      "event_": 3,
+      "detailed": 3,
+      "follows": 3,
+      "s": 3,
+      "categorize": 3,
+      "etc": 3,
+      "reference": 3,
+      "start_tzid": 3,
+      "l": 3,
+      "audiospace": 3,
+      "31924": 3,
+      "choose": 3,
+      "declined": 3,
+      "busy": 3,
+      "complexity": 3,
+      "09": 2,
+      "term": 2,
+      "represented": 2,
+      "different": 2,
+      "day": 2,
+      "inclusive": 2,
+      "iso": 2,
+      "8601": 2,
+      "exists": 2,
+      "exclusive": 2,
+      "address": 2,
+      "gps": 2,
+      "room": 2,
+      "link": 2,
+      "https": 2,
+      "en": 2,
+      "wikipedia": 2,
+      "org": 2,
+      "wiki": 2,
+      "associate": 2,
+      "searchable": 2,
+      "physical": 2,
+      "hashtag": 2,
+      "references": 2,
+      "web": 2,
+      "pages": 2,
+      "documents": 2,
+      "calls": 2,
+      "recorded": 2,
+      "videos": 2,
+      "following": 2,
+      "deprecated": 2,
+      "available": 2,
+      "jsonc": 2,
+      "participants": 2,
+      "hashtags": 2,
+      "defined": 2,
+      "america": 2,
+      "costa_rica": 2,
+      "end_tzid": 2,
+      "summary": 2,
+      "brief": 2,
+      "label": 2,
+      "custom": 2,
+      "replaceable": 2,
+      "multiple": 2,
+      "json": 2,
+      "attendance": 2,
+      "attend": 2,
+      "prompt": 2,
+      "tagged": 2,
+      "rsvps": 2,
+      "defining": 2,
+      "changes": 2,
+      "revision": 2,
+      "interpret": 2,
+      "31925": 2,
+      "note": 2,
+      "accepted": 2,
+      "tentative": 2,
+      "determines": 2,
+      "fb": 2,
+      "metadata": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "b4cdc1a73d415c79c35655fa02f5e55cd1f2a60c",
+        "timestamp": "2023-08-01T12:28:54-03:00",
+        "date": "2023-08-01",
+        "author": "Terry Yiu",
+        "path": "52.md",
+        "status": "Draft",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        "NIP 09"
+      ],
+      "body_extracted_llm": []
+    }
+  }
+}

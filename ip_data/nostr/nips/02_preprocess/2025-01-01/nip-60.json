@@ -1,0 +1,215 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "60",
+      "title": "Cashu Wallet",
+      "author": [
+        "Pablo Fernandez"
+      ],
+      "created": "2024-10-25",
+      "status": "Draft",
+      "type": "Optional",
+      "layer": null,
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Sun Oct 27 22:56:40 2024 +0100",
+    "total_commits": 2,
+    "git_history": [
+      [
+        "f21aa981d4960dae858ce1da87b553598c5010e0",
+        "Sun Oct 27 22:56:40 2024 +0100",
+        "ilcompratoreconsapevole"
+      ],
+      [
+        "ba46b23d95b186c9a8fedabf8324af2ae40e8ce4",
+        "Fri Oct 25 17:54:49 2024 +0100",
+        "Pablo Fernandez"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "wallet": 35,
+      "event": 29,
+      "proofs": 19,
+      "id": 19,
+      "kind": 17,
+      "token": 17,
+      "mint": 16,
+      "nip": 14,
+      "tags": 13,
+      "1": 11,
+      "events": 11,
+      "user": 10,
+      "37375": 10,
+      "content": 10,
+      "optional": 8,
+      "s": 8,
+      "relays": 7,
+      "2": 7,
+      "7375": 7,
+      "unspent": 7,
+      "nip44_encrypt": 7,
+      "balance": 7,
+      "e": 7,
+      "tag": 7,
+      "pubkey": 7,
+      "created": 7,
+      "7376": 6,
+      "https": 6,
+      "relay": 6,
+      "encrypted": 5,
+      "clients": 5,
+      "client": 5,
+      "4": 5,
+      "quote": 5,
+      "new": 4,
+      "funds": 4,
+      "state": 4,
+      "private": 4,
+      "key": 4,
+      "spending": 4,
+      "history": 4,
+      "jsonc": 4,
+      "sat": 4,
+      "d": 4,
+      "delete": 4,
+      "direction": 4,
+      "destroyed": 4,
+      "expiration": 4,
+      "cashu": 3,
+      "use": 3,
+      "users": 3,
+      "61": 3,
+      "unit": 3,
+      "description": 3,
+      "fetching": 3,
+      "44": 3,
+      "multiple": 3,
+      "stablenut": 3,
+      "umint": 3,
+      "cash": 3,
+      "spent": 3,
+      "create": 3,
+      "transaction": 3,
+      "received": 3,
+      "hint": 3,
+      "redeemed": 3,
+      "fetch": 3,
+      "jsonconc": 3,
+      "information": 2,
+      "stored": 2,
+      "applications": 2,
+      "creating": 2,
+      "wallets": 2,
+      "receiving": 2,
+      "flow": 2,
+      "represent": 2,
+      "3": 2,
+      "privkey": 2,
+      "shitposting": 2,
+      "day": 2,
+      "wss": 2,
+      "related": 2,
+      "found": 2,
+      "65": 2,
+      "human": 2,
+      "readable": 2,
+      "field": 2,
+      "wants": 2,
+      "add": 2,
+      "deleted": 2,
+      "record": 2,
+      "publish": 2,
+      "sent": 2,
+      "marker": 2,
+      "check": 2,
+      "validating": 2,
+      "sats": 2,
+      "8": 2,
+      "roll": 2,
+      "application": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "ba46b23d95b186c9a8fedabf8324af2ae40e8ce4",
+        "timestamp": "2024-10-25T13:54:49-03:00",
+        "date": "2024-10-25",
+        "author": "Pablo Fernandez",
+        "path": "60.md",
+        "status": "Draft",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        "NIP 09",
+        "NIP 0D",
+        "NIP 40",
+        "NIP 44",
+        "NIP 61",
+        "NIP 65"
+      ],
+      "body_extracted_llm": []
+    }
+  }
+}

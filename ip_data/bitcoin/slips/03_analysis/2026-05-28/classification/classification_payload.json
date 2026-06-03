@@ -1,0 +1,102 @@
+{
+  "meta": {
+    "node_count": 23,
+    "generated_metrics": [
+      "sankey_full",
+      "sankey_grouped",
+      "status_over_time"
+    ]
+  },
+  "sankey_full": {
+    "links": []
+  },
+  "sankey_grouped": {
+    "links": [
+      {
+        "source": "Other",
+        "target": "Final",
+        "count": 10
+      },
+      {
+        "source": "Final",
+        "target": "Standard",
+        "count": 10
+      },
+      {
+        "source": "Other",
+        "target": "Draft",
+        "count": 6
+      },
+      {
+        "source": "Draft",
+        "target": "Standard",
+        "count": 6
+      },
+      {
+        "source": "Other",
+        "target": "Active",
+        "count": 5
+      },
+      {
+        "source": "Active",
+        "target": "Standard",
+        "count": 4
+      },
+      {
+        "source": "Other",
+        "target": "Accepted",
+        "count": 2
+      },
+      {
+        "source": "Accepted",
+        "target": "Informational",
+        "count": 1
+      },
+      {
+        "source": "Active",
+        "target": "Informational",
+        "count": 1
+      },
+      {
+        "source": "Accepted",
+        "target": "Standard",
+        "count": 1
+      }
+    ]
+  },
+  "status_over_time": {
+    "2014": {
+      "Accepted": 1,
+      "Active": 1,
+      "Draft": 1,
+      "Final": 1
+    },
+    "2015": {
+      "Active": 1,
+      "Final": 2
+    },
+    "2016": {
+      "Active": 1,
+      "Final": 2
+    },
+    "2017": {
+      "Active": 1,
+      "Draft": 1,
+      "Final": 1
+    },
+    "2018": {
+      "Active": 1
+    },
+    "2019": {
+      "Accepted": 1,
+      "Draft": 2,
+      "Final": 3
+    },
+    "2021": {
+      "Draft": 1
+    },
+    "2022": {
+      "Draft": 1
+    }
+  }
+}

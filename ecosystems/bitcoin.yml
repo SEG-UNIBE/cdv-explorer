@@ -14,6 +14,7 @@ sources:
     compliance_checker: bip
     repository_owner: bitcoin
     repository_name: bips
+    current_base_url: https://bips.dev
 
     harvest: ip_data/bitcoin/bips/01_harvest
     preprocess: ip_data/bitcoin/bips/02_preprocess
@@ -99,3 +100,54 @@ sources:
             - Complete
             - Deployed
             - Closed
+
+  slips:
+    display_name: SatoshiLabs Improvement Proposals
+    proposal_acronym: SLIP
+    proposal_term_singular: SatoshiLabs Improvement Proposal
+    proposal_term_plural: SatoshiLabs Improvement Proposals
+
+    source_type: github_repo
+    harvester: github_repo
+    preprocessor: rfc_preamble
+    compliance_checker: slip
+    repository_owner: satoshilabs
+    repository_name: slips
+
+    harvest: ip_data/bitcoin/slips/01_harvest
+    preprocess: ip_data/bitcoin/slips/02_preprocess
+    analysis: ip_data/bitcoin/slips/03_analysis
+    postprocess: ip_data/bitcoin/slips/04_postprocess
+
+    document_prefix: slip
+    primary_id_field: slip
+    document_file_pattern: '^slip-\d{4}\.md$'
+    document_dir_pattern: '^slip-\d{4}$'
+    reference_pattern: '\bSLIP[-#\s]?(\d+)\b'
+    max_proposal_id: 9999
+    stop_words_file: assets/stopwords/en_basic.txt
+
+    preamble:
+      required_fields:
+        - slip
+        - title
+        - authors
+        - status
+        - type
+        - created
+      optional_fields: []
+      field_aliases:
+        number: slip
+        author: authors
+      expected_headlines:
+        abstract: 2
+      list_valued_fields:
+        - authors
+
+    classification:
+      dimensions:
+        status:
+          aliases: {}
+        type:
+          aliases: {}
+      regimes: []

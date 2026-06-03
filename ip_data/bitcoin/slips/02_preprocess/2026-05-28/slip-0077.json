@@ -1,0 +1,188 @@
+{
+  "raw": {
+    "preamble": {
+      "slip": "77",
+      "title": "Deterministic blinding key derivation for Confidential Transactions",
+      "author": [
+        "Roman Zeyde"
+      ],
+      "authors": [
+        "Roman Zeyde <mail@romanzey.de>"
+      ],
+      "status": "Draft",
+      "type": "Standard",
+      "created": "2019-06-15"
+    }
+  },
+  "meta": {
+    "last_commit": "Sat Jul 4 18:23:51 2020 +0200",
+    "total_commits": 4,
+    "git_history": [
+      [
+        "ae15f978d0dfb0cd0ac869018847e6bd1dac5a8b",
+        "Sat Jul 4 18:23:51 2020 +0200",
+        "Marco Argentieri"
+      ],
+      [
+        "4a9ca86a108a3648c957c67eaacc3f191d2b6089",
+        "Mon Jul 29 13:13:53 2019 +0300",
+        "Roman Zeyde"
+      ],
+      [
+        "e3947761c2f840b47275b074edbd771cc69d35fd",
+        "Mon Jul 1 21:39:00 2019 +0300",
+        "Roman Zeyde"
+      ],
+      [
+        "2992f3f681a0c4c75228aa55d5b10a3f9385b149",
+        "Sat Jun 15 21:38:44 2019 +0300",
+        "Roman Zeyde"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 85.71,
+      "passed_checks": 6,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 7,
+      "slip": {
+        "score": 85.71,
+        "passed_checks": 6,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 7,
+        "checks": [
+          {
+            "id": "slip.required_field.slip",
+            "label": "Required field 'slip' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.authors",
+            "label": "Required field 'authors' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.type",
+            "label": "Required field 'type' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.created",
+            "label": "Required field 'created' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "slip",
+            "passed": false,
+            "details": "Missing: abstract"
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "key": 12,
+      "derivation": 10,
+      "confidential": 9,
+      "transactions": 8,
+      "blinding": 7,
+      "shared": 7,
+      "https": 7,
+      "elements": 6,
+      "com": 6,
+      "slip": 5,
+      "receiver": 5,
+      "ecdh": 5,
+      "nonce": 5,
+      "blinding_private_key": 5,
+      "github": 5,
+      "blob": 5,
+      "master": 4,
+      "seed": 4,
+      "0077": 3,
+      "deterministic": 3,
+      "sender": 3,
+      "use": 3,
+      "liquid": 3,
+      "scheme": 3,
+      "public": 3,
+      "master_blinding_key": 3,
+      "msg": 3,
+      "b": 3,
+      "sha256": 3,
+      "elementsproject": 3,
+      "developer": 3,
+      "guide": 3,
+      "type": 2,
+      "design": 2,
+      "private": 2,
+      "keys": 2,
+      "blinding_public_key": 2,
+      "order": 2,
+      "blind": 2,
+      "transaction": 2,
+      "outputs": 2,
+      "output": 2,
+      "s": 2,
+      "able": 2,
+      "unblinding": 2,
+      "0021": 2,
+      "domain": 2,
+      "root": 2,
+      "hmac_sha512": 2,
+      "label": 2,
+      "node": 2,
+      "32": 2,
+      "derived": 2,
+      "bip": 2,
+      "0039": 2,
+      "mnemonic": 2,
+      "compressed": 2,
+      "tutorial": 2,
+      "src": 2,
+      "wallet": 2,
+      "cpp": 2
+    },
+    "changes_in_status": [],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        "SLIP 21"
+      ],
+      "body_extracted_llm": []
+    }
+  }
+}

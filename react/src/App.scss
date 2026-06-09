@@ -310,6 +310,58 @@
   }
 }
 
+.content.content--dashboard {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  bottom: 16px;
+  left: 20px;
+  max-width: none;
+  min-height: auto;
+  height: auto;
+  margin: 0;
+  overflow: hidden;
+}
+
+@media (min-width: 961px) {
+  html.dashboard-route-active,
+  body.dashboard-route-active {
+    height: 100%;
+    overflow: hidden;
+  }
+}
+
+.dashboard-shell {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 1.5rem;
+  height: 100%;
+  min-height: 0;
+}
+
+.dashboard-ribbon {
+  min-height: 0;
+  overflow-y: auto;
+  border: 1px solid var(--app-border);
+  border-radius: 0.75rem;
+  background: color-mix(in srgb, var(--app-surface) 92%, var(--app-bg));
+  box-shadow: var(--app-shadow);
+  padding: 1rem;
+}
+
+.dashboard-main {
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0 0.35rem 2.5rem 0;
+  scrollbar-gutter: stable;
+}
+
+.dashboard-main__inner {
+  width: min(100%, 1480px);
+  margin: 0 auto;
+}
+
 .dashboard-toolbar {
   display: flex;
   justify-content: space-between;
@@ -346,47 +398,93 @@
   margin: 0;
 }
 
-@keyframes controls-breathe {
-  0%, 100% { box-shadow: var(--app-shadow), 0 0 14px 4px color-mix(in srgb, var(--primary-color) 50%, transparent); }
-  50%       { box-shadow: var(--app-shadow), 0 0 14px 4px transparent; }
-}
-
-.dashboard-sticky-controls {
-  width: min(280px, 100%);
-  margin-left: auto;
-  position: sticky;
-  top: 92px;
-  z-index: 50;
-  background: var(--app-surface);
-  border: 1px solid var(--app-border);
-  border-radius: 0.75rem;
-  padding: 0.8rem;
-  animation: controls-breathe 3.5s ease-in-out infinite;
-
-  &:hover,
-  &:focus-within {
-    animation-play-state: paused;
-  }
-
-  @media (min-width: 901px) {
-    animation: none;
-  }
-}
-
-.dashboard-sticky-controls__link-row {
+.dashboard-ribbon__brand {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 0.22rem;
-  margin-top: 0.9rem;
-  padding-top: 0.8rem;
-  border-top: 1px solid var(--app-border);
+  gap: 0.8rem;
+  min-width: 0;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--app-border);
 }
 
-.dashboard-sticky-controls__source-row {
-  margin-bottom: 0.9rem;
-  padding-bottom: 0.8rem;
+.dashboard-ribbon__title {
+  margin: 0;
+  font-family: "Nova Round", sans-serif;
+  font-size: 1.15rem;
+  line-height: 1.15;
+  color: var(--app-text);
+}
+
+.dashboard-ribbon__brand span {
+  display: block;
+  margin-top: 0.3rem;
+  color: var(--app-text-muted);
+  font-size: 0.82rem;
+  overflow-wrap: anywhere;
+}
+
+.dashboard-ribbon__toc,
+.dashboard-ribbon__controls {
+  margin-top: 1rem;
+}
+
+.dashboard-ribbon__label {
+  margin-bottom: 0.55rem;
+  color: var(--app-text-muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.dashboard-ribbon__toc {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding-bottom: 1rem;
   border-bottom: 1px solid var(--app-border);
+}
+
+.dashboard-ribbon__toc-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 38px;
+  border: 1px solid transparent;
+  border-radius: 0.45rem;
+  background: transparent;
+  color: var(--app-text);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  padding: 0 0.65rem;
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease;
+}
+
+.dashboard-ribbon__toc-item:hover,
+.dashboard-ribbon__toc-item:focus-visible {
+  border-color: var(--app-border);
+  background: var(--app-surface-subtle);
+}
+
+.dashboard-ribbon__toc-item.is-active {
+  border-color: color-mix(in srgb, var(--primary-color) 55%, var(--app-border));
+  background: color-mix(in srgb, var(--primary-color) 13%, var(--app-surface));
+  color: var(--app-text);
+}
+
+.dashboard-ribbon__field {
+  margin-bottom: 0.95rem;
+}
+
+.dashboard-ribbon__field label {
+  display: block;
+  margin-bottom: 0.45rem;
+  color: var(--app-text);
+  font-size: 0.84rem;
+  font-weight: 700;
 }
 
 .dashboard-source-picker.p-multiselect {
@@ -398,27 +496,27 @@
   font-size: 0.84rem;
 }
 
-.dashboard-sticky-controls__help {
+.dashboard-ribbon__help {
   margin: 0.45rem 0 0;
   color: var(--app-text-muted);
   font-size: 0.78rem;
   line-height: 1.35;
 }
 
-.dashboard-source-tabs .p-tabview-nav {
-  background: transparent;
-  border-bottom: 1px solid var(--app-border);
+.dashboard-ribbon__link-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.55rem 0.35rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--app-border);
 }
 
-.dashboard-source-tabs .p-tabview-panels {
-  padding: 1rem 0 0;
-  background: transparent;
-}
-
-.dashboard-sticky-controls__label-inline {
-  flex: 0 0 auto;
+.dashboard-ribbon__label-inline {
+  flex: 0 0 100%;
   font-size: 0.84rem;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--app-text);
 }
 
@@ -456,104 +554,50 @@
   color: var(--app-text);
 }
 
-@media (max-width: 900px) {
-  .dashboard-source-note {
-    max-width: none;
+.dashboard-source-tabs .p-tabview-nav {
+  background: transparent;
+  border-bottom: 1px solid var(--app-border);
+}
+
+.dashboard-source-tabs .p-tabview-panels {
+  padding: 1rem 0 0;
+  background: transparent;
+}
+
+.dashboard-anchor {
+  scroll-margin-top: 1rem;
+}
+
+@media (max-width: 960px) {
+  .content.content--dashboard {
+    position: static;
+    height: auto;
+    margin: 88px 16px 24px;
+    overflow: visible;
   }
 
-  .dashboard-sticky-controls {
-    position: static;
-    border: none;
-    padding: 0;
-    background: transparent;
-    box-shadow: none;
-    width: auto;
+  .dashboard-shell {
+    display: block;
     height: auto;
   }
 
-  .dashboard-sticky-controls__panel {
-    position: static;
-    opacity: 1;
-    pointer-events: auto;
-    transform: none;
-    background: transparent;
-    border: none;
-    padding: 0;
-    box-shadow: none;
-    width: auto;
-  }
-}
-
-.dashboard-sticky-controls__indicator {
-  display: none;
-}
-
-.dashboard-sticky-controls__panel {
-  /* mobile fallback — full styles applied in desktop media query */
-}
-
-@media (min-width: 901px) {
-  /* Outer element: fixed 2.4rem × 2.4rem anchor in the flow — never shifts content */
-  .dashboard-sticky-controls {
-    width: 2.4rem;
-    height: 2.4rem;
-    padding: 0;
+  .dashboard-ribbon {
+    margin-bottom: 1.25rem;
     overflow: visible;
-    background: transparent;
-    border: none;
-    box-shadow: none;
-    border-radius: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
   }
 
-  /* Indicator icon — visible when panel is hidden */
-  .dashboard-sticky-controls__indicator {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 2rem;
-    height: 2rem;
-    border-radius: 0.6rem;
-    background: var(--app-surface);
-    border: 1px solid var(--app-border);
-    color: var(--app-text-muted);
-    font-size: 0.95rem;
-    opacity: 0.45;
-    transition: opacity 160ms ease;
-    animation: controls-breathe 3.5s ease-in-out infinite;
+  .dashboard-ribbon__toc {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
   }
 
-  .dashboard-sticky-controls:hover .dashboard-sticky-controls__indicator,
-  .dashboard-sticky-controls:focus-within .dashboard-sticky-controls__indicator {
-    display: none;
+  .dashboard-main {
+    overflow: visible;
+    padding: 0;
   }
 
-  /* Panel: absolutely positioned — floats over content, zero layout impact */
-  .dashboard-sticky-controls__panel {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: min(280px, 90vw);
-    background: var(--app-surface);
-    border: 1px solid var(--app-border);
-    border-radius: 0.75rem;
-    padding: 0.8rem;
-    box-shadow: var(--app-shadow);
-    opacity: 0;
-    pointer-events: none;
-    transform: scale(0.95) translateY(-6px);
-    transform-origin: top right;
-    transition: opacity 180ms ease, transform 180ms ease;
-  }
-
-  .dashboard-sticky-controls:hover .dashboard-sticky-controls__panel,
-  .dashboard-sticky-controls:focus-within .dashboard-sticky-controls__panel {
-    opacity: 1;
-    pointer-events: auto;
-    transform: scale(1) translateY(0);
+  .dashboard-source-note {
+    max-width: none;
   }
 }
 

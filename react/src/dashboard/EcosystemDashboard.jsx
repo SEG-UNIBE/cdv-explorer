@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Dropdown } from 'primereact/dropdown';
 import { InputSwitch } from 'primereact/inputswitch';
 import { MultiSelect } from 'primereact/multiselect';
@@ -92,6 +92,8 @@ export function EcosystemDashboard() {
   const [wordCloudFilterText, setWordCloudFilterText] = useState('');
   const [highlightedConformityProposal, setHighlightedConformityProposal] = useState('');
   const [linkMode, setLinkMode] = useState('history');
+  const [activeTocSection, setActiveTocSection] = useState('dashboard-authorship');
+  const dashboardScrollRef = useRef(null);
 
   useEffect(() => {
     setSelectedSourceIds((current) => {
@@ -259,6 +261,52 @@ export function EcosystemDashboard() {
     }
   }, [dependencyMetricsApproachOptions, selectedDependencyMetricsApproach]);
 
+  useEffect(() => {
+    document.documentElement.classList.add('dashboard-route-active');
+    document.body.classList.add('dashboard-route-active');
+    return () => {
+      document.documentElement.classList.remove('dashboard-route-active');
+      document.body.classList.remove('dashboard-route-active');
+    };
+  }, []);
+
+  const showConformitySection = useMemo(() => {
+    if (!ecosystem) return false;
+    if (orderedSelectedSourceIds.length > 1) {
+      return orderedSelectedSourceIds.some((sourceId) => (
+        (ecosystem.sources?.[sourceId]?.complianceStandards || []).length > 0
+      ));
+    }
+    return (activeEcosystem?.complianceStandards || []).length > 0;
+  }, [activeEcosystem, ecosystem, orderedSelectedSourceIds]);
+  const dashboardTocItems = useMemo(() => [
+    { id: 'dashboard-authorship', label: 'Authorship' },
+    { id: 'dashboard-classification', label: 'Classification' },
+    { id: 'dashboard-evolution', label: 'Evolution' },
+    { id: 'dashboard-dependencies', label: 'Dependencies' },
+    ...(showConformitySection ? [{ id: 'dashboard-conformity', label: 'Conformity' }] : []),
+  ], [showConformitySection]);
+
+  useEffect(() => {
+    const scrollPane = dashboardScrollRef.current;
+    if (!scrollPane || dashboardTocItems.length === 0) return undefined;
+
+    const updateActiveSection = () => {
+      const paneTop = scrollPane.getBoundingClientRect().top;
+      const current = dashboardTocItems.reduce((active, item) => {
+        const section = document.getElementById(item.id);
+        if (!section) return active;
+        const offset = section.getBoundingClientRect().top - paneTop;
+        return offset <= 120 ? item.id : active;
+      }, dashboardTocItems[0].id);
+      setActiveTocSection(current);
+    };
+
+    updateActiveSection();
+    scrollPane.addEventListener('scroll', updateActiveSection, { passive: true });
+    return () => scrollPane.removeEventListener('scroll', updateActiveSection);
+  }, [dashboardTocItems]);
+
   if (!ecosystem) {
     return (
       <section className="content">
@@ -306,100 +354,127 @@ export function EcosystemDashboard() {
   const dashboardTitle = `${ecosystem.name} Ecosystem`;
   const dashboardDescription = ecosystem.ecosystemDescription;
 
+  const scrollToDashboardSection = (sectionId) => {
+    const target = document.getElementById(sectionId);
+    if (!target) return;
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setActiveTocSection(sectionId);
+  };
+
   return (
     <DashboardSnapshotProvider
       snapshot={selectedDataset?.snapshot || selectedSnapshot}
       linkMode={linkMode}
       ecosystem={activeEcosystem}
     >
-      <section className="content">
+      <section className="content content--dashboard">
       {dataLoading && <div className="dashboard-loading-bar" />}
-      <div className="dashboard-toolbar">
-        <div className="dashboard-toolbar__copy">
-          <div className="dashboard-title-row">
+      <div className="dashboard-shell">
+        <aside className="dashboard-ribbon" aria-label="Dashboard controls">
+          <div className="dashboard-ribbon__brand">
             <img className="dashboard-title-logo" src={ecosystem.logo} alt={`${ecosystem.name} logo`} />
-            <h1>{dashboardTitle}</h1>
-          </div>
-          {dashboardDescription && (
-            <p>{dashboardDescription}</p>
-          )}
-          <ul>
-            {sourceRepositories.map((repository) => {
-              const href = getSourceRepositoryHref(repository);
-
-              return (
-                <li key={repository}>
-                  {href ? (
-                    <a href={href} target="_blank" rel="noreferrer">
-                      {repository}
-                    </a>
-                  ) : repository}
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      </div>
-      <div className="dashboard-sticky-controls">
-        <span className="dashboard-sticky-controls__indicator" aria-hidden="true">
-          <i className="pi pi-sliders-h" />
-        </span>
-        <div className="dashboard-sticky-controls__panel">
-          {showSourcePicker && (
-            <div className="dashboard-sticky-controls__source-row">
-              <label htmlFor="source-select" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>
-                SOURCES
-              </label>
-              <MultiSelect
-                inputId="source-select"
-                value={selectedSourceIds}
-                options={sourcePickerOptions}
-                onChange={(event) => {
-                  if (Array.isArray(event.value) && event.value.length > 0) {
-                    setSelectedSourceIds(event.value);
-                  }
-                }}
-                display="chip"
-                placeholder="Select sources"
-                className="dashboard-source-picker w-full"
-                maxSelectedLabels={sourcePickerOptions.length}
-              />
+            <div>
+              <div className="dashboard-ribbon__title">{dashboardTitle}</div>
+              <span>{selectedSnapshot === 'current' ? 'Current' : selectedSnapshot}</span>
             </div>
-          )}
-          <label htmlFor="snapshot-select" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>
-            SNAPSHOT
-          </label>
-          <Dropdown
-            inputId="snapshot-select"
-            value={selectedSnapshot}
-            options={snapshotOptions}
-            onChange={(event) => setSelectedSnapshot(event.value)}
-            placeholder="Select snapshot date"
-            className="w-full"
-          />
-          {showMultiSourceSnapshotHelp && (
-            <p className="dashboard-sticky-controls__help">
-              Snapshot choices are limited to dates available for all selected sources.
-            </p>
-          )}
-          <div className="dashboard-sticky-controls__link-row">
-            <span className="dashboard-sticky-controls__label-inline">IP Links:</span>
-            <span className={`dashboard-link-mode-text${linkMode === 'history' ? ' is-active' : ''}`}>
-              Historic
-            </span>
-            <InputSwitch
-              checked={linkMode === 'current'}
-              onChange={(event) => setLinkMode(event.value ? 'current' : 'history')}
-              inputId="link-mode-switch"
-              aria-label="IP links mode"
-              className="dashboard-link-mode-switch"
-            />
-            <span className={`dashboard-link-mode-text${linkMode === 'current' ? ' is-active' : ''}`}>
-              Current
-            </span>
           </div>
-        </div>
-      </div>
+          <nav className="dashboard-ribbon__toc" aria-label="Dashboard sections">
+            <div className="dashboard-ribbon__label">Contents</div>
+            {dashboardTocItems.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                className={`dashboard-ribbon__toc-item${activeTocSection === item.id ? ' is-active' : ''}`}
+                onClick={() => scrollToDashboardSection(item.id)}
+              >
+                {item.label}
+              </button>
+            ))}
+          </nav>
+          <div className="dashboard-ribbon__controls">
+            <div className="dashboard-ribbon__label">Controls</div>
+            {showSourcePicker && (
+              <div className="dashboard-ribbon__field">
+                <label htmlFor="source-select">Sources</label>
+                <MultiSelect
+                  inputId="source-select"
+                  value={selectedSourceIds}
+                  options={sourcePickerOptions}
+                  onChange={(event) => {
+                    if (Array.isArray(event.value) && event.value.length > 0) {
+                      setSelectedSourceIds(event.value);
+                    }
+                  }}
+                  display="chip"
+                  placeholder="Select sources"
+                  className="dashboard-source-picker w-full"
+                  maxSelectedLabels={sourcePickerOptions.length}
+                />
+              </div>
+            )}
+            <div className="dashboard-ribbon__field">
+              <label htmlFor="snapshot-select">Snapshot</label>
+              <Dropdown
+                inputId="snapshot-select"
+                value={selectedSnapshot}
+                options={snapshotOptions}
+                onChange={(event) => setSelectedSnapshot(event.value)}
+                placeholder="Select snapshot date"
+                className="w-full"
+              />
+              {showMultiSourceSnapshotHelp && (
+                <p className="dashboard-ribbon__help">
+                  Dates are limited to snapshots available for all selected sources.
+                </p>
+              )}
+            </div>
+            <div className="dashboard-ribbon__link-row">
+              <span className="dashboard-ribbon__label-inline">IP Links</span>
+              <span className={`dashboard-link-mode-text${linkMode === 'history' ? ' is-active' : ''}`}>
+                Historic
+              </span>
+              <InputSwitch
+                checked={linkMode === 'current'}
+                onChange={(event) => setLinkMode(event.value ? 'current' : 'history')}
+                inputId="link-mode-switch"
+                aria-label="IP links mode"
+                className="dashboard-link-mode-switch"
+              />
+              <span className={`dashboard-link-mode-text${linkMode === 'current' ? ' is-active' : ''}`}>
+                Current
+              </span>
+            </div>
+          </div>
+        </aside>
+
+        <main className="dashboard-main" ref={dashboardScrollRef}>
+          <div className="dashboard-main__inner">
+          <div className="dashboard-toolbar">
+            <div className="dashboard-toolbar__copy">
+              <div className="dashboard-title-row">
+                <img className="dashboard-title-logo" src={ecosystem.logo} alt={`${ecosystem.name} logo`} />
+                <h1>{dashboardTitle}</h1>
+              </div>
+              {dashboardDescription && (
+                <p>{dashboardDescription}</p>
+              )}
+              <ul>
+                {sourceRepositories.map((repository) => {
+                  const href = getSourceRepositoryHref(repository);
+
+                  return (
+                    <li key={repository}>
+                      {href ? (
+                        <a href={href} target="_blank" rel="noreferrer">
+                          {repository}
+                        </a>
+                      ) : repository}
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          </div>
 
       <div className="sk-crossfade">
         {skeletonActive && (
@@ -415,83 +490,98 @@ export function EcosystemDashboard() {
             className={`sk-crossfade__layer${contentEntered ? '' : ' sk-enter'}`}
             onAnimationEnd={(e) => e.animationName === 'sk-fade-in' && setContentEntered(true)}
           >
-            <AuthorshipSection
-              ecosystem={activeEcosystem}
-              yearData={yearData}
-              topAuthors={topAuthors}
-              authorContributionHistogram={authorContributionHistogram}
-              bipAuthorCountHistogram={bipAuthorCountHistogram}
-              collaborationNetwork={collaborationNetwork}
-              collaborationMetricsSummary={collaborationMetricsSummary}
-              collaborationMetricsRows={collaborationMetricsRows}
-              collaborationClusterSizeDistribution={collaborationClusterSizeDistribution}
-              collaborationDegreeDistribution={collaborationDegreeDistribution}
-              highlightedAuthor={highlightedAuthor}
-              setHighlightedAuthor={setHighlightedAuthor}
-              collaborationLayoutMode={collaborationLayoutMode}
-              setCollaborationLayoutMode={setCollaborationLayoutMode}
-              collaborationMinClusterCollaborations={collaborationMinClusterCollaborations}
-              setCollaborationMinClusterCollaborations={setCollaborationMinClusterCollaborations}
-              collaborationAuthorOptions={collaborationAuthorOptions}
-              wordCloudFilterText={wordCloudFilterText}
-              setWordCloudFilterText={setWordCloudFilterText}
-              hasWordCloudFilter={hasWordCloudFilter}
-              filteredWordCloudData={filteredWordCloudData}
-              wordCloudData={wordCloudData}
-            />
-            <ClassificationSection
-              ecosystem={activeEcosystem}
-              ecosystemBase={ecosystem}
-              selectedSourceIds={orderedSelectedSourceIds}
-              perSourceDashboardData={perSourceDashboardData}
-              classificationCategoryDomains={classificationCategoryDomains}
-              classificationDistributions={classificationDistributions}
-              classificationTimeline={classificationTimeline}
-              classificationChordData={classificationChordData}
-              classificationRelationRows={classificationRelationRows}
-            />
-            <EvolutionSection
-              ecosystem={activeEcosystem}
-              ecosystemBase={ecosystem}
-              selectedSourceIds={orderedSelectedSourceIds}
-              perSourceDashboardData={perSourceDashboardData}
-              evolutionPayload={evolutionPayload}
-            />
-            <DependenciesSection
-              ecosystem={activeEcosystem}
-              selectedDataset={selectedDataset}
-              highlightedDependencyProposal={highlightedDependencyProposal}
-              setHighlightedDependencyProposal={setHighlightedDependencyProposal}
-              dependencyProposalOptions={dependencyProposalOptions}
-              dependencyMinRelations={dependencyMinRelations}
-              setDependencyMinRelations={setDependencyMinRelations}
-              dependencyMinRelationsIncludeConnections={dependencyMinRelationsIncludeConnections}
-              setDependencyMinRelationsIncludeConnections={setDependencyMinRelationsIncludeConnections}
-              dependencyFilterText={dependencyFilterText}
-              setDependencyFilterText={setDependencyFilterText}
-              dependencyIncludeConnections={dependencyIncludeConnections}
-              setDependencyIncludeConnections={setDependencyIncludeConnections}
-              hasDependencyFilter={hasDependencyFilter}
-              selectedDependencyProposalIds={selectedDependencyProposalIds}
-              dependencyMetricsApproachOptions={dependencyMetricsApproachOptions}
-              activeDependencyMetricsApproach={activeDependencyMetricsApproach}
-              setSelectedDependencyMetricsApproach={setSelectedDependencyMetricsApproach}
-              activeDependencyMetrics={activeDependencyMetrics}
-              dependencyMetrics={dependencyMetrics}
-            />
-            <ConformitySection
-              ecosystem={activeEcosystem}
-              ecosystemBase={ecosystem}
-              selectedSourceIds={orderedSelectedSourceIds}
-              perSourceDashboardData={perSourceDashboardData}
-              dependencyProposalOptions={dependencyProposalOptions}
-              highlightedConformityProposal={highlightedConformityProposal}
-              setHighlightedConformityProposal={setHighlightedConformityProposal}
-              conformityRows={conformityRows}
-              conformityFailedChecks={conformityFailedChecks}
-            />
+            <div id="dashboard-authorship" className="dashboard-anchor">
+              <AuthorshipSection
+                ecosystem={activeEcosystem}
+                yearData={yearData}
+                topAuthors={topAuthors}
+                authorContributionHistogram={authorContributionHistogram}
+                bipAuthorCountHistogram={bipAuthorCountHistogram}
+                collaborationNetwork={collaborationNetwork}
+                collaborationMetricsSummary={collaborationMetricsSummary}
+                collaborationMetricsRows={collaborationMetricsRows}
+                collaborationClusterSizeDistribution={collaborationClusterSizeDistribution}
+                collaborationDegreeDistribution={collaborationDegreeDistribution}
+                highlightedAuthor={highlightedAuthor}
+                setHighlightedAuthor={setHighlightedAuthor}
+                collaborationLayoutMode={collaborationLayoutMode}
+                setCollaborationLayoutMode={setCollaborationLayoutMode}
+                collaborationMinClusterCollaborations={collaborationMinClusterCollaborations}
+                setCollaborationMinClusterCollaborations={setCollaborationMinClusterCollaborations}
+                collaborationAuthorOptions={collaborationAuthorOptions}
+                wordCloudFilterText={wordCloudFilterText}
+                setWordCloudFilterText={setWordCloudFilterText}
+                hasWordCloudFilter={hasWordCloudFilter}
+                filteredWordCloudData={filteredWordCloudData}
+                wordCloudData={wordCloudData}
+              />
+            </div>
+            <div id="dashboard-classification" className="dashboard-anchor">
+              <ClassificationSection
+                ecosystem={activeEcosystem}
+                ecosystemBase={ecosystem}
+                selectedSourceIds={orderedSelectedSourceIds}
+                perSourceDashboardData={perSourceDashboardData}
+                classificationCategoryDomains={classificationCategoryDomains}
+                classificationDistributions={classificationDistributions}
+                classificationTimeline={classificationTimeline}
+                classificationChordData={classificationChordData}
+                classificationRelationRows={classificationRelationRows}
+              />
+            </div>
+            <div id="dashboard-evolution" className="dashboard-anchor">
+              <EvolutionSection
+                ecosystem={activeEcosystem}
+                ecosystemBase={ecosystem}
+                selectedSourceIds={orderedSelectedSourceIds}
+                perSourceDashboardData={perSourceDashboardData}
+                evolutionPayload={evolutionPayload}
+              />
+            </div>
+            <div id="dashboard-dependencies" className="dashboard-anchor">
+              <DependenciesSection
+                ecosystem={activeEcosystem}
+                selectedDataset={selectedDataset}
+                highlightedDependencyProposal={highlightedDependencyProposal}
+                setHighlightedDependencyProposal={setHighlightedDependencyProposal}
+                dependencyProposalOptions={dependencyProposalOptions}
+                dependencyMinRelations={dependencyMinRelations}
+                setDependencyMinRelations={setDependencyMinRelations}
+                dependencyMinRelationsIncludeConnections={dependencyMinRelationsIncludeConnections}
+                setDependencyMinRelationsIncludeConnections={setDependencyMinRelationsIncludeConnections}
+                dependencyFilterText={dependencyFilterText}
+                setDependencyFilterText={setDependencyFilterText}
+                dependencyIncludeConnections={dependencyIncludeConnections}
+                setDependencyIncludeConnections={setDependencyIncludeConnections}
+                hasDependencyFilter={hasDependencyFilter}
+                selectedDependencyProposalIds={selectedDependencyProposalIds}
+                dependencyMetricsApproachOptions={dependencyMetricsApproachOptions}
+                activeDependencyMetricsApproach={activeDependencyMetricsApproach}
+                setSelectedDependencyMetricsApproach={setSelectedDependencyMetricsApproach}
+                activeDependencyMetrics={activeDependencyMetrics}
+                dependencyMetrics={dependencyMetrics}
+              />
+            </div>
+            {showConformitySection && (
+              <div id="dashboard-conformity" className="dashboard-anchor">
+                <ConformitySection
+                  ecosystem={activeEcosystem}
+                  ecosystemBase={ecosystem}
+                  selectedSourceIds={orderedSelectedSourceIds}
+                  perSourceDashboardData={perSourceDashboardData}
+                  dependencyProposalOptions={dependencyProposalOptions}
+                  highlightedConformityProposal={highlightedConformityProposal}
+                  setHighlightedConformityProposal={setHighlightedConformityProposal}
+                  conformityRows={conformityRows}
+                  conformityFailedChecks={conformityFailedChecks}
+                />
+              </div>
+            )}
           </div>
         )}
+      </div>
+          </div>
+        </main>
       </div>
       </section>
     </DashboardSnapshotProvider>

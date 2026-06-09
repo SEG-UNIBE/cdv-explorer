@@ -282,6 +282,8 @@ def _normalize_proposal_id(value: Any) -> str:
     text = _normalize_identity_text(value)
     if not text:
         return ""
+    if re.fullmatch(r"x+", text):
+        return ""
     if text.isdigit():
         return str(int(text))
     if re.fullmatch(r"[0-9a-z]+", text):
@@ -323,8 +325,14 @@ def _extract_path_proposal_id(file_path: Path) -> str:
 
 
 def _build_snapshot_identity(preamble: Dict[str, Any], *, fallback_path: str | None = None) -> Dict[str, Any]:
-    proposal_id = _normalize_proposal_id(preamble.get(PRIMARY_ID_FIELD))
-    if not proposal_id and fallback_path:
+    raw_proposal_id = preamble.get(PRIMARY_ID_FIELD)
+    has_declared_proposal_id = (
+        bool(PRIMARY_ID_FIELD)
+        and PRIMARY_ID_FIELD in preamble
+        and bool(_normalize_identity_text(raw_proposal_id))
+    )
+    proposal_id = _normalize_proposal_id(raw_proposal_id)
+    if not proposal_id and not has_declared_proposal_id and fallback_path:
         proposal_id = _extract_path_proposal_id(Path(fallback_path))
 
     created = _normalize_identity_text(preamble.get("created"))[:10]

@@ -2,14 +2,17 @@ import subprocess
 from pathlib import Path
 
 
-def _clone_or_update(repo_url: str, local_dir: Path) -> None:
+def _clone_or_update(repo_url: str, local_dir: Path, progress_callback=None) -> None:
     if local_dir.exists():
         if not any(local_dir.iterdir()):
             subprocess.run(["git", "clone", repo_url, str(local_dir)], check=True)
             return
         if not (local_dir / ".git").exists():
             raise ValueError(f"{local_dir} exists but is not a git repository.")
-        subprocess.run(["git", "-C", str(local_dir), "fetch", "--all", "--prune"], check=True)
+        try:
+            subprocess.run(["git", "-C", str(local_dir), "fetch", "--all", "--prune"], check=True)
+        except subprocess.CalledProcessError:
+            _emit(progress_callback, "Fetch failed; using existing local repository")
         return
     local_dir.parent.mkdir(parents=True, exist_ok=True)
     subprocess.run(["git", "clone", repo_url, str(local_dir)], check=True)
@@ -47,7 +50,7 @@ def _checkout_snapshot(local_dir: Path, snapshot: str) -> None:
     commit_hash = result.stdout.strip()
     if not commit_hash:
         raise ValueError(f"No commit found on or before {snapshot}.")
-    subprocess.run(["git", "-C", str(local_dir), "checkout", "--detach", commit_hash], check=True)
+    subprocess.run(["git", "-C", str(local_dir), "checkout", "--force", "--detach", commit_hash], check=True)
 
 
 def _emit(progress_callback, message: str | None = None, advance: int = 0) -> None:
@@ -68,7 +71,7 @@ def harvest(
 
     repo_state = "Fetching repository updates" if local_dir.exists() else "Cloning repository"
     _emit(progress_callback, repo_state)
-    _clone_or_update(repo_url, local_dir)
+    _clone_or_update(repo_url, local_dir, progress_callback=progress_callback)
 
     _emit(progress_callback, f"Checking out snapshot for {snapshot}", advance=1)
     _checkout_snapshot(local_dir, snapshot)

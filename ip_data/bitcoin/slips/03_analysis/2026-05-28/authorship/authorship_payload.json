@@ -1,7 +1,7 @@
 {
   "meta": {
     "node_count": 23,
-    "author_count": 6,
+    "author_count": 15,
     "generated_metrics": [
       "top_authors",
       "bips_per_year",
@@ -14,11 +14,31 @@
   "top_authors": [
     {
       "author": "Pavol Rusnak",
-      "count": 15
+      "count": 11
+    },
+    {
+      "author": "Marek Palatinus",
+      "count": 4
+    },
+    {
+      "author": "Ondrej Vejpustek",
+      "count": 4
+    },
+    {
+      "author": "Andrew R. Kozlik",
+      "count": 4
     },
     {
       "author": "Andrew Kozlik",
-      "count": 5
+      "count": 3
+    },
+    {
+      "author": "Jochen Hoenicke",
+      "count": 2
+    },
+    {
+      "author": "Karel Bilek",
+      "count": 2
     },
     {
       "author": "Roman Zeyde",
@@ -29,7 +49,23 @@
       "count": 2
     },
     {
+      "author": "SatoshiLabs",
+      "count": 1
+    },
+    {
       "author": "Peter Jensen",
+      "count": 1
+    },
+    {
+      "author": "Stepan Snigirev",
+      "count": 1
+    },
+    {
+      "author": "TBD",
+      "count": 1
+    },
+    {
+      "author": "Tomas Susanka",
       "count": 1
     },
     {
@@ -74,45 +110,77 @@
   "author_contribution_histogram": [
     {
       "bips_written": 1,
-      "authors": 2
+      "authors": 6
     },
     {
       "bips_written": 2,
-      "authors": 2
+      "authors": 4
     },
     {
-      "bips_written": 5,
+      "bips_written": 3,
       "authors": 1
     },
     {
-      "bips_written": 15,
+      "bips_written": 4,
+      "authors": 3
+    },
+    {
+      "bips_written": 11,
       "authors": 1
     }
   ],
   "bip_author_count_histogram": [
     {
       "author_count": 1,
-      "bip_count": 20
+      "bip_count": 15
     },
     {
       "author_count": 2,
       "bip_count": 3
+    },
+    {
+      "author_count": 3,
+      "bip_count": 3
+    },
+    {
+      "author_count": 4,
+      "bip_count": 1
+    },
+    {
+      "author_count": 6,
+      "bip_count": 1
     }
   ],
   "top_10_share": {
     "total_bips": 23,
-    "bips_by_top_10_authors": 26,
-    "percentage": 113.04
+    "bips_by_top_10_authors": 35,
+    "percentage": 152.17
   },
   "collaboration_network": {
     "nodes": [
       {
+        "id": "SatoshiLabs",
+        "degree": 0
+      },
+      {
+        "id": "Jochen Hoenicke",
+        "degree": 5
+      },
+      {
         "id": "Pavol Rusnak",
+        "degree": 8
+      },
+      {
+        "id": "Marek Palatinus",
+        "degree": 6
+      },
+      {
+        "id": "Karel Bilek",
         "degree": 2
       },
       {
         "id": "Peter Jensen",
-        "degree": 1
+        "degree": 0
       },
       {
         "id": "Roman Zeyde",
@@ -120,7 +188,27 @@
       },
       {
         "id": "Andrew Kozlik",
+        "degree": 6
+      },
+      {
+        "id": "Stepan Snigirev",
+        "degree": 3
+      },
+      {
+        "id": "Ondrej Vejpustek",
+        "degree": 7
+      },
+      {
+        "id": "TBD",
         "degree": 0
+      },
+      {
+        "id": "Andrew R. Kozlik",
+        "degree": 2
+      },
+      {
+        "id": "Tomas Susanka",
+        "degree": 5
       },
       {
         "id": "Fabian Schuh",
@@ -128,64 +216,227 @@
       },
       {
         "id": "Clark Moody",
-        "degree": 1
+        "degree": 0
       }
     ],
     "edges": [
       {
-        "source": "Pavol Rusnak",
-        "target": "Peter Jensen",
+        "source": "Jochen Hoenicke",
+        "target": "Pavol Rusnak",
+        "weight": 2
+      },
+      {
+        "source": "Jochen Hoenicke",
+        "target": "Andrew Kozlik",
+        "weight": 1
+      },
+      {
+        "source": "Jochen Hoenicke",
+        "target": "Ondrej Vejpustek",
+        "weight": 1
+      },
+      {
+        "source": "Jochen Hoenicke",
+        "target": "Tomas Susanka",
+        "weight": 1
+      },
+      {
+        "source": "Jochen Hoenicke",
+        "target": "Marek Palatinus",
         "weight": 1
       },
       {
         "source": "Pavol Rusnak",
-        "target": "Clark Moody",
+        "target": "Marek Palatinus",
+        "weight": 4
+      },
+      {
+        "source": "Pavol Rusnak",
+        "target": "Karel Bilek",
+        "weight": 1
+      },
+      {
+        "source": "Pavol Rusnak",
+        "target": "Andrew Kozlik",
         "weight": 2
+      },
+      {
+        "source": "Pavol Rusnak",
+        "target": "Stepan Snigirev",
+        "weight": 1
+      },
+      {
+        "source": "Pavol Rusnak",
+        "target": "Ondrej Vejpustek",
+        "weight": 4
+      },
+      {
+        "source": "Pavol Rusnak",
+        "target": "Andrew R. Kozlik",
+        "weight": 2
+      },
+      {
+        "source": "Pavol Rusnak",
+        "target": "Tomas Susanka",
+        "weight": 1
+      },
+      {
+        "source": "Marek Palatinus",
+        "target": "Karel Bilek",
+        "weight": 1
+      },
+      {
+        "source": "Marek Palatinus",
+        "target": "Andrew Kozlik",
+        "weight": 1
+      },
+      {
+        "source": "Marek Palatinus",
+        "target": "Ondrej Vejpustek",
+        "weight": 1
+      },
+      {
+        "source": "Marek Palatinus",
+        "target": "Tomas Susanka",
+        "weight": 1
+      },
+      {
+        "source": "Andrew Kozlik",
+        "target": "Stepan Snigirev",
+        "weight": 1
+      },
+      {
+        "source": "Andrew Kozlik",
+        "target": "Ondrej Vejpustek",
+        "weight": 2
+      },
+      {
+        "source": "Andrew Kozlik",
+        "target": "Tomas Susanka",
+        "weight": 1
+      },
+      {
+        "source": "Stepan Snigirev",
+        "target": "Ondrej Vejpustek",
+        "weight": 1
+      },
+      {
+        "source": "Ondrej Vejpustek",
+        "target": "Andrew R. Kozlik",
+        "weight": 2
+      },
+      {
+        "source": "Ondrej Vejpustek",
+        "target": "Tomas Susanka",
+        "weight": 1
       }
     ]
   },
   "collaboration_centrality": [
     {
       "author": "Pavol Rusnak",
-      "degree": 0.4,
-      "betweenness": 0.1,
-      "closeness": 0.4,
-      "eigenvector": 0.7071067811857501
+      "degree": 0.5714285714285714,
+      "betweenness": 0.08241758241758243,
+      "closeness": 0.5714285714285714,
+      "eigenvector": 0.43490194932229104
+    },
+    {
+      "author": "Ondrej Vejpustek",
+      "degree": 0.5,
+      "betweenness": 0.03846153846153846,
+      "closeness": 0.5079365079365079,
+      "eigenvector": 0.41251981592512926
+    },
+    {
+      "author": "Andrew Kozlik",
+      "degree": 0.42857142857142855,
+      "betweenness": 0.010989010989010988,
+      "closeness": 0.45714285714285713,
+      "eigenvector": 0.3891722219061298
+    },
+    {
+      "author": "Marek Palatinus",
+      "degree": 0.42857142857142855,
+      "betweenness": 0.02197802197802198,
+      "closeness": 0.45714285714285713,
+      "eigenvector": 0.3774849705815288
+    },
+    {
+      "author": "Tomas Susanka",
+      "degree": 0.3571428571428571,
+      "betweenness": 0.0,
+      "closeness": 0.41558441558441556,
+      "eigenvector": 0.3551028371843669
+    },
+    {
+      "author": "Jochen Hoenicke",
+      "degree": 0.3571428571428571,
+      "betweenness": 0.0,
+      "closeness": 0.41558441558441556,
+      "eigenvector": 0.35510283718436686
+    },
+    {
+      "author": "Stepan Snigirev",
+      "degree": 0.21428571428571427,
+      "betweenness": 0.0,
+      "closeness": 0.3516483516483517,
+      "eigenvector": 0.22299572175470553
+    },
+    {
+      "author": "Andrew R. Kozlik",
+      "degree": 0.14285714285714285,
+      "betweenness": 0.0,
+      "closeness": 0.32653061224489793,
+      "eigenvector": 0.152816484743482
+    },
+    {
+      "author": "Karel Bilek",
+      "degree": 0.14285714285714285,
+      "betweenness": 0.0,
+      "closeness": 0.32653061224489793,
+      "eigenvector": 0.14649830969483874
+    },
+    {
+      "author": "SatoshiLabs",
+      "degree": 0.0,
+      "betweenness": 0.0,
+      "closeness": 0.0,
+      "eigenvector": 1.5931693429665405e-08
     },
     {
       "author": "Peter Jensen",
-      "degree": 0.2,
+      "degree": 0.0,
       "betweenness": 0.0,
-      "closeness": 0.26666666666666666,
-      "eigenvector": 0.4999999999988723
-    },
-    {
-      "author": "Clark Moody",
-      "degree": 0.2,
-      "betweenness": 0.0,
-      "closeness": 0.26666666666666666,
-      "eigenvector": 0.4999999999988723
+      "closeness": 0.0,
+      "eigenvector": 1.5931693429665405e-08
     },
     {
       "author": "Roman Zeyde",
       "degree": 0.0,
       "betweenness": 0.0,
       "closeness": 0.0,
-      "eigenvector": 1.0619499099442525e-06
+      "eigenvector": 1.5931693429665405e-08
     },
     {
-      "author": "Andrew Kozlik",
+      "author": "TBD",
       "degree": 0.0,
       "betweenness": 0.0,
       "closeness": 0.0,
-      "eigenvector": 1.0619499099442525e-06
+      "eigenvector": 1.5931693429665405e-08
     },
     {
       "author": "Fabian Schuh",
       "degree": 0.0,
       "betweenness": 0.0,
       "closeness": 0.0,
-      "eigenvector": 1.0619499099442525e-06
+      "eigenvector": 1.5931693429665405e-08
+    },
+    {
+      "author": "Clark Moody",
+      "degree": 0.0,
+      "betweenness": 0.0,
+      "closeness": 0.0,
+      "eigenvector": 1.5931693429665405e-08
     }
   ]
 }

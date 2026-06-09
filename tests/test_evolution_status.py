@@ -152,6 +152,74 @@ class EvolutionStatusTests(unittest.TestCase):
             ],
         )
 
+    def test_extract_status_timeline_keeps_pre_assignment_history_with_placeholder_id(self) -> None:
+        log_stdout = "\n".join(
+            [
+                "__COMMIT__assigncommit|2016-01-08T17:56:02+00:00|Luke Dashjr",
+                "R099\tbip-segwitaddress.mediawiki\tbip-0142.mediawiki",
+                "__COMMIT__createcommit|2015-12-24T21:45:11+08:00|Johnson Lau",
+                "A\tbip-segwitaddress.mediawiki",
+            ]
+        )
+
+        current_content = """<pre>
+  BIP: 142
+  Title: Address Format for Segregated Witness
+  Author: Johnson Lau <jl2012@xbt.hk>
+  Status: Draft
+  Created: 2015-12-24
+</pre>
+"""
+        initial_content = """<pre>
+  BIP: x
+  Title: Address Format for Witness Program
+  Author: Johnson Lau <jl2012@xbt.hk>
+  Status: Draft
+  Created: 2015-12-24
+</pre>
+"""
+        show_stdout_by_spec = {
+            "assigncommit:bip-0142.mediawiki": current_content,
+            "createcommit:bip-segwitaddress.mediawiki": initial_content,
+        }
+
+        def fake_run(args, **kwargs):
+            if "log" in args:
+                return subprocess.CompletedProcess(args=args, returncode=0, stdout=log_stdout)
+            if "show" in args:
+                spec = args[-1]
+                stdout = show_stdout_by_spec.get(spec)
+                if stdout is None:
+                    raise AssertionError(f"Unexpected git show spec: {spec}")
+                return subprocess.CompletedProcess(args=args, returncode=0, stdout=stdout)
+            raise AssertionError(f"Unexpected subprocess invocation: {args}")
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            repo_dir = Path(tmp_dir)
+            file_path = repo_dir / "bip-0142.mediawiki"
+            file_path.write_text(current_content, encoding="utf-8")
+
+            with patch("analysis.evolution.mining.subprocess.run", side_effect=fake_run):
+                timeline = extract_status_timeline(
+                    repo_dir=repo_dir,
+                    file_path=file_path,
+                )
+
+        self.assertEqual(
+            timeline,
+            [
+                {
+                    "commit": "createcommit",
+                    "timestamp": "2015-12-24T21:45:11+08:00",
+                    "date": "2015-12-24",
+                    "author": "Johnson Lau",
+                    "path": "bip-segwitaddress.mediawiki",
+                    "status": "Draft",
+                    "standard": "bip2",
+                }
+            ],
+        )
+
     def test_prepare_evolution_payload_splits_bip3_cutover_period(self) -> None:
         proposal_data = [
             {

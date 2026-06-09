@@ -12,11 +12,11 @@ _SLIP_CONFIG = {
     "document_file_pattern": r"^slip-\d{4}\.md$",
     "compliance_checker": "slip",
     "preamble": {
-        "required_fields": ["slip", "title", "authors", "status", "type", "created"],
+        "required_fields": ["slip", "title", "author", "status", "type", "created"],
         "optional_fields": [],
-        "field_aliases": {"number": "slip", "author": "authors"},
+        "field_aliases": {"number": "slip", "authors": "author"},
         "expected_headlines": {"abstract": 2},
-        "list_valued_fields": ["authors"],
+        "list_valued_fields": ["author"],
     },
 }
 
@@ -32,7 +32,7 @@ class SlipExtractionTests(unittest.TestCase):
             "Type: Standard",
             "Status: Final",
             "Authors: Jochen Hoenicke",
-            "  Pavol Rusnak",
+            "    Pavol Rusnak",
             "Created: 2016-04-26",
             "```",
             "",
@@ -48,11 +48,13 @@ class SlipExtractionTests(unittest.TestCase):
 
             extract(_SLIP_CONFIG, harvest_dir, output_dir)
 
-            output = (output_dir / "slip-0010.json").read_text(encoding="utf-8")
+            output = json.loads((output_dir / "slip-0010.json").read_text(encoding="utf-8"))
 
-        self.assertIn('"slip": "10"', output)
-        self.assertIn('"authors": [', output)
-        self.assertIn('"slip": {', output)
+        preamble = output["raw"]["preamble"]
+        self.assertEqual("10", preamble["slip"])
+        self.assertEqual(["Jochen Hoenicke", "Pavol Rusnak"], preamble["author"])
+        self.assertNotIn("authors", preamble)
+        self.assertIn("slip", output["insights"]["formal_compliance"])
 
     def test_skips_non_proposal_markdown_files(self):
         content = "\n".join([

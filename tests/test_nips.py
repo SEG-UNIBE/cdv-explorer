@@ -13,7 +13,7 @@ _NIP_CONFIG = {
     "compliance_checker": "nip",
     "preamble": {
         "required_fields": ["nip", "title", "status"],
-        "optional_fields": ["type", "layer", "kind"],
+        "optional_fields": ["author", "type", "layer", "kind"],
         "expected_headlines": {},
     },
     "classification": {
@@ -52,6 +52,7 @@ class NipExtractionTests(unittest.TestCase):
 
         self.assertEqual("01", output["raw"]["preamble"]["nip"])
         self.assertEqual("Basic Protocol Flow", output["raw"]["preamble"]["title"])
+        self.assertIsNone(output["raw"]["preamble"]["author"])
         self.assertEqual("Draft", output["raw"]["preamble"]["status"])
         self.assertEqual("Mandatory", output["raw"]["preamble"]["type"])
         self.assertEqual("Relay", output["raw"]["preamble"]["layer"])

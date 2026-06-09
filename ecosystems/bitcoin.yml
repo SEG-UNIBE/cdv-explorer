@@ -131,18 +131,18 @@ sources:
       required_fields:
         - slip
         - title
-        - authors
+        - author
         - status
         - type
         - created
       optional_fields: []
       field_aliases:
         number: slip
-        author: authors
+        authors: author
       expected_headlines:
         abstract: 2
       list_valued_fields:
-        - authors
+        - author
 
     classification:
       dimensions:

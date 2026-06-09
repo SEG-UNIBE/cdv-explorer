@@ -302,6 +302,7 @@ export function EcosystemDashboard() {
     value: source.sourceId,
   }));
   const showSourcePicker = sourcePickerOptions.length > 1;
+  const showMultiSourceSnapshotHelp = orderedSelectedSourceIds.length > 1;
   const dashboardTitle = `${ecosystem.name} Ecosystem`;
   const dashboardDescription = ecosystem.ecosystemDescription;
 
@@ -376,6 +377,11 @@ export function EcosystemDashboard() {
             placeholder="Select snapshot date"
             className="w-full"
           />
+          {showMultiSourceSnapshotHelp && (
+            <p className="dashboard-sticky-controls__help">
+              Snapshot choices are limited to dates available for all selected sources.
+            </p>
+          )}
           <div className="dashboard-sticky-controls__link-row">
             <span className="dashboard-sticky-controls__label-inline">IP Links:</span>
             <span className={`dashboard-link-mode-text${linkMode === 'history' ? ' is-active' : ''}`}>

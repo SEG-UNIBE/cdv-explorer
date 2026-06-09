@@ -28,6 +28,7 @@ COLUMN_LABELS: dict[str, str] = {
 
 OK = "✅"
 FAIL = "❌"
+NO_SOURCE = "—"
 
 
 def check_snapshot(snapshot_dir: Path) -> dict:
@@ -71,21 +72,22 @@ def build_summary(rows: list[dict], errors_by_snapshot: dict[str, list[str]]) ->
     lines: list[str] = []
 
     if not rows:
-        lines.append("⚠️ No snapshots found under `ip_data/*/03_analysis/`.")
+        lines.append("⚠️ No snapshots found under `ip_data/*/03_analysis/` or `ip_data/*/*/03_analysis/`.")
         return "\n".join(lines)
 
     lines.append("## Snapshot Validation")
     lines.append("")
 
     file_cols = list(COLUMN_LABELS.values())
-    header = ["Ecosystem", "Snapshot", "Proposals", "LLM edges"] + file_cols
+    header = ["Ecosystem", "Source", "Snapshot", "Proposals", "LLM edges"] + file_cols
     lines.append("| " + " | ".join(header) + " |")
-    lines.append("|:---|:---|---:|---:" + "|:---:" * len(file_cols) + "|")
+    lines.append("|:---|:---|:---|---:|---:" + "|:---:" * len(file_cols) + "|")
 
     for row in rows:
         stats = row["stats"]
         cells = [
             row["ecosystem"],
+            row["source"],
             row["snapshot"],
             str(stats.get("proposals", "—")),
             str(stats.get("llm", "—")),
@@ -106,6 +108,12 @@ def build_summary(rows: list[dict], errors_by_snapshot: dict[str, list[str]]) ->
     return "\n".join(lines)
 
 
+def snapshot_key(ecosystem: str, source: str | None, snapshot: str) -> str:
+    if source:
+        return f"{ecosystem}/{source}/{snapshot}"
+    return f"{ecosystem}/{snapshot}"
+
+
 def main() -> None:
     rows: list[dict] = []
     errors_by_snapshot: dict[str, list[str]] = {}
@@ -116,13 +124,17 @@ def main() -> None:
             continue
         # Support both ip_data/<ecosystem>/03_analysis and ip_data/<ecosystem>/<source>/03_analysis
         candidate = ecosystem_dir / "03_analysis"
-        analysis_dirs = [candidate] if candidate.is_dir() else [
-            p / "03_analysis" for p in sorted(ecosystem_dir.iterdir())
-            if p.is_dir() and (p / "03_analysis").is_dir()
-        ]
+        analysis_dirs: list[tuple[str | None, Path]]
+        if candidate.is_dir():
+            analysis_dirs = [(None, candidate)]
+        else:
+            analysis_dirs = [
+                (p.name, p / "03_analysis") for p in sorted(ecosystem_dir.iterdir())
+                if p.is_dir() and (p / "03_analysis").is_dir()
+            ]
         ecosystem = ecosystem_dir.name
 
-        for analysis_dir in analysis_dirs:
+        for source, analysis_dir in analysis_dirs:
             for snapshot_dir in sorted(analysis_dir.iterdir(), reverse=True):
                 if not snapshot_dir.is_dir():
                     continue
@@ -131,10 +143,11 @@ def main() -> None:
 
                 if not checked["ok"]:
                     all_ok = False
-                    errors_by_snapshot[f"{ecosystem}/{snapshot}"] = checked["errors"]
+                    errors_by_snapshot[snapshot_key(ecosystem, source, snapshot)] = checked["errors"]
 
                 rows.append({
                     "ecosystem": ecosystem,
+                    "source": source or NO_SOURCE,
                     "snapshot": snapshot,
                     "stats": checked["stats"],
                     "file_status": checked["file_status"],

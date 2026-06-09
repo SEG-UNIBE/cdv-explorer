@@ -3,6 +3,12 @@ import ReactDOM from 'react-dom/client';
 import './index.scss';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import * as Cronitor from '@cronitorio/cronitor-rum';
+
+Cronitor.load('87489f544a75b9925710479a60b4d043', {
+  debug: false,
+  trackMode: 'history',
+});
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

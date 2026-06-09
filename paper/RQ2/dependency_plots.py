@@ -418,7 +418,6 @@ def draw_static_network_with_layouts(
 
     group_attr = nx.get_node_attributes(graph, "group")
     group_counts = Counter(group_attr.values())
-    sorted_groups = sorted(group_counts.items(), key=lambda item: item[1], reverse=True)
 
     node_colors_data = []
     cmap_for_plot = None

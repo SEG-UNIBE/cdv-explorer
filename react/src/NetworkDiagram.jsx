@@ -74,6 +74,60 @@ function buildEdgeKey(source, target) {
   return `${String(source)}->${String(target)}`;
 }
 
+function nodeGraphId(node) {
+  if (!node || typeof node !== 'object') {
+    return String(node ?? '');
+  }
+  if (node.graphId != null) {
+    return String(node.graphId);
+  }
+  const sourcePart = String(node.graphSource || node.source || '').trim();
+  const idPart = String(node.id ?? '').trim();
+  return sourcePart ? `${sourcePart}:${idPart}` : idPart;
+}
+
+function edgeGraphSourceId(edge) {
+  if (edge?.source && typeof edge.source === 'object') {
+    return nodeGraphId(edge.source);
+  }
+  return String(edge?.sourceKey ?? edge?.sourceGraphId ?? edge?.source ?? '');
+}
+
+function edgeGraphTargetId(edge) {
+  if (edge?.target && typeof edge.target === 'object') {
+    return nodeGraphId(edge.target);
+  }
+  return String(edge?.targetKey ?? edge?.targetGraphId ?? edge?.target ?? '');
+}
+
+function edgeSourceProposalId(edge) {
+  if (edge?.source && typeof edge.source === 'object') {
+    return String(edge.source.id ?? '');
+  }
+  return String(edge?.sourceProposalId ?? edge?.source ?? '');
+}
+
+function edgeTargetProposalId(edge) {
+  if (edge?.target && typeof edge.target === 'object') {
+    return String(edge.target.id ?? '');
+  }
+  return String(edge?.targetProposalId ?? edge?.target ?? '');
+}
+
+function edgeSourceSourceId(edge) {
+  if (edge?.source && typeof edge.source === 'object') {
+    return String(edge.source.source || '');
+  }
+  return String(edge?.sourceSourceId || '');
+}
+
+function edgeTargetSourceId(edge) {
+  if (edge?.target && typeof edge.target === 'object') {
+    return String(edge.target.source || '');
+  }
+  return String(edge?.targetSourceId || '');
+}
+
 function normalizeCategory(value, fallbackLabel) {
   const text = String(value ?? '').trim();
   return text || fallbackLabel;
@@ -159,14 +213,14 @@ function buildDisplayedLinks(linksByType, linkType) {
       .flatMap((relationType) => (linksByType?.[relationType] || []).map((edge, index) => ({
         ...edge,
         relationType,
-        key: `${relationType}-${edge.source}-${edge.target}-${index}`,
+        key: `${relationType}-${edgeGraphSourceId(edge)}-${edgeGraphTargetId(edge)}-${index}`,
       })));
   }
 
   return (linksByType?.[linkType] || []).map((edge, index) => ({
     ...edge,
     relationType: linkType,
-    key: `${linkType}-${edge.source}-${edge.target}-${index}`,
+    key: `${linkType}-${edgeGraphSourceId(edge)}-${edgeGraphTargetId(edge)}-${index}`,
   }));
 }
 
@@ -174,26 +228,31 @@ function getLinkSetForType(linksByType, linkType) {
   if (linkType === PREAMBLE_EXTRACTED) {
     return ['requires', 'replaces', 'proposed_replacement']
       .flatMap((relationType) => (linksByType?.[relationType] || []).map((edge) => ({
-        source: String(edge.source),
-        target: String(edge.target),
+        ...edge,
+        source: edgeGraphSourceId(edge),
+        target: edgeGraphTargetId(edge),
       })));
   }
 
   return (linksByType?.[linkType] || []).map((edge) => ({
-    source: String(edge.source),
-    target: String(edge.target),
+    ...edge,
+    source: edgeGraphSourceId(edge),
+    target: edgeGraphTargetId(edge),
   }));
 }
 
 function buildComparisonLinks(linksByType, approachType, baselineType) {
   const approachEdges = getLinkSetForType(linksByType, approachType);
   const baselineEdges = getLinkSetForType(linksByType, baselineType);
-  const approachKeys = new Set(approachEdges.map((edge) => buildEdgeKey(edge.source, edge.target)));
-  const baselineKeys = new Set(baselineEdges.map((edge) => buildEdgeKey(edge.source, edge.target)));
+  const approachByKey = new Map(approachEdges.map((edge) => [buildEdgeKey(edge.source, edge.target), edge]));
+  const baselineByKey = new Map(baselineEdges.map((edge) => [buildEdgeKey(edge.source, edge.target), edge]));
+  const approachKeys = new Set(approachByKey.keys());
+  const baselineKeys = new Set(baselineByKey.keys());
   const combinedKeys = new Set([...approachKeys, ...baselineKeys]);
 
   return Array.from(combinedKeys).map((edgeKey, index) => {
     const [source, target] = edgeKey.split('->');
+    const sourceEdge = approachByKey.get(edgeKey) || baselineByKey.get(edgeKey) || {};
     let comparisonStatus = 'approach_only';
 
     if (approachKeys.has(edgeKey) && baselineKeys.has(edgeKey)) {
@@ -203,6 +262,7 @@ function buildComparisonLinks(linksByType, approachType, baselineType) {
     }
 
     return {
+      ...sourceEdge,
       source,
       target,
       relationType: approachType,
@@ -395,14 +455,16 @@ export const NetworkDiagram = ({
       return;
     }
 
-    const allNodes = nodes.map((node) => ({ ...node }));
-    const nodeById = new Map(allNodes.map((node) => [String(node.id), node]));
+    const allNodes = nodes.map((node) => ({ ...node, graphId: nodeGraphId(node) }));
+    const nodeById = new Map(allNodes.map((node) => [nodeGraphId(node), node]));
     const allLinks = links
-      .filter((edge) => nodeById.has(String(edge.source)) && nodeById.has(String(edge.target)))
+      .filter((edge) => nodeById.has(edgeGraphSourceId(edge)) && nodeById.has(edgeGraphTargetId(edge)))
       .map((edge) => ({
         ...edge,
-        source: String(edge.source),
-        target: String(edge.target),
+        source: edgeGraphSourceId(edge),
+        target: edgeGraphTargetId(edge),
+        sourceGraphId: edgeGraphSourceId(edge),
+        targetGraphId: edgeGraphTargetId(edge),
       }));
 
     const requestedRefs = (proposalFilterIds || []).filter((value) => value && typeof value === 'object');
@@ -413,7 +475,7 @@ export const NetworkDiagram = ({
         .map((value) => String(value))
     );
     const hasFilter = requestedRefKeys.size > 0 || requestedIds.size > 0;
-    let displayedNodeIds = new Set(allNodes.map((node) => String(node.id)));
+    let displayedNodeIds = new Set(allNodes.map((node) => nodeGraphId(node)));
     let localLinks = allLinks;
 
     if (hasFilter) {
@@ -430,18 +492,18 @@ export const NetworkDiagram = ({
               || requestedIds.has(unpaddedNumericNodeId)
             );
           })
-          .map((node) => String(node.id))
+          .map((node) => nodeGraphId(node))
       );
 
       if (includeConnections) {
         displayedNodeIds = new Set(matchedFilterNodeIds);
         localLinks = allLinks.filter((edge) => {
-          const sourceIncluded = matchedFilterNodeIds.has(String(edge.source));
-          const targetIncluded = matchedFilterNodeIds.has(String(edge.target));
+          const sourceIncluded = matchedFilterNodeIds.has(edgeGraphSourceId(edge));
+          const targetIncluded = matchedFilterNodeIds.has(edgeGraphTargetId(edge));
 
           if (sourceIncluded || targetIncluded) {
-            displayedNodeIds.add(String(edge.source));
-            displayedNodeIds.add(String(edge.target));
+            displayedNodeIds.add(edgeGraphSourceId(edge));
+            displayedNodeIds.add(edgeGraphTargetId(edge));
             return true;
           }
           return false;
@@ -449,24 +511,24 @@ export const NetworkDiagram = ({
       } else {
         displayedNodeIds = matchedFilterNodeIds;
         localLinks = allLinks.filter((edge) => (
-          displayedNodeIds.has(String(edge.source)) && displayedNodeIds.has(String(edge.target))
+          displayedNodeIds.has(edgeGraphSourceId(edge)) && displayedNodeIds.has(edgeGraphTargetId(edge))
         ));
       }
     }
 
-    const localNodes = allNodes.filter((node) => displayedNodeIds.has(String(node.id)));
+    const localNodes = allNodes.filter((node) => displayedNodeIds.has(nodeGraphId(node)));
     if (localNodes.length === 0) {
       return;
     }
 
-    const adjacency = new Map(localNodes.map((node) => [String(node.id), new Set()]));
-    const degreeById = new Map(localNodes.map((node) => [String(node.id), 0]));
-    const incomingById = new Map(localNodes.map((node) => [String(node.id), 0]));
-    const outgoingById = new Map(localNodes.map((node) => [String(node.id), 0]));
+    const adjacency = new Map(localNodes.map((node) => [nodeGraphId(node), new Set()]));
+    const degreeById = new Map(localNodes.map((node) => [nodeGraphId(node), 0]));
+    const incomingById = new Map(localNodes.map((node) => [nodeGraphId(node), 0]));
+    const outgoingById = new Map(localNodes.map((node) => [nodeGraphId(node), 0]));
 
     localLinks.forEach((edge) => {
-      const sourceId = String(edge.source);
-      const targetId = String(edge.target);
+      const sourceId = edgeGraphSourceId(edge);
+      const targetId = edgeGraphTargetId(edge);
       adjacency.get(sourceId)?.add(targetId);
       adjacency.get(targetId)?.add(sourceId);
       degreeById.set(sourceId, (degreeById.get(sourceId) || 0) + 1);
@@ -476,7 +538,7 @@ export const NetworkDiagram = ({
     });
 
     localNodes.forEach((node) => {
-      const nodeId = String(node.id);
+      const nodeId = nodeGraphId(node);
       node.degree = degreeById.get(nodeId) || 0;
       node.incomingDegree = incomingById.get(nodeId) || 0;
       node.outgoingDegree = outgoingById.get(nodeId) || 0;
@@ -486,22 +548,22 @@ export const NetworkDiagram = ({
     const thresholdMatchedNodeIds = new Set(
       localNodes
         .filter((node) => Number(node.degree || 0) >= relationThreshold)
-        .map((node) => String(node.id))
+        .map((node) => nodeGraphId(node))
     );
     let relationFilteredNodeIds = thresholdMatchedNodeIds;
     let filteredLinks = localLinks.filter((edge) => (
-      relationFilteredNodeIds.has(String(edge.source)) && relationFilteredNodeIds.has(String(edge.target))
+      relationFilteredNodeIds.has(edgeGraphSourceId(edge)) && relationFilteredNodeIds.has(edgeGraphTargetId(edge))
     ));
 
     if (includeThresholdConnections && thresholdMatchedNodeIds.size > 0) {
       relationFilteredNodeIds = new Set(thresholdMatchedNodeIds);
       filteredLinks = localLinks.filter((edge) => {
-        const sourceMatched = thresholdMatchedNodeIds.has(String(edge.source));
-        const targetMatched = thresholdMatchedNodeIds.has(String(edge.target));
+        const sourceMatched = thresholdMatchedNodeIds.has(edgeGraphSourceId(edge));
+        const targetMatched = thresholdMatchedNodeIds.has(edgeGraphTargetId(edge));
 
         if (sourceMatched || targetMatched) {
-          relationFilteredNodeIds.add(String(edge.source));
-          relationFilteredNodeIds.add(String(edge.target));
+          relationFilteredNodeIds.add(edgeGraphSourceId(edge));
+          relationFilteredNodeIds.add(edgeGraphTargetId(edge));
           return true;
         }
 
@@ -509,7 +571,7 @@ export const NetworkDiagram = ({
       });
     }
 
-    const filteredNodes = localNodes.filter((node) => relationFilteredNodeIds.has(String(node.id)));
+    const filteredNodes = localNodes.filter((node) => relationFilteredNodeIds.has(nodeGraphId(node)));
 
     if (filteredNodes.length === 0) {
       exportPayloadRef.current = null;
@@ -529,7 +591,7 @@ export const NetworkDiagram = ({
     const importedPositions = importedLayout?.positions || null;
     let importedPositionedNodeCount = 0;
     filteredNodes.forEach((node) => {
-      const coords = importedPositions?.[String(node.id)];
+      const coords = importedPositions?.[nodeGraphId(node)] || importedPositions?.[String(node.id)];
       if (!coords) {
         return;
       }
@@ -547,12 +609,9 @@ export const NetworkDiagram = ({
             const nodeEcosystem = getSourceScopedEcosystem(ecosystem, node.source);
             return normalizeProposalId(node.id, nodeEcosystem) === normalizeProposalId(highlightText, nodeEcosystem);
           })
-          .map((node) => String(node.id))
+          .map((node) => nodeGraphId(node))
       )
       : new Set();
-
-    const getEdgeSourceId = (edge) => (typeof edge.source === 'object' ? String(edge.source.id) : String(edge.source));
-    const getEdgeTargetId = (edge) => (typeof edge.target === 'object' ? String(edge.target.id) : String(edge.target));
 
     const fallbackLabel = `Unknown ${colorBy.charAt(0).toUpperCase()}${colorBy.slice(1)}`;
     const allGroups = Array.from(new Set(allNodes.map((node) => normalizeCategory(node[colorBy], fallbackLabel))));
@@ -596,6 +655,8 @@ export const NetworkDiagram = ({
     const updateExportPayload = () => {
       const exportedNodes = filteredNodes.map((entry) => ({
         id: String(entry.id),
+        source: entry.source || null,
+        graph_id: nodeGraphId(entry),
         x: Number(entry.x || 0),
         y: Number(entry.y || 0),
         degree: Number(entry.degree || 0),
@@ -625,13 +686,17 @@ export const NetworkDiagram = ({
         },
         nodes: exportedNodes,
         links: filteredLinks.map((edge) => ({
-          source: getEdgeSourceId(edge),
-          target: getEdgeTargetId(edge),
+          source: edgeSourceProposalId(edge),
+          target: edgeTargetProposalId(edge),
+          source_source: edgeSourceSourceId(edge) || null,
+          target_source: edgeTargetSourceId(edge) || null,
+          source_graph_id: edgeGraphSourceId(edge),
+          target_graph_id: edgeGraphTargetId(edge),
           relation_type: edge.relationType || null,
           comparison_status: edge.comparisonStatus || 'approach_only',
         })),
         positions: Object.fromEntries(
-          exportedNodes.map((entry) => [String(entry.id), [entry.x, entry.y]])
+          exportedNodes.map((entry) => [String(entry.graph_id), [entry.x, entry.y]])
         ),
       };
     };
@@ -681,14 +746,17 @@ export const NetworkDiagram = ({
         .style('top', `${pageY - 28}px`);
     };
 
-    const renderNodeTooltip = (entry) => (
-      `<strong><a href="${getProposalUrl(entry.id, snapshotLabel, { linkMode }, ecosystem)}" target="_blank" rel="noreferrer">${formatProposalReference(entry.id, ecosystem)}</a></strong><br/>` +
-      `Outgoing: ${entry.outgoingDegree}<br/>` +
-      `Incoming: ${entry.incomingDegree}<br/>` +
-      `Layer: ${entry.layer || 'Unknown'}<br/>` +
-      `Status: ${entry.status || 'Unknown'}<br/>` +
-      `Type: ${entry.type || 'Unknown'}`
-    );
+    const renderNodeTooltip = (entry) => {
+      const nodeEcosystem = getSourceScopedEcosystem(ecosystem, entry.source);
+      return (
+        `<strong><a href="${getProposalUrl(entry.id, snapshotLabel, { linkMode }, nodeEcosystem)}" target="_blank" rel="noreferrer">${formatProposalReference(entry.id, nodeEcosystem)}</a></strong><br/>` +
+        `Outgoing: ${entry.outgoingDegree}<br/>` +
+        `Incoming: ${entry.incomingDegree}<br/>` +
+        `Layer: ${entry.layer || 'Unknown'}<br/>` +
+        `Status: ${entry.status || 'Unknown'}<br/>` +
+        `Type: ${entry.type || 'Unknown'}`
+      );
+    };
 
     const relationLabel = {
       [BODY_EXTRACTED_REGEX]: 'Regex-Extracted Dependency',
@@ -698,33 +766,39 @@ export const NetworkDiagram = ({
       proposed_replacement: 'Proposed Replacement',
     };
 
-    const renderEdgeTooltip = (edge) => (
-      `<strong><a href="${getProposalUrl(getEdgeSourceId(edge), snapshotLabel, { linkMode }, ecosystem)}" target="_blank" rel="noreferrer">${formatProposalReference(getEdgeSourceId(edge), ecosystem)}</a></strong>` +
-      ` &rarr; ` +
-      `<strong><a href="${getProposalUrl(getEdgeTargetId(edge), snapshotLabel, { linkMode }, ecosystem)}" target="_blank" rel="noreferrer">${formatProposalReference(getEdgeTargetId(edge), ecosystem)}</a></strong><br/>` +
-      `Type: ${
-        !isDifferentialMode
-          ? (relationLabel[edge.relationType] || edge.relationType)
-          : (
-            edge.comparisonStatus === 'overlap'
-              ? `${getLinkTypeLabel(linkType)} + ${getLinkTypeLabel(baselineType)}`
-              : edge.comparisonStatus === 'baseline_only'
-                ? `${getLinkTypeLabel(baselineType)} only`
-                : `${getLinkTypeLabel(linkType)} only`
-          )
-      }` +
-      (
-        !isDifferentialMode
-          ? ''
-          : `<br/>Comparison: ${
-            edge.comparisonStatus === 'overlap'
-              ? `Exists in baseline (${getLinkTypeLabel(baselineType)})`
-              : edge.comparisonStatus === 'baseline_only'
-                ? `Missing from ${getLinkTypeLabel(linkType)}`
-                : `Only in ${getLinkTypeLabel(linkType)}`
-          }`
-      )
-    );
+    const renderEdgeTooltip = (edge) => {
+      const sourceEcosystem = getSourceScopedEcosystem(ecosystem, edgeSourceSourceId(edge));
+      const targetEcosystem = getSourceScopedEcosystem(ecosystem, edgeTargetSourceId(edge));
+      const sourceId = edgeSourceProposalId(edge);
+      const targetId = edgeTargetProposalId(edge);
+      return (
+        `<strong><a href="${getProposalUrl(sourceId, snapshotLabel, { linkMode }, sourceEcosystem)}" target="_blank" rel="noreferrer">${formatProposalReference(sourceId, sourceEcosystem)}</a></strong>` +
+        ` &rarr; ` +
+        `<strong><a href="${getProposalUrl(targetId, snapshotLabel, { linkMode }, targetEcosystem)}" target="_blank" rel="noreferrer">${formatProposalReference(targetId, targetEcosystem)}</a></strong><br/>` +
+        `Type: ${
+          !isDifferentialMode
+            ? (relationLabel[edge.relationType] || edge.relationType)
+            : (
+              edge.comparisonStatus === 'overlap'
+                ? `${getLinkTypeLabel(linkType)} + ${getLinkTypeLabel(baselineType)}`
+                : edge.comparisonStatus === 'baseline_only'
+                  ? `${getLinkTypeLabel(baselineType)} only`
+                  : `${getLinkTypeLabel(linkType)} only`
+            )
+        }` +
+        (
+          !isDifferentialMode
+            ? ''
+            : `<br/>Comparison: ${
+              edge.comparisonStatus === 'overlap'
+                ? `Exists in baseline (${getLinkTypeLabel(baselineType)})`
+                : edge.comparisonStatus === 'baseline_only'
+                  ? `Missing from ${getLinkTypeLabel(linkType)}`
+                  : `Only in ${getLinkTypeLabel(linkType)}`
+            }`
+        )
+      );
+    };
 
     const getWordCount = (node) => {
       const wl = node.word_list;
@@ -736,7 +810,7 @@ export const NetworkDiagram = ({
       .domain([wordCountExtent[0] || 0, wordCountExtent[1] || 1])
       .range([7, 20]);
     const getNodeRadius = (entry) => (
-      searchMatchedIds.has(String(entry.id))
+      searchMatchedIds.has(nodeGraphId(entry))
         ? radius(getWordCount(entry)) + 5
         : radius(getWordCount(entry))
     );
@@ -751,7 +825,7 @@ export const NetworkDiagram = ({
       });
     });
 
-    const linkForce = d3.forceLink(filteredLinks).id((node) => String(node.id));
+    const linkForce = d3.forceLink(filteredLinks).id((node) => nodeGraphId(node));
     const chargeForce = d3.forceManyBody();
     const collisionForce = d3.forceCollide().radius((node) => radius(Number(node.degree || 0)) + 10);
     const centerForce = d3.forceCenter(width / 2, height / 2);
@@ -813,7 +887,7 @@ export const NetworkDiagram = ({
           if (searchMatchedIds.size === 0) {
             return 0.72;
           }
-          return searchMatchedIds.has(getEdgeSourceId(edge)) || searchMatchedIds.has(getEdgeTargetId(edge)) ? 0.95 : 0.08;
+          return searchMatchedIds.has(edgeGraphSourceId(edge)) || searchMatchedIds.has(edgeGraphTargetId(edge)) ? 0.95 : 0.08;
         })
         .attr('stroke-width', DEFAULT_LINK_WIDTH)
         .attr('stroke-dasharray', (edge) => getEdgeDasharray(edge));
@@ -821,28 +895,29 @@ export const NetworkDiagram = ({
 
     const applyDefaultNodeStyles = () => {
       node
-        .attr('stroke', (entry) => (searchMatchedIds.has(String(entry.id)) ? '#f4a261' : '#fff'))
-        .attr('stroke-width', (entry) => (searchMatchedIds.has(String(entry.id)) ? 3 : 1.5))
+        .attr('stroke', (entry) => (searchMatchedIds.has(nodeGraphId(entry)) ? '#f4a261' : '#fff'))
+        .attr('stroke-width', (entry) => (searchMatchedIds.has(nodeGraphId(entry)) ? 3 : 1.5))
         .attr('fill-opacity', (entry) => {
           if (searchMatchedIds.size === 0) {
             return 0.95;
           }
-          return searchMatchedIds.has(String(entry.id)) ? 1 : 0.18;
+          return searchMatchedIds.has(nodeGraphId(entry)) ? 1 : 0.18;
         });
     };
 
     const applyPinnedNodeStyles = (entry) => {
+      const selectedGraphId = nodeGraphId(entry);
       node
-        .attr('stroke', (candidate) => (String(candidate.id) === String(entry.id) ? '#f4a261' : '#fff'))
-        .attr('stroke-width', (candidate) => (String(candidate.id) === String(entry.id) ? 3.5 : 1.5))
-        .attr('fill-opacity', (candidate) => (String(candidate.id) === String(entry.id) ? 1 : 0.18));
+        .attr('stroke', (candidate) => (nodeGraphId(candidate) === selectedGraphId ? '#f4a261' : '#fff'))
+        .attr('stroke-width', (candidate) => (nodeGraphId(candidate) === selectedGraphId ? 3.5 : 1.5))
+        .attr('fill-opacity', (candidate) => (nodeGraphId(candidate) === selectedGraphId ? 1 : 0.18));
 
       link
         .attr('stroke-opacity', (edge) => (
-          getEdgeSourceId(edge) === String(entry.id) || getEdgeTargetId(edge) === String(entry.id) ? 0.95 : 0.1
+          edgeGraphSourceId(edge) === selectedGraphId || edgeGraphTargetId(edge) === selectedGraphId ? 0.95 : 0.1
         ))
         .attr('stroke-width', (edge) => (
-          getEdgeSourceId(edge) === String(entry.id) || getEdgeTargetId(edge) === String(entry.id) ? ACTIVE_LINK_WIDTH : DEFAULT_LINK_WIDTH
+          edgeGraphSourceId(edge) === selectedGraphId || edgeGraphTargetId(edge) === selectedGraphId ? ACTIVE_LINK_WIDTH : DEFAULT_LINK_WIDTH
         ));
     };
 
@@ -853,13 +928,13 @@ export const NetworkDiagram = ({
 
       node
         .attr('fill-opacity', (entry) => (
-          String(entry.id) === getEdgeSourceId(selectedEdge) || String(entry.id) === getEdgeTargetId(selectedEdge) ? 1 : 0.18
+          nodeGraphId(entry) === edgeGraphSourceId(selectedEdge) || nodeGraphId(entry) === edgeGraphTargetId(selectedEdge) ? 1 : 0.18
         ))
         .attr('stroke', (entry) => (
-          String(entry.id) === getEdgeSourceId(selectedEdge) || String(entry.id) === getEdgeTargetId(selectedEdge) ? '#f4a261' : '#fff'
+          nodeGraphId(entry) === edgeGraphSourceId(selectedEdge) || nodeGraphId(entry) === edgeGraphTargetId(selectedEdge) ? '#f4a261' : '#fff'
         ))
         .attr('stroke-width', (entry) => (
-          String(entry.id) === getEdgeSourceId(selectedEdge) || String(entry.id) === getEdgeTargetId(selectedEdge) ? 3 : 1.5
+          nodeGraphId(entry) === edgeGraphSourceId(selectedEdge) || nodeGraphId(entry) === edgeGraphTargetId(selectedEdge) ? 3 : 1.5
         ));
     };
 
@@ -933,10 +1008,10 @@ export const NetworkDiagram = ({
         if (searchMatchedIds.size === 0) {
           return 0.95;
         }
-        return searchMatchedIds.has(String(entry.id)) ? 1 : 0.18;
+        return searchMatchedIds.has(nodeGraphId(entry)) ? 1 : 0.18;
       })
-      .attr('stroke', (entry) => (searchMatchedIds.has(String(entry.id)) ? '#f4a261' : '#fff'))
-      .attr('stroke-width', (entry) => (searchMatchedIds.has(String(entry.id)) ? 3 : 1.5))
+      .attr('stroke', (entry) => (searchMatchedIds.has(nodeGraphId(entry)) ? '#f4a261' : '#fff'))
+      .attr('stroke-width', (entry) => (searchMatchedIds.has(nodeGraphId(entry)) ? 3 : 1.5))
       .on('mouseover', function (event, entry) {
         if (pinnedInteraction) {
           return;
@@ -948,10 +1023,10 @@ export const NetworkDiagram = ({
 
         link
           .attr('stroke-opacity', (edge) => (
-            getEdgeSourceId(edge) === String(entry.id) || getEdgeTargetId(edge) === String(entry.id) ? 0.95 : 0.1
+            edgeGraphSourceId(edge) === nodeGraphId(entry) || edgeGraphTargetId(edge) === nodeGraphId(entry) ? 0.95 : 0.1
           ))
           .attr('stroke-width', (edge) => (
-            getEdgeSourceId(edge) === String(entry.id) || getEdgeTargetId(edge) === String(entry.id) ? 3.2 : 2.2
+            edgeGraphSourceId(edge) === nodeGraphId(entry) || edgeGraphTargetId(edge) === nodeGraphId(entry) ? 3.2 : 2.2
           ));
 
         tooltip
@@ -1014,24 +1089,24 @@ export const NetworkDiagram = ({
 
     const labeledNodeIds = new Set(
       localNodes
-        .filter((entry) => relationFilteredNodeIds.has(String(entry.id)))
+        .filter((entry) => relationFilteredNodeIds.has(nodeGraphId(entry)))
         .slice()
         .sort((left, right) => Number(right.degree || 0) - Number(left.degree || 0))
         .slice(0, 16)
-        .map((entry) => String(entry.id))
+        .map((entry) => nodeGraphId(entry))
     );
 
     labels = root.append('g')
       .selectAll('text')
-      .data(filteredNodes.filter((entry) => labeledNodeIds.has(String(entry.id)) || searchMatchedIds.has(String(entry.id))))
+      .data(filteredNodes.filter((entry) => labeledNodeIds.has(nodeGraphId(entry)) || searchMatchedIds.has(nodeGraphId(entry))))
       .join('text')
-      .text((entry) => formatProposalReference(entry.id, ecosystem))
+      .text((entry) => formatProposalReference(entry.id, getSourceScopedEcosystem(ecosystem, entry.source)))
       .style('font-size', '10.5px')
       .style('fill', 'var(--chart-text)')
-      .style('font-weight', (entry) => (searchMatchedIds.has(String(entry.id)) ? 700 : 400))
+      .style('font-weight', (entry) => (searchMatchedIds.has(nodeGraphId(entry)) ? 700 : 400))
       .style('opacity', (entry) => {
         if (searchMatchedIds.size > 0) {
-          return searchMatchedIds.has(String(entry.id)) ? 1 : 0.22;
+          return searchMatchedIds.has(nodeGraphId(entry)) ? 1 : 0.22;
         }
         return 1;
       })
@@ -1097,7 +1172,7 @@ export const NetworkDiagram = ({
     } else {
       if (importedPositions && importedPositionedNodeCount > 0 && importedPositionedNodeCount < filteredNodes.length) {
         filteredNodes.forEach((entry) => {
-          const coords = importedPositions[String(entry.id)];
+          const coords = importedPositions[nodeGraphId(entry)] || importedPositions[String(entry.id)];
           if (!coords) {
             return;
           }
@@ -1113,7 +1188,7 @@ export const NetworkDiagram = ({
       }
 
       filteredNodes.forEach((entry) => {
-        if (!importedPositions?.[String(entry.id)]) {
+        if (!importedPositions?.[nodeGraphId(entry)] && !importedPositions?.[String(entry.id)]) {
           return;
         }
         entry.fx = null;

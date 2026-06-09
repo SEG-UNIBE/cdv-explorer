@@ -16,6 +16,7 @@ import { getSlipCommitUrl, getSlipUrl, normalizeSlipId } from './slipLinks';
 import { getRepositoryCommitUrl, getRepositoryProposalUrl } from './proposalLinkResolver';
 import { renderProposalListHtml } from './bipTooltipContent';
 import { buildWordCloudData, parseProposalFilterExpression } from './dashboard/dashboardData';
+import { buildProposalGraphId, scopeDependencyLinksForSource } from './data';
 import {
   buildClassificationRelationProposalLabel,
   buildClassificationRelationProposalUrl,
@@ -49,6 +50,40 @@ test('normalizes legacy dependency link keys into canonical keys', () => {
   expect(normalized[PREAMBLE_EXTRACTED].requires).toHaveLength(1);
   expect(normalized[PREAMBLE_EXTRACTED].proposed_replacement).toHaveLength(0);
   expect(normalized[BODY_EXTRACTED_LLM]).toHaveLength(1);
+});
+
+test('source-scopes dependency links without changing display proposal ids', () => {
+  const bipLinks = scopeDependencyLinksForSource({
+    [BODY_EXTRACTED_REGEX]: [{ source: '32', target: '44', value: 1 }],
+  }, 'bip', 'bips');
+  const slipLinks = scopeDependencyLinksForSource({
+    [BODY_EXTRACTED_REGEX]: [{ source: '32', target: '44', value: 1 }],
+  }, 'slip', 'slips');
+
+  expect(buildProposalGraphId('bips', '32')).toBe('bips:32');
+  expect(buildProposalGraphId('slips', '32')).toBe('slips:32');
+  expect(bipLinks[BODY_EXTRACTED_REGEX][0]).toMatchObject({
+    source: '32',
+    target: '44',
+    sourceProposalId: '32',
+    targetProposalId: '44',
+    sourceSourceId: 'bip',
+    targetSourceId: 'bip',
+    sourceGraphSource: 'bips',
+    targetGraphSource: 'bips',
+    sourceKey: 'bips:32',
+    targetKey: 'bips:44',
+  });
+  expect(slipLinks[BODY_EXTRACTED_REGEX][0]).toMatchObject({
+    source: '32',
+    target: '44',
+    sourceSourceId: 'slip',
+    targetSourceId: 'slip',
+    sourceGraphSource: 'slips',
+    targetGraphSource: 'slips',
+    sourceKey: 'slips:32',
+    targetKey: 'slips:44',
+  });
 });
 
 describe('proposal link resolution', () => {

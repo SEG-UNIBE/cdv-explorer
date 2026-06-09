@@ -34,6 +34,57 @@ const EMPTY_DATASET = {
   conformity: { per_proposal: [] }
 };
 
+export function buildProposalGraphId(sourceSlug, proposalId) {
+  const sourcePart = String(sourceSlug || '').trim();
+  const idPart = String(proposalId ?? '').trim();
+  return sourcePart ? `${sourcePart}:${idPart}` : idPart;
+}
+
+function scopeDependencyEdge(edge, sourceId, sourceSlug = sourceId) {
+  if (!edge || edge.source == null || edge.target == null) {
+    return edge;
+  }
+
+  const sourceProposalId = String(edge.sourceProposalId ?? edge.source);
+  const targetProposalId = String(edge.targetProposalId ?? edge.target);
+  const sourceSourceId = String(edge.sourceSourceId ?? sourceId ?? '');
+  const targetSourceId = String(edge.targetSourceId ?? sourceId ?? '');
+  const sourceGraphSource = String(edge.sourceGraphSource ?? sourceSlug ?? sourceSourceId);
+  const targetGraphSource = String(edge.targetGraphSource ?? sourceSlug ?? targetSourceId);
+
+  return {
+    ...edge,
+    sourceProposalId,
+    targetProposalId,
+    sourceSourceId,
+    targetSourceId,
+    sourceGraphSource,
+    targetGraphSource,
+    sourceKey: edge.sourceKey || buildProposalGraphId(sourceGraphSource, sourceProposalId),
+    targetKey: edge.targetKey || buildProposalGraphId(targetGraphSource, targetProposalId),
+  };
+}
+
+export function scopeDependencyLinksForSource(linksByType, sourceId, sourceSlug = sourceId) {
+  const links = normalizeDependencyLinks(linksByType || EMPTY_LINKS);
+  const explicit = links[PREAMBLE_EXTRACTED] || {};
+
+  const scoped = {
+    [BODY_EXTRACTED_REGEX]: (links[BODY_EXTRACTED_REGEX] || []).map((edge) => scopeDependencyEdge(edge, sourceId, sourceSlug)),
+    [BODY_EXTRACTED_LLM]: (links[BODY_EXTRACTED_LLM] || []).map((edge) => scopeDependencyEdge(edge, sourceId, sourceSlug)),
+    [PREAMBLE_EXTRACTED]: {
+      requires: (explicit.requires || links.requires || []).map((edge) => scopeDependencyEdge(edge, sourceId, sourceSlug)),
+      replaces: (explicit.replaces || links.replaces || []).map((edge) => scopeDependencyEdge(edge, sourceId, sourceSlug)),
+      proposed_replacement: (explicit.proposed_replacement || links.proposed_replacement || []).map((edge) => scopeDependencyEdge(edge, sourceId, sourceSlug)),
+    },
+  };
+
+  scoped.requires = scoped[PREAMBLE_EXTRACTED].requires;
+  scoped.replaces = scoped[PREAMBLE_EXTRACTED].replaces;
+  scoped.proposed_replacement = scoped[PREAMBLE_EXTRACTED].proposed_replacement;
+  return scoped;
+}
+
 function countAllLinks(linksByType) {
   const links = linksByType || {};
   const explicit = links[PREAMBLE_EXTRACTED] || {};
@@ -46,10 +97,16 @@ function countAllLinks(linksByType) {
   );
 }
 
-function ensureSingleSourceShape(snapshotLabel, sourceId, snapshotData) {
+function ensureSingleSourceShape(snapshotLabel, sourceId, sourceSlug, snapshotData) {
   const network = snapshotData.network || { nodes: [], links: EMPTY_LINKS };
-  const links = normalizeDependencyLinks(network.links || EMPTY_LINKS);
-  const nodes = (network.nodes || []).map((node) => ({ ...node, source: sourceId }));
+  const graphSource = sourceSlug || sourceId;
+  const links = scopeDependencyLinksForSource(network.links || EMPTY_LINKS, sourceId, graphSource);
+  const nodes = (network.nodes || []).map((node) => ({
+    ...node,
+    source: sourceId,
+    graphSource,
+    graphId: buildProposalGraphId(graphSource, node?.id),
+  }));
 
   return {
     snapshot: snapshotLabel,
@@ -253,7 +310,7 @@ function fetchSingleSourceDataset(ecosystemId, source, sourceId, snapshot) {
     fetchJson(`${base}/evolution/evolution_payload.json`),
     fetchJson(`${base}/conformity/conformity_metrics.json`),
   ]).then(([network, dependencyMetrics, authorship, classification, evolution, conformity]) =>
-    ensureSingleSourceShape(snapshot, sourceId, {
+    ensureSingleSourceShape(snapshot, sourceId, source.sourceSlug || sourceId, {
       network, dependencyMetrics, authorship, classification, evolution, conformity,
     })
   ).catch((err) => {

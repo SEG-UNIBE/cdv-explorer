@@ -179,6 +179,13 @@ function createEdgeStrokeWidthScale(links) {
     .clamp(true);
 }
 
+function allowGraphZoomGesture(event) {
+  if (event?.type === 'wheel') {
+    return event.ctrlKey || event.metaKey;
+  }
+  return !event?.button;
+}
+
 export const AuthorCollaborationNetwork = ({
   data,
   width = 1200,
@@ -563,6 +570,7 @@ export const AuthorCollaborationNetwork = ({
 
     const zoomBehavior = d3.zoom()
       .scaleExtent([0.5, 3])
+      .filter(allowGraphZoomGesture)
       .on('zoom', (event) => {
         root.attr('transform', event.transform);
       });

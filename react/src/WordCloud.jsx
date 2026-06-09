@@ -2,6 +2,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import cloud from 'd3-cloud';
 
+function allowVisualZoomGesture(event) {
+  if (event?.type === 'wheel') {
+    return event.ctrlKey || event.metaKey;
+  }
+  return !event?.button;
+}
+
 export const WordCloud = ({ words, width = 1250, height = 750 }) => {
   const containerRef = useRef();
   const svgRef = useRef();
@@ -112,6 +119,7 @@ export const WordCloud = ({ words, width = 1250, height = 750 }) => {
 
       const zoom = d3.zoom()
         .scaleExtent([0.6, 4])
+        .filter(allowVisualZoomGesture)
         .on('start', () => {
           svg.style('cursor', 'grabbing');
         })

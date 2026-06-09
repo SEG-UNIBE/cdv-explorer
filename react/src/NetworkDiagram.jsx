@@ -148,6 +148,13 @@ function formatProposalFilterValue(value, ecosystem) {
   return formatProposalReference(value, ecosystem);
 }
 
+function allowGraphZoomGesture(event) {
+  if (event?.type === 'wheel') {
+    return event.ctrlKey || event.metaKey;
+  }
+  return !event?.button;
+}
+
 function sanitizeFilePart(value, fallback = 'unknown') {
   const text = String(value ?? '')
     .trim()
@@ -868,6 +875,7 @@ export const NetworkDiagram = ({
 
     const zoomBehavior = d3.zoom()
       .scaleExtent([0.5, 3])
+      .filter(allowGraphZoomGesture)
       .on('zoom', (event) => {
         root.attr('transform', event.transform);
       });

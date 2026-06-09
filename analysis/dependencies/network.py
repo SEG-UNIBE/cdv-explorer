@@ -2,7 +2,7 @@ import json
 import csv
 import re
 from pathlib import Path
-from typing import Any, Dict, Iterable, List, Optional
+from typing import Any, Dict, Iterable, List
 
 from analysis.dependencies.constants import (
     BODY_EXTRACTED_LLM,

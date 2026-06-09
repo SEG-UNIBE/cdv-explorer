@@ -1,5 +1,4 @@
 """Preamble extractor for RFC-822-style key:value headers (BIPs and similar)."""
-import os
 import re
 import json
 import sys

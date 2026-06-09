@@ -1,4 +1,4 @@
-from collections import Counter, defaultdict
+from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import PathPatch, Rectangle
 from matplotlib.path import Path
 
-from paper.RQ3._plotting import BAR_EDGE_COLOR, BAR_EDGE_WIDTH, bar_style, save_figure
+from paper.RQ3._plotting import BAR_EDGE_COLOR, bar_style, save_figure
 from paper.RQ1.classification_status import STATUS_COLORS, resolve_rq1_status_order
 from paper.RQ1.classification_type import TYPE_COLORS, TYPE_ORDER
 

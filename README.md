@@ -172,6 +172,15 @@ python main.py ecosystems add-source bitcoin  # add a second IP catalog to an ec
 
 ## Developer Notes
 
+### Development dependencies
+
+For local test/development work, install the dev requirements instead of the runtime-only set:
+
+```bash
+pip install -r requirements-dev.txt
+python -m pytest
+```
+
 ### Pipeline architecture
 
 The pipeline transforms raw IP corpora into versioned, frontend-ready datasets in four stages: **Harvest** → **Preprocess** → **Analysis** → **Postprocess**.

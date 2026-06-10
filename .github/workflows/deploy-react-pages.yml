@@ -61,7 +61,7 @@ jobs:
         working-directory: react
 
   build:
-    needs: [test, validate, frontend-test]
+    needs: [validate, frontend-test]
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     defaults:

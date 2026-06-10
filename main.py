@@ -827,3 +827,4 @@ def _build_source_scaffold(
 
 if __name__ == "__main__":
     app()
+

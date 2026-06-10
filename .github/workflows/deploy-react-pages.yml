@@ -5,6 +5,19 @@ on:
     branches:
       - main
       - master
+      - dev
+    paths:
+      - '.github/workflows/deploy-react-pages.yml'
+      - 'react/**'
+      - 'scripts/validate_snapshots.py'
+      - 'ip_data/**/01_harvest/**'
+      - 'ip_data/**/02_preprocess/**'
+      - 'ip_data/**/03_analysis/**'
+      - 'ip_data/**/04_postprocess/**'
+  pull_request:
+    branches:
+      - main
+      - master
     paths:
       - '.github/workflows/deploy-react-pages.yml'
       - 'react/**'
@@ -25,7 +38,23 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dev dependencies
+        run: pip install -r requirements-dev.txt
+
+      - name: Run ruff check
+        run: ruff check .
+
   validate:
+    needs: lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -38,6 +67,7 @@ jobs:
         run: python scripts/validate_snapshots.py
 
   frontend-test:
+    needs: lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -59,10 +89,11 @@ jobs:
       - name: Run frontend tests
         run: npm test -- --watchAll=false
         working-directory: react
+        env:
+          CI: true
 
   build:
     needs: [validate, frontend-test]
-    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -97,6 +128,7 @@ jobs:
 
   deploy:
     needs: build
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

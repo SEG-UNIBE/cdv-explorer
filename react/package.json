@@ -13,6 +13,7 @@
     "@testing-library/user-event": "^13.5.0",
     "d3": "^7.9.0",
     "d3-cloud": "^1.2.7",
+    "js-yaml": "^3.14.1",
     "primeflex": "^4.0.0",
     "primeicons": "^7.0.0",
     "primereact": "^10.9.3",
@@ -26,9 +27,9 @@
   },
   "scripts": {
     "postinstall": "patch-package",
-    "prestart": "node scripts/generateSnapshotIndex.js && node scripts/generateProposalLinkIndex.js",
+    "prestart": "node scripts/generateEcosystemConfig.js && node scripts/generateSnapshotIndex.js && node scripts/generateProposalLinkIndex.js",
     "start": "react-scripts start",
-    "prebuild": "node scripts/generateSnapshotIndex.js && node scripts/generateProposalLinkIndex.js",
+    "prebuild": "node scripts/generateEcosystemConfig.js && node scripts/generateSnapshotIndex.js && node scripts/generateProposalLinkIndex.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

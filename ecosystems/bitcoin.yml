@@ -1,5 +1,13 @@
 slug: bitcoin
 display_name: Bitcoin
+frontend:
+  status: available
+  description: Improvement proposals across the Bitcoin ecosystem
+  ecosystem_description: >
+    The Bitcoin ecosystem maintains two complementary series of improvement proposals:
+    BIPs (Bitcoin Improvement Proposals) for core protocol changes and SLIPs
+    (SatoshiLabs Improvement Proposals) for wallet-layer standards. Use the source
+    picker to focus on one series, or analyze both together.
 
 sources:
   bips:
@@ -28,6 +36,16 @@ sources:
     reference_pattern: '\bBIP[-#\s]?(\d+)\b'
     max_proposal_id: 999
     stop_words_file: assets/stopwords/en_basic.txt
+    frontend:
+      compliance_standards:
+        - key: bip2
+          label: BIP2 Conformity
+          color: "#e45756"
+          hoverColor: "#b63f3e"
+        - key: bip3
+          label: BIP3 Conformity
+          color: "#f08c00"
+          hoverColor: "#e67700"
 
     preamble:
       required_fields:
@@ -126,6 +144,8 @@ sources:
     reference_pattern: '\bSLIP[-#\s]?(\d+)\b'
     max_proposal_id: 9999
     stop_words_file: assets/stopwords/en_basic.txt
+    frontend:
+      compliance_standards: []
 
     preamble:
       required_fields:

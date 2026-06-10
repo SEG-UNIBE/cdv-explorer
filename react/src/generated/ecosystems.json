@@ -1,0 +1,282 @@
+[
+  {
+    "id": "bitcoin",
+    "name": "Bitcoin",
+    "status": "available",
+    "description": "Improvement proposals across the Bitcoin ecosystem",
+    "ecosystemDescription": "The Bitcoin ecosystem maintains two complementary series of improvement proposals: BIPs (Bitcoin Improvement Proposals) for core protocol changes and SLIPs (SatoshiLabs Improvement Proposals) for wallet-layer standards. Use the source picker to focus on one series, or analyze both together.",
+    "sources": {
+      "bip": {
+        "sourceId": "bip",
+        "sourceSlug": "bips",
+        "acronym": "BIP",
+        "label": "Bitcoin Improvement Proposals",
+        "shortLabel": "BIPs",
+        "proposalPlural": "Bitcoin Improvement Proposals (BIPs)",
+        "proposalShortPlural": "BIPs",
+        "proposalTermSingular": "Bitcoin Improvement Proposal",
+        "proposalTermPlural": "Bitcoin Improvement Proposals",
+        "sourceRepositories": [
+          "github/bitcoin/bips"
+        ],
+        "dataPath": "ip_data/bitcoin/bips/03_analysis",
+        "classificationDimensions": [
+          {
+            "field": "status",
+            "label": "Status"
+          },
+          {
+            "field": "type",
+            "label": "Type"
+          },
+          {
+            "field": "layer",
+            "label": "Layer"
+          }
+        ],
+        "classificationChordBadgeOffsets": {},
+        "complianceStandards": [
+          {
+            "key": "bip2",
+            "label": "BIP2 Conformity",
+            "color": "#e45756",
+            "hoverColor": "#b63f3e"
+          },
+          {
+            "key": "bip3",
+            "label": "BIP3 Conformity",
+            "color": "#f08c00",
+            "hoverColor": "#e67700"
+          }
+        ],
+        "complianceChecker": "bip",
+        "documentPrefix": "bip",
+        "primaryIdField": "bip",
+        "referencePattern": "\\bBIP[-#\\s]?(\\d+)\\b",
+        "maxProposalId": 999,
+        "repositoryOwner": "bitcoin",
+        "repositoryName": "bips",
+        "currentBaseUrl": "https://bips.dev",
+        "ecosystemSlug": "bitcoin"
+      },
+      "slip": {
+        "sourceId": "slip",
+        "sourceSlug": "slips",
+        "acronym": "SLIP",
+        "label": "SatoshiLabs Improvement Proposals",
+        "shortLabel": "SLIPs",
+        "proposalPlural": "SatoshiLabs Improvement Proposals (SLIPs)",
+        "proposalShortPlural": "SLIPs",
+        "proposalTermSingular": "SatoshiLabs Improvement Proposal",
+        "proposalTermPlural": "SatoshiLabs Improvement Proposals",
+        "sourceRepositories": [
+          "github/satoshilabs/slips"
+        ],
+        "dataPath": "ip_data/bitcoin/slips/03_analysis",
+        "classificationDimensions": [
+          {
+            "field": "status",
+            "label": "Status"
+          },
+          {
+            "field": "type",
+            "label": "Type"
+          }
+        ],
+        "classificationChordBadgeOffsets": {},
+        "complianceStandards": [],
+        "complianceChecker": "slip",
+        "documentPrefix": "slip",
+        "primaryIdField": "slip",
+        "referencePattern": "\\bSLIP[-#\\s]?(\\d+)\\b",
+        "maxProposalId": 9999,
+        "repositoryOwner": "satoshilabs",
+        "repositoryName": "slips",
+        "currentBaseUrl": "",
+        "ecosystemSlug": "bitcoin"
+      }
+    },
+    "sourceOrder": [
+      "bip",
+      "slip"
+    ],
+    "defaultSourceId": "bip",
+    "sourceId": "bip",
+    "sourceSlug": "bips",
+    "acronym": "BIP",
+    "label": "Bitcoin Improvement Proposals",
+    "shortLabel": "BIPs",
+    "proposalPlural": "Bitcoin Improvement Proposals (BIPs)",
+    "proposalShortPlural": "BIPs",
+    "proposalTermSingular": "Bitcoin Improvement Proposal",
+    "proposalTermPlural": "Bitcoin Improvement Proposals",
+    "sourceRepositories": [
+      "github/bitcoin/bips"
+    ],
+    "dataPath": "ip_data/bitcoin/bips/03_analysis",
+    "classificationDimensions": [
+      {
+        "field": "status",
+        "label": "Status"
+      },
+      {
+        "field": "type",
+        "label": "Type"
+      },
+      {
+        "field": "layer",
+        "label": "Layer"
+      }
+    ],
+    "classificationChordBadgeOffsets": {},
+    "complianceStandards": [
+      {
+        "key": "bip2",
+        "label": "BIP2 Conformity",
+        "color": "#e45756",
+        "hoverColor": "#b63f3e"
+      },
+      {
+        "key": "bip3",
+        "label": "BIP3 Conformity",
+        "color": "#f08c00",
+        "hoverColor": "#e67700"
+      }
+    ],
+    "complianceChecker": "bip",
+    "documentPrefix": "bip",
+    "primaryIdField": "bip",
+    "referencePattern": "\\bBIP[-#\\s]?(\\d+)\\b",
+    "maxProposalId": 999,
+    "repositoryOwner": "bitcoin",
+    "repositoryName": "bips",
+    "currentBaseUrl": "https://bips.dev",
+    "ecosystemSlug": "bitcoin"
+  },
+  {
+    "id": "nostr",
+    "name": "Nostr",
+    "status": "available",
+    "description": "Improvement proposals across the Nostr ecosystem",
+    "ecosystemDescription": "Nostr is a decentralized messaging protocol built on relays and clients. NIPs (Nostr Implementation Possibilities) define the rules of this protocol, specifying message formats, event kinds, and relay behaviors.",
+    "sources": {
+      "nip": {
+        "sourceId": "nip",
+        "sourceSlug": "nips",
+        "acronym": "NIP",
+        "label": "Nostr Implementation Possibilities",
+        "shortLabel": "NIPs",
+        "proposalPlural": "Nostr Implementation Possibilities (NIPs)",
+        "proposalShortPlural": "NIPs",
+        "proposalTermSingular": "Nostr Implementation Possibility",
+        "proposalTermPlural": "Nostr Implementation Possibilities",
+        "sourceRepositories": [
+          "github/nostr-protocol/nips"
+        ],
+        "dataPath": "ip_data/nostr/nips/03_analysis",
+        "classificationDimensions": [
+          {
+            "field": "status",
+            "label": "Status"
+          },
+          {
+            "field": "type",
+            "label": "Type"
+          },
+          {
+            "field": "layer",
+            "label": "Layer"
+          }
+        ],
+        "classificationChordBadgeOffsets": {
+          "layer": {
+            "x": -20
+          }
+        },
+        "complianceStandards": [
+          {
+            "key": "nip",
+            "label": "NIP Conformity",
+            "color": "#4c72b0",
+            "hoverColor": "#3a5a8e"
+          }
+        ],
+        "complianceChecker": "nip",
+        "documentPrefix": "nip",
+        "primaryIdField": "nip",
+        "referencePattern": "\\bNIP-([0-9A-Fa-f]{1,3})\\b",
+        "maxProposalId": 255,
+        "repositoryOwner": "nostr-protocol",
+        "repositoryName": "nips",
+        "currentBaseUrl": "",
+        "ecosystemSlug": "nostr"
+      }
+    },
+    "sourceOrder": [
+      "nip"
+    ],
+    "defaultSourceId": "nip",
+    "sourceId": "nip",
+    "sourceSlug": "nips",
+    "acronym": "NIP",
+    "label": "Nostr Implementation Possibilities",
+    "shortLabel": "NIPs",
+    "proposalPlural": "Nostr Implementation Possibilities (NIPs)",
+    "proposalShortPlural": "NIPs",
+    "proposalTermSingular": "Nostr Implementation Possibility",
+    "proposalTermPlural": "Nostr Implementation Possibilities",
+    "sourceRepositories": [
+      "github/nostr-protocol/nips"
+    ],
+    "dataPath": "ip_data/nostr/nips/03_analysis",
+    "classificationDimensions": [
+      {
+        "field": "status",
+        "label": "Status"
+      },
+      {
+        "field": "type",
+        "label": "Type"
+      },
+      {
+        "field": "layer",
+        "label": "Layer"
+      }
+    ],
+    "classificationChordBadgeOffsets": {
+      "layer": {
+        "x": -20
+      }
+    },
+    "complianceStandards": [
+      {
+        "key": "nip",
+        "label": "NIP Conformity",
+        "color": "#4c72b0",
+        "hoverColor": "#3a5a8e"
+      }
+    ],
+    "complianceChecker": "nip",
+    "documentPrefix": "nip",
+    "primaryIdField": "nip",
+    "referencePattern": "\\bNIP-([0-9A-Fa-f]{1,3})\\b",
+    "maxProposalId": 255,
+    "repositoryOwner": "nostr-protocol",
+    "repositoryName": "nips",
+    "currentBaseUrl": "",
+    "ecosystemSlug": "nostr"
+  },
+  {
+    "id": "tor",
+    "name": "Tor",
+    "status": "coming-soon",
+    "description": "Tor Design Proposals (TORDP)",
+    "ecosystemDescription": "",
+    "sources": {},
+    "sourceOrder": [],
+    "defaultSourceId": null,
+    "acronym": "TORDP",
+    "proposalPlural": "Tor Design Proposals (TORDP)",
+    "proposalShortPlural": "TORDPs"
+  }
+]

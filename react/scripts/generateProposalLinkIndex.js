@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
+const yaml = require('js-yaml');
 
 const reactRoot = path.resolve(__dirname, '..');
 const repoRoot = path.resolve(reactRoot, '..');
@@ -17,55 +18,13 @@ function readJson(filePath, fallback = {}) {
   return JSON.parse(fs.readFileSync(filePath, 'utf8'));
 }
 
-function stripYamlValue(value) {
-  return String(value || '')
-    .trim()
-    .replace(/^['"]|['"]$/g, '');
-}
-
 function parseEcosystemYaml(filePath) {
-  const lines = fs.readFileSync(filePath, 'utf8').split(/\r?\n/);
-  const ecosystem = { slug: path.basename(filePath, '.yml'), sources: {} };
-  let inSources = false;
-  let currentSource = null;
-
-  lines.forEach((line) => {
-    if (!line.trim() || line.trim().startsWith('#')) {
-      return;
-    }
-
-    const rootMatch = line.match(/^([A-Za-z0-9_-]+):\s*(.*)$/);
-    if (rootMatch) {
-      const [, key, value] = rootMatch;
-      inSources = key === 'sources';
-      currentSource = null;
-      if (key === 'slug' && value.trim()) {
-        ecosystem.slug = stripYamlValue(value);
-      }
-      return;
-    }
-
-    if (!inSources) {
-      return;
-    }
-
-    const sourceMatch = line.match(/^  ([A-Za-z0-9_-]+):\s*$/);
-    if (sourceMatch) {
-      currentSource = sourceMatch[1];
-      ecosystem.sources[currentSource] = {};
-      return;
-    }
-
-    const sourceValueMatch = line.match(/^    ([A-Za-z0-9_-]+):\s*(.*)$/);
-    if (currentSource && sourceValueMatch) {
-      const [, key, value] = sourceValueMatch;
-      if (value.trim()) {
-        ecosystem.sources[currentSource][key] = stripYamlValue(value);
-      }
-    }
-  });
-
-  return ecosystem;
+  const ecosystem = yaml.load(fs.readFileSync(filePath, 'utf8')) || {};
+  return {
+    ...ecosystem,
+    slug: ecosystem.slug || path.basename(filePath, '.yml'),
+    sources: ecosystem.sources || {},
+  };
 }
 
 function runGit(localDir, args, fallback = '') {

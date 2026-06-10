@@ -70,6 +70,7 @@ app = typer.Typer(
         "[green]python main.py run -e bitcoin -s 2026-03-16 --skipllm[/green]\n\n"
         "[green]python main.py run -e nostr -s 2026-03-16 --skipllm[/green]\n\n"
         "[green]python main.py snapshots[/green]\n\n"
+        "[green]python main.py artifacts rebuild -e bitcoin -s 2026-03-16[/green]\n\n"
         "[green]python main.py doctor[/green]\n\n"
         "[green]python main.py ecosystems list[/green]\n\n"
         "[green]python main.py ecosystems show bitcoin[/green]\n\n"
@@ -92,6 +93,12 @@ snapshots_app = typer.Typer(
     invoke_without_command=True,
 )
 app.add_typer(snapshots_app, name="snapshots", rich_help_panel="Discovery")
+artifacts_app = typer.Typer(
+    help="Rebuild generated analysis and postprocess artifacts from preprocessed JSON.",
+    rich_markup_mode="rich",
+    no_args_is_help=True,
+)
+app.add_typer(artifacts_app, name="artifacts", rich_help_panel="Pipeline")
 
 
 # ---------------------------------------------------------------------------
@@ -229,6 +236,57 @@ def _remove_snapshot_targets(targets: list[tuple[str, Path]]) -> None:
             target.unlink()
 
 
+def _validate_snapshot_date(snapshot: str) -> None:
+    try:
+        date.fromisoformat(snapshot)
+    except ValueError:
+        console.print(f"[red]Invalid snapshot date '{snapshot}'. Use YYYY-MM-DD.[/red]")
+        raise typer.Exit(1)
+
+
+def _rebuild_source_artifacts(eco_slug: str, src_slug: str, src: dict, snapshot: str) -> None:
+    """Rebuild analysis/postprocess artifacts for one source from existing preprocess JSON."""
+    from analysis.pipeline import prepare_ecosystem_artifacts
+
+    harvest_root = Path(src["harvest"])
+    preprocess_dir = Path(src["preprocess"]) / snapshot
+    analysis_root = Path(src["analysis"])
+    postprocess_root = Path(src["postprocess"])
+    source_context = SourceContext.from_config(src, ecosystem_slug=eco_slug, source_slug=src_slug)
+
+    if not preprocess_dir.is_dir():
+        console.print(
+            f"[red]Missing preprocessed JSON directory for {eco_slug}/{src_slug}: "
+            f"{preprocess_dir}[/red]"
+        )
+        raise typer.Exit(1)
+
+    if not any(preprocess_dir.glob("*.json")):
+        console.print(
+            f"[red]No preprocessed JSON files found for {eco_slug}/{src_slug}: "
+            f"{preprocess_dir}[/red]"
+        )
+        raise typer.Exit(1)
+
+    _run_stage(
+        "Build analysis and postprocess artifacts",
+        9,
+        "step",
+        lambda u: prepare_ecosystem_artifacts(
+            proposal_json_dir=preprocess_dir,
+            artifact_root=analysis_root,
+            postprocess_root=postprocess_root,
+            snapshot=snapshot,
+            id_field=src["primary_id_field"],
+            proposal_label=src["proposal_acronym"],
+            repo_dir=harvest_root if harvest_root.exists() else None,
+            file_prefix=src["document_prefix"],
+            source_context=source_context,
+            progress_callback=u,
+        ),
+    )
+
+
 def _analysis_dirs_for_ecosystem(eco_dir: Path, eco_config: dict | None = None) -> list[tuple[str | None, Path]]:
     direct = eco_dir / "03_analysis"
     if direct.is_dir():
@@ -274,15 +332,12 @@ def _run_source_pipeline(eco_slug: str, src_slug: str, src: dict, snapshot: str,
     """Run the full pipeline for one source."""
     from pipeline.harvest import get_harvester
     from pipeline.preprocess import get_extractor, get_enricher
-    from analysis.pipeline import prepare_ecosystem_artifacts
 
     harvest_root = Path(src["harvest"])
     preprocess_root = Path(src["preprocess"])
     analysis_root = Path(src["analysis"])
-    postprocess_root = Path(src["postprocess"])
     output_dir = preprocess_root / snapshot
     prefix = src["document_prefix"]
-    source_context = SourceContext.from_config(src, ecosystem_slug=eco_slug, source_slug=src_slug)
 
     harvester = get_harvester(src.get("harvester", "github_repo"))
     extractor = get_extractor(src.get("preprocessor", "rfc_preamble"))
@@ -317,18 +372,7 @@ def _run_source_pipeline(eco_slug: str, src_slug: str, src: dict, snapshot: str,
                    skip_llm=skipllm,
                    progress_callback=u))
 
-    _run_stage("Build analysis and postprocess artifacts", 9, "step",
-               lambda u: prepare_ecosystem_artifacts(
-                   proposal_json_dir=output_dir,
-                   artifact_root=analysis_root,
-                   postprocess_root=postprocess_root,
-                   snapshot=snapshot,
-                   id_field=src["primary_id_field"],
-                   proposal_label=src["proposal_acronym"],
-                   repo_dir=harvest_root,
-                   file_prefix=src["document_prefix"],
-                   source_context=source_context,
-                   progress_callback=u))
+    _rebuild_source_artifacts(eco_slug, src_slug, src, snapshot)
 
 
 # ---------------------------------------------------------------------------
@@ -511,11 +555,7 @@ def run(
         raise typer.Exit(1)
     eco = _get_ecosystem(eco_slug)
 
-    try:
-        date.fromisoformat(snapshot)
-    except ValueError:
-        console.print(f"[red]Invalid snapshot date '{snapshot}'. Use YYYY-MM-DD.[/red]")
-        raise typer.Exit(1)
+    _validate_snapshot_date(snapshot)
 
     sources: dict = eco.get("sources", {})
     if not sources:
@@ -537,6 +577,46 @@ def run(
             _run_source_pipeline(eco_slug, src_slug, src_cfg, snapshot, skipllm)
         elapsed = time.monotonic() - run_started
         console.print(f"\n[green]All sources done in {elapsed:.1f}s[/green]")
+
+
+# ---------------------------------------------------------------------------
+# artifacts
+# ---------------------------------------------------------------------------
+
+@artifacts_app.command("rebuild", rich_help_panel="Manage")
+def artifacts_rebuild(
+    ecosystem: Annotated[Optional[str], typer.Option("--ecosystem", "-e", help="Ecosystem slug (default: first registered).")] = None,
+    source: Annotated[Optional[str], typer.Option("--source", help="Source slug (default: all sources).")] = None,
+    snapshot: Annotated[str, typer.Option("--snapshot", "-s", help="Snapshot date (YYYY-MM-DD). Required.")] = ...,
+) -> None:
+    """Rebuild analysis and postprocess artifacts from existing preprocessed JSON."""
+    eco_slug = ecosystem or next(iter(ECOSYSTEM_REGISTRY), None)
+    if not eco_slug:
+        console.print("[red]No ecosystems registered. Add a .yml file to the ecosystems/ directory.[/red]")
+        raise typer.Exit(1)
+    eco = _get_ecosystem(eco_slug)
+    _validate_snapshot_date(snapshot)
+
+    sources: dict = eco.get("sources", {})
+    if not sources:
+        console.print(f"[red]Ecosystem '{eco_slug}' has no sources configured.[/red]")
+        raise typer.Exit(1)
+
+    targets: dict[str, dict] = {source: _get_source(eco, source)} if source else sources
+
+    rebuild_started = time.monotonic()
+    if len(targets) == 1:
+        src_slug, src_cfg = next(iter(targets.items()))
+        _rebuild_source_artifacts(eco_slug, src_slug, src_cfg, snapshot)
+        elapsed = time.monotonic() - rebuild_started
+        console.print(f"\n[green]Artifacts rebuilt in {elapsed:.1f}s[/green]")
+        return
+
+    for src_slug, src_cfg in targets.items():
+        console.rule(f"[bold]{eco_slug} / {src_slug}[/bold]")
+        _rebuild_source_artifacts(eco_slug, src_slug, src_cfg, snapshot)
+    elapsed = time.monotonic() - rebuild_started
+    console.print(f"\n[green]Artifacts rebuilt for all sources in {elapsed:.1f}s[/green]")
 
 
 # ---------------------------------------------------------------------------
@@ -601,11 +681,7 @@ def snapshots_remove(
     yes: Annotated[bool, typer.Option("--yes", "-y", help="Delete without an interactive confirmation prompt.")] = False,
 ) -> None:
     """Remove generated preprocess, analysis, and postprocess directories for a snapshot."""
-    try:
-        date.fromisoformat(snapshot)
-    except ValueError:
-        console.print(f"[red]Invalid snapshot date '{snapshot}'. Use YYYY-MM-DD.[/red]")
-        raise typer.Exit(1)
+    _validate_snapshot_date(snapshot)
 
     eco = _get_ecosystem(ecosystem)
     targets = _collect_snapshot_removal_targets(ecosystem, eco, source, snapshot)

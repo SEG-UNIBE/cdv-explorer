@@ -117,11 +117,14 @@ export function EcosystemDashboard() {
   const [dataReady, setDataReady] = useState(false);
   const [skeletonActive, setSkeletonActive] = useState(true);
   const [contentEntered, setContentEntered] = useState(false);
+  const [fetchError, setFetchError] = useState(null);
+  const [retryCounter, setRetryCounter] = useState(0);
 
   useEffect(() => {
     if (!ecosystem || ecosystem.status !== 'available' || !selectedSnapshot || orderedSelectedSourceIds.length === 0) {
       setSelectedDataset(emptyDataset);
       setDataLoading(false);
+      setFetchError(null);
       return undefined;
     }
     if (!isDatasetCached(ecosystemId, selectedSnapshot, orderedSelectedSourceIds)) {
@@ -131,6 +134,7 @@ export function EcosystemDashboard() {
     }
     let cancelled = false;
     setDataLoading(true);
+    setFetchError(null);
     fetchDatasetForSelection(ecosystemId, selectedSnapshot, orderedSelectedSourceIds)
       .then((dataset) => {
         if (!cancelled) {
@@ -139,15 +143,20 @@ export function EcosystemDashboard() {
           setDataReady(true);
         }
       })
-      .catch(() => {
+      .catch((error) => {
         if (!cancelled) {
-          setSelectedDataset(emptyDataset);
           setDataLoading(false);
-          setDataReady(true);
+          setSkeletonActive(false);
+          setFetchError({
+            snapshot: selectedSnapshot,
+            sourceIds: orderedSelectedSourceIds,
+            message: error instanceof Error ? error.message : String(error),
+          });
         }
       });
     return () => { cancelled = true; };
-  }, [ecosystemId, orderedSelectedSourceIds, selectedSnapshot, ecosystem, emptyDataset]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ecosystemId, orderedSelectedSourceIds, selectedSnapshot, ecosystem, emptyDataset, retryCounter]);
   const {
     yearData,
     wordCloudData,
@@ -476,6 +485,31 @@ export function EcosystemDashboard() {
             </div>
           </div>
 
+      {fetchError ? (
+        <div className="dashboard-fetch-error">
+          <div className="dashboard-fetch-error__icon" aria-hidden="true">⚠</div>
+          <p className="dashboard-fetch-error__title">Failed to load dashboard data</p>
+          <p className="dashboard-fetch-error__detail">
+            Snapshot: <code>{fetchError.snapshot}</code>
+            {fetchError.sourceIds.length > 0 && (
+              <> · Sources: <code>{fetchError.sourceIds.join(', ')}</code></>
+            )}
+          </p>
+          {fetchError.message && (
+            <p className="dashboard-fetch-error__message">{fetchError.message}</p>
+          )}
+          <button
+            type="button"
+            className="dashboard-fetch-error__retry"
+            onClick={() => {
+              setSkeletonActive(true);
+              setRetryCounter((c) => c + 1);
+            }}
+          >
+            Try again
+          </button>
+        </div>
+      ) : (
       <div className="sk-crossfade">
         {skeletonActive && (
           <div
@@ -580,6 +614,7 @@ export function EcosystemDashboard() {
           </div>
         )}
       </div>
+      )}
           </div>
         </main>
       </div>

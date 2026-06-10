@@ -1,0 +1,225 @@
+{
+  "raw": {
+    "preamble": {
+      "slip": "13",
+      "title": "Authentication using deterministic hierarchy",
+      "author": [
+        "Pavol Rusnak <stick@satoshilabs.com>"
+      ],
+      "status": "Final",
+      "type": "Standard",
+      "created": "2015-03-12"
+    }
+  },
+  "meta": {
+    "last_commit": "Tue Dec 10 16:16:32 2024 +0100",
+    "total_commits": 8,
+    "git_history": [
+      [
+        "55de03357a0eb1dc3df31ce5f548ec8cc553fef2",
+        "Tue Dec 10 16:16:32 2024 +0100",
+        "Mathias Herberts"
+      ],
+      [
+        "508968da89aeb23a07d14109207cbd49aa0ca12a",
+        "Tue Mar 9 17:28:27 2021 +0100",
+        "Andrew Kozlik"
+      ],
+      [
+        "4131f572653db15463ced4fa702485da37ea6076",
+        "Sun Feb 10 00:34:48 2019 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "40c88470be714e81a5149b50adf2db25ab230bf4",
+        "Tue Mar 14 21:54:43 2017 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "107edf5d15d769fad054440518503c7754d557d7",
+        "Tue Mar 14 22:11:09 2017 +0200",
+        "Roman Zeyde"
+      ],
+      [
+        "98357061ad36a06b9f2754b92d7773af2c6e8ffa",
+        "Thu Feb 18 20:41:57 2016 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "86e3f4d9d0a13ff83c98a3da539af77a45fe19d0",
+        "Sun Feb 14 11:54:29 2016 +0000",
+        "Gary Rowe"
+      ],
+      [
+        "b76151348a7430013a4b147725ed94b0f6b72994",
+        "Mon Feb 1 16:02:09 2016 +0100",
+        "Pavol Rusnak"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 85.71,
+      "passed_checks": 6,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 7,
+      "slip": {
+        "score": 85.71,
+        "passed_checks": 6,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 7,
+        "checks": [
+          {
+            "id": "slip.required_field.slip",
+            "label": "Required field 'slip' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.author",
+            "label": "Required field 'author' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.type",
+            "label": "Required field 'type' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.created",
+            "label": "Required field 'created' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "slip",
+            "passed": false,
+            "details": "Missing: abstract"
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "com": 8,
+      "user": 7,
+      "uri": 7,
+      "https": 7,
+      "b": 7,
+      "example": 6,
+      "index": 6,
+      "c": 6,
+      "challenge": 6,
+      "key": 6,
+      "slip": 5,
+      "deterministic": 5,
+      "service": 5,
+      "d": 5,
+      "hierarchy": 4,
+      "public": 4,
+      "hd": 4,
+      "1": 4,
+      "node": 4,
+      "signature": 4,
+      "identity": 3,
+      "2": 3,
+      "sha256": 3,
+      "hash": 3,
+      "3": 3,
+      "hash128": 3,
+      "0010": 3,
+      "bitcoin": 3,
+      "2637750992": 3,
+      "2845082444": 3,
+      "3761103859": 3,
+      "github": 3,
+      "blob": 3,
+      "private": 3,
+      "address": 3,
+      "master": 3,
+      "0013": 2,
+      "authentication": 2,
+      "standard": 2,
+      "satoshilabs": 2,
+      "authenticating": 2,
+      "backing": 2,
+      "wallets": 2,
+      "s": 2,
+      "rfc": 2,
+      "3986": 2,
+      "path": 2,
+      "32": 2,
+      "bit": 2,
+      "structure": 2,
+      "use": 2,
+      "little": 2,
+      "endian": 2,
+      "result": 2,
+      "bits": 2,
+      "4": 2,
+      "5": 2,
+      "e": 2,
+      "g": 2,
+      "6": 2,
+      "m": 2,
+      "according": 2,
+      "0": 2,
+      "org": 2,
+      "login": 2,
+      "4005495825": 2,
+      "python": 2,
+      "trezor": 2,
+      "hidden": 2,
+      "maximum": 2,
+      "length": 2,
+      "64": 2,
+      "shown": 2,
+      "visual": 2,
+      "mm": 2,
+      "message": 2,
+      "valid": 2,
+      "account": 2,
+      "bip": 2,
+      "0043": 2
+    },
+    "changes_in_status": [],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        "BIP 43",
+        "SLIP 10"
+      ],
+      "body_extracted_llm": []
+    }
+  }
+}

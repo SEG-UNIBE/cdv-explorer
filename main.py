@@ -310,6 +310,7 @@ def _run_source_pipeline(eco_slug: str, src_slug: str, src: dict, snapshot: str,
     analysis_root = Path(src["analysis"])
     output_dir = preprocess_root / snapshot
     prefix = src["document_prefix"]
+    source_context = SourceContext.from_config(src, ecosystem_slug=eco_slug, source_slug=src_slug)
 
     harvester = get_harvester(src.get("harvester", "github_repo"))
     extractor = get_extractor(src.get("preprocessor", "rfc_preamble"))
@@ -342,6 +343,7 @@ def _run_source_pipeline(eco_slug: str, src_slug: str, src: dict, snapshot: str,
                    preprocess_dir=output_dir,
                    harvest_dir=harvest_root,
                    skip_llm=skipllm,
+                   source_context=source_context,
                    progress_callback=u))
 
     _rebuild_source_artifacts(eco_slug, src_slug, src, snapshot)
@@ -827,4 +829,3 @@ def _build_source_scaffold(
 
 if __name__ == "__main__":
     app()
-

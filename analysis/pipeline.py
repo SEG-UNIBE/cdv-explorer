@@ -52,6 +52,34 @@ def _save_status_map_csv(status_map: Dict[str, Dict[str, int]], output_path: Pat
     _save_csv_rows(rows, output_path, fieldnames=[index_name] + all_statuses)
 
 
+def _known_proposal_ids_by_source(context: SourceContext, snapshot: str) -> Dict[str, set[str]]:
+    ids_by_source: Dict[str, set[str]] = {}
+
+    for source_slug, source_config in context.ecosystem_source_configs.items():
+        preprocess_root = source_config.get("preprocess")
+        id_field = source_config.get("primary_id_field")
+        if not preprocess_root or not id_field:
+            continue
+
+        source_context = SourceContext.from_config(
+            source_config,
+            ecosystem_slug=context.ecosystem_slug,
+            source_slug=source_slug,
+        )
+        source_dir = Path(preprocess_root) / snapshot
+        if not source_dir.is_dir():
+            continue
+
+        ids: set[str] = set()
+        for document in load_proposal_json_documents(source_dir, source_context=source_context):
+            proposal_id = document.get("raw", {}).get("preamble", {}).get(id_field)
+            if proposal_id is not None:
+                ids.add(str(proposal_id))
+        ids_by_source[source_slug] = ids
+
+    return ids_by_source
+
+
 def _flatten_conformity_rows(rows: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     return [
         {
@@ -220,6 +248,7 @@ def prepare_ecosystem_artifacts(
         id_field=id_field,
         proposal_label=proposal_label,
         source_context=context,
+        known_proposal_ids_by_source=_known_proposal_ids_by_source(context, snapshot),
     )
     snapshot_root = artifact_root / snapshot
 

@@ -27,6 +27,7 @@ export function AuthorNetworkCanvas({
   redrawGraphRef,
   exportPayloadRef,
   updateExportPayloadRef,
+  onlyCrossSource,
 }) {
   const svgRef = useRef();
 
@@ -557,7 +558,10 @@ export function AuthorNetworkCanvas({
         snapshot: snapshotLabel,
         network: 'authorship_collaboration',
         layout_mode: layoutMode,
-        filter: { min_cluster_collaborations: collaborationThreshold },
+        filter: {
+          min_cluster_collaborations: collaborationThreshold,
+          only_cross_source: Boolean(onlyCrossSource),
+        },
         meta: { width, height, node_count: visibleNodes.length, edge_count: visibleLinks.length },
         positions,
         edge_curves: edgeCurves,
@@ -654,7 +658,7 @@ export function AuthorNetworkCanvas({
       svg.selectAll('*').remove();
       d3.select('body').selectAll('.author-network-tooltip').remove();
     };
-  }, [data, ecosystem, height, highlightAuthor, importedLayout, layoutMode, linkMode, minClusterCollaborations, snapshotLabel, width, exportPayloadRef, physicsEnabledRef, redrawGraphRef, simulationRef, updateExportPayloadRef]);
+  }, [data, ecosystem, height, highlightAuthor, importedLayout, layoutMode, linkMode, minClusterCollaborations, onlyCrossSource, snapshotLabel, width, exportPayloadRef, physicsEnabledRef, redrawGraphRef, simulationRef, updateExportPayloadRef]);
 
   return <svg ref={svgRef} role="img" />;
 }

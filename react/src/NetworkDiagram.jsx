@@ -63,6 +63,9 @@ export const NetworkDiagram = ({
         proposalShortPlural={proposalShortPlural}
         includeThresholdConnections={includeThresholdConnections}
         setIncludeThresholdConnections={setIncludeThresholdConnections}
+        onlyCrossSource={state.onlyCrossSource}
+        setOnlyCrossSource={state.setOnlyCrossSource}
+        canFilterCrossSource={state.canFilterCrossSource}
       />
       <NetworkDiagramCanvas
         width={width}
@@ -82,6 +85,7 @@ export const NetworkDiagram = ({
         baselineType={state.baselineType}
         layoutMode={state.layoutMode}
         isDifferentialMode={state.isDifferentialMode}
+        onlyCrossSource={state.onlyCrossSource}
         importedLayout={state.importedLayout}
         physicsEnabledRef={state.physicsEnabledRef}
         simulationRef={state.simulationRef}

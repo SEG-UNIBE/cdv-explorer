@@ -122,6 +122,41 @@ export function edgeTargetSourceId(edge) {
   return String(edge?.targetSourceId || '');
 }
 
+function graphSourceIdFromKey(value) {
+  const text = String(value ?? '').trim();
+  const separatorIndex = text.indexOf(':');
+  return separatorIndex > 0 ? text.slice(0, separatorIndex) : '';
+}
+
+export function edgeSourceGraphSourceId(edge) {
+  return String(edge?.sourceGraphSource || graphSourceIdFromKey(edgeGraphSourceId(edge)) || edgeSourceSourceId(edge) || '');
+}
+
+export function edgeTargetGraphSourceId(edge) {
+  return String(edge?.targetGraphSource || graphSourceIdFromKey(edgeGraphTargetId(edge)) || edgeTargetSourceId(edge) || '');
+}
+
+export function isCrossSourceDependencyEdge(edge) {
+  const sourceId = edgeSourceGraphSourceId(edge).trim();
+  const targetId = edgeTargetGraphSourceId(edge).trim();
+  return Boolean(sourceId && targetId && sourceId !== targetId);
+}
+
+export function filterCrossSourceDependencyGraph(nodes, links) {
+  const filteredLinks = (Array.isArray(links) ? links : []).filter(isCrossSourceDependencyEdge);
+  const linkedNodeIds = new Set();
+
+  filteredLinks.forEach((edge) => {
+    linkedNodeIds.add(edgeGraphSourceId(edge));
+    linkedNodeIds.add(edgeGraphTargetId(edge));
+  });
+
+  return {
+    nodes: (Array.isArray(nodes) ? nodes : []).filter((node) => linkedNodeIds.has(nodeGraphId(node))),
+    links: filteredLinks,
+  };
+}
+
 export function normalizeCategory(value, fallbackLabel) {
   const text = String(value ?? '').trim();
   return text || fallbackLabel;

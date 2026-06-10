@@ -13,6 +13,9 @@ export function AuthorNetworkToolbar({
   minClusterCollaborations,
   setMinClusterCollaborations,
   hasNodes,
+  onlyCrossSource,
+  setOnlyCrossSource,
+  canFilterCrossSource,
 }) {
   return (
     <div className="network-layout-controls">
@@ -79,7 +82,7 @@ export function AuthorNetworkToolbar({
       </div>
       <div className="network-layout-picker network-layout-picker--filter">
         <div className="network-layout-picker__label">Filter</div>
-        <label className="network-layout-threshold">
+        <div className="network-layout-threshold">
           <span className="network-layout-threshold__copy">Only show components with</span>
           <input
             value={minClusterCollaborations}
@@ -89,7 +92,18 @@ export function AuthorNetworkToolbar({
             className="p-inputtext p-component network-layout-threshold__input"
           />
           <span className="network-layout-threshold__suffix">or more collaborations.</span>
-        </label>
+          <button
+            type="button"
+            className={`network-layout-action-button network-filter-action-button ${onlyCrossSource ? 'network-layout-action-button--active' : ''}`.trim()}
+            onClick={() => setOnlyCrossSource?.(!onlyCrossSource)}
+            title="Show only authors and collaborations tied to proposal refs from multiple sources."
+            aria-label="Show only cross-source IPs"
+            aria-pressed={Boolean(onlyCrossSource)}
+            disabled={!canFilterCrossSource}
+          >
+            only cross-source IPs
+          </button>
+        </div>
       </div>
     </div>
   );

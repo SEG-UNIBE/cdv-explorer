@@ -138,13 +138,14 @@ def enrich(
     preprocess_dir: Path,
     harvest_dir: Path,
     skip_llm: bool = False,
+    source_context: SourceContext | None = None,
     progress_callback=None,
 ) -> None:
     """Enrich all preprocess JSON files with git metadata, word lists, and dependencies."""
     proposal_label: str = src_config["proposal_acronym"]
     id_field: str = src_config["primary_id_field"]
     reference_pattern: str = src_config["reference_pattern"]
-    source_context = SourceContext.from_config(src_config)
+    source_context = source_context or SourceContext.from_config(src_config)
     stop_words = _load_stop_words(src_config.get("stop_words_file"))
 
     json_files = sorted(f for f in preprocess_dir.iterdir() if f.suffix == ".json")

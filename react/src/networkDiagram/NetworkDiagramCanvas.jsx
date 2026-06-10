@@ -43,6 +43,7 @@ export function NetworkDiagramCanvas({
   baselineType,
   layoutMode,
   isDifferentialMode,
+  onlyCrossSource,
   importedLayout,
   physicsEnabledRef,
   simulationRef,
@@ -294,6 +295,7 @@ export function NetworkDiagramCanvas({
           include_connections: Boolean(includeConnections),
           min_relations: relationThreshold,
           include_threshold_connections: Boolean(includeThresholdConnections),
+          only_cross_source: Boolean(onlyCrossSource),
         },
         nodes: exportedNodes,
         links: filteredLinks.map((edge) => ({
@@ -836,7 +838,7 @@ export function NetworkDiagramCanvas({
       svg.selectAll('*').remove();
       d3.select('body').selectAll('.dependency-network-tooltip').remove();
     };
-  }, [baselineType, colorBy, ecosystem, height, highlightProposal, importedLayout, includeConnections, includeThresholdConnections, isDifferentialMode, layoutMode, linkMode, linkType, links, minRelations, nodes, proposalFilterIds, snapshotLabel, width, exportPayloadRef, legendRef, physicsEnabledRef, redrawGraphRef, simulationRef, updateExportPayloadRef]);
+  }, [baselineType, colorBy, ecosystem, height, highlightProposal, importedLayout, includeConnections, includeThresholdConnections, isDifferentialMode, layoutMode, linkMode, linkType, links, minRelations, nodes, onlyCrossSource, proposalFilterIds, snapshotLabel, width, exportPayloadRef, legendRef, physicsEnabledRef, redrawGraphRef, simulationRef, updateExportPayloadRef]);
 
   return <svg ref={svgRef} role="img" />;
 }

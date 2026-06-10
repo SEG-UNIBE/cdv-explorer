@@ -1,6 +1,8 @@
+import { useEffect, useMemo } from 'react';
 import { useDashboardEcosystem, useDashboardLinkMode, useDashboardSnapshot } from './dashboard/DashboardSnapshotContext';
 import { AuthorNetworkCanvas } from './authorNetwork/AuthorNetworkCanvas';
 import { AuthorNetworkToolbar } from './authorNetwork/AuthorNetworkToolbar';
+import { authorNetworkHasCrossSourceRefs, filterCrossSourceAuthorNetwork } from './authorNetwork/authorNetworkUtils';
 import { useAuthorNetworkState } from './authorNetwork/useAuthorNetworkState';
 
 export const AuthorCollaborationNetwork = ({
@@ -23,8 +25,26 @@ export const AuthorCollaborationNetwork = ({
     setMinClusterCollaborations,
     setLayoutMode,
   });
+  const { onlyCrossSource, setOnlyCrossSource } = state;
 
-  const hasNodes = Array.isArray(data?.nodes) && data.nodes.length > 0;
+  const canFilterCrossSource = useMemo(
+    () => authorNetworkHasCrossSourceRefs(data),
+    [data]
+  );
+  useEffect(() => {
+    if (!canFilterCrossSource && onlyCrossSource) {
+      setOnlyCrossSource(false);
+    }
+  }, [canFilterCrossSource, onlyCrossSource, setOnlyCrossSource]);
+
+  const graphData = useMemo(() => {
+    if (!onlyCrossSource || !canFilterCrossSource) {
+      return data;
+    }
+    return filterCrossSourceAuthorNetwork(data);
+  }, [canFilterCrossSource, data, onlyCrossSource]);
+
+  const hasNodes = Array.isArray(graphData?.nodes) && graphData.nodes.length > 0;
 
   return (
     <div>
@@ -41,9 +61,12 @@ export const AuthorCollaborationNetwork = ({
         minClusterCollaborations={minClusterCollaborations}
         setMinClusterCollaborations={setMinClusterCollaborations}
         hasNodes={hasNodes}
+        onlyCrossSource={onlyCrossSource}
+        setOnlyCrossSource={setOnlyCrossSource}
+        canFilterCrossSource={canFilterCrossSource}
       />
       <AuthorNetworkCanvas
-        data={data}
+        data={graphData}
         width={width}
         height={height}
         highlightAuthor={highlightAuthor}
@@ -58,6 +81,7 @@ export const AuthorCollaborationNetwork = ({
         redrawGraphRef={state.redrawGraphRef}
         exportPayloadRef={state.exportPayloadRef}
         updateExportPayloadRef={state.updateExportPayloadRef}
+        onlyCrossSource={onlyCrossSource}
       />
     </div>
   );

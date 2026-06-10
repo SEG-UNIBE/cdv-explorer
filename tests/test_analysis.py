@@ -18,6 +18,7 @@ from analysis.dependencies.mining import (
 )
 from analysis.dependencies.metrics import extract_dependency_metrics
 from analysis.dependencies.network import build_network_data
+from ecosystems import ECOSYSTEM_REGISTRY
 from pipeline.source_context import SourceContext
 
 
@@ -123,6 +124,22 @@ class CreateReferenceListTests(unittest.TestCase):
         )
         self.assertEqual(result, ["NIP 01", "NIP F4"])
 
+    def test_detects_sibling_source_references_from_context(self):
+        context = SourceContext.from_config(
+            ECOSYSTEM_REGISTRY["bitcoin"]["sources"]["slips"],
+            ecosystem_slug="bitcoin",
+            source_slug="slips",
+        )
+
+        result = create_reference_list(
+            "SLIP-0132 registers version bytes for BIP-0032 and BIPs 39 and 44.",
+            proposal_label="SLIP",
+            reference_pattern=r"\bSLIP[-#\s]?(\d+)\b",
+            source_context=context,
+        )
+
+        self.assertEqual(result, ["BIP 32", "BIP 39", "BIP 44", "SLIP 132"])
+
 
 class PrepareLlmDependencyTextTests(unittest.TestCase):
     def test_strips_leading_pre_block(self):
@@ -190,6 +207,89 @@ class BuildNetworkDataTests(unittest.TestCase):
             result["dependency_edges"],
         )
         self.assertNotIn("links", result)
+
+    def test_source_qualified_references_create_cross_source_edges(self):
+        context = SourceContext.from_config(
+            ECOSYSTEM_REGISTRY["bitcoin"]["sources"]["slips"],
+            ecosystem_slug="bitcoin",
+            source_slug="slips",
+        )
+        slip_132 = {
+            "raw": {"preamble": {"slip": "132", "title": "Registered HD version bytes for BIP-0032"}},
+            "insights": {
+                "interrelations": {
+                    "body_extracted_regex": ["BIP 32", "SLIP 32"],
+                    "body_extracted_llm": [],
+                    "preamble_extracted": [],
+                }
+            },
+        }
+        slip_32 = {
+            "raw": {"preamble": {"slip": "32", "title": "Extended serialization format for BIP-32 wallets"}},
+            "insights": {
+                "interrelations": {
+                    "body_extracted_regex": [],
+                    "body_extracted_llm": [],
+                    "preamble_extracted": [],
+                }
+            },
+        }
+
+        result = build_network_data(
+            [slip_132, slip_32],
+            id_field="slip",
+            proposal_label="SLIP",
+            source_context=context,
+            known_proposal_ids_by_source={"bips": {"32"}, "slips": {"32", "132"}},
+        )
+
+        self.assertIn(
+            {
+                "source": "slips:132",
+                "target": "bips:32",
+                "extraction_method": "body_extracted_regex",
+                "relation_type": "reference",
+                "value": 1,
+            },
+            result["dependency_edges"],
+        )
+        self.assertIn(
+            {
+                "source": "slips:132",
+                "target": "slips:32",
+                "extraction_method": "body_extracted_regex",
+                "relation_type": "reference",
+                "value": 1,
+            },
+            result["dependency_edges"],
+        )
+
+    def test_unknown_cross_source_targets_are_excluded_when_known_ids_are_available(self):
+        context = SourceContext.from_config(
+            ECOSYSTEM_REGISTRY["bitcoin"]["sources"]["slips"],
+            ecosystem_slug="bitcoin",
+            source_slug="slips",
+        )
+        result = build_network_data(
+            [
+                {
+                    "raw": {"preamble": {"slip": "132", "title": "Registered HD version bytes"}},
+                    "insights": {
+                        "interrelations": {
+                            "body_extracted_regex": ["BIP 999"],
+                            "body_extracted_llm": [],
+                            "preamble_extracted": [],
+                        }
+                    },
+                }
+            ],
+            id_field="slip",
+            proposal_label="SLIP",
+            source_context=context,
+            known_proposal_ids_by_source={"bips": {"32"}, "slips": {"132"}},
+        )
+
+        self.assertEqual(result["dependency_edges"], [])
 
     def test_dependency_metrics_use_canonical_edges_when_present(self):
         network_data = {

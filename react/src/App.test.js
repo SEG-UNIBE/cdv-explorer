@@ -17,6 +17,8 @@ import { getRepositoryCommitUrl, getRepositoryProposalUrl } from './proposalLink
 import { renderProposalListHtml } from './bipTooltipContent';
 import { buildDashboardData, buildWordCloudData, parseProposalFilterExpression } from './dashboard/dashboardData';
 import { buildProposalGraphId, scopeDependencyLinksForSource } from './data';
+import { filterCrossSourceAuthorNetwork } from './authorNetwork/authorNetworkUtils';
+import { filterCrossSourceDependencyGraph } from './networkDiagram/networkDiagramUtils';
 import {
   buildClassificationRelationProposalLabel,
   buildClassificationRelationProposalUrl,
@@ -130,6 +132,43 @@ test('source-scopes canonical dependency edge graph keys for display', () => {
     sourceKey: 'bips:32',
     targetKey: 'slips:44',
   });
+});
+
+test('filters dependency graph to cross-source edges and their endpoint nodes', () => {
+  const nodes = [
+    { id: '32', source: 'bip', graphSource: 'bips' },
+    { id: '44', source: 'slip', graphSource: 'slips' },
+    { id: '45', source: 'slip', graphSource: 'slips' },
+  ];
+  const links = [
+    { sourceKey: 'bips:32', targetKey: 'slips:44', sourceGraphSource: 'bips', targetGraphSource: 'slips' },
+    { sourceKey: 'slips:44', targetKey: 'slips:45', sourceGraphSource: 'slips', targetGraphSource: 'slips' },
+  ];
+
+  const filtered = filterCrossSourceDependencyGraph(nodes, links);
+
+  expect(filtered.nodes.map((node) => `${node.graphSource}:${node.id}`)).toEqual(['bips:32', 'slips:44']);
+  expect(filtered.links).toEqual([links[0]]);
+});
+
+test('filters authorship graph to cross-source proposal refs', () => {
+  const data = {
+    nodes: [
+      { id: 'Ada', bips: [{ source: 'bip', id: '1' }, { source: 'slip', id: '44' }] },
+      { id: 'Bob', bips: [{ source: 'bip', id: '2' }] },
+      { id: 'Chen', bips: [{ source: 'nip', id: '1' }] },
+      { id: 'Drew', bips: [{ source: 'bip', id: '3' }] },
+    ],
+    edges: [
+      { source: 'Ada', target: 'Bob', bips: [{ source: 'bip', id: '1' }] },
+      { source: 'Bob', target: 'Chen', bips: [{ source: 'bip', id: '2' }, { source: 'slip', id: '44' }] },
+    ],
+  };
+
+  const filtered = filterCrossSourceAuthorNetwork(data);
+
+  expect(filtered.nodes.map((node) => node.id)).toEqual(['Ada', 'Bob', 'Chen']);
+  expect(filtered.edges).toEqual([data.edges[1]]);
 });
 
 test('classification chord uses normalized category labels for SLIP Standard types', () => {

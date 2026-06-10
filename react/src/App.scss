@@ -1276,11 +1276,23 @@
   background: color-mix(in srgb, var(--primary-color) 10%, transparent);
 }
 
+.network-filter-action-button:not(:disabled) {
+  opacity: 0.82;
+  visibility: visible;
+  pointer-events: auto;
+}
+
 .network-layout-action-button:disabled {
   opacity: 0.2;
   visibility: hidden;
   pointer-events: none;
   cursor: default;
+}
+
+.network-filter-action-button:disabled {
+  opacity: 0.32;
+  visibility: visible;
+  pointer-events: none;
 }
 
 .dependency-metrics-toolbar {

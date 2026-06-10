@@ -75,6 +75,17 @@ class SourceContext:
         return self.classification_dimensions.get(field, {}).get("aliases", {})
 
     @property
+    def ecosystem_source_configs(self) -> Mapping[str, Mapping[str, Any]]:
+        if self.ecosystem_slug:
+            ecosystem = ECOSYSTEM_REGISTRY.get(self.ecosystem_slug)
+            sources = ecosystem.get("sources", {}) if isinstance(ecosystem, Mapping) else {}
+            if sources:
+                return sources
+        if self.source_slug:
+            return {self.source_slug: self.config}
+        return {}
+
+    @property
     def primary_id_field(self) -> str:
         return str(self.config.get("primary_id_field") or "").strip()
 
@@ -109,4 +120,3 @@ class SourceContext:
                 aliases = self.classification_aliases(field)
                 normalized[field] = aliases.get(normalized[field], normalized[field])
         return normalized
-

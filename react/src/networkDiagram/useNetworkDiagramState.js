@@ -7,8 +7,10 @@ import {
   LINK_TYPE_OPTION_VALUES,
   buildComparisonLinks,
   buildDisplayedLinks,
+  filterCrossSourceDependencyGraph,
   formatProposalFilterValue,
   formatSnapshotFilePart,
+  isCrossSourceDependencyEdge,
   normalizeImportedPositions,
   normalizeProposalId,
 } from './networkDiagramUtils';
@@ -36,15 +38,16 @@ export function useNetworkDiagramState({
   const [layoutMode, setLayoutMode] = useState('balanced');
   const [physicsEnabled, setPhysicsEnabled] = useState(true);
   const [importedLayout, setImportedLayout] = useState(null);
+  const [onlyCrossSource, setOnlyCrossSource] = useState(false);
 
   const isDifferentialMode = baselineType !== BASELINE_NONE_VALUE;
 
-  const nodes = useMemo(
+  const baseNodes = useMemo(
     () => (Array.isArray(data?.nodes) ? data.nodes.map((node) => ({ ...node })) : []),
     [data]
   );
 
-  const links = useMemo(() => {
+  const baseLinks = useMemo(() => {
     if (isDifferentialMode) {
       return buildComparisonLinks(data?.links || {}, linkType, baselineType);
     }
@@ -53,6 +56,24 @@ export function useNetworkDiagramState({
       comparisonStatus: 'approach_only',
     }));
   }, [baselineType, data, isDifferentialMode, linkType]);
+
+  const canFilterCrossSource = useMemo(
+    () => baseLinks.some(isCrossSourceDependencyEdge),
+    [baseLinks]
+  );
+
+  useEffect(() => {
+    if (!canFilterCrossSource && onlyCrossSource) {
+      setOnlyCrossSource(false);
+    }
+  }, [canFilterCrossSource, onlyCrossSource]);
+
+  const { nodes, links } = useMemo(() => {
+    if (!onlyCrossSource || !canFilterCrossSource) {
+      return { nodes: baseNodes, links: baseLinks };
+    }
+    return filterCrossSourceDependencyGraph(baseNodes, baseLinks);
+  }, [baseLinks, baseNodes, canFilterCrossSource, onlyCrossSource]);
 
   useEffect(() => {
     physicsEnabledRef.current = physicsEnabled;
@@ -160,6 +181,10 @@ export function useNetworkDiagramState({
         setProposalFilterText?.(payload.filter.proposal_ids.map((value) => String(value)).join(','));
       }
 
+      if (typeof payload?.filter?.only_cross_source === 'boolean') {
+        setOnlyCrossSource(payload.filter.only_cross_source);
+      }
+
       setImportedLayout({
         fileName: file.name,
         positions: importedPositions,
@@ -192,6 +217,9 @@ export function useNetworkDiagramState({
     physicsEnabled,
     importedLayout,
     isDifferentialMode,
+    onlyCrossSource,
+    setOnlyCrossSource,
+    canFilterCrossSource,
     nodes,
     links,
     handleLayoutExport,

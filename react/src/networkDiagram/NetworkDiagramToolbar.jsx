@@ -59,6 +59,9 @@ export function NetworkDiagramToolbar({
   proposalShortPlural,
   includeThresholdConnections,
   setIncludeThresholdConnections,
+  onlyCrossSource,
+  setOnlyCrossSource,
+  canFilterCrossSource,
 }) {
   const edgeLegendItems = isDifferentialMode
     ? [
@@ -230,6 +233,17 @@ export function NetworkDiagramToolbar({
               />
               <span>transient</span>
             </label>
+            <button
+              type="button"
+              className={`network-layout-action-button network-filter-action-button ${onlyCrossSource ? 'network-layout-action-button--active' : ''}`.trim()}
+              onClick={() => setOnlyCrossSource?.(!onlyCrossSource)}
+              title="Show only relationships whose endpoints come from different proposal sources."
+              aria-label="Show only cross-source IPs"
+              aria-pressed={Boolean(onlyCrossSource)}
+              disabled={!canFilterCrossSource}
+            >
+              only cross-source IPs
+            </button>
           </div>
         </div>
       </div>

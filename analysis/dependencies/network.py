@@ -2,7 +2,7 @@ import json
 import csv
 import re
 from pathlib import Path
-from typing import Any, Dict, Iterable, List
+from typing import Any, Dict, Iterable, List, Mapping
 
 from analysis.dependencies.constants import (
     BODY_EXTRACTED_LLM,
@@ -131,6 +131,173 @@ def normalize_proposal_ids(field: Any, proposal_label: str = "IP") -> List[str]:
     return result
 
 
+def _uses_hex_proposal_ids(proposal_label: str = "IP", reference_pattern: str = "") -> bool:
+    return proposal_label.upper() == "NIP" or "A-F" in reference_pattern or "a-f" in reference_pattern
+
+
+def _source_reference_configs(
+    context: SourceContext,
+    proposal_label: str = "IP",
+) -> List[Dict[str, Any]]:
+    configs: List[Dict[str, Any]] = []
+    for source_slug, source_config in context.ecosystem_source_configs.items():
+        label = str(source_config.get("proposal_acronym") or "").strip()
+        pattern = str(source_config.get("reference_pattern") or "").strip()
+        if not label:
+            continue
+        configs.append(
+            {
+                "source_slug": source_slug,
+                "proposal_label": label,
+                "reference_pattern": pattern,
+                "max_proposal_id": source_config.get("max_proposal_id"),
+            }
+        )
+
+    if not configs:
+        configs.append(
+            {
+                "source_slug": context.source_slug,
+                "proposal_label": proposal_label,
+                "reference_pattern": context.reference_pattern,
+                "max_proposal_id": context.max_proposal_id,
+            }
+        )
+
+    return configs
+
+
+def _normalize_reference_id(value: Any, config: Mapping[str, Any]) -> str | None:
+    text = str(value).strip()
+    if not text:
+        return None
+
+    proposal_label = str(config.get("proposal_label") or "IP")
+    reference_pattern = str(config.get("reference_pattern") or "")
+    max_proposal_id = config.get("max_proposal_id")
+
+    if _uses_hex_proposal_ids(proposal_label, reference_pattern):
+        if not re.fullmatch(r"[0-9A-Fa-f]{1,6}", text):
+            return None
+        number = int(text, 16)
+        if max_proposal_id is not None and number > int(max_proposal_id):
+            return None
+        normalized = text.upper()
+        return normalized.zfill(2) if len(normalized) == 1 else normalized
+
+    try:
+        number = int(text)
+    except (TypeError, ValueError):
+        return None
+    if number < 0:
+        return None
+    if max_proposal_id is not None and number > int(max_proposal_id):
+        return None
+    return str(number)
+
+
+def _reference_id_chars(config: Mapping[str, Any]) -> str:
+    return r"[0-9A-Fa-f]" if _uses_hex_proposal_ids(
+        str(config.get("proposal_label") or "IP"),
+        str(config.get("reference_pattern") or ""),
+    ) else r"\d"
+
+
+def _resolve_reference_item(
+    item: Any,
+    reference_configs: List[Dict[str, Any]],
+    active_config: Dict[str, Any],
+) -> Dict[str, str] | None:
+    if isinstance(item, dict):
+        raw_source = (
+            item.get("target_source")
+            or item.get("source_slug")
+            or item.get("graph_source")
+            or item.get("source")
+        )
+        raw_id = item.get("target_id") or item.get("proposal_id") or item.get("id") or item.get("target")
+        if raw_id is None:
+            return None
+        matching_config = next(
+            (config for config in reference_configs if str(config.get("source_slug")) == str(raw_source)),
+            active_config,
+        )
+        normalized_id = _normalize_reference_id(raw_id, matching_config)
+        if normalized_id is None:
+            return None
+        return {
+            "source_slug": str(matching_config.get("source_slug") or ""),
+            "proposal_id": normalized_id,
+        }
+
+    text = str(item).strip()
+    if not text:
+        return None
+
+    for config in reference_configs:
+        label = re.escape(str(config.get("proposal_label") or ""))
+        if not label:
+            continue
+        id_chars = _reference_id_chars(config)
+        match = re.match(rf"(?i)^\s*{label}[-#\s]*({id_chars}+)\s*$", text)
+        if not match:
+            continue
+        normalized_id = _normalize_reference_id(match.group(1), config)
+        if normalized_id is None:
+            return None
+        return {
+            "source_slug": str(config.get("source_slug") or ""),
+            "proposal_id": normalized_id,
+        }
+
+    id_chars = _reference_id_chars(active_config)
+    match = re.match(rf"(?i)^\s*({id_chars}+)\s*$", text)
+    if not match:
+        return None
+    normalized_id = _normalize_reference_id(match.group(1), active_config)
+    if normalized_id is None:
+        return None
+    return {
+        "source_slug": str(active_config.get("source_slug") or ""),
+        "proposal_id": normalized_id,
+    }
+
+
+def normalize_proposal_references(
+    field: Any,
+    proposal_label: str = "IP",
+    source_context: SourceContext | None = None,
+) -> List[Dict[str, str]]:
+    if not field:
+        return []
+
+    context = source_context or SourceContext.default()
+    reference_configs = _source_reference_configs(context, proposal_label=proposal_label)
+    active_config = next(
+        (
+            config
+            for config in reference_configs
+            if str(config.get("source_slug")) == str(context.source_slug)
+        ),
+        reference_configs[0],
+    )
+    raw_items = field if isinstance(field, list) else str(field).split(",")
+    references: List[Dict[str, str]] = []
+    seen = set()
+
+    for item in raw_items:
+        reference = _resolve_reference_item(item, reference_configs, active_config)
+        if reference is None:
+            continue
+        key = (reference["source_slug"], reference["proposal_id"])
+        if key in seen:
+            continue
+        seen.add(key)
+        references.append(reference)
+
+    return references
+
+
 def _apply_alias(value: Any, aliases: Dict[str, str]) -> Any:
     if value is None:
         return None
@@ -156,6 +323,7 @@ def build_network_data(
     id_field: str = "id",
     proposal_label: str = "IP",
     source_context: SourceContext | None = None,
+    known_proposal_ids_by_source: Mapping[str, set[str]] | None = None,
 ) -> Dict[str, Any]:
     context = source_context or SourceContext.default()
     classification_fields: List[str] = context.classification_fields
@@ -173,6 +341,27 @@ def build_network_data(
     replaces_links = []
     proposed_replacement_links = []
     node_ids = set()
+    known_ids_by_source = {
+        str(source_slug): {str(proposal_id) for proposal_id in proposal_ids}
+        for source_slug, proposal_ids in (known_proposal_ids_by_source or {}).items()
+    }
+
+    def target_exists(source_id: str, target_source_slug: str | None, target_id: str) -> bool:
+        source_slug = str(target_source_slug or context.source_slug or "")
+        if source_slug == str(context.source_slug or "") and target_id == source_id:
+            return False
+        if source_slug == str(context.source_slug or ""):
+            return target_id in node_ids
+        if source_slug in known_ids_by_source:
+            return target_id in known_ids_by_source[source_slug]
+        return True
+
+    def make_link(source_id: str, target_source_slug: str | None, target_id: str) -> Dict[str, Any]:
+        return {
+            "source": build_graph_key(context.source_slug, source_id),
+            "target": build_graph_key(target_source_slug or context.source_slug, target_id),
+            "value": 1,
+        }
 
     for proposal in proposal_data:
         if not proposal:
@@ -239,30 +428,43 @@ def build_network_data(
 
         references_field = interrelations.get(BODY_EXTRACTED_REGEX)
 
-        for ref_id in normalize_proposal_ids(references_field, proposal_label=proposal_label):
-            if ref_id in node_ids:
-                explicit_reference_links.append({"source": proposal_id, "target": ref_id, "value": 1})
+        for ref in normalize_proposal_references(references_field, proposal_label=proposal_label, source_context=context):
+            if target_exists(proposal_id, ref.get("source_slug"), ref["proposal_id"]):
+                explicit_reference_links.append(make_link(proposal_id, ref.get("source_slug"), ref["proposal_id"]))
 
-        for dep_id in normalize_proposal_ids(interrelations.get(BODY_EXTRACTED_LLM), proposal_label=proposal_label):
-            if dep_id in node_ids:
-                implicit_dependency_links.append({"source": proposal_id, "target": dep_id, "value": 1})
+        for dep in normalize_proposal_references(
+            interrelations.get(BODY_EXTRACTED_LLM),
+            proposal_label=proposal_label,
+            source_context=context,
+        ):
+            if target_exists(proposal_id, dep.get("source_slug"), dep["proposal_id"]):
+                implicit_dependency_links.append(make_link(proposal_id, dep.get("source_slug"), dep["proposal_id"]))
 
         preamble_interrelations = get_preamble_interrelations(preamble, source_context=context)
 
-        for req_id in normalize_proposal_ids(preamble_interrelations.get("requires"), proposal_label=proposal_label):
-            if req_id in node_ids:
-                requires_links.append({"source": proposal_id, "target": req_id, "value": 1})
+        for req in normalize_proposal_references(
+            preamble_interrelations.get("requires"),
+            proposal_label=proposal_label,
+            source_context=context,
+        ):
+            if target_exists(proposal_id, req.get("source_slug"), req["proposal_id"]):
+                requires_links.append(make_link(proposal_id, req.get("source_slug"), req["proposal_id"]))
 
-        for rep_id in normalize_proposal_ids(preamble_interrelations.get("replaces"), proposal_label=proposal_label):
-            if rep_id in node_ids:
-                replaces_links.append({"source": proposal_id, "target": rep_id, "value": 1})
+        for rep in normalize_proposal_references(
+            preamble_interrelations.get("replaces"),
+            proposal_label=proposal_label,
+            source_context=context,
+        ):
+            if target_exists(proposal_id, rep.get("source_slug"), rep["proposal_id"]):
+                replaces_links.append(make_link(proposal_id, rep.get("source_slug"), rep["proposal_id"]))
 
-        for sup_id in normalize_proposal_ids(
+        for sup in normalize_proposal_references(
             preamble_interrelations.get("proposed_replacement"),
             proposal_label=proposal_label,
+            source_context=context,
         ):
-            if sup_id in node_ids:
-                proposed_replacement_links.append({"source": proposal_id, "target": sup_id, "value": 1})
+            if target_exists(proposal_id, sup.get("source_slug"), sup["proposal_id"]):
+                proposed_replacement_links.append(make_link(proposal_id, sup.get("source_slug"), sup["proposal_id"]))
 
     explicit_dependency_links = {
         "requires": requires_links,

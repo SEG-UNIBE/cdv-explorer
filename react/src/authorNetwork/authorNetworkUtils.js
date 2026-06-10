@@ -89,6 +89,62 @@ export function normalizeImportedEdgeCurves(payload) {
   return normalizedCurves;
 }
 
+function proposalRefSource(ref) {
+  return String(ref?.source ?? ref?.graphSource ?? '').trim();
+}
+
+export function proposalRefsSpanSources(refs) {
+  const sources = new Set(
+    (Array.isArray(refs) ? refs : [])
+      .map(proposalRefSource)
+      .filter(Boolean)
+  );
+  return sources.size > 1;
+}
+
+function edgeEndpointId(value) {
+  if (value && typeof value === 'object') {
+    return String(value.id ?? '');
+  }
+  return String(value ?? '');
+}
+
+export function filterCrossSourceAuthorNetwork(data) {
+  const nodes = Array.isArray(data?.nodes) ? data.nodes : [];
+  const edges = Array.isArray(data?.edges) ? data.edges : [];
+  const visibleNodeIds = new Set(
+    nodes
+      .filter((node) => proposalRefsSpanSources(node?.bips))
+      .map((node) => String(node.id ?? ''))
+      .filter(Boolean)
+  );
+  const visibleEdges = edges.filter((edge) => proposalRefsSpanSources(edge?.bips));
+
+  visibleEdges.forEach((edge) => {
+    const sourceId = edgeEndpointId(edge?.source);
+    const targetId = edgeEndpointId(edge?.target);
+    if (sourceId) {
+      visibleNodeIds.add(sourceId);
+    }
+    if (targetId) {
+      visibleNodeIds.add(targetId);
+    }
+  });
+
+  return {
+    ...data,
+    nodes: nodes.filter((node) => visibleNodeIds.has(String(node.id ?? ''))),
+    edges: visibleEdges,
+  };
+}
+
+export function authorNetworkHasCrossSourceRefs(data) {
+  const nodes = Array.isArray(data?.nodes) ? data.nodes : [];
+  const edges = Array.isArray(data?.edges) ? data.edges : [];
+  return nodes.some((node) => proposalRefsSpanSources(node?.bips))
+    || edges.some((edge) => proposalRefsSpanSources(edge?.bips));
+}
+
 export function buildDisplayCollaborationComponents(nodes, adjacency) {
   const isolatedIds = [];
   const visited = new Set();

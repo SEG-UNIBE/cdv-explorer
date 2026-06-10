@@ -19,24 +19,87 @@ from analysis.proposal_schema import (
 from pipeline.source_context import SourceContext
 from analysis.utils import parse_date_ymd as _parse_date_ymd
 
+RELATION_REFERENCE = "reference"
+RELATION_IMPLICIT_DEPENDENCY = "implicit_dependency"
 
-def _aggregate_explicit_dependencies(explicit_dependencies: Dict[str, List[Dict[str, Any]]]) -> List[Dict[str, Any]]:
-    seen = set()
-    aggregated: List[Dict[str, Any]] = []
-    for subtype_links in explicit_dependencies.values():
-        for link in subtype_links:
-            key = (str(link.get("source")), str(link.get("target")))
-            if key in seen:
-                continue
-            seen.add(key)
-            aggregated.append(
-                {
-                    "source": str(link.get("source")),
-                    "target": str(link.get("target")),
-                    "value": link.get("value", 1),
-                }
+
+def build_graph_key(source_slug: str | None, proposal_id: Any) -> str:
+    return f"{source_slug}:{proposal_id}" if source_slug else str(proposal_id)
+
+
+def make_dependency_edge(
+    source: Any,
+    target: Any,
+    extraction_method: str,
+    relation_type: str,
+    value: Any = 1,
+) -> Dict[str, Any]:
+    return {
+        "source": str(source),
+        "target": str(target),
+        "extraction_method": extraction_method,
+        "relation_type": relation_type,
+        "value": value,
+    }
+
+
+def _link_endpoint_to_graph_key(value: Any, source_slug: str | None = None) -> str:
+    text = str(value)
+    if ":" in text:
+        return text
+    return build_graph_key(source_slug, text)
+
+
+def dependency_edges_from_links(links_by_type: Dict[str, Any], source_slug: str | None = None) -> List[Dict[str, Any]]:
+    edges: List[Dict[str, Any]] = []
+    if not isinstance(links_by_type, dict):
+        return edges
+
+    for link_type, links in links_by_type.items():
+        if link_type == PREAMBLE_EXTRACTED and isinstance(links, dict):
+            for relation_type, subtype_links in links.items():
+                for link in subtype_links or []:
+                    edges.append(
+                        make_dependency_edge(
+                            _link_endpoint_to_graph_key(link.get("source"), source_slug),
+                            _link_endpoint_to_graph_key(link.get("target"), source_slug),
+                            PREAMBLE_EXTRACTED,
+                            relation_type,
+                            link.get("value", 1),
+                        )
+                    )
+            continue
+
+        relation_type = RELATION_IMPLICIT_DEPENDENCY if link_type == BODY_EXTRACTED_LLM else RELATION_REFERENCE
+        for link in links or []:
+            edges.append(
+                make_dependency_edge(
+                    _link_endpoint_to_graph_key(link.get("source"), source_slug),
+                    _link_endpoint_to_graph_key(link.get("target"), source_slug),
+                    link_type,
+                    relation_type,
+                    link.get("value", 1),
+                )
             )
-    return aggregated
+
+    return edges
+
+
+def normalize_dependency_edges(network_data: Dict[str, Any]) -> List[Dict[str, Any]]:
+    edges = network_data.get("dependency_edges")
+    if isinstance(edges, list):
+        return [
+            make_dependency_edge(
+                edge.get("source"),
+                edge.get("target"),
+                str(edge.get("extraction_method") or ""),
+                str(edge.get("relation_type") or ""),
+                edge.get("value", 1),
+            )
+            for edge in edges
+            if edge.get("source") is not None and edge.get("target") is not None
+        ]
+    return []
 
 
 def normalize_proposal_ids(field: Any, proposal_label: str = "IP") -> List[str]:
@@ -124,10 +187,12 @@ def build_network_data(
             continue
 
         proposal_id = str(proposal_id)
+        graph_key = build_graph_key(context.source_slug, proposal_id)
         if proposal_id not in node_ids:
             git_history = proposal.get("meta", {}).get("git_history", [])
             node: Dict[str, Any] = {
                 "id": proposal_id,
+                "graph_key": graph_key,
                 "title": preamble.get("title"),
                 "compliance_score": formal_compliance.get("score", preamble.get("compliance_score")),
                 "created": preamble.get("created"),
@@ -204,14 +269,16 @@ def build_network_data(
         "replaces": replaces_links,
         "proposed_replacement": proposed_replacement_links,
     }
+    raw_links = {
+        BODY_EXTRACTED_REGEX: explicit_reference_links,
+        PREAMBLE_EXTRACTED: explicit_dependency_links,
+        BODY_EXTRACTED_LLM: implicit_dependency_links,
+    }
+    dependency_edges = dependency_edges_from_links(raw_links, source_slug=context.source_slug)
 
     return {
         "nodes": nodes,
-        "links": {
-            BODY_EXTRACTED_REGEX: explicit_reference_links,
-            PREAMBLE_EXTRACTED: explicit_dependency_links,
-            BODY_EXTRACTED_LLM: implicit_dependency_links,
-        },
+        "dependency_edges": dependency_edges,
     }
 
 
@@ -243,41 +310,21 @@ def save_network_data_artifacts(network_data: Dict[str, Any], output_stem: Path)
                 row["author"] = " | ".join(str(a) for a in row["author"])
             writer.writerow(row)
 
-    links_by_type = network_data.get("links", {})
-    for link_type, links in links_by_type.items():
-        if link_type == PREAMBLE_EXTRACTED and isinstance(links, dict):
-            aggregate_links = _aggregate_explicit_dependencies(links)
-            aggregate_path = output_stem.parent / f"{output_stem.name}_{link_type}_edges.csv"
-            with aggregate_path.open("w", encoding="utf-8", newline="") as handle:
-                writer = csv.DictWriter(handle, fieldnames=["source", "target", "value"])
-                writer.writeheader()
-                for link in aggregate_links:
-                    writer.writerow(link)
-
-            for subtype, subtype_links in links.items():
-                links_csv_path = output_stem.parent / f"{output_stem.name}_{link_type}_{subtype}_edges.csv"
-                with links_csv_path.open("w", encoding="utf-8", newline="") as handle:
-                    writer = csv.DictWriter(handle, fieldnames=["source", "target", "value"])
-                    writer.writeheader()
-                    for link in subtype_links:
-                        writer.writerow(
-                            {
-                                "source": link.get("source"),
-                                "target": link.get("target"),
-                                "value": link.get("value", 1),
-                            }
-                        )
-            continue
-
-        links_csv_path = output_stem.parent / f"{output_stem.name}_{link_type}_edges.csv"
-        with links_csv_path.open("w", encoding="utf-8", newline="") as handle:
-            writer = csv.DictWriter(handle, fieldnames=["source", "target", "value"])
-            writer.writeheader()
-            for link in links:
-                writer.writerow(
-                    {
-                        "source": link.get("source"),
-                        "target": link.get("target"),
-                        "value": link.get("value", 1),
-                    }
-                )
+    dependency_edges = normalize_dependency_edges(network_data)
+    dependency_edges_path = output_stem.parent / f"{output_stem.name}_dependency_edges.csv"
+    with dependency_edges_path.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(
+            handle,
+            fieldnames=["source", "target", "extraction_method", "relation_type", "value"],
+        )
+        writer.writeheader()
+        for edge in dependency_edges:
+            writer.writerow(
+                {
+                    "source": edge.get("source"),
+                    "target": edge.get("target"),
+                    "extraction_method": edge.get("extraction_method"),
+                    "relation_type": edge.get("relation_type"),
+                    "value": edge.get("value", 1),
+                }
+            )

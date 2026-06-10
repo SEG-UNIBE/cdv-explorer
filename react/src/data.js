@@ -40,20 +40,45 @@ export function buildProposalGraphId(sourceSlug, proposalId) {
   return sourcePart ? `${sourcePart}:${idPart}` : idPart;
 }
 
-function scopeDependencyEdge(edge, sourceId, sourceSlug = sourceId) {
+function parseProposalGraphKey(value) {
+  const text = String(value ?? '').trim();
+  const separatorIndex = text.indexOf(':');
+  if (separatorIndex <= 0) {
+    return { graphSource: null, proposalId: text };
+  }
+  return {
+    graphSource: text.slice(0, separatorIndex),
+    proposalId: text.slice(separatorIndex + 1),
+  };
+}
+
+function buildSourceIdBySlug(ecosystem) {
+  return Object.fromEntries(
+    Object.entries(ecosystem?.sources || {}).map(([sourceId, source]) => [
+      source.sourceSlug || sourceId,
+      source.sourceId || sourceId,
+    ])
+  );
+}
+
+function scopeDependencyEdge(edge, sourceId, sourceSlug = sourceId, sourceIdBySlug = {}) {
   if (!edge || edge.source == null || edge.target == null) {
     return edge;
   }
 
-  const sourceProposalId = String(edge.sourceProposalId ?? edge.source);
-  const targetProposalId = String(edge.targetProposalId ?? edge.target);
-  const sourceSourceId = String(edge.sourceSourceId ?? sourceId ?? '');
-  const targetSourceId = String(edge.targetSourceId ?? sourceId ?? '');
-  const sourceGraphSource = String(edge.sourceGraphSource ?? sourceSlug ?? sourceSourceId);
-  const targetGraphSource = String(edge.targetGraphSource ?? sourceSlug ?? targetSourceId);
+  const parsedSourceKey = parseProposalGraphKey(edge.sourceKey ?? edge.source);
+  const parsedTargetKey = parseProposalGraphKey(edge.targetKey ?? edge.target);
+  const sourceProposalId = String(edge.sourceProposalId ?? parsedSourceKey.proposalId);
+  const targetProposalId = String(edge.targetProposalId ?? parsedTargetKey.proposalId);
+  const sourceGraphSource = String(edge.sourceGraphSource ?? parsedSourceKey.graphSource ?? sourceSlug ?? sourceId ?? '');
+  const targetGraphSource = String(edge.targetGraphSource ?? parsedTargetKey.graphSource ?? sourceSlug ?? sourceId ?? '');
+  const sourceSourceId = String(edge.sourceSourceId ?? sourceIdBySlug[sourceGraphSource] ?? sourceId ?? '');
+  const targetSourceId = String(edge.targetSourceId ?? sourceIdBySlug[targetGraphSource] ?? sourceId ?? '');
 
   return {
     ...edge,
+    source: sourceProposalId,
+    target: targetProposalId,
     sourceProposalId,
     targetProposalId,
     sourceSourceId,
@@ -65,17 +90,17 @@ function scopeDependencyEdge(edge, sourceId, sourceSlug = sourceId) {
   };
 }
 
-export function scopeDependencyLinksForSource(linksByType, sourceId, sourceSlug = sourceId) {
+export function scopeDependencyLinksForSource(linksByType, sourceId, sourceSlug = sourceId, sourceIdBySlug = {}) {
   const links = normalizeDependencyLinks(linksByType || EMPTY_LINKS);
   const explicit = links[PREAMBLE_EXTRACTED] || {};
 
   const scoped = {
-    [BODY_EXTRACTED_REGEX]: (links[BODY_EXTRACTED_REGEX] || []).map((edge) => scopeDependencyEdge(edge, sourceId, sourceSlug)),
-    [BODY_EXTRACTED_LLM]: (links[BODY_EXTRACTED_LLM] || []).map((edge) => scopeDependencyEdge(edge, sourceId, sourceSlug)),
+    [BODY_EXTRACTED_REGEX]: (links[BODY_EXTRACTED_REGEX] || []).map((edge) => scopeDependencyEdge(edge, sourceId, sourceSlug, sourceIdBySlug)),
+    [BODY_EXTRACTED_LLM]: (links[BODY_EXTRACTED_LLM] || []).map((edge) => scopeDependencyEdge(edge, sourceId, sourceSlug, sourceIdBySlug)),
     [PREAMBLE_EXTRACTED]: {
-      requires: (explicit.requires || links.requires || []).map((edge) => scopeDependencyEdge(edge, sourceId, sourceSlug)),
-      replaces: (explicit.replaces || links.replaces || []).map((edge) => scopeDependencyEdge(edge, sourceId, sourceSlug)),
-      proposed_replacement: (explicit.proposed_replacement || links.proposed_replacement || []).map((edge) => scopeDependencyEdge(edge, sourceId, sourceSlug)),
+      requires: (explicit.requires || links.requires || []).map((edge) => scopeDependencyEdge(edge, sourceId, sourceSlug, sourceIdBySlug)),
+      replaces: (explicit.replaces || links.replaces || []).map((edge) => scopeDependencyEdge(edge, sourceId, sourceSlug, sourceIdBySlug)),
+      proposed_replacement: (explicit.proposed_replacement || links.proposed_replacement || []).map((edge) => scopeDependencyEdge(edge, sourceId, sourceSlug, sourceIdBySlug)),
     },
   };
 
@@ -97,10 +122,12 @@ function countAllLinks(linksByType) {
   );
 }
 
-function ensureSingleSourceShape(snapshotLabel, sourceId, sourceSlug, snapshotData) {
+function ensureSingleSourceShape(snapshotLabel, sourceId, sourceSlug, snapshotData, ecosystem = null) {
   const network = snapshotData.network || { nodes: [], links: EMPTY_LINKS };
   const graphSource = sourceSlug || sourceId;
-  const links = scopeDependencyLinksForSource(network.links || EMPTY_LINKS, sourceId, graphSource);
+  const sourceIdBySlug = buildSourceIdBySlug(ecosystem);
+  const rawLinks = { dependency_edges: network.dependency_edges || [] };
+  const links = scopeDependencyLinksForSource(rawLinks, sourceId, graphSource, sourceIdBySlug);
   const nodes = (network.nodes || []).map((node) => ({
     ...node,
     source: sourceId,
@@ -312,7 +339,7 @@ function fetchSingleSourceDataset(ecosystemId, source, sourceId, snapshot) {
   ]).then(([network, dependencyMetrics, authorship, classification, evolution, conformity]) =>
     ensureSingleSourceShape(snapshot, sourceId, source.sourceSlug || sourceId, {
       network, dependencyMetrics, authorship, classification, evolution, conformity,
-    })
+    }, ecosystemsById[ecosystemId])
   ).catch((err) => {
     fetchCache.delete(key);
     throw err;

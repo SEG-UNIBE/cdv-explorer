@@ -157,7 +157,7 @@ def _collect_display_node_ids(
 
     display_ids = {node_id for node_id in node_ids if node_id in focus_ids}
     for link_type in LAYOUT_EDGE_TYPES:
-        for edge in get_links_by_type(network_data.get("links", {}), link_type):
+        for edge in get_links_by_type(network_data.get("dependency_edges", []), link_type):
             source_id = str(edge.get("source"))
             target_id = str(edge.get("target"))
             if _edge_in_focus_neighborhood(source_id, target_id, focus_ids):
@@ -214,7 +214,7 @@ def _build_layout_graph(network_data: Dict[str, Any], display_ids: set[str], foc
 
     seen_edges = set()
     for link_type in LAYOUT_EDGE_TYPES:
-        for edge in get_links_by_type(network_data.get("links", {}), link_type):
+        for edge in get_links_by_type(network_data.get("dependency_edges", []), link_type):
             source_id = str(edge.get("source"))
             target_id = str(edge.get("target"))
             key = _build_edge_key(source_id, target_id)
@@ -352,7 +352,7 @@ def _compute_axis_limits(
 
 
 def _build_comparison_edges(
-    network_links: Dict[str, Any],
+    dependency_edges: list[Dict[str, Any]],
     *,
     approach_type: str,
     baseline_type: str,
@@ -361,7 +361,7 @@ def _build_comparison_edges(
 ) -> dict[str, list[tuple[str, str]]]:
     approach_edges = {
         _build_edge_key(edge.get("source"), edge.get("target"))
-        for edge in get_links_by_type(network_links, approach_type)
+        for edge in get_links_by_type(dependency_edges, approach_type)
         if (
             str(edge.get("source")) in display_ids
             and str(edge.get("target")) in display_ids
@@ -370,7 +370,7 @@ def _build_comparison_edges(
     }
     baseline_edges = {
         _build_edge_key(edge.get("source"), edge.get("target"))
-        for edge in get_links_by_type(network_links, baseline_type)
+        for edge in get_links_by_type(dependency_edges, baseline_type)
         if (
             str(edge.get("source")) in display_ids
             and str(edge.get("target")) in display_ids
@@ -844,7 +844,7 @@ def render_differential_dependency_plots(
     output_paths: list[Path] = []
     for plot_spec in COMPARISON_PLOTS:
         comparison_edges = _build_comparison_edges(
-            network_data.get("links", {}),
+            network_data.get("dependency_edges", []),
             approach_type=plot_spec["approach"],
             baseline_type=plot_spec["baseline"],
             display_ids=display_ids,

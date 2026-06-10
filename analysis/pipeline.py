@@ -7,7 +7,6 @@ from analysis.authorship import extract_authorship_metrics
 from analysis.authorship import prepare_authorship_payload
 from analysis.classification import prepare_classification_payload
 from analysis.conformity import extract_conformity_metrics
-from analysis.dependencies.constants import PREAMBLE_EXTRACTED
 from analysis.dependencies import (
     build_network_data,
     extract_dependency_metrics,
@@ -96,29 +95,16 @@ def _save_react_ready_exports(
         )
 
     flat_edges: List[Dict[str, Any]] = []
-    for link_type, links in network_data.get("links", {}).items():
-        if link_type == PREAMBLE_EXTRACTED and isinstance(links, dict):
-            for subtype, subtype_links in links.items():
-                for link in subtype_links:
-                    flat_edges.append(
-                        {
-                            "edge_type": subtype,
-                            "source": link.get("source"),
-                            "target": link.get("target"),
-                            "value": link.get("value", 1),
-                        }
-                    )
-            continue
-
-        for link in links:
-            flat_edges.append(
-                {
-                    "edge_type": link_type,
-                    "source": link.get("source"),
-                    "target": link.get("target"),
-                    "value": link.get("value", 1),
-                }
-            )
+    for edge in network_data.get("dependency_edges", []):
+        flat_edges.append(
+            {
+                "source": edge.get("source"),
+                "target": edge.get("target"),
+                "extraction_method": edge.get("extraction_method"),
+                "relation_type": edge.get("relation_type"),
+                "value": edge.get("value", 1),
+            }
+        )
 
     status_over_time_long: List[Dict[str, Any]] = []
     for year, statuses in classification_payload.get("status_over_time", {}).items():
@@ -147,7 +133,7 @@ def _save_react_ready_exports(
     _save_csv_rows(
         flat_edges,
         edges_csv,
-        fieldnames=["edge_type", "source", "target", "value"],
+        fieldnames=["source", "target", "extraction_method", "relation_type", "value"],
     )
     _save_csv_rows(
         authorship_payload.get("top_authors", []),

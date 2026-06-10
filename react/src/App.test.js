@@ -35,21 +35,40 @@ test('dependency link options default to the canonical preamble approach', () =>
   ]);
 });
 
-test('normalizes legacy dependency link keys into canonical keys', () => {
+test('normalizes canonical dependency edges into grouped dependency links', () => {
   const normalized = normalizeDependencyLinks({
-    explicit_references: [{ source: '1', target: '2', value: 1 }],
-    explicit_dependencies: {
-      requires: [{ source: '2', target: '1', value: 1 }],
-      replaces: [],
-      superseded_by: [],
-    },
-    implicit_dependencies: [{ source: '3', target: '2', value: 1 }],
+    dependency_edges: [
+      {
+        source: 'bips:1',
+        target: 'bips:2',
+        extraction_method: PREAMBLE_EXTRACTED,
+        relation_type: 'requires',
+        value: 1,
+      },
+      {
+        source: 'bips:2',
+        target: 'bips:3',
+        extraction_method: BODY_EXTRACTED_REGEX,
+        relation_type: 'reference',
+        value: 1,
+      },
+    ],
   });
 
-  expect(normalized[BODY_EXTRACTED_REGEX]).toHaveLength(1);
-  expect(normalized[PREAMBLE_EXTRACTED].requires).toHaveLength(1);
-  expect(normalized[PREAMBLE_EXTRACTED].proposed_replacement).toHaveLength(0);
-  expect(normalized[BODY_EXTRACTED_LLM]).toHaveLength(1);
+  expect(normalized[PREAMBLE_EXTRACTED].requires).toEqual([
+    {
+      source: 'bips:1',
+      target: 'bips:2',
+      extraction_method: PREAMBLE_EXTRACTED,
+      relation_type: 'requires',
+      value: 1,
+    },
+  ]);
+  expect(normalized[BODY_EXTRACTED_REGEX][0]).toMatchObject({
+    source: 'bips:2',
+    target: 'bips:3',
+    relation_type: 'reference',
+  });
 });
 
 test('source-scopes dependency links without changing display proposal ids', () => {
@@ -82,6 +101,33 @@ test('source-scopes dependency links without changing display proposal ids', () 
     sourceGraphSource: 'slips',
     targetGraphSource: 'slips',
     sourceKey: 'slips:32',
+    targetKey: 'slips:44',
+  });
+});
+
+test('source-scopes canonical dependency edge graph keys for display', () => {
+  const links = scopeDependencyLinksForSource({
+    dependency_edges: [
+      {
+        source: 'bips:32',
+        target: 'slips:44',
+        extraction_method: BODY_EXTRACTED_LLM,
+        relation_type: 'implicit_dependency',
+        value: 1,
+      },
+    ],
+  }, 'bip', 'bips', { bips: 'bip', slips: 'slip' });
+
+  expect(links[BODY_EXTRACTED_LLM][0]).toMatchObject({
+    source: '32',
+    target: '44',
+    sourceProposalId: '32',
+    targetProposalId: '44',
+    sourceSourceId: 'bip',
+    targetSourceId: 'slip',
+    sourceGraphSource: 'bips',
+    targetGraphSource: 'slips',
+    sourceKey: 'bips:32',
     targetKey: 'slips:44',
   });
 });

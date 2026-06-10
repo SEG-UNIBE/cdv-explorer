@@ -15,20 +15,63 @@ export const DEPENDENCY_SHORT_LABELS = {
   [BODY_EXTRACTED_LLM]: 'LLM',
 };
 
+function linkFromDependencyEdge(edge) {
+  return {
+    source: edge.source,
+    target: edge.target,
+    value: edge.value ?? 1,
+    extraction_method: edge.extraction_method,
+    relation_type: edge.relation_type,
+  };
+}
+
+function linksFromDependencyEdges(dependencyEdges) {
+  const links = {
+    [BODY_EXTRACTED_REGEX]: [],
+    [PREAMBLE_EXTRACTED]: {
+      requires: [],
+      replaces: [],
+      proposed_replacement: [],
+    },
+    [BODY_EXTRACTED_LLM]: [],
+  };
+
+  (dependencyEdges || []).forEach((edge) => {
+    if (!edge || edge.source == null || edge.target == null) return;
+    const link = linkFromDependencyEdge(edge);
+    if (edge.extraction_method === PREAMBLE_EXTRACTED) {
+      const relationType = edge.relation_type;
+      if (!links[PREAMBLE_EXTRACTED][relationType]) {
+        links[PREAMBLE_EXTRACTED][relationType] = [];
+      }
+      links[PREAMBLE_EXTRACTED][relationType].push(link);
+      return;
+    }
+    if (links[edge.extraction_method]) {
+      links[edge.extraction_method].push(link);
+    }
+  });
+
+  return links;
+}
+
 export function normalizeDependencyLinks(rawLinks) {
-  const links = rawLinks || {};
-  const preambleExtracted = links[PREAMBLE_EXTRACTED] || links.explicit_dependencies || {};
+  const dependencyEdges = Array.isArray(rawLinks)
+    ? rawLinks
+    : (Array.isArray(rawLinks?.dependency_edges) ? rawLinks.dependency_edges : null);
+  const links = dependencyEdges
+    ? linksFromDependencyEdges(dependencyEdges)
+    : (rawLinks || {});
+  const preambleExtracted = links[PREAMBLE_EXTRACTED] || {};
   const requires = preambleExtracted.requires || links.requires || [];
   const replaces = preambleExtracted.replaces || links.replaces || [];
   const proposedReplacement =
     preambleExtracted.proposed_replacement
-    || preambleExtracted.superseded_by
     || links.proposed_replacement
-    || links.superseded_by
     || [];
 
   return {
-    [BODY_EXTRACTED_REGEX]: links[BODY_EXTRACTED_REGEX] || links.explicit_references || [],
+    [BODY_EXTRACTED_REGEX]: links[BODY_EXTRACTED_REGEX] || [],
     [PREAMBLE_EXTRACTED]: {
       requires,
       replaces,
@@ -37,6 +80,6 @@ export function normalizeDependencyLinks(rawLinks) {
     requires,
     replaces,
     proposed_replacement: proposedReplacement,
-    [BODY_EXTRACTED_LLM]: links[BODY_EXTRACTED_LLM] || links.implicit_dependencies || [],
+    [BODY_EXTRACTED_LLM]: links[BODY_EXTRACTED_LLM] || [],
   };
 }

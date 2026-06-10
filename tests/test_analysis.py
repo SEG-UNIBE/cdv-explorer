@@ -16,10 +16,24 @@ from analysis.dependencies.mining import (
     normalize_dependency_output,
     prepare_llm_dependency_text,
 )
+from analysis.dependencies.metrics import extract_dependency_metrics
 from analysis.dependencies.network import build_network_data
+from pipeline.source_context import SourceContext
 
 
-def _proposal(bip_id, *, regex_refs=None, llm_deps=None, status="Draft", bip2_score=None, bip3_score=None, checks=None):
+def _proposal(
+    bip_id,
+    *,
+    regex_refs=None,
+    llm_deps=None,
+    requires=None,
+    replaces=None,
+    proposed_replacement=None,
+    status="Draft",
+    bip2_score=None,
+    bip3_score=None,
+    checks=None,
+):
     compliance = {}
     if bip2_score is not None:
         compliance["bip2"] = {"score": bip2_score, "checks": checks or []}
@@ -27,8 +41,15 @@ def _proposal(bip_id, *, regex_refs=None, llm_deps=None, status="Draft", bip2_sc
         compliance["bip3"] = {"score": bip3_score, "checks": []}
     if compliance:
         compliance["score"] = bip2_score
+    preamble = {"bip": bip_id, "title": f"Proposal {bip_id}", "status": status}
+    if requires is not None:
+        preamble["requires"] = requires
+    if replaces is not None:
+        preamble["replaces"] = replaces
+    if proposed_replacement is not None:
+        preamble["proposed_replacement"] = proposed_replacement
     return {
-        "raw": {"preamble": {"bip": bip_id, "title": f"Proposal {bip_id}", "status": status}},
+        "raw": {"preamble": preamble},
         "insights": {
             "formal_compliance": compliance,
             "interrelations": {
@@ -128,20 +149,80 @@ class BuildNetworkDataTests(unittest.TestCase):
     def test_link_created_when_both_nodes_exist(self):
         result = build_network_data([_proposal("1", regex_refs=["BIP 2"]), _proposal("2")],
                                     id_field="bip", proposal_label="BIP")
-        links = result["links"]["body_extracted_regex"]
-        self.assertEqual(len(links), 1)
-        self.assertEqual(links[0]["source"], "1")
-        self.assertEqual(links[0]["target"], "2")
+        edges = result["dependency_edges"]
+        self.assertEqual(len(edges), 1)
+        self.assertEqual(edges[0]["source"], "bips:1")
+        self.assertEqual(edges[0]["target"], "bips:2")
+        self.assertEqual(edges[0]["extraction_method"], "body_extracted_regex")
+        self.assertNotIn("links", result)
+
+    def test_dependency_edges_use_source_safe_graph_keys(self):
+        source_context = SourceContext.from_config(
+            {"classification": {"dimensions": {}}},
+            source_slug="bips",
+        )
+        result = build_network_data(
+            [_proposal("1", regex_refs=["BIP 2"], requires=["BIP 2"]), _proposal("2")],
+            id_field="bip",
+            proposal_label="BIP",
+            source_context=source_context,
+        )
+
+        self.assertEqual(result["nodes"][0]["graph_key"], "bips:1")
+        self.assertIn(
+            {
+                "source": "bips:1",
+                "target": "bips:2",
+                "extraction_method": "body_extracted_regex",
+                "relation_type": "reference",
+                "value": 1,
+            },
+            result["dependency_edges"],
+        )
+        self.assertIn(
+            {
+                "source": "bips:1",
+                "target": "bips:2",
+                "extraction_method": "preamble_extracted",
+                "relation_type": "requires",
+                "value": 1,
+            },
+            result["dependency_edges"],
+        )
+        self.assertNotIn("links", result)
+
+    def test_dependency_metrics_use_canonical_edges_when_present(self):
+        network_data = {
+            "nodes": [
+                {"id": "1", "graph_key": "bips:1", "title": "Proposal 1"},
+                {"id": "2", "graph_key": "bips:2", "title": "Proposal 2"},
+            ],
+            "dependency_edges": [
+                {
+                    "source": "bips:1",
+                    "target": "bips:2",
+                    "extraction_method": "preamble_extracted",
+                    "relation_type": "requires",
+                    "value": 1,
+                }
+            ],
+        }
+
+        metrics = extract_dependency_metrics(network_data)
+
+        self.assertEqual(metrics["by_approach"]["preamble_extracted"]["summary"]["edge_count"], 1)
+        per_bip_ids = {row["id"] for row in metrics["by_approach"]["preamble_extracted"]["per_bip"]}
+        self.assertEqual(per_bip_ids, {"bips:1", "bips:2"})
 
     def test_link_to_unknown_node_excluded(self):
         result = build_network_data([_proposal("1", regex_refs=["BIP 99"])],
                                     id_field="bip", proposal_label="BIP")
-        self.assertEqual(result["links"]["body_extracted_regex"], [])
+        self.assertEqual(result["dependency_edges"], [])
 
     def test_llm_link_to_unknown_node_excluded(self):
         result = build_network_data([_proposal("1", llm_deps=["BIP 99"])],
                                     id_field="bip", proposal_label="BIP")
-        self.assertEqual(result["links"]["body_extracted_llm"], [])
+        self.assertEqual(result["dependency_edges"], [])
 
     def test_duplicate_proposal_ids_deduplicated(self):
         result = build_network_data([_proposal("1"), _proposal("1")],

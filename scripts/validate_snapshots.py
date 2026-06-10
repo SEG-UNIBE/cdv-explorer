@@ -9,7 +9,7 @@ from pathlib import Path
 ANALYSIS_ROOT = Path("ip_data")
 
 REQUIRED_FILES: dict[str, list[str]] = {
-    "dependencies/network_data.json":             ["nodes", "links"],
+    "dependencies/network_data.json":             ["nodes", "dependency_edges"],
     "dependencies/dependency_metrics.json":        ["by_approach", "pairwise_comparisons"],
     "authorship/authorship_payload.json":          ["meta", "top_authors", "bips_per_year", "top_10_share"],
     "classification/classification_payload.json":  ["meta", "sankey_grouped", "status_over_time"],
@@ -62,9 +62,12 @@ def check_snapshot(snapshot_dir: Path) -> dict:
             result["file_status"][label] = OK
 
         if rel_path == "dependencies/network_data.json":
-            links = data.get("links", {})
             result["stats"]["proposals"] = len(data.get("nodes", []))
-            result["stats"]["llm"] = len(links.get("body_extracted_llm", []))
+            result["stats"]["llm"] = sum(
+                1
+                for edge in data.get("dependency_edges", [])
+                if edge.get("extraction_method") == "body_extracted_llm"
+            )
 
     return result
 

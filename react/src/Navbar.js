@@ -4,9 +4,16 @@ import { Button } from 'primereact/button';
 import { Link } from 'react-router-dom';
 import { FaGithub } from 'react-icons/fa';
 import { useTheme } from './theme';
+import pkg from '../package.json';
 import './Navbar.scss';
 
+const { version } = pkg;
+
 const REPOSITORY_URL = 'https://github.com/SEG-UNIBE/cdv-explorer';
+
+const envBadge = window.location.hostname.includes('pages.dev') ? 'DEV'
+  : window.location.hostname === 'localhost' ? 'LOCAL'
+  : null;
 
 const Navbar = () => {
   const [mobileMenuVisible, setMobileMenuVisible] = useState(false);
@@ -33,7 +40,11 @@ const Navbar = () => {
   return (
     <div className="nav-bar">
       <div className="nav-logo">
-        <Link to="/" className="nav-brand">CDV Explorer</Link>
+        <Link to="/" className="nav-brand">
+          CDV Explorer
+          {envBadge && <span className={`nav-env-badge nav-env-badge--${envBadge.toLowerCase()}`}>{envBadge}</span>}
+        </Link>
+        <span className="nav-version">v{version}</span>
       </div>
 
       <div className="nav-items">

@@ -17,6 +17,19 @@
   gap: 1rem;
 
   .nav-logo {
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+
+    .nav-version {
+      font-size: 11px;
+      font-family: monospace;
+      color: var(--nav-brand);
+      opacity: 0.4;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+
     .nav-brand {
       text-decoration: none;
       font-family: Roboto, sans-serif;
@@ -24,6 +37,23 @@
       font-weight: 700;
       color: var(--nav-brand);
       letter-spacing: 0.02em;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .nav-env-badge {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #fff;
+      border-radius: 4px;
+      padding: 2px 6px;
+      line-height: 1.4;
+      vertical-align: middle;
+
+      &--dev   { background: #f97316; }
+      &--local { background: #8b5cf6; }
     }
   }
 

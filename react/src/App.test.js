@@ -15,7 +15,7 @@ import { getNipCommitUrl, getNipUrl } from './nipLinks';
 import { getSlipCommitUrl, getSlipUrl, normalizeSlipId } from './slipLinks';
 import { getRepositoryCommitUrl, getRepositoryProposalUrl } from './proposalLinkResolver';
 import { renderProposalListHtml } from './bipTooltipContent';
-import { buildWordCloudData, parseProposalFilterExpression } from './dashboard/dashboardData';
+import { buildDashboardData, buildWordCloudData, parseProposalFilterExpression } from './dashboard/dashboardData';
 import { buildProposalGraphId, scopeDependencyLinksForSource } from './data';
 import {
   buildClassificationRelationProposalLabel,
@@ -84,6 +84,30 @@ test('source-scopes dependency links without changing display proposal ids', () 
     sourceKey: 'slips:32',
     targetKey: 'slips:44',
   });
+});
+
+test('classification chord uses normalized category labels for SLIP Standard types', () => {
+  const dashboardData = buildDashboardData({
+    nodes: [
+      { id: '10', source: 'slip', type: 'Standard', status: 'Final' },
+      { id: '12', source: 'slip', type: 'Standard', status: 'Draft' },
+      { id: '16', source: 'slip', type: 'Informational', status: 'Active' },
+    ],
+    authorship: { bips_per_year: [{ year: 2026, count: 3 }] },
+    conformity: {},
+  }, bitcoinEcosystem.sources.slip);
+
+  const groups = dashboardData.classificationChordData.groups;
+  const indexByKey = new Map(groups.map((group, index) => [group.id, index]));
+  const standardIndex = indexByKey.get('type|||Standards Track');
+  const finalIndex = indexByKey.get('status|||Final');
+  const draftIndex = indexByKey.get('status|||Draft');
+
+  expect(standardIndex).not.toBeUndefined();
+  expect(finalIndex).not.toBeUndefined();
+  expect(draftIndex).not.toBeUndefined();
+  expect(dashboardData.classificationChordData.matrix[standardIndex][finalIndex]).toBe(1);
+  expect(dashboardData.classificationChordData.matrix[standardIndex][draftIndex]).toBe(1);
 });
 
 describe('proposal link resolution', () => {

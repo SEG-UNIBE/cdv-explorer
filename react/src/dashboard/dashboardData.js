@@ -719,7 +719,10 @@ function buildClassificationChordData(nodes, categoryDomains = {}, dimensions = 
   const pairBips = new Map();
 
   dimensions.forEach(({ field, label }) => {
-    const categories = Array.isArray(categoryDomains[field]) ? categoryDomains[field] : [];
+    const categories = Array.from(new Set(
+      (Array.isArray(categoryDomains[field]) ? categoryDomains[field] : [])
+        .map((category) => normalizeChordValueForField(field, category))
+    ));
     categories.forEach((category) => {
       const key = `${field}|||${category}`;
       groupIndexByKey.set(key, groups.length);

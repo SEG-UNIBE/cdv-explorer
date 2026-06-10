@@ -76,7 +76,7 @@ def build_summary(rows: list[dict], errors_by_snapshot: dict[str, list[str]]) ->
         lines.append("⚠️ No snapshots found under `ip_data/*/03_analysis/` or `ip_data/*/*/03_analysis/`.")
         return "\n".join(lines)
 
-    lines.append("## Snapshot Validation")
+    lines.append("### Artifact Validation")
     lines.append("")
 
     file_cols = list(COLUMN_LABELS.values())

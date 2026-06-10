@@ -54,7 +54,7 @@ jobs:
       - name: Run ruff check
         run: ruff check .
 
-  validate:
+  test-unit:
     needs: lint
     runs-on: ubuntu-latest
     steps:
@@ -64,10 +64,29 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Install dev dependencies
+        run: pip install -r requirements-dev.txt
+
+      - name: Run pytest
+        run: pytest
+
+  artifact-validation:
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dev dependencies
+        run: pip install -r requirements-dev.txt
+
       - name: Validate snapshot artifacts
         run: python scripts/validate_snapshots.py
 
-  frontend-test:
+  test-frontend:
     needs: lint
     runs-on: ubuntu-latest
     steps:
@@ -94,7 +113,7 @@ jobs:
           CI: true
 
   build:
-    needs: [validate, frontend-test]
+    needs: [test-unit, artifact-validation, test-frontend]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5

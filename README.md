@@ -3,7 +3,7 @@
 _Modern decentralized software ecosystems evolve through crowdsourced improvement proposals (IPs) that are continuously shaped and autonomously implemented by independent actors. As a result, these ecosystems exhibit so-called **Community-Driven Variability (CDV)** [^1], a novel paradigm that extends beyond traditional variability-intensive systems. This tool allows to explore the proposal space of such ecosystems by providing interactive visualizations and insights about their evolution, authorship, classification, conformity, and inter-proposal relationships._
 
 <div align="center">
-  <a href="https://ranonymousse.github.io/cdv-explorer/#/">
+  <a href="https://seg-unibe.github.io/cdv-explorer/#/">
     <img width="100%" src="./assets/thumb.png" alt="CDV Explorer" />
   </a>
 </div>
@@ -22,10 +22,10 @@ _Modern decentralized software ecosystems evolve through crowdsourced improvemen
 </br>
 
 <div align="center">
-  <a href="https://github.com/ranonymousse/cdv-explorer/actions/workflows/deploy-react-pages.yml">
-    <img src="https://img.shields.io/github/actions/workflow/status/ranonymousse/cdv-explorer/deploy-react-pages.yml?style=flat&label=deploy&logo=githubactions&logoColor=white" alt="Deploy" />
+  <a href="https://github.com/SEG-UNIBE/cdv-explorer/actions/workflows/deploy-react-pages.yml">
+    <img src="https://img.shields.io/github/actions/workflow/status/SEG-UNIBE/cdv-explorer/deploy-react-pages.yml?style=flat&label=deploy&logo=githubactions&logoColor=white" alt="Deploy" />
   </a>
-  <a href="https://ranonymousse.github.io/cdv-explorer/#/">
+  <a href="https://seg-unibe.github.io/cdv-explorer/#/">
     <img src="https://img.shields.io/badge/GitHub%20Pages-live-brightgreen?style=flat&logo=githubpages&logoColor=white" alt="Live Demo" />
   </a>
   <a href="./LICENSE">
@@ -53,7 +53,7 @@ As of now, two CDV-exhibiting ecosystems are integrated:
 | **Bitcoin** | Bitcoin Improvement Proposals (BIPs) | [bitcoin/bips](https://github.com/bitcoin/bips) |
 | **Nostr** | Nostr Implementation Possibilities (NIPs) | [nostr-protocol/nips](https://github.com/nostr-protocol/nips) |
 
-The live demo is deployed at [ranonymousse.github.io/cdv-explorer](https://ranonymousse.github.io/cdv-explorer/#/).
+The live demo is deployed at [seg-unibe.github.io/cdv-explorer](https://seg-unibe.github.io/cdv-explorer/#/).
 
 </br>
 
@@ -68,7 +68,7 @@ The live demo is deployed at [ranonymousse.github.io/cdv-explorer](https://ranon
 ### 1 - Clone the repository
 
 ```bash
-git clone https://github.com/ranonymousse/cdv-explorer.git
+git clone https://github.com/SEG-UNIBE/cdv-explorer.git
 cd cdv-explorer
 ```
 

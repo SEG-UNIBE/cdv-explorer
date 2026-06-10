@@ -10,7 +10,7 @@ from matplotlib.patches import Patch
 from matplotlib.ticker import MaxNLocator
 
 from analysis.artifact_io import resolve_latest_snapshot_label
-from pipeline.ecosystem_config import ACTIVE_ECOSYSTEM
+from pipeline.source_context import SourceContext
 from paper.plot_colors import with_plot_alpha
 from paper.RQ3._plotting import (
     BAR_EDGE_COLOR,
@@ -56,8 +56,6 @@ STATUS_COLORS = {
     "Unknown": "#adb5bd",
 }
 
-_CLASSIFICATION_CONFIG = ACTIVE_ECOSYSTEM.get("classification", {})
-
 
 def _parse_snapshot_date(snapshot_label: str | None) -> date | None:
     candidate = snapshot_label
@@ -72,9 +70,13 @@ def _parse_snapshot_date(snapshot_label: str | None) -> date | None:
         return None
 
 
-def resolve_rq1_status_order(snapshot_label: str | None) -> list[str]:
+def resolve_rq1_status_order(
+    snapshot_label: str | None,
+    source_context: SourceContext | None = None,
+) -> list[str]:
     snapshot_date = _parse_snapshot_date(snapshot_label)
-    regimes = _CLASSIFICATION_CONFIG.get("regimes", [])
+    context = source_context or SourceContext.default()
+    regimes = context.classification_config.get("regimes", [])
     valid_orders: list[list[str]] = []
 
     for entry in regimes:

@@ -4,34 +4,6 @@ from __future__ import annotations
 import os
 import sys
 
-
-def _preparse_env() -> tuple[str | None, str | None]:
-    """Extract --ecosystem / --source from argv before any pipeline imports run.
-
-    Standalone helper modules still support env-based defaults, so keep these
-    values available for backwards-compatible direct script imports.
-    """
-    args = sys.argv[1:]
-    eco: str | None = None
-    src: str | None = None
-    for i, arg in enumerate(args):
-        if arg in ("--ecosystem", "-e") and i + 1 < len(args):
-            eco = args[i + 1]
-        elif arg.startswith("--ecosystem="):
-            eco = arg.split("=", 1)[1]
-        elif arg == "--source" and i + 1 < len(args):
-            src = args[i + 1]
-        elif arg.startswith("--source="):
-            src = arg.split("=", 1)[1]
-    return eco, src
-
-
-_eco, _src = _preparse_env()
-if _eco:
-    os.environ.setdefault("CDV_ECOSYSTEM", _eco)
-if _src:
-    os.environ.setdefault("CDV_SOURCE", _src)
-
 import json
 import re
 import shutil

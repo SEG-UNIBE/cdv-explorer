@@ -24,6 +24,7 @@ from analysis.dependencies.mining import (
 )
 from analysis.evolution import extract_status_timeline
 from analysis.proposal_schema import normalize_proposal_document
+from pipeline.source_context import SourceContext
 
 MIN_WORD_OCCURRENCE = 2
 LLM_MAX_CONCURRENCY = 5
@@ -94,14 +95,24 @@ def _build_base_insights(
     proposal_label: str,
     id_field: str,
     reference_pattern: str,
+    source_context: SourceContext,
 ) -> Tuple[Dict[str, Any], str, str]:
     raw_content = source_file.read_text(encoding="utf-8") if source_file.exists() else ""
     body_content = prepare_llm_dependency_text(raw_content)
     preamble = json_data.get("raw", {}).get("preamble", {})
     proposal_number = _proposal_number(preamble, id_field)
 
-    references = create_reference_list(body_content, proposal_label=proposal_label, reference_pattern=reference_pattern)
-    explicit_deps = create_explicit_dependency_list(preamble, proposal_label=proposal_label)
+    references = create_reference_list(
+        body_content,
+        proposal_label=proposal_label,
+        reference_pattern=reference_pattern,
+        source_context=source_context,
+    )
+    explicit_deps = create_explicit_dependency_list(
+        preamble,
+        proposal_label=proposal_label,
+        source_context=source_context,
+    )
 
     raw_proposal_id = str(preamble.get(id_field, "")).strip()
     self_refs = {f"{proposal_label} {proposal_number}"}
@@ -133,6 +144,7 @@ def enrich(
     proposal_label: str = src_config["proposal_acronym"]
     id_field: str = src_config["primary_id_field"]
     reference_pattern: str = src_config["reference_pattern"]
+    source_context = SourceContext.from_config(src_config)
     stop_words = _load_stop_words(src_config.get("stop_words_file"))
 
     json_files = sorted(f for f in preprocess_dir.iterdir() if f.suffix == ".json")
@@ -195,7 +207,10 @@ def enrich(
             if progress_callback is not None:
                 progress_callback(json_file.name, 0)
 
-            json_data = normalize_proposal_document(json.loads(json_file.read_text(encoding="utf-8")))
+            json_data = normalize_proposal_document(
+                json.loads(json_file.read_text(encoding="utf-8")),
+                source_context=source_context,
+            )
             preamble = json_data.get("raw", {}).get("preamble", {})
             id_value = str(preamble.get(id_field, ""))
             source_file = _find_source_file(harvest_dir, id_value, src_config)
@@ -208,9 +223,19 @@ def enrich(
                 continue
 
             json_data = update_metadata_from_git(json_data, source_file, harvest_dir)
-            json_data["insights"]["changes_in_status"] = extract_status_timeline(harvest_dir, source_file)
+            json_data["insights"]["changes_in_status"] = extract_status_timeline(
+                harvest_dir,
+                source_file,
+                source_context=source_context,
+            )
             base_insights, llm_content, proposal_number = _build_base_insights(
-                json_data, source_file, stop_words, proposal_label, id_field, reference_pattern
+                json_data,
+                source_file,
+                stop_words,
+                proposal_label,
+                id_field,
+                reference_pattern,
+                source_context,
             )
             json_data["insights"]["word_list"] = base_insights["word_list"]
             json_data["insights"]["interrelations"].update(base_insights["interrelations"])
@@ -231,6 +256,7 @@ def enrich(
                 current_proposal_number=proposal_number,
                 proposal_label=proposal_label,
                 api_key=api_key,
+                source_context=source_context,
             )
             pending[future] = {
                 "job_id": json_file.name,

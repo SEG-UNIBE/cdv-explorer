@@ -16,22 +16,8 @@ from analysis.proposal_schema import (
     get_preamble_interrelations,
     normalize_proposal_document,
 )
-from pipeline.ecosystem_config import ACTIVE_ECOSYSTEM
+from pipeline.source_context import SourceContext
 from analysis.utils import parse_date_ymd as _parse_date_ymd
-
-
-_DIMS = ACTIVE_ECOSYSTEM.get("classification", {}).get("dimensions", {})
-LAYER_ALIASES = _DIMS.get("layer", {}).get("aliases", {})
-STATUS_ALIASES = _DIMS.get("status", {}).get("aliases", {})
-TYPE_ALIASES = _DIMS.get("type", {}).get("aliases", {})
-
-# All classification dimension fields defined in the ecosystem config.
-# These are included as node attributes so the React frontend can use them.
-_CLASSIFICATION_FIELDS: List[str] = list(_DIMS.keys())
-_CLASSIFICATION_ALIASES: Dict[str, Dict[str, str]] = {
-    field: (_DIMS[field].get("aliases") or {})
-    for field in _CLASSIFICATION_FIELDS
-}
 
 
 def _aggregate_explicit_dependencies(explicit_dependencies: Dict[str, List[Dict[str, Any]]]) -> List[Dict[str, Any]]:
@@ -88,12 +74,15 @@ def _apply_alias(value: Any, aliases: Dict[str, str]) -> Any:
     return aliases.get(value, value)
 
 
-def load_proposal_json_documents(source_dir: Path) -> List[Dict[str, Any]]:
+def load_proposal_json_documents(
+    source_dir: Path,
+    source_context: SourceContext | None = None,
+) -> List[Dict[str, Any]]:
     documents: List[Dict[str, Any]] = []
     for file_path in sorted(source_dir.glob("*.json")):
         try:
             with file_path.open("r", encoding="utf-8") as handle:
-                documents.append(normalize_proposal_document(json.load(handle)))
+                documents.append(normalize_proposal_document(json.load(handle), source_context=source_context))
         except json.JSONDecodeError:
             continue
     return documents
@@ -103,7 +92,17 @@ def build_network_data(
     proposal_data: Iterable[Dict[str, Any]],
     id_field: str = "id",
     proposal_label: str = "IP",
+    source_context: SourceContext | None = None,
 ) -> Dict[str, Any]:
+    context = source_context or SourceContext.default()
+    classification_fields: List[str] = context.classification_fields
+    classification_aliases: Dict[str, Dict[str, str]] = {
+        field: dict(context.classification_aliases(field))
+        for field in classification_fields
+    }
+    layer_aliases = dict(context.classification_aliases("layer"))
+    status_aliases = dict(context.classification_aliases("status"))
+    type_aliases = dict(context.classification_aliases("type"))
     nodes = []
     explicit_reference_links = []
     implicit_dependency_links = []
@@ -149,12 +148,12 @@ def build_network_data(
                     _ymd = _parse_date_ymd(_oldest[1])
                     if _ymd:
                         node["created"] = _ymd
-            for field in _CLASSIFICATION_FIELDS:
-                node[field] = _apply_alias(preamble.get(field), _CLASSIFICATION_ALIASES[field])
+            for field in classification_fields:
+                node[field] = _apply_alias(preamble.get(field), classification_aliases[field])
             # Backward-compat aliases for ecosystems that don't define layer/type/status explicitly.
-            node.setdefault("layer", _apply_alias(preamble.get("layer"), LAYER_ALIASES))
-            node.setdefault("status", _apply_alias(preamble.get("status"), STATUS_ALIASES))
-            node.setdefault("type", _apply_alias(preamble.get("type"), TYPE_ALIASES))
+            node.setdefault("layer", _apply_alias(preamble.get("layer"), layer_aliases))
+            node.setdefault("status", _apply_alias(preamble.get("status"), status_aliases))
+            node.setdefault("type", _apply_alias(preamble.get("type"), type_aliases))
             nodes.append(node)
             node_ids.add(proposal_id)
 
@@ -183,7 +182,7 @@ def build_network_data(
             if dep_id in node_ids:
                 implicit_dependency_links.append({"source": proposal_id, "target": dep_id, "value": 1})
 
-        preamble_interrelations = get_preamble_interrelations(preamble)
+        preamble_interrelations = get_preamble_interrelations(preamble, source_context=context)
 
         for req_id in normalize_proposal_ids(preamble_interrelations.get("requires"), proposal_label=proposal_label):
             if req_id in node_ids:
@@ -227,7 +226,14 @@ def save_network_data_artifacts(network_data: Dict[str, Any], output_stem: Path)
     nodes_csv_path = output_stem.parent / f"{output_stem.name}_nodes.csv"
     with nodes_csv_path.open("w", encoding="utf-8", newline="") as handle:
         _base = ["id", "title", "compliance_score", "created", "author"]
-        _class = sorted({f for f in _CLASSIFICATION_FIELDS} | {"layer", "status", "type"})
+        reserved = set(_base) | {"word_list"}
+        node_fields = {
+            key
+            for node in network_data.get("nodes", [])
+            for key in node.keys()
+            if key not in reserved
+        }
+        _class = sorted(node_fields | {"layer", "status", "type"})
         fieldnames = _base + _class
         writer = csv.DictWriter(handle, fieldnames=fieldnames)
         writer.writeheader()

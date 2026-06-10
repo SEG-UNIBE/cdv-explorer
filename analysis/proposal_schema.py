@@ -1,6 +1,6 @@
 from typing import Any, Dict, List
 
-from pipeline.ecosystem_config import ACTIVE_ECOSYSTEM
+from pipeline.source_context import SourceContext
 
 
 META_KEYS = ("last_commit", "total_commits", "git_history")
@@ -10,7 +10,6 @@ INTERRELATION_KEY_MAP = {
     "body_extracted_llm": "implicit_dependencies",
 }
 LEGACY_TOP_LEVEL_KEYS = {"metadata", "history", "compliance"}
-PREAMBLE_FIELD_ALIASES = ACTIVE_ECOSYSTEM.get("preamble", {}).get("field_aliases", {})
 PREAMBLE_INTERRELATION_KEYS = ("requires", "replaces", "proposed_replacement")
 
 
@@ -47,14 +46,18 @@ def _has_value(value: Any) -> bool:
     return value not in (None, "", [], {})
 
 
-def get_preamble_interrelations(preamble: Dict[str, Any] | None) -> Dict[str, Any]:
+def get_preamble_interrelations(
+    preamble: Dict[str, Any] | None,
+    source_context: SourceContext | None = None,
+) -> Dict[str, Any]:
     source = _as_dict(preamble)
+    field_aliases = (source_context or SourceContext.default()).field_aliases
     interrelations: Dict[str, Any] = {}
 
     for subtype in PREAMBLE_INTERRELATION_KEYS:
         value = source.get(subtype)
         if not _has_value(value):
-            for source_key, canonical_key in PREAMBLE_FIELD_ALIASES.items():
+            for source_key, canonical_key in field_aliases.items():
                 if canonical_key != subtype:
                     continue
                 alias_value = source.get(source_key)
@@ -67,17 +70,21 @@ def get_preamble_interrelations(preamble: Dict[str, Any] | None) -> Dict[str, An
     return interrelations
 
 
-def normalize_raw_preamble(preamble: Dict[str, Any] | None) -> Dict[str, Any]:
+def normalize_raw_preamble(
+    preamble: Dict[str, Any] | None,
+    source_context: SourceContext | None = None,
+) -> Dict[str, Any]:
     normalized = _as_dict(preamble)
+    field_aliases = (source_context or SourceContext.default()).field_aliases
 
-    for source_key, canonical_key in PREAMBLE_FIELD_ALIASES.items():
+    for source_key, canonical_key in field_aliases.items():
         if canonical_key in normalized:
             continue
         if source_key not in normalized:
             continue
         normalized[canonical_key] = normalized[source_key]
 
-    for source_key, canonical_key in PREAMBLE_FIELD_ALIASES.items():
+    for source_key, canonical_key in field_aliases.items():
         if canonical_key != source_key:
             normalized.pop(source_key, None)
 
@@ -146,13 +153,16 @@ def get_interrelations(proposal: Dict[str, Any]) -> Dict[str, List[Any]]:
     return interrelations
 
 
-def normalize_proposal_document(proposal: Dict[str, Any] | None) -> Dict[str, Any]:
+def normalize_proposal_document(
+    proposal: Dict[str, Any] | None,
+    source_context: SourceContext | None = None,
+) -> Dict[str, Any]:
     source = proposal if isinstance(proposal, dict) else {}
     raw = _as_dict(source.get("raw"))
     insights = _as_dict(source.get("insights"))
 
     normalized_raw: Dict[str, Any] = {
-        "preamble": normalize_raw_preamble(raw.get("preamble")),
+        "preamble": normalize_raw_preamble(raw.get("preamble"), source_context=source_context),
     }
     for key, value in raw.items():
         if key in {"preamble", "compliance"}:

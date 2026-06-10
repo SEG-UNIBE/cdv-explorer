@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 from typing import Any, Dict
 
-from pipeline.ecosystem_config import ACTIVE_ECOSYSTEM
+from pipeline.source_context import SourceContext
 
 from analysis.artifact_io import load_network_data
 from analysis.classification import prepare_classification_payload
@@ -16,17 +16,18 @@ def save_payload(payload: Dict[str, Any], output_path: Path) -> None:
 
 
 def main() -> None:
+    source_context = SourceContext.default()
     parser = argparse.ArgumentParser(description="Prepare classification artifact from network_data.")
     parser.add_argument("--snapshot", help="Snapshot label YYYY-MM-DD.")
     parser.add_argument(
         "--output-dir",
-        default=f"{ACTIVE_ECOSYSTEM['analysis']}",
+        default=f"{source_context.config['analysis']}",
         help="Root analysis directory where <snapshot>/classification/classification_payload.json is written.",
     )
     args = parser.parse_args()
 
     data = load_network_data(snapshot=args.snapshot)
-    payload = prepare_classification_payload(data)
+    payload = prepare_classification_payload(data, source_context=source_context)
 
     snapshot_label = args.snapshot or "latest"
     repo_root = Path(__file__).resolve().parents[2]

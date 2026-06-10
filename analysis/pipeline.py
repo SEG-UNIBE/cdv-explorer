@@ -16,6 +16,7 @@ from analysis.dependencies import (
 )
 from analysis.evolution import prepare_evolution_payload
 from analysis.wordcloud import extract_wordcloud_metrics
+from pipeline.source_context import SourceContext
 
 
 def _save_json(payload: Dict[str, Any], output_path: Path) -> None:
@@ -208,9 +209,12 @@ def prepare_ecosystem_artifacts(
     proposal_label: str,
     repo_dir: Path | None = None,
     file_prefix: str = "bip",
+    source_context: SourceContext | None = None,
     status_callback=None,
     progress_callback=None,
 ) -> Dict[str, Path]:
+    context = source_context or SourceContext.default()
+
     def emit(message: str, advance: int = 0) -> None:
         if progress_callback is not None:
             progress_callback(message, advance)
@@ -219,13 +223,17 @@ def prepare_ecosystem_artifacts(
             status_callback(message)
 
     emit("Loading proposal JSON")
-    proposal_data: List[Dict[str, Any]] = load_proposal_json_documents(proposal_json_dir)
+    proposal_data: List[Dict[str, Any]] = load_proposal_json_documents(
+        proposal_json_dir,
+        source_context=context,
+    )
 
     emit("Building dependency network", advance=1)
     network_data = build_network_data(
         proposal_data,
         id_field=id_field,
         proposal_label=proposal_label,
+        source_context=context,
     )
     snapshot_root = artifact_root / snapshot
 
@@ -267,7 +275,7 @@ def prepare_ecosystem_artifacts(
     _save_json(dependency_metrics, dependency_metrics_path)
 
     emit("Preparing classification artifacts", advance=1)
-    classification_payload = prepare_classification_payload(network_data)
+    classification_payload = prepare_classification_payload(network_data, source_context=context)
     classification_payload_path = snapshot_root / "classification" / "classification_payload.json"
     _save_json(classification_payload, classification_payload_path)
     _save_csv_rows(
@@ -288,12 +296,13 @@ def prepare_ecosystem_artifacts(
         id_field=id_field,
         repo_dir=repo_dir,
         file_prefix=file_prefix,
+        source_context=context,
     )
     evolution_payload_path = snapshot_root / "evolution" / "evolution_payload.json"
     _save_json(evolution_payload, evolution_payload_path)
 
     emit("Preparing conformity artifacts", advance=1)
-    conformity_metrics = extract_conformity_metrics(proposal_data, id_field=id_field)
+    conformity_metrics = extract_conformity_metrics(proposal_data, id_field=id_field, source_context=context)
     conformity_path = snapshot_root / "conformity" / "conformity_metrics.json"
     _save_json(conformity_metrics, conformity_path)
     _save_csv_rows(

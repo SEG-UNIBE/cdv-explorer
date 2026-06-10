@@ -6,6 +6,7 @@ from unittest.mock import patch
 
 from analysis.evolution.metrics import prepare_evolution_payload
 from analysis.evolution.mining import extract_status_timeline
+from pipeline.source_context import SourceContext
 
 
 class EvolutionStatusTests(unittest.TestCase):
@@ -54,26 +55,28 @@ class EvolutionStatusTests(unittest.TestCase):
             file_path = repo_dir / "EE.md"
             file_path.write_text(current_content, encoding="utf-8")
 
-            with patch.multiple(
-                "analysis.evolution.mining",
-                PREPROCESSOR="nip_tags",
-                DOCUMENT_PREFIX="nip",
-                PRIMARY_ID_FIELD="nip",
-                FIELD_ALIASES={"optionality": "type"},
-                _CLASSIFICATION_CONFIG={
-                    "dimensions": {
-                        "status": {"aliases": {"draft": "Draft", "final": "Final"}},
-                        "type": {"aliases": {"mandatory": "Mandatory", "optional": "Optional"}},
-                        "layer": {"aliases": {"relay": "Relay"}},
+            source_context = SourceContext.from_config(
+                {
+                    "preprocessor": "nip_tags",
+                    "document_prefix": "nip",
+                    "primary_id_field": "nip",
+                    "preamble": {"field_aliases": {"optionality": "type"}},
+                    "classification": {
+                        "dimensions": {
+                            "status": {"aliases": {"draft": "Draft", "final": "Final"}},
+                            "type": {"aliases": {"mandatory": "Mandatory", "optional": "Optional"}},
+                            "layer": {"aliases": {"relay": "Relay"}},
+                        },
+                        "regimes": [],
                     },
-                    "regimes": [],
-                },
-            ):
-                with patch("analysis.evolution.mining.subprocess.run", side_effect=fake_run):
-                    timeline = extract_status_timeline(
-                        repo_dir=repo_dir,
-                        file_path=file_path,
-                    )
+                }
+            )
+            with patch("analysis.evolution.mining.subprocess.run", side_effect=fake_run):
+                timeline = extract_status_timeline(
+                    repo_dir=repo_dir,
+                    file_path=file_path,
+                    source_context=source_context,
+                )
 
         self.assertEqual(
             timeline,

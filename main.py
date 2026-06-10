@@ -8,10 +8,8 @@ import sys
 def _preparse_env() -> tuple[str | None, str | None]:
     """Extract --ecosystem / --source from argv before any pipeline imports run.
 
-    All pipeline modules resolve ACTIVE_ECOSYSTEM at import time by reading
-    CDV_ECOSYSTEM and CDV_SOURCE env vars, so these must be set before the
-    first import of any pipeline module.  Returns None for each when the
-    flag is absent - callers should fall back to the first registered ecosystem.
+    Standalone helper modules still support env-based defaults, so keep these
+    values available for backwards-compatible direct script imports.
     """
     args = sys.argv[1:]
     eco: str | None = None
@@ -51,6 +49,7 @@ from rich.table import Table
 from tqdm import tqdm
 
 from ecosystems import ECOSYSTEM_REGISTRY
+from pipeline.source_context import SourceContext
 
 ECOSYSTEMS_DIR = Path(__file__).parent / "ecosystems"
 console = Console()
@@ -87,6 +86,12 @@ eco_app = typer.Typer(
     no_args_is_help=True,
 )
 app.add_typer(eco_app, name="ecosystems", rich_help_panel="Discovery")
+snapshots_app = typer.Typer(
+    help="List and remove generated snapshot artifacts.",
+    rich_markup_mode="rich",
+    invoke_without_command=True,
+)
+app.add_typer(snapshots_app, name="snapshots", rich_help_panel="Discovery")
 
 
 # ---------------------------------------------------------------------------
@@ -190,6 +195,40 @@ def _latest_snapshot_labels(analysis_root: Path) -> list[str]:
     )
 
 
+def _snapshot_artifact_dirs(src: dict, snapshot: str) -> list[Path]:
+    return [
+        Path(src["preprocess"]) / snapshot,
+        Path(src["analysis"]) / snapshot,
+        Path(src["postprocess"]) / snapshot,
+    ]
+
+
+def _collect_snapshot_removal_targets(
+    eco_slug: str,
+    eco: dict,
+    source_slug: str | None,
+    snapshot: str,
+) -> list[tuple[str, Path]]:
+    sources: dict = eco.get("sources", {})
+    selected_sources = {source_slug: _get_source(eco, source_slug)} if source_slug else sources
+    targets: list[tuple[str, Path]] = []
+
+    for src_slug, src in selected_sources.items():
+        for artifact_dir in _snapshot_artifact_dirs(src, snapshot):
+            if artifact_dir.exists():
+                targets.append((src_slug, artifact_dir))
+
+    return sorted(targets, key=lambda item: (item[0], str(item[1])))
+
+
+def _remove_snapshot_targets(targets: list[tuple[str, Path]]) -> None:
+    for _source_slug, target in targets:
+        if target.is_dir():
+            shutil.rmtree(target)
+        else:
+            target.unlink()
+
+
 def _analysis_dirs_for_ecosystem(eco_dir: Path, eco_config: dict | None = None) -> list[tuple[str | None, Path]]:
     direct = eco_dir / "03_analysis"
     if direct.is_dir():
@@ -232,8 +271,7 @@ def _load_requirements(requirements_path: Path) -> list[str]:
 
 
 def _run_source_pipeline(eco_slug: str, src_slug: str, src: dict, snapshot: str, skipllm: bool) -> None:
-    """Run the full pipeline for one source. Imports are lazy so the env vars
-    set at startup are already in place when pipeline modules are first loaded."""
+    """Run the full pipeline for one source."""
     from pipeline.harvest import get_harvester
     from pipeline.preprocess import get_extractor, get_enricher
     from analysis.pipeline import prepare_ecosystem_artifacts
@@ -244,6 +282,7 @@ def _run_source_pipeline(eco_slug: str, src_slug: str, src: dict, snapshot: str,
     postprocess_root = Path(src["postprocess"])
     output_dir = preprocess_root / snapshot
     prefix = src["document_prefix"]
+    source_context = SourceContext.from_config(src, ecosystem_slug=eco_slug, source_slug=src_slug)
 
     harvester = get_harvester(src.get("harvester", "github_repo"))
     extractor = get_extractor(src.get("preprocessor", "rfc_preamble"))
@@ -288,6 +327,7 @@ def _run_source_pipeline(eco_slug: str, src_slug: str, src: dict, snapshot: str,
                    proposal_label=src["proposal_acronym"],
                    repo_dir=harvest_root,
                    file_prefix=src["document_prefix"],
+                   source_context=source_context,
                    progress_callback=u))
 
 
@@ -491,23 +531,10 @@ def run(
         elapsed = time.monotonic() - run_started
         console.print(f"\n[green]Done in {elapsed:.1f}s[/green]")
     else:
-        # Multiple sources: spawn a subprocess per source so each gets fresh
-        # module state with its own CDV_SOURCE env var resolved at import time.
         run_started = time.monotonic()
-        for src_slug in targets:
+        for src_slug, src_cfg in targets.items():
             console.rule(f"[bold]{eco_slug} / {src_slug}[/bold]")
-            subprocess.run(
-                [
-                    sys.executable,
-                    str(Path(__file__).resolve()),
-                    "run",
-                    "--ecosystem", eco_slug,
-                    "--source", src_slug,
-                    "--snapshot", snapshot,
-                    *(["--skipllm"] if skipllm else []),
-                ],
-                check=True,
-            )
+            _run_source_pipeline(eco_slug, src_slug, src_cfg, snapshot, skipllm)
         elapsed = time.monotonic() - run_started
         console.print(f"\n[green]All sources done in {elapsed:.1f}s[/green]")
 
@@ -516,11 +543,9 @@ def run(
 # snapshots
 # ---------------------------------------------------------------------------
 
-@app.command(rich_help_panel="Discovery")
-def snapshots(
+def _print_snapshots(
     ecosystem: Annotated[Optional[str], typer.Option("--ecosystem", "-e", help="Filter by ecosystem.")] = None,
 ) -> None:
-    """List available snapshots found under ip_data/."""
     ip_root = Path("ip_data")
     if not ip_root.exists():
         console.print("[yellow]No ip_data directory found.[/yellow]")
@@ -546,6 +571,65 @@ def snapshots(
     else:
         suffix = f" for ecosystem '{ecosystem}'" if ecosystem else ""
         console.print(f"[yellow]No snapshots found{suffix}.[/yellow]")
+
+
+@snapshots_app.callback(invoke_without_command=True)
+def snapshots(
+    ctx: typer.Context,
+    ecosystem: Annotated[Optional[str], typer.Option("--ecosystem", "-e", help="Filter by ecosystem.")] = None,
+) -> None:
+    """List available snapshots found under ip_data/."""
+    if ctx.invoked_subcommand is not None:
+        return
+    _print_snapshots(ecosystem=ecosystem)
+
+
+@snapshots_app.command("list", rich_help_panel="Inspect")
+def snapshots_list(
+    ecosystem: Annotated[Optional[str], typer.Option("--ecosystem", "-e", help="Filter by ecosystem.")] = None,
+) -> None:
+    """List available snapshots found under ip_data/."""
+    _print_snapshots(ecosystem=ecosystem)
+
+
+@snapshots_app.command("remove", rich_help_panel="Manage")
+def snapshots_remove(
+    snapshot: Annotated[str, typer.Argument(help="Snapshot date to remove (YYYY-MM-DD).")],
+    ecosystem: Annotated[str, typer.Option("--ecosystem", "-e", help="Ecosystem slug.")],
+    source: Annotated[Optional[str], typer.Option("--source", help="Source slug. Omit to remove all sources in the ecosystem.")] = None,
+    dry_run: Annotated[bool, typer.Option("--dry-run", help="Show matching snapshot directories without deleting.")] = False,
+    yes: Annotated[bool, typer.Option("--yes", "-y", help="Delete without an interactive confirmation prompt.")] = False,
+) -> None:
+    """Remove generated preprocess, analysis, and postprocess directories for a snapshot."""
+    try:
+        date.fromisoformat(snapshot)
+    except ValueError:
+        console.print(f"[red]Invalid snapshot date '{snapshot}'. Use YYYY-MM-DD.[/red]")
+        raise typer.Exit(1)
+
+    eco = _get_ecosystem(ecosystem)
+    targets = _collect_snapshot_removal_targets(ecosystem, eco, source, snapshot)
+    if not targets:
+        scope = f"{ecosystem}/{source}" if source else ecosystem
+        console.print(f"[yellow]No generated snapshot directories found for {scope} at {snapshot}.[/yellow]")
+        return
+
+    table = Table("Source", "Path", title=f"Snapshot Removal: {ecosystem} / {snapshot}")
+    for src_slug, target in targets:
+        table.add_row(src_slug, str(target))
+    console.print(table)
+
+    if dry_run:
+        console.print("[green]Dry run complete. No files were removed.[/green]")
+        return
+
+    if not yes:
+        if not typer.confirm("Remove these generated snapshot directories?"):
+            console.print("[yellow]Aborted.[/yellow]")
+            raise typer.Exit(1)
+
+    _remove_snapshot_targets(targets)
+    console.print(f"[green]Removed {len(targets)} generated snapshot director{'y' if len(targets) == 1 else 'ies'}.[/green]")
 
 
 # ---------------------------------------------------------------------------

@@ -1,12 +1,6 @@
 from typing import Any, Dict
 
-from pipeline.ecosystem_config import ACTIVE_ECOSYSTEM
-
-
-_DIMS = ACTIVE_ECOSYSTEM.get("classification", {}).get("dimensions", {})
-LAYER_ALIASES = _DIMS.get("layer", {}).get("aliases", {})
-STATUS_ALIASES = _DIMS.get("status", {}).get("aliases", {})
-TYPE_ALIASES = _DIMS.get("type", {}).get("aliases", {})
+from pipeline.source_context import SourceContext
 
 
 def normalize_classification_fields(
@@ -14,11 +8,13 @@ def normalize_classification_fields(
     layer_aliases: Dict[str, str] | None = None,
     status_aliases: Dict[str, str] | None = None,
     type_aliases: Dict[str, str] | None = None,
+    source_context: SourceContext | None = None,
 ) -> Dict[str, Any]:
     normalized = dict(preamble)
-    active_layer_aliases = layer_aliases if layer_aliases is not None else LAYER_ALIASES
-    active_status_aliases = status_aliases if status_aliases is not None else STATUS_ALIASES
-    active_type_aliases = type_aliases if type_aliases is not None else TYPE_ALIASES
+    context = source_context or SourceContext.default()
+    active_layer_aliases = layer_aliases if layer_aliases is not None else context.classification_aliases("layer")
+    active_status_aliases = status_aliases if status_aliases is not None else context.classification_aliases("status")
+    active_type_aliases = type_aliases if type_aliases is not None else context.classification_aliases("type")
 
     if normalized.get("layer") is not None:
         normalized["layer"] = active_layer_aliases.get(normalized["layer"], normalized["layer"])
@@ -28,4 +24,3 @@ def normalize_classification_fields(
         normalized["type"] = active_type_aliases.get(normalized["type"], normalized["type"])
 
     return normalized
-

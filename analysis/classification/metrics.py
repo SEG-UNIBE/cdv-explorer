@@ -1,12 +1,7 @@
 from collections import Counter, defaultdict
 from datetime import datetime
 from typing import Any, Dict, List, Tuple
-from pipeline.ecosystem_config import ACTIVE_ECOSYSTEM
-
-_DIMS = ACTIVE_ECOSYSTEM.get("classification", {}).get("dimensions", {})
-LAYER_ALIASES = _DIMS.get("layer", {}).get("aliases", {})
-STATUS_ALIASES = _DIMS.get("status", {}).get("aliases", {})
-TYPE_ALIASES = _DIMS.get("type", {}).get("aliases", {})
+from pipeline.source_context import SourceContext
 
 
 def _clean_base(value: Any, fallback: str) -> str:
@@ -31,18 +26,23 @@ def _extract_year(date_text: Any) -> int | None:
         return None
 
 
-def _node_triplet(node: Dict[str, Any]) -> Tuple[str, str, str]:
-    layer = _apply_alias(_clean_base(node.get("layer"), "Unknown Layer"), LAYER_ALIASES)
-    status = _apply_alias(_clean_base(node.get("status"), "Unknown Status"), STATUS_ALIASES)
-    kind = _apply_alias(_clean_base(node.get("type"), "Unknown Type"), TYPE_ALIASES)
+def _node_triplet(node: Dict[str, Any], source_context: SourceContext) -> Tuple[str, str, str]:
+    layer = _apply_alias(_clean_base(node.get("layer"), "Unknown Layer"), source_context.classification_aliases("layer"))
+    status = _apply_alias(_clean_base(node.get("status"), "Unknown Status"), source_context.classification_aliases("status"))
+    kind = _apply_alias(_clean_base(node.get("type"), "Unknown Type"), source_context.classification_aliases("type"))
     return layer, status, kind
 
 
-def build_sankey_links(nodes: List[Dict[str, Any]], grouped_status: bool) -> List[Dict[str, Any]]:
+def build_sankey_links(
+    nodes: List[Dict[str, Any]],
+    grouped_status: bool,
+    source_context: SourceContext | None = None,
+) -> List[Dict[str, Any]]:
+    context = source_context or SourceContext.default()
     links = Counter()
 
     for node in nodes:
-        layer, status, kind = _node_triplet(node)
+        layer, status, kind = _node_triplet(node, context)
 
         if grouped_status:
             status = _base_status(status)
@@ -65,14 +65,18 @@ def build_sankey_links(nodes: List[Dict[str, Any]], grouped_status: bool) -> Lis
     ]
 
 
-def build_status_over_time(nodes: List[Dict[str, Any]]) -> Dict[str, Dict[str, int]]:
+def build_status_over_time(
+    nodes: List[Dict[str, Any]],
+    source_context: SourceContext | None = None,
+) -> Dict[str, Dict[str, int]]:
+    context = source_context or SourceContext.default()
     yearly = defaultdict(Counter)
 
     for node in nodes:
         year = _extract_year(node.get("created"))
         if year is None:
             continue
-        status = _apply_alias(_clean_base(node.get("status"), "Unknown"), STATUS_ALIASES)
+        status = _apply_alias(_clean_base(node.get("status"), "Unknown"), context.classification_aliases("status"))
         yearly[year][status] += 1
 
     out: Dict[str, Dict[str, int]] = {}
@@ -81,14 +85,18 @@ def build_status_over_time(nodes: List[Dict[str, Any]]) -> Dict[str, Dict[str, i
     return out
 
 
-def build_type_over_time(nodes: List[Dict[str, Any]]) -> Dict[str, Dict[str, int]]:
+def build_type_over_time(
+    nodes: List[Dict[str, Any]],
+    source_context: SourceContext | None = None,
+) -> Dict[str, Dict[str, int]]:
+    context = source_context or SourceContext.default()
     yearly = defaultdict(Counter)
 
     for node in nodes:
         year = _extract_year(node.get("created"))
         if year is None:
             continue
-        kind = _apply_alias(_clean_base(node.get("type"), "Unknown Type"), TYPE_ALIASES)
+        kind = _apply_alias(_clean_base(node.get("type"), "Unknown Type"), context.classification_aliases("type"))
         yearly[year][kind] += 1
 
     out: Dict[str, Dict[str, int]] = {}
@@ -97,7 +105,11 @@ def build_type_over_time(nodes: List[Dict[str, Any]]) -> Dict[str, Dict[str, int
     return out
 
 
-def prepare_classification_payload(network_data: Dict[str, Any]) -> Dict[str, Any]:
+def prepare_classification_payload(
+    network_data: Dict[str, Any],
+    source_context: SourceContext | None = None,
+) -> Dict[str, Any]:
+    context = source_context or SourceContext.default()
     nodes = network_data.get("nodes", [])
 
     return {
@@ -110,10 +122,10 @@ def prepare_classification_payload(network_data: Dict[str, Any]) -> Dict[str, An
             ],
         },
         "sankey_full": {
-            "links": build_sankey_links(nodes, grouped_status=False),
+            "links": build_sankey_links(nodes, grouped_status=False, source_context=context),
         },
         "sankey_grouped": {
-            "links": build_sankey_links(nodes, grouped_status=True),
+            "links": build_sankey_links(nodes, grouped_status=True, source_context=context),
         },
-        "status_over_time": build_status_over_time(nodes),
+        "status_over_time": build_status_over_time(nodes, source_context=context),
     }

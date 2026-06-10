@@ -6,10 +6,9 @@ from typing import Any, Dict, List
 from analysis.classification.preprocess import normalize_classification_fields
 from analysis.proposal_schema import get_changes_in_status
 from analysis.evolution.mining import extract_status_timeline
-from pipeline.ecosystem_config import ACTIVE_ECOSYSTEM
+from pipeline.source_context import SourceContext
 
 
-_CLASSIFICATION_CONFIG = ACTIVE_ECOSYSTEM.get("classification", {})
 BIP2_PRIMARY_STATUS_ORDER = [
     "Draft",
     "Active",
@@ -26,11 +25,11 @@ BIP2_EXCLUSIVE_STATUSES = set(BIP2_PRIMARY_STATUS_ORDER) - {"Draft"}
 BIP3_EXCLUSIVE_STATUSES = {"Complete", "Deployed", "Closed"}
 
 
-def _normalize_status(status: Any) -> str:
+def _normalize_status(status: Any, source_context: SourceContext) -> str:
     text = str(status or "").strip()
     if not text:
         return ""
-    normalized = normalize_classification_fields({"status": text})
+    normalized = normalize_classification_fields({"status": text}, source_context=source_context)
     return str(normalized.get("status") or "").strip()
 
 
@@ -59,10 +58,14 @@ def _infer_standard(status: str) -> str:
     return "bip3" if status in BIP3_EXCLUSIVE_STATUSES else "bip2"
 
 
-def _fallback_timeline(proposal: Dict[str, Any], id_field: str) -> List[Dict[str, Any]]:
+def _fallback_timeline(
+    proposal: Dict[str, Any],
+    id_field: str,
+    source_context: SourceContext,
+) -> List[Dict[str, Any]]:
     preamble = proposal.get("raw", {}).get("preamble", {})
     proposal_id = _normalize_proposal_id(preamble.get(id_field))
-    status = _normalize_status(preamble.get("status"))
+    status = _normalize_status(preamble.get("status"), source_context)
     created_date = _parse_event_date(preamble.get("created"))
 
     if not proposal_id or not status or created_date is None:
@@ -73,7 +76,7 @@ def _fallback_timeline(proposal: Dict[str, Any], id_field: str) -> List[Dict[str
             "proposal_id": proposal_id,
             "date": created_date,
             "status": status,
-            "standard": _resolve_event_standard(None, created_date, status),
+            "standard": _resolve_event_standard(None, created_date, status, source_context),
             "commit": "",
             "timestamp": created_date.isoformat(),
             "author": "",
@@ -103,9 +106,13 @@ def _timeline_needs_path_rehydration(raw_timeline: Any) -> bool:
     )
 
 
-def _normalize_timeline_event(proposal_id: str, event: Dict[str, Any]) -> Dict[str, Any] | None:
+def _normalize_timeline_event(
+    proposal_id: str,
+    event: Dict[str, Any],
+    source_context: SourceContext,
+) -> Dict[str, Any] | None:
     event_date = _parse_event_date(event.get("date") or event.get("timestamp"))
-    status = _normalize_status(event.get("status"))
+    status = _normalize_status(event.get("status"), source_context)
     if event_date is None or not status or not proposal_id:
         return None
 
@@ -113,6 +120,7 @@ def _normalize_timeline_event(proposal_id: str, event: Dict[str, Any]) -> Dict[s
         event.get("standard"),
         event_date,
         status,
+        source_context,
     )
     return {
         "proposal_id": proposal_id,
@@ -130,6 +138,7 @@ def _build_created_seed_event(
     proposal: Dict[str, Any],
     source_event: Dict[str, Any] | None,
     snapshot_date: date | None,
+    source_context: SourceContext,
 ) -> Dict[str, Any] | None:
     if source_event is None:
         return None
@@ -151,7 +160,7 @@ def _build_created_seed_event(
         "proposal_id": proposal_id,
         "date": created_date,
         "status": status,
-        "standard": _resolve_event_standard(None, created_date, status),
+        "standard": _resolve_event_standard(None, created_date, status, source_context),
         "commit": "",
         "timestamp": created_date.isoformat(),
         "author": "",
@@ -163,6 +172,7 @@ def _build_countable_timeline(
     proposal: Dict[str, Any],
     timeline: List[Dict[str, Any]],
     snapshot_date: date | None,
+    source_context: SourceContext,
 ) -> List[Dict[str, Any]]:
     visible_timeline = [
         event for event in timeline
@@ -172,6 +182,7 @@ def _build_countable_timeline(
         proposal,
         timeline[0] if timeline else None,
         snapshot_date,
+        source_context,
     )
 
     if created_seed is not None:
@@ -183,6 +194,7 @@ def _serialize_proposal_timeline(
     proposal: Dict[str, Any],
     timeline: List[Dict[str, Any]],
     snapshot_date: date | None,
+    source_context: SourceContext,
 ) -> Dict[str, Any] | None:
     visible_timeline = [
         event for event in timeline
@@ -208,7 +220,7 @@ def _serialize_proposal_timeline(
             "date": created_date.isoformat(),
             "timestamp": creation_source.get("timestamp", ""),
             "status": creation_source.get("status", ""),
-            "standard": _resolve_event_standard(None, created_date, creation_source.get("status", "")),
+            "standard": _resolve_event_standard(None, created_date, creation_source.get("status", ""), source_context),
             "commit": creation_source.get("commit", ""),
             "author": creation_source.get("author", ""),
             "path": creation_source.get("path", ""),
@@ -267,9 +279,9 @@ def _serialize_proposal_timeline(
     }
 
 
-def _build_status_order(categories: List[str]) -> List[str]:
+def _build_status_order(categories: List[str], source_context: SourceContext) -> List[str]:
     configured_order: List[str] = []
-    for entry in _CLASSIFICATION_CONFIG.get("regimes", []):
+    for entry in source_context.classification_config.get("regimes", []):
         for status in entry.get("status_order", []):
             if status not in configured_order:
                 configured_order.append(status)
@@ -278,8 +290,8 @@ def _build_status_order(categories: List[str]) -> List[str]:
     return [status for status in configured_order if status in categories] + remaining
 
 
-def _resolve_bip3_start_date() -> date | None:
-    for entry in _CLASSIFICATION_CONFIG.get("regimes", []):
+def _resolve_bip3_start_date(source_context: SourceContext) -> date | None:
+    for entry in source_context.classification_config.get("regimes", []):
         if str(entry.get("standard") or "").strip() != "bip3":
             continue
         start_date = _parse_event_date(entry.get("valid_from"))
@@ -288,12 +300,12 @@ def _resolve_bip3_start_date() -> date | None:
     return None
 
 
-def _resolve_standard_from_date(event_date: date | None) -> str | None:
+def _resolve_standard_from_date(event_date: date | None, source_context: SourceContext) -> str | None:
     if event_date is None:
         return None
 
     matched_standard = None
-    for entry in _CLASSIFICATION_CONFIG.get("regimes", []):
+    for entry in source_context.classification_config.get("regimes", []):
         standard = str(entry.get("standard") or "").strip()
         if not standard:
             continue
@@ -312,7 +324,12 @@ def _resolve_standard_from_date(event_date: date | None) -> str | None:
     return matched_standard
 
 
-def _resolve_event_standard(raw_standard: Any, event_date: date | None, status: str) -> str:
+def _resolve_event_standard(
+    raw_standard: Any,
+    event_date: date | None,
+    status: str,
+    source_context: SourceContext,
+) -> str:
     standard = str(raw_standard or "").strip()
     if standard:
         return standard
@@ -322,7 +339,7 @@ def _resolve_event_standard(raw_standard: Any, event_date: date | None, status: 
     if status in BIP2_EXCLUSIVE_STATUSES:
         return "bip2"
 
-    return _resolve_standard_from_date(event_date) or _infer_standard(status)
+    return _resolve_standard_from_date(event_date, source_context) or _infer_standard(status)
 
 
 def _quarter_start(value: date) -> date:
@@ -410,6 +427,7 @@ def _build_evolution_series(
     proposal_timelines: List[List[Dict[str, Any]]],
     periods: List[Dict[str, Any]],
     ordered_categories: List[str],
+    source_context: SourceContext,
     *,
     standard_filter: str | None = None,
 ) -> Dict[str, Any]:
@@ -433,7 +451,12 @@ def _build_evolution_series(
             if not active_status:
                 continue
 
-            effective_standard = active_standard or _resolve_event_standard(None, period_end, active_status)
+            effective_standard = active_standard or _resolve_event_standard(
+                None,
+                period_end,
+                active_status,
+                source_context,
+            )
 
             if standard_filter is not None and effective_standard != standard_filter:
                 continue
@@ -549,7 +572,9 @@ def prepare_evolution_payload(
     *,
     repo_dir: Path | None = None,
     file_prefix: str = "bip",
+    source_context: SourceContext | None = None,
 ) -> Dict[str, Any]:
+    context = source_context or SourceContext.default()
     proposal_timelines: List[List[Dict[str, Any]]] = []
     serialized_timelines: List[Dict[str, Any]] = []
     category_set = set()
@@ -565,16 +590,20 @@ def prepare_evolution_payload(
         if proposal_id and repo_dir is not None and _timeline_needs_path_rehydration(raw_timeline):
             proposal_file_path = _find_proposal_file(repo_dir, proposal_id, file_prefix)
             if proposal_file_path is not None:
-                raw_timeline = extract_status_timeline(repo_dir, proposal_file_path)
+                raw_timeline = extract_status_timeline(repo_dir, proposal_file_path, source_context=context)
 
         timeline = []
         for event in raw_timeline if isinstance(raw_timeline, list) else []:
-            normalized_event = _normalize_timeline_event(proposal_id, event) if isinstance(event, dict) else None
+            normalized_event = (
+                _normalize_timeline_event(proposal_id, event, context)
+                if isinstance(event, dict)
+                else None
+            )
             if normalized_event is not None:
                 timeline.append(normalized_event)
 
         if not timeline:
-            timeline = _fallback_timeline(proposal, id_field=id_field)
+            timeline = _fallback_timeline(proposal, id_field=id_field, source_context=context)
 
         if not timeline:
             continue
@@ -584,6 +613,7 @@ def prepare_evolution_payload(
             proposal,
             timeline,
             snapshot_date,
+            context,
         )
         if countable_timeline:
             proposal_timelines.append(countable_timeline)
@@ -591,6 +621,7 @@ def prepare_evolution_payload(
             proposal,
             timeline,
             snapshot_date,
+            context,
         )
         if serialized_timeline is not None:
             serialized_timelines.append(serialized_timeline)
@@ -631,8 +662,8 @@ def prepare_evolution_payload(
             "proposal_timelines": [],
         }
 
-    bip3_start_date = _resolve_bip3_start_date()
-    ordered_categories = _build_status_order(list(category_set))
+    bip3_start_date = _resolve_bip3_start_date(context)
+    ordered_categories = _build_status_order(list(category_set), context)
     periods = _build_periods(min_date, max_date, breakpoint_date=bip3_start_date)
     first_period = periods[0]
     last_period = periods[-1]
@@ -651,18 +682,21 @@ def prepare_evolution_payload(
         proposal_timelines,
         periods,
         ordered_categories,
+        context,
     )
     status_evolution_by_standard = {
         "bip2": _build_evolution_series(
             proposal_timelines,
             periods,
             ordered_categories_by_standard["bip2"],
+            context,
             standard_filter="bip2",
         ),
         "bip3": _build_evolution_series(
             proposal_timelines,
             periods,
             ordered_categories_by_standard["bip3"],
+            context,
             standard_filter="bip3",
         ),
     }

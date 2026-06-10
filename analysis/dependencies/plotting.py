@@ -6,7 +6,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from pipeline.ecosystem_config import ACTIVE_ECOSYSTEM
+from pipeline.source_context import SourceContext
 from paper._utils.io import resolve_output_dir
 
 
@@ -22,8 +22,9 @@ def main() -> None:
 
     from analysis.artifact_io import resolve_latest_snapshot_label
 
+    source_context = SourceContext.default()
     snapshot_label = args.snapshot or resolve_latest_snapshot_label() or "latest"
-    default_relative_path = Path(ACTIVE_ECOSYSTEM["postprocess"]) / snapshot_label / "dependencies" / "plots"
+    default_relative_path = Path(source_context.config["postprocess"]) / snapshot_label / "dependencies" / "plots"
     output_dir = resolve_output_dir(args.output_dir, default_relative_path)
 
     from analysis.artifact_io import load_network_data

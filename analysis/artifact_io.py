@@ -2,12 +2,12 @@ import json
 from pathlib import Path
 from typing import Any, Dict
 
-from pipeline.ecosystem_config import ACTIVE_ECOSYSTEM
+from pipeline.source_context import SourceContext
 
 
 def get_analysis_artifact_root() -> Path:
     repo_root = Path(__file__).resolve().parents[1]
-    return repo_root / ACTIVE_ECOSYSTEM["analysis"]
+    return repo_root / SourceContext.default().config["analysis"]
 
 
 def resolve_latest_snapshot_label() -> str | None:

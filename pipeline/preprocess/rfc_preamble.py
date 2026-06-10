@@ -16,6 +16,7 @@ from analysis.conformity.compliance import (
 from pipeline.preprocess.checkers import get_checker
 from analysis.classification.preprocess import normalize_classification_fields
 from analysis.proposal_schema import normalize_proposal_document
+from pipeline.source_context import SourceContext
 
 
 def _extract_raw_preamble_block(file_content: str) -> str:
@@ -65,13 +66,14 @@ def _normalize_preamble(
     preamble: Dict[str, Any],
     field_aliases: dict,
     list_valued_fields: set,
+    source_context: SourceContext,
 ) -> Dict[str, Any]:
     normalized = dict(preamble)
     for src_key, canonical_key in field_aliases.items():
         if canonical_key in normalized or src_key not in normalized:
             continue
         normalized[canonical_key] = normalized[src_key]
-    normalized = normalize_classification_fields(normalized)
+    normalized = normalize_classification_fields(normalized, source_context=source_context)
     for list_field in list_valued_fields:
         value = normalized.get(list_field)
         if value is None or isinstance(value, list):
@@ -94,7 +96,9 @@ def _save_json(
     required_fields: List[str],
     optional_fields: List[str],
     compliance_payload: Optional[Dict[str, Any]],
+    source_context: SourceContext | None = None,
 ) -> Path:
+    context = source_context or SourceContext.default()
     output_dir.mkdir(parents=True, exist_ok=True)
     proposal_number = str(preamble.get(id_field, f"unknown_{file_prefix}"))
     try:
@@ -107,7 +111,10 @@ def _save_json(
     existing: Dict[str, Any] = {}
     if output_path.exists():
         try:
-            existing = normalize_proposal_document(json.loads(output_path.read_text(encoding="utf-8")))
+            existing = normalize_proposal_document(
+                json.loads(output_path.read_text(encoding="utf-8")),
+                source_context=context,
+            )
         except (json.JSONDecodeError, OSError):
             existing = {}
 
@@ -115,7 +122,7 @@ def _save_json(
     for field in required_fields + optional_fields:
         ordered_preamble[field] = preamble.get(field)
 
-    json_data = normalize_proposal_document(existing)
+    json_data = normalize_proposal_document(existing, source_context=context)
     json_data["raw"]["preamble"] = ordered_preamble
     json_data["insights"]["formal_compliance"] = compliance_payload or {}
 
@@ -142,6 +149,7 @@ def extract(
     file_prefix: str = src_config["document_prefix"]
     id_field: str = src_config["primary_id_field"]
     document_file_pattern = re.compile(src_config["document_file_pattern"], re.IGNORECASE)
+    source_context = SourceContext.from_config(src_config)
 
     proposal_files = sorted(
         p for p in harvest_dir.iterdir()
@@ -175,6 +183,7 @@ def extract(
             _extract_preamble(content, list_valued_fields),
             field_aliases,
             list_valued_fields,
+            source_context,
         )
         if preamble.get(id_field) is not None:
             preamble[id_field] = _normalize_prefixed_numeric_id(preamble.get(id_field), file_prefix)
@@ -185,7 +194,7 @@ def extract(
         preamble["Compliance Score"] = compliance_payload["score"]
         written_paths.add(_save_json(
             preamble, output_dir, file_prefix, id_field,
-            required_fields, optional_fields, compliance_payload,
+            required_fields, optional_fields, compliance_payload, source_context,
         ))
 
         if progress_callback is not None:

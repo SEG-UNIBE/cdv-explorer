@@ -2,18 +2,20 @@ from collections import defaultdict
 from typing import Any, Dict, List
 
 from analysis.proposal_schema import get_formal_compliance
-from pipeline.ecosystem_config import ACTIVE_ECOSYSTEM
+from pipeline.source_context import SourceContext
 
 
-STATUS_ALIASES = ACTIVE_ECOSYSTEM.get("classification", {}).get("dimensions", {}).get("status", {}).get("aliases", {})
-
-
-def _apply_status_alias(status: Any) -> str:
+def _apply_status_alias(status: Any, source_context: SourceContext) -> str:
     value = status or "Unknown"
-    return STATUS_ALIASES.get(value, value)
+    return source_context.classification_aliases("status").get(value, value)
 
 
-def extract_conformity_metrics(proposal_data: List[Dict[str, Any]], id_field: str = "id") -> Dict[str, Any]:
+def extract_conformity_metrics(
+    proposal_data: List[Dict[str, Any]],
+    id_field: str = "id",
+    source_context: SourceContext | None = None,
+) -> Dict[str, Any]:
+    context = source_context or SourceContext.default()
     per_proposal = []
     score_values = []
     by_standard = defaultdict(list)
@@ -29,7 +31,7 @@ def extract_conformity_metrics(proposal_data: List[Dict[str, Any]], id_field: st
         score = formal_compliance.get("score")
         if score is None:
             score = preamble.get("compliance_score")
-        status = _apply_status_alias(preamble.get("status"))
+        status = _apply_status_alias(preamble.get("status"), context)
 
         # Discover which standard sub-assessments are present (e.g. bip2, bip3, nip).
         standard_keys = [

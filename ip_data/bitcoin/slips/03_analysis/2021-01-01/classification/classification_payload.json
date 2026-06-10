@@ -1,0 +1,63 @@
+{
+  "meta": {
+    "node_count": 21,
+    "generated_metrics": [
+      "sankey_full",
+      "sankey_grouped",
+      "status_over_time"
+    ]
+  },
+  "sankey_full": {
+    "links": []
+  },
+  "sankey_grouped": {
+    "links": [
+      {
+        "source": "Other",
+        "target": "Draft",
+        "count": 20
+      },
+      {
+        "source": "Draft",
+        "target": "Standard",
+        "count": 19
+      },
+      {
+        "source": "Other",
+        "target": "Accepted",
+        "count": 1
+      },
+      {
+        "source": "Accepted",
+        "target": "Informational",
+        "count": 1
+      },
+      {
+        "source": "Draft",
+        "target": "Informational",
+        "count": 1
+      }
+    ]
+  },
+  "status_over_time": {
+    "2014": {
+      "Accepted": 1,
+      "Draft": 3
+    },
+    "2015": {
+      "Draft": 3
+    },
+    "2016": {
+      "Draft": 3
+    },
+    "2017": {
+      "Draft": 3
+    },
+    "2018": {
+      "Draft": 1
+    },
+    "2019": {
+      "Draft": 6
+    }
+  }
+}

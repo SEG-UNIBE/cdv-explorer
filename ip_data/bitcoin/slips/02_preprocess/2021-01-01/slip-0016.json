@@ -1,0 +1,268 @@
+{
+  "raw": {
+    "preamble": {
+      "slip": "16",
+      "title": "Format for password storage and its encryption",
+      "author": [
+        "Peter Jensen <peteritsjustadream@gmail.com>"
+      ],
+      "status": "Draft",
+      "type": "Standard",
+      "created": "2016-18-02"
+    }
+  },
+  "meta": {
+    "last_commit": "Wed Feb 21 16:47:32 2018 +0100",
+    "total_commits": 9,
+    "git_history": [
+      [
+        "af362ae4010ff69b886a76d91dd6d43bac0c6df6",
+        "Wed Feb 21 16:47:32 2018 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "750f3836564ba8af40999bf6ff6860762cbfafc3",
+        "Wed Oct 4 16:32:17 2017 +0200",
+        "Tomas Susanka"
+      ],
+      [
+        "40c88470be714e81a5149b50adf2db25ab230bf4",
+        "Tue Mar 14 21:54:43 2017 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "bff6ca0cfc0500e03c70f9b9a954bbcdbb32964a",
+        "Wed Jun 8 18:44:49 2016 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "05f148de399bda7c54f97b74fa7f34363c686a14",
+        "Mon Feb 22 16:51:47 2016 +0100",
+        "chren"
+      ],
+      [
+        "98357061ad36a06b9f2754b92d7773af2c6e8ffa",
+        "Thu Feb 18 20:41:57 2016 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "26ac59beda94341f0c232ec74b39d9d71690dc1c",
+        "Thu Feb 18 18:00:22 2016 +0100",
+        "Peter Jensen"
+      ],
+      [
+        "d1fd949052f56df705ad2f45ecf1bbfdf3440024",
+        "Thu Feb 18 17:56:53 2016 +0100",
+        "Peter Jensen"
+      ],
+      [
+        "908f24102b0b03c845ee97a8871606e43921648f",
+        "Thu Feb 18 17:54:50 2016 +0100",
+        "Peter Jensen"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 85.71,
+      "passed_checks": 6,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 7,
+      "slip": {
+        "score": 85.71,
+        "passed_checks": 6,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 7,
+        "checks": [
+          {
+            "id": "slip.required_field.slip",
+            "label": "Required field 'slip' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.author",
+            "label": "Required field 'author' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.type",
+            "label": "Required field 'type' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.created",
+            "label": "Required field 'created' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "slip",
+            "passed": false,
+            "details": "Missing: abstract"
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "encryption": 24,
+      "key": 13,
+      "string": 13,
+      "file": 11,
+      "true": 10,
+      "storage": 9,
+      "device": 9,
+      "cipherkeyvalue": 9,
+      "bytes": 9,
+      "output": 9,
+      "nonce": 9,
+      "password": 8,
+      "0": 8,
+      "title": 7,
+      "example": 7,
+      "decryption": 7,
+      "encrypted": 6,
+      "entry": 6,
+      "gcm": 6,
+      "step": 6,
+      "slip": 5,
+      "com": 5,
+      "master": 5,
+      "tags": 5,
+      "level": 5,
+      "deriving": 5,
+      "path": 5,
+      "unlock": 5,
+      "encrypt": 5,
+      "iv": 5,
+      "javascript": 5,
+      "result": 5,
+      "data": 5,
+      "process": 5,
+      "false": 5,
+      "second": 4,
+      "masterkey": 4,
+      "10016": 4,
+      "256": 4,
+      "2": 4,
+      "user": 4,
+      "use": 4,
+      "hex": 4,
+      "aes": 4,
+      "generated": 4,
+      "authtag": 4,
+      "github": 4,
+      "username": 4,
+      "safe_note": 4,
+      "values": 4,
+      "buffer": 4,
+      "array": 4,
+      "0016": 3,
+      "format": 3,
+      "derive": 3,
+      "json": 3,
+      "object": 3,
+      "entries": 3,
+      "following": 3,
+      "length": 3,
+      "2d650551248d792eabf628f451200d7f51cb63e46aadcbb1038aacb05e8c8aee2d650551248d792eabf628f451200d7f51cb63e46aadcbb1038aacb05e8c8aee": 3,
+      "session": 3,
+      "0x80000000": 3,
+      "half": 3,
+      "algorithm": 3,
+      "12": 3,
+      "tag": 3,
+      "https": 3,
+      "keys": 3,
+      "set": 3,
+      "satoshi": 3,
+      "nakamoto": 3,
+      "note": 3,
+      "1": 3,
+      "plain": 3,
+      "described": 3,
+      "later": 3,
+      "type": 2,
+      "hardware": 2,
+      "design": 2,
+      "contains": 2,
+      "max": 2,
+      "enc_value": 2,
+      "128": 2,
+      "0011": 2,
+      "hmac": 2,
+      "filekey": 2,
+      "filename_mess": 2,
+      "pswd": 2,
+      "32": 2,
+      "decrypt": 2,
+      "randomly": 2,
+      "info": 2,
+      "nodejs": 2,
+      "org": 2,
+      "api": 2,
+      "crypto": 2,
+      "html": 2,
+      "stored": 2,
+      "16": 2,
+      "rest": 2,
+      "ciphertext": 2,
+      "setup": 2,
+      "active": 2,
+      "8688105887642a3cbb61889d8762432ef864df107e097d2b19e93c8d808c2e21": 2,
+      "random": 2,
+      "ask": 2,
+      "askonencrypt": 2,
+      "askondecrypt": 2,
+      "want": 2,
+      "becuase": 2,
+      "somebody": 2,
+      "rob": 2,
+      "instead": 2,
+      "python": 2,
+      "pwd_reader": 2,
+      "py": 2,
+      "trezor": 2
+    },
+    "changes_in_status": [],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        "BIP 32",
+        "SLIP 11"
+      ],
+      "body_extracted_llm": []
+    }
+  }
+}

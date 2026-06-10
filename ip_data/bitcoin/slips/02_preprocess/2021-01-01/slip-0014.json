@@ -1,0 +1,205 @@
+{
+  "raw": {
+    "preamble": {
+      "slip": "14",
+      "title": "Stress Test Deterministic Wallet",
+      "author": [
+        "Pavol Rusnak <stick@satoshilabs.com>"
+      ],
+      "status": "Draft",
+      "type": "Informational",
+      "created": "2015-01-12"
+    }
+  },
+  "meta": {
+    "last_commit": "Tue Jun 16 21:10:06 2020 +0200",
+    "total_commits": 8,
+    "git_history": [
+      [
+        "3affa7e29671444714496863141255a8934ae75a",
+        "Tue Jun 16 21:10:06 2020 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "ea652c26c81ab450528343368dbe86e9128c90ff",
+        "Thu Apr 25 16:26:42 2019 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "ba1925bf25494465ed2f97a36f1a79c28f2ef79e",
+        "Mon Jun 5 18:06:21 2017 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "70915d8961965cdfd84233992a6841eb664d5a5d",
+        "Tue May 16 00:11:28 2017 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "16883eff4d4af2e3e949426087ed4f770cd00802",
+        "Wed Apr 26 15:43:15 2017 +0200",
+        "Karel Bílek"
+      ],
+      [
+        "134aa82d041345a0f5890ea2e216c4315de6f5f3",
+        "Thu Mar 30 16:33:51 2017 +0200",
+        "Karel Bílek"
+      ],
+      [
+        "40c88470be714e81a5149b50adf2db25ab230bf4",
+        "Tue Mar 14 21:54:43 2017 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "b76151348a7430013a4b147725ed94b0f6b72994",
+        "Mon Feb 1 16:02:09 2016 +0100",
+        "Pavol Rusnak"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 85.71,
+      "passed_checks": 6,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 7,
+      "slip": {
+        "score": 85.71,
+        "passed_checks": 6,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 7,
+        "checks": [
+          {
+            "id": "slip.required_field.slip",
+            "label": "Required field 'slip' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.author",
+            "label": "Required field 'author' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.type",
+            "label": "Required field 'type' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.created",
+            "label": "Required field 'created' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "slip",
+            "passed": false,
+            "details": "Missing: abstract"
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "bip": 10,
+      "bitcoin": 8,
+      "https": 8,
+      "deterministic": 7,
+      "account": 7,
+      "wallet": 6,
+      "com": 6,
+      "addresses": 6,
+      "m": 6,
+      "0": 6,
+      "btc1": 6,
+      "trezor": 6,
+      "io": 6,
+      "github": 5,
+      "bips": 5,
+      "blob": 5,
+      "master": 5,
+      "mediawiki": 5,
+      "slip": 4,
+      "0014": 4,
+      "test": 4,
+      "xpub": 4,
+      "mnemonic": 4,
+      "stress": 3,
+      "link": 3,
+      "index": 3,
+      "address": 3,
+      "private": 3,
+      "key": 3,
+      "1": 3,
+      "2": 3,
+      "3": 3,
+      "4": 3,
+      "5": 3,
+      "6": 3,
+      "7": 3,
+      "8": 3,
+      "9": 3,
+      "p2sh": 3,
+      "types": 2,
+      "transactions": 2,
+      "md": 2,
+      "xpub6bivtcpg9fqpxnpmhxg8phtzqdwc2su4qwu6xw9tpwfyhxydcljgrwbjz5h6qtahdpq7pqhtpjiyzvzaro14qhiay2fvrx996oep42u8wzy": 2,
+      "segwit": 2,
+      "ypub6xkbb5dskq8royg8isntgktj6bmefgjxds83ad5cz5tpdv8qofwswqftwp2pv24vndrphquehl7vrmvstj2gpkv6uatqcbkzalm6rjamxg6": 2,
+      "zpub6rszzdak6ruaferwyn8z1cgwcxcukblmjjfnrw4fwktcoxq8787214pnjjnbg5uatyghunzjn6lfp5k5xymrlfjncy46bmyjpyzsbpfgagt": 2,
+      "0032": 2,
+      "wallets": 2,
+      "0039": 2,
+      "0044": 2,
+      "0049": 2,
+      "derivation": 2,
+      "scheme": 2,
+      "p2wpkh": 2,
+      "based": 2,
+      "accounts": 2,
+      "0084": 2
+    },
+    "changes_in_status": [],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        "BIP 32",
+        "BIP 39",
+        "BIP 44",
+        "BIP 49",
+        "BIP 84"
+      ],
+      "body_extracted_llm": []
+    }
+  }
+}

@@ -1,0 +1,178 @@
+{
+  "raw": {
+    "preamble": {
+      "slip": "17",
+      "title": "ECDH using deterministic hierarchy",
+      "author": [
+        "Roman Zeyde <roman.zeyde@gmail.com>"
+      ],
+      "status": "Draft",
+      "type": "Standard",
+      "created": "2016-05-29"
+    }
+  },
+  "meta": {
+    "last_commit": "Tue Mar 14 21:54:43 2017 +0100",
+    "total_commits": 2,
+    "git_history": [
+      [
+        "40c88470be714e81a5149b50adf2db25ab230bf4",
+        "Tue Mar 14 21:54:43 2017 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "6055bbdf5982a27e7b2bbaf6b6f879e0ebbcf1bc",
+        "Wed Jun 8 22:43:10 2016 +0300",
+        "Roman Zeyde"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 85.71,
+      "passed_checks": 6,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 7,
+      "slip": {
+        "score": 85.71,
+        "passed_checks": 6,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 7,
+        "checks": [
+          {
+            "id": "slip.required_field.slip",
+            "label": "Required field 'slip' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.author",
+            "label": "Required field 'author' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.type",
+            "label": "Required field 'type' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.created",
+            "label": "Required field 'created' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "slip",
+            "passed": false,
+            "details": "Missing: abstract"
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "deterministic": 6,
+      "com": 6,
+      "uri": 5,
+      "bob": 5,
+      "p2": 5,
+      "hierarchy": 4,
+      "elliptic": 4,
+      "curve": 4,
+      "https": 4,
+      "public": 4,
+      "b": 4,
+      "index": 4,
+      "shared": 4,
+      "secret": 4,
+      "k1": 4,
+      "q": 4,
+      "bip": 4,
+      "wallets": 3,
+      "keys": 3,
+      "s": 3,
+      "example": 3,
+      "bit": 3,
+      "hash": 3,
+      "c": 3,
+      "d": 3,
+      "g": 3,
+      "derive": 3,
+      "alice": 3,
+      "k2": 3,
+      "key": 3,
+      "slip": 2,
+      "0017": 2,
+      "ecdh": 2,
+      "roman": 2,
+      "zeyde": 2,
+      "backing": 2,
+      "private": 2,
+      "service": 2,
+      "identity": 2,
+      "rfc": 2,
+      "3986": 2,
+      "32": 2,
+      "generate": 2,
+      "hd": 2,
+      "1": 2,
+      "use": 2,
+      "little": 2,
+      "endian": 2,
+      "compute": 2,
+      "result": 2,
+      "bits": 2,
+      "hash128": 2,
+      "agree": 2,
+      "p1": 2,
+      "point": 2,
+      "0032": 2,
+      "github": 2,
+      "bitcoin": 2,
+      "bips": 2,
+      "blob": 2,
+      "master": 2,
+      "mediawiki": 2,
+      "0043": 2
+    },
+    "changes_in_status": [],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        "BIP 32",
+        "BIP 43"
+      ],
+      "body_extracted_llm": []
+    }
+  }
+}

@@ -1,0 +1,233 @@
+{
+  "raw": {
+    "preamble": {
+      "slip": "21",
+      "title": "Hierarchical derivation of symmetric keys",
+      "author": [
+        "Andrew R. Kozlik <andrew.kozlik@satoshilabs.com>",
+        "Ondrej Vejpustek <ondrej.vejpustek@satoshilabs.com>",
+        "Pavol Rusnak <stick@satoshilabs.com>"
+      ],
+      "status": "Draft",
+      "type": "Standard",
+      "created": "2019-06-25"
+    }
+  },
+  "meta": {
+    "last_commit": "Fri Jul 19 21:17:56 2019 +0200",
+    "total_commits": 2,
+    "git_history": [
+      [
+        "25b74c29a6ece27468cb2beae120331fe2e1d054",
+        "Fri Jul 19 21:17:56 2019 +0200",
+        "Andrew Kozlik"
+      ],
+      [
+        "b8d0e220c9cd1f0f0ce8041a360397ac2f9d176d",
+        "Thu Jun 27 16:35:07 2019 +0200",
+        "Andrew Kozlik"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 85.71,
+      "passed_checks": 6,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 7,
+      "slip": {
+        "score": 85.71,
+        "passed_checks": 6,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 7,
+        "checks": [
+          {
+            "id": "slip.required_field.slip",
+            "label": "Required field 'slip' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.author",
+            "label": "Required field 'author' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.type",
+            "label": "Required field 'type' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.created",
+            "label": "Required field 'created' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "slip",
+            "passed": false,
+            "details": "Missing: abstract"
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "key": 44,
+      "master": 22,
+      "slip": 19,
+      "node": 17,
+      "derivation": 16,
+      "symmetric": 13,
+      "com": 13,
+      "bip": 12,
+      "https": 11,
+      "child": 11,
+      "nodes": 10,
+      "n": 10,
+      "keys": 9,
+      "satoshilabs": 8,
+      "0032": 8,
+      "github": 8,
+      "blob": 8,
+      "nist": 8,
+      "seed": 7,
+      "0010": 7,
+      "length": 7,
+      "256": 6,
+      "use": 6,
+      "m": 6,
+      "800": 6,
+      "108": 6,
+      "0021": 5,
+      "slips": 5,
+      "md": 5,
+      "derive": 5,
+      "private": 5,
+      "encryption": 5,
+      "defined": 5,
+      "0039": 5,
+      "derived": 5,
+      "hmac": 5,
+      "bit": 5,
+      "label": 5,
+      "32": 5,
+      "sp": 5,
+      "value": 5,
+      "hierarchical": 4,
+      "hierarchy": 4,
+      "secret": 4,
+      "bitcoin": 4,
+      "secp256k1": 4,
+      "example": 4,
+      "purpose": 4,
+      "deterministic": 4,
+      "string": 4,
+      "sha512": 4,
+      "byte": 4,
+      "wallets": 3,
+      "bips": 3,
+      "mediawiki": 3,
+      "specification": 3,
+      "0011": 3,
+      "designed": 3,
+      "separation": 3,
+      "s": 3,
+      "associated": 3,
+      "variable": 3,
+      "labels": 3,
+      "functions": 3,
+      "number": 2,
+      "standard": 2,
+      "andrew": 2,
+      "kozlik": 2,
+      "ondrej": 2,
+      "vejpustek": 2,
+      "deriving": 2,
+      "pairs": 2,
+      "p": 2,
+      "ed25519": 2,
+      "algorithms": 2,
+      "needed": 2,
+      "implementation": 2,
+      "generation": 2,
+      "domain": 2,
+      "binary": 2,
+      "b": 2,
+      "msg": 2,
+      "level": 2,
+      "e": 2,
+      "sufficiently": 2,
+      "avoid": 2,
+      "collisions": 2,
+      "9999": 2,
+      "function": 2,
+      "0": 2,
+      "bytes": 2,
+      "data": 2,
+      "authentication": 2,
+      "doi": 2,
+      "org": 2,
+      "10": 2,
+      "6028": 2,
+      "recommendation": 2,
+      "pseudorandom": 2,
+      "keylength": 2,
+      "uses": 2,
+      "principle": 2,
+      "known": 2,
+      "processes": 2,
+      "scheme": 2,
+      "labeling": 2,
+      "31": 2,
+      "integer": 2,
+      "index": 2,
+      "omitted": 2,
+      "input": 2,
+      "message": 2
+    },
+    "changes_in_status": [],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        "BIP 32",
+        "BIP 39",
+        "SLIP 10",
+        "SLIP 11",
+        "SLIP 39",
+        "SLIP 9999"
+      ],
+      "body_extracted_llm": []
+    }
+  }
+}

@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "65",
       "title": "Relay List Metadata",
-      "author": [
-        "Mike Dilger"
-      ],
-      "created": "2023-02-03",
       "status": "Draft",
+      "author": null,
+      "created": "2023-02-03",
       "type": "Optional",
       "layer": null,
       "kind": null
@@ -230,9 +228,18 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 0A",
-        "NIP 0D",
-        "NIP 11"
+        {
+          "target": "nips:0A",
+          "count": 1
+        },
+        {
+          "target": "nips:0D",
+          "count": 1
+        },
+        {
+          "target": "nips:11",
+          "count": 1
+        }
       ],
       "body_extracted_llm": []
     }

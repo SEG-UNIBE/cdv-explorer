@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "47",
       "title": "Nostr Wallet Connect (NWC)",
-      "author": [
-        "Semisol"
-      ],
-      "created": "2023-03-30",
       "status": "Draft",
+      "author": null,
+      "created": "2023-03-30",
       "type": "Optional",
       "layer": null,
       "kind": null
@@ -533,17 +531,32 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 4",
-        "NIP 44",
-        "NIP 57"
+        {
+          "target": "nips:04",
+          "count": 17
+        },
+        {
+          "target": "nips:0A",
+          "count": 1
+        },
+        {
+          "target": "nips:0D",
+          "count": 1
+        },
+        {
+          "target": "nips:44",
+          "count": 21
+        },
+        {
+          "target": "nips:57",
+          "count": 1
+        },
+        {
+          "target": "nips:DE",
+          "count": 1
+        }
       ],
-      "body_extracted_llm": [
-        "NIP 1",
-        "NIP 4",
-        "NIP 16",
-        "NIP 40",
-        "NIP 44"
-      ]
+      "body_extracted_llm": []
     }
   }
 }

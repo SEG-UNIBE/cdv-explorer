@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "08",
       "title": "Handling Mentions",
-      "author": [
-        "fiatjaf"
-      ],
-      "created": "2022-05-01",
       "status": "Final",
+      "author": null,
+      "created": "2022-05-01",
       "type": "Optional",
       "layer": null,
       "kind": "unrecommended"
@@ -168,11 +166,12 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 27"
+        {
+          "target": "nips:27",
+          "count": 1
+        }
       ],
-      "body_extracted_llm": [
-        "NIP 1"
-      ]
+      "body_extracted_llm": []
     }
   }
 }

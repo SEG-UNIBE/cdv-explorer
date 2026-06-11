@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "71",
       "title": "Video Events",
-      "author": [
-        "zmeyer44"
-      ],
-      "created": "2023-12-09",
       "status": "Draft",
+      "author": null,
+      "created": "2023-12-09",
       "type": "Optional",
       "layer": null,
       "kind": null
@@ -367,16 +365,20 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 92",
-        "NIP 94",
-        "NIP 96"
+        {
+          "target": "nips:92",
+          "count": 2
+        },
+        {
+          "target": "nips:94",
+          "count": 1
+        },
+        {
+          "target": "nips:96",
+          "count": 7
+        }
       ],
-      "body_extracted_llm": [
-        "NIP 33",
-        "NIP 92",
-        "NIP 94",
-        "NIP 96"
-      ]
+      "body_extracted_llm": []
     }
   }
 }

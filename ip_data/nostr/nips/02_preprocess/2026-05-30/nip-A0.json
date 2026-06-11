@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "A0",
       "title": "Voice Messages",
-      "author": [
-        "Fabian"
-      ],
-      "created": "2025-07-23",
       "status": "Draft",
+      "author": null,
+      "created": "2025-07-23",
       "type": null,
       "layer": null,
       "kind": null
@@ -187,8 +185,14 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 22",
-        "NIP 92"
+        {
+          "target": "nips:22",
+          "count": 1
+        },
+        {
+          "target": "nips:92",
+          "count": 2
+        }
       ],
       "body_extracted_llm": []
     }

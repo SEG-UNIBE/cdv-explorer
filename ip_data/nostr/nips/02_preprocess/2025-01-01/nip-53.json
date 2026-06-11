@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "53",
       "title": "Live Activities",
-      "author": [
-        "Vitor Pamplona"
-      ],
-      "created": "2023-07-08",
       "status": "Draft",
+      "author": null,
+      "created": "2023-07-08",
       "type": "Optional",
       "layer": null,
       "kind": null
@@ -234,8 +232,14 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 19",
-        "NIP DE"
+        {
+          "target": "nips:19",
+          "count": 1
+        },
+        {
+          "target": "nips:DE",
+          "count": 1
+        }
       ],
       "body_extracted_llm": []
     }

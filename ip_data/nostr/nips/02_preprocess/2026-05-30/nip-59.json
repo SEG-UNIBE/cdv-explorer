@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "59",
       "title": "Gift Wrap",
-      "author": [
-        "Jonathan Staab"
-      ],
-      "created": "2023-08-11",
       "status": "Unknown",
+      "author": null,
+      "created": "2023-08-11",
       "type": "Optional",
       "layer": "Relay",
       "kind": null
@@ -297,18 +295,44 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 9",
-        "NIP 13",
-        "NIP 17",
-        "NIP 19",
-        "NIP 42",
-        "NIP 44",
-        "NIP 62"
+        {
+          "target": "nips:09",
+          "count": 1
+        },
+        {
+          "target": "nips:0C",
+          "count": 1
+        },
+        {
+          "target": "nips:0F",
+          "count": 2
+        },
+        {
+          "target": "nips:13",
+          "count": 2
+        },
+        {
+          "target": "nips:17",
+          "count": 1
+        },
+        {
+          "target": "nips:19",
+          "count": 3
+        },
+        {
+          "target": "nips:42",
+          "count": 2
+        },
+        {
+          "target": "nips:44",
+          "count": 6
+        },
+        {
+          "target": "nips:62",
+          "count": 1
+        }
       ],
-      "body_extracted_llm": [
-        "NIP 16",
-        "NIP 44"
-      ]
+      "body_extracted_llm": []
     }
   }
 }

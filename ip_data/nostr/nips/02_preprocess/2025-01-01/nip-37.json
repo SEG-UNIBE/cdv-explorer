@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "37",
       "title": "Draft Events",
-      "author": [
-        "Vitor Pamplona"
-      ],
-      "created": "2024-05-30",
       "status": "Draft",
+      "author": null,
+      "created": "2024-05-30",
       "type": "Optional",
       "layer": null,
       "kind": null
@@ -131,8 +129,14 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 44",
-        "NIP 65"
+        {
+          "target": "nips:44",
+          "count": 2
+        },
+        {
+          "target": "nips:65",
+          "count": 1
+        }
       ],
       "body_extracted_llm": []
     }

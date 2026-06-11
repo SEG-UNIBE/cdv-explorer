@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "A4",
       "title": "Public Messages",
-      "author": [
-        "Vitor Pamplona"
-      ],
-      "created": "2025-12-18",
       "status": "Draft",
+      "author": null,
+      "created": "2025-12-18",
       "type": "Optional",
       "layer": null,
       "kind": null
@@ -134,15 +132,42 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 17",
-        "NIP 18",
-        "NIP 19",
-        "NIP 21",
-        "NIP 25",
-        "NIP 40",
-        "NIP 57",
-        "NIP 65",
-        "NIP 92"
+        {
+          "target": "nips:17",
+          "count": 1
+        },
+        {
+          "target": "nips:18",
+          "count": 1
+        },
+        {
+          "target": "nips:19",
+          "count": 1
+        },
+        {
+          "target": "nips:21",
+          "count": 2
+        },
+        {
+          "target": "nips:25",
+          "count": 1
+        },
+        {
+          "target": "nips:40",
+          "count": 1
+        },
+        {
+          "target": "nips:57",
+          "count": 1
+        },
+        {
+          "target": "nips:65",
+          "count": 1
+        },
+        {
+          "target": "nips:92",
+          "count": 1
+        }
       ],
       "body_extracted_llm": []
     }

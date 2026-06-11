@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "99",
       "title": "Classified Listings",
-      "author": [
-        "Jeff Gardner"
-      ],
-      "created": "2023-07-18",
       "status": "Draft",
+      "author": null,
+      "created": "2023-07-18",
       "type": "Optional",
       "layer": null,
       "kind": null
@@ -202,9 +200,18 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 15",
-        "NIP 23",
-        "NIP 58"
+        {
+          "target": "nips:15",
+          "count": 1
+        },
+        {
+          "target": "nips:23",
+          "count": 1
+        },
+        {
+          "target": "nips:58",
+          "count": 1
+        }
       ],
       "body_extracted_llm": []
     }

@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "16",
       "title": "Event Treatment",
-      "author": [
-        "Semisol"
-      ],
-      "created": "2022-05-26",
       "status": "Final",
+      "author": null,
+      "created": "2022-05-26",
       "type": "Mandatory",
       "layer": null,
       "kind": null
@@ -158,7 +156,10 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 01"
+        {
+          "target": "nips:01",
+          "count": 1
+        }
       ],
       "body_extracted_llm": []
     }

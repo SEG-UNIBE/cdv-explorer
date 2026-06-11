@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "11",
       "title": "Relay Information Document",
-      "author": [
-        "fiatjaf"
-      ],
-      "created": "2022-05-01",
       "status": "Draft",
+      "author": null,
+      "created": "2022-05-01",
       "type": "Optional",
       "layer": null,
       "kind": null
@@ -436,12 +434,30 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 01",
-        "NIP 09",
-        "NIP 0A",
-        "NIP 13",
-        "NIP 17",
-        "NIP 42"
+        {
+          "target": "nips:01",
+          "count": 1
+        },
+        {
+          "target": "nips:09",
+          "count": 1
+        },
+        {
+          "target": "nips:0A",
+          "count": 1
+        },
+        {
+          "target": "nips:13",
+          "count": 1
+        },
+        {
+          "target": "nips:17",
+          "count": 1
+        },
+        {
+          "target": "nips:42",
+          "count": 1
+        }
       ],
       "body_extracted_llm": []
     }

@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "43",
       "title": "Relay Access Metadata and Requests",
-      "author": [
-        "hodlbod"
-      ],
-      "created": "2025-10-30",
       "status": "Draft",
+      "author": null,
+      "created": "2025-10-30",
       "type": "Optional",
       "layer": "Relay",
       "kind": null
@@ -168,17 +166,20 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 11",
-        "NIP 42",
-        "NIP 70"
+        {
+          "target": "nips:11",
+          "count": 9
+        },
+        {
+          "target": "nips:42",
+          "count": 1
+        },
+        {
+          "target": "nips:70",
+          "count": 4
+        }
       ],
-      "body_extracted_llm": [
-        "NIP 11",
-        "NIP 16",
-        "NIP 20",
-        "NIP 42",
-        "NIP 70"
-      ]
+      "body_extracted_llm": []
     }
   }
 }

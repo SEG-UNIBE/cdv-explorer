@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "23",
       "title": "Long-form Content",
-      "author": [
-        "fiatjaf"
-      ],
-      "created": "2023-02-03",
       "status": "Draft",
+      "author": null,
+      "created": "2023-02-03",
       "type": "Optional",
       "layer": null,
       "kind": null
@@ -222,9 +220,18 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 19",
-        "NIP 21",
-        "NIP 27"
+        {
+          "target": "nips:19",
+          "count": 1
+        },
+        {
+          "target": "nips:21",
+          "count": 1
+        },
+        {
+          "target": "nips:27",
+          "count": 1
+        }
       ],
       "body_extracted_llm": []
     }

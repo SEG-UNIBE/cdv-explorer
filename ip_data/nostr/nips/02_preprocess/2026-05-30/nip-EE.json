@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "EE",
       "title": "E2EE Messaging using the Messaging Layer Security (MLS) Protocol",
-      "author": [
-        "Jeff Gardner"
-      ],
-      "created": "2025-08-27",
       "status": "Final",
+      "author": null,
+      "created": "2025-08-27",
       "type": "Optional",
       "layer": null,
       "kind": "unrecommended"
@@ -448,12 +446,38 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 1",
-        "NIP 4",
-        "NIP 17",
-        "NIP 44",
-        "NIP 59",
-        "NIP 70"
+        {
+          "target": "nips:01",
+          "count": 1
+        },
+        {
+          "target": "nips:04",
+          "count": 2
+        },
+        {
+          "target": "nips:0D",
+          "count": 1
+        },
+        {
+          "target": "nips:0F",
+          "count": 1
+        },
+        {
+          "target": "nips:17",
+          "count": 2
+        },
+        {
+          "target": "nips:44",
+          "count": 7
+        },
+        {
+          "target": "nips:59",
+          "count": 3
+        },
+        {
+          "target": "nips:70",
+          "count": 1
+        }
       ],
       "body_extracted_llm": []
     }

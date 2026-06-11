@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "47",
       "title": "Nostr Wallet Connect",
-      "author": [
-        "Semisol"
-      ],
-      "created": "2023-03-30",
       "status": "Draft",
+      "author": null,
+      "created": "2023-03-30",
       "type": "Optional",
       "layer": null,
       "kind": null
@@ -403,9 +401,18 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 04",
-        "NIP 0D",
-        "NIP DE"
+        {
+          "target": "nips:04",
+          "count": 2
+        },
+        {
+          "target": "nips:0D",
+          "count": 1
+        },
+        {
+          "target": "nips:DE",
+          "count": 1
+        }
       ],
       "body_extracted_llm": []
     }

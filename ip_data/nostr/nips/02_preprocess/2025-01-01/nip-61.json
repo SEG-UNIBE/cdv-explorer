@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "61",
       "title": "Nut Zaps",
-      "author": [
-        "Pablo Fernandez"
-      ],
-      "created": "2024-10-25",
       "status": "Unknown",
+      "author": null,
+      "created": "2024-10-25",
       "type": null,
       "layer": null,
       "kind": null
@@ -177,11 +175,26 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 07",
-        "NIP 44",
-        "NIP 46",
-        "NIP 60",
-        "NIP 65"
+        {
+          "target": "nips:07",
+          "count": 2
+        },
+        {
+          "target": "nips:44",
+          "count": 2
+        },
+        {
+          "target": "nips:46",
+          "count": 2
+        },
+        {
+          "target": "nips:60",
+          "count": 1
+        },
+        {
+          "target": "nips:65",
+          "count": 3
+        }
       ],
       "body_extracted_llm": []
     }

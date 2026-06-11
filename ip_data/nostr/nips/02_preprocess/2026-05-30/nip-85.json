@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "85",
       "title": "Trusted Assertions",
-      "author": [
-        "Vitor Pamplona"
-      ],
-      "created": "2026-01-22",
       "status": "Draft",
+      "author": null,
+      "created": "2026-01-22",
       "type": "Optional",
       "layer": null,
       "kind": null
@@ -226,15 +224,24 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 44",
-        "NIP 73"
+        {
+          "target": "nips:0A",
+          "count": 1
+        },
+        {
+          "target": "nips:0C",
+          "count": 1
+        },
+        {
+          "target": "nips:44",
+          "count": 1
+        },
+        {
+          "target": "nips:73",
+          "count": 4
+        }
       ],
-      "body_extracted_llm": [
-        "NIP 16",
-        "NIP 33",
-        "NIP 44",
-        "NIP 73"
-      ]
+      "body_extracted_llm": []
     }
   }
 }

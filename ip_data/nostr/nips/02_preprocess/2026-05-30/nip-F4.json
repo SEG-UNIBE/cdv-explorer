@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "F4",
       "title": "Podcasts",
-      "author": [
-        "fiatjaf"
-      ],
-      "created": "2026-05-28",
       "status": "Draft",
+      "author": null,
+      "created": "2026-05-28",
       "type": "Optional",
       "layer": null,
       "kind": null
@@ -174,7 +172,10 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 51"
+        {
+          "target": "nips:51",
+          "count": 1
+        }
       ],
       "body_extracted_llm": []
     }

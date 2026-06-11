@@ -3,13 +3,9 @@
     "preamble": {
       "nip": "44",
       "title": "Encrypted Payloads (Versioned)",
-      "author": [
-        "Jon Staab",
-        "Paul Miller",
-        "fiatjaf"
-      ],
-      "created": "2023-12-20",
       "status": "Unknown",
+      "author": null,
+      "created": "2023-12-20",
       "type": "Optional",
       "layer": null,
       "kind": null
@@ -438,9 +434,18 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 01",
-        "NIP 04",
-        "NIP 0B"
+        {
+          "target": "nips:01",
+          "count": 5
+        },
+        {
+          "target": "nips:04",
+          "count": 1
+        },
+        {
+          "target": "nips:0B",
+          "count": 1
+        }
       ],
       "body_extracted_llm": []
     }

@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "96",
       "title": "HTTP File Storage Integration",
-      "author": [
-        "arthurfranca"
-      ],
-      "created": "2024-01-08",
       "status": "Draft",
+      "author": null,
+      "created": "2024-01-08",
       "type": "Optional",
       "layer": null,
       "kind": null
@@ -360,14 +358,20 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 94",
-        "NIP 98"
+        {
+          "target": "nips:94",
+          "count": 18
+        },
+        {
+          "target": "nips:98",
+          "count": 2
+        },
+        {
+          "target": "nips:B7",
+          "count": 1
+        }
       ],
-      "body_extracted_llm": [
-        "NIP 16",
-        "NIP 94",
-        "NIP 98"
-      ]
+      "body_extracted_llm": []
     }
   }
 }

@@ -3,12 +3,9 @@
     "preamble": {
       "nip": "33",
       "title": "Parameterized Replaceable Events",
-      "author": [
-        "fiatjaf",
-        "Semisol"
-      ],
-      "created": "2023-01-04",
       "status": "Final",
+      "author": null,
+      "created": "2023-01-04",
       "type": "Mandatory",
       "layer": null,
       "kind": null
@@ -175,11 +172,12 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 1"
+        {
+          "target": "nips:01",
+          "count": 1
+        }
       ],
-      "body_extracted_llm": [
-        "NIP 1"
-      ]
+      "body_extracted_llm": []
     }
   }
 }

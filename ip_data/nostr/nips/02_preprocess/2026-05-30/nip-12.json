@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "12",
       "title": "Generic Tag Queries",
-      "author": [
-        "fiatjaf"
-      ],
-      "created": "2022-05-01",
       "status": "Final",
+      "author": null,
+      "created": "2022-05-01",
       "type": "Mandatory",
       "layer": null,
       "kind": null
@@ -128,11 +126,12 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 1"
+        {
+          "target": "nips:01",
+          "count": 1
+        }
       ],
-      "body_extracted_llm": [
-        "NIP 1"
-      ]
+      "body_extracted_llm": []
     }
   }
 }

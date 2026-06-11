@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "45",
       "title": "Event Counts",
-      "author": [
-        "Jonathan Staab"
-      ],
-      "created": "2023-01-03",
       "status": "Draft",
+      "author": null,
+      "created": "2023-01-03",
       "type": "Optional",
       "layer": "Relay",
       "kind": null
@@ -285,13 +283,20 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 1",
-        "NIP 65"
+        {
+          "target": "nips:01",
+          "count": 1
+        },
+        {
+          "target": "nips:65",
+          "count": 1
+        },
+        {
+          "target": "nips:CA",
+          "count": 1
+        }
       ],
-      "body_extracted_llm": [
-        "NIP 1",
-        "NIP 33"
-      ]
+      "body_extracted_llm": []
     }
   }
 }

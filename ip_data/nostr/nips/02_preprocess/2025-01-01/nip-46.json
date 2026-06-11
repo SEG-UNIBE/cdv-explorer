@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "46",
       "title": "Nostr Remote Signing",
-      "author": [
-        "Marco Argentieri"
-      ],
-      "created": "2023-02-20",
       "status": "Unknown",
+      "author": null,
+      "created": "2023-02-20",
       "type": null,
       "layer": null,
       "kind": null
@@ -404,12 +402,30 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 04",
-        "NIP 05",
-        "NIP 0A",
-        "NIP 44",
-        "NIP 89",
-        "NIP DE"
+        {
+          "target": "nips:04",
+          "count": 4
+        },
+        {
+          "target": "nips:05",
+          "count": 3
+        },
+        {
+          "target": "nips:0A",
+          "count": 2
+        },
+        {
+          "target": "nips:44",
+          "count": 13
+        },
+        {
+          "target": "nips:89",
+          "count": 4
+        },
+        {
+          "target": "nips:DE",
+          "count": 1
+        }
       ],
       "body_extracted_llm": []
     }

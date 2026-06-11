@@ -360,10 +360,14 @@ def _run_source_pipeline(eco_slug: str, src_slug: str, src: dict, snapshot: str,
     manifest_path.parent.mkdir(parents=True, exist_ok=True)
     manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True), encoding="utf-8")
 
-    file_pattern = re.compile(src["document_file_pattern"], re.IGNORECASE)
-    proposal_files = [p for p in harvest_root.iterdir() if file_pattern.match(p.name)]
-    _run_stage("Step 2/4 · II. Preprocess".ljust(28), len(proposal_files), "ip",
-               lambda u: extractor(src_config=src, harvest_dir=harvest_root, output_dir=output_dir, progress_callback=u))
+    preprocess_exists = output_dir.exists() and any(output_dir.glob("*.json"))
+    if focus is not None and preprocess_exists:
+        console.print(f"  [green]✓[/green]  {'Step 2/4 · II. Preprocess'.ljust(28)}  [dim]skipped — focus run, existing preambles preserved[/dim]")
+    else:
+        file_pattern = re.compile(src["document_file_pattern"], re.IGNORECASE)
+        proposal_files = [p for p in harvest_root.iterdir() if file_pattern.match(p.name)]
+        _run_stage("Step 2/4 · II. Preprocess".ljust(28), len(proposal_files), "ip",
+                   lambda u: extractor(src_config=src, harvest_dir=harvest_root, output_dir=output_dir, progress_callback=u))
 
     json_files = list(output_dir.glob("*.json")) if output_dir.exists() else []
     focus_note = f"  (focus: {len(focus)}/{len(json_files)} ip)" if focus else ""

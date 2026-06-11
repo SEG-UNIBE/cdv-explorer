@@ -245,8 +245,7 @@ def enrich(
             print(f"WARNING: LLM extraction failed for {record['job_id']}: {exc}", file=sys.stderr)
             result = []
         data = record["json_data"]
-        existing = data["insights"]["interrelations"].get(BODY_EXTRACTED_LLM, [])
-        prior_runs = existing if is_llm_runs_format(existing) else []
+        prior_runs = record.get("preserved_runs") or []
         data["insights"]["interrelations"][BODY_EXTRACTED_LLM] = prior_runs + [
             {
                 "model": llm_model,
@@ -266,10 +265,14 @@ def enrich(
             if progress_callback is not None:
                 progress_callback(json_file.name, 0)
 
-            json_data = normalize_proposal_document(
-                json.loads(json_file.read_text(encoding="utf-8")),
-                source_context=source_context,
+            raw_json = json.loads(json_file.read_text(encoding="utf-8"))
+            raw_llm = (
+                raw_json.get("insights", {})
+                        .get("interrelations", {})
+                        .get(BODY_EXTRACTED_LLM, [])
             )
+            preserved_runs = raw_llm if is_llm_runs_format(raw_llm) else []
+            json_data = normalize_proposal_document(raw_json, source_context=source_context)
             preamble = json_data.get("raw", {}).get("preamble", {})
             id_value = str(preamble.get(id_field, ""))
 
@@ -310,10 +313,7 @@ def enrich(
             output_path = preprocess_dir / json_file.name
 
             if not llm_enabled or executor is None:
-                existing_llm = json_data["insights"]["interrelations"].get(BODY_EXTRACTED_LLM)
-                json_data["insights"]["interrelations"][BODY_EXTRACTED_LLM] = (
-                    existing_llm if isinstance(existing_llm, list) else []
-                )
+                json_data["insights"]["interrelations"][BODY_EXTRACTED_LLM] = preserved_runs
                 _write(output_path, json_data, output_path.name)
                 continue
 
@@ -329,6 +329,7 @@ def enrich(
                 "job_id": json_file.name,
                 "json_data": json_data,
                 "output_path": output_path,
+                "preserved_runs": preserved_runs,
             }
             submitted_llm += 1
             if llm_bar is not None:

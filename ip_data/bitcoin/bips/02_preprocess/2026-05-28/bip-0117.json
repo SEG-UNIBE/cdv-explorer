@@ -746,6 +746,42 @@
               "confidence": "low"
             }
           ]
+        },
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:59:52Z",
+          "dependencies": [
+            {
+              "target": "bips:8",
+              "evidence": "This BIP will be deployed by BIP8 (Version bits with lock-in by height)",
+              "reason": "The deployment mechanism is explicitly specified using BIP8 activation rules.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:16",
+              "evidence": "BIP16 (Pay to Script Hash) and BIP141 (Segregated Witness) provide mechanisms",
+              "reason": "The proposal’s tail-call and delayed-revelation behavior is defined in relation to P2SH script execution semantics.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:114",
+              "evidence": "BIP114 (Merkelized Abstract Syntax Tree) specifies an explicit MAST scheme",
+              "reason": "The proposal extends and generalizes MAST-like semantics introduced by BIP114.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:116",
+              "evidence": "This BIP, in conjunction with BIP116 (MERKLEBRANCHVERIFY)",
+              "reason": "The proposal requires MERKLEBRANCHVERIFY to commit to and verify the selected policy script path.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "BIP16 (Pay to Script Hash) and BIP141 (Segregated Witness) provide mechanisms",
+              "reason": "The proposal constrains tail-call execution to segwit redeem scripts and relies on segwit witness/script execution semantics.",
+              "confidence": "low"
+            }
+          ]
         }
       ]
     }

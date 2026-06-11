@@ -280,13 +280,13 @@ describe('proposal link resolution', () => {
 
   test('uses the snapshot commit for historic NIP links and normalizes numeric NIP ids', () => {
     expect(getNipUrl('1', '2026-05-30', { linkMode: 'history' })).toBe(
-      'https://github.com/nostr-protocol/nips/blob/0731968ee9f61de993e43f8bd865439e19a7b655/01.md'
+      'https://github.com/nostr-protocol/nips/blob/4f494afd7fdca049bf2e307cc547ee512f48266a/01.md'
     );
   });
 
   test('uses the snapshot commit for historic hex NIP links', () => {
     expect(getNipUrl('nip-f4', '2026-05-30', { linkMode: 'history' })).toBe(
-      'https://github.com/nostr-protocol/nips/blob/0731968ee9f61de993e43f8bd865439e19a7b655/F4.md'
+      'https://github.com/nostr-protocol/nips/blob/4f494afd7fdca049bf2e307cc547ee512f48266a/F4.md'
     );
   });
 

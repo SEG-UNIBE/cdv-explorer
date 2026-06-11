@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { useLocalStorageState } from '../useLocalStorageState';
 import { Dropdown } from 'primereact/dropdown';
 import { InputSwitch } from 'primereact/inputswitch';
 import { MultiSelect } from 'primereact/multiselect';
@@ -61,7 +62,10 @@ export function EcosystemDashboard() {
     () => (ecosystem?.defaultSourceId ? [ecosystem.defaultSourceId] : []),
     [ecosystem],
   );
-  const [selectedSourceIds, setSelectedSourceIds] = useState(defaultSelectedSourceIds);
+  const [selectedSourceIds, setSelectedSourceIds] = useLocalStorageState(
+    `cdv-explorer-${ecosystemId}-sources`,
+    defaultSelectedSourceIds,
+  );
   const orderedSelectedSourceIds = useMemo(
     () => (ecosystem?.sourceOrder || []).filter((id) => selectedSourceIds.includes(id)),
     [ecosystem, selectedSourceIds],
@@ -79,7 +83,10 @@ export function EcosystemDashboard() {
     () => getAvailableSnapshots(ecosystemId, orderedSelectedSourceIds),
     [ecosystemId, orderedSelectedSourceIds],
   );
-  const [selectedSnapshot, setSelectedSnapshot] = useState(availableSnapshots[0] ?? null);
+  const [selectedSnapshot, setSelectedSnapshot] = useLocalStorageState(
+    `cdv-explorer-${ecosystemId}-snapshot`,
+    availableSnapshots[0] ?? null,
+  );
   const [highlightedAuthor, setHighlightedAuthor] = useState('');
   const [collaborationLayoutMode, setCollaborationLayoutMode] = useState('balanced');
   const [collaborationMinClusterCollaborations, setCollaborationMinClusterCollaborations] = useState('0');
@@ -91,7 +98,7 @@ export function EcosystemDashboard() {
   const [selectedDependencyMetricsApproach, setSelectedDependencyMetricsApproach] = useState(DEFAULT_DEPENDENCY_APPROACH);
   const [wordCloudFilterText, setWordCloudFilterText] = useState('');
   const [highlightedConformityProposal, setHighlightedConformityProposal] = useState('');
-  const [linkMode, setLinkMode] = useState('history');
+  const [linkMode, setLinkMode] = useLocalStorageState('cdv-explorer-linkmode', 'history');
   const [activeTocSection, setActiveTocSection] = useState('dashboard-authorship');
   const dashboardScrollRef = useRef(null);
 

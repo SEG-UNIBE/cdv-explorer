@@ -153,7 +153,20 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:28Z",
+          "dependencies": [
+            {
+              "target": "nips:19",
+              "evidence": "The identifiers that come after are expected to be the same as those defined in [NIP-19](19.md)",
+              "reason": "This URI scheme reuses the identifier formats defined by NIP-19, so its syntax and interoperability depend on those encodings.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

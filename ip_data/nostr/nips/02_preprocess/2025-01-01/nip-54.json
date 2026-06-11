@@ -263,7 +263,38 @@
           "count": 2
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:25Z",
+          "dependencies": [
+            {
+              "target": "nips:02",
+              "evidence": "contact lists can form the basis of a recommendation system",
+              "reason": "The proposal relies on contact lists as a source of trust/recommendation data for ranking wiki articles.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:21",
+              "evidence": "`nostr:...` links, as per [NIP-21](21.md), should link to profiles or arbitrary Nostr events",
+              "reason": "The wiki content syntax explicitly depends on NIP-21 for parsing and resolving nostr URI links.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:25",
+              "evidence": "reactions are very simple and can be used to create a simple web-of-trust",
+              "reason": "The proposal uses reaction events as a trust/ranking signal for wiki article selection and merge/deference semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:51",
+              "evidence": "lists of relays can be created with the kind 10102 and then used by wiki clients",
+              "reason": "The proposal depends on NIP-51 relay lists to determine which relays to query and how to rank fetched articles.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

@@ -908,23 +908,82 @@
     ],
     "interrelations": {
       "preamble_extracted": [
-        "BIP 21",
-        "BIP 78",
-        "BIP 173",
-        "BIP 174"
+        {
+          "target": "bips:21",
+          "type": "requires"
+        },
+        {
+          "target": "bips:78",
+          "type": "requires"
+        },
+        {
+          "target": "bips:173",
+          "type": "requires"
+        },
+        {
+          "target": "bips:174",
+          "type": "requires"
+        }
       ],
       "body_extracted_regex": [
-        "BIP 21",
-        "BIP 78",
-        "BIP 174",
-        "BIP 321",
-        "BIP 324"
+        {
+          "target": "bips:21",
+          "count": 6
+        },
+        {
+          "target": "bips:78",
+          "count": 30
+        },
+        {
+          "target": "bips:174",
+          "count": 1
+        },
+        {
+          "target": "bips:321",
+          "count": 2
+        },
+        {
+          "target": "bips:324",
+          "count": 4
+        }
       ],
       "body_extracted_llm": [
-        "BIP 21",
-        "BIP 78",
-        "BIP 174",
-        "BIP 324"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:58:02Z",
+          "dependencies": [
+            {
+              "target": "bips:21",
+              "evidence": "Bitcoin URIs ([BIP 21] or [BIP 321]) are a standard way to request bitcoin.",
+              "reason": "The proposal uses Bitcoin URI syntax and parameters for Payjoin session initiation.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:32",
+              "evidence": "Bitcoin URIs ([BIP 21] or [BIP 321]) are a standard way to request bitcoin.",
+              "reason": "The proposal supports BIP 321 Bitcoin URIs as an accepted URI format for Payjoin.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:78",
+              "evidence": "relative to and described in BIP 78 ('Version 1')",
+              "reason": "This proposal is a backwards-compatible version of Payjoin that reuses BIP 78 checks, payload semantics, and compatibility behavior.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:174",
+              "evidence": "This transaction is serialized as a BIP 174 PSBTv0",
+              "reason": "The protocol’s Original and Proposal transactions are carried as PSBTv0 messages defined by BIP 174.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:324",
+              "evidence": "ElligatorSwift as defined in BIP 324 is used to encode encapsulated HPKE public keys",
+              "reason": "The proposal relies on BIP 324's ElligatorSwift wire format for HPKE public-key encoding.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

@@ -406,9 +406,25 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 173"
+        {
+          "target": "bips:173",
+          "count": 5
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:02:14Z",
+          "dependencies": [
+            {
+              "target": "bips:173",
+              "evidence": "Registered human-readable parts for BIP-0173",
+              "reason": "This proposal defines registered human-readable parts specifically for the Bech32 address format introduced by BIP 173, so it relies on that address structure and HRP field.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

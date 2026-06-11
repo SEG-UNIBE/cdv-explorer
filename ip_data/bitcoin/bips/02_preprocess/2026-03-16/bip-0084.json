@@ -545,20 +545,72 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 32",
-        "BIP 43",
-        "BIP 44",
-        "BIP 49",
-        "BIP 141",
-        "BIP 173",
-        "SLIP 132"
+        {
+          "target": "bips:32",
+          "count": 4
+        },
+        {
+          "target": "bips:43",
+          "count": 2
+        },
+        {
+          "target": "bips:44",
+          "count": 5
+        },
+        {
+          "target": "bips:49",
+          "count": 7
+        },
+        {
+          "target": "bips:141",
+          "count": 4
+        },
+        {
+          "target": "bips:173",
+          "count": 4
+        },
+        {
+          "target": "slips:132",
+          "count": 2
+        }
       ],
       "body_extracted_llm": [
-        "BIP 32",
-        "BIP 43",
-        "BIP 44",
-        "BIP 141",
-        "BIP 173"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:58:05Z",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "This BIP defines the two needed steps to derive multiple deterministic addresses based on a BIP 32 root account.",
+              "reason": "It relies on BIP 32 hierarchical deterministic key derivation as the root account model for the scheme.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:43",
+              "evidence": "For the purpose-path level it uses 84'.",
+              "reason": "Using a purpose field value in the derivation path depends on the BIP 43 purpose-field structure.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "To derive the P2WPKH address from the above calculated public key, we use the encapsulation defined in BIP 141",
+              "reason": "The address and script format are specialized to Segregated Witness P2WPKH as defined by BIP 141.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:173",
+              "evidence": "This BIP defines the derivation scheme for HD wallets using the P2WPKH (BIP 173) serialization format",
+              "reason": "The proposal’s address derivation and serialization assume the Bech32 P2WPKH address format introduced by BIP 173.",
+              "confidence": "low"
+            },
+            {
+              "target": "slips:132",
+              "evidence": "Additional registered version bytes are listed in SLIP-0132.",
+              "reason": "The extended key prefixes and version bytes used by this scheme are defined through the SLIP-0132 registry.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

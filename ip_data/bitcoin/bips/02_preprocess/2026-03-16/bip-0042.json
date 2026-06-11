@@ -551,11 +551,45 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 16",
-        "BIP 34",
-        "BIP 62"
+        {
+          "target": "bips:16",
+          "count": 1
+        },
+        {
+          "target": "bips:34",
+          "count": 1
+        },
+        {
+          "target": "bips:62",
+          "count": 1
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:57:48Z",
+          "dependencies": [
+            {
+              "target": "bips:16",
+              "evidence": "A softfork (see BIP16, BIP34, BIP62)",
+              "reason": "The proposal relies on the softfork mechanism introduced by BIP16 to activate the subsidy change.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:34",
+              "evidence": "A softfork (see BIP16, BIP34, BIP62)",
+              "reason": "The proposal depends on the block-version softfork context referenced by BIP34 as part of the activation approach.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:62",
+              "evidence": "A softfork (see BIP16, BIP34, BIP62)",
+              "reason": "The proposal uses the softfork activation framework associated with BIP62 as part of its consensus change.",
+              "confidence": "medium"
+            }
+          ]
+        }
+      ]
     }
   }
 }

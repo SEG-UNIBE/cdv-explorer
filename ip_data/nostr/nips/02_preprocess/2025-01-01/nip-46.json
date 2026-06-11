@@ -427,7 +427,32 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:23Z",
+          "dependencies": [
+            {
+              "target": "nips:05",
+              "evidence": "\"Announcing _remote-signer_ metadata\" ... \"With NIP-05, a request to `<remote-signer>/.well-known/nostr.json?name=_` MAY return this\"",
+              "reason": "The proposal uses NIP-05 discovery to publish and validate remote-signer metadata and connection information.",
+              "confidence": "low"
+            },
+            {
+              "target": "nips:44",
+              "evidence": "\"The `content` field is a JSON-RPC-like message that is [NIP-44] encrypted\"",
+              "reason": "NIP-44 defines the encryption format used for request and response event payloads, so this protocol depends on it for confidentiality.",
+              "confidence": "low"
+            },
+            {
+              "target": "nips:89",
+              "evidence": "\"Remote signer discovery via NIP-89\" ... \"_remote-signer_ MAY publish a NIP-89 `kind: 31990` event\"",
+              "reason": "The proposal relies on NIP-89 metadata events to advertise and discover remote signers and associated connection details.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

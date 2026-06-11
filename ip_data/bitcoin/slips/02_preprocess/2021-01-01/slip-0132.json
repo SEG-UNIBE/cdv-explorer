@@ -255,12 +255,37 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 32",
-        "BIP 49",
-        "BIP 84",
-        "SLIP 32"
+        {
+          "target": "bips:32",
+          "count": 9
+        },
+        {
+          "target": "bips:49",
+          "count": 3
+        },
+        {
+          "target": "bips:84",
+          "count": 2
+        },
+        {
+          "target": "slips:32",
+          "count": 6
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:02:11Z",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "# SLIP-0132 : Registered HD version bytes for BIP-0032",
+              "reason": "The proposal defines a registry of HD version bytes specifically for BIP-32 extended serialization and relies on BIP-32's serialization format and derivation scheme.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

@@ -566,12 +566,44 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 12",
-        "BIP 16",
-        "BIP 17"
+        {
+          "target": "bips:12",
+          "count": 2
+        },
+        {
+          "target": "bips:16",
+          "count": 2
+        },
+        {
+          "target": "bips:17",
+          "count": 2
+        }
       ],
       "body_extracted_llm": [
-        "BIP 16"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:57:39Z",
+          "dependencies": [
+            {
+              "target": "bips:12",
+              "evidence": "OP_EVAL, the original P2SH design",
+              "reason": "The proposal’s script-hash address concept is directly tied to the earlier P2SH design introduced here.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:16",
+              "evidence": "BIP 16: Pay to Script Hash (aka \"/P2SH/\")",
+              "reason": "This proposal defines the address format for pay-to-script-hash outputs, which is the mechanism established by BIP 16.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:17",
+              "evidence": "OP_CHECKHASHVERIFY, another P2SH design",
+              "reason": "The proposal’s scope is the script-hash address type used for P2SH-style spending, which is the substantive mechanism discussed in BIP 17.",
+              "confidence": "medium"
+            }
+          ]
+        }
       ]
     }
   }

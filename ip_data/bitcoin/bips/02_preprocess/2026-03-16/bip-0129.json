@@ -747,32 +747,79 @@
     ],
     "interrelations": {
       "preamble_extracted": [
-        "BIP 32",
-        "BIP 174",
-        "BIP 322",
-        "BIP 380",
-        "BIP 381",
-        "BIP 382",
-        "BIP 383"
+        {
+          "target": "bips:32",
+          "type": "requires"
+        },
+        {
+          "target": "bips:174",
+          "type": "requires"
+        },
+        {
+          "target": "bips:322",
+          "type": "requires"
+        },
+        {
+          "target": "bips:380",
+          "type": "requires"
+        },
+        {
+          "target": "bips:381",
+          "type": "requires"
+        },
+        {
+          "target": "bips:382",
+          "type": "requires"
+        },
+        {
+          "target": "bips:383",
+          "type": "requires"
+        }
       ],
       "body_extracted_regex": [
-        "BIP 32",
-        "BIP 39",
-        "BIP 44",
-        "BIP 174",
-        "BIP 322",
-        "BIP 380",
-        "BIP 381",
-        "BIP 382",
-        "BIP 383"
+        {
+          "target": "bips:32",
+          "count": 2
+        },
+        {
+          "target": "bips:39",
+          "count": 2
+        },
+        {
+          "target": "bips:44",
+          "count": 1
+        },
+        {
+          "target": "bips:174",
+          "count": 2
+        },
+        {
+          "target": "bips:322",
+          "count": 4
+        },
+        {
+          "target": "bips:380",
+          "count": 2
+        },
+        {
+          "target": "bips:381",
+          "count": 2
+        },
+        {
+          "target": "bips:382",
+          "count": 2
+        },
+        {
+          "target": "bips:383",
+          "count": 2
+        }
       ],
       "body_extracted_llm": [
-        "BIP 32",
-        "BIP 322",
-        "BIP 380",
-        "BIP 381",
-        "BIP 382",
-        "BIP 383"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:58:28Z",
+          "dependencies": []
+        }
       ]
     }
   }

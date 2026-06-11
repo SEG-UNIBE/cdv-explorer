@@ -602,7 +602,20 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:57:52Z",
+          "dependencies": [
+            {
+              "target": "bips:16",
+              "evidence": "Bitcoin 0.8 did not use Berkeley DB. It switched to LevelDB instead",
+              "reason": "The proposal’s consensus-failure analysis depends on BIP 16-era block validation behavior only insofar as it discusses block validity rules, but it does not actually build on BIP 16 mechanisms. Omitted.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

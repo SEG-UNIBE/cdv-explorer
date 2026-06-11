@@ -343,7 +343,20 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:24Z",
+          "dependencies": [
+            {
+              "target": "nips:09",
+              "evidence": "These calendar events are addressable and deletable per [NIP-09](09.md).",
+              "reason": "The proposal relies on NIP-09 for deletion semantics of calendar event kinds.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

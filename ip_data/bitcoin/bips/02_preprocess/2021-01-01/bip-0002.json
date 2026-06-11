@@ -1154,14 +1154,32 @@
     ],
     "interrelations": {
       "preamble_extracted": [
-        "BIP 1"
+        {
+          "target": "bips:1",
+          "type": "replaces"
+        }
       ],
       "body_extracted_regex": [
-        "BIP 1",
-        "BIP 9",
-        "BIP 123"
+        {
+          "target": "bips:1",
+          "count": 12
+        },
+        {
+          "target": "bips:9",
+          "count": 1
+        },
+        {
+          "target": "bips:123",
+          "count": 6
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:00:20Z",
+          "dependencies": []
+        }
+      ]
     }
   }
 }

@@ -640,13 +640,65 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 11",
-        "BIP 30",
-        "BIP 34",
-        "BIP 62",
-        "BIP 66"
+        {
+          "target": "bips:11",
+          "count": 3
+        },
+        {
+          "target": "bips:30",
+          "count": 2
+        },
+        {
+          "target": "bips:34",
+          "count": 2
+        },
+        {
+          "target": "bips:62",
+          "count": 6
+        },
+        {
+          "target": "bips:66",
+          "count": 5
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:01:24Z",
+          "dependencies": [
+            {
+              "target": "bips:11",
+              "evidence": "This is the standard ''m-of-n'' script defined in BIP 11",
+              "reason": "The proposal adopts BIP 11’s multisig script structure as the basis for its new OP_CHECKSIGEX script format.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:30",
+              "evidence": "coinbase transactions in blocks at heights 91842 and 91880 ... and motivated the introduction of BIP 34",
+              "reason": "The proposal relies on BIP 30’s duplicate-coinbase transaction issue as part of its rationale for handling coinbase normalized IDs safely.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:34",
+              "evidence": "motivated the introduction of BIP 34",
+              "reason": "The proposal uses BIP 34 as the historical fix that made coinbase transaction uniqueness safe, supporting its coinbase handling assumptions.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:62",
+              "evidence": "BIPs 62 ... alleviate the problem of third-party modification",
+              "reason": "The proposal’s malleability design is positioned as a replacement/extension of BIP 62’s canonical-signature approach and builds on that problem domain.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:66",
+              "evidence": "BIPs 62 ... and 66 ... alleviate the problem of third-party modification",
+              "reason": "The proposal’s malleability design is positioned as a replacement/extension of BIP 66’s strict-DER approach and builds on that problem domain.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

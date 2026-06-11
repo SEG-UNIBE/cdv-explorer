@@ -145,7 +145,26 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:47Z",
+          "dependencies": [
+            {
+              "target": "nips:09",
+              "evidence": "including [NIP-09](09.md) Deletion Events",
+              "reason": "The proposal's deletion scope explicitly relies on NIP-09 delete event semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:59",
+              "evidence": "SHOULD delete all [NIP-59](59.md) Gift Wraps",
+              "reason": "The proposal extends its deletion requirements to gift wraps defined by NIP-59.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

@@ -535,7 +535,20 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:00:20Z",
+          "dependencies": [
+            {
+              "target": "bips:12",
+              "evidence": "scriptSig larger than 200 bytes; to accommodate 3-signature transactions, this will be increased to 500 bytes",
+              "reason": "This proposal changes the standard scriptSig size limit needed for the multi-signature redemption format to be accepted and relayed.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

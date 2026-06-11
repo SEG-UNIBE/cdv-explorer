@@ -347,7 +347,20 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:28Z",
+          "dependencies": [
+            {
+              "target": "nips:31",
+              "evidence": "like [`\"alt\"`](https://github.com/nostr-protocol/nips/blob/master/31.md)",
+              "reason": "The proposal explicitly relies on the alt tag defined by this NIP as an optional tag for representing the game to users of non-supporting clients.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

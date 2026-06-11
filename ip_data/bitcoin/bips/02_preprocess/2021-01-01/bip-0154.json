@@ -845,7 +845,20 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:01:32Z",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "The other is where the whole or parts of the data chunk are given as input (a \"big nonce\"). In this case, the internal nonce size is zero bytes",
+              "reason": "The proposal’s SHA256 POW format explicitly defines a zero-byte nonce mode and uses predecessor/successor chaining semantics, which rely on the broader nonce/input handling introduced here.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

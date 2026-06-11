@@ -238,7 +238,20 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:10Z",
+          "dependencies": [
+            {
+              "target": "nips:01",
+              "evidence": "\"[",
+              "reason": "The proposal defines the older positional \"e\" tag scheme as \"as per NIP-01\", so its tag format and event metadata semantics rely on NIP-01.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

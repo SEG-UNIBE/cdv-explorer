@@ -378,7 +378,26 @@
           "count": 7
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:51Z",
+          "dependencies": [
+            {
+              "target": "nips:92",
+              "evidence": "The primary source of video information is the `imeta` tags which is defined in [NIP-92](92.md)",
+              "reason": "This proposal relies on NIP-92’s `imeta` tag format as the primary carrier of video metadata and extends its properties.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:94",
+              "evidence": "This NIP defines the following additional `imeta` properties aside from those listed in [NIP-92](92.md) & [NIP-94](94.md)",
+              "reason": "The proposal explicitly depends on NIP-94 as an existing source of `imeta` property definitions that it amends with additional fields.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

@@ -543,14 +543,30 @@
     ],
     "interrelations": {
       "preamble_extracted": [
-        "BIP 380"
+        {
+          "target": "bips:380",
+          "type": "requires"
+        }
       ],
       "body_extracted_regex": [
-        "BIP 380"
+        {
+          "target": "bips:380",
+          "count": 1
+        }
       ],
       "body_extracted_llm": [
-        "BIP 141",
-        "BIP 380"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:59:32Z",
+          "dependencies": [
+            {
+              "target": "bips:380",
+              "evidence": "use the format and general operation specified in [[bip-0380.mediawiki|380]]",
+              "reason": "This proposal depends on the descriptor framework and syntax defined by BIP 380 to define new descriptor expressions.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

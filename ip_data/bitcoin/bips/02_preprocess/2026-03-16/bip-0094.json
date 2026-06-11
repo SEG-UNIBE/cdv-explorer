@@ -641,20 +641,18 @@
       "preamble_extracted": [],
       "body_extracted_regex": [],
       "body_extracted_llm": [
-        "BIP 16",
-        "BIP 30",
-        "BIP 34",
-        "BIP 65",
-        "BIP 66",
-        "BIP 68",
-        "BIP 112",
-        "BIP 113",
-        "BIP 141",
-        "BIP 143",
-        "BIP 147",
-        "BIP 340",
-        "BIP 341",
-        "BIP 342"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:58:11Z",
+          "dependencies": [
+            {
+              "target": "bips:16",
+              "evidence": "All consensus rules active on mainnet at the time of this proposal are enforced from block 1",
+              "reason": "The proposal relies on the set of mainnet consensus rules already introduced and activated by prior soft forks, including those defined in this proposal's referenced mainnet rule set.",
+              "confidence": "medium"
+            }
+          ]
+        }
       ]
     }
   }

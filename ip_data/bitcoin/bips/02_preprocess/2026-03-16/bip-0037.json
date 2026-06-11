@@ -787,7 +787,32 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:57:47Z",
+          "dependencies": [
+            {
+              "target": "bips:12",
+              "evidence": "The `getdata` command is extended to allow a new type in the `inv` submessage",
+              "reason": "The proposal extends the existing inv/getdata inventory and data-retrieval message semantics introduced by the referenced proposal.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:16",
+              "evidence": "If an output matches whilst testing a transaction, the node might need to update the filter by inserting the serialized COutPoint structure",
+              "reason": "The filter-update behavior depends on recognizing standard pay-to-script-hash-related outputs and their spending outpoints, which are tied to the P2SH output handling introduced by this proposal.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:30",
+              "evidence": "The `version` command is extended with a new field",
+              "reason": "This proposal amends the version handshake by adding a new relay-control field to connection negotiation.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

@@ -602,18 +602,82 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 9",
-        "BIP 16",
-        "BIP 66",
-        "BIP 141",
-        "BIP 143",
-        "BIP 147",
-        "BIP 148",
-        "BIP 149"
+        {
+          "target": "bips:9",
+          "count": 6
+        },
+        {
+          "target": "bips:16",
+          "count": 2
+        },
+        {
+          "target": "bips:66",
+          "count": 1
+        },
+        {
+          "target": "bips:141",
+          "count": 4
+        },
+        {
+          "target": "bips:143",
+          "count": 3
+        },
+        {
+          "target": "bips:147",
+          "count": 3
+        },
+        {
+          "target": "bips:148",
+          "count": 2
+        },
+        {
+          "target": "bips:149",
+          "count": 2
+        }
       ],
       "body_extracted_llm": [
-        "BIP 9",
-        "BIP 141"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:58:10Z",
+          "dependencies": [
+            {
+              "target": "bips:9",
+              "evidence": "This BIP will be deployed by a \"version bits\" ... BIP9 with the name \"segsignal\"",
+              "reason": "The proposal uses BIP9 version-bits deployment machinery and activation state rules to define its own signaling threshold and timeout behavior.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "to activate BIP141, BIP143 and BIP147",
+              "reason": "The proposal is specifically about forcing activation of the segwit deployment governed by BIP141, so its mechanism depends on that deployment's state and signaling bit.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:143",
+              "evidence": "to activate BIP141, BIP143 and BIP147",
+              "reason": "The proposal treats BIP143 as part of the existing segwit deployment it is trying to activate, so its effect depends on BIP143 being included in that activation package.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:147",
+              "evidence": "to activate BIP141, BIP143 and BIP147",
+              "reason": "The proposal treats BIP147 as part of the existing segwit deployment it is trying to activate, so its effect depends on BIP147 being included in that activation package.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:148",
+              "evidence": "*[[bip-0148.mediawiki|BIP148 Mandatory activation of segwit deployment]]",
+              "reason": "The text’s rationale and references show it relies on the idea of mandatory segwit signaling to orphan non-signalling blocks, which is the same technical approach introduced by BIP148.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:149",
+              "evidence": "*[[bip-0149.mediawiki|BIP149 Segregated Witness (second deployment)]]",
+              "reason": "The proposal references an alternative segwit deployment that would be activated or constrained by the same segwit activation context, making it a substantive related dependency only if the deployment is used as an activation alternative.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

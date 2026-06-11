@@ -438,7 +438,26 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:12Z",
+          "dependencies": [
+            {
+              "target": "nips:04",
+              "evidence": "All checkout events are sent as JSON strings using [NIP-04](04.md).",
+              "reason": "The checkout message exchange is defined to use NIP-04 encrypted direct messages, so the marketplace workflow depends on its transport and content handling.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:19",
+              "evidence": "Create a customized user experience using the `naddr` from [NIP-19](19.md#shareable-identifiers-with-extra-metadata).",
+              "reason": "Marketplace UI/UX customization is built around naddr shareable identifiers and their metadata format from NIP-19.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

@@ -554,11 +554,26 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 44",
-        "BIP 174",
-        "SLIP 44"
+        {
+          "target": "bips:44",
+          "count": 1
+        },
+        {
+          "target": "bips:174",
+          "count": 4
+        },
+        {
+          "target": "slips:44",
+          "count": 1
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:01:14Z",
+          "dependencies": []
+        }
+      ]
     }
   }
 }

@@ -273,7 +273,26 @@
           "count": 4
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:09Z",
+          "dependencies": [
+            {
+              "target": "nips:04",
+              "evidence": "window.nostr.nip04.encrypt(pubkey, plaintext): string // returns ciphertext and iv as specified in nip-04",
+              "reason": "The optional API explicitly reuses the NIP-04 encryption format and semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:44",
+              "evidence": "window.nostr.nip44.encrypt(pubkey, plaintext): string // returns ciphertext as specified in nip-44",
+              "reason": "The optional API explicitly depends on the NIP-44 ciphertext format and encryption semantics.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

@@ -267,7 +267,62 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:30Z",
+          "dependencies": [
+            {
+              "target": "nips:01",
+              "evidence": "extra fields not specified in NIP-01",
+              "reason": "The proposal adds optional fields to kind-0 metadata events and relies on the base event structure defined in NIP-01.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:02",
+              "evidence": "extra fields not specified in NIP-02",
+              "reason": "The proposal defines additional kind-3 metadata that extends the follow-list event format from NIP-02.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:51",
+              "evidence": "title: name of [NIP-51] sets",
+              "reason": "The meaning of the `title` tag is specialized by NIP-51's set semantics, so this proposal depends on that tag interpretation.",
+              "confidence": "low"
+            },
+            {
+              "target": "nips:52",
+              "evidence": "title: name of [NIP-51] sets, [NIP-52] calendar event",
+              "reason": "The `title` tag meaning includes NIP-52 calendar events, so the tag semantics here depend on NIP-52.",
+              "confidence": "low"
+            },
+            {
+              "target": "nips:53",
+              "evidence": "title: name of [NIP-51] sets, [NIP-52] calendar event, [NIP-53] live event",
+              "reason": "The `title` tag meaning includes NIP-53 live events, so this proposal relies on that event type's naming semantics.",
+              "confidence": "low"
+            },
+            {
+              "target": "nips:65",
+              "evidence": "[NIP-65](65.md) should be used instead",
+              "reason": "The proposal deprecates the relay-map structure in favor of NIP-65, making NIP-65 the replacement mechanism for that data.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:73",
+              "evidence": "`i`: an external id the event is referring to in some way - see [NIP-73](73.md)",
+              "reason": "The `i` tag's meaning is explicitly defined by NIP-73, which this proposal adopts for tag semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:99",
+              "evidence": "title: name of [NIP-51] sets, [NIP-52] calendar event, [NIP-53] live event or [NIP-99] listing",
+              "reason": "The `title` tag meaning includes NIP-99 listings, so this proposal depends on NIP-99 for that tag interpretation.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

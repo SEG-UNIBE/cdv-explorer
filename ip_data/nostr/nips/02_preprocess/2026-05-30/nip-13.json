@@ -212,7 +212,20 @@
           "count": 4
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:25Z",
+          "dependencies": [
+            {
+              "target": "nips:01",
+              "evidence": "difficulty is defined to be the number of leading zero bits in the `NIP-01` id",
+              "reason": "The PoW definition, mining process, and validation all depend on the event id format and recalculation defined by NIP-01.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

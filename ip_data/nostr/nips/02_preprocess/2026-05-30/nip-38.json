@@ -184,7 +184,20 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:35Z",
+          "dependencies": [
+            {
+              "target": "nips:30",
+              "evidence": "The `content` MAY include emoji(s), or [NIP-30](30.md) custom emoji(s).",
+              "reason": "This proposal allows custom emoji in status content by referencing the emoji format defined by NIP-30.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

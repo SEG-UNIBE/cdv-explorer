@@ -546,12 +546,55 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 9",
-        "BIP 65",
-        "BIP 68",
-        "BIP 112"
+        {
+          "target": "bips:9",
+          "count": 7
+        },
+        {
+          "target": "bips:65",
+          "count": 3
+        },
+        {
+          "target": "bips:68",
+          "count": 4
+        },
+        {
+          "target": "bips:112",
+          "count": 4
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:01:07Z",
+          "dependencies": [
+            {
+              "target": "bips:9",
+              "evidence": "deployed by \"versionbits\" BIP9 using bit 0",
+              "reason": "The activation mechanism is versionbits signaling as defined by BIP9, which this proposal uses for deployment.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:65",
+              "evidence": "required by BIP65 (CHECKLOCKTIMEVERIFY)",
+              "reason": "The proposal changes the time source used for locktime evaluation, directly affecting CHECKLOCKTIMEVERIFY semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:68",
+              "evidence": "matching the behavior of BIP68 (sequence numbers)",
+              "reason": "The proposal explicitly aligns locktime calculation behavior with the sequence-lock rules introduced by BIP68.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:112",
+              "evidence": "matching the behavior of BIP68 (sequence numbers) and BIP112 (CHECKSEQUENCEVERIFY)",
+              "reason": "The proposal explicitly aligns locktime calculation behavior with CHECKSEQUENCEVERIFY semantics introduced by BIP112.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

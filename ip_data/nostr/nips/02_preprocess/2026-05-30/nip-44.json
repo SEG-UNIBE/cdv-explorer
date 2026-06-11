@@ -447,7 +447,20 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:38Z",
+          "dependencies": [
+            {
+              "target": "nips:01",
+              "evidence": "\"MUST be used in the context of a signed event as described in NIP-01\"",
+              "reason": "The encryption format is defined for use inside NIP-01 events and relies on NIP-01 event structure and signing semantics before decryption.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

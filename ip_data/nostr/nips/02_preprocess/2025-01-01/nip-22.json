@@ -263,7 +263,32 @@
           "count": 2
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:14Z",
+          "dependencies": [
+            {
+              "target": "nips:21",
+              "evidence": "\"q\" tags MAY be used when citing events in the `.content` with [NIP-21](21.md).",
+              "reason": "The proposal defines optional tag usage specifically for quoting or mentioning content under NIP-21’s content conventions.",
+              "confidence": "low"
+            },
+            {
+              "target": "nips:73",
+              "evidence": "The possible values for `i` tags – and `k` tags, when related to an extenal identity – are listed on [NIP-73](73.md).",
+              "reason": "It relies on NIP-73 to define the permissible `i`/`k` tag values for external identifiers and scopes.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:94",
+              "evidence": "A comment on a [NIP-94](94.md) file looks like this:",
+              "reason": "The proposal gives a concrete comment format for NIP-94 file events, extending that event type with this comment schema.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

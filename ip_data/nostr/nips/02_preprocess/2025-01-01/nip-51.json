@@ -475,7 +475,56 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:26Z",
+          "dependencies": [
+            {
+              "target": "nips:04",
+              "evidence": "encrypted using the same scheme from [NIP-04](04.md)",
+              "reason": "Private list items are defined to use NIP-04 encryption semantics and key agreement.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:17",
+              "evidence": "\"relay\" (see [NIP-17](17.md))",
+              "reason": "The DM relays list uses the relay reference meaning introduced by NIP-17.",
+              "confidence": "low"
+            },
+            {
+              "target": "nips:28",
+              "evidence": "[NIP-28](28.md) chat channels the user is in",
+              "reason": "The public chats list item type is specialized for NIP-28 channel definitions.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:29",
+              "evidence": "[NIP-29](29.md) groups the user is in",
+              "reason": "The simple groups list uses NIP-29 group identifiers and relay URL structure.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:30",
+              "evidence": "see [NIP-30](30.md)",
+              "reason": "Emoji lists and emoji sets rely on the emoji tag semantics defined by NIP-30.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:54",
+              "evidence": "[NIP-54](54.md) user recommended wiki authors",
+              "reason": "The good wiki authors and relays lists are defined specifically in terms of NIP-54 wiki concepts.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:72",
+              "evidence": "[NIP-72](72.md) communities the user belongs to",
+              "reason": "The communities list entries are specialized to NIP-72 community identifiers.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

@@ -231,7 +231,20 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:17Z",
+          "dependencies": [
+            {
+              "target": "nips:10",
+              "evidence": "Clients SHOULD use [NIP-10](10.md) marked \"e\" tags",
+              "reason": "The proposal relies on NIP-10’s tagged reply/root semantics and relay recommendation format for channel metadata and messages.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

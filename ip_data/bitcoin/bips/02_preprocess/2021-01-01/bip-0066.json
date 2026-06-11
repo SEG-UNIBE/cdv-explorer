@@ -589,10 +589,35 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 34",
-        "BIP 62"
+        {
+          "target": "bips:34",
+          "count": 1
+        },
+        {
+          "target": "bips:62",
+          "count": 2
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:00:44Z",
+          "dependencies": [
+            {
+              "target": "bips:34",
+              "evidence": "We reuse the double-threshold switchover mechanism from BIP 34",
+              "reason": "The deployment logic explicitly adopts BIP 34’s activation mechanism and thresholds.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:62",
+              "evidence": "reducing transaction malleability (see BIP 62)",
+              "reason": "The proposal references BIP 62 as the source of the malleability context that this rule change helps address, but this is a related effect rather than a required technical mechanism.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

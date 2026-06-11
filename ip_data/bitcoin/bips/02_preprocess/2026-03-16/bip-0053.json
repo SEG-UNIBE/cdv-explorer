@@ -630,14 +630,52 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 2",
-        "BIP 37",
-        "BIP 64",
-        "BIP 66",
-        "BIP 141"
+        {
+          "target": "bips:2",
+          "count": 3
+        },
+        {
+          "target": "bips:37",
+          "count": 4
+        },
+        {
+          "target": "bips:64",
+          "count": 1
+        },
+        {
+          "target": "bips:66",
+          "count": 2
+        },
+        {
+          "target": "bips:141",
+          "count": 2
+        }
       ],
       "body_extracted_llm": [
-        "BIP 141"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:57:54Z",
+          "dependencies": [
+            {
+              "target": "bips:37",
+              "evidence": "BIP37 provides a partial Merkle tree format",
+              "reason": "The proposal’s SPV attack analysis and mitigation rely on the partial Merkle proof format introduced by this BIP.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:66",
+              "evidence": "After BIP66 was activated on the Bitcoin network",
+              "reason": "The pre-segwit transaction-size analysis depends on the signature size constraints enforced by this consensus change.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "This BIP disallows single-input single-output segwit transactions that pay to a 2-byte witness program.",
+              "reason": "The segwit-specific restriction depends on witness program semantics and valid length rules defined by this BIP.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

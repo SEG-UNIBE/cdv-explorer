@@ -268,10 +268,35 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 32",
-        "BIP 39"
+        {
+          "target": "bips:32",
+          "count": 9
+        },
+        {
+          "target": "bips:39",
+          "count": 4
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:01:59Z",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "how a BIP-0032 like derivation is used",
+              "reason": "The proposal adapts and remains compatible with BIP-32 derivation structure and child-key rules.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:39",
+              "evidence": "The BIP-0039 standard describes the procedure to compute a 512 bit seed",
+              "reason": "The master key generation starts from the seed produced by BIP-39 mnemonic/passphrase processing.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

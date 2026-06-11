@@ -602,7 +602,20 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:01:36Z",
+          "dependencies": [
+            {
+              "target": "bips:31",
+              "evidence": "Introduce a new message type sendaddrv2",
+              "reason": "The proposal adds a new P2P message and signaling flow that extends the existing Bitcoin network messaging protocol defined by the target.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

@@ -707,12 +707,30 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 1",
-        "BIP 2",
-        "BIP 3",
-        "BIP 4"
+        {
+          "target": "bips:1",
+          "count": 1
+        },
+        {
+          "target": "bips:2",
+          "count": 1
+        },
+        {
+          "target": "bips:3",
+          "count": 1
+        },
+        {
+          "target": "bips:4",
+          "count": 1
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:58:46Z",
+          "dependencies": []
+        }
+      ]
     }
   }
 }

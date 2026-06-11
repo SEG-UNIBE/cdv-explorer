@@ -526,17 +526,74 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 32",
-        "BIP 43",
-        "BIP 44",
-        "BIP 49",
-        "BIP 84",
-        "BIP 341"
+        {
+          "target": "bips:32",
+          "count": 4
+        },
+        {
+          "target": "bips:43",
+          "count": 2
+        },
+        {
+          "target": "bips:44",
+          "count": 5
+        },
+        {
+          "target": "bips:49",
+          "count": 6
+        },
+        {
+          "target": "bips:84",
+          "count": 4
+        },
+        {
+          "target": "bips:341",
+          "count": 8
+        }
       ],
       "body_extracted_llm": [
-        "BIP 32",
-        "BIP 44",
-        "BIP 341"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:58:09Z",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "This BIP defines the two needed steps to derive multiple deterministic addresses based on a BIP 32 master private key.",
+              "reason": "The derivation scheme relies on BIP 32 hierarchical deterministic key derivation as its base mechanism.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:43",
+              "evidence": "the same account-structure as defined in BIPs 44, 49, and 84",
+              "reason": "The derivation path uses the purpose field structure introduced by BIP 43.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:44",
+              "evidence": "the same account-structure as defined in BIPs 44, 49, and 84",
+              "reason": "The proposal adopts the multi-level account derivation path structure standardized by BIP 44.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:49",
+              "evidence": "we largely use the same approach used in BIPs 49 and 84 for ease of implementation.",
+              "reason": "The proposal explicitly reuses the derivation-scheme approach established by BIP 49 for account/path handling.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:84",
+              "evidence": "we largely use the same approach used in BIPs 49 and 84 for ease of implementation.",
+              "reason": "The proposal explicitly reuses the derivation-scheme approach established by BIP 84 for account/path handling.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "This document suggests a derivation scheme for HD wallets whose keys are involved in single key P2TR (BIP 341) outputs as the Taproot internal key.",
+              "reason": "The proposal’s address construction and output key/tap tweak semantics are specifically defined by Taproot in BIP 341.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

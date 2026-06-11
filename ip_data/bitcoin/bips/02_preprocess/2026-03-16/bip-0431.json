@@ -785,9 +785,25 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 125"
+        {
+          "target": "bips:125",
+          "count": 5
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:59:41Z",
+          "dependencies": [
+            {
+              "target": "bips:125",
+              "evidence": "signaling BIP125 replaceability",
+              "reason": "The proposal’s replacement behavior and opt-in signaling explicitly rely on BIP 125’s replaceability semantics.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

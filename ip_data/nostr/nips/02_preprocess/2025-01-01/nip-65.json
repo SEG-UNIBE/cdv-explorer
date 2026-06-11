@@ -241,7 +241,26 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:30Z",
+          "dependencies": [
+            {
+              "target": "nips:03",
+              "evidence": "This NIP doesn't fully replace relay lists that are designed to configure a client's usage of relays (such as `kind:3` style relay lists).",
+              "reason": "The proposal explicitly constrains its behavior relative to kind 3 relay lists, which are the preexisting relay-list format it complements rather than replaces.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:11",
+              "evidence": "If a relay signals support for this NIP in their [NIP-11](11.md) document",
+              "reason": "The proposal uses NIP-11 relay metadata as the mechanism for relays to signal support for accepting kind 10002 events.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

@@ -1666,23 +1666,124 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 32",
-        "BIP 127",
-        "BIP 143",
-        "BIP 341",
-        "BIP 352",
-        "BIP 353",
-        "BIP 370",
-        "BIP 371",
-        "BIP 373",
-        "BIP 374",
-        "BIP 375"
+        {
+          "target": "bips:32",
+          "count": 12
+        },
+        {
+          "target": "bips:127",
+          "count": 3
+        },
+        {
+          "target": "bips:143",
+          "count": 1
+        },
+        {
+          "target": "bips:341",
+          "count": 3
+        },
+        {
+          "target": "bips:352",
+          "count": 1
+        },
+        {
+          "target": "bips:353",
+          "count": 5
+        },
+        {
+          "target": "bips:370",
+          "count": 12
+        },
+        {
+          "target": "bips:371",
+          "count": 9
+        },
+        {
+          "target": "bips:373",
+          "count": 4
+        },
+        {
+          "target": "bips:374",
+          "count": 2
+        },
+        {
+          "target": "bips:375",
+          "count": 7
+        }
       ],
       "body_extracted_llm": [
-        "BIP 16",
-        "BIP 32",
-        "BIP 141",
-        "BIP 143"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:58:54Z",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "The 78 byte serialized extended public key as defined by BIP 32",
+              "reason": "PSBT key origin and xpub fields reuse BIP 32 extended public keys and derivation-path semantics for signer discovery and change detection.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:127",
+              "evidence": "The UTF-8 encoded commitment message string for the proof-of-reserves. See BIP 127 for more information.",
+              "reason": "The proof-of-reserves PSBT input field carries commitment data specifically defined by BIP 127.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:143",
+              "evidence": "The sighash algorithm for Segwit specified in BIP 143",
+              "reason": "Signer validation and compatibility for segwit inputs depend on the Segwit sighash algorithm defined by this proposal.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "The control block for this leaf as specified in BIP 341",
+              "reason": "Taproot PSBT fields encode Taproot control blocks, leaf hashes, and internal/output keys using BIP 341 semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:352",
+              "evidence": "Must be omitted in PSBTv0. Must be provided in PSBTv2 if not sending to a BIP352 silent payment address",
+              "reason": "PSBT output script handling is constrained by Silent Payments address requirements introduced by BIP 352.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:353",
+              "evidence": "The currently defined per-output types are defined as follows: ... BIP 353 DNSSEC proof",
+              "reason": "PSBT defines a dedicated output field for BIP 353 DNSSEC proofs, relying on that proposal's address-validation data model.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:370",
+              "evidence": "PSBT_GLOBAL_TX_VERSION = 0x02",
+              "reason": "PSBTv2 transaction version, input/output counts, locktime, and modifiable flags are introduced as version-2 fields by BIP 370.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:371",
+              "evidence": "Taproot Key Spend Signature ... Taproot Leaf Script ... as specified in BIP 341",
+              "reason": "PSBT taproot input/output fields for key path, script path, leaves, and Merkle data extend the Taproot signing model.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:373",
+              "evidence": "MuSig2 Participant Public Keys ... Public Nonce ... Partial Signature",
+              "reason": "PSBT includes MuSig2 coordination fields for aggregate keys, nonces, and partial signatures defined by BIP 373.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:374",
+              "evidence": "A BIP374 DLEQ proof computed for the matching ECDH share",
+              "reason": "PSBT silent-payment proof fields rely on the DLEQ proof concept defined by BIP 374.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:375",
+              "evidence": "Silent Payment Global ECDH Share ... Silent Payment Input DLEQ Proof",
+              "reason": "PSBT adds silent-payment-specific global/input/output fields that depend on the Silent Payments protocol introduced by BIP 375.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

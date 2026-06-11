@@ -199,7 +199,26 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:51Z",
+          "dependencies": [
+            {
+              "target": "nips:01",
+              "evidence": "Events are [addressable events] (01.md#kinds)",
+              "reason": "The proposal relies on NIP-01 event kind/addressable event semantics to define this event type.",
+              "confidence": "low"
+            },
+            {
+              "target": "nips:40",
+              "evidence": "after this time the relay SHOULD delete it ([NIP-40](40.md))",
+              "reason": "The expiration handling for these order events depends on NIP-40's deletion/expiration semantics.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

@@ -479,7 +479,44 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:04Z",
+          "dependencies": [
+            {
+              "target": "nips:04",
+              "evidence": "Originally, one-to-one direct messages (DMs) in Nostr happened via the scheme defined in [NIP-04](04.md).",
+              "reason": "The proposal contrasts with and replaces the direct-message scheme introduced by NIP-04, relying on that context to define its own messaging approach.",
+              "confidence": "medium"
+            },
+            {
+              "target": "nips:17",
+              "evidence": "Most recently, [NIP-17](17.md) combines [NIP-44](44.md) encryption with [NIP-59](59.md) gift-wrapping",
+              "reason": "The proposal’s welcome flow and metadata-hiding discussion build on the gift-wrapped DM model introduced by NIP-17, which it extends with MLS-based group messaging.",
+              "confidence": "medium"
+            },
+            {
+              "target": "nips:44",
+              "evidence": "With the addition of [NIP-44](44.md), we have an updated encryption scheme",
+              "reason": "The proposal directly uses NIP-44 for encrypting group events and defines how MLS-derived keys feed into NIP-44 encryption.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:59",
+              "evidence": "Most recently, [NIP-17](17.md) combines [NIP-44](44.md) encryption with [NIP-59](59.md) gift-wrapping",
+              "reason": "The proposal requires NIP-59 gift-wrapping for Welcome Events, depending on its sealed-event delivery semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:70",
+              "evidence": "the `-` tag can be used to ensure that KeyPackage Events are only published by their authenticated author. Read more in [NIP-70](70.md)",
+              "reason": "The KeyPackage event format optionally uses the authenticated-author tag mechanism defined by NIP-70, constraining publication behavior.",
+              "confidence": "medium"
+            }
+          ]
+        }
+      ]
     }
   }
 }

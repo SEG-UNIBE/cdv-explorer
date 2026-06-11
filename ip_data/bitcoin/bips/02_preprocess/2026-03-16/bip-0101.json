@@ -629,11 +629,34 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 34",
-        "BIP 100"
+        {
+          "target": "bips:34",
+          "count": 1
+        },
+        {
+          "target": "bips:100",
+          "count": 2
+        }
       ],
       "body_extracted_llm": [
-        "BIP 34"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:58:12Z",
+          "dependencies": [
+            {
+              "target": "bips:9",
+              "evidence": "The version number scheme is designed to be compatible with Pieter's Wuille's proposed \"Version bits\" BIP",
+              "reason": "The deployment signaling scheme is explicitly designed around the version-bits activation mechanism defined by this proposal.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:34",
+              "evidence": "Deployment shall be controlled by hash-power supermajority vote (similar to the technique used in BIP34)",
+              "reason": "The activation mechanism relies on the supermajority version-signaling deployment technique introduced by BIP34.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

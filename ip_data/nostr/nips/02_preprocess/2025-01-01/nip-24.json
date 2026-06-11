@@ -254,7 +254,50 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:16Z",
+          "dependencies": [
+            {
+              "target": "nips:51",
+              "evidence": "name of [NIP-51](51.md) sets",
+              "reason": "The meaning of the `title` tag is defined by reference to NIP-51 sets, so the tag semantics depend on that NIP.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:52",
+              "evidence": "[NIP-52](52.md) calendar event",
+              "reason": "The `title` tag is specialized for NIP-52 calendar events, relying on that proposal's event type and semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:53",
+              "evidence": "[NIP-53](53.md) live event",
+              "reason": "The `title` tag is specialized for NIP-53 live events, so this proposal depends on that event definition.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:65",
+              "evidence": "[NIP-65](65.md) should be used instead",
+              "reason": "The proposal deprecates the embedded relay map in kind 3 and replaces it with NIP-65, which constrains the allowed format.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:73",
+              "evidence": "`i`: an external id the event is referring to in some way - see [NIP-73](73.md)",
+              "reason": "The `i` tag's meaning is defined by NIP-73, so this proposal depends on that tag specification.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:99",
+              "evidence": "[NIP-99](99.md) listing",
+              "reason": "The `title` tag is specialized for NIP-99 listings, relying on that proposal's listing semantics.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

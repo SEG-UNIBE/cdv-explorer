@@ -548,12 +548,49 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 9",
-        "BIP 34",
-        "BIP 65",
-        "BIP 66"
+        {
+          "target": "bips:9",
+          "count": 5
+        },
+        {
+          "target": "bips:34",
+          "count": 11
+        },
+        {
+          "target": "bips:65",
+          "count": 10
+        },
+        {
+          "target": "bips:66",
+          "count": 10
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:00:56Z",
+          "dependencies": [
+            {
+              "target": "bips:34",
+              "evidence": "replace the trigger mechanism by caching the block heights at which those consensus rules became enforced",
+              "reason": "The proposal changes how BIP 34’s activation and enforcement are determined, relying on its activation height and coinbase-height rule.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:65",
+              "evidence": "replace the trigger mechanism by caching the block heights at which those consensus rules became enforced",
+              "reason": "The proposal changes how BIP 65’s activation and enforcement are determined, relying on its activation height and CHECKLOCKTIMEVERIFY rule.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:66",
+              "evidence": "replace the trigger mechanism by caching the block heights at which those consensus rules became enforced",
+              "reason": "The proposal changes how BIP 66’s activation and enforcement are determined, relying on its activation height and DER signature rule.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

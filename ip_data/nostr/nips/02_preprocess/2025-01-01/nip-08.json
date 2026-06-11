@@ -171,7 +171,20 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:09Z",
+          "dependencies": [
+            {
+              "target": "nips:27",
+              "evidence": "deprecated in favor of [NIP-27](27.md)",
+              "reason": "The proposal is explicitly superseded by NIP-27, so NIP-27 defines the replacement handling for mentions that this proposal would otherwise standardize.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

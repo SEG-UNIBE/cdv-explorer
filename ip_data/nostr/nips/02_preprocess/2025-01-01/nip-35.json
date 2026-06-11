@@ -211,7 +211,20 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:19Z",
+          "dependencies": [
+            {
+              "target": "nips:10",
+              "evidence": "should follow `NIP-10` for tagging",
+              "reason": "The torrent comment event explicitly reuses NIP-10's tagging semantics for replies/threads, so implementation depends on that event-tagging model.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

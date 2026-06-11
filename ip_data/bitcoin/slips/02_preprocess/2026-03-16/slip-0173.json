@@ -1751,12 +1751,49 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 32",
-        "BIP 93",
-        "BIP 173",
-        "BIP 350"
+        {
+          "target": "bips:32",
+          "count": 2
+        },
+        {
+          "target": "bips:93",
+          "count": 2
+        },
+        {
+          "target": "bips:173",
+          "count": 5
+        },
+        {
+          "target": "bips:350",
+          "count": 3
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:00:14Z",
+          "dependencies": [
+            {
+              "target": "bips:93",
+              "evidence": "The codex32 format is used to store master secret data",
+              "reason": "The codex32 registrations depend on the codex32 format introduced by BIP 93, including its HRP-based encoding and checksum rules.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:173",
+              "evidence": "BIP-0173 defines a new format for segregated witness output addresses",
+              "reason": "This proposal registers human-readable parts specifically for the address format defined by BIP 173, so it relies on that format's semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:350",
+              "evidence": "Entries annotated with \"(m)\" use Bech32m [BIP-0350]",
+              "reason": "The non-segwit-compatible registrations use Bech32m behavior defined by BIP 350, making it a technical prerequisite for those entries.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

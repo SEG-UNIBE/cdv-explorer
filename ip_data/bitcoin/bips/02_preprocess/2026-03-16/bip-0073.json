@@ -529,12 +529,30 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 70"
+        {
+          "target": "bips:70",
+          "count": 6
+        }
       ],
       "body_extracted_llm": [
-        "BIP 21",
-        "BIP 70",
-        "BIP 71"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:57:59Z",
+          "dependencies": [
+            {
+              "target": "bips:70",
+              "evidence": "This BIP describes an enhancement to the payment protocol ([[bip-0070.mediawiki|BIP 70]])",
+              "reason": "The proposal extends the payment protocol defined by BIP 70 and reuses its payment request semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:71",
+              "evidence": "Augmentation to payment protocol",
+              "reason": "The proposal’s feature set relies on the bitcoin URI/payment request URL behavior established by the payment-related URI specification in BIP 71.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

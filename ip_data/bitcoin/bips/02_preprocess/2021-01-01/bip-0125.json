@@ -588,10 +588,35 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 68",
-        "BIP 112"
+        {
+          "target": "bips:68",
+          "count": 1
+        },
+        {
+          "target": "bips:112",
+          "count": 1
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:01:15Z",
+          "dependencies": [
+            {
+              "target": "bips:68",
+              "evidence": "compatible with consensus-enforced locktime as provided in ... draft BIP68",
+              "reason": "The proposal relies on sequence-number semantics and locktime behavior defined by BIP 68 to avoid conflicting with relative lock-time usage.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:112",
+              "evidence": "and draft BIP112 (CHECKSEQUENCEVERIFY)",
+              "reason": "The proposal’s use of nSequence for replaceability must remain compatible with CHECKSEQUENCEVERIFY rules introduced by BIP 112.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

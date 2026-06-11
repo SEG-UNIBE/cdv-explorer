@@ -633,16 +633,54 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 9",
-        "BIP 22",
-        "BIP 23",
-        "BIP 141"
+        {
+          "target": "bips:9",
+          "count": 4
+        },
+        {
+          "target": "bips:22",
+          "count": 4
+        },
+        {
+          "target": "bips:23",
+          "count": 5
+        },
+        {
+          "target": "bips:141",
+          "count": 8
+        }
       ],
       "body_extracted_llm": [
-        "BIP 9",
-        "BIP 22",
-        "BIP 23",
-        "BIP 141"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:58:39Z",
+          "dependencies": [
+            {
+              "target": "bips:9",
+              "evidence": "the template's \"rules\" list (see BIP 9) includes \"segwit\"",
+              "reason": "The proposal relies on BIP 9 rule signaling semantics to determine when segregated witness is active in templates.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:22",
+              "evidence": "modifications to the getblocktemplate JSON-RPC call (BIP 22)",
+              "reason": "This proposal directly amends the getblocktemplate protocol defined by BIP 22.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:23",
+              "evidence": "see BIP 23 Mutations",
+              "reason": "The coinbase commitment placement rule depends on BIP 23 mutation support and its generation mutability semantics.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "support segregated witness as defined by BIP 141",
+              "reason": "The proposal extends getblocktemplate to convey witness-specific block data and consensus-derived limits introduced by BIP 141.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

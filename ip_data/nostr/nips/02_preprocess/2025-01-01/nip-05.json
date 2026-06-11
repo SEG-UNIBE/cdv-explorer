@@ -300,7 +300,20 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:07Z",
+          "dependencies": [
+            {
+              "target": "nips:19",
+              "evidence": "Keys in NIP-19 `npub` format are only meant to be used for display",
+              "reason": "The proposal constrains how NIP-19 bech32-encoded keys may be used in clients, distinguishing display-only usage from the hex key format required here.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

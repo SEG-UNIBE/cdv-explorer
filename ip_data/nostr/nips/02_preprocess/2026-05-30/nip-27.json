@@ -233,7 +233,38 @@
           "count": 2
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:35Z",
+          "dependencies": [
+            {
+              "target": "nips:18",
+              "evidence": "Including [NIP-18](18.md)'s quote tags",
+              "reason": "The proposal optionally relies on quote-tag semantics to notify mentioned profiles or make referenced events recognize replies.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:19",
+              "evidence": "raw [NIP-19](19.md) codes into the body of text",
+              "reason": "The inline-reference encoding is based on NIP-19 codes that are wrapped and later decoded by clients.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:21",
+              "evidence": "using [NIP-21](21.md) codes",
+              "reason": "The proposal requires clients to use and interpret nostr: URI links defined by NIP-21 for inline references.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:23",
+              "evidence": "if a client ... sees, for example, a [`kind:30023`](23.md) `nostr:naddr1...` URL reference",
+              "reason": "The proposal extends its inline-reference handling to addressable events such as kind 30023, which are introduced by NIP-23.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

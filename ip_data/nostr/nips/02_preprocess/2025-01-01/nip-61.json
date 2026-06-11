@@ -196,7 +196,38 @@
           "count": 3
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:28Z",
+          "dependencies": [
+            {
+              "target": "nips:44",
+              "evidence": "store the private key in the `kind:37375` event in the nip44-encrypted `content` field",
+              "reason": "The proposal relies on NIP-44 encryption to protect wallet/key material stored in event content.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:46",
+              "evidence": "clients can: ... store the private key in the `kind:37375` event in the nip44-encrypted `content` field",
+              "reason": "The appendix explicitly relies on NIP-46 signing constraints as the motivation for this fallback key-storage approach.",
+              "confidence": "low"
+            },
+            {
+              "target": "nips:60",
+              "evidence": "swap the tokens into a wallet the user controls, either a [[NIP-60]] wallet",
+              "reason": "Receiving nut zaps depends on the NIP-60 wallet model as one of the defined redemption targets.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:65",
+              "evidence": "Clients SHOULD normalize and deduplicate mint URLs as described in NIP-65.",
+              "reason": "The proposal directly depends on NIP-65's mint URL normalization/deduplication rules and its relay publishing guidance.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

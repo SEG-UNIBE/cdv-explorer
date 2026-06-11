@@ -827,18 +827,64 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 8",
-        "BIP 9",
-        "BIP 16",
-        "BIP 141",
-        "BIP 341"
+        {
+          "target": "bips:8",
+          "count": 2
+        },
+        {
+          "target": "bips:9",
+          "count": 9
+        },
+        {
+          "target": "bips:16",
+          "count": 3
+        },
+        {
+          "target": "bips:141",
+          "count": 1
+        },
+        {
+          "target": "bips:341",
+          "count": 3
+        }
       ],
       "body_extracted_llm": [
-        "BIP 9",
-        "BIP 16",
-        "BIP 141",
-        "BIP 341",
-        "BIP 342"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:58:16Z",
+          "dependencies": [
+            {
+              "target": "bips:8",
+              "evidence": "\"This deployment uses a modified version of BIP9\"",
+              "reason": "The deployment changes activation semantics by adopting BIP8-like mandatory signaling and height-based lock-in behavior, so it relies on BIP8 activation mechanics.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:9",
+              "evidence": "\"This deployment uses a modified version of BIP9\"",
+              "reason": "The proposal’s activation state machine and GetBlockTemplate signaling are built on BIP9’s deployment framework.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:16",
+              "evidence": "\"except for the redeemScript push in BIP16 scriptSigs\"",
+              "reason": "The script-size exception depends on the scriptSig/redeemScript construction defined by BIP16.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "\"not Witness v0/BIP 141, Taproot/BIP 341, or P2A\"",
+              "reason": "The rule’s witness-version classification explicitly depends on the SegWit version 0 semantics introduced by BIP141.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "\"not Witness v0/BIP 141, Taproot/BIP 341, or P2A\"",
+              "reason": "The proposal’s Taproot annex, control block, and tapleaf rules depend on Taproot output and script-path semantics defined by BIP341.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

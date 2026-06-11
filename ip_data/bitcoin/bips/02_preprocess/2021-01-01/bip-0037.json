@@ -753,7 +753,20 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:00:34Z",
+          "dependencies": [
+            {
+              "target": "bips:31",
+              "evidence": "After a filter has been set, nodes don't merely stop announcing non-matching transactions, they can also serve filtered blocks.",
+              "reason": "This proposal introduces filtered block delivery as an extension to the peer-to-peer protocol message flow established by the earlier transport/p2p protocol proposal.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

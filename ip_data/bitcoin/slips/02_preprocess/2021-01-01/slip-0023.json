@@ -261,12 +261,55 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 32",
-        "BIP 39",
-        "SLIP 10",
-        "SLIP 39"
+        {
+          "target": "bips:32",
+          "count": 9
+        },
+        {
+          "target": "bips:39",
+          "count": 8
+        },
+        {
+          "target": "slips:10",
+          "count": 6
+        },
+        {
+          "target": "slips:39",
+          "count": 9
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:02:18Z",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "adapts the master node derivation used in BIP-0032",
+              "reason": "The proposal reuses and modifies BIP-0032-style master node derivation and key hierarchy assumptions.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:39",
+              "evidence": "a BIP-0039 mnemonic or a set of SLIP-0039 mnemonics",
+              "reason": "The proposal’s Icarus derivation is defined from a BIP-0039 mnemonic and passphrase.",
+              "confidence": "low"
+            },
+            {
+              "target": "slips:10",
+              "evidence": "adapts the master node derivation used in BIP-0032 and SLIP-0010",
+              "reason": "The proposed universal derivation is explicitly modeled on SLIP-0010-style master-node derivation.",
+              "confidence": "high"
+            },
+            {
+              "target": "slips:39",
+              "evidence": "primarily intended for use with SLIP-0039 Shamir's Secret-Sharing for Mnemonic Codes",
+              "reason": "The new universal master-node derivation is designed to work with SLIP-0039-derived master secrets and is mandated for that source.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

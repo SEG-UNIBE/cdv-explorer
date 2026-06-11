@@ -275,7 +275,26 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:25Z",
+          "dependencies": [
+            {
+              "target": "nips:04",
+              "evidence": "\"nip04_encrypt\"",
+              "reason": "The proposal defines signer methods specifically for NIP-04 encryption/decryption, so its request/response semantics extend that protocol.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:44",
+              "evidence": "\"nip44_encrypt\"",
+              "reason": "The proposal defines signer methods specifically for NIP-44 encryption/decryption, so its request/response semantics extend that protocol.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

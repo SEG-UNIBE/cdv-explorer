@@ -581,7 +581,20 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:57:37Z",
+          "dependencies": [
+            {
+              "target": "bips:6",
+              "evidence": "OP_CHECKMULTISIG transactions are redeemed using a standard scriptSig",
+              "reason": "The proposal’s transaction validity and relay format rely on the standard scriptSig/scriptPubKey transaction structure defined by the script system in this BIP.",
+              "confidence": "medium"
+            }
+          ]
+        }
+      ]
     }
   }
 }

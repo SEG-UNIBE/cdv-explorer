@@ -208,7 +208,26 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:21Z",
+          "dependencies": [
+            {
+              "target": "nips:01",
+              "evidence": "new message, `AUTH`, which relays CAN send ... and clients can send to relays",
+              "reason": "The proposal relies on the existing client-relay message exchange model and event submission/response flow defined by the basic Nostr protocol.",
+              "confidence": "low"
+            },
+            {
+              "target": "nips:20",
+              "evidence": "`OK` and `CLOSED` machine-readable prefixes",
+              "reason": "This proposal extends the semantics of relay response messages by defining new machine-readable prefixes inside OK and CLOSED responses.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

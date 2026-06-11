@@ -182,7 +182,20 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:22Z",
+          "dependencies": [
+            {
+              "target": "nips:01",
+              "evidence": "filters as specified in [NIP 01](01.md) for the verb `REQ`",
+              "reason": "The COUNT verb reuses NIP 01 filter syntax and request semantics, so it depends on that filter definition.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

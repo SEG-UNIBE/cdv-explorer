@@ -225,7 +225,44 @@
           "count": 2
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:28Z",
+          "dependencies": [
+            {
+              "target": "nips:09",
+              "evidence": "token event should be [[NIP-09]]-deleted",
+              "reason": "The proposal relies on NIP-09 deletion semantics to retire spent token events.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:40",
+              "evidence": "These events should be created with an expiration tag [[NIP-40]] matching the expiration",
+              "reason": "The quote event uses NIP-40 expiration tags to define relay discard behavior and event lifetime.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:44",
+              "evidence": "`content`: nip44_encrypt([",
+              "reason": "NIP-44 is required for encrypting wallet, token, history, and quote event content and tags.",
+              "confidence": "low"
+            },
+            {
+              "target": "nips:61",
+              "evidence": "This is only used when receiving funds from others, described in NIP-61.",
+              "reason": "The wallet private key and spending-history `redeemed` marker reference the receiving workflow defined by NIP-61.",
+              "confidence": "medium"
+            },
+            {
+              "target": "nips:65",
+              "evidence": "if missing, clients should follow [[NIP-65]].",
+              "reason": "Relay discovery falls back to NIP-65 relay lists when wallet relays are absent.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

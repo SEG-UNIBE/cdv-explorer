@@ -743,24 +743,96 @@
     ],
     "interrelations": {
       "preamble_extracted": [
-        "BIP 340",
-        "BIP 341",
-        "BIP 342"
+        {
+          "target": "bips:340",
+          "type": "requires"
+        },
+        {
+          "target": "bips:341",
+          "type": "requires"
+        },
+        {
+          "target": "bips:342",
+          "type": "requires"
+        }
       ],
       "body_extracted_regex": [
-        "BIP 30",
-        "BIP 68",
-        "BIP 112",
-        "BIP 141",
-        "BIP 340",
-        "BIP 341",
-        "BIP 342",
-        "BIP 350"
+        {
+          "target": "bips:30",
+          "count": 2
+        },
+        {
+          "target": "bips:68",
+          "count": 2
+        },
+        {
+          "target": "bips:112",
+          "count": 2
+        },
+        {
+          "target": "bips:141",
+          "count": 1
+        },
+        {
+          "target": "bips:340",
+          "count": 10
+        },
+        {
+          "target": "bips:341",
+          "count": 20
+        },
+        {
+          "target": "bips:342",
+          "count": 22
+        },
+        {
+          "target": "bips:350",
+          "count": 2
+        }
       ],
       "body_extracted_llm": [
-        "BIP 340",
-        "BIP 341",
-        "BIP 342"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:58:22Z",
+          "dependencies": [
+            {
+              "target": "bips:30",
+              "evidence": "replay of the signature is only possible if the same input can be spent multiple times, which is not possible on the Bitcoin blockchain (due to enforcement of BIP 30)",
+              "reason": "The replay discussion assumes BIP 30’s prohibition on duplicate-spend transactions to explain why ordinary sighashes are replay-resistant.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:68",
+              "evidence": "This risk may be mitigated somewhat by using BIP 68/BIP 112 relative time locks",
+              "reason": "The proposal uses relative timelocks from BIP 68 as a mitigation for malleability in transactions using ANYPREVOUT signatures.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:112",
+              "evidence": "This risk may be mitigated somewhat by using BIP 68/BIP 112 relative time locks",
+              "reason": "The proposal depends on the relative lock-time semantics introduced by BIP 112 as part of its malleability mitigation guidance.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:340",
+              "evidence": "retain the same elliptic curve and signature algorithm (ie, secp256k1 and BIP 340)",
+              "reason": "The proposal relies on BIP 340’s Schnorr signature scheme and verification function for BIP 118 signatures.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "This BIP describes a new type of public key for tapscript (BIP 342) transactions.",
+              "reason": "BIP 118 is defined in the Taproot context and reuses BIP 341 concepts such as taproot internal keys, tapleaf hashes, and transaction signing rules.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:342",
+              "evidence": "This BIP describes a new type of public key for tapscript (BIP 342) transactions.",
+              "reason": "BIP 118 directly modifies the signature opcode rules and signature validation semantics defined by BIP 342.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

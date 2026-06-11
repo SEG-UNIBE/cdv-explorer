@@ -575,10 +575,24 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 101"
+        {
+          "target": "bips:101",
+          "count": 1
+        }
       ],
       "body_extracted_llm": [
-        "BIP 101"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:58:15Z",
+          "dependencies": [
+            {
+              "target": "bips:101",
+              "evidence": "Similar deployment model to BIP101",
+              "reason": "The proposal explicitly adopts BIP101’s activation model, so its deployment semantics depend on that proposal.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

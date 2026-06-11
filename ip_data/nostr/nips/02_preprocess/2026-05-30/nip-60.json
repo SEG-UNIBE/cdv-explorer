@@ -276,7 +276,44 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:51Z",
+          "dependencies": [
+            {
+              "target": "nips:09",
+              "evidence": "the token event should be [NIP-09](09.md)-deleted",
+              "reason": "The proposal relies on NIP-09 delete events to mark spent token events and uses its delete-tag semantics for state transitions.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:40",
+              "evidence": "events should be created with an expiration tag [NIP-40](40.md)",
+              "reason": "The optional quote-state event depends on NIP-40 expiration tags to define its lifecycle and expiry behavior.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:44",
+              "evidence": "`content`: nip44_encrypt([...])",
+              "reason": "The wallet, token, spending history, and quote events use NIP-44 encrypted payloads and encrypted tags, so the proposal depends on NIP-44 content encryption semantics.",
+              "confidence": "low"
+            },
+            {
+              "target": "nips:61",
+              "evidence": "This is only used for receiving [NIP-61](61.md) nutzaps.",
+              "reason": "The wallet private key and spending-history markers are specifically intended to support NIP-61 nutzap receipt and redemption flow.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:65",
+              "evidence": "it should fall back to using the user's [NIP-65](65.md) relays",
+              "reason": "Discovery of wallet/token data falls back to relays defined by NIP-65, so this proposal depends on NIP-65 relay list semantics.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

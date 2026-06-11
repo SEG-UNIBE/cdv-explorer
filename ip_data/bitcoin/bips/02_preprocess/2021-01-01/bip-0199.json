@@ -488,7 +488,26 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:01:46Z",
+          "dependencies": [
+            {
+              "target": "bips:112",
+              "evidence": "[TIMEOUTOP] is either OP_CHECKSEQUENCEVERIFY or OP_CHECKLOCKTIMEVERIFY.",
+              "reason": "The HTLC script explicitly relies on the timeout semantics introduced by this proposal's relative-locktime opcode.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:117",
+              "evidence": "[TIMEOUTOP] is either OP_CHECKSEQUENCEVERIFY or OP_CHECKLOCKTIMEVERIFY.",
+              "reason": "The HTLC script can use the relative timelock opcode defined by this proposal to enforce the refund timeout.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

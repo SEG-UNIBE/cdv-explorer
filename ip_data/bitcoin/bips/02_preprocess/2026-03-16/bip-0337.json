@@ -573,10 +573,54 @@
       "preamble_extracted": [],
       "body_extracted_regex": [],
       "body_extracted_llm": [
-        "BIP 16",
-        "BIP 141",
-        "BIP 340",
-        "BIP 341"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:59:10Z",
+          "dependencies": [
+            {
+              "target": "bips:141",
+              "evidence": "Taproot",
+              "reason": "The proposal’s compressed signature handling and transaction examples rely on Taproot-specific witness and key-spend semantics introduced by this upgrade.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:143",
+              "evidence": "Legacy/Segwit",
+              "reason": "The proposal’s standard signature hash handling for legacy/segwit inputs depends on the transaction digest rules defined here.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:173",
+              "evidence": "P2WPKH",
+              "reason": "The compressed transaction format explicitly recognizes P2WPKH outputs and inputs, relying on the segwit v0 script/address format defined by this proposal.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:174",
+              "evidence": "Partially Signed Bitcoin Transaction",
+              "reason": "The proposal’s reference implementation and compressed/uncompressed transaction handling are closely tied to PSBT-style input/output metadata and signing workflows.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:340",
+              "evidence": "P2TR",
+              "reason": "The proposal’s script-type encoding and compressed signature rules include P2TR, which depends on Taproot’s key path spending and Schnorr signature semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "for Taproot",
+              "reason": "The compression format treats Taproot inputs specially and depends on Taproot transaction/witness rules for key-spend signatures.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:342",
+              "evidence": "P2TR on a key spend",
+              "reason": "The proposal’s compressed signature format for P2TR key spends relies on the annex/control-block and signature semantics introduced by this Taproot script update.",
+              "confidence": "medium"
+            }
+          ]
+        }
       ]
     }
   }

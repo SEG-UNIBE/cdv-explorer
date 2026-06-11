@@ -160,7 +160,20 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:50Z",
+          "dependencies": [
+            {
+              "target": "nips:42",
+              "evidence": "requires the client perform the [NIP-42](42.md) `AUTH` flow",
+              "reason": "This proposal relies on NIP-42 authentication to verify the publisher's identity before accepting protected events.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

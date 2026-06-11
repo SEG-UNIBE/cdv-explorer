@@ -681,14 +681,44 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 11",
-        "BIP 16",
-        "BIP 45"
+        {
+          "target": "bips:11",
+          "count": 3
+        },
+        {
+          "target": "bips:16",
+          "count": 4
+        },
+        {
+          "target": "bips:45",
+          "count": 2
+        }
       ],
       "body_extracted_llm": [
-        "BIP 11",
-        "BIP 13",
-        "BIP 16"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:57:57Z",
+          "dependencies": [
+            {
+              "target": "bips:11",
+              "evidence": "Pay-to-script-hash (BIP-0011) is a transaction type that allows funding of arbitrary scripts",
+              "reason": "The proposal is specifically about deterministic multisig P2SH scripts, so it builds on the P2SH concept introduced by BIP 11.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:16",
+              "evidence": "Hash the redeem script according to BIP-0016 to get the P2SH address.",
+              "reason": "The proposal’s address generation and script handling rely on the P2SH hashing and redemption model defined by BIP 16.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:45",
+              "evidence": "BIP-0045 - Structure for Deterministic P2SH Multisignature Wallets",
+              "reason": "The proposal explicitly aligns with deterministic P2SH multisignature wallet structure and address generation conventions introduced by BIP 45.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

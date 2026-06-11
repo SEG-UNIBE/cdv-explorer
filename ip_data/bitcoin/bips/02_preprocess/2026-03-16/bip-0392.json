@@ -507,24 +507,51 @@
     ],
     "interrelations": {
       "preamble_extracted": [
-        "BIP 341",
-        "BIP 350",
-        "BIP 352",
-        "BIP 380"
+        {
+          "target": "bips:341",
+          "type": "requires"
+        },
+        {
+          "target": "bips:350",
+          "type": "requires"
+        },
+        {
+          "target": "bips:352",
+          "type": "requires"
+        },
+        {
+          "target": "bips:380",
+          "type": "requires"
+        }
       ],
       "body_extracted_regex": [
-        "BIP 341",
-        "BIP 350",
-        "BIP 352",
-        "BIP 380",
-        "BIP 390"
+        {
+          "target": "bips:341",
+          "count": 2
+        },
+        {
+          "target": "bips:350",
+          "count": 2
+        },
+        {
+          "target": "bips:352",
+          "count": 6
+        },
+        {
+          "target": "bips:380",
+          "count": 2
+        },
+        {
+          "target": "bips:390",
+          "count": 1
+        }
       ],
       "body_extracted_llm": [
-        "BIP 32",
-        "BIP 341",
-        "BIP 350",
-        "BIP 352",
-        "BIP 380"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:59:40Z",
+          "dependencies": []
+        }
       ]
     }
   }

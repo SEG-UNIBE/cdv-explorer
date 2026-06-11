@@ -601,11 +601,45 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 32",
-        "BIP 43",
-        "BIP 44"
+        {
+          "target": "bips:32",
+          "count": 12
+        },
+        {
+          "target": "bips:43",
+          "count": 4
+        },
+        {
+          "target": "bips:44",
+          "count": 3
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:01:42Z",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "Utilizing hierarchical deterministic wallets as described in BIP-0032",
+              "reason": "The proposal’s key derivation scheme is built on BIP32 hierarchical deterministic wallet paths and hardened derivation semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:43",
+              "evidence": "the \"Purpose Field\" in BIP-0043",
+              "reason": "The proposal uses BIP43’s purpose field convention to assign purpose 175' for this subtree.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:44",
+              "evidence": "The coin type field is identical to the same field in BIP-0044",
+              "reason": "The proposal reuses BIP44’s coin_type field semantics in its derivation path structure.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

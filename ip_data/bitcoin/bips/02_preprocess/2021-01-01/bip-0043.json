@@ -479,10 +479,35 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 32",
-        "BIP 44"
+        {
+          "target": "bips:32",
+          "count": 13
+        },
+        {
+          "target": "bips:44",
+          "count": 1
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:00:37Z",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "based on algorithm described in BIP-0032",
+              "reason": "The proposal defines its purpose field within the BIP32 hierarchical deterministic wallet tree and depends on BIP32 derivation and node serialization concepts.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:44",
+              "evidence": "Example: Scheme described in BIP44 should use 44'",
+              "reason": "BIP44 is used as the concrete scheme that instantiates this proposal's purpose field convention, relying on its assigned purpose number.",
+              "confidence": "medium"
+            }
+          ]
+        }
+      ]
     }
   }
 }

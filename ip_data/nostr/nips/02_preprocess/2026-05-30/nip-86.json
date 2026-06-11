@@ -149,7 +149,20 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:54Z",
+          "dependencies": [
+            {
+              "target": "nips:98",
+              "evidence": "The request must contain an `Authorization` header with a valid [NIP-98](./98.md) event",
+              "reason": "This API requires NIP-98 authenticated events for authorization, and also changes the payload tag requirement and relay URL semantics from that scheme.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

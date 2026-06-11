@@ -571,11 +571,34 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 14",
-        "BIP 37"
+        {
+          "target": "bips:14",
+          "count": 1
+        },
+        {
+          "target": "bips:37",
+          "count": 4
+        }
       ],
       "body_extracted_llm": [
-        "BIP 37"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:57:54Z",
+          "dependencies": [
+            {
+              "target": "bips:14",
+              "evidence": "[[bip-0014.mediawiki|User Agent]]",
+              "reason": "The version message includes the user agent field defined by the target proposal, so this specification relies on that field format.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:37",
+              "evidence": "Whether the remote peer should announce relayed transactions or not, see [[bip-0037.mediawiki|BIP 0037]]",
+              "reason": "This proposal formalizes the relay flag in the version message that was introduced by the target, making BIP 37's relay semantics part of the protocol payload.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

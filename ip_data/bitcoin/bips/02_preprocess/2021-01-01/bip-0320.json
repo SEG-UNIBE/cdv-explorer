@@ -466,10 +466,35 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 8",
-        "BIP 9"
+        {
+          "target": "bips:8",
+          "count": 3
+        },
+        {
+          "target": "bips:9",
+          "count": 3
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:01:56Z",
+          "dependencies": [
+            {
+              "target": "bips:8",
+              "evidence": "removed from BIP8 and BIP9 specifications",
+              "reason": "The proposal directly amends BIP 8's version-bits signaling by excluding reserved bits from its activation semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:9",
+              "evidence": "removed from BIP8 and BIP9 specifications",
+              "reason": "The proposal directly changes BIP 9 soft-fork signaling by reserving block-header version bits and ignoring them for BIP 9 warnings/activation.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

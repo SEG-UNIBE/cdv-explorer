@@ -537,7 +537,20 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:57:55Z",
+          "dependencies": [
+            {
+              "target": "bips:37",
+              "evidence": "When combined with Bloom filtering this can be reasonably efficient.",
+              "reason": "The proposal explicitly relies on Bloom filtering as the complementary mechanism for efficient block searching and SPV-style querying.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

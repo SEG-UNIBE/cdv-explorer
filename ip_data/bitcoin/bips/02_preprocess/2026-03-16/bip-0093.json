@@ -861,14 +861,54 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 32",
-        "BIP 39",
-        "BIP 173",
-        "SLIP 39"
+        {
+          "target": "bips:32",
+          "count": 15
+        },
+        {
+          "target": "bips:39",
+          "count": 30
+        },
+        {
+          "target": "bips:173",
+          "count": 9
+        },
+        {
+          "target": "slips:39",
+          "count": 9
+        }
       ],
       "body_extracted_llm": [
-        "BIP 32",
-        "BIP 173"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:58:10Z",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "“a standard for backing up and restoring the master seed of a ... BIP-0032 hierarchical deterministic wallet”",
+              "reason": "The proposal directly encodes and recovers BIP-32 master seed material, so its format and recovery semantics depend on BIP 32’s seed model.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:39",
+              "evidence": "“BIP-0039 serves the same purpose as this standard: encoding master seeds for storage by users.”",
+              "reason": "The proposal is an alternative backup/encoding method for the same seed material used by BIP 39 mnemonics, and discusses interoperability and conversion from that scheme.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:173",
+              "evidence": "“It reuses the base-32 character set from BIP-0173”",
+              "reason": "codex32 adopts Bech32 character set, casing, and checksum-related decoding rules defined by BIP 173.",
+              "confidence": "low"
+            },
+            {
+              "target": "slips:39",
+              "evidence": "“SLIP-0039 has essentially the same motivations as this standard.”",
+              "reason": "The proposal’s share generation and secret recovery are positioned as an alternative to SLIP-39, and it explicitly reuses the same secret-sharing use case while differing in technical format.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

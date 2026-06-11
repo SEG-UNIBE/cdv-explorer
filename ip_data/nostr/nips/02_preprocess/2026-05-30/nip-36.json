@@ -136,7 +136,20 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:38Z",
+          "dependencies": [
+            {
+              "target": "nips:32",
+              "evidence": "`l` and `L` tags MAY be also be used as defined in [NIP-32](32.md)",
+              "reason": "The proposal reuses the tag semantics from NIP-32 for further qualification and querying, so NIP-32 defines the applicable format and behavior.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

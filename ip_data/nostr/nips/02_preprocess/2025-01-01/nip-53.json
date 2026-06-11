@@ -241,7 +241,20 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:24Z",
+          "dependencies": [
+            {
+              "target": "nips:19",
+              "evidence": "The activity MUST be linked to using the [NIP-19](19.md) `naddr` code along with the `a` tag.",
+              "reason": "This proposal requires NIP-19's naddr encoding to link live activities, so it depends on that identifier format for addressing.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

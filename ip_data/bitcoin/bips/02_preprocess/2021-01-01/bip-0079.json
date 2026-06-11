@@ -607,14 +607,51 @@
     ],
     "interrelations": {
       "preamble_extracted": [
-        "BIP 78"
+        {
+          "target": "bips:78",
+          "type": "proposed_replacement"
+        }
       ],
       "body_extracted_regex": [
-        "BIP 21",
-        "BIP 69",
-        "BIP 125"
+        {
+          "target": "bips:21",
+          "count": 1
+        },
+        {
+          "target": "bips:69",
+          "count": 1
+        },
+        {
+          "target": "bips:125",
+          "count": 1
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:00:55Z",
+          "dependencies": [
+            {
+              "target": "bips:21",
+              "evidence": "The standard way of letting a sender know where to send a bustapay transaction is done via a bip21 encoded address.",
+              "reason": "BustaPay defines its discovery parameter as a BIP21 URI extension, so it relies on BIP21 address encoding and parsing.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:69",
+              "evidence": "Check if the transaction was already sorted according to BIP69",
+              "reason": "The receiver is instructed to preserve BIP69 ordering if present, so the protocol must handle transactions using that canonical ordering rule.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:125",
+              "evidence": "encouraged to use a slightly more aggressive feerate than usual as well as BIP125 (Opt-in Full Replace-by-Fee Signaling)",
+              "reason": "The protocol’s replace-by-fee fallback and propagation behavior depend on BIP125 opt-in RBF signaling semantics.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

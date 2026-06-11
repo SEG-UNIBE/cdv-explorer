@@ -1115,26 +1115,82 @@
     ],
     "interrelations": {
       "preamble_extracted": [
-        "BIP 443"
+        {
+          "target": "bips:443",
+          "type": "proposed_replacement"
+        }
       ],
       "body_extracted_regex": [
-        "BIP 65",
-        "BIP 112",
-        "BIP 118",
-        "BIP 119",
-        "BIP 125",
-        "BIP 340",
-        "BIP 341",
-        "BIP 342"
+        {
+          "target": "bips:65",
+          "count": 2
+        },
+        {
+          "target": "bips:112",
+          "count": 2
+        },
+        {
+          "target": "bips:118",
+          "count": 1
+        },
+        {
+          "target": "bips:119",
+          "count": 5
+        },
+        {
+          "target": "bips:125",
+          "count": 2
+        },
+        {
+          "target": "bips:340",
+          "count": 2
+        },
+        {
+          "target": "bips:341",
+          "count": 2
+        },
+        {
+          "target": "bips:342",
+          "count": 2
+        }
       ],
       "body_extracted_llm": [
-        "BIP 68",
-        "BIP 112",
-        "BIP 119",
-        "BIP 125",
-        "BIP 340",
-        "BIP 341",
-        "BIP 342"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:59:15Z",
+          "dependencies": [
+            {
+              "target": "bips:119",
+              "evidence": "allow users to enforce a delay period ... with the exception of a prespecified \"recovery\" path",
+              "reason": "The proposal’s vault construction explicitly relies on CTV to commit withdrawal transactions to a fixed set of outputs and make the trigger/update semantics work.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:125",
+              "evidence": "the input is not marked as opt-in replaceable ... per BIP-0125",
+              "reason": "Recovery transactions are required to follow opt-in RBF replacement rules, so the policy behavior is part of the design’s fee and anti-pinning model.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:340",
+              "evidence": "tagged hash for 'recoveryOut' as ... tagged_hash(\"VaultRecoverySPK\", ... )",
+              "reason": "The recovery authorization check depends on BIP 340’s tagged hash function reference code to compute the required scriptPubKey commitment.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "encumbering coins under a taptree (BIP-341) containing at least two leaves",
+              "reason": "Vault outputs are defined as Taproot taptrees with leaf replacement semantics, so the proposal builds directly on the BIP 341 output structure.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:342",
+              "evidence": "Decrement the per-script sigops budget (see ... BIP-0342) by 60",
+              "reason": "The opcode rules are tapscript semantics and explicitly use the BIP 342 sigops budget and script execution model.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

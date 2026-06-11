@@ -573,16 +573,37 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 118",
-        "BIP 119",
-        "BIP 340",
-        "BIP 342",
-        "BIP 347",
-        "BIP 349"
+        {
+          "target": "bips:118",
+          "count": 4
+        },
+        {
+          "target": "bips:119",
+          "count": 3
+        },
+        {
+          "target": "bips:340",
+          "count": 6
+        },
+        {
+          "target": "bips:342",
+          "count": 5
+        },
+        {
+          "target": "bips:347",
+          "count": 3
+        },
+        {
+          "target": "bips:349",
+          "count": 3
+        }
       ],
       "body_extracted_llm": [
-        "BIP 340",
-        "BIP 342"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:59:17Z",
+          "dependencies": []
+        }
       ]
     }
   }

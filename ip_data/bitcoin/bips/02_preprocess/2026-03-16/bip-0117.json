@@ -685,16 +685,56 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 8",
-        "BIP 16",
-        "BIP 68",
-        "BIP 114",
-        "BIP 116",
-        "BIP 141"
+        {
+          "target": "bips:8",
+          "count": 7
+        },
+        {
+          "target": "bips:16",
+          "count": 5
+        },
+        {
+          "target": "bips:68",
+          "count": 3
+        },
+        {
+          "target": "bips:114",
+          "count": 5
+        },
+        {
+          "target": "bips:116",
+          "count": 6
+        },
+        {
+          "target": "bips:141",
+          "count": 7
+        }
       ],
       "body_extracted_llm": [
-        "BIP 8",
-        "BIP 141"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:58:19Z",
+          "dependencies": [
+            {
+              "target": "bips:8",
+              "evidence": "This BIP will be deployed by BIP8 (Version bits with lock-in by height)",
+              "reason": "The proposal specifies BIP8 as its activation mechanism and depends on its version-bits deployment semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:116",
+              "evidence": "This BIP, in conjunction with BIP116 (MERKLEBRANCHVERIFY)",
+              "reason": "The proposal’s core mechanism requires MERKLEBRANCHVERIFY to commit to and validate the selected policy script before execution.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "only from within a segwit redeem script",
+              "reason": "Tail-call semantics are restricted to segwit v0-style witness/script execution, so the proposal depends on Segregated Witness context and rules.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

@@ -234,7 +234,26 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:31Z",
+          "dependencies": [
+            {
+              "target": "nips:09",
+              "evidence": "using [NIP-09 event deletion requests](09.md)",
+              "reason": "The moderation workflow relies on NIP-09 deletion requests for withdrawing approvals.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:18",
+              "evidence": "support cross-posting ... by posting a NIP 18 `kind 6` or `kind 16` repost",
+              "reason": "Cross-posting explicitly uses the repost event types defined by NIP-18.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

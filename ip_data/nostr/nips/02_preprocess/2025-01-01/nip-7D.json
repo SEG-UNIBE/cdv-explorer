@@ -113,7 +113,20 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:31Z",
+          "dependencies": [
+            {
+              "target": "nips:22",
+              "evidence": "Replies to `kind 11` MUST use [NIP-22](./22.md) `kind 1111` comments.",
+              "reason": "The proposal defines thread replies in terms of NIP-22 comment events and their semantics.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

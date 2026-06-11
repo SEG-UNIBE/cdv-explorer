@@ -116,7 +116,20 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:01Z",
+          "dependencies": [
+            {
+              "target": "nips:18",
+              "evidence": "Other content types MAY be quoted within a `kind 9` following [NIP 18](./18.md)",
+              "reason": "The proposal explicitly relies on NIP 18 for quoting content inside chat messages.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

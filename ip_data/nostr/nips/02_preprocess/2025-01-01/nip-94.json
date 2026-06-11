@@ -336,7 +336,20 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:35Z",
+          "dependencies": [
+            {
+              "target": "nips:96",
+              "evidence": "\"service\" (optional) service type which is serving the file (eg. [NIP-96](96.md))",
+              "reason": "The file metadata schema includes an optional service tag that references and relies on the upload/service semantics defined by NIP-96.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

@@ -259,15 +259,61 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 32",
-        "SLIP 1",
-        "SLIP 2",
-        "SLIP 3",
-        "SLIP 4",
-        "SLIP 11",
-        "SLIP 14"
+        {
+          "target": "bips:32",
+          "count": 2
+        },
+        {
+          "target": "slips:1",
+          "count": 1
+        },
+        {
+          "target": "slips:2",
+          "count": 1
+        },
+        {
+          "target": "slips:3",
+          "count": 1
+        },
+        {
+          "target": "slips:4",
+          "count": 1
+        },
+        {
+          "target": "slips:11",
+          "count": 2
+        },
+        {
+          "target": "slips:14",
+          "count": 2
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:02:00Z",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "m/10015'/0' (hardened path, see BIP32)",
+              "reason": "The proposal’s master-key derivation uses BIP32 hardened path semantics and xpub terminology.",
+              "confidence": "low"
+            },
+            {
+              "target": "slips:11",
+              "evidence": "CipherKeyValue is defined in [SLIP-0011]",
+              "reason": "The proposal relies on the CipherKeyValue mechanism defined by this target to derive the master key from the device.",
+              "confidence": "high"
+            },
+            {
+              "target": "slips:14",
+              "evidence": "For the \"stress test\" wallet, defined in SLIP-0014",
+              "reason": "The example derivations and expected outputs are specialized to the wallet definition introduced by this target.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

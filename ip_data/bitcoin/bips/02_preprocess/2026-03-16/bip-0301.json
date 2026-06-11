@@ -592,10 +592,24 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 300"
+        {
+          "target": "bips:300",
+          "count": 1
+        }
       ],
       "body_extracted_llm": [
-        "BIP 300"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:58:59Z",
+          "dependencies": [
+            {
+              "target": "bips:34",
+              "evidence": "main:coinbase",
+              "reason": "The proposal's BMM Accept is encoded in the coinbase transaction, so it relies on the coinbase transaction structure defined by BIP 34/coinbase handling.",
+              "confidence": "medium"
+            }
+          ]
+        }
       ]
     }
   }

@@ -167,7 +167,38 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:36Z",
+          "dependencies": [
+            {
+              "target": "nips:40",
+              "evidence": "[NIP-40](40.md) `expiration` tags are recommended",
+              "reason": "The proposal incorporates NIP-40 expiration tags as part of the draft event metadata and lifecycle guidance.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:42",
+              "evidence": "Private Storage relays SHOULD be [NIP-42](42.md)-authed",
+              "reason": "The private storage relay behavior is constrained by NIP-42 authentication requirements.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:44",
+              "evidence": "The draft is JSON-stringified, [NIP44-encrypted](44.md) to the signer's public key",
+              "reason": "NIP-44 encryption is the core mechanism used to encode draft content and private relay lists.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:65",
+              "evidence": "Clients MUST publish kind `10013` events to the author's [NIP-65](65.md) `write` relays",
+              "reason": "The relay publication rule depends on NIP-65 write-relay semantics.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

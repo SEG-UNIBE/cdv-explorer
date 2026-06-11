@@ -406,7 +406,26 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:17Z",
+          "dependencies": [
+            {
+              "target": "nips:51",
+              "evidence": "A definition for `kind:10009` was included in [NIP-51](51.md) that allows clients to store the list of groups a user wants to remember being in.",
+              "reason": "The proposal relies on NIP-51’s kind:10009 group-list record for storing remembered groups.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:70",
+              "evidence": "clients should include the [NIP-70](70.md) `-` tag",
+              "reason": "The proposal explicitly depends on NIP-70’s `-` tag behavior for unmanaged relays.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

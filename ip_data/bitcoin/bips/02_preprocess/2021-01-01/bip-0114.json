@@ -769,12 +769,49 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 9",
-        "BIP 16",
-        "BIP 112",
-        "BIP 141"
+        {
+          "target": "bips:9",
+          "count": 2
+        },
+        {
+          "target": "bips:16",
+          "count": 2
+        },
+        {
+          "target": "bips:112",
+          "count": 4
+        },
+        {
+          "target": "bips:141",
+          "count": 10
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:01:07Z",
+          "dependencies": [
+            {
+              "target": "bips:9",
+              "evidence": "will be deployed by version-bits [[bip-0009.mediawiki|BIP9]] after BIP141 is enforced",
+              "reason": "The proposal’s activation mechanism relies on BIP9 version-bits deployment semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:112",
+              "evidence": "This is the \"Escrow with Timeout\" example in [[bip-0112.mediawiki|BIP112]]",
+              "reason": "The proposal’s MAST examples and branch rules depend on the CHECKLOCKTIMEVERIFY/CHECKSEQUENCEVERIFY semantics introduced by this proposal.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "In [[bip-0141.mediawiki|BIP141]], witness programs with a version byte of 1 or larger are considered to be anyone-can-spend scripts",
+              "reason": "The proposal defines a new v1 witness program and explicitly uses BIP141’s witness program structure and validation rules.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

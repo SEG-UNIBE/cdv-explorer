@@ -1291,17 +1291,48 @@
     ],
     "interrelations": {
       "preamble_extracted": [
-        "BIP 1",
-        "BIP 3"
+        {
+          "target": "bips:1",
+          "type": "replaces"
+        },
+        {
+          "target": "bips:3",
+          "type": "proposed_replacement"
+        }
       ],
       "body_extracted_regex": [
-        "BIP 1",
-        "BIP 9",
-        "BIP 123"
+        {
+          "target": "bips:1",
+          "count": 12
+        },
+        {
+          "target": "bips:9",
+          "count": 1
+        },
+        {
+          "target": "bips:123",
+          "count": 6
+        }
       ],
       "body_extracted_llm": [
-        "BIP 1",
-        "BIP 123"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:57:35Z",
+          "dependencies": [
+            {
+              "target": "bips:1",
+              "evidence": "This particular BIP replaces BIP 1 with a more well-defined and clear process.",
+              "reason": "The proposal directly amends and supersedes the prior BIP process defined by BIP 1.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:123",
+              "evidence": "See [[bip-0123.mediawiki|BIP 123]] for definitions of the various BIP layers. Activation of this BIP implies activation of BIP 123.",
+              "reason": "The Layer header semantics and activation rule are defined by BIP 123, which this proposal incorporates.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

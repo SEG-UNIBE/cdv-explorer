@@ -136,7 +136,20 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:19Z",
+          "dependencies": [
+            {
+              "target": "nips:32",
+              "evidence": "`l` and `L` tags MAY be also be used as defined in [NIP-32](32.md)",
+              "reason": "This proposal reuses the labeling and namespace tagging mechanism defined by NIP-32 for content-warning qualification and querying.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

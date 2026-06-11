@@ -542,7 +542,20 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:58:28Z",
+          "dependencies": [
+            {
+              "target": "bips:11",
+              "evidence": "“coalescing transaction”",
+              "reason": "The proposal defines a new transaction type and behavior, which depends on the transaction format and type-handling framework established by BIP 11.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

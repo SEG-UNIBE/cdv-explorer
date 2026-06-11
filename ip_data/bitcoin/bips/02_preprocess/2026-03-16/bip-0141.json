@@ -1140,23 +1140,112 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 9",
-        "BIP 16",
-        "BIP 62",
-        "BIP 65",
-        "BIP 68",
-        "BIP 70",
-        "BIP 112",
-        "BIP 143",
-        "BIP 144",
-        "BIP 146",
-        "BIP 173"
+        {
+          "target": "bips:9",
+          "count": 5
+        },
+        {
+          "target": "bips:16",
+          "count": 11
+        },
+        {
+          "target": "bips:62",
+          "count": 4
+        },
+        {
+          "target": "bips:65",
+          "count": 2
+        },
+        {
+          "target": "bips:68",
+          "count": 2
+        },
+        {
+          "target": "bips:70",
+          "count": 2
+        },
+        {
+          "target": "bips:112",
+          "count": 2
+        },
+        {
+          "target": "bips:143",
+          "count": 8
+        },
+        {
+          "target": "bips:144",
+          "count": 6
+        },
+        {
+          "target": "bips:146",
+          "count": 2
+        },
+        {
+          "target": "bips:173",
+          "count": 2
+        }
       ],
       "body_extracted_llm": [
-        "BIP 9",
-        "BIP 16",
-        "BIP 143",
-        "BIP 144"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:58:39Z",
+          "dependencies": [
+            {
+              "target": "bips:9",
+              "evidence": "This BIP will be deployed by \"version bits\" BIP9",
+              "reason": "Activation is specified to use BIP9 version-bits deployment rules, so the proposal depends on BIP9 for soft-fork signaling and activation.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:16",
+              "evidence": "scriptPubKey (or redeemScript as defined in BIP16/P2SH)",
+              "reason": "The witness program can be embedded in or interpreted through BIP16 P2SH redeem scripts, so the proposal relies on BIP16 script semantics.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:65",
+              "evidence": "a new script system that could sign and manipulate the new data (like ... BIP65 and ... BIP112)",
+              "reason": "The proposal’s future script-system extension explicitly references BIP65 as part of the signing/locktime mechanism it wants to reuse or extend.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:68",
+              "evidence": "BIP68 enables per-input relative-lock-time using the nSequence field",
+              "reason": "The proposal discusses extending relative lock-time behavior beyond the existing BIP68 nSequence-based mechanism.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:112",
+              "evidence": "a new script system that could sign and manipulate the new data (like ... BIP112)",
+              "reason": "The proposal’s future extension for new script semantics explicitly builds on the script-signing/verification behavior introduced by BIP112.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:143",
+              "evidence": "a new transaction digest algorithm for signature verification in version 0 witness program",
+              "reason": "Version 0 witness validation depends on the signature digest rules defined by BIP143.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:144",
+              "evidence": "Total size is the block size in bytes with transactions serialized as described in BIP144",
+              "reason": "Block weight and transaction size calculations use the serialization format defined by BIP144.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:146",
+              "evidence": "Signature(s) must be null vector(s) if an OP_CHECKSIG or OP_CHECKMULTISIG is failed",
+              "reason": "The consensus/policy rules for witness script failure handling explicitly rely on BIP146’s NULLFAIL semantics.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:173",
+              "evidence": "BIP173 Base32 address format for native v0-16 witness outputs",
+              "reason": "Native witness outputs require the address format defined by BIP173 to represent and use witness programs.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

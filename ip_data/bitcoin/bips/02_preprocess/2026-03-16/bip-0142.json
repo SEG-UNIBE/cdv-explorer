@@ -606,15 +606,56 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 13",
-        "BIP 16",
-        "BIP 47",
-        "BIP 63",
-        "BIP 70",
-        "BIP 141"
+        {
+          "target": "bips:13",
+          "count": 5
+        },
+        {
+          "target": "bips:16",
+          "count": 3
+        },
+        {
+          "target": "bips:47",
+          "count": 1
+        },
+        {
+          "target": "bips:63",
+          "count": 1
+        },
+        {
+          "target": "bips:70",
+          "count": 3
+        },
+        {
+          "target": "bips:141",
+          "count": 5
+        }
       ],
       "body_extracted_llm": [
-        "BIP 141"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:58:36Z",
+          "dependencies": [
+            {
+              "target": "bips:13",
+              "evidence": "BIP13 P2SH address has been defined in 2012",
+              "reason": "The proposal’s address format is explicitly modeled on and contrasted with the existing P2SH address format introduced by BIP13.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:16",
+              "evidence": "A native witness program output is ... ; Segwit-in-P2SH is a BIP16 P2SH redeemScript",
+              "reason": "The proposal relies on BIP16’s P2SH redeemScript mechanism as one of the witness-program encodings discussed in its specification.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "support native segregated witness transactions",
+              "reason": "The new address format is defined specifically for segwit witness programs and the witness version/program semantics introduced by BIP141.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

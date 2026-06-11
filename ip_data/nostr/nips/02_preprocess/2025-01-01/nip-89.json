@@ -242,7 +242,32 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:34Z",
+          "dependencies": [
+            {
+              "target": "nips:01",
+              "evidence": "\"content\" is an optional `metadata`-like stringified JSON object, as described in NIP-01.",
+              "reason": "The handler event’s metadata field is defined by and relies on the metadata/content conventions from NIP-01.",
+              "confidence": "low"
+            },
+            {
+              "target": "nips:19",
+              "evidence": "\"bech32\" in a URL MUST be replaced by clients with the NIP-19-encoded entity",
+              "reason": "The handler URL substitution and entity-loading behavior depends on NIP-19 encodings and their semantics.",
+              "confidence": "low"
+            },
+            {
+              "target": "nips:31",
+              "evidence": "the client would allow user B to interact with the unknown-kind event (e.g. tapping on it). User B's client might display the event using its `alt` tag (as described in NIP-31).",
+              "reason": "The proposal’s unknown-kind display flow relies on the alt-tag presentation behavior defined by NIP-31.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

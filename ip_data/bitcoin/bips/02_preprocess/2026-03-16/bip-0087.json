@@ -645,21 +645,90 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 32",
-        "BIP 39",
-        "BIP 43",
-        "BIP 44",
-        "BIP 45",
-        "BIP 49",
-        "BIP 67",
-        "BIP 84",
-        "BIP 129",
-        "BIP 174"
+        {
+          "target": "bips:32",
+          "count": 8
+        },
+        {
+          "target": "bips:39",
+          "count": 1
+        },
+        {
+          "target": "bips:43",
+          "count": 7
+        },
+        {
+          "target": "bips:44",
+          "count": 9
+        },
+        {
+          "target": "bips:45",
+          "count": 4
+        },
+        {
+          "target": "bips:49",
+          "count": 3
+        },
+        {
+          "target": "bips:67",
+          "count": 5
+        },
+        {
+          "target": "bips:84",
+          "count": 3
+        },
+        {
+          "target": "bips:129",
+          "count": 4
+        },
+        {
+          "target": "bips:174",
+          "count": 5
+        }
       ],
       "body_extracted_llm": [
-        "BIP 32",
-        "BIP 43",
-        "BIP 44"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:58:08Z",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "defined in BIP32 path",
+              "reason": "The proposal’s derivation hierarchy and hardened/public child derivation semantics are built on BIP32.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:43",
+              "evidence": "Purpose is a constant set to 87' following the BIP43 recommendation",
+              "reason": "The proposal uses BIP43’s purpose-field hierarchy to define the top-level path structure.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:44",
+              "evidence": "This BIP is a particular application of BIP43",
+              "reason": "The account-level structure and multi-account wallet organization follow the BIP44 pattern and extend it for this scheme.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:67",
+              "evidence": "deterministic key sorting as per BIP67",
+              "reason": "The multisig address derivation relies on BIP67 sorted public-key ordering for deterministic script generation.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:129",
+              "evidence": "Please see BIP-0129 ... for an introduction on descriptor templates",
+              "reason": "The address discovery and descriptor-template workflow depends on BIP129’s multisig setup concepts.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:174",
+              "evidence": "key origin information for maximum compatibility with BIP-0174",
+              "reason": "The descriptor-based restore/discovery process depends on PSBT key-origin data defined by BIP174.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

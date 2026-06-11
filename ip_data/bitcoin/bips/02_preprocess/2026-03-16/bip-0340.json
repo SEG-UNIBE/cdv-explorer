@@ -1242,15 +1242,42 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 32",
-        "BIP 62",
-        "BIP 66",
-        "BIP 118",
-        "BIP 146",
-        "BIP 327",
-        "BIP 341"
+        {
+          "target": "bips:32",
+          "count": 4
+        },
+        {
+          "target": "bips:62",
+          "count": 2
+        },
+        {
+          "target": "bips:66",
+          "count": 2
+        },
+        {
+          "target": "bips:118",
+          "count": 2
+        },
+        {
+          "target": "bips:146",
+          "count": 2
+        },
+        {
+          "target": "bips:327",
+          "count": 2
+        },
+        {
+          "target": "bips:341",
+          "count": 2
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:59:11Z",
+          "dependencies": []
+        }
+      ]
     }
   }
 }

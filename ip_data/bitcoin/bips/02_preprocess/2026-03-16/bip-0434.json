@@ -619,16 +619,60 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 35",
-        "BIP 130",
-        "BIP 133",
-        "BIP 152",
-        "BIP 155",
-        "BIP 324",
-        "BIP 339"
+        {
+          "target": "bips:35",
+          "count": 4
+        },
+        {
+          "target": "bips:130",
+          "count": 6
+        },
+        {
+          "target": "bips:133",
+          "count": 6
+        },
+        {
+          "target": "bips:152",
+          "count": 6
+        },
+        {
+          "target": "bips:155",
+          "count": 8
+        },
+        {
+          "target": "bips:324",
+          "count": 6
+        },
+        {
+          "target": "bips:339",
+          "count": 10
+        }
       ],
       "body_extracted_llm": [
-        "BIP 324"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:59:46Z",
+          "dependencies": [
+            {
+              "target": "bips:155",
+              "evidence": "BIP 155 (addrv2) and BIP 339 (wtxid-relay) are examples",
+              "reason": "The proposal generalizes the pre-verack feature-negotiation pattern used by this BIP and includes it as a supported use case.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:324",
+              "evidence": "Nodes implementing both this BIP and BIP 324 (v2 P2P encrypted transport) MUST treat a message with a 1-byte message_type equal to 37",
+              "reason": "The message-type mapping depends on the transport framing defined by this BIP.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:339",
+              "evidence": "codifying and generalising the mechanism used by BIP 339",
+              "reason": "This proposal directly generalizes the feature-negotiation mechanism introduced by this BIP.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

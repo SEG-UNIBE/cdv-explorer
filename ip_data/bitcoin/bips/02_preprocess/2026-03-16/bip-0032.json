@@ -1087,9 +1087,25 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 39"
+        {
+          "target": "bips:39",
+          "count": 2
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:57:45Z",
+          "dependencies": [
+            {
+              "target": "bips:16",
+              "evidence": "the version bytes to obtain human-recognizable Base58 strings",
+              "reason": "BIP 32 explicitly reuses the Base58Check encoding/version-byte style established by the referenced proposal context for serialized extended keys.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

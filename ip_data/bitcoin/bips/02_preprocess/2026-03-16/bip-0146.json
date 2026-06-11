@@ -602,15 +602,64 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 9",
-        "BIP 62",
-        "BIP 66",
-        "BIP 141",
-        "BIP 152"
+        {
+          "target": "bips:9",
+          "count": 6
+        },
+        {
+          "target": "bips:62",
+          "count": 2
+        },
+        {
+          "target": "bips:66",
+          "count": 6
+        },
+        {
+          "target": "bips:141",
+          "count": 3
+        },
+        {
+          "target": "bips:152",
+          "count": 2
+        }
       ],
       "body_extracted_llm": [
-        "BIP 9",
-        "BIP 66"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:58:44Z",
+          "dependencies": [
+            {
+              "target": "bips:9",
+              "evidence": "This BIP will be deployed by \"version bits\" BIP9.",
+              "reason": "The proposal’s activation mechanism depends on BIP9 version-bits deployment rules.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:62",
+              "evidence": "This document is extracted from the previous BIP62 proposal",
+              "reason": "The proposal is derived from BIP62’s malleability rules and inherits its substantive script-validity constraints.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:66",
+              "evidence": "with strict DER encoding (see BIP66)",
+              "reason": "The Low-S and NULLFAIL rules apply to signatures already subject to BIP66 strict DER encoding, so the validity conditions rely on that encoding rule.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "segregated witness ([... ] BIP141) transactions",
+              "reason": "The proposal explicitly extends its new signature rules to segregated witness scripts introduced by BIP141.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:152",
+              "evidence": "may reduce the efficiency of compact block relay ([... ] BIP152)",
+              "reason": "The motivation depends on BIP152 compact block relay semantics, since the malleability issue is defined in terms of its effect on wtxid relay efficiency.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

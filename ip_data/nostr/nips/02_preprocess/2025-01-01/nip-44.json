@@ -447,7 +447,20 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:21Z",
+          "dependencies": [
+            {
+              "target": "nips:01",
+              "evidence": "\"MUST be used in the context of a signed event as described in NIP-01\"",
+              "reason": "This proposal requires NIP-01 event structure, hashing, and signing rules for the encrypted payload format to function.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

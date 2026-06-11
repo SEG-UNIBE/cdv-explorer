@@ -438,7 +438,26 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:26Z",
+          "dependencies": [
+            {
+              "target": "nips:04",
+              "evidence": "All checkout events are sent as JSON strings using [NIP-04]",
+              "reason": "The proposal relies on NIP-04 for encrypted customer-merchant checkout and support message transport.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:19",
+              "evidence": "Create a customized user experience using the `naddr` from [NIP-19]",
+              "reason": "The marketplace customization mechanism depends on NIP-19 naddr identifiers to share and reference marketplace configuration.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

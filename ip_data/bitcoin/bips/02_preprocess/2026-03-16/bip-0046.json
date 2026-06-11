@@ -725,19 +725,74 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 32",
-        "BIP 44",
-        "BIP 49",
-        "BIP 65",
-        "BIP 84",
-        "BIP 86"
+        {
+          "target": "bips:32",
+          "count": 5
+        },
+        {
+          "target": "bips:44",
+          "count": 2
+        },
+        {
+          "target": "bips:49",
+          "count": 5
+        },
+        {
+          "target": "bips:65",
+          "count": 2
+        },
+        {
+          "target": "bips:84",
+          "count": 4
+        },
+        {
+          "target": "bips:86",
+          "count": 3
+        }
       ],
       "body_extracted_llm": [
-        "BIP 32",
-        "BIP 44",
-        "BIP 65",
-        "BIP 141",
-        "BIP 173"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:57:51Z",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "This BIP defines the two needed steps to derive multiple deterministic addresses based on a BIP 32 master private key.",
+              "reason": "The proposal’s derivation scheme is built on BIP 32 hierarchical key derivation and master keys.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:44",
+              "evidence": "This BIP uses a similar account-structure as defined in BIP 44 but with change set to 2.",
+              "reason": "The account/path structure is adapted from BIP 44 and the proposal’s derivation format relies on that hierarchy.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:49",
+              "evidence": "We largely use the same approach used in BIPs 49, 84 and 86 for ease of implementation.",
+              "reason": "The proposal explicitly follows the derivation-pattern approach established by BIP 49 for account path conventions and compatibility considerations.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:65",
+              "evidence": "Fidelity bonds are created by locking up bitcoins using the OP_CHECKLOCKTIMEVERIFY opcode.",
+              "reason": "The timelocked output script depends on OP_CHECKLOCKTIMEVERIFY semantics introduced by BIP 65.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:84",
+              "evidence": "We largely use the same approach used in BIPs 49, 84 and 86 for ease of implementation.",
+              "reason": "The proposal explicitly adopts the derivation-path style used by BIP 84.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:86",
+              "evidence": "We largely use the same approach used in BIPs 49, 84 and 86 for ease of implementation.",
+              "reason": "The proposal explicitly adopts the derivation-path style used by BIP 86.",
+              "confidence": "medium"
+            }
+          ]
+        }
       ]
     }
   }

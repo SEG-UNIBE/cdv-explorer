@@ -609,20 +609,114 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 119",
-        "BIP 327",
-        "BIP 340",
-        "BIP 341",
-        "BIP 342",
-        "BIP 347",
-        "BIP 348",
-        "BIP 349",
-        "BIP 443",
-        "BIP 446"
+        {
+          "target": "bips:119",
+          "count": 3
+        },
+        {
+          "target": "bips:327",
+          "count": 4
+        },
+        {
+          "target": "bips:340",
+          "count": 4
+        },
+        {
+          "target": "bips:341",
+          "count": 2
+        },
+        {
+          "target": "bips:342",
+          "count": 3
+        },
+        {
+          "target": "bips:347",
+          "count": 3
+        },
+        {
+          "target": "bips:348",
+          "count": 3
+        },
+        {
+          "target": "bips:349",
+          "count": 3
+        },
+        {
+          "target": "bips:443",
+          "count": 3
+        },
+        {
+          "target": "bips:446",
+          "count": 3
+        }
       ],
       "body_extracted_llm": [
-        "BIP 341",
-        "BIP 342"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:59:48Z",
+          "dependencies": [
+            {
+              "target": "bips:119",
+              "evidence": "`OP_CHECKTEMPLATEVERIFY`",
+              "reason": "The proposal’s example scripts and witness commitments rely on CTV semantics to bind transaction templates and state hashes.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:327",
+              "evidence": "`BIP-327 aggregate key of channel participants`",
+              "reason": "The channel example uses the aggregate key format defined by MuSig2 for the internal key in the script template.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:340",
+              "evidence": "Notation follows [BIP-340], including the tagged hash notation",
+              "reason": "The opcode specification uses the tagged hash construction and notation defined by BIP-340.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "For taproot script spends with leaf version *0xc0* (see [BIP-342])",
+              "reason": "The proposal’s opcode activation and script-spend context are within the Taproot script framework established by BIP-341.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:342",
+              "evidence": "For taproot script spends with leaf version *0xc0* (see [BIP-342]), `OP_PAIRCOMMIT` replaces `OP_SUCCESS205`",
+              "reason": "The opcode is defined as a Tapscript opcode replacing an OP_SUCCESS slot under BIP-342’s tapscript rules and leaf versioning.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:347",
+              "evidence": "`OP_CAT`[^6][^9]",
+              "reason": "The proposal discusses CAT-based commitment constructions as an alternative and contrasts them with the new opcode’s semantics.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:348",
+              "evidence": "Combined with `OP_CHECKSIGFROMSTACK`",
+              "reason": "The proposal’s motivating contract constructions require CSFS to sign over committed data pairs.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:349",
+              "evidence": "`OP_INTERNALKEY`",
+              "reason": "The example scripts use OP_INTERNALKEY to form taproot key-path/script-path constructions around the new commitment opcode.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:443",
+              "evidence": "`OP_CHECKCONTRACTVERIFY`",
+              "reason": "The examples and rationale refer to CHECKCONTRACTVERIFY-style contract validation as part of the script constructions that paircommit supports.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:446",
+              "evidence": "`OP_TEMPLATEHASH`",
+              "reason": "The document relies on template-hash-style transaction commitments in its Lightning Symmetry constructions and comparisons.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

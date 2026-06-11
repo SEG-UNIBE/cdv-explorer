@@ -150,7 +150,20 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:29Z",
+          "dependencies": [
+            {
+              "target": "nips:42",
+              "evidence": "relays ensuring that the author is authenticated before publishing their own events",
+              "reason": "The proposal requires NIP-42 AUTH authentication for relays that accept protected events, making it a functional prerequisite for enforcement.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

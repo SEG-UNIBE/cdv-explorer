@@ -211,7 +211,20 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:33Z",
+          "dependencies": [
+            {
+              "target": "nips:10",
+              "evidence": "should follow `NIP-10` for tagging",
+              "reason": "Torrent comments inherit and require the event tagging/reply semantics defined by NIP-10.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

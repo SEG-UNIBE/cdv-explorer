@@ -772,18 +772,52 @@
     ],
     "interrelations": {
       "preamble_extracted": [
-        "BIP 340",
-        "BIP 341",
-        "BIP 342"
+        {
+          "target": "bips:340",
+          "type": "requires"
+        },
+        {
+          "target": "bips:341",
+          "type": "requires"
+        },
+        {
+          "target": "bips:342",
+          "type": "requires"
+        }
       ],
       "body_extracted_regex": [
-        "BIP 3",
-        "BIP 341",
-        "BIP 342"
+        {
+          "target": "bips:3",
+          "count": 1
+        },
+        {
+          "target": "bips:341",
+          "count": 2
+        },
+        {
+          "target": "bips:342",
+          "count": 2
+        }
       ],
       "body_extracted_llm": [
-        "BIP 341",
-        "BIP 342"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:59:19Z",
+          "dependencies": [
+            {
+              "target": "bips:341",
+              "evidence": "Nothing Up My Sleeve\" (NUMS) points as described in [[bip-0341.mediawiki|BIP341]]",
+              "reason": "The proposal relies on Taproot key-spend semantics and NUMS points defined by BIP341 when discussing how OP_CAT interacts with taproot outputs.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:342",
+              "evidence": "motivated to leverage the tapscript softfork opcode upgrade path introduced in [[bip-0342.mediawiki|BIP342]]",
+              "reason": "The proposed opcode is activated as a tapscript upgrade path defined by BIP342, so the proposal depends on that script version and opcode framework.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

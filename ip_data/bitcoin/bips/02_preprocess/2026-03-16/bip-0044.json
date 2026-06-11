@@ -709,17 +709,54 @@
     ],
     "interrelations": {
       "preamble_extracted": [
-        "BIP 32",
-        "BIP 43"
+        {
+          "target": "bips:32",
+          "type": "requires"
+        },
+        {
+          "target": "bips:43",
+          "type": "requires"
+        }
       ],
       "body_extracted_regex": [
-        "BIP 32",
-        "BIP 43",
-        "SLIP 44"
+        {
+          "target": "bips:32",
+          "count": 8
+        },
+        {
+          "target": "bips:43",
+          "count": 6
+        },
+        {
+          "target": "slips:44",
+          "count": 2
+        }
       ],
       "body_extracted_llm": [
-        "BIP 32",
-        "BIP 43"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:57:50Z",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "based on an algorithm described in BIP-0032",
+              "reason": "The proposal defines its derivation hierarchy and path structure on top of BIP32's hierarchical deterministic key derivation.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:43",
+              "evidence": "purpose scheme described in BIP-0043",
+              "reason": "The proposal uses BIP43's purpose field scheme to define the first path level and scope the subtree.",
+              "confidence": "high"
+            },
+            {
+              "target": "slips:44",
+              "evidence": "visit SatoshiLabs that maintains the full list: [[https://github.com/satoshilabs/slips/blob/master/slip-0044.md|SLIP-0044 : Registered coin types for BIP-0044]]",
+              "reason": "The coin_type level depends on the registered coin type assignments maintained by SLIP-0044.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

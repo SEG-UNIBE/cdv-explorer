@@ -511,17 +511,64 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 8",
-        "BIP 9",
-        "BIP 141",
-        "BIP 143",
-        "BIP 147"
+        {
+          "target": "bips:8",
+          "count": 5
+        },
+        {
+          "target": "bips:9",
+          "count": 6
+        },
+        {
+          "target": "bips:141",
+          "count": 4
+        },
+        {
+          "target": "bips:143",
+          "count": 4
+        },
+        {
+          "target": "bips:147",
+          "count": 4
+        }
       ],
       "body_extracted_llm": [
-        "BIP 8",
-        "BIP 141",
-        "BIP 143",
-        "BIP 147"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:58:43Z",
+          "dependencies": [
+            {
+              "target": "bips:8",
+              "evidence": "This BIP will be deployed by BIP8 with the name \"segwit\" and using bit 1.",
+              "reason": "The deployment semantics and activation mechanism are explicitly defined by BIP8.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:9",
+              "evidence": "This BIP should only be deployed if BIP9-segwit fails to lock-in or activate before timeout",
+              "reason": "The proposal’s deployment conditions and compatibility constraints are defined relative to the BIP9 versionbits activation process.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "a user activated soft fork for [[bip-0141.mediawiki|BIP141]], [[bip-0143.mediawiki|BIP143]] and [[bip-0147.mediawiki|BIP147]]",
+              "reason": "The proposal activates and depends on the SegWit consensus changes introduced by this BIP.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:143",
+              "evidence": "a user activated soft fork for [[bip-0141.mediawiki|BIP141]], [[bip-0143.mediawiki|BIP143]] and [[bip-0147.mediawiki|BIP147]]",
+              "reason": "The proposal activates and depends on the SegWit transaction digest rules introduced by this BIP.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:147",
+              "evidence": "a user activated soft fork for [[bip-0141.mediawiki|BIP141]], [[bip-0143.mediawiki|BIP143]] and [[bip-0147.mediawiki|BIP147]]",
+              "reason": "The proposal activates and depends on the SegWit script and witness changes introduced by this BIP.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

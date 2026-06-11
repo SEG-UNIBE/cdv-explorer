@@ -7199,9 +7199,18 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 44"
+        {
+          "target": "bips:44",
+          "count": 10
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:00:11Z",
+          "dependencies": []
+        }
+      ]
     }
   }
 }

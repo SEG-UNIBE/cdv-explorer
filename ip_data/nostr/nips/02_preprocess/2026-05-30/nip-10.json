@@ -271,7 +271,32 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:25Z",
+          "dependencies": [
+            {
+              "target": "nips:01",
+              "evidence": "`e` tags without any marker. `[`e`, <event-id>, <relay-url>]` as per NIP-01.",
+              "reason": "The proposal’s deprecated positional event-tag format is defined by reference to NIP-01’s tag syntax and event structure.",
+              "confidence": "low"
+            },
+            {
+              "target": "nips:21",
+              "evidence": "`q` tags MAY be used when citing events in the `.content` with [NIP-21](21.md).",
+              "reason": "The `q` tag usage is introduced specifically for citing events in content, tying this proposal’s quoting mechanism to NIP-21’s event-mention semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:22",
+              "evidence": "Kind 1 replies MUST NOT be used to reply to other kinds, use [NIP-22](22.md) instead.",
+              "reason": "This proposal constrains when its kind-1 reply/threading rules apply and explicitly delegates cross-kind replies to NIP-22.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

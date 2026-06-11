@@ -646,15 +646,61 @@
     ],
     "interrelations": {
       "preamble_extracted": [
-        "BIP 9"
+        {
+          "target": "bips:9",
+          "type": "replaces"
+        }
       ],
       "body_extracted_regex": [
-        "BIP 9",
-        "BIP 34",
-        "BIP 65",
-        "BIP 66"
+        {
+          "target": "bips:9",
+          "count": 20
+        },
+        {
+          "target": "bips:34",
+          "count": 1
+        },
+        {
+          "target": "bips:65",
+          "count": 1
+        },
+        {
+          "target": "bips:66",
+          "count": 1
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:01:23Z",
+          "dependencies": [
+            {
+              "target": "bips:9",
+              "evidence": "This document describes a generalized signaling scheme",
+              "reason": "The proposal extends BIP9’s version-bits deployment state machine and activation semantics with configurable thresholds, windows, and grace periods.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:34",
+              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
+              "reason": "The proposal’s available nVersion signaling space is constrained by earlier block-version deployments, which directly affects the signaling-bit range it defines.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:65",
+              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
+              "reason": "The proposal relies on the version-field constraints imposed by prior consensus deployments when defining usable signaling bits.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:66",
+              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
+              "reason": "The proposal relies on the version-field constraints imposed by prior consensus deployments when defining usable signaling bits.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

@@ -234,7 +234,26 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:01Z",
+          "dependencies": [
+            {
+              "target": "nips:23",
+              "evidence": "The structure of these events is very similar to [NIP-23] long-form content events.",
+              "reason": "NIP-99 reuses the long-form content event structure as its basis, so it depends on that event format and semantics.",
+              "confidence": "low"
+            },
+            {
+              "target": "nips:58",
+              "evidence": "clients SHOULD use `image` tags as described in [NIP-58](58.md).",
+              "reason": "NIP-99 relies on NIP-58’s image tag convention for rendering and metadata interoperability.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

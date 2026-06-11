@@ -702,7 +702,20 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:07Z",
+          "dependencies": [
+            {
+              "target": "nips:24",
+              "evidence": "\"Extra metadata fields\" may be set.",
+              "reason": "The user metadata kind 0 explicitly relies on the additional metadata field definitions from this proposal.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

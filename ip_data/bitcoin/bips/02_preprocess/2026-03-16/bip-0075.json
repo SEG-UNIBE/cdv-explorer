@@ -1044,11 +1044,28 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 32",
-        "BIP 70"
+        {
+          "target": "bips:32",
+          "count": 2
+        },
+        {
+          "target": "bips:70",
+          "count": 27
+        }
       ],
       "body_extracted_llm": [
-        "BIP 70"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:58:01Z",
+          "dependencies": [
+            {
+              "target": "bips:70",
+              "evidence": "This BIP is an extension to BIP 70",
+              "reason": "The proposal extends and modifies the BIP70 Payment Protocol, reusing its messages and process semantics as the base protocol.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

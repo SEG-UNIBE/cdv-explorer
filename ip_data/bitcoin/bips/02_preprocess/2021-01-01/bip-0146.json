@@ -568,13 +568,65 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 9",
-        "BIP 62",
-        "BIP 66",
-        "BIP 141",
-        "BIP 152"
+        {
+          "target": "bips:9",
+          "count": 6
+        },
+        {
+          "target": "bips:62",
+          "count": 2
+        },
+        {
+          "target": "bips:66",
+          "count": 6
+        },
+        {
+          "target": "bips:141",
+          "count": 3
+        },
+        {
+          "target": "bips:152",
+          "count": 2
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:01:27Z",
+          "dependencies": [
+            {
+              "target": "bips:9",
+              "evidence": "This BIP will be deployed by \"version bits\" [https://github.com/bitcoin/bips/blob/master/bip-0009.mediawiki BIP9].",
+              "reason": "The activation method relies on version-bits deployment semantics defined by BIP9.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:62",
+              "evidence": "This document is extracted from the previous BIP62 proposal",
+              "reason": "The proposal is derived from BIP62 and inherits its malleability-fix context and ruleset lineage.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:66",
+              "evidence": "with strict DER encoding (see BIP66)",
+              "reason": "The LOW_S and NULLFAIL rules apply to signatures already constrained by BIP66 DER encoding, so the validity rules depend on that signature format.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "segregated witness ([... BIP141]) transactions",
+              "reason": "The proposal explicitly applies its new rules to segregated witness scripts and references P2WPKH as part of that witness system.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:152",
+              "evidence": "may reduce the efficiency of compact block relay ([... BIP152])",
+              "reason": "The motivation depends on the wtxid behavior introduced by compact block relay for segregated witness transactions.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

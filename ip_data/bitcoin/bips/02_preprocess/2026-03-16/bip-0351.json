@@ -667,22 +667,76 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 32",
-        "BIP 43",
-        "BIP 44",
-        "BIP 47",
-        "BIP 157",
-        "BIP 158",
-        "BIP 380",
-        "SLIP 132"
+        {
+          "target": "bips:32",
+          "count": 7
+        },
+        {
+          "target": "bips:43",
+          "count": 2
+        },
+        {
+          "target": "bips:44",
+          "count": 3
+        },
+        {
+          "target": "bips:47",
+          "count": 5
+        },
+        {
+          "target": "bips:157",
+          "count": 2
+        },
+        {
+          "target": "bips:158",
+          "count": 3
+        },
+        {
+          "target": "bips:380",
+          "count": 1
+        },
+        {
+          "target": "slips:132",
+          "count": 1
+        }
       ],
       "body_extracted_llm": [
-        "BIP 32",
-        "BIP 43",
-        "BIP 44",
-        "BIP 141",
-        "BIP 341",
-        "BIP 350"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:59:21Z",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "The derivation path for this BIP follows BIP44. The following BIP32 path levels are defined",
+              "reason": "The proposal uses BIP32 hierarchical key derivation and non-hardened child keys as part of its payment code and notification scheme.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:43",
+              "evidence": "The derivation path for this BIP follows BIP44. The following BIP32 path levels are defined",
+              "reason": "The proposal adopts the purpose field structure defined by BIP43 to allocate a dedicated purpose number in the derivation path.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:44",
+              "evidence": "The derivation path for this BIP follows BIP44. The following BIP32 path levels are defined",
+              "reason": "The proposal explicitly bases its account-level derivation path on the BIP44 hierarchy.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:157",
+              "evidence": "Compact Block Filters, as formulated in BIP-0158, do not cover OP_RETURN data payloads.",
+              "reason": "The proposal relies on the BIP157/BIP158 light-client filtering context when discussing how recipients can detect notifications.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:158",
+              "evidence": "Compact Block Filters, as formulated in BIP-0158, do not cover OP_RETURN data payloads.",
+              "reason": "The proposal depends on the compact block filter format from BIP158 to explain the limitation that motivates its external notification scanning approach.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

@@ -336,7 +336,32 @@
           "count": 2
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:34Z",
+          "dependencies": [
+            {
+              "target": "nips:04",
+              "evidence": "Encryption for private tags will use [NIP-04 - Encrypted Direct Message encryption]",
+              "reason": "The proposal relies on NIP-04 to encrypt the private input parameters and content fields.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:05",
+              "evidence": "A job request might be canceled by publishing a `kind:5` delete request event tagging the job request event.",
+              "reason": "Cancellation semantics depend on NIP-05 delete request events to invalidate job requests.",
+              "confidence": "medium"
+            },
+            {
+              "target": "nips:89",
+              "evidence": "Service Providers MAY use NIP-89 announcements to advertise their support for job kinds",
+              "reason": "Service provider discoverability and advertising are built on NIP-89 announcement events.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

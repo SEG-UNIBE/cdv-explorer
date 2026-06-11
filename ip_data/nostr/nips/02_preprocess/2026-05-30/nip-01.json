@@ -777,7 +777,26 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:22Z",
+          "dependencies": [
+            {
+              "target": "nips:10",
+              "evidence": "[NIP-10](10.md), for instance, specifies the `kind:1` text note",
+              "reason": "The proposal uses NIP-10 as the specification for the kind 1 event type, so kind conventions here rely on it.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:24",
+              "evidence": "[Extra metadata fields](24.md#kind-0) may be set.",
+              "reason": "The kind 0 user metadata event explicitly allows extra fields defined by the target, extending the base event format.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

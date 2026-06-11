@@ -651,16 +651,50 @@
     ],
     "interrelations": {
       "preamble_extracted": [
-        "BIP 78"
+        {
+          "target": "bips:78",
+          "type": "proposed_replacement"
+        }
       ],
       "body_extracted_regex": [
-        "BIP 21",
-        "BIP 69",
-        "BIP 125"
+        {
+          "target": "bips:21",
+          "count": 1
+        },
+        {
+          "target": "bips:69",
+          "count": 1
+        },
+        {
+          "target": "bips:125",
+          "count": 1
+        }
       ],
       "body_extracted_llm": [
-        "BIP 21",
-        "BIP 141"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:58:02Z",
+          "dependencies": [
+            {
+              "target": "bips:21",
+              "evidence": "The standard way of letting a sender know where to send a bustapay transaction is done via a bip21 encoded address.",
+              "reason": "The protocol uses BIP21 payment URI parameters to convey the Bustapay URL.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:69",
+              "evidence": "Check if the transaction was already sorted according to BIP69",
+              "reason": "The implementation note constrains transaction ordering behavior based on BIP69 sorting.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:125",
+              "evidence": "use a slightly more aggressive feerate than usual as well as BIP125 (Opt-in Full Replace-by-Fee Signaling)",
+              "reason": "The protocol relies on opt-in RBF signaling to support replacement and fallback publication behavior.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

@@ -957,25 +957,92 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 32",
-        "BIP 44",
-        "BIP 48",
-        "BIP 49",
-        "BIP 84",
-        "BIP 86",
-        "BIP 129",
-        "BIP 327",
-        "BIP 379",
-        "BIP 380",
-        "BIP 389",
-        "BIP 390"
+        {
+          "target": "bips:32",
+          "count": 7
+        },
+        {
+          "target": "bips:44",
+          "count": 4
+        },
+        {
+          "target": "bips:48",
+          "count": 2
+        },
+        {
+          "target": "bips:49",
+          "count": 4
+        },
+        {
+          "target": "bips:84",
+          "count": 4
+        },
+        {
+          "target": "bips:86",
+          "count": 4
+        },
+        {
+          "target": "bips:129",
+          "count": 2
+        },
+        {
+          "target": "bips:327",
+          "count": 1
+        },
+        {
+          "target": "bips:379",
+          "count": 3
+        },
+        {
+          "target": "bips:380",
+          "count": 3
+        },
+        {
+          "target": "bips:389",
+          "count": 2
+        },
+        {
+          "target": "bips:390",
+          "count": 2
+        }
       ],
       "body_extracted_llm": [
-        "BIP 32",
-        "BIP 379",
-        "BIP 380",
-        "BIP 389",
-        "BIP 390"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:59:40Z",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "can only sign with keys derived from a single seed via BIP-32",
+              "reason": "Wallet policies encode extended public keys and derivation paths, relying on BIP-32 key derivation and xpub serialization.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:379",
+              "evidence": "See BIP-379 for a precise specification of all the valid miniscript SCRIPT expressions",
+              "reason": "The wallet policy language includes miniscript templates and depends on BIP-379 for the valid miniscript expression semantics.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:380",
+              "evidence": "Wallet policies build on top of output script descriptors",
+              "reason": "The proposal defines wallet policies as a constrained representation derived from descriptor concepts and maps template elements directly to descriptor concepts.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:389",
+              "evidence": "BIP-389 allows multipath /<NUM;NUM;...;NUM> expressions with an arbitrary number of options",
+              "reason": "The policy format specializes descriptor multipath derivation by restricting and reusing the multipath path syntax defined by BIP-389.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:390",
+              "evidence": "despite being allowed in BIP-390",
+              "reason": "The invalid-policy rule explicitly constrains derivation-before-aggregation in wallet policies relative to BIP-390's allowed behavior, so the policy semantics depend on that prior mechanism.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

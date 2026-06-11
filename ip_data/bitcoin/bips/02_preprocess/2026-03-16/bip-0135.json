@@ -706,16 +706,60 @@
     ],
     "interrelations": {
       "preamble_extracted": [
-        "BIP 9"
+        {
+          "target": "bips:9",
+          "type": "replaces"
+        }
       ],
       "body_extracted_regex": [
-        "BIP 9",
-        "BIP 34",
-        "BIP 65",
-        "BIP 66"
+        {
+          "target": "bips:9",
+          "count": 20
+        },
+        {
+          "target": "bips:34",
+          "count": 1
+        },
+        {
+          "target": "bips:65",
+          "count": 1
+        },
+        {
+          "target": "bips:66",
+          "count": 1
+        }
       ],
       "body_extracted_llm": [
-        "BIP 9"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:58:36Z",
+          "dependencies": [
+            {
+              "target": "bips:9",
+              "evidence": "BIP9 introduced a mechanism for using the version bits",
+              "reason": "The proposal generalizes and retains the BIP9 version-bits state machine and deployment semantics, making BIP9 the direct technical base.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:34",
+              "evidence": "Due to the constraints set by BIP 34",
+              "reason": "The proposal's available nVersion space and bit allocation rely on the header/version constraints introduced by BIP 34.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:65",
+              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
+              "reason": "The proposal depends on the version-field constraints established by BIP 65 as part of the available nVersion range analysis.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:66",
+              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
+              "reason": "The proposal depends on the version-field constraints established by BIP 66 as part of the available nVersion range analysis.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

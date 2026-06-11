@@ -296,7 +296,26 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:38Z",
+          "dependencies": [
+            {
+              "target": "nips:01",
+              "evidence": "filters as specified in [NIP 01](01.md) for the verb `REQ`",
+              "reason": "The COUNT request reuses NIP-01 filter syntax and REQ semantics, so its wire format depends on NIP-01.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:65",
+              "evidence": "the client has decided it will read reactions from the NIP-65 \"read\" relays of Z's author",
+              "reason": "The client-side usage relies on NIP-65 relay lists to determine which relays to query and merge counts from.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

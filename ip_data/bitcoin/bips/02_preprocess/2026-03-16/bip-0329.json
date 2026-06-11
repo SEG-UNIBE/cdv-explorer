@@ -638,16 +638,56 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 32",
-        "BIP 39",
-        "BIP 44",
-        "BIP 84",
-        "BIP 380",
-        "SLIP 15"
+        {
+          "target": "bips:32",
+          "count": 3
+        },
+        {
+          "target": "bips:39",
+          "count": 1
+        },
+        {
+          "target": "bips:44",
+          "count": 1
+        },
+        {
+          "target": "bips:84",
+          "count": 1
+        },
+        {
+          "target": "bips:380",
+          "count": 3
+        },
+        {
+          "target": "slips:15",
+          "count": 3
+        }
       ],
       "body_extracted_llm": [
-        "BIP 32",
-        "BIP 380"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:59:06Z",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "\"xpub\" | Extended public key as defined by BIP32",
+              "reason": "The format and meaning of xpub records rely on BIP32 extended public keys.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:380",
+              "evidence": "\"origin\" property must contain an abbreviated output descriptor (as defined by BIP380)",
+              "reason": "The origin field uses the output descriptor syntax defined by BIP380.",
+              "confidence": "low"
+            },
+            {
+              "target": "slips:15",
+              "evidence": "SLIP-0015 defines a format for exporting address and output labels",
+              "reason": "The proposal explicitly contrasts itself with SLIP-0015 as an existing label export format for the same data, but does not rely on its mechanism.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

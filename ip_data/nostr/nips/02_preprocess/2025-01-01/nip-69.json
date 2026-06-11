@@ -174,7 +174,20 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:29Z",
+          "dependencies": [
+            {
+              "target": "nips:40",
+              "evidence": "The expiration date of the order ([NIP-40])",
+              "reason": "The order event semantics explicitly rely on NIP-40 for the expiration tag meaning and format.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

@@ -242,7 +242,20 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:29Z",
+          "dependencies": [
+            {
+              "target": "nips:01",
+              "evidence": "Relays should answer requests such as `['REQ', '', {'authors': ['A']}]`",
+              "reason": "The proposal relies on the event/query model and request filtering defined by NIP-01 to specify relay support for delegated events.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

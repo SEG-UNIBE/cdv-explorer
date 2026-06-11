@@ -259,7 +259,26 @@
           "count": 6
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:27Z",
+          "dependencies": [
+            {
+              "target": "nips:13",
+              "evidence": "including the recipient's `p` tag or [NIP-13] proof of work",
+              "reason": "The wrapper event optionally uses proof-of-work as part of its routing/spam-mitigation semantics, so the proposal depends on NIP-13 for that mechanism.",
+              "confidence": "low"
+            },
+            {
+              "target": "nips:44",
+              "evidence": "This NIP relies on [NIP-44]'s versioned encryption algorithms.",
+              "reason": "Gift Wrap uses NIP-44 encryption for sealing and wrapping event JSON, making NIP-44 a core cryptographic dependency.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

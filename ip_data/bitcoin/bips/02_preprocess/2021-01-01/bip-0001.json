@@ -811,12 +811,37 @@
     ],
     "interrelations": {
       "preamble_extracted": [
-        "BIP 2"
+        {
+          "target": "bips:2",
+          "type": "proposed_replacement"
+        }
       ],
       "body_extracted_regex": [
-        "BIP 8"
+        {
+          "target": "bips:8",
+          "count": 1
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:00:18Z",
+          "dependencies": [
+            {
+              "target": "bips:7",
+              "evidence": "code style (examples should match BIP 8 & 7)",
+              "reason": "This process document explicitly references BIP 7 as a style convention that later BIPs should follow.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:8",
+              "evidence": "code style (examples should match BIP 8 & 7)",
+              "reason": "This process document explicitly references BIP 8 as a style convention that later BIPs should follow.",
+              "confidence": "medium"
+            }
+          ]
+        }
+      ]
     }
   }
 }

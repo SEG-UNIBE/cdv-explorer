@@ -749,14 +749,42 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 119",
-        "BIP 327",
-        "BIP 341",
-        "BIP 345"
+        {
+          "target": "bips:119",
+          "count": 2
+        },
+        {
+          "target": "bips:327",
+          "count": 1
+        },
+        {
+          "target": "bips:341",
+          "count": 10
+        },
+        {
+          "target": "bips:345",
+          "count": 2
+        }
       ],
       "body_extracted_llm": [
-        "BIP 341",
-        "BIP 342"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:59:45Z",
+          "dependencies": [
+            {
+              "target": "bips:327",
+              "evidence": "the naked key could be an aggregate key using [[bip-0327.mediawiki|MuSig2]]",
+              "reason": "The proposal explicitly relies on MuSig2 for aggregate key construction used as the naked key.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "If there is no data committed in the UTXO, then the naked key is the internal key as defined in BIP-341.",
+              "reason": "The proposal defines key and taptree semantics using Taproot internal key and Merkle tree rules from this BIP.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

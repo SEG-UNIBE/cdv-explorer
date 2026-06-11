@@ -167,7 +167,20 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:35Z",
+          "dependencies": [
+            {
+              "target": "nips:57",
+              "evidence": "The goal MAY include multiple beneficiary pubkeys by specifying [`zap` tags](57.md#appendix-g-zap-tag-on-other-events).",
+              "reason": "The proposal relies on the zap-tag mechanism defined by NIP 57 to specify multiple beneficiaries on the goal event.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

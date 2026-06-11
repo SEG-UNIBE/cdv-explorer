@@ -140,7 +140,20 @@
           "count": 2
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:56Z",
+          "dependencies": [
+            {
+              "target": "nips:94",
+              "evidence": "MAY include any field specified by [NIP 94]",
+              "reason": "The proposal directly reuses and extends the media metadata fields defined by NIP 94, making it a technical dependency for tag contents and semantics.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

@@ -568,11 +568,51 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 21",
-        "BIP 70",
-        "BIP 120"
+        {
+          "target": "bips:21",
+          "count": 6
+        },
+        {
+          "target": "bips:70",
+          "count": 1
+        },
+        {
+          "target": "bips:120",
+          "count": 2
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:01:12Z",
+          "dependencies": [
+            {
+              "target": "bips:21",
+              "evidence": "The specification is the same as BIP0021, with the following differences",
+              "reason": "The URI format, query handling, extensibility, and req-* rules are inherited from BIP 21 and modified here.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:70",
+              "evidence": "BIP70 PaymentDetails data",
+              "reason": "The transaction-hint matching rules map URI parameters to BIP70 PaymentDetails fields, relying on that payment request data model.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:120",
+              "evidence": "[https://github.com/bitcoin/bips/blob/master/bip-0120.mediawiki BIP0120]: Proof of Payment",
+              "reason": "The proposal defines a URI scheme specifically for the Proof of Payment process introduced by BIP 120.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:173",
+              "evidence": "The transaction hash of the payment",
+              "reason": "The txid parameter is used as a transaction identifier to match the payment transaction, depending on standard transaction hash semantics.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

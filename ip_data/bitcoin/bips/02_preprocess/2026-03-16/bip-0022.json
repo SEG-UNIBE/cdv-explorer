@@ -696,13 +696,44 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 16",
-        "BIP 23",
-        "BIP 34"
+        {
+          "target": "bips:16",
+          "count": 2
+        },
+        {
+          "target": "bips:23",
+          "count": 6
+        },
+        {
+          "target": "bips:34",
+          "count": 4
+        }
       ],
       "body_extracted_llm": [
-        "BIP 16",
-        "BIP 34"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:57:45Z",
+          "dependencies": [
+            {
+              "target": "bips:16",
+              "evidence": "Due to the BIP 0016 changes regarding rules on block sigops",
+              "reason": "The proposal’s transaction sigop accounting relies on the block sigop rules introduced by BIP 16.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:23",
+              "evidence": "[[bip-0023.mediawiki#Block Proposal|\"proposal\"]]",
+              "reason": "The proposal explicitly uses and extends the block proposal mode defined by BIP 23.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:34",
+              "evidence": "clients MUST understand the implications of the version they use (eg, comply with BIP 0034 for version 2)",
+              "reason": "The block template format constrains version and coinbase script requirements based on BIP 34.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

@@ -1269,11 +1269,26 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 65",
-        "BIP 112",
-        "BIP 341"
+        {
+          "target": "bips:65",
+          "count": 1
+        },
+        {
+          "target": "bips:112",
+          "count": 1
+        },
+        {
+          "target": "bips:341",
+          "count": 2
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:58:23Z",
+          "dependencies": []
+        }
+      ]
     }
   }
 }

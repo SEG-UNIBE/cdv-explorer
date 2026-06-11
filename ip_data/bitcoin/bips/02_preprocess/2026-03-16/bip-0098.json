@@ -760,9 +760,25 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 116"
+        {
+          "target": "bips:116",
+          "count": 4
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:58:11Z",
+          "dependencies": [
+            {
+              "target": "bips:116",
+              "evidence": "This BIP is used by BIP116 (MERKLEBRANCHVERIFY) to add Merkle inclusion proof verification to script",
+              "reason": "The proposal is specifically designed to be consumed by BIP 116’s opcode and deployment mechanism, so BIP 116 depends on these proof and tree formats.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

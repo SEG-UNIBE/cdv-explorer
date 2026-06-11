@@ -213,7 +213,26 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:13Z",
+          "dependencies": [
+            {
+              "target": "nips:10",
+              "evidence": "q tags should follow the same conventions as NIP 10 `e` tags",
+              "reason": "The quote-repost tag format and semantics explicitly reuse and adapt NIP 10 tag conventions.",
+              "confidence": "low"
+            },
+            {
+              "target": "nips:21",
+              "evidence": "MUST include the [NIP-21](21.md) `nevent`, `note`, or `naddr` of the event in the content",
+              "reason": "Quote reposts require NIP-21 event address encodings in their content.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

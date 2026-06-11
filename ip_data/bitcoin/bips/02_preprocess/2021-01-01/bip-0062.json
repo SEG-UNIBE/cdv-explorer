@@ -676,9 +676,31 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 34"
+        {
+          "target": "bips:34",
+          "count": 1
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:00:44Z",
+          "dependencies": [
+            {
+              "target": "bips:16",
+              "evidence": "scriptPubKey evaluation will be required to result in a single non-zero value",
+              "reason": "This rule relies on the script evaluation and stack semantics introduced by the script system defined in BIP 16.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:34",
+              "evidence": "The same mechanism as in BIP 0034 is used to introduce v3 blocks.",
+              "reason": "The proposal explicitly reuses BIP 34's version-based activation mechanism for consensus enforcement.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

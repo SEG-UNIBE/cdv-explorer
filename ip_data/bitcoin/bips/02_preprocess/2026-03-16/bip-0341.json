@@ -1292,25 +1292,96 @@
     ],
     "interrelations": {
       "preamble_extracted": [
-        "BIP 340"
+        {
+          "target": "bips:340",
+          "type": "requires"
+        }
       ],
       "body_extracted_regex": [
-        "BIP 9",
-        "BIP 98",
-        "BIP 114",
-        "BIP 117",
-        "BIP 118",
-        "BIP 141",
-        "BIP 143",
-        "BIP 340",
-        "BIP 342",
-        "BIP 350"
+        {
+          "target": "bips:9",
+          "count": 2
+        },
+        {
+          "target": "bips:98",
+          "count": 2
+        },
+        {
+          "target": "bips:114",
+          "count": 2
+        },
+        {
+          "target": "bips:117",
+          "count": 2
+        },
+        {
+          "target": "bips:118",
+          "count": 2
+        },
+        {
+          "target": "bips:141",
+          "count": 4
+        },
+        {
+          "target": "bips:143",
+          "count": 4
+        },
+        {
+          "target": "bips:340",
+          "count": 21
+        },
+        {
+          "target": "bips:342",
+          "count": 9
+        },
+        {
+          "target": "bips:350",
+          "count": 3
+        }
       ],
       "body_extracted_llm": [
-        "BIP 9",
-        "BIP 141",
-        "BIP 340",
-        "BIP 342"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:59:16Z",
+          "dependencies": [
+            {
+              "target": "bips:9",
+              "evidence": "deployed by \"version bits\" ... using BIP9 modified to use a lower threshold",
+              "reason": "The activation mechanism is based on and modifies BIP9 version-bits deployment rules.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "A Taproot output is a native SegWit output (see BIP141) with version number 1",
+              "reason": "Taproot output encoding and witness-program rules depend on SegWit versioned outputs introduced by BIP141.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:143",
+              "evidence": "In summary, the semantics of the BIP143 sighash types remain unchanged",
+              "reason": "The proposal preserves and specializes the existing sighash type semantics from BIP143 while redefining the serialization.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:340",
+              "evidence": "The notation below follows that of BIP340",
+              "reason": "Taproot relies on BIP340's Schnorr signature definitions, tagged hashes, public-key lifting, and verification algorithm.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:342",
+              "evidence": "Execute the script, according to the applicable script rules ... BIP342 specifies validity rules",
+              "reason": "Taproot script-path spending delegates leaf-version 0xc0 validation to BIP342's script semantics and is deployed concurrently with it.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:350",
+              "evidence": "the (mainnet) BIP350 address given an internal public key",
+              "reason": "The proposal's address encoding for SegWit v1 outputs uses Bech32m as defined by BIP350.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

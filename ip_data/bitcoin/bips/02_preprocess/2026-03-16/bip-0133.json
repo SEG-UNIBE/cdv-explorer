@@ -521,8 +521,24 @@
       "preamble_extracted": [],
       "body_extracted_regex": [],
       "body_extracted_llm": [
-        "BIP 35",
-        "BIP 37"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:58:30Z",
+          "dependencies": [
+            {
+              "target": "bips:37",
+              "evidence": "\"The fee filter is additive with a bloom filter for transactions\"",
+              "reason": "The fee filter is defined to combine with transaction bloom filtering, so it depends on the transaction relay/filtering semantics introduced by BIP 37.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:111",
+              "evidence": "\"Feature discovery is enabled by checking protocol version >= 70013\"",
+              "reason": "The proposal relies on the network protocol version introduced by BIP 111 to detect peer feature support.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

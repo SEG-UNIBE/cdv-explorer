@@ -194,7 +194,26 @@
           "count": 2
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:59Z",
+          "dependencies": [
+            {
+              "target": "nips:22",
+              "evidence": "kind: 1244 events MUST follow the structure of NIP-22",
+              "reason": "The reply voice-message event explicitly reuses the reply structure defined by NIP-22, making it a direct technical dependency.",
+              "confidence": "low"
+            },
+            {
+              "target": "nips:92",
+              "evidence": "Visual representation with `imeta` (NIP-92) tag (optional)",
+              "reason": "The proposal defines optional preview metadata using the imeta tag format from NIP-92, so support for that tag relies on NIP-92 semantics.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

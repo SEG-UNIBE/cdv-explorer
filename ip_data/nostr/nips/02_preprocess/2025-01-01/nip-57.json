@@ -424,7 +424,44 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:27Z",
+          "dependencies": [
+            {
+              "target": "nips:01",
+              "evidence": "retrieve `zap receipt`s on events and pubkeys using a NIP-01 filter",
+              "reason": "The proposal relies on NIP-01 filter semantics to discover zap receipts.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:23",
+              "evidence": "tipping addressable events such as NIP-23 long-form notes",
+              "reason": "The zap request adds the `a` tag specifically to support addressable events defined by NIP-23.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:29",
+              "evidence": "the `zap` tag on the event being zapped",
+              "reason": "The protocol introduces and consumes a `zap` tag format to direct payments, which is the core mechanism from the referenced proposal.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:39",
+              "evidence": "decode their lud06 or lud16 field on their profile according to the [lnurl specifications]",
+              "reason": "Zap discovery and callback flow depend on LNURL pay metadata and callback behavior defined by LNURL/LUD06 and LUD16.",
+              "confidence": "low"
+            },
+            {
+              "target": "nips:65",
+              "evidence": "a valid BIP 340 public key in hex",
+              "reason": "Validation of the recipient's nostr identity requires BIP-340 public keys as specified by the referenced proposal.",
+              "confidence": "medium"
+            }
+          ]
+        }
+      ]
     }
   }
 }

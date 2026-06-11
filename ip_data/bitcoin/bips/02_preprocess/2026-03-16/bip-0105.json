@@ -545,11 +545,28 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 34",
-        "BIP 100"
+        {
+          "target": "bips:34",
+          "count": 3
+        },
+        {
+          "target": "bips:100",
+          "count": 1
+        }
       ],
       "body_extracted_llm": [
-        "BIP 34"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:58:14Z",
+          "dependencies": [
+            {
+              "target": "bips:34",
+              "evidence": "As per BIP34, the coinbase transaction scriptSig starts with a push of the block height.",
+              "reason": "The proposal relies on BIP34’s coinbase height-commitment format as the basis for encoding block-size votes in the coinbase scriptSig.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

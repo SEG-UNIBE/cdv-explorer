@@ -990,11 +990,39 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 32",
-        "BIP 39",
-        "BIP 173"
+        {
+          "target": "bips:32",
+          "count": 17
+        },
+        {
+          "target": "bips:39",
+          "count": 20
+        },
+        {
+          "target": "bips:173",
+          "count": 3
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:02:08Z",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "specification for its use in backing up Hierarchical Deterministic Wallets described in BIP-0032",
+              "reason": "The share scheme is defined to back up BIP-32 master seeds and uses the BIP-32 seed as the master secret input.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:173",
+              "evidence": "heavily inspired by Bech32 defined in BIP-0173",
+              "reason": "The checksum design explicitly relies on the Bech32 checksum model and its error-detection properties.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

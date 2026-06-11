@@ -1319,14 +1319,40 @@
     ],
     "interrelations": {
       "preamble_extracted": [
-        "BIP 151"
+        {
+          "target": "bips:151",
+          "type": "replaces"
+        }
       ],
       "body_extracted_regex": [
-        "BIP 31",
-        "BIP 340"
+        {
+          "target": "bips:31",
+          "count": 2
+        },
+        {
+          "target": "bips:340",
+          "count": 4
+        }
       ],
       "body_extracted_llm": [
-        "BIP 340"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:59:03Z",
+          "dependencies": [
+            {
+              "target": "bips:31",
+              "evidence": "ping messages every 20 minutes (the timeout interval for post-BIP31 connections)",
+              "reason": "The rekeying interval rationale relies on the existing BIP31 ping/pong timeout behavior to estimate packet frequency.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:340",
+              "evidence": "as in BIP340",
+              "reason": "The shared-secret hashing explicitly uses the BIP340 tagged-hash construction, so the proposal depends on that hash format.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

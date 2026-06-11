@@ -844,10 +844,22 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 71",
-        "BIP 72"
+        {
+          "target": "bips:71",
+          "count": 3
+        },
+        {
+          "target": "bips:72",
+          "count": 2
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:00:47Z",
+          "dependencies": []
+        }
+      ]
     }
   }
 }

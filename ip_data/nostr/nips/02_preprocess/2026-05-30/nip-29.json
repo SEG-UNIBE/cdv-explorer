@@ -482,7 +482,32 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:32Z",
+          "dependencies": [
+            {
+              "target": "nips:11",
+              "evidence": "as stated by the [NIP-11](11.md) \"self\" pubkey",
+              "reason": "The proposal relies on NIP-11’s relay self public key concept to identify the signing key for relay-generated group metadata and admin events.",
+              "confidence": "low"
+            },
+            {
+              "target": "nips:51",
+              "evidence": "A definition for `kind:10009` was included in [NIP-51](51.md) that allows clients to store the list of groups",
+              "reason": "The proposal uses the NIP-51 list/metadata event definition as the mechanism for storing remembered groups.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:98",
+              "evidence": "with a [NIP-98](98.md)-style `Authorization` header to get back the LiveKit JWT",
+              "reason": "The LiveKit token endpoint requires NIP-98-style authenticated requests for issuing access tokens.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

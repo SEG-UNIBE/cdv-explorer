@@ -682,18 +682,54 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 32",
-        "BIP 43",
-        "BIP 44",
-        "BIP 67"
+        {
+          "target": "bips:32",
+          "count": 8
+        },
+        {
+          "target": "bips:43",
+          "count": 6
+        },
+        {
+          "target": "bips:44",
+          "count": 6
+        },
+        {
+          "target": "bips:67",
+          "count": 5
+        }
       ],
       "body_extracted_llm": [
-        "BIP 16",
-        "BIP 32",
-        "BIP 43",
-        "BIP 44",
-        "BIP 67",
-        "BIP 141"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:57:51Z",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "based on an algorithm described in BIP-0032",
+              "reason": "The proposal uses BIP32 hierarchical deterministic derivation and path semantics as the foundation for its wallet hierarchy.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:43",
+              "evidence": "This BIP is a particular application of BIP43.",
+              "reason": "The proposal specializes the purpose-field hierarchy defined by BIP43 to assign purpose 48' and structure the derivation path.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:44",
+              "evidence": "multi-account hierarchy described in BIP-0044",
+              "reason": "The account-level organization and multi-account wallet structure are directly modeled on BIP44's hierarchy.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:67",
+              "evidence": "Any wallet that supports BIP48 inherently supports deterministic key sorting as per BIP67",
+              "reason": "The specification requires deterministic public-key sorting for multi-signature scripts, which is the mechanism defined by BIP67.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

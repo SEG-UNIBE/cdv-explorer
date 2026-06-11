@@ -578,9 +578,25 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 9"
+        {
+          "target": "bips:9",
+          "count": 1
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:58:15Z",
+          "dependencies": [
+            {
+              "target": "bips:9",
+              "evidence": "0x10000000 was chosen to be compatible with the BIP 9 proposal for parallel deployment of soft forks",
+              "reason": "The deployment mechanism and version-bit signaling are selected to align with BIP 9's soft-fork activation scheme.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

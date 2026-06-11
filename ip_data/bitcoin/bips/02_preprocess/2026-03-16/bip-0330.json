@@ -763,14 +763,44 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 141",
-        "BIP 339",
-        "BIP 340"
+        {
+          "target": "bips:141",
+          "count": 1
+        },
+        {
+          "target": "bips:339",
+          "count": 2
+        },
+        {
+          "target": "bips:340",
+          "count": 2
+        }
       ],
       "body_extracted_llm": [
-        "BIP 141",
-        "BIP 339",
-        "BIP 340"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:59:06Z",
+          "dependencies": [
+            {
+              "target": "bips:141",
+              "evidence": "the transaction hash including witness data as defined by BIP141",
+              "reason": "Short transaction IDs are computed from wtxids, which are defined by this proposal's transaction witness format.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:339",
+              "evidence": "should be enabled only if both peers signal BIP-339 support",
+              "reason": "Negotiation and use of the protocol are gated on support signaled by the target proposal.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:340",
+              "evidence": "TaggedHash is specified by BIP-340",
+              "reason": "The short-ID salting hash uses the TaggedHash construction defined by the target.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

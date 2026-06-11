@@ -239,7 +239,20 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:21Z",
+          "dependencies": [
+            {
+              "target": "nips:17",
+              "evidence": "deprecated in favor of [NIP-17](17.md)",
+              "reason": "This proposal explicitly defers to NIP-17 as the replacement mechanism for encrypted direct messages, making it a direct technical successor/dependency context.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

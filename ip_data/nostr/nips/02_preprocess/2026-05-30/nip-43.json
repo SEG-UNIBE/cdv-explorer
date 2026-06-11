@@ -179,7 +179,32 @@
           "count": 4
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:38Z",
+          "dependencies": [
+            {
+              "target": "nips:11",
+              "evidence": "signed by the pubkey specified in the `self` field of the relay's [NIP 11] document",
+              "reason": "The proposal relies on NIP 11 relay metadata, specifically the `self` field and `supported_nips`, to identify the signing key and capability discovery.",
+              "confidence": "low"
+            },
+            {
+              "target": "nips:42",
+              "evidence": "Failed claims SHOULD use the same standard \"restricted: \" prefix specified by NIP 42.",
+              "reason": "The proposal reuses NIP 42's standardized error-prefix semantics for relay responses to join claims.",
+              "confidence": "low"
+            },
+            {
+              "target": "nips:70",
+              "evidence": "A [NIP 70] `-` tag",
+              "reason": "The proposal requires the NIP 70 `-` tag in multiple event types as a mandatory tagging mechanism.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

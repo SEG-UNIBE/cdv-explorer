@@ -354,12 +354,49 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 39",
-        "SLIP 10",
-        "SLIP 21",
-        "SLIP 39"
+        {
+          "target": "bips:39",
+          "count": 3
+        },
+        {
+          "target": "slips:10",
+          "count": 5
+        },
+        {
+          "target": "slips:21",
+          "count": 5
+        },
+        {
+          "target": "slips:39",
+          "count": 2
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:02:09Z",
+          "dependencies": [
+            {
+              "target": "bips:39",
+              "evidence": "such as that defined in SLIP-0039 or the binary seed defined in BIP-0039",
+              "reason": "The proposal relies on BIP-39 seed material as a supported master secret source for deriving credential-related keys.",
+              "confidence": "low"
+            },
+            {
+              "target": "slips:10",
+              "evidence": "derived from a master secret and from the version and authentication tag of the credential ID using the SLIP-0010 key derivation scheme",
+              "reason": "The proposal uses SLIP-0010 to derive the credential key pair along a specific key path.",
+              "confidence": "low"
+            },
+            {
+              "target": "slips:21",
+              "evidence": "the master secret using the SLIP-0021 method for hierarchical derivation of symmetric keys",
+              "reason": "The proposal defines both the encryption key and CredRandom via SLIP-0021 hierarchical symmetric-key derivation.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

@@ -285,7 +285,26 @@
           "count": 4
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:19Z",
+          "dependencies": [
+            {
+              "target": "nips:09",
+              "evidence": "unlike [NIP-09](09.md) deletion requests",
+              "reason": "The repository state announcement semantics explicitly rely on NIP-09 as the contrasting mechanism for removing state, affecting the meaning of empty refs tracking.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:10",
+              "evidence": "Patches in a patch set SHOULD include a NIP-10 `e` `reply` tag",
+              "reason": "Patch and reply threading rules are defined by NIP-10 tags and the proposal requires them for patch series and reply events.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

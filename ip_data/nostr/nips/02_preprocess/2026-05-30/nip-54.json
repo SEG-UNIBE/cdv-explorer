@@ -301,7 +301,38 @@
           "count": 2
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:45Z",
+          "dependencies": [
+            {
+              "target": "nips:02",
+              "evidence": "Contact lists can form the basis of a recommendation system",
+              "reason": "The wiki prioritization and trust model relies on contact lists as an input to article ranking and recommendation.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:21",
+              "evidence": "Links can have target URIs in NIP-21 format",
+              "reason": "The content format explicitly uses NIP-21 nostr URI links as part of wiki article rendering and linking semantics.",
+              "confidence": "low"
+            },
+            {
+              "target": "nips:25",
+              "evidence": "The destination pubkey can create NIP-25 reactions",
+              "reason": "Merge request acceptance/rejection and article recommendation both depend on NIP-25 reaction events and their meaning.",
+              "confidence": "low"
+            },
+            {
+              "target": "nips:51",
+              "evidence": "Relays can be created with the kind 10102 and then used by wiki clients",
+              "reason": "Relay lists are used to determine query and ranking behavior for wiki clients, so the wiki proposal builds on NIP-51 list kinds.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

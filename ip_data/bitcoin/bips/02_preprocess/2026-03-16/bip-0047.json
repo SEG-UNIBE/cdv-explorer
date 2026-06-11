@@ -912,15 +912,44 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 32",
-        "BIP 43",
-        "BIP 44"
+        {
+          "target": "bips:32",
+          "count": 4
+        },
+        {
+          "target": "bips:43",
+          "count": 4
+        },
+        {
+          "target": "bips:44",
+          "count": 9
+        }
       ],
       "body_extracted_llm": [
-        "BIP 32",
-        "BIP 37",
-        "BIP 43",
-        "BIP 44"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:57:50Z",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "This BIP is a particular application of BIP43",
+              "reason": "The proposal’s derivation paths, hardened/non-hardened child keys, and payment code structure rely on BIP32 hierarchical deterministic key derivation.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:43",
+              "evidence": "This BIP is a particular application of BIP43",
+              "reason": "The proposal explicitly adopts BIP43’s purpose-field scheme and sets purpose to 47' following that recommendation.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:44",
+              "evidence": "intended to supplement HD wallets which implement BIP44",
+              "reason": "The proposal maps payment codes to BIP44 accounts, reuses the coin type field, and defines interoperability with BIP44 address/account handling.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

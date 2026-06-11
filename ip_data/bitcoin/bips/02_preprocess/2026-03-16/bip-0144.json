@@ -635,11 +635,34 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 130",
-        "BIP 141"
+        {
+          "target": "bips:130",
+          "count": 1
+        },
+        {
+          "target": "bips:141",
+          "count": 2
+        }
       ],
       "body_extracted_llm": [
-        "BIP 141"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:58:38Z",
+          "dependencies": [
+            {
+              "target": "bips:130",
+              "evidence": "we don't always use invs anymore (with 'sendheaders' BIP 130)",
+              "reason": "The relay rationale relies on the sendheaders mechanism from BIP 130 as part of the protocol context for inventory advertisement behavior.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "requiring commitments in future blocks ([... ] BIP141 - Consensus segwit BIP)",
+              "reason": "This proposal defines witness relay and serialization that depend on the segregated witness structures and commitments introduced by BIP 141.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

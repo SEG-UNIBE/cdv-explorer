@@ -259,10 +259,35 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 32",
-        "SLIP 11"
+        {
+          "target": "bips:32",
+          "count": 1
+        },
+        {
+          "target": "slips:11",
+          "count": 2
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:02:00Z",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "hardened path, see BIP32",
+              "reason": "The proposal’s key derivation path explicitly relies on BIP32 hardened derivation semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "slips:11",
+              "evidence": "CipherKeyValue is defined in [SLIP-0011]",
+              "reason": "The proposal uses the CipherKeyValue operation defined by SLIP-0011 as the core hardware-device key derivation/encryption primitive.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

@@ -220,14 +220,63 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 32",
-        "BIP 39",
-        "SLIP 10",
-        "SLIP 11",
-        "SLIP 39",
-        "SLIP 9999"
+        {
+          "target": "bips:32",
+          "count": 8
+        },
+        {
+          "target": "bips:39",
+          "count": 3
+        },
+        {
+          "target": "slips:10",
+          "count": 7
+        },
+        {
+          "target": "slips:11",
+          "count": 3
+        },
+        {
+          "target": "slips:39",
+          "count": 2
+        },
+        {
+          "target": "slips:9999",
+          "count": 1
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:02:03Z",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "We adapt the master node generation from BIP-0032",
+              "reason": "The proposal explicitly reuses BIP-0032 master node generation as the basis for its own derivation scheme.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:39",
+              "evidence": "the binary seed defined in [BIP-0039]",
+              "reason": "The master secret can be the BIP-0039 seed, which is a direct input to the derivation process.",
+              "confidence": "high"
+            },
+            {
+              "target": "slips:10",
+              "evidence": "We adapt the master node generation from BIP-0032 and SLIP-0010",
+              "reason": "The proposal states it adapts SLIP-0010's master node generation, relying on that derivation framework as a template.",
+              "confidence": "high"
+            },
+            {
+              "target": "slips:39",
+              "evidence": "such as that defined in SLIP-0039",
+              "reason": "The master secret may be the SLIP-0039 output, so the scheme depends on that seed format as an allowed input.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

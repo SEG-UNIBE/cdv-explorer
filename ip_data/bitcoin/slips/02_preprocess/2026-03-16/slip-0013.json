@@ -216,10 +216,35 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 43",
-        "SLIP 10"
+        {
+          "target": "bips:43",
+          "count": 2
+        },
+        {
+          "target": "slips:10",
+          "count": 3
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:59:52Z",
+          "dependencies": [
+            {
+              "target": "bips:43",
+              "evidence": "derive the HD node `m/13'/A'/B'/C'/D'` according to SLIP-0010",
+              "reason": "The proposal uses the BIP-43 purpose field pattern for the first hardened component of the derivation path.",
+              "confidence": "medium"
+            },
+            {
+              "target": "slips:10",
+              "evidence": "derive the HD node `m/13'/A'/B'/C'/D'` according to SLIP-0010",
+              "reason": "The proposal explicitly relies on SLIP-0010 for deriving the hierarchical deterministic node and private keys.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

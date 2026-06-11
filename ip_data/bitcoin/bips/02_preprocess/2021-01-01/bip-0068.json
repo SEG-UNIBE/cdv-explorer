@@ -758,11 +758,45 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 9",
-        "BIP 112",
-        "BIP 113"
+        {
+          "target": "bips:9",
+          "count": 7
+        },
+        {
+          "target": "bips:112",
+          "count": 6
+        },
+        {
+          "target": "bips:113",
+          "count": 4
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:00:48Z",
+          "dependencies": [
+            {
+              "target": "bips:9",
+              "evidence": "This BIP is to be deployed by \"versionbits\" BIP9 using bit 0.",
+              "reason": "Activation is specified using BIP9 versionbits, so the proposal depends on that deployment mechanism.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:112",
+              "evidence": "This BIP must be deployed simultaneously with BIP112",
+              "reason": "The proposal’s deployment and semantics are coordinated with BIP112, which defines the opcode that interprets the sequence-lock data.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:113",
+              "evidence": "All references to median-time-past (MTP) are as defined by BIP113.",
+              "reason": "The relative time-lock semantics rely on the median-time-past definition introduced by BIP113.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

@@ -251,7 +251,20 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:53Z",
+          "dependencies": [
+            {
+              "target": "nips:01",
+              "evidence": "The filter is as described in [NIP-01](01.md).",
+              "reason": "The proposal relies on NIP-01 filter semantics and NIP-01 error reason formatting for its NEG-OPEN and NEG-ERR messages.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

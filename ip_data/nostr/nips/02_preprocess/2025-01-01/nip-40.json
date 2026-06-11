@@ -211,7 +211,20 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:21Z",
+          "dependencies": [
+            {
+              "target": "nips:11",
+              "evidence": "Clients SHOULD use the `supported_nips` field to learn if a relay supports this NIP.",
+              "reason": "The proposal relies on relay capability advertisement via supported NIPs to determine whether clients may send expiration-tagged events.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

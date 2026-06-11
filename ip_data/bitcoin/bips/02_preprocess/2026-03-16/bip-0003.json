@@ -1299,18 +1299,52 @@
     ],
     "interrelations": {
       "preamble_extracted": [
-        "BIP 2",
-        "BIP 123"
+        {
+          "target": "bips:123",
+          "type": "requires"
+        },
+        {
+          "target": "bips:2",
+          "type": "replaces"
+        }
       ],
       "body_extracted_regex": [
-        "BIP 1",
-        "BIP 2",
-        "BIP 50",
-        "BIP 123"
+        {
+          "target": "bips:1",
+          "count": 3
+        },
+        {
+          "target": "bips:2",
+          "count": 17
+        },
+        {
+          "target": "bips:50",
+          "count": 2
+        },
+        {
+          "target": "bips:123",
+          "count": 6
+        }
       ],
       "body_extracted_llm": [
-        "BIP 2",
-        "BIP 123"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:57:35Z",
+          "dependencies": [
+            {
+              "target": "bips:2",
+              "evidence": "It replaces [BIP 2]",
+              "reason": "The proposal explicitly supersedes BIP 2 and redefines the BIP process relative to it.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:123",
+              "evidence": "using the BIP classification defined in [BIP 123]",
+              "reason": "The proposal’s Layer header rules and BIP type classification rely on the classification scheme introduced by BIP 123.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

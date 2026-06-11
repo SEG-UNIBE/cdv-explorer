@@ -621,19 +621,58 @@
     ],
     "interrelations": {
       "preamble_extracted": [
-        "BIP 352",
-        "BIP 370",
-        "BIP 374"
+        {
+          "target": "bips:352",
+          "type": "requires"
+        },
+        {
+          "target": "bips:370",
+          "type": "requires"
+        },
+        {
+          "target": "bips:374",
+          "type": "requires"
+        }
       ],
       "body_extracted_regex": [
-        "BIP 352",
-        "BIP 370",
-        "BIP 374"
+        {
+          "target": "bips:352",
+          "count": 9
+        },
+        {
+          "target": "bips:370",
+          "count": 2
+        },
+        {
+          "target": "bips:374",
+          "count": 10
+        }
       ],
       "body_extracted_llm": [
-        "BIP 352",
-        "BIP 370",
-        "BIP 374"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:59:30Z",
+          "dependencies": [
+            {
+              "target": "bips:352",
+              "evidence": "adds support for sending to silent payments as described in BIP352",
+              "reason": "The proposal extends PSBT semantics specifically to carry and compute silent payment data defined by the target.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:370",
+              "evidence": "additional fields and updated role responsibilities for BIP370 PSBTv2",
+              "reason": "The proposal directly modifies PSBTv2 fields and role behavior introduced by the target.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:374",
+              "evidence": "A BIP374 DLEQ proof computed for the matching ECDH share",
+              "reason": "The proposal relies on the DLEQ proof format, generation, and verification procedures from the target for silent payment validation.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

@@ -342,7 +342,44 @@
           "count": 5
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:28Z",
+          "dependencies": [
+            {
+              "target": "nips:21",
+              "evidence": "q tags MAY be used when citing events in the .content with NIP-21",
+              "reason": "The proposal adds a permitted tag format and encoding for cited events, relying on NIP-21 event reference syntax.",
+              "confidence": "low"
+            },
+            {
+              "target": "nips:25",
+              "evidence": "kind 7 reactions may be sent to an encrypted chat",
+              "reason": "It extends encrypted chat participation rules to include reaction events defined by NIP-25.",
+              "confidence": "low"
+            },
+            {
+              "target": "nips:42",
+              "evidence": "enforced using NIP 42 AUTH",
+              "reason": "Relay protection for serving gift-wrapped events depends on authenticated access control defined by NIP-42.",
+              "confidence": "low"
+            },
+            {
+              "target": "nips:44",
+              "evidence": "uses NIP-44 encryption",
+              "reason": "The encrypted chat scheme relies on NIP-44 for encrypting the inner content and for the latest-version requirement.",
+              "confidence": "low"
+            },
+            {
+              "target": "nips:59",
+              "evidence": "uses NIP-59 seals and gift wraps",
+              "reason": "The proposal's message construction is built around sealing and gift-wrapping semantics from NIP-59, including unsigned messages and deletion behavior.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

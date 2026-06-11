@@ -507,7 +507,20 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:58:13Z",
+          "dependencies": [
+            {
+              "target": "bips:1",
+              "evidence": "Trigger: (1) Block time 00:00:00 on flag day, AND (2) 95% of the last 1,000 blocks have signaled support.",
+              "reason": "This uses the BIP1-style soft/hard fork activation mechanism based on miner signaling thresholds and deployment timing.",
+              "confidence": "medium"
+            }
+          ]
+        }
+      ]
     }
   }
 }

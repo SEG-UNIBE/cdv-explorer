@@ -594,10 +594,24 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 151"
+        {
+          "target": "bips:151",
+          "count": 7
+        }
       ],
       "body_extracted_llm": [
-        "BIP 151"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:58:41Z",
+          "dependencies": [
+            {
+              "target": "bips:151",
+              "evidence": "\"Authentication initialization must only happen if encrypted channels have been established (according to BIP-151 [1]).\"",
+              "reason": "The proposal requires BIP 151 encrypted channels before its authentication and re-keying procedures can operate.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

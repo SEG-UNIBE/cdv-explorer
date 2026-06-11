@@ -232,7 +232,26 @@
           "count": 2
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:49Z",
+          "dependencies": [
+            {
+              "target": "nips:11",
+              "evidence": "document relay characteristics inferred either from a relay's NIP 11 document",
+              "reason": "The relay discovery event derives its fields and semantics from NIP 11 relay metadata, including contradictions and limitations parsing.",
+              "confidence": "low"
+            },
+            {
+              "target": "nips:52",
+              "evidence": "`g` - A [NIP-52] geohash",
+              "reason": "The proposal reuses the NIP 52 geohash tag format as part of both event kinds.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

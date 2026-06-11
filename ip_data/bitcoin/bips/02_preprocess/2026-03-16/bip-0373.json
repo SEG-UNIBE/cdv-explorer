@@ -818,30 +818,100 @@
     ],
     "interrelations": {
       "preamble_extracted": [
-        "BIP 32",
-        "BIP 174",
-        "BIP 327",
-        "BIP 328",
-        "BIP 370"
+        {
+          "target": "bips:32",
+          "type": "requires"
+        },
+        {
+          "target": "bips:174",
+          "type": "requires"
+        },
+        {
+          "target": "bips:327",
+          "type": "requires"
+        },
+        {
+          "target": "bips:328",
+          "type": "requires"
+        },
+        {
+          "target": "bips:370",
+          "type": "requires"
+        }
       ],
       "body_extracted_regex": [
-        "BIP 32",
-        "BIP 174",
-        "BIP 327",
-        "BIP 328",
-        "BIP 340",
-        "BIP 341",
-        "BIP 370"
+        {
+          "target": "bips:32",
+          "count": 4
+        },
+        {
+          "target": "bips:174",
+          "count": 2
+        },
+        {
+          "target": "bips:327",
+          "count": 9
+        },
+        {
+          "target": "bips:328",
+          "count": 4
+        },
+        {
+          "target": "bips:340",
+          "count": 6
+        },
+        {
+          "target": "bips:341",
+          "count": 4
+        },
+        {
+          "target": "bips:370",
+          "count": 2
+        }
       ],
       "body_extracted_llm": [
-        "BIP 32",
-        "BIP 174",
-        "BIP 327",
-        "BIP 328",
-        "BIP 340",
-        "BIP 341",
-        "BIP 370",
-        "BIP 371"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:59:32Z",
+          "dependencies": [
+            {
+              "target": "bips:174",
+              "evidence": "additional fields for BIP 174 PSBTv0",
+              "reason": "The proposal adds new fields to the PSBTv0 format defined by this target, so it depends on PSBT field structure and extensibility rules from it.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:327",
+              "evidence": "MuSig2 Multi-Signature data to be included in a PSBT",
+              "reason": "The new PSBT fields are specifically for carrying MuSig2 data and rely on the MuSig2 signing roles and algorithms defined by this target.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:328",
+              "evidence": "Derivation from the aggregate pubkey can be assumed to follow BIP 328",
+              "reason": "The proposal uses BIP 328 as the basis for deriving pubkeys from the aggregate pubkey and for synthetic xpub handling, which constrains the derivation semantics.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:340",
+              "evidence": "BIP 340 compatible public keys and signatures",
+              "reason": "The specified MuSig2 outputs and final signatures are required to be compatible with BIP 340 signature/public-key rules.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "followed by the BIP 341 tapleaf hash of the Taproot leaf script",
+              "reason": "The new nonce and partial-sig keydata include the Taproot tapleaf hash semantics defined by this target to identify the signed script path.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:370",
+              "evidence": "additional fields for BIP 174 PSBTv0 and BIP 370 PSBTv2",
+              "reason": "The proposal extends PSBTv2 as defined by this target with new allowed fields and version-specific inclusion/exclusion rules.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

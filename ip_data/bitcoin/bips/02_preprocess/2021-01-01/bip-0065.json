@@ -795,10 +795,22 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 9",
-        "BIP 66"
+        {
+          "target": "bips:9",
+          "count": 1
+        },
+        {
+          "target": "bips:66",
+          "count": 1
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:00:43Z",
+          "dependencies": []
+        }
+      ]
     }
   }
 }

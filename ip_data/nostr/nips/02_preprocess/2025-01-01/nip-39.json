@@ -191,7 +191,20 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:21Z",
+          "dependencies": [
+            {
+              "target": "nips:01",
+              "evidence": "a new optional `i` tag is introduced for `kind 0` metadata event defined in [NIP-01](01.md)",
+              "reason": "This proposal extends the metadata event format defined by NIP-01 by adding a new tag and associated parsing rules.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

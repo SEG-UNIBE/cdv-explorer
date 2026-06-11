@@ -837,11 +837,28 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 9",
-        "BIP 66"
+        {
+          "target": "bips:9",
+          "count": 1
+        },
+        {
+          "target": "bips:66",
+          "count": 1
+        }
       ],
       "body_extracted_llm": [
-        "BIP 66"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:57:55Z",
+          "dependencies": [
+            {
+              "target": "bips:66",
+              "evidence": "We reuse the double-threshold IsSuperMajority() switchover mechanism used in BIP66",
+              "reason": "The deployment rules explicitly reuse BIP 66's activation mechanism and thresholds, so this proposal depends on that soft-fork deployment structure.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

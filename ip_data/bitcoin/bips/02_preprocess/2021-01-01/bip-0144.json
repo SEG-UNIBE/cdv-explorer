@@ -598,10 +598,35 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 130",
-        "BIP 141"
+        {
+          "target": "bips:130",
+          "count": 1
+        },
+        {
+          "target": "bips:141",
+          "count": 2
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:01:25Z",
+          "dependencies": [
+            {
+              "target": "bips:130",
+              "evidence": "with 'sendheaders' BIP 130",
+              "reason": "The relay design assumes header announcements instead of inventory advertisement, which affects how witness data is requested and propagated.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "defining witness structures and requiring commitments in future blocks (BIP141",
+              "reason": "This proposal’s new witness serialization, hashes, and relay rules are introduced to carry the witness structures defined by the referenced consensus proposal.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

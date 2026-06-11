@@ -588,7 +588,20 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:57:36Z",
+          "dependencies": [
+            {
+              "target": "bips:11",
+              "evidence": "\"A multi-signature transaction is one where a certain number of Bitcoins are \"encumbered\" with more than one recipient address.\"",
+              "reason": "This proposal’s transaction format is specifically for multi-signature spending, which relies on the multi-signature script semantics introduced by the referenced proposal.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

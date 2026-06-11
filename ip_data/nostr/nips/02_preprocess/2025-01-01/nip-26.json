@@ -226,7 +226,20 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:15Z",
+          "dependencies": [
+            {
+              "target": "nips:01",
+              "evidence": "Relays should answer requests such as `[\"REQ\", \"\", {\"authors\": [\"A\"]}]` by querying both the `pubkey` and delegation tags",
+              "reason": "This proposal extends event/query handling by requiring relays to interpret delegation tags when satisfying author-based requests, which builds on the basic event and request model.",
+              "confidence": "medium"
+            }
+          ]
+        }
+      ]
     }
   }
 }

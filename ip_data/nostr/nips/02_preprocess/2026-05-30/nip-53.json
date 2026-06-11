@@ -333,7 +333,26 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:42Z",
+          "dependencies": [
+            {
+              "target": "nips:19",
+              "evidence": "linked to using the [NIP-19](19.md) `naddr` code",
+              "reason": "The proposal relies on NIP-19’s naddr encoding to identify and reference the live activity.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:21",
+              "evidence": "`q` tags MAY be used when citing events in the `.content` with [NIP-21](21.md)",
+              "reason": "The proposal extends event content citation with the q-tag mechanism defined by NIP-21.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

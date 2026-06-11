@@ -177,7 +177,32 @@
           "count": 1
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:32Z",
+          "dependencies": [
+            {
+              "target": "nips:25",
+              "evidence": "kind 7 ([NIP-25](25.md)) events",
+              "reason": "This proposal extends the set of event kinds covered by the custom emoji tag semantics to kind 7 reactions defined by NIP-25.",
+              "confidence": "low"
+            },
+            {
+              "target": "nips:38",
+              "evidence": "kind 30315 ([NIP-38](38.md)) events",
+              "reason": "This proposal extends the emoji-tagging and emojification rules to kind 30315 events introduced by NIP-38.",
+              "confidence": "low"
+            },
+            {
+              "target": "nips:51",
+              "evidence": "an optional address pointer (`kind:pubkey:d-tag`) to the kind 30030 emoji set ([NIP-51](51.md))",
+              "reason": "The emoji tag can include an address pointer to an emoji set defined by NIP-51, so the tag format and linkage rely on that proposal's addressable set mechanism.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

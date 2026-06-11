@@ -271,7 +271,26 @@
           "count": 6
         }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:30Z",
+          "dependencies": [
+            {
+              "target": "nips:09",
+              "evidence": "addressable and delete-requestable per [NIP-09](09.md)",
+              "reason": "This proposal relies on NIP-09 for the addressable/delete-requestable event behavior it assigns to video events.",
+              "confidence": "low"
+            },
+            {
+              "target": "nips:92",
+              "evidence": "The primary source of video information is the `imeta` tags which is defined in [NIP-92](92.md)",
+              "reason": "The video event format depends on NIP-92's imeta tag schema to carry the media metadata and file variants.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

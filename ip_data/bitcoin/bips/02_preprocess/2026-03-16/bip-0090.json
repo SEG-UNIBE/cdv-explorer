@@ -577,15 +577,48 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 9",
-        "BIP 34",
-        "BIP 65",
-        "BIP 66"
+        {
+          "target": "bips:9",
+          "count": 5
+        },
+        {
+          "target": "bips:34",
+          "count": 11
+        },
+        {
+          "target": "bips:65",
+          "count": 10
+        },
+        {
+          "target": "bips:66",
+          "count": 10
+        }
       ],
       "body_extracted_llm": [
-        "BIP 34",
-        "BIP 65",
-        "BIP 66"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:58:07Z",
+          "dependencies": [
+            {
+              "target": "bips:34",
+              "evidence": "replace the test which governs enforcement of BIP 34",
+              "reason": "The proposal changes how BIP 34 activation and enforcement are handled by replacing its version-based trigger with a height check.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:65",
+              "evidence": "replace the test which governs enforcement of BIP 65",
+              "reason": "The proposal changes how BIP 65 activation and enforcement are handled by replacing its version-based trigger with a height check.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:66",
+              "evidence": "replace the test which governs enforcement of BIP 66",
+              "reason": "The proposal changes how BIP 66 activation and enforcement are handled by replacing its version-based trigger with a height check.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

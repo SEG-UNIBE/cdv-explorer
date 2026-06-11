@@ -7,7 +7,6 @@ from analysis.dependencies.constants import (
     BODY_EXTRACTED_REGEX,
     DEPENDENCY_APPROACH_LABELS,
     DEPENDENCY_APPROACH_ORDER,
-    PREAMBLE_DEPENDENCY_SUBTYPES,
     PREAMBLE_EXTRACTED,
 )
 
@@ -25,14 +24,6 @@ def _canonical_dependency_edges(network_data: Dict[str, Any]) -> List[Dict[str, 
 
 def _links_for_type(network_data: Dict[str, Any], link_type: str) -> List[Dict[str, Any]]:
     dependency_edges = _canonical_dependency_edges(network_data)
-    if link_type in PREAMBLE_DEPENDENCY_SUBTYPES:
-        return [
-            edge
-            for edge in dependency_edges
-            if edge.get("extraction_method") == PREAMBLE_EXTRACTED
-            and edge.get("relation_type") == link_type
-        ]
-
     if link_type == PREAMBLE_EXTRACTED:
         return [
             edge
@@ -47,7 +38,12 @@ def _links_for_type(network_data: Dict[str, Any], link_type: str) -> List[Dict[s
             if edge.get("extraction_method") == link_type
         ]
 
-    return []
+    return [
+        edge
+        for edge in dependency_edges
+        if edge.get("extraction_method") == PREAMBLE_EXTRACTED
+        and edge.get("relation_type") == link_type
+    ]
 
 
 def _split_graph_key(value: Any) -> tuple[str | None, str]:

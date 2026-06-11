@@ -16,8 +16,8 @@ from analysis.dependencies.constants import (
     PREAMBLE_EXTRACTED,
 )
 from analysis.dependencies.mining import (
-    create_explicit_dependency_list,
-    create_reference_list,
+    create_explicit_dependency_targets,
+    create_reference_targets,
     llm_extract_implicit_dependencies,
     load_api_key,
     prepare_llm_dependency_text,
@@ -102,30 +102,34 @@ def _build_base_insights(
     preamble = json_data.get("raw", {}).get("preamble", {})
     proposal_number = _proposal_number(preamble, id_field)
 
-    references = create_reference_list(
+    references = create_reference_targets(
         body_content,
         proposal_label=proposal_label,
         reference_pattern=reference_pattern,
         source_context=source_context,
     )
-    explicit_deps = create_explicit_dependency_list(
+    explicit_deps = create_explicit_dependency_targets(
         preamble,
         proposal_label=proposal_label,
         source_context=source_context,
     )
 
     raw_proposal_id = str(preamble.get(id_field, "")).strip()
-    self_refs = {f"{proposal_label} {proposal_number}"}
+    self_target = f"{source_context.source_slug}:{proposal_number}"
+    self_target_raw = f"{source_context.source_slug}:{raw_proposal_id}"
+    self_targets = {self_target}
     if raw_proposal_id:
-        self_refs.add(f"{proposal_label} {raw_proposal_id.upper()}")
+        self_targets.add(self_target_raw)
         if proposal_label.upper() == "NIP":
-            self_refs.add(f"{proposal_label} {raw_proposal_id.upper().zfill(2)}")
+            self_targets.add(f"{source_context.source_slug}:{raw_proposal_id.upper().zfill(2)}")
+            self_targets.add(f"{source_context.source_slug}:{raw_proposal_id.upper()}")
+
     return (
         {
             "word_list": _build_word_list(raw_content, stop_words),
             "interrelations": {
-                PREAMBLE_EXTRACTED: [r for r in explicit_deps if r not in self_refs],
-                BODY_EXTRACTED_REGEX: [r for r in references if r not in self_refs],
+                PREAMBLE_EXTRACTED: [entry for entry in explicit_deps if entry.get("target") not in self_targets],
+                BODY_EXTRACTED_REGEX: [entry for entry in references if entry.get("target") not in self_targets],
             },
         },
         body_content,

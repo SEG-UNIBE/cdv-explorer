@@ -28,11 +28,7 @@ function linkFromDependencyEdge(edge) {
 function linksFromDependencyEdges(dependencyEdges) {
   const links = {
     [BODY_EXTRACTED_REGEX]: [],
-    [PREAMBLE_EXTRACTED]: {
-      requires: [],
-      replaces: [],
-      proposed_replacement: [],
-    },
+    [PREAMBLE_EXTRACTED]: {},
     [BODY_EXTRACTED_LLM]: [],
   };
 
@@ -63,23 +59,21 @@ export function normalizeDependencyLinks(rawLinks) {
     ? linksFromDependencyEdges(dependencyEdges)
     : (rawLinks || {});
   const preambleExtracted = links[PREAMBLE_EXTRACTED] || {};
-  const requires = preambleExtracted.requires || links.requires || [];
-  const replaces = preambleExtracted.replaces || links.replaces || [];
-  const proposedReplacement =
-    preambleExtracted.proposed_replacement
-    || links.proposed_replacement
-    || [];
+  const preambleRelationTypes = Array.from(new Set([
+    ...Object.keys(preambleExtracted),
+    ...['requires', 'replaces', 'proposed_replacement'].filter((relationType) => Array.isArray(links[relationType])),
+  ]));
+  const normalizedPreamble = Object.fromEntries(
+    preambleRelationTypes.map((relationType) => [
+      relationType,
+      preambleExtracted[relationType] || links[relationType] || [],
+    ])
+  );
 
   return {
     [BODY_EXTRACTED_REGEX]: links[BODY_EXTRACTED_REGEX] || [],
-    [PREAMBLE_EXTRACTED]: {
-      requires,
-      replaces,
-      proposed_replacement: proposedReplacement,
-    },
-    requires,
-    replaces,
-    proposed_replacement: proposedReplacement,
+    [PREAMBLE_EXTRACTED]: normalizedPreamble,
+    ...normalizedPreamble,
     [BODY_EXTRACTED_LLM]: links[BODY_EXTRACTED_LLM] || [],
   };
 }

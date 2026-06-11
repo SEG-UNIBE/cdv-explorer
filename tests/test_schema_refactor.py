@@ -340,11 +340,11 @@ class SchemaRefactorTests(unittest.TestCase):
                 "pipeline.preprocess._enrich.extract_status_timeline",
                 return_value=[{"date": "2020-01-01", "status": "Draft", "standard": "bip2"}],
             ), patch(
-                "pipeline.preprocess._enrich.create_reference_list",
-                return_value=["BIP 2"],
+                "pipeline.preprocess._enrich.create_reference_targets",
+                return_value=[{"target": "bips:2", "count": 1}],
             ), patch(
-                "pipeline.preprocess._enrich.create_explicit_dependency_list",
-                return_value=["BIP 2"],
+                "pipeline.preprocess._enrich.create_explicit_dependency_targets",
+                return_value=[{"target": "bips:2", "type": "requires"}],
             ):
                 enrich_ip_files(
                     src_config=src_config,
@@ -364,8 +364,11 @@ class SchemaRefactorTests(unittest.TestCase):
             self.assertIsInstance(payload["insights"]["word_list"], dict)
             self.assertEqual(payload["insights"]["changes_in_status"][0]["status"], "Draft")
             self.assertNotIn("interrelations", payload["raw"]["preamble"])
-            self.assertEqual(payload["insights"]["interrelations"]["preamble_extracted"], ["BIP 2"])
-            self.assertEqual(payload["insights"]["interrelations"]["body_extracted_regex"], ["BIP 2"])
+            self.assertEqual(
+                payload["insights"]["interrelations"]["preamble_extracted"],
+                [{"target": "bips:2", "type": "requires"}],
+            )
+            self.assertEqual(payload["insights"]["interrelations"]["body_extracted_regex"], [{"target": "bips:2", "count": 1}])
             self.assertEqual(payload["insights"]["interrelations"]["body_extracted_llm"], [])
 
 

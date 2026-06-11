@@ -51,10 +51,12 @@ def get_preamble_interrelations(
     source_context: SourceContext | None = None,
 ) -> Dict[str, Any]:
     source = _as_dict(preamble)
-    field_aliases = (source_context or SourceContext.default()).field_aliases
+    context = source_context or SourceContext.default()
+    field_aliases = context.field_aliases
+    interrelation_types = context.preamble_interrelation_types
     interrelations: Dict[str, Any] = {}
 
-    for subtype in PREAMBLE_INTERRELATION_KEYS:
+    for subtype in interrelation_types:
         value = source.get(subtype)
         if not _has_value(value):
             for source_key, canonical_key in field_aliases.items():
@@ -136,7 +138,7 @@ def get_changes_in_status(proposal: Dict[str, Any]) -> List[Any]:
     return []
 
 
-def get_interrelations(proposal: Dict[str, Any]) -> Dict[str, List[Any]]:
+def get_interrelations(proposal: Dict[str, Any]) -> Dict[str, Any]:
     interrelations = empty_interrelations()
     insights = _as_dict(proposal.get("insights"))
     canonical = _as_dict(insights.get("interrelations"))

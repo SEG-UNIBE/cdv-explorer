@@ -230,6 +230,101 @@ def create_reference_list(
     return sorted(proposal_references, key=lambda value: _reference_sort_key(value, active_label, label_order))
 
 
+def _format_target_key(source_slug: Any, proposal_id: Any) -> str:
+    return f"{source_slug}:{proposal_id}"
+
+
+def _resolve_target_reference(
+    item: Any,
+    reference_configs: List[Dict[str, Any]],
+    active_config: Dict[str, Any],
+) -> Dict[str, str] | None:
+    if isinstance(item, dict):
+        target = item.get("target")
+        if isinstance(target, str) and ":" in target:
+            source_slug, proposal_id = target.split(":", 1)
+            matching_config = next(
+                (config for config in reference_configs if str(config["source_slug"]) == source_slug),
+                active_config,
+            )
+            normalized_id = _normalize_with_reference_config(proposal_id, matching_config)
+            if normalized_id is None:
+                return None
+            return {
+                "source_slug": str(matching_config["source_slug"]),
+                "proposal_id": normalized_id,
+                "label": _format_reference(str(matching_config["proposal_label"]), normalized_id),
+            }
+
+    for config in reference_configs:
+        normalized = _match_reference_item(item, config, allow_bare=False)
+        if normalized is None:
+            continue
+        return {
+            "source_slug": str(config["source_slug"]),
+            "proposal_id": normalized.split(" ", 1)[1],
+            "label": normalized,
+        }
+
+    normalized = _match_reference_item(item, active_config, allow_bare=True)
+    if normalized is None:
+        return None
+    return {
+        "source_slug": str(active_config["source_slug"]),
+        "proposal_id": normalized.split(" ", 1)[1],
+        "label": normalized,
+    }
+
+
+def create_reference_targets(
+    raw_content: str,
+    proposal_label: str | None = None,
+    reference_pattern: str | None = None,
+    source_context: SourceContext | None = None,
+) -> List[Dict[str, Any]]:
+    context = source_context or SourceContext.default()
+    reference_configs = _reference_configs_for_context(context, proposal_label, reference_pattern)
+    active_label = proposal_label or context.proposal_label
+    label_order = _reference_label_order(reference_configs)
+    counts: Dict[str, Dict[str, Any]] = {}
+
+    for config in reference_configs:
+        active_proposal_label = str(config["proposal_label"])
+        active_reference_pattern = str(config["reference_pattern"])
+
+        if _uses_hex_proposal_ids(active_proposal_label, active_reference_pattern):
+            list_pattern = re.compile(
+                rf"(?i)\b{re.escape(active_proposal_label)}s?[-#\s]*([0-9A-Fa-f]{{1,{MAX_REFERENCE_DIGITS}}}(?![0-9A-Fa-f])(?:\s*(?:,|/|and|or)\s*[0-9A-Fa-f]{{1,{MAX_REFERENCE_DIGITS}}}(?![0-9A-Fa-f]))*)"
+            )
+            token_pattern = r"[0-9A-Fa-f]+"
+        else:
+            list_pattern = re.compile(
+                rf"(?i)\b{re.escape(active_proposal_label)}s?[-#\s]*(\d{{1,{MAX_REFERENCE_DIGITS}}}(?!\d)(?:\s*(?:,|/|and|or)\s*\d{{1,{MAX_REFERENCE_DIGITS}}}(?!\d))*)"
+            )
+            token_pattern = r"\d+"
+
+        for match in list_pattern.findall(raw_content):
+            for raw_id in re.findall(token_pattern, match):
+                normalized_id = _normalize_with_reference_config(raw_id, config)
+                if normalized_id is None:
+                    continue
+                target = _format_target_key(config["source_slug"], normalized_id)
+                counts.setdefault(
+                    target,
+                    {
+                        "target": target,
+                        "count": 0,
+                        "_label": _format_reference(active_proposal_label, normalized_id),
+                    },
+                )["count"] += 1
+
+    items = sorted(
+        counts.values(),
+        key=lambda item: _reference_sort_key(item["_label"], active_label, label_order),
+    )
+    return [{"target": item["target"], "count": item["count"]} for item in items]
+
+
 def create_explicit_dependency_list(
     preamble: Dict[str, Any],
     proposal_label: str | None = None,
@@ -269,6 +364,47 @@ def create_explicit_dependency_list(
                 dependency_ids.add(normalized)
 
     return sorted(dependency_ids, key=lambda value: _reference_sort_key(value, active_label, label_order))
+
+
+def create_explicit_dependency_targets(
+    preamble: Dict[str, Any],
+    proposal_label: str | None = None,
+    source_context: SourceContext | None = None,
+) -> List[Dict[str, str]]:
+    context = source_context or SourceContext.default()
+    reference_configs = _reference_configs_for_context(context, proposal_label, context.reference_pattern)
+    active_label = proposal_label or context.proposal_label
+    active_config = next(
+        (
+            config
+            for config in reference_configs
+            if str(config["proposal_label"]).upper() == active_label.upper()
+        ),
+        reference_configs[0],
+    )
+    label_order = _reference_label_order(reference_configs)
+    preamble_interrelations = get_preamble_interrelations(preamble, source_context=context)
+    result: List[Dict[str, str]] = []
+
+    for subtype in context.preamble_interrelation_types:
+        value = preamble_interrelations.get(subtype)
+        if not value:
+            continue
+        raw_items = value if isinstance(value, list) else str(value).split(",")
+        targets: Dict[str, Dict[str, str]] = {}
+        for item in raw_items:
+            reference = _resolve_target_reference(item, reference_configs, active_config)
+            if reference is None:
+                continue
+            target = _format_target_key(reference["source_slug"], reference["proposal_id"])
+            targets[target] = {"target": target, "_label": reference["label"]}
+        ordered = sorted(
+            targets.values(),
+            key=lambda item: _reference_sort_key(item["_label"], active_label, label_order),
+        )
+        result.extend({"target": item["target"], "type": subtype} for item in ordered)
+
+    return result
 
 
 def load_api_key() -> str | None:
@@ -331,6 +467,139 @@ def normalize_dependency_output(
     return sorted(normalized_ids, key=lambda value: _reference_sort_key(value, active_proposal_label, label_order))
 
 
+def _resolve_llm_target(
+    item: Any,
+    reference_configs: List[Dict[str, Any]],
+    active_config: Dict[str, Any],
+) -> Dict[str, str] | None:
+    raw_target = item
+    raw_source = None
+    raw_id = None
+
+    if isinstance(item, dict):
+        raw_source = item.get("target_source") or item.get("source_slug")
+        raw_id = item.get("target_id") or item.get("proposal_id") or item.get("id")
+        raw_target = item.get("target") or item.get("label") or item.get("dependency")
+
+    if raw_source and raw_id is not None:
+        matching_config = next(
+            (config for config in reference_configs if str(config.get("source_slug")) == str(raw_source)),
+            active_config,
+        )
+        normalized_id = _normalize_with_reference_config(raw_id, matching_config)
+        if normalized_id is None:
+            return None
+        return {
+            "source_slug": str(matching_config["source_slug"]),
+            "proposal_id": normalized_id,
+            "label": _format_reference(str(matching_config["proposal_label"]), normalized_id),
+        }
+
+    if raw_target is None:
+        return None
+
+    target_text = str(raw_target).strip()
+    if not target_text:
+        return None
+
+    if ":" in target_text:
+        target_source, target_id = target_text.split(":", 1)
+        matching_config = next(
+            (config for config in reference_configs if str(config.get("source_slug")) == target_source),
+            active_config,
+        )
+        normalized_id = _normalize_with_reference_config(target_id, matching_config)
+        if normalized_id is None:
+            return None
+        return {
+            "source_slug": str(matching_config["source_slug"]),
+            "proposal_id": normalized_id,
+            "label": _format_reference(str(matching_config["proposal_label"]), normalized_id),
+        }
+
+    for config in reference_configs:
+        normalized = _match_reference_item(target_text, config, allow_bare=False)
+        if normalized is None:
+            continue
+        return {
+            "source_slug": str(config["source_slug"]),
+            "proposal_id": normalized.split(" ", 1)[1],
+            "label": normalized,
+        }
+
+    normalized = _match_reference_item(target_text, active_config, allow_bare=True)
+    if normalized is None:
+        return None
+    return {
+        "source_slug": str(active_config["source_slug"]),
+        "proposal_id": normalized.split(" ", 1)[1],
+        "label": normalized,
+    }
+
+
+def normalize_llm_dependency_output(
+    payload: Any,
+    proposal_label: str | None = None,
+    current_proposal_number: str | None = None,
+    source_context: SourceContext | None = None,
+) -> List[Dict[str, str]]:
+    if not isinstance(payload, list):
+        return []
+
+    context = source_context or SourceContext.default()
+    reference_configs = _reference_configs_for_context(context, proposal_label, context.reference_pattern)
+    active_proposal_label = proposal_label or context.proposal_label
+    active_config = next(
+        (
+            config
+            for config in reference_configs
+            if str(config["proposal_label"]).upper() == active_proposal_label.upper()
+        ),
+        reference_configs[0],
+    )
+    label_order = _reference_label_order(reference_configs)
+    current_id = None if current_proposal_number is None else _normalize_with_reference_config(
+        current_proposal_number,
+        active_config,
+    )
+    current_target = None if current_id is None else f"{active_config['source_slug']}:{current_id}"
+    normalized_entries: List[Dict[str, str]] = []
+    seen_targets = set()
+
+    for item in payload:
+        target = _resolve_llm_target(item, reference_configs, active_config)
+        if target is None:
+            continue
+        target_key = f"{target['source_slug']}:{target['proposal_id']}"
+        if target_key == current_target or target_key in seen_targets:
+            continue
+        seen_targets.add(target_key)
+
+        evidence = str(item.get("evidence", "")).strip() if isinstance(item, dict) else ""
+        reason = str(item.get("reason", "")).strip() if isinstance(item, dict) else ""
+        confidence = str(item.get("confidence", "low")).strip().lower() if isinstance(item, dict) else "low"
+        if confidence not in {"low", "medium", "high"}:
+            confidence = "low"
+
+        normalized_entries.append(
+            {
+                "target": target_key,
+                "evidence": evidence,
+                "reason": reason,
+                "confidence": confidence,
+            }
+        )
+
+    return sorted(
+        normalized_entries,
+        key=lambda entry: _reference_sort_key(
+            _resolve_llm_target(entry["target"], reference_configs, active_config)["label"],
+            active_proposal_label,
+            label_order,
+        ),
+    )
+
+
 def llm_extract_implicit_dependencies(
     text: str,
     current_proposal_number: str | None = None,
@@ -347,8 +616,20 @@ def llm_extract_implicit_dependencies(
     active_proposal_label = proposal_label or context.proposal_label
     active_proposal_singular = proposal_singular or context.proposal_singular
     reference_configs = _reference_configs_for_context(context, active_proposal_label, context.reference_pattern)
+    active_config = next(
+        (
+            config
+            for config in reference_configs
+            if str(config["proposal_label"]).upper() == active_proposal_label.upper()
+        ),
+        reference_configs[0],
+    )
     source_labels = ", ".join(
         f"{config['proposal_label']} ({config['source_slug']})"
+        for config in reference_configs
+    )
+    target_formats = ", ".join(
+        f"{config['proposal_label']} => {config['source_slug']}:ID"
         for config in reference_configs
     )
     system_prompt = f"""
@@ -370,12 +651,17 @@ Do not include:
 
 Output policy:
 - Return JSON only, with no explanation and no markdown.
-- Return a normalized, sorted, distinct list using source labels in the form "LABEL ID".
+- Return a normalized, sorted, distinct list of dependency objects.
+- Each object must use target format "source_slug:ID".
 - Valid labels for this ecosystem: {source_labels}.
+- Target format mapping: {target_formats}.
 - Preserve hexadecimal identifiers and leading zeroes when the ecosystem uses them.
 - Sort by source label, then ascending proposal identifier.
 - Exclude {active_proposal_label} {current_proposal_number} if present.
 - Return an empty list when there are no real dependencies.
+- Evidence must be a short exact quote or close excerpt from the proposal text.
+- Reason must briefly explain why the target is a technical dependency, not just a citation.
+- Confidence must be one of: low, medium, high.
 """.strip()
     user_prompt = f"""
 Analyze {active_proposal_singular} {active_proposal_label}{f" {current_proposal_number}" if current_proposal_number else ""}.
@@ -383,15 +669,15 @@ Analyze {active_proposal_singular} {active_proposal_label}{f" {current_proposal_
 <examples>
 <example>
 <text>This proposal depends on {active_proposal_label} 39 and 32.</text>
-<output>["{active_proposal_label} 32", "{active_proposal_label} 39"]</output>
+<output>{{"dependencies":[{{"target":"{active_config['source_slug']}:32","evidence":"depends on {active_proposal_label} 39 and 32","reason":"The proposal explicitly says it depends on this target.","confidence":"high"}},{{"target":"{active_config['source_slug']}:39","evidence":"depends on {active_proposal_label} 39 and 32","reason":"The proposal explicitly says it depends on this target.","confidence":"high"}}]}}</output>
 </example>
 <example>
 <text>This proposal builds upon {active_proposal_label}-0016 for partially signed transactions.</text>
-<output>["{active_proposal_label} 16"]</output>
+<output>{{"dependencies":[{{"target":"{active_config['source_slug']}:16","evidence":"builds upon {active_proposal_label}-0016 for partially signed transactions","reason":"The proposal builds on mechanisms introduced by the target.","confidence":"high"}}]}}</output>
 </example>
 <example>
 <text>Since {active_proposal_label} 44 introduced a privacy concern, this proposal suggests a new hashing function to address that issue.</text>
-<output>[]</output>
+<output>{{"dependencies":[]}}</output>
 </example>
 </examples>
 
@@ -411,7 +697,17 @@ Now apply the same rules to the actual proposal text below.
                 "properties": {
                     "dependencies": {
                         "type": "array",
-                        "items": {"type": "string"},
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "target": {"type": "string"},
+                                "evidence": {"type": "string"},
+                                "reason": {"type": "string"},
+                                "confidence": {"type": "string", "enum": ["low", "medium", "high"]},
+                            },
+                            "required": ["target", "evidence", "reason", "confidence"],
+                            "additionalProperties": False,
+                        },
                     }
                 },
                 "required": ["dependencies"],
@@ -438,7 +734,7 @@ Now apply the same rules to the actual proposal text below.
         if getattr(message, "refusal", None):
             return []
         payload = json.loads(message.content.strip())
-        return normalize_dependency_output(
+        return normalize_llm_dependency_output(
             payload.get("dependencies"),
             proposal_label=active_proposal_label,
             current_proposal_number=current_proposal_number,
@@ -457,7 +753,7 @@ Now apply the same rules to the actual proposal text below.
         if getattr(message, "refusal", None):
             return []
         payload = json.loads(message.content.strip())
-        return normalize_dependency_output(
+        return normalize_llm_dependency_output(
             payload.get("dependencies"),
             proposal_label=active_proposal_label,
             current_proposal_number=current_proposal_number,

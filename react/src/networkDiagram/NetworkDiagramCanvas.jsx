@@ -19,6 +19,7 @@ import {
   edgeSourceSourceId,
   edgeTargetProposalId,
   edgeTargetSourceId,
+  formatRelationTypeLabel,
   getLinkTypeLabel,
   nodeGraphId,
   normalizeCategory,
@@ -390,7 +391,7 @@ export function NetworkDiagramCanvas({
         `<strong><a href="${getProposalUrl(targetId, snapshotLabel, { linkMode }, targetEcosystem)}" target="_blank" rel="noreferrer">${formatProposalReference(targetId, targetEcosystem)}</a></strong><br/>` +
         `Type: ${
           !isDifferentialMode
-            ? (relationLabel[edge.relationType] || edge.relationType)
+            ? (relationLabel[edge.relationType] || formatRelationTypeLabel(edge.relationType))
             : (
               edge.comparisonStatus === 'overlap'
                 ? `${getLinkTypeLabel(linkType)} + ${getLinkTypeLabel(baselineType)}`

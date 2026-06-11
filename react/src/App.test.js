@@ -54,6 +54,13 @@ test('normalizes canonical dependency edges into grouped dependency links', () =
         relation_type: 'reference',
         value: 1,
       },
+      {
+        source: 'bips:3',
+        target: 'bips:4',
+        extraction_method: PREAMBLE_EXTRACTED,
+        relation_type: 'depends_on',
+        value: 1,
+      },
     ],
   });
 
@@ -71,6 +78,15 @@ test('normalizes canonical dependency edges into grouped dependency links', () =
     target: 'bips:3',
     relation_type: 'reference',
   });
+  expect(normalized[PREAMBLE_EXTRACTED].depends_on).toEqual([
+    {
+      source: 'bips:3',
+      target: 'bips:4',
+      extraction_method: PREAMBLE_EXTRACTED,
+      relation_type: 'depends_on',
+      value: 1,
+    },
+  ]);
 });
 
 test('source-scopes dependency links without changing display proposal ids', () => {
@@ -248,11 +264,11 @@ describe('proposal link resolution', () => {
   });
 
   test('falls back to the latest known SLIP file when a historic snapshot file lookup misses', () => {
-    expect(getRepositoryProposalUrl('bitcoin', 32, '2021-01-01', {
+    expect(getRepositoryProposalUrl('bitcoin', 24, '2021-01-01', {
       linkMode: 'history',
       sourceSlug: 'slips',
     })).toBe(
-      `https://github.com/satoshilabs/slips/blob/${proposalLinkIndex.bitcoin.sources.slips.defaultBranch}/slip-0032.md`
+      `https://github.com/satoshilabs/slips/blob/${proposalLinkIndex.bitcoin.sources.slips.defaultBranch}/slip-0024.md`
     );
   });
 

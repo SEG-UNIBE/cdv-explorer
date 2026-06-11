@@ -69,6 +69,10 @@ sources:
         - requires
         - replaces
         - proposed_replacement
+      interrelation_types:
+        - requires
+        - replaces
+        - proposed_replacement
       field_aliases:
         authors: author
         assigned: created
@@ -159,6 +163,7 @@ sources:
         - type
         - created
       optional_fields: []
+      interrelation_types: []
       field_aliases:
         number: slip
         authors: author

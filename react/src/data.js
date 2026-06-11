@@ -9,14 +9,7 @@ import snapshotIndex from './generated/snapshotIndex.json';
 
 const EMPTY_LINKS = {
   [BODY_EXTRACTED_REGEX]: [],
-  [PREAMBLE_EXTRACTED]: {
-    requires: [],
-    replaces: [],
-    proposed_replacement: [],
-  },
-  requires: [],
-  replaces: [],
-  proposed_replacement: [],
+  [PREAMBLE_EXTRACTED]: {},
   [BODY_EXTRACTED_LLM]: [],
 };
 
@@ -97,16 +90,17 @@ export function scopeDependencyLinksForSource(linksByType, sourceId, sourceSlug 
   const scoped = {
     [BODY_EXTRACTED_REGEX]: (links[BODY_EXTRACTED_REGEX] || []).map((edge) => scopeDependencyEdge(edge, sourceId, sourceSlug, sourceIdBySlug)),
     [BODY_EXTRACTED_LLM]: (links[BODY_EXTRACTED_LLM] || []).map((edge) => scopeDependencyEdge(edge, sourceId, sourceSlug, sourceIdBySlug)),
-    [PREAMBLE_EXTRACTED]: {
-      requires: (explicit.requires || links.requires || []).map((edge) => scopeDependencyEdge(edge, sourceId, sourceSlug, sourceIdBySlug)),
-      replaces: (explicit.replaces || links.replaces || []).map((edge) => scopeDependencyEdge(edge, sourceId, sourceSlug, sourceIdBySlug)),
-      proposed_replacement: (explicit.proposed_replacement || links.proposed_replacement || []).map((edge) => scopeDependencyEdge(edge, sourceId, sourceSlug, sourceIdBySlug)),
-    },
+    [PREAMBLE_EXTRACTED]: Object.fromEntries(
+      Object.entries(explicit).map(([relationType, edges]) => [
+        relationType,
+        (edges || []).map((edge) => scopeDependencyEdge(edge, sourceId, sourceSlug, sourceIdBySlug)),
+      ])
+    ),
   };
 
-  scoped.requires = scoped[PREAMBLE_EXTRACTED].requires;
-  scoped.replaces = scoped[PREAMBLE_EXTRACTED].replaces;
-  scoped.proposed_replacement = scoped[PREAMBLE_EXTRACTED].proposed_replacement;
+  Object.entries(scoped[PREAMBLE_EXTRACTED]).forEach(([relationType, edges]) => {
+    scoped[relationType] = edges;
+  });
   return scoped;
 }
 
@@ -116,9 +110,7 @@ function countAllLinks(linksByType) {
   return (
     (links[BODY_EXTRACTED_REGEX]?.length || 0)
     + (links[BODY_EXTRACTED_LLM]?.length || 0)
-    + (explicit.requires?.length || links.requires?.length || 0)
-    + (explicit.replaces?.length || links.replaces?.length || 0)
-    + (explicit.proposed_replacement?.length || links.proposed_replacement?.length || 0)
+    + Object.values(explicit).reduce((sum, entries) => sum + (entries?.length || 0), 0)
   );
 }
 
@@ -241,25 +233,23 @@ function mergeLinks(perSourceDatasets) {
   const merged = {
     [BODY_EXTRACTED_REGEX]: [],
     [BODY_EXTRACTED_LLM]: [],
-    [PREAMBLE_EXTRACTED]: { requires: [], replaces: [], proposed_replacement: [] },
-    requires: [],
-    replaces: [],
-    proposed_replacement: [],
+    [PREAMBLE_EXTRACTED]: {},
   };
   perSourceDatasets.forEach((d) => {
     const links = d.links || {};
     merged[BODY_EXTRACTED_REGEX].push(...(links[BODY_EXTRACTED_REGEX] || []));
     merged[BODY_EXTRACTED_LLM].push(...(links[BODY_EXTRACTED_LLM] || []));
     const explicit = links[PREAMBLE_EXTRACTED] || {};
-    merged[PREAMBLE_EXTRACTED].requires.push(...(explicit.requires || links.requires || []));
-    merged[PREAMBLE_EXTRACTED].replaces.push(...(explicit.replaces || links.replaces || []));
-    merged[PREAMBLE_EXTRACTED].proposed_replacement.push(...(explicit.proposed_replacement || links.proposed_replacement || []));
+    Object.entries(explicit).forEach(([relationType, entries]) => {
+      if (!merged[PREAMBLE_EXTRACTED][relationType]) {
+        merged[PREAMBLE_EXTRACTED][relationType] = [];
+      }
+      merged[PREAMBLE_EXTRACTED][relationType].push(...(entries || []));
+    });
   });
-  // Keep flat aliases in sync with the explicit-preamble bucket so legacy
-  // consumers reading `links.requires` continue to work.
-  merged.requires = merged[PREAMBLE_EXTRACTED].requires;
-  merged.replaces = merged[PREAMBLE_EXTRACTED].replaces;
-  merged.proposed_replacement = merged[PREAMBLE_EXTRACTED].proposed_replacement;
+  Object.entries(merged[PREAMBLE_EXTRACTED]).forEach(([relationType, entries]) => {
+    merged[relationType] = entries;
+  });
   return merged;
 }
 

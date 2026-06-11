@@ -64,6 +64,15 @@ export function getLinkTypeLabel(linkType) {
   return LINK_TYPE_OPTIONS.find((option) => option.value === linkType)?.label || linkType;
 }
 
+export function formatRelationTypeLabel(relationType) {
+  if (!relationType) return 'Dependency';
+  return String(relationType)
+    .split('_')
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ');
+}
+
 export function buildEdgeKey(source, target) {
   return `${String(source)}->${String(target)}`;
 }
@@ -241,8 +250,9 @@ export function normalizeImportedPositions(payload) {
 
 export function buildDisplayedLinks(linksByType, linkType) {
   if (linkType === PREAMBLE_EXTRACTED) {
-    return ['requires', 'replaces', 'proposed_replacement']
-      .flatMap((relationType) => (linksByType?.[relationType] || []).map((edge, index) => ({
+    const explicit = linksByType?.[PREAMBLE_EXTRACTED] || {};
+    return Object.entries(explicit)
+      .flatMap(([relationType, edges]) => (edges || []).map((edge, index) => ({
         ...edge,
         relationType,
         key: `${relationType}-${edgeGraphSourceId(edge)}-${edgeGraphTargetId(edge)}-${index}`,
@@ -257,8 +267,9 @@ export function buildDisplayedLinks(linksByType, linkType) {
 
 export function getLinkSetForType(linksByType, linkType) {
   if (linkType === PREAMBLE_EXTRACTED) {
-    return ['requires', 'replaces', 'proposed_replacement']
-      .flatMap((relationType) => (linksByType?.[relationType] || []).map((edge) => ({
+    const explicit = linksByType?.[PREAMBLE_EXTRACTED] || {};
+    return Object.values(explicit)
+      .flatMap((edges) => (edges || []).map((edge) => ({
         ...edge,
         source: edgeGraphSourceId(edge),
         target: edgeGraphTargetId(edge),

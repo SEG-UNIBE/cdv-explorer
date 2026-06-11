@@ -12,12 +12,15 @@ if "openai" not in sys.modules:
 from analysis.conformity.metrics import extract_conformity_metrics
 from analysis.authorship.mining import update_metadata_from_git
 from analysis.dependencies.mining import (
+    create_explicit_dependency_targets,
     create_reference_list,
+    create_reference_targets,
     llm_extract_implicit_dependencies,
     normalize_dependency_output,
+    normalize_llm_dependency_output,
     prepare_llm_dependency_text,
 )
-from analysis.dependencies.metrics import extract_dependency_metrics
+from analysis.dependencies.metrics import build_graph, extract_dependency_metrics
 from analysis.dependencies.network import build_network_data
 from ecosystems import ECOSYSTEM_REGISTRY
 from pipeline.source_context import SourceContext
@@ -50,6 +53,13 @@ def _proposal(
         preamble["replaces"] = replaces
     if proposed_replacement is not None:
         preamble["proposed_replacement"] = proposed_replacement
+
+    def target_entries(value):
+        if value is None:
+            return []
+        values = value if isinstance(value, list) else [value]
+        return [{"target": ref} for ref in values]
+
     return {
         "raw": {"preamble": preamble},
         "insights": {
@@ -57,7 +67,13 @@ def _proposal(
             "interrelations": {
                 "body_extracted_regex": regex_refs or [],
                 "body_extracted_llm": llm_deps or [],
-                "preamble_extracted": [],
+                "preamble_extracted": [
+                    {**entry, "type": "requires"} for entry in target_entries(requires)
+                ] + [
+                    {**entry, "type": "replaces"} for entry in target_entries(replaces)
+                ] + [
+                    {**entry, "type": "proposed_replacement"} for entry in target_entries(proposed_replacement)
+                ],
             },
         },
     }
@@ -142,6 +158,122 @@ class CreateReferenceListTests(unittest.TestCase):
         self.assertEqual(result, ["BIP 32", "BIP 39", "BIP 44", "SLIP 132"])
 
 
+class CreateReferenceTargetsTests(unittest.TestCase):
+    def test_counts_repeated_regex_references_by_target(self):
+        context = SourceContext.from_config(
+            ECOSYSTEM_REGISTRY["bitcoin"]["sources"]["bips"],
+            ecosystem_slug="bitcoin",
+            source_slug="bips",
+        )
+
+        result = create_reference_targets(
+            "BIP 32 references BIP-32 and BIPs 32 and 39.",
+            proposal_label="BIP",
+            reference_pattern=r"\bBIP[-#\s]?(\d+)\b",
+            source_context=context,
+        )
+
+        self.assertEqual(
+            result,
+            [{"target": "bips:32", "count": 3}, {"target": "bips:39", "count": 1}],
+        )
+
+    def test_counts_mixed_bip_reference_syntax_variants(self):
+        context = SourceContext.from_config(
+            ECOSYSTEM_REGISTRY["bitcoin"]["sources"]["bips"],
+            ecosystem_slug="bitcoin",
+            source_slug="bips",
+        )
+
+        result = create_reference_targets(
+            """
+            This proposal cites BIP 32, BIP-32, BIP #32, BIP - 32, and BIP32.
+            It also references BIPs 33 and 99, BIPs 33/99, and bip-99.
+            It points implementers to SLIP-0132 for registered version bytes.
+            BIP 1000 is outside the configured BIP range and should be ignored.
+            """,
+            proposal_label="BIP",
+            reference_pattern=r"\bBIP[-#\s]?(\d+)\b",
+            source_context=context,
+        )
+
+        self.assertEqual(
+            result,
+            [
+                {"target": "bips:32", "count": 5},
+                {"target": "bips:33", "count": 2},
+                {"target": "bips:99", "count": 3},
+                {"target": "slips:132", "count": 1},
+            ],
+        )
+
+    def test_detects_sibling_source_targets(self):
+        context = SourceContext.from_config(
+            ECOSYSTEM_REGISTRY["bitcoin"]["sources"]["slips"],
+            ecosystem_slug="bitcoin",
+            source_slug="slips",
+        )
+
+        result = create_reference_targets(
+            "SLIP-0132 registers version bytes for BIP-0032 and BIPs 39 and 44.",
+            proposal_label="SLIP",
+            reference_pattern=r"\bSLIP[-#\s]?(\d+)\b",
+            source_context=context,
+        )
+
+        self.assertEqual(
+            result,
+            [
+                {"target": "bips:32", "count": 1},
+                {"target": "bips:39", "count": 1},
+                {"target": "bips:44", "count": 1},
+                {"target": "slips:132", "count": 1},
+            ],
+        )
+
+
+class CreateExplicitDependencyTargetsTests(unittest.TestCase):
+    def test_keeps_preamble_dependency_subtypes(self):
+        context = SourceContext.from_config(
+            ECOSYSTEM_REGISTRY["bitcoin"]["sources"]["bips"],
+            ecosystem_slug="bitcoin",
+            source_slug="bips",
+        )
+
+        result = create_explicit_dependency_targets(
+            {"requires": "BIP 32, SLIP-0132", "replaces": "1"},
+            proposal_label="BIP",
+            source_context=context,
+        )
+
+        self.assertEqual(
+            result,
+            [
+                {"target": "bips:32", "type": "requires"},
+                {"target": "slips:132", "type": "requires"},
+                {"target": "bips:1", "type": "replaces"},
+            ],
+        )
+
+    def test_uses_source_configured_preamble_interrelation_types(self):
+        context = SourceContext.from_config(
+            {
+                "proposal_acronym": "XIP",
+                "reference_pattern": r"\bXIP[-#\s]?(\d+)\b",
+                "preamble": {"interrelation_types": ["depends_on"]},
+            },
+            source_slug="xips",
+        )
+
+        result = create_explicit_dependency_targets(
+            {"depends_on": "XIP 7", "requires": "XIP 8"},
+            proposal_label="XIP",
+            source_context=context,
+        )
+
+        self.assertEqual(result, [{"target": "xips:7", "type": "depends_on"}])
+
+
 class PrepareLlmDependencyTextTests(unittest.TestCase):
     def test_strips_leading_pre_block(self):
         raw = "<pre>\nBIP: 1\nTitle: Test\n</pre>\nThis is the body."
@@ -190,6 +322,76 @@ class LlmModelConfigTests(unittest.TestCase):
             )
 
 
+class NormalizeLlmDependencyOutputTests(unittest.TestCase):
+    def test_returns_rich_source_aware_dependency_objects(self):
+        context = SourceContext.from_config(
+            ECOSYSTEM_REGISTRY["bitcoin"]["sources"]["bips"],
+            ecosystem_slug="bitcoin",
+            source_slug="bips",
+        )
+
+        result = normalize_llm_dependency_output(
+            [
+                {
+                    "target": "BIP 32",
+                    "evidence": "depends on BIP 32",
+                    "reason": "It relies on hierarchical deterministic wallets.",
+                    "confidence": "HIGH",
+                },
+                {
+                    "target": "slips:132",
+                    "evidence": "uses SLIP-0132 version bytes",
+                    "reason": "It relies on version byte definitions from SLIP 132.",
+                    "confidence": "medium",
+                },
+            ],
+            proposal_label="BIP",
+            current_proposal_number="1",
+            source_context=context,
+        )
+
+        self.assertEqual(
+            result,
+            [
+                {
+                    "target": "bips:32",
+                    "evidence": "depends on BIP 32",
+                    "reason": "It relies on hierarchical deterministic wallets.",
+                    "confidence": "high",
+                },
+                {
+                    "target": "slips:132",
+                    "evidence": "uses SLIP-0132 version bytes",
+                    "reason": "It relies on version byte definitions from SLIP 132.",
+                    "confidence": "medium",
+                },
+            ],
+        )
+
+    def test_excludes_current_proposal_and_deduplicates_targets(self):
+        context = SourceContext.from_config(
+            ECOSYSTEM_REGISTRY["bitcoin"]["sources"]["bips"],
+            ecosystem_slug="bitcoin",
+            source_slug="bips",
+        )
+
+        result = normalize_llm_dependency_output(
+            [
+                {"target": "bips:32", "evidence": "self", "reason": "self", "confidence": "high"},
+                {"target": "BIP-39", "evidence": "first", "reason": "first", "confidence": "unexpected"},
+                {"target": "bips:39", "evidence": "second", "reason": "second", "confidence": "high"},
+            ],
+            proposal_label="BIP",
+            current_proposal_number="32",
+            source_context=context,
+        )
+
+        self.assertEqual(
+            result,
+            [{"target": "bips:39", "evidence": "first", "reason": "first", "confidence": "low"}],
+        )
+
+
 class BuildNetworkDataTests(unittest.TestCase):
     def test_link_created_when_both_nodes_exist(self):
         result = build_network_data([_proposal("1", regex_refs=["BIP 2"]), _proposal("2")],
@@ -234,6 +436,44 @@ class BuildNetworkDataTests(unittest.TestCase):
             },
             result["dependency_edges"],
         )
+
+    def test_rich_llm_dependencies_create_source_aware_edges(self):
+        source_context = SourceContext.from_config(
+            ECOSYSTEM_REGISTRY["bitcoin"]["sources"]["bips"],
+            ecosystem_slug="bitcoin",
+            source_slug="bips",
+        )
+
+        result = build_network_data(
+            [
+                _proposal(
+                    "1",
+                    llm_deps=[
+                        {
+                            "target": "slips:132",
+                            "evidence": "uses SLIP-0132 version bytes",
+                            "reason": "It relies on version byte definitions.",
+                            "confidence": "high",
+                        }
+                    ],
+                )
+            ],
+            id_field="bip",
+            proposal_label="BIP",
+            source_context=source_context,
+            known_proposal_ids_by_source={"slips": {"132"}},
+        )
+
+        self.assertIn(
+            {
+                "source": "bips:1",
+                "target": "slips:132",
+                "extraction_method": "body_extracted_llm",
+                "relation_type": "implicit_dependency",
+                "value": 1,
+            },
+            result["dependency_edges"],
+        )
         self.assertNotIn("links", result)
 
     def test_source_qualified_references_create_cross_source_edges(self):
@@ -246,7 +486,7 @@ class BuildNetworkDataTests(unittest.TestCase):
             "raw": {"preamble": {"slip": "132", "title": "Registered HD version bytes for BIP-0032"}},
             "insights": {
                 "interrelations": {
-                    "body_extracted_regex": ["BIP 32", "SLIP 32"],
+                    "body_extracted_regex": [{"target": "bips:32", "count": 1}, {"target": "slips:32", "count": 1}],
                     "body_extracted_llm": [],
                     "preamble_extracted": [],
                 }
@@ -304,7 +544,7 @@ class BuildNetworkDataTests(unittest.TestCase):
                     "raw": {"preamble": {"slip": "132", "title": "Registered HD version bytes"}},
                     "insights": {
                         "interrelations": {
-                            "body_extracted_regex": ["BIP 999"],
+                            "body_extracted_regex": [{"target": "bips:999", "count": 1}],
                             "body_extracted_llm": [],
                             "preamble_extracted": [],
                         }
@@ -341,6 +581,27 @@ class BuildNetworkDataTests(unittest.TestCase):
         self.assertEqual(metrics["by_approach"]["preamble_extracted"]["summary"]["edge_count"], 1)
         per_bip_ids = {row["id"] for row in metrics["by_approach"]["preamble_extracted"]["per_bip"]}
         self.assertEqual(per_bip_ids, {"bips:1", "bips:2"})
+
+    def test_dependency_metrics_can_filter_custom_preamble_relation_type(self):
+        network_data = {
+            "nodes": [
+                {"id": "1", "graph_key": "xips:1", "title": "Proposal 1"},
+                {"id": "2", "graph_key": "xips:2", "title": "Proposal 2"},
+            ],
+            "dependency_edges": [
+                {
+                    "source": "xips:1",
+                    "target": "xips:2",
+                    "extraction_method": "preamble_extracted",
+                    "relation_type": "depends_on",
+                    "value": 1,
+                }
+            ],
+        }
+
+        graph = build_graph(network_data, link_type="depends_on")
+
+        self.assertEqual(list(graph.edges()), [("xips:1", "xips:2")])
 
     def test_link_to_unknown_node_excluded(self):
         result = build_network_data([_proposal("1", regex_refs=["BIP 99"])],

@@ -60,6 +60,20 @@ class SourceContext:
         return set(self.preamble_config.get("list_valued_fields", []))
 
     @property
+    def preamble_interrelation_types(self) -> tuple[str, ...]:
+        if "interrelation_types" in self.preamble_config:
+            fields = self.preamble_config.get("interrelation_types") or []
+            return tuple(str(field) for field in fields if str(field).strip())
+        if "dependency_fields" in self.preamble_config:
+            fields = self.preamble_config.get("dependency_fields") or []
+            return tuple(str(field) for field in fields if str(field).strip())
+        return ("requires", "replaces", "proposed_replacement")
+
+    @property
+    def preamble_dependency_fields(self) -> tuple[str, ...]:
+        return self.preamble_interrelation_types
+
+    @property
     def classification_config(self) -> Mapping[str, Any]:
         return self.config.get("classification", {})
 

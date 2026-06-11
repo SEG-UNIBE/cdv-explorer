@@ -10,12 +10,7 @@ from analysis.dependencies.constants import (
     PREAMBLE_EXTRACTED,
 )
 from analysis.authorship.mining import get_git_authors_on_first_day
-from analysis.proposal_schema import (
-    get_formal_compliance,
-    get_interrelations,
-    get_preamble_interrelations,
-    normalize_proposal_document,
-)
+from analysis.proposal_schema import get_formal_compliance, get_interrelations, normalize_proposal_document
 from pipeline.source_context import SourceContext
 from analysis.utils import parse_date_ymd as _parse_date_ymd
 
@@ -218,6 +213,14 @@ def _resolve_reference_item(
         raw_id = item.get("target_id") or item.get("proposal_id") or item.get("id") or item.get("target")
         if raw_id is None:
             return None
+        if raw_source is None and isinstance(raw_id, str) and ":" in raw_id:
+            raw_source, raw_id = raw_id.split(":", 1)
+        if raw_source is None and isinstance(raw_id, str):
+            resolved = _resolve_reference_item(raw_id, reference_configs, active_config)
+            if resolved is not None:
+                if item.get("count") is not None:
+                    resolved["count"] = item.get("count")
+                return resolved
         matching_config = next(
             (config for config in reference_configs if str(config.get("source_slug")) == str(raw_source)),
             active_config,
@@ -228,6 +231,7 @@ def _resolve_reference_item(
         return {
             "source_slug": str(matching_config.get("source_slug") or ""),
             "proposal_id": normalized_id,
+            **({"count": item.get("count")} if item.get("count") is not None else {}),
         }
 
     text = str(item).strip()
@@ -337,9 +341,9 @@ def build_network_data(
     nodes = []
     explicit_reference_links = []
     implicit_dependency_links = []
-    requires_links = []
-    replaces_links = []
-    proposed_replacement_links = []
+    explicit_dependency_links: Dict[str, List[Dict[str, Any]]] = {
+        relation_type: [] for relation_type in context.preamble_interrelation_types
+    }
     node_ids = set()
     known_ids_by_source = {
         str(source_slug): {str(proposal_id) for proposal_id in proposal_ids}
@@ -356,11 +360,11 @@ def build_network_data(
             return target_id in known_ids_by_source[source_slug]
         return True
 
-    def make_link(source_id: str, target_source_slug: str | None, target_id: str) -> Dict[str, Any]:
+    def make_link(source_id: str, target_source_slug: str | None, target_id: str, value: Any = 1) -> Dict[str, Any]:
         return {
             "source": build_graph_key(context.source_slug, source_id),
             "target": build_graph_key(target_source_slug or context.source_slug, target_id),
-            "value": 1,
+            "value": value,
         }
 
     for proposal in proposal_data:
@@ -430,7 +434,7 @@ def build_network_data(
 
         for ref in normalize_proposal_references(references_field, proposal_label=proposal_label, source_context=context):
             if target_exists(proposal_id, ref.get("source_slug"), ref["proposal_id"]):
-                explicit_reference_links.append(make_link(proposal_id, ref.get("source_slug"), ref["proposal_id"]))
+                explicit_reference_links.append(make_link(proposal_id, ref.get("source_slug"), ref["proposal_id"], ref.get("count", 1)))
 
         for dep in normalize_proposal_references(
             interrelations.get(BODY_EXTRACTED_LLM),
@@ -440,37 +444,29 @@ def build_network_data(
             if target_exists(proposal_id, dep.get("source_slug"), dep["proposal_id"]):
                 implicit_dependency_links.append(make_link(proposal_id, dep.get("source_slug"), dep["proposal_id"]))
 
-        preamble_interrelations = get_preamble_interrelations(preamble, source_context=context)
+        preamble_interrelations = interrelations.get(PREAMBLE_EXTRACTED, [])
+        relation_entries_by_type: Dict[str, List[Any]] = {}
+        if isinstance(preamble_interrelations, list):
+            for entry in preamble_interrelations:
+                if not isinstance(entry, dict):
+                    continue
+                relation_type = str(entry.get("type") or "").strip()
+                if not relation_type:
+                    continue
+                relation_entries_by_type.setdefault(relation_type, []).append(entry)
 
-        for req in normalize_proposal_references(
-            preamble_interrelations.get("requires"),
-            proposal_label=proposal_label,
-            source_context=context,
-        ):
-            if target_exists(proposal_id, req.get("source_slug"), req["proposal_id"]):
-                requires_links.append(make_link(proposal_id, req.get("source_slug"), req["proposal_id"]))
+        for relation_type, relation_entries in relation_entries_by_type.items():
+            explicit_dependency_links.setdefault(relation_type, [])
+            for ref in normalize_proposal_references(
+                relation_entries,
+                proposal_label=proposal_label,
+                source_context=context,
+            ):
+                if target_exists(proposal_id, ref.get("source_slug"), ref["proposal_id"]):
+                    explicit_dependency_links[relation_type].append(
+                        make_link(proposal_id, ref.get("source_slug"), ref["proposal_id"])
+                    )
 
-        for rep in normalize_proposal_references(
-            preamble_interrelations.get("replaces"),
-            proposal_label=proposal_label,
-            source_context=context,
-        ):
-            if target_exists(proposal_id, rep.get("source_slug"), rep["proposal_id"]):
-                replaces_links.append(make_link(proposal_id, rep.get("source_slug"), rep["proposal_id"]))
-
-        for sup in normalize_proposal_references(
-            preamble_interrelations.get("proposed_replacement"),
-            proposal_label=proposal_label,
-            source_context=context,
-        ):
-            if target_exists(proposal_id, sup.get("source_slug"), sup["proposal_id"]):
-                proposed_replacement_links.append(make_link(proposal_id, sup.get("source_slug"), sup["proposal_id"]))
-
-    explicit_dependency_links = {
-        "requires": requires_links,
-        "replaces": replaces_links,
-        "proposed_replacement": proposed_replacement_links,
-    }
     raw_links = {
         BODY_EXTRACTED_REGEX: explicit_reference_links,
         PREAMBLE_EXTRACTED: explicit_dependency_links,

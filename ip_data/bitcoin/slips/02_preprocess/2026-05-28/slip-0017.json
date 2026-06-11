@@ -190,10 +190,29 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 43",
-        "SLIP 10"
+        {
+          "target": "bips:43",
+          "count": 2
+        },
+        {
+          "target": "slips:10",
+          "count": 3
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:55:19Z",
+          "dependencies": [
+            {
+              "target": "slips:10",
+              "evidence": "Derive the HD node `m/17'/A'/B'/C'/D'` according to SLIP-0010",
+              "reason": "The derivation path and hardened child key generation explicitly rely on SLIP-0010's hierarchical deterministic key derivation scheme.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

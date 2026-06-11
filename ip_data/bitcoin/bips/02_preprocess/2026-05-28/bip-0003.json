@@ -1299,17 +1299,58 @@
     ],
     "interrelations": {
       "preamble_extracted": [
-        "BIP 2",
-        "BIP 123"
+        {
+          "target": "bips:123",
+          "type": "requires"
+        },
+        {
+          "target": "bips:2",
+          "type": "replaces"
+        }
       ],
       "body_extracted_regex": [
-        "BIP 1",
-        "BIP 2",
-        "BIP 50",
-        "BIP 123"
+        {
+          "target": "bips:1",
+          "count": 3
+        },
+        {
+          "target": "bips:2",
+          "count": 17
+        },
+        {
+          "target": "bips:50",
+          "count": 2
+        },
+        {
+          "target": "bips:123",
+          "count": 6
+        }
       ],
       "body_extracted_llm": [
-        "BIP 123"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:52:44Z",
+          "dependencies": [
+            {
+              "target": "bips:1",
+              "evidence": "Related Work - BIP 1: BIP Purpose and Guidelines",
+              "reason": "BIP 3 supersedes and revises the general purpose and guidelines framework established by BIP 1.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:2",
+              "evidence": "It replaces [BIP 2](bip-0002.mediawiki) with a streamlined process",
+              "reason": "BIP 3 is a direct replacement for BIP 2 and depends on its process model as the baseline being amended.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:123",
+              "evidence": "Specification BIPs use the Layer header rules specified in [BIP 123](bip-0123.mediawiki)",
+              "reason": "BIP 3 adopts BIP 123's layer classification rules for the Layer header, making it a technical prerequisite for the new preamble format.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

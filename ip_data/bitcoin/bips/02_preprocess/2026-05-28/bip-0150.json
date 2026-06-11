@@ -594,10 +594,24 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 151"
+        {
+          "target": "bips:151",
+          "count": 7
+        }
       ],
       "body_extracted_llm": [
-        "BIP 151"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:53:51Z",
+          "dependencies": [
+            {
+              "target": "bips:151",
+              "evidence": "\"Authentication initialization must only happen if encrypted channels have been established (according to BIP-151 [1]).\"",
+              "reason": "The authentication protocol is explicitly gated on BIP 151 encrypted channels and uses its encryption-session-ID, so it depends on that transport encryption scheme.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

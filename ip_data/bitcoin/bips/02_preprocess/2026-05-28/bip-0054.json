@@ -867,15 +867,52 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 16",
-        "BIP 30",
-        "BIP 34",
-        "BIP 94",
-        "BIP 182"
+        {
+          "target": "bips:16",
+          "count": 4
+        },
+        {
+          "target": "bips:30",
+          "count": 14
+        },
+        {
+          "target": "bips:34",
+          "count": 16
+        },
+        {
+          "target": "bips:94",
+          "count": 3
+        },
+        {
+          "target": "bips:182",
+          "count": 3
+        }
       ],
       "body_extracted_llm": [
-        "BIP 16",
-        "BIP 141"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:53:04Z",
+          "dependencies": [
+            {
+              "target": "bips:16",
+              "evidence": "The accounting is the same as for [bip-0016][BIP16 specs]",
+              "reason": "The signature-op counting rule explicitly reuses BIP16 script evaluation accounting semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:30",
+              "evidence": "without [bip-0030][BIP30] validation",
+              "reason": "The proposal changes coinbase rules specifically to eliminate the need for BIP30 duplicate-transaction validation.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:34",
+              "evidence": "Since [bip-0034][BIP34] activation",
+              "reason": "The new coinbase uniqueness rule is defined relative to BIP34 violation history and replaces reliance on BIP30 after BIP34 activation.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

@@ -837,11 +837,34 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 9",
-        "BIP 66"
+        {
+          "target": "bips:9",
+          "count": 1
+        },
+        {
+          "target": "bips:66",
+          "count": 1
+        }
       ],
       "body_extracted_llm": [
-        "BIP 66"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:53:05Z",
+          "dependencies": [
+            {
+              "target": "bips:9",
+              "evidence": "BIP9 involves permanently setting a high-order bit to 1",
+              "reason": "The proposal’s deployment section relies on BIP9 as an alternative soft-fork signaling/activation mechanism and contrasts version-bit constraints against it.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:66",
+              "evidence": "We reuse the double-threshold IsSuperMajority() switchover mechanism used in BIP66",
+              "reason": "The deployment mechanism directly reuses the activation logic defined by the referenced proposal.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

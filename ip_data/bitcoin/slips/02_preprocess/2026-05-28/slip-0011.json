@@ -227,11 +227,33 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 32",
-        "SLIP 15",
-        "SLIP 16"
+        {
+          "target": "bips:32",
+          "count": 4
+        },
+        {
+          "target": "slips:15",
+          "count": 2
+        },
+        {
+          "target": "slips:16",
+          "count": 2
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:55:18Z",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "BIP 32 path",
+              "reason": "The proposal derives the encryption key from a BIP32 node private key, so the hierarchical deterministic derivation mechanism is required.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

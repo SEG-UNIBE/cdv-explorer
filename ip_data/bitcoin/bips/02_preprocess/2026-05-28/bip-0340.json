@@ -1242,15 +1242,67 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 32",
-        "BIP 62",
-        "BIP 66",
-        "BIP 118",
-        "BIP 146",
-        "BIP 327",
-        "BIP 341"
+        {
+          "target": "bips:32",
+          "count": 4
+        },
+        {
+          "target": "bips:62",
+          "count": 2
+        },
+        {
+          "target": "bips:66",
+          "count": 2
+        },
+        {
+          "target": "bips:118",
+          "count": 2
+        },
+        {
+          "target": "bips:146",
+          "count": 2
+        },
+        {
+          "target": "bips:327",
+          "count": 2
+        },
+        {
+          "target": "bips:341",
+          "count": 2
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:54:28Z",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "bip-0032.mediawiki#public-parent-key--public-child-key|BIP32's unhardened derivation",
+              "reason": "The signature design is constrained to remain secure under BIP32-style additive key derivation, so it depends on that derivation mechanism being supported.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:118",
+              "evidence": "may change with proposals such as SIGHASH_NOINPUT ([[bip-0118.mediawiki|BIP118]])",
+              "reason": "The key-prefixing requirement is justified by and anticipates this transaction-signing change, which affects the public-key commitment assumptions.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:327",
+              "evidence": "participants can aggregate their public keys into a single public key by means of an interactive scheme such as MuSig2 ([[bip-0327.mediawiki|BIP327]])",
+              "reason": "The application of multisignatures relies on the MuSig2 protocol as a concrete higher-level scheme built for Schnorr signatures.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "as for example done in [[bip-0341.mediawiki|BIP341]]",
+              "reason": "The proposal explicitly relies on BIP341 as an example of pre-hashing and transaction-message handling in the taproot context.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

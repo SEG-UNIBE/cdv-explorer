@@ -511,17 +511,64 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 8",
-        "BIP 9",
-        "BIP 141",
-        "BIP 143",
-        "BIP 147"
+        {
+          "target": "bips:8",
+          "count": 5
+        },
+        {
+          "target": "bips:9",
+          "count": 6
+        },
+        {
+          "target": "bips:141",
+          "count": 4
+        },
+        {
+          "target": "bips:143",
+          "count": 4
+        },
+        {
+          "target": "bips:147",
+          "count": 4
+        }
       ],
       "body_extracted_llm": [
-        "BIP 8",
-        "BIP 141",
-        "BIP 143",
-        "BIP 147"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:53:50Z",
+          "dependencies": [
+            {
+              "target": "bips:8",
+              "evidence": "This BIP will be deployed by BIP8 with the name \"segwit\" and using bit 1.",
+              "reason": "The proposal’s activation mechanism is explicitly defined in terms of BIP8 deployment parameters and behavior.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:9",
+              "evidence": "a user activated soft fork (UASF) that deploys segwit again using versionbits with guaranteed lock-in",
+              "reason": "The proposal relies on BIP9 versionbits deployment semantics as the prior segwit activation path it modifies and supersedes.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "a user activated soft fork for [[bip-0141.mediawiki|BIP141]]",
+              "reason": "The proposal’s soft fork activates segwit rules introduced by BIP141, so its deployment depends on those consensus changes.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:143",
+              "evidence": "a user activated soft fork for [[bip-0143.mediawiki|BIP143]]",
+              "reason": "The proposal activates transaction digest rules introduced by BIP143 as part of segwit.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:147",
+              "evidence": "a user activated soft fork for [[bip-0147.mediawiki|BIP147]]",
+              "reason": "The proposal activates segwit-related script semantics introduced by BIP147 as part of the same soft fork.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

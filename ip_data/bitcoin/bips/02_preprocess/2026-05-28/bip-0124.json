@@ -557,13 +557,54 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 16",
-        "BIP 32",
-        "BIP 65",
-        "BIP 112"
+        {
+          "target": "bips:16",
+          "count": 3
+        },
+        {
+          "target": "bips:32",
+          "count": 6
+        },
+        {
+          "target": "bips:65",
+          "count": 3
+        },
+        {
+          "target": "bips:112",
+          "count": 3
+        }
       ],
       "body_extracted_llm": [
-        "BIP 32"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:53:34Z",
+          "dependencies": [
+            {
+              "target": "bips:16",
+              "evidence": "The most popular formats are pay-to-pubkey-hash and m-of-n pay-to-script-hash (BIP16).",
+              "reason": "The proposal explicitly includes P2SH as a supported script format context for the template system, relying on that script output type.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:32",
+              "evidence": "using the key derivation mechanism defined in BIP32",
+              "reason": "The proposal’s script templates are built from BIP32 derivation paths and indexes, so its key generation depends on BIP32 HD derivation.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:65",
+              "evidence": "the advent of hashlocked and timelocked contracts (BIP65, BIP112)",
+              "reason": "The timelocked contract template uses OP_CHECKLOCKTIMEVERIFY, which is defined by BIP65.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:112",
+              "evidence": "the advent of hashlocked and timelocked contracts (BIP65, BIP112)",
+              "reason": "The proposal’s generalized script templates are motivated by and intended to support timelocked contract semantics introduced by BIP112.",
+              "confidence": "medium"
+            }
+          ]
+        }
       ]
     }
   }

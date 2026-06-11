@@ -168,10 +168,35 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 32",
-        "BIP 173"
+        {
+          "target": "bips:32",
+          "count": 7
+        },
+        {
+          "target": "bips:173",
+          "count": 3
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:55:23Z",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "Extended serialization format for BIP-32 wallets",
+              "reason": "The proposal extends and redefines the serialization of BIP-32 extended keys, so BIP-32 is the base mechanism it builds on.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:173",
+              "evidence": "encoded using Bech32 format described in BIP-0173",
+              "reason": "The serialization format depends on Bech32 encoding rules defined by the target.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

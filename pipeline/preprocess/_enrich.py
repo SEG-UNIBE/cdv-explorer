@@ -4,12 +4,14 @@ import re
 import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from collections import Counter
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, Tuple
 
 from tqdm import tqdm
 
 from analysis.authorship.mining import update_metadata_from_git
+from analysis.proposal_schema import is_llm_runs_format
 from analysis.dependencies.constants import (
     BODY_EXTRACTED_LLM,
     BODY_EXTRACTED_REGEX,
@@ -152,11 +154,21 @@ def _build_base_insights(
     )
 
 
+def _in_focus(proposal_number: str, raw_id: str, focus: set[str]) -> bool:
+    return (
+        proposal_number in focus
+        or raw_id in focus
+        or proposal_number.upper() in focus
+        or raw_id.upper() in focus
+    )
+
+
 def enrich(
     src_config: dict,
     preprocess_dir: Path,
     harvest_dir: Path,
     skip_llm: bool = False,
+    focus: set[str] | None = None,
     source_context: SourceContext | None = None,
     progress_callback=None,
 ) -> None:
@@ -205,6 +217,16 @@ def enrich(
     completed_llm = 0
 
     executor = ThreadPoolExecutor(max_workers=max_workers) if llm_enabled else None
+    llm_bar = tqdm(
+        total=0,
+        desc="  ↳ LLM",
+        unit="ip",
+        position=1,
+        leave=False,
+        dynamic_ncols=True,
+        file=sys.stdout,
+        mininterval=0.1,
+    ) if (llm_enabled and progress_callback is not None) else None
 
     def _write(output_path: Path, data: Dict[str, Any], msg: str) -> None:
         output_path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -223,8 +245,18 @@ def enrich(
             print(f"WARNING: LLM extraction failed for {record['job_id']}: {exc}", file=sys.stderr)
             result = []
         data = record["json_data"]
-        data["insights"]["interrelations"][BODY_EXTRACTED_LLM] = result if isinstance(result, list) else []
+        existing = data["insights"]["interrelations"].get(BODY_EXTRACTED_LLM, [])
+        prior_runs = existing if is_llm_runs_format(existing) else []
+        data["insights"]["interrelations"][BODY_EXTRACTED_LLM] = prior_runs + [
+            {
+                "model": llm_model,
+                "timestamp": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                "dependencies": result if isinstance(result, list) else [],
+            }
+        ]
         completed_llm += 1
+        if llm_bar is not None:
+            llm_bar.update(1)
         _write(record["output_path"], data, f"{record['job_id']} | LLM {completed_llm}/{submitted_llm}")
 
     try:
@@ -240,6 +272,14 @@ def enrich(
             )
             preamble = json_data.get("raw", {}).get("preamble", {})
             id_value = str(preamble.get(id_field, ""))
+
+            if focus is not None and not _in_focus(_proposal_number(preamble, id_field), id_value, focus):
+                if progress_callback is not None:
+                    progress_callback(json_file.name, 1)
+                if local_progress:
+                    progress.update(1)
+                continue
+
             source_file = _find_source_file(harvest_dir, id_value, src_config)
 
             if not source_file:
@@ -291,6 +331,9 @@ def enrich(
                 "output_path": output_path,
             }
             submitted_llm += 1
+            if llm_bar is not None:
+                llm_bar.total = submitted_llm
+                llm_bar.refresh()
 
             if len(pending) >= max_workers:
                 _complete_future(next(as_completed(tuple(pending.keys()))))
@@ -302,4 +345,6 @@ def enrich(
     finally:
         if executor is not None:
             executor.shutdown(wait=True)
+        if llm_bar is not None:
+            llm_bar.close()
         progress.close()

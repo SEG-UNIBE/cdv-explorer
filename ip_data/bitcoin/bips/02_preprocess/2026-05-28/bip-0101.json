@@ -629,10 +629,41 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 34",
-        "BIP 100"
+        {
+          "target": "bips:34",
+          "count": 1
+        },
+        {
+          "target": "bips:100",
+          "count": 2
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:53:22Z",
+          "dependencies": [
+            {
+              "target": "bips:9",
+              "evidence": "The version number scheme is designed to be compatible with Pieter's Wuille's proposed \"Version bits\" BIP",
+              "reason": "The proposal relies on the version-bits signaling scheme for its activation/version-number semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:34",
+              "evidence": "Deployment shall be controlled by hash-power supermajority vote (similar to the technique used in BIP34)",
+              "reason": "The proposal adopts the supermajority version-based activation technique introduced by this BIP.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:100",
+              "evidence": "The deployment plan is taken from Jeff Garzik's proposed BIP100 block size increase",
+              "reason": "The proposal explicitly bases its deployment plan on the block-size deployment mechanism from this proposal.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

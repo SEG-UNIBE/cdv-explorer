@@ -793,9 +793,25 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 70"
+        {
+          "target": "bips:70",
+          "count": 2
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:52:48Z",
+          "dependencies": [
+            {
+              "target": "bips:13",
+              "evidence": "\"[[bip-0070.mediawiki|BIP 0070]] (payment protocol) may be seen as the alternative to Aliases.\"",
+              "reason": "The proposal frames its alias system as an alternative to the payment protocol, but it does not technically rely on BIP 70 mechanisms.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

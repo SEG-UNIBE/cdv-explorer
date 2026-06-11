@@ -571,11 +571,34 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 14",
-        "BIP 37"
+        {
+          "target": "bips:14",
+          "count": 1
+        },
+        {
+          "target": "bips:37",
+          "count": 4
+        }
       ],
       "body_extracted_llm": [
-        "BIP 37"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:53:03Z",
+          "dependencies": [
+            {
+              "target": "bips:14",
+              "evidence": "[[bip-0014.mediawiki|User Agent]]",
+              "reason": "The version message payload includes the user_agent field defined by the target proposal’s subversion/user agent format.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:37",
+              "evidence": "see [[bip-0037.mediawiki|BIP 0037]], since version >= 70001",
+              "reason": "The relay flag field is introduced and its semantics are defined as an extension of the version message behavior from the target proposal.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

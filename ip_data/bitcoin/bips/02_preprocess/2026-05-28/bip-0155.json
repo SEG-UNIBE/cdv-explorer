@@ -701,7 +701,20 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:53:53Z",
+          "dependencies": [
+            {
+              "target": "bips:31",
+              "evidence": "The <code>sendaddrv2</code> message MUST only be sent in response to the <code>version</code> message from a peer and prior to sending the <code>verack</code> message.",
+              "reason": "The proposal’s signaling and handshake sequencing relies on the existing Bitcoin P2P version/verack exchange defined by this BIP.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

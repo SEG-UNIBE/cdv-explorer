@@ -238,14 +238,63 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 32",
-        "BIP 39",
-        "SLIP 10",
-        "SLIP 11",
-        "SLIP 39",
-        "SLIP 9999"
+        {
+          "target": "bips:32",
+          "count": 8
+        },
+        {
+          "target": "bips:39",
+          "count": 3
+        },
+        {
+          "target": "slips:10",
+          "count": 6
+        },
+        {
+          "target": "slips:11",
+          "count": 4
+        },
+        {
+          "target": "slips:39",
+          "count": 2
+        },
+        {
+          "target": "slips:9999",
+          "count": 1
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:55:22Z",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "We adapt the master node generation from BIP-0032",
+              "reason": "The master node generation is explicitly adapted from BIP-32, so this proposal relies on BIP-32's hierarchical key-derivation structure as the basis for its own master node construction.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:39",
+              "evidence": "the binary seed defined in [BIP-0039]",
+              "reason": "The proposal uses the BIP-39 binary seed as a permissible master secret input to its derivation process.",
+              "confidence": "high"
+            },
+            {
+              "target": "slips:10",
+              "evidence": "We adapt the master node generation from BIP-0032 and SLIP-0010",
+              "reason": "The proposal explicitly adapts SLIP-0010's master node generation mechanism for its own symmetric-key hierarchy.",
+              "confidence": "high"
+            },
+            {
+              "target": "slips:39",
+              "evidence": "such as that defined in [SLIP-0039]",
+              "reason": "The proposal uses the SLIP-0039 master secret as a source value for the symmetric-key derivation hierarchy.",
+              "confidence": "medium"
+            }
+          ]
+        }
+      ]
     }
   }
 }

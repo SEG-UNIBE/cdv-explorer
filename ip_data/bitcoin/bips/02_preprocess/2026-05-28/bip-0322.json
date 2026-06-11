@@ -927,22 +927,68 @@
     ],
     "interrelations": {
       "preamble_extracted": [
-        "BIP 174",
-        "BIP 340",
-        "BIP 341"
+        {
+          "target": "bips:174",
+          "type": "requires"
+        },
+        {
+          "target": "bips:340",
+          "type": "requires"
+        },
+        {
+          "target": "bips:341",
+          "type": "requires"
+        }
       ],
       "body_extracted_regex": [
-        "BIP 174",
-        "BIP 325",
-        "BIP 340",
-        "BIP 341"
+        {
+          "target": "bips:174",
+          "count": 10
+        },
+        {
+          "target": "bips:325",
+          "count": 1
+        },
+        {
+          "target": "bips:340",
+          "count": 2
+        },
+        {
+          "target": "bips:341",
+          "count": 2
+        }
       ],
       "body_extracted_llm": [
-        "BIP 141",
-        "BIP 174",
-        "BIP 340",
-        "BIP 341",
-        "BIP 342"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:54:16Z",
+          "dependencies": [
+            {
+              "target": "bips:174",
+              "evidence": "see [[bip-0174.mediawiki#input-finalizer|BIP174]] for details on the finalization process",
+              "reason": "The proposal uses PSBT structures, fields, and finalization rules defined by this BIP for proof-of-funds and PSBT-based signing.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:325",
+              "evidence": "Full signatures follow an analogous specification to the BIP325 challenges and solutions used by Signet.",
+              "reason": "The full signature format is modeled on BIP325's challenge/solution transaction construction.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:340",
+              "evidence": "message_hash is a BIP340-tagged hash of the message",
+              "reason": "The message hashing and signature handling rely on BIP340 tagged hashing semantics.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "The use of SIGHASH_DEFAULT may be used alternatively (e.g., BIP341 P2TR)",
+              "reason": "The allowed sighash behavior and P2TR support depend on BIP341's Taproot transaction/signature rules.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

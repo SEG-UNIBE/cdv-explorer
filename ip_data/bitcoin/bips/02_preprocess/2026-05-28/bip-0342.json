@@ -818,23 +818,78 @@
     ],
     "interrelations": {
       "preamble_extracted": [
-        "BIP 340",
-        "BIP 341"
+        {
+          "target": "bips:340",
+          "type": "requires"
+        },
+        {
+          "target": "bips:341",
+          "type": "requires"
+        }
       ],
       "body_extracted_regex": [
-        "BIP 65",
-        "BIP 112",
-        "BIP 141",
-        "BIP 143",
-        "BIP 340",
-        "BIP 341"
+        {
+          "target": "bips:65",
+          "count": 2
+        },
+        {
+          "target": "bips:112",
+          "count": 2
+        },
+        {
+          "target": "bips:141",
+          "count": 6
+        },
+        {
+          "target": "bips:143",
+          "count": 1
+        },
+        {
+          "target": "bips:340",
+          "count": 8
+        },
+        {
+          "target": "bips:341",
+          "count": 23
+        }
       ],
       "body_extracted_llm": [
-        "BIP 65",
-        "BIP 112",
-        "BIP 141",
-        "BIP 340",
-        "BIP 341"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:54:30Z",
+          "dependencies": [
+            {
+              "target": "bips:65",
+              "evidence": "including the OP_CHECKLOCKTIMEVERIFY and OP_CHECKSEQUENCEVERIFY opcodes defined in BIP65 and BIP112",
+              "reason": "Tapscript inherits CLTV semantics from this proposal, so its script execution rules depend on the opcode behavior defined here.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:112",
+              "evidence": "including the OP_CHECKLOCKTIMEVERIFY and OP_CHECKSEQUENCEVERIFY opcodes defined in BIP65 and BIP112",
+              "reason": "Tapscript inherits CSV semantics from this proposal, so its script execution rules depend on the opcode behavior defined here.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "The rules below only apply when validating a transaction input for which all of the conditions below are true: * The transaction input is a segregated witness spend (i.e., the scriptPubKey contains a witness program as defined in BIP141).",
+              "reason": "The proposal is only applicable to segregated witness spends as defined by this proposal, making BIP141 part of its validation preconditions.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:340",
+              "evidence": "Schnorr signatures as specified in BIP340",
+              "reason": "Tapscript modifies signature opcodes to verify Schnorr signatures and reuses the BIP340 verification/signature semantics.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "This document specifies the semantics of the initial scripting system under BIP341.",
+              "reason": "The tapscript rules are defined as part of Taproot script-path spending and use BIP341's witness, tapleaf, and common signature message structures.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

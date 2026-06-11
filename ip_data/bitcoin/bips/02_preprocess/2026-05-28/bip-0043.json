@@ -551,11 +551,28 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 32",
-        "BIP 44"
+        {
+          "target": "bips:32",
+          "count": 13
+        },
+        {
+          "target": "bips:44",
+          "count": 1
+        }
       ],
       "body_extracted_llm": [
-        "BIP 32"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:52:58Z",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "based on algorithm described in BIP-0032",
+              "reason": "The proposal defines a new first-level tree convention specifically for BIP32 deterministic wallets and relies on BIP32 hardened derivation and serialization concepts.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

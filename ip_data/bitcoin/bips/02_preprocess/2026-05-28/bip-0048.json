@@ -682,18 +682,54 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 32",
-        "BIP 43",
-        "BIP 44",
-        "BIP 67"
+        {
+          "target": "bips:32",
+          "count": 8
+        },
+        {
+          "target": "bips:43",
+          "count": 6
+        },
+        {
+          "target": "bips:44",
+          "count": 6
+        },
+        {
+          "target": "bips:67",
+          "count": 5
+        }
       ],
       "body_extracted_llm": [
-        "BIP 16",
-        "BIP 32",
-        "BIP 43",
-        "BIP 44",
-        "BIP 67",
-        "BIP 141"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:53:01Z",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "This BIP defines a logical hierarchy ... based on ... BIP-0032",
+              "reason": "The proposal uses BIP32 hierarchical deterministic key derivation and path semantics as the foundation of its wallet structure.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:43",
+              "evidence": "purpose scheme described in BIP-0043",
+              "reason": "The proposal adopts BIP43's purpose-field scheme to define the purpose' level of the derivation path.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:44",
+              "evidence": "multi-account hierarchy described in BIP-0044",
+              "reason": "The proposal extends the multi-account derivation hierarchy from BIP44 for its account-level structure.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:67",
+              "evidence": "based on an algorithm described in BIP-0067",
+              "reason": "The proposal requires deterministic key sorting from BIP67 for multi-signature address/script derivation.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

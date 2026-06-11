@@ -625,13 +625,17 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 32"
+        {
+          "target": "bips:32",
+          "count": 4
+        }
       ],
       "body_extracted_llm": [
-        "BIP 141",
-        "BIP 340",
-        "BIP 341",
-        "BIP 342"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:54:43Z",
+          "dependencies": []
+        }
       ]
     }
   }

@@ -866,17 +866,94 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 16",
-        "BIP 34",
-        "BIP 65",
-        "BIP 66",
-        "BIP 68",
-        "BIP 112",
-        "BIP 113",
-        "BIP 141"
+        {
+          "target": "bips:16",
+          "count": 1
+        },
+        {
+          "target": "bips:34",
+          "count": 7
+        },
+        {
+          "target": "bips:65",
+          "count": 4
+        },
+        {
+          "target": "bips:66",
+          "count": 4
+        },
+        {
+          "target": "bips:68",
+          "count": 1
+        },
+        {
+          "target": "bips:112",
+          "count": 1
+        },
+        {
+          "target": "bips:113",
+          "count": 1
+        },
+        {
+          "target": "bips:141",
+          "count": 1
+        }
       ],
       "body_extracted_llm": [
-        "BIP 22"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:52:47Z",
+          "dependencies": [
+            {
+              "target": "bips:16",
+              "evidence": "examples of this would be BIPs 16, 65, 66, 68, 112, and 113",
+              "reason": "The proposal’s getblocktemplate semantics are designed around deployments that invalidate transactions like BIP 16, affecting how templates can be used for mining.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:34",
+              "evidence": "BIP 34 introduced a mechanism for doing soft-forking changes without a predefined flag timestamp",
+              "reason": "The proposal builds on BIP 34’s version-based soft-fork activation concept and replaces its integer-threshold semantics.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:65",
+              "evidence": "This approach was later reused in BIP 66 and BIP 65",
+              "reason": "The proposal depends on BIP 65 as part of the prior version-number-based activation pattern it supersedes and constrains.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:66",
+              "evidence": "This approach was later reused in BIP 66 and BIP 65",
+              "reason": "The proposal depends on BIP 66 as part of the prior version-number-based activation pattern it supersedes and constrains.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:68",
+              "evidence": "examples of this would be BIPs 16, 65, 66, 68, 112, and 113",
+              "reason": "The getblocktemplate '!' prefix rule is defined for deployments like BIP 68 that change transaction validity, so the proposal’s template semantics extend to such activation rules.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:112",
+              "evidence": "examples of this would be BIPs 16, 65, 66, 68, 112, and 113",
+              "reason": "The proposal’s getblocktemplate rule-prefix semantics are meant to support deployments like BIP 112 that alter validation rules and may impact mining templates.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:113",
+              "evidence": "examples of this would be BIPs 16, 65, 66, 68, 112, and 113",
+              "reason": "The proposal’s getblocktemplate rule-prefix semantics are meant to support deployments like BIP 113 that alter validation rules and may impact mining templates.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "an example of this would be BIP 141 (since it modifies the txid hashing and adds a commitment to the generation transaction)",
+              "reason": "The proposal’s '!' prefix mechanism explicitly treats BIP 141-style changes as requiring special handling in block template generation.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

@@ -1274,11 +1274,51 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 65",
-        "BIP 112",
-        "BIP 341"
+        {
+          "target": "bips:65",
+          "count": 1
+        },
+        {
+          "target": "bips:112",
+          "count": 1
+        },
+        {
+          "target": "bips:341",
+          "count": 2
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:53:33Z",
+          "dependencies": [
+            {
+              "target": "bips:65",
+              "evidence": "Similar soft forks for OP_CHECKSEQUENCEVERIFY and OP_CHECKLOCKTIMEVERIFY (see BIP-0065 and BIP-0112)",
+              "reason": "The proposal relies on the soft-fork pattern of repurposing NOP opcodes established by this BIP.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:112",
+              "evidence": "Similar soft forks for OP_CHECKSEQUENCEVERIFY and OP_CHECKLOCKTIMEVERIFY (see BIP-0065 and BIP-0112)",
+              "reason": "The proposal relies on the soft-fork pattern of repurposing NOP opcodes established by this BIP.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "segwit transaction must be exactly empty",
+              "reason": "CTV’s scriptSig rules and compatibility discussion depend on SegWit’s empty-scriptSig semantics for witness spending.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "The same value is also pre-computed for and defined in BIP-341 and can be shared.",
+              "reason": "CTV explicitly reuses precomputed transaction data already defined by this proposal, so its validation logic depends on those shared computations.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

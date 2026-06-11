@@ -805,14 +805,54 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 9",
-        "BIP 16",
-        "BIP 112",
-        "BIP 141"
+        {
+          "target": "bips:9",
+          "count": 2
+        },
+        {
+          "target": "bips:16",
+          "count": 2
+        },
+        {
+          "target": "bips:112",
+          "count": 4
+        },
+        {
+          "target": "bips:141",
+          "count": 10
+        }
       ],
       "body_extracted_llm": [
-        "BIP 9",
-        "BIP 141"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:53:28Z",
+          "dependencies": [
+            {
+              "target": "bips:9",
+              "evidence": "will be deployed by version-bits BIP9 after BIP141 is enforced",
+              "reason": "The activation mechanism relies on version-bits deployment defined by this proposal.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:16",
+              "evidence": "The [[bip-0016.mediawiki|BIP16]] (Pay-to-script-hash, \"P2SH\") fixes the first 3 problems",
+              "reason": "The proposal’s witness-script design and motivation build on P2SH as the earlier script-hashing model it extends.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:112",
+              "evidence": "The following is the \"Escrow with Timeout\" example in [[bip-0112.mediawiki|BIP112]]",
+              "reason": "The proposal uses CHECKSEQUENCEVERIFY/locktime semantics from this BIP in its script examples and branch structure.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "In [[bip-0141.mediawiki|BIP141]], witness programs with a version byte of 1 or larger are considered to be anyone-can-spend scripts",
+              "reason": "The new witness program type and version-1 interpretation are defined relative to Segregated Witness.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

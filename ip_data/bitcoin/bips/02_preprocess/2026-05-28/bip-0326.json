@@ -576,12 +576,21 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 68",
-        "BIP 341"
+        {
+          "target": "bips:68",
+          "count": 3
+        },
+        {
+          "target": "bips:341",
+          "count": 3
+        }
       ],
       "body_extracted_llm": [
-        "BIP 68",
-        "BIP 341"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:54:20Z",
+          "dependencies": []
+        }
       ]
     }
   }

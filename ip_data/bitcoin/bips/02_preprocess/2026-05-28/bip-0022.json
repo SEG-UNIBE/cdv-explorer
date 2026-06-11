@@ -706,13 +706,44 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 16",
-        "BIP 23",
-        "BIP 34"
+        {
+          "target": "bips:16",
+          "count": 2
+        },
+        {
+          "target": "bips:23",
+          "count": 6
+        },
+        {
+          "target": "bips:34",
+          "count": 4
+        }
       ],
       "body_extracted_llm": [
-        "BIP 16",
-        "BIP 34"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:52:53Z",
+          "dependencies": [
+            {
+              "target": "bips:16",
+              "evidence": "Due to the BIP 0016 changes regarding rules on block sigops",
+              "reason": "The proposal relies on BIP 16’s sigop-counting rules to define the meaning of the sigops fields in templates and transactions.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:23",
+              "evidence": "a [[bip-0023.mediawiki#block-proposal|\"proposal\"]]",
+              "reason": "This proposal explicitly supports the proposal mode and related capabilities defined by BIP 23, extending its pooled-mining protocol.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:34",
+              "evidence": "comply with [[bip-0034.mediawiki|BIP 0034]] for version 2",
+              "reason": "The block template’s version handling and coinbase contents require adherence to BIP 34’s block-version and coinbase-height rules.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

@@ -534,14 +534,44 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 32",
-        "BIP 43",
-        "BIP 44"
+        {
+          "target": "bips:32",
+          "count": 7
+        },
+        {
+          "target": "bips:43",
+          "count": 6
+        },
+        {
+          "target": "bips:44",
+          "count": 4
+        }
       ],
       "body_extracted_llm": [
-        "BIP 32",
-        "BIP 43",
-        "BIP 44"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:53:12Z",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "based on an algorithm described in BIP-0032",
+              "reason": "The wallet hierarchy and child key derivation are built on BIP32 derivation semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:43",
+              "evidence": "purpose scheme described in BIP-0043",
+              "reason": "The proposal uses the BIP43 purpose field convention to define the hardened purpose level.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:44",
+              "evidence": "This BIP is a particular application of BIP43 and is based on BIP44.",
+              "reason": "The coin type constants are taken from BIP44 and the hierarchy follows its multi-account-style structure.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

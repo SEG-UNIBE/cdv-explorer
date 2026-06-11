@@ -808,14 +808,50 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 21",
-        "BIP 321",
-        "BIP 352"
+        {
+          "target": "bips:21",
+          "count": 3
+        },
+        {
+          "target": "bips:321",
+          "count": 2
+        },
+        {
+          "target": "bips:352",
+          "count": 1
+        }
       ],
       "body_extracted_llm": [
-        "BIP 21",
-        "BIP 174",
-        "BIP 370"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:54:43Z",
+          "dependencies": [
+            {
+              "target": "bips:21",
+              "evidence": "standard format for encoding BIP 21 URI schemes in DNS TXT records",
+              "reason": "The proposal encodes and reconstructs BIP 21 payment URIs, so its data format and parsing depend on BIP 21 semantics.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:321",
+              "evidence": "Reference implementations for parsing the URI contents can be found in BIP 321.",
+              "reason": "The proposal relies on BIP 321 for parsing the URI contents it stores in TXT records.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:352",
+              "evidence": "On-chain addresses which are re-used (i.e. not including schemes like Silent Payments)",
+              "reason": "It treats Silent Payments as a special address scheme that changes the address-reuse/rotation guidance, so the proposal constrains behavior based on that scheme.",
+              "confidence": "low"
+            },
+            {
+              "target": "slips:32",
+              "evidence": "using the protocol described in BLIP 32",
+              "reason": "The proposal explicitly suggests DNS resolution over native onion messages via BLIP 32, which is a specific transport mechanism it can build on for privacy-preserving resolution.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

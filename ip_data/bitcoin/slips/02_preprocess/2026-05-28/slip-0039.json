@@ -1079,11 +1079,45 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 32",
-        "BIP 39",
-        "BIP 173"
+        {
+          "target": "bips:32",
+          "count": 18
+        },
+        {
+          "target": "bips:39",
+          "count": 20
+        },
+        {
+          "target": "bips:173",
+          "count": 3
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:55:33Z",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "backing up Hierarchical Deterministic Wallets described in BIP-0032",
+              "reason": "The proposal defines how its shares are used to back up BIP-32 master seeds and derives the wallet seed from them.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:39",
+              "evidence": "This SLIP is mainly intended as a replacement for BIP-0039",
+              "reason": "The proposal explicitly defines compatibility and migration semantics relative to BIP-39 mnemonics and passphrases.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:173",
+              "evidence": "The checksum design is heavily inspired by Bech32 defined in BIP-0173",
+              "reason": "The checksum mechanism is substantively based on the checksum scheme introduced by BIP-173.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

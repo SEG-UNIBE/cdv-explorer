@@ -551,10 +551,24 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 70"
+        {
+          "target": "bips:70",
+          "count": 6
+        }
       ],
       "body_extracted_llm": [
-        "BIP 70"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:53:09Z",
+          "dependencies": [
+            {
+              "target": "bips:70",
+              "evidence": "\"The Payment Protocol (defined in BIP70)\"",
+              "reason": "The proposal directly changes the Payment Protocol defined by BIP 70 and relies on its PaymentRequest and output-handling semantics.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

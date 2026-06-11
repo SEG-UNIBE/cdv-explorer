@@ -498,22 +498,82 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 119",
-        "BIP 340",
-        "BIP 341",
-        "BIP 342",
-        "BIP 346",
-        "BIP 348",
-        "BIP 349",
-        "BIP 446"
+        {
+          "target": "bips:119",
+          "count": 2
+        },
+        {
+          "target": "bips:340",
+          "count": 2
+        },
+        {
+          "target": "bips:341",
+          "count": 1
+        },
+        {
+          "target": "bips:342",
+          "count": 3
+        },
+        {
+          "target": "bips:346",
+          "count": 2
+        },
+        {
+          "target": "bips:348",
+          "count": 3
+        },
+        {
+          "target": "bips:349",
+          "count": 3
+        },
+        {
+          "target": "bips:446",
+          "count": 7
+        }
       ],
       "body_extracted_llm": [
-        "BIP 340",
-        "BIP 341",
-        "BIP 342",
-        "BIP 348",
-        "BIP 349",
-        "BIP 446"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:55:12Z",
+          "dependencies": [
+            {
+              "target": "bips:340",
+              "evidence": "OP_CHECKSIGFROMSTACK introduces [BIP 340][schnorr-bip] signature verification for arbitrary messages",
+              "reason": "The proposed opcode relies on Schnorr signature verification semantics defined by BIP 340.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "OP_INTERNALKEY allows to push the [Taproot][taproot-bip] internal key on the stack",
+              "reason": "The opcode depends on Taproot internal key concepts introduced by BIP 341.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:342",
+              "evidence": "In [BIP 342 Tapscript], the following operations are updated.",
+              "reason": "The proposal directly amends Tapscript opcode behavior defined by BIP 342.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:348",
+              "evidence": "OP_CHECKSIGFROMSTACK redefines OP_SUCCESS204 (0xcc) as per the specification of [BIP 348]",
+              "reason": "The opcode definition and semantics are taken from BIP 348.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:349",
+              "evidence": "OP_INTERNALKEY redefines OP_SUCCESS203 (0xcb) as per the specification of [BIP 349]",
+              "reason": "The opcode definition and semantics are taken from BIP 349.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:446",
+              "evidence": "OP_TEMPLATEHASH redefines OP_SUCCESS206 (0xce) as per the specification of [BIP 446]",
+              "reason": "The opcode definition and semantics are taken from BIP 446.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

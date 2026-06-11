@@ -641,13 +641,65 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 11",
-        "BIP 12",
-        "BIP 13",
-        "BIP 16",
-        "BIP 17"
+        {
+          "target": "bips:11",
+          "count": 2
+        },
+        {
+          "target": "bips:12",
+          "count": 1
+        },
+        {
+          "target": "bips:13",
+          "count": 2
+        },
+        {
+          "target": "bips:16",
+          "count": 3
+        },
+        {
+          "target": "bips:17",
+          "count": 1
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:52:50Z",
+          "dependencies": [
+            {
+              "target": "bips:11",
+              "evidence": "This BIP replaces BIPs 12 and 17",
+              "reason": "The proposal says it replaces the script extensions from this BIP family, making it a substantive predecessor it supersedes.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:12",
+              "evidence": "This BIP replaces BIPs 12 and 17",
+              "reason": "The proposal explicitly states it replaces the script-system extension defined by this BIP.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:13",
+              "evidence": "The Motivation for this BIP (and BIP 13, the pay-to-script-hash address type)",
+              "reason": "This proposal relies on the pay-to-script-hash address format introduced by BIP 13 as part of the same mechanism.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:16",
+              "evidence": "It also replaces BIP 16, which is identical in terms of protocol",
+              "reason": "The proposal adopts the same pay-to-script-hash protocol semantics while changing compatibility and rollout behavior, so it directly builds on and amends BIP 16.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:17",
+              "evidence": "This BIP replaces BIPs 12 and 17",
+              "reason": "The proposal explicitly states it replaces the script-system extension defined by this BIP.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

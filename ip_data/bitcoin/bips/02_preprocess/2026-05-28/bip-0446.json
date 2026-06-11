@@ -604,16 +604,64 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 118",
-        "BIP 119",
-        "BIP 340",
-        "BIP 341",
-        "BIP 342"
+        {
+          "target": "bips:118",
+          "count": 2
+        },
+        {
+          "target": "bips:119",
+          "count": 4
+        },
+        {
+          "target": "bips:340",
+          "count": 2
+        },
+        {
+          "target": "bips:341",
+          "count": 14
+        },
+        {
+          "target": "bips:342",
+          "count": 1
+        }
       ],
       "body_extracted_llm": [
-        "BIP 340",
-        "BIP 341",
-        "BIP 342"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:55:12Z",
+          "dependencies": [
+            {
+              "target": "bips:118",
+              "evidence": "See [BIP118's rationale][apo-bip-spent-amounts] for more about this.",
+              "reason": "The rationale for optionally committing to spent amounts directly depends on BIP118’s discussion of those commitments in rebindable signatures.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:119",
+              "evidence": "The design of `OP_TEMPLATEHASH` was inspired by the design of [BIP119][ctv-bip] `OP_CHECKTEMPLATEVERIFY`",
+              "reason": "The proposal explicitly builds on and contrasts with CTV’s transaction-commitment semantics when defining its own opcode.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:340",
+              "evidence": "The template hash uses a tagged hash as introduced by BIP340",
+              "reason": "The proposal relies on BIP340’s tagged-hash construction for its new hashing primitive.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "introduced by [BIP341][schnorr-bip] and [BIP341][taproot-bip]",
+              "reason": "The proposal reuses BIP341 transaction digest fields and signature-message structure to define the new opcode’s semantics.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:342",
+              "evidence": "This document proposes a new operation for [Tapscript][tapscript-bip]: `OP_TEMPLATEHASH`",
+              "reason": "The opcode is defined specifically in the Tapscript execution context, so it depends on the Tapscript rules from this proposal.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

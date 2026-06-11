@@ -537,7 +537,20 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:53:04Z",
+          "dependencies": [
+            {
+              "target": "bips:37",
+              "evidence": "When combined with Bloom filtering this can be reasonably efficient.",
+              "reason": "The proposal’s SPV use case explicitly relies on Bloom filtering for efficient lookup and proof workflows.",
+              "confidence": "medium"
+            }
+          ]
+        }
+      ]
     }
   }
 }

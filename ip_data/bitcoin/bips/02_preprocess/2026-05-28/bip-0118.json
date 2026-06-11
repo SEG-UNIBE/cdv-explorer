@@ -743,24 +743,102 @@
     ],
     "interrelations": {
       "preamble_extracted": [
-        "BIP 340",
-        "BIP 341",
-        "BIP 342"
+        {
+          "target": "bips:340",
+          "type": "requires"
+        },
+        {
+          "target": "bips:341",
+          "type": "requires"
+        },
+        {
+          "target": "bips:342",
+          "type": "requires"
+        }
       ],
       "body_extracted_regex": [
-        "BIP 30",
-        "BIP 68",
-        "BIP 112",
-        "BIP 141",
-        "BIP 340",
-        "BIP 341",
-        "BIP 342",
-        "BIP 350"
+        {
+          "target": "bips:30",
+          "count": 2
+        },
+        {
+          "target": "bips:68",
+          "count": 2
+        },
+        {
+          "target": "bips:112",
+          "count": 2
+        },
+        {
+          "target": "bips:141",
+          "count": 1
+        },
+        {
+          "target": "bips:340",
+          "count": 10
+        },
+        {
+          "target": "bips:341",
+          "count": 20
+        },
+        {
+          "target": "bips:342",
+          "count": 22
+        },
+        {
+          "target": "bips:350",
+          "count": 2
+        }
       ],
       "body_extracted_llm": [
-        "BIP 340",
-        "BIP 341",
-        "BIP 342"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:53:33Z",
+          "dependencies": [
+            {
+              "target": "bips:30",
+              "evidence": "due to enforcement of BIP 30",
+              "reason": "The replay-safety discussion depends on BIP 30’s no-reuse of spent transaction outputs as part of the security argument.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:68",
+              "evidence": "This risk may be mitigated somewhat by using BIP 68/BIP 112 relative time locks",
+              "reason": "The mitigation relies on BIP 68 relative locktime semantics to reduce malleability exposure.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:112",
+              "evidence": "This risk may be mitigated somewhat by using BIP 68/BIP 112 relative time locks",
+              "reason": "The mitigation relies on BIP 112’s CHECKSEQUENCEVERIFY behavior as part of relative timelocks.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:340",
+              "evidence": "retain the same elliptic curve and signature algorithm (ie, secp256k1 and BIP 340)",
+              "reason": "This proposal reuses BIP 340’s Schnorr verification and signature encoding/verification primitive for BIP 118 signatures.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "This BIP describes a new type of public key for tapscript (BIP 342) transactions",
+              "reason": "BIP 118 is defined as a modification to Taproot transaction and signature-digest rules established by BIP 341.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:342",
+              "evidence": "This BIP modifies the behaviour of the BIP 342 signature opcodes",
+              "reason": "BIP 118 is implemented by changing how BIP 342 tapscript signature opcodes validate certain public keys.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:350",
+              "evidence": "support sending to BIP350 Bech32m addresses",
+              "reason": "Backwards-compatibility notes rely on BIP 350’s Bech32m address encoding for SegWit v1 outputs.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

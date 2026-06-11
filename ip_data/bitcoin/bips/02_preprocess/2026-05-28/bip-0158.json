@@ -876,15 +876,50 @@
     ],
     "interrelations": {
       "preamble_extracted": [
-        "BIP 157"
+        {
+          "target": "bips:157",
+          "type": "requires"
+        }
       ],
       "body_extracted_regex": [
-        "BIP 37",
-        "BIP 141",
-        "BIP 157"
+        {
+          "target": "bips:37",
+          "count": 2
+        },
+        {
+          "target": "bips:141",
+          "count": 1
+        },
+        {
+          "target": "bips:157",
+          "count": 5
+        }
       ],
       "body_extracted_llm": [
-        "BIP 157"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:53:56Z",
+          "dependencies": [
+            {
+              "target": "bips:37",
+              "evidence": "alternative to Bloom filters, as used in BIP 37",
+              "reason": "The proposal is explicitly a replacement for the Bloom filter-based filtering mechanism introduced by BIP 37, inheriting the same use case and constraints.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "current witness commitment <ref>https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki</ref>",
+              "reason": "The filter design excludes OP_RETURN outputs specifically to avoid circularity with the witness commitment mechanism introduced by BIP 141.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:157",
+              "evidence": "for use in the BIP 157 light client protocol",
+              "reason": "This proposal defines the compact filter structure that is consumed by the BIP 157 light client protocol, so the filter format and signaling are built around BIP 157.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

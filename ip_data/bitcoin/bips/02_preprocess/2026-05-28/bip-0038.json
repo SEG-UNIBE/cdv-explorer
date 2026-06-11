@@ -986,7 +986,26 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:52:57Z",
+          "dependencies": [
+            {
+              "target": "bips:16",
+              "evidence": "could be understood in the future to include keys participating in multisig transactions",
+              "reason": "The proposal’s prefix and reserved flag bits are designed around future multisig key use, which depends on multisig transaction semantics introduced by this proposal.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:32",
+              "evidence": "the person generating the final key string and its associated Bitcoin address",
+              "reason": "The EC-multiplied mode derives Bitcoin addresses from generated key material and is the same mechanism later reused by BIP 32 style hierarchical key derivation assumptions; however this is only weakly implied in the text.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

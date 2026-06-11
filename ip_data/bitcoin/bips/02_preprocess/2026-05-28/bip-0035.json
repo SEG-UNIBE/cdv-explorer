@@ -503,7 +503,20 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:52:54Z",
+          "dependencies": [
+            {
+              "target": "bips:7",
+              "evidence": "Feature discovery is enabled by checking two \"version\" message attributes",
+              "reason": "The proposal relies on the existing Bitcoin P2P version message and service-bit negotiation semantics introduced by this proposal.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

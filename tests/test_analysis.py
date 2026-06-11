@@ -23,6 +23,7 @@ from analysis.dependencies.mining import (
 from analysis.dependencies.metrics import build_graph, extract_dependency_metrics
 from analysis.dependencies.network import build_network_data
 from analysis.dependencies.utils import uses_hex_proposal_ids
+from analysis.proposal_schema import get_interrelations, is_llm_runs_format, latest_llm_dependencies
 from ecosystems import ECOSYSTEM_REGISTRY
 from pipeline.source_context import SourceContext
 
@@ -320,15 +321,6 @@ class PrepareLlmDependencyTextTests(unittest.TestCase):
 
 
 class LlmModelConfigTests(unittest.TestCase):
-    def test_source_context_reads_ecosystem_llm_model(self):
-        context = SourceContext.from_config(
-            ECOSYSTEM_REGISTRY["bitcoin"]["sources"]["bips"],
-            ecosystem_slug="bitcoin",
-            source_slug="bips",
-        )
-
-        self.assertEqual(context.llm_model, "gpt-5")
-
     def test_llm_extraction_requires_configured_model(self):
         context = SourceContext.from_config(
             {
@@ -773,6 +765,69 @@ class ExtractConformityMetricsTests(unittest.TestCase):
         no_id = {"raw": {"preamble": {}}, "insights": {"formal_compliance": {}}}
         result = extract_conformity_metrics([no_id], id_field="bip")
         self.assertEqual(result["per_proposal"], [])
+
+
+class LlmRunsFormatTests(unittest.TestCase):
+    def _proposal_with_runs(self, runs):
+        return {
+            "raw": {"preamble": {"bip": "1"}},
+            "insights": {
+                "interrelations": {
+                    "preamble_extracted": [],
+                    "body_extracted_regex": [],
+                    "body_extracted_llm": runs,
+                }
+            },
+        }
+
+    def test_detects_new_runs_format(self):
+        runs = [{"model": "gpt-5", "timestamp": "2026-06-11T10:00:00Z", "dependencies": []}]
+        self.assertTrue(is_llm_runs_format(runs))
+
+    def test_does_not_detect_old_flat_format_as_runs(self):
+        self.assertFalse(is_llm_runs_format(["BIP 32"]))
+        self.assertFalse(is_llm_runs_format([{"target": "bips:32", "confidence": "high"}]))
+        self.assertFalse(is_llm_runs_format([]))
+
+    def test_latest_run_dependencies_are_returned(self):
+        runs = [
+            {"model": "gpt-4", "timestamp": "2026-01-01T00:00:00Z", "dependencies": [{"target": "bips:1"}]},
+            {"model": "gpt-5", "timestamp": "2026-06-01T00:00:00Z", "dependencies": [{"target": "bips:32"}]},
+        ]
+        self.assertEqual(latest_llm_dependencies(runs), [{"target": "bips:32"}])
+
+    def test_latest_run_is_selected_by_timestamp_not_position(self):
+        runs = [
+            {"model": "gpt-5", "timestamp": "2026-06-01T00:00:00Z", "dependencies": [{"target": "bips:32"}]},
+            {"model": "gpt-4", "timestamp": "2026-01-01T00:00:00Z", "dependencies": [{"target": "bips:1"}]},
+        ]
+        self.assertEqual(latest_llm_dependencies(runs), [{"target": "bips:32"}])
+
+    def test_old_flat_format_passed_through_unchanged(self):
+        flat = [{"target": "bips:32", "evidence": "x", "reason": "y", "confidence": "high"}]
+        self.assertEqual(latest_llm_dependencies(flat), flat)
+
+    def test_get_interrelations_resolves_latest_run(self):
+        runs = [
+            {"model": "gpt-4", "timestamp": "2026-01-01T00:00:00Z", "dependencies": [{"target": "bips:1"}]},
+            {"model": "gpt-5", "timestamp": "2026-06-01T00:00:00Z", "dependencies": [{"target": "bips:32"}]},
+        ]
+        result = get_interrelations(self._proposal_with_runs(runs))
+        self.assertEqual(result["body_extracted_llm"], [{"target": "bips:32"}])
+
+    def test_network_data_uses_latest_llm_run(self):
+        runs = [
+            {"model": "gpt-4", "timestamp": "2026-01-01T00:00:00Z", "dependencies": [{"target": "bips:99", "evidence": "", "reason": "", "confidence": "low"}]},
+            {"model": "gpt-5", "timestamp": "2026-06-01T00:00:00Z", "dependencies": [{"target": "bips:2", "evidence": "x", "reason": "y", "confidence": "high"}]},
+        ]
+        proposals = [
+            self._proposal_with_runs(runs),
+            {"raw": {"preamble": {"bip": "2", "title": "P2"}}, "insights": {"interrelations": {"preamble_extracted": [], "body_extracted_regex": [], "body_extracted_llm": []}}},
+        ]
+        result = build_network_data(proposals, id_field="bip", proposal_label="BIP")
+        targets = {e["target"] for e in result["dependency_edges"]}
+        self.assertIn("bips:2", targets)
+        self.assertNotIn("bips:99", targets)
 
 
 if __name__ == "__main__":

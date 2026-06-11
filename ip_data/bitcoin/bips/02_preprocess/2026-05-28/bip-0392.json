@@ -507,24 +507,82 @@
     ],
     "interrelations": {
       "preamble_extracted": [
-        "BIP 341",
-        "BIP 350",
-        "BIP 352",
-        "BIP 380"
+        {
+          "target": "bips:341",
+          "type": "requires"
+        },
+        {
+          "target": "bips:350",
+          "type": "requires"
+        },
+        {
+          "target": "bips:352",
+          "type": "requires"
+        },
+        {
+          "target": "bips:380",
+          "type": "requires"
+        }
       ],
       "body_extracted_regex": [
-        "BIP 341",
-        "BIP 350",
-        "BIP 352",
-        "BIP 380",
-        "BIP 390"
+        {
+          "target": "bips:341",
+          "count": 2
+        },
+        {
+          "target": "bips:350",
+          "count": 2
+        },
+        {
+          "target": "bips:352",
+          "count": 6
+        },
+        {
+          "target": "bips:380",
+          "count": 2
+        },
+        {
+          "target": "bips:390",
+          "count": 1
+        }
       ],
       "body_extracted_llm": [
-        "BIP 32",
-        "BIP 341",
-        "BIP 350",
-        "BIP 352",
-        "BIP 380"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:55:02Z",
+          "dependencies": [
+            {
+              "target": "bips:341",
+              "evidence": "The output scripts produced are BIP341 taproot outputs",
+              "reason": "The descriptor’s generated script type is Taproot, so it relies on the output script semantics defined by BIP341.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:350",
+              "evidence": "It is a Bech32m encoding of",
+              "reason": "The spscan and spspend key encodings use the Bech32m encoding format specified by this proposal.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:352",
+              "evidence": "silent payment key material and describe P2TR outputs when combined with sender input public keys as defined in BIP352",
+              "reason": "The descriptor depends on silent payment key material, serialization, derivation paths, and output construction rules introduced by the silent payments proposal.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:380",
+              "evidence": "sp() descriptors use the format and general operation specified in BIP380",
+              "reason": "The proposal is defined within the output descriptor framework and relies on the descriptor syntax and semantics established by BIP380.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:390",
+              "evidence": "other key expression BIPs (e.g. musig() as defined in BIP390)",
+              "reason": "The sp() two-argument form explicitly accepts key expressions defined by BIP390, so it extends that key-expression framework.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

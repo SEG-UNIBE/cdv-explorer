@@ -1292,25 +1292,59 @@
     ],
     "interrelations": {
       "preamble_extracted": [
-        "BIP 340"
+        {
+          "target": "bips:340",
+          "type": "requires"
+        }
       ],
       "body_extracted_regex": [
-        "BIP 9",
-        "BIP 98",
-        "BIP 114",
-        "BIP 117",
-        "BIP 118",
-        "BIP 141",
-        "BIP 143",
-        "BIP 340",
-        "BIP 342",
-        "BIP 350"
+        {
+          "target": "bips:9",
+          "count": 2
+        },
+        {
+          "target": "bips:98",
+          "count": 2
+        },
+        {
+          "target": "bips:114",
+          "count": 2
+        },
+        {
+          "target": "bips:117",
+          "count": 2
+        },
+        {
+          "target": "bips:118",
+          "count": 2
+        },
+        {
+          "target": "bips:141",
+          "count": 4
+        },
+        {
+          "target": "bips:143",
+          "count": 4
+        },
+        {
+          "target": "bips:340",
+          "count": 21
+        },
+        {
+          "target": "bips:342",
+          "count": 9
+        },
+        {
+          "target": "bips:350",
+          "count": 3
+        }
       ],
       "body_extracted_llm": [
-        "BIP 9",
-        "BIP 141",
-        "BIP 340",
-        "BIP 342"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:54:30Z",
+          "dependencies": []
+        }
       ]
     }
   }

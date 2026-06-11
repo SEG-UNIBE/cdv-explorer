@@ -1590,15 +1590,44 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 3",
-        "BIP 32",
-        "BIP 143"
+        {
+          "target": "bips:3",
+          "count": 1
+        },
+        {
+          "target": "bips:32",
+          "count": 10
+        },
+        {
+          "target": "bips:143",
+          "count": 1
+        }
       ],
       "body_extracted_llm": [
-        "BIP 16",
-        "BIP 32",
-        "BIP 141",
-        "BIP 143"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:54:04Z",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "The 78 byte serialized extended public key as defined by BIP 32",
+              "reason": "PSBT encodes xpubs and derivation paths using BIP 32 key serialization and fingerprint/path semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:143",
+              "evidence": "The sighash algorithm for Segwit specified in BIP 143",
+              "reason": "PSBT signing rules for segwit inputs rely on the segwit sighash algorithm defined by this proposal.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:173",
+              "evidence": "including P2SH embedded ones",
+              "reason": "PSBT distinguishes witness UTXOs and segwit-related script validation based on the P2SH-P2WPKH/P2WSH address and script conventions introduced by this proposal.",
+              "confidence": "medium"
+            }
+          ]
+        }
       ]
     }
   }

@@ -582,15 +582,54 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 9",
-        "BIP 34",
-        "BIP 65",
-        "BIP 66"
+        {
+          "target": "bips:9",
+          "count": 5
+        },
+        {
+          "target": "bips:34",
+          "count": 11
+        },
+        {
+          "target": "bips:65",
+          "count": 10
+        },
+        {
+          "target": "bips:66",
+          "count": 10
+        }
       ],
       "body_extracted_llm": [
-        "BIP 34",
-        "BIP 65",
-        "BIP 66"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:53:18Z",
+          "dependencies": [
+            {
+              "target": "bips:9",
+              "evidence": "deprecated in favor of BIP 9 deployments",
+              "reason": "The proposal explicitly frames the removed mechanism as superseded by BIP 9, indicating the deployment model being replaced and providing the context for the simplification.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:34",
+              "evidence": "the test which governs enforcement of BIP 34, BIP 65, and BIP 66",
+              "reason": "The proposal changes how BIP 34 enforcement is activated and validated, replacing its lookback-triggered deployment logic with height-based checks.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:65",
+              "evidence": "the test which governs enforcement of BIP 34, BIP 65, and BIP 66",
+              "reason": "The proposal changes how BIP 65 enforcement is activated and validated, replacing its lookback-triggered deployment logic with height-based checks.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:66",
+              "evidence": "the test which governs enforcement of BIP 34, BIP 65, and BIP 66",
+              "reason": "The proposal changes how BIP 66 enforcement is activated and validated, replacing its lookback-triggered deployment logic with height-based checks.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

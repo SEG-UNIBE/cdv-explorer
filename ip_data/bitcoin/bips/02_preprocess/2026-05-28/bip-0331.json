@@ -798,12 +798,44 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 133",
-        "BIP 330",
-        "BIP 339"
+        {
+          "target": "bips:133",
+          "count": 2
+        },
+        {
+          "target": "bips:330",
+          "count": 1
+        },
+        {
+          "target": "bips:339",
+          "count": 1
+        }
       ],
       "body_extracted_llm": [
-        "BIP 339"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:54:23Z",
+          "dependencies": [
+            {
+              "target": "bips:130",
+              "evidence": "A client using BIP330 reconciliation-based transaction relay (Erlay) is able to use package relay without interference.",
+              "reason": "The proposal explicitly builds on transaction reconciliation relay when describing compatibility and interaction with package relay.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:133",
+              "evidence": "If the peers are using BIP133 fee filters and a low-feerate transaction is below the node's fee filter, the sender will not announce it.",
+              "reason": "The package relay flow depends on fee-filter-based announcement behavior to explain how low-fee parents can still propagate via orphan handling.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:339",
+              "evidence": "two nodes that both support BIP339 wtxid-based transaction relay shouldn't ever need to use txid-based transaction relay.",
+              "reason": "The proposal relies on wtxid-based relay as the base transport/identification mechanism for package and orphan relay.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

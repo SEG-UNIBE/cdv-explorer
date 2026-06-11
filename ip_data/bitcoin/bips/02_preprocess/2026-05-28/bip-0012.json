@@ -582,9 +582,25 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 11"
+        {
+          "target": "bips:11",
+          "count": 1
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:52:45Z",
+          "dependencies": [
+            {
+              "target": "bips:11",
+              "evidence": "\"M-of-N Multisignature Transactions BIP 11\"",
+              "reason": "The proposal relies on the multisignature transaction format as the referenced standard transaction type that OP_EVAL scripts may wrap and spend.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

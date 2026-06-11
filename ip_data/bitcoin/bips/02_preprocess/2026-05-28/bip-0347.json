@@ -778,17 +778,39 @@
     ],
     "interrelations": {
       "preamble_extracted": [
-        "BIP 340",
-        "BIP 341",
-        "BIP 342"
+        {
+          "target": "bips:340",
+          "type": "requires"
+        },
+        {
+          "target": "bips:341",
+          "type": "requires"
+        },
+        {
+          "target": "bips:342",
+          "type": "requires"
+        }
       ],
       "body_extracted_regex": [
-        "BIP 3",
-        "BIP 341",
-        "BIP 342"
+        {
+          "target": "bips:3",
+          "count": 2
+        },
+        {
+          "target": "bips:341",
+          "count": 2
+        },
+        {
+          "target": "bips:342",
+          "count": 2
+        }
       ],
       "body_extracted_llm": [
-        "BIP 342"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:54:34Z",
+          "dependencies": []
+        }
       ]
     }
   }

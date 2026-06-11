@@ -523,7 +523,20 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:52:53Z",
+          "dependencies": [
+            {
+              "target": "bips:10",
+              "evidence": "When the protocol version as negotiated in the \"ver\" message",
+              "reason": "The proposal depends on the Bitcoin P2P version-negotiation mechanism defined by the network protocol specification introduced in BIP 10.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

@@ -501,15 +501,27 @@
     ],
     "interrelations": {
       "preamble_extracted": [
-        "BIP 323"
+        {
+          "target": "bips:323",
+          "type": "proposed_replacement"
+        }
       ],
       "body_extracted_regex": [
-        "BIP 8",
-        "BIP 9"
+        {
+          "target": "bips:8",
+          "count": 3
+        },
+        {
+          "target": "bips:9",
+          "count": 3
+        }
       ],
       "body_extracted_llm": [
-        "BIP 8",
-        "BIP 9"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:54:13Z",
+          "dependencies": []
+        }
       ]
     }
   }

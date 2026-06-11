@@ -787,7 +787,20 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:52:56Z",
+          "dependencies": [
+            {
+              "target": "bips:31",
+              "evidence": "peer-to-peer protocol ... after the version handshake has completed",
+              "reason": "The proposal depends on the pre-existing P2P version-handshake message exchange and extends it with filter negotiation semantics.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

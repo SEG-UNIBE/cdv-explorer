@@ -814,20 +814,51 @@
     ],
     "interrelations": {
       "preamble_extracted": [
-        "BIP 142",
-        "BIP 350"
+        {
+          "target": "bips:142",
+          "type": "replaces"
+        },
+        {
+          "target": "bips:350",
+          "type": "proposed_replacement"
+        }
       ],
       "body_extracted_regex": [
-        "BIP 13",
-        "BIP 16",
-        "BIP 141",
-        "BIP 142",
-        "BIP 143",
-        "BIP 350",
-        "SLIP 173"
+        {
+          "target": "bips:13",
+          "count": 2
+        },
+        {
+          "target": "bips:16",
+          "count": 1
+        },
+        {
+          "target": "bips:141",
+          "count": 6
+        },
+        {
+          "target": "bips:142",
+          "count": 2
+        },
+        {
+          "target": "bips:143",
+          "count": 2
+        },
+        {
+          "target": "bips:350",
+          "count": 2
+        },
+        {
+          "target": "slips:173",
+          "count": 2
+        }
       ],
       "body_extracted_llm": [
-        "BIP 141"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:54:00Z",
+          "dependencies": []
+        }
       ]
     }
   }

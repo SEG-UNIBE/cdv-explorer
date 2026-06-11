@@ -629,7 +629,18 @@
       "preamble_extracted": [],
       "body_extracted_regex": [],
       "body_extracted_llm": [
-        "BIP 14"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:52:55Z",
+          "dependencies": [
+            {
+              "target": "bips:31",
+              "evidence": "same as the `services` field in `addr` messages",
+              "reason": "The proposal uses the existing peer-service bitfield semantics from BIP 31 as the model for standard services and their transition rules.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

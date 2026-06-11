@@ -706,16 +706,35 @@
     ],
     "interrelations": {
       "preamble_extracted": [
-        "BIP 9"
+        {
+          "target": "bips:9",
+          "type": "replaces"
+        }
       ],
       "body_extracted_regex": [
-        "BIP 9",
-        "BIP 34",
-        "BIP 65",
-        "BIP 66"
+        {
+          "target": "bips:9",
+          "count": 20
+        },
+        {
+          "target": "bips:34",
+          "count": 1
+        },
+        {
+          "target": "bips:65",
+          "count": 1
+        },
+        {
+          "target": "bips:66",
+          "count": 1
+        }
       ],
       "body_extracted_llm": [
-        "BIP 9"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:53:41Z",
+          "dependencies": []
+        }
       ]
     }
   }

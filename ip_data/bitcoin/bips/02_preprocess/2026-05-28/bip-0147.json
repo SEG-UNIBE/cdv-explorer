@@ -539,15 +539,52 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 9",
-        "BIP 62",
-        "BIP 141",
-        "BIP 143",
-        "BIP 152"
+        {
+          "target": "bips:9",
+          "count": 6
+        },
+        {
+          "target": "bips:62",
+          "count": 2
+        },
+        {
+          "target": "bips:141",
+          "count": 4
+        },
+        {
+          "target": "bips:143",
+          "count": 1
+        },
+        {
+          "target": "bips:152",
+          "count": 2
+        }
       ],
       "body_extracted_llm": [
-        "BIP 9",
-        "BIP 141"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:53:49Z",
+          "dependencies": [
+            {
+              "target": "bips:9",
+              "evidence": "deployed by \"version bits\" ... BIP9 using the same parameters",
+              "reason": "The proposal’s activation mechanism is explicitly version-bits deployment defined by BIP 9.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "also pay-to-witness-script-hash scripts described in BIP141",
+              "reason": "The rule is extended to P2WSH scripts introduced by BIP 141, so it relies on that script type and its semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:143",
+              "evidence": "using the same parameters for BIP141 and BIP143",
+              "reason": "The deployment section ties activation parameters to BIP 143, making its deployment assumptions dependent on that proposal’s segwit-signature context.",
+              "confidence": "medium"
+            }
+          ]
+        }
       ]
     }
   }

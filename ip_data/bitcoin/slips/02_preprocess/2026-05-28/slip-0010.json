@@ -366,11 +366,45 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 32",
-        "BIP 39",
-        "SLIP 39"
+        {
+          "target": "bips:32",
+          "count": 18
+        },
+        {
+          "target": "bips:39",
+          "count": 5
+        },
+        {
+          "target": "slips:39",
+          "count": 5
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:55:16Z",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "generalizing the derivation scheme used in BIP-0032",
+              "reason": "The proposal explicitly extends BIP-32 master and child key derivation mechanics, including retry behavior and compatibility semantics.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:39",
+              "evidence": "Trezor generates all keys from a BIP-0039 mnemonic",
+              "reason": "The seed input to this derivation scheme is defined as the output of BIP-39 mnemonic processing.",
+              "confidence": "low"
+            },
+            {
+              "target": "slips:39",
+              "evidence": "or from a set of SLIP-0039 mnemonic shares",
+              "reason": "The derivation scheme accepts seeds produced by SLIP-39, so it depends on its mnemonic-share-to-seed process.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

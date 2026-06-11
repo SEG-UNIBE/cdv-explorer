@@ -1319,13 +1319,41 @@
     ],
     "interrelations": {
       "preamble_extracted": [
-        "BIP 151"
+        {
+          "target": "bips:151",
+          "type": "replaces"
+        }
       ],
       "body_extracted_regex": [
-        "BIP 31",
-        "BIP 340"
+        {
+          "target": "bips:31",
+          "count": 2
+        },
+        {
+          "target": "bips:340",
+          "count": 4
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:54:16Z",
+          "dependencies": [
+            {
+              "target": "bips:31",
+              "evidence": "the timeout interval for post-BIP31 connections",
+              "reason": "The rekeying interval rationale depends on BIP31's ping timeout behavior to estimate packet cadence.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:340",
+              "evidence": "sha256_tagged(tag, x) returns a tagged hash value ... as in BIP340",
+              "reason": "The proposal defines its shared-secret hash using the tagged-hash construction introduced by BIP340.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

@@ -797,20 +797,68 @@
     ],
     "interrelations": {
       "preamble_extracted": [
-        "BIP 32",
-        "BIP 340",
-        "BIP 341"
+        {
+          "target": "bips:32",
+          "type": "requires"
+        },
+        {
+          "target": "bips:340",
+          "type": "requires"
+        },
+        {
+          "target": "bips:341",
+          "type": "requires"
+        }
       ],
       "body_extracted_regex": [
-        "BIP 3",
-        "BIP 32",
-        "BIP 340",
-        "BIP 341"
+        {
+          "target": "bips:3",
+          "count": 1
+        },
+        {
+          "target": "bips:32",
+          "count": 7
+        },
+        {
+          "target": "bips:340",
+          "count": 9
+        },
+        {
+          "target": "bips:341",
+          "count": 2
+        }
       ],
       "body_extracted_llm": [
-        "BIP 32",
-        "BIP 340",
-        "BIP 341"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:53:18Z",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "withholds BIP32 chain codes",
+              "reason": "The proposal’s delegation scheme is built around BIP32 chain codes and non-hardened child derivation.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:327",
+              "evidence": "The notation, algorithmic patterns, and test-vector style are adapted from BIP-327 (MuSig2)",
+              "reason": "The blind-signing protocol’s structure and notation are adapted from this multisignature protocol, indicating substantive reliance on its design patterns.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:340",
+              "evidence": "Both modes produce valid BIP340 signatures",
+              "reason": "The signing protocols are designed to output signatures valid under BIP340 and use its challenge/signature semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "Consequently the protocol is compatible with BIP341",
+              "reason": "The X-only tweak and signature flow is intended to work with Taproot/Tapscript output semantics defined by BIP341.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

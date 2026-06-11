@@ -1075,15 +1075,40 @@
     ],
     "interrelations": {
       "preamble_extracted": [
-        "BIP 79"
+        {
+          "target": "bips:79",
+          "type": "replaces"
+        }
       ],
       "body_extracted_regex": [
-        "BIP 21",
-        "BIP 79"
+        {
+          "target": "bips:21",
+          "count": 20
+        },
+        {
+          "target": "bips:79",
+          "count": 5
+        }
       ],
       "body_extracted_llm": [
-        "BIP 21",
-        "BIP 174"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:53:11Z",
+          "dependencies": [
+            {
+              "target": "bips:21",
+              "evidence": "The receiver of the payment, presents a BIP 21 URI to the sender",
+              "reason": "The protocol relies on BIP21 URI parameters to advertise the payjoin endpoint and control behavior.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:174",
+              "evidence": "This proposal is very similar.",
+              "reason": "The proposal materially builds on the PSBT format and fields for exchanging partially signed transactions.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

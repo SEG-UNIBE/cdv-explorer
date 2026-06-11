@@ -601,13 +601,38 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 21",
-        "BIP 70",
-        "BIP 120"
+        {
+          "target": "bips:21",
+          "count": 6
+        },
+        {
+          "target": "bips:70",
+          "count": 1
+        },
+        {
+          "target": "bips:120",
+          "count": 2
+        }
       ],
       "body_extracted_llm": [
-        "BIP 21",
-        "BIP 120"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:53:32Z",
+          "dependencies": [
+            {
+              "target": "bips:21",
+              "evidence": "The specification is the same as BIP0021, with the following differences",
+              "reason": "The proposal directly reuses BIP 21 URI parsing and extensibility rules as the base scheme, then modifies them.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:120",
+              "evidence": "[BIP0120]: Proof of Payment",
+              "reason": "The proposal is for a Proof of Payment URI scheme and depends on the PoP process and transaction proof semantics introduced by BIP 120.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

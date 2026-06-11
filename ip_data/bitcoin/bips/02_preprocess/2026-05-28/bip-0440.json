@@ -621,11 +621,24 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 342"
+        {
+          "target": "bips:342",
+          "count": 4
+        }
       ],
       "body_extracted_llm": [
-        "BIP 141",
-        "BIP 342"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:55:06Z",
+          "dependencies": [
+            {
+              "target": "bips:342",
+              "evidence": "generalizes the \"sigops budget\" introduced in BIP342 to non-signature operations",
+              "reason": "The proposal explicitly extends BIP 342’s budget model to cover additional opcode costs, so it relies on that mechanism.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

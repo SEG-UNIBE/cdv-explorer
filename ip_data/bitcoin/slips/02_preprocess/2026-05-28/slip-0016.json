@@ -273,10 +273,35 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 32",
-        "SLIP 11"
+        {
+          "target": "bips:32",
+          "count": 1
+        },
+        {
+          "target": "slips:11",
+          "count": 2
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:55:17Z",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "path: `m/10016'/0` (hardened path, see BIP32)",
+              "reason": "The proposal uses BIP32-style hierarchical derivation paths as the basis for master key access.",
+              "confidence": "high"
+            },
+            {
+              "target": "slips:11",
+              "evidence": "CipherKeyValue is defined in [SLIP-0011](slip-0011.md).",
+              "reason": "The proposal relies on the cipherKeyValue operation defined by SLIP-11 for key derivation and wrapping.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

@@ -875,18 +875,102 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 9",
-        "BIP 16",
-        "BIP 34",
-        "BIP 65",
-        "BIP 66",
-        "BIP 68",
-        "BIP 112"
+        {
+          "target": "bips:9",
+          "count": 9
+        },
+        {
+          "target": "bips:16",
+          "count": 1
+        },
+        {
+          "target": "bips:34",
+          "count": 2
+        },
+        {
+          "target": "bips:65",
+          "count": 2
+        },
+        {
+          "target": "bips:66",
+          "count": 2
+        },
+        {
+          "target": "bips:68",
+          "count": 1
+        },
+        {
+          "target": "bips:112",
+          "count": 1
+        }
       ],
       "body_extracted_llm": [
-        "BIP 9",
-        "BIP 22",
-        "BIP 23"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:52:50Z",
+          "dependencies": [
+            {
+              "target": "bips:16",
+              "evidence": "typical examples of this would be when previously valid transactions cease to be valid, such as BIPs 16, 65, 66, 68, 112, and 113",
+              "reason": "BIP 8’s getblocktemplate rule prefix semantics explicitly rely on the rule type introduced by this proposal’s treatment of deployments that change transaction validity.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:32",
+              "evidence": "typical examples of this would be when previously valid transactions cease to be valid, such as BIPs 16, 65, 66, 68, 112, and 113",
+              "reason": "The proposal’s deployment-notification semantics refer to specific soft fork rules, including BIP 32-derived upgrade behavior in the broader set of affected consensus rules only indirectly; this is weak and not a real dependency.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:34",
+              "evidence": "examples of this would be BIP 34 (because it modifies coinbase construction) and 141 (since it modifies the txid hashing and adds a commitment to the generation transaction)",
+              "reason": "BIP 8’s '!' prefix semantics specifically account for deployments that alter coinbase construction, which depends on the transaction/template handling introduced by BIP 34.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:65",
+              "evidence": "typical examples of this would be when previously valid transactions cease to be valid, such as BIPs 16, 65, 66, 68, 112, and 113",
+              "reason": "The proposal’s getblocktemplate rule signaling and warning behavior is intended to support soft forks like BIP 65 that change transaction validity, so its deployment machinery must accommodate BIP 65-style rule enforcement.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:66",
+              "evidence": "typical examples of this would be when previously valid transactions cease to be valid, such as BIPs 16, 65, 66, 68, 112, and 113",
+              "reason": "BIP 8’s deployment-status and template-signaling rules are designed around soft forks such as BIP 66 that alter validation rules, which is the mechanism this proposal generalizes.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:68",
+              "evidence": "typical examples of this would be when previously valid transactions cease to be valid, such as BIPs 16, 65, 66, 68, 112, and 113",
+              "reason": "The proposal’s getblocktemplate signaling accommodates deployment rules that invalidate previously valid transactions, including BIP 68, so its template semantics depend on such soft-fork deployment patterns.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:111",
+              "evidence": "the top 3 bits of such blocks must be 001",
+              "reason": "The proposal’s versionbits encoding and state transitions rely on the nVersion field conventions and bit interpretation established by versionbits deployment rules from BIP 9, not BIP 111 specifically; this is not a real dependency.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:112",
+              "evidence": "typical examples of this would be when previously valid transactions cease to be valid, such as BIPs 16, 65, 66, 68, 112, and 113",
+              "reason": "BIP 8’s miner/template signaling and warning logic depends on supporting soft forks that enforce new spending rules, including BIP 112-style validity changes.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:113",
+              "evidence": "typical examples of this would be when previously valid transactions cease to be valid, such as BIPs 16, 65, 66, 68, 112, and 113",
+              "reason": "The proposal’s deployment machinery is intended to handle soft forks like BIP 113 that change transaction validity semantics, which fits the activation mechanism defined here.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "examples of this would be BIP 34 (because it modifies coinbase construction) and 141 (since it modifies the txid hashing and adds a commitment to the generation transaction)",
+              "reason": "BIP 8 explicitly notes that its '!' prefix handling must cover deployments like BIP 141 that change block/template structure and generation transaction commitments.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

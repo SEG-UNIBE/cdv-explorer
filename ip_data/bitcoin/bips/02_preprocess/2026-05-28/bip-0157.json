@@ -758,15 +758,50 @@
     ],
     "interrelations": {
       "preamble_extracted": [
-        "BIP 158"
+        {
+          "target": "bips:158",
+          "type": "requires"
+        }
       ],
       "body_extracted_regex": [
-        "BIP 37",
-        "BIP 111",
-        "BIP 158"
+        {
+          "target": "bips:37",
+          "count": 10
+        },
+        {
+          "target": "bips:111",
+          "count": 2
+        },
+        {
+          "target": "bips:158",
+          "count": 2
+        }
       ],
       "body_extracted_llm": [
-        "BIP 158"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:53:57Z",
+          "dependencies": [
+            {
+              "target": "bips:37",
+              "evidence": "The standard light client protocol in use today, defined in BIP 37",
+              "reason": "The proposal replaces and is designed as an alternative to the BIP 37 light client protocol, inheriting its use case and constraints.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:111",
+              "evidence": "similar to attacks against BIP 37 enabled nodes noted in BIP 111",
+              "reason": "The proposal’s node operation and DoS discussion explicitly rely on the BIP 111 analysis of BIP 37-style resource abuse.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:158",
+              "evidence": "The initial filter types are defined separately in BIP 158",
+              "reason": "The protocol’s filter type signaling and compact filter contents depend on the filter definitions introduced by BIP 158.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

@@ -505,10 +505,24 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 431"
+        {
+          "target": "bips:431",
+          "count": 2
+        }
       ],
       "body_extracted_llm": [
-        "BIP 141"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:55:05Z",
+          "dependencies": [
+            {
+              "target": "bips:431",
+              "evidence": "If unsure, use in conjunction with TRUC transactions.",
+              "reason": "TRUC transactions are presented as the anti-pinning constraint recommended for safe use of P2A, so P2A’s deployment guidance relies on TRUC’s topology limits.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

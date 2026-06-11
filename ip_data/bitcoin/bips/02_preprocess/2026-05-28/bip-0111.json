@@ -566,10 +566,24 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 37"
+        {
+          "target": "bips:37",
+          "count": 3
+        }
       ],
       "body_extracted_llm": [
-        "BIP 37"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:53:25Z",
+          "dependencies": [
+            {
+              "target": "bips:37",
+              "evidence": "This BIP extends BIP 37, Connection Bloom filtering",
+              "reason": "The proposal directly modifies and adds signaling and compatibility rules on top of BIP 37 bloom filtering behavior.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

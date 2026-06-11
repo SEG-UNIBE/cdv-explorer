@@ -343,12 +343,49 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 32",
-        "BIP 43",
-        "BIP 44",
-        "SLIP 44"
+        {
+          "target": "bips:32",
+          "count": 1
+        },
+        {
+          "target": "bips:43",
+          "count": 1
+        },
+        {
+          "target": "bips:44",
+          "count": 5
+        },
+        {
+          "target": "slips:44",
+          "count": 1
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:55:35Z",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "Apostrophe in the path indicates that BIP32 hardened derivation is used.",
+              "reason": "The hierarchy’s derivation semantics depend on BIP32 hardened derivation.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:43",
+              "evidence": "Purpose is a constant set to 48' ... following the BIP43 recommendation.",
+              "reason": "The proposal adopts BIP43’s purpose field convention as part of its path structure.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:44",
+              "evidence": "It extends BIP-0044 ... The key derivation structure defined in BIP-0044/SLIP-0044",
+              "reason": "The proposal explicitly extends and is structured around the BIP44 deterministic wallet hierarchy.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

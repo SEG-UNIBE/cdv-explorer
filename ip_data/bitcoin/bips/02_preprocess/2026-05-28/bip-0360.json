@@ -865,29 +865,116 @@
     ],
     "interrelations": {
       "preamble_extracted": [
-        "BIP 340",
-        "BIP 341",
-        "BIP 342"
+        {
+          "target": "bips:340",
+          "type": "requires"
+        },
+        {
+          "target": "bips:341",
+          "type": "requires"
+        },
+        {
+          "target": "bips:342",
+          "type": "requires"
+        }
       ],
       "body_extracted_regex": [
-        "BIP 3",
-        "BIP 16",
-        "BIP 32",
-        "BIP 141",
-        "BIP 173",
-        "BIP 340",
-        "BIP 341",
-        "BIP 342",
-        "BIP 347",
-        "BIP 350"
+        {
+          "target": "bips:3",
+          "count": 2
+        },
+        {
+          "target": "bips:16",
+          "count": 2
+        },
+        {
+          "target": "bips:32",
+          "count": 1
+        },
+        {
+          "target": "bips:141",
+          "count": 5
+        },
+        {
+          "target": "bips:173",
+          "count": 2
+        },
+        {
+          "target": "bips:340",
+          "count": 2
+        },
+        {
+          "target": "bips:341",
+          "count": 20
+        },
+        {
+          "target": "bips:342",
+          "count": 3
+        },
+        {
+          "target": "bips:347",
+          "count": 2
+        },
+        {
+          "target": "bips:350",
+          "count": 2
+        }
       ],
       "body_extracted_llm": [
-        "BIP 141",
-        "BIP 173",
-        "BIP 340",
-        "BIP 341",
-        "BIP 342",
-        "BIP 350"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:54:46Z",
+          "dependencies": [
+            {
+              "target": "bips:16",
+              "evidence": "P2MR and P2TR both provide greater script privacy than P2SH BIP 16",
+              "reason": "The proposal constrains its privacy comparison and design motivation against the script-reveal semantics of P2SH defined by BIP 16.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "A P2MR output is a native SegWit output (see BIP 141)",
+              "reason": "P2MR uses SegWit versioning, witness program structure, and native SegWit validation rules from BIP 141.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:173",
+              "evidence": "following BIP 173. Bech32m encoding maps version 2 to the prefix z",
+              "reason": "P2MR address encoding and version-to-prefix behavior depend on the SegWit address format defined by BIP 173.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:340",
+              "evidence": "Similar to BIP 341 test vectors, all signatures are created with an all-zero (0x0000...0000) BIP 340 auxiliary randomness array",
+              "reason": "P2MR test vectors and signature generation rely on the Schnorr signature scheme and auxiliary randomness conventions defined by BIP 340.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "Nearly the same functionality as P2TR (Pay-to-Taproot) outputs",
+              "reason": "P2MR is built by modifying Taproot output and validation semantics, including Merkle-root commitments, control blocks, and script-path logic from BIP 341.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:342",
+              "evidence": "Execute the script, according to the script rules specified in BIP 342",
+              "reason": "P2MR script execution uses tapscript rules and common signature message construction from BIP 342.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:347",
+              "evidence": "OP_SUCCESSx is a mechanism to upgrade tapscript",
+              "reason": "The proposal’s future post-quantum opcode path assumes the tapscript upgrade mechanism introduced by BIP 347.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:350",
+              "evidence": "Per BIP 350 older wallets should be able to spend funds to SegWit version 2 outputs",
+              "reason": "Backward-compatibility behavior for version-2 witness programs is defined in relation to BIP 350.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

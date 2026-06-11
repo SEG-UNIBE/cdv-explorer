@@ -889,15 +889,54 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 9",
-        "BIP 65",
-        "BIP 68",
-        "BIP 113"
+        {
+          "target": "bips:9",
+          "count": 7
+        },
+        {
+          "target": "bips:65",
+          "count": 3
+        },
+        {
+          "target": "bips:68",
+          "count": 9
+        },
+        {
+          "target": "bips:113",
+          "count": 3
+        }
       ],
       "body_extracted_llm": [
-        "BIP 9",
-        "BIP 68",
-        "BIP 113"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:53:27Z",
+          "dependencies": [
+            {
+              "target": "bips:9",
+              "evidence": "This BIP is to be deployed by \"versionbits\" BIP9 using bit 0.",
+              "reason": "The activation method depends on the versionbits deployment mechanism defined by BIP 9.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:65",
+              "evidence": "This BIP was based heavily on work done by Peter Todd for the closely related BIP 65.",
+              "reason": "The proposal reuses the same general script-enforced locktime design pattern and is explicitly based on that prior mechanism.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:68",
+              "evidence": "in combination with BIP 68 allows execution pathways of a script to be restricted based on the age of the output being spent",
+              "reason": "CHECKSEQUENCEVERIFY compares against the nSequence semantics introduced by BIP 68, so its validation rules rely on that consensus relative-locktime behavior.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:113",
+              "evidence": "This BIP must be deployed simultaneously with BIP68 and BIP113 using the same deployment mechanism.",
+              "reason": "The proposal's deployment timing is coordinated with BIP 113, making its activation plan dependent on that proposal's soft-fork deployment.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

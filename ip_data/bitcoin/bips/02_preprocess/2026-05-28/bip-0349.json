@@ -533,13 +533,38 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 118",
-        "BIP 341",
-        "BIP 342"
+        {
+          "target": "bips:118",
+          "count": 1
+        },
+        {
+          "target": "bips:341",
+          "count": 3
+        },
+        {
+          "target": "bips:342",
+          "count": 3
+        }
       ],
       "body_extracted_llm": [
-        "BIP 341",
-        "BIP 342"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:54:39Z",
+          "dependencies": [
+            {
+              "target": "bips:341",
+              "evidence": "the 32-byte x-only representation of the taproot internal key ... as defined in [BIP 341]",
+              "reason": "The opcode’s semantics depend on Taproot’s internal key definition from BIP 341.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:342",
+              "evidence": "When verifying taproot script path spends having leaf version `0xc0` (as defined in [BIP 342])",
+              "reason": "The opcode is only defined for Taproot script-path spends under BIP 342’s leaf-version and script-verification rules.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

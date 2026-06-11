@@ -511,15 +511,23 @@
     ],
     "interrelations": {
       "preamble_extracted": [
-        "BIP 380"
+        {
+          "target": "bips:380",
+          "type": "requires"
+        }
       ],
       "body_extracted_regex": [
-        "BIP 380"
+        {
+          "target": "bips:380",
+          "count": 1
+        }
       ],
       "body_extracted_llm": [
-        "BIP 16",
-        "BIP 141",
-        "BIP 380"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:54:59Z",
+          "dependencies": []
+        }
       ]
     }
   }

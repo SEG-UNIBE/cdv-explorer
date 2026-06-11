@@ -587,10 +587,24 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 141"
+        {
+          "target": "bips:141",
+          "count": 2
+        }
       ],
       "body_extracted_llm": [
-        "BIP 141"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:54:08Z",
+          "dependencies": [
+            {
+              "target": "bips:141",
+              "evidence": "The block weight defined by BIP 141 is the size of the block stripped of its segwit signatures times 3, plus the full size of the block.",
+              "reason": "This proposal’s weight-proof calculation directly uses the block weight definition introduced by BIP 141.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

@@ -781,12 +781,34 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 173",
-        "BIP 350"
+        {
+          "target": "bips:173",
+          "count": 2
+        },
+        {
+          "target": "bips:350",
+          "count": 2
+        }
       ],
       "body_extracted_llm": [
-        "BIP 173",
-        "BIP 350"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:53:40Z",
+          "dependencies": [
+            {
+              "target": "bips:173",
+              "evidence": "MUST use the '''Bech32m''' encoding as defined in ... BIP-0173",
+              "reason": "The proposal relies on the Bech32 encoding specification for its address format and parsing rules.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:350",
+              "evidence": "and later refined in ... BIP-0350",
+              "reason": "The proposal depends on the Bech32m refinement that changes the checksum/encoding behavior it requires.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

@@ -120,6 +120,13 @@ class SourceContext:
         return value or None
 
     @property
+    def llm_reasoning(self) -> Mapping[str, Any] | None:
+        if "reasoning_effort" not in self.llm_config:
+            return None
+        effort = self.llm_config.get("reasoning_effort")
+        return {"effort": str(effort)} if effort is not None else {}
+
+    @property
     def primary_id_field(self) -> str:
         return str(self.config.get("primary_id_field") or "").strip()
 

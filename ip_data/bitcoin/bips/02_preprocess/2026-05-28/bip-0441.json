@@ -723,19 +723,40 @@
     ],
     "interrelations": {
       "preamble_extracted": [
-        "BIP 440"
+        {
+          "target": "bips:440",
+          "type": "requires"
+        }
       ],
       "body_extracted_regex": [
-        "BIP 342",
-        "BIP 440"
+        {
+          "target": "bips:342",
+          "count": 4
+        },
+        {
+          "target": "bips:440",
+          "count": 6
+        }
       ],
       "body_extracted_llm": [
-        "BIP 65",
-        "BIP 112",
-        "BIP 340",
-        "BIP 341",
-        "BIP 342",
-        "BIP 440"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:55:07Z",
+          "dependencies": [
+            {
+              "target": "bips:342",
+              "evidence": "All opcodes not explicitly defined here are treated exactly as defined by BIP342.",
+              "reason": "The new tapscript version relies on BIP 342’s opcode and validation semantics as the base execution model it extends.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:440",
+              "evidence": "relying on the Varops Budget in BIP440",
+              "reason": "The proposal’s opcode validation and cost accounting depend on BIP 440’s varops budget mechanism.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

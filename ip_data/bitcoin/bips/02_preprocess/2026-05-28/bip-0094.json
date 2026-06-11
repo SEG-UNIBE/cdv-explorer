@@ -641,20 +641,24 @@
       "preamble_extracted": [],
       "body_extracted_regex": [],
       "body_extracted_llm": [
-        "BIP 16",
-        "BIP 30",
-        "BIP 34",
-        "BIP 65",
-        "BIP 66",
-        "BIP 68",
-        "BIP 112",
-        "BIP 113",
-        "BIP 141",
-        "BIP 143",
-        "BIP 147",
-        "BIP 340",
-        "BIP 341",
-        "BIP 342"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:53:21Z",
+          "dependencies": [
+            {
+              "target": "bips:9",
+              "evidence": "all soft forks that are active on mainnet as of May 2024 are enforced from genesis",
+              "reason": "The proposal requires the set of active soft-fork rules and their enforcement status defined by the activation framework.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:68",
+              "evidence": "These blocks MUST still comply with existing Median-Time-Past nTime restrictions",
+              "reason": "The time-warp prevention rule depends on the existing median-time-past timestamp constraint introduced by this proposal.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

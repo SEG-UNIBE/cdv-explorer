@@ -138,6 +138,27 @@ def get_changes_in_status(proposal: Dict[str, Any]) -> List[Any]:
     return []
 
 
+def is_llm_runs_format(value: Any) -> bool:
+    """Return True when value is the timestamped multi-run list format for body_extracted_llm."""
+    return (
+        isinstance(value, list)
+        and bool(value)
+        and isinstance(value[0], dict)
+        and "timestamp" in value[0]
+        and "dependencies" in value[0]
+    )
+
+
+def latest_llm_dependencies(value: Any) -> List[Any]:
+    """Resolve body_extracted_llm to the latest run's dependency list regardless of storage format."""
+    if not isinstance(value, list) or not value:
+        return []
+    if is_llm_runs_format(value):
+        latest = max(value, key=lambda r: str(r.get("timestamp", "")))
+        return list(latest.get("dependencies") or [])
+    return list(value)
+
+
 def get_interrelations(proposal: Dict[str, Any]) -> Dict[str, Any]:
     interrelations = empty_interrelations()
     insights = _as_dict(proposal.get("insights"))
@@ -148,9 +169,17 @@ def get_interrelations(proposal: Dict[str, Any]) -> Dict[str, Any]:
         canonical_value = canonical.get(canonical_key)
 
         if isinstance(legacy_value, list):
-            interrelations[canonical_key] = list(legacy_value)
+            interrelations[canonical_key] = (
+                latest_llm_dependencies(legacy_value)
+                if canonical_key == "body_extracted_llm"
+                else list(legacy_value)
+            )
         if isinstance(canonical_value, list):
-            interrelations[canonical_key] = list(canonical_value)
+            interrelations[canonical_key] = (
+                latest_llm_dependencies(canonical_value)
+                if canonical_key == "body_extracted_llm"
+                else list(canonical_value)
+            )
 
     return interrelations
 

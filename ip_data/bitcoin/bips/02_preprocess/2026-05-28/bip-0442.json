@@ -613,21 +613,102 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 119",
-        "BIP 327",
-        "BIP 340",
-        "BIP 341",
-        "BIP 342",
-        "BIP 347",
-        "BIP 348",
-        "BIP 349",
-        "BIP 443",
-        "BIP 446"
+        {
+          "target": "bips:119",
+          "count": 3
+        },
+        {
+          "target": "bips:327",
+          "count": 4
+        },
+        {
+          "target": "bips:340",
+          "count": 4
+        },
+        {
+          "target": "bips:341",
+          "count": 2
+        },
+        {
+          "target": "bips:342",
+          "count": 3
+        },
+        {
+          "target": "bips:347",
+          "count": 3
+        },
+        {
+          "target": "bips:348",
+          "count": 3
+        },
+        {
+          "target": "bips:349",
+          "count": 3
+        },
+        {
+          "target": "bips:443",
+          "count": 3
+        },
+        {
+          "target": "bips:446",
+          "count": 3
+        }
       ],
       "body_extracted_llm": [
-        "BIP 340",
-        "BIP 341",
-        "BIP 342"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:55:08Z",
+          "dependencies": [
+            {
+              "target": "bips:119",
+              "evidence": "OP_CHECKTEMPLATEVERIFY",
+              "reason": "The proposal uses CTV in the example scripts to commit to transaction templates and state hashes.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:327",
+              "evidence": "BIP-327 aggregate key of channel participants",
+              "reason": "The example channel script relies on MuSig2 aggregate key semantics for the internal key.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:340",
+              "evidence": "Notation follows [BIP-340], including the tagged hash notation",
+              "reason": "The new opcode’s hash construction is defined using BIP-340 tagged hash notation.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "For taproot script spends with leaf version *0xc0* (see [BIP-342])",
+              "reason": "The opcode is scoped to Taproot script spends, relying on the Taproot script environment defined by the surrounding Taproot BIP set.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:342",
+              "evidence": "For taproot script spends with leaf version *0xc0* (see [BIP-342])",
+              "reason": "The opcode is specifically introduced as a Tapscript opcode for leaf version 0xc0 spends.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:348",
+              "evidence": "Combined with `OP_CHECKSIGFROMSTACK`",
+              "reason": "The proposal’s motivating constructions and example scripts depend on CSFS to verify signatures over paired commitments.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:349",
+              "evidence": "OP_INTERNALKEY",
+              "reason": "The example scripts use INTERNALKEY to combine the pair commitment with the taproot internal key in script logic.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:443",
+              "evidence": "OP_CHECKCONTRACTVERIFY",
+              "reason": "The proposal discusses CTV-related contract constructions and explicitly references CHECKCONTRACTVERIFY as a related opcode in the technical context of template commitments.",
+              "confidence": "medium"
+            }
+          ]
+        }
       ]
     }
   }

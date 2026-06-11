@@ -578,10 +578,24 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 1"
+        {
+          "target": "bips:1",
+          "count": 3
+        }
       ],
       "body_extracted_llm": [
-        "BIP 1"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:54:51Z",
+          "dependencies": [
+            {
+              "target": "bips:1",
+              "evidence": "“the BIP editor (BIP-001)”",
+              "reason": "The proposal relies on BIP 1’s editor and process framework to assign BIP numbers and manage submission roles.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

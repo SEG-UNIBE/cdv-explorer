@@ -595,12 +595,32 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 44",
-        "BIP 174",
-        "SLIP 44"
+        {
+          "target": "bips:44",
+          "count": 1
+        },
+        {
+          "target": "bips:174",
+          "count": 4
+        },
+        {
+          "target": "slips:44",
+          "count": 1
+        }
       ],
       "body_extracted_llm": [
-        "BIP 174"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:53:35Z",
+          "dependencies": [
+            {
+              "target": "bips:174",
+              "evidence": "The proposal also includes the description of a PSBT extension",
+              "reason": "The PSBT extension adds a new input field and wallet-processing rules within the BIP 174 PSBT format, so it substantively depends on PSBT semantics.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

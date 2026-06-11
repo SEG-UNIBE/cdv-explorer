@@ -661,17 +661,72 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 65",
-        "BIP 68",
-        "BIP 112",
-        "BIP 119",
-        "BIP 140",
-        "BIP 433",
-        "BIP 443"
+        {
+          "target": "bips:65",
+          "count": 4
+        },
+        {
+          "target": "bips:68",
+          "count": 4
+        },
+        {
+          "target": "bips:112",
+          "count": 2
+        },
+        {
+          "target": "bips:119",
+          "count": 2
+        },
+        {
+          "target": "bips:140",
+          "count": 2
+        },
+        {
+          "target": "bips:433",
+          "count": 2
+        },
+        {
+          "target": "bips:443",
+          "count": 2
+        }
       ],
       "body_extracted_llm": [
-        "BIP 68",
-        "BIP 141"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:53:37Z",
+          "dependencies": [
+            {
+              "target": "bips:65",
+              "evidence": "as explained in [[bip-0065.mediawiki|BIP-65]]",
+              "reason": "The proposal relies on BIP 65’s nLocktime-based timelock mechanism as part of the recovery-plan motivation and related script semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:68",
+              "evidence": "following the rules of [[bip-0068.mediawiki|BIP-68]]",
+              "reason": "The recovery transaction’s relative-locktime and nSequence encoding are defined using BIP 68 rules.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:112",
+              "evidence": "can use absolute and relative locktimes using OP_CHECKLOCKTIMEVERIFY ([[bip-0065.mediawiki|BIP-65]]) and OP_CHECKSEQUENCEVERIFY ([[bip-0112.mediawiki|BIP-112]])",
+              "reason": "The proposal’s discussion of script-based recovery mechanisms depends on the relative-locktime semantics introduced by BIP 112.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:140",
+              "evidence": "It is important that the \"Alert Transaction\" will be non-malleable (e.g. by using [[bip-0140.mediawiki|BIP-140]])",
+              "reason": "The proposal requires non-malleable alert transactions so the recovery transaction’s UTXO reference remains valid.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:433",
+              "evidence": "anchor-addresses... could possibly be P2A addresses (described in [[bip-0433.mediawiki|BIP-433]])",
+              "reason": "The CPFP anchor output option depends on the P2A address type defined by BIP 433.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

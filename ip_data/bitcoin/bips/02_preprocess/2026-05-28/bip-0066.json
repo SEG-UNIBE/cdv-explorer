@@ -625,11 +625,34 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 34",
-        "BIP 62"
+        {
+          "target": "bips:34",
+          "count": 1
+        },
+        {
+          "target": "bips:62",
+          "count": 2
+        }
       ],
       "body_extracted_llm": [
-        "BIP 34"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:53:06Z",
+          "dependencies": [
+            {
+              "target": "bips:34",
+              "evidence": "We reuse the double-threshold switchover mechanism from BIP 34",
+              "reason": "The deployment mechanism directly depends on BIP 34's activation thresholds and switchover logic.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:62",
+              "evidence": "This proposal has the added benefit of reducing transaction malleability (see BIP 62).",
+              "reason": "The proposal is a component of the broader malleability-reduction ruleset introduced by BIP 62 and inherits that context.",
+              "confidence": "medium"
+            }
+          ]
+        }
       ]
     }
   }

@@ -888,11 +888,34 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 71",
-        "BIP 72"
+        {
+          "target": "bips:71",
+          "count": 3
+        },
+        {
+          "target": "bips:72",
+          "count": 2
+        }
       ],
       "body_extracted_llm": [
-        "BIP 71"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:53:07Z",
+          "dependencies": [
+            {
+              "target": "bips:71",
+              "evidence": "Wallet software sending Payment messages via HTTP must set appropriate Content-Type and Accept headers, as specified in BIP 71",
+              "reason": "The payment protocol explicitly relies on BIP 71 for the required MIME types and HTTP headers used to exchange Payment and PaymentACK messages.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:72",
+              "evidence": "[[bip-0072.mediawiki|BIP 0072]] : Payment Protocol bitcoin: URI extensions",
+              "reason": "The protocol depends on URI extensions defined by BIP 72 to initiate payment requests through bitcoin: links.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

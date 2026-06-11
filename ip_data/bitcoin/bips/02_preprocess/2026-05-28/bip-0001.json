@@ -863,13 +863,35 @@
     ],
     "interrelations": {
       "preamble_extracted": [
-        "BIP 2"
+        {
+          "target": "bips:2",
+          "type": "proposed_replacement"
+        }
       ],
       "body_extracted_regex": [
-        "BIP 2",
-        "BIP 8"
+        {
+          "target": "bips:2",
+          "count": 1
+        },
+        {
+          "target": "bips:8",
+          "count": 1
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:52:42Z",
+          "dependencies": [
+            {
+              "target": "bips:2",
+              "evidence": "Superseded by BIP2",
+              "reason": "The document is rendered obsolete by BIP 2, so its process and status semantics are defined by that later proposal.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

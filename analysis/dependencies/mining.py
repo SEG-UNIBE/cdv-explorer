@@ -612,6 +612,54 @@ def normalize_llm_dependency_output(
     ]
 
 
+def _ground_evidence(entries: List[Dict[str, str]], source_text: str) -> List[Dict[str, str]]:
+    """Lower confidence to 'low' when the LLM's evidence quote cannot be found verbatim in the source."""
+    if not source_text:
+        return entries
+    normalized_text = re.sub(r"\s+", " ", source_text).lower()
+    result = []
+    for entry in entries:
+        evidence = entry.get("evidence", "")
+        if evidence:
+            normalized_evidence = re.sub(r"\s+", " ", evidence).strip().lower()
+            if normalized_evidence and normalized_evidence not in normalized_text:
+                entry = {**entry, "confidence": "low"}
+        result.append(entry)
+    return result
+
+
+def _extract_response_content(response: Any) -> str | None:
+    """Extract JSON text from either a Chat Completions or Responses API response."""
+    # Chat Completions API: response.choices[*].message
+    choices = getattr(response, "choices", None)
+    if choices:
+        message = choices[0].message
+        if getattr(message, "refusal", None):
+            return None
+        return (message.content or "").strip() or None
+    # Responses API: failed status
+    if getattr(response, "status", None) == "failed":
+        return None
+    # Responses API: output_text convenience property
+    output_text = getattr(response, "output_text", None)
+    if output_text is not None:
+        return output_text.strip() or None
+    # Responses API: iterate output items
+    for item in getattr(response, "output", []):
+        for content in getattr(item, "content", []):
+            text = getattr(content, "text", None)
+            if text:
+                return text.strip()
+    return None
+
+
+def _to_responses_text_format(response_format: Dict[str, Any]) -> Dict[str, Any]:
+    """Convert a Chat Completions response_format dict to Responses API text.format shape."""
+    if response_format.get("type") == "json_schema" and "json_schema" in response_format:
+        return {"type": "json_schema", **response_format["json_schema"]}
+    return dict(response_format)
+
+
 def _dependencies_from_llm_response(
     response: Any,
     *,
@@ -619,10 +667,10 @@ def _dependencies_from_llm_response(
     current_proposal_number: str | None,
     source_context: SourceContext,
 ) -> List[Dict[str, str]]:
-    message = response.choices[0].message
-    if getattr(message, "refusal", None):
+    content = _extract_response_content(response)
+    if content is None:
         return []
-    payload = json.loads(message.content.strip())
+    payload = json.loads(content)
     return normalize_llm_dependency_output(
         payload.get("dependencies"),
         proposal_label=proposal_label,
@@ -663,6 +711,19 @@ def llm_extract_implicit_dependencies(
         f"{config['proposal_label']} => {config['source_slug']}:ID"
         for config in reference_configs
     )
+    sibling_config = next(
+        (c for c in reference_configs if c["source_slug"] != active_config["source_slug"]),
+        None,
+    )
+    if sibling_config:
+        cross_source_example = f"""
+<example>
+<text>This proposal uses the version byte registry from {sibling_config['proposal_label']} 132 and builds on {active_proposal_label} 32 for key derivation.</text>
+<output>{{"dependencies":[{{"target":"{active_config['source_slug']}:32","evidence":"builds on {active_proposal_label} 32 for key derivation","reason":"The proposal extends key derivation mechanisms from the target.","confidence":"high"}},{{"target":"{sibling_config['source_slug']}:132","evidence":"uses the version byte registry from {sibling_config['proposal_label']} 132","reason":"The proposal relies on version byte definitions established by the target.","confidence":"high"}}]}}</output>
+</example>
+"""
+    else:
+        cross_source_example = ""
     system_prompt = f"""
 You extract implicit technical dependencies from {active_proposal_singular} documents.
 
@@ -707,10 +768,10 @@ Analyze {active_proposal_singular} {active_proposal_label}{f" {current_proposal_
 <output>{{"dependencies":[{{"target":"{active_config['source_slug']}:16","evidence":"builds upon {active_proposal_label}-0016 for partially signed transactions","reason":"The proposal builds on mechanisms introduced by the target.","confidence":"high"}}]}}</output>
 </example>
 <example>
-<text>Since {active_proposal_label} 44 introduced a privacy concern, this proposal suggests a new hashing function to address that issue.</text>
+<text>Unlike {active_proposal_label} 44, which defines a symmetric encryption scheme, this proposal introduces a standalone asymmetric key agreement protocol. No primitives or formats from {active_proposal_label} 44 are reused.</text>
 <output>{{"dependencies":[]}}</output>
 </example>
-</examples>
+{cross_source_example}</examples>
 
 Now apply the same rules to the actual proposal text below.
 
@@ -751,39 +812,53 @@ Now apply the same rules to the actual proposal text below.
     if not resolved_api_key:
         raise RuntimeError("No API key available for LLM extraction")
 
+    llm_reasoning = context.llm_reasoning
+
     client = OpenAI(api_key=resolved_api_key)
-    try:
-        response = client.chat.completions.create(
-            model=resolved_model,
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_prompt},
-            ],
-            response_format=response_format,
-        )
-        return _dependencies_from_llm_response(
+    messages = [
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": user_prompt},
+    ]
+
+    def _parse(response: Any) -> List[Dict[str, str]]:
+        results = _dependencies_from_llm_response(
             response,
             proposal_label=active_proposal_label,
             current_proposal_number=current_proposal_number,
             source_context=context,
         )
-    except TypeError:
+        return _ground_evidence(results, text)
+
+    if llm_reasoning is not None:
+        # Responses API path (reasoning models)
         try:
-            response = client.chat.completions.create(
-                model=resolved_model,
-                messages=[
-                    {"role": "system", "content": system_prompt},
-                    {"role": "user", "content": user_prompt},
-                ],
-                response_format={"type": "json_object"},
-            )
-            return _dependencies_from_llm_response(
-                response,
-                proposal_label=active_proposal_label,
-                current_proposal_number=current_proposal_number,
-                source_context=context,
-            )
+            kwargs: Dict[str, Any] = {
+                "model": resolved_model,
+                "input": messages,
+                "text": {"format": _to_responses_text_format(response_format)},
+            }
+            if llm_reasoning:
+                kwargs["reasoning"] = llm_reasoning
+            response = client.responses.create(**kwargs)
+            return _parse(response)
         except (JSONDecodeError, TypeError, ValueError, KeyError, OSError, TimeoutError, ConnectionError) as exc:
             raise RuntimeError(f"LLM API call failed: {exc}") from exc
-    except (JSONDecodeError, TypeError, ValueError, KeyError, OSError, TimeoutError, ConnectionError) as exc:
-        raise RuntimeError(f"LLM API call failed: {exc}") from exc
+    else:
+        # Chat Completions API path
+        try:
+            return _parse(client.chat.completions.create(
+                model=resolved_model,
+                messages=messages,
+                response_format=response_format,
+            ))
+        except TypeError:
+            try:
+                return _parse(client.chat.completions.create(
+                    model=resolved_model,
+                    messages=messages,
+                    response_format={"type": "json_object"},
+                ))
+            except (JSONDecodeError, TypeError, ValueError, KeyError, OSError, TimeoutError, ConnectionError) as exc:
+                raise RuntimeError(f"LLM API call failed: {exc}") from exc
+        except (JSONDecodeError, TypeError, ValueError, KeyError, OSError, TimeoutError, ConnectionError) as exc:
+            raise RuntimeError(f"LLM API call failed: {exc}") from exc

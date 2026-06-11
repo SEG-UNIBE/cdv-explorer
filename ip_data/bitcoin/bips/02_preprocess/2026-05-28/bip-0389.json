@@ -549,16 +549,44 @@
     ],
     "interrelations": {
       "preamble_extracted": [
-        "BIP 380"
+        {
+          "target": "bips:380",
+          "type": "requires"
+        }
       ],
       "body_extracted_regex": [
-        "BIP 32",
-        "BIP 88",
-        "BIP 380"
+        {
+          "target": "bips:32",
+          "count": 8
+        },
+        {
+          "target": "bips:88",
+          "count": 1
+        },
+        {
+          "target": "bips:380",
+          "count": 4
+        }
       ],
       "body_extracted_llm": [
-        "BIP 32",
-        "BIP 380"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:54:58Z",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "extended public key or xprv encoded extended private key (as defined in BIP 32)",
+              "reason": "The proposal modifies how BIP 32 derivation path steps are expressed within descriptors, so it relies on BIP 32 key and path semantics.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:380",
+              "evidence": "A modification to Key Expressions of Descriptors that are described in BIP 380",
+              "reason": "The proposal directly amends the Key Expression grammar and behavior defined by this BIP.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

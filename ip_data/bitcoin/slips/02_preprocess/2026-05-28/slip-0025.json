@@ -227,18 +227,85 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 32",
-        "BIP 43",
-        "BIP 44",
-        "BIP 48",
-        "BIP 49",
-        "BIP 78",
-        "BIP 84",
-        "BIP 86",
-        "SLIP 10",
-        "SLIP 44"
+        {
+          "target": "bips:32",
+          "count": 7
+        },
+        {
+          "target": "bips:43",
+          "count": 2
+        },
+        {
+          "target": "bips:44",
+          "count": 4
+        },
+        {
+          "target": "bips:48",
+          "count": 4
+        },
+        {
+          "target": "bips:49",
+          "count": 2
+        },
+        {
+          "target": "bips:78",
+          "count": 4
+        },
+        {
+          "target": "bips:84",
+          "count": 3
+        },
+        {
+          "target": "bips:86",
+          "count": 8
+        },
+        {
+          "target": "slips:10",
+          "count": 4
+        },
+        {
+          "target": "slips:44",
+          "count": 5
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:55:33Z",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "based on the algorithm defined in BIP 32",
+              "reason": "The proposal’s hierarchy and derivation path are built on BIP 32 key derivation.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:43",
+              "evidence": "and the scheme described in BIP 43",
+              "reason": "The proposal adopts BIP 43’s purpose-based derivation structure to define its hierarchy.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:86",
+              "evidence": "The scriptPubKey is defined exactly as specified in the [Address derivation] section of BIP 86",
+              "reason": "The address construction reuses BIP 86’s Taproot output key and scriptPubKey derivation.",
+              "confidence": "low"
+            },
+            {
+              "target": "slips:10",
+              "evidence": "based on the algorithm defined in [BIP 32] and [SLIP 10]",
+              "reason": "The proposal explicitly relies on SLIP 10 as part of the key derivation foundation.",
+              "confidence": "low"
+            },
+            {
+              "target": "slips:44",
+              "evidence": "The value of coin_type MUST be one of the coin types defined in SLIP 44",
+              "reason": "Coin type selection and network separation depend on SLIP 44’s registered coin type registry.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
     }
   }
 }

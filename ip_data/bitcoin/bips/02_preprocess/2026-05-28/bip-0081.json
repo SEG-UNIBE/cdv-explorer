@@ -530,15 +530,54 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 32",
-        "BIP 43",
-        "BIP 44",
-        "BIP 80"
+        {
+          "target": "bips:32",
+          "count": 8
+        },
+        {
+          "target": "bips:43",
+          "count": 6
+        },
+        {
+          "target": "bips:44",
+          "count": 3
+        },
+        {
+          "target": "bips:80",
+          "count": 2
+        }
       ],
       "body_extracted_llm": [
-        "BIP 32",
-        "BIP 43",
-        "BIP 44"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:53:13Z",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "based on an algorithm described in BIP-0032",
+              "reason": "The proposal’s wallet hierarchy and derivation path are built on BIP32 key derivation.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:43",
+              "evidence": "This BIP is a particular application of BIP43",
+              "reason": "The proposal uses the BIP43 purpose-field hierarchy as the framework for its path structure.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:44",
+              "evidence": "and is based on BIP44",
+              "reason": "The proposal explicitly adopts the multi-account hierarchical pattern from BIP44 for its own derivation scheme.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:80",
+              "evidence": "* [[bip-0080.mediawiki|BIP80 - Hierarchy for Non-Colored Voting Pool Deterministic Multisig Wallets]]",
+              "reason": "The proposal’s voting-pool deterministic multisig hierarchy is a colored-coin specialization that builds on the non-colored voting pool hierarchy.",
+              "confidence": "medium"
+            }
+          ]
+        }
       ]
     }
   }

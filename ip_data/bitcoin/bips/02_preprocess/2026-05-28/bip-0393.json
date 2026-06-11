@@ -505,17 +505,50 @@
     ],
     "interrelations": {
       "preamble_extracted": [
-        "BIP 380"
+        {
+          "target": "bips:380",
+          "type": "requires"
+        }
       ],
       "body_extracted_regex": [
-        "BIP 32",
-        "BIP 352",
-        "BIP 380"
+        {
+          "target": "bips:32",
+          "count": 2
+        },
+        {
+          "target": "bips:352",
+          "count": 4
+        },
+        {
+          "target": "bips:380",
+          "count": 11
+        }
       ],
       "body_extracted_llm": [
-        "BIP 32",
-        "BIP 352",
-        "BIP 380"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:55:03Z",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "for [[bip-0032.mediawiki|BIP 32]] derived-key wallets",
+              "reason": "The gap-limit annotation specifically depends on the derived-key wallet structure defined by BIP 32.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:352",
+              "evidence": "for [[bip-0352.mediawiki|BIP 352]] silent payment wallets",
+              "reason": "The max-label annotation is defined specifically for silent payment wallets introduced by BIP 352.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:380",
+              "evidence": "as defined in [[bip-0380.mediawiki|BIP 380]]",
+              "reason": "This proposal directly specifies an annotation syntax for descriptors and checksum behavior on top of BIP 380.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

@@ -216,7 +216,7 @@ def _validate_snapshot_date(snapshot: str) -> None:
         raise typer.Exit(1)
 
 
-def _rebuild_source_artifacts(eco_slug: str, src_slug: str, src: dict, snapshot: str) -> None:
+def _rebuild_source_artifacts(eco_slug: str, src_slug: str, src: dict, snapshot: str, *, stage_label: str = "Build analysis and postprocess artifacts") -> None:
     """Rebuild analysis/postprocess artifacts for one source from existing preprocess JSON."""
     from analysis.pipeline import prepare_ecosystem_artifacts
 
@@ -241,7 +241,7 @@ def _rebuild_source_artifacts(eco_slug: str, src_slug: str, src: dict, snapshot:
         raise typer.Exit(1)
 
     _run_stage(
-        "Build analysis and postprocess artifacts",
+        stage_label,
         9,
         "step",
         lambda u: prepare_ecosystem_artifacts(
@@ -307,7 +307,29 @@ def _ecosystem_llm_model(config: dict) -> str:
     return str(llm_config.get("model", "")).strip()
 
 
-def _run_source_pipeline(eco_slug: str, src_slug: str, src: dict, snapshot: str, skipllm: bool) -> None:
+def _parse_focus(focus_str: str | None) -> set[str] | None:
+    """Parse '1-9,30-44,85,A0' into a set of normalized ID strings."""
+    if not focus_str:
+        return None
+    ids: set[str] = set()
+    for part in focus_str.split(","):
+        part = part.strip()
+        if not part:
+            continue
+        if "-" in part:
+            lo, _, hi = part.partition("-")
+            try:
+                for i in range(int(lo.strip()), int(hi.strip()) + 1):
+                    ids.add(str(i))
+                continue
+            except ValueError:
+                pass
+        ids.add(part)
+        ids.add(part.upper())
+    return ids or None
+
+
+def _run_source_pipeline(eco_slug: str, src_slug: str, src: dict, snapshot: str, skipllm: bool, focus: set[str] | None = None) -> None:
     """Run the full pipeline for one source."""
     from pipeline.harvest import get_harvester
     from pipeline.preprocess import get_extractor, get_enricher
@@ -323,7 +345,7 @@ def _run_source_pipeline(eco_slug: str, src_slug: str, src: dict, snapshot: str,
     extractor = get_extractor(src.get("preprocessor", "rfc_preamble"))
     enricher = get_enricher()
 
-    _run_stage("Download repository snapshot", 3, "step",
+    _run_stage("Step 1/4 · I. Harvest".ljust(28), 3, "step",
                lambda u: harvester(src_config=src, snapshot=snapshot, local_dir=harvest_root, progress_callback=u))
 
     commit = subprocess.run(
@@ -340,20 +362,22 @@ def _run_source_pipeline(eco_slug: str, src_slug: str, src: dict, snapshot: str,
 
     file_pattern = re.compile(src["document_file_pattern"], re.IGNORECASE)
     proposal_files = [p for p in harvest_root.iterdir() if file_pattern.match(p.name)]
-    _run_stage("Extract preambles", len(proposal_files), "ip",
+    _run_stage("Step 2/4 · II. Preprocess".ljust(28), len(proposal_files), "ip",
                lambda u: extractor(src_config=src, harvest_dir=harvest_root, output_dir=output_dir, progress_callback=u))
 
     json_files = list(output_dir.glob("*.json")) if output_dir.exists() else []
-    _run_stage("Process meta and insights", len(json_files), "ip",
+    focus_note = f"  (focus: {len(focus)}/{len(json_files)} ip)" if focus else ""
+    _run_stage(f"{'Step 3/4 · III. Analysis'.ljust(28)}{focus_note}", len(json_files), "ip",
                lambda u: enricher(
                    src_config=src,
                    preprocess_dir=output_dir,
                    harvest_dir=harvest_root,
                    skip_llm=skipllm,
+                   focus=focus,
                    source_context=source_context,
                    progress_callback=u))
 
-    _rebuild_source_artifacts(eco_slug, src_slug, src, snapshot)
+    _rebuild_source_artifacts(eco_slug, src_slug, src, snapshot, stage_label="Step 4/4 · IV. Postprocess".ljust(28))
 
 
 # ---------------------------------------------------------------------------
@@ -542,6 +566,7 @@ def run(
     source: Annotated[Optional[str], typer.Option("--source", help="Source slug (default: all sources).")] = None,
     snapshot: Annotated[str, typer.Option("--snapshot", "-s", help="Snapshot date (YYYY-MM-DD). Required.")] = ...,
     skipllm: Annotated[bool, typer.Option("--skipllm", help="Skip LLM-based extraction.")] = False,
+    focus: Annotated[Optional[str], typer.Option("--focus", help="Comma-separated list of proposal IDs to process (e.g. '1-9,30-44,85,A0'). All others are skipped.")] = None,
 ) -> None:
     """Run the full pipeline for a snapshot. Runs all sources unless --source is given."""
     eco_slug = ecosystem or next(iter(ECOSYSTEM_REGISTRY), None)
@@ -557,19 +582,21 @@ def run(
         console.print(f"[red]Ecosystem '{eco_slug}' has no sources configured.[/red]")
         raise typer.Exit(1)
 
+    focus_ids = _parse_focus(focus)
+
     targets: dict[str, dict] = {source: _get_source(eco, source)} if source else sources
 
     if len(targets) == 1:
         src_slug, src_cfg = next(iter(targets.items()))
         run_started = time.monotonic()
-        _run_source_pipeline(eco_slug, src_slug, src_cfg, snapshot, skipllm)
+        _run_source_pipeline(eco_slug, src_slug, src_cfg, snapshot, skipllm, focus_ids)
         elapsed = time.monotonic() - run_started
         console.print(f"\n[green]Done in {elapsed:.1f}s[/green]")
     else:
         run_started = time.monotonic()
         for src_slug, src_cfg in targets.items():
             console.rule(f"[bold]{eco_slug} / {src_slug}[/bold]")
-            _run_source_pipeline(eco_slug, src_slug, src_cfg, snapshot, skipllm)
+            _run_source_pipeline(eco_slug, src_slug, src_cfg, snapshot, skipllm, focus_ids)
         elapsed = time.monotonic() - run_started
         console.print(f"\n[green]All sources done in {elapsed:.1f}s[/green]")
 

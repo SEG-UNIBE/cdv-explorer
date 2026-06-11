@@ -716,15 +716,44 @@
     ],
     "interrelations": {
       "preamble_extracted": [
-        "BIP 20",
-        "BIP 321"
+        {
+          "target": "bips:20",
+          "type": "replaces"
+        },
+        {
+          "target": "bips:321",
+          "type": "proposed_replacement"
+        }
       ],
       "body_extracted_regex": [
-        "BIP 20",
-        "BIP 321"
+        {
+          "target": "bips:20",
+          "count": 4
+        },
+        {
+          "target": "bips:321",
+          "count": 4
+        }
       ],
       "body_extracted_llm": [
-        "BIP 20"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:52:52Z",
+          "dependencies": [
+            {
+              "target": "bips:20",
+              "evidence": "This BIP is a modification of an earlier [[bip-0020.mediawiki|BIP 0020]]",
+              "reason": "The proposal explicitly modifies BIP 20’s Bitcoin URI scheme, so BIP 20 is the direct technical base being amended.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:321",
+              "evidence": "This BIP has been superseded and replaced with BIP 321.",
+              "reason": "The document states it is replaced by BIP 321, indicating the intended successor specification for the same URI scheme.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

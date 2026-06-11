@@ -794,17 +794,76 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "BIP 9",
-        "BIP 12",
-        "BIP 16",
-        "BIP 17",
-        "BIP 30",
-        "BIP 50",
-        "BIP 65",
-        "BIP 66"
+        {
+          "target": "bips:9",
+          "count": 1
+        },
+        {
+          "target": "bips:12",
+          "count": 1
+        },
+        {
+          "target": "bips:16",
+          "count": 2
+        },
+        {
+          "target": "bips:17",
+          "count": 2
+        },
+        {
+          "target": "bips:30",
+          "count": 1
+        },
+        {
+          "target": "bips:50",
+          "count": 2
+        },
+        {
+          "target": "bips:65",
+          "count": 1
+        },
+        {
+          "target": "bips:66",
+          "count": 2
+        }
       ],
       "body_extracted_llm": [
-        "BIP 9"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:53:22Z",
+          "dependencies": [
+            {
+              "target": "bips:9",
+              "evidence": "a more efficient use of the version field in block headers",
+              "reason": "The proposal's improved deployment mechanism is an extension of the version-field-based signaling defined by BIP9.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:16",
+              "evidence": "The first precedent of a softfork was the introduction of P2SH documented in BIP16.",
+              "reason": "BIP16 introduced the P2SH softfork mechanism that this proposal uses as the precedent for uncontroversial softfork deployment.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:30",
+              "evidence": "the voting mechanism and first used for BIP30 and BIP66.",
+              "reason": "This proposal relies on the miner voting deployment mechanism first used in BIP30 as part of its softfork activation model.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:65",
+              "evidence": "BIP65 is expected to be deployed with the improved mechanism.",
+              "reason": "BIP65 is identified as a deployment target for the improved version-bits mechanism described here, making it a direct consumer of that mechanism.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:66",
+              "evidence": "the voting mechanism and first used for BIP30 and BIP66.",
+              "reason": "This proposal relies on the miner voting deployment mechanism first used in BIP66 as part of its softfork activation model.",
+              "confidence": "medium"
+            }
+          ]
+        }
       ]
     }
   }

@@ -7,6 +7,7 @@ from typing import Any, Dict, List, Mapping
 
 from openai import OpenAI
 
+from analysis.dependencies.utils import normalize_reference_id, normalize_reference_id_for_config, uses_hex_proposal_ids
 from analysis.proposal_schema import get_preamble_interrelations
 from pipeline.source_context import SourceContext
 
@@ -30,23 +31,9 @@ def prepare_llm_dependency_text(raw_content: str) -> str:
     return _strip_top_preamble_block(raw_content).replace("\r\n", "\n").replace("\r", "\n").strip()
 
 
-def _normalize_reference_number(value: Any, max_proposal_id: Any = None) -> int | None:
-    try:
-        number = int(value)
-    except (TypeError, ValueError):
-        return None
-
-    if number < 0:
-        return None
-
-    if max_proposal_id is not None and number > int(max_proposal_id):
-        return None
-
-    return number
-
 
 def _uses_hex_proposal_ids(proposal_label: str = "IP", reference_pattern: str = "") -> bool:
-    return proposal_label.upper() == "NIP" or "A-F" in reference_pattern or "a-f" in reference_pattern
+    return uses_hex_proposal_ids(proposal_label, reference_pattern)
 
 
 def _reference_configs_for_context(
@@ -108,35 +95,40 @@ def _reference_label_order(configs: List[Dict[str, Any]]) -> Mapping[str, int]:
     }
 
 
+def _reference_patterns_by_label(configs: List[Dict[str, Any]]) -> Mapping[str, str]:
+    return {
+        str(config["proposal_label"]).upper(): str(config["reference_pattern"])
+        for config in configs
+    }
+
+
 def _normalize_reference_id(
     value: Any,
     proposal_label: str = "IP",
     reference_pattern: str = "",
     max_proposal_id: Any = None,
 ) -> str | None:
-    text = str(value).strip()
-    if not text:
-        return None
-
-    if _uses_hex_proposal_ids(proposal_label, reference_pattern):
-        if not re.fullmatch(rf"[0-9A-Fa-f]{{1,{MAX_REFERENCE_DIGITS}}}", text):
-            return None
-        number = int(text, 16)
-        if max_proposal_id is not None and number > int(max_proposal_id):
-            return None
-        normalized = text.upper()
-        return normalized.zfill(2) if len(normalized) == 1 else normalized
-
-    normalized_num = _normalize_reference_number(text, max_proposal_id=max_proposal_id)
-    return None if normalized_num is None else str(normalized_num)
+    return normalize_reference_id(
+        value,
+        proposal_label=proposal_label,
+        reference_pattern=reference_pattern,
+        max_proposal_id=max_proposal_id,
+        max_reference_digits=MAX_REFERENCE_DIGITS,
+    )
 
 
-def _reference_sort_key(value: str, proposal_label: str = "IP", label_order: Mapping[str, int] | None = None) -> tuple[int, int, str]:
+def _reference_sort_key(
+    value: str,
+    proposal_label: str = "IP",
+    label_order: Mapping[str, int] | None = None,
+    reference_patterns_by_label: Mapping[str, str] | None = None,
+) -> tuple[int, int, str]:
     parts = value.split()
     label = parts[0].upper() if parts else proposal_label.upper()
-    suffix = value.split()[-1]
+    suffix = parts[-1] if parts else ""
+    reference_pattern = (reference_patterns_by_label or {}).get(label, "")
     try:
-        base = 16 if _uses_hex_proposal_ids(proposal_label) else 10
+        base = 16 if _uses_hex_proposal_ids(label, reference_pattern) else 10
         numeric = int(suffix, base)
     except ValueError:
         numeric = 10**12
@@ -156,11 +148,10 @@ def _id_chars_for_reference_config(config: Dict[str, Any]) -> str:
 
 
 def _normalize_with_reference_config(value: Any, config: Dict[str, Any]) -> str | None:
-    return _normalize_reference_id(
+    return normalize_reference_id_for_config(
         value,
-        str(config["proposal_label"]),
-        str(config["reference_pattern"]),
-        config.get("max_proposal_id"),
+        config,
+        max_reference_digits=MAX_REFERENCE_DIGITS,
     )
 
 
@@ -196,6 +187,7 @@ def create_reference_list(
     context = source_context or SourceContext.default()
     reference_configs = _reference_configs_for_context(context, proposal_label, reference_pattern)
     label_order = _reference_label_order(reference_configs)
+    reference_patterns_by_label = _reference_patterns_by_label(reference_configs)
     proposal_references = set()
 
     for config in reference_configs:
@@ -227,7 +219,10 @@ def create_reference_list(
                     proposal_references.add(_format_reference(active_proposal_label, normalized_id))
 
     active_label = proposal_label or context.proposal_label
-    return sorted(proposal_references, key=lambda value: _reference_sort_key(value, active_label, label_order))
+    return sorted(
+        proposal_references,
+        key=lambda value: _reference_sort_key(value, active_label, label_order, reference_patterns_by_label),
+    )
 
 
 def _format_target_key(source_slug: Any, proposal_id: Any) -> str:
@@ -286,6 +281,7 @@ def create_reference_targets(
     reference_configs = _reference_configs_for_context(context, proposal_label, reference_pattern)
     active_label = proposal_label or context.proposal_label
     label_order = _reference_label_order(reference_configs)
+    reference_patterns_by_label = _reference_patterns_by_label(reference_configs)
     counts: Dict[str, Dict[str, Any]] = {}
 
     for config in reference_configs:
@@ -320,7 +316,7 @@ def create_reference_targets(
 
     items = sorted(
         counts.values(),
-        key=lambda item: _reference_sort_key(item["_label"], active_label, label_order),
+        key=lambda item: _reference_sort_key(item["_label"], active_label, label_order, reference_patterns_by_label),
     )
     return [{"target": item["target"], "count": item["count"]} for item in items]
 
@@ -342,6 +338,7 @@ def create_explicit_dependency_list(
         reference_configs[0],
     )
     label_order = _reference_label_order(reference_configs)
+    reference_patterns_by_label = _reference_patterns_by_label(reference_configs)
     dependency_ids = set()
     preamble_interrelations = get_preamble_interrelations(preamble, source_context=context)
 
@@ -363,7 +360,10 @@ def create_explicit_dependency_list(
             if normalized is not None:
                 dependency_ids.add(normalized)
 
-    return sorted(dependency_ids, key=lambda value: _reference_sort_key(value, active_label, label_order))
+    return sorted(
+        dependency_ids,
+        key=lambda value: _reference_sort_key(value, active_label, label_order, reference_patterns_by_label),
+    )
 
 
 def create_explicit_dependency_targets(
@@ -383,6 +383,7 @@ def create_explicit_dependency_targets(
         reference_configs[0],
     )
     label_order = _reference_label_order(reference_configs)
+    reference_patterns_by_label = _reference_patterns_by_label(reference_configs)
     preamble_interrelations = get_preamble_interrelations(preamble, source_context=context)
     result: List[Dict[str, str]] = []
 
@@ -400,7 +401,7 @@ def create_explicit_dependency_targets(
             targets[target] = {"target": target, "_label": reference["label"]}
         ordered = sorted(
             targets.values(),
-            key=lambda item: _reference_sort_key(item["_label"], active_label, label_order),
+            key=lambda item: _reference_sort_key(item["_label"], active_label, label_order, reference_patterns_by_label),
         )
         result.extend({"target": item["target"], "type": subtype} for item in ordered)
 
@@ -441,6 +442,7 @@ def normalize_dependency_output(
         reference_configs[0],
     )
     label_order = _reference_label_order(reference_configs)
+    reference_patterns_by_label = _reference_patterns_by_label(reference_configs)
     current_id = None if current_proposal_number is None else _normalize_reference_id(
         current_proposal_number,
         active_proposal_label,
@@ -464,7 +466,10 @@ def normalize_dependency_output(
             continue
         normalized_ids.add(normalized)
 
-    return sorted(normalized_ids, key=lambda value: _reference_sort_key(value, active_proposal_label, label_order))
+    return sorted(
+        normalized_ids,
+        key=lambda value: _reference_sort_key(value, active_proposal_label, label_order, reference_patterns_by_label),
+    )
 
 
 def _resolve_llm_target(
@@ -558,6 +563,7 @@ def normalize_llm_dependency_output(
         reference_configs[0],
     )
     label_order = _reference_label_order(reference_configs)
+    reference_patterns_by_label = _reference_patterns_by_label(reference_configs)
     current_id = None if current_proposal_number is None else _normalize_with_reference_config(
         current_proposal_number,
         active_config,
@@ -587,16 +593,41 @@ def normalize_llm_dependency_output(
                 "evidence": evidence,
                 "reason": reason,
                 "confidence": confidence,
+                "_label": target["label"],
             }
         )
 
-    return sorted(
+    sorted_entries = sorted(
         normalized_entries,
         key=lambda entry: _reference_sort_key(
-            _resolve_llm_target(entry["target"], reference_configs, active_config)["label"],
+            entry.get("_label", ""),
             active_proposal_label,
             label_order,
+            reference_patterns_by_label,
         ),
+    )
+    return [
+        {key: value for key, value in entry.items() if not key.startswith("_")}
+        for entry in sorted_entries
+    ]
+
+
+def _dependencies_from_llm_response(
+    response: Any,
+    *,
+    proposal_label: str,
+    current_proposal_number: str | None,
+    source_context: SourceContext,
+) -> List[Dict[str, str]]:
+    message = response.choices[0].message
+    if getattr(message, "refusal", None):
+        return []
+    payload = json.loads(message.content.strip())
+    return normalize_llm_dependency_output(
+        payload.get("dependencies"),
+        proposal_label=proposal_label,
+        current_proposal_number=current_proposal_number,
+        source_context=source_context,
     )
 
 
@@ -730,34 +761,29 @@ Now apply the same rules to the actual proposal text below.
             ],
             response_format=response_format,
         )
-        message = response.choices[0].message
-        if getattr(message, "refusal", None):
-            return []
-        payload = json.loads(message.content.strip())
-        return normalize_llm_dependency_output(
-            payload.get("dependencies"),
+        return _dependencies_from_llm_response(
+            response,
             proposal_label=active_proposal_label,
             current_proposal_number=current_proposal_number,
             source_context=context,
         )
     except TypeError:
-        response = client.chat.completions.create(
-            model=resolved_model,
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_prompt},
-            ],
-            response_format={"type": "json_object"},
-        )
-        message = response.choices[0].message
-        if getattr(message, "refusal", None):
-            return []
-        payload = json.loads(message.content.strip())
-        return normalize_llm_dependency_output(
-            payload.get("dependencies"),
-            proposal_label=active_proposal_label,
-            current_proposal_number=current_proposal_number,
-            source_context=context,
-        )
+        try:
+            response = client.chat.completions.create(
+                model=resolved_model,
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_prompt},
+                ],
+                response_format={"type": "json_object"},
+            )
+            return _dependencies_from_llm_response(
+                response,
+                proposal_label=active_proposal_label,
+                current_proposal_number=current_proposal_number,
+                source_context=context,
+            )
+        except (JSONDecodeError, TypeError, ValueError, KeyError, OSError, TimeoutError, ConnectionError) as exc:
+            raise RuntimeError(f"LLM API call failed: {exc}") from exc
     except (JSONDecodeError, TypeError, ValueError, KeyError, OSError, TimeoutError, ConnectionError) as exc:
         raise RuntimeError(f"LLM API call failed: {exc}") from exc

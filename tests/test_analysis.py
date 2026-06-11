@@ -22,6 +22,7 @@ from analysis.dependencies.mining import (
 )
 from analysis.dependencies.metrics import build_graph, extract_dependency_metrics
 from analysis.dependencies.network import build_network_data
+from analysis.dependencies.utils import uses_hex_proposal_ids
 from ecosystems import ECOSYSTEM_REGISTRY
 from pipeline.source_context import SourceContext
 
@@ -140,6 +141,29 @@ class CreateReferenceListTests(unittest.TestCase):
             reference_pattern=r"\bNIP-([0-9A-Fa-f]{1,3})\b",
         )
         self.assertEqual(result, ["NIP 01", "NIP F4"])
+
+    def test_detects_hex_ids_from_reference_pattern_for_non_nip_sources(self):
+        context = SourceContext.from_config(
+            {
+                "proposal_acronym": "XIP",
+                "proposal_term_singular": "Example Improvement Proposal",
+                "reference_pattern": r"\bXIP-([0-9A-Fa-f]{1,3})\b",
+            },
+            source_slug="xips",
+        )
+
+        result = create_reference_list(
+            "This builds on XIP-0A and XIP-10.",
+            proposal_label="XIP",
+            reference_pattern=r"\bXIP-([0-9A-Fa-f]{1,3})\b",
+            source_context=context,
+        )
+
+        self.assertEqual(result, ["XIP 0A", "XIP 10"])
+
+    def test_hex_detection_requires_hex_character_class(self):
+        self.assertFalse(uses_hex_proposal_ids("BIP", r"\bBCA-FLAG-(\d+)\b"))
+        self.assertTrue(uses_hex_proposal_ids("XIP", r"\bXIP-([0-9A-Fa-f]{1,3})\b"))
 
     def test_detects_sibling_source_references_from_context(self):
         context = SourceContext.from_config(
@@ -321,6 +345,37 @@ class LlmModelConfigTests(unittest.TestCase):
                 source_context=context,
             )
 
+    def test_llm_fallback_json_errors_are_wrapped(self):
+        context = SourceContext.from_config(
+            {
+                "proposal_acronym": "BIP",
+                "proposal_term_singular": "Bitcoin Improvement Proposal",
+                "reference_pattern": r"\bBIP[-#\s]?(\d+)\b",
+            },
+            source_slug="bips",
+        )
+
+        def create_completion(**kwargs):
+            if kwargs["response_format"]["type"] == "json_schema":
+                raise TypeError("structured outputs unsupported")
+            message = types.SimpleNamespace(content="{not json", refusal=None)
+            return types.SimpleNamespace(choices=[types.SimpleNamespace(message=message)])
+
+        client = types.SimpleNamespace(
+            chat=types.SimpleNamespace(
+                completions=types.SimpleNamespace(create=create_completion)
+            )
+        )
+
+        with patch("analysis.dependencies.mining.OpenAI", return_value=client):
+            with self.assertRaisesRegex(RuntimeError, "LLM API call failed"):
+                llm_extract_implicit_dependencies(
+                    "This proposal depends on BIP 32.",
+                    api_key="test-key",
+                    model="test-model",
+                    source_context=context,
+                )
+
 
 class NormalizeLlmDependencyOutputTests(unittest.TestCase):
     def test_returns_rich_source_aware_dependency_objects(self):
@@ -367,6 +422,7 @@ class NormalizeLlmDependencyOutputTests(unittest.TestCase):
                 },
             ],
         )
+        self.assertTrue(all("_label" not in entry for entry in result))
 
     def test_excludes_current_proposal_and_deduplicates_targets(self):
         context = SourceContext.from_config(
@@ -402,6 +458,24 @@ class BuildNetworkDataTests(unittest.TestCase):
         self.assertEqual(edges[0]["target"], "bips:2")
         self.assertEqual(edges[0]["extraction_method"], "body_extracted_regex")
         self.assertNotIn("links", result)
+
+    def test_generator_input_still_creates_edges(self):
+        proposals = (_proposal(value, regex_refs=["BIP 2"] if value == "1" else []) for value in ["1", "2"])
+
+        result = build_network_data(proposals, id_field="bip", proposal_label="BIP")
+
+        self.assertEqual(
+            result["dependency_edges"],
+            [
+                {
+                    "source": "bips:1",
+                    "target": "bips:2",
+                    "extraction_method": "body_extracted_regex",
+                    "relation_type": "reference",
+                    "value": 1,
+                }
+            ],
+        )
 
     def test_dependency_edges_use_source_safe_graph_keys(self):
         source_context = SourceContext.from_config(

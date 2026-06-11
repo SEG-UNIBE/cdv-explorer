@@ -4,6 +4,7 @@ import re
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Mapping
 
+from analysis.dependencies.utils import normalize_reference_id_for_config, uses_hex_proposal_ids
 from analysis.dependencies.constants import (
     BODY_EXTRACTED_LLM,
     BODY_EXTRACTED_REGEX,
@@ -127,7 +128,7 @@ def normalize_proposal_ids(field: Any, proposal_label: str = "IP") -> List[str]:
 
 
 def _uses_hex_proposal_ids(proposal_label: str = "IP", reference_pattern: str = "") -> bool:
-    return proposal_label.upper() == "NIP" or "A-F" in reference_pattern or "a-f" in reference_pattern
+    return uses_hex_proposal_ids(proposal_label, reference_pattern)
 
 
 def _source_reference_configs(
@@ -163,32 +164,7 @@ def _source_reference_configs(
 
 
 def _normalize_reference_id(value: Any, config: Mapping[str, Any]) -> str | None:
-    text = str(value).strip()
-    if not text:
-        return None
-
-    proposal_label = str(config.get("proposal_label") or "IP")
-    reference_pattern = str(config.get("reference_pattern") or "")
-    max_proposal_id = config.get("max_proposal_id")
-
-    if _uses_hex_proposal_ids(proposal_label, reference_pattern):
-        if not re.fullmatch(r"[0-9A-Fa-f]{1,6}", text):
-            return None
-        number = int(text, 16)
-        if max_proposal_id is not None and number > int(max_proposal_id):
-            return None
-        normalized = text.upper()
-        return normalized.zfill(2) if len(normalized) == 1 else normalized
-
-    try:
-        number = int(text)
-    except (TypeError, ValueError):
-        return None
-    if number < 0:
-        return None
-    if max_proposal_id is not None and number > int(max_proposal_id):
-        return None
-    return str(number)
+    return normalize_reference_id_for_config(value, config)
 
 
 def _reference_id_chars(config: Mapping[str, Any]) -> str:
@@ -330,6 +306,7 @@ def build_network_data(
     known_proposal_ids_by_source: Mapping[str, set[str]] | None = None,
 ) -> Dict[str, Any]:
     context = source_context or SourceContext.default()
+    proposals = list(proposal_data)
     classification_fields: List[str] = context.classification_fields
     classification_aliases: Dict[str, Dict[str, str]] = {
         field: dict(context.classification_aliases(field))
@@ -367,7 +344,7 @@ def build_network_data(
             "value": value,
         }
 
-    for proposal in proposal_data:
+    for proposal in proposals:
         if not proposal:
             continue
 
@@ -415,7 +392,7 @@ def build_network_data(
             nodes.append(node)
             node_ids.add(proposal_id)
 
-    for proposal in proposal_data:
+    for proposal in proposals:
         if not proposal:
             continue
 

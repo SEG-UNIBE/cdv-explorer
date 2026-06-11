@@ -22,6 +22,7 @@ from analysis.dependencies.mining import (
     load_api_key,
     prepare_llm_dependency_text,
 )
+from analysis.dependencies.utils import normalize_reference_id_for_config
 from analysis.evolution import extract_status_timeline
 from analysis.proposal_schema import normalize_proposal_document
 from pipeline.source_context import SourceContext
@@ -88,6 +89,28 @@ def _proposal_number(preamble: dict, id_field: str) -> str:
         return raw
 
 
+def _self_targets(
+    preamble: dict,
+    id_field: str,
+    proposal_number: str,
+    source_context: SourceContext,
+) -> set[str]:
+    raw_proposal_id = str(preamble.get(id_field, "")).strip()
+    source_slug = str(source_context.source_slug or "")
+    reference_config = {
+        "proposal_label": source_context.proposal_label,
+        "reference_pattern": source_context.reference_pattern,
+        "max_proposal_id": source_context.max_proposal_id,
+    }
+    targets = {f"{source_slug}:{proposal_number}"}
+    if raw_proposal_id:
+        targets.add(f"{source_slug}:{raw_proposal_id}")
+        canonical_id = normalize_reference_id_for_config(raw_proposal_id, reference_config)
+        if canonical_id is not None:
+            targets.add(f"{source_slug}:{canonical_id}")
+    return targets
+
+
 def _build_base_insights(
     json_data: Dict[str, Any],
     source_file: Path,
@@ -114,15 +137,7 @@ def _build_base_insights(
         source_context=source_context,
     )
 
-    raw_proposal_id = str(preamble.get(id_field, "")).strip()
-    self_target = f"{source_context.source_slug}:{proposal_number}"
-    self_target_raw = f"{source_context.source_slug}:{raw_proposal_id}"
-    self_targets = {self_target}
-    if raw_proposal_id:
-        self_targets.add(self_target_raw)
-        if proposal_label.upper() == "NIP":
-            self_targets.add(f"{source_context.source_slug}:{raw_proposal_id.upper().zfill(2)}")
-            self_targets.add(f"{source_context.source_slug}:{raw_proposal_id.upper()}")
+    self_targets = _self_targets(preamble, id_field, proposal_number, source_context)
 
     return (
         {
@@ -266,7 +281,6 @@ def enrich(
                 llm_extract_implicit_dependencies,
                 text=llm_content,
                 current_proposal_number=proposal_number,
-                proposal_label=proposal_label,
                 api_key=api_key,
                 model=llm_model,
                 source_context=source_context,

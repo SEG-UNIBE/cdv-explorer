@@ -175,17 +175,17 @@ export function DependenciesSection({
             className="dependency-metrics-toolbar__dropdown"
           />
         </div>
-        <div className="analysis-grid dependency-metrics-summary">
+        <div className="dependency-metrics-summary">
           {dependencyMetricCards.map((metric) => (
             <div
               key={metric.label}
-              className="analysis-stat analysis-stat--interactive"
+              className="metric-badge"
               onMouseEnter={(event) => showMetricTooltip(event, metric.description)}
               onMouseMove={moveMetricTooltip}
               onMouseLeave={hideMetricTooltip}
             >
-              <h4>{metric.label}</h4>
-              <p>{metric.value}</p>
+              <span className="metric-badge__label">{metric.label}</span>
+              <span className="metric-badge__value">{metric.value}</span>
             </div>
           ))}
         </div>

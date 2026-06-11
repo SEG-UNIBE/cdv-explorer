@@ -175,17 +175,17 @@ export function AuthorshipSection({
           <strong>Betweenness</strong> measures how often an author lies on the shortest paths between other authors, indicating their role in connecting otherwise separate groups.
           Each metric value is annotated with its rank among all authors in the network (e.g. <code>#1</code> = highest).
         </p>
-        <div className="analysis-grid collaboration-metrics-summary">
+        <div className="collaboration-metrics-summary">
           {collaborationMetricCards.map((metric) => (
             <div
               key={metric.label}
-              className="analysis-stat analysis-stat--interactive"
+              className="metric-badge"
               onMouseEnter={(event) => showMetricTooltip(event, metric.description)}
               onMouseMove={moveMetricTooltip}
               onMouseLeave={hideMetricTooltip}
             >
-              <h4>{metric.label}</h4>
-              <p>{metric.value}</p>
+              <span className="metric-badge__label">{metric.label}</span>
+              <span className="metric-badge__value">{metric.value}</span>
             </div>
           ))}
         </div>

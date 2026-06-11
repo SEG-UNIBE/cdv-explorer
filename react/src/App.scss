@@ -1320,12 +1320,47 @@
   min-width: 260px;
 }
 
-.dependency-metrics-summary {
+.dependency-metrics-summary,
+.collaboration-metrics-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  gap: 0.4rem 0.5rem;
   margin-bottom: 1rem;
 }
 
-.collaboration-metrics-summary {
-  margin-bottom: 1rem;
+.metric-badge {
+  display: flex;
+  align-items: stretch;
+  border-radius: 5px;
+  overflow: hidden;
+  border: 1px solid var(--app-border);
+  cursor: help;
+  user-select: none;
+}
+
+.metric-badge__label {
+  flex: 1;
+  padding: 5px 9px;
+  background: var(--app-surface-subtle);
+  color: var(--app-text);
+  border-right: 1px solid var(--app-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  text-align: center;
+}
+
+.metric-badge__value {
+  flex: 1;
+  padding: 5px 9px;
+  background: var(--app-surface);
+  color: var(--app-text);
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .proposal-event-history {

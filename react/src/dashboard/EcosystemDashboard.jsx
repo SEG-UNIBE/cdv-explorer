@@ -108,7 +108,7 @@ export function EcosystemDashboard() {
       if (valid.length > 0) return valid;
       return defaultSelectedSourceIds;
     });
-  }, [ecosystem, defaultSelectedSourceIds]);
+  }, [ecosystem, defaultSelectedSourceIds, setSelectedSourceIds]);
 
   useEffect(() => {
     setSelectedSnapshot((current) => {
@@ -117,7 +117,7 @@ export function EcosystemDashboard() {
       }
       return availableSnapshots[0] ?? null;
     });
-  }, [ecosystemId, availableSnapshots]);
+  }, [ecosystemId, availableSnapshots, setSelectedSnapshot]);
 
   const [selectedDataset, setSelectedDataset] = useState(emptyDataset);
   const [dataLoading, setDataLoading] = useState(true);

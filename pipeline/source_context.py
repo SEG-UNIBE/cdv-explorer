@@ -86,6 +86,26 @@ class SourceContext:
         return {}
 
     @property
+    def ecosystem_config(self) -> Mapping[str, Any]:
+        if not self.ecosystem_slug:
+            return {}
+        ecosystem = ECOSYSTEM_REGISTRY.get(self.ecosystem_slug)
+        return ecosystem if isinstance(ecosystem, Mapping) else {}
+
+    @property
+    def llm_config(self) -> Mapping[str, Any]:
+        config = self.ecosystem_config.get("llm", {})
+        return config if isinstance(config, Mapping) else {}
+
+    @property
+    def llm_model(self) -> str | None:
+        model = self.llm_config.get("model")
+        if model is None:
+            return None
+        value = str(model).strip()
+        return value or None
+
+    @property
     def primary_id_field(self) -> str:
         return str(self.config.get("primary_id_field") or "").strip()
 

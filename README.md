@@ -106,7 +106,7 @@ python main.py run -e nostr -s 2026-03-16 --skipllm
 ```
 
 > [!NOTE]
-> Omit `--skipllm` to also run the OpenAI-based inter-proposal relation extraction. Provide the API key via the `OPENAI_API_KEY` environment variable, or by creating a file named `apikey.secret` in the project root containing only the key. The pipeline picks up the file automatically when the environment variable is not set.
+> Omit `--skipllm` to also run the OpenAI-based inter-proposal relation extraction. Set the model in the ecosystem YAML under `llm.model`, and provide the API key via the `OPENAI_API_KEY` environment variable or an `apikey.secret` file in the project root. The pipeline picks up the file automatically when the environment variable is not set.
 
 > **Snapshot date:** `-s` is required. The pipeline resolves to the last commit whose committer timestamp falls on or before `YYYY-MM-DD 23:59:59` and checks out the repository at that point.
 

@@ -13,6 +13,7 @@ from analysis.conformity.metrics import extract_conformity_metrics
 from analysis.authorship.mining import update_metadata_from_git
 from analysis.dependencies.mining import (
     create_reference_list,
+    llm_extract_implicit_dependencies,
     normalize_dependency_output,
     prepare_llm_dependency_text,
 )
@@ -160,6 +161,33 @@ class PrepareLlmDependencyTextTests(unittest.TestCase):
     def test_content_without_preamble_block_is_unchanged(self):
         text = "Just plain content with no preamble block."
         self.assertEqual(prepare_llm_dependency_text(text), text)
+
+
+class LlmModelConfigTests(unittest.TestCase):
+    def test_source_context_reads_ecosystem_llm_model(self):
+        context = SourceContext.from_config(
+            ECOSYSTEM_REGISTRY["bitcoin"]["sources"]["bips"],
+            ecosystem_slug="bitcoin",
+            source_slug="bips",
+        )
+
+        self.assertEqual(context.llm_model, "gpt-5")
+
+    def test_llm_extraction_requires_configured_model(self):
+        context = SourceContext.from_config(
+            {
+                "proposal_acronym": "BIP",
+                "proposal_term_singular": "Bitcoin Improvement Proposal",
+                "reference_pattern": r"\bBIP[-#\s]?(\d+)\b",
+            }
+        )
+
+        with self.assertRaisesRegex(RuntimeError, "No LLM model configured"):
+            llm_extract_implicit_dependencies(
+                "This proposal depends on BIP 32.",
+                api_key="test-key",
+                source_context=context,
+            )
 
 
 class BuildNetworkDataTests(unittest.TestCase):

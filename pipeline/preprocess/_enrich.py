@@ -165,11 +165,18 @@ def enrich(
     )
 
     api_key = None if skip_llm else load_api_key()
-    llm_enabled = bool(api_key) and not skip_llm
+    llm_model = None if skip_llm else source_context.llm_model
+    llm_enabled = bool(api_key and llm_model) and not skip_llm
     if not skip_llm and not api_key:
         print(
             "WARNING: LLM step skipped — no API key found. "
             "Set OPENAI_API_KEY or create apikey.secret.",
+            file=sys.stderr,
+        )
+    if not skip_llm and not llm_model:
+        print(
+            "WARNING: LLM step skipped — no LLM model configured. "
+            "Set llm.model in the ecosystem YAML.",
             file=sys.stderr,
         )
 
@@ -257,6 +264,7 @@ def enrich(
                 current_proposal_number=proposal_number,
                 proposal_label=proposal_label,
                 api_key=api_key,
+                model=llm_model,
                 source_context=source_context,
             )
             pending[future] = {

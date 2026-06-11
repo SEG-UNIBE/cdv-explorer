@@ -300,6 +300,13 @@ def _load_requirements(requirements_path: Path) -> list[str]:
     return packages
 
 
+def _ecosystem_llm_model(config: dict) -> str:
+    llm_config = config.get("llm", {})
+    if not isinstance(llm_config, dict):
+        return ""
+    return str(llm_config.get("model", "")).strip()
+
+
 def _run_source_pipeline(eco_slug: str, src_slug: str, src: dict, snapshot: str, skipllm: bool) -> None:
     """Run the full pipeline for one source."""
     from pipeline.harvest import get_harvester
@@ -419,6 +426,20 @@ def doctor() -> None:
         "OK" if sources else "FAIL",
         "Ecosystem configs",
         f"{len(ECOSYSTEM_REGISTRY)} ecosystems, {len(sources)} sources",
+    )
+    ecosystems_missing_llm_model = [
+        slug
+        for slug, config in ECOSYSTEM_REGISTRY.items()
+        if config.get("sources") and not _ecosystem_llm_model(config)
+    ]
+    ok &= _doctor_row(
+        table,
+        "WARN" if ecosystems_missing_llm_model else "OK",
+        "LLM model config",
+        (
+            f"Missing llm.model in ecosystems: {', '.join(ecosystems_missing_llm_model)}; "
+            "`run --skipllm` still works"
+        ) if ecosystems_missing_llm_model else "llm.model configured for ecosystems with sources",
     )
 
     required_source_keys = {

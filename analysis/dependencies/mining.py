@@ -11,7 +11,6 @@ from analysis.proposal_schema import get_preamble_interrelations
 from pipeline.source_context import SourceContext
 
 
-LLM_MODEL = "gpt-5"
 TOP_PRE_BLOCK_PATTERN = re.compile(r"^\s*<pre>.*?</pre>\s*", re.DOTALL | re.IGNORECASE)
 TOP_FENCED_BLOCK_PATTERN = re.compile(r"^\s*```[^\n]*\n.*?\n```\s*(?:\n|$)", re.DOTALL)
 STRUCTURED_OUTPUT_NAME = "implicit_dependency_list"
@@ -338,10 +337,13 @@ def llm_extract_implicit_dependencies(
     proposal_label: str | None = None,
     proposal_singular: str | None = None,
     api_key: str | None = None,
-    model: str = LLM_MODEL,
+    model: str | None = None,
     source_context: SourceContext | None = None,
 ) -> List[str]:
     context = source_context or SourceContext.default()
+    resolved_model = model or context.llm_model
+    if not resolved_model:
+        raise RuntimeError("No LLM model configured. Set `llm.model` in the ecosystem YAML.")
     active_proposal_label = proposal_label or context.proposal_label
     active_proposal_singular = proposal_singular or context.proposal_singular
     reference_configs = _reference_configs_for_context(context, active_proposal_label, context.reference_pattern)
@@ -425,7 +427,7 @@ Now apply the same rules to the actual proposal text below.
     client = OpenAI(api_key=resolved_api_key)
     try:
         response = client.chat.completions.create(
-            model=model,
+            model=resolved_model,
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt},
@@ -444,7 +446,7 @@ Now apply the same rules to the actual proposal text below.
         )
     except TypeError:
         response = client.chat.completions.create(
-            model=model,
+            model=resolved_model,
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt},

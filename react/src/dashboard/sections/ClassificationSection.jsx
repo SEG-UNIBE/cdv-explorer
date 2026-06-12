@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { TabView, TabPanel } from 'primereact/tabview';
 import { ClassificationPieChart } from '../../ClassificationPieChart';
 import { ClassificationStackedTimelineChart } from '../../ClassificationStackedTimelineChart';
 import { ClassificationChordDiagram } from '../../ClassificationChordDiagram';
@@ -7,6 +6,7 @@ import { ClassificationLegend } from '../../ClassificationLegend';
 import { ClassificationRelationTable } from '../../ClassificationRelationTable';
 import { ExportableCard } from '../ExportableCard';
 import { CLASSIFICATION_DIMENSIONS } from '../constants';
+import { SectionSourceToggle } from './SectionSourceToggle';
 
 function ClassificationContent({
   ecosystem,
@@ -117,6 +117,8 @@ export function ClassificationSection({
   ecosystemBase,
   selectedSourceIds = [],
   perSourceDashboardData = {},
+  sectionSourceView,
+  setSectionSourceView,
   classificationCategoryDomains,
   classificationDistributions,
   classificationTimeline,
@@ -124,32 +126,38 @@ export function ClassificationSection({
   classificationRelationRows,
 }) {
   const isMultiSource = selectedSourceIds.length > 1;
+  const activeSourceId = isMultiSource && selectedSourceIds.includes(sectionSourceView)
+    ? sectionSourceView
+    : selectedSourceIds[0];
+  const activeSource = ecosystemBase?.sources?.[activeSourceId];
+  const activeData = isMultiSource ? perSourceDashboardData?.[activeSourceId] : null;
+  const activeEcosystem = isMultiSource && activeSource
+    ? { ...ecosystemBase, ...activeSource }
+    : ecosystem;
 
   return (
     <section className="dashboard-section">
       <div className="dashboard-section__header">
         <h2 className="dashboard-section__title">Classification</h2>
+        <SectionSourceToggle
+          ecosystemBase={ecosystemBase}
+          selectedSourceIds={selectedSourceIds}
+          value={activeSourceId}
+          onChange={setSectionSourceView}
+          supportsMerged={false}
+        />
       </div>
       {isMultiSource ? (
-        <TabView className="dashboard-source-tabs">
-          {selectedSourceIds.map((sourceId) => {
-            const source = ecosystemBase?.sources?.[sourceId];
-            const data = perSourceDashboardData?.[sourceId];
-            if (!source || !data) return null;
-            return (
-              <TabPanel key={sourceId} header={source.shortLabel || source.acronym}>
-                <ClassificationContent
-                  ecosystem={{ ...ecosystemBase, ...source }}
-                  classificationCategoryDomains={data.classificationCategoryDomains}
-                  classificationDistributions={data.classificationDistributions}
-                  classificationTimeline={data.classificationTimeline}
-                  classificationChordData={data.classificationChordData}
-                  classificationRelationRows={data.classificationRelationRows}
-                />
-              </TabPanel>
-            );
-          })}
-        </TabView>
+        activeData && (
+          <ClassificationContent
+            ecosystem={activeEcosystem}
+            classificationCategoryDomains={activeData.classificationCategoryDomains}
+            classificationDistributions={activeData.classificationDistributions}
+            classificationTimeline={activeData.classificationTimeline}
+            classificationChordData={activeData.classificationChordData}
+            classificationRelationRows={activeData.classificationRelationRows}
+          />
+        )
       ) : (
         <ClassificationContent
           ecosystem={ecosystem}

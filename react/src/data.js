@@ -54,6 +54,19 @@ function buildSourceIdBySlug(ecosystem) {
   );
 }
 
+function sourceSlugForEntry([id, source]) {
+  return source?.sourceSlug || id;
+}
+
+export function getSourceCombinationKey(sourceEntries) {
+  const slugs = (sourceEntries || []).map(sourceSlugForEntry).filter(Boolean).sort();
+  return slugs.length > 1 ? slugs.join('+') : null;
+}
+
+function getCombinedDataPath(ecosystemId, combinationKey) {
+  return `ip_data/${ecosystemId}/_combined/${combinationKey}/03_analysis`;
+}
+
 function scopeDependencyEdge(edge, sourceId, sourceSlug = sourceId, sourceIdBySlug = {}) {
   if (!edge || edge.source == null || edge.target == null) {
     return edge;
@@ -142,6 +155,53 @@ function ensureSingleSourceShape(snapshotLabel, sourceId, sourceSlug, snapshotDa
       node_count: nodes.length,
       link_count: countAllLinks(links),
       ...(snapshotData.meta || {}),
+    },
+  };
+}
+
+function ensureCombinedSourceShape(snapshotLabel, sourceEntries, combinationKey, snapshotData, ecosystem = null) {
+  const sourceIds = sourceEntries.map(([id]) => id);
+  const network = snapshotData.network || { nodes: [], dependency_edges: [] };
+  const sourceIdBySlug = buildSourceIdBySlug(ecosystem);
+  const rawLinks = { dependency_edges: network.dependency_edges || [] };
+  const links = scopeDependencyLinksForSource(rawLinks, '', '', sourceIdBySlug);
+  const nodes = (network.nodes || []).map((node) => {
+    const parsedGraphKey = parseProposalGraphKey(node?.graph_key ?? node?.graphId ?? node?.graph_id);
+    const graphSource = String(
+      node?.graphSource
+      || node?.source_slug
+      || node?.sourceSlug
+      || parsedGraphKey.graphSource
+      || ''
+    );
+    const sourceId = sourceIdBySlug[graphSource] || graphSource;
+    return {
+      ...node,
+      source: sourceId,
+      graphSource,
+      graphId: node?.graphId || node?.graph_key || buildProposalGraphId(graphSource, node?.id),
+    };
+  });
+
+  return {
+    snapshot: snapshotLabel,
+    sourceIds,
+    combinationKey,
+    isMergedSelection: true,
+    nodes,
+    links,
+    network: { ...network, nodes, links },
+    dependencyMetrics: snapshotData.dependencyMetrics || EMPTY_DATASET.dependencyMetrics,
+    authorship: snapshotData.authorship || EMPTY_DATASET.authorship,
+    classification: snapshotData.classification || EMPTY_DATASET.classification,
+    evolution: snapshotData.evolution || EMPTY_DATASET.evolution,
+    conformity: snapshotData.conformity || EMPTY_DATASET.conformity,
+    meta: {
+      node_count: nodes.length,
+      link_count: countAllLinks(links),
+      ...(snapshotData.meta || {}),
+      is_merged_selection: true,
+      combination_key: combinationKey,
     },
   };
 }
@@ -253,7 +313,7 @@ function mergeLinks(perSourceDatasets) {
   return merged;
 }
 
-function buildMergedDataset(snapshotLabel, entries) {
+function buildMergedDataset(snapshotLabel, entries, combinedDataset = null) {
   const perSourceDatasets = entries.map(([, ds]) => ds);
   const bySource = Object.fromEntries(entries);
   const sourceIds = entries.map(([id]) => id);
@@ -262,9 +322,17 @@ function buildMergedDataset(snapshotLabel, entries) {
     return { ...perSourceDatasets[0], bySource, sourceIds };
   }
 
+  if (combinedDataset) {
+    return {
+      ...combinedDataset,
+      bySource,
+      sourceIds,
+      isMergedSelection: true,
+    };
+  }
+
   const nodes = perSourceDatasets.flatMap((d) => d.nodes || []);
   const links = mergeLinks(perSourceDatasets);
-  const primary = perSourceDatasets[0];
 
   return {
     snapshot: snapshotLabel,
@@ -274,16 +342,25 @@ function buildMergedDataset(snapshotLabel, entries) {
     links,
     network: { nodes, links },
     authorship: mergeAuthorship(perSourceDatasets),
-    // Non-mergeable payloads (different schemas per source) — top-level holds
-    // the primary source's data so single-source-style components keep working;
-    // tabbed sections read `bySource` for per-source rendering.
-    classification: primary.classification,
-    evolution: primary.evolution,
-    conformity: primary.conformity,
-    dependencyMetrics: primary.dependencyMetrics,
+    classification: {
+      ...EMPTY_DATASET.classification,
+      meta: { merge_status: 'not_mergeable', sourceIds },
+    },
+    evolution: {
+      ...EMPTY_DATASET.evolution,
+      meta: { merge_status: 'not_mergeable', sourceIds },
+    },
+    conformity: {
+      ...EMPTY_DATASET.conformity,
+      meta: { merge_status: 'not_mergeable', sourceIds },
+    },
+    dependencyMetrics: EMPTY_DATASET.dependencyMetrics,
+    isMergedSelection: true,
     meta: {
       node_count: nodes.length,
       link_count: countAllLinks(links),
+      is_merged_selection: true,
+      dependency_metrics_status: 'unavailable_without_combined_artifact',
     },
   };
 }
@@ -314,6 +391,10 @@ function makeCacheKey(ecosystemId, sourceSlug, snapshot) {
   return `${ecosystemId}/${sourceSlug}/${snapshot}`;
 }
 
+function makeCombinedCacheKey(ecosystemId, combinationKey, snapshot) {
+  return `${ecosystemId}/_combined/${combinationKey}/${snapshot}`;
+}
+
 function fetchSingleSourceDataset(ecosystemId, source, sourceId, snapshot) {
   const key = makeCacheKey(ecosystemId, source.sourceSlug, snapshot);
   if (fetchCache.has(key)) return fetchCache.get(key);
@@ -339,15 +420,58 @@ function fetchSingleSourceDataset(ecosystemId, source, sourceId, snapshot) {
   return promise;
 }
 
+function fetchCombinedSourceDataset(ecosystemId, sourceEntries, snapshot) {
+  const combinationKey = getSourceCombinationKey(sourceEntries);
+  if (!combinationKey) return Promise.resolve(null);
+  const key = makeCombinedCacheKey(ecosystemId, combinationKey, snapshot);
+  if (fetchCache.has(key)) return fetchCache.get(key);
+
+  const base = `./${getCombinedDataPath(ecosystemId, combinationKey)}/${snapshot}`;
+  const promise = Promise.all([
+    fetchJson(`${base}/dependencies/network_data.json`),
+    fetchJson(`${base}/dependencies/dependency_metrics.json`),
+    fetchJson(`${base}/authorship/authorship_payload.json`),
+    fetchJson(`${base}/classification/classification_payload.json`),
+    fetchJson(`${base}/evolution/evolution_payload.json`),
+    fetchJson(`${base}/conformity/conformity_metrics.json`),
+  ]).then(([network, dependencyMetrics, authorship, classification, evolution, conformity]) =>
+    ensureCombinedSourceShape(snapshot, sourceEntries, combinationKey, {
+      network, dependencyMetrics, authorship, classification, evolution, conformity,
+    }, ecosystemsById[ecosystemId])
+  ).catch((err) => {
+    fetchCache.delete(key);
+    throw err;
+  });
+
+  fetchCache.set(key, promise);
+  return promise;
+}
+
+function hasCombinedSnapshot(ecosystemId, sourceEntries, snapshot) {
+  const combinationKey = getSourceCombinationKey(sourceEntries);
+  if (!combinationKey) return false;
+  return (snapshotIndex[ecosystemId]?.[combinationKey] || []).includes(snapshot);
+}
+
 export function isDatasetCached(ecosystemId, snapshot, sourceIds = null) {
   const { sources } = resolveSourcesForIds(ecosystemId, sourceIds);
   if (sources.length === 0) return false;
-  return sources.every(([, source]) => fetchCache.has(makeCacheKey(ecosystemId, source.sourceSlug, snapshot)));
+  const sourceDatasetsCached = sources.every(([, source]) => (
+    fetchCache.has(makeCacheKey(ecosystemId, source.sourceSlug, snapshot))
+  ));
+  if (!sourceDatasetsCached) return false;
+  if (sources.length <= 1 || !hasCombinedSnapshot(ecosystemId, sources, snapshot)) return true;
+  return fetchCache.has(makeCombinedCacheKey(ecosystemId, getSourceCombinationKey(sources), snapshot));
 }
 
 export function getAvailableSnapshots(ecosystemId, sourceIds = null) {
   const { sources } = resolveSourcesForIds(ecosystemId, sourceIds);
   if (sources.length === 0) return [];
+  const combinationKey = getSourceCombinationKey(sources);
+  if (combinationKey) {
+    const combinedSnapshots = snapshotIndex[ecosystemId]?.[combinationKey] || [];
+    if (combinedSnapshots.length > 0) return combinedSnapshots;
+  }
   const lists = sources.map(([, source]) => snapshotIndex[ecosystemId]?.[source.sourceSlug] || []);
   if (lists.length === 1) return lists[0];
   // Intersection across selected sources, preserving the first source's ordering.
@@ -361,8 +485,17 @@ export function fetchDatasetForSelection(ecosystemId, snapshot, sourceIds = null
     return Promise.resolve(EMPTY_DATASET);
   }
 
-  return Promise.all(
+  const sourceDatasetsPromise = Promise.all(
     sources.map(([id, source]) => fetchSingleSourceDataset(ecosystemId, source, id, snapshot)
       .then((dataset) => [id, dataset])),
-  ).then((entries) => buildMergedDataset(snapshot, entries));
+  );
+
+  if (sources.length > 1 && hasCombinedSnapshot(ecosystemId, sources, snapshot)) {
+    return Promise.all([
+      sourceDatasetsPromise,
+      fetchCombinedSourceDataset(ecosystemId, sources, snapshot),
+    ]).then(([entries, combinedDataset]) => buildMergedDataset(snapshot, entries, combinedDataset));
+  }
+
+  return sourceDatasetsPromise.then((entries) => buildMergedDataset(snapshot, entries));
 }

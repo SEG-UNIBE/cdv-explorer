@@ -16,7 +16,7 @@ import { getSlipCommitUrl, getSlipUrl, normalizeSlipId } from './slipLinks';
 import { getRepositoryCommitUrl, getRepositoryProposalUrl } from './proposalLinkResolver';
 import { renderProposalListHtml } from './bipTooltipContent';
 import { buildDashboardData, buildWordCloudData, parseProposalFilterExpression } from './dashboard/dashboardData';
-import { buildProposalGraphId, scopeDependencyLinksForSource } from './data';
+import { buildProposalGraphId, getSourceCombinationKey, scopeDependencyLinksForSource } from './data';
 import { filterCrossSourceAuthorNetwork } from './authorNetwork/authorNetworkUtils';
 import { filterCrossSourceDependencyGraph } from './networkDiagram/networkDiagramUtils';
 import {
@@ -121,6 +121,17 @@ test('source-scopes dependency links without changing display proposal ids', () 
     sourceKey: 'slips:32',
     targetKey: 'slips:44',
   });
+});
+
+test('builds stable combined source artifact keys', () => {
+  const entries = [
+    ['slip', { sourceSlug: 'slips' }],
+    ['bip', { sourceSlug: 'bips' }],
+  ];
+
+  expect(getSourceCombinationKey(entries)).toBe('bips+slips');
+  expect(getSourceCombinationKey(entries.slice().reverse())).toBe('bips+slips');
+  expect(getSourceCombinationKey([entries[0]])).toBeNull();
 });
 
 test('source-scopes canonical dependency edge graph keys for display', () => {

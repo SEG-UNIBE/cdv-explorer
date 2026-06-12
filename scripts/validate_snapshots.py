@@ -118,6 +118,26 @@ def snapshot_key(ecosystem: str, source: str | None, snapshot: str) -> str:
     return f"{ecosystem}/{snapshot}"
 
 
+def analysis_dirs_for_ecosystem(ecosystem_dir: Path) -> list[tuple[str | None, Path]]:
+    # Support ip_data/<ecosystem>/03_analysis, ip_data/<ecosystem>/<source>/03_analysis,
+    # and ip_data/<ecosystem>/_combined/<combo>/03_analysis.
+    candidate = ecosystem_dir / "03_analysis"
+    if candidate.is_dir():
+        return [(None, candidate)]
+
+    analysis_dirs = [
+        (p.name, p / "03_analysis") for p in sorted(ecosystem_dir.iterdir())
+        if p.is_dir() and p.name != "_combined" and (p / "03_analysis").is_dir()
+    ]
+    combined_root = ecosystem_dir / "_combined"
+    if combined_root.is_dir():
+        analysis_dirs.extend(
+            (p.name, p / "03_analysis") for p in sorted(combined_root.iterdir())
+            if p.is_dir() and (p / "03_analysis").is_dir()
+        )
+    return analysis_dirs
+
+
 def main() -> None:
     rows: list[dict] = []
     errors_by_snapshot: dict[str, list[str]] = {}
@@ -126,16 +146,7 @@ def main() -> None:
     for ecosystem_dir in sorted(ANALYSIS_ROOT.iterdir()):
         if not ecosystem_dir.is_dir():
             continue
-        # Support both ip_data/<ecosystem>/03_analysis and ip_data/<ecosystem>/<source>/03_analysis
-        candidate = ecosystem_dir / "03_analysis"
-        analysis_dirs: list[tuple[str | None, Path]]
-        if candidate.is_dir():
-            analysis_dirs = [(None, candidate)]
-        else:
-            analysis_dirs = [
-                (p.name, p / "03_analysis") for p in sorted(ecosystem_dir.iterdir())
-                if p.is_dir() and (p / "03_analysis").is_dir()
-            ]
+        analysis_dirs = analysis_dirs_for_ecosystem(ecosystem_dir)
         ecosystem = ecosystem_dir.name
 
         for source, analysis_dir in analysis_dirs:

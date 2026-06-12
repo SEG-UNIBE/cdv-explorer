@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Dropdown } from 'primereact/dropdown';
 import { RadioButton } from 'primereact/radiobutton';
-import { TabView, TabPanel } from 'primereact/tabview';
 import { EvolutionStatusStackedBarChart } from '../../EvolutionStatusStackedBarChart';
 import { ProposalEventTimeline } from '../../ProposalEventTimeline';
 import { ExportableCard } from '../ExportableCard';
+import { SectionSourceToggle } from './SectionSourceToggle';
 
 function hasPositiveValues(series) {
   return Array.isArray(series?.rows) && series.rows.some((row) => (
@@ -134,9 +134,19 @@ export function EvolutionSection({
   ecosystemBase,
   selectedSourceIds = [],
   perSourceDashboardData = {},
+  sectionSourceView,
+  setSectionSourceView,
   evolutionPayload,
 }) {
   const isMultiSource = selectedSourceIds.length > 1;
+  const activeSourceId = isMultiSource && selectedSourceIds.includes(sectionSourceView)
+    ? sectionSourceView
+    : selectedSourceIds[0];
+  const activeSource = ecosystemBase?.sources?.[activeSourceId];
+  const activeData = isMultiSource ? perSourceDashboardData?.[activeSourceId] : null;
+  const activeEcosystem = isMultiSource && activeSource
+    ? { ...ecosystemBase, ...activeSource }
+    : ecosystem;
 
   if (!isMultiSource) {
     const overall = evolutionPayload?.status_evolution_segmented || evolutionPayload?.status_evolution;
@@ -155,22 +165,20 @@ export function EvolutionSection({
     <section className="dashboard-section">
       <div className="dashboard-section__header">
         <h2 className="dashboard-section__title">Evolution</h2>
+        <SectionSourceToggle
+          ecosystemBase={ecosystemBase}
+          selectedSourceIds={selectedSourceIds}
+          value={activeSourceId}
+          onChange={setSectionSourceView}
+          supportsMerged={false}
+        />
       </div>
-      <TabView className="dashboard-source-tabs">
-        {selectedSourceIds.map((sourceId) => {
-          const source = ecosystemBase?.sources?.[sourceId];
-          const data = perSourceDashboardData?.[sourceId];
-          if (!source || !data) return null;
-          return (
-            <TabPanel key={sourceId} header={source.shortLabel || source.acronym}>
-              <EvolutionContent
-                ecosystem={{ ...ecosystemBase, ...source }}
-                evolutionPayload={data.evolutionPayload}
-              />
-            </TabPanel>
-          );
-        })}
-      </TabView>
+      {activeData && (
+        <EvolutionContent
+          ecosystem={activeEcosystem}
+          evolutionPayload={activeData.evolutionPayload}
+        />
+      )}
     </section>
   );
 }

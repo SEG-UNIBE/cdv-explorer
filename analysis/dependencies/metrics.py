@@ -54,14 +54,21 @@ def _split_graph_key(value: Any) -> tuple[str | None, str]:
     return source_slug or None, proposal_id
 
 
-def _canonical_node_ids(network_data: Dict[str, Any]) -> Dict[str, str]:
-    dependency_edges = _canonical_dependency_edges(network_data)
-    edge_keys = {
+def _network_edge_keys(network_data: Dict[str, Any]) -> set[str]:
+    return {
         str(value)
-        for edge in dependency_edges
+        for edge in _canonical_dependency_edges(network_data)
         for value in (edge.get("source"), edge.get("target"))
         if value is not None
     }
+
+
+def _node_graph_id(node: Dict[str, Any], edge_keys: set[str]) -> str:
+    raw_id = str(node.get("id"))
+    graph_key = node.get("graph_key") or node.get("graphId") or node.get("graph_id")
+    if graph_key is not None:
+        return str(graph_key)
+
     source_slugs = {
         source_slug
         for source_slug, _proposal_id in (_split_graph_key(value) for value in edge_keys)
@@ -69,42 +76,30 @@ def _canonical_node_ids(network_data: Dict[str, Any]) -> Dict[str, str]:
     }
     single_edge_source_slug = next(iter(source_slugs)) if len(source_slugs) == 1 else None
 
-    node_ids: Dict[str, str] = {}
-    for node in network_data.get("nodes", []):
-        raw_id = str(node.get("id"))
-        graph_key = node.get("graph_key") or node.get("graphId") or node.get("graph_id")
-        if graph_key is not None:
-            node_ids[raw_id] = str(graph_key)
-            continue
+    node_source_slug = node.get("graphSource") or node.get("source_slug") or node.get("sourceSlug")
+    if node_source_slug:
+        return f"{node_source_slug}:{raw_id}"
 
-        node_source_slug = node.get("graphSource") or node.get("source_slug") or node.get("sourceSlug")
-        if node_source_slug:
-            node_ids[raw_id] = f"{node_source_slug}:{raw_id}"
-            continue
-
-        matching_edge_keys = [
-            key
-            for key in edge_keys
-            if _split_graph_key(key)[1] == raw_id
-        ]
-        if len(matching_edge_keys) == 1:
-            node_ids[raw_id] = matching_edge_keys[0]
-        elif single_edge_source_slug:
-            node_ids[raw_id] = f"{single_edge_source_slug}:{raw_id}"
-        else:
-            node_ids[raw_id] = raw_id
-
-    return node_ids
+    matching_edge_keys = [
+        key
+        for key in edge_keys
+        if _split_graph_key(key)[1] == raw_id
+    ]
+    if len(matching_edge_keys) == 1:
+        return matching_edge_keys[0]
+    if single_edge_source_slug:
+        return f"{single_edge_source_slug}:{raw_id}"
+    return raw_id
 
 
 def build_graph(network_data: Dict[str, Any], link_type: str = BODY_EXTRACTED_REGEX) -> nx.DiGraph:
     graph = nx.DiGraph()
     use_canonical_edges = bool(_canonical_dependency_edges(network_data))
-    node_id_map = _canonical_node_ids(network_data) if use_canonical_edges else {}
+    edge_keys = _network_edge_keys(network_data) if use_canonical_edges else set()
 
     for node in network_data.get("nodes", []):
         raw_id = str(node["id"])
-        graph_id = node_id_map.get(raw_id, raw_id)
+        graph_id = _node_graph_id(node, edge_keys) if use_canonical_edges else raw_id
         graph.add_node(
             graph_id,
             title=node.get("title"),
@@ -213,9 +208,9 @@ def _approach_labels() -> Dict[str, str]:
 
 def _build_pairwise_comparisons(network_data: Dict[str, Any]) -> Dict[str, Any]:
     use_canonical_edges = bool(_canonical_dependency_edges(network_data))
-    node_id_map = _canonical_node_ids(network_data) if use_canonical_edges else {}
+    edge_keys = _network_edge_keys(network_data) if use_canonical_edges else set()
     nodes_by_id = {
-        node_id_map.get(str(node.get("id")), str(node.get("id"))): node
+        (_node_graph_id(node, edge_keys) if use_canonical_edges else str(node.get("id"))): node
         for node in network_data.get("nodes", [])
         if node.get("id") is not None
     }

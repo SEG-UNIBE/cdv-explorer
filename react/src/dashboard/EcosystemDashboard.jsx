@@ -21,6 +21,7 @@ import { ConformitySection } from './sections/ConformitySection';
 import { EvolutionSection } from './sections/EvolutionSection';
 import { DashboardSnapshotProvider } from './DashboardSnapshotContext';
 import { DashboardSkeleton } from './DashboardSkeleton';
+import { SECTION_VIEW_MERGED } from './sections/SectionSourceToggle';
 
 function getSourceRepositoryHref(repository) {
   const text = String(repository || '').trim();
@@ -39,6 +40,34 @@ function formatProposalOption(node, ecosystem) {
     return source.formatProposalReference(node?.id);
   }
   return normalizeProposalFilterValue(node?.id);
+}
+
+function normalizeSectionSourceView(view, selectedSourceIds, supportsMerged) {
+  if (selectedSourceIds.length <= 1) {
+    return SECTION_VIEW_MERGED;
+  }
+  if (supportsMerged && view === SECTION_VIEW_MERGED) {
+    return SECTION_VIEW_MERGED;
+  }
+  if (selectedSourceIds.includes(view)) {
+    return view;
+  }
+  return supportsMerged ? SECTION_VIEW_MERGED : selectedSourceIds[0];
+}
+
+function getSectionDataset(selectedDataset, sectionSourceView) {
+  if (sectionSourceView === SECTION_VIEW_MERGED) {
+    return selectedDataset;
+  }
+  return selectedDataset?.bySource?.[sectionSourceView] || selectedDataset;
+}
+
+function getSectionEcosystem(ecosystem, activeEcosystem, sectionSourceView) {
+  if (sectionSourceView === SECTION_VIEW_MERGED) {
+    return activeEcosystem;
+  }
+  const source = ecosystem?.sources?.[sectionSourceView];
+  return source ? { ...ecosystem, ...source } : activeEcosystem;
 }
 
 export function EcosystemDashboard() {
@@ -100,6 +129,11 @@ export function EcosystemDashboard() {
   const [highlightedConformityProposal, setHighlightedConformityProposal] = useState('');
   const [linkMode, setLinkMode] = useLocalStorageState('cdv-explorer-linkmode', 'history');
   const [activeTocSection, setActiveTocSection] = useState('dashboard-authorship');
+  const [authorshipSourceView, setAuthorshipSourceView] = useState(SECTION_VIEW_MERGED);
+  const [classificationSourceView, setClassificationSourceView] = useState('');
+  const [evolutionSourceView, setEvolutionSourceView] = useState('');
+  const [dependenciesSourceView, setDependenciesSourceView] = useState(SECTION_VIEW_MERGED);
+  const [conformitySourceView, setConformitySourceView] = useState('');
   const dashboardScrollRef = useRef(null);
 
   useEffect(() => {
@@ -164,27 +198,15 @@ export function EcosystemDashboard() {
     return () => { cancelled = true; };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ecosystemId, orderedSelectedSourceIds, selectedSnapshot, ecosystem, emptyDataset, retryCounter]);
+  const dashboardData = useMemo(() => buildDashboardData(selectedDataset, activeEcosystem), [selectedDataset, activeEcosystem]);
   const {
-    yearData,
-    wordCloudData,
-    conformityRows,
-    conformityFailedChecks,
     classificationDistributions,
     classificationTimeline,
     classificationCategoryDomains,
     classificationChordData,
     classificationRelationRows,
     evolutionPayload,
-    topAuthors,
-    authorContributionHistogram,
-    bipAuthorCountHistogram,
-    collaborationNetwork,
-    collaborationMetricsSummary,
-    collaborationMetricsRows,
-    collaborationClusterSizeDistribution,
-    collaborationDegreeDistribution,
-    dependencyMetrics,
-  } = useMemo(() => buildDashboardData(selectedDataset, activeEcosystem), [selectedDataset, activeEcosystem]);
+  } = dashboardData;
   const perSourceDashboardData = useMemo(() => {
     const bySource = selectedDataset?.bySource || {};
     return orderedSelectedSourceIds.reduce((acc, sourceId) => {
@@ -196,44 +218,71 @@ export function EcosystemDashboard() {
       return acc;
     }, {});
   }, [selectedDataset, ecosystem, orderedSelectedSourceIds]);
+
+  const activeAuthorshipSourceView = normalizeSectionSourceView(authorshipSourceView, orderedSelectedSourceIds, true);
+  const activeClassificationSourceView = normalizeSectionSourceView(classificationSourceView, orderedSelectedSourceIds, false);
+  const activeEvolutionSourceView = normalizeSectionSourceView(evolutionSourceView, orderedSelectedSourceIds, false);
+  const activeDependenciesSourceView = normalizeSectionSourceView(dependenciesSourceView, orderedSelectedSourceIds, true);
+  const activeConformitySourceView = normalizeSectionSourceView(conformitySourceView, orderedSelectedSourceIds, false);
+
+  const authorshipViewDataset = getSectionDataset(selectedDataset, activeAuthorshipSourceView);
+  const dependencyViewDataset = getSectionDataset(selectedDataset, activeDependenciesSourceView);
+  const conformityViewDataset = getSectionDataset(selectedDataset, activeConformitySourceView);
+  const authorshipViewEcosystem = getSectionEcosystem(ecosystem, activeEcosystem, activeAuthorshipSourceView);
+  const dependencyViewEcosystem = getSectionEcosystem(ecosystem, activeEcosystem, activeDependenciesSourceView);
+  const conformityViewEcosystem = getSectionEcosystem(ecosystem, activeEcosystem, activeConformitySourceView);
+  const authorshipDashboardData = activeAuthorshipSourceView === SECTION_VIEW_MERGED
+    ? dashboardData
+    : (perSourceDashboardData[activeAuthorshipSourceView] || dashboardData);
+  const dependencyDashboardData = activeDependenciesSourceView === SECTION_VIEW_MERGED
+    ? dashboardData
+    : (perSourceDashboardData[activeDependenciesSourceView] || dashboardData);
+  const conformityDashboardData = activeConformitySourceView === SECTION_VIEW_MERGED
+    ? dashboardData
+    : (perSourceDashboardData[activeConformitySourceView] || dashboardData);
+
+  const dependencyViewMetrics = dependencyDashboardData.dependencyMetrics;
   const dependencyMetricsApproachOptions = useMemo(
     () => LINK_TYPE_OPTIONS.filter(
-      (option) => dependencyMetrics?.by_approach?.[option.value]
+      (option) => dependencyViewMetrics?.by_approach?.[option.value]
     ),
-    [dependencyMetrics]
+    [dependencyViewMetrics]
   );
   const activeDependencyMetricsApproach = dependencyMetricsApproachOptions.some(
     (option) => option.value === selectedDependencyMetricsApproach
   )
     ? selectedDependencyMetricsApproach
     : (dependencyMetricsApproachOptions[0]?.value || DEFAULT_DEPENDENCY_APPROACH);
-  const activeDependencyMetrics = dependencyMetrics?.by_approach?.[activeDependencyMetricsApproach] || {
+  const activeDependencyMetrics = dependencyViewMetrics?.by_approach?.[activeDependencyMetricsApproach] || {
     summary: {},
     per_bip: [],
   };
-  const availableProposalNodes = useMemo(
-    () => (selectedDataset?.nodes || [])
+  const authorshipAvailableProposalNodes = useMemo(
+    () => (authorshipViewDataset?.nodes || [])
       .filter((node) => node?.id != null),
-    [selectedDataset]
+    [authorshipViewDataset]
   );
-  const availableProposalIds = useMemo(
-    () => (selectedDataset?.nodes || [])
-      .map((node) => normalizeProposalFilterValue(node?.id))
-      .filter(Boolean)
-      .sort((left, right) => Number(left) - Number(right)),
-    [selectedDataset]
+  const dependencyAvailableProposalNodes = useMemo(
+    () => (dependencyViewDataset?.nodes || [])
+      .filter((node) => node?.id != null),
+    [dependencyViewDataset]
+  );
+  const conformityAvailableProposalNodes = useMemo(
+    () => (conformityViewDataset?.nodes || [])
+      .filter((node) => node?.id != null),
+    [conformityViewDataset]
   );
   const selectedWordCloudProposalIds = useMemo(
-    () => parseProposalFilterExpression(wordCloudFilterText, availableProposalNodes, ecosystem),
-    [availableProposalNodes, ecosystem, wordCloudFilterText]
+    () => parseProposalFilterExpression(wordCloudFilterText, authorshipAvailableProposalNodes, ecosystem),
+    [authorshipAvailableProposalNodes, ecosystem, wordCloudFilterText]
   );
   const selectedDependencyProposalIds = useMemo(
-    () => parseProposalFilterExpression(dependencyFilterText, availableProposalNodes, ecosystem),
-    [availableProposalNodes, dependencyFilterText, ecosystem]
+    () => parseProposalFilterExpression(dependencyFilterText, dependencyAvailableProposalNodes, ecosystem),
+    [dependencyAvailableProposalNodes, dependencyFilterText, ecosystem]
   );
   const filteredWordCloudData = useMemo(
-    () => buildWordCloudData(selectedDataset?.nodes || [], selectedWordCloudProposalIds, ecosystem),
-    [ecosystem, selectedDataset, selectedWordCloudProposalIds]
+    () => buildWordCloudData(authorshipViewDataset?.nodes || [], selectedWordCloudProposalIds, ecosystem),
+    [ecosystem, authorshipViewDataset, selectedWordCloudProposalIds]
   );
   const hasWordCloudFilter = wordCloudFilterText.trim().length > 0;
   const hasDependencyFilter = dependencyFilterText.trim().length > 0;
@@ -244,10 +293,10 @@ export function EcosystemDashboard() {
         return current;
       }
 
-      const normalized = parseProposalFilterExpression(current, availableProposalNodes, ecosystem);
+      const normalized = parseProposalFilterExpression(current, authorshipAvailableProposalNodes, ecosystem);
       return normalized.length ? current : '';
     });
-  }, [availableProposalNodes, ecosystem]);
+  }, [authorshipAvailableProposalNodes, ecosystem]);
 
   useEffect(() => {
     setDependencyFilterText((current) => {
@@ -255,10 +304,10 @@ export function EcosystemDashboard() {
         return current;
       }
 
-      const normalized = parseProposalFilterExpression(current, availableProposalNodes, ecosystem);
+      const normalized = parseProposalFilterExpression(current, dependencyAvailableProposalNodes, ecosystem);
       return normalized.length ? current : '';
     });
-  }, [availableProposalNodes, ecosystem]);
+  }, [dependencyAvailableProposalNodes, ecosystem]);
 
   useEffect(() => {
     setHighlightedConformityProposal((current) => {
@@ -266,10 +315,10 @@ export function EcosystemDashboard() {
         return current;
       }
 
-      const normalized = normalizeProposalFilterValue(current);
-      return availableProposalIds.includes(normalized) ? current : '';
+      const normalized = parseProposalFilterExpression(current, conformityAvailableProposalNodes, ecosystem);
+      return normalized.length ? current : '';
     });
-  }, [availableProposalIds]);
+  }, [conformityAvailableProposalNodes, ecosystem]);
 
   useEffect(() => {
     if (!dependencyMetricsApproachOptions.some((option) => option.value === selectedDependencyMetricsApproach)) {
@@ -343,12 +392,16 @@ export function EcosystemDashboard() {
     );
   }
 
-  const collaborationAuthorOptions = collaborationNetwork.nodes
+  const collaborationAuthorOptions = (authorshipDashboardData.collaborationNetwork?.nodes || [])
     .map((node) => String(node.id || ''))
     .filter(Boolean)
     .sort((left, right) => left.localeCompare(right));
-  const dependencyProposalOptions = availableProposalNodes
-    .map((node) => formatProposalOption(node, ecosystem))
+  const dependencyProposalOptions = dependencyAvailableProposalNodes
+    .map((node) => formatProposalOption(node, dependencyViewEcosystem))
+    .filter(Boolean)
+    .sort((left, right) => left.localeCompare(right, undefined, { numeric: true }));
+  const conformityProposalOptions = conformityAvailableProposalNodes
+    .map((node) => formatProposalOption(node, conformityViewEcosystem))
     .filter(Boolean)
     .sort((left, right) => left.localeCompare(right, undefined, { numeric: true }));
   const snapshotOptions = availableSnapshots.map((snapshot) => ({
@@ -533,16 +586,20 @@ export function EcosystemDashboard() {
           >
             <div id="dashboard-authorship" className="dashboard-anchor">
               <AuthorshipSection
-                ecosystem={activeEcosystem}
-                yearData={yearData}
-                topAuthors={topAuthors}
-                authorContributionHistogram={authorContributionHistogram}
-                bipAuthorCountHistogram={bipAuthorCountHistogram}
-                collaborationNetwork={collaborationNetwork}
-                collaborationMetricsSummary={collaborationMetricsSummary}
-                collaborationMetricsRows={collaborationMetricsRows}
-                collaborationClusterSizeDistribution={collaborationClusterSizeDistribution}
-                collaborationDegreeDistribution={collaborationDegreeDistribution}
+                ecosystem={authorshipViewEcosystem}
+                ecosystemBase={ecosystem}
+                selectedSourceIds={orderedSelectedSourceIds}
+                sectionSourceView={activeAuthorshipSourceView}
+                setSectionSourceView={setAuthorshipSourceView}
+                yearData={authorshipDashboardData.yearData}
+                topAuthors={authorshipDashboardData.topAuthors}
+                authorContributionHistogram={authorshipDashboardData.authorContributionHistogram}
+                bipAuthorCountHistogram={authorshipDashboardData.bipAuthorCountHistogram}
+                collaborationNetwork={authorshipDashboardData.collaborationNetwork}
+                collaborationMetricsSummary={authorshipDashboardData.collaborationMetricsSummary}
+                collaborationMetricsRows={authorshipDashboardData.collaborationMetricsRows}
+                collaborationClusterSizeDistribution={authorshipDashboardData.collaborationClusterSizeDistribution}
+                collaborationDegreeDistribution={authorshipDashboardData.collaborationDegreeDistribution}
                 highlightedAuthor={highlightedAuthor}
                 setHighlightedAuthor={setHighlightedAuthor}
                 collaborationLayoutMode={collaborationLayoutMode}
@@ -554,7 +611,7 @@ export function EcosystemDashboard() {
                 setWordCloudFilterText={setWordCloudFilterText}
                 hasWordCloudFilter={hasWordCloudFilter}
                 filteredWordCloudData={filteredWordCloudData}
-                wordCloudData={wordCloudData}
+                wordCloudData={authorshipDashboardData.wordCloudData}
               />
             </div>
             <div id="dashboard-classification" className="dashboard-anchor">
@@ -563,6 +620,8 @@ export function EcosystemDashboard() {
                 ecosystemBase={ecosystem}
                 selectedSourceIds={orderedSelectedSourceIds}
                 perSourceDashboardData={perSourceDashboardData}
+                sectionSourceView={activeClassificationSourceView}
+                setSectionSourceView={setClassificationSourceView}
                 classificationCategoryDomains={classificationCategoryDomains}
                 classificationDistributions={classificationDistributions}
                 classificationTimeline={classificationTimeline}
@@ -576,13 +635,19 @@ export function EcosystemDashboard() {
                 ecosystemBase={ecosystem}
                 selectedSourceIds={orderedSelectedSourceIds}
                 perSourceDashboardData={perSourceDashboardData}
+                sectionSourceView={activeEvolutionSourceView}
+                setSectionSourceView={setEvolutionSourceView}
                 evolutionPayload={evolutionPayload}
               />
             </div>
             <div id="dashboard-dependencies" className="dashboard-anchor">
               <DependenciesSection
-                ecosystem={activeEcosystem}
-                selectedDataset={selectedDataset}
+                ecosystem={dependencyViewEcosystem}
+                ecosystemBase={ecosystem}
+                selectedSourceIds={orderedSelectedSourceIds}
+                sectionSourceView={activeDependenciesSourceView}
+                setSectionSourceView={setDependenciesSourceView}
+                selectedDataset={dependencyViewDataset}
                 highlightedDependencyProposal={highlightedDependencyProposal}
                 setHighlightedDependencyProposal={setHighlightedDependencyProposal}
                 dependencyProposalOptions={dependencyProposalOptions}
@@ -600,22 +665,24 @@ export function EcosystemDashboard() {
                 activeDependencyMetricsApproach={activeDependencyMetricsApproach}
                 setSelectedDependencyMetricsApproach={setSelectedDependencyMetricsApproach}
                 activeDependencyMetrics={activeDependencyMetrics}
-                dependencyMetrics={dependencyMetrics}
+                dependencyMetrics={dependencyViewMetrics}
               />
             </div>
             {showConformitySection && (
               <div id="dashboard-conformity" className="dashboard-anchor">
-                <ConformitySection
-                  ecosystem={activeEcosystem}
-                  ecosystemBase={ecosystem}
-                  selectedSourceIds={orderedSelectedSourceIds}
-                  perSourceDashboardData={perSourceDashboardData}
-                  dependencyProposalOptions={dependencyProposalOptions}
-                  highlightedConformityProposal={highlightedConformityProposal}
-                  setHighlightedConformityProposal={setHighlightedConformityProposal}
-                  conformityRows={conformityRows}
-                  conformityFailedChecks={conformityFailedChecks}
-                />
+	                <ConformitySection
+	                  ecosystem={activeEcosystem}
+	                  ecosystemBase={ecosystem}
+	                  selectedSourceIds={orderedSelectedSourceIds}
+	                  perSourceDashboardData={perSourceDashboardData}
+	                  sectionSourceView={activeConformitySourceView}
+	                  setSectionSourceView={setConformitySourceView}
+	                  dependencyProposalOptions={conformityProposalOptions}
+	                  highlightedConformityProposal={highlightedConformityProposal}
+	                  setHighlightedConformityProposal={setHighlightedConformityProposal}
+	                  conformityRows={conformityDashboardData.conformityRows}
+	                  conformityFailedChecks={conformityDashboardData.conformityFailedChecks}
+	                />
               </div>
             )}
           </div>

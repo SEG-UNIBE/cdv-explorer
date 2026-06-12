@@ -43,6 +43,7 @@ app = typer.Typer(
         "[green]python main.py run -e nostr -s 2026-03-16 --skipllm[/green]\n\n"
         "[green]python main.py snapshots[/green]\n\n"
         "[green]python main.py artifacts rebuild -e bitcoin -s 2026-03-16[/green]\n\n"
+        "[green]python main.py artifacts rebuild -e bitcoin --all[/green]\n\n"
         "[green]python main.py doctor[/green]\n\n"
         "[green]python main.py ecosystems list[/green]\n\n"
         "[green]python main.py ecosystems show bitcoin[/green]\n\n"
@@ -174,6 +175,24 @@ def _latest_snapshot_labels(analysis_root: Path) -> list[str]:
     )
 
 
+def _snapshot_labels(root: Path) -> list[str]:
+    if not root.is_dir():
+        return []
+    return sorted(
+        (p.name for p in root.iterdir() if p.is_dir() and re.match(r"^\d{4}-\d{2}-\d{2}$", p.name)),
+    )
+
+
+def _common_preprocess_snapshot_labels(sources: dict[str, dict]) -> list[str]:
+    snapshot_sets = [
+        set(_snapshot_labels(Path(src.get("preprocess", ""))))
+        for src in sources.values()
+    ]
+    if not snapshot_sets:
+        return []
+    return sorted(set.intersection(*snapshot_sets))
+
+
 def _snapshot_artifact_dirs(src: dict, snapshot: str) -> list[Path]:
     return [
         Path(src["preprocess"]) / snapshot,
@@ -259,6 +278,46 @@ def _rebuild_source_artifacts(eco_slug: str, src_slug: str, src: dict, snapshot:
     )
 
 
+def _count_source_combinations(source_count: int) -> int:
+    if source_count < 2:
+        return 0
+    return (2 ** source_count) - source_count - 1
+
+
+def _rebuild_combined_source_artifacts(eco_slug: str, eco: dict, snapshot: str) -> None:
+    """Rebuild precomputed artifacts for every multi-source combination."""
+    from analysis.pipeline import prepare_combined_source_artifacts
+
+    sources = eco.get("sources", {})
+    combo_count = _count_source_combinations(len(sources))
+    if combo_count == 0:
+        return
+
+    _run_stage(
+        "Build combined source artifacts".ljust(28),
+        combo_count * 6,
+        "step",
+        lambda u: prepare_combined_source_artifacts(
+            ecosystem_slug=eco_slug,
+            source_configs=sources,
+            snapshot=snapshot,
+            progress_callback=u,
+        ),
+    )
+
+
+def _rebuild_artifacts_for_targets(eco_slug: str, eco: dict, targets: dict[str, dict], snapshot: str) -> None:
+    if len(targets) == 1:
+        src_slug, src_cfg = next(iter(targets.items()))
+        _rebuild_source_artifacts(eco_slug, src_slug, src_cfg, snapshot)
+        return
+
+    for src_slug, src_cfg in targets.items():
+        console.rule(f"[bold]{eco_slug} / {src_slug}[/bold]")
+        _rebuild_source_artifacts(eco_slug, src_slug, src_cfg, snapshot)
+    _rebuild_combined_source_artifacts(eco_slug, eco, snapshot)
+
+
 def _analysis_dirs_for_ecosystem(eco_dir: Path, eco_config: dict | None = None) -> list[tuple[str | None, Path]]:
     direct = eco_dir / "03_analysis"
     if direct.is_dir():
@@ -269,11 +328,18 @@ def _analysis_dirs_for_ecosystem(eco_dir: Path, eco_config: dict | None = None) 
                 break
         return [(matched_source, direct)]
 
-    return [
+    source_dirs = [
         (source_dir.name, source_dir / "03_analysis")
         for source_dir in sorted(eco_dir.iterdir())
-        if source_dir.is_dir() and (source_dir / "03_analysis").is_dir()
+        if source_dir.is_dir() and source_dir.name != "_combined" and (source_dir / "03_analysis").is_dir()
     ]
+    combined_root = eco_dir / "_combined"
+    combo_dirs = [
+        (combo_dir.name, combo_dir / "03_analysis")
+        for combo_dir in sorted(combined_root.iterdir())
+        if combined_root.is_dir() and combo_dir.is_dir() and (combo_dir / "03_analysis").is_dir()
+    ] if combined_root.is_dir() else []
+    return source_dirs + combo_dirs
 
 
 def _doctor_row(table: Table, status: str, check: str, details: str) -> bool:
@@ -601,6 +667,7 @@ def run(
         for src_slug, src_cfg in targets.items():
             console.rule(f"[bold]{eco_slug} / {src_slug}[/bold]")
             _run_source_pipeline(eco_slug, src_slug, src_cfg, snapshot, skipllm, focus_ids)
+        _rebuild_combined_source_artifacts(eco_slug, eco, snapshot)
         elapsed = time.monotonic() - run_started
         console.print(f"\n[green]All sources done in {elapsed:.1f}s[/green]")
 
@@ -613,7 +680,8 @@ def run(
 def artifacts_rebuild(
     ecosystem: Annotated[Optional[str], typer.Option("--ecosystem", "-e", help="Ecosystem slug (default: first registered).")] = None,
     source: Annotated[Optional[str], typer.Option("--source", help="Source slug (default: all sources).")] = None,
-    snapshot: Annotated[str, typer.Option("--snapshot", "-s", help="Snapshot date (YYYY-MM-DD). Required.")] = ...,
+    snapshot: Annotated[Optional[str], typer.Option("--snapshot", "-s", help="Snapshot date (YYYY-MM-DD). Required unless --all is used.")] = None,
+    all_snapshots: Annotated[bool, typer.Option("--all", help="Rebuild every existing preprocessed snapshot for the selected ecosystem/source.")] = False,
 ) -> None:
     """Rebuild analysis and postprocess artifacts from existing preprocessed JSON."""
     eco_slug = ecosystem or next(iter(ECOSYSTEM_REGISTRY), None)
@@ -621,7 +689,14 @@ def artifacts_rebuild(
         console.print("[red]No ecosystems registered. Add a .yml file to the ecosystems/ directory.[/red]")
         raise typer.Exit(1)
     eco = _get_ecosystem(eco_slug)
-    _validate_snapshot_date(snapshot)
+    if all_snapshots and snapshot:
+        console.print("[red]Use either --all or --snapshot, not both.[/red]")
+        raise typer.Exit(1)
+    if not all_snapshots and not snapshot:
+        console.print("[red]Missing option '--snapshot' / '-s'. Use --all to rebuild every preprocessed snapshot.[/red]")
+        raise typer.Exit(1)
+    if snapshot:
+        _validate_snapshot_date(snapshot)
 
     sources: dict = eco.get("sources", {})
     if not sources:
@@ -631,18 +706,27 @@ def artifacts_rebuild(
     targets: dict[str, dict] = {source: _get_source(eco, source)} if source else sources
 
     rebuild_started = time.monotonic()
-    if len(targets) == 1:
-        src_slug, src_cfg = next(iter(targets.items()))
-        _rebuild_source_artifacts(eco_slug, src_slug, src_cfg, snapshot)
+
+    if all_snapshots:
+        snapshots = _common_preprocess_snapshot_labels(targets)
+        if not snapshots:
+            scope = f"{eco_slug}/{source}" if source else eco_slug
+            console.print(f"[yellow]No preprocessed snapshots found for {scope}.[/yellow]")
+            raise typer.Exit(0)
+
+        for snapshot_label in snapshots:
+            console.rule(f"[bold]{eco_slug} / {snapshot_label}[/bold]")
+            _rebuild_artifacts_for_targets(eco_slug, eco, targets, snapshot_label)
         elapsed = time.monotonic() - rebuild_started
-        console.print(f"\n[green]Artifacts rebuilt in {elapsed:.1f}s[/green]")
+        console.print(f"\n[green]Artifacts rebuilt for {len(snapshots)} snapshot(s) in {elapsed:.1f}s[/green]")
         return
 
-    for src_slug, src_cfg in targets.items():
-        console.rule(f"[bold]{eco_slug} / {src_slug}[/bold]")
-        _rebuild_source_artifacts(eco_slug, src_slug, src_cfg, snapshot)
+    _rebuild_artifacts_for_targets(eco_slug, eco, targets, snapshot)
     elapsed = time.monotonic() - rebuild_started
-    console.print(f"\n[green]Artifacts rebuilt for all sources in {elapsed:.1f}s[/green]")
+    if len(targets) == 1:
+        console.print(f"\n[green]Artifacts rebuilt in {elapsed:.1f}s[/green]")
+    else:
+        console.print(f"\n[green]Artifacts rebuilt for all sources in {elapsed:.1f}s[/green]")
 
 
 # ---------------------------------------------------------------------------

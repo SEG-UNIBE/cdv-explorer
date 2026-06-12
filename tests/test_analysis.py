@@ -23,6 +23,7 @@ from analysis.dependencies.mining import (
 from analysis.dependencies.metrics import build_graph, extract_dependency_metrics
 from analysis.dependencies.network import build_network_data
 from analysis.dependencies.utils import uses_hex_proposal_ids
+from analysis.pipeline import combined_source_key, merge_source_network_data
 from analysis.proposal_schema import get_interrelations, is_llm_runs_format, latest_llm_dependencies
 from ecosystems import ECOSYSTEM_REGISTRY
 from pipeline.source_context import SourceContext
@@ -655,6 +656,72 @@ class BuildNetworkDataTests(unittest.TestCase):
         self.assertEqual(metrics["by_approach"]["preamble_extracted"]["summary"]["edge_count"], 1)
         per_bip_ids = {row["id"] for row in metrics["by_approach"]["preamble_extracted"]["per_bip"]}
         self.assertEqual(per_bip_ids, {"bips:1", "bips:2"})
+
+    def test_dependency_metrics_preserve_duplicate_ids_across_sources(self):
+        network_data = {
+            "nodes": [
+                {"id": "32", "graph_key": "bips:32", "title": "BIP 32"},
+                {"id": "32", "graph_key": "slips:32", "title": "SLIP 32"},
+                {"id": "132", "graph_key": "slips:132", "title": "SLIP 132"},
+            ],
+            "dependency_edges": [
+                {
+                    "source": "bips:32",
+                    "target": "slips:132",
+                    "extraction_method": "body_extracted_regex",
+                    "relation_type": "reference",
+                    "value": 1,
+                },
+                {
+                    "source": "slips:32",
+                    "target": "slips:132",
+                    "extraction_method": "body_extracted_regex",
+                    "relation_type": "reference",
+                    "value": 1,
+                },
+            ],
+        }
+
+        metrics = extract_dependency_metrics(network_data)
+        per_bip_ids = {row["id"] for row in metrics["by_approach"]["body_extracted_regex"]["per_bip"]}
+
+        self.assertEqual(per_bip_ids, {"bips:32", "slips:32", "slips:132"})
+
+    def test_merge_source_network_data_preserves_source_scoped_nodes_and_edges(self):
+        self.assertEqual(combined_source_key(["slips", "bips"]), "bips+slips")
+
+        merged = merge_source_network_data([
+            (
+                "bips",
+                {
+                    "nodes": [{"id": "32", "graph_key": "bips:32", "title": "BIP 32"}],
+                    "dependency_edges": [
+                        {
+                            "source": "bips:32",
+                            "target": "slips:132",
+                            "extraction_method": "body_extracted_regex",
+                            "relation_type": "reference",
+                            "value": 1,
+                        }
+                    ],
+                },
+            ),
+            (
+                "slips",
+                {
+                    "nodes": [
+                        {"id": "32", "graph_key": "slips:32", "title": "SLIP 32"},
+                        {"id": "132", "graph_key": "slips:132", "title": "SLIP 132"},
+                    ],
+                    "dependency_edges": [],
+                },
+            ),
+        ])
+
+        self.assertEqual({node["graph_key"] for node in merged["nodes"]}, {"bips:32", "slips:32", "slips:132"})
+        self.assertEqual(merged["meta"]["combination_key"], "bips+slips")
+        self.assertEqual(merged["dependency_edges"][0]["source"], "bips:32")
+        self.assertEqual(merged["dependency_edges"][0]["target"], "slips:132")
 
     def test_dependency_metrics_can_filter_custom_preamble_relation_type(self):
         network_data = {

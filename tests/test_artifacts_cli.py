@@ -4,8 +4,12 @@ from pathlib import Path
 from unittest.mock import patch
 
 import typer
+from typer.testing import CliRunner
 
-from main import _rebuild_source_artifacts
+from main import app, _common_preprocess_snapshot_labels, _rebuild_source_artifacts
+
+
+runner = CliRunner()
 
 
 class ArtifactRebuildTests(unittest.TestCase):
@@ -57,6 +61,43 @@ class ArtifactRebuildTests(unittest.TestCase):
 
             with self.assertRaises(typer.Exit):
                 _rebuild_source_artifacts("bitcoin", "bips", src, "2026-05-28")
+
+    def test_common_preprocess_snapshots_use_intersection(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            root = Path(tmp_dir)
+            bips = self._source_config(root / "bips")
+            slips = self._source_config(root / "slips")
+            for src, snapshots in (
+                (bips, ["2021-01-01", "2026-03-16", "2026-05-28"]),
+                (slips, ["2026-03-16", "2026-05-28", "2027-01-01"]),
+            ):
+                for snapshot in snapshots:
+                    (Path(src["preprocess"]) / snapshot).mkdir(parents=True)
+
+            snapshots = _common_preprocess_snapshot_labels({"bips": bips, "slips": slips})
+
+            self.assertEqual(snapshots, ["2026-03-16", "2026-05-28"])
+
+    def test_rebuild_all_artifacts_rebuilds_every_common_preprocess_snapshot(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            root = Path(tmp_dir)
+            bips = self._source_config(root / "bips")
+            slips = self._source_config(root / "slips")
+            for src in (bips, slips):
+                for snapshot in ("2026-03-16", "2026-05-28"):
+                    preprocess_dir = Path(src["preprocess"]) / snapshot
+                    preprocess_dir.mkdir(parents=True)
+                    (preprocess_dir / "proposal.json").write_text("{}", encoding="utf-8")
+
+            ecosystem = {"slug": "bitcoin", "sources": {"bips": bips, "slips": slips}}
+            with (
+                patch.dict("main.ECOSYSTEM_REGISTRY", {"bitcoin": ecosystem}, clear=True),
+                patch("main._rebuild_artifacts_for_targets") as rebuild,
+            ):
+                result = runner.invoke(app, ["artifacts", "rebuild", "-e", "bitcoin", "--all"])
+
+            self.assertEqual(result.exit_code, 0, result.output)
+            self.assertEqual([call.args[3] for call in rebuild.call_args_list], ["2026-03-16", "2026-05-28"])
 
 
 if __name__ == "__main__":

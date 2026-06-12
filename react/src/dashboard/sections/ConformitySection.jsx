@@ -2,10 +2,10 @@ import { Button } from 'primereact/button';
 import { Card } from 'primereact/card';
 import { InputText } from 'primereact/inputtext';
 import { Tag } from 'primereact/tag';
-import { TabView, TabPanel } from 'primereact/tabview';
 import { FormalConformitySwarmPlot } from '../../FormalConformitySwarmPlot';
 import { ConformityFailedChecksHistogram } from '../../ConformityFailedChecksHistogram';
 import { ExportableCard } from '../ExportableCard';
+import { SectionSourceToggle } from './SectionSourceToggle';
 
 function ConformityContent({
   ecosystem,
@@ -71,6 +71,8 @@ export function ConformitySection({
   ecosystemBase,
   selectedSourceIds = [],
   perSourceDashboardData = {},
+  sectionSourceView,
+  setSectionSourceView,
   dependencyProposalOptions,
   highlightedConformityProposal,
   setHighlightedConformityProposal,
@@ -88,6 +90,15 @@ export function ConformitySection({
   if (!isMultiSource && (ecosystem.complianceStandards || []).length === 0) return null;
   if (isMultiSource && sourcesWithStandards.length === 0) return null;
 
+  const activeSourceId = isMultiSource && selectedSourceIds.includes(sectionSourceView)
+    ? sectionSourceView
+    : selectedSourceIds[0];
+  const activeSource = ecosystemBase?.sources?.[activeSourceId];
+  const activeData = isMultiSource ? perSourceDashboardData?.[activeSourceId] : null;
+  const activeEcosystem = isMultiSource && activeSource
+    ? { ...ecosystemBase, ...activeSource }
+    : ecosystem;
+
   return (
     <section className="dashboard-section">
       <div className="dashboard-section__header">
@@ -95,6 +106,13 @@ export function ConformitySection({
           Formal Conformity
           <Tag className="dashboard-section__tag" severity="warning" value="Experimental" />
         </h2>
+        <SectionSourceToggle
+          ecosystemBase={ecosystemBase}
+          selectedSourceIds={selectedSourceIds}
+          value={activeSourceId}
+          onChange={setSectionSourceView}
+          supportsMerged={false}
+        />
       </div>
       <Card className="mb-4">
         <h3>Definition</h3>
@@ -130,23 +148,14 @@ export function ConformitySection({
         </div>
       </Card>
       {isMultiSource ? (
-        <TabView className="dashboard-source-tabs">
-          {sourcesWithStandards.map((sourceId) => {
-            const source = ecosystemBase?.sources?.[sourceId];
-            const data = perSourceDashboardData?.[sourceId];
-            if (!source || !data) return null;
-            return (
-              <TabPanel key={sourceId} header={source.shortLabel || source.acronym}>
-                <ConformityContent
-                  ecosystem={{ ...ecosystemBase, ...source }}
-                  highlightedConformityProposal={highlightedConformityProposal}
-                  conformityRows={data.conformityRows}
-                  conformityFailedChecks={data.conformityFailedChecks}
-                />
-              </TabPanel>
-            );
-          })}
-        </TabView>
+        activeData && (
+          <ConformityContent
+            ecosystem={activeEcosystem}
+            highlightedConformityProposal={highlightedConformityProposal}
+            conformityRows={activeData.conformityRows}
+            conformityFailedChecks={activeData.conformityFailedChecks}
+          />
+        )
       ) : (
         <ConformityContent
           ecosystem={ecosystem}

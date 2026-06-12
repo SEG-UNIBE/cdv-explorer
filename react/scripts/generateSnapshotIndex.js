@@ -29,13 +29,27 @@ function findSourceAnalysisRoots(ecosystemDir, ecosystemId) {
     return [{ sourceSlug: ecosystemId, analysisRoot: directRoot }];
   }
 
-  return fs.readdirSync(ecosystemDir, { withFileTypes: true })
+  const sourceRoots = fs.readdirSync(ecosystemDir, { withFileTypes: true })
     .filter((entry) => entry.isDirectory())
+    .filter((entry) => entry.name !== '_combined')
     .map((entry) => ({
       sourceSlug: entry.name,
       analysisRoot: path.join(ecosystemDir, entry.name, '03_analysis'),
     }))
     .filter(({ analysisRoot }) => fs.existsSync(analysisRoot));
+
+  const combinedRoot = path.join(ecosystemDir, '_combined');
+  const combinedRoots = fs.existsSync(combinedRoot)
+    ? fs.readdirSync(combinedRoot, { withFileTypes: true })
+      .filter((entry) => entry.isDirectory())
+      .map((entry) => ({
+        sourceSlug: entry.name,
+        analysisRoot: path.join(combinedRoot, entry.name, '03_analysis'),
+      }))
+      .filter(({ analysisRoot }) => fs.existsSync(analysisRoot))
+    : [];
+
+  return sourceRoots.concat(combinedRoots);
 }
 
 function buildSnapshotIndex() {

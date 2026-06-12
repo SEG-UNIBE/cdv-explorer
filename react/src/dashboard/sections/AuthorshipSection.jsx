@@ -15,9 +15,14 @@ import { WordCloud } from '../../WordCloud';
 import { ProposalFilterControl } from '../../ProposalFilterControl';
 import { useAnalysisMetricTooltip } from '../../useAnalysisMetricTooltip';
 import { ExportableCard } from '../ExportableCard';
+import { SectionSourceToggle } from './SectionSourceToggle';
 
 export function AuthorshipSection({
   ecosystem,
+  ecosystemBase,
+  selectedSourceIds = [],
+  sectionSourceView,
+  setSectionSourceView,
   yearData,
   topAuthors,
   authorContributionHistogram,
@@ -77,6 +82,13 @@ export function AuthorshipSection({
     <section className="dashboard-section">
       <div className="dashboard-section__header">
         <h2 className="dashboard-section__title">Authorship Diversity</h2>
+        <SectionSourceToggle
+          ecosystemBase={ecosystemBase}
+          selectedSourceIds={selectedSourceIds}
+          value={sectionSourceView}
+          onChange={setSectionSourceView}
+          supportsMerged
+        />
       </div>
       <div className="dashboard-grid dashboard-grid--wide-left">
         <ExportableCard className="mb-4" exportTitle="Creation Over Time">

@@ -9,9 +9,14 @@ import { DependencyComparisonHeatmaps } from '../../DependencyComparisonHeatmaps
 import { ProposalFilterControl } from '../../ProposalFilterControl';
 import { useAnalysisMetricTooltip } from '../../useAnalysisMetricTooltip';
 import { ExportableCard } from '../ExportableCard';
+import { SectionSourceToggle } from './SectionSourceToggle';
 
 export function DependenciesSection({
   ecosystem,
+  ecosystemBase,
+  selectedSourceIds = [],
+  sectionSourceView,
+  setSectionSourceView,
   selectedDataset,
   highlightedDependencyProposal,
   setHighlightedDependencyProposal,
@@ -70,6 +75,13 @@ export function DependenciesSection({
     <section className="dashboard-section">
       <div className="dashboard-section__header">
         <h2 className="dashboard-section__title">Dependencies</h2>
+        <SectionSourceToggle
+          ecosystemBase={ecosystemBase}
+          selectedSourceIds={selectedSourceIds}
+          value={sectionSourceView}
+          onChange={setSectionSourceView}
+          supportsMerged
+        />
       </div>
       <ExportableCard className="mb-4" exportTitle="Proposal Interrelation Graph">
         <h3>Proposal Interrelation Graph</h3>

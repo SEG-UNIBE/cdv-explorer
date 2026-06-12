@@ -16,7 +16,12 @@ import { getSlipCommitUrl, getSlipUrl, normalizeSlipId } from './slipLinks';
 import { getRepositoryCommitUrl, getRepositoryProposalUrl } from './proposalLinkResolver';
 import { renderProposalListHtml } from './bipTooltipContent';
 import { buildDashboardData, buildWordCloudData, parseProposalFilterExpression } from './dashboard/dashboardData';
-import { buildProposalGraphId, getSourceCombinationKey, scopeDependencyLinksForSource } from './data';
+import {
+  buildProposalGraphId,
+  fetchDatasetForSelection,
+  getSourceCombinationKey,
+  scopeDependencyLinksForSource,
+} from './data';
 import { filterCrossSourceAuthorNetwork } from './authorNetwork/authorNetworkUtils';
 import { filterCrossSourceDependencyGraph } from './networkDiagram/networkDiagramUtils';
 import {
@@ -132,6 +137,75 @@ test('builds stable combined source artifact keys', () => {
   expect(getSourceCombinationKey(entries)).toBe('bips+slips');
   expect(getSourceCombinationKey(entries.slice().reverse())).toBe('bips+slips');
   expect(getSourceCombinationKey([entries[0]])).toBeNull();
+});
+
+test('multi-source fetch uses combined dependency metrics when combined artifacts exist', async () => {
+  const metricPayload = (label, edgeCount) => ({
+    by_approach: {
+      [BODY_EXTRACTED_REGEX]: {
+        summary: { edge_count: edgeCount },
+        per_bip: [{ id: label, out_degree: edgeCount }],
+      },
+    },
+    pairwise_comparisons: { label },
+  });
+  const networkPayload = (url) => {
+    if (url.includes('/_combined/bips+slips/')) {
+      return {
+        nodes: [
+          { id: '1', graph_key: 'bips:1' },
+          { id: '32', graph_key: 'slips:32' },
+        ],
+        dependency_edges: [
+          {
+            source: 'bips:1',
+            target: 'slips:32',
+            extraction_method: BODY_EXTRACTED_REGEX,
+            relation_type: 'reference',
+            value: 1,
+          },
+        ],
+      };
+    }
+    return { nodes: [{ id: '1' }], dependency_edges: [] };
+  };
+  const payloadForUrl = (url) => {
+    if (url.endsWith('/dependencies/network_data.json')) return networkPayload(url);
+    if (url.endsWith('/dependencies/dependency_metrics.json')) {
+      if (url.includes('/_combined/bips+slips/')) return metricPayload('combined', 99);
+      if (url.includes('/bips/')) return metricPayload('bips', 1);
+      return metricPayload('slips', 2);
+    }
+    if (url.endsWith('/authorship/authorship_payload.json')) return {};
+    if (url.endsWith('/classification/classification_payload.json')) return {};
+    if (url.endsWith('/evolution/evolution_payload.json')) return {};
+    if (url.endsWith('/conformity/conformity_metrics.json')) return {};
+    throw new Error(`Unexpected fetch URL: ${url}`);
+  };
+  const previousFetch = global.fetch;
+  global.fetch = jest.fn((url) => Promise.resolve({
+    ok: true,
+    json: () => Promise.resolve(payloadForUrl(url)),
+  }));
+
+  try {
+    const dataset = await fetchDatasetForSelection('bitcoin', '2026-03-16', ['bip', 'slip']);
+
+    expect(dataset.isMergedSelection).toBe(true);
+    expect(dataset.combinationKey).toBe('bips+slips');
+    expect(dataset.dependencyMetrics.by_approach[BODY_EXTRACTED_REGEX].summary.edge_count).toBe(99);
+    expect(dataset.bySource.bip.dependencyMetrics.by_approach[BODY_EXTRACTED_REGEX].summary.edge_count).toBe(1);
+    expect(dataset.bySource.slip.dependencyMetrics.by_approach[BODY_EXTRACTED_REGEX].summary.edge_count).toBe(2);
+    expect(dataset.links[BODY_EXTRACTED_REGEX][0]).toMatchObject({
+      sourceKey: 'bips:1',
+      targetKey: 'slips:32',
+      sourceSourceId: 'bip',
+      targetSourceId: 'slip',
+    });
+    expect(global.fetch).toHaveBeenCalledWith(expect.stringContaining('/_combined/bips+slips/03_analysis/2026-03-16/dependencies/dependency_metrics.json'));
+  } finally {
+    global.fetch = previousFetch;
+  }
 });
 
 test('source-scopes canonical dependency edge graph keys for display', () => {

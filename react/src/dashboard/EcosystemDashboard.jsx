@@ -221,7 +221,6 @@ export function EcosystemDashboard() {
   const conformityViewDataset = getSectionDataset(selectedDataset, activeConformitySourceView);
   const authorshipViewEcosystem = getSectionEcosystem(ecosystem, activeEcosystem, activeAuthorshipSourceView);
   const dependencyViewEcosystem = getSectionEcosystem(ecosystem, activeEcosystem, activeDependenciesSourceView);
-  const conformityViewEcosystem = getSectionEcosystem(ecosystem, activeEcosystem, activeConformitySourceView);
   const authorshipDashboardData = activeAuthorshipSourceView === SECTION_VIEW_MERGED
     ? dashboardData
     : (perSourceDashboardData[activeAuthorshipSourceView] || dashboardData);

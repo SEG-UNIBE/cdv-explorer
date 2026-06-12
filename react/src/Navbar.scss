@@ -1,6 +1,6 @@
 .nav-bar {
   width: 100%;
-  height: 60px;
+  height: 52px;
   padding: 0 24px;
   background: var(--nav-bg);
   backdrop-filter: blur(18px);
@@ -92,14 +92,15 @@
     background: var(--app-surface);
     color: var(--app-text);
     border-radius: 999px;
-    min-height: 38px;
+    min-height: 32px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.55rem;
-    padding: 0 0.95rem;
+    gap: 0.45rem;
+    padding: 0 0.75rem;
+    font-size: 0.88rem;
     text-decoration: none;
-    font: inherit;
+    font-family: inherit;
     cursor: pointer;
     transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease, transform 140ms ease;
 
@@ -111,17 +112,17 @@
 
     i,
     svg {
-      font-size: 1rem;
+      font-size: 0.9rem;
       flex: 0 0 auto;
     }
   }
 
   .nav-theme-button {
-    min-width: 116px;
+    min-width: 104px;
   }
 
   .nav-github-button {
-    width: 38px;
+    width: 32px;
     padding: 0;
   }
 

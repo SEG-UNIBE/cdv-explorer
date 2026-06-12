@@ -1,9 +1,9 @@
 .content {
-  margin-top: 100px; /* Ensure this is enough to push content below the navbar */
+  margin-top: 64px; /* 52px navbar + small breathing room */
   margin-left: 20px;
   margin-right: 20px;
   max-width: 1400px;
-  min-height: calc(100vh - 150px); /* 100px for navbar + 50px for footer */
+  min-height: calc(100vh - 114px); /* 64px top + 50px footer */
   
   @media screen and (min-width: 1400px) {
     margin-left: auto;
@@ -373,10 +373,10 @@
 
 .content.content--dashboard {
   position: fixed;
-  top: 80px;
-  right: 20px;
+  top: 60px;
+  right: 12px;
   bottom: 16px;
-  left: 20px;
+  left: 12px;
   max-width: none;
   min-height: auto;
   height: auto;
@@ -698,7 +698,7 @@
   .content.content--dashboard {
     position: static;
     height: auto;
-    margin: 88px 16px 24px;
+    margin: 64px 12px 24px;
     overflow: visible;
   }
 

@@ -238,6 +238,7 @@ def _validate_snapshot_date(snapshot: str) -> None:
 def _rebuild_source_artifacts(eco_slug: str, src_slug: str, src: dict, snapshot: str, *, stage_label: str = "Build analysis and postprocess artifacts") -> None:
     """Rebuild analysis/postprocess artifacts for one source from existing preprocess JSON."""
     from analysis.pipeline import prepare_ecosystem_artifacts
+    from analysis.validation import validate_source_snapshot
 
     harvest_root = Path(src["harvest"])
     preprocess_dir = Path(src["preprocess"]) / snapshot
@@ -277,6 +278,21 @@ def _rebuild_source_artifacts(eco_slug: str, src_slug: str, src: dict, snapshot:
         ),
     )
 
+    validation = validate_source_snapshot(
+        ecosystem_slug=eco_slug,
+        source_slug=src_slug,
+        source_config=src,
+        ecosystem_config=_get_ecosystem(eco_slug),
+        snapshot=snapshot,
+    )
+    if not validation.ok:
+        console.print(f"[red]Snapshot validation failed for {eco_slug}/{src_slug}/{snapshot}:[/red]")
+        for error in validation.errors[:20]:
+            console.print(f"  [red]-[/red] {error}")
+        if len(validation.errors) > 20:
+            console.print(f"  [red]-[/red] ... and {len(validation.errors) - 20} more")
+        raise typer.Exit(1)
+
 
 def _count_source_combinations(source_count: int) -> int:
     if source_count < 2:
@@ -287,23 +303,40 @@ def _count_source_combinations(source_count: int) -> int:
 def _rebuild_combined_source_artifacts(eco_slug: str, eco: dict, snapshot: str) -> None:
     """Rebuild precomputed artifacts for every multi-source combination."""
     from analysis.pipeline import prepare_combined_source_artifacts
+    from analysis.validation import validate_combined_snapshot
 
     sources = eco.get("sources", {})
     combo_count = _count_source_combinations(len(sources))
     if combo_count == 0:
         return
 
+    saved: dict[str, dict[str, Path]] = {}
+
+    def _run(progress_callback) -> None:
+        nonlocal saved
+        saved = prepare_combined_source_artifacts(
+            ecosystem_slug=eco_slug,
+            source_configs=sources,
+            snapshot=snapshot,
+            progress_callback=progress_callback,
+        )
+
     _run_stage(
         "Build combined source artifacts".ljust(28),
         combo_count * 6,
         "step",
-        lambda u: prepare_combined_source_artifacts(
-            ecosystem_slug=eco_slug,
-            source_configs=sources,
-            snapshot=snapshot,
-            progress_callback=u,
-        ),
+        _run,
     )
+
+    for combo_key in saved:
+        validation = validate_combined_snapshot(ecosystem_slug=eco_slug, combo_key=combo_key, snapshot=snapshot)
+        if not validation.ok:
+            console.print(f"[red]Snapshot validation failed for {eco_slug}/{combo_key}/{snapshot}:[/red]")
+            for error in validation.errors[:20]:
+                console.print(f"  [red]-[/red] {error}")
+            if len(validation.errors) > 20:
+                console.print(f"  [red]-[/red] ... and {len(validation.errors) - 20} more")
+            raise typer.Exit(1)
 
 
 def _rebuild_artifacts_for_targets(eco_slug: str, eco: dict, targets: dict[str, dict], snapshot: str) -> None:
@@ -602,6 +635,7 @@ def doctor() -> None:
         ok &= _doctor_row(table, "WARN", "Snapshot artifacts", "scripts/validate_snapshots.py not found")
 
     generated_files = [
+        Path("react/src/generated/ecosystems.json"),
         Path("react/src/generated/snapshotIndex.json"),
         Path("react/src/generated/proposalLinkIndex.json"),
     ]

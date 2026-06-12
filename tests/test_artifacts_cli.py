@@ -6,6 +6,7 @@ from unittest.mock import patch
 import typer
 from typer.testing import CliRunner
 
+from analysis.validation import SnapshotValidationResult
 from main import app, _common_preprocess_snapshot_labels, _rebuild_source_artifacts
 
 
@@ -39,6 +40,7 @@ class ArtifactRebuildTests(unittest.TestCase):
                     side_effect=lambda _name, _total, _unit, runner: runner(lambda *_args, **_kwargs: None),
                 ),
                 patch("analysis.pipeline.prepare_ecosystem_artifacts") as prepare,
+                patch("analysis.validation.validate_source_snapshot", return_value=SnapshotValidationResult()),
             ):
                 _rebuild_source_artifacts("bitcoin", "bips", src, "2026-05-28")
 

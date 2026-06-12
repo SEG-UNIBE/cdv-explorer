@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import { useDashboardEcosystem, useDashboardLinkMode, useDashboardSnapshot } from './dashboard/DashboardSnapshotContext';
+import { CollapsibleControls } from './dashboard/CollapsibleControls';
 import { NetworkDiagramCanvas } from './networkDiagram/NetworkDiagramCanvas';
 import { NetworkDiagramToolbar } from './networkDiagram/NetworkDiagramToolbar';
 import { useNetworkDiagramState } from './networkDiagram/useNetworkDiagramState';
@@ -20,6 +21,7 @@ export const NetworkDiagram = ({
   setIncludeConnections,
   includeThresholdConnections = false,
   setIncludeThresholdConnections,
+  extraControls = null,
 }) => {
   const legendRef = useRef();
   const snapshotLabel = useDashboardSnapshot();
@@ -39,34 +41,37 @@ export const NetworkDiagram = ({
 
   return (
     <div>
-      <NetworkDiagramToolbar
-        colorBy={state.colorBy}
-        setColorBy={state.setColorBy}
-        linkType={state.linkType}
-        setLinkType={state.setLinkType}
-        baselineType={state.baselineType}
-        setBaselineType={state.setBaselineType}
-        layoutMode={state.layoutMode}
-        setLayoutMode={state.setLayoutMode}
-        physicsEnabled={state.physicsEnabled}
-        handlePhysicsToggle={state.handlePhysicsToggle}
-        importedLayout={state.importedLayout}
-        handleLayoutImportClick={state.handleLayoutImportClick}
-        handleLayoutImport={state.handleLayoutImport}
-        handleLayoutExport={state.handleLayoutExport}
-        importInputRef={state.importInputRef}
-        legendRef={legendRef}
-        isDifferentialMode={state.isDifferentialMode}
-        nodes={state.nodes}
-        minRelations={minRelations}
-        setMinRelations={setMinRelations}
-        proposalShortPlural={proposalShortPlural}
-        includeThresholdConnections={includeThresholdConnections}
-        setIncludeThresholdConnections={setIncludeThresholdConnections}
-        onlyCrossSource={state.onlyCrossSource}
-        setOnlyCrossSource={state.setOnlyCrossSource}
-        canFilterCrossSource={state.canFilterCrossSource}
-      />
+      <CollapsibleControls>
+        {extraControls}
+        <NetworkDiagramToolbar
+          colorBy={state.colorBy}
+          setColorBy={state.setColorBy}
+          linkType={state.linkType}
+          setLinkType={state.setLinkType}
+          baselineType={state.baselineType}
+          setBaselineType={state.setBaselineType}
+          layoutMode={state.layoutMode}
+          setLayoutMode={state.setLayoutMode}
+          physicsEnabled={state.physicsEnabled}
+          handlePhysicsToggle={state.handlePhysicsToggle}
+          importedLayout={state.importedLayout}
+          handleLayoutImportClick={state.handleLayoutImportClick}
+          handleLayoutImport={state.handleLayoutImport}
+          handleLayoutExport={state.handleLayoutExport}
+          importInputRef={state.importInputRef}
+          legendRef={legendRef}
+          isDifferentialMode={state.isDifferentialMode}
+          nodes={state.nodes}
+          minRelations={minRelations}
+          setMinRelations={setMinRelations}
+          proposalShortPlural={proposalShortPlural}
+          includeThresholdConnections={includeThresholdConnections}
+          setIncludeThresholdConnections={setIncludeThresholdConnections}
+          onlyCrossSource={state.onlyCrossSource}
+          setOnlyCrossSource={state.setOnlyCrossSource}
+          canFilterCrossSource={state.canFilterCrossSource}
+        />
+      </CollapsibleControls>
       <NetworkDiagramCanvas
         width={width}
         height={height}

@@ -9,6 +9,7 @@ import { DependencyComparisonHeatmaps } from '../../DependencyComparisonHeatmaps
 import { ProposalFilterControl } from '../../ProposalFilterControl';
 import { useAnalysisMetricTooltip } from '../../useAnalysisMetricTooltip';
 import { ExportableCard } from '../ExportableCard';
+import { CollapsibleControls } from '../CollapsibleControls';
 import { SectionSourceToggle } from './SectionSourceToggle';
 
 export function DependenciesSection({
@@ -88,64 +89,6 @@ export function DependenciesSection({
         <p>
           Three relationship-extraction approaches visualized as a directed graph. Node size reflects document length (word count) and edges represent relationships between proposals. <strong>Preamble</strong> extracts explicitly stated dependencies from the preamble. <strong>Regex</strong> captures explicit proposal references via pattern matching. <strong>LLM</strong> infers implicit dependencies using a language model.
         </p>
-        <div className="network-finder">
-          <div className="network-finder__copy">
-            <strong>Find proposal.</strong>
-            <span>Search a proposal ID to highlight and center its node in the network.</span>
-          </div>
-          <div className="network-finder__controls">
-            <InputText
-              value={highlightedDependencyProposal}
-              onChange={(event) => setHighlightedDependencyProposal(event.target.value)}
-              placeholder="Type a proposal ID, e.g. BIP32"
-              aria-label="Find proposal: search by ID to highlight its node"
-              list="dependency-proposal-options"
-            />
-            <datalist id="dependency-proposal-options">
-              {dependencyProposalOptions.map((proposalId) => (
-                <option key={proposalId} value={proposalId} />
-              ))}
-            </datalist>
-            <Button
-              type="button"
-              label="Clear"
-              severity="secondary"
-              text
-              onClick={() => setHighlightedDependencyProposal('')}
-              disabled={!highlightedDependencyProposal.trim()}
-            />
-          </div>
-        </div>
-        <div className="wordcloud-filter">
-          <div className="wordcloud-filter__copy">
-            <strong>Filter proposals.</strong>
-          </div>
-          <div className="wordcloud-filter__controls">
-            <ProposalFilterControl
-              value={dependencyFilterText}
-              onChange={setDependencyFilterText}
-              ecosystem={ecosystem}
-              placeholder="Type BIP, then 2,3-5 and press Enter"
-              aria-label="Filter proposals by ID (e.g. BIP32, SLIP44, BIP30-BIP35)"
-            />
-            <label className="dependency-filter-checkbox">
-              <input
-                type="checkbox"
-                checked={dependencyIncludeConnections}
-                onChange={(event) => setDependencyIncludeConnections(event.target.checked)}
-              />
-              <span>transient</span>
-            </label>
-            <Button
-              type="button"
-              label="Clear"
-              severity="secondary"
-              text
-              onClick={() => setDependencyFilterText('')}
-              disabled={!hasDependencyFilter}
-            />
-          </div>
-        </div>
         <NetworkDiagram
           data={selectedDataset}
           width={1200}
@@ -160,6 +103,68 @@ export function DependenciesSection({
           setIncludeConnections={setDependencyIncludeConnections}
           includeThresholdConnections={dependencyMinRelationsIncludeConnections}
           setIncludeThresholdConnections={setDependencyMinRelationsIncludeConnections}
+          extraControls={(
+            <>
+              <div className="network-finder">
+                <div className="network-finder__copy">
+                  <strong>Find proposal.</strong>
+                  <span>Search a proposal ID to highlight and center its node in the network.</span>
+                </div>
+                <div className="network-finder__controls">
+                  <InputText
+                    value={highlightedDependencyProposal}
+                    onChange={(event) => setHighlightedDependencyProposal(event.target.value)}
+                    placeholder="Type a proposal ID, e.g. BIP32"
+                    aria-label="Find proposal: search by ID to highlight its node"
+                    list="dependency-proposal-options"
+                  />
+                  <datalist id="dependency-proposal-options">
+                    {dependencyProposalOptions.map((proposalId) => (
+                      <option key={proposalId} value={proposalId} />
+                    ))}
+                  </datalist>
+                  <Button
+                    type="button"
+                    label="Clear"
+                    severity="secondary"
+                    text
+                    onClick={() => setHighlightedDependencyProposal('')}
+                    disabled={!highlightedDependencyProposal.trim()}
+                  />
+                </div>
+              </div>
+              <div className="wordcloud-filter">
+                <div className="wordcloud-filter__copy">
+                  <strong>Filter proposals.</strong>
+                </div>
+                <div className="wordcloud-filter__controls">
+                  <ProposalFilterControl
+                    value={dependencyFilterText}
+                    onChange={setDependencyFilterText}
+                    ecosystem={ecosystem}
+                    placeholder="Type BIP, then 2,3-5 and press Enter"
+                    aria-label="Filter proposals by ID (e.g. BIP32, SLIP44, BIP30-BIP35)"
+                  />
+                  <label className="dependency-filter-checkbox">
+                    <input
+                      type="checkbox"
+                      checked={dependencyIncludeConnections}
+                      onChange={(event) => setDependencyIncludeConnections(event.target.checked)}
+                    />
+                    <span>transient</span>
+                  </label>
+                  <Button
+                    type="button"
+                    label="Clear"
+                    severity="secondary"
+                    text
+                    onClick={() => setDependencyFilterText('')}
+                    disabled={!hasDependencyFilter}
+                  />
+                </div>
+              </div>
+            </>
+          )}
         />
       </ExportableCard>
       <Card className="mb-4">
@@ -173,20 +178,22 @@ export function DependenciesSection({
           <strong>PageRank</strong> is similar, but additionally accounts for direction and distributes importance across outgoing links.{' '}
           <strong>Betweenness</strong> measures how often a proposal lies on the shortest paths between others, indicating its role in connecting otherwise separate parts of the dependency graph. 
         </p>
-        <div className="dependency-metrics-toolbar">
-          <div className="dependency-metrics-toolbar__copy">
-            <strong>Reference approach.</strong>
-            <span>Select which extracted relationship set, Preamble, Regex, or LLM, should drive the metrics below.</span>
+        <CollapsibleControls>
+          <div className="dependency-metrics-toolbar">
+            <div className="dependency-metrics-toolbar__copy">
+              <strong>Reference approach.</strong>
+              <span>Select which extracted relationship set, Preamble, Regex, or LLM, should drive the metrics below.</span>
+            </div>
+            <Dropdown
+              value={activeDependencyMetricsApproach}
+              options={dependencyMetricsApproachOptions}
+              onChange={(event) => setSelectedDependencyMetricsApproach(event.value)}
+              placeholder="Select approach"
+              aria-label="Reference approach for dependency metrics"
+              className="dependency-metrics-toolbar__dropdown"
+            />
           </div>
-          <Dropdown
-            value={activeDependencyMetricsApproach}
-            options={dependencyMetricsApproachOptions}
-            onChange={(event) => setSelectedDependencyMetricsApproach(event.value)}
-            placeholder="Select approach"
-            aria-label="Reference approach for dependency metrics"
-            className="dependency-metrics-toolbar__dropdown"
-          />
-        </div>
+        </CollapsibleControls>
         <div className="dependency-metrics-summary">
           {dependencyMetricCards.map((metric) => (
             <div

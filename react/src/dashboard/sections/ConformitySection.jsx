@@ -5,6 +5,7 @@ import { Tag } from 'primereact/tag';
 import { FormalConformitySwarmPlot } from '../../FormalConformitySwarmPlot';
 import { ConformityFailedChecksHistogram } from '../../ConformityFailedChecksHistogram';
 import { ExportableCard } from '../ExportableCard';
+import { CollapsibleControls } from '../CollapsibleControls';
 import { SectionSourceToggle } from './SectionSourceToggle';
 
 function ConformityContent({
@@ -119,33 +120,35 @@ export function ConformitySection({
         <p>
           {ecosystem.conformityDescription || `Formal conformity of ${ecosystem.proposalShortPlural} according to the underlying specification process guidelines. Conformity score (0–100) is computed based on automated checks. For details on failed checks, hover over the bubbles.`}
         </p>
-        <div className="network-finder">
-          <div className="network-finder__copy">
-            <strong>Find proposal:</strong>
+        <CollapsibleControls>
+          <div className="network-finder">
+            <div className="network-finder__copy">
+              <strong>Find proposal:</strong>
+            </div>
+            <div className="network-finder__controls">
+              <InputText
+                value={highlightedConformityProposal}
+                onChange={(event) => setHighlightedConformityProposal(event.target.value)}
+                placeholder="Type a proposal ID"
+                aria-label="Find proposal: type an ID to highlight it in the conformity chart"
+                list="conformity-proposal-options"
+              />
+              <datalist id="conformity-proposal-options">
+                {dependencyProposalOptions.map((proposalId) => (
+                  <option key={proposalId} value={proposalId} />
+                ))}
+              </datalist>
+              <Button
+                type="button"
+                label="Clear"
+                severity="secondary"
+                text
+                onClick={() => setHighlightedConformityProposal('')}
+                disabled={!highlightedConformityProposal.trim()}
+              />
+            </div>
           </div>
-          <div className="network-finder__controls">
-            <InputText
-              value={highlightedConformityProposal}
-              onChange={(event) => setHighlightedConformityProposal(event.target.value)}
-              placeholder="Type a proposal ID"
-              aria-label="Find proposal: type an ID to highlight it in the conformity chart"
-              list="conformity-proposal-options"
-            />
-            <datalist id="conformity-proposal-options">
-              {dependencyProposalOptions.map((proposalId) => (
-                <option key={proposalId} value={proposalId} />
-              ))}
-            </datalist>
-            <Button
-              type="button"
-              label="Clear"
-              severity="secondary"
-              text
-              onClick={() => setHighlightedConformityProposal('')}
-              disabled={!highlightedConformityProposal.trim()}
-            />
-          </div>
-        </div>
+        </CollapsibleControls>
       </Card>
       {isMultiSource ? (
         activeData && (

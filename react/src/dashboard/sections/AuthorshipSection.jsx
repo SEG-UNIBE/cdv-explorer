@@ -15,6 +15,7 @@ import { WordCloud } from '../../WordCloud';
 import { ProposalFilterControl } from '../../ProposalFilterControl';
 import { useAnalysisMetricTooltip } from '../../useAnalysisMetricTooltip';
 import { ExportableCard } from '../ExportableCard';
+import { CollapsibleControls } from '../CollapsibleControls';
 import { SectionSourceToggle } from './SectionSourceToggle';
 
 export function AuthorshipSection({
@@ -134,33 +135,6 @@ export function AuthorshipSection({
         <p>
           Co-authorship across the selected proposal corpus, shown as a collaboration graph. Larger nodes indicate authors of more proposals, while thicker edges indicate more co-authored proposals. Colors encode connected components, while authors without collaborations are grouped into one shared component.
         </p>
-        <div className="network-finder">
-          <div className="network-finder__copy">
-            <strong>Author Search</strong>
-          </div>
-          <div className="network-finder__controls">
-            <InputText
-              value={highlightedAuthor}
-              onChange={(event) => setHighlightedAuthor(event.target.value)}
-              placeholder="Type an author name"
-              aria-label="Author search: type a name to highlight in the collaboration graph"
-              list="author-collaboration-options"
-            />
-            <datalist id="author-collaboration-options">
-              {collaborationAuthorOptions.map((author) => (
-                <option key={author} value={author} />
-              ))}
-            </datalist>
-            <Button
-              type="button"
-              label="Clear"
-              severity="secondary"
-              text
-              onClick={() => setHighlightedAuthor('')}
-              disabled={!highlightedAuthor.trim()}
-            />
-          </div>
-        </div>
         <div>
           <AuthorCollaborationNetwork
             data={collaborationNetwork}
@@ -171,6 +145,35 @@ export function AuthorshipSection({
             setLayoutMode={setCollaborationLayoutMode}
             minClusterCollaborations={collaborationMinClusterCollaborations}
             setMinClusterCollaborations={setCollaborationMinClusterCollaborations}
+            extraControls={(
+              <div className="network-finder">
+                <div className="network-finder__copy">
+                  <strong>Author Search</strong>
+                </div>
+                <div className="network-finder__controls">
+                  <InputText
+                    value={highlightedAuthor}
+                    onChange={(event) => setHighlightedAuthor(event.target.value)}
+                    placeholder="Type an author name"
+                    aria-label="Author search: type a name to highlight in the collaboration graph"
+                    list="author-collaboration-options"
+                  />
+                  <datalist id="author-collaboration-options">
+                    {collaborationAuthorOptions.map((author) => (
+                      <option key={author} value={author} />
+                    ))}
+                  </datalist>
+                  <Button
+                    type="button"
+                    label="Clear"
+                    severity="secondary"
+                    text
+                    onClick={() => setHighlightedAuthor('')}
+                    disabled={!highlightedAuthor.trim()}
+                  />
+                </div>
+              </div>
+            )}
           />
         </div>
       </ExportableCard>
@@ -262,28 +265,30 @@ export function AuthorshipSection({
         <p>
           Highlighting the most frequent terms across the selected proposal corpus.
         </p>
-        <div className="wordcloud-filter">
-          <div className="wordcloud-filter__copy">
-            <strong>Filter proposals:</strong>
+        <CollapsibleControls>
+          <div className="wordcloud-filter">
+            <div className="wordcloud-filter__copy">
+              <strong>Filter proposals:</strong>
+            </div>
+            <div className="wordcloud-filter__controls">
+              <ProposalFilterControl
+                value={wordCloudFilterText}
+                onChange={setWordCloudFilterText}
+                ecosystem={ecosystem}
+                placeholder="Type BIP, then 2,3-5 and press Enter"
+                aria-label="Filter proposals by ID for word cloud (e.g. BIP32, SLIP44, BIP30-BIP35)"
+              />
+              <Button
+                type="button"
+                label="Clear"
+                severity="secondary"
+                text
+                onClick={() => setWordCloudFilterText('')}
+                disabled={!hasWordCloudFilter}
+              />
+            </div>
           </div>
-          <div className="wordcloud-filter__controls">
-            <ProposalFilterControl
-              value={wordCloudFilterText}
-              onChange={setWordCloudFilterText}
-              ecosystem={ecosystem}
-              placeholder="Type BIP, then 2,3-5 and press Enter"
-              aria-label="Filter proposals by ID for word cloud (e.g. BIP32, SLIP44, BIP30-BIP35)"
-            />
-            <Button
-              type="button"
-              label="Clear"
-              severity="secondary"
-              text
-              onClick={() => setWordCloudFilterText('')}
-              disabled={!hasWordCloudFilter}
-            />
-          </div>
-        </div>
+        </CollapsibleControls>
         <div>
           <WordCloud words={hasWordCloudFilter ? filteredWordCloudData : wordCloudData} width={1250} height={500} />
         </div>

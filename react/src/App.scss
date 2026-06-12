@@ -2106,3 +2106,42 @@
   padding: 0;
   cursor: pointer;
 }
+
+.collapsible-controls {
+  margin: 0.75rem 0 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--app-border);
+  background: var(--app-surface);
+  box-shadow: none;
+
+  .p-panel-header {
+    background: transparent;
+    border: 0;
+    padding: 0.4rem 0.75rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--app-text-muted, #6c757d);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  .p-panel-content {
+    border: 0;
+    background: transparent;
+    padding: 0.6rem 0.85rem 0.85rem;
+  }
+
+  .p-panel-header-icon {
+    color: inherit;
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  > .p-toggleable-content > .p-panel-content > *:first-child {
+    margin-top: 0;
+  }
+
+  > .p-toggleable-content > .p-panel-content > *:last-child {
+    margin-bottom: 0;
+  }
+}

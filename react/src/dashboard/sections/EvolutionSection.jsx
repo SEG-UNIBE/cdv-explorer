@@ -4,6 +4,7 @@ import { RadioButton } from 'primereact/radiobutton';
 import { EvolutionStatusStackedBarChart } from '../../EvolutionStatusStackedBarChart';
 import { ProposalEventTimeline } from '../../ProposalEventTimeline';
 import { ExportableCard } from '../ExportableCard';
+import { CollapsibleControls } from '../CollapsibleControls';
 import { SectionSourceToggle } from './SectionSourceToggle';
 
 function hasPositiveValues(series) {
@@ -64,28 +65,30 @@ function EvolutionContent({ ecosystem, evolutionPayload }) {
             ? `If the selected snapshot extends beyond ${milestoneDate}, the chart also marks ${formattedMilestoneLabel} with a separate breakpoint inside that quarter.`
             : ''}
         </p>
-        <div className="network-layout-controls">
-          <div className="network-layout-picker">
-            <div className="network-layout-picker__label">Mode</div>
-            <div className="network-layout-picker__options">
-              {[
-                { label: 'Absolute', value: 'absolute' },
-                { label: 'Relative', value: 'relative' },
-              ].map((option) => (
-                <label key={option.value} className="network-layout-picker__option">
-                  <RadioButton
-                    inputId={`evolution-mode-${ecosystem.sourceId || 'default'}-${option.value}`}
-                    name={`evolution-mode-${ecosystem.sourceId || 'default'}`}
-                    value={option.value}
-                    onChange={(event) => setChartMode(event.value)}
-                    checked={chartMode === option.value}
-                  />
-                  <span>{option.label}</span>
-                </label>
-              ))}
+        <CollapsibleControls>
+          <div className="network-layout-controls">
+            <div className="network-layout-picker">
+              <div className="network-layout-picker__label">Mode</div>
+              <div className="network-layout-picker__options">
+                {[
+                  { label: 'Absolute', value: 'absolute' },
+                  { label: 'Relative', value: 'relative' },
+                ].map((option) => (
+                  <label key={option.value} className="network-layout-picker__option">
+                    <RadioButton
+                      inputId={`evolution-mode-${ecosystem.sourceId || 'default'}-${option.value}`}
+                      name={`evolution-mode-${ecosystem.sourceId || 'default'}`}
+                      value={option.value}
+                      onChange={(event) => setChartMode(event.value)}
+                      checked={chartMode === option.value}
+                    />
+                    <span>{option.label}</span>
+                  </label>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
+        </CollapsibleControls>
         <div>
           <EvolutionStatusStackedBarChart
             data={overallEvolution}
@@ -102,21 +105,23 @@ function EvolutionContent({ ecosystem, evolutionPayload }) {
           <p>
             Visualizes the status changes of a specific {ecosystem.acronym}. Timeline markers open the historic repository version for the corresponding git commit.
           </p>
-          <div className="dependency-metrics-toolbar">
-            <div className="dependency-metrics-toolbar__copy">
-              <strong>Select proposal.</strong>
-              <span>Choose a {ecosystem.acronym} to inspect its event-level history.</span>
+          <CollapsibleControls>
+            <div className="dependency-metrics-toolbar">
+              <div className="dependency-metrics-toolbar__copy">
+                <strong>Select proposal.</strong>
+                <span>Choose a {ecosystem.acronym} to inspect its event-level history.</span>
+              </div>
+              <Dropdown
+                value={selectedProposalId}
+                options={proposalTimelineOptions}
+                onChange={(event) => setSelectedProposalId(event.value)}
+                placeholder={`Select ${ecosystem.acronym}`}
+                aria-label={`Select ${ecosystem.acronym} to inspect its event history`}
+                filter
+                className="dependency-metrics-toolbar__dropdown"
+              />
             </div>
-            <Dropdown
-              value={selectedProposalId}
-              options={proposalTimelineOptions}
-              onChange={(event) => setSelectedProposalId(event.value)}
-              placeholder={`Select ${ecosystem.acronym}`}
-              aria-label={`Select ${ecosystem.acronym} to inspect its event history`}
-              filter
-              className="dependency-metrics-toolbar__dropdown"
-            />
-          </div>
+          </CollapsibleControls>
           <ProposalEventTimeline
             timeline={selectedProposalTimeline}
             proposalShortLabel={ecosystem.acronym}

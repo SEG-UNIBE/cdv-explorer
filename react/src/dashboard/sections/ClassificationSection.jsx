@@ -5,6 +5,7 @@ import { ClassificationChordDiagram } from '../../ClassificationChordDiagram';
 import { ClassificationLegend } from '../../ClassificationLegend';
 import { ClassificationRelationTable } from '../../ClassificationRelationTable';
 import { ExportableCard } from '../ExportableCard';
+import { CollapsibleControls } from '../CollapsibleControls';
 import { CLASSIFICATION_DIMENSIONS } from '../constants';
 import { SectionSourceToggle } from './SectionSourceToggle';
 
@@ -91,16 +92,18 @@ function ClassificationContent({
           {hasDim3 && ` Can be expanded using the optional ${dim3.label} field.`}
         </p>
         {hasDim3 && (
-          <div className="classification-relation-toolbar">
-            <label className="dependency-filter-checkbox">
-              <input
-                type="checkbox"
-                checked={includeThirdDim}
-                onChange={(event) => setIncludeThirdDim(event.target.checked)}
-              />
-              <span>include {dim3.label}</span>
-            </label>
-          </div>
+          <CollapsibleControls>
+            <div className="classification-relation-toolbar">
+              <label className="dependency-filter-checkbox">
+                <input
+                  type="checkbox"
+                  checked={includeThirdDim}
+                  onChange={(event) => setIncludeThirdDim(event.target.checked)}
+                />
+                <span>include {dim3.label}</span>
+              </label>
+            </div>
+          </CollapsibleControls>
         )}
         <ClassificationRelationTable
           rows={tableRows}

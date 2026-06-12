@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import { useDashboardEcosystem, useDashboardLinkMode, useDashboardSnapshot } from './dashboard/DashboardSnapshotContext';
+import { CollapsibleControls } from './dashboard/CollapsibleControls';
 import { AuthorNetworkCanvas } from './authorNetwork/AuthorNetworkCanvas';
 import { AuthorNetworkToolbar } from './authorNetwork/AuthorNetworkToolbar';
 import { authorNetworkHasCrossSourceRefs, filterCrossSourceAuthorNetwork } from './authorNetwork/authorNetworkUtils';
@@ -14,6 +15,7 @@ export const AuthorCollaborationNetwork = ({
   setLayoutMode,
   minClusterCollaborations = '0',
   setMinClusterCollaborations,
+  extraControls = null,
 }) => {
   const snapshotLabel = useDashboardSnapshot();
   const linkMode = useDashboardLinkMode();
@@ -48,23 +50,26 @@ export const AuthorCollaborationNetwork = ({
 
   return (
     <div>
-      <AuthorNetworkToolbar
-        layoutMode={layoutMode}
-        setLayoutMode={setLayoutMode}
-        physicsEnabled={state.physicsEnabled}
-        handlePhysicsToggle={state.handlePhysicsToggle}
-        importedLayout={state.importedLayout}
-        handleLayoutImportClick={state.handleLayoutImportClick}
-        handleLayoutImport={state.handleLayoutImport}
-        handleLayoutExport={state.handleLayoutExport}
-        importInputRef={state.importInputRef}
-        minClusterCollaborations={minClusterCollaborations}
-        setMinClusterCollaborations={setMinClusterCollaborations}
-        hasNodes={hasNodes}
-        onlyCrossSource={onlyCrossSource}
-        setOnlyCrossSource={setOnlyCrossSource}
-        canFilterCrossSource={canFilterCrossSource}
-      />
+      <CollapsibleControls>
+        {extraControls}
+        <AuthorNetworkToolbar
+          layoutMode={layoutMode}
+          setLayoutMode={setLayoutMode}
+          physicsEnabled={state.physicsEnabled}
+          handlePhysicsToggle={state.handlePhysicsToggle}
+          importedLayout={state.importedLayout}
+          handleLayoutImportClick={state.handleLayoutImportClick}
+          handleLayoutImport={state.handleLayoutImport}
+          handleLayoutExport={state.handleLayoutExport}
+          importInputRef={state.importInputRef}
+          minClusterCollaborations={minClusterCollaborations}
+          setMinClusterCollaborations={setMinClusterCollaborations}
+          hasNodes={hasNodes}
+          onlyCrossSource={onlyCrossSource}
+          setOnlyCrossSource={setOnlyCrossSource}
+          canFilterCrossSource={canFilterCrossSource}
+        />
+      </CollapsibleControls>
       <AuthorNetworkCanvas
         data={graphData}
         width={width}

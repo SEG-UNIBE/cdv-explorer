@@ -143,7 +143,26 @@ Options:
       --source TEXT      Source slug (default: all sources for that ecosystem)
   -s, --snapshot TEXT    Snapshot date YYYY-MM-DD  [required]
       --skipllm          Skip LLM-based extraction
+      --focus TEXT       Process only specific proposals (e.g. '1-9,30-44,85,A0')
 ```
+
+**Snapshot rebuild workflow:**
+
+When updating LLM extraction, dependency analysis, or other enrichment logic, rebuild only the affected proposals to avoid re-processing large snapshots:
+
+```bash
+# Rebuild analysis and postprocess for a specific proposal
+python main.py run -e bitcoin -s 2026-03-16 --focus 340 --skipllm
+
+# Rebuild analysis for multiple proposals
+python main.py run -e bitcoin -s 2026-03-16 --focus 1-10,320-340 --skipllm
+
+# Rebuild an entire snapshot (regenerate all four pipeline stages)
+python main.py run -e bitcoin -s 2026-03-16 --skipllm
+```
+
+> [!NOTE]
+> The `--focus` flag **skips harvest and preprocess** stages, re-running only analysis and postprocess on the targeted proposals. This preserves existing enrichment (compliance checks, Git history, word clouds) while updating derived metrics.
 
 ### `snapshots` - list available snapshots
 

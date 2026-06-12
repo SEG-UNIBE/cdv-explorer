@@ -10,7 +10,7 @@ from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from analysis.validation.snapshots import (  # noqa: E402
+from analysis.validation.snapshots import (
     ANALYSIS_COLUMN_LABELS,
     SnapshotValidationResult,
     validate_analysis_snapshot,
@@ -19,7 +19,7 @@ from analysis.validation.snapshots import (  # noqa: E402
     validate_react_generated_indexes,
     validate_react_snapshot_exports,
 )
-from ecosystems import ECOSYSTEM_REGISTRY  # noqa: E402
+from ecosystems import ECOSYSTEM_REGISTRY
 
 
 ANALYSIS_ROOT = Path("ip_data")

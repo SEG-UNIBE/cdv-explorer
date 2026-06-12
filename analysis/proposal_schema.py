@@ -4,13 +4,8 @@ from pipeline.source_context import SourceContext
 
 
 META_KEYS = ("last_commit", "total_commits", "git_history")
-INTERRELATION_KEY_MAP = {
-    "preamble_extracted": "explicit_dependencies",
-    "body_extracted_regex": "explicit_references",
-    "body_extracted_llm": "implicit_dependencies",
-}
+OBSOLETE_INTERRELATION_KEYS = {"explicit_dependencies", "explicit_references", "implicit_dependencies"}
 LEGACY_TOP_LEVEL_KEYS = {"metadata", "history", "compliance"}
-PREAMBLE_INTERRELATION_KEYS = ("requires", "replaces", "proposed_replacement")
 
 
 def empty_meta() -> Dict[str, Any]:
@@ -150,37 +145,38 @@ def is_llm_runs_format(value: Any) -> bool:
 
 
 def latest_llm_dependencies(value: Any) -> List[Any]:
-    """Resolve body_extracted_llm to the latest run's dependency list regardless of storage format."""
+    """Resolve body_extracted_llm to the latest run's dependency list."""
     if not isinstance(value, list) or not value:
         return []
     if is_llm_runs_format(value):
         latest = max(value, key=lambda r: str(r.get("timestamp", "")))
         return list(latest.get("dependencies") or [])
-    return list(value)
+    return []
 
 
-def get_interrelations(proposal: Dict[str, Any]) -> Dict[str, Any]:
+def normalize_interrelations(proposal: Dict[str, Any]) -> Dict[str, Any]:
     interrelations = empty_interrelations()
     insights = _as_dict(proposal.get("insights"))
     canonical = _as_dict(insights.get("interrelations"))
 
-    for canonical_key, legacy_key in INTERRELATION_KEY_MAP.items():
-        legacy_value = insights.get(legacy_key)
-        canonical_value = canonical.get(canonical_key)
+    preamble_extracted = canonical.get("preamble_extracted")
+    if isinstance(preamble_extracted, list):
+        interrelations["preamble_extracted"] = list(preamble_extracted)
 
-        if isinstance(legacy_value, list):
-            interrelations[canonical_key] = (
-                latest_llm_dependencies(legacy_value)
-                if canonical_key == "body_extracted_llm"
-                else list(legacy_value)
-            )
-        if isinstance(canonical_value, list):
-            interrelations[canonical_key] = (
-                latest_llm_dependencies(canonical_value)
-                if canonical_key == "body_extracted_llm"
-                else list(canonical_value)
-            )
+    body_extracted_regex = canonical.get("body_extracted_regex")
+    if isinstance(body_extracted_regex, list):
+        interrelations["body_extracted_regex"] = list(body_extracted_regex)
 
+    body_extracted_llm = canonical.get("body_extracted_llm")
+    if is_llm_runs_format(body_extracted_llm):
+        interrelations["body_extracted_llm"] = list(body_extracted_llm)
+
+    return interrelations
+
+
+def get_interrelations(proposal: Dict[str, Any]) -> Dict[str, Any]:
+    interrelations = normalize_interrelations(proposal)
+    interrelations["body_extracted_llm"] = latest_llm_dependencies(interrelations["body_extracted_llm"])
     return interrelations
 
 
@@ -204,7 +200,7 @@ def normalize_proposal_document(
     for key, value in insights.items():
         if key in {"formal_compliance", "changes_in_status", "interrelations"}:
             continue
-        if key in INTERRELATION_KEY_MAP.values():
+        if key in OBSOLETE_INTERRELATION_KEYS:
             continue
         normalized_insights[key] = value
 
@@ -212,7 +208,7 @@ def normalize_proposal_document(
     normalized_insights["word_list"] = dict(word_list) if isinstance(word_list, dict) else {}
     normalized_insights["formal_compliance"] = get_formal_compliance(source)
     normalized_insights["changes_in_status"] = get_changes_in_status(source)
-    normalized_insights["interrelations"] = get_interrelations(source)
+    normalized_insights["interrelations"] = normalize_interrelations(source)
 
     normalized = {
         "raw": normalized_raw,

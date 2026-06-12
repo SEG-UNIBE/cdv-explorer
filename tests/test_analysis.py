@@ -62,13 +62,21 @@ def _proposal(
         values = value if isinstance(value, list) else [value]
         return [{"target": ref} for ref in values]
 
+    llm_runs = [] if llm_deps is None else [
+        {
+            "model": "test-model",
+            "timestamp": "2026-06-01T00:00:00Z",
+            "dependencies": llm_deps,
+        }
+    ]
+
     return {
         "raw": {"preamble": preamble},
         "insights": {
             "formal_compliance": compliance,
             "interrelations": {
                 "body_extracted_regex": regex_refs or [],
-                "body_extracted_llm": llm_deps or [],
+                "body_extracted_llm": llm_runs,
                 "preamble_extracted": [
                     {**entry, "type": "requires"} for entry in target_entries(requires)
                 ] + [
@@ -803,9 +811,9 @@ class LlmRunsFormatTests(unittest.TestCase):
         ]
         self.assertEqual(latest_llm_dependencies(runs), [{"target": "bips:32"}])
 
-    def test_old_flat_format_passed_through_unchanged(self):
+    def test_old_flat_format_is_ignored(self):
         flat = [{"target": "bips:32", "evidence": "x", "reason": "y", "confidence": "high"}]
-        self.assertEqual(latest_llm_dependencies(flat), flat)
+        self.assertEqual(latest_llm_dependencies(flat), [])
 
     def test_get_interrelations_resolves_latest_run(self):
         runs = [
@@ -817,12 +825,29 @@ class LlmRunsFormatTests(unittest.TestCase):
 
     def test_network_data_uses_latest_llm_run(self):
         runs = [
-            {"model": "gpt-4", "timestamp": "2026-01-01T00:00:00Z", "dependencies": [{"target": "bips:99", "evidence": "", "reason": "", "confidence": "low"}]},
-            {"model": "gpt-5", "timestamp": "2026-06-01T00:00:00Z", "dependencies": [{"target": "bips:2", "evidence": "x", "reason": "y", "confidence": "high"}]},
+            {
+                "model": "gpt-4",
+                "timestamp": "2026-01-01T00:00:00Z",
+                "dependencies": [{"target": "bips:99", "evidence": "", "reason": "", "confidence": "low"}],
+            },
+            {
+                "model": "gpt-5",
+                "timestamp": "2026-06-01T00:00:00Z",
+                "dependencies": [{"target": "bips:2", "evidence": "x", "reason": "y", "confidence": "high"}],
+            },
         ]
         proposals = [
             self._proposal_with_runs(runs),
-            {"raw": {"preamble": {"bip": "2", "title": "P2"}}, "insights": {"interrelations": {"preamble_extracted": [], "body_extracted_regex": [], "body_extracted_llm": []}}},
+            {
+                "raw": {"preamble": {"bip": "2", "title": "P2"}},
+                "insights": {
+                    "interrelations": {
+                        "preamble_extracted": [],
+                        "body_extracted_regex": [],
+                        "body_extracted_llm": [],
+                    }
+                },
+            },
         ]
         result = build_network_data(proposals, id_field="bip", proposal_label="BIP")
         targets = {e["target"] for e in result["dependency_edges"]}

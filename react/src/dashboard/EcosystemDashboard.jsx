@@ -11,7 +11,6 @@ import { getAvailableSnapshots, fetchDatasetForSelection, isDatasetCached } from
 import {
   buildDashboardData,
   buildWordCloudData,
-  normalizeProposalFilterValue,
   parseProposalFilterExpression,
 } from './dashboardData';
 import { AuthorshipSection } from './sections/AuthorshipSection';
@@ -32,14 +31,6 @@ function getSourceRepositoryHref(repository) {
   }
 
   return null;
-}
-
-function formatProposalOption(node, ecosystem) {
-  const source = ecosystem?.sources?.[node?.source] || ecosystem;
-  if (typeof source?.formatProposalReference === 'function') {
-    return source.formatProposalReference(node?.id);
-  }
-  return normalizeProposalFilterValue(node?.id);
 }
 
 function normalizeSectionSourceView(view, selectedSourceIds, supportsMerged) {
@@ -396,14 +387,6 @@ export function EcosystemDashboard() {
     .map((node) => String(node.id || ''))
     .filter(Boolean)
     .sort((left, right) => left.localeCompare(right));
-  const dependencyProposalOptions = dependencyAvailableProposalNodes
-    .map((node) => formatProposalOption(node, dependencyViewEcosystem))
-    .filter(Boolean)
-    .sort((left, right) => left.localeCompare(right, undefined, { numeric: true }));
-  const conformityProposalOptions = conformityAvailableProposalNodes
-    .map((node) => formatProposalOption(node, conformityViewEcosystem))
-    .filter(Boolean)
-    .sort((left, right) => left.localeCompare(right, undefined, { numeric: true }));
   const snapshotOptions = availableSnapshots.map((snapshot) => ({
     label: snapshot === 'current' ? 'Current' : snapshot,
     value: snapshot,
@@ -650,7 +633,6 @@ export function EcosystemDashboard() {
                 selectedDataset={dependencyViewDataset}
                 highlightedDependencyProposal={highlightedDependencyProposal}
                 setHighlightedDependencyProposal={setHighlightedDependencyProposal}
-                dependencyProposalOptions={dependencyProposalOptions}
                 dependencyMinRelations={dependencyMinRelations}
                 setDependencyMinRelations={setDependencyMinRelations}
                 dependencyMinRelationsIncludeConnections={dependencyMinRelationsIncludeConnections}
@@ -677,7 +659,6 @@ export function EcosystemDashboard() {
 	                  perSourceDashboardData={perSourceDashboardData}
 	                  sectionSourceView={activeConformitySourceView}
 	                  setSectionSourceView={setConformitySourceView}
-	                  dependencyProposalOptions={conformityProposalOptions}
 	                  highlightedConformityProposal={highlightedConformityProposal}
 	                  setHighlightedConformityProposal={setHighlightedConformityProposal}
 	                  conformityRows={conformityDashboardData.conformityRows}

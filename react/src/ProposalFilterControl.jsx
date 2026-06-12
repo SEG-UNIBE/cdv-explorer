@@ -173,12 +173,25 @@ export function ProposalFilterControl({
   ecosystem,
   placeholder = 'Type BIP, then 2,3-5 and press Enter',
   ariaLabel = 'Filter proposals',
+  singleSelect = false,
 }) {
   const [draft, setDraft] = useState('');
   const [activeSourceId, setActiveSourceId] = useState('');
   const sources = useMemo(() => getSources(ecosystem), [ecosystem]);
   const activeSource = sources.find((source) => source.sourceId === activeSourceId) || null;
   const groups = useMemo(() => parseGroups(value, sources), [sources, value]);
+
+  const commit = (tokens) => {
+    if (singleSelect) {
+      const firstToken = tokens[0]?.split(',')[0]?.trim() || '';
+      if (!firstToken) return;
+      // Strip ranges: keep only the starting proposal (e.g. "BIP1-10" -> "BIP1")
+      const collapsed = firstToken.replace(/^([A-Za-z]*\s*[- ]*0*\d+)\s*-\s*[A-Za-z]*\s*[- ]*0*\d+$/i, '$1');
+      onChange(normalizeFilterValue(collapsed, sources));
+      return;
+    }
+    onChange(appendAndNormalize(value, tokens, sources));
+  };
 
   const commitDraft = () => {
     const text = draft.trim();
@@ -199,7 +212,7 @@ export function ProposalFilterControl({
           .split(',')
           .map((part) => buildSourceToken(source, part))
           .filter(Boolean);
-        onChange(appendAndNormalize(value, tokens, sources));
+        commit(tokens);
         setActiveSourceId(source.sourceId);
         setDraft('');
         return;
@@ -210,7 +223,7 @@ export function ProposalFilterControl({
     const tokens = activeSource
       ? parts.map((part) => buildSourceToken(activeSource, part))
       : parts;
-    onChange(appendAndNormalize(value, tokens, sources));
+    commit(tokens);
     setDraft('');
   };
 

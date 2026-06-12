@@ -1,9 +1,9 @@
 import { Button } from 'primereact/button';
 import { Card } from 'primereact/card';
-import { InputText } from 'primereact/inputtext';
 import { Tag } from 'primereact/tag';
 import { FormalConformitySwarmPlot } from '../../FormalConformitySwarmPlot';
 import { ConformityFailedChecksHistogram } from '../../ConformityFailedChecksHistogram';
+import { ProposalFilterControl } from '../../ProposalFilterControl';
 import { ExportableCard } from '../ExportableCard';
 import { CollapsibleControls } from '../CollapsibleControls';
 import { SectionSourceToggle } from './SectionSourceToggle';
@@ -74,7 +74,6 @@ export function ConformitySection({
   perSourceDashboardData = {},
   sectionSourceView,
   setSectionSourceView,
-  dependencyProposalOptions,
   highlightedConformityProposal,
   setHighlightedConformityProposal,
   conformityRows,
@@ -126,18 +125,14 @@ export function ConformitySection({
               <strong>Find proposal:</strong>
             </div>
             <div className="network-finder__controls">
-              <InputText
+              <ProposalFilterControl
                 value={highlightedConformityProposal}
-                onChange={(event) => setHighlightedConformityProposal(event.target.value)}
-                placeholder="Type a proposal ID"
+                onChange={setHighlightedConformityProposal}
+                ecosystem={ecosystem}
+                placeholder="Type BIP, then 32 and press Enter"
                 aria-label="Find proposal: type an ID to highlight it in the conformity chart"
-                list="conformity-proposal-options"
+                singleSelect
               />
-              <datalist id="conformity-proposal-options">
-                {dependencyProposalOptions.map((proposalId) => (
-                  <option key={proposalId} value={proposalId} />
-                ))}
-              </datalist>
               <Button
                 type="button"
                 label="Clear"

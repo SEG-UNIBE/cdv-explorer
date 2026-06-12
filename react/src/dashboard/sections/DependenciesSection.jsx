@@ -2,7 +2,6 @@ import { useMemo } from 'react';
 import { Button } from 'primereact/button';
 import { Card } from 'primereact/card';
 import { Dropdown } from 'primereact/dropdown';
-import { InputText } from 'primereact/inputtext';
 import { NetworkDiagram } from '../../NetworkDiagram';
 import { ProposalGraphMetricsTable } from '../../ProposalGraphMetricsTable';
 import { DependencyComparisonHeatmaps } from '../../DependencyComparisonHeatmaps';
@@ -21,7 +20,6 @@ export function DependenciesSection({
   selectedDataset,
   highlightedDependencyProposal,
   setHighlightedDependencyProposal,
-  dependencyProposalOptions,
   dependencyMinRelations,
   setDependencyMinRelations,
   dependencyMinRelationsIncludeConnections,
@@ -111,18 +109,14 @@ export function DependenciesSection({
                   <span>Search a proposal ID to highlight and center its node in the network.</span>
                 </div>
                 <div className="network-finder__controls">
-                  <InputText
+                  <ProposalFilterControl
                     value={highlightedDependencyProposal}
-                    onChange={(event) => setHighlightedDependencyProposal(event.target.value)}
-                    placeholder="Type a proposal ID, e.g. BIP32"
+                    onChange={setHighlightedDependencyProposal}
+                    ecosystem={ecosystem}
+                    placeholder="Type BIP, then 32 and press Enter"
                     aria-label="Find proposal: search by ID to highlight its node"
-                    list="dependency-proposal-options"
+                    singleSelect
                   />
-                  <datalist id="dependency-proposal-options">
-                    {dependencyProposalOptions.map((proposalId) => (
-                      <option key={proposalId} value={proposalId} />
-                    ))}
-                  </datalist>
                   <Button
                     type="button"
                     label="Clear"

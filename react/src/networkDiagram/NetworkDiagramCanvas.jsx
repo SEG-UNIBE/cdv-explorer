@@ -56,6 +56,12 @@ export function NetworkDiagramCanvas({
   const svgRef = useRef();
 
   useEffect(() => {
+    const sanitizePatternToken = (value) => String(value || '')
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9_-]+/g, '-')
+      .replace(/^-+|-+$/g, '') || 'unknown';
+
     const svg = d3.select(svgRef.current);
     svg.selectAll('*').remove();
     d3.select('body').selectAll('.dependency-network-tooltip').remove();
@@ -198,6 +204,33 @@ export function NetworkDiagramCanvas({
       return;
     }
 
+    const presentSourceIds = Array.from(
+      new Set(
+        filteredNodes
+          .map((node) => String(node.source || '').trim())
+          .filter(Boolean)
+      )
+    );
+    const orderedVisibleSourceIds = [
+      ...(ecosystem?.sourceOrder || []).filter((sourceId) => presentSourceIds.includes(sourceId)),
+      ...presentSourceIds.filter((sourceId) => !(ecosystem?.sourceOrder || []).includes(sourceId)),
+    ];
+    const multiSourcePatternsEnabled = orderedVisibleSourceIds.length > 1;
+    const sourcePatternKindById = new Map(
+      orderedVisibleSourceIds.map((sourceId, index) => {
+        if (!multiSourcePatternsEnabled || index === 0) {
+          return [sourceId, 'solid'];
+        }
+        if (index === 1) {
+          return [sourceId, 'diagonal'];
+        }
+        if (index === 2) {
+          return [sourceId, 'dotted'];
+        }
+        return [sourceId, 'solid'];
+      })
+    );
+
     const importedPositions = importedLayout?.positions || null;
     let importedPositionedNodeCount = 0;
     filteredNodes.forEach((node) => {
@@ -232,6 +265,20 @@ export function NetworkDiagramCanvas({
     filteredNodes.forEach((node) => {
       node.colorGroup = normalizeCategory(node[colorBy], fallbackLabel);
     });
+
+    const nodePatternId = (sourceId, groupLabel, patternKind) => (
+      `dependency-node-pattern-${patternKind}-${sanitizePatternToken(sourceId)}-${sanitizePatternToken(groupLabel)}`
+    );
+    const getNodePatternKind = (entry) => sourcePatternKindById.get(String(entry.source || '').trim()) || 'solid';
+    const getNodeFill = (entry) => {
+      const groupLabel = normalizeCategory(entry[colorBy], fallbackLabel);
+      const fillColor = color(groupLabel);
+      const patternKind = getNodePatternKind(entry);
+      if (!multiSourcePatternsEnabled || patternKind === 'solid') {
+        return fillColor;
+      }
+      return `url(#${nodePatternId(String(entry.source || ''), groupLabel, patternKind)})`;
+    };
 
     const getEdgeColor = (edge) => {
       if (!isDifferentialMode) {
@@ -321,6 +368,51 @@ export function NetworkDiagramCanvas({
       .style('height', 'auto');
 
     const defs = svg.append('defs');
+    if (multiSourcePatternsEnabled) {
+      orderedVisibleSourceIds.forEach((sourceId) => {
+        const patternKind = sourcePatternKindById.get(sourceId) || 'solid';
+        if (patternKind === 'solid') {
+          return;
+        }
+
+        allGroups.forEach((groupLabel) => {
+          const fillColor = color(groupLabel);
+          const pattern = defs
+            .append('pattern')
+            .attr('id', nodePatternId(sourceId, groupLabel, patternKind))
+            .attr('patternUnits', 'userSpaceOnUse')
+            .attr('width', 8)
+            .attr('height', 8);
+
+          pattern
+            .append('rect')
+            .attr('width', 8)
+            .attr('height', 8)
+            .attr('fill', fillColor);
+
+          if (patternKind === 'diagonal') {
+            pattern
+              .append('path')
+              .attr('d', 'M-2,2 l4,-4 M0,8 l8,-8 M6,10 l4,-4')
+              .attr('stroke', 'rgba(255,255,255,0.78)')
+              .attr('stroke-width', 1.35)
+              .attr('stroke-linecap', 'round');
+          }
+
+          if (patternKind === 'dotted') {
+            [[2, 2], [6, 6]].forEach(([cx, cy]) => {
+              pattern
+                .append('circle')
+                .attr('cx', cx)
+                .attr('cy', cy)
+                .attr('r', 1.15)
+                .attr('fill', 'rgba(255,255,255,0.8)');
+            });
+          }
+        });
+      });
+    }
+
     const markerDefinitions = Array.from(
       new Map(filteredLinks.map((edge) => [getEdgeMarkerId(edge), getEdgeColor(edge)])).entries()
     );
@@ -611,7 +703,7 @@ export function NetworkDiagramCanvas({
       .data(filteredNodes)
       .join('circle')
       .attr('r', (entry) => getNodeRadius(entry))
-      .attr('fill', (entry) => color(normalizeCategory(entry[colorBy], fallbackLabel)))
+      .attr('fill', (entry) => getNodeFill(entry))
       .attr('fill-opacity', (entry) => {
         if (searchMatchedIds.size === 0) {
           return 0.95;
@@ -807,25 +899,67 @@ export function NetworkDiagramCanvas({
     legend.selectAll('*').remove();
 
     const entries = color.domain().filter(Boolean);
-    if (entries.length > 0) {
-      const container = legend
-        .append('div')
-        .attr('class', 'dependency-node-legend');
-
-      entries.forEach((group) => {
+    const renderLegendItems = (container, groups, sourceId = '') => {
+      const patternKind = sourcePatternKindById.get(sourceId) || 'solid';
+      groups.forEach((group) => {
         const item = container
           .append('div')
           .attr('class', 'dependency-node-legend__item');
 
         item
           .append('span')
-          .attr('class', 'dependency-node-legend__swatch')
-          .style('background-color', color(group));
+          .attr('class', `dependency-node-legend__swatch dependency-node-legend__swatch--${patternKind}`)
+          .style('--legend-swatch-base', color(group));
 
         item
           .append('span')
           .text(group);
       });
+    };
+
+    if (entries.length > 0) {
+      if (orderedVisibleSourceIds.length > 1) {
+        const groupedLegend = legend
+          .append('div')
+          .attr('class', 'dependency-node-legend-groups');
+
+        orderedVisibleSourceIds.forEach((sourceId) => {
+          const sourceEntries = Array.from(
+            new Set(
+              filteredNodes
+                .filter((node) => String(node.source || '') === sourceId)
+                .map((node) => node.colorGroup)
+                .filter(Boolean)
+            )
+          );
+
+          if (sourceEntries.length === 0) {
+            return;
+          }
+
+          const source = ecosystem?.sources?.[sourceId];
+          const section = groupedLegend
+            .append('section')
+            .attr('class', 'dependency-node-legend-group');
+
+          section
+            .append('div')
+            .attr('class', 'dependency-node-legend-group__title')
+            .text(source?.shortLabel || source?.acronym || sourceId || 'IPs');
+
+          const container = section
+            .append('div')
+            .attr('class', 'dependency-node-legend');
+
+          renderLegendItems(container, sourceEntries, sourceId);
+        });
+      } else {
+        const container = legend
+          .append('div')
+          .attr('class', 'dependency-node-legend');
+
+        renderLegendItems(container, entries, orderedVisibleSourceIds[0] || '');
+      }
     }
 
     return () => {

@@ -59,7 +59,7 @@ export function DependenciesSection({
       description: 'Number of proposals with neither incoming nor outgoing relationships in the selected graph.',
     },
     {
-      label: 'Circular Dependencies',
+      label: 'Circ. Deps.',
       value: activeDependencyMetrics.summary?.circular_dependency_count ?? 0,
       description: 'Number of dependency cycles detected in the selected interrelation graph.',
     },
@@ -91,6 +91,7 @@ export function DependenciesSection({
           data={selectedDataset}
           width={1200}
           height={700}
+          controlsClassName="dependency-graph-controls"
           highlightProposal={highlightedDependencyProposal}
           proposalShortPlural={ecosystem.proposalShortPlural}
           minRelations={dependencyMinRelations}
@@ -102,21 +103,17 @@ export function DependenciesSection({
           includeThresholdConnections={dependencyMinRelationsIncludeConnections}
           setIncludeThresholdConnections={setDependencyMinRelationsIncludeConnections}
           extraControls={(
-            <>
-              <div className="network-finder">
-                <div className="network-finder__copy">
-                  <strong>Find proposal.</strong>
-                  <span>Search a proposal ID to highlight and center its node in the network.</span>
-                </div>
-                <div className="network-finder__controls">
-                  <ProposalFilterControl
-                    value={highlightedDependencyProposal}
-                    onChange={setHighlightedDependencyProposal}
-                    ecosystem={ecosystem}
-                    placeholder="Type BIP, then 32 and press Enter"
-                    aria-label="Find proposal: search by ID to highlight its node"
-                    singleSelect
-                  />
+            <div className="dependency-graph-search-grid">
+              <ProposalFilterControl
+                value={highlightedDependencyProposal}
+                onChange={setHighlightedDependencyProposal}
+                ecosystem={ecosystem}
+                placeholder="Type BIP, then 32 and press Enter"
+                ariaLabel="Find proposal: search by ID to highlight its node"
+                singleSelect
+                layout="split"
+                entryLabel="Proposal Search"
+                trailingControl={(
                   <Button
                     type="button"
                     label="Clear"
@@ -125,28 +122,18 @@ export function DependenciesSection({
                     onClick={() => setHighlightedDependencyProposal('')}
                     disabled={!highlightedDependencyProposal.trim()}
                   />
-                </div>
-              </div>
-              <div className="wordcloud-filter">
-                <div className="wordcloud-filter__copy">
-                  <strong>Filter proposals.</strong>
-                </div>
-                <div className="wordcloud-filter__controls">
-                  <ProposalFilterControl
-                    value={dependencyFilterText}
-                    onChange={setDependencyFilterText}
-                    ecosystem={ecosystem}
-                    placeholder="Type BIP, then 2,3-5 and press Enter"
-                    aria-label="Filter proposals by ID (e.g. BIP32, SLIP44, BIP30-BIP35)"
-                  />
-                  <label className="dependency-filter-checkbox">
-                    <input
-                      type="checkbox"
-                      checked={dependencyIncludeConnections}
-                      onChange={(event) => setDependencyIncludeConnections(event.target.checked)}
-                    />
-                    <span>transient</span>
-                  </label>
+                )}
+                className="dependency-graph-search-control dependency-graph-search-control--find"
+              />
+              <ProposalFilterControl
+                value={dependencyFilterText}
+                onChange={setDependencyFilterText}
+                ecosystem={ecosystem}
+                placeholder="Type BIP, then 2,3-5 and press Enter"
+                ariaLabel="Filter proposals by ID (e.g. BIP32, SLIP44, BIP30-BIP35)"
+                layout="split"
+                entryLabel="Filter Proposals"
+                trailingControl={(
                   <Button
                     type="button"
                     label="Clear"
@@ -155,9 +142,10 @@ export function DependenciesSection({
                     onClick={() => setDependencyFilterText('')}
                     disabled={!hasDependencyFilter}
                   />
-                </div>
-              </div>
-            </>
+                )}
+                className="dependency-graph-search-control dependency-graph-search-control--filter wordcloud-filter--chips-right"
+              />
+            </div>
           )}
         />
       </ExportableCard>
@@ -172,22 +160,6 @@ export function DependenciesSection({
           <strong>PageRank</strong> is similar, but additionally accounts for direction and distributes importance across outgoing links.{' '}
           <strong>Betweenness</strong> measures how often a proposal lies on the shortest paths between others, indicating its role in connecting otherwise separate parts of the dependency graph. 
         </p>
-        <CollapsibleControls>
-          <div className="dependency-metrics-toolbar">
-            <div className="dependency-metrics-toolbar__copy">
-              <strong>Reference approach.</strong>
-              <span>Select which extracted relationship set, Preamble, Regex, or LLM, should drive the metrics below.</span>
-            </div>
-            <Dropdown
-              value={activeDependencyMetricsApproach}
-              options={dependencyMetricsApproachOptions}
-              onChange={(event) => setSelectedDependencyMetricsApproach(event.value)}
-              placeholder="Select approach"
-              aria-label="Reference approach for dependency metrics"
-              className="dependency-metrics-toolbar__dropdown"
-            />
-          </div>
-        </CollapsibleControls>
         <div className="dependency-metrics-summary">
           {dependencyMetricCards.map((metric) => (
             <div
@@ -202,9 +174,47 @@ export function DependenciesSection({
             </div>
           ))}
         </div>
+        <CollapsibleControls>
+          <div className="dependency-metrics-toolbar">
+            <div className="dependency-metrics-toolbar__field">
+              <label className="dependency-metrics-toolbar__label" htmlFor="dependency-metrics-approach">
+                Approach
+              </label>
+              <Dropdown
+                inputId="dependency-metrics-approach"
+                value={activeDependencyMetricsApproach}
+                options={dependencyMetricsApproachOptions}
+                onChange={(event) => setSelectedDependencyMetricsApproach(event.value)}
+                placeholder="Select approach"
+                aria-label="Approach for dependency metrics"
+                className="dependency-metrics-toolbar__dropdown"
+              />
+            </div>
+            <ProposalFilterControl
+              value={dependencyFilterText}
+              onChange={setDependencyFilterText}
+              ecosystem={ecosystem}
+              placeholder="Type BIP, then 2,3-5 and press Enter"
+              ariaLabel="Filter proposals for dependency metrics"
+              layout="split"
+              entryLabel="Filter Proposals"
+              trailingControl={(
+                <Button
+                  type="button"
+                  label="Clear"
+                  severity="secondary"
+                  text
+                  onClick={() => setDependencyFilterText('')}
+                  disabled={!hasDependencyFilter}
+                />
+              )}
+              className="dependency-metrics-toolbar__filter"
+            />
+          </div>
+        </CollapsibleControls>
         <ProposalGraphMetricsTable
           rows={activeDependencyMetrics.per_bip || []}
-          proposalShortLabel={ecosystem.acronym || 'IP'}
+          proposalFilterIds={selectedDependencyProposalIds}
           defaultSortField="pagerank"
           defaultSortOrder={-1}
         />

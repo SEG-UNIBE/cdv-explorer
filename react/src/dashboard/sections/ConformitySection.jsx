@@ -120,28 +120,28 @@ export function ConformitySection({
           {ecosystem.conformityDescription || `Formal conformity of ${ecosystem.proposalShortPlural} according to the underlying specification process guidelines. Conformity score (0–100) is computed based on automated checks. For details on failed checks, hover over the bubbles.`}
         </p>
         <CollapsibleControls>
-          <div className="network-finder">
-            <div className="network-finder__copy">
-              <strong>Find proposal:</strong>
-            </div>
-            <div className="network-finder__controls">
-              <ProposalFilterControl
-                value={highlightedConformityProposal}
-                onChange={setHighlightedConformityProposal}
-                ecosystem={ecosystem}
-                placeholder="Type BIP, then 32 and press Enter"
-                aria-label="Find proposal: type an ID to highlight it in the conformity chart"
-                singleSelect
-              />
-              <Button
-                type="button"
-                label="Clear"
-                severity="secondary"
-                text
-                onClick={() => setHighlightedConformityProposal('')}
-                disabled={!highlightedConformityProposal.trim()}
-              />
-            </div>
+          <div className="conformity-definition-controls">
+            <ProposalFilterControl
+              value={highlightedConformityProposal}
+              onChange={setHighlightedConformityProposal}
+              ecosystem={activeEcosystem}
+              placeholder={`Type ${activeEcosystem.acronym}, then 32 and press Enter`}
+              ariaLabel="Find proposal: type an ID to highlight it in the conformity chart"
+              singleSelect
+              layout="split"
+              entryLabel="Find Proposal"
+              trailingControl={(
+                <Button
+                  type="button"
+                  label="Clear"
+                  severity="secondary"
+                  text
+                  onClick={() => setHighlightedConformityProposal('')}
+                  disabled={!highlightedConformityProposal.trim()}
+                />
+              )}
+              className="conformity-definition-filter"
+            />
           </div>
         </CollapsibleControls>
       </Card>

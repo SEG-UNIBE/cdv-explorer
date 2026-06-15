@@ -22,6 +22,7 @@ export const NetworkDiagram = ({
   includeThresholdConnections = false,
   setIncludeThresholdConnections,
   extraControls = null,
+  controlsClassName = '',
 }) => {
   const legendRef = useRef();
   const snapshotLabel = useDashboardSnapshot();
@@ -41,7 +42,7 @@ export const NetworkDiagram = ({
 
   return (
     <div>
-      <CollapsibleControls>
+      <CollapsibleControls className={controlsClassName}>
         {extraControls}
         <NetworkDiagramToolbar
           colorBy={state.colorBy}

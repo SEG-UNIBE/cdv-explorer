@@ -146,7 +146,7 @@ export function AuthorshipSection({
             minClusterCollaborations={collaborationMinClusterCollaborations}
             setMinClusterCollaborations={setCollaborationMinClusterCollaborations}
             extraControls={(
-              <div className="network-finder">
+              <div className="network-finder author-collaboration-search">
                 <div className="network-finder__copy">
                   <strong>Author Search</strong>
                 </div>
@@ -266,18 +266,16 @@ export function AuthorshipSection({
           Highlighting the most frequent terms across the selected proposal corpus.
         </p>
         <CollapsibleControls>
-          <div className="wordcloud-filter">
-            <div className="wordcloud-filter__copy">
-              <strong>Filter proposals:</strong>
-            </div>
-            <div className="wordcloud-filter__controls">
-              <ProposalFilterControl
-                value={wordCloudFilterText}
-                onChange={setWordCloudFilterText}
-                ecosystem={ecosystem}
-                placeholder="Type BIP, then 2,3-5 and press Enter"
-                aria-label="Filter proposals by ID for word cloud (e.g. BIP32, SLIP44, BIP30-BIP35)"
-              />
+          <ProposalFilterControl
+            value={wordCloudFilterText}
+            onChange={setWordCloudFilterText}
+            ecosystem={ecosystem}
+            placeholder="Type BIP, then 2,3-5 and press Enter"
+            aria-label="Filter proposals by ID for word cloud (e.g. BIP32, SLIP44, BIP30-BIP35)"
+            layout="split"
+            entryLabel="Filter proposals"
+            className="wordcloud-filter--chips-right"
+            trailingControl={(
               <Button
                 type="button"
                 label="Clear"
@@ -286,8 +284,8 @@ export function AuthorshipSection({
                 onClick={() => setWordCloudFilterText('')}
                 disabled={!hasWordCloudFilter}
               />
-            </div>
-          </div>
+            )}
+          />
         </CollapsibleControls>
         <div>
           <WordCloud words={hasWordCloudFilter ? filteredWordCloudData : wordCloudData} width={1250} height={500} />

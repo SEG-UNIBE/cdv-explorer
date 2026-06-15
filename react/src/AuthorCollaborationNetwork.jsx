@@ -50,7 +50,7 @@ export const AuthorCollaborationNetwork = ({
 
   return (
     <div>
-      <CollapsibleControls>
+      <CollapsibleControls className="author-collaboration-controls">
         {extraControls}
         <AuthorNetworkToolbar
           layoutMode={layoutMode}

@@ -105,20 +105,20 @@ function EvolutionContent({ ecosystem, evolutionPayload }) {
           <p>
             Visualizes the status changes of a specific {ecosystem.acronym}. Timeline markers open the historic repository version for the corresponding git commit.
           </p>
-          <CollapsibleControls>
-            <div className="dependency-metrics-toolbar">
-              <div className="dependency-metrics-toolbar__copy">
-                <strong>Select proposal.</strong>
-                <span>Choose a {ecosystem.acronym} to inspect its event-level history.</span>
-              </div>
+          <CollapsibleControls className="proposal-timeline-controls">
+            <div className="proposal-timeline-control">
+              <label className="proposal-timeline-control__label" htmlFor={`timeline-proposal-${ecosystem.sourceId || 'default'}`}>
+                Select proposal.
+              </label>
               <Dropdown
+                inputId={`timeline-proposal-${ecosystem.sourceId || 'default'}`}
                 value={selectedProposalId}
                 options={proposalTimelineOptions}
                 onChange={(event) => setSelectedProposalId(event.value)}
                 placeholder={`Select ${ecosystem.acronym}`}
                 aria-label={`Select ${ecosystem.acronym} to inspect its event history`}
                 filter
-                className="dependency-metrics-toolbar__dropdown"
+                className="proposal-timeline-control__dropdown"
               />
             </div>
           </CollapsibleControls>

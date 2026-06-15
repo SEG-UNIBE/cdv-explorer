@@ -174,6 +174,10 @@ export function ProposalFilterControl({
   placeholder = 'Type BIP, then 2,3-5 and press Enter',
   ariaLabel = 'Filter proposals',
   singleSelect = false,
+  layout = 'default',
+  entryLabel = '',
+  trailingControl = null,
+  className = '',
 }) {
   const [draft, setDraft] = useState('');
   const [activeSourceId, setActiveSourceId] = useState('');
@@ -227,45 +231,66 @@ export function ProposalFilterControl({
     setDraft('');
   };
 
-  return (
-    <div className="proposal-filter-control">
-      <div className="proposal-filter-control__chips" aria-live="polite">
-        {groups.map((group) => (
-          <span key={group.key} className="proposal-filter-chip">
-            <button
-              type="button"
-              className="proposal-filter-chip__label"
-              onClick={() => group.source && setActiveSourceId(group.source.sourceId)}
-              title={group.source ? `Use ${group.label} for the next entry` : undefined}
-            >
-              {group.label}: {group.parts.join(',')}
-            </button>
-            <button
-              type="button"
-              className="proposal-filter-chip__remove"
-              aria-label={`Remove ${group.label} filter`}
-              onClick={() => onChange(removeGroupFromValue(value, group))}
-            >
-              x
-            </button>
-          </span>
-        ))}
+  const chips = (
+    <div className="proposal-filter-control__chips" aria-live="polite">
+      {groups.map((group) => (
+        <span key={group.key} className="proposal-filter-chip">
+          <button
+            type="button"
+            className="proposal-filter-chip__label"
+            onClick={() => group.source && setActiveSourceId(group.source.sourceId)}
+            title={group.source ? `Use ${group.label} for the next entry` : undefined}
+          >
+            {group.label}: {group.parts.join(',')}
+          </button>
+          <button
+            type="button"
+            className="proposal-filter-chip__remove"
+            aria-label={`Remove ${group.label} filter`}
+            onClick={() => onChange(removeGroupFromValue(value, group))}
+          >
+            x
+          </button>
+        </span>
+      ))}
+    </div>
+  );
+
+  const input = (
+    <input
+      type="text"
+      className="p-inputtext p-component"
+      value={draft}
+      onChange={(event) => setDraft(event.target.value)}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter') {
+          event.preventDefault();
+          commitDraft();
+        }
+      }}
+      onBlur={commitDraft}
+      placeholder={placeholder}
+      aria-label={ariaLabel}
+    />
+  );
+
+  if (layout === 'split') {
+    return (
+      <div className={`proposal-filter-control proposal-filter-control--split ${className}`.trim()}>
+        <div className="proposal-filter-control__entry">
+          {entryLabel ? <strong className="proposal-filter-control__entry-label">{entryLabel}</strong> : null}
+          {input}
+          {trailingControl}
+        </div>
+        {chips}
       </div>
-      <input
-        type="text"
-        className="p-inputtext p-component"
-        value={draft}
-        onChange={(event) => setDraft(event.target.value)}
-        onKeyDown={(event) => {
-          if (event.key === 'Enter') {
-            event.preventDefault();
-            commitDraft();
-          }
-        }}
-        onBlur={commitDraft}
-        placeholder={placeholder}
-        aria-label={ariaLabel}
-      />
+    );
+  }
+
+  return (
+    <div className={`proposal-filter-control ${className}`.trim()}>
+      {chips}
+      {input}
     </div>
   );
 }

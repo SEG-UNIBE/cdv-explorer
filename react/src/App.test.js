@@ -94,6 +94,20 @@ test('normalizes canonical dependency edges into grouped dependency links', () =
   ]);
 });
 
+test('does not synthesize legacy top-level preamble relation arrays', () => {
+  const canonical = normalizeDependencyLinks({
+    [PREAMBLE_EXTRACTED]: {
+      depends_on: [{ source: 'xips:1', target: 'xips:7', value: 1 }],
+    },
+    requires: [{ source: 'xips:1', target: 'xips:99', value: 1 }],
+  });
+
+  expect(canonical[PREAMBLE_EXTRACTED]).toEqual({
+    depends_on: [{ source: 'xips:1', target: 'xips:7', value: 1 }],
+  });
+  expect(canonical.requires).toBeUndefined();
+});
+
 test('source-scopes dependency links without changing display proposal ids', () => {
   const bipLinks = scopeDependencyLinksForSource({
     [BODY_EXTRACTED_REGEX]: [{ source: '32', target: '44', value: 1 }],
@@ -116,6 +130,7 @@ test('source-scopes dependency links without changing display proposal ids', () 
     sourceKey: 'bips:32',
     targetKey: 'bips:44',
   });
+  expect(bipLinks.requires).toBeUndefined();
   expect(slipLinks[BODY_EXTRACTED_REGEX][0]).toMatchObject({
     source: '32',
     target: '44',
@@ -126,6 +141,7 @@ test('source-scopes dependency links without changing display proposal ids', () 
     sourceKey: 'slips:32',
     targetKey: 'slips:44',
   });
+  expect(slipLinks.requires).toBeUndefined();
 });
 
 test('builds stable combined source artifact keys', () => {

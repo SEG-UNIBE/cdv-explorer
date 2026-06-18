@@ -90,13 +90,11 @@ def normalize_raw_preamble(
 
 def get_meta(proposal: Dict[str, Any]) -> Dict[str, Any]:
     meta = empty_meta()
-    legacy_meta = _as_dict(proposal.get("metadata"))
     canonical_meta = _as_dict(proposal.get("meta"))
 
-    for source in (legacy_meta, canonical_meta):
-        for key in META_KEYS:
-            if key in source:
-                meta[key] = source[key]
+    for key in META_KEYS:
+        if key in canonical_meta:
+            meta[key] = canonical_meta[key]
 
     if not isinstance(meta["git_history"], list):
         meta["git_history"] = []
@@ -105,32 +103,15 @@ def get_meta(proposal: Dict[str, Any]) -> Dict[str, Any]:
 
 
 def get_formal_compliance(proposal: Dict[str, Any]) -> Dict[str, Any]:
-    raw = _as_dict(proposal.get("raw"))
     insights = _as_dict(proposal.get("insights"))
-
-    for candidate in (
-        insights.get("formal_compliance"),
-        proposal.get("compliance"),
-        raw.get("compliance"),
-    ):
-        if isinstance(candidate, dict):
-            return dict(candidate)
-
-    return {}
+    candidate = insights.get("formal_compliance")
+    return dict(candidate) if isinstance(candidate, dict) else {}
 
 
 def get_changes_in_status(proposal: Dict[str, Any]) -> List[Any]:
-    legacy_history = _as_dict(proposal.get("history"))
     insights = _as_dict(proposal.get("insights"))
-
-    for candidate in (
-        insights.get("changes_in_status"),
-        legacy_history.get("status_timeline"),
-    ):
-        if isinstance(candidate, list):
-            return list(candidate)
-
-    return []
+    candidate = insights.get("changes_in_status")
+    return list(candidate) if isinstance(candidate, list) else []
 
 
 def is_llm_runs_format(value: Any) -> bool:

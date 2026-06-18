@@ -75,42 +75,39 @@ def proposal_document(
                 "superseded_by": superseded_by,
             }
         },
-        "metadata": {
+        "meta": {
             "last_commit": "2020-01-02",
             "total_commits": 1,
             "git_history": [["abc", "2020-01-02", "Author"]],
-            "contributors": 1,
         },
-        "compliance": {
-            "score": 75.0,
-            "bip2": {
-                "score": 70.0,
-                "checks": [
-                    {
-                        "id": "bip2.required_field.bip",
-                        "label": "Required field 'bip' is present",
-                        "category": "required_field",
-                        "standard": "bip2",
-                        "passed": True,
-                    }
-                ],
+        "insights": {
+            "formal_compliance": {
+                "score": 75.0,
+                "bip2": {
+                    "score": 70.0,
+                    "checks": [
+                        {
+                            "id": "bip2.required_field.bip",
+                            "label": "Required field 'bip' is present",
+                            "category": "required_field",
+                            "standard": "bip2",
+                            "passed": True,
+                        }
+                    ],
+                },
+                "bip3": {
+                    "score": 80.0,
+                    "checks": [],
+                },
             },
-            "bip3": {
-                "score": 80.0,
-                "checks": [],
-            },
-        },
-        "history": {
-            "status_timeline": [
+            "changes_in_status": [
                 {
                     "proposal_id": proposal_id,
                     "date": "2020-01-01",
                     "status": "Draft",
                     "standard": "bip2",
                 }
-            ]
-        },
-        "insights": {
+            ],
             "word_list": {"bitcoin": 3, "proposal": 2},
             "interrelations": interrelations or {
                 "preamble_extracted": [],

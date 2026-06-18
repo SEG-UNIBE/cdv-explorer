@@ -100,7 +100,7 @@ export function scopeDependencyLinksForSource(linksByType, sourceId, sourceSlug 
   const links = normalizeDependencyLinks(linksByType || EMPTY_LINKS);
   const explicit = links[PREAMBLE_EXTRACTED] || {};
 
-  const scoped = {
+  return {
     [BODY_EXTRACTED_REGEX]: (links[BODY_EXTRACTED_REGEX] || []).map((edge) => scopeDependencyEdge(edge, sourceId, sourceSlug, sourceIdBySlug)),
     [BODY_EXTRACTED_LLM]: (links[BODY_EXTRACTED_LLM] || []).map((edge) => scopeDependencyEdge(edge, sourceId, sourceSlug, sourceIdBySlug)),
     [PREAMBLE_EXTRACTED]: Object.fromEntries(
@@ -110,11 +110,6 @@ export function scopeDependencyLinksForSource(linksByType, sourceId, sourceSlug 
       ])
     ),
   };
-
-  Object.entries(scoped[PREAMBLE_EXTRACTED]).forEach(([relationType, edges]) => {
-    scoped[relationType] = edges;
-  });
-  return scoped;
 }
 
 function countAllLinks(linksByType) {
@@ -306,9 +301,6 @@ function mergeLinks(perSourceDatasets) {
       }
       merged[PREAMBLE_EXTRACTED][relationType].push(...(entries || []));
     });
-  });
-  Object.entries(merged[PREAMBLE_EXTRACTED]).forEach(([relationType, entries]) => {
-    merged[relationType] = entries;
   });
   return merged;
 }

@@ -51,6 +51,18 @@ function linksFromDependencyEdges(dependencyEdges) {
   return links;
 }
 
+function normalizePreambleLinks(value) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) {
+    return {};
+  }
+
+  return Object.fromEntries(
+    Object.entries(value)
+      .filter(([, edges]) => Array.isArray(edges))
+      .map(([relationType, edges]) => [relationType, edges])
+  );
+}
+
 export function normalizeDependencyLinks(rawLinks) {
   const dependencyEdges = Array.isArray(rawLinks)
     ? rawLinks
@@ -58,22 +70,10 @@ export function normalizeDependencyLinks(rawLinks) {
   const links = dependencyEdges
     ? linksFromDependencyEdges(dependencyEdges)
     : (rawLinks || {});
-  const preambleExtracted = links[PREAMBLE_EXTRACTED] || {};
-  const preambleRelationTypes = Array.from(new Set([
-    ...Object.keys(preambleExtracted),
-    ...['requires', 'replaces', 'proposed_replacement'].filter((relationType) => Array.isArray(links[relationType])),
-  ]));
-  const normalizedPreamble = Object.fromEntries(
-    preambleRelationTypes.map((relationType) => [
-      relationType,
-      preambleExtracted[relationType] || links[relationType] || [],
-    ])
-  );
 
   return {
     [BODY_EXTRACTED_REGEX]: links[BODY_EXTRACTED_REGEX] || [],
-    [PREAMBLE_EXTRACTED]: normalizedPreamble,
-    ...normalizedPreamble,
+    [PREAMBLE_EXTRACTED]: normalizePreambleLinks(links[PREAMBLE_EXTRACTED]),
     [BODY_EXTRACTED_LLM]: links[BODY_EXTRACTED_LLM] || [],
   };
 }

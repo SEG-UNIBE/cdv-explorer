@@ -8,8 +8,6 @@ import {
   DEFAULT_EDGE_COLORS,
   DEFAULT_LINK_WIDTH,
   DIFFERENTIAL_EDGE_COLORS,
-  EXPLICIT_DEPENDENCY_COLORS,
-  EXPLICIT_DEPENDENCY_STYLES,
   PINNED_LINK_WIDTH,
   PREAMBLE_EXTRACTED,
   allowGraphZoomGesture,
@@ -21,6 +19,9 @@ import {
   edgeTargetSourceId,
   formatRelationTypeLabel,
   getLinkTypeLabel,
+  getPreambleRelationDasharray,
+  getPreambleRelationStroke,
+  getPreambleRelationTypes,
   nodeGraphId,
   normalizeCategory,
   getSourceScopedEcosystem,
@@ -279,11 +280,12 @@ export function NetworkDiagramCanvas({
       }
       return `url(#${nodePatternId(String(entry.source || ''), groupLabel, patternKind)})`;
     };
+    const preambleRelationTypes = getPreambleRelationTypes(links);
 
     const getEdgeColor = (edge) => {
       if (!isDifferentialMode) {
         if (linkType === PREAMBLE_EXTRACTED) {
-          return EXPLICIT_DEPENDENCY_COLORS[edge.relationType] || '#667085';
+          return getPreambleRelationStroke();
         }
         return DEFAULT_EDGE_COLORS[edge.relationType] || '#607d8b';
       }
@@ -304,7 +306,7 @@ export function NetworkDiagramCanvas({
       if (linkType !== PREAMBLE_EXTRACTED) {
         return null;
       }
-      return EXPLICIT_DEPENDENCY_STYLES[edge.relationType] || null;
+      return getPreambleRelationDasharray(edge.relationType, preambleRelationTypes);
     };
 
     const updateExportPayload = () => {
@@ -464,14 +466,6 @@ export function NetworkDiagramCanvas({
       );
     };
 
-    const relationLabel = {
-      body_extracted_regex: 'Regex-Extracted Dependency',
-      body_extracted_llm: 'LLM-Extracted Dependency',
-      requires: 'Requires',
-      replaces: 'Replaces',
-      proposed_replacement: 'Proposed Replacement',
-    };
-
     const renderEdgeTooltip = (edge) => {
       const sourceEcosystem = getSourceScopedEcosystem(ecosystem, edgeSourceSourceId(edge));
       const targetEcosystem = getSourceScopedEcosystem(ecosystem, edgeTargetSourceId(edge));
@@ -483,7 +477,13 @@ export function NetworkDiagramCanvas({
         `<strong><a href="${getProposalUrl(targetId, snapshotLabel, { linkMode }, targetEcosystem)}" target="_blank" rel="noreferrer">${formatProposalReference(targetId, targetEcosystem)}</a></strong><br/>` +
         `Type: ${
           !isDifferentialMode
-            ? (relationLabel[edge.relationType] || formatRelationTypeLabel(edge.relationType))
+            ? (
+              edge.relationType === 'body_extracted_regex'
+                ? 'Regex-Extracted Dependency'
+                : edge.relationType === 'body_extracted_llm'
+                  ? 'LLM-Extracted Dependency'
+                  : formatRelationTypeLabel(edge.relationType)
+            )
             : (
               edge.comparisonStatus === 'overlap'
                 ? `${getLinkTypeLabel(linkType)} + ${getLinkTypeLabel(baselineType)}`

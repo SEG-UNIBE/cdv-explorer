@@ -940,7 +940,7 @@ export function buildDashboardData(dataset, ecosystem = {}) {
     const failuresByCheck = new Map();
 
     conformityRows.forEach((entry) => {
-      const complianceDetails = entry?.formal_compliance || entry?.compliance || {};
+      const complianceDetails = entry?.formal_compliance || {};
       const checks = Array.isArray(complianceDetails?.[standardKey]?.checks)
         ? complianceDetails[standardKey].checks
         : [];

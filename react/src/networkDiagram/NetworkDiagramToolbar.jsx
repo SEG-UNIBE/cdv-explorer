@@ -6,18 +6,15 @@ import {
   COLOR_BY_OPTIONS,
   DIFFERENTIAL_EDGE_COLORS,
   DEFAULT_EDGE_COLORS,
-  EXPLICIT_DEPENDENCY_STYLES,
   LAYOUT_OPTIONS,
   LINK_TYPE_OPTIONS,
   PREAMBLE_EXTRACTED,
+  formatRelationTypeLabel,
   getLinkTypeLabel,
+  getPreambleRelationDasharray,
+  getPreambleRelationStroke,
+  getPreambleRelationTypes,
 } from './networkDiagramUtils';
-
-const EXPLICIT_LEGEND_ITEMS = [
-  { label: 'Requires', dasharray: EXPLICIT_DEPENDENCY_STYLES.requires, stroke: '#667085' },
-  { label: 'Replaces', dasharray: EXPLICIT_DEPENDENCY_STYLES.replaces, stroke: '#667085' },
-  { label: 'Proposed Replacement', dasharray: EXPLICIT_DEPENDENCY_STYLES.proposed_replacement, stroke: '#667085' },
-];
 
 function EdgeLegendLine({ stroke, dasharray }) {
   return (
@@ -63,7 +60,9 @@ export function NetworkDiagramToolbar({
   onlyCrossSource,
   setOnlyCrossSource,
   canFilterCrossSource,
+  linksByType,
 }) {
+  const preambleRelationTypes = getPreambleRelationTypes(linksByType);
   const edgeLegendItems = isDifferentialMode
     ? [
       { label: getLinkTypeLabel(linkType), dasharray: null, stroke: DIFFERENTIAL_EDGE_COLORS.approach_only },
@@ -71,7 +70,11 @@ export function NetworkDiagramToolbar({
       { label: `Missing from ${getLinkTypeLabel(linkType)}`, dasharray: '7 5', stroke: DIFFERENTIAL_EDGE_COLORS.baseline_only },
     ]
     : linkType === PREAMBLE_EXTRACTED
-      ? EXPLICIT_LEGEND_ITEMS
+      ? preambleRelationTypes.map((relationType) => ({
+        label: formatRelationTypeLabel(relationType),
+        dasharray: getPreambleRelationDasharray(relationType, preambleRelationTypes),
+        stroke: getPreambleRelationStroke(),
+      }))
       : [{ label: getLinkTypeLabel(linkType), dasharray: null, stroke: DEFAULT_EDGE_COLORS[linkType] || '#667085' }];
 
   const approachLegendItems = isDifferentialMode

@@ -71,6 +71,7 @@ export const NetworkDiagram = ({
           onlyCrossSource={state.onlyCrossSource}
           setOnlyCrossSource={state.setOnlyCrossSource}
           canFilterCrossSource={state.canFilterCrossSource}
+          linksByType={state.links}
         />
       </CollapsibleControls>
       <NetworkDiagramCanvas

@@ -19,5 +19,3 @@ DEPENDENCY_APPROACH_LABELS = {
     BODY_EXTRACTED_REGEX: "Body-Extracted Dependencies (Regex)",
     BODY_EXTRACTED_LLM: "Body-Extracted Dependencies (LLM)",
 }
-
-PREAMBLE_DEPENDENCY_SUBTYPES = ("requires", "replaces", "proposed_replacement")

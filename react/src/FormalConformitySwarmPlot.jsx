@@ -216,7 +216,7 @@ export const FormalConformitySwarmPlot = ({
 
       const renderTooltipHtml = (entry) => (
         (() => {
-          const complianceDetails = entry?.formal_compliance || entry?.compliance || {};
+          const complianceDetails = entry?.formal_compliance || {};
           const panelCompliance = complianceDetails?.[panel.key] || {};
           const checks = panelCompliance.checks || [];
           return (

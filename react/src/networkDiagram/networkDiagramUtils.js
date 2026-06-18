@@ -33,11 +33,8 @@ export const COLOR_BY_OPTION_VALUES = new Set(COLOR_BY_OPTIONS.map((option) => o
 export const LAYOUT_OPTION_VALUES = new Set(LAYOUT_OPTIONS.map((option) => option.value));
 export const LINK_TYPE_OPTION_VALUES = new Set(LINK_TYPE_OPTIONS.map((option) => option.value));
 
-export const EXPLICIT_DEPENDENCY_COLORS = {
-  requires: '#667085',
-  replaces: '#667085',
-  proposed_replacement: '#667085',
-};
+const PREAMBLE_RELATION_STROKE = '#667085';
+const PREAMBLE_RELATION_DASH_PATTERNS = [null, '8 5', '2.5 4', '10 4 2 4', '4 4'];
 
 export const DEFAULT_EDGE_COLORS = {
   [BODY_EXTRACTED_REGEX]: '#939AA9',
@@ -54,12 +51,6 @@ export const DEFAULT_LINK_WIDTH = 1.8;
 export const ACTIVE_LINK_WIDTH = 2.8;
 export const PINNED_LINK_WIDTH = 2.6;
 
-export const EXPLICIT_DEPENDENCY_STYLES = {
-  requires: null,
-  replaces: '8 5',
-  proposed_replacement: '2.5 4',
-};
-
 export function getLinkTypeLabel(linkType) {
   return LINK_TYPE_OPTIONS.find((option) => option.value === linkType)?.label || linkType;
 }
@@ -71,6 +62,24 @@ export function formatRelationTypeLabel(relationType) {
     .filter(Boolean)
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(' ');
+}
+
+export function getPreambleRelationTypes(linksByType) {
+  return Object.keys(linksByType?.[PREAMBLE_EXTRACTED] || {})
+    .filter((relationType) => Array.isArray(linksByType?.[PREAMBLE_EXTRACTED]?.[relationType]))
+    .sort((left, right) => formatRelationTypeLabel(left).localeCompare(formatRelationTypeLabel(right)));
+}
+
+export function getPreambleRelationStroke() {
+  return PREAMBLE_RELATION_STROKE;
+}
+
+export function getPreambleRelationDasharray(relationType, relationTypes = []) {
+  const orderedTypes = Array.isArray(relationTypes) && relationTypes.length > 0
+    ? relationTypes
+    : [relationType];
+  const relationIndex = Math.max(0, orderedTypes.indexOf(relationType));
+  return PREAMBLE_RELATION_DASH_PATTERNS[relationIndex % PREAMBLE_RELATION_DASH_PATTERNS.length];
 }
 
 export function buildEdgeKey(source, target) {

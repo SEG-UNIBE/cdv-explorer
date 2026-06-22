@@ -1,0 +1,21 @@
+# Ground-truth dependency edges for the Nostr ecosystem (NIPs).
+#
+# Columns:
+#   source         Proposal that holds the dependency, in graph_key format (e.g. nips:04).
+#   target         Proposal being depended on (graph_key format).
+#   relation_type  One of:
+#                    depends_on   source is functionally dependent on target.
+#                    references   source cites or mentions target without functional dependency.
+#                    supersedes   source obsoletes or replaces target.
+#   confidence     One of: low | medium | high.
+#   evidence       Short anchor (URL fragment, section name, or direct quote) backing the claim. Wrap in quotes if it contains commas.
+#   note           Optional free-text rationale. Wrap in quotes if it contains commas.
+#   reviewer       Reviewer initials or handle.
+#   reviewed_at    ISO date of review (YYYY-MM-DD). Snapshot context can be triangulated from this against the latest snapshot at review time.
+#
+# Inter-source edges (if/when additional Nostr sources are added) are recorded in this single file.
+# Lines starting with '#' are skipped during import. Replace the examples below with real entries.
+#
+source,target,relation_type,confidence,evidence,note,reviewer,reviewed_at
+nips:17,nips:44,depends_on,high,"This NIP defines an encrypted chat scheme which uses NIP-44 encryption",,rbo,2026-06-22
+nips:17,nips:59,depends_on,high,"This NIP defines an encrypted chat scheme which uses [...] NIP-59 gift-wrapping. [...] Following NIP-59, the unsigned chat messages must be sealed (kind:13) and then gift-wrapped (kind:1059)",,rbo,2026-06-22

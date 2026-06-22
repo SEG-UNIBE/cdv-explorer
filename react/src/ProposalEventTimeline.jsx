@@ -46,6 +46,9 @@ function formatEventTime(timestamp) {
 }
 
 function getEventTitle(event) {
+  if (event.kind === 'regime_transition') {
+    return String(event.label || 'Regime transition');
+  }
   return event.kind === 'creation' ? 'Created' : String(event.label || event.status || 'Status update');
 }
 
@@ -57,6 +60,15 @@ function getEventDescription(event) {
     return 'Proposal creation.';
   }
 
+  if (event.kind === 'regime_transition') {
+    const previousStandard = String(event.previous_standard || '').trim();
+    const currentStandard = String(event.standard || '').trim();
+    if (event.previous_status && event.previous_status !== event.status) {
+      return `Reporting regime changed from ${previousStandard || 'the previous regime'} to ${currentStandard || 'the next regime'}, remapping status from ${event.previous_status} to ${event.status}.`;
+    }
+    return `Reporting regime changed from ${previousStandard || 'the previous regime'} to ${currentStandard || 'the next regime'} while status remained ${event.status}.`;
+  }
+
   if (event.previous_status && event.previous_status !== event.status) {
     return `Status changed from ${event.previous_status} to ${event.status}.`;
   }
@@ -65,17 +77,17 @@ function getEventDescription(event) {
 }
 
 function formatMilestoneLabel(label) {
-  if (String(label || '').trim() === 'BIP3 Activation') {
-    return 'BIP-3 activation';
+  const text = String(label || '').trim();
+  const match = text.match(/^BIP(\d+) Activation$/i);
+  if (match) {
+    return `BIP-${match[1]} activation`;
   }
-  return String(label || '').trim();
+  return text;
 }
 
 export function ProposalEventTimeline({
   timeline,
-  proposalShortLabel = 'BIP',
-  milestoneDate = '',
-  milestoneLabel = '',
+  milestones = [],
 }) {
   const snapshotLabel = useDashboardSnapshot();
   const linkMode = useDashboardLinkMode();
@@ -121,45 +133,49 @@ export function ProposalEventTimeline({
     };
   }, [events]);
 
-  const milestoneOffset = useMemo(() => {
-    const timestamp = Date.parse(`${String(milestoneDate || '').trim()}T00:00:00Z`);
-    if (!eventDomain || Number.isNaN(timestamp)) {
-      return null;
-    }
-    if (timestamp < eventDomain.min || timestamp > eventDomain.max) {
-      return null;
-    }
-    if (eventDomain.min === eventDomain.max) {
-      return 50;
+  const visibleMilestones = useMemo(() => {
+    if (!eventDomain) {
+      return [];
     }
 
-    const normalizedOffset = (timestamp - eventDomain.min) / (eventDomain.max - eventDomain.min);
-    return EDGE_PADDING_PERCENT + normalizedOffset * (100 - EDGE_PADDING_PERCENT * 2);
-  }, [eventDomain, milestoneDate]);
+    return (Array.isArray(milestones) ? milestones : [])
+      .map((milestone) => {
+        const dateText = String(milestone?.date || '').trim();
+        const timestamp = Date.parse(`${dateText}T00:00:00Z`);
+        if (Number.isNaN(timestamp) || timestamp < eventDomain.min || timestamp > eventDomain.max) {
+          return null;
+        }
 
-  const listMilestoneIndex = useMemo(() => {
-    const timestamp = Date.parse(`${String(milestoneDate || '').trim()}T00:00:00Z`);
-    if (Number.isNaN(timestamp) || events.length < 2) {
-      return -1;
-    }
+        const offset = eventDomain.min === eventDomain.max
+          ? 50
+          : EDGE_PADDING_PERCENT + ((timestamp - eventDomain.min) / (eventDomain.max - eventDomain.min)) * (100 - EDGE_PADDING_PERCENT * 2);
 
-    let sawEarlierEvent = false;
-    for (let index = 0; index < events.length; index += 1) {
-      const eventTimestamp = Date.parse(`${events[index].date}T00:00:00Z`);
-      if (Number.isNaN(eventTimestamp)) {
-        continue;
-      }
+        let listIndex = -1;
+        if (events.length >= 2) {
+          let sawEarlierEvent = false;
+          for (let index = 0; index < events.length; index += 1) {
+            const eventTimestamp = Date.parse(`${events[index].date}T00:00:00Z`);
+            if (Number.isNaN(eventTimestamp)) {
+              continue;
+            }
+            if (eventTimestamp < timestamp) {
+              sawEarlierEvent = true;
+              continue;
+            }
+            listIndex = sawEarlierEvent ? index : -1;
+            break;
+          }
+        }
 
-      if (eventTimestamp < timestamp) {
-        sawEarlierEvent = true;
-        continue;
-      }
-
-      return sawEarlierEvent ? index : -1;
-    }
-
-    return -1;
-  }, [events, milestoneDate]);
+        return {
+          key: `${dateText}-${String(milestone?.standard || '').trim() || 'milestone'}`,
+          label: formatMilestoneLabel(milestone?.label || 'Milestone'),
+          offset,
+          listIndex,
+        };
+      })
+      .filter(Boolean);
+  }, [eventDomain, events, milestones]);
 
   if (!timeline || !events.length) {
     return null;
@@ -217,17 +233,18 @@ export function ProposalEventTimeline({
       <div className="proposal-event-history__plot-wrap">
         <div className="proposal-event-history__plot" role="img" aria-label={`${proposalLabel} event timeline`}>
           <div className="proposal-event-history__axis" />
-          {milestoneOffset != null ? (
+          {visibleMilestones.map((milestone) => (
             <div
+              key={milestone.key}
               className="proposal-event-history__milestone"
-              style={{ left: `${milestoneOffset}%` }}
+              style={{ left: `${milestone.offset}%` }}
               aria-hidden="true"
             >
               <span className="proposal-event-history__milestone-label">
-                {formatMilestoneLabel(milestoneLabel || 'Milestone')}
+                {milestone.label}
               </span>
             </div>
-          ) : null}
+          ))}
           <div className="proposal-event-history__axis-label is-start">
             {formatDate(events[0]?.date, { year: 'numeric', month: 'short', day: 'numeric' })}
             {events[0]?.timeLabel ? `, ${events[0].timeLabel}` : ''}
@@ -295,11 +312,11 @@ export function ProposalEventTimeline({
 
           return (
             <Fragment key={event.key}>
-              {index === listMilestoneIndex ? (
-                <div className="proposal-event-history__list-milestone" aria-hidden="true">
-                  <span>{formatMilestoneLabel(milestoneLabel || 'Milestone')}</span>
+              {visibleMilestones.filter((milestone) => milestone.listIndex === index).map((milestone) => (
+                <div key={milestone.key} className="proposal-event-history__list-milestone" aria-hidden="true">
+                  <span>{milestone.label}</span>
                 </div>
-              ) : null}
+              ))}
               <article
                 className={`proposal-event-history__item${isActive ? ' is-active' : ''}`}
                 style={{ '--event-color': color }}

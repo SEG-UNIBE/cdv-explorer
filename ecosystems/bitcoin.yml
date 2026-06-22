@@ -107,20 +107,63 @@ sources:
       # Use valid_from / valid_until (both optional) to bound each period.
       # status_order drives display ordering in paper figures.
       regimes:
-        - valid_until: "2026-01-11"
-          standard: bip2
+        - valid_until: "2016-11-29"
+          standard: bip1
+          label: BIP1
           status_order:
             - Draft
-            - Proposed
+            - Active
+            - Accepted
+            - Deferred
             - Rejected
             - Withdrawn
-            - Deferred
             - Final
+            - Superseded
+        - valid_from: "2016-11-30"
+          valid_until: "2026-01-11"
+          standard: bip2
+          label: BIP2
+          milestone_label: BIP2 Activation
+          transition_status_map:
+            - from: Accepted
+              to: Proposed
+            - from: Superseded
+              to: Replaced
+          status_order:
+            - Draft
             - Active
+            - Proposed
+            - Deferred
+            - Rejected
+            - Withdrawn
+            - Final
             - Replaced
             - Obsolete
         - valid_from: "2026-01-12"
           standard: bip3
+          label: BIP3
+          milestone_label: BIP3 Activation
+          transition_status_map:
+            - from: Accepted
+              to: Complete
+            - from: Proposed
+              to: Complete
+            - from: Active
+              to: Deployed
+            - from: Final
+              to: Deployed
+            - from: Deferred
+              to: Closed
+            - from: Rejected
+              to: Closed
+            - from: Withdrawn
+              to: Closed
+            - from: Replaced
+              to: Closed
+            - from: Obsolete
+              to: Closed
+            - from: Superseded
+              to: Closed
           status_order:
             - Draft
             - Complete

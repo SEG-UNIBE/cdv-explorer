@@ -218,7 +218,7 @@ class EvolutionStatusTests(unittest.TestCase):
                     "author": "Johnson Lau",
                     "path": "bip-segwitaddress.mediawiki",
                     "status": "Draft",
-                    "standard": "bip2",
+                    "standard": "bip1",
                 }
             ],
         )
@@ -270,7 +270,23 @@ class EvolutionStatusTests(unittest.TestCase):
         )
         self.assertEqual(payload["meta"]["first_period"], "2025-Q4")
         self.assertEqual(payload["meta"]["last_period"], "2026-Q1")
-        self.assertEqual(payload["meta"]["milestones"], [{"date": "2026-01-12", "label": "BIP3 Activation"}])
+        self.assertEqual(
+            payload["meta"]["milestones"],
+            [
+                {
+                    "date": "2016-11-30",
+                    "label": "BIP2 Activation",
+                    "standard": "bip2",
+                    "standard_label": "BIP2",
+                },
+                {
+                    "date": "2026-01-12",
+                    "label": "BIP3 Activation",
+                    "standard": "bip3",
+                    "standard_label": "BIP3",
+                },
+            ],
+        )
 
         segmented_rows = {
             row["period_key"]: row for row in payload["status_evolution_segmented"]["rows"]
@@ -290,6 +306,219 @@ class EvolutionStatusTests(unittest.TestCase):
         self.assertEqual(segmented_rows["2026-Q1-post-bip3"]["values"]["bip3:Draft"], 1)
         self.assertEqual(segmented_rows["2026-Q1-post-bip3"]["values"]["bip3:Deployed"], 1)
         self.assertEqual(segmented_rows["2026-Q1-post-bip3"]["values"]["bip3:Complete"], 1)
+
+    def test_prepare_evolution_payload_splits_bip2_cutover_period_and_keeps_bip1_statuses(self) -> None:
+        proposal_data = [
+            {
+                "raw": {"preamble": {"bip": "1"}},
+                "insights": {
+                    "changes_in_status": [
+                        {"date": "2016-10-01", "status": "Accepted", "standard": "bip2"},
+                        {"date": "2016-11-30", "status": "Replaced", "standard": "bip2"},
+                    ]
+                },
+            },
+            {
+                "raw": {"preamble": {"bip": "2"}},
+                "insights": {
+                    "changes_in_status": [
+                        {"date": "2016-10-01", "status": "Draft", "standard": "bip2"},
+                        {"date": "2016-11-30", "status": "Active", "standard": "bip2"},
+                    ]
+                },
+            },
+        ]
+
+        payload = prepare_evolution_payload(
+            proposal_data=proposal_data,
+            snapshot_label="2016-12-31",
+            id_field="bip",
+        )
+
+        self.assertEqual(
+            [row["period_key"] for row in payload["status_evolution"]["rows"]],
+            ["2016-Q4-pre-bip2", "2016-Q4-post-bip2"],
+        )
+        self.assertEqual(
+            payload["meta"]["milestones"][0],
+            {
+                "date": "2016-11-30",
+                "label": "BIP2 Activation",
+                "standard": "bip2",
+                "standard_label": "BIP2",
+            },
+        )
+
+        segmented_rows = {
+            row["period_key"]: row for row in payload["status_evolution_segmented"]["rows"]
+        }
+
+        self.assertEqual(segmented_rows["2016-Q4-pre-bip2"]["period_end"], "2016-11-29")
+        self.assertEqual(segmented_rows["2016-Q4-pre-bip2"]["values"]["bip1:Accepted"], 1)
+        self.assertEqual(segmented_rows["2016-Q4-pre-bip2"]["values"]["bip1:Draft"], 1)
+        self.assertEqual(segmented_rows["2016-Q4-post-bip2"]["period_start"], "2016-11-30")
+        self.assertEqual(segmented_rows["2016-Q4-post-bip2"]["values"]["bip1:Accepted"], 0)
+        self.assertEqual(segmented_rows["2016-Q4-post-bip2"]["values"]["bip1:Draft"], 0)
+        self.assertEqual(segmented_rows["2016-Q4-post-bip2"]["values"]["bip2:Replaced"], 1)
+        self.assertEqual(segmented_rows["2016-Q4-post-bip2"]["values"]["bip2:Active"], 1)
+
+    def test_prepare_evolution_payload_reassigns_legacy_accepted_event_to_bip1_by_date(self) -> None:
+        proposal_data = [
+            {
+                "raw": {"preamble": {"bip": "1"}},
+                "insights": {
+                    "changes_in_status": [
+                        {"date": "2013-10-21", "status": "Accepted", "standard": "bip2"},
+                    ]
+                },
+            }
+        ]
+
+        payload = prepare_evolution_payload(
+            proposal_data=proposal_data,
+            snapshot_label="2014-01-01",
+            id_field="bip",
+        )
+
+        segmented_row = payload["status_evolution_segmented"]["rows"][0]
+        self.assertEqual(segmented_row["values"]["bip1:Accepted"], 1)
+
+    def test_prepare_evolution_payload_preserves_non_official_bip1_status_labels(self) -> None:
+        proposal_data = [
+            {
+                "raw": {
+                    "preamble": {
+                        "bip": "20",
+                        "title": "Preserve historical label",
+                        "created": "2012-03-19",
+                    }
+                },
+                "insights": {
+                    "changes_in_status": [
+                        {"date": "2012-03-19", "status": "Draft", "standard": "bip1"},
+                        {"date": "2013-10-01", "status": "Replaced", "standard": "bip1"},
+                        {"date": "2016-11-30", "status": "Replaced", "standard": "bip2"},
+                    ]
+                },
+            }
+        ]
+
+        payload = prepare_evolution_payload(
+            proposal_data=proposal_data,
+            snapshot_label="2017-01-01",
+            id_field="bip",
+        )
+
+        segment_definitions = {
+            entry["key"]: entry for entry in payload["status_evolution_segmented"]["segmentDefinitions"]
+        }
+        self.assertIn("bip1:Replaced", segment_definitions)
+        self.assertFalse(segment_definitions["bip1:Replaced"]["isOfficial"])
+        self.assertEqual(segment_definitions["bip1:Replaced"]["label"], "Replaced")
+
+        segmented_rows = {
+            row["period_key"]: row for row in payload["status_evolution_segmented"]["rows"]
+        }
+        self.assertEqual(segmented_rows["2016-Q4-pre-bip2"]["values"]["bip1:Replaced"], 1)
+        self.assertEqual(segmented_rows["2016-Q4-post-bip2"]["values"]["bip2:Replaced"], 1)
+
+    def test_prepare_evolution_payload_injects_synthetic_regime_transition_event(self) -> None:
+        proposal_data = [
+            {
+                "raw": {
+                    "preamble": {
+                        "bip": "30",
+                        "title": "Duplicate transactions",
+                        "created": "2012-02-22",
+                    }
+                },
+                "insights": {
+                    "changes_in_status": [
+                        {"date": "2012-02-27", "status": "Draft", "standard": "bip1"},
+                        {"date": "2013-10-21", "status": "Final", "standard": "bip1"},
+                    ]
+                },
+            }
+        ]
+
+        payload = prepare_evolution_payload(
+            proposal_data=proposal_data,
+            snapshot_label="2017-01-01",
+            id_field="bip",
+        )
+
+        timeline = payload["proposal_timelines"][0]
+        self.assertEqual(timeline["current_status"], "Final")
+        self.assertEqual(timeline["current_standard"], "bip2")
+        self.assertEqual(
+            timeline["events"][-1],
+            {
+                "kind": "regime_transition",
+                "label": "BIP2 Activation",
+                "date": "2016-11-30",
+                "timestamp": "2016-11-30T00:00:00Z",
+                "status": "Final",
+                "standard": "bip2",
+                "commit": "",
+                "author": "",
+                "path": "",
+                "previous_status": "Final",
+                "synthetic": True,
+                "previous_standard": "bip1",
+            },
+        )
+
+    def test_prepare_evolution_payload_injects_transition_from_created_anchor_before_first_observed_event(self) -> None:
+        proposal_data = [
+            {
+                "raw": {
+                    "preamble": {
+                        "bip": "100",
+                        "title": "Anchor-based transition",
+                        "created": "2015-06-11",
+                    }
+                },
+                "insights": {
+                    "changes_in_status": [
+                        {"date": "2017-03-08", "status": "Draft", "standard": "bip2"},
+                    ]
+                },
+            }
+        ]
+
+        payload = prepare_evolution_payload(
+            proposal_data=proposal_data,
+            snapshot_label="2017-04-01",
+            id_field="bip",
+        )
+
+        segmented_rows = {
+            row["period_key"]: row for row in payload["status_evolution_segmented"]["rows"]
+        }
+        self.assertEqual(segmented_rows["2016-Q4-pre-bip2"]["values"]["bip1:Draft"], 1)
+        self.assertEqual(segmented_rows["2016-Q4-post-bip2"]["values"]["bip1:Draft"], 0)
+        self.assertEqual(segmented_rows["2016-Q4-post-bip2"]["values"]["bip2:Draft"], 1)
+
+        timeline = payload["proposal_timelines"][0]
+        self.assertEqual(timeline["current_status"], "Draft")
+        self.assertEqual(timeline["current_standard"], "bip2")
+        self.assertEqual(
+            timeline["events"][1],
+            {
+                "kind": "regime_transition",
+                "label": "BIP2 Activation",
+                "date": "2016-11-30",
+                "timestamp": "2016-11-30T00:00:00Z",
+                "status": "Draft",
+                "standard": "bip2",
+                "commit": "",
+                "author": "",
+                "path": "",
+                "previous_status": "Draft",
+                "synthetic": True,
+                "previous_standard": "bip1",
+            },
+        )
 
     def test_prepare_evolution_payload_does_not_project_bip3_before_harvested_transition(self) -> None:
         proposal_data = [

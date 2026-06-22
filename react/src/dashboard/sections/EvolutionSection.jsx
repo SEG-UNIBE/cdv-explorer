@@ -16,17 +16,17 @@ function hasPositiveValues(series) {
 function EvolutionContent({ ecosystem, evolutionPayload }) {
   const [chartMode, setChartMode] = useState('absolute');
   const [selectedProposalId, setSelectedProposalId] = useState('');
-  const overallEvolution = evolutionPayload?.status_evolution_segmented
+  const overallEvolution = useMemo(() => (
+    evolutionPayload?.status_evolution_segmented
     || evolutionPayload?.status_evolution
-    || { categories: [], rows: [] };
+    || { categories: [], rows: [] }
+  ), [evolutionPayload]);
   const proposalTimelines = useMemo(() => (
     Array.isArray(evolutionPayload?.proposal_timelines) ? evolutionPayload.proposal_timelines : []
   ), [evolutionPayload]);
-  const milestoneLabel = evolutionPayload?.meta?.milestones?.[0]?.label || '';
-  const milestoneDate = evolutionPayload?.meta?.milestones?.[0]?.date || '';
-  const formattedMilestoneLabel = milestoneLabel === 'BIP3 Activation'
-    ? 'BIP-3 activation'
-    : (milestoneLabel || 'the process change');
+  const milestones = useMemo(() => (
+    Array.isArray(evolutionPayload?.meta?.milestones) ? evolutionPayload.meta.milestones : []
+  ), [evolutionPayload]);
   const hasData = hasPositiveValues(overallEvolution);
   const proposalTimelineOptions = useMemo(() => proposalTimelines.map((entry) => {
     const eventCount = Number(entry?.event_count ?? entry?.events?.length ?? 0);
@@ -61,9 +61,7 @@ function EvolutionContent({ ecosystem, evolutionPayload }) {
         <h3>{ecosystem.acronym} Status Evolution</h3>
         <p>
           Stacked status counts reconstructed from proposal git history using commit dates.
-          Each bar assigns a {ecosystem.acronym} to the status it had at the end of that quarter, not the status it held for the largest share of days within that quarter. {milestoneDate
-            ? `If the selected snapshot extends beyond ${milestoneDate}, the chart also marks ${formattedMilestoneLabel} with a separate breakpoint inside that quarter.`
-            : ''}
+          Each bar assigns a {ecosystem.acronym} to the status it had at the end of that quarter, not the status it held for the largest share of days within that quarter. Labels marked with `*` denote non-official status names observed in repository history.
         </p>
         <CollapsibleControls>
           <div className="network-layout-controls">
@@ -125,8 +123,7 @@ function EvolutionContent({ ecosystem, evolutionPayload }) {
           <ProposalEventTimeline
             timeline={selectedProposalTimeline}
             proposalShortLabel={ecosystem.acronym}
-            milestoneDate={milestoneDate}
-            milestoneLabel={milestoneLabel}
+            milestones={milestones}
           />
         </ExportableCard>
       ) : null}

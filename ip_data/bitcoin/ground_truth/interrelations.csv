@@ -1,21 +1,3 @@
-# Ground-truth interrelation edges for the Bitcoin ecosystem (BIPs + SLIPs).
-#
-# Columns:
-#   source         Proposal that holds the dependency, in graph_key format (e.g. bips:32, slips:44).
-#   target         Proposal being depended on (graph_key format).
-#   relation_type  One of:
-#                    depends_on   source is functionally dependent on target.
-#                    references   source cites or mentions target without functional dependency.
-#                    supersedes   source obsoletes or replaces target.
-#   confidence     One of: low | medium | high.
-#   evidence       Short anchor (URL fragment, section name, or direct quote) backing the claim. Wrap in quotes if it contains commas.
-#   note           Optional free-text rationale. Wrap in quotes if it contains commas.
-#   reviewer       Reviewer initials or handle.
-#   reviewed_at    ISO date of review (YYYY-MM-DD). Snapshot context can be triangulated from this against the latest snapshot at review time.
-#
-# Inter-source edges (e.g. bips:N -> slips:M) are recorded in this single file.
-# Lines starting with '#' are skipped during import. Replace the examples below with real entries.
-#
 source,target,relation_type,confidence,evidence,note,reviewer,reviewed_at 
 bips:31,bips:14,depends_on,high,"When the protocol version as negotiated in the 'ver' message is greater than 60000, the 'ping' message must contain a uint64 field called 'nonce'.","BIP14 defines the protocol-version negotiation that gates this   behaviour.",rbo,2026-06-22
 bips:77,bips:21,depends_on,high,"The receiver initiates a Payjoin Session by sharing a Payjoin URI that includes the URL of an ephemeral mailbox [...] Bitcoin URIs (BIP 21 or BIP 321) are a standard way to request bitcoin. A Payjoin URI is a Bitcoin URI that contains a pj parameter.",BIP21 originally defined the Bitcoin URI scheme that carries the Payjoin pj parameter. BIP321 later replaced BIP21.,rbo,2026-06-22

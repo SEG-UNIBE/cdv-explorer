@@ -8,6 +8,13 @@ function getSources(ecosystem) {
     .filter(Boolean);
 }
 
+function buildPlaceholder(ecosystem, sources, singleSelect) {
+  const exampleSource = sources[0]?.acronym || ecosystem?.acronym || 'IP';
+  return singleSelect
+    ? `e.g. ${exampleSource}32`
+    : `e.g. ${exampleSource}3,10-15,99`;
+}
+
 function normalizePart(value) {
   return String(value || '').trim().replace(/^0+(\d)/, '$1');
 }
@@ -171,7 +178,7 @@ export function ProposalFilterControl({
   value,
   onChange,
   ecosystem,
-  placeholder = 'Type BIP, then 2,3-5 and press Enter',
+  placeholder = '',
   ariaLabel = 'Filter proposals',
   singleSelect = false,
   layout = 'default',
@@ -184,6 +191,7 @@ export function ProposalFilterControl({
   const sources = useMemo(() => getSources(ecosystem), [ecosystem]);
   const activeSource = sources.find((source) => source.sourceId === activeSourceId) || null;
   const groups = useMemo(() => parseGroups(value, sources), [sources, value]);
+  const resolvedPlaceholder = placeholder || buildPlaceholder(ecosystem, sources, singleSelect);
 
   const commit = (tokens) => {
     if (singleSelect) {
@@ -269,7 +277,7 @@ export function ProposalFilterControl({
         }
       }}
       onBlur={commitDraft}
-      placeholder={placeholder}
+      placeholder={resolvedPlaceholder}
       aria-label={ariaLabel}
     />
   );

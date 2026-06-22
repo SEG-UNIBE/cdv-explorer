@@ -125,7 +125,6 @@ export function ConformitySection({
               value={highlightedConformityProposal}
               onChange={setHighlightedConformityProposal}
               ecosystem={activeEcosystem}
-              placeholder={`Type ${activeEcosystem.acronym}, then 32 and press Enter`}
               ariaLabel="Find proposal: type an ID to highlight it in the conformity chart"
               singleSelect
               layout="split"

@@ -270,7 +270,6 @@ export function AuthorshipSection({
             value={wordCloudFilterText}
             onChange={setWordCloudFilterText}
             ecosystem={ecosystem}
-            placeholder="Type BIP, then 2,3-5 and press Enter"
             aria-label="Filter proposals by ID for word cloud (e.g. BIP32, SLIP44, BIP30-BIP35)"
             layout="split"
             entryLabel="Filter proposals"

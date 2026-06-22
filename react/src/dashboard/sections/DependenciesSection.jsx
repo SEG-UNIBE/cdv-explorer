@@ -108,7 +108,6 @@ export function DependenciesSection({
                 value={highlightedDependencyProposal}
                 onChange={setHighlightedDependencyProposal}
                 ecosystem={ecosystem}
-                placeholder="Type BIP, then 32 and press Enter"
                 ariaLabel="Find proposal: search by ID to highlight its node"
                 singleSelect
                 layout="split"
@@ -129,7 +128,6 @@ export function DependenciesSection({
                 value={dependencyFilterText}
                 onChange={setDependencyFilterText}
                 ecosystem={ecosystem}
-                placeholder="Type BIP, then 2,3-5 and press Enter"
                 ariaLabel="Filter proposals by ID (e.g. BIP32, SLIP44, BIP30-BIP35)"
                 layout="split"
                 entryLabel="Filter Proposals"
@@ -194,7 +192,6 @@ export function DependenciesSection({
               value={dependencyFilterText}
               onChange={setDependencyFilterText}
               ecosystem={ecosystem}
-              placeholder="Type BIP, then 2,3-5 and press Enter"
               ariaLabel="Filter proposals for dependency metrics"
               layout="split"
               entryLabel="Filter Proposals"

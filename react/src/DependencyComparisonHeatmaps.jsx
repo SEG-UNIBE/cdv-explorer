@@ -534,7 +534,6 @@ export function DependencyComparisonHeatmaps({
                 value={sourceFilterText}
                 onChange={setSourceFilterText}
                 ecosystem={ecosystem}
-                placeholder="Type BIP, then 2,3-5 and press Enter"
                 ariaLabel="Filter source proposals for dependency comparison details"
                 layout="split"
                 entryLabel="Filter Proposals (Source)"
@@ -554,7 +553,6 @@ export function DependencyComparisonHeatmaps({
                 value={targetFilterText}
                 onChange={setTargetFilterText}
                 ecosystem={ecosystem}
-                placeholder="Type BIP, then 2,3-5 and press Enter"
                 ariaLabel="Filter target proposals for dependency comparison details"
                 layout="split"
                 entryLabel="Filter Proposals (Target)"

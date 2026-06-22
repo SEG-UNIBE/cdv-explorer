@@ -225,7 +225,8 @@ p {
 .p-inputtext::placeholder,
 .p-dropdown .p-dropdown-label.p-placeholder,
 .p-multiselect .p-multiselect-label.p-placeholder {
-  color: var(--app-text-muted);
+  color: color-mix(in srgb, var(--app-text) 40%, transparent);
+  opacity: 1;
 }
 
 .p-inputtext:enabled:hover,

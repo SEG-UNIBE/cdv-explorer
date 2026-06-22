@@ -12,7 +12,7 @@ function buildPlaceholder(ecosystem, sources, singleSelect) {
   const exampleSource = sources[0]?.acronym || ecosystem?.acronym || 'IP';
   return singleSelect
     ? `e.g. ${exampleSource}32`
-    : `e.g. ${exampleSource}3,10-15,99`;
+    : `e.g. ${exampleSource}3,10-15`;
 }
 
 function normalizePart(value) {

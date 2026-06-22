@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { DEFAULT_DEPENDENCY_APPROACH } from '../dependencyApproaches';
 import {
+  ATTRIBUTE_FILTER_DIMENSION_VALUES,
   BASELINE_NONE_VALUE,
   COLOR_BY_OPTION_VALUES,
   LAYOUT_OPTION_VALUES,
@@ -10,9 +11,11 @@ import {
   filterCrossSourceDependencyGraph,
   formatProposalFilterValue,
   formatSnapshotFilePart,
+  getDependencyNodeAttributeFallbackLabel,
   isCrossSourceDependencyEdge,
   normalizeImportedPositions,
   normalizeProposalId,
+  normalizeCategory,
 } from './networkDiagramUtils';
 
 export function useNetworkDiagramState({
@@ -39,6 +42,8 @@ export function useNetworkDiagramState({
   const [physicsEnabled, setPhysicsEnabled] = useState(true);
   const [importedLayout, setImportedLayout] = useState(null);
   const [onlyCrossSource, setOnlyCrossSource] = useState(false);
+  const [attributeFilterDimension, setAttributeFilterDimension] = useState('');
+  const [attributeFilterValues, setAttributeFilterValues] = useState([]);
 
   const isDifferentialMode = baselineType !== BASELINE_NONE_VALUE;
 
@@ -74,6 +79,35 @@ export function useNetworkDiagramState({
     }
     return filterCrossSourceDependencyGraph(baseNodes, baseLinks);
   }, [baseLinks, baseNodes, canFilterCrossSource, onlyCrossSource]);
+
+  const attributeFilterOptions = useMemo(() => {
+    if (!attributeFilterDimension) {
+      return [];
+    }
+    const fallbackLabel = getDependencyNodeAttributeFallbackLabel(attributeFilterDimension);
+    const labels = Array.from(new Set(
+      nodes.map((node) => normalizeCategory(node?.[attributeFilterDimension], fallbackLabel))
+    ));
+    labels.sort((left, right) => left.localeCompare(right, undefined, { sensitivity: 'base', numeric: true }));
+    return labels.map((label) => ({ label, value: label }));
+  }, [attributeFilterDimension, nodes]);
+
+  useEffect(() => {
+    if (!attributeFilterDimension && attributeFilterValues.length > 0) {
+      setAttributeFilterValues([]);
+    }
+  }, [attributeFilterDimension, attributeFilterValues]);
+
+  useEffect(() => {
+    if (attributeFilterValues.length === 0) {
+      return;
+    }
+    const validValues = new Set(attributeFilterOptions.map((option) => option.value));
+    const filteredValues = attributeFilterValues.filter((value) => validValues.has(value));
+    if (filteredValues.length !== attributeFilterValues.length) {
+      setAttributeFilterValues(filteredValues);
+    }
+  }, [attributeFilterOptions, attributeFilterValues]);
 
   useEffect(() => {
     physicsEnabledRef.current = physicsEnabled;
@@ -185,6 +219,23 @@ export function useNetworkDiagramState({
         setOnlyCrossSource(payload.filter.only_cross_source);
       }
 
+      const importedAttributeDimension = String(payload?.filter?.attribute_dimension || '').trim();
+      if (ATTRIBUTE_FILTER_DIMENSION_VALUES.has(importedAttributeDimension)) {
+        setAttributeFilterDimension(importedAttributeDimension);
+      } else {
+        setAttributeFilterDimension('');
+      }
+
+      if (Array.isArray(payload?.filter?.attribute_values)) {
+        setAttributeFilterValues(
+          payload.filter.attribute_values
+            .map((value) => String(value).trim())
+            .filter(Boolean)
+        );
+      } else {
+        setAttributeFilterValues([]);
+      }
+
       setImportedLayout({
         fileName: file.name,
         positions: importedPositions,
@@ -219,6 +270,11 @@ export function useNetworkDiagramState({
     isDifferentialMode,
     onlyCrossSource,
     setOnlyCrossSource,
+    attributeFilterDimension,
+    setAttributeFilterDimension,
+    attributeFilterValues,
+    setAttributeFilterValues,
+    attributeFilterOptions,
     canFilterCrossSource,
     nodes,
     links,

@@ -29,9 +29,18 @@ export const COLOR_BY_OPTIONS = [
   { label: 'Type', value: 'type' },
 ];
 
+export const ATTRIBUTE_FILTER_DIMENSION_OPTIONS = [
+  { label: 'Status', value: 'status' },
+  { label: 'Type', value: 'type' },
+  { label: 'Layer', value: 'layer' },
+];
+
 export const COLOR_BY_OPTION_VALUES = new Set(COLOR_BY_OPTIONS.map((option) => option.value));
 export const LAYOUT_OPTION_VALUES = new Set(LAYOUT_OPTIONS.map((option) => option.value));
 export const LINK_TYPE_OPTION_VALUES = new Set(LINK_TYPE_OPTIONS.map((option) => option.value));
+export const ATTRIBUTE_FILTER_DIMENSION_VALUES = new Set(
+  ATTRIBUTE_FILTER_DIMENSION_OPTIONS.map((option) => option.value)
+);
 
 const PREAMBLE_RELATION_STROKE = '#667085';
 const PREAMBLE_RELATION_DASH_PATTERNS = [null, '8 5', '2.5 4', '10 4 2 4', '4 4'];
@@ -178,6 +187,12 @@ export function filterCrossSourceDependencyGraph(nodes, links) {
 export function normalizeCategory(value, fallbackLabel) {
   const text = String(value ?? '').trim();
   return text || fallbackLabel;
+}
+
+export function getDependencyNodeAttributeFallbackLabel(dimension) {
+  const label = String(dimension || '').trim();
+  if (!label) return 'Unknown';
+  return `Unknown ${label.charAt(0).toUpperCase()}${label.slice(1)}`;
 }
 
 export function getSourceScopedEcosystem(ecosystem, sourceId) {

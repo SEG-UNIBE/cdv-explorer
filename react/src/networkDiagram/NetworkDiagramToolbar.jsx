@@ -1,7 +1,9 @@
 import { Dropdown } from 'primereact/dropdown';
 import { InputSwitch } from 'primereact/inputswitch';
 import { InputText } from 'primereact/inputtext';
+import { MultiSelect } from 'primereact/multiselect';
 import {
+  ATTRIBUTE_FILTER_DIMENSION_OPTIONS,
   BASELINE_OPTIONS,
   COLOR_BY_OPTIONS,
   DIFFERENTIAL_EDGE_COLORS,
@@ -61,6 +63,11 @@ export function NetworkDiagramToolbar({
   setOnlyCrossSource,
   canFilterCrossSource,
   linksByType,
+  attributeFilterDimension,
+  setAttributeFilterDimension,
+  attributeFilterValues,
+  setAttributeFilterValues,
+  attributeFilterOptions,
 }) {
   const preambleRelationTypes = getPreambleRelationTypes(linksByType);
   const edgeLegendItems = isDifferentialMode
@@ -159,6 +166,31 @@ export function NetworkDiagramToolbar({
         <div className="dependency-graph-field dependency-graph-field--filter">
           <div className="network-layout-picker__label">Filter</div>
           <div className="dependency-graph-field__body">
+            <div className="network-layout-threshold dependency-graph-threshold dependency-graph-threshold--attribute">
+              <Dropdown
+                value={attributeFilterDimension}
+                options={ATTRIBUTE_FILTER_DIMENSION_OPTIONS}
+                onChange={(event) => {
+                  setAttributeFilterDimension?.(event.value || '');
+                  setAttributeFilterValues?.([]);
+                }}
+                placeholder="Filter dimension"
+                aria-label="Dependency graph filter dimension"
+                className="dependency-graph-attribute-filter__dimension"
+                showClear={Boolean(attributeFilterDimension)}
+              />
+              <MultiSelect
+                value={attributeFilterValues}
+                options={attributeFilterOptions}
+                onChange={(event) => setAttributeFilterValues?.(event.value || [])}
+                placeholder="Select values"
+                aria-label="Dependency graph filter values"
+                className="dependency-graph-attribute-filter__values"
+                disabled={!attributeFilterDimension}
+                display="chip"
+                maxSelectedLabels={2}
+              />
+            </div>
             <div className="network-layout-threshold dependency-graph-threshold">
               <span className="network-layout-threshold__copy">Only show {proposalShortPlural} with</span>
               <InputText

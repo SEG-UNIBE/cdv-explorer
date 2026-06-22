@@ -19,6 +19,7 @@ import {
   edgeTargetSourceId,
   formatRelationTypeLabel,
   getLinkTypeLabel,
+  getDependencyNodeAttributeFallbackLabel,
   getPreambleRelationDasharray,
   getPreambleRelationStroke,
   getPreambleRelationTypes,
@@ -46,6 +47,8 @@ export function NetworkDiagramCanvas({
   layoutMode,
   isDifferentialMode,
   onlyCrossSource,
+  attributeFilterDimension,
+  attributeFilterValues,
   importedLayout,
   physicsEnabledRef,
   simulationRef,
@@ -140,12 +143,48 @@ export function NetworkDiagramCanvas({
       return;
     }
 
-    const adjacency = new Map(localNodes.map((node) => [nodeGraphId(node), new Set()]));
-    const degreeById = new Map(localNodes.map((node) => [nodeGraphId(node), 0]));
-    const incomingById = new Map(localNodes.map((node) => [nodeGraphId(node), 0]));
-    const outgoingById = new Map(localNodes.map((node) => [nodeGraphId(node), 0]));
+    const attributeFallbackLabel = getDependencyNodeAttributeFallbackLabel(attributeFilterDimension);
+    const selectedAttributeValues = new Set(
+      (attributeFilterValues || [])
+        .map((value) => String(value).trim())
+        .filter(Boolean)
+    );
+    const hasAttributeFilter = Boolean(attributeFilterDimension && selectedAttributeValues.size > 0);
+    const attributeFilteredNodeIds = hasAttributeFilter
+      ? new Set(
+        localNodes
+          .filter((node) => selectedAttributeValues.has(
+            normalizeCategory(node?.[attributeFilterDimension], attributeFallbackLabel)
+          ))
+          .map((node) => nodeGraphId(node))
+      )
+      : new Set(localNodes.map((node) => nodeGraphId(node)));
+    const attributeFilteredNodes = localNodes.filter((node) => attributeFilteredNodeIds.has(nodeGraphId(node)));
+    const attributeFilteredLinks = localLinks.filter((edge) => (
+      attributeFilteredNodeIds.has(edgeGraphSourceId(edge)) && attributeFilteredNodeIds.has(edgeGraphTargetId(edge))
+    ));
 
-    localLinks.forEach((edge) => {
+    if (attributeFilteredNodes.length === 0) {
+      exportPayloadRef.current = null;
+      svg
+        .attr('width', width)
+        .attr('height', height)
+        .append('text')
+        .attr('x', width / 2)
+        .attr('y', height / 2)
+        .attr('text-anchor', 'middle')
+        .attr('fill', 'var(--app-text-muted)')
+        .style('font-size', '14px')
+        .text('No proposals match the current attribute filter.');
+      return;
+    }
+
+    const adjacency = new Map(attributeFilteredNodes.map((node) => [nodeGraphId(node), new Set()]));
+    const degreeById = new Map(attributeFilteredNodes.map((node) => [nodeGraphId(node), 0]));
+    const incomingById = new Map(attributeFilteredNodes.map((node) => [nodeGraphId(node), 0]));
+    const outgoingById = new Map(attributeFilteredNodes.map((node) => [nodeGraphId(node), 0]));
+
+    attributeFilteredLinks.forEach((edge) => {
       const sourceId = edgeGraphSourceId(edge);
       const targetId = edgeGraphTargetId(edge);
       adjacency.get(sourceId)?.add(targetId);
@@ -156,7 +195,7 @@ export function NetworkDiagramCanvas({
       incomingById.set(targetId, (incomingById.get(targetId) || 0) + 1);
     });
 
-    localNodes.forEach((node) => {
+    attributeFilteredNodes.forEach((node) => {
       const nId = nodeGraphId(node);
       node.degree = degreeById.get(nId) || 0;
       node.incomingDegree = incomingById.get(nId) || 0;
@@ -165,18 +204,18 @@ export function NetworkDiagramCanvas({
 
     const relationThreshold = Math.max(0, Number(String(minRelations).trim() || '0') || 0);
     const thresholdMatchedNodeIds = new Set(
-      localNodes
+      attributeFilteredNodes
         .filter((node) => Number(node.degree || 0) >= relationThreshold)
         .map((node) => nodeGraphId(node))
     );
     let relationFilteredNodeIds = thresholdMatchedNodeIds;
-    let filteredLinks = localLinks.filter((edge) => (
+    let filteredLinks = attributeFilteredLinks.filter((edge) => (
       relationFilteredNodeIds.has(edgeGraphSourceId(edge)) && relationFilteredNodeIds.has(edgeGraphTargetId(edge))
     ));
 
     if (includeThresholdConnections && thresholdMatchedNodeIds.size > 0) {
       relationFilteredNodeIds = new Set(thresholdMatchedNodeIds);
-      filteredLinks = localLinks.filter((edge) => {
+      filteredLinks = attributeFilteredLinks.filter((edge) => {
         const sourceMatched = thresholdMatchedNodeIds.has(edgeGraphSourceId(edge));
         const targetMatched = thresholdMatchedNodeIds.has(edgeGraphTargetId(edge));
         if (sourceMatched || targetMatched) {
@@ -188,7 +227,7 @@ export function NetworkDiagramCanvas({
       });
     }
 
-    const filteredNodes = localNodes.filter((node) => relationFilteredNodeIds.has(nodeGraphId(node)));
+    const filteredNodes = attributeFilteredNodes.filter((node) => relationFilteredNodeIds.has(nodeGraphId(node)));
 
     if (filteredNodes.length === 0) {
       exportPayloadRef.current = null;
@@ -346,6 +385,8 @@ export function NetworkDiagramCanvas({
           min_relations: relationThreshold,
           include_threshold_connections: Boolean(includeThresholdConnections),
           only_cross_source: Boolean(onlyCrossSource),
+          attribute_dimension: attributeFilterDimension || null,
+          attribute_values: Array.from(selectedAttributeValues),
         },
         nodes: exportedNodes,
         links: filteredLinks.map((edge) => ({
@@ -973,7 +1014,7 @@ export function NetworkDiagramCanvas({
       svg.selectAll('*').remove();
       d3.select('body').selectAll('.dependency-network-tooltip').remove();
     };
-  }, [baselineType, colorBy, ecosystem, height, highlightProposal, importedLayout, includeConnections, includeThresholdConnections, isDifferentialMode, layoutMode, linkMode, linkType, links, minRelations, nodes, onlyCrossSource, proposalFilterIds, snapshotLabel, width, exportPayloadRef, legendRef, physicsEnabledRef, redrawGraphRef, simulationRef, updateExportPayloadRef]);
+  }, [attributeFilterDimension, attributeFilterValues, baselineType, colorBy, ecosystem, height, highlightProposal, importedLayout, includeConnections, includeThresholdConnections, isDifferentialMode, layoutMode, linkMode, linkType, links, minRelations, nodes, onlyCrossSource, proposalFilterIds, snapshotLabel, width, exportPayloadRef, legendRef, physicsEnabledRef, redrawGraphRef, simulationRef, updateExportPayloadRef]);
 
   return <svg ref={svgRef} role="img" />;
 }

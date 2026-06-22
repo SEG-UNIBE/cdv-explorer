@@ -72,6 +72,11 @@ export const NetworkDiagram = ({
           setOnlyCrossSource={state.setOnlyCrossSource}
           canFilterCrossSource={state.canFilterCrossSource}
           linksByType={state.links}
+          attributeFilterDimension={state.attributeFilterDimension}
+          setAttributeFilterDimension={state.setAttributeFilterDimension}
+          attributeFilterValues={state.attributeFilterValues}
+          setAttributeFilterValues={state.setAttributeFilterValues}
+          attributeFilterOptions={state.attributeFilterOptions}
         />
       </CollapsibleControls>
       <NetworkDiagramCanvas
@@ -93,6 +98,8 @@ export const NetworkDiagram = ({
         layoutMode={state.layoutMode}
         isDifferentialMode={state.isDifferentialMode}
         onlyCrossSource={state.onlyCrossSource}
+        attributeFilterDimension={state.attributeFilterDimension}
+        attributeFilterValues={state.attributeFilterValues}
         importedLayout={state.importedLayout}
         physicsEnabledRef={state.physicsEnabledRef}
         simulationRef={state.simulationRef}

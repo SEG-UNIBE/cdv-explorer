@@ -554,9 +554,53 @@
   width: 100%;
 }
 
+.dashboard-ribbon__field .p-dropdown,
+.dashboard-ribbon__field .p-multiselect {
+  height: var(--dashboard-control-height, 2.15rem);
+  min-height: var(--dashboard-control-height, 2.15rem);
+}
+
+.dashboard-ribbon__field .p-dropdown {
+  display: flex;
+  align-items: stretch;
+}
+
+.dashboard-ribbon__field .p-dropdown .p-dropdown-label,
+.dashboard-ribbon__field .p-dropdown .p-dropdown-trigger,
+.dashboard-ribbon__field .p-multiselect .p-multiselect-label-container,
+.dashboard-ribbon__field .p-multiselect .p-multiselect-label,
+.dashboard-ribbon__field .p-multiselect .p-multiselect-trigger {
+  min-height: 100%;
+}
+
+.dashboard-ribbon__field .p-dropdown .p-dropdown-label {
+  display: flex;
+  align-items: center;
+  padding-top: 0;
+  padding-bottom: 0;
+  line-height: 1.2;
+}
+
 .dashboard-source-picker.p-multiselect .p-multiselect-label {
-  padding: 0.35rem 0.6rem;
   font-size: 0.84rem;
+  gap: 0.28rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dashboard-source-picker.p-multiselect .p-multiselect-token {
+  margin: 0;
+  padding: 0.08rem 0.34rem;
+  min-height: 1.3rem;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  line-height: 1.1;
+}
+
+.dashboard-source-picker.p-multiselect .p-multiselect-token .p-multiselect-token-icon {
+  margin-left: 0.22rem;
+  font-size: 0.74rem;
 }
 
 .dashboard-ribbon__help {
@@ -1797,6 +1841,50 @@
     align-items: center;
   }
 
+  .dependency-graph-threshold--attribute {
+    display: grid;
+    grid-template-columns: 180px minmax(0, 1fr);
+    align-items: center;
+    gap: 0.55rem;
+  }
+
+  .dependency-graph-attribute-filter__dimension,
+  .dependency-graph-attribute-filter__values {
+    min-height: 1.8rem;
+  }
+
+  .dependency-graph-attribute-filter__dimension {
+    width: 180px;
+    min-width: 180px;
+    max-width: 180px;
+  }
+
+  .dependency-graph-attribute-filter__values {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .dependency-graph-attribute-filter__values.p-multiselect .p-multiselect-label {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    gap: 0.28rem;
+  }
+
+  .dependency-graph-attribute-filter__values.p-multiselect .p-multiselect-token {
+    margin: 0;
+    padding: 0.08rem 0.34rem;
+    min-height: 1.3rem;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    line-height: 1.1;
+  }
+
+  .dependency-graph-attribute-filter__values.p-multiselect .p-multiselect-token .p-multiselect-token-icon {
+    margin-left: 0.22rem;
+    font-size: 0.74rem;
+  }
+
   .dependency-graph-threshold .network-layout-threshold__input {
     width: 46px;
     min-height: 1.8rem;
@@ -2555,6 +2643,17 @@
     .dependency-graph-color-legend {
       margin-left: 0;
     }
+
+    .dependency-graph-attribute-filter__dimension,
+    .dependency-graph-attribute-filter__values {
+      width: 100%;
+      min-width: 0;
+      max-width: none;
+    }
+
+    .dependency-graph-threshold--attribute {
+      grid-template-columns: 1fr;
+    }
   }
 
   .author-collaboration-toolbar {
@@ -2864,6 +2963,7 @@
 
   .p-inputtext,
   .p-dropdown,
+  .p-multiselect,
   .p-button {
     height: var(--dashboard-control-height, 2.15rem);
     min-height: var(--dashboard-control-height, 2.15rem);
@@ -2874,13 +2974,15 @@
     padding-bottom: 0.36rem;
   }
 
-  .p-dropdown {
+  .p-dropdown,
+  .p-multiselect {
     display: flex;
     align-items: stretch;
     overflow: hidden;
   }
 
-  .p-dropdown .p-dropdown-label {
+  .p-dropdown .p-dropdown-label,
+  .p-multiselect .p-multiselect-label {
     display: flex;
     align-items: center;
     min-height: 100%;
@@ -2890,11 +2992,20 @@
     padding-bottom: 0;
   }
 
-  .p-dropdown .p-dropdown-trigger {
+  .p-dropdown .p-dropdown-trigger,
+  .p-multiselect .p-multiselect-trigger {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     flex: 0 0 auto;
+  }
+
+  .p-multiselect .p-multiselect-label-container {
+    display: flex;
+    align-items: stretch;
+    min-height: 100%;
+    min-width: 0;
+    flex: 1 1 auto;
   }
 
   .p-button {

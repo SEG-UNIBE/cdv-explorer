@@ -1,9 +1,11 @@
 import json
+import os
 import tempfile
 import unittest
 from pathlib import Path
 
 from analysis.validation.snapshots import (
+    validate_ground_truth_curated_file,
     validate_preprocess_snapshot,
     validate_react_generated_indexes,
     validate_react_snapshot_exports,
@@ -106,6 +108,52 @@ class SnapshotValidationTests(unittest.TestCase):
 
         self.assertFalse(result.ok)
         self.assertIn("proposalLinkIndex.json", "\n".join(result.errors))
+
+    def test_ground_truth_validation_rejects_invalid_curated_rows(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            root = Path(tmp_dir)
+            csv_path = root / "ip_data" / "bitcoin" / "ground_truth" / "interrelations.csv"
+            csv_path.parent.mkdir(parents=True)
+            csv_path.write_text(
+                "\n".join([
+                    "source,target,relation_type,confidence,evidence,note,reviewer,reviewed_at",
+                    "bips:44,bips:32,depends_on,high,Requires: 32,,rbo,2026-06-22",
+                    "bips:44,bips:32,supersedes,medium,Duplicate pair conflict,,rbo,2026-06-22",
+                    "oops,bips:33,depends_on,maybe,Bad source format,,rbo,2026-99-99",
+                    "slips:39,bips:32,,high,Missing relation type,,rbo,2026-06-22",
+                ]),
+                encoding="utf-8",
+            )
+
+            ecosystem_config = {
+                "sources": {
+                    "bips": {
+                        "proposal_acronym": "BIP",
+                        "reference_pattern": r"\bBIP[-#\s]?(\d+)\b",
+                        "max_proposal_id": 9999,
+                    },
+                    "slips": {
+                        "proposal_acronym": "SLIP",
+                        "reference_pattern": r"\bSLIP[-#\s]?(\d+)\b",
+                        "max_proposal_id": 9999,
+                    },
+                }
+            }
+
+            previous_cwd = Path.cwd()
+            os.chdir(root)
+            try:
+                result = validate_ground_truth_curated_file("bitcoin", ecosystem_config=ecosystem_config)
+            finally:
+                os.chdir(previous_cwd)
+
+        self.assertFalse(result.ok)
+        error_text = "\n".join(result.errors)
+        self.assertIn("conflicting relation types", error_text)
+        self.assertIn("must use source_slug:id format", error_text)
+        self.assertIn("invalid confidence `maybe`", error_text)
+        self.assertIn("invalid `reviewed_at` date `2026-99-99`", error_text)
+        self.assertIn("missing `relation_type`", error_text)
 
 
 if __name__ == "__main__":

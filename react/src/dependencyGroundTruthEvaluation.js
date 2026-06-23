@@ -289,6 +289,7 @@ export function buildGroundTruthEvaluation(dataset, options = {}) {
 
   return {
     matchMode,
+    restrictToCuratedSources,
     curatedProposalCount: curatedSourceKeys.size,
     curatedTargetCount: curatedTargetKeys.size,
     totalProposalCount,

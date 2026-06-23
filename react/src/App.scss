@@ -2151,6 +2151,13 @@
   align-items: start;
 }
 
+.ground-truth-evaluation-controls__column {
+  display: grid;
+  gap: 0.75rem;
+  align-content: start;
+  min-width: 0;
+}
+
 .ground-truth-evaluation-controls .network-layout-picker {
   grid-template-columns: 8.75rem minmax(0, 1fr);
 }

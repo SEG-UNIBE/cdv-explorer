@@ -1,7 +1,11 @@
 import unittest
 
 from analysis.dependencies.metrics import build_graph, extract_dependency_metrics
-from analysis.dependencies.network import build_network_data, load_ground_truth_curated_entries
+from analysis.dependencies.network import (
+    build_network_data,
+    load_ground_truth_curated_entries,
+    validate_ground_truth_curated_entries,
+)
 from analysis.pipeline import combined_source_key, merge_source_network_data
 from ecosystems import ECOSYSTEM_REGISTRY
 from pipeline.source_context import SourceContext
@@ -234,6 +238,49 @@ class BuildNetworkDataTests(unittest.TestCase):
         self.assertEqual(rows[0]["reviewed_at"], "2026-06-22")
         self.assertIn("relation_type", rows[0])
         self.assertNotIn("reviewed_at ", rows[0])
+
+    def test_ground_truth_validation_rejects_duplicates_and_unknown_sources(self):
+        errors = validate_ground_truth_curated_entries(
+            [
+                {
+                    "source": "bips:44",
+                    "target": "bips:32",
+                    "relation_type": "depends_on",
+                    "__line__": 2,
+                },
+                {
+                    "source": "bips:44",
+                    "target": "bips:32",
+                    "relation_type": "depends_on",
+                    "__line__": 3,
+                },
+                {
+                    "source": "bips:44",
+                    "target": "bips:32",
+                    "relation_type": "supersedes",
+                    "__line__": 4,
+                },
+                {
+                    "source": "bogus:1",
+                    "target": "bips:32",
+                    "relation_type": "depends_on",
+                    "__line__": 5,
+                },
+            ],
+            source_configs_by_slug={
+                "bips": {
+                    "source_slug": "bips",
+                    "proposal_label": "BIP",
+                    "reference_pattern": r"\bBIP[-#\s]?(\d+)\b",
+                    "max_proposal_id": 9999,
+                }
+            },
+        )
+
+        error_text = "\n".join(errors)
+        self.assertIn("duplicate curated edge", error_text)
+        self.assertIn("conflicting relation types", error_text)
+        self.assertIn("unknown source slug `bogus`", error_text)
 
     def test_unknown_cross_source_targets_are_excluded_when_known_ids_are_available(self):
         context = SourceContext.from_config(

@@ -7,7 +7,12 @@ from pathlib import Path
 from typing import Any, Mapping
 
 from analysis.dependencies.constants import BODY_EXTRACTED_LLM, BODY_EXTRACTED_REGEX, PREAMBLE_EXTRACTED
+from analysis.dependencies.network import (
+    load_ground_truth_curated_entries,
+    validate_ground_truth_curated_entries,
+)
 from analysis.dependencies.utils import normalize_reference_id_for_config
+from ecosystems import ECOSYSTEM_REGISTRY
 from pipeline.source_context import SourceContext
 
 
@@ -77,6 +82,24 @@ def _known_source_configs(
     if isinstance(sources, Mapping) and sources:
         return {str(slug): config for slug, config in sources.items() if isinstance(config, Mapping)}
     return {source_slug: source_config}
+
+
+def _ground_truth_source_configs(
+    ecosystem_slug: str,
+    ecosystem_config: Mapping[str, Any] | None,
+) -> dict[str, Mapping[str, Any]]:
+    config = ecosystem_config or ECOSYSTEM_REGISTRY.get(ecosystem_slug) or {}
+    sources = config.get("sources", {}) if isinstance(config, Mapping) else {}
+    return {
+        str(source_slug): {
+            "source_slug": str(source_slug),
+            "proposal_label": source_config.get("proposal_acronym") or "IP",
+            "reference_pattern": source_config.get("reference_pattern") or "",
+            "max_proposal_id": source_config.get("max_proposal_id"),
+        }
+        for source_slug, source_config in sources.items()
+        if isinstance(source_config, Mapping)
+    }
 
 
 def _target_error(
@@ -347,6 +370,38 @@ def validate_analysis_snapshot(snapshot_dir: Path) -> SnapshotValidationResult:
     return result
 
 
+def validate_ground_truth_curated_file(
+    ecosystem_slug: str,
+    ecosystem_config: Mapping[str, Any] | None = None,
+) -> SnapshotValidationResult:
+    result = SnapshotValidationResult()
+    csv_path = Path("ip_data") / ecosystem_slug / "ground_truth" / "interrelations.csv"
+    if not csv_path.exists():
+        result.file_status["ground_truth"] = "—"
+        return result
+
+    try:
+        entries = load_ground_truth_curated_entries(ecosystem_slug, strict=False)
+    except ValueError as exc:
+        result.file_status["ground_truth"] = "❌ bad CSV"
+        result.fail(str(exc))
+        return result
+
+    errors = validate_ground_truth_curated_entries(
+        entries,
+        source_configs_by_slug=_ground_truth_source_configs(ecosystem_slug, ecosystem_config),
+    )
+    if errors:
+        result.file_status["ground_truth"] = "❌ schema"
+        for error in errors:
+            result.fail(f"`{csv_path}` {error}")
+        return result
+
+    result.stats["ground_truth_edges"] = len(entries)
+    result.file_status["ground_truth"] = "✅"
+    return result
+
+
 def validate_react_snapshot_exports(react_dir: Path) -> SnapshotValidationResult:
     result = SnapshotValidationResult()
     index_path = react_dir / "dataset_index.json"
@@ -388,6 +443,7 @@ def validate_source_snapshot(
     snapshot: str,
 ) -> SnapshotValidationResult:
     result = SnapshotValidationResult()
+    result.merge(validate_ground_truth_curated_file(ecosystem_slug, ecosystem_config))
     result.merge(
         validate_preprocess_snapshot(
             Path(str(source_config["preprocess"])) / snapshot,
@@ -405,6 +461,7 @@ def validate_source_snapshot(
 def validate_combined_snapshot(*, ecosystem_slug: str, combo_key: str, snapshot: str) -> SnapshotValidationResult:
     combo_root = Path("ip_data") / ecosystem_slug / "_combined" / combo_key
     result = SnapshotValidationResult()
+    result.merge(validate_ground_truth_curated_file(ecosystem_slug))
     result.merge(validate_analysis_snapshot(combo_root / "03_analysis" / snapshot))
     result.merge(validate_react_snapshot_exports(combo_root / "04_postprocess" / snapshot / "react"))
     return result

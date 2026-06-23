@@ -122,7 +122,7 @@ def build_summary(rows: list[dict[str, Any]], generated_result: SnapshotValidati
         lines.append("### Artifact Validation")
         lines.append("")
 
-        file_cols = ["preprocess"] + list(ANALYSIS_COLUMN_LABELS.values()) + ["react"]
+        file_cols = ["ground_truth", "preprocess"] + list(ANALYSIS_COLUMN_LABELS.values()) + ["react"]
         header = ["Ecosystem", "Source", "Snapshot", "Proposals", "LLM edges"] + file_cols
         lines.append("| " + " | ".join(header) + " |")
         lines.append("|:---|:---|:---|---:|---:" + "|:---:" * len(file_cols) + "|")

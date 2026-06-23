@@ -342,123 +342,127 @@ export function DependenciesSection({
           </div>
           <CollapsibleControls>
             <div className="ground-truth-evaluation-controls">
-              <div className="network-layout-picker">
-                <div
-                  className="network-layout-picker__label gt-help-label"
-                  onMouseEnter={(event) => showHtmlMetricTooltip(event, MATCH_MODE_TOOLTIP)}
-                  onMouseMove={moveMetricTooltip}
-                  onMouseLeave={hideMetricTooltip}
-                >
-                  Match Mode
+              <div className="ground-truth-evaluation-controls__column">
+                <div className="network-layout-picker">
+                  <div
+                    className="network-layout-picker__label gt-help-label"
+                    onMouseEnter={(event) => showHtmlMetricTooltip(event, MATCH_MODE_TOOLTIP)}
+                    onMouseMove={moveMetricTooltip}
+                    onMouseLeave={hideMetricTooltip}
+                  >
+                    Match Mode
+                  </div>
+                  <div className="network-layout-picker__options">
+                    {GROUND_TRUTH_MATCH_MODE_OPTIONS.map((option) => (
+                      <label key={option.value} className="network-layout-picker__option">
+                        <RadioButton
+                          inputId={`ground-truth-match-mode-${option.value}`}
+                          name="ground-truth-match-mode"
+                          value={option.value}
+                          onChange={(event) => setGroundTruthMatchMode(event.value)}
+                          checked={groundTruthMatchMode === option.value}
+                        />
+                        <span>{option.label}</span>
+                      </label>
+                    ))}
+                  </div>
                 </div>
-                <div className="network-layout-picker__options">
-                  {GROUND_TRUTH_MATCH_MODE_OPTIONS.map((option) => (
-                    <label key={option.value} className="network-layout-picker__option">
-                      <RadioButton
-                        inputId={`ground-truth-match-mode-${option.value}`}
-                        name="ground-truth-match-mode"
-                        value={option.value}
-                        onChange={(event) => setGroundTruthMatchMode(event.value)}
-                        checked={groundTruthMatchMode === option.value}
+                {groundTruthMatchMode === GROUND_TRUTH_MATCH_MODE_EXACT_TYPE ? (
+                  <div className="gt-type-mapping">
+                    <div className="gt-type-mapping__header">
+                      <span className="gt-type-mapping__title">Relation-type mapping</span>
+                      <Button
+                        type="button"
+                        label="Reset to default"
+                        severity="secondary"
+                        text
+                        onClick={() => setTypeMapping(defaultTypeMapping)}
                       />
-                      <span>{option.label}</span>
-                    </label>
-                  ))}
-                </div>
+                    </div>
+                    {typeMapping.rows.length ? (
+                      <table className="gt-type-mapping__table">
+                        <thead>
+                          <tr>
+                            <th>Use</th>
+                            <th>Approach</th>
+                            <th>Extracted subtype</th>
+                            <th>Treat as GT type</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {typeMapping.rows.map((row, index) => (
+                            row.empty ? (
+                              <tr key={`${row.approach}:::empty`} className="gt-type-mapping__row--empty">
+                                <td>
+                                  <input type="checkbox" checked={false} disabled aria-label="No relations extracted" />
+                                </td>
+                                <td>{DEPENDENCY_SHORT_LABELS[row.approach] || row.approach}</td>
+                                <td colSpan={2}><span className="gt-type-mapping__muted">no relations extracted</span></td>
+                              </tr>
+                            ) : (
+                              <tr key={`${row.approach}:::${row.subtype}`}>
+                                <td>
+                                  <input
+                                    type="checkbox"
+                                    checked={row.include}
+                                    aria-label={`Include ${row.subtype}`}
+                                    onChange={(event) => updateTypeMappingRow(index, { include: event.target.checked })}
+                                  />
+                                </td>
+                                <td>{DEPENDENCY_SHORT_LABELS[row.approach] || row.approach}</td>
+                                <td><code>{row.subtype}</code></td>
+                                <td>
+                                  <select
+                                    className="gt-type-mapping__select"
+                                    value={row.target || ''}
+                                    disabled={!row.include || !typeMapping.gtTypes.length}
+                                    onChange={(event) => updateTypeMappingRow(index, { target: event.target.value })}
+                                  >
+                                    {typeMapping.gtTypes.map((gtType) => (
+                                      <option key={gtType} value={gtType}>{gtType}</option>
+                                    ))}
+                                    <option value={GT_TYPE_ALL}>(all types)</option>
+                                  </select>
+                                </td>
+                              </tr>
+                            )
+                          ))}
+                        </tbody>
+                      </table>
+                    ) : (
+                      <p className="ground-truth-evaluation-controls__note">
+                        The selected dataset has no extracted relation subtypes to map.
+                      </p>
+                    )}
+                  </div>
+                ) : null}
               </div>
-              <div className="network-layout-picker">
-                <div
-                  className="network-layout-picker__label gt-help-label"
-                  onMouseEnter={(event) => showHtmlMetricTooltip(event, SCOPE_TOOLTIP)}
-                  onMouseMove={moveMetricTooltip}
-                  onMouseLeave={hideMetricTooltip}
-                >
-                  Scope
-                </div>
-                <div className="ground-truth-scope">
-                  <span className={`ground-truth-scope__label${restrictToCuratedSources ? '' : ' is-muted'}`}>
-                    GT source nodes only
-                  </span>
-                  <InputSwitch
-                    inputId="ground-truth-scope-toggle"
-                    checked={!restrictToCuratedSources}
-                    onChange={(event) => setRestrictToCuratedSources(!event.value)}
-                  />
-                  <span className={`ground-truth-scope__label${restrictToCuratedSources ? ' is-muted' : ''}`}>
-                    All IPs
-                  </span>
+              <div className="ground-truth-evaluation-controls__column">
+                <div className="network-layout-picker">
+                  <div
+                    className="network-layout-picker__label gt-help-label"
+                    onMouseEnter={(event) => showHtmlMetricTooltip(event, SCOPE_TOOLTIP)}
+                    onMouseMove={moveMetricTooltip}
+                    onMouseLeave={hideMetricTooltip}
+                  >
+                    Scope
+                  </div>
+                  <div className="ground-truth-scope">
+                    <span className={`ground-truth-scope__label${restrictToCuratedSources ? '' : ' is-muted'}`}>
+                      GT source nodes only
+                    </span>
+                    <InputSwitch
+                      inputId="ground-truth-scope-toggle"
+                      checked={!restrictToCuratedSources}
+                      onChange={(event) => setRestrictToCuratedSources(!event.value)}
+                    />
+                    <span className={`ground-truth-scope__label${restrictToCuratedSources ? ' is-muted' : ''}`}>
+                      All IPs
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
-            {groundTruthMatchMode === GROUND_TRUTH_MATCH_MODE_EXACT_TYPE ? (
-              <div className="gt-type-mapping">
-                <div className="gt-type-mapping__header">
-                  <span className="gt-type-mapping__title">Relation-type mapping</span>
-                  <Button
-                    type="button"
-                    label="Reset to default"
-                    severity="secondary"
-                    text
-                    onClick={() => setTypeMapping(defaultTypeMapping)}
-                  />
-                </div>
-                {typeMapping.rows.length ? (
-                  <table className="gt-type-mapping__table">
-                    <thead>
-                      <tr>
-                        <th>Use</th>
-                        <th>Approach</th>
-                        <th>Extracted subtype</th>
-                        <th>Treat as GT type</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {typeMapping.rows.map((row, index) => (
-                        row.empty ? (
-                          <tr key={`${row.approach}:::empty`} className="gt-type-mapping__row--empty">
-                            <td>
-                              <input type="checkbox" checked={false} disabled aria-label="No relations extracted" />
-                            </td>
-                            <td>{DEPENDENCY_SHORT_LABELS[row.approach] || row.approach}</td>
-                            <td colSpan={2}><span className="gt-type-mapping__muted">no relations extracted</span></td>
-                          </tr>
-                        ) : (
-                          <tr key={`${row.approach}:::${row.subtype}`}>
-                            <td>
-                              <input
-                                type="checkbox"
-                                checked={row.include}
-                                aria-label={`Include ${row.subtype}`}
-                                onChange={(event) => updateTypeMappingRow(index, { include: event.target.checked })}
-                              />
-                            </td>
-                            <td>{DEPENDENCY_SHORT_LABELS[row.approach] || row.approach}</td>
-                            <td><code>{row.subtype}</code></td>
-                            <td>
-                              <select
-                                className="gt-type-mapping__select"
-                                value={row.target || ''}
-                                disabled={!row.include || !typeMapping.gtTypes.length}
-                                onChange={(event) => updateTypeMappingRow(index, { target: event.target.value })}
-                              >
-                                {typeMapping.gtTypes.map((gtType) => (
-                                  <option key={gtType} value={gtType}>{gtType}</option>
-                                ))}
-                                <option value={GT_TYPE_ALL}>(all types)</option>
-                              </select>
-                            </td>
-                          </tr>
-                        )
-                      ))}
-                    </tbody>
-                  </table>
-                ) : (
-                  <p className="ground-truth-evaluation-controls__note">
-                    The selected dataset has no extracted relation subtypes to map.
-                  </p>
-                )}
-              </div>
-            ) : null}
           </CollapsibleControls>
           <DependencyGroundTruthEvaluationCharts evaluation={groundTruthEvaluation} />
         </ExportableCard>

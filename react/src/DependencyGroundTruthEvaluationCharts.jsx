@@ -321,6 +321,9 @@ export function DependencyGroundTruthEvaluationCharts({ evaluation }) {
   const ecosystem = useDashboardEcosystem();
   const snapshotLabel = useDashboardSnapshot();
   const linkMode = useDashboardLinkMode();
+  const qualitySubtitle = evaluation?.restrictToCuratedSources
+    ? 'Precision, recall, and F1 on curated source proposals'
+    : 'Precision, recall, and F1 on all proposals in scope';
 
   if (!evaluation?.approaches?.length) {
     return null;
@@ -347,7 +350,7 @@ export function DependencyGroundTruthEvaluationCharts({ evaluation }) {
         />
         <GroupedBarChart
           title="Quality Metrics"
-          subtitle="Precision, recall, and F1 on curated source proposals"
+          subtitle={qualitySubtitle}
           rows={evaluatedApproaches}
           series={SCORE_SERIES}
           valueFormatter={formatScore}

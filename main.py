@@ -238,7 +238,7 @@ def _validate_snapshot_date(snapshot: str) -> None:
 def _rebuild_source_artifacts(eco_slug: str, src_slug: str, src: dict, snapshot: str, *, stage_label: str = "Build analysis and postprocess artifacts") -> None:
     """Rebuild analysis/postprocess artifacts for one source from existing preprocess JSON."""
     from analysis.pipeline import prepare_ecosystem_artifacts
-    from analysis.validation import validate_source_snapshot
+    from analysis.validation import validate_ground_truth_curated_file, validate_source_snapshot
 
     harvest_root = Path(src["harvest"])
     preprocess_dir = Path(src["preprocess"]) / snapshot
@@ -258,6 +258,15 @@ def _rebuild_source_artifacts(eco_slug: str, src_slug: str, src: dict, snapshot:
             f"[red]No preprocessed JSON files found for {eco_slug}/{src_slug}: "
             f"{preprocess_dir}[/red]"
         )
+        raise typer.Exit(1)
+
+    ground_truth_validation = validate_ground_truth_curated_file(eco_slug, _get_ecosystem(eco_slug))
+    if not ground_truth_validation.ok:
+        console.print(f"[red]Ground-truth validation failed for {eco_slug}:[/red]")
+        for error in ground_truth_validation.errors[:20]:
+            console.print(f"  [red]-[/red] {error}")
+        if len(ground_truth_validation.errors) > 20:
+            console.print(f"  [red]-[/red] ... and {len(ground_truth_validation.errors) - 20} more")
         raise typer.Exit(1)
 
     _run_stage(

@@ -325,8 +325,16 @@ export function DependencyGroundTruthEvaluationCharts({ evaluation }) {
     ? 'Precision, recall, and F1 on curated source proposals'
     : 'Precision, recall, and F1 on all proposals in scope';
 
-  if (!evaluation?.approaches?.length) {
+  if (!evaluation) {
     return null;
+  }
+
+  if (!evaluation.approaches?.length) {
+    return (
+      <p className="ground-truth-type-agnostic-note">
+        No curated ground-truth edges match the active GT cutoff.
+      </p>
+    );
   }
 
   const evaluatedApproaches = evaluation.approaches.filter((approach) => approach.evaluated !== false);

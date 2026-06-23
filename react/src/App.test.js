@@ -19,6 +19,7 @@ import { renderProposalListHtml } from './bipTooltipContent';
 import {
   buildDefaultTypeMapping,
   buildGroundTruthEvaluation,
+  GROUND_TRUTH_CUTOFF_MODE_ON_OR_BEFORE,
   GROUND_TRUTH_MATCH_MODE_EXACT_TYPE,
   GT_TYPE_ALL,
 } from './dependencyGroundTruthEvaluation';
@@ -489,6 +490,56 @@ test('non-restricted scope scores edges from proposals without curated ground tr
   const openRegex = open.approaches.find((approach) => approach.approach === BODY_EXTRACTED_REGEX);
   // Now the bips:7 edge is scored and, absent from the gold set, counts as a false positive.
   expect(openRegex).toEqual(expect.objectContaining({ tp: 1, fp: 1, fn: 0 }));
+});
+
+test('ground-truth evaluation can filter curated edges by review-date cutoff', () => {
+  const dataset = {
+    nodes: [{ id: '1' }, { id: '2' }, { id: '3' }],
+    links: {
+      [GROUND_TRUTH_CURATED]: [
+        { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'depends_on', reviewed_at: '2026-06-20' },
+        { sourceKey: 'bips:1', targetKey: 'bips:3', relation_type: 'depends_on', reviewed_at: '2026-06-22' },
+        { sourceKey: 'bips:2', targetKey: 'bips:3', relation_type: 'depends_on' },
+      ],
+      [BODY_EXTRACTED_REGEX]: [
+        { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'reference' },
+        { sourceKey: 'bips:1', targetKey: 'bips:3', relation_type: 'reference' },
+      ],
+    },
+  };
+
+  const evaluation = buildGroundTruthEvaluation(dataset, {
+    gtCutoffMode: GROUND_TRUTH_CUTOFF_MODE_ON_OR_BEFORE,
+    gtCutoffDate: '2026-06-21',
+  });
+  const regex = evaluation.approaches.find((approach) => approach.approach === BODY_EXTRACTED_REGEX);
+
+  expect(evaluation.goldEdgeCount).toBe(1);
+  expect(evaluation.curatedProposalCount).toBe(1);
+  expect(regex).toEqual(expect.objectContaining({ tp: 1, fp: 1, fn: 0 }));
+});
+
+test('ground-truth evaluation returns an empty benchmark when a cutoff excludes all curated edges', () => {
+  const dataset = {
+    nodes: [{ id: '1' }, { id: '2' }],
+    links: {
+      [GROUND_TRUTH_CURATED]: [
+        { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'depends_on', reviewed_at: '2026-06-22' },
+      ],
+    },
+  };
+
+  const evaluation = buildGroundTruthEvaluation(dataset, {
+    gtCutoffMode: GROUND_TRUTH_CUTOFF_MODE_ON_OR_BEFORE,
+    gtCutoffDate: '2026-06-21',
+  });
+
+  expect(evaluation).toEqual(expect.objectContaining({
+    goldEdgeCount: 0,
+    curatedProposalCount: 0,
+    curatedTargetCount: 0,
+    approaches: [],
+  }));
 });
 
 test('an approach is only scored against the gold types it is mapped to', () => {

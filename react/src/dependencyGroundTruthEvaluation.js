@@ -26,6 +26,14 @@ export const GROUND_TRUTH_MATCH_MODE_OPTIONS = [
   { label: 'Exact Type', value: GROUND_TRUTH_MATCH_MODE_EXACT_TYPE },
 ];
 
+export const GROUND_TRUTH_CUTOFF_MODE_ALL = 'all';
+export const GROUND_TRUTH_CUTOFF_MODE_ON_OR_BEFORE = 'on_or_before';
+
+export const GROUND_TRUTH_CUTOFF_MODE_OPTIONS = [
+  { label: 'All reviewed edges', value: GROUND_TRUTH_CUTOFF_MODE_ALL },
+  { label: 'Reviewed on or before', value: GROUND_TRUTH_CUTOFF_MODE_ON_OR_BEFORE },
+];
+
 // Sentinel target meaning "match any ground-truth type for this directed pair".
 // Lets a generic subtype (e.g. Regex `reference`) count whenever the edge exists
 // in the ground truth, regardless of the curated relation type.
@@ -33,6 +41,26 @@ export const GT_TYPE_ALL = '*';
 
 function normalizeRelationType(relationType) {
   return String(relationType || '').trim().toLowerCase();
+}
+
+function normalizeReviewDate(value) {
+  const text = String(value || '').trim();
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(text);
+  if (!match) {
+    return null;
+  }
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  const date = new Date(Date.UTC(year, month - 1, day));
+  if (
+    date.getUTCFullYear() !== year
+    || date.getUTCMonth() !== month - 1
+    || date.getUTCDate() !== day
+  ) {
+    return null;
+  }
+  return text;
 }
 
 function flattenApproachLinks(linksByType, approach) {
@@ -221,18 +249,42 @@ export function buildGroundTruthEvaluation(dataset, options = {}) {
     ontology = DEFAULT_RELATION_ONTOLOGY,
     typeMapping = null,
     restrictToCuratedSources = true,
+    gtCutoffMode = GROUND_TRUTH_CUTOFF_MODE_ALL,
+    gtCutoffDate = '',
   } = options;
   const isExactType = matchMode === GROUND_TRUTH_MATCH_MODE_EXACT_TYPE;
   const linksByType = dataset?.links || {};
-  const groundTruthEdges = flattenApproachLinks(linksByType, GROUND_TRUTH_CURATED);
+  const allGroundTruthEdges = flattenApproachLinks(linksByType, GROUND_TRUTH_CURATED);
 
-  if (!groundTruthEdges.length) {
+  if (!allGroundTruthEdges.length) {
     return null;
   }
+
+  const normalizedCutoffDate = normalizeReviewDate(gtCutoffDate);
+  const groundTruthEdges = gtCutoffMode === GROUND_TRUTH_CUTOFF_MODE_ON_OR_BEFORE && normalizedCutoffDate
+    ? allGroundTruthEdges.filter((edge) => {
+      const reviewedAt = normalizeReviewDate(edge?.reviewed_at);
+      return reviewedAt && reviewedAt <= normalizedCutoffDate;
+    })
+    : allGroundTruthEdges;
 
   const curatedSourceKeys = new Set(groundTruthEdges.map(edgeSourceKey).filter(Boolean));
   const curatedTargetKeys = new Set(groundTruthEdges.map(edgeTargetKey).filter(Boolean));
   const totalProposalCount = Array.isArray(dataset?.nodes) ? dataset.nodes.length : 0;
+
+  if (!groundTruthEdges.length) {
+    return {
+      matchMode,
+      restrictToCuratedSources,
+      gtCutoffMode,
+      gtCutoffDate: normalizedCutoffDate,
+      curatedProposalCount: 0,
+      curatedTargetCount: 0,
+      totalProposalCount,
+      goldEdgeCount: 0,
+      approaches: [],
+    };
+  }
 
   const goldEdgeMap = dedupeEntries(groundTruthEdges.map((edge) => ({
     key: isExactType ? buildTypedEdgeKey(edge, edge?.relation_type) : buildDirectedEdgeKey(edge),
@@ -290,6 +342,8 @@ export function buildGroundTruthEvaluation(dataset, options = {}) {
   return {
     matchMode,
     restrictToCuratedSources,
+    gtCutoffMode,
+    gtCutoffDate: normalizedCutoffDate,
     curatedProposalCount: curatedSourceKeys.size,
     curatedTargetCount: curatedTargetKeys.size,
     totalProposalCount,

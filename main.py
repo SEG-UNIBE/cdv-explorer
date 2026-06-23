@@ -626,7 +626,7 @@ def doctor() -> None:
         "; ".join(snapshot_details) if snapshot_details else "no configured sources",
     )
 
-    validate_script = Path("scripts/validate_snapshots.py")
+    validate_script = Path("scripts/validate_artifacts.py")
     if validate_script.exists():
         result = subprocess.run(
             [sys.executable, str(validate_script)],
@@ -638,10 +638,10 @@ def doctor() -> None:
             table,
             "OK" if result.returncode == 0 else "FAIL",
             "Snapshot artifacts",
-            "validation passed" if result.returncode == 0 else "validation failed; run `python3 scripts/validate_snapshots.py`",
+            "validation passed" if result.returncode == 0 else "validation failed; run `python3 scripts/validate_artifacts.py`",
         )
     else:
-        ok &= _doctor_row(table, "WARN", "Snapshot artifacts", "scripts/validate_snapshots.py not found")
+        ok &= _doctor_row(table, "WARN", "Snapshot artifacts", "scripts/validate_artifacts.py not found")
 
     generated_files = [
         Path("react/src/generated/ecosystems.json"),

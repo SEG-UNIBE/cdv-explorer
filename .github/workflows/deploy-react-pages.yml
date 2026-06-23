@@ -9,7 +9,7 @@ on:
     paths:
       - '.github/workflows/deploy-react-pages.yml'
       - 'react/**'
-      - 'scripts/validate_snapshots.py'
+      - 'scripts/validate_artifacts.py'
       - 'ip_data/**/01_harvest/**'
       - 'ip_data/**/02_preprocess/**'
       - 'ip_data/**/03_analysis/**'
@@ -22,7 +22,7 @@ on:
     paths:
       - '.github/workflows/deploy-react-pages.yml'
       - 'react/**'
-      - 'scripts/validate_snapshots.py'
+      - 'scripts/validate_artifacts.py'
       - 'ip_data/**/01_harvest/**'
       - 'ip_data/**/02_preprocess/**'
       - 'ip_data/**/03_analysis/**'
@@ -84,7 +84,7 @@ jobs:
         run: pip install -r requirements-dev.txt
 
       - name: Validate snapshot artifacts
-        run: python scripts/validate_snapshots.py
+        run: python scripts/validate_artifacts.py
 
   test-frontend:
     needs: lint

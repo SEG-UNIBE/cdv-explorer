@@ -13,12 +13,15 @@ import { ProposalFilterControl } from '../../ProposalFilterControl';
 import {
   buildDefaultTypeMapping,
   buildGroundTruthEvaluation,
+  GROUND_TRUTH_CUTOFF_MODE_ALL,
+  GROUND_TRUTH_CUTOFF_MODE_ON_OR_BEFORE,
+  GROUND_TRUTH_CUTOFF_MODE_OPTIONS,
   GROUND_TRUTH_MATCH_MODE_EDGE_ONLY,
   GROUND_TRUTH_MATCH_MODE_EXACT_TYPE,
   GROUND_TRUTH_MATCH_MODE_OPTIONS,
   GT_TYPE_ALL,
 } from '../../dependencyGroundTruthEvaluation';
-import { DEPENDENCY_SHORT_LABELS } from '../../dependencyApproaches';
+import { DEPENDENCY_SHORT_LABELS, GROUND_TRUTH_CURATED } from '../../dependencyApproaches';
 import { resolveRelationOntology } from '../../dependencyRelationOntology';
 import { useAnalysisMetricTooltip } from '../../useAnalysisMetricTooltip';
 import { ExportableCard } from '../ExportableCard';
@@ -32,6 +35,10 @@ const MATCH_MODE_TOOLTIP = '<strong>Edge Only</strong> matches directed source-t
 const SCOPE_TOOLTIP = '<strong>GT source nodes only</strong>: scoring is limited to IPs that have curated outgoing GT links.'
   + '<br /><br /><strong>All IPs</strong>: every extracted edge is scored, so edges from IPs without curated ground '
   + 'truth count as false positives.';
+
+const GT_CUTOFF_TOOLTIP = '<strong>All reviewed edges</strong>: use the full curated benchmark.'
+  + '<br /><br /><strong>Reviewed on or before</strong>: include only curated edges whose <code>reviewed_at</code> date '
+  + 'is on or before the selected cutoff. Review dates refer to the latest available proposal version at review time.';
 
 export function DependenciesSection({
   ecosystem,
@@ -60,6 +67,8 @@ export function DependenciesSection({
 }) {
   const [groundTruthMatchMode, setGroundTruthMatchMode] = useState(GROUND_TRUTH_MATCH_MODE_EDGE_ONLY);
   const [restrictToCuratedSources, setRestrictToCuratedSources] = useState(true);
+  const [groundTruthCutoffMode, setGroundTruthCutoffMode] = useState(GROUND_TRUTH_CUTOFF_MODE_ALL);
+  const [groundTruthCutoffDate, setGroundTruthCutoffDate] = useState('');
   const {
     showTooltip: showMetricTooltip,
     showHtmlTooltip: showHtmlMetricTooltip,
@@ -117,14 +126,42 @@ export function DependenciesSection({
       rows: prev.rows.map((row, rowIndex) => (rowIndex === index ? { ...row, ...patch } : row)),
     }));
   };
+  const availableGroundTruthReviewDates = useMemo(() => {
+    const seen = new Set();
+    return (selectedDataset?.links?.[GROUND_TRUTH_CURATED] || [])
+      .map((edge) => String(edge?.reviewed_at || '').trim())
+      .filter((value) => /^\d{4}-\d{2}-\d{2}$/.test(value))
+      .filter((value) => {
+        if (seen.has(value)) {
+          return false;
+        }
+        seen.add(value);
+        return true;
+      })
+      .sort();
+  }, [selectedDataset]);
+  const latestGroundTruthReviewDate = availableGroundTruthReviewDates[availableGroundTruthReviewDates.length - 1] || '';
+  useEffect(() => {
+    if (!availableGroundTruthReviewDates.length) {
+      if (groundTruthCutoffDate) {
+        setGroundTruthCutoffDate('');
+      }
+      return;
+    }
+    if (!groundTruthCutoffDate || !availableGroundTruthReviewDates.includes(groundTruthCutoffDate)) {
+      setGroundTruthCutoffDate(latestGroundTruthReviewDate);
+    }
+  }, [availableGroundTruthReviewDates, groundTruthCutoffDate, latestGroundTruthReviewDate]);
   const groundTruthEvaluation = useMemo(
     () => buildGroundTruthEvaluation(selectedDataset, {
       matchMode: groundTruthMatchMode,
       ontology: relationOntology,
       typeMapping,
       restrictToCuratedSources,
+      gtCutoffMode: groundTruthCutoffMode,
+      gtCutoffDate: groundTruthCutoffDate,
     }),
-    [groundTruthMatchMode, selectedDataset, relationOntology, typeMapping, restrictToCuratedSources],
+    [groundTruthMatchMode, selectedDataset, relationOntology, typeMapping, restrictToCuratedSources, groundTruthCutoffMode, groundTruthCutoffDate],
   );
   const groundTruthSummaryCards = useMemo(() => (
     groundTruthEvaluation
@@ -462,6 +499,36 @@ export function DependenciesSection({
                     <span className={`ground-truth-scope__label${restrictToCuratedSources ? ' is-muted' : ''}`}>
                       All IPs
                     </span>
+                  </div>
+                </div>
+                <div className="network-layout-picker">
+                  <div
+                    className="network-layout-picker__label gt-help-label"
+                    onMouseEnter={(event) => showHtmlMetricTooltip(event, GT_CUTOFF_TOOLTIP)}
+                    onMouseMove={moveMetricTooltip}
+                    onMouseLeave={hideMetricTooltip}
+                  >
+                    GT Cutoff
+                  </div>
+                  <div className="ground-truth-cutoff">
+                    <Dropdown
+                      value={groundTruthCutoffMode}
+                      options={GROUND_TRUTH_CUTOFF_MODE_OPTIONS}
+                      optionLabel="label"
+                      optionValue="value"
+                      onChange={(event) => setGroundTruthCutoffMode(event.value)}
+                      aria-label="Ground-truth cutoff mode"
+                      className="ground-truth-cutoff__mode"
+                    />
+                    <input
+                      type="date"
+                      className="p-inputtext ground-truth-cutoff__date"
+                      value={groundTruthCutoffDate}
+                      onChange={(event) => setGroundTruthCutoffDate(event.target.value)}
+                      disabled={groundTruthCutoffMode !== GROUND_TRUTH_CUTOFF_MODE_ON_OR_BEFORE || !availableGroundTruthReviewDates.length}
+                      max={latestGroundTruthReviewDate || undefined}
+                      aria-label="Ground-truth cutoff date"
+                    />
                   </div>
                 </div>
               </div>

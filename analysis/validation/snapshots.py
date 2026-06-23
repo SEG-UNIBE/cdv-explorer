@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Any, Mapping
 
 from analysis.dependencies.constants import BODY_EXTRACTED_LLM, BODY_EXTRACTED_REGEX, PREAMBLE_EXTRACTED
-from analysis.dependencies.network import (
+from analysis.validation.ground_truth import (
     load_ground_truth_curated_entries,
     validate_ground_truth_curated_entries,
 )

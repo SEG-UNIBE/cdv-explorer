@@ -15,6 +15,7 @@ from analysis.validation.snapshots import (
     SnapshotValidationResult,
     validate_analysis_snapshot,
     validate_combined_snapshot,
+    validate_ground_truth_curated_file,
     validate_preprocess_snapshot,
     validate_react_generated_indexes,
     validate_react_snapshot_exports,
@@ -113,7 +114,27 @@ def _combined_rows() -> list[dict[str, Any]]:
     return rows
 
 
-def build_summary(rows: list[dict[str, Any]], generated_result: SnapshotValidationResult) -> str:
+def _ground_truth_rows() -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    for ecosystem, ecosystem_config in sorted(ECOSYSTEM_REGISTRY.items()):
+        result = validate_ground_truth_curated_file(ecosystem, ecosystem_config=ecosystem_config)
+        rows.append(
+            {
+                "ecosystem": ecosystem,
+                "stats": result.stats,
+                "file_status": result.file_status,
+                "errors": result.errors,
+                "ok": result.ok,
+            }
+        )
+    return rows
+
+
+def build_summary(
+    rows: list[dict[str, Any]],
+    ground_truth_rows: list[dict[str, Any]],
+    generated_result: SnapshotValidationResult,
+) -> str:
     lines: list[str] = []
 
     if not rows:
@@ -122,7 +143,7 @@ def build_summary(rows: list[dict[str, Any]], generated_result: SnapshotValidati
         lines.append("### Artifact Validation")
         lines.append("")
 
-        file_cols = ["ground_truth", "preprocess"] + list(ANALYSIS_COLUMN_LABELS.values()) + ["react"]
+        file_cols = ["preprocess"] + list(ANALYSIS_COLUMN_LABELS.values()) + ["react"]
         header = ["Ecosystem", "Source", "Snapshot", "Proposals", "LLM edges"] + file_cols
         lines.append("| " + " | ".join(header) + " |")
         lines.append("|:---|:---|:---|---:|---:" + "|:---:" * len(file_cols) + "|")
@@ -139,6 +160,22 @@ def build_summary(rows: list[dict[str, Any]], generated_result: SnapshotValidati
             lines.append("| " + " | ".join(cells) + " |")
 
     lines.append("")
+    lines.append("### Ground Truth Validation")
+    lines.append("")
+    lines.append("| Ecosystem | GT CSV | Curated edges |")
+    lines.append("|:---|:---:|---:|")
+    for row in ground_truth_rows:
+        lines.append(
+            "| "
+            + " | ".join([
+                row["ecosystem"],
+                row["file_status"].get("ground_truth", "—"),
+                str(row["stats"].get("ground_truth_edges", "—")),
+            ])
+            + " |"
+        )
+
+    lines.append("")
     lines.append("### React Generated Indexes")
     lines.append("")
     lines.append(generated_result.file_status.get("react_generated", FAIL))
@@ -148,6 +185,11 @@ def build_summary(rows: list[dict[str, Any]], generated_result: SnapshotValidati
         for row in rows
         if row["errors"]
     }
+    errors_by_snapshot.update({
+        f"{row['ecosystem']}/ground_truth": row["errors"]
+        for row in ground_truth_rows
+        if row["errors"]
+    })
     if generated_result.errors:
         errors_by_snapshot["react/src/generated"] = generated_result.errors
 
@@ -166,10 +208,11 @@ def build_summary(rows: list[dict[str, Any]], generated_result: SnapshotValidati
 
 def main() -> None:
     rows = _source_rows() + _combined_rows()
+    ground_truth_rows = _ground_truth_rows()
     generated_result = validate_react_generated_indexes()
-    all_ok = generated_result.ok and all(row["ok"] for row in rows)
+    all_ok = generated_result.ok and all(row["ok"] for row in rows) and all(row["ok"] for row in ground_truth_rows)
 
-    summary = build_summary(rows, generated_result)
+    summary = build_summary(rows, ground_truth_rows, generated_result)
     print(summary)
 
     summary_path = os.environ.get("GITHUB_STEP_SUMMARY")

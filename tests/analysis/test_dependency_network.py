@@ -1,12 +1,12 @@
 import unittest
 
 from analysis.dependencies.metrics import build_graph, extract_dependency_metrics
-from analysis.dependencies.network import (
-    build_network_data,
+from analysis.dependencies.network import build_network_data
+from analysis.pipeline import combined_source_key, merge_source_network_data
+from analysis.validation.ground_truth import (
     load_ground_truth_curated_entries,
     validate_ground_truth_curated_entries,
 )
-from analysis.pipeline import combined_source_key, merge_source_network_data
 from ecosystems import ECOSYSTEM_REGISTRY
 from pipeline.source_context import SourceContext
 from tests.helpers import proposal as _proposal

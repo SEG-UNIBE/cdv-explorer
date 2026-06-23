@@ -326,35 +326,50 @@ export function DependencyGroundTruthEvaluationCharts({ evaluation }) {
     return null;
   }
 
+  const evaluatedApproaches = evaluation.approaches.filter((approach) => approach.evaluated !== false);
+  const unmappedApproaches = evaluation.approaches.filter((approach) => approach.evaluated === false);
+
   return (
-    <div className="dependency-evaluation-chart-grid">
-      <GroupedBarChart
-        title="Confusion Counts"
-        subtitle="True positives, false positives, and false negatives"
-        rows={evaluation.approaches}
-        series={COUNT_SERIES}
-        valueFormatter={formatCount}
-        showHtmlTooltip={showHtmlTooltip}
-        moveTooltip={moveTooltip}
-        hideTooltip={hideTooltip}
-        ecosystem={ecosystem}
-        snapshotLabel={snapshotLabel}
-        linkMode={linkMode}
-      />
-      <GroupedBarChart
-        title="Quality Metrics"
-        subtitle="Precision, recall, and F1 on curated source proposals"
-        rows={evaluation.approaches}
-        series={SCORE_SERIES}
-        valueFormatter={formatScore}
-        valueMax={1}
-        showHtmlTooltip={showHtmlTooltip}
-        moveTooltip={moveTooltip}
-        hideTooltip={hideTooltip}
-        ecosystem={ecosystem}
-        snapshotLabel={snapshotLabel}
-        linkMode={linkMode}
-      />
-    </div>
+    <>
+      <div className="dependency-evaluation-chart-grid">
+        <GroupedBarChart
+          title="Confusion Counts"
+          subtitle="True positives, false positives, and false negatives"
+          rows={evaluatedApproaches}
+          series={COUNT_SERIES}
+          valueFormatter={formatCount}
+          showHtmlTooltip={showHtmlTooltip}
+          moveTooltip={moveTooltip}
+          hideTooltip={hideTooltip}
+          ecosystem={ecosystem}
+          snapshotLabel={snapshotLabel}
+          linkMode={linkMode}
+        />
+        <GroupedBarChart
+          title="Quality Metrics"
+          subtitle="Precision, recall, and F1 on curated source proposals"
+          rows={evaluatedApproaches}
+          series={SCORE_SERIES}
+          valueFormatter={formatScore}
+          valueMax={1}
+          showHtmlTooltip={showHtmlTooltip}
+          moveTooltip={moveTooltip}
+          hideTooltip={hideTooltip}
+          ecosystem={ecosystem}
+          snapshotLabel={snapshotLabel}
+          linkMode={linkMode}
+        />
+      </div>
+      {unmappedApproaches.length ? (
+        <p className="ground-truth-type-agnostic-note">
+          <strong>Not scored in Exact Type:</strong>
+          {' '}
+          {unmappedApproaches.map((approach) => approach.label).join(', ')}
+          {' '}
+          &mdash; no relation subtypes are included in the mapping above. Enable a subtype to score them,
+          or see <strong>Edge Only</strong> for their edge-recovery results.
+        </p>
+      ) : null}
+    </>
   );
 }

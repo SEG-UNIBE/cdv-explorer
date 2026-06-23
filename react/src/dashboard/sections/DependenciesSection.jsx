@@ -1,7 +1,8 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Button } from 'primereact/button';
 import { Card } from 'primereact/card';
 import { Dropdown } from 'primereact/dropdown';
+import { InputSwitch } from 'primereact/inputswitch';
 import { RadioButton } from 'primereact/radiobutton';
 import { Tag } from 'primereact/tag';
 import { NetworkDiagram } from '../../NetworkDiagram';
@@ -10,14 +11,27 @@ import { DependencyComparisonHeatmaps } from '../../DependencyComparisonHeatmaps
 import { DependencyGroundTruthEvaluationCharts } from '../../DependencyGroundTruthEvaluationCharts';
 import { ProposalFilterControl } from '../../ProposalFilterControl';
 import {
+  buildDefaultTypeMapping,
   buildGroundTruthEvaluation,
   GROUND_TRUTH_MATCH_MODE_EDGE_ONLY,
+  GROUND_TRUTH_MATCH_MODE_EXACT_TYPE,
   GROUND_TRUTH_MATCH_MODE_OPTIONS,
+  GT_TYPE_ALL,
 } from '../../dependencyGroundTruthEvaluation';
+import { DEPENDENCY_SHORT_LABELS } from '../../dependencyApproaches';
+import { resolveRelationOntology } from '../../dependencyRelationOntology';
 import { useAnalysisMetricTooltip } from '../../useAnalysisMetricTooltip';
 import { ExportableCard } from '../ExportableCard';
 import { CollapsibleControls } from '../CollapsibleControls';
 import { SectionSourceToggle } from './SectionSourceToggle';
+
+const MATCH_MODE_TOOLTIP = '<strong>Edge Only</strong> matches directed source-target pairs regardless of relation type.'
+  + '<br /><br /><strong>Exact Type</strong> additionally requires the relation type to match. Choose which extracted '
+  + 'subtypes to score and how they map to a ground-truth type in the table below.';
+
+const SCOPE_TOOLTIP = '<strong>GT source nodes only</strong>: scoring is limited to IPs that have curated outgoing GT links.'
+  + '<br /><br /><strong>All IPs</strong>: every extracted edge is scored, so edges from IPs without curated ground '
+  + 'truth count as false positives.';
 
 export function DependenciesSection({
   ecosystem,
@@ -45,8 +59,10 @@ export function DependenciesSection({
   dependencyMetrics,
 }) {
   const [groundTruthMatchMode, setGroundTruthMatchMode] = useState(GROUND_TRUTH_MATCH_MODE_EDGE_ONLY);
+  const [restrictToCuratedSources, setRestrictToCuratedSources] = useState(true);
   const {
     showTooltip: showMetricTooltip,
+    showHtmlTooltip: showHtmlMetricTooltip,
     moveTooltip: moveMetricTooltip,
     hideTooltip: hideMetricTooltip,
   } = useAnalysisMetricTooltip();
@@ -78,22 +94,62 @@ export function DependenciesSection({
       description: 'Share of all possible directed proposal-to-proposal links that actually exist. Higher density means a more interconnected graph.',
     },
   ]), [activeDependencyMetrics.summary]);
+  const relationOntology = useMemo(
+    () => resolveRelationOntology(ecosystem?.id, {
+      sourceIds: selectedSourceIds.length ? selectedSourceIds : null,
+    }),
+    [ecosystem?.id, selectedSourceIds],
+  );
+  // Default relation-type mapping, discovered from the dataset and prefilled from
+  // the declared ontology. Editable user state resets to this whenever the
+  // dataset, ecosystem, or source selection changes.
+  const defaultTypeMapping = useMemo(
+    () => buildDefaultTypeMapping(selectedDataset, relationOntology),
+    [selectedDataset, relationOntology],
+  );
+  const [typeMapping, setTypeMapping] = useState(defaultTypeMapping);
+  useEffect(() => {
+    setTypeMapping(defaultTypeMapping);
+  }, [defaultTypeMapping]);
+  const updateTypeMappingRow = (index, patch) => {
+    setTypeMapping((prev) => ({
+      ...prev,
+      rows: prev.rows.map((row, rowIndex) => (rowIndex === index ? { ...row, ...patch } : row)),
+    }));
+  };
   const groundTruthEvaluation = useMemo(
-    () => buildGroundTruthEvaluation(selectedDataset, { matchMode: groundTruthMatchMode }),
-    [groundTruthMatchMode, selectedDataset],
+    () => buildGroundTruthEvaluation(selectedDataset, {
+      matchMode: groundTruthMatchMode,
+      ontology: relationOntology,
+      typeMapping,
+      restrictToCuratedSources,
+    }),
+    [groundTruthMatchMode, selectedDataset, relationOntology, typeMapping, restrictToCuratedSources],
   );
   const groundTruthSummaryCards = useMemo(() => (
     groundTruthEvaluation
       ? [
         {
-          label: 'Nodes in GT',
+          label: 'GT Source Nodes',
           value: groundTruthEvaluation.curatedProposalCount,
-          description: 'Number of proposals with at least one curated ground-truth outgoing interrelation in the selected dataset.',
+          description: 'Number of distinct IPs with at least one curated ground-truth outgoing interrelation in the selected dataset.',
         },
         {
-          label: 'Edges in GT',
+          label: 'GT Target Nodes',
+          value: groundTruthEvaluation.curatedTargetCount,
+          description: 'Number of distinct IPs referenced as targets by at least one curated ground-truth edge.',
+        },
+        {
+          label: 'GT Edges',
           value: groundTruthEvaluation.goldEdgeCount,
           description: 'Number of unique directed ground-truth edges used as the reference set.',
+        },
+        {
+          label: 'GT Coverage',
+          value: groundTruthEvaluation.totalProposalCount
+            ? `${((groundTruthEvaluation.curatedProposalCount / groundTruthEvaluation.totalProposalCount) * 100).toFixed(1)}%`
+            : '—',
+          description: 'Share of all IPs in the dataset that have at least one curated ground-truth outgoing interrelation. Lower coverage means the evaluation reflects only a small curated slice of the ecosystem.',
         },
       ]
       : []
@@ -268,7 +324,7 @@ export function DependenciesSection({
           </h3>
           <p>
             Compares Preamble, Regex, and LLM against the curated Ground Truth (GT) interrelations in the selected dataset.
-            Evaluation is restricted to proposals that have curated outgoing GT links and can score either directed edge recovery only or exact relation-type agreement.
+            Use the controls to choose the match mode and whether to restrict scoring to proposals with curated GT links.
           </p>
           <div className="dependency-metrics-summary">
             {groundTruthSummaryCards.map((metric) => (
@@ -287,7 +343,14 @@ export function DependenciesSection({
           <CollapsibleControls>
             <div className="ground-truth-evaluation-controls">
               <div className="network-layout-picker">
-                <div className="network-layout-picker__label">Match Mode</div>
+                <div
+                  className="network-layout-picker__label gt-help-label"
+                  onMouseEnter={(event) => showHtmlMetricTooltip(event, MATCH_MODE_TOOLTIP)}
+                  onMouseMove={moveMetricTooltip}
+                  onMouseLeave={hideMetricTooltip}
+                >
+                  Match Mode
+                </div>
                 <div className="network-layout-picker__options">
                   {GROUND_TRUTH_MATCH_MODE_OPTIONS.map((option) => (
                     <label key={option.value} className="network-layout-picker__option">
@@ -303,12 +366,99 @@ export function DependenciesSection({
                   ))}
                 </div>
               </div>
-              <p className="ground-truth-evaluation-controls__note">
-                <strong>Edge Only</strong> matches directed source-target pairs regardless of relation type.
-                {' '}
-                <strong>Exact Type</strong> additionally requires the relation label to match the curated GT edge.
-              </p>
+              <div className="network-layout-picker">
+                <div
+                  className="network-layout-picker__label gt-help-label"
+                  onMouseEnter={(event) => showHtmlMetricTooltip(event, SCOPE_TOOLTIP)}
+                  onMouseMove={moveMetricTooltip}
+                  onMouseLeave={hideMetricTooltip}
+                >
+                  Scope
+                </div>
+                <div className="ground-truth-scope">
+                  <span className={`ground-truth-scope__label${restrictToCuratedSources ? '' : ' is-muted'}`}>
+                    GT source nodes only
+                  </span>
+                  <InputSwitch
+                    inputId="ground-truth-scope-toggle"
+                    checked={!restrictToCuratedSources}
+                    onChange={(event) => setRestrictToCuratedSources(!event.value)}
+                  />
+                  <span className={`ground-truth-scope__label${restrictToCuratedSources ? ' is-muted' : ''}`}>
+                    All IPs
+                  </span>
+                </div>
+              </div>
             </div>
+            {groundTruthMatchMode === GROUND_TRUTH_MATCH_MODE_EXACT_TYPE ? (
+              <div className="gt-type-mapping">
+                <div className="gt-type-mapping__header">
+                  <span className="gt-type-mapping__title">Relation-type mapping</span>
+                  <Button
+                    type="button"
+                    label="Reset to default"
+                    severity="secondary"
+                    text
+                    onClick={() => setTypeMapping(defaultTypeMapping)}
+                  />
+                </div>
+                {typeMapping.rows.length ? (
+                  <table className="gt-type-mapping__table">
+                    <thead>
+                      <tr>
+                        <th>Use</th>
+                        <th>Approach</th>
+                        <th>Extracted subtype</th>
+                        <th>Treat as GT type</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {typeMapping.rows.map((row, index) => (
+                        row.empty ? (
+                          <tr key={`${row.approach}:::empty`} className="gt-type-mapping__row--empty">
+                            <td>
+                              <input type="checkbox" checked={false} disabled aria-label="No relations extracted" />
+                            </td>
+                            <td>{DEPENDENCY_SHORT_LABELS[row.approach] || row.approach}</td>
+                            <td colSpan={2}><span className="gt-type-mapping__muted">no relations extracted</span></td>
+                          </tr>
+                        ) : (
+                          <tr key={`${row.approach}:::${row.subtype}`}>
+                            <td>
+                              <input
+                                type="checkbox"
+                                checked={row.include}
+                                aria-label={`Include ${row.subtype}`}
+                                onChange={(event) => updateTypeMappingRow(index, { include: event.target.checked })}
+                              />
+                            </td>
+                            <td>{DEPENDENCY_SHORT_LABELS[row.approach] || row.approach}</td>
+                            <td><code>{row.subtype}</code></td>
+                            <td>
+                              <select
+                                className="gt-type-mapping__select"
+                                value={row.target || ''}
+                                disabled={!row.include || !typeMapping.gtTypes.length}
+                                onChange={(event) => updateTypeMappingRow(index, { target: event.target.value })}
+                              >
+                                {typeMapping.gtTypes.map((gtType) => (
+                                  <option key={gtType} value={gtType}>{gtType}</option>
+                                ))}
+                                <option value={GT_TYPE_ALL}>(all types)</option>
+                              </select>
+                            </td>
+                          </tr>
+                        )
+                      ))}
+                    </tbody>
+                  </table>
+                ) : (
+                  <p className="ground-truth-evaluation-controls__note">
+                    The selected dataset has no extracted relation subtypes to map.
+                  </p>
+                )}
+              </div>
+            ) : null}
           </CollapsibleControls>
           <DependencyGroundTruthEvaluationCharts evaluation={groundTruthEvaluation} />
         </ExportableCard>

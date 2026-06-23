@@ -17,9 +17,12 @@ import { getSlipCommitUrl, getSlipUrl, normalizeSlipId } from './slipLinks';
 import { getRepositoryCommitUrl, getRepositoryProposalUrl } from './proposalLinkResolver';
 import { renderProposalListHtml } from './bipTooltipContent';
 import {
+  buildDefaultTypeMapping,
   buildGroundTruthEvaluation,
   GROUND_TRUTH_MATCH_MODE_EXACT_TYPE,
+  GT_TYPE_ALL,
 } from './dependencyGroundTruthEvaluation';
+import { resolveRelationOntology } from './dependencyRelationOntology';
 import { buildDashboardData, buildWordCloudData, parseProposalFilterExpression } from './dashboard/dashboardData';
 import {
   buildProposalGraphId,
@@ -331,25 +334,250 @@ test('ground-truth evaluation can require exact relation-type matches', () => {
   }, { matchMode: GROUND_TRUTH_MATCH_MODE_EXACT_TYPE });
 
   expect(evaluation.approaches).toEqual([
+    // Preamble `requires` maps to GT `depends_on` by default, so it matches.
     expect.objectContaining({
       approach: PREAMBLE_EXTRACTED,
-      tp: 0,
-      fp: 1,
-      fn: 1,
-    }),
-    expect.objectContaining({
-      approach: BODY_EXTRACTED_REGEX,
-      tp: 0,
-      fp: 1,
-      fn: 1,
-    }),
-    expect.objectContaining({
-      approach: BODY_EXTRACTED_LLM,
+      evaluated: true,
       tp: 1,
       fp: 0,
       fn: 0,
     }),
+    // Regex and LLM have no included subtype by default: not scored in Exact Type.
+    expect.objectContaining({
+      approach: BODY_EXTRACTED_REGEX,
+      evaluated: false,
+      tp: 0,
+      fp: 0,
+      fn: 0,
+    }),
+    expect.objectContaining({
+      approach: BODY_EXTRACTED_LLM,
+      evaluated: false,
+      tp: 0,
+      fp: 0,
+      fn: 0,
+    }),
   ]);
+});
+
+test('default type mapping is discovered from data and prefilled from the ontology', () => {
+  const dataset = {
+    links: {
+      [GROUND_TRUTH_CURATED]: [
+        { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'depends_on' },
+        { sourceKey: 'bips:3', targetKey: 'bips:4', relation_type: 'supersedes' },
+      ],
+      [BODY_EXTRACTED_REGEX]: [
+        { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'reference' },
+      ],
+      [BODY_EXTRACTED_LLM]: [
+        { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'implicit_dependency' },
+      ],
+      [PREAMBLE_EXTRACTED]: {
+        requires: [{ sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'requires' }],
+        replaces: [{ sourceKey: 'bips:3', targetKey: 'bips:4', relation_type: 'replaces' }],
+        proposed_replacement: [{ sourceKey: 'bips:5', targetKey: 'bips:6', relation_type: 'proposed_replacement' }],
+      },
+    },
+  };
+
+  const mapping = buildDefaultTypeMapping(dataset, resolveRelationOntology('bitcoin'));
+  expect(mapping.gtTypes).toEqual(['depends_on', 'supersedes']);
+  expect(mapping.rows).toEqual([
+    { approach: PREAMBLE_EXTRACTED, subtype: 'requires', include: true, target: 'depends_on' },
+    { approach: PREAMBLE_EXTRACTED, subtype: 'replaces', include: true, target: 'supersedes' },
+    // Excluded by default; its target is an inert fallback suggestion (first GT type).
+    { approach: PREAMBLE_EXTRACTED, subtype: 'proposed_replacement', include: false, target: 'depends_on' },
+    { approach: BODY_EXTRACTED_REGEX, subtype: 'reference', include: false, target: 'depends_on' },
+    { approach: BODY_EXTRACTED_LLM, subtype: 'implicit_dependency', include: false, target: 'depends_on' },
+  ]);
+});
+
+test('default type mapping keeps a placeholder row for approaches with no extracted relations', () => {
+  const dataset = {
+    links: {
+      [GROUND_TRUTH_CURATED]: [
+        { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'depends_on' },
+      ],
+      [BODY_EXTRACTED_REGEX]: [
+        { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'reference' },
+      ],
+      // No PREAMBLE_EXTRACTED and no BODY_EXTRACTED_LLM edges in this dataset.
+    },
+  };
+
+  const mapping = buildDefaultTypeMapping(dataset, resolveRelationOntology('bitcoin'));
+  const preambleRow = mapping.rows.find((row) => row.approach === PREAMBLE_EXTRACTED);
+  const llmRow = mapping.rows.find((row) => row.approach === BODY_EXTRACTED_LLM);
+  expect(preambleRow).toEqual({ approach: PREAMBLE_EXTRACTED, subtype: null, include: false, target: null, empty: true });
+  expect(llmRow).toEqual({ approach: BODY_EXTRACTED_LLM, subtype: null, include: false, target: null, empty: true });
+});
+
+test('mapping a subtype to "(all)" matches any gold type without inflating false positives', () => {
+  const dataset = {
+    links: {
+      [GROUND_TRUTH_CURATED]: [
+        { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'depends_on' },
+        { sourceKey: 'bips:3', targetKey: 'bips:4', relation_type: 'supersedes' },
+      ],
+      [BODY_EXTRACTED_REGEX]: [
+        // matches the depends_on gold pair (any type)
+        { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'reference' },
+        // matches the supersedes gold pair (any type)
+        { sourceKey: 'bips:3', targetKey: 'bips:4', relation_type: 'reference' },
+        // not in the gold set at all -> exactly one false positive
+        { sourceKey: 'bips:1', targetKey: 'bips:9', relation_type: 'reference' },
+      ],
+    },
+  };
+
+  const typeMapping = {
+    gtTypes: ['depends_on', 'supersedes'],
+    rows: [
+      { approach: BODY_EXTRACTED_REGEX, subtype: 'reference', include: true, target: GT_TYPE_ALL },
+    ],
+  };
+  const evaluation = buildGroundTruthEvaluation(dataset, {
+    matchMode: GROUND_TRUTH_MATCH_MODE_EXACT_TYPE,
+    typeMapping,
+  });
+  const regex = evaluation.approaches.find((approach) => approach.approach === BODY_EXTRACTED_REGEX);
+  // 2 gold pairs matched regardless of type, 1 unmatched edge -> single FP (not one per gold type).
+  expect(regex).toEqual(expect.objectContaining({ evaluated: true, tp: 2, fp: 1, fn: 0 }));
+});
+
+test('non-restricted scope scores edges from proposals without curated ground truth', () => {
+  const dataset = {
+    links: {
+      [GROUND_TRUTH_CURATED]: [
+        { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'depends_on' },
+      ],
+      [BODY_EXTRACTED_REGEX]: [
+        { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'reference' },
+        // bips:7 has no curated GT outgoing link.
+        { sourceKey: 'bips:7', targetKey: 'bips:8', relation_type: 'reference' },
+      ],
+    },
+  };
+
+  const restricted = buildGroundTruthEvaluation(dataset, { restrictToCuratedSources: true });
+  const restrictedRegex = restricted.approaches.find((approach) => approach.approach === BODY_EXTRACTED_REGEX);
+  // Edge from the non-curated source bips:7 is ignored.
+  expect(restrictedRegex).toEqual(expect.objectContaining({ tp: 1, fp: 0, fn: 0 }));
+
+  const open = buildGroundTruthEvaluation(dataset, { restrictToCuratedSources: false });
+  const openRegex = open.approaches.find((approach) => approach.approach === BODY_EXTRACTED_REGEX);
+  // Now the bips:7 edge is scored and, absent from the gold set, counts as a false positive.
+  expect(openRegex).toEqual(expect.objectContaining({ tp: 1, fp: 1, fn: 0 }));
+});
+
+test('an approach is only scored against the gold types it is mapped to', () => {
+  const dataset = {
+    links: {
+      [GROUND_TRUTH_CURATED]: [
+        { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'depends_on' },
+        { sourceKey: 'bips:3', targetKey: 'bips:4', relation_type: 'supersedes' },
+        { sourceKey: 'bips:5', targetKey: 'bips:6', relation_type: 'references' },
+      ],
+      [BODY_EXTRACTED_REGEX]: [
+        { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'reference' },
+      ],
+    },
+  };
+
+  // Map Regex only to depends_on -> supersedes/references gold edges are out of scope.
+  const typeMapping = {
+    gtTypes: ['depends_on', 'supersedes', 'references'],
+    rows: [
+      { approach: BODY_EXTRACTED_REGEX, subtype: 'reference', include: true, target: 'depends_on' },
+    ],
+  };
+  const evaluation = buildGroundTruthEvaluation(dataset, {
+    matchMode: GROUND_TRUTH_MATCH_MODE_EXACT_TYPE,
+    typeMapping,
+  });
+  const regex = evaluation.approaches.find((approach) => approach.approach === BODY_EXTRACTED_REGEX);
+  // Only the depends_on gold edge counts: 1 TP, 0 FP, 0 FN (not 2 FN for the other types).
+  expect(regex).toEqual(expect.objectContaining({ tp: 1, fp: 0, fn: 0 }));
+  expect(regex.falseNegativeEdges).toEqual([]);
+});
+
+test('editing the type mapping changes which edges are scored', () => {
+  const dataset = {
+    links: {
+      [GROUND_TRUTH_CURATED]: [
+        { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'depends_on' },
+      ],
+      [BODY_EXTRACTED_LLM]: [
+        { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'implicit_dependency' },
+      ],
+    },
+  };
+
+  // By default the LLM subtype is excluded -> LLM is not scored.
+  const baseline = buildGroundTruthEvaluation(dataset, { matchMode: GROUND_TRUTH_MATCH_MODE_EXACT_TYPE });
+  const llmBaseline = baseline.approaches.find((approach) => approach.approach === BODY_EXTRACTED_LLM);
+  expect(llmBaseline.evaluated).toBe(false);
+
+  // Opt the LLM subtype in and map it to depends_on -> it now matches the gold edge.
+  const typeMapping = {
+    gtTypes: ['depends_on'],
+    rows: [
+      { approach: BODY_EXTRACTED_LLM, subtype: 'implicit_dependency', include: true, target: 'depends_on' },
+    ],
+  };
+  const edited = buildGroundTruthEvaluation(dataset, {
+    matchMode: GROUND_TRUTH_MATCH_MODE_EXACT_TYPE,
+    typeMapping,
+  });
+  const llmEdited = edited.approaches.find((approach) => approach.approach === BODY_EXTRACTED_LLM);
+  expect(llmEdited).toEqual(expect.objectContaining({ evaluated: true, tp: 1, fp: 0, fn: 0 }));
+});
+
+test('ground-truth evaluation ignores forward-pointing proposed_replacement preamble edges', () => {
+  const evaluation = buildGroundTruthEvaluation({
+    links: {
+      [GROUND_TRUTH_CURATED]: [
+        { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'supersedes' },
+      ],
+      [PREAMBLE_EXTRACTED]: {
+        replaces: [
+          { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'replaces' },
+        ],
+        proposed_replacement: [
+          // Reverse-direction edge: must be excluded, so it neither matches nor adds a false positive.
+          { sourceKey: 'bips:1', targetKey: 'bips:9', relation_type: 'proposed_replacement' },
+        ],
+      },
+    },
+  }, { matchMode: GROUND_TRUTH_MATCH_MODE_EXACT_TYPE });
+
+  const preamble = evaluation.approaches.find((approach) => approach.approach === PREAMBLE_EXTRACTED);
+  expect(preamble).toEqual(expect.objectContaining({ tp: 1, fp: 0, fn: 0 }));
+});
+
+test('relation ontology is ecosystem- and source-aware', () => {
+  const bitcoin = resolveRelationOntology('bitcoin');
+  expect(bitcoin.hasPreambleTypes).toBe(true);
+  expect(bitcoin.canonicalMap.requires).toBe('DEPENDS_ON');
+  expect(bitcoin.canonicalMap.replaces).toBe('SUPERSEDES');
+  expect(bitcoin.excludedTypes.has('proposed_replacement')).toBe(true);
+  expect(bitcoin.alignment).toEqual([
+    expect.objectContaining({ canonical: 'DEPENDS_ON', preamble: ['requires'] }),
+    expect.objectContaining({ canonical: 'SUPERSEDES', preamble: ['replaces'] }),
+    expect.objectContaining({ canonical: 'REFERENCES', preamble: [] }),
+  ]);
+
+  // Nostr has no preamble dependency headers.
+  const nostr = resolveRelationOntology('nostr');
+  expect(nostr.hasPreambleTypes).toBe(false);
+  expect(nostr.canonicalMap.requires).toBeUndefined();
+  expect(nostr.alignment.every((entry) => entry.preamble.length === 0)).toBe(true);
+
+  // Narrowing bitcoin to the slip source drops the BIP preamble vocabulary.
+  const slipOnly = resolveRelationOntology('bitcoin', { sourceIds: ['slip'] });
+  expect(slipOnly.hasPreambleTypes).toBe(false);
+  expect(slipOnly.canonicalMap.requires).toBeUndefined();
 });
 
 test('source-scopes canonical dependency edge graph keys for display', () => {

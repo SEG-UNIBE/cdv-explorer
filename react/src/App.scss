@@ -2069,6 +2069,81 @@
   gap: 1rem;
 }
 
+.gt-type-mapping {
+  grid-column: 1 / -1;
+  margin-top: 0.75rem;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid var(--app-border);
+  border-radius: 6px;
+  background: var(--app-surface-subtle);
+}
+
+.gt-type-mapping__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.4rem;
+}
+
+.gt-type-mapping__title {
+  font-weight: 600;
+}
+
+.gt-type-mapping__table {
+  border-collapse: collapse;
+  font-size: 0.84rem;
+
+  th,
+  td {
+    text-align: left;
+    padding: 0.25rem 0.85rem 0.25rem 0;
+    vertical-align: middle;
+  }
+
+  th {
+    color: var(--app-text-muted);
+    font-weight: 600;
+  }
+
+  code {
+    font-size: 0.8rem;
+  }
+}
+
+.gt-type-mapping__select {
+  font-size: 0.82rem;
+  padding: 0.15rem 0.35rem;
+  border: 1px solid var(--app-border);
+  border-radius: 4px;
+  background: var(--app-surface, transparent);
+  color: var(--app-text);
+
+  &:disabled {
+    opacity: 0.5;
+  }
+}
+
+.gt-type-mapping__muted {
+  color: var(--app-text-muted);
+  font-style: italic;
+}
+
+.gt-type-mapping__row--empty {
+  opacity: 0.7;
+}
+
+.ground-truth-type-agnostic-note {
+  margin: 0.85rem 0 0;
+  color: var(--app-text-muted);
+  font-size: 0.84rem;
+  line-height: 1.45;
+
+  strong {
+    color: var(--app-text);
+  }
+}
+
 .ground-truth-evaluation-controls {
   display: grid;
   grid-template-columns: minmax(390px, 1fr) minmax(390px, 1fr);
@@ -2078,6 +2153,26 @@
 
 .ground-truth-evaluation-controls .network-layout-picker {
   grid-template-columns: 8.75rem minmax(0, 1fr);
+}
+
+.gt-help-label {
+  cursor: help;
+}
+
+.ground-truth-scope {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.ground-truth-scope__label {
+  color: var(--app-text);
+  font-size: 0.84rem;
+
+  &.is-muted {
+    color: var(--app-text-muted);
+    opacity: 0.7;
+  }
 }
 
 .ground-truth-evaluation-controls__note {
@@ -3142,6 +3237,7 @@
     border: 0;
     background: transparent;
     padding: 0.62rem 0.7rem 0.72rem;
+    color: var(--app-text);
   }
 
   .p-panel-header-icon {

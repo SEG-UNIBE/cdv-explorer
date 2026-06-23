@@ -3,6 +3,11 @@ import { Dropdown } from 'primereact/dropdown';
 import { RadioButton } from 'primereact/radiobutton';
 import { EvolutionStatusStackedBarChart } from '../../EvolutionStatusStackedBarChart';
 import { ProposalEventTimeline } from '../../ProposalEventTimeline';
+import {
+  DashboardSnapshotProvider,
+  useDashboardLinkMode,
+  useDashboardSnapshot,
+} from '../DashboardSnapshotContext';
 import { ExportableCard } from '../ExportableCard';
 import { CollapsibleControls } from '../CollapsibleControls';
 import { SectionSourceToggle } from './SectionSourceToggle';
@@ -16,6 +21,8 @@ function hasPositiveValues(series) {
 function EvolutionContent({ ecosystem, evolutionPayload }) {
   const [chartMode, setChartMode] = useState('absolute');
   const [selectedProposalId, setSelectedProposalId] = useState('');
+  const snapshot = useDashboardSnapshot();
+  const linkMode = useDashboardLinkMode();
   const overallEvolution = useMemo(() => (
     evolutionPayload?.status_evolution_segmented
     || evolutionPayload?.status_evolution
@@ -56,7 +63,8 @@ function EvolutionContent({ ecosystem, evolutionPayload }) {
   }
 
   return (
-    <>
+    <DashboardSnapshotProvider snapshot={snapshot} linkMode={linkMode} ecosystem={ecosystem}>
+      <>
       <ExportableCard className="mb-4" exportTitle={`${ecosystem.acronym} Status Evolution`}>
         <h3>{ecosystem.acronym} Status Evolution</h3>
         <p>
@@ -127,7 +135,8 @@ function EvolutionContent({ ecosystem, evolutionPayload }) {
           />
         </ExportableCard>
       ) : null}
-    </>
+      </>
+    </DashboardSnapshotProvider>
   );
 }
 

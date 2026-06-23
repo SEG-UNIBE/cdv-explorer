@@ -418,6 +418,9 @@ export function DependenciesSection({
                                     disabled={!row.include || !typeMapping.gtTypes.length}
                                     onChange={(event) => updateTypeMappingRow(index, { target: event.target.value })}
                                   >
+                                    <option value="" disabled>
+                                      No default GT type
+                                    </option>
                                     {typeMapping.gtTypes.map((gtType) => (
                                       <option key={gtType} value={gtType}>{gtType}</option>
                                     ))}

@@ -386,10 +386,10 @@ test('default type mapping is discovered from data and prefilled from the ontolo
   expect(mapping.rows).toEqual([
     { approach: PREAMBLE_EXTRACTED, subtype: 'requires', include: true, target: 'depends_on' },
     { approach: PREAMBLE_EXTRACTED, subtype: 'replaces', include: true, target: 'supersedes' },
-    // Excluded by default; its target is an inert fallback suggestion (first GT type).
-    { approach: PREAMBLE_EXTRACTED, subtype: 'proposed_replacement', include: false, target: 'depends_on' },
-    { approach: BODY_EXTRACTED_REGEX, subtype: 'reference', include: false, target: 'depends_on' },
-    { approach: BODY_EXTRACTED_LLM, subtype: 'implicit_dependency', include: false, target: 'depends_on' },
+    // No matching GT class is present in this dataset, so these remain unmapped.
+    { approach: PREAMBLE_EXTRACTED, subtype: 'proposed_replacement', include: false, target: null },
+    { approach: BODY_EXTRACTED_REGEX, subtype: 'reference', include: false, target: null },
+    { approach: BODY_EXTRACTED_LLM, subtype: 'implicit_dependency', include: false, target: null },
   ]);
 });
 
@@ -411,6 +411,26 @@ test('default type mapping keeps a placeholder row for approaches with no extrac
   const llmRow = mapping.rows.find((row) => row.approach === BODY_EXTRACTED_LLM);
   expect(preambleRow).toEqual({ approach: PREAMBLE_EXTRACTED, subtype: null, include: false, target: null, empty: true });
   expect(llmRow).toEqual({ approach: BODY_EXTRACTED_LLM, subtype: null, include: false, target: null, empty: true });
+});
+
+test('default type mapping does not auto-map a subtype when the GT slice lacks its canonical class', () => {
+  const dataset = {
+    links: {
+      [GROUND_TRUTH_CURATED]: [
+        { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'depends_on' },
+      ],
+      [PREAMBLE_EXTRACTED]: {
+        replaces: [{ sourceKey: 'bips:3', targetKey: 'bips:4', relation_type: 'replaces' }],
+      },
+    },
+  };
+
+  const mapping = buildDefaultTypeMapping(dataset, resolveRelationOntology('bitcoin'));
+  expect(mapping.rows).toEqual([
+    { approach: PREAMBLE_EXTRACTED, subtype: 'replaces', include: false, target: null },
+    { approach: BODY_EXTRACTED_REGEX, subtype: null, include: false, target: null, empty: true },
+    { approach: BODY_EXTRACTED_LLM, subtype: null, include: false, target: null, empty: true },
+  ]);
 });
 
 test('mapping a subtype to "(all)" matches any gold type without inflating false positives', () => {

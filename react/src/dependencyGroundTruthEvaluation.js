@@ -173,7 +173,7 @@ export function buildDefaultTypeMapping(dataset, ontology = DEFAULT_RELATION_ONT
     const typeBearing = TYPE_BEARING_DEPENDENCY_APPROACHES.has(approach);
     subtypes.forEach((subtype) => {
       const canonical = canonicalMap[subtype] || subtype;
-      const target = canonicalToGtType[canonical] || gtTypes[0] || null;
+      const target = canonicalToGtType[canonical] || null;
       const excluded = excludedTypes.has(subtype);
       rows.push({
         approach,

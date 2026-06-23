@@ -31,13 +31,29 @@ export function useAnalysisMetricTooltip() {
     };
   }, []);
 
-  const showTooltip = (event, description) => {
+  const showTooltip = (event, description, { interactive = false } = {}) => {
     const tooltip = tooltipRef.current;
     if (!tooltip || !description) {
       return;
     }
 
     tooltip.textContent = description;
+    tooltip.style.whiteSpace = 'normal';
+    tooltip.style.pointerEvents = interactive ? 'auto' : 'none';
+    tooltip.style.opacity = '1';
+    tooltip.style.left = `${event.pageX + 10}px`;
+    tooltip.style.top = `${event.pageY - 28}px`;
+  };
+
+  const showHtmlTooltip = (event, html, { interactive = false } = {}) => {
+    const tooltip = tooltipRef.current;
+    if (!tooltip || !html) {
+      return;
+    }
+
+    tooltip.innerHTML = html;
+    tooltip.style.whiteSpace = 'normal';
+    tooltip.style.pointerEvents = interactive ? 'auto' : 'none';
     tooltip.style.opacity = '1';
     tooltip.style.left = `${event.pageX + 10}px`;
     tooltip.style.top = `${event.pageY - 28}px`;
@@ -60,10 +76,12 @@ export function useAnalysisMetricTooltip() {
     }
 
     tooltip.style.opacity = '0';
+    tooltip.style.pointerEvents = 'none';
   };
 
   return {
     showTooltip,
+    showHtmlTooltip,
     moveTooltip,
     hideTooltip,
   };

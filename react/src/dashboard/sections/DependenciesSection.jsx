@@ -2,10 +2,13 @@ import { useMemo } from 'react';
 import { Button } from 'primereact/button';
 import { Card } from 'primereact/card';
 import { Dropdown } from 'primereact/dropdown';
+import { Tag } from 'primereact/tag';
 import { NetworkDiagram } from '../../NetworkDiagram';
 import { ProposalGraphMetricsTable } from '../../ProposalGraphMetricsTable';
 import { DependencyComparisonHeatmaps } from '../../DependencyComparisonHeatmaps';
+import { DependencyGroundTruthEvaluationCharts } from '../../DependencyGroundTruthEvaluationCharts';
 import { ProposalFilterControl } from '../../ProposalFilterControl';
+import { buildGroundTruthEvaluation } from '../../dependencyGroundTruthEvaluation';
 import { useAnalysisMetricTooltip } from '../../useAnalysisMetricTooltip';
 import { ExportableCard } from '../ExportableCard';
 import { CollapsibleControls } from '../CollapsibleControls';
@@ -69,6 +72,31 @@ export function DependenciesSection({
       description: 'Share of all possible directed proposal-to-proposal links that actually exist. Higher density means a more interconnected graph.',
     },
   ]), [activeDependencyMetrics.summary]);
+  const groundTruthEvaluation = useMemo(
+    () => buildGroundTruthEvaluation(selectedDataset),
+    [selectedDataset],
+  );
+  const groundTruthSummaryCards = useMemo(() => (
+    groundTruthEvaluation
+      ? [
+        {
+          label: 'Curated Proposals',
+          value: groundTruthEvaluation.curatedProposalCount,
+          description: 'Number of proposals with at least one curated ground-truth outgoing interrelation in the selected dataset.',
+        },
+        {
+          label: 'Gold Edges',
+          value: groundTruthEvaluation.goldEdgeCount,
+          description: 'Number of unique directed ground-truth edges used as the reference set.',
+        },
+        {
+          label: 'Match Mode',
+          value: groundTruthEvaluation.matchMode,
+          description: 'Experimental evaluation currently scores directed source-target edge recovery and ignores relation-type matching.',
+        },
+      ]
+      : []
+  ), [groundTruthEvaluation]);
 
   return (
     <section className="dashboard-section">
@@ -227,6 +255,37 @@ export function DependenciesSection({
           proposalShortLabel={ecosystem.acronym || 'BIP'}
         />
       </ExportableCard>
+      {groundTruthEvaluation ? (
+        <ExportableCard className="mb-4" exportTitle="Experimental Ground Truth Evaluation">
+          <h3 className="card-title-with-badge">
+            Ground Truth Evaluation
+            <Tag
+              className="dashboard-section__tag card-title-with-badge__tag"
+              severity="warning"
+              value="Experimental"
+            />
+          </h3>
+          <p>
+            Compares Preamble, Regex, and LLM against the curated ground-truth interrelations in the selected dataset.
+            Evaluation is currently restricted to directed edge recovery on proposals that have curated outgoing links.
+          </p>
+          <div className="dependency-metrics-summary">
+            {groundTruthSummaryCards.map((metric) => (
+              <div
+                key={metric.label}
+                className={`metric-badge${metric.label === 'Match Mode' ? ' metric-badge--wide-value' : ''}`}
+                onMouseEnter={(event) => showMetricTooltip(event, metric.description)}
+                onMouseMove={moveMetricTooltip}
+                onMouseLeave={hideMetricTooltip}
+              >
+                <span className="metric-badge__label">{metric.label}</span>
+                <span className="metric-badge__value">{metric.value}</span>
+              </div>
+            ))}
+          </div>
+          <DependencyGroundTruthEvaluationCharts evaluation={groundTruthEvaluation} />
+        </ExportableCard>
+      ) : null}
     </section>
   );
 }

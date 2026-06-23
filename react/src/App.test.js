@@ -16,6 +16,7 @@ import { getNipCommitUrl, getNipUrl } from './nipLinks';
 import { getSlipCommitUrl, getSlipUrl, normalizeSlipId } from './slipLinks';
 import { getRepositoryCommitUrl, getRepositoryProposalUrl } from './proposalLinkResolver';
 import { renderProposalListHtml } from './bipTooltipContent';
+import { buildGroundTruthEvaluation } from './dependencyGroundTruthEvaluation';
 import { buildDashboardData, buildWordCloudData, parseProposalFilterExpression } from './dashboard/dashboardData';
 import {
   buildProposalGraphId,
@@ -248,6 +249,62 @@ test('multi-source fetch uses combined dependency metrics when combined artifact
   } finally {
     global.fetch = previousFetch;
   }
+});
+
+test('ground-truth evaluation scores directed edge recovery on curated source proposals', () => {
+  const evaluation = buildGroundTruthEvaluation({
+    links: {
+      [GROUND_TRUTH_CURATED]: [
+        { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'depends_on' },
+        { sourceKey: 'bips:1', targetKey: 'bips:3', relation_type: 'depends_on' },
+      ],
+      [BODY_EXTRACTED_REGEX]: [
+        { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'reference' },
+        { sourceKey: 'bips:1', targetKey: 'bips:9', relation_type: 'reference' },
+        { sourceKey: 'bips:5', targetKey: 'bips:6', relation_type: 'reference' },
+      ],
+      [BODY_EXTRACTED_LLM]: [
+        { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'depends_on' },
+        { sourceKey: 'bips:1', targetKey: 'bips:3', relation_type: 'depends_on' },
+      ],
+      [PREAMBLE_EXTRACTED]: {
+        requires: [
+          { sourceKey: 'bips:1', targetKey: 'bips:3', relation_type: 'requires' },
+        ],
+      },
+    },
+  });
+
+  expect(evaluation.curatedProposalCount).toBe(1);
+  expect(evaluation.goldEdgeCount).toBe(2);
+  expect(evaluation.approaches).toEqual([
+    expect.objectContaining({
+      approach: PREAMBLE_EXTRACTED,
+      tp: 1,
+      fp: 0,
+      fn: 1,
+      precision: 1,
+      recall: 0.5,
+    }),
+    expect.objectContaining({
+      approach: BODY_EXTRACTED_REGEX,
+      tp: 1,
+      fp: 1,
+      fn: 1,
+      precision: 0.5,
+      recall: 0.5,
+      f1: 0.5,
+    }),
+    expect.objectContaining({
+      approach: BODY_EXTRACTED_LLM,
+      tp: 2,
+      fp: 0,
+      fn: 0,
+      precision: 1,
+      recall: 1,
+      f1: 1,
+    }),
+  ]);
 });
 
 test('source-scopes canonical dependency edge graph keys for display', () => {

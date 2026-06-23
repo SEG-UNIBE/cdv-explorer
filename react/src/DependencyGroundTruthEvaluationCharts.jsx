@@ -19,6 +19,7 @@ const COUNT_SERIES = [
   { key: 'fp', label: 'FP', color: '#e15759' },
   { key: 'fn', label: 'FN', color: '#4e79a7' },
 ];
+const TOOLTIP_EDGE_SCROLL_THRESHOLD = 15;
 
 function formatScore(value) {
   return `${Math.round(Number(value || 0) * 100)}%`;
@@ -42,39 +43,29 @@ function renderProposalAnchor(graphKey, ecosystem, snapshotLabel, linkMode) {
   return `<a href="${escapeHtml(url)}" target="_blank" rel="noreferrer">${escapeHtml(label)}</a>`;
 }
 
-function renderEdgeListHtml(edges, ecosystem, snapshotLabel, linkMode, limit = 8) {
+function renderEdgeListHtml(edges, ecosystem, snapshotLabel, linkMode, { showRelationType = false } = {}) {
   const list = Array.isArray(edges) ? edges.filter(Boolean) : [];
   if (!list.length) {
     return '';
   }
 
-  const visible = list.slice(0, limit);
   const renderItems = (entries) => entries.map((edge) => (
     `<div class="tooltip-edge-list__item">` +
     `${renderProposalAnchor(edge.source, ecosystem, snapshotLabel, linkMode)}` +
     `<span class="tooltip-edge-list__arrow">&rarr;</span>` +
     `${renderProposalAnchor(edge.target, ecosystem, snapshotLabel, linkMode)}` +
+    `${showRelationType && edge?.relationType ? `<span class="tooltip-edge-list__type">(${escapeHtml(edge.relationType)})</span>` : ''}` +
     `</div>`
   ));
 
-  const items = renderItems(visible);
-
-  if (list.length > limit) {
-    items.push(
-      `<details class="tooltip-edge-list__more">` +
-      `<summary>+${list.length - limit} more</summary>` +
-      `<div class="tooltip-edge-list tooltip-edge-list--nested">` +
-      `${renderItems(list.slice(limit)).join('')}` +
-      `</div>` +
-      `</details>`
-    );
-  }
-
-  return `<div class="tooltip-edge-list">${items.join('')}</div>`;
+  const listClassName = list.length > TOOLTIP_EDGE_SCROLL_THRESHOLD
+    ? 'tooltip-edge-list tooltip-edge-list--scroll'
+    : 'tooltip-edge-list';
+  return `<div class="${listClassName}">${renderItems(list).join('')}</div>`;
 }
 
-function renderOptionalListRow(label, edges, ecosystem, snapshotLabel, linkMode) {
-  const content = renderEdgeListHtml(edges, ecosystem, snapshotLabel, linkMode);
+function renderOptionalListRow(label, edges, ecosystem, snapshotLabel, linkMode, options = {}) {
+  const content = renderEdgeListHtml(edges, ecosystem, snapshotLabel, linkMode, options);
   return content ? [label, content] : null;
 }
 
@@ -91,8 +82,8 @@ function buildBarTooltipHtml({
     return renderTooltipCardHtml({
       titleHtml: `<strong>${chartTitle}</strong>`,
       rows: [
-        ['Interpretation', 'Present in both the approach output and the curated ground truth'],
-        renderOptionalListRow('Matching Edges', row.matchedEdges, ecosystem, snapshotLabel, linkMode),
+        ['Info', 'Present in both the approach output and the curated ground truth'],
+        renderOptionalListRow('Matching<br/>Edges', row.matchedEdges, ecosystem, snapshotLabel, linkMode, { showRelationType: true }),
       ],
     });
   }
@@ -101,8 +92,8 @@ function buildBarTooltipHtml({
     return renderTooltipCardHtml({
       titleHtml: `<strong>${chartTitle}</strong>`,
       rows: [
-        ['Interpretation', `Present in ${row.label} but absent from ground truth`],
-        renderOptionalListRow(`Only in ${row.label}`, row.falsePositiveEdges, ecosystem, snapshotLabel, linkMode),
+        ['Info', `Present in ${row.label} but absent from ground truth`],
+        renderOptionalListRow(`Only in<br/>${row.label}`, row.falsePositiveEdges, ecosystem, snapshotLabel, linkMode),
       ],
     });
   }
@@ -111,8 +102,8 @@ function buildBarTooltipHtml({
     return renderTooltipCardHtml({
       titleHtml: `<strong>${chartTitle}</strong>`,
       rows: [
-        ['Interpretation', 'Present in ground truth but missed by the approach'],
-        renderOptionalListRow(`Missing from ${row.label}`, row.falseNegativeEdges, ecosystem, snapshotLabel, linkMode),
+        ['Info', 'Present in ground truth but missed by the approach'],
+        renderOptionalListRow(`Missing in<br/>${row.label}`, row.falseNegativeEdges, ecosystem, snapshotLabel, linkMode, { showRelationType: true }),
       ],
     });
   }
@@ -121,8 +112,8 @@ function buildBarTooltipHtml({
     return renderTooltipCardHtml({
       titleHtml: `<strong>${chartTitle}</strong>`,
       rows: [
-        ['Interpretation', `Precision decreases when edges are present in ${row.label} but absent from ground truth.`],
-        renderOptionalListRow(`Only in ${row.label}`, row.falsePositiveEdges, ecosystem, snapshotLabel, linkMode),
+        ['Info', `Precision decreases when edges are present in ${row.label} but absent from ground truth.`],
+        renderOptionalListRow(`Only in<br/>${row.label}`, row.falsePositiveEdges, ecosystem, snapshotLabel, linkMode),
       ],
     });
   }
@@ -131,8 +122,8 @@ function buildBarTooltipHtml({
     return renderTooltipCardHtml({
       titleHtml: `<strong>${chartTitle}</strong>`,
       rows: [
-        ['Interpretation', 'Recall decreases when the approach misses edges present in ground truth.'],
-        renderOptionalListRow(`Missing from ${row.label}`, row.falseNegativeEdges, ecosystem, snapshotLabel, linkMode),
+        ['Info', 'Recall decreases when the approach misses edges present in ground truth.'],
+        renderOptionalListRow(`Missing in<br/>${row.label}`, row.falseNegativeEdges, ecosystem, snapshotLabel, linkMode, { showRelationType: true }),
       ],
     });
   }
@@ -140,9 +131,9 @@ function buildBarTooltipHtml({
   return renderTooltipCardHtml({
     titleHtml: `<strong>${chartTitle}</strong>`,
     rows: [
-      ['Interpretation', 'F1 balances both false positives and false negatives.'],
-      renderOptionalListRow(`Present in ${row.label} only`, row.falsePositiveEdges, ecosystem, snapshotLabel, linkMode),
-      renderOptionalListRow(`Missing from ${row.label}`, row.falseNegativeEdges, ecosystem, snapshotLabel, linkMode),
+      ['Info', 'F1 balances both false positives and false negatives.'],
+      renderOptionalListRow(`Only in<br/>${row.label}`, row.falsePositiveEdges, ecosystem, snapshotLabel, linkMode),
+      renderOptionalListRow(`Missing in<br/>${row.label}`, row.falseNegativeEdges, ecosystem, snapshotLabel, linkMode, { showRelationType: true }),
     ],
   });
 }

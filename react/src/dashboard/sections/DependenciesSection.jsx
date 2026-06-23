@@ -1,14 +1,19 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { Button } from 'primereact/button';
 import { Card } from 'primereact/card';
 import { Dropdown } from 'primereact/dropdown';
+import { RadioButton } from 'primereact/radiobutton';
 import { Tag } from 'primereact/tag';
 import { NetworkDiagram } from '../../NetworkDiagram';
 import { ProposalGraphMetricsTable } from '../../ProposalGraphMetricsTable';
 import { DependencyComparisonHeatmaps } from '../../DependencyComparisonHeatmaps';
 import { DependencyGroundTruthEvaluationCharts } from '../../DependencyGroundTruthEvaluationCharts';
 import { ProposalFilterControl } from '../../ProposalFilterControl';
-import { buildGroundTruthEvaluation } from '../../dependencyGroundTruthEvaluation';
+import {
+  buildGroundTruthEvaluation,
+  GROUND_TRUTH_MATCH_MODE_EDGE_ONLY,
+  GROUND_TRUTH_MATCH_MODE_OPTIONS,
+} from '../../dependencyGroundTruthEvaluation';
 import { useAnalysisMetricTooltip } from '../../useAnalysisMetricTooltip';
 import { ExportableCard } from '../ExportableCard';
 import { CollapsibleControls } from '../CollapsibleControls';
@@ -39,6 +44,7 @@ export function DependenciesSection({
   activeDependencyMetrics,
   dependencyMetrics,
 }) {
+  const [groundTruthMatchMode, setGroundTruthMatchMode] = useState(GROUND_TRUTH_MATCH_MODE_EDGE_ONLY);
   const {
     showTooltip: showMetricTooltip,
     moveTooltip: moveMetricTooltip,
@@ -73,26 +79,21 @@ export function DependenciesSection({
     },
   ]), [activeDependencyMetrics.summary]);
   const groundTruthEvaluation = useMemo(
-    () => buildGroundTruthEvaluation(selectedDataset),
-    [selectedDataset],
+    () => buildGroundTruthEvaluation(selectedDataset, { matchMode: groundTruthMatchMode }),
+    [groundTruthMatchMode, selectedDataset],
   );
   const groundTruthSummaryCards = useMemo(() => (
     groundTruthEvaluation
       ? [
         {
-          label: 'Curated Proposals',
+          label: 'IPs in GT',
           value: groundTruthEvaluation.curatedProposalCount,
           description: 'Number of proposals with at least one curated ground-truth outgoing interrelation in the selected dataset.',
         },
         {
-          label: 'Gold Edges',
+          label: 'Edges in GT',
           value: groundTruthEvaluation.goldEdgeCount,
           description: 'Number of unique directed ground-truth edges used as the reference set.',
-        },
-        {
-          label: 'Match Mode',
-          value: groundTruthEvaluation.matchMode,
-          description: 'Experimental evaluation currently scores directed source-target edge recovery and ignores relation-type matching.',
         },
       ]
       : []
@@ -266,14 +267,14 @@ export function DependenciesSection({
             />
           </h3>
           <p>
-            Compares Preamble, Regex, and LLM against the curated ground-truth interrelations in the selected dataset.
-            Evaluation is currently restricted to directed edge recovery on proposals that have curated outgoing links.
+            Compares Preamble, Regex, and LLM against the curated Ground Truth (GT) interrelations in the selected dataset.
+            Evaluation is restricted to proposals that have curated outgoing GT links and can score either directed edge recovery only or exact relation-type agreement.
           </p>
           <div className="dependency-metrics-summary">
             {groundTruthSummaryCards.map((metric) => (
               <div
                 key={metric.label}
-                className={`metric-badge${metric.label === 'Match Mode' ? ' metric-badge--wide-value' : ''}`}
+                className="metric-badge"
                 onMouseEnter={(event) => showMetricTooltip(event, metric.description)}
                 onMouseMove={moveMetricTooltip}
                 onMouseLeave={hideMetricTooltip}
@@ -283,6 +284,32 @@ export function DependenciesSection({
               </div>
             ))}
           </div>
+          <CollapsibleControls>
+            <div className="ground-truth-evaluation-controls">
+              <div className="network-layout-picker">
+                <div className="network-layout-picker__label">Match Mode</div>
+                <div className="network-layout-picker__options">
+                  {GROUND_TRUTH_MATCH_MODE_OPTIONS.map((option) => (
+                    <label key={option.value} className="network-layout-picker__option">
+                      <RadioButton
+                        inputId={`ground-truth-match-mode-${option.value}`}
+                        name="ground-truth-match-mode"
+                        value={option.value}
+                        onChange={(event) => setGroundTruthMatchMode(event.value)}
+                        checked={groundTruthMatchMode === option.value}
+                      />
+                      <span>{option.label}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+              <p className="ground-truth-evaluation-controls__note">
+                <strong>Edge Only</strong> matches directed source-target pairs regardless of relation type.
+                {' '}
+                <strong>Exact Type</strong> additionally requires the relation label to match the curated GT edge.
+              </p>
+            </div>
+          </CollapsibleControls>
           <DependencyGroundTruthEvaluationCharts evaluation={groundTruthEvaluation} />
         </ExportableCard>
       ) : null}

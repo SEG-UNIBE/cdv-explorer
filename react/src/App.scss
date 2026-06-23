@@ -2069,6 +2069,28 @@
   gap: 1rem;
 }
 
+.ground-truth-evaluation-controls {
+  display: grid;
+  grid-template-columns: minmax(390px, 1fr) minmax(390px, 1fr);
+  gap: 0.75rem 2rem;
+  align-items: start;
+}
+
+.ground-truth-evaluation-controls .network-layout-picker {
+  grid-template-columns: 8.75rem minmax(0, 1fr);
+}
+
+.ground-truth-evaluation-controls__note {
+  margin: 0;
+  color: var(--app-text-muted);
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+
+.ground-truth-evaluation-controls__note strong {
+  color: var(--app-text);
+}
+
 .dependency-evaluation-chart {
   min-width: 0;
 }
@@ -2154,21 +2176,14 @@
   flex: 0 0 auto;
 }
 
-.tooltip-edge-list__more {
+.tooltip-edge-list__type {
   color: color-mix(in srgb, var(--tooltip-text) 72%, transparent);
 }
 
-.tooltip-edge-list__more summary {
-  cursor: pointer;
-  list-style: none;
-}
-
-.tooltip-edge-list__more summary::-webkit-details-marker {
-  display: none;
-}
-
-.tooltip-edge-list--nested {
-  margin-top: 0.22rem;
+.tooltip-edge-list--scroll {
+  max-height: 18rem;
+  overflow-y: auto;
+  padding-right: 0.2rem;
 }
 
 .proposal-event-history {
@@ -2809,6 +2824,15 @@
 
   .dependency-evaluation-chart-grid {
     grid-template-columns: 1fr;
+  }
+
+  .ground-truth-evaluation-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .ground-truth-evaluation-controls .network-layout-picker {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
   }
 
   .dependency-graph-controls {

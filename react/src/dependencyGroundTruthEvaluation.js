@@ -12,6 +12,14 @@ export const EVALUATED_DEPENDENCY_APPROACHES = [
   BODY_EXTRACTED_LLM,
 ];
 
+export const GROUND_TRUTH_MATCH_MODE_EDGE_ONLY = 'edge_only';
+export const GROUND_TRUTH_MATCH_MODE_EXACT_TYPE = 'exact_type';
+
+export const GROUND_TRUTH_MATCH_MODE_OPTIONS = [
+  { label: 'Edge Only', value: GROUND_TRUTH_MATCH_MODE_EDGE_ONLY },
+  { label: 'Exact Type', value: GROUND_TRUTH_MATCH_MODE_EXACT_TYPE },
+];
+
 function flattenApproachLinks(linksByType, approach) {
   if (approach === PREAMBLE_EXTRACTED) {
     return Object.values(linksByType?.[PREAMBLE_EXTRACTED] || {}).flat().filter(Boolean);
@@ -33,10 +41,18 @@ function buildDirectedEdgeKey(edge) {
   return source && target ? `${source}->${target}` : '';
 }
 
-function dedupeEdgesByKey(edges) {
+function buildExactTypeEdgeKey(edge) {
+  const baseKey = buildDirectedEdgeKey(edge);
+  const relationType = String(edge?.relation_type || '').trim();
+  return baseKey && relationType ? `${baseKey}:::${relationType}` : baseKey;
+}
+
+function dedupeEdgesByKey(edges, matchMode) {
   const entries = new Map();
   edges.forEach((edge) => {
-    const key = buildDirectedEdgeKey(edge);
+    const key = matchMode === GROUND_TRUTH_MATCH_MODE_EXACT_TYPE
+      ? buildExactTypeEdgeKey(edge)
+      : buildDirectedEdgeKey(edge);
     if (!key || entries.has(key)) {
       return;
     }
@@ -49,8 +65,8 @@ function dedupeEdgesByKey(edges) {
   return entries;
 }
 
-function summarizeApproach(predictedEdges, goldEdgeMap) {
-  const predictedEdgeMap = dedupeEdgesByKey(predictedEdges);
+function summarizeApproach(predictedEdges, goldEdgeMap, matchMode) {
+  const predictedEdgeMap = dedupeEdgesByKey(predictedEdges, matchMode);
   const predictedEdgeKeys = new Set(predictedEdgeMap.keys());
   const goldEdgeKeys = new Set(goldEdgeMap.keys());
 
@@ -91,7 +107,10 @@ function summarizeApproach(predictedEdges, goldEdgeMap) {
   };
 }
 
-export function buildGroundTruthEvaluation(dataset) {
+export function buildGroundTruthEvaluation(dataset, options = {}) {
+  const {
+    matchMode = GROUND_TRUTH_MATCH_MODE_EDGE_ONLY,
+  } = options;
   const linksByType = dataset?.links || {};
   const groundTruthEdges = flattenApproachLinks(linksByType, GROUND_TRUTH_CURATED);
 
@@ -104,7 +123,7 @@ export function buildGroundTruthEvaluation(dataset) {
       .map(edgeSourceKey)
       .filter(Boolean)
   );
-  const goldEdgeMap = dedupeEdgesByKey(groundTruthEdges);
+  const goldEdgeMap = dedupeEdgesByKey(groundTruthEdges, matchMode);
   const goldEdgeKeys = new Set(goldEdgeMap.keys());
 
   if (!curatedSourceKeys.size || !goldEdgeKeys.size) {
@@ -112,7 +131,7 @@ export function buildGroundTruthEvaluation(dataset) {
   }
 
   return {
-    matchMode: 'Directed edge recovery',
+    matchMode,
     curatedProposalCount: curatedSourceKeys.size,
     goldEdgeCount: goldEdgeKeys.size,
     approaches: EVALUATED_DEPENDENCY_APPROACHES.map((approach) => {
@@ -122,7 +141,7 @@ export function buildGroundTruthEvaluation(dataset) {
       return {
         approach,
         label: DEPENDENCY_SHORT_LABELS[approach] || approach,
-        ...summarizeApproach(predictedEdges, goldEdgeMap),
+        ...summarizeApproach(predictedEdges, goldEdgeMap, matchMode),
       };
     }),
   };

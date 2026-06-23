@@ -16,7 +16,10 @@ import { getNipCommitUrl, getNipUrl } from './nipLinks';
 import { getSlipCommitUrl, getSlipUrl, normalizeSlipId } from './slipLinks';
 import { getRepositoryCommitUrl, getRepositoryProposalUrl } from './proposalLinkResolver';
 import { renderProposalListHtml } from './bipTooltipContent';
-import { buildGroundTruthEvaluation } from './dependencyGroundTruthEvaluation';
+import {
+  buildGroundTruthEvaluation,
+  GROUND_TRUTH_MATCH_MODE_EXACT_TYPE,
+} from './dependencyGroundTruthEvaluation';
 import { buildDashboardData, buildWordCloudData, parseProposalFilterExpression } from './dashboard/dashboardData';
 import {
   buildProposalGraphId,
@@ -303,6 +306,48 @@ test('ground-truth evaluation scores directed edge recovery on curated source pr
       precision: 1,
       recall: 1,
       f1: 1,
+    }),
+  ]);
+});
+
+test('ground-truth evaluation can require exact relation-type matches', () => {
+  const evaluation = buildGroundTruthEvaluation({
+    links: {
+      [GROUND_TRUTH_CURATED]: [
+        { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'depends_on' },
+      ],
+      [BODY_EXTRACTED_REGEX]: [
+        { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'reference' },
+      ],
+      [BODY_EXTRACTED_LLM]: [
+        { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'depends_on' },
+      ],
+      [PREAMBLE_EXTRACTED]: {
+        requires: [
+          { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'requires' },
+        ],
+      },
+    },
+  }, { matchMode: GROUND_TRUTH_MATCH_MODE_EXACT_TYPE });
+
+  expect(evaluation.approaches).toEqual([
+    expect.objectContaining({
+      approach: PREAMBLE_EXTRACTED,
+      tp: 0,
+      fp: 1,
+      fn: 1,
+    }),
+    expect.objectContaining({
+      approach: BODY_EXTRACTED_REGEX,
+      tp: 0,
+      fp: 1,
+      fn: 1,
+    }),
+    expect.objectContaining({
+      approach: BODY_EXTRACTED_LLM,
+      tp: 1,
+      fp: 0,
+      fn: 0,
     }),
   ]);
 });

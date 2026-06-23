@@ -74,11 +74,14 @@ export function ConformitySection({
   perSourceDashboardData = {},
   sectionSourceView,
   setSectionSourceView,
+  showExperimentalFeatures,
   highlightedConformityProposal,
   setHighlightedConformityProposal,
   conformityRows,
   conformityFailedChecks,
 }) {
+  if (!showExperimentalFeatures) return null;
+
   const isMultiSource = selectedSourceIds.length > 1;
   const sourcesWithStandards = isMultiSource
     ? selectedSourceIds.filter((sourceId) => (

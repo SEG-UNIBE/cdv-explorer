@@ -403,6 +403,8 @@
 }
 
 .dashboard-ribbon {
+  display: flex;
+  flex-direction: column;
   min-height: 0;
   overflow-y: auto;
   border: 1px solid var(--app-border);
@@ -489,6 +491,20 @@
 .dashboard-ribbon__toc,
 .dashboard-ribbon__controls {
   margin-top: 1rem;
+}
+
+.dashboard-ribbon__footer {
+  margin-top: auto;
+  padding-top: 1rem;
+}
+
+.dashboard-ribbon__footer .dashboard-ribbon__link-row {
+  flex-wrap: nowrap;
+}
+
+.dashboard-ribbon__footer .dashboard-ribbon__label-inline {
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .dashboard-ribbon__label {

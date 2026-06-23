@@ -4,6 +4,7 @@ import { Button } from 'primereact/button';
 import { Link } from 'react-router-dom';
 import { FaGithub } from 'react-icons/fa';
 import { useTheme } from './theme';
+import { getEnvironmentBadge } from './runtimeEnvironment';
 import pkg from '../package.json';
 import './Navbar.scss';
 
@@ -11,9 +12,7 @@ const { version } = pkg;
 
 const REPOSITORY_URL = 'https://github.com/SEG-UNIBE/cdv-explorer';
 
-const envBadge = window.location.hostname.includes('pages.dev') ? 'DEV'
-  : window.location.hostname === 'localhost' ? 'LOCAL'
-  : null;
+const envBadge = getEnvironmentBadge();
 
 const Navbar = () => {
   const [mobileMenuVisible, setMobileMenuVisible] = useState(false);

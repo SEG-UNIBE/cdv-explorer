@@ -64,6 +64,7 @@ export function DependenciesSection({
   setSelectedDependencyMetricsApproach,
   activeDependencyMetrics,
   dependencyMetrics,
+  showExperimentalFeatures,
 }) {
   const [groundTruthMatchMode, setGroundTruthMatchMode] = useState(GROUND_TRUTH_MATCH_MODE_EDGE_ONLY);
   const [restrictToCuratedSources, setRestrictToCuratedSources] = useState(true);
@@ -349,7 +350,7 @@ export function DependenciesSection({
           proposalShortLabel={ecosystem.acronym || 'BIP'}
         />
       </ExportableCard>
-      {groundTruthEvaluation ? (
+      {showExperimentalFeatures && groundTruthEvaluation ? (
         <ExportableCard className="mb-4" exportTitle="Experimental Ground Truth Evaluation">
           <h3 className="card-title-with-badge">
             Ground Truth Evaluation

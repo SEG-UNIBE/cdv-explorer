@@ -34,6 +34,11 @@ import {
 import { filterCrossSourceAuthorNetwork } from './authorNetwork/authorNetworkUtils';
 import { filterCrossSourceDependencyGraph } from './networkDiagram/networkDiagramUtils';
 import {
+  getDefaultExperimentalFeaturesEnabled,
+  getEnvironmentBadge,
+  getRuntimeEnvironment,
+} from './runtimeEnvironment';
+import {
   buildClassificationRelationProposalLabel,
   buildClassificationRelationProposalUrl,
 } from './ClassificationRelationTable';
@@ -517,6 +522,25 @@ test('ground-truth evaluation can filter curated edges by review-date cutoff', (
   expect(evaluation.goldEdgeCount).toBe(1);
   expect(evaluation.curatedProposalCount).toBe(1);
   expect(regex).toEqual(expect.objectContaining({ tp: 1, fp: 1, fn: 0 }));
+});
+
+test('runtime environment detection distinguishes local dev and prod hosts', () => {
+  expect(getRuntimeEnvironment('localhost')).toBe('local');
+  expect(getRuntimeEnvironment('127.0.0.1')).toBe('local');
+  expect(getRuntimeEnvironment('cdv-explorer.pages.dev')).toBe('dev');
+  expect(getRuntimeEnvironment('seg-unibe.github.io')).toBe('prod');
+});
+
+test('environment badge is shown only for local and pages dev hosts', () => {
+  expect(getEnvironmentBadge('localhost')).toBe('LOCAL');
+  expect(getEnvironmentBadge('preview.pages.dev')).toBe('DEV');
+  expect(getEnvironmentBadge('seg-unibe.github.io')).toBeNull();
+});
+
+test('experimental features default to enabled outside production only', () => {
+  expect(getDefaultExperimentalFeaturesEnabled('localhost')).toBe(true);
+  expect(getDefaultExperimentalFeaturesEnabled('preview.pages.dev')).toBe(true);
+  expect(getDefaultExperimentalFeaturesEnabled('seg-unibe.github.io')).toBe(false);
 });
 
 test('ground-truth evaluation returns an empty benchmark when a cutoff excludes all curated edges', () => {

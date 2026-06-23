@@ -24,6 +24,7 @@ export function AuthorshipSection({
   selectedSourceIds = [],
   sectionSourceView,
   setSectionSourceView,
+  showExperimentalFeatures,
   yearData,
   topAuthors,
   authorContributionHistogram,
@@ -253,43 +254,45 @@ export function AuthorshipSection({
           </div>
         </ExportableCard>
       </div>
-      <ExportableCard className="mb-4" exportTitle="Word Cloud of Document Text">
-        <h3 className="card-title-with-badge">
-          Word Cloud of Document Text
-          <Tag
-            className="dashboard-section__tag card-title-with-badge__tag"
-            severity="warning"
-            value="Experimental"
-          />
-        </h3>
-        <p>
-          Highlighting the most frequent terms across the selected proposal corpus.
-        </p>
-        <CollapsibleControls>
-          <ProposalFilterControl
-            value={wordCloudFilterText}
-            onChange={setWordCloudFilterText}
-            ecosystem={ecosystem}
-            aria-label="Filter proposals by ID for word cloud (e.g. BIP32, SLIP44, BIP30-BIP35)"
-            layout="split"
-            entryLabel="Filter proposals"
-            className="wordcloud-filter--chips-right"
-            trailingControl={(
-              <Button
-                type="button"
-                label="Clear"
-                severity="secondary"
-                text
-                onClick={() => setWordCloudFilterText('')}
-                disabled={!hasWordCloudFilter}
-              />
-            )}
-          />
-        </CollapsibleControls>
-        <div>
-          <WordCloud words={hasWordCloudFilter ? filteredWordCloudData : wordCloudData} width={1250} height={500} />
-        </div>
-      </ExportableCard>
+      {showExperimentalFeatures ? (
+        <ExportableCard className="mb-4" exportTitle="Word Cloud of Document Text">
+          <h3 className="card-title-with-badge">
+            Word Cloud of Document Text
+            <Tag
+              className="dashboard-section__tag card-title-with-badge__tag"
+              severity="warning"
+              value="Experimental"
+            />
+          </h3>
+          <p>
+            Highlighting the most frequent terms across the selected proposal corpus.
+          </p>
+          <CollapsibleControls>
+            <ProposalFilterControl
+              value={wordCloudFilterText}
+              onChange={setWordCloudFilterText}
+              ecosystem={ecosystem}
+              aria-label="Filter proposals by ID for word cloud (e.g. BIP32, SLIP44, BIP30-BIP35)"
+              layout="split"
+              entryLabel="Filter proposals"
+              className="wordcloud-filter--chips-right"
+              trailingControl={(
+                <Button
+                  type="button"
+                  label="Clear"
+                  severity="secondary"
+                  text
+                  onClick={() => setWordCloudFilterText('')}
+                  disabled={!hasWordCloudFilter}
+                />
+              )}
+            />
+          </CollapsibleControls>
+          <div>
+            <WordCloud words={hasWordCloudFilter ? filteredWordCloudData : wordCloudData} width={1250} height={500} />
+          </div>
+        </ExportableCard>
+      ) : null}
     </section>
   );
 }

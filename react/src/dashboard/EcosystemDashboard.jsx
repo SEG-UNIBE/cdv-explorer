@@ -21,6 +21,7 @@ import { EvolutionSection } from './sections/EvolutionSection';
 import { DashboardSnapshotProvider } from './DashboardSnapshotContext';
 import { DashboardSkeleton } from './DashboardSkeleton';
 import { SECTION_VIEW_MERGED } from './sections/SectionSourceToggle';
+import { getDefaultExperimentalFeaturesEnabled } from '../runtimeEnvironment';
 
 function getSourceRepositoryHref(repository) {
   const text = String(repository || '').trim();
@@ -125,6 +126,10 @@ export function EcosystemDashboard() {
   const [evolutionSourceView, setEvolutionSourceView] = useState('');
   const [dependenciesSourceView, setDependenciesSourceView] = useState(SECTION_VIEW_MERGED);
   const [conformitySourceView, setConformitySourceView] = useState('');
+  const [showExperimentalFeatures, setShowExperimentalFeatures] = useLocalStorageState(
+    'cdv-explorer-show-experimental-features',
+    getDefaultExperimentalFeaturesEnabled(),
+  );
   const dashboardScrollRef = useRef(null);
 
   useEffect(() => {
@@ -326,6 +331,7 @@ export function EcosystemDashboard() {
   }, []);
 
   const showConformitySection = useMemo(() => {
+    if (!showExperimentalFeatures) return false;
     if (!ecosystem) return false;
     if (orderedSelectedSourceIds.length > 1) {
       return orderedSelectedSourceIds.some((sourceId) => (
@@ -333,7 +339,7 @@ export function EcosystemDashboard() {
       ));
     }
     return (activeEcosystem?.complianceStandards || []).length > 0;
-  }, [activeEcosystem, ecosystem, orderedSelectedSourceIds]);
+  }, [activeEcosystem, ecosystem, orderedSelectedSourceIds, showExperimentalFeatures]);
   const dashboardTocItems = useMemo(() => [
     { id: 'dashboard-authorship', label: 'Authorship' },
     { id: 'dashboard-classification', label: 'Classification' },
@@ -496,6 +502,18 @@ export function EcosystemDashboard() {
               </span>
             </div>
           </div>
+          <div className="dashboard-ribbon__footer">
+            <div className="dashboard-ribbon__link-row">
+              <span className="dashboard-ribbon__label-inline">Experimental Features</span>
+              <InputSwitch
+                checked={showExperimentalFeatures}
+                onChange={(event) => setShowExperimentalFeatures(Boolean(event.value))}
+                inputId="experimental-features-switch"
+                aria-label="Enable experimental features"
+                className="dashboard-link-mode-switch"
+              />
+            </div>
+          </div>
         </aside>
 
         <main className="dashboard-main" ref={dashboardScrollRef}>
@@ -573,6 +591,7 @@ export function EcosystemDashboard() {
                 selectedSourceIds={orderedSelectedSourceIds}
                 sectionSourceView={activeAuthorshipSourceView}
                 setSectionSourceView={setAuthorshipSourceView}
+                showExperimentalFeatures={showExperimentalFeatures}
                 yearData={authorshipDashboardData.yearData}
                 topAuthors={authorshipDashboardData.topAuthors}
                 authorContributionHistogram={authorshipDashboardData.authorContributionHistogram}
@@ -647,6 +666,7 @@ export function EcosystemDashboard() {
                 setSelectedDependencyMetricsApproach={setSelectedDependencyMetricsApproach}
                 activeDependencyMetrics={activeDependencyMetrics}
                 dependencyMetrics={dependencyViewMetrics}
+                showExperimentalFeatures={showExperimentalFeatures}
               />
             </div>
             {showConformitySection && (
@@ -658,6 +678,7 @@ export function EcosystemDashboard() {
 	                  perSourceDashboardData={perSourceDashboardData}
 	                  sectionSourceView={activeConformitySourceView}
 	                  setSectionSourceView={setConformitySourceView}
+	                  showExperimentalFeatures={showExperimentalFeatures}
 	                  highlightedConformityProposal={highlightedConformityProposal}
 	                  setHighlightedConformityProposal={setHighlightedConformityProposal}
 	                  conformityRows={conformityDashboardData.conformityRows}

@@ -1,7 +1,8 @@
 import * as d3 from 'd3';
 import { useEffect, useRef } from 'react';
-import { renderProposalListHtml } from './bipTooltipContent';
+import { renderProposalListRow } from './bipTooltipContent';
 import { useDashboardEcosystem, useDashboardLinkMode, useDashboardSnapshot } from './dashboard/DashboardSnapshotContext';
+import { renderTooltipCardHtml } from './tooltipHtml';
 
 const AUTHORS_BAR_COLOR = '#e45756';
 const AUTHORS_BAR_HOVER_COLOR = '#b63f3e';
@@ -82,11 +83,13 @@ export const TopAuthorsChart = ({ data, width = 600, height = 400 }) => {
     let pinnedAuthor = null;
 
     const renderTooltipHtml = (entry) => {
-      return (
-        `<strong>${entry.author}</strong><br/>` +
-        `Proposals: ${entry.count}<br/>` +
-        renderProposalListHtml(entry.bips, snapshotLabel, { ecosystem, linkMode })
-      );
+      return renderTooltipCardHtml({
+        titleHtml: `<strong>${entry.author}</strong>`,
+        rows: [
+          ['Proposals', entry.count],
+          renderProposalListRow(entry.bips, snapshotLabel, { ecosystem, linkMode }),
+        ],
+      });
     };
 
     const setTooltipPosition = (pageX, pageY) => {

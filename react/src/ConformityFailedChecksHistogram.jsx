@@ -1,7 +1,8 @@
 import * as d3 from 'd3';
 import { useEffect, useRef } from 'react';
-import { renderProposalListHtml } from './bipTooltipContent';
+import { renderProposalListRow } from './bipTooltipContent';
 import { useDashboardEcosystem, useDashboardLinkMode, useDashboardSnapshot } from './dashboard/DashboardSnapshotContext';
+import { renderTooltipCardHtml } from './tooltipHtml';
 
 function truncateTextToWidth(text, maxWidth, measurer) {
   const value = String(text || '');
@@ -124,9 +125,13 @@ export const ConformityFailedChecksHistogram = ({
     };
 
     const renderTooltipHtml = (entry) => (
-      `<strong>${entry.label}</strong><br/>` +
-      `Failed in ${entry.count} ${proposalShortLabel}${entry.count === 1 ? '' : 's'}<br/>` +
-      renderProposalListHtml(entry.proposals, snapshotLabel, { ecosystem, label: 'Affected:', linkMode })
+      renderTooltipCardHtml({
+        titleHtml: `<strong>${entry.label}</strong>`,
+        rows: [
+          ['Failed In', `${entry.count} ${proposalShortLabel}${entry.count === 1 ? '' : 's'}`],
+          renderProposalListRow(entry.proposals, snapshotLabel, { ecosystem, label: 'Affected:', linkMode }),
+        ],
+      })
     );
 
     const resetBarStyles = () => {

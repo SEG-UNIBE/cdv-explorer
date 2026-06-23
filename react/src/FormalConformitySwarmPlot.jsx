@@ -2,6 +2,7 @@ import * as d3 from 'd3';
 import { useEffect, useRef } from 'react';
 import { useDashboardEcosystem, useDashboardLinkMode, useDashboardSnapshot } from './dashboard/DashboardSnapshotContext';
 import { formatProposalReference, getProposalUrl, normalizeProposalId } from './proposalLinks';
+import { renderTooltipCardHtml } from './tooltipHtml';
 
 
 function getStandardScore(entry, key) {
@@ -219,16 +220,21 @@ export const FormalConformitySwarmPlot = ({
           const complianceDetails = entry?.formal_compliance || {};
           const panelCompliance = complianceDetails?.[panel.key] || {};
           const checks = panelCompliance.checks || [];
-          return (
-            `<strong><a href="${getProposalUrl(entry.id, snapshotLabel, { linkMode }, ecosystem)}" target="_blank" rel="noreferrer">${formatProposalReference(entry.id, ecosystem)}</a></strong><br/>` +
-            `${entry.panelLabel}: ${formatScore(entry.score)}<br/>` +
-            `Status: ${entry.status || 'Unknown'}<br/>` +
-            `Passed: ${panelCompliance.passed_checks ?? 0} | Failed: ${panelCompliance.failed_checks ?? 0} | Skipped: ${panelCompliance.skipped_checks ?? 0}<br/>` +
-            (panelCompliance.failed_checks
-              ? '<strong style="display:block; margin-top:0.35rem;">Failed checks</strong>'
-              : '') +
-            renderChecksHtml(checks)
-          );
+          return renderTooltipCardHtml({
+            titleHtml: `<strong><a href="${getProposalUrl(entry.id, snapshotLabel, { linkMode }, ecosystem)}" target="_blank" rel="noreferrer">${formatProposalReference(entry.id, ecosystem)}</a></strong>`,
+            rows: [
+              [entry.panelLabel, formatScore(entry.score)],
+              ['Status', entry.status || 'Unknown'],
+              ['Passed', panelCompliance.passed_checks ?? 0],
+              ['Failed', panelCompliance.failed_checks ?? 0],
+              ['Skipped', panelCompliance.skipped_checks ?? 0],
+            ],
+            bodyHtml: (
+              panelCompliance.failed_checks
+                ? '<strong class="tooltip-card__section-label">Failed checks</strong>'
+                : ''
+            ) + renderChecksHtml(checks),
+          });
         })()
       );
 

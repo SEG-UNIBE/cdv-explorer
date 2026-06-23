@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import cloud from 'd3-cloud';
+import { renderTooltipCardHtml } from './tooltipHtml';
 
 function allowVisualZoomGesture(event) {
   if (event?.type === 'wheel') {
@@ -160,7 +161,10 @@ export const WordCloud = ({ words, width = 1250, height = 750 }) => {
 
           tooltip
             .style('opacity', 1)
-            .html(`<strong>${d.text}</strong><br/>Count: ${d.count}`);
+            .html(renderTooltipCardHtml({
+              titleHtml: `<strong>${d.text}</strong>`,
+              rows: [['Count', d.count]],
+            }));
         })
         .on('mousemove', function (event) {
           tooltip

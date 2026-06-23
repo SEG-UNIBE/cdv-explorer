@@ -1,5 +1,6 @@
 import * as d3 from 'd3';
 import { useEffect, useRef } from 'react';
+import { renderTooltipCardHtml } from './tooltipHtml';
 
 const HISTOGRAM_BAR_COLOR = '#2f9e44';
 const HISTOGRAM_BAR_HOVER_COLOR = '#2b8a3e';
@@ -102,11 +103,12 @@ export const AuthorContributionHistogram = ({ data, width = 600, height = 400 })
         d3.select(this).attr('fill', HISTOGRAM_BAR_HOVER_COLOR);
         tooltip
           .style('opacity', 1)
-          .html(
-            `There ${entry.authors === 1 ? 'is' : 'are'} <strong>${entry.authors}</strong> ` +
-            `author${entry.authors === 1 ? '' : 's'} that authored <strong>${entry.bipsWritten}</strong> ` +
-            `proposal${entry.bipsWritten === 1 ? '' : 's'}.`
-          );
+          .html(renderTooltipCardHtml({
+            titleHtml: `<strong>${entry.bipsWritten}</strong> proposal${entry.bipsWritten === 1 ? '' : 's'}`,
+            rows: [
+              ['Authors', entry.authors],
+            ],
+          }));
       })
       .on('mousemove', function (event) {
         tooltip

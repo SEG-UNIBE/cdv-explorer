@@ -1,7 +1,8 @@
 import * as d3 from 'd3';
 import { useEffect, useRef } from 'react';
-import { renderProposalListHtml } from './bipTooltipContent';
+import { renderProposalListRow } from './bipTooltipContent';
 import { useDashboardEcosystem, useDashboardLinkMode, useDashboardSnapshot } from './dashboard/DashboardSnapshotContext';
+import { renderTooltipCardHtml } from './tooltipHtml';
 
 const BAR_COLOR = '#7048e8';
 const BAR_HOVER_COLOR = '#5f3dc4';
@@ -93,9 +94,13 @@ export const BipAuthorCountHistogram = ({ data, width = 600, height = 400 }) => 
 
     const renderTooltipHtml = (e) => {
       const authorLabel = e.authorCount === 1 ? 'single authors' : e.authorCount === 2 ? 'two authors' : e.authorCount === 3 ? 'three authors' : `${e.authorCount} authors`;
-      const header = `<strong>${e.bipCount}</strong> proposal${e.bipCount === 1 ? ' is' : 's are'} authored by ${authorLabel}.`;
-      const bipList = renderProposalListHtml(e.bips, snapshotLabel, { ecosystem, linkMode });
-      return bipList ? `${header}<br/>${bipList}` : header;
+      return renderTooltipCardHtml({
+        titleHtml: `<strong>${e.bipCount}</strong> proposal${e.bipCount === 1 ? '' : 's'}`,
+        rows: [
+          ['Author Count', authorLabel],
+          renderProposalListRow(e.bips, snapshotLabel, { ecosystem, linkMode }),
+        ],
+      });
     };
 
     svg.on('click', () => {

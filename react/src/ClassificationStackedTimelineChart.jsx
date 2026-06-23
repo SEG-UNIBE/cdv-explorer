@@ -1,8 +1,9 @@
 import * as d3 from 'd3';
 import { useEffect, useRef } from 'react';
-import { renderProposalListHtml } from './bipTooltipContent';
+import { renderProposalListRow } from './bipTooltipContent';
 import { getClassificationColorMap } from './classificationColors';
 import { useDashboardEcosystem, useDashboardLinkMode, useDashboardSnapshot } from './dashboard/DashboardSnapshotContext';
+import { renderTooltipCardHtml } from './tooltipHtml';
 
 export const ClassificationStackedTimelineChart = ({
   categoryDomains,
@@ -129,11 +130,15 @@ export const ClassificationStackedTimelineChart = ({
           : [];
 
         return (
-          `<strong>${config?.label || field}</strong><br/>` +
-          `Year: ${segment.data.year}<br/>` +
-          `Category: ${segment.key}<br/>` +
-          `Count: ${segment.data[segment.key]}<br/>` +
-          renderProposalListHtml(bipList, snapshotLabel, { ecosystem, linkMode })
+          renderTooltipCardHtml({
+            titleHtml: `<strong>${config?.label || field}</strong>`,
+            rows: [
+              ['Year', segment.data.year],
+              ['Category', segment.key],
+              ['Count', segment.data[segment.key]],
+              renderProposalListRow(bipList, snapshotLabel, { ecosystem, linkMode }),
+            ],
+          })
         );
       };
 

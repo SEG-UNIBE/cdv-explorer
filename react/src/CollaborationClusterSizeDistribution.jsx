@@ -1,5 +1,6 @@
 import * as d3 from 'd3';
 import { useEffect, useRef } from 'react';
+import { renderTooltipCardHtml } from './tooltipHtml';
 
 const CLUSTER_BAR_COLOR = 'var(--chart-accent-orange)';
 const CLUSTER_BAR_HOVER_COLOR = 'var(--chart-accent-orange-hover)';
@@ -179,11 +180,17 @@ export function CollaborationClusterSizeDistribution({ data, width = 640, height
         d3.select(this).attr('fill', CLUSTER_BAR_HOVER_COLOR);
         tooltip
           .style('opacity', 1)
-          .html(
-            `There ${entry.clusterCount === 1 ? 'is' : 'are'} <strong>${entry.clusterCount}</strong> ` +
-            `connected component${entry.clusterCount === 1 ? '' : 's'} of size ${entry.clusterSize},<br/>` +
-            `accounting for ${entry.authorCount} author${entry.authorCount === 1 ? '' : 's'} in total.`
-          );
+          .html(renderTooltipCardHtml({
+            titleHtml: `<strong>Size ${entry.clusterSize}</strong> component${entry.clusterCount === 1 ? '' : 's'}`,
+            rows: [
+              ['Components', entry.clusterCount],
+              ['Authors', entry.authorCount],
+              [
+                'Meaning',
+                `There ${entry.clusterCount === 1 ? 'is' : 'are'} ${entry.clusterCount} connected component${entry.clusterCount === 1 ? '' : 's'} of size ${entry.clusterSize}, accounting for ${entry.authorCount} author${entry.authorCount === 1 ? '' : 's'} in total.`,
+              ],
+            ],
+          }));
       })
       .on('mousemove', function (event) {
         tooltip

@@ -2581,10 +2581,13 @@
 .proposal-tooltip,
 .formal-conformity-tooltip,
 .conformity-failed-checks-tooltip,
+.collaboration-degree-tooltip,
+.collaboration-cluster-tooltip,
 .classification-pie-tooltip,
 .classification-timeline-tooltip,
 .proposal-sankey-tooltip,
 .classification-chord-tooltip,
+.bip-author-count-tooltip,
 .author-histogram-tooltip,
 .wordcloud-tooltip {
   width: min(320px, calc(100vw - 32px));
@@ -2610,39 +2613,78 @@
   text-decoration: underline;
 }
 
-.dependency-tooltip-title {
+.dependency-tooltip-title,
+.tooltip-card__title {
   margin-bottom: 0.45rem;
   line-height: 1.35;
+  text-align: left;
 }
 
-.dependency-tooltip-arrow {
+.dependency-tooltip-arrow,
+.tooltip-card__arrow {
   opacity: 0.72;
 }
 
-.dependency-tooltip-table {
+.dependency-tooltip-table,
+.tooltip-card__table {
   width: 100%;
   border-collapse: collapse;
   border-spacing: 0;
-  table-layout: fixed;
+  table-layout: auto;
 }
 
 .dependency-tooltip-table th,
-.dependency-tooltip-table td {
+.dependency-tooltip-table td,
+.tooltip-card__table th,
+.tooltip-card__table td {
   padding: 0.12rem 0;
   vertical-align: top;
   text-align: left;
 }
 
-.dependency-tooltip-table th {
-  width: 5.25rem;
+.dependency-tooltip-table th,
+.tooltip-card__table th {
+  width: 1%;
   padding-right: 0.65rem;
   font-weight: 600;
   color: color-mix(in srgb, var(--tooltip-text) 78%, transparent);
   white-space: nowrap;
 }
 
-.dependency-tooltip-table td {
+.dependency-tooltip-table td,
+.tooltip-card__table td {
   color: var(--tooltip-text);
+}
+
+.tooltip-card__body {
+  margin-top: 0.45rem;
+  text-align: left;
+}
+
+.tooltip-card__section {
+  display: grid;
+  grid-template-columns: minmax(5.5rem, max-content) minmax(0, 1fr);
+  align-items: start;
+  column-gap: 0.7rem;
+}
+
+.tooltip-card__section-label,
+.tooltip-card__body strong {
+  display: block;
+  margin-bottom: 0.2rem;
+}
+
+.tooltip-card__section-label {
+  margin: 0;
+  white-space: nowrap;
+}
+
+.tooltip-card__section-content {
+  min-width: 0;
+}
+
+.tooltip-card__section-subgroup + .tooltip-card__section-subgroup {
+  margin-top: 0.22rem;
 }
 
 @media (max-width: 900px) {

@@ -1,7 +1,8 @@
 import * as d3 from 'd3';
 import { useEffect, useRef } from 'react';
-import { renderProposalListHtml } from './bipTooltipContent';
+import { renderProposalListRow } from './bipTooltipContent';
 import { useDashboardEcosystem, useDashboardLinkMode, useDashboardSnapshot } from './dashboard/DashboardSnapshotContext';
+import { renderTooltipCardHtml } from './tooltipHtml';
 
 const SOURCE_COLOR_FALLBACKS = ['#4c78a8', '#f58518', '#54a24b', '#b279a2', '#72b7b2'];
 const TOTAL_LINE_COLOR = '#e45756';
@@ -100,12 +101,14 @@ export const ProposalTimelineChart = ({ data, width = 600, height = 300 }) => {
     const renderTooltipHtml = (entry) => {
       const breakdown = isMultiSource ? formatBreakdown(entry.bySource) : '';
       const cumulativeBreakdown = isMultiSource ? formatBreakdown(entry.cumulativeBySource) : '';
-      return (
-        `<strong>${entry.year}</strong><br/>` +
-        `New proposals: ${entry.count}${breakdown ? ` (${breakdown})` : ''}<br/>` +
-        `Cumulative proposals: ${entry.cumulative}${cumulativeBreakdown ? ` (${cumulativeBreakdown})` : ''}<br/>` +
-        renderProposalListHtml(entry.bips, snapshotLabel, { ecosystem, linkMode })
-      );
+      return renderTooltipCardHtml({
+        titleHtml: `<strong>${entry.year}</strong>`,
+        rows: [
+          ['New Proposals', `${entry.count}${breakdown ? ` (${breakdown})` : ''}`],
+          ['Cumulative', `${entry.cumulative}${cumulativeBreakdown ? ` (${cumulativeBreakdown})` : ''}`],
+          renderProposalListRow(entry.bips, snapshotLabel, { ecosystem, linkMode }),
+        ],
+      });
     };
 
     const setTooltipPosition = (pageX, pageY) => {

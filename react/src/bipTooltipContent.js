@@ -43,7 +43,6 @@ export function renderProposalListHtml(proposals, snapshotOrOptions = null, opti
     : null;
   const {
     emptyText = 'No proposal list available.',
-    label = 'List:',
     linkMode = 'history',
     ecosystem = null,
   } = snapshotLabel == null && snapshotOrOptions && typeof snapshotOrOptions === 'object'
@@ -58,7 +57,7 @@ export function renderProposalListHtml(proposals, snapshotOrOptions = null, opti
   // Legacy path: flat array of id strings/numbers — single-source semantics,
   // routes through the ecosystem-level link helpers.
   if (!isRefShape(list[0])) {
-    return `${label} ${renderLegacyProposalList(list, snapshotLabel, { linkMode, ecosystem })}`;
+    return renderLegacyProposalList(list, snapshotLabel, { linkMode, ecosystem });
   }
 
   // Tuple path: refs are { source, id } — group by source and use each source's
@@ -80,17 +79,42 @@ export function renderProposalListHtml(proposals, snapshotOrOptions = null, opti
   if (orderedSourceIds.length === 1) {
     const sourceId = orderedSourceIds[0];
     const source = sourcesMap[sourceId] || ecosystem;
-    return `${label} ${renderRefGroup(groups.get(sourceId), snapshotLabel, source, { linkMode })}`;
+    return renderRefGroup(groups.get(sourceId), snapshotLabel, source, { linkMode });
   }
 
   const sections = orderedSourceIds.map((sourceId) => {
     const source = sourcesMap[sourceId] || ecosystem;
     const heading = escapeHtml(source?.shortLabel || source?.acronym || sourceId || 'IPs');
     const body = renderRefGroup(groups.get(sourceId), snapshotLabel, source, { linkMode });
-    return `<strong>${heading}:</strong> ${body}`;
+    return (
+      `<div class="tooltip-card__section-subgroup">` +
+      `<strong>${heading}:</strong> ${body}` +
+      `</div>`
+    );
   });
 
-  return `${label}<br/>${sections.join('<br/>')}`;
+  return sections.join('');
+}
+
+export function renderProposalListRow(proposals, snapshotOrOptions = null, options = {}) {
+  const snapshotLabel = typeof snapshotOrOptions === 'string' || snapshotOrOptions == null
+    ? snapshotOrOptions
+    : null;
+  const {
+    emptyText = 'No proposal list available.',
+    label = 'List:',
+  } = snapshotLabel == null && snapshotOrOptions && typeof snapshotOrOptions === 'object'
+    ? snapshotOrOptions
+    : options;
+
+  const normalizedLabel = String(label || '')
+    .replace(/:\s*$/, '')
+    .trim();
+
+  return [
+    normalizedLabel,
+    renderProposalListHtml(proposals, snapshotOrOptions, options) || emptyText,
+  ];
 }
 
 export const renderBipListHtml = renderProposalListHtml;

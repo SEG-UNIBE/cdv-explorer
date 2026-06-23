@@ -11,6 +11,7 @@ import { CollapsibleControls } from './dashboard/CollapsibleControls';
 import { useDashboardEcosystem, useDashboardLinkMode, useDashboardSnapshot } from './dashboard/DashboardSnapshotContext';
 import { parseProposalFilterExpression } from './dashboard/dashboardData';
 import { formatProposalLabel, getProposalUrl, normalizeProposalId } from './proposalLinks';
+import { renderTooltipCardHtml } from './tooltipHtml';
 
 const SHORT_LABELS = DEPENDENCY_SHORT_LABELS;
 
@@ -141,11 +142,15 @@ function renderCellTooltipHtml(metric, comparison) {
       : `Only in ${approachShortLabel}`;
 
   return (
-    `<strong>${metricLabel}</strong><br/>` +
-    `${buildCellExplanation(metric, comparison)}<br/>` +
-    `Same: ${comparison.summary.overlap} (${formatPercent(comparison.summary.hit_rate)})<br/>` +
-    `Not in ${approachShortLabel}: ${comparison.summary.baseline_only} (${formatPercent(comparison.summary.missed_rate)})<br/>` +
-    `Only in ${approachShortLabel}: ${comparison.summary.approach_only} (${formatPercent(getApproachOnlyRate(comparison))})`
+    renderTooltipCardHtml({
+      titleHtml: `<strong>${metricLabel}</strong>`,
+      rows: [
+        ['Same', `${comparison.summary.overlap} (${formatPercent(comparison.summary.hit_rate)})`],
+        [`Not in ${approachShortLabel}`, `${comparison.summary.baseline_only} (${formatPercent(comparison.summary.missed_rate)})`],
+        [`Only in ${approachShortLabel}`, `${comparison.summary.approach_only} (${formatPercent(getApproachOnlyRate(comparison))})`],
+      ],
+      bodyHtml: buildCellExplanation(metric, comparison),
+    })
   );
 }
 

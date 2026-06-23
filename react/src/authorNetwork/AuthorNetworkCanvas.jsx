@@ -1,6 +1,7 @@
 import * as d3 from 'd3';
 import { useEffect, useRef } from 'react';
-import { renderProposalListHtml } from '../bipTooltipContent';
+import { renderProposalListRow } from '../bipTooltipContent';
+import { renderTooltipCardHtml } from '../tooltipHtml';
 import {
   DEFAULT_EDGE_CURVE_DIRECTION,
   DEFAULT_EDGE_CURVE_STRENGTH,
@@ -174,22 +175,26 @@ export function AuthorNetworkCanvas({
 
     const renderNodeTooltip = (entry) => {
       const authoredBips = Array.isArray(entry.bips) ? entry.bips : [];
-      return (
-        `<strong>${entry.id}</strong><br/>` +
-        `Authored proposals: ${authoredBips.length}<br/>` +
-        `Collaborations: ${entry.degree}<br/>` +
-        (entry.degree > 0 ? `Connected component size: ${entry.clusterSize}<br/>` : '') +
-        renderProposalListHtml(authoredBips, snapshotLabel, { emptyText: 'No authored proposals available.', ecosystem, linkMode })
-      );
+      return renderTooltipCardHtml({
+        titleHtml: `<strong>${entry.id}</strong>`,
+        rows: [
+          ['Authored Proposals', authoredBips.length],
+          ['Collaborations', entry.degree],
+          ...(entry.degree > 0 ? [['Component Size', entry.clusterSize]] : []),
+          renderProposalListRow(authoredBips, snapshotLabel, { emptyText: 'No authored proposals available.', ecosystem, linkMode }),
+        ],
+      });
     };
 
     const renderEdgeTooltip = (edge) => {
       const sharedBips = Array.isArray(edge.bips) ? edge.bips : [];
-      return (
-        `<strong>${getEdgeSourceId(edge)}</strong> x <strong>${getEdgeTargetId(edge)}</strong><br/>` +
-        `Shared proposals: ${sharedBips.length}<br/>` +
-        renderProposalListHtml(sharedBips, snapshotLabel, { emptyText: 'No shared proposals available.', ecosystem, linkMode })
-      );
+      return renderTooltipCardHtml({
+        titleHtml: `<strong>${getEdgeSourceId(edge)}</strong> <span class="tooltip-card__arrow">&times;</span> <strong>${getEdgeTargetId(edge)}</strong>`,
+        rows: [
+          ['Shared Proposals', sharedBips.length],
+          renderProposalListRow(sharedBips, snapshotLabel, { emptyText: 'No shared proposals available.', ecosystem, linkMode }),
+        ],
+      });
     };
 
     const setTooltipPosition = (pageX, pageY) => {

@@ -1,6 +1,7 @@
 import * as d3 from 'd3';
 import { useEffect, useRef } from 'react';
 import { getClassificationColorMap } from './classificationColors';
+import { renderTooltipCardHtml } from './tooltipHtml';
 
 export function EvolutionStatusAreaChart({
   data,
@@ -164,15 +165,16 @@ export function EvolutionStatusAreaChart({
         }))
         .filter((entry) => entry.value > 0)
         .sort((left, right) => right.value - left.value || left.category.localeCompare(right.category))
-        .map((entry) => `${entry.category}: ${entry.value}`)
-        .join('<br/>');
+        .map((entry) => [entry.category, entry.value]);
 
-      return (
-        `<strong>${title}</strong><br/>` +
-        `Year: ${row.year}<br/>` +
-        `Total: ${total}<br/>` +
-        `${lines}`
-      );
+      return renderTooltipCardHtml({
+        titleHtml: `<strong>${title}</strong>`,
+        rows: [
+          ['Year', row.year],
+          ['Total', total],
+          ...lines,
+        ],
+      });
     };
 
     const setTooltipPosition = (event) => {

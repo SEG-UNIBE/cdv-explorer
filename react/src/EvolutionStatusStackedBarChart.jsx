@@ -1,8 +1,9 @@
 import * as d3 from 'd3';
 import { useEffect, useRef, useState } from 'react';
-import { renderProposalListHtml } from './bipTooltipContent';
+import { renderProposalListRow } from './bipTooltipContent';
 import { getClassificationColorMap } from './classificationColors';
 import { useDashboardEcosystem, useDashboardLinkMode, useDashboardSnapshot } from './dashboard/DashboardSnapshotContext';
+import { renderTooltipCardHtml } from './tooltipHtml';
 
 export function EvolutionStatusStackedBarChart({
   data,
@@ -392,20 +393,26 @@ export function EvolutionStatusStackedBarChart({
         ? segment.data.bips[segment.key]
         : [];
       const dateRange = segment.data.periodStart && segment.data.periodEnd
-        ? `Range: ${segment.data.periodStart} to ${segment.data.periodEnd}<br/>`
+        ? `${segment.data.periodStart} to ${segment.data.periodEnd}`
         : '';
 
-      return (
-        `<strong>${title}</strong><br/>` +
-        `Period: ${segment.data.periodDisplay || segment.data.period}<br/>` +
-        dateRange +
-        `${segmentByKey.get(segment.key)?.standard ? `Standard: ${String(segmentByKey.get(segment.key)?.standard).toUpperCase()}<br/>` : ''}` +
-        `Status: ${formatSegmentLabel(segmentByKey.get(segment.key) || { status: segment.key })}<br/>` +
-        `${segmentByKey.get(segment.key)?.isOfficial === false ? 'Note: non-official status label observed in repository history.<br/>' : ''}` +
-        `Count: ${segment.data[`${segment.key}__raw`]}<br/>` +
-        `Share: ${Math.round((Number(segment.data[`${segment.key}__share`] || 0)) * 100)}%<br/>` +
-        renderProposalListHtml(bipList, snapshotLabel, { ecosystem, linkMode })
-      );
+      return renderTooltipCardHtml({
+        titleHtml: `<strong>${title}</strong>`,
+        rows: [
+          ['Period', segment.data.periodDisplay || segment.data.period],
+          ...(dateRange ? [['Range', dateRange]] : []),
+          ...(segmentByKey.get(segment.key)?.standard
+            ? [['Standard', String(segmentByKey.get(segment.key)?.standard).toUpperCase()]]
+            : []),
+          ['Status', formatSegmentLabel(segmentByKey.get(segment.key) || { status: segment.key })],
+          ...(segmentByKey.get(segment.key)?.isOfficial === false
+            ? [['Note', 'non-official status label observed in repository history.']]
+            : []),
+          ['Count', segment.data[`${segment.key}__raw`]],
+          ['Share', `${Math.round((Number(segment.data[`${segment.key}__share`] || 0)) * 100)}%`],
+          renderProposalListRow(bipList, snapshotLabel, { ecosystem, linkMode }),
+        ],
+      });
     };
 
     const applyBaseBarStyles = () => {

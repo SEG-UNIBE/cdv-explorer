@@ -3,6 +3,7 @@ import { useEffect, useRef } from 'react';
 import { buildProposalRefKeySet, nodeRefKey } from '../dashboard/dashboardData';
 import { formatProposalReference, getProposalUrl, normalizeProposalId } from '../proposalLinks';
 import { getClassificationColorMap } from '../classificationColors';
+import { renderTooltipCardHtml } from '../tooltipHtml';
 import {
   ACTIVE_LINK_WIDTH,
   DEFAULT_EDGE_COLORS,
@@ -498,14 +499,16 @@ export function NetworkDiagramCanvas({
 
     const renderNodeTooltip = (entry) => {
       const nodeEcosystem = getSourceScopedEcosystem(ecosystem, entry.source);
-      return (
-        `<strong><a href="${getProposalUrl(entry.id, snapshotLabel, { linkMode }, nodeEcosystem)}" target="_blank" rel="noreferrer">${formatProposalReference(entry.id, nodeEcosystem)}</a></strong><br/>` +
-        `Outgoing: ${entry.outgoingDegree}<br/>` +
-        `Incoming: ${entry.incomingDegree}<br/>` +
-        `Layer: ${entry.layer || 'Unknown'}<br/>` +
-        `Status: ${entry.status || 'Unknown'}<br/>` +
-        `Type: ${entry.type || 'Unknown'}`
-      );
+      return renderTooltipCardHtml({
+        titleHtml: `<strong><a href="${getProposalUrl(entry.id, snapshotLabel, { linkMode }, nodeEcosystem)}" target="_blank" rel="noreferrer">${formatProposalReference(entry.id, nodeEcosystem)}</a></strong>`,
+        rows: [
+          ['Outgoing', entry.outgoingDegree],
+          ['Incoming', entry.incomingDegree],
+          ['Layer', entry.layer || 'Unknown'],
+          ['Status', entry.status || 'Unknown'],
+          ['Type', entry.type || 'Unknown'],
+        ],
+      });
     };
 
     const renderEdgeTooltip = (edge) => {
@@ -548,24 +551,14 @@ export function NetworkDiagramCanvas({
           )],
         ];
 
-      const metadataTable = (
-        `<table class="dependency-tooltip-table" role="presentation">` +
-        metadataRows
-          .filter(Boolean)
-          .map(([label, value]) => (
-            `<tr><th>${label}</th><td>${value}</td></tr>`
-          ))
-          .join('') +
-        `</table>`
-      );
-      return (
-        `<div class="dependency-tooltip-title">` +
+      return renderTooltipCardHtml({
+        titleHtml:
         `<strong><a href="${getProposalUrl(sourceId, snapshotLabel, { linkMode }, sourceEcosystem)}" target="_blank" rel="noreferrer">${formatProposalReference(sourceId, sourceEcosystem)}</a></strong>` +
-        ` <span class="dependency-tooltip-arrow">&rarr;</span> ` +
+        ` <span class="tooltip-card__arrow">&rarr;</span> ` +
         `<strong><a href="${getProposalUrl(targetId, snapshotLabel, { linkMode }, targetEcosystem)}" target="_blank" rel="noreferrer">${formatProposalReference(targetId, targetEcosystem)}</a></strong>` +
-        `</div>` +
-        metadataTable
-      );
+        ``,
+        rows: metadataRows,
+      });
     };
 
     const getWordCount = (node) => {

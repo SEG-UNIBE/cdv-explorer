@@ -1,8 +1,9 @@
 import * as d3 from 'd3';
 import { useEffect, useRef } from 'react';
-import { renderProposalListHtml } from './bipTooltipContent';
+import { renderProposalListRow } from './bipTooltipContent';
 import { getClassificationColorMap } from './classificationColors';
 import { useDashboardEcosystem, useDashboardLinkMode, useDashboardSnapshot } from './dashboard/DashboardSnapshotContext';
+import { renderTooltipCardHtml } from './tooltipHtml';
 
 export const ClassificationPieChart = ({ dimension, colorDomain, data, width = 360, height = 320 }) => {
   const ref = useRef();
@@ -50,12 +51,14 @@ export const ClassificationPieChart = ({ dimension, colorDomain, data, width = 3
     let pinnedCategory = null;
 
     const renderTooltipHtml = (entry) => {
-      return (
-        `<strong>${entry.id}</strong><br/>` +
-        `Count: ${entry.value}<br/>` +
-        `Share: ${((entry.value / total) * 100).toFixed(1)}%<br/>` +
-        renderProposalListHtml(entry.bips, snapshotLabel, { ecosystem, linkMode })
-      );
+      return renderTooltipCardHtml({
+        titleHtml: `<strong>${entry.id}</strong>`,
+        rows: [
+          ['Count', entry.value],
+          ['Share', `${((entry.value / total) * 100).toFixed(1)}%`],
+          renderProposalListRow(entry.bips, snapshotLabel, { ecosystem, linkMode }),
+        ],
+      });
     };
 
     const setTooltipPosition = (pageX, pageY) => {

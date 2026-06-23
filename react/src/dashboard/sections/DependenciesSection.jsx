@@ -86,7 +86,7 @@ export function DependenciesSection({
     groundTruthEvaluation
       ? [
         {
-          label: 'IPs in GT',
+          label: 'Nodes in GT',
           value: groundTruthEvaluation.curatedProposalCount,
           description: 'Number of proposals with at least one curated ground-truth outgoing interrelation in the selected dataset.',
         },

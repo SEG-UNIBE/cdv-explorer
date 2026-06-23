@@ -1,4 +1,5 @@
 import * as d3 from 'd3';
+import { positionTooltip } from './tooltipPosition';
 import { useEffect, useRef } from 'react';
 import { renderTooltipCardHtml } from './tooltipHtml';
 
@@ -119,9 +120,7 @@ export function CollaborationDegreeDistribution({ data, width = 640, height = 41
           }));
       })
       .on('mousemove', function (event) {
-        tooltip
-          .style('left', `${event.pageX + 10}px`)
-          .style('top', `${event.pageY - 28}px`);
+        positionTooltip(tooltip, event.pageX, event.pageY);
       })
       .on('mouseout', function () {
         d3.select(this).attr('fill', DEGREE_BAR_COLOR);

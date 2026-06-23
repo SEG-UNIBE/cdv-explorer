@@ -1,4 +1,5 @@
 import * as d3 from 'd3';
+import { positionTooltip } from './tooltipPosition';
 import { useEffect, useRef } from 'react';
 import { renderProposalListRow } from './bipTooltipContent';
 import { useDashboardEcosystem, useDashboardLinkMode, useDashboardSnapshot } from './dashboard/DashboardSnapshotContext';
@@ -93,9 +94,7 @@ export const TopAuthorsChart = ({ data, width = 600, height = 400 }) => {
     };
 
     const setTooltipPosition = (pageX, pageY) => {
-      tooltip
-        .style('left', `${pageX + 10}px`)
-        .style('top', `${pageY - 28}px`);
+      positionTooltip(tooltip, pageX, pageY);
     };
 
     const longestAuthorLabel = d3.max(sortedAuthors, (entry) => String(entry.author || '').length) || 0;

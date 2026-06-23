@@ -1,4 +1,5 @@
 import * as d3 from 'd3';
+import { positionTooltip } from './tooltipPosition';
 import { useEffect, useRef } from 'react';
 import { getClassificationColorMap } from './classificationColors';
 import { renderTooltipCardHtml } from './tooltipHtml';
@@ -178,9 +179,7 @@ export function EvolutionStatusAreaChart({
     };
 
     const setTooltipPosition = (event) => {
-      tooltip
-        .style('left', `${event.pageX + 10}px`)
-        .style('top', `${event.pageY - 28}px`);
+      positionTooltip(tooltip, event.pageX, event.pageY);
     };
 
     root.append('rect')

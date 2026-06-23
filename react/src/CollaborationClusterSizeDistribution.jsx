@@ -1,4 +1,5 @@
 import * as d3 from 'd3';
+import { positionTooltip } from './tooltipPosition';
 import { useEffect, useRef } from 'react';
 import { renderTooltipCardHtml } from './tooltipHtml';
 
@@ -193,9 +194,7 @@ export function CollaborationClusterSizeDistribution({ data, width = 640, height
           }));
       })
       .on('mousemove', function (event) {
-        tooltip
-          .style('left', `${event.pageX + 10}px`)
-          .style('top', `${event.pageY - 28}px`);
+        positionTooltip(tooltip, event.pageX, event.pageY);
       })
       .on('mouseout', function (event, entry) {
         d3.select(this).attr('fill', CLUSTER_BAR_COLOR);

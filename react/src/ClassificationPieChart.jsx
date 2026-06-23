@@ -1,4 +1,5 @@
 import * as d3 from 'd3';
+import { positionTooltip } from './tooltipPosition';
 import { useEffect, useRef } from 'react';
 import { renderProposalListRow } from './bipTooltipContent';
 import { getClassificationColorMap } from './classificationColors';
@@ -62,9 +63,7 @@ export const ClassificationPieChart = ({ dimension, colorDomain, data, width = 3
     };
 
     const setTooltipPosition = (pageX, pageY) => {
-      tooltip
-        .style('left', `${pageX + 10}px`)
-        .style('top', `${pageY - 28}px`);
+      positionTooltip(tooltip, pageX, pageY);
     };
 
     const total = d3.sum(chartData, (entry) => Number(entry.value || 0));

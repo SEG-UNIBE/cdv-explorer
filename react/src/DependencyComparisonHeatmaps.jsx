@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { positionTooltip } from './tooltipPosition';
 import { Button } from 'primereact/button';
 import {
   BODY_EXTRACTED_REGEX,
@@ -307,8 +308,7 @@ export function DependencyComparisonHeatmaps({
 
     tooltip.innerHTML = html;
     tooltip.style.opacity = '1';
-    tooltip.style.left = `${event.pageX + 10}px`;
-    tooltip.style.top = `${event.pageY - 28}px`;
+    positionTooltip(tooltip, event.pageX, event.pageY);
   };
 
   const moveTooltip = (event) => {
@@ -317,8 +317,7 @@ export function DependencyComparisonHeatmaps({
       return;
     }
 
-    tooltip.style.left = `${event.pageX + 10}px`;
-    tooltip.style.top = `${event.pageY - 28}px`;
+    positionTooltip(tooltip, event.pageX, event.pageY);
   };
 
   const hideTooltip = () => {

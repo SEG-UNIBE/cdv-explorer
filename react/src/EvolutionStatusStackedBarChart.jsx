@@ -1,4 +1,5 @@
 import * as d3 from 'd3';
+import { positionTooltip } from './tooltipPosition';
 import { useEffect, useRef, useState } from 'react';
 import { renderProposalListRow } from './bipTooltipContent';
 import { getClassificationColorMap } from './classificationColors';
@@ -460,17 +461,14 @@ export function EvolutionStatusStackedBarChart({
         tooltip
           .style('opacity', 1)
           .style('pointer-events', 'none')
-          .html(renderTooltipHtml(segment))
-          .style('left', `${event.pageX + 10}px`)
-          .style('top', `${event.pageY - 28}px`);
+          .html(renderTooltipHtml(segment));
+        positionTooltip(tooltip, event.pageX, event.pageY);
       })
       .on('mousemove', function (event) {
         if (pinnedSegmentKey) {
           return;
         }
-        tooltip
-          .style('left', `${event.pageX + 10}px`)
-          .style('top', `${event.pageY - 28}px`);
+        positionTooltip(tooltip, event.pageX, event.pageY);
       })
       .on('mouseleave', function () {
         if (pinnedSegmentKey) {
@@ -490,9 +488,8 @@ export function EvolutionStatusStackedBarChart({
         tooltip
           .style('opacity', 1)
           .style('pointer-events', 'auto')
-          .html(renderTooltipHtml(segment))
-          .style('left', `${event.pageX + 10}px`)
-          .style('top', `${event.pageY - 28}px`);
+          .html(renderTooltipHtml(segment));
+        positionTooltip(tooltip, event.pageX, event.pageY);
       });
 
     applyBaseBarStyles();

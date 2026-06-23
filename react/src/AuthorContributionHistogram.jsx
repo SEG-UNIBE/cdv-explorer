@@ -1,4 +1,5 @@
 import * as d3 from 'd3';
+import { positionTooltip } from './tooltipPosition';
 import { useEffect, useRef } from 'react';
 import { renderTooltipCardHtml } from './tooltipHtml';
 
@@ -111,9 +112,7 @@ export const AuthorContributionHistogram = ({ data, width = 600, height = 400 })
           }));
       })
       .on('mousemove', function (event) {
-        tooltip
-          .style('left', `${event.pageX + 10}px`)
-          .style('top', `${event.pageY - 28}px`);
+        positionTooltip(tooltip, event.pageX, event.pageY);
       })
       .on('mouseout', function () {
         d3.select(this).attr('fill', HISTOGRAM_BAR_COLOR);

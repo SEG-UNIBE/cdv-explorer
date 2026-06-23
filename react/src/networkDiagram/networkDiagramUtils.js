@@ -1,12 +1,13 @@
 import {
   BODY_EXTRACTED_LLM,
   BODY_EXTRACTED_REGEX,
+  GROUND_TRUTH_CURATED,
   LINK_TYPE_OPTIONS as DEPENDENCY_LINK_TYPE_OPTIONS,
   PREAMBLE_EXTRACTED,
 } from '../dependencyApproaches';
 import { formatProposalReference, normalizeProposalId } from '../proposalLinks';
 
-export { PREAMBLE_EXTRACTED, normalizeProposalId };
+export { GROUND_TRUTH_CURATED, PREAMBLE_EXTRACTED, normalizeProposalId };
 
 export const LINK_TYPE_OPTIONS = DEPENDENCY_LINK_TYPE_OPTIONS;
 
@@ -48,6 +49,7 @@ const PREAMBLE_RELATION_DASH_PATTERNS = [null, '8 5', '2.5 4', '10 4 2 4', '4 4'
 export const DEFAULT_EDGE_COLORS = {
   [BODY_EXTRACTED_REGEX]: '#939AA9',
   [BODY_EXTRACTED_LLM]: '#939AA9',
+  [GROUND_TRUTH_CURATED]: '#8b6f3d',
 };
 
 export const DIFFERENTIAL_EDGE_COLORS = {
@@ -278,13 +280,17 @@ export function buildDisplayedLinks(linksByType, linkType) {
     return Object.entries(explicit)
       .flatMap(([relationType, edges]) => (edges || []).map((edge, index) => ({
         ...edge,
+        approachType: PREAMBLE_EXTRACTED,
         relationType,
+        semanticRelationType: relationType,
         key: `${relationType}-${edgeGraphSourceId(edge)}-${edgeGraphTargetId(edge)}-${index}`,
       })));
   }
   return (linksByType?.[linkType] || []).map((edge, index) => ({
     ...edge,
-    relationType: linkType,
+    approachType: linkType,
+    relationType: edge.relation_type || linkType,
+    semanticRelationType: edge.relation_type || null,
     key: `${linkType}-${edgeGraphSourceId(edge)}-${edgeGraphTargetId(edge)}-${index}`,
   }));
 }
@@ -328,7 +334,9 @@ export function buildComparisonLinks(linksByType, approachType, baselineType) {
       ...sourceEdge,
       source,
       target,
-      relationType: approachType,
+      approachType,
+      relationType: sourceEdge.relationType || sourceEdge.relation_type || approachType,
+      semanticRelationType: sourceEdge.semanticRelationType || sourceEdge.relation_type || null,
       comparisonStatus,
       key: `${approachType}-${baselineType}-${comparisonStatus}-${source}-${target}-${index}`,
     };

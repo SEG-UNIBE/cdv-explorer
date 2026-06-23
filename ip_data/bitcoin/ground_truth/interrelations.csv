@@ -1,4 +1,4 @@
-source,target,relation_type,confidence,evidence,note,reviewer,reviewed_at 
+source,target,relation_type,confidence,evidence,note,reviewer,reviewed_at
 bips:31,bips:14,depends_on,high,"When the protocol version as negotiated in the 'ver' message is greater than 60000, the 'ping' message must contain a uint64 field called 'nonce'.","BIP14 defines the protocol-version negotiation that gates this   behaviour.",rbo,2026-06-22
 bips:77,bips:21,depends_on,high,"The receiver initiates a Payjoin Session by sharing a Payjoin URI that includes the URL of an ephemeral mailbox [...] Bitcoin URIs (BIP 21 or BIP 321) are a standard way to request bitcoin. A Payjoin URI is a Bitcoin URI that contains a pj parameter.",BIP21 originally defined the Bitcoin URI scheme that carries the Payjoin pj parameter. BIP321 later replaced BIP21.,rbo,2026-06-22
 bips:321,bips:21,supersedes,high,"This BIP is a modification and intended replacement of BIP 0021 to add information about the modern usage of bitcoin.",,rbo,2026-06-22

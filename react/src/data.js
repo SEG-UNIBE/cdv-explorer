@@ -1,6 +1,7 @@
 import {
   BODY_EXTRACTED_LLM,
   BODY_EXTRACTED_REGEX,
+  GROUND_TRUTH_CURATED,
   PREAMBLE_EXTRACTED,
   normalizeDependencyLinks,
 } from './dependencyApproaches';
@@ -11,6 +12,7 @@ const EMPTY_LINKS = {
   [BODY_EXTRACTED_REGEX]: [],
   [PREAMBLE_EXTRACTED]: {},
   [BODY_EXTRACTED_LLM]: [],
+  [GROUND_TRUTH_CURATED]: [],
 };
 
 const EMPTY_DATASET = {
@@ -103,6 +105,7 @@ export function scopeDependencyLinksForSource(linksByType, sourceId, sourceSlug 
   return {
     [BODY_EXTRACTED_REGEX]: (links[BODY_EXTRACTED_REGEX] || []).map((edge) => scopeDependencyEdge(edge, sourceId, sourceSlug, sourceIdBySlug)),
     [BODY_EXTRACTED_LLM]: (links[BODY_EXTRACTED_LLM] || []).map((edge) => scopeDependencyEdge(edge, sourceId, sourceSlug, sourceIdBySlug)),
+    [GROUND_TRUTH_CURATED]: (links[GROUND_TRUTH_CURATED] || []).map((edge) => scopeDependencyEdge(edge, sourceId, sourceSlug, sourceIdBySlug)),
     [PREAMBLE_EXTRACTED]: Object.fromEntries(
       Object.entries(explicit).map(([relationType, edges]) => [
         relationType,
@@ -118,6 +121,7 @@ function countAllLinks(linksByType) {
   return (
     (links[BODY_EXTRACTED_REGEX]?.length || 0)
     + (links[BODY_EXTRACTED_LLM]?.length || 0)
+    + (links[GROUND_TRUTH_CURATED]?.length || 0)
     + Object.values(explicit).reduce((sum, entries) => sum + (entries?.length || 0), 0)
   );
 }
@@ -288,12 +292,14 @@ function mergeLinks(perSourceDatasets) {
   const merged = {
     [BODY_EXTRACTED_REGEX]: [],
     [BODY_EXTRACTED_LLM]: [],
+    [GROUND_TRUTH_CURATED]: [],
     [PREAMBLE_EXTRACTED]: {},
   };
   perSourceDatasets.forEach((d) => {
     const links = d.links || {};
     merged[BODY_EXTRACTED_REGEX].push(...(links[BODY_EXTRACTED_REGEX] || []));
     merged[BODY_EXTRACTED_LLM].push(...(links[BODY_EXTRACTED_LLM] || []));
+    merged[GROUND_TRUTH_CURATED].push(...(links[GROUND_TRUTH_CURATED] || []));
     const explicit = links[PREAMBLE_EXTRACTED] || {};
     Object.entries(explicit).forEach(([relationType, entries]) => {
       if (!merged[PREAMBLE_EXTRACTED][relationType]) {

@@ -5,6 +5,7 @@ import {
   BODY_EXTRACTED_LLM,
   BODY_EXTRACTED_REGEX,
   DEFAULT_DEPENDENCY_APPROACH,
+  GROUND_TRUTH_CURATED,
   LINK_TYPE_OPTIONS,
   PREAMBLE_EXTRACTED,
   normalizeDependencyLinks,
@@ -39,6 +40,7 @@ test('dependency link options default to the canonical preamble approach', () =>
     PREAMBLE_EXTRACTED,
     BODY_EXTRACTED_REGEX,
     BODY_EXTRACTED_LLM,
+    GROUND_TRUTH_CURATED,
   ]);
 });
 
@@ -66,6 +68,17 @@ test('normalizes canonical dependency edges into grouped dependency links', () =
         relation_type: 'depends_on',
         value: 1,
       },
+      {
+        source: 'bips:4',
+        target: 'slips:44',
+        extraction_method: GROUND_TRUTH_CURATED,
+        relation_type: 'supersedes',
+        confidence: 'high',
+        evidence: 'Curated evidence',
+        reviewer: 'rbo',
+        reviewed_at: '2026-06-22',
+        value: 1,
+      },
     ],
   });
 
@@ -89,6 +102,19 @@ test('normalizes canonical dependency edges into grouped dependency links', () =
       target: 'bips:4',
       extraction_method: PREAMBLE_EXTRACTED,
       relation_type: 'depends_on',
+      value: 1,
+    },
+  ]);
+  expect(normalized[GROUND_TRUTH_CURATED]).toEqual([
+    {
+      source: 'bips:4',
+      target: 'slips:44',
+      extraction_method: GROUND_TRUTH_CURATED,
+      relation_type: 'supersedes',
+      confidence: 'high',
+      evidence: 'Curated evidence',
+      reviewer: 'rbo',
+      reviewed_at: '2026-06-22',
       value: 1,
     },
   ]);

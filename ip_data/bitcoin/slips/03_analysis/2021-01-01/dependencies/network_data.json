@@ -4015,6 +4015,102 @@
       "extraction_method": "body_extracted_llm",
       "relation_type": "implicit_dependency",
       "value": 1
+    },
+    {
+      "source": "slips:39",
+      "target": "bips:32",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "depends_on",
+      "value": 1,
+      "confidence": "high",
+      "evidence": "This SLIP describes a standard and interoperable implementation of Shamir's secret-sharing (SSS) and a specification for its use in backing up Hierarchical Deterministic Wallets described in BIP-0032.",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-22"
+    },
+    {
+      "source": "slips:39",
+      "target": "bips:39",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "supersedes",
+      "value": 1,
+      "confidence": "high",
+      "evidence": "This SLIP is mainly intended as a replacement for BIP-0039 and for the most part, the two are not compatible.",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-22"
+    },
+    {
+      "source": "slips:44",
+      "target": "bips:44",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "depends_on",
+      "value": 1,
+      "confidence": "high",
+      "evidence": "BIP-0044 defines a logical hierarchy for deterministic wallets. Level 2 of the hierarchy describes a coin type in use. BIP repository does not want to deal with assigning the values for various coin types different than Bitcoin so we propose this SLIP to become such body.",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-22"
+    },
+    {
+      "source": "slips:10",
+      "target": "bips:32",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "depends_on",
+      "value": 1,
+      "confidence": "medium",
+      "evidence": "SLIP-0010 describes a generalized derivation scheme for private and public key pairs in hierarchical deterministic wallets. [...] This SLIP describes how to derive a master private/public key for these curves by generalizing the derivation scheme used in BIP-0032.",
+      "note": "SLIP10 extends BIP32 to additional curves.",
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-22"
+    },
+    {
+      "source": "slips:21",
+      "target": "bips:32",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "depends_on",
+      "value": 1,
+      "confidence": "medium",
+      "evidence": "We adapt the master node generation from BIP-0032 and SLIP-0010.",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-22"
+    },
+    {
+      "source": "slips:21",
+      "target": "slips:10",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "depends_on",
+      "value": 1,
+      "confidence": "medium",
+      "evidence": "We adapt the master node generation from BIP-0032 and SLIP-0010.",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-22"
+    },
+    {
+      "source": "slips:21",
+      "target": "slips:39",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "depends_on",
+      "value": 1,
+      "confidence": "medium",
+      "evidence": "Let S be the master secret, such as that defined in SLIP-0039 or the binary seed defined in BIP-0039.",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-22"
+    },
+    {
+      "source": "slips:21",
+      "target": "bips:39",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "depends_on",
+      "value": 1,
+      "confidence": "medium",
+      "evidence": "Let S be the master secret, such as that defined in SLIP-0039 or the binary seed defined in BIP-0039.",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-22"
     }
   ]
 }

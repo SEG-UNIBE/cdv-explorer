@@ -4,8 +4,8 @@ import {
   BODY_EXTRACTED_REGEX,
   DEFAULT_DEPENDENCY_APPROACH,
   DEPENDENCY_SHORT_LABELS,
+  PAIRWISE_LINK_TYPE_OPTIONS,
 } from './dependencyApproaches';
-import { LINK_TYPE_OPTIONS } from './NetworkDiagram';
 import { ProposalFilterControl } from './ProposalFilterControl';
 import { CollapsibleControls } from './dashboard/CollapsibleControls';
 import { useDashboardEcosystem, useDashboardLinkMode, useDashboardSnapshot } from './dashboard/DashboardSnapshotContext';
@@ -191,7 +191,7 @@ function ComparisonTable({
   onMoveTooltip,
   onHideTooltip,
 }) {
-  const approachKeys = LINK_TYPE_OPTIONS.map((option) => option.value);
+  const approachKeys = PAIRWISE_LINK_TYPE_OPTIONS.map((option) => option.value);
 
   return (
     <table className="dependency-heatmap-table dependency-heatmap-table--triple">

@@ -8,6 +8,7 @@ import {
   DEFAULT_EDGE_COLORS,
   DEFAULT_LINK_WIDTH,
   DIFFERENTIAL_EDGE_COLORS,
+  GROUND_TRUTH_CURATED,
   PINNED_LINK_WIDTH,
   PREAMBLE_EXTRACTED,
   allowGraphZoomGesture,
@@ -326,7 +327,7 @@ export function NetworkDiagramCanvas({
         if (linkType === PREAMBLE_EXTRACTED) {
           return getPreambleRelationStroke();
         }
-        return DEFAULT_EDGE_COLORS[edge.relationType] || '#607d8b';
+        return DEFAULT_EDGE_COLORS[edge.approachType || edge.relationType] || '#607d8b';
       }
       return DIFFERENTIAL_EDGE_COLORS[edge.comparisonStatus] || DIFFERENTIAL_EDGE_COLORS.approach_only;
     };
@@ -512,38 +513,58 @@ export function NetworkDiagramCanvas({
       const targetEcosystem = getSourceScopedEcosystem(ecosystem, edgeTargetSourceId(edge));
       const sourceId = edgeSourceProposalId(edge);
       const targetId = edgeTargetProposalId(edge);
+      const approachType = edge.approachType || linkType;
+      const approachLabel = getLinkTypeLabel(approachType);
+      const relationLabel = formatRelationTypeLabel(edge.semanticRelationType || edge.relationType);
+      const metadataRows = !isDifferentialMode
+        ? [
+          ['Approach', approachLabel],
+          ['Relation', relationLabel],
+          ...(approachType === GROUND_TRUTH_CURATED
+            ? [
+              edge.confidence ? ['Confidence', formatRelationTypeLabel(edge.confidence)] : null,
+              edge.evidence ? ['Evidence', edge.evidence] : null,
+              edge.note ? ['Note', edge.note] : null,
+              edge.reviewer ? ['Reviewer', edge.reviewer] : null,
+              edge.reviewed_at ? ['Reviewed', edge.reviewed_at] : null,
+            ]
+            : []
+          ),
+        ]
+        : [
+          ['Approach', (
+            edge.comparisonStatus === 'overlap'
+              ? `${getLinkTypeLabel(linkType)} + ${getLinkTypeLabel(baselineType)}`
+              : edge.comparisonStatus === 'baseline_only'
+                ? `${getLinkTypeLabel(baselineType)} only`
+                : `${getLinkTypeLabel(linkType)} only`
+          )],
+          ['Comparison', (
+            edge.comparisonStatus === 'overlap'
+              ? `Exists in baseline (${getLinkTypeLabel(baselineType)})`
+              : edge.comparisonStatus === 'baseline_only'
+                ? `Missing from ${getLinkTypeLabel(linkType)}`
+                : `Only in ${getLinkTypeLabel(linkType)}`
+          )],
+        ];
+
+      const metadataTable = (
+        `<table class="dependency-tooltip-table" role="presentation">` +
+        metadataRows
+          .filter(Boolean)
+          .map(([label, value]) => (
+            `<tr><th>${label}</th><td>${value}</td></tr>`
+          ))
+          .join('') +
+        `</table>`
+      );
       return (
+        `<div class="dependency-tooltip-title">` +
         `<strong><a href="${getProposalUrl(sourceId, snapshotLabel, { linkMode }, sourceEcosystem)}" target="_blank" rel="noreferrer">${formatProposalReference(sourceId, sourceEcosystem)}</a></strong>` +
-        ` &rarr; ` +
-        `<strong><a href="${getProposalUrl(targetId, snapshotLabel, { linkMode }, targetEcosystem)}" target="_blank" rel="noreferrer">${formatProposalReference(targetId, targetEcosystem)}</a></strong><br/>` +
-        `Type: ${
-          !isDifferentialMode
-            ? (
-              edge.relationType === 'body_extracted_regex'
-                ? 'Regex-Extracted Dependency'
-                : edge.relationType === 'body_extracted_llm'
-                  ? 'LLM-Extracted Dependency'
-                  : formatRelationTypeLabel(edge.relationType)
-            )
-            : (
-              edge.comparisonStatus === 'overlap'
-                ? `${getLinkTypeLabel(linkType)} + ${getLinkTypeLabel(baselineType)}`
-                : edge.comparisonStatus === 'baseline_only'
-                  ? `${getLinkTypeLabel(baselineType)} only`
-                  : `${getLinkTypeLabel(linkType)} only`
-            )
-        }` +
-        (
-          !isDifferentialMode
-            ? ''
-            : `<br/>Comparison: ${
-              edge.comparisonStatus === 'overlap'
-                ? `Exists in baseline (${getLinkTypeLabel(baselineType)})`
-                : edge.comparisonStatus === 'baseline_only'
-                  ? `Missing from ${getLinkTypeLabel(linkType)}`
-                  : `Only in ${getLinkTypeLabel(linkType)}`
-            }`
-        )
+        ` <span class="dependency-tooltip-arrow">&rarr;</span> ` +
+        `<strong><a href="${getProposalUrl(targetId, snapshotLabel, { linkMode }, targetEcosystem)}" target="_blank" rel="noreferrer">${formatProposalReference(targetId, targetEcosystem)}</a></strong>` +
+        `</div>` +
+        metadataTable
       );
     };
 

@@ -1,13 +1,15 @@
 import json
 import csv
+import io
 import re
 from pathlib import Path
-from typing import Any, Dict, Iterable, List, Mapping
+from typing import Any, Dict, Iterable, List, Mapping, Sequence
 
 from analysis.dependencies.utils import normalize_reference_id_for_config, uses_hex_proposal_ids
 from analysis.dependencies.constants import (
     BODY_EXTRACTED_LLM,
     BODY_EXTRACTED_REGEX,
+    GROUND_TRUTH_CURATED,
     PREAMBLE_EXTRACTED,
 )
 from analysis.authorship.mining import get_git_authors_on_first_day
@@ -17,6 +19,17 @@ from analysis.utils import parse_date_ymd as _parse_date_ymd
 
 RELATION_REFERENCE = "reference"
 RELATION_IMPLICIT_DEPENDENCY = "implicit_dependency"
+GROUND_TRUTH_CSV_COLUMNS = (
+    "source",
+    "target",
+    "relation_type",
+    "confidence",
+    "evidence",
+    "note",
+    "reviewer",
+    "reviewed_at",
+)
+EDGE_BASE_FIELDS = {"source", "target", "extraction_method", "relation_type", "value"}
 
 
 def build_graph_key(source_slug: str | None, proposal_id: Any) -> str:
@@ -29,6 +42,7 @@ def make_dependency_edge(
     extraction_method: str,
     relation_type: str,
     value: Any = 1,
+    **extra: Any,
 ) -> Dict[str, Any]:
     return {
         "source": str(source),
@@ -36,6 +50,7 @@ def make_dependency_edge(
         "extraction_method": extraction_method,
         "relation_type": relation_type,
         "value": value,
+        **extra,
     }
 
 
@@ -73,8 +88,13 @@ def dependency_edges_from_links(links_by_type: Dict[str, Any], source_slug: str 
                     _link_endpoint_to_graph_key(link.get("source"), source_slug),
                     _link_endpoint_to_graph_key(link.get("target"), source_slug),
                     link_type,
-                    relation_type,
+                    str(link.get("relation_type") or relation_type),
                     link.get("value", 1),
+                    **{
+                        key: value
+                        for key, value in link.items()
+                        if key not in {"source", "target", "value", "relation_type"}
+                    },
                 )
             )
 
@@ -91,11 +111,51 @@ def normalize_dependency_edges(network_data: Dict[str, Any]) -> List[Dict[str, A
                 str(edge.get("extraction_method") or ""),
                 str(edge.get("relation_type") or ""),
                 edge.get("value", 1),
+                **{
+                    key: value
+                    for key, value in edge.items()
+                    if key not in EDGE_BASE_FIELDS
+                },
             )
             for edge in edges
             if edge.get("source") is not None and edge.get("target") is not None
         ]
     return []
+
+
+def load_ground_truth_curated_entries(ecosystem_slug: str | None) -> List[Dict[str, str]]:
+    if not ecosystem_slug:
+        return []
+
+    csv_path = Path("ip_data") / str(ecosystem_slug) / "ground_truth" / "interrelations.csv"
+    if not csv_path.exists():
+        return []
+
+    lines = [
+        line
+        for line in csv_path.read_text(encoding="utf-8").splitlines()
+        if line.strip() and not line.lstrip().startswith("#")
+    ]
+    if not lines:
+        return []
+
+    reader = csv.DictReader(io.StringIO("\n".join(lines)), skipinitialspace=True)
+    if reader.fieldnames is None:
+        return []
+    reader.fieldnames = [str(field or "").strip() for field in reader.fieldnames]
+
+    entries: List[Dict[str, str]] = []
+    for row in reader:
+        normalized = {
+            str(key).strip(): str(value).strip()
+            for key, value in row.items()
+            if key is not None and value is not None
+        }
+        if not normalized.get("source") or not normalized.get("target"):
+            continue
+        entries.append({column: normalized.get(column, "") for column in GROUND_TRUTH_CSV_COLUMNS})
+
+    return entries
 
 
 def normalize_proposal_ids(field: Any, proposal_label: str = "IP") -> List[str]:
@@ -304,6 +364,7 @@ def build_network_data(
     proposal_label: str = "IP",
     source_context: SourceContext | None = None,
     known_proposal_ids_by_source: Mapping[str, set[str]] | None = None,
+    ground_truth_entries: Sequence[Mapping[str, Any]] | None = None,
 ) -> Dict[str, Any]:
     context = source_context or SourceContext.default()
     proposals = list(proposal_data)
@@ -318,6 +379,7 @@ def build_network_data(
     nodes = []
     explicit_reference_links = []
     implicit_dependency_links = []
+    ground_truth_links = []
     explicit_dependency_links: Dict[str, List[Dict[str, Any]]] = {
         relation_type: [] for relation_type in context.preamble_interrelation_types
     }
@@ -337,11 +399,18 @@ def build_network_data(
             return target_id in known_ids_by_source[source_slug]
         return True
 
-    def make_link(source_id: str, target_source_slug: str | None, target_id: str, value: Any = 1) -> Dict[str, Any]:
+    def make_link(
+        source_id: str,
+        target_source_slug: str | None,
+        target_id: str,
+        value: Any = 1,
+        **extra: Any,
+    ) -> Dict[str, Any]:
         return {
             "source": build_graph_key(context.source_slug, source_id),
             "target": build_graph_key(target_source_slug or context.source_slug, target_id),
             "value": value,
+            **extra,
         }
 
     for proposal in proposals:
@@ -444,10 +513,56 @@ def build_network_data(
                         make_link(proposal_id, ref.get("source_slug"), ref["proposal_id"])
                     )
 
+    source_configs_by_slug = {
+        str(config.get("source_slug") or ""): config
+        for config in _source_reference_configs(context, proposal_label=proposal_label)
+    }
+    curated_entries = list(ground_truth_entries) if ground_truth_entries is not None else load_ground_truth_curated_entries(context.ecosystem_slug)
+    for entry in curated_entries:
+        if not isinstance(entry, Mapping):
+            continue
+        raw_source = str(entry.get("source") or "").strip()
+        raw_target = str(entry.get("target") or "").strip()
+        if ":" not in raw_source or ":" not in raw_target:
+            continue
+
+        source_source_slug, source_id_text = raw_source.split(":", 1)
+        target_source_slug, target_id_text = raw_target.split(":", 1)
+        source_config = source_configs_by_slug.get(source_source_slug)
+        target_config = source_configs_by_slug.get(target_source_slug)
+        if source_config is None or target_config is None:
+            continue
+
+        source_id = _normalize_reference_id(source_id_text, source_config)
+        target_id = _normalize_reference_id(target_id_text, target_config)
+        if source_id is None or target_id is None:
+            continue
+        if source_source_slug != str(context.source_slug or ""):
+            continue
+        if source_id not in node_ids:
+            continue
+        if not target_exists(source_id, target_source_slug, target_id):
+            continue
+
+        ground_truth_links.append(
+            make_link(
+                source_id,
+                target_source_slug,
+                target_id,
+                relation_type=str(entry.get("relation_type") or "").strip() or "references",
+                confidence=str(entry.get("confidence") or "").strip() or None,
+                evidence=str(entry.get("evidence") or "").strip() or None,
+                note=str(entry.get("note") or "").strip() or None,
+                reviewer=str(entry.get("reviewer") or "").strip() or None,
+                reviewed_at=str(entry.get("reviewed_at") or "").strip() or None,
+            )
+        )
+
     raw_links = {
         BODY_EXTRACTED_REGEX: explicit_reference_links,
         PREAMBLE_EXTRACTED: explicit_dependency_links,
         BODY_EXTRACTED_LLM: implicit_dependency_links,
+        GROUND_TRUTH_CURATED: ground_truth_links,
     }
     dependency_edges = dependency_edges_from_links(raw_links, source_slug=context.source_slug)
 

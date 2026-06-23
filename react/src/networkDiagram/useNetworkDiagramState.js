@@ -44,6 +44,7 @@ export function useNetworkDiagramState({
   const [onlyCrossSource, setOnlyCrossSource] = useState(false);
   const [attributeFilterDimension, setAttributeFilterDimension] = useState('');
   const [attributeFilterValues, setAttributeFilterValues] = useState([]);
+  const linksByType = data?.links || {};
 
   const isDifferentialMode = baselineType !== BASELINE_NONE_VALUE;
 
@@ -278,6 +279,7 @@ export function useNetworkDiagramState({
     canFilterCrossSource,
     nodes,
     links,
+    linksByType,
     handleLayoutExport,
     handlePhysicsToggle,
     handleLayoutImportClick,

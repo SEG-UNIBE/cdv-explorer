@@ -2610,6 +2610,41 @@
   text-decoration: underline;
 }
 
+.dependency-tooltip-title {
+  margin-bottom: 0.45rem;
+  line-height: 1.35;
+}
+
+.dependency-tooltip-arrow {
+  opacity: 0.72;
+}
+
+.dependency-tooltip-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  table-layout: fixed;
+}
+
+.dependency-tooltip-table th,
+.dependency-tooltip-table td {
+  padding: 0.12rem 0;
+  vertical-align: top;
+  text-align: left;
+}
+
+.dependency-tooltip-table th {
+  width: 5.25rem;
+  padding-right: 0.65rem;
+  font-weight: 600;
+  color: color-mix(in srgb, var(--tooltip-text) 78%, transparent);
+  white-space: nowrap;
+}
+
+.dependency-tooltip-table td {
+  color: var(--tooltip-text);
+}
+
 @media (max-width: 900px) {
   .author-collaboration-controls {
     .network-finder {

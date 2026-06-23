@@ -1,9 +1,17 @@
 export const PREAMBLE_EXTRACTED = 'preamble_extracted';
 export const BODY_EXTRACTED_REGEX = 'body_extracted_regex';
 export const BODY_EXTRACTED_LLM = 'body_extracted_llm';
+export const GROUND_TRUTH_CURATED = 'ground_truth_curated';
 export const DEFAULT_DEPENDENCY_APPROACH = PREAMBLE_EXTRACTED;
 
 export const LINK_TYPE_OPTIONS = [
+  { label: 'Preamble', value: PREAMBLE_EXTRACTED },
+  { label: 'Regex', value: BODY_EXTRACTED_REGEX },
+  { label: 'LLM', value: BODY_EXTRACTED_LLM },
+  { label: 'Ground Truth', value: GROUND_TRUTH_CURATED },
+];
+
+export const PAIRWISE_LINK_TYPE_OPTIONS = [
   { label: 'Preamble', value: PREAMBLE_EXTRACTED },
   { label: 'Regex', value: BODY_EXTRACTED_REGEX },
   { label: 'LLM', value: BODY_EXTRACTED_LLM },
@@ -13,10 +21,12 @@ export const DEPENDENCY_SHORT_LABELS = {
   [PREAMBLE_EXTRACTED]: 'Preamble',
   [BODY_EXTRACTED_REGEX]: 'Regex',
   [BODY_EXTRACTED_LLM]: 'LLM',
+  [GROUND_TRUTH_CURATED]: 'Ground Truth',
 };
 
 function linkFromDependencyEdge(edge) {
   return {
+    ...edge,
     source: edge.source,
     target: edge.target,
     value: edge.value ?? 1,
@@ -30,6 +40,7 @@ function linksFromDependencyEdges(dependencyEdges) {
     [BODY_EXTRACTED_REGEX]: [],
     [PREAMBLE_EXTRACTED]: {},
     [BODY_EXTRACTED_LLM]: [],
+    [GROUND_TRUTH_CURATED]: [],
   };
 
   (dependencyEdges || []).forEach((edge) => {
@@ -75,5 +86,6 @@ export function normalizeDependencyLinks(rawLinks) {
     [BODY_EXTRACTED_REGEX]: links[BODY_EXTRACTED_REGEX] || [],
     [PREAMBLE_EXTRACTED]: normalizePreambleLinks(links[PREAMBLE_EXTRACTED]),
     [BODY_EXTRACTED_LLM]: links[BODY_EXTRACTED_LLM] || [],
+    [GROUND_TRUTH_CURATED]: links[GROUND_TRUTH_CURATED] || [],
   };
 }

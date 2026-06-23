@@ -1,7 +1,7 @@
 import unittest
 
 from analysis.dependencies.metrics import build_graph, extract_dependency_metrics
-from analysis.dependencies.network import build_network_data
+from analysis.dependencies.network import build_network_data, load_ground_truth_curated_entries
 from analysis.pipeline import combined_source_key, merge_source_network_data
 from ecosystems import ECOSYSTEM_REGISTRY
 from pipeline.source_context import SourceContext
@@ -162,6 +162,78 @@ class BuildNetworkDataTests(unittest.TestCase):
             },
             result["dependency_edges"],
         )
+
+    def test_ground_truth_curated_edges_are_imported_for_matching_source(self):
+        context = SourceContext.from_config(
+            ECOSYSTEM_REGISTRY["bitcoin"]["sources"]["bips"],
+            ecosystem_slug="bitcoin",
+            source_slug="bips",
+        )
+        result = build_network_data(
+            [_proposal("44"), _proposal("32")],
+            id_field="bip",
+            proposal_label="BIP",
+            source_context=context,
+            known_proposal_ids_by_source={"bips": {"44", "32"}, "slips": {"44"}},
+            ground_truth_entries=[
+                {
+                    "source": "bips:44",
+                    "target": "bips:32",
+                    "relation_type": "depends_on",
+                    "confidence": "high",
+                    "evidence": "Requires: 32",
+                    "note": "Declared in preamble",
+                    "reviewer": "rbo",
+                    "reviewed_at": "2026-06-22",
+                },
+                {
+                    "source": "slips:44",
+                    "target": "bips:44",
+                    "relation_type": "references",
+                },
+            ],
+        )
+
+        self.assertIn(
+            {
+                "source": "bips:44",
+                "target": "bips:32",
+                "extraction_method": "ground_truth_curated",
+                "relation_type": "depends_on",
+                "value": 1,
+                "confidence": "high",
+                "evidence": "Requires: 32",
+                "note": "Declared in preamble",
+                "reviewer": "rbo",
+                "reviewed_at": "2026-06-22",
+            },
+            result["dependency_edges"],
+        )
+        self.assertEqual(
+            [edge for edge in result["dependency_edges"] if edge["extraction_method"] == "ground_truth_curated"],
+            [
+                {
+                    "source": "bips:44",
+                    "target": "bips:32",
+                    "extraction_method": "ground_truth_curated",
+                    "relation_type": "depends_on",
+                    "value": 1,
+                    "confidence": "high",
+                    "evidence": "Requires: 32",
+                    "note": "Declared in preamble",
+                    "reviewer": "rbo",
+                    "reviewed_at": "2026-06-22",
+                }
+            ],
+        )
+
+    def test_ground_truth_csv_loader_trims_headers_and_skips_comments(self):
+        rows = load_ground_truth_curated_entries("bitcoin")
+
+        self.assertTrue(rows)
+        self.assertEqual(rows[0]["reviewed_at"], "2026-06-22")
+        self.assertIn("relation_type", rows[0])
+        self.assertNotIn("reviewed_at ", rows[0])
 
     def test_unknown_cross_source_targets_are_excluded_when_known_ids_are_available(self):
         context = SourceContext.from_config(

@@ -7,6 +7,8 @@ from analysis.dependencies.constants import (
     BODY_EXTRACTED_REGEX,
     DEPENDENCY_APPROACH_LABELS,
     DEPENDENCY_APPROACH_ORDER,
+    DEPENDENCY_PAIRWISE_COMPARISON_ORDER,
+    GROUND_TRUTH_CURATED,
     PREAMBLE_EXTRACTED,
 )
 
@@ -31,7 +33,7 @@ def _links_for_type(network_data: Dict[str, Any], link_type: str) -> List[Dict[s
             if edge.get("extraction_method") == PREAMBLE_EXTRACTED
         ]
 
-    if link_type in (BODY_EXTRACTED_REGEX, BODY_EXTRACTED_LLM):
+    if link_type in (BODY_EXTRACTED_REGEX, BODY_EXTRACTED_LLM, GROUND_TRUTH_CURATED):
         return [
             edge
             for edge in dependency_edges
@@ -217,14 +219,16 @@ def _build_pairwise_comparisons(network_data: Dict[str, Any]) -> Dict[str, Any]:
     approach_labels = _approach_labels()
     pairwise: Dict[str, Any] = {}
 
-    for approach_key, approach_label in approach_labels.items():
+    for approach_key in DEPENDENCY_PAIRWISE_COMPARISON_ORDER:
+        approach_label = approach_labels[approach_key]
         approach_links = _links_for_type(network_data, approach_key)
         approach_edge_keys = {
             (str(link.get("source")), str(link.get("target")))
             for link in approach_links
         }
 
-        for baseline_key, baseline_label in approach_labels.items():
+        for baseline_key in DEPENDENCY_PAIRWISE_COMPARISON_ORDER:
+            baseline_label = approach_labels[baseline_key]
             baseline_links = _links_for_type(network_data, baseline_key)
             baseline_edge_keys = {
                 (str(link.get("source")), str(link.get("target")))

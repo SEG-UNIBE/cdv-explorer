@@ -21,7 +21,7 @@ import { EvolutionSection } from './sections/EvolutionSection';
 import { DashboardSnapshotProvider } from './DashboardSnapshotContext';
 import { DashboardSkeleton } from './DashboardSkeleton';
 import { SECTION_VIEW_MERGED } from './sections/SectionSourceToggle';
-import { getDefaultExperimentalFeaturesEnabled } from '../runtimeEnvironment';
+import { getDefaultExperimentalFeaturesEnabled, getRuntimeEnvironment } from '../runtimeEnvironment';
 
 function getSourceRepositoryHref(repository) {
   const text = String(repository || '').trim();
@@ -96,6 +96,7 @@ export function EcosystemDashboard() {
     () => (primarySourceId ? ecosystem?.sources?.[primarySourceId] || null : null),
     [ecosystem, primarySourceId],
   );
+  const runtimeEnvironment = useMemo(() => getRuntimeEnvironment(), []);
   const activeEcosystem = useMemo(
     () => (activeSource ? { ...ecosystem, ...activeSource } : ecosystem),
     [ecosystem, activeSource],
@@ -127,7 +128,7 @@ export function EcosystemDashboard() {
   const [dependenciesSourceView, setDependenciesSourceView] = useState(SECTION_VIEW_MERGED);
   const [conformitySourceView, setConformitySourceView] = useState('');
   const [showExperimentalFeatures, setShowExperimentalFeatures] = useLocalStorageState(
-    'cdv-explorer-show-experimental-features',
+    `cdv-explorer-show-experimental-features-${runtimeEnvironment}`,
     getDefaultExperimentalFeaturesEnabled(),
   );
   const dashboardScrollRef = useRef(null);

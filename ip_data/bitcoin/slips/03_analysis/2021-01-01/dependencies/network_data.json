@@ -4017,6 +4017,66 @@
       "value": 1
     },
     {
+      "source": "slips:10",
+      "target": "bips:32",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "depends_on",
+      "value": 1,
+      "confidence": "medium",
+      "evidence": "SLIP-0010 describes a generalized derivation scheme for private and public key pairs in hierarchical deterministic wallets. [...] This SLIP describes how to derive a master private/public key for these curves by generalizing the derivation scheme used in BIP-0032.",
+      "note": "SLIP10 extends BIP32 to additional curves.",
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-22"
+    },
+    {
+      "source": "slips:21",
+      "target": "bips:32",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "depends_on",
+      "value": 1,
+      "confidence": "medium",
+      "evidence": "We adapt the master node generation from BIP-0032 and SLIP-0010.",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-22"
+    },
+    {
+      "source": "slips:21",
+      "target": "bips:39",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "depends_on",
+      "value": 1,
+      "confidence": "medium",
+      "evidence": "Let S be the master secret, such as that defined in SLIP-0039 or the binary seed defined in BIP-0039.",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-22"
+    },
+    {
+      "source": "slips:21",
+      "target": "slips:10",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "depends_on",
+      "value": 1,
+      "confidence": "medium",
+      "evidence": "We adapt the master node generation from BIP-0032 and SLIP-0010.",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-22"
+    },
+    {
+      "source": "slips:21",
+      "target": "slips:39",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "depends_on",
+      "value": 1,
+      "confidence": "medium",
+      "evidence": "Let S be the master secret, such as that defined in SLIP-0039 or the binary seed defined in BIP-0039.",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-22"
+    },
+    {
       "source": "slips:39",
       "target": "bips:32",
       "extraction_method": "ground_truth_curated",
@@ -4051,66 +4111,7 @@
       "note": null,
       "reviewer": "rbo",
       "reviewed_at": "2026-06-22"
-    },
-    {
-      "source": "slips:10",
-      "target": "bips:32",
-      "extraction_method": "ground_truth_curated",
-      "relation_type": "depends_on",
-      "value": 1,
-      "confidence": "medium",
-      "evidence": "SLIP-0010 describes a generalized derivation scheme for private and public key pairs in hierarchical deterministic wallets. [...] This SLIP describes how to derive a master private/public key for these curves by generalizing the derivation scheme used in BIP-0032.",
-      "note": "SLIP10 extends BIP32 to additional curves.",
-      "reviewer": "rbo",
-      "reviewed_at": "2026-06-22"
-    },
-    {
-      "source": "slips:21",
-      "target": "bips:32",
-      "extraction_method": "ground_truth_curated",
-      "relation_type": "depends_on",
-      "value": 1,
-      "confidence": "medium",
-      "evidence": "We adapt the master node generation from BIP-0032 and SLIP-0010.",
-      "note": null,
-      "reviewer": "rbo",
-      "reviewed_at": "2026-06-22"
-    },
-    {
-      "source": "slips:21",
-      "target": "slips:10",
-      "extraction_method": "ground_truth_curated",
-      "relation_type": "depends_on",
-      "value": 1,
-      "confidence": "medium",
-      "evidence": "We adapt the master node generation from BIP-0032 and SLIP-0010.",
-      "note": null,
-      "reviewer": "rbo",
-      "reviewed_at": "2026-06-22"
-    },
-    {
-      "source": "slips:21",
-      "target": "slips:39",
-      "extraction_method": "ground_truth_curated",
-      "relation_type": "depends_on",
-      "value": 1,
-      "confidence": "medium",
-      "evidence": "Let S be the master secret, such as that defined in SLIP-0039 or the binary seed defined in BIP-0039.",
-      "note": null,
-      "reviewer": "rbo",
-      "reviewed_at": "2026-06-22"
-    },
-    {
-      "source": "slips:21",
-      "target": "bips:39",
-      "extraction_method": "ground_truth_curated",
-      "relation_type": "depends_on",
-      "value": 1,
-      "confidence": "medium",
-      "evidence": "Let S be the master secret, such as that defined in SLIP-0039 or the binary seed defined in BIP-0039.",
-      "note": null,
-      "reviewer": "rbo",
-      "reviewed_at": "2026-06-22"
     }
-  ]
+  ],
+  "ground_truth_reviewed_ips": []
 }

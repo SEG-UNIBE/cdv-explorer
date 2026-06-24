@@ -30,7 +30,7 @@ export const GROUND_TRUTH_CUTOFF_MODE_ALL = 'all';
 export const GROUND_TRUTH_CUTOFF_MODE_ON_OR_BEFORE = 'on_or_before';
 
 export const GROUND_TRUTH_CUTOFF_MODE_OPTIONS = [
-  { label: 'All reviewed edges', value: GROUND_TRUTH_CUTOFF_MODE_ALL },
+  { label: 'All completed reviews', value: GROUND_TRUTH_CUTOFF_MODE_ALL },
   { label: 'Reviewed on or before', value: GROUND_TRUTH_CUTOFF_MODE_ON_OR_BEFORE },
 ];
 
@@ -76,6 +76,10 @@ function edgeSourceKey(edge) {
 
 function edgeTargetKey(edge) {
   return String(edge?.targetKey || edge?.target || '').trim();
+}
+
+function reviewedIpKey(entry) {
+  return String(entry?.ip || entry?.graph_key || entry?.graphKey || '').trim();
 }
 
 function buildDirectedEdgeKey(edge) {
@@ -248,19 +252,28 @@ export function buildGroundTruthEvaluation(dataset, options = {}) {
     matchMode = GROUND_TRUTH_MATCH_MODE_EDGE_ONLY,
     ontology = DEFAULT_RELATION_ONTOLOGY,
     typeMapping = null,
-    restrictToCuratedSources = true,
+    restrictToReviewedSources = true,
     gtCutoffMode = GROUND_TRUTH_CUTOFF_MODE_ALL,
     gtCutoffDate = '',
   } = options;
   const isExactType = matchMode === GROUND_TRUTH_MATCH_MODE_EXACT_TYPE;
   const linksByType = dataset?.links || {};
   const allGroundTruthEdges = flattenApproachLinks(linksByType, GROUND_TRUTH_CURATED);
-
-  if (!allGroundTruthEdges.length) {
-    return null;
-  }
+  const allReviewedIps = Array.isArray(dataset?.groundTruthReviewedIps)
+    ? dataset.groundTruthReviewedIps.filter(Boolean)
+    : [];
 
   const normalizedCutoffDate = normalizeReviewDate(gtCutoffDate);
+  const reviewedIps = allReviewedIps.filter((entry) => {
+    const reviewedAt = normalizeReviewDate(entry?.reviewed_at);
+    if (!reviewedAt) {
+      return false;
+    }
+    if (gtCutoffMode === GROUND_TRUTH_CUTOFF_MODE_ON_OR_BEFORE && normalizedCutoffDate) {
+      return reviewedAt <= normalizedCutoffDate;
+    }
+    return true;
+  });
   const groundTruthEdges = gtCutoffMode === GROUND_TRUTH_CUTOFF_MODE_ON_OR_BEFORE && normalizedCutoffDate
     ? allGroundTruthEdges.filter((edge) => {
       const reviewedAt = normalizeReviewDate(edge?.reviewed_at);
@@ -268,23 +281,9 @@ export function buildGroundTruthEvaluation(dataset, options = {}) {
     })
     : allGroundTruthEdges;
 
-  const curatedSourceKeys = new Set(groundTruthEdges.map(edgeSourceKey).filter(Boolean));
+  const reviewedSourceKeys = new Set(reviewedIps.map(reviewedIpKey).filter(Boolean));
   const curatedTargetKeys = new Set(groundTruthEdges.map(edgeTargetKey).filter(Boolean));
   const totalProposalCount = Array.isArray(dataset?.nodes) ? dataset.nodes.length : 0;
-
-  if (!groundTruthEdges.length) {
-    return {
-      matchMode,
-      restrictToCuratedSources,
-      gtCutoffMode,
-      gtCutoffDate: normalizedCutoffDate,
-      curatedProposalCount: 0,
-      curatedTargetCount: 0,
-      totalProposalCount,
-      goldEdgeCount: 0,
-      approaches: [],
-    };
-  }
 
   const goldEdgeMap = dedupeEntries(groundTruthEdges.map((edge) => ({
     key: isExactType ? buildTypedEdgeKey(edge, edge?.relation_type) : buildDirectedEdgeKey(edge),
@@ -292,7 +291,7 @@ export function buildGroundTruthEvaluation(dataset, options = {}) {
   })));
   const goldEdgeKeys = new Set(goldEdgeMap.keys());
 
-  if (!curatedSourceKeys.size || !goldEdgeKeys.size) {
+  if (!reviewedSourceKeys.size) {
     return null;
   }
 
@@ -341,19 +340,18 @@ export function buildGroundTruthEvaluation(dataset, options = {}) {
 
   return {
     matchMode,
-    restrictToCuratedSources,
+    restrictToReviewedSources,
     gtCutoffMode,
     gtCutoffDate: normalizedCutoffDate,
-    curatedProposalCount: curatedSourceKeys.size,
+    reviewedProposalCount: reviewedSourceKeys.size,
     curatedTargetCount: curatedTargetKeys.size,
     totalProposalCount,
     goldEdgeCount: goldEdgeKeys.size,
     approaches: EVALUATED_DEPENDENCY_APPROACHES.map((approach) => {
-      // Restricted mode scores only proposals that have curated outgoing GT links;
-      // non-restricted mode scores every extracted edge (so edges from proposals
-      // without curated ground truth count as false positives).
+      // Restricted mode scores only proposals that were explicitly reviewed in
+      // the benchmark scope; non-restricted mode scores every extracted edge.
       const approachEdges = flattenApproachLinks(linksByType, approach)
-        .filter((edge) => !restrictToCuratedSources || curatedSourceKeys.has(edgeSourceKey(edge)));
+        .filter((edge) => !restrictToReviewedSources || reviewedSourceKeys.has(edgeSourceKey(edge)));
 
       let predictedEntries;
       let evaluated;

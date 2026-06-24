@@ -5,7 +5,9 @@ from analysis.dependencies.network import build_network_data
 from analysis.pipeline import combined_source_key, merge_source_network_data
 from analysis.validation.ground_truth import (
     load_ground_truth_curated_entries,
+    load_ground_truth_reviewed_ips,
     validate_ground_truth_curated_entries,
+    validate_reviewed_ip_entries,
 )
 from ecosystems import ECOSYSTEM_REGISTRY
 from pipeline.source_context import SourceContext
@@ -281,6 +283,84 @@ class BuildNetworkDataTests(unittest.TestCase):
         self.assertIn("duplicate curated edge", error_text)
         self.assertIn("conflicting relation types", error_text)
         self.assertIn("unknown source slug `bogus`", error_text)
+
+    def test_reviewed_ips_loader_trims_headers_and_skips_comments(self):
+        rows = load_ground_truth_reviewed_ips("bitcoin", strict=False)
+
+        self.assertIsInstance(rows, list)
+
+    def test_reviewed_ips_validation_rejects_duplicates_and_bad_dates(self):
+        errors = validate_reviewed_ip_entries(
+            [
+                {"ip": "bips:44", "reviewed_at": "2026-06-22", "__line__": 2},
+                {"ip": "bips:44", "reviewed_at": "2026-06-23", "__line__": 3},
+                {"ip": "oops", "reviewed_at": "2026-99-99", "__line__": 4},
+            ],
+            source_configs_by_slug={
+                "bips": {
+                    "source_slug": "bips",
+                    "proposal_label": "BIP",
+                    "reference_pattern": r"\bBIP[-#\s]?(\d+)\b",
+                    "max_proposal_id": 9999,
+                }
+            },
+        )
+
+        error_text = "\n".join(errors)
+        self.assertIn("duplicate reviewed IP", error_text)
+        self.assertIn("must use source_slug:id format", error_text)
+        self.assertIn("invalid `reviewed_at` date `2026-99-99`", error_text)
+
+    def test_ground_truth_reviewed_ips_are_imported_for_matching_source(self):
+        context = SourceContext.from_config(
+            ECOSYSTEM_REGISTRY["bitcoin"]["sources"]["bips"],
+            ecosystem_slug="bitcoin",
+            source_slug="bips",
+        )
+        result = build_network_data(
+            [_proposal("44"), _proposal("32")],
+            id_field="bip",
+            proposal_label="BIP",
+            source_context=context,
+            reviewed_ips_entries=[
+                {
+                    "ip": "bips:44",
+                    "reviewer": "rbo",
+                    "reviewed_at": "2026-06-24",
+                    "sampling_strategy": "manual",
+                },
+                {
+                    "ip": "slips:44",
+                    "reviewed_at": "2026-06-24",
+                },
+            ],
+        )
+
+        self.assertEqual(
+            result["ground_truth_reviewed_ips"],
+            [
+                {
+                    "ip": "bips:44",
+                    "proposal_id": "44",
+                    "source_slug": "bips",
+                    "reviewer": "rbo",
+                    "reviewed_at": "2026-06-24",
+                    "sampling_strategy": "manual",
+                    "sampling_snapshot": None,
+                    "sampling_seed": None,
+                    "era_bucket": None,
+                    "density_bucket": None,
+                    "density_basis": None,
+                    "created": None,
+                    "status": None,
+                    "type": None,
+                    "layer": None,
+                    "title": None,
+                    "extracted_target_count": None,
+                    "note": None,
+                }
+            ],
+        )
 
     def test_unknown_cross_source_targets_are_excluded_when_known_ids_are_available(self):
         context = SourceContext.from_config(

@@ -321,8 +321,8 @@ export function DependencyGroundTruthEvaluationCharts({ evaluation }) {
   const ecosystem = useDashboardEcosystem();
   const snapshotLabel = useDashboardSnapshot();
   const linkMode = useDashboardLinkMode();
-  const qualitySubtitle = evaluation?.restrictToCuratedSources
-    ? 'Precision, recall, and F1 on curated source proposals'
+  const qualitySubtitle = evaluation?.restrictToReviewedSources
+    ? 'Precision, recall, and F1 on reviewed source IPs'
     : 'Precision, recall, and F1 on all proposals in scope';
 
   if (!evaluation) {
@@ -332,7 +332,7 @@ export function DependencyGroundTruthEvaluationCharts({ evaluation }) {
   if (!evaluation.approaches?.length) {
     return (
       <p className="ground-truth-type-agnostic-note">
-        No curated ground-truth edges match the active GT cutoff.
+        No reviewed benchmark scope or curated GT edges match the active cutoff.
       </p>
     );
   }

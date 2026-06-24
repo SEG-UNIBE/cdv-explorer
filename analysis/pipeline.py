@@ -124,7 +124,9 @@ def _node_graph_key(node: Mapping[str, Any], source_slug: str) -> str:
 def merge_source_network_data(networks_by_source: Sequence[tuple[str, Dict[str, Any]]]) -> Dict[str, Any]:
     nodes: List[Dict[str, Any]] = []
     edges: List[Dict[str, Any]] = []
+    reviewed_ips: List[Dict[str, Any]] = []
     seen_nodes: set[str] = set()
+    seen_reviewed_ips: set[str] = set()
     source_slugs = [source_slug for source_slug, _network_data in networks_by_source]
 
     for source_slug, network_data in networks_by_source:
@@ -142,10 +144,19 @@ def merge_source_network_data(networks_by_source: Sequence[tuple[str, Dict[str, 
             })
 
         edges.extend(normalize_dependency_edges(network_data))
+        for reviewed_ip in network_data.get("ground_truth_reviewed_ips", []):
+            if not isinstance(reviewed_ip, dict):
+                continue
+            graph_key = str(reviewed_ip.get("ip") or "").strip()
+            if not graph_key or graph_key in seen_reviewed_ips:
+                continue
+            seen_reviewed_ips.add(graph_key)
+            reviewed_ips.append(reviewed_ip)
 
     return {
         "nodes": nodes,
         "dependency_edges": edges,
+        "ground_truth_reviewed_ips": reviewed_ips,
         "meta": {
             "node_count": len(nodes),
             "edge_count": len(edges),

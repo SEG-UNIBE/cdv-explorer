@@ -72,6 +72,12 @@ artifacts_app = typer.Typer(
     no_args_is_help=True,
 )
 app.add_typer(artifacts_app, name="artifacts", rich_help_panel="Pipeline")
+ground_truth_app = typer.Typer(
+    help="Manage human-curated ground-truth benchmark files.",
+    rich_markup_mode="rich",
+    no_args_is_help=True,
+)
+app.add_typer(ground_truth_app, name="ground-truth", rich_help_panel="Pipeline")
 
 
 # ---------------------------------------------------------------------------
@@ -166,6 +172,25 @@ def _command_version(command: str, *args: str) -> str | None:
     return output[0] if output else executable
 
 
+def _prompt_choice(label: str, options: list[str], *, default_index: int = 0) -> str:
+    if not options:
+        raise typer.Exit(1)
+    console.print(f"[bold]{label}[/bold]")
+    for index, option in enumerate(options, start=1):
+        marker = " [dim](default)[/dim]" if index - 1 == default_index else ""
+        console.print(f"  {index}. {option}{marker}")
+    while True:
+        raw = typer.prompt("Choose a number", default=str(default_index + 1)).strip()
+        try:
+            selected = int(raw)
+        except ValueError:
+            console.print("[red]Please enter a number.[/red]")
+            continue
+        if 1 <= selected <= len(options):
+            return options[selected - 1]
+        console.print(f"[red]Please choose a value between 1 and {len(options)}.[/red]")
+
+
 def _latest_snapshot_labels(analysis_root: Path) -> list[str]:
     if not analysis_root.is_dir():
         return []
@@ -181,6 +206,15 @@ def _snapshot_labels(root: Path) -> list[str]:
     return sorted(
         (p.name for p in root.iterdir() if p.is_dir() and re.match(r"^\d{4}-\d{2}-\d{2}$", p.name)),
     )
+
+
+def _analysis_snapshot_labels_with_networks(analysis_root: Path) -> list[str]:
+    labels: list[str] = []
+    for snapshot in _snapshot_labels(analysis_root):
+        network_path = analysis_root / snapshot / "dependencies" / "network_data.json"
+        if network_path.exists():
+            labels.append(snapshot)
+    return labels
 
 
 def _common_preprocess_snapshot_labels(sources: dict[str, dict]) -> list[str]:
@@ -238,7 +272,11 @@ def _validate_snapshot_date(snapshot: str) -> None:
 def _rebuild_source_artifacts(eco_slug: str, src_slug: str, src: dict, snapshot: str, *, stage_label: str = "Build analysis and postprocess artifacts") -> None:
     """Rebuild analysis/postprocess artifacts for one source from existing preprocess JSON."""
     from analysis.pipeline import prepare_ecosystem_artifacts
-    from analysis.validation import validate_ground_truth_curated_file, validate_source_snapshot
+    from analysis.validation import (
+        validate_ground_truth_curated_file,
+        validate_ground_truth_reviewed_ips_file,
+        validate_source_snapshot,
+    )
 
     harvest_root = Path(src["harvest"])
     preprocess_dir = Path(src["preprocess"]) / snapshot
@@ -261,12 +299,14 @@ def _rebuild_source_artifacts(eco_slug: str, src_slug: str, src: dict, snapshot:
         raise typer.Exit(1)
 
     ground_truth_validation = validate_ground_truth_curated_file(eco_slug, _get_ecosystem(eco_slug))
-    if not ground_truth_validation.ok:
+    reviewed_ips_validation = validate_ground_truth_reviewed_ips_file(eco_slug, _get_ecosystem(eco_slug))
+    ground_truth_errors = ground_truth_validation.errors + reviewed_ips_validation.errors
+    if not ground_truth_validation.ok or not reviewed_ips_validation.ok:
         console.print(f"[red]Ground-truth validation failed for {eco_slug}:[/red]")
-        for error in ground_truth_validation.errors[:20]:
+        for error in ground_truth_errors[:20]:
             console.print(f"  [red]-[/red] {error}")
-        if len(ground_truth_validation.errors) > 20:
-            console.print(f"  [red]-[/red] ... and {len(ground_truth_validation.errors) - 20} more")
+        if len(ground_truth_errors) > 20:
+            console.print(f"  [red]-[/red] ... and {len(ground_truth_errors) - 20} more")
         raise typer.Exit(1)
 
     _run_stage(
@@ -625,6 +665,23 @@ def doctor() -> None:
         "Snapshots",
         "; ".join(snapshot_details) if snapshot_details else "no configured sources",
     )
+    reviewed_ip_warnings: list[str] = []
+    for eco_slug, eco in sorted(ECOSYSTEM_REGISTRY.items()):
+        if not eco.get("sources"):
+            continue
+        gt_dir = Path("ip_data") / eco_slug / "ground_truth"
+        interrelations_csv = gt_dir / "interrelations.csv"
+        reviewed_ips_csv = gt_dir / "reviewed_ips.csv"
+        if interrelations_csv.exists() and not reviewed_ips_csv.exists():
+            reviewed_ip_warnings.append(eco_slug)
+    ok &= _doctor_row(
+        table,
+        "WARN" if reviewed_ip_warnings else "OK",
+        "Ground-truth reviewed IP scope",
+        (
+            f"Missing ground_truth/reviewed_ips.csv for ecosystems: {', '.join(reviewed_ip_warnings)}"
+        ) if reviewed_ip_warnings else "reviewed_ips.csv present wherever ground-truth edges exist",
+    )
 
     validate_script = Path("scripts/validate_artifacts.py")
     if validate_script.exists():
@@ -770,6 +827,166 @@ def artifacts_rebuild(
         console.print(f"\n[green]Artifacts rebuilt in {elapsed:.1f}s[/green]")
     else:
         console.print(f"\n[green]Artifacts rebuilt for all sources in {elapsed:.1f}s[/green]")
+
+
+# ---------------------------------------------------------------------------
+# ground-truth
+# ---------------------------------------------------------------------------
+
+@ground_truth_app.command("sample-reviewed-ips", rich_help_panel="Manage")
+def ground_truth_sample_reviewed_ips(
+    ecosystem: Annotated[Optional[str], typer.Option("--ecosystem", "-e", help="Ecosystem slug.")] = None,
+    source: Annotated[Optional[str], typer.Option("--source", help="Source slug to sample from.")] = None,
+    snapshot: Annotated[Optional[str], typer.Option("--snapshot", "-s", help="Snapshot date (YYYY-MM-DD).")] = None,
+    count: Annotated[Optional[int], typer.Option("--count", help="Number of new reviewed IP rows to prefill.")] = None,
+    seed: Annotated[Optional[int], typer.Option("--seed", help="Random seed for reproducible stratified sampling.")] = None,
+    era_buckets: Annotated[Optional[int], typer.Option("--era-buckets", min=1, help="Number of time-based strata to use.")] = None,
+    density_basis: Annotated[Optional[str], typer.Option("--density-basis", help="Density basis: all_methods, regex_only, llm_only, or preamble_only.")] = None,
+    density_low_max: Annotated[Optional[int], typer.Option("--density-low-max", min=0, help="Upper bound for the `low` extracted-density bucket; values above this become `high`.")] = None,
+    reviewer: Annotated[Optional[str], typer.Option("--reviewer", help="Optional reviewer name to prefill in new rows.")] = None,
+    replace: Annotated[Optional[bool], typer.Option("--replace/--append", help="Overwrite reviewed_ips.csv or append new rows.")] = None,
+    wizard: Annotated[bool, typer.Option("--wizard", help="Force interactive step-by-step prompts.")] = False,
+) -> None:
+    """Prefill ground_truth/reviewed_ips.csv from a stratified source-IP sample."""
+    from analysis.ground_truth_sampling import (
+        ALL_METHODS,
+        DENSITY_BASIS_OPTIONS,
+        LLM_ONLY,
+        PREAMBLE_ONLY,
+        REGEX_ONLY,
+        prefill_reviewed_ips_csv,
+    )
+    from analysis.validation import validate_ground_truth_reviewed_ips_file
+
+    interactive = wizard or ecosystem is None or source is None or snapshot is None
+    available_ecosystems = [
+        slug for slug, eco in sorted(ECOSYSTEM_REGISTRY.items())
+        if eco.get("sources")
+    ]
+    if not available_ecosystems:
+        console.print("[red]No ecosystems with configured sources are available.[/red]")
+        raise typer.Exit(1)
+
+    if ecosystem is None:
+        ecosystem = _prompt_choice("Ecosystem", available_ecosystems)
+    eco = _get_ecosystem(ecosystem)
+
+    available_sources = sorted(eco.get("sources", {}).keys())
+    if source is None:
+        source = _prompt_choice("Source", available_sources)
+    src = _get_source(eco, source)
+
+    available_snapshots = _analysis_snapshot_labels_with_networks(Path(str(src["analysis"])))
+    if not available_snapshots:
+        console.print(f"[red]No analysis snapshots with dependency network artifacts found for {ecosystem}/{source}.[/red]")
+        raise typer.Exit(1)
+    if snapshot is None:
+        snapshot = _prompt_choice("Snapshot", list(reversed(available_snapshots)))
+    _validate_snapshot_date(snapshot)
+
+    if count is None:
+        count = int(typer.prompt("How many new reviewed IPs should be added?", default="30")) if interactive else 30
+    if count < 1:
+        console.print("[red]`--count` must be at least 1.[/red]")
+        raise typer.Exit(1)
+
+    if seed is None:
+        seed = int(typer.prompt("Random seed", default="42")) if interactive else 42
+    if era_buckets is None:
+        era_buckets = int(typer.prompt("Number of era buckets", default="3")) if interactive else 3
+    if density_basis is None:
+        if interactive:
+            basis_label = _prompt_choice(
+                "Density basis",
+                [
+                    f"{ALL_METHODS} (union of preamble, regex, and LLM outgoing targets)",
+                    f"{REGEX_ONLY} (regex outgoing targets only)",
+                    f"{LLM_ONLY} (LLM outgoing targets only)",
+                    f"{PREAMBLE_ONLY} (preamble outgoing targets only)",
+                ],
+            )
+            density_basis = basis_label.split(" ", 1)[0]
+        else:
+            density_basis = ALL_METHODS
+    if density_basis not in DENSITY_BASIS_OPTIONS:
+        allowed = ", ".join(sorted(DENSITY_BASIS_OPTIONS))
+        console.print(f"[red]Invalid `--density-basis`. Allowed: {allowed}[/red]")
+        raise typer.Exit(1)
+    if density_low_max is None:
+        density_low_max = int(typer.prompt("Largest extracted-target count still treated as `low` density", default="2")) if interactive else 2
+    if reviewer is None:
+        reviewer = typer.prompt("Reviewer name to prefill (optional)", default="") if interactive else ""
+    if replace is None:
+        if interactive:
+            replace_choice = _prompt_choice("Write mode", ["append (recommended)", "replace"])
+            replace = replace_choice == "replace"
+        else:
+            replace = False
+
+    if interactive:
+        console.print("")
+        console.print("[bold]Sampling plan[/bold]")
+        console.print(f"  Ecosystem: {ecosystem}")
+        console.print(f"  Source: {source}")
+        console.print(f"  Snapshot: {snapshot}")
+        console.print(f"  Count: {count}")
+        console.print(f"  Seed: {seed}")
+        console.print(f"  Era buckets: {era_buckets}")
+        console.print(f"  Density basis: {density_basis}")
+        console.print(f"  Low-density max: {density_low_max}")
+        console.print(f"  Reviewer: {reviewer or '—'}")
+        console.print(f"  Mode: {'replace' if replace else 'append'}")
+        if not typer.confirm("Proceed?", default=True):
+            raise typer.Exit(0)
+
+    network_path = Path(str(src["analysis"])) / snapshot / "dependencies" / "network_data.json"
+    if not network_path.exists():
+        console.print(
+            f"[red]Missing dependency network artifact for {ecosystem}/{source}/{snapshot}: "
+            f"{network_path}[/red]"
+        )
+        console.print(
+            f"[yellow]Rebuild artifacts first, e.g. `python main.py artifacts rebuild -e {ecosystem} --source {source} -s {snapshot}`[/yellow]"
+        )
+        raise typer.Exit(1)
+
+    result = prefill_reviewed_ips_csv(
+        ecosystem,
+        source_slug=source,
+        network_path=network_path,
+        count=count,
+        seed=seed,
+        era_bucket_count=era_buckets,
+        density_basis=density_basis,
+        density_low_max=density_low_max,
+        reviewer=reviewer or "",
+        replace=replace,
+    )
+
+    validation = validate_ground_truth_reviewed_ips_file(ecosystem, ecosystem_config=eco)
+    if not validation.ok:
+        console.print(f"[red]Reviewed-IP validation failed for {ecosystem}:[/red]")
+        for error in validation.errors[:20]:
+            console.print(f"  [red]-[/red] {error}")
+        if len(validation.errors) > 20:
+            console.print(f"  [red]-[/red] ... and {len(validation.errors) - 20} more")
+        raise typer.Exit(1)
+
+    output_path = result["output_path"]
+    console.print(f"[green]Updated[/green] {output_path}")
+    console.print(
+        f"Existing rows kept: {result['existing_count']} | "
+        f"New rows added: {result['added_count']} | "
+        f"Total rows: {result['total_count']}"
+    )
+
+    if result["sampled_rows"]:
+        strata_table = Table("Stratum", "Count", title="Sample Composition")
+        for stratum, sample_count in sorted(result["strata_counts"].items()):
+            strata_table.add_row(stratum, str(sample_count))
+        console.print(strata_table)
+    else:
+        console.print("[yellow]No new IPs were added. The reviewed set already covers the available candidates.[/yellow]")
 
 
 # ---------------------------------------------------------------------------

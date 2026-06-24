@@ -20,8 +20,9 @@ const EMPTY_DATASET = {
   sourceIds: [],
   bySource: {},
   nodes: [],
+  groundTruthReviewedIps: [],
   links: EMPTY_LINKS,
-  network: { nodes: [], links: EMPTY_LINKS },
+  network: { nodes: [], links: EMPTY_LINKS, ground_truth_reviewed_ips: [] },
   dependencyMetrics: { by_approach: {}, pairwise_comparisons: {} },
   authorship: { meta: {}, top_authors: [], bips_per_year: [], top_10_share: {} },
   classification: { meta: {}, sankey_grouped: { links: [] }, status_over_time: {} },
@@ -138,13 +139,17 @@ function ensureSingleSourceShape(snapshotLabel, sourceId, sourceSlug, snapshotDa
     graphSource,
     graphId: buildProposalGraphId(graphSource, node?.id),
   }));
+  const groundTruthReviewedIps = Array.isArray(network.ground_truth_reviewed_ips)
+    ? network.ground_truth_reviewed_ips.filter(Boolean)
+    : [];
 
   return {
     snapshot: snapshotLabel,
     sourceIds: [sourceId],
     nodes,
+    groundTruthReviewedIps,
     links,
-    network: { ...network, nodes, links },
+    network: { ...network, nodes, links, ground_truth_reviewed_ips: groundTruthReviewedIps },
     dependencyMetrics: snapshotData.dependencyMetrics || EMPTY_DATASET.dependencyMetrics,
     authorship: snapshotData.authorship || EMPTY_DATASET.authorship,
     classification: snapshotData.classification || EMPTY_DATASET.classification,
@@ -181,6 +186,9 @@ function ensureCombinedSourceShape(snapshotLabel, sourceEntries, combinationKey,
       graphId: node?.graphId || node?.graph_key || buildProposalGraphId(graphSource, node?.id),
     };
   });
+  const groundTruthReviewedIps = Array.isArray(network.ground_truth_reviewed_ips)
+    ? network.ground_truth_reviewed_ips.filter(Boolean)
+    : [];
 
   return {
     snapshot: snapshotLabel,
@@ -188,8 +196,9 @@ function ensureCombinedSourceShape(snapshotLabel, sourceEntries, combinationKey,
     combinationKey,
     isMergedSelection: true,
     nodes,
+    groundTruthReviewedIps,
     links,
-    network: { ...network, nodes, links },
+    network: { ...network, nodes, links, ground_truth_reviewed_ips: groundTruthReviewedIps },
     dependencyMetrics: snapshotData.dependencyMetrics || EMPTY_DATASET.dependencyMetrics,
     authorship: snapshotData.authorship || EMPTY_DATASET.authorship,
     classification: snapshotData.classification || EMPTY_DATASET.classification,
@@ -311,6 +320,22 @@ function mergeLinks(perSourceDatasets) {
   return merged;
 }
 
+function mergeGroundTruthReviewedIps(perSourceDatasets) {
+  const merged = [];
+  const seen = new Set();
+  perSourceDatasets.forEach((dataset) => {
+    (dataset.groundTruthReviewedIps || []).forEach((entry) => {
+      const key = String(entry?.ip || '').trim();
+      if (!key || seen.has(key)) {
+        return;
+      }
+      seen.add(key);
+      merged.push(entry);
+    });
+  });
+  return merged;
+}
+
 function buildMergedDataset(snapshotLabel, entries, combinedDataset = null) {
   const perSourceDatasets = entries.map(([, ds]) => ds);
   const bySource = Object.fromEntries(entries);
@@ -331,14 +356,16 @@ function buildMergedDataset(snapshotLabel, entries, combinedDataset = null) {
 
   const nodes = perSourceDatasets.flatMap((d) => d.nodes || []);
   const links = mergeLinks(perSourceDatasets);
+  const groundTruthReviewedIps = mergeGroundTruthReviewedIps(perSourceDatasets);
 
   return {
     snapshot: snapshotLabel,
     sourceIds,
     bySource,
     nodes,
+    groundTruthReviewedIps,
     links,
-    network: { nodes, links },
+    network: { nodes, links, ground_truth_reviewed_ips: groundTruthReviewedIps },
     authorship: mergeAuthorship(perSourceDatasets),
     classification: {
       ...EMPTY_DATASET.classification,

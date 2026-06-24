@@ -13,7 +13,7 @@ from analysis.dependencies.constants import (
 )
 from analysis.authorship.mining import get_git_authors_on_first_day
 from analysis.proposal_schema import get_formal_compliance, get_interrelations, normalize_proposal_document
-from analysis.validation.ground_truth import load_ground_truth_curated_entries
+from analysis.validation.ground_truth import load_ground_truth_curated_entries, load_ground_truth_reviewed_ips
 from pipeline.source_context import SourceContext
 from analysis.utils import parse_date_ymd as _parse_date_ymd
 
@@ -320,6 +320,7 @@ def build_network_data(
     source_context: SourceContext | None = None,
     known_proposal_ids_by_source: Mapping[str, set[str]] | None = None,
     ground_truth_entries: Sequence[Mapping[str, Any]] | None = None,
+    reviewed_ips_entries: Sequence[Mapping[str, Any]] | None = None,
 ) -> Dict[str, Any]:
     context = source_context or SourceContext.default()
     proposals = list(proposal_data)
@@ -513,6 +514,52 @@ def build_network_data(
             )
         )
 
+    reviewed_ip_rows = list(reviewed_ips_entries) if reviewed_ips_entries is not None else load_ground_truth_reviewed_ips(context.ecosystem_slug)
+    ground_truth_reviewed_ips = []
+    seen_reviewed_ips: set[str] = set()
+    for entry in reviewed_ip_rows:
+        if not isinstance(entry, Mapping):
+            continue
+        raw_ip = str(entry.get("ip") or "").strip()
+        if ":" not in raw_ip:
+            continue
+        ip_source_slug, ip_id_text = raw_ip.split(":", 1)
+        source_config = source_configs_by_slug.get(ip_source_slug)
+        if source_config is None:
+            continue
+        ip_id = _normalize_reference_id(ip_id_text, source_config)
+        if ip_id is None:
+            continue
+        if ip_source_slug != str(context.source_slug or ""):
+            continue
+        if ip_id not in node_ids:
+            continue
+
+        graph_key = build_graph_key(ip_source_slug, ip_id)
+        if graph_key in seen_reviewed_ips:
+            continue
+        seen_reviewed_ips.add(graph_key)
+        ground_truth_reviewed_ips.append({
+            "ip": graph_key,
+            "proposal_id": ip_id,
+            "source_slug": ip_source_slug,
+            "reviewer": str(entry.get("reviewer") or "").strip() or None,
+            "reviewed_at": str(entry.get("reviewed_at") or "").strip() or None,
+            "sampling_strategy": str(entry.get("sampling_strategy") or "").strip() or None,
+            "sampling_snapshot": str(entry.get("sampling_snapshot") or "").strip() or None,
+            "sampling_seed": str(entry.get("sampling_seed") or "").strip() or None,
+            "era_bucket": str(entry.get("era_bucket") or "").strip() or None,
+            "density_bucket": str(entry.get("density_bucket") or "").strip() or None,
+            "density_basis": str(entry.get("density_basis") or "").strip() or None,
+            "created": str(entry.get("created") or "").strip() or None,
+            "status": str(entry.get("status") or "").strip() or None,
+            "type": str(entry.get("type") or "").strip() or None,
+            "layer": str(entry.get("layer") or "").strip() or None,
+            "title": str(entry.get("title") or "").strip() or None,
+            "extracted_target_count": str(entry.get("extracted_target_count") or "").strip() or None,
+            "note": str(entry.get("note") or "").strip() or None,
+        })
+
     raw_links = {
         BODY_EXTRACTED_REGEX: explicit_reference_links,
         PREAMBLE_EXTRACTED: explicit_dependency_links,
@@ -524,6 +571,7 @@ def build_network_data(
     return {
         "nodes": nodes,
         "dependency_edges": dependency_edges,
+        "ground_truth_reviewed_ips": ground_truth_reviewed_ips,
     }
 
 

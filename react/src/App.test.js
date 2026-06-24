@@ -265,6 +265,9 @@ test('multi-source fetch uses combined dependency metrics when combined artifact
 
 test('ground-truth evaluation scores directed edge recovery on curated source proposals', () => {
   const evaluation = buildGroundTruthEvaluation({
+    groundTruthReviewedIps: [
+      { ip: 'bips:1', reviewed_at: '2026-06-22' },
+    ],
     links: {
       [GROUND_TRUTH_CURATED]: [
         { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'depends_on' },
@@ -287,7 +290,7 @@ test('ground-truth evaluation scores directed edge recovery on curated source pr
     },
   });
 
-  expect(evaluation.curatedProposalCount).toBe(1);
+  expect(evaluation.reviewedProposalCount).toBe(1);
   expect(evaluation.goldEdgeCount).toBe(2);
   expect(evaluation.approaches).toEqual([
     expect.objectContaining({
@@ -321,6 +324,9 @@ test('ground-truth evaluation scores directed edge recovery on curated source pr
 
 test('ground-truth evaluation can require exact relation-type matches', () => {
   const evaluation = buildGroundTruthEvaluation({
+    groundTruthReviewedIps: [
+      { ip: 'bips:1', reviewed_at: '2026-06-22' },
+    ],
     links: {
       [GROUND_TRUTH_CURATED]: [
         { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'depends_on' },
@@ -368,6 +374,10 @@ test('ground-truth evaluation can require exact relation-type matches', () => {
 
 test('default type mapping is discovered from data and prefilled from the ontology', () => {
   const dataset = {
+    groundTruthReviewedIps: [
+      { ip: 'bips:1', reviewed_at: '2026-06-22' },
+      { ip: 'bips:3', reviewed_at: '2026-06-22' },
+    ],
     links: {
       [GROUND_TRUTH_CURATED]: [
         { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'depends_on' },
@@ -401,6 +411,9 @@ test('default type mapping is discovered from data and prefilled from the ontolo
 
 test('default type mapping keeps a placeholder row for approaches with no extracted relations', () => {
   const dataset = {
+    groundTruthReviewedIps: [
+      { ip: 'bips:1', reviewed_at: '2026-06-22' },
+    ],
     links: {
       [GROUND_TRUTH_CURATED]: [
         { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'depends_on' },
@@ -421,6 +434,9 @@ test('default type mapping keeps a placeholder row for approaches with no extrac
 
 test('default type mapping does not auto-map a subtype when the GT slice lacks its canonical class', () => {
   const dataset = {
+    groundTruthReviewedIps: [
+      { ip: 'bips:1', reviewed_at: '2026-06-22' },
+    ],
     links: {
       [GROUND_TRUTH_CURATED]: [
         { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'depends_on' },
@@ -441,6 +457,10 @@ test('default type mapping does not auto-map a subtype when the GT slice lacks i
 
 test('mapping a subtype to "(all)" matches any gold type without inflating false positives', () => {
   const dataset = {
+    groundTruthReviewedIps: [
+      { ip: 'bips:1', reviewed_at: '2026-06-22' },
+      { ip: 'bips:3', reviewed_at: '2026-06-22' },
+    ],
     links: {
       [GROUND_TRUTH_CURATED]: [
         { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'depends_on' },
@@ -474,6 +494,9 @@ test('mapping a subtype to "(all)" matches any gold type without inflating false
 
 test('non-restricted scope scores edges from proposals without curated ground truth', () => {
   const dataset = {
+    groundTruthReviewedIps: [
+      { ip: 'bips:1', reviewed_at: '2026-06-22' },
+    ],
     links: {
       [GROUND_TRUTH_CURATED]: [
         { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'depends_on' },
@@ -486,20 +509,48 @@ test('non-restricted scope scores edges from proposals without curated ground tr
     },
   };
 
-  const restricted = buildGroundTruthEvaluation(dataset, { restrictToCuratedSources: true });
+  const restricted = buildGroundTruthEvaluation(dataset, { restrictToReviewedSources: true });
   const restrictedRegex = restricted.approaches.find((approach) => approach.approach === BODY_EXTRACTED_REGEX);
   // Edge from the non-curated source bips:7 is ignored.
   expect(restrictedRegex).toEqual(expect.objectContaining({ tp: 1, fp: 0, fn: 0 }));
 
-  const open = buildGroundTruthEvaluation(dataset, { restrictToCuratedSources: false });
+  const open = buildGroundTruthEvaluation(dataset, { restrictToReviewedSources: false });
   const openRegex = open.approaches.find((approach) => approach.approach === BODY_EXTRACTED_REGEX);
   // Now the bips:7 edge is scored and, absent from the gold set, counts as a false positive.
   expect(openRegex).toEqual(expect.objectContaining({ tp: 1, fp: 1, fn: 0 }));
 });
 
+test('reviewed IP scope includes reviewed proposals with zero curated edges', () => {
+  const dataset = {
+    groundTruthReviewedIps: [
+      { ip: 'bips:1', reviewed_at: '2026-06-22' },
+      { ip: 'bips:7', reviewed_at: '2026-06-22' },
+    ],
+    links: {
+      [GROUND_TRUTH_CURATED]: [
+        { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'depends_on' },
+      ],
+      [BODY_EXTRACTED_REGEX]: [
+        { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'reference' },
+        { sourceKey: 'bips:7', targetKey: 'bips:8', relation_type: 'reference' },
+      ],
+    },
+  };
+
+  const evaluation = buildGroundTruthEvaluation(dataset, { restrictToReviewedSources: true });
+  const regex = evaluation.approaches.find((approach) => approach.approach === BODY_EXTRACTED_REGEX);
+
+  expect(evaluation.reviewedProposalCount).toBe(2);
+  expect(regex).toEqual(expect.objectContaining({ tp: 1, fp: 1, fn: 0 }));
+});
+
 test('ground-truth evaluation can filter curated edges by review-date cutoff', () => {
   const dataset = {
     nodes: [{ id: '1' }, { id: '2' }, { id: '3' }],
+    groundTruthReviewedIps: [
+      { ip: 'bips:1', reviewed_at: '2026-06-20' },
+      { ip: 'bips:2', reviewed_at: '2026-06-22' },
+    ],
     links: {
       [GROUND_TRUTH_CURATED]: [
         { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'depends_on', reviewed_at: '2026-06-20' },
@@ -520,7 +571,7 @@ test('ground-truth evaluation can filter curated edges by review-date cutoff', (
   const regex = evaluation.approaches.find((approach) => approach.approach === BODY_EXTRACTED_REGEX);
 
   expect(evaluation.goldEdgeCount).toBe(1);
-  expect(evaluation.curatedProposalCount).toBe(1);
+  expect(evaluation.reviewedProposalCount).toBe(1);
   expect(regex).toEqual(expect.objectContaining({ tp: 1, fp: 1, fn: 0 }));
 });
 
@@ -543,12 +594,18 @@ test('experimental features default to enabled outside production only', () => {
   expect(getDefaultExperimentalFeaturesEnabled('seg-unibe.github.io')).toBe(false);
 });
 
-test('ground-truth evaluation returns an empty benchmark when a cutoff excludes all curated edges', () => {
+test('ground-truth evaluation returns null when a cutoff excludes the reviewed benchmark scope', () => {
   const dataset = {
     nodes: [{ id: '1' }, { id: '2' }],
+    groundTruthReviewedIps: [
+      { ip: 'bips:1', reviewed_at: '2026-06-22' },
+    ],
     links: {
       [GROUND_TRUTH_CURATED]: [
         { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'depends_on', reviewed_at: '2026-06-22' },
+      ],
+      [BODY_EXTRACTED_REGEX]: [
+        { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'reference' },
       ],
     },
   };
@@ -558,16 +615,16 @@ test('ground-truth evaluation returns an empty benchmark when a cutoff excludes 
     gtCutoffDate: '2026-06-21',
   });
 
-  expect(evaluation).toEqual(expect.objectContaining({
-    goldEdgeCount: 0,
-    curatedProposalCount: 0,
-    curatedTargetCount: 0,
-    approaches: [],
-  }));
+  expect(evaluation).toBeNull();
 });
 
 test('an approach is only scored against the gold types it is mapped to', () => {
   const dataset = {
+    groundTruthReviewedIps: [
+      { ip: 'bips:1', reviewed_at: '2026-06-22' },
+      { ip: 'bips:3', reviewed_at: '2026-06-22' },
+      { ip: 'bips:5', reviewed_at: '2026-06-22' },
+    ],
     links: {
       [GROUND_TRUTH_CURATED]: [
         { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'depends_on' },
@@ -599,6 +656,9 @@ test('an approach is only scored against the gold types it is mapped to', () => 
 
 test('editing the type mapping changes which edges are scored', () => {
   const dataset = {
+    groundTruthReviewedIps: [
+      { ip: 'bips:1', reviewed_at: '2026-06-22' },
+    ],
     links: {
       [GROUND_TRUTH_CURATED]: [
         { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'depends_on' },
@@ -631,6 +691,9 @@ test('editing the type mapping changes which edges are scored', () => {
 
 test('ground-truth evaluation ignores forward-pointing proposed_replacement preamble edges', () => {
   const evaluation = buildGroundTruthEvaluation({
+    groundTruthReviewedIps: [
+      { ip: 'bips:1', reviewed_at: '2026-06-22' },
+    ],
     links: {
       [GROUND_TRUTH_CURATED]: [
         { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'supersedes' },

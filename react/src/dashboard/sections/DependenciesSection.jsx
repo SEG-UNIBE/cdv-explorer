@@ -32,13 +32,15 @@ const MATCH_MODE_TOOLTIP = '<strong>Edge Only</strong> matches directed source-t
   + '<br /><br /><strong>Exact Type</strong> additionally requires the relation type to match. Choose which extracted '
   + 'subtypes to score and how they map to a ground-truth type in the table below.';
 
-const SCOPE_TOOLTIP = '<strong>GT source nodes only</strong>: scoring is limited to IPs that have curated outgoing GT links.'
-  + '<br /><br /><strong>All IPs</strong>: every extracted edge is scored, so edges from IPs without curated ground '
-  + 'truth count as false positives.';
+const SCOPE_TOOLTIP = '<strong>Reviewed source IPs only</strong>: scoring is limited to IPs listed in <code>reviewed_ips.csv</code> '
+  + 'with a completed <code>reviewed_at</code> date. This is the benchmark scope and includes reviewed IPs with zero curated edges.'
+  + '<br /><br /><strong>All IPs</strong>: every extracted edge is scored, so edges from IPs outside the reviewed benchmark '
+  + 'count as false positives.';
 
-const GT_CUTOFF_TOOLTIP = '<strong>All reviewed edges</strong>: use the full curated benchmark.'
-  + '<br /><br /><strong>Reviewed on or before</strong>: include only curated edges whose <code>reviewed_at</code> date '
-  + 'is on or before the selected cutoff. Review dates refer to the latest available proposal version at review time.';
+const GT_CUTOFF_TOOLTIP = '<strong>All completed reviews</strong>: use the full reviewed benchmark scope and all curated GT edges.'
+  + '<br /><br /><strong>Reviewed on or before</strong>: include only reviewed IPs and curated GT edges whose '
+  + '<code>reviewed_at</code> date is on or before the selected cutoff. Review dates refer to the latest available proposal '
+  + 'version at review time.';
 
 export function DependenciesSection({
   ecosystem,
@@ -67,7 +69,7 @@ export function DependenciesSection({
   showExperimentalFeatures,
 }) {
   const [groundTruthMatchMode, setGroundTruthMatchMode] = useState(GROUND_TRUTH_MATCH_MODE_EDGE_ONLY);
-  const [restrictToCuratedSources, setRestrictToCuratedSources] = useState(true);
+  const [restrictToReviewedSources, setRestrictToReviewedSources] = useState(true);
   const [groundTruthCutoffMode, setGroundTruthCutoffMode] = useState(GROUND_TRUTH_CUTOFF_MODE_ALL);
   const [groundTruthCutoffDate, setGroundTruthCutoffDate] = useState('');
   const {
@@ -129,8 +131,11 @@ export function DependenciesSection({
   };
   const availableGroundTruthReviewDates = useMemo(() => {
     const seen = new Set();
-    return (selectedDataset?.links?.[GROUND_TRUTH_CURATED] || [])
-      .map((edge) => String(edge?.reviewed_at || '').trim())
+    const values = [
+      ...(selectedDataset?.links?.[GROUND_TRUTH_CURATED] || []).map((edge) => String(edge?.reviewed_at || '').trim()),
+      ...(selectedDataset?.groundTruthReviewedIps || []).map((entry) => String(entry?.reviewed_at || '').trim()),
+    ];
+    return values
       .filter((value) => /^\d{4}-\d{2}-\d{2}$/.test(value))
       .filter((value) => {
         if (seen.has(value)) {
@@ -158,19 +163,19 @@ export function DependenciesSection({
       matchMode: groundTruthMatchMode,
       ontology: relationOntology,
       typeMapping,
-      restrictToCuratedSources,
+      restrictToReviewedSources,
       gtCutoffMode: groundTruthCutoffMode,
       gtCutoffDate: groundTruthCutoffDate,
     }),
-    [groundTruthMatchMode, selectedDataset, relationOntology, typeMapping, restrictToCuratedSources, groundTruthCutoffMode, groundTruthCutoffDate],
+    [groundTruthMatchMode, selectedDataset, relationOntology, typeMapping, restrictToReviewedSources, groundTruthCutoffMode, groundTruthCutoffDate],
   );
   const groundTruthSummaryCards = useMemo(() => (
     groundTruthEvaluation
       ? [
         {
-          label: 'GT Source Nodes',
-          value: groundTruthEvaluation.curatedProposalCount,
-          description: 'Number of distinct IPs with at least one curated ground-truth outgoing interrelation in the selected dataset.',
+          label: 'Reviewed Source IPs',
+          value: groundTruthEvaluation.reviewedProposalCount,
+          description: 'Number of distinct source IPs included in the reviewed benchmark scope. This comes from completed reviewed entries, not only from positive GT edges.',
         },
         {
           label: 'GT Target Nodes',
@@ -183,11 +188,11 @@ export function DependenciesSection({
           description: 'Number of unique directed ground-truth edges used as the reference set.',
         },
         {
-          label: 'GT Coverage',
+          label: 'Benchmark Coverage',
           value: groundTruthEvaluation.totalProposalCount
-            ? `${((groundTruthEvaluation.curatedProposalCount / groundTruthEvaluation.totalProposalCount) * 100).toFixed(1)}%`
+            ? `${((groundTruthEvaluation.reviewedProposalCount / groundTruthEvaluation.totalProposalCount) * 100).toFixed(1)}%`
             : '—',
-          description: 'Share of all IPs in the dataset that have at least one curated ground-truth outgoing interrelation. Lower coverage means the evaluation reflects only a small curated slice of the ecosystem.',
+          description: 'Share of all IPs in the dataset that are explicitly covered by the reviewed benchmark scope. Lower coverage means the evaluation reflects only a small curated slice of the ecosystem.',
         },
       ]
       : []
@@ -489,15 +494,15 @@ export function DependenciesSection({
                     Scope
                   </div>
                   <div className="ground-truth-scope">
-                    <span className={`ground-truth-scope__label${restrictToCuratedSources ? '' : ' is-muted'}`}>
-                      GT source nodes only
+                    <span className={`ground-truth-scope__label${restrictToReviewedSources ? '' : ' is-muted'}`}>
+                      Reviewed source IPs only
                     </span>
                     <InputSwitch
                       inputId="ground-truth-scope-toggle"
-                      checked={!restrictToCuratedSources}
-                      onChange={(event) => setRestrictToCuratedSources(!event.value)}
+                      checked={!restrictToReviewedSources}
+                      onChange={(event) => setRestrictToReviewedSources(!event.value)}
                     />
-                    <span className={`ground-truth-scope__label${restrictToCuratedSources ? ' is-muted' : ''}`}>
+                    <span className={`ground-truth-scope__label${restrictToReviewedSources ? ' is-muted' : ''}`}>
                       All IPs
                     </span>
                   </div>

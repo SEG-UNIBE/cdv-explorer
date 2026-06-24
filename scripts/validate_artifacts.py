@@ -16,6 +16,7 @@ from analysis.validation.snapshots import (
     validate_analysis_snapshot,
     validate_combined_snapshot,
     validate_ground_truth_curated_file,
+    validate_ground_truth_reviewed_ips_file,
     validate_preprocess_snapshot,
     validate_react_generated_indexes,
     validate_react_snapshot_exports,
@@ -118,6 +119,7 @@ def _ground_truth_rows() -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     for ecosystem, ecosystem_config in sorted(ECOSYSTEM_REGISTRY.items()):
         result = validate_ground_truth_curated_file(ecosystem, ecosystem_config=ecosystem_config)
+        result.merge(validate_ground_truth_reviewed_ips_file(ecosystem, ecosystem_config=ecosystem_config))
         rows.append(
             {
                 "ecosystem": ecosystem,
@@ -162,15 +164,18 @@ def build_summary(
     lines.append("")
     lines.append("### Ground Truth Validation")
     lines.append("")
-    lines.append("| Ecosystem | GT CSV | Curated edges |")
-    lines.append("|:---|:---:|---:|")
+    lines.append("| Ecosystem | GT CSV | Reviewed IPs CSV | Curated edges | Reviewed IPs | Completed reviews |")
+    lines.append("|:---|:---:|:---:|---:|---:|---:|")
     for row in ground_truth_rows:
         lines.append(
             "| "
             + " | ".join([
                 row["ecosystem"],
                 row["file_status"].get("ground_truth", "—"),
+                row["file_status"].get("reviewed_ips", "—"),
                 str(row["stats"].get("ground_truth_edges", "—")),
+                str(row["stats"].get("reviewed_ips", "—")),
+                str(row["stats"].get("completed_reviewed_ips", "—")),
             ])
             + " |"
         )

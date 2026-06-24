@@ -18,6 +18,24 @@ GROUND_TRUTH_CSV_COLUMNS = (
     "reviewer",
     "reviewed_at",
 )
+REVIEWED_IPS_CSV_COLUMNS = (
+    "ip",
+    "reviewer",
+    "reviewed_at",
+    "sampling_strategy",
+    "sampling_snapshot",
+    "sampling_seed",
+    "era_bucket",
+    "density_bucket",
+    "density_basis",
+    "created",
+    "status",
+    "type",
+    "layer",
+    "title",
+    "extracted_target_count",
+    "note",
+)
 GROUND_TRUTH_ALLOWED_RELATION_TYPES = {"depends_on", "supersedes", "references"}
 GROUND_TRUTH_ALLOWED_CONFIDENCE = {"low", "medium", "high"}
 GROUND_TRUTH_GRAPH_KEY_RE = re.compile(r"^(?P<source>[A-Za-z0-9_-]+):(?P<id>[^:\s]+)$")
@@ -188,11 +206,11 @@ def validate_ground_truth_curated_entries(
     return errors
 
 
-def load_ground_truth_curated_entries(ecosystem_slug: str | None, *, strict: bool = True) -> List[Dict[str, str]]:
-    if not ecosystem_slug:
-        return []
-
-    csv_path = Path("ip_data") / str(ecosystem_slug) / "ground_truth" / "interrelations.csv"
+def _load_csv_rows(
+    csv_path: Path,
+    *,
+    columns: Sequence[str],
+) -> List[Dict[str, str]]:
     if not csv_path.exists():
         return []
 
@@ -204,7 +222,8 @@ def load_ground_truth_curated_entries(ecosystem_slug: str | None, *, strict: boo
     if not lines:
         return []
 
-    reader = csv.DictReader(io.StringIO("\n".join(lines)), skipinitialspace=True)
+    delimiter = "\t" if "\t" in lines[0] else ","
+    reader = csv.DictReader(io.StringIO("\n".join(lines)), skipinitialspace=True, delimiter=delimiter)
     if reader.fieldnames is None:
         return []
     reader.fieldnames = [str(field or "").strip() for field in reader.fieldnames]
@@ -216,12 +235,89 @@ def load_ground_truth_curated_entries(ecosystem_slug: str | None, *, strict: boo
             for key, value in row.items()
             if key is not None and value is not None
         }
-        if not normalized.get("source") or not normalized.get("target"):
-            continue
         entries.append({
-            **{column: normalized.get(column, "") for column in GROUND_TRUTH_CSV_COLUMNS},
+            **{column: normalized.get(column, "") for column in columns},
             "__line__": reader.line_num,
         })
+
+    return entries
+
+
+def _normalize_iso_date(text: Any) -> str | None:
+    value = str(text or "").strip()
+    if not value:
+        return None
+    try:
+        date.fromisoformat(value)
+    except ValueError:
+        return None
+    return value
+
+
+def validate_reviewed_ip_entries(
+    entries: Sequence[Mapping[str, Any]],
+    *,
+    source_configs_by_slug: Mapping[str, Mapping[str, Any]],
+) -> List[str]:
+    errors: List[str] = []
+    seen_ips: set[str] = set()
+
+    for index, entry in enumerate(entries):
+        row_label = f"row {entry.get('__line__')}" if isinstance(entry, Mapping) and entry.get("__line__") else f"row {index + 2}"
+        if not isinstance(entry, Mapping):
+            errors.append(f"{row_label}: entry must be an object")
+            continue
+
+        row_errors: List[str] = []
+        raw_ip = str(entry.get("ip") or "").strip()
+        normalized_ip = None
+        try:
+            source_slug, proposal_id = _validate_ground_truth_graph_key(
+                raw_ip,
+                field_name="ip",
+                source_configs_by_slug=source_configs_by_slug,
+            )
+            normalized_ip = f"{source_slug}:{proposal_id}"
+        except ValueError as exc:
+            row_errors.append(str(exc))
+
+        reviewed_at = str(entry.get("reviewed_at") or "").strip()
+        if reviewed_at:
+            try:
+                date.fromisoformat(reviewed_at)
+            except ValueError:
+                row_errors.append(f"invalid `reviewed_at` date `{reviewed_at}`; use YYYY-MM-DD")
+
+        extracted_target_count = str(entry.get("extracted_target_count") or "").strip()
+        if extracted_target_count:
+            try:
+                if int(extracted_target_count) < 0:
+                    raise ValueError
+            except ValueError:
+                row_errors.append("`extracted_target_count` must be a non-negative integer")
+
+        if row_errors:
+            errors.extend(f"{row_label}: {message}" for message in row_errors)
+            continue
+
+        if normalized_ip in seen_ips:
+            errors.append(f"{row_label}: duplicate reviewed IP `{normalized_ip}`")
+            continue
+        seen_ips.add(str(normalized_ip))
+
+    return errors
+
+
+def load_ground_truth_curated_entries(ecosystem_slug: str | None, *, strict: bool = True) -> List[Dict[str, str]]:
+    if not ecosystem_slug:
+        return []
+
+    csv_path = Path("ip_data") / str(ecosystem_slug) / "ground_truth" / "interrelations.csv"
+    entries = [
+        entry
+        for entry in _load_csv_rows(csv_path, columns=GROUND_TRUTH_CSV_COLUMNS)
+        if entry.get("source") and entry.get("target")
+    ]
 
     if strict:
         errors = validate_ground_truth_curated_entries(
@@ -234,3 +330,39 @@ def load_ground_truth_curated_entries(ecosystem_slug: str | None, *, strict: boo
             )
 
     return entries
+
+
+def load_ground_truth_reviewed_ips(ecosystem_slug: str | None, *, strict: bool = True) -> List[Dict[str, str]]:
+    if not ecosystem_slug:
+        return []
+
+    csv_path = Path("ip_data") / str(ecosystem_slug) / "ground_truth" / "reviewed_ips.csv"
+    entries = [
+        entry
+        for entry in _load_csv_rows(csv_path, columns=REVIEWED_IPS_CSV_COLUMNS)
+        if entry.get("ip")
+    ]
+
+    if strict:
+        errors = validate_reviewed_ip_entries(
+            entries,
+            source_configs_by_slug=ground_truth_source_configs_by_slug(ecosystem_slug),
+        )
+        if errors:
+            raise ValueError(
+                f"Reviewed-IP validation failed for `{csv_path}`:\n- " + "\n- ".join(errors)
+            )
+
+    return entries
+
+
+def completed_reviewed_ip_entries(entries: Sequence[Mapping[str, Any]]) -> List[Dict[str, str]]:
+    completed: List[Dict[str, str]] = []
+    for entry in entries:
+        if not isinstance(entry, Mapping):
+            continue
+        reviewed_at = _normalize_iso_date(entry.get("reviewed_at"))
+        if not reviewed_at:
+            continue
+        completed.append({str(key): str(value) for key, value in entry.items() if key is not None and value is not None})
+    return completed

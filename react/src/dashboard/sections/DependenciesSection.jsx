@@ -32,10 +32,7 @@ const MATCH_MODE_TOOLTIP = '<strong>Edge Only</strong> matches directed source-t
   + '<br /><br /><strong>Exact Type</strong> additionally requires the relation type to match. Choose which extracted '
   + 'subtypes to score and how they map to a ground-truth type in the table below.';
 
-const SCOPE_TOOLTIP = '<strong>Reviewed source IPs only</strong>: scoring is limited to IPs listed in <code>reviewed_ips.csv</code> '
-  + 'with a completed <code>reviewed_at</code> date. This is the benchmark scope and includes reviewed IPs with zero curated edges.'
-  + '<br /><br /><strong>All IPs</strong>: every extracted edge is scored, so edges from IPs outside the reviewed benchmark '
-  + 'count as false positives.';
+const SCOPE_TOOLTIP = 'Reviewed scores only completed benchmark reviews from reviewed_ips.csv, while All scores every extracted source IP in the dataset.';
 
 const GT_CUTOFF_TOOLTIP = '<strong>All completed reviews</strong>: use the full reviewed benchmark scope and all curated GT edges.'
   + '<br /><br /><strong>Reviewed on or before</strong>: include only reviewed IPs and curated GT edges whose '
@@ -173,22 +170,17 @@ export function DependenciesSection({
     groundTruthEvaluation
       ? [
         {
-          label: 'Reviewed Source IPs',
+          label: 'GT Nodes',
           value: groundTruthEvaluation.reviewedProposalCount,
-          description: 'Number of distinct source IPs included in the reviewed benchmark scope. This comes from completed reviewed entries, not only from positive GT edges.',
-        },
-        {
-          label: 'GT Target Nodes',
-          value: groundTruthEvaluation.curatedTargetCount,
-          description: 'Number of distinct IPs referenced as targets by at least one curated ground-truth edge.',
+          description: 'Number of distinct reviewed IPs included in the curated benchmark scope. This comes from completed reviewed entries, including IPs with no documented GT edge.',
         },
         {
           label: 'GT Edges',
           value: groundTruthEvaluation.goldEdgeCount,
-          description: 'Number of unique directed ground-truth edges used as the reference set.',
+          description: 'Number of unique documented ground-truth interrelations used as the reference edge set.',
         },
         {
-          label: 'Benchmark Coverage',
+          label: 'Coverage',
           value: groundTruthEvaluation.totalProposalCount
             ? `${((groundTruthEvaluation.reviewedProposalCount / groundTruthEvaluation.totalProposalCount) * 100).toFixed(1)}%`
             : '—',
@@ -197,6 +189,58 @@ export function DependenciesSection({
       ]
       : []
   ), [groundTruthEvaluation]);
+  const groundTruthMethodologyText = useMemo(() => {
+    const reviewedIps = Array.isArray(selectedDataset?.groundTruthReviewedIps)
+      ? selectedDataset.groundTruthReviewedIps.filter(Boolean)
+      : [];
+    if (!reviewedIps.length) {
+      return 'This benchmark compares Preamble, Regex, and LLM against manually reviewed source IPs and their documented interrelations.';
+    }
+
+    const sourceSlugLabels = new Map(
+      Object.values(ecosystemBase?.sources || {}).map((source) => [
+        String(source?.sourceSlug || '').trim(),
+        String(source?.acronym || source?.shortLabel || source?.label || source?.sourceSlug || '').trim(),
+      ]),
+    );
+    const sourceLabels = Array.from(new Set(
+      reviewedIps
+        .map((entry) => String(entry?.source_slug || String(entry?.ip || '').split(':', 1)[0] || '').trim())
+        .filter(Boolean)
+        .map((slug) => sourceSlugLabels.get(slug) || slug.toUpperCase()),
+    ));
+    const reviewedTypes = Array.from(new Set(
+      reviewedIps
+        .map((entry) => String(entry?.type || '').trim())
+        .filter(Boolean),
+    ));
+    const densityBases = Array.from(new Set(
+      reviewedIps
+        .map((entry) => String(entry?.density_basis || '').trim())
+        .filter((value) => value && value !== '-'),
+    ));
+
+    const sourceText = sourceLabels.length === 1
+      ? `reviewed source IPs are sampled from the ${sourceLabels[0]} catalogue only`
+      : `reviewed source IPs are sampled from the ${sourceLabels.join(' + ')} catalogues only`;
+    const typeText = reviewedTypes.length === 1
+      ? ` and restricted to proposals of type ${reviewedTypes[0]}`
+      : '';
+    const densityText = densityBases.length === 1 && densityBases[0] === 'llm_only'
+      ? 'an approximate dependency-density signal derived from LLM-mined interdependencies'
+      : 'an approximate extracted dependency-density signal';
+
+    return `This benchmark compares Preamble, Regex, and LLM against a curated ground truth (GT) built from manually reviewed source IPs and their documented interrelations. For the current benchmark, ${sourceText}${typeText}. The reviewed IPs are then randomly sampled across stratified buckets defined by (i) proposal era based on creation date (early, middle, recent) and (ii) ${densityText} (none, low, high).`;
+  }, [ecosystemBase?.sources, selectedDataset]);
+  const groundTruthScopeStats = useMemo(() => {
+    if (!groundTruthEvaluation) {
+      return '';
+    }
+    const nodeCount = restrictToReviewedSources
+      ? groundTruthEvaluation.reviewedProposalCount
+      : groundTruthEvaluation.totalProposalCount;
+    return `Nodes=${nodeCount}`;
+  }, [groundTruthEvaluation, restrictToReviewedSources]);
 
   return (
     <section className="dashboard-section">
@@ -366,8 +410,7 @@ export function DependenciesSection({
             />
           </h3>
           <p>
-            Compares Preamble, Regex, and LLM against the curated Ground Truth (GT) interrelations in the selected dataset.
-            Use the controls to choose the match mode and whether to restrict scoring to proposals with curated GT links.
+            {groundTruthMethodologyText}
           </p>
           <div className="dependency-metrics-summary">
             {groundTruthSummaryCards.map((metric) => (
@@ -495,7 +538,7 @@ export function DependenciesSection({
                   </div>
                   <div className="ground-truth-scope">
                     <span className={`ground-truth-scope__label${restrictToReviewedSources ? '' : ' is-muted'}`}>
-                      Reviewed source IPs only
+                      Reviewed
                     </span>
                     <InputSwitch
                       inputId="ground-truth-scope-toggle"
@@ -503,8 +546,9 @@ export function DependenciesSection({
                       onChange={(event) => setRestrictToReviewedSources(!event.value)}
                     />
                     <span className={`ground-truth-scope__label${restrictToReviewedSources ? ' is-muted' : ''}`}>
-                      All IPs
+                      All
                     </span>
+                    <span className="ground-truth-scope__stats">{groundTruthScopeStats}</span>
                   </div>
                 </div>
                 <div className="network-layout-picker">

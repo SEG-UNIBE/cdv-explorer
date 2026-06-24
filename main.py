@@ -843,6 +843,7 @@ def ground_truth_sample_reviewed_ips(
     era_buckets: Annotated[Optional[int], typer.Option("--era-buckets", min=1, help="Number of time-based strata to use.")] = None,
     density_basis: Annotated[Optional[str], typer.Option("--density-basis", help="Density basis: all_methods, regex_only, llm_only, or preamble_only.")] = None,
     density_low_max: Annotated[Optional[int], typer.Option("--density-low-max", min=0, help="Upper bound for the `low` extracted-density bucket; values above this become `high`.")] = None,
+    proposal_type: Annotated[Optional[str], typer.Option("--proposal-type", help="Optional exact proposal type filter (e.g. Specification).")] = None,
     reviewer: Annotated[Optional[str], typer.Option("--reviewer", help="Optional reviewer name to prefill in new rows.")] = None,
     replace: Annotated[Optional[bool], typer.Option("--replace/--append", help="Overwrite reviewed_ips.csv or append new rows.")] = None,
     wizard: Annotated[bool, typer.Option("--wizard", help="Force interactive step-by-step prompts.")] = False,
@@ -914,6 +915,8 @@ def ground_truth_sample_reviewed_ips(
         raise typer.Exit(1)
     if density_low_max is None:
         density_low_max = int(typer.prompt("Largest extracted-target count still treated as `low` density", default="2")) if interactive else 2
+    if proposal_type is None:
+        proposal_type = typer.prompt("Restrict to proposal type (optional)", default="").strip() if interactive else ""
     if reviewer is None:
         reviewer = typer.prompt("Reviewer name to prefill (optional)", default="") if interactive else ""
     if replace is None:
@@ -934,6 +937,7 @@ def ground_truth_sample_reviewed_ips(
         console.print(f"  Era buckets: {era_buckets}")
         console.print(f"  Density basis: {density_basis}")
         console.print(f"  Low-density max: {density_low_max}")
+        console.print(f"  Proposal type filter: {proposal_type or '—'}")
         console.print(f"  Reviewer: {reviewer or '—'}")
         console.print(f"  Mode: {'replace' if replace else 'append'}")
         if not typer.confirm("Proceed?", default=True):
@@ -959,6 +963,7 @@ def ground_truth_sample_reviewed_ips(
         era_bucket_count=era_buckets,
         density_basis=density_basis,
         density_low_max=density_low_max,
+        proposal_type=proposal_type or None,
         reviewer=reviewer or "",
         replace=replace,
     )
@@ -979,6 +984,8 @@ def ground_truth_sample_reviewed_ips(
         f"New rows added: {result['added_count']} | "
         f"Total rows: {result['total_count']}"
     )
+    if result.get("proposal_type"):
+        console.print(f"Type filter: {result['proposal_type']}")
 
     if result["sampled_rows"]:
         strata_table = Table("Stratum", "Count", title="Sample Composition")

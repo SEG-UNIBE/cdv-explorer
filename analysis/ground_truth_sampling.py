@@ -130,6 +130,7 @@ def build_reviewed_ip_sample(
     era_bucket_count: int = 3,
     density_low_max: int = 2,
     density_basis: str = ALL_METHODS,
+    proposal_type: str | None = None,
     exclude_ips: Sequence[str] | None = None,
 ) -> List[Dict[str, Any]]:
     nodes = network_data.get("nodes", [])
@@ -164,12 +165,15 @@ def build_reviewed_ip_sample(
         ip = f"{source_slug}:{proposal_id}"
         if ip in exclude:
             continue
+        node_type = str(node.get("type") or "").strip()
+        if proposal_type and node_type != proposal_type:
+            continue
         extracted_target_count = len(outgoing_targets.get(ip, set()))
         candidates.append({
             "ip": ip,
             "created": str(node.get("created") or "").strip(),
             "status": str(node.get("status") or "").strip(),
-            "type": str(node.get("type") or "").strip(),
+            "type": node_type,
             "layer": str(node.get("layer") or "").strip(),
             "title": str(node.get("title") or "").strip(),
             "extracted_target_count": extracted_target_count,
@@ -204,6 +208,7 @@ def prefill_reviewed_ips_csv(
     era_bucket_count: int = 3,
     density_low_max: int = 2,
     density_basis: str = ALL_METHODS,
+    proposal_type: str | None = None,
     reviewer: str = "",
     replace: bool = False,
 ) -> Dict[str, Any]:
@@ -220,6 +225,7 @@ def prefill_reviewed_ips_csv(
         era_bucket_count=era_bucket_count,
         density_low_max=density_low_max,
         density_basis=density_basis,
+        proposal_type=proposal_type,
         exclude_ips=existing_ips,
     )
 
@@ -254,6 +260,7 @@ def prefill_reviewed_ips_csv(
         "added_count": len(new_rows),
         "requested_count": count,
         "total_count": len(rows_to_write),
+        "proposal_type": proposal_type,
         "sampled_rows": new_rows,
         "strata_counts": Counter(
             f"{row['era_bucket']} / {row['density_bucket']}"

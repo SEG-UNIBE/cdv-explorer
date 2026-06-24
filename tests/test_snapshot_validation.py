@@ -163,10 +163,10 @@ class SnapshotValidationTests(unittest.TestCase):
             csv_path.parent.mkdir(parents=True)
             csv_path.write_text(
                 "\n".join([
-                    "ip,reviewer,reviewed_at,sampling_strategy",
-                    "bips:44,rbo,2026-06-22,sampler",
-                    "bips:44,rbo,2026-06-23,manual",
-                    "oops,rbo,2026-99-99,manual",
+                    "ip,reviewer,reviewed_at,sampling_strategy,density_bucket,density_basis,created",
+                    "bips:44,rbo,2026-06-22,sampler,low,llm_only,2014-04-24",
+                    "bips:44,rbo,2026-06-23,manual,-,-,2014-04-24",
+                    "oops,rbo,2026-99-99,invalid_strategy,sideways,2012-04-11,not-a-date",
                 ]),
                 encoding="utf-8",
             )
@@ -193,6 +193,10 @@ class SnapshotValidationTests(unittest.TestCase):
         self.assertIn("duplicate reviewed IP", error_text)
         self.assertIn("must use source_slug:id format", error_text)
         self.assertIn("invalid `reviewed_at` date `2026-99-99`", error_text)
+        self.assertIn("invalid `sampling_strategy` `invalid_strategy`", error_text)
+        self.assertIn("invalid `density_bucket` `sideways`", error_text)
+        self.assertIn("invalid `density_basis` `2012-04-11`", error_text)
+        self.assertIn("invalid `created` date `not-a-date`", error_text)
 
 
 if __name__ == "__main__":

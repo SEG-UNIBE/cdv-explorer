@@ -38,6 +38,9 @@ REVIEWED_IPS_CSV_COLUMNS = (
 )
 GROUND_TRUTH_ALLOWED_RELATION_TYPES = {"depends_on", "supersedes", "references"}
 GROUND_TRUTH_ALLOWED_CONFIDENCE = {"low", "medium", "high"}
+REVIEWED_IP_ALLOWED_SAMPLING_STRATEGIES = {"sampler", "manual"}
+REVIEWED_IP_ALLOWED_DENSITY_BUCKETS = {"none", "low", "high"}
+REVIEWED_IP_ALLOWED_DENSITY_BASIS = {"all_methods", "regex_only", "llm_only", "preamble_only"}
 GROUND_TRUTH_GRAPH_KEY_RE = re.compile(r"^(?P<source>[A-Za-z0-9_-]+):(?P<id>[^:\s]+)$")
 HEX_REFERENCE_CLASS_PATTERN = re.compile(r"\[[^\]]*0-9[^\]]*A-F[^\]]*a-f[^\]]*\]")
 
@@ -295,6 +298,28 @@ def validate_reviewed_ip_entries(
                     raise ValueError
             except ValueError:
                 row_errors.append("`extracted_target_count` must be a non-negative integer")
+
+        sampling_strategy = str(entry.get("sampling_strategy") or "").strip()
+        if sampling_strategy and sampling_strategy not in REVIEWED_IP_ALLOWED_SAMPLING_STRATEGIES:
+            allowed = ", ".join(sorted(REVIEWED_IP_ALLOWED_SAMPLING_STRATEGIES))
+            row_errors.append(f"invalid `sampling_strategy` `{sampling_strategy}`; allowed: {allowed}")
+
+        density_bucket = str(entry.get("density_bucket") or "").strip()
+        if density_bucket and density_bucket != "-" and density_bucket not in REVIEWED_IP_ALLOWED_DENSITY_BUCKETS:
+            allowed = ", ".join(sorted(REVIEWED_IP_ALLOWED_DENSITY_BUCKETS))
+            row_errors.append(f"invalid `density_bucket` `{density_bucket}`; allowed: {allowed}")
+
+        density_basis = str(entry.get("density_basis") or "").strip()
+        if density_basis and density_basis != "-" and density_basis not in REVIEWED_IP_ALLOWED_DENSITY_BASIS:
+            allowed = ", ".join(sorted(REVIEWED_IP_ALLOWED_DENSITY_BASIS))
+            row_errors.append(f"invalid `density_basis` `{density_basis}`; allowed: {allowed}")
+
+        created = str(entry.get("created") or "").strip()
+        if created:
+            try:
+                date.fromisoformat(created)
+            except ValueError:
+                row_errors.append(f"invalid `created` date `{created}`; use YYYY-MM-DD")
 
         if row_errors:
             errors.extend(f"{row_label}: {message}" for message in row_errors)

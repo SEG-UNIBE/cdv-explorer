@@ -162,8 +162,71 @@ class ArtifactRebuildTests(unittest.TestCase):
             reviewed_csv = root / "ip_data" / "bitcoin" / "ground_truth" / "reviewed_ips.csv"
             self.assertTrue(reviewed_csv.exists())
             content = reviewed_csv.read_text(encoding="utf-8")
-            self.assertIn("ip,reviewer,reviewed_at,sampling_strategy", content)
+            self.assertIn("ip\treviewer\treviewed_at\tsampling_strategy", content)
             self.assertIn("bips:", content)
+
+    def test_ground_truth_sampling_can_filter_to_specific_proposal_type(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            root = Path(tmp_dir)
+            analysis_root = root / "bips" / "03_analysis" / "2026-05-28" / "dependencies"
+            analysis_root.mkdir(parents=True)
+            (analysis_root / "network_data.json").write_text(
+                """
+                {
+                  "nodes": [
+                    {"id": "1", "created": "2012-01-01", "status": "Draft", "type": "Process", "layer": "", "title": "One"},
+                    {"id": "2", "created": "2016-01-01", "status": "Final", "type": "Specification", "layer": "", "title": "Two"},
+                    {"id": "3", "created": "2024-01-01", "status": "Draft", "type": "Specification", "layer": "", "title": "Three"}
+                  ],
+                  "dependency_edges": [
+                    {"source": "bips:2", "target": "bips:1", "extraction_method": "body_extracted_regex", "relation_type": "reference", "value": 1},
+                    {"source": "bips:3", "target": "bips:1", "extraction_method": "body_extracted_llm", "relation_type": "implicit_dependency", "value": 1}
+                  ]
+                }
+                """,
+                encoding="utf-8",
+            )
+
+            ecosystem = {
+                "slug": "bitcoin",
+                "sources": {
+                    "bips": {
+                        **self._source_config(root / "bips"),
+                        "reference_pattern": r"\\bBIP[-#\\s]?(\\d+)\\b",
+                    }
+                },
+            }
+            previous_cwd = Path.cwd()
+            os.chdir(root)
+            try:
+                with patch.dict("main.ECOSYSTEM_REGISTRY", {"bitcoin": ecosystem}, clear=True):
+                    result = runner.invoke(
+                        app,
+                        [
+                            "ground-truth",
+                            "sample-reviewed-ips",
+                            "-e",
+                            "bitcoin",
+                            "--source",
+                            "bips",
+                            "-s",
+                            "2026-05-28",
+                            "--count",
+                            "2",
+                            "--seed",
+                            "7",
+                            "--proposal-type",
+                            "Specification",
+                        ],
+                    )
+            finally:
+                os.chdir(previous_cwd)
+
+            self.assertEqual(result.exit_code, 0, result.output)
+            reviewed_csv = root / "ip_data" / "bitcoin" / "ground_truth" / "reviewed_ips.csv"
+            rows = reviewed_csv.read_text(encoding="utf-8").splitlines()
+            self.assertEqual(len(rows), 3)
+            self.assertTrue(all("Specification" in row for row in rows[1:]))
 
 
 if __name__ == "__main__":

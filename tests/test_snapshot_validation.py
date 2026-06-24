@@ -120,6 +120,7 @@ class SnapshotValidationTests(unittest.TestCase):
                     "source,target,relation_type,confidence,evidence,note,reviewer,reviewed_at",
                     "bips:44,bips:32,depends_on,high,Requires: 32,,rbo,2026-06-22",
                     "bips:44,bips:32,supersedes,medium,Duplicate pair conflict,,rbo,2026-06-22",
+                    "bips:79,bips:78,superseded_by,high,Proposed-Replacement: 78,,rbo,2026-06-22",
                     "oops,bips:33,depends_on,maybe,Bad source format,,rbo,2026-99-99",
                     "slips:39,bips:32,,high,Missing relation type,,rbo,2026-06-22",
                 ]),

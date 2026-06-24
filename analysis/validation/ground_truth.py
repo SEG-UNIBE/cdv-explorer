@@ -36,7 +36,7 @@ REVIEWED_IPS_CSV_COLUMNS = (
     "extracted_target_count",
     "note",
 )
-GROUND_TRUTH_ALLOWED_RELATION_TYPES = {"depends_on", "supersedes", "references"}
+GROUND_TRUTH_ALLOWED_RELATION_TYPES = {"depends_on", "supersedes", "superseded_by", "references"}
 GROUND_TRUTH_ALLOWED_CONFIDENCE = {"low", "medium", "high"}
 REVIEWED_IP_ALLOWED_SAMPLING_STRATEGIES = {"sampler", "manual"}
 REVIEWED_IP_ALLOWED_DENSITY_BUCKETS = {"none", "low", "high"}

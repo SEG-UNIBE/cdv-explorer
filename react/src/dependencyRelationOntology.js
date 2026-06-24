@@ -7,12 +7,13 @@
 // `requires` / `replaces` / `proposed_replacement`), so it is declared per
 // ecosystem and per source and merged in on demand.
 
-const CANONICAL_TYPE_ORDER = ['DEPENDS_ON', 'SUPERSEDES', 'REFERENCES'];
+const CANONICAL_TYPE_ORDER = ['DEPENDS_ON', 'SUPERSEDES', 'SUPERSEDED_BY', 'REFERENCES'];
 
 // Curated ground-truth labels per canonical type (ecosystem-independent).
 const GROUND_TRUTH_CANONICAL = {
   DEPENDS_ON: ['depends_on'],
   SUPERSEDES: ['supersedes'],
+  SUPERSEDED_BY: ['superseded_by'],
   REFERENCES: ['references'],
 };
 
@@ -21,6 +22,7 @@ const UNIVERSAL_RELATION_TYPE_MAP = {
   // ground truth
   depends_on: 'DEPENDS_ON',
   supersedes: 'SUPERSEDES',
+  superseded_by: 'SUPERSEDED_BY',
   references: 'REFERENCES',
   // generic extraction approaches
   reference: 'REFERENCES', // Regex
@@ -33,9 +35,11 @@ const UNIVERSAL_RELATION_TYPE_MAP = {
 const SOURCE_PREAMBLE_ONTOLOGY = {
   bitcoin: {
     bip: {
-      map: { requires: 'DEPENDS_ON', replaces: 'SUPERSEDES' },
-      // forward-pointing edge (reverse direction of GT `supersedes`)
-      excluded: ['proposed_replacement'],
+      map: {
+        requires: 'DEPENDS_ON',
+        replaces: 'SUPERSEDES',
+        proposed_replacement: 'SUPERSEDED_BY',
+      },
     },
     // slip: no preamble dependency headers
   },

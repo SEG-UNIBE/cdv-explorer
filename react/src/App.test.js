@@ -382,6 +382,7 @@ test('default type mapping is discovered from data and prefilled from the ontolo
       [GROUND_TRUTH_CURATED]: [
         { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'depends_on' },
         { sourceKey: 'bips:3', targetKey: 'bips:4', relation_type: 'supersedes' },
+        { sourceKey: 'bips:5', targetKey: 'bips:6', relation_type: 'superseded_by' },
       ],
       [BODY_EXTRACTED_REGEX]: [
         { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'reference' },
@@ -398,12 +399,11 @@ test('default type mapping is discovered from data and prefilled from the ontolo
   };
 
   const mapping = buildDefaultTypeMapping(dataset, resolveRelationOntology('bitcoin'));
-  expect(mapping.gtTypes).toEqual(['depends_on', 'supersedes']);
+  expect(mapping.gtTypes).toEqual(['depends_on', 'supersedes', 'superseded_by']);
   expect(mapping.rows).toEqual([
     { approach: PREAMBLE_EXTRACTED, subtype: 'requires', include: true, target: 'depends_on' },
     { approach: PREAMBLE_EXTRACTED, subtype: 'replaces', include: true, target: 'supersedes' },
-    // No matching GT class is present in this dataset, so these remain unmapped.
-    { approach: PREAMBLE_EXTRACTED, subtype: 'proposed_replacement', include: false, target: null },
+    { approach: PREAMBLE_EXTRACTED, subtype: 'proposed_replacement', include: true, target: 'superseded_by' },
     { approach: BODY_EXTRACTED_REGEX, subtype: 'reference', include: false, target: null },
     { approach: BODY_EXTRACTED_LLM, subtype: 'implicit_dependency', include: false, target: null },
   ]);
@@ -689,22 +689,18 @@ test('editing the type mapping changes which edges are scored', () => {
   expect(llmEdited).toEqual(expect.objectContaining({ evaluated: true, tp: 1, fp: 0, fn: 0 }));
 });
 
-test('ground-truth evaluation ignores forward-pointing proposed_replacement preamble edges', () => {
+test('ground-truth evaluation can match proposed_replacement against superseded_by', () => {
   const evaluation = buildGroundTruthEvaluation({
     groundTruthReviewedIps: [
-      { ip: 'bips:1', reviewed_at: '2026-06-22' },
+      { ip: 'bips:9', reviewed_at: '2026-06-22' },
     ],
     links: {
       [GROUND_TRUTH_CURATED]: [
-        { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'supersedes' },
+        { sourceKey: 'bips:9', targetKey: 'bips:10', relation_type: 'superseded_by' },
       ],
       [PREAMBLE_EXTRACTED]: {
-        replaces: [
-          { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'replaces' },
-        ],
         proposed_replacement: [
-          // Reverse-direction edge: must be excluded, so it neither matches nor adds a false positive.
-          { sourceKey: 'bips:1', targetKey: 'bips:9', relation_type: 'proposed_replacement' },
+          { sourceKey: 'bips:9', targetKey: 'bips:10', relation_type: 'proposed_replacement' },
         ],
       },
     },
@@ -719,10 +715,11 @@ test('relation ontology is ecosystem- and source-aware', () => {
   expect(bitcoin.hasPreambleTypes).toBe(true);
   expect(bitcoin.canonicalMap.requires).toBe('DEPENDS_ON');
   expect(bitcoin.canonicalMap.replaces).toBe('SUPERSEDES');
-  expect(bitcoin.excludedTypes.has('proposed_replacement')).toBe(true);
+  expect(bitcoin.canonicalMap.proposed_replacement).toBe('SUPERSEDED_BY');
   expect(bitcoin.alignment).toEqual([
     expect.objectContaining({ canonical: 'DEPENDS_ON', preamble: ['requires'] }),
     expect.objectContaining({ canonical: 'SUPERSEDES', preamble: ['replaces'] }),
+    expect.objectContaining({ canonical: 'SUPERSEDED_BY', preamble: ['proposed_replacement'] }),
     expect.objectContaining({ canonical: 'REFERENCES', preamble: [] }),
   ]);
 

@@ -148,6 +148,185 @@
   gap: 0.35rem;
 }
 
+.about-page {
+  padding: 2rem 0 2.5rem;
+}
+
+.about-page__intro {
+  max-width: none;
+}
+
+.about-page__intro h1,
+.about-page__section h2 {
+  margin-top: 0;
+}
+
+.about-page__intro p,
+.about-page__publication-authors,
+.about-page__publication-meta {
+  color: var(--app-text-muted);
+}
+
+.about-page__section {
+  margin-top: 2rem;
+}
+
+.about-page__cards,
+.about-page__publications {
+  margin-top: 1rem;
+  display: grid;
+  gap: 0.9rem;
+}
+
+.about-page__cards--two-column,
+.about-page__logos {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.about-page__publications {
+  grid-template-columns: 1fr;
+}
+
+.about-page__card.p-card .p-card-body {
+  padding: 1rem 1.1rem;
+}
+
+.about-page__card--link.p-card .p-card-body {
+  padding-top: 0.7rem;
+  padding-bottom: 0.7rem;
+}
+
+.about-page__card.p-card .p-card-content {
+  padding: 0;
+}
+
+.about-page__link-tile {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  min-height: 72px;
+  align-items: center;
+  justify-content: center;
+  column-gap: 0.8rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.about-page__link-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.about-page__link-icon {
+  font-size: 2rem;
+  color: var(--primary-color);
+}
+
+.about-page__link-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.about-page__link-label {
+  color: var(--app-text);
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.about-page__link-target {
+  color: var(--app-text-muted);
+  line-height: 1.4;
+}
+
+.about-page__link-tile:hover .about-page__link-label,
+.about-page__publication-doi:hover {
+  color: var(--primary-color);
+}
+
+.about-page__publication-doi {
+  line-height: 1.4;
+}
+
+.about-page__organization-copy,
+.about-page__publication-entry {
+  margin: 0.55rem 0 0;
+  color: var(--app-text-muted);
+  line-height: 1.6;
+}
+
+.about-page__publication-entry strong {
+  color: var(--app-text);
+}
+
+.about-page__publication-doi--muted {
+  color: var(--app-text-muted);
+  font-weight: 500;
+}
+
+.about-page__card--organization .p-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.about-page__organization-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.about-page__logo-card {
+  min-height: 104px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--app-border);
+  border-radius: 8px;
+  background: var(--app-background);
+  padding: 1rem;
+}
+
+.about-page__logo-card--seg {
+  min-height: 120px;
+}
+
+.about-page__logo-card--unibe {
+  min-height: 196px;
+  padding: 0.5rem;
+}
+
+.about-page__logo {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.about-page__logo--seg {
+  max-height: 74px;
+}
+
+.about-page__logo--unibe {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 160px;
+  object-fit: contain;
+}
+
+@media screen and (max-width: 900px) {
+  .about-page__cards--two-column {
+    grid-template-columns: 1fr;
+  }
+
+  .about-page__organization-split {
+    grid-template-columns: 1fr;
+  }
+}
+
 // ── Skeleton / content crossfade ─────────────────────────────────────────────
 
 @keyframes sk-fade-out { to   { opacity: 0; } }

@@ -121,7 +121,7 @@ jobs:
         working-directory: react
 
       - name: Run frontend tests
-        run: npm test -- --watchAll=false
+        run: npm test -- --run
         working-directory: react
         env:
           CI: true

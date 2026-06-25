@@ -127,16 +127,22 @@ python main.py run -e nostr -s 2026-03-16 --skipllm
 ```bash
 cd react
 npm install
-npm start        # dev server at http://localhost:3000
+npm start        # Vite dev server, typically at http://localhost:5173
 ```
 
-`npm start` also regenerates the snapshot index and generic proposal link index automatically before launching the dev server.
-It also refreshes the generated ecosystem metadata used by the frontend.
+The frontend now uses **[Vite](https://vite.dev/)** for local development and production builds.
+`npm start` and `npm run dev` both regenerate the snapshot index, proposal link index, and ecosystem metadata before launching the dev server.
 
 For a production build:
 
 ```bash
 npm run build
+```
+
+For the frontend test suite:
+
+```bash
+npm test -- --run
 ```
 
 </br>
@@ -231,6 +237,18 @@ pip install -r requirements-dev.txt
 python -m pytest
 ```
 
+For the React frontend:
+
+```bash
+cd react
+npm install
+npm test -- --run
+npm run build
+```
+
+The frontend uses **Vite** for bundling/dev serving and **Vitest** for unit tests.
+Build output is written to `react/build` to stay compatible with the existing GitHub Pages and Cloudflare deployment workflows.
+
 ### Pipeline architecture
 
 The pipeline transforms raw IP corpora into versioned, frontend-ready datasets in four stages: **Harvest** → **Preprocess** → **Analysis** → **Postprocess**.
@@ -313,6 +331,7 @@ Concrete examples: [`bip-0340.json`](ip_data/bitcoin/bips/02_preprocess/2026-03-
 Production is deployed to GitHub Pages via [`.github/workflows/deploy-prod.yml`](.github/workflows/deploy-prod.yml) after a successful `CI` run on `main` or `master`.
 Development builds are deployed to Cloudflare Pages via [`.github/workflows/deploy-dev.yml`](.github/workflows/deploy-dev.yml) after a successful `CI` run on `dev`.
 To enable GitHub Pages on a fork, go to `Settings > Pages` and set the source to `GitHub Actions`.
+Both workflows build the Vite app and publish the generated `react/build` directory.
 
 </br>
 

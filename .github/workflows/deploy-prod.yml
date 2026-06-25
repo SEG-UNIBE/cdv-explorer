@@ -7,8 +7,14 @@ on:
     types:
       - completed
   workflow_dispatch:
+    inputs:
+      run_id:
+        description: CI workflow run id containing the react-build artifact
+        required: true
+        type: string
 
 permissions:
+  actions: read
   contents: read
   pages: write
   id-token: write
@@ -18,7 +24,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
+  package:
     if: >
       github.event_name == 'workflow_dispatch' ||
       (
@@ -31,28 +37,18 @@ jobs:
       )
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - name: Download frontend artifact from CI
+        uses: actions/download-artifact@v8
         with:
-          ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.ref }}
+          name: react-build
+          run-id: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.id || inputs.run_id }}
+          github-token: ${{ github.token }}
+          path: react/build
 
       - name: Setup Pages
         uses: actions/configure-pages@v6
         with:
           enablement: true
-
-      - uses: actions/setup-node@v6
-        with:
-          node-version: 22
-          cache: npm
-          cache-dependency-path: react/package-lock.json
-
-      - name: Install dependencies
-        run: npm ci
-        working-directory: react
-
-      - name: Build app
-        run: npm run build
-        working-directory: react
 
       - name: Prevent Jekyll processing
         run: touch react/build/.nojekyll
@@ -63,7 +59,7 @@ jobs:
           path: react/build
 
   deploy:
-    needs: build
+    needs: package
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

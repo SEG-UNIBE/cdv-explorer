@@ -7,8 +7,14 @@ on:
     types:
       - completed
   workflow_dispatch:
+    inputs:
+      run_id:
+        description: CI workflow run id containing the react-build artifact
+        required: true
+        type: string
 
 permissions:
+  actions: read
   contents: read
 
 concurrency:
@@ -19,7 +25,7 @@ env:
   CLOUDFLARE_PAGES_PROJECT: cdv-explorer
 
 jobs:
-  build:
+  deploy:
     if: >
       github.event_name == 'workflow_dispatch' ||
       (
@@ -27,44 +33,22 @@ jobs:
         github.event.workflow_run.event == 'push' &&
         github.event.workflow_run.head_branch == 'dev'
       )
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-        with:
-          ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.ref }}
-
-      - uses: actions/setup-node@v6
-        with:
-          node-version: 22
-          cache: npm
-          cache-dependency-path: react/package-lock.json
-
-      - name: Install frontend dependencies
-        run: npm ci
-        working-directory: react
-
-      - name: Build app
-        run: npm run build
-        working-directory: react
-
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v7
-        with:
-          name: react-build-dev
-          path: react/build
-
-  deploy:
-    needs: build
     environment:
       name: cloudflare-pages
       url: https://cdv-explorer.pages.dev/
     runs-on: ubuntu-latest
     steps:
-      - name: Download build artifact
+      - name: Download frontend artifact from CI
         uses: actions/download-artifact@v8
         with:
-          name: react-build-dev
+          name: react-build
+          run-id: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.id || inputs.run_id }}
+          github-token: ${{ github.token }}
           path: react/build
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
 
       - name: Deploy to Cloudflare Pages
         run: npx wrangler pages deploy react/build --project-name="${CLOUDFLARE_PAGES_PROJECT}" --branch=dev

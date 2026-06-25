@@ -5,6 +5,7 @@ import unittest
 from pathlib import Path
 
 from analysis.validation.snapshots import (
+    expected_combined_snapshot_targets,
     validate_ground_truth_curated_file,
     validate_ground_truth_ips_file,
     validate_preprocess_snapshot,
@@ -198,6 +199,79 @@ class SnapshotValidationTests(unittest.TestCase):
         self.assertIn("invalid `density_bucket` `sideways`", error_text)
         self.assertIn("invalid `density_basis` `2012-04-11`", error_text)
         self.assertIn("invalid `created` date `not-a-date`", error_text)
+
+    def test_ips_validation_warns_when_rows_fall_outside_declared_policy(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            root = Path(tmp_dir)
+            csv_path = root / "ip_data" / "bitcoin" / "ground_truth" / "ips.csv"
+            csv_path.parent.mkdir(parents=True)
+            csv_path.write_text(
+                "\n".join([
+                    "ip\treviewer\treviewed_at\tsampling_strategy\tdensity_bucket\tdensity_basis\tcreated\ttype",
+                    "bips:44\trbo\t2026-06-22\tsampler\tlow\tall_methods\t2014-04-24\tSpecification",
+                    "slips:55\trbo\t2026-06-22\tmanual\t-\t-\t2015-01-01\tWallet",
+                    "bips:78\trbo\t2026-06-22\tmanual\t-\t-\t2018-12-01\tInformational",
+                ]),
+                encoding="utf-8",
+            )
+
+            ecosystem_config = {
+                "sources": {
+                    "bips": {
+                        "proposal_acronym": "BIP",
+                        "reference_pattern": r"\bBIP[-#\s]?(\d+)\b",
+                        "max_proposal_id": 9999,
+                    },
+                    "slips": {
+                        "proposal_acronym": "SLIP",
+                        "reference_pattern": r"\bSLIP[-#\s]?(\d+)\b",
+                        "max_proposal_id": 9999,
+                    },
+                }
+            }
+
+            previous_cwd = Path.cwd()
+            os.chdir(root)
+            try:
+                result = validate_ground_truth_ips_file("bitcoin", ecosystem_config=ecosystem_config)
+            finally:
+                os.chdir(previous_cwd)
+
+        self.assertTrue(result.ok)
+        self.assertEqual("⚠️ policy", result.file_status["reviewed_ips"])
+        warning_text = "\n".join(result.warnings)
+        self.assertIn("expects source `bips`", warning_text)
+        self.assertIn("expects proposal type `Specification`", warning_text)
+
+    def test_expected_combined_snapshot_targets_uses_source_snapshot_intersection(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            root = Path(tmp_dir)
+            bips = self._source_config(root, "bips")
+            slips = self._source_config(root, "slips")
+            nips = self._source_config(root, "nips")
+
+            for snapshot in ("2026-05-28", "2026-03-16", "2021-01-01"):
+                (Path(bips["analysis"]) / snapshot).mkdir(parents=True)
+            for snapshot in ("2026-05-28", "2026-03-16"):
+                (Path(slips["analysis"]) / snapshot).mkdir(parents=True)
+            for snapshot in ("2026-05-28",):
+                (Path(nips["analysis"]) / snapshot).mkdir(parents=True)
+
+            targets = expected_combined_snapshot_targets(
+                "bitcoin",
+                ecosystem_config={"sources": {"bips": bips, "slips": slips, "nips": nips}},
+            )
+
+        self.assertEqual(
+            targets,
+            [
+                ("bips+nips", "2026-05-28"),
+                ("bips+slips", "2026-05-28"),
+                ("bips+slips", "2026-03-16"),
+                ("nips+slips", "2026-05-28"),
+                ("bips+nips+slips", "2026-05-28"),
+            ],
+        )
 
 
 if __name__ == "__main__":

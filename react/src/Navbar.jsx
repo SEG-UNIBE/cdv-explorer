@@ -3,7 +3,7 @@ import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import { Link } from 'react-router-dom';
 import { FaGithub } from 'react-icons/fa';
-import { useTheme } from './theme';
+import { useTheme } from './theme.jsx';
 import { getEnvironmentBadge } from './runtimeEnvironment';
 import pkg from '../package.json';
 import './Navbar.scss';

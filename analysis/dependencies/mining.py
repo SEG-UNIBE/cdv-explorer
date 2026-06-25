@@ -7,7 +7,7 @@ from typing import Any, Dict, List, Mapping
 
 from openai import OpenAI
 
-from analysis.dependencies.utils import normalize_reference_id, normalize_reference_id_for_config, uses_hex_proposal_ids
+from analysis.reference_ids import normalize_reference_id, normalize_reference_id_for_config, uses_hex_proposal_ids
 from analysis.proposal_schema import get_preamble_interrelations
 from pipeline.source_context import SourceContext
 
@@ -29,12 +29,6 @@ def prepare_llm_dependency_text(raw_content: str) -> str:
         return ""
 
     return _strip_top_preamble_block(raw_content).replace("\r\n", "\n").replace("\r", "\n").strip()
-
-
-
-def _uses_hex_proposal_ids(proposal_label: str = "IP", reference_pattern: str = "") -> bool:
-    return uses_hex_proposal_ids(proposal_label, reference_pattern)
-
 
 def _reference_configs_for_context(
     context: SourceContext,
@@ -128,7 +122,7 @@ def _reference_sort_key(
     suffix = parts[-1] if parts else ""
     reference_pattern = (reference_patterns_by_label or {}).get(label, "")
     try:
-        base = 16 if _uses_hex_proposal_ids(label, reference_pattern) else 10
+        base = 16 if uses_hex_proposal_ids(label, reference_pattern) else 10
         numeric = int(suffix, base)
     except ValueError:
         numeric = 10**12
@@ -141,7 +135,7 @@ def _format_reference(label: str, normalized_id: str) -> str:
 
 
 def _id_chars_for_reference_config(config: Dict[str, Any]) -> str:
-    return r"[0-9A-Fa-f]" if _uses_hex_proposal_ids(
+    return r"[0-9A-Fa-f]" if uses_hex_proposal_ids(
         str(config["proposal_label"]),
         str(config["reference_pattern"]),
     ) else r"\d"
@@ -201,7 +195,7 @@ def create_reference_list(
             if normalized_id is not None:
                 proposal_references.add(_format_reference(active_proposal_label, normalized_id))
 
-        if _uses_hex_proposal_ids(active_proposal_label, active_reference_pattern):
+        if uses_hex_proposal_ids(active_proposal_label, active_reference_pattern):
             list_pattern = re.compile(
                 rf"(?i)\b{re.escape(active_proposal_label)}s?[-#\s]*([0-9A-Fa-f]{{1,{MAX_REFERENCE_DIGITS}}}(?![0-9A-Fa-f])(?:\s*(?:,|/|and|or)\s*[0-9A-Fa-f]{{1,{MAX_REFERENCE_DIGITS}}}(?![0-9A-Fa-f]))*)"
             )
@@ -288,7 +282,7 @@ def create_reference_targets(
         active_proposal_label = str(config["proposal_label"])
         active_reference_pattern = str(config["reference_pattern"])
 
-        if _uses_hex_proposal_ids(active_proposal_label, active_reference_pattern):
+        if uses_hex_proposal_ids(active_proposal_label, active_reference_pattern):
             list_pattern = re.compile(
                 rf"(?i)\b{re.escape(active_proposal_label)}s?[-#\s]*([0-9A-Fa-f]{{1,{MAX_REFERENCE_DIGITS}}}(?![0-9A-Fa-f])(?:\s*(?:,|/|and|or)\s*[0-9A-Fa-f]{{1,{MAX_REFERENCE_DIGITS}}}(?![0-9A-Fa-f]))*)"
             )

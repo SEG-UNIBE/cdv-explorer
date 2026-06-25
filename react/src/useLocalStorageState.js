@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 
 function readFromStorage(key, fallback) {
   try {
@@ -12,11 +12,15 @@ function readFromStorage(key, fallback) {
 
 export function useLocalStorageState(key, defaultValue) {
   const [value, setValue] = useState(() => readFromStorage(key, defaultValue));
+  const defaultValueRef = useRef(defaultValue);
+
+  useEffect(() => {
+    defaultValueRef.current = defaultValue;
+  }, [defaultValue]);
 
   // Re-read from localStorage when key changes (e.g. navigating between ecosystems)
   useEffect(() => {
-    setValue(readFromStorage(key, defaultValue));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    setValue(readFromStorage(key, defaultValueRef.current));
   }, [key]);
 
   const setPersisted = useCallback((updater) => {

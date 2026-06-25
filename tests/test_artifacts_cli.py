@@ -112,8 +112,8 @@ class ArtifactRebuildTests(unittest.TestCase):
                 {
                   "nodes": [
                     {"id": "1", "created": "2012-01-01", "status": "Draft", "type": "Process", "layer": "", "title": "One"},
-                    {"id": "2", "created": "2016-01-01", "status": "Final", "type": "Standard", "layer": "", "title": "Two"},
-                    {"id": "3", "created": "2024-01-01", "status": "Draft", "type": "Standard", "layer": "", "title": "Three"}
+                    {"id": "2", "created": "2016-01-01", "status": "Final", "type": "Specification", "layer": "", "title": "Two"},
+                    {"id": "3", "created": "2024-01-01", "status": "Draft", "type": "Specification", "layer": "", "title": "Three"}
                   ],
                   "dependency_edges": [
                     {"source": "bips:2", "target": "bips:1", "extraction_method": "body_extracted_regex", "relation_type": "reference", "value": 1},

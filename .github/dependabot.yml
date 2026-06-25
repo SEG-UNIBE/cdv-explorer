@@ -1,11 +1,14 @@
 version: 2
 
+# Dependabot version updates are grouped aggressively to keep PR volume low.
+# Regular update PRs target `dev`. Security update PRs remain separate and
+# may still target the repository default branch when GitHub detects a
+# vulnerable dependency.
 updates:
   - package-ecosystem: github-actions
     directory: /
     schedule:
-      interval: weekly
-      day: monday
+      interval: monthly
     target-branch: dev
     open-pull-requests-limit: 1
     groups:
@@ -16,8 +19,7 @@ updates:
   - package-ecosystem: pip
     directory: /
     schedule:
-      interval: weekly
-      day: monday
+      interval: monthly
     target-branch: dev
     open-pull-requests-limit: 1
     groups:
@@ -28,8 +30,7 @@ updates:
   - package-ecosystem: npm
     directory: /react
     schedule:
-      interval: weekly
-      day: monday
+      interval: monthly
     target-branch: dev
     open-pull-requests-limit: 1
     groups:

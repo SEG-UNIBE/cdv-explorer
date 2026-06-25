@@ -119,6 +119,7 @@ npm start        # dev server at http://localhost:3000
 ```
 
 `npm start` also regenerates the snapshot index and generic proposal link index automatically before launching the dev server.
+It also refreshes the generated ecosystem metadata used by the frontend.
 
 For a production build:
 
@@ -179,6 +180,23 @@ python main.py doctor
 
 Runs read-only checks for required tooling, installed Python packages, configured ecosystem sources, snapshot artifacts, generated frontend indexes, and optional LLM credentials.
 
+### `artifacts rebuild` - regenerate derived artifacts from existing preprocess JSON
+
+```bash
+python main.py artifacts rebuild -e bitcoin -s 2026-03-16
+python main.py artifacts rebuild -e bitcoin --all
+```
+
+Use this when the raw/preprocessed proposal JSON is already available and you only want to rebuild analysis and React-facing exports after changing downstream logic.
+
+### `ground-truth sample-ips` - prefill reviewed IPs for benchmarking
+
+```bash
+python main.py ground-truth sample-ips --wizard
+```
+
+This interactive helper pre-fills `ground_truth/ips.csv` from a stratified sample of IPs, thereby enlarging the ground truth data set of manually reviewed IPs and their interrelations (maintained in `ground_truth/interrelations.csv`).
+
 ### `ecosystems` - manage ecosystem configs
 
 ```bash
@@ -225,11 +243,14 @@ Ecosystem-specific logic is confined to the first two stages, keeping the analys
 │   └── wordcloud/
 ├── react/                   # interactive frontend (D3, PrimeReact)
 └── ip_data/
-    └── <ecosystem>/
-        ├── 01_harvest/      # raw IP documents             [gitignored]
-        ├── 02_preprocess/   # IP object model (JSON)       ← Stage II output
-        ├── 03_analysis/     # analysis artifacts           ← Stage III output
-        └── 04_postprocess/  # frontend payloads            ← Stage IV output
+    └── <ecosystem>/         # e.g. bitcoin, nostr, ...
+        ├── <source>/        # e.g. bips, slips, ...
+        │   ├── 01_harvest/      # raw IP documents             [gitignored]
+        │   ├── 02_preprocess/   # IP object model (JSON)       ← Stage II output
+        │   ├── 03_analysis/     # analysis artifacts           ← Stage III output
+        │   └── 04_postprocess/  # frontend payloads            ← Stage IV output
+        ├── _combined/           # precomputed multi-source artifacts
+        └── ground_truth/        # curated benchmark CSVs
 ```
 
 ### Preprocess schema
@@ -259,6 +280,9 @@ The schema has three top-level blocks: **`raw`** (verbatim preamble), **`meta`**
   }
 }
 ```
+
+The exact object shapes inside `interrelations` are source-aware and method-specific. 
+In particular, targets use `source_slug:id` keys, regex-derived entries carry occurrence counts, and LLM-derived entries are stored as timestamped runs with per-dependency metadata.
 
 Concrete examples: [`bip-0340.json`](ip_data/bitcoin/bips/02_preprocess/2026-03-16/bip-0340.json) (Schnorr Signatures) · [`nip-10.json`](ip_data/nostr/nips/02_preprocess/2026-05-30/nip-10.json) (Text Notes and Threads)
 

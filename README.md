@@ -23,14 +23,20 @@ _Modern decentralized software ecosystems evolve through crowdsourced improvemen
 </br>
 
 <div align="center">
-  <a href="https://github.com/SEG-UNIBE/cdv-explorer/actions/workflows/deploy-react-pages.yml">
-    <img src="https://img.shields.io/github/actions/workflow/status/SEG-UNIBE/cdv-explorer/deploy-react-pages.yml?style=flat&label=deploy&logo=githubactions&logoColor=white" alt="Deploy" />
+  <a href="https://github.com/SEG-UNIBE/cdv-explorer/releases">
+    <img src="https://img.shields.io/github/v/release/SEG-UNIBE/cdv-explorer?display_name=tag&style=flat" alt="Release" />
   </a>
   <a href="https://seg-unibe.github.io/cdv-explorer/#/">
-    <img src="https://img.shields.io/badge/GitHub%20Pages-live-brightgreen?style=flat&logo=githubpages&logoColor=white" alt="Live Demo" />
+    <img src="https://img.shields.io/badge/PROD-live-brightgreen?style=flat&logo=githubpages&logoColor=white" alt="PROD Live" />
   </a>
-  <a href="./LICENSE">
-    <img src="https://img.shields.io/badge/License-GPL--3.0-red?style=flat" alt="GPL-3.0" />
+  <a href="https://cdv-explorer.pages.dev/">
+    <img src="https://img.shields.io/badge/DEV-live-blue?style=flat&logo=cloudflarepages&logoColor=white" alt="DEV Live" />
+  </a>
+  <a href="https://github.com/SEG-UNIBE/cdv-explorer/actions/workflows/ci.yml">
+    <img src="https://img.shields.io/github/actions/workflow/status/SEG-UNIBE/cdv-explorer/ci.yml?style=flat&label=tests&logo=githubactions&logoColor=white" alt="Tests" />
+  </a>
+  <a href="https://github.com/SEG-UNIBE/cdv-explorer/actions/workflows/deploy-react-pages.yml">
+    <img src="https://img.shields.io/github/actions/workflow/status/SEG-UNIBE/cdv-explorer/deploy-react-pages.yml?style=flat&label=deploy&logo=githubactions&logoColor=white" alt="Deploy" />
   </a>
 </div>
 
@@ -39,6 +45,12 @@ _Modern decentralized software ecosystems evolve through crowdsourced improvemen
   <img src="https://img.shields.io/badge/React-18-3776AB?style=flat&logo=react&logoColor=white" alt="React 18" />
   <img src="https://img.shields.io/badge/Node.js-22%2B-3776AB?style=flat&logo=nodedotjs&logoColor=white" alt="Node.js 22+" />
   <img src="https://img.shields.io/badge/D3.js-v7-3776AB?style=flat&logo=d3dotjs&logoColor=white" alt="D3.js" />
+</div>
+
+<div align="center">
+  <a href="./LICENSE">
+    <img src="https://img.shields.io/badge/License-GPL--3.0-red?style=flat" alt="GPL-3.0" />
+  </a>
   <a href="https://youtu.be/56GKRexRuoI"><img src="https://img.shields.io/badge/Demo-Video-red.svg?logo=youtube&logoColor=white" alt="Demo Video" /></a>
 </div>
 
@@ -48,7 +60,7 @@ _Modern decentralized software ecosystems evolve through crowdsourced improvemen
 ## Introduction
 
 CDV-Explorer is an ecosystem-agnostic pipeline for mining and analysing improvement proposals (IPs).
-As of now, two CDV-exhibiting ecosystems are integrated:
+At the moment, the explorer ships with active source integrations for the following two CDV-exhibiting ecosystems:
 
 | Ecosystem | Proposals | Source repository |
 |-----------|-----------|-------------------|

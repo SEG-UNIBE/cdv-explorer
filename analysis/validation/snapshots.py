@@ -10,6 +10,7 @@ from analysis.dependencies.constants import BODY_EXTRACTED_LLM, BODY_EXTRACTED_R
 from analysis.validation.ground_truth import (
     load_ground_truth_ips,
     load_ground_truth_curated_entries,
+    validate_reviewed_ip_policy,
     validate_ground_truth_curated_entries,
     validate_reviewed_ip_entries,
 )
@@ -49,6 +50,7 @@ TARGET_RE = re.compile(r"^(?P<source>[A-Za-z0-9_-]+):(?P<id>[^:\s]+)$")
 class SnapshotValidationResult:
     ok: bool = True
     errors: list[str] = field(default_factory=list)
+    warnings: list[str] = field(default_factory=list)
     stats: dict[str, Any] = field(default_factory=dict)
     file_status: dict[str, str] = field(default_factory=dict)
 
@@ -56,9 +58,13 @@ class SnapshotValidationResult:
         self.ok = False
         self.errors.append(message)
 
+    def warn(self, message: str) -> None:
+        self.warnings.append(message)
+
     def merge(self, other: "SnapshotValidationResult") -> None:
         self.ok = self.ok and other.ok
         self.errors.extend(other.errors)
+        self.warnings.extend(other.warnings)
         self.stats.update(other.stats)
         self.file_status.update(other.file_status)
 
@@ -435,7 +441,14 @@ def validate_ground_truth_ips_file(
     result.stats["completed_reviewed_ips"] = sum(
         1 for entry in entries if isinstance(entry, Mapping) and str(entry.get("reviewed_at") or "").strip()
     )
-    result.file_status["reviewed_ips"] = "✅"
+    policy_warnings = validate_reviewed_ip_policy(entries, ecosystem_slug=ecosystem_slug)
+    if policy_warnings:
+        result.file_status["reviewed_ips"] = "⚠️ policy"
+        for warning in policy_warnings:
+            result.warn(f"`{csv_path}` {warning}")
+        result.stats["reviewed_ip_policy_warnings"] = len(policy_warnings)
+    else:
+        result.file_status["reviewed_ips"] = "✅"
     return result
 
 

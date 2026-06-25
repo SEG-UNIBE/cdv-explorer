@@ -43,6 +43,12 @@ REVIEWED_IP_ALLOWED_DENSITY_BUCKETS = {"none", "low", "high"}
 REVIEWED_IP_ALLOWED_DENSITY_BASIS = {"all_methods", "regex_only", "llm_only", "preamble_only"}
 GROUND_TRUTH_GRAPH_KEY_RE = re.compile(r"^(?P<source>[A-Za-z0-9_-]+):(?P<id>[^:\s]+)$")
 HEX_REFERENCE_CLASS_PATTERN = re.compile(r"\[[^\]]*0-9[^\]]*A-F[^\]]*a-f[^\]]*\]")
+GROUND_TRUTH_REVIEW_POLICIES: dict[str, dict[str, Any]] = {
+    "bitcoin": {
+        "allowed_source_slugs": ("bips",),
+        "required_type": "Specification",
+    },
+}
 
 
 def _uses_hex_proposal_ids(proposal_label: str = "IP", reference_pattern: str = "") -> bool:
@@ -255,6 +261,77 @@ def _normalize_iso_date(text: Any) -> str | None:
     except ValueError:
         return None
     return value
+
+
+def reviewed_ip_policy_for_ecosystem(ecosystem_slug: str | None) -> Dict[str, Any] | None:
+    if not ecosystem_slug:
+        return None
+    policy = GROUND_TRUTH_REVIEW_POLICIES.get(str(ecosystem_slug))
+    return dict(policy) if isinstance(policy, Mapping) else None
+
+
+def validate_reviewed_ip_policy(
+    entries: Sequence[Mapping[str, Any]],
+    *,
+    ecosystem_slug: str | None,
+) -> List[str]:
+    policy = reviewed_ip_policy_for_ecosystem(ecosystem_slug)
+    if not policy:
+        return []
+
+    warnings: List[str] = []
+    allowed_source_slugs = {str(value).strip() for value in policy.get("allowed_source_slugs", ()) if str(value).strip()}
+    required_type = str(policy.get("required_type") or "").strip()
+
+    source_scope_violations: List[str] = []
+    type_scope_violations: List[str] = []
+    type_unknown: List[str] = []
+
+    for entry in entries:
+        if not isinstance(entry, Mapping):
+            continue
+        ip = str(entry.get("ip") or "").strip()
+        if not ip or ":" not in ip:
+            continue
+        source_slug, _proposal_id = ip.split(":", 1)
+        proposal_type = str(entry.get("type") or "").strip()
+
+        if allowed_source_slugs and source_slug not in allowed_source_slugs:
+            source_scope_violations.append(ip)
+            continue
+
+        if required_type:
+            if not proposal_type:
+                type_unknown.append(ip)
+            elif proposal_type != required_type:
+                type_scope_violations.append(f"{ip} ({proposal_type})")
+
+    if source_scope_violations:
+        expected = ", ".join(sorted(allowed_source_slugs))
+        examples = ", ".join(source_scope_violations[:5])
+        more = "" if len(source_scope_violations) <= 5 else f", +{len(source_scope_violations) - 5} more"
+        warnings.append(
+            f"reviewed IP scope for `{ecosystem_slug}` currently expects source `{expected}`, "
+            f"but {len(source_scope_violations)} row(s) use other source slugs: {examples}{more}"
+        )
+
+    if type_scope_violations:
+        examples = ", ".join(type_scope_violations[:5])
+        more = "" if len(type_scope_violations) <= 5 else f", +{len(type_scope_violations) - 5} more"
+        warnings.append(
+            f"reviewed IP scope for `{ecosystem_slug}` currently expects proposal type `{required_type}`, "
+            f"but {len(type_scope_violations)} row(s) use another type: {examples}{more}"
+        )
+
+    if type_unknown:
+        examples = ", ".join(type_unknown[:5])
+        more = "" if len(type_unknown) <= 5 else f", +{len(type_unknown) - 5} more"
+        warnings.append(
+            f"reviewed IP scope for `{ecosystem_slug}` expects proposal type metadata, "
+            f"but {len(type_unknown)} row(s) have an empty `type`: {examples}{more}"
+        )
+
+    return warnings
 
 
 def validate_reviewed_ip_entries(

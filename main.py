@@ -191,6 +191,16 @@ def _prompt_choice(label: str, options: list[str], *, default_index: int = 0) ->
         console.print(f"[red]Please choose a value between 1 and {len(options)}.[/red]")
 
 
+def _density_basis_description(value: str) -> str:
+    descriptions = {
+        "all_methods": "union of outgoing preamble, regex, and LLM relations",
+        "regex_only": "outgoing regex relations only",
+        "llm_only": "outgoing LLM relations only",
+        "preamble_only": "outgoing preamble relations only",
+    }
+    return descriptions.get(value, value)
+
+
 def _latest_snapshot_labels(analysis_root: Path) -> list[str]:
     if not analysis_root.is_dir():
         return []
@@ -539,6 +549,8 @@ def _run_source_pipeline(eco_slug: str, src_slug: str, src: dict, snapshot: str,
 @app.command(rich_help_panel="Discovery")
 def doctor() -> None:
     """Check local tools, dependencies, configs, and snapshot artifacts without changing files."""
+    from analysis.validation import reviewed_ip_policy_for_ecosystem, validate_ground_truth_ips_file
+
     table = Table("Status", "Check", "Details", title="CDV-Explorer Doctor")
     ok = True
 
@@ -681,6 +693,22 @@ def doctor() -> None:
         (
             f"Missing ground_truth/ips.csv for ecosystems: {', '.join(reviewed_ip_warnings)}"
         ) if reviewed_ip_warnings else "ips.csv present wherever ground-truth edges exist",
+    )
+
+    reviewed_ip_policy_warnings: list[str] = []
+    for eco_slug, eco in sorted(ECOSYSTEM_REGISTRY.items()):
+        if not eco.get("sources"):
+            continue
+        if not reviewed_ip_policy_for_ecosystem(eco_slug):
+            continue
+        reviewed_validation = validate_ground_truth_ips_file(eco_slug, ecosystem_config=eco)
+        if reviewed_validation.warnings:
+            reviewed_ip_policy_warnings.append(f"{eco_slug}: {reviewed_validation.warnings[0]}")
+    ok &= _doctor_row(
+        table,
+        "WARN" if reviewed_ip_policy_warnings else "OK",
+        "Ground-truth sampling policy",
+        "; ".join(reviewed_ip_policy_warnings) if reviewed_ip_policy_warnings else "reviewed IP sets match declared sampling policy",
     )
 
     validate_script = Path("scripts/validate_artifacts.py")
@@ -857,7 +885,7 @@ def ground_truth_sample_ips(
         REGEX_ONLY,
         prefill_ips_csv,
     )
-    from analysis.validation import validate_ground_truth_ips_file
+    from analysis.validation import reviewed_ip_policy_for_ecosystem, validate_ground_truth_ips_file
 
     interactive = wizard or ecosystem is None or source is None or snapshot is None
     available_ecosystems = [
@@ -876,6 +904,7 @@ def ground_truth_sample_ips(
     if source is None:
         source = _prompt_choice("Source", available_sources)
     src = _get_source(eco, source)
+    reviewed_ip_policy = reviewed_ip_policy_for_ecosystem(ecosystem)
 
     available_snapshots = _analysis_snapshot_labels_with_networks(Path(str(src["analysis"])))
     if not available_snapshots:
@@ -916,7 +945,13 @@ def ground_truth_sample_ips(
     if density_low_max is None:
         density_low_max = int(typer.prompt("Largest extracted-target count still treated as `low` density", default="2")) if interactive else 2
     if proposal_type is None:
-        proposal_type = typer.prompt("Restrict to proposal type (optional)", default="").strip() if interactive else ""
+        default_proposal_type = ""
+        if reviewed_ip_policy and source in set(reviewed_ip_policy.get("allowed_source_slugs", ())):
+            default_proposal_type = str(reviewed_ip_policy.get("required_type") or "").strip()
+        proposal_type = typer.prompt(
+            "Restrict to proposal type (optional)",
+            default=default_proposal_type,
+        ).strip() if interactive else default_proposal_type
     if reviewer is None:
         reviewer = typer.prompt("Reviewer name to prefill (optional)", default="") if interactive else ""
     if replace is None:
@@ -926,6 +961,20 @@ def ground_truth_sample_ips(
         else:
             replace = False
 
+    policy_warnings: list[str] = []
+    if reviewed_ip_policy:
+        allowed_source_slugs = {str(value).strip() for value in reviewed_ip_policy.get("allowed_source_slugs", ()) if str(value).strip()}
+        required_type = str(reviewed_ip_policy.get("required_type") or "").strip()
+        if allowed_source_slugs and source not in allowed_source_slugs:
+            policy_warnings.append(
+                f"Current GT policy for `{ecosystem}` expects source `{', '.join(sorted(allowed_source_slugs))}`, but you selected `{source}`."
+            )
+        if required_type and source in allowed_source_slugs and proposal_type != required_type:
+            selected_type = proposal_type or "no type filter"
+            policy_warnings.append(
+                f"Current GT policy for `{ecosystem}` expects proposal type `{required_type}`, but this run uses `{selected_type}`."
+            )
+
     if interactive:
         console.print("")
         console.print("[bold]Sampling plan[/bold]")
@@ -934,14 +983,26 @@ def ground_truth_sample_ips(
         console.print(f"  Snapshot: {snapshot}")
         console.print(f"  Count: {count}")
         console.print(f"  Seed: {seed}")
-        console.print(f"  Era buckets: {era_buckets}")
-        console.print(f"  Density basis: {density_basis}")
+        console.print(f"  Era buckets: {era_buckets}  [dim](created-date strata such as early/middle/recent)[/dim]")
+        console.print(f"  Density basis: {density_basis}  [dim]({_density_basis_description(density_basis)})[/dim]")
         console.print(f"  Low-density max: {density_low_max}")
         console.print(f"  Proposal type filter: {proposal_type or '—'}")
         console.print(f"  Reviewer: {reviewer or '—'}")
         console.print(f"  Mode: {'replace' if replace else 'append'}")
+        if reviewed_ip_policy:
+            policy_bits = []
+            if reviewed_ip_policy.get("allowed_source_slugs"):
+                policy_bits.append(f"source in {', '.join(reviewed_ip_policy['allowed_source_slugs'])}")
+            if reviewed_ip_policy.get("required_type"):
+                policy_bits.append(f"type = {reviewed_ip_policy['required_type']}")
+            console.print(f"  GT policy: {'; '.join(policy_bits)}")
+        for warning in policy_warnings:
+            console.print(f"  [yellow]Warning:[/yellow] {warning}")
         if not typer.confirm("Proceed?", default=True):
             raise typer.Exit(0)
+    elif policy_warnings:
+        for warning in policy_warnings:
+            console.print(f"[yellow]Warning:[/yellow] {warning}")
 
     network_path = Path(str(src["analysis"])) / snapshot / "dependencies" / "network_data.json"
     if not network_path.exists():

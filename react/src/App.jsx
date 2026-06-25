@@ -2,10 +2,10 @@ import { lazy, Suspense, useEffect } from 'react';
 import { Card } from 'primereact/card';
 import { Tag } from 'primereact/tag';
 import { HashRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
-import Navbar from './Navbar';
+import Navbar from './Navbar.jsx';
 import './App.scss';
 import { ecosystems } from './ecosystems';
-import { ThemeProvider, useTheme } from './theme';
+import { ThemeProvider, useTheme } from './theme.jsx';
 import { fetchDatasetForSelection, getAvailableSnapshots } from './data';
 
 const EcosystemDashboard = lazy(() =>

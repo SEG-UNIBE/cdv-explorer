@@ -5,19 +5,6 @@ export default defineConfig({
   base: './',
   plugins: [react()],
   publicDir: 'public',
-  esbuild: {
-    loader: 'jsx',
-    include: /src\/.*\.[jt]sx?$/,
-    exclude: [],
-  },
-  optimizeDeps: {
-    esbuildOptions: {
-      loader: {
-        '.js': 'jsx',
-        '.jsx': 'jsx',
-      },
-    },
-  },
   build: {
     outDir: 'build',
     emptyOutDir: true,

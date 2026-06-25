@@ -4,8 +4,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { InputSwitch } from 'primereact/inputswitch';
 import { MultiSelect } from 'primereact/multiselect';
 import { Link, useParams } from 'react-router-dom';
-import { DEFAULT_DEPENDENCY_APPROACH } from '../dependencyApproaches';
-import { LINK_TYPE_OPTIONS } from '../NetworkDiagram';
+import { DEFAULT_DEPENDENCY_APPROACH, LINK_TYPE_OPTIONS } from '../dependencyApproaches';
 import { ecosystemsById } from '../ecosystems';
 import { getAvailableSnapshots, fetchDatasetForSelection, isDatasetCached } from '../data';
 import {

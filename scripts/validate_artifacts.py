@@ -13,6 +13,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from analysis.validation.snapshots import (
     ANALYSIS_COLUMN_LABELS,
     SnapshotValidationResult,
+    expected_combined_snapshot_targets,
     validate_analysis_snapshot,
     validate_combined_snapshot,
     validate_ground_truth_curated_file,
@@ -84,36 +85,28 @@ def _source_rows() -> list[dict[str, Any]]:
 
 def _combined_rows() -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
-    for ecosystem_dir in sorted(ANALYSIS_ROOT.iterdir()) if ANALYSIS_ROOT.is_dir() else []:
-        combined_root = ecosystem_dir / "_combined"
-        if not combined_root.is_dir():
+    for ecosystem, ecosystem_config in sorted(ECOSYSTEM_REGISTRY.items()):
+        sources = ecosystem_config.get("sources") or {}
+        if len(sources) < 2:
             continue
-        ecosystem = ecosystem_dir.name
-        for combo_dir in sorted(combined_root.iterdir()):
-            analysis_root = combo_dir / "03_analysis"
-            if not analysis_root.is_dir():
-                continue
-            for snapshot_dir in sorted(analysis_root.iterdir(), reverse=True):
-                if not snapshot_dir.is_dir():
-                    continue
-                snapshot = snapshot_dir.name
-                result = validate_combined_snapshot(
-                    ecosystem_slug=ecosystem,
-                    combo_key=combo_dir.name,
-                    snapshot=snapshot,
-                )
-                rows.append(
-                    {
-                        "ecosystem": ecosystem,
-                        "source": combo_dir.name,
-                        "snapshot": snapshot,
-                        "stats": result.stats,
-                        "file_status": result.file_status,
-                        "errors": result.errors,
-                        "warnings": result.warnings,
-                        "ok": result.ok,
-                    }
-                )
+        for combo_key, snapshot in expected_combined_snapshot_targets(ecosystem, ecosystem_config):
+            result = validate_combined_snapshot(
+                ecosystem_slug=ecosystem,
+                combo_key=combo_key,
+                snapshot=snapshot,
+            )
+            rows.append(
+                {
+                    "ecosystem": ecosystem,
+                    "source": combo_key,
+                    "snapshot": snapshot,
+                    "stats": result.stats,
+                    "file_status": result.file_status,
+                    "errors": result.errors,
+                    "warnings": result.warnings,
+                    "ok": result.ok,
+                }
+            )
     return rows
 
 

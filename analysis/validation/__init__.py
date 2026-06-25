@@ -9,6 +9,7 @@ from .ground_truth import (
 )
 from .snapshots import (
     SnapshotValidationResult,
+    expected_combined_snapshot_targets,
     validate_combined_snapshot,
     validate_ground_truth_curated_file,
     validate_ground_truth_ips_file,
@@ -18,6 +19,7 @@ from .snapshots import (
 
 __all__ = [
     "SnapshotValidationResult",
+    "expected_combined_snapshot_targets",
     "validate_combined_snapshot",
     "validate_ground_truth_curated_file",
     "validate_ground_truth_ips_file",

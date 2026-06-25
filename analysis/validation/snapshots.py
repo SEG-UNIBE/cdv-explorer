@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import re
 from dataclasses import dataclass, field
+from itertools import combinations
 from pathlib import Path
 from typing import Any, Mapping
 
@@ -44,6 +45,7 @@ REACT_GENERATED_INDEXES = (
 )
 
 TARGET_RE = re.compile(r"^(?P<source>[A-Za-z0-9_-]+):(?P<id>[^:\s]+)$")
+SNAPSHOT_LABEL_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
 
 @dataclass
@@ -108,6 +110,53 @@ def _ground_truth_source_configs(
         for source_slug, source_config in sources.items()
         if isinstance(source_config, Mapping)
     }
+
+
+def _snapshot_labels(root: Path) -> list[str]:
+    if not root.is_dir():
+        return []
+    return sorted(
+        [
+            path.name
+            for path in root.iterdir()
+            if path.is_dir() and SNAPSHOT_LABEL_RE.match(path.name)
+        ],
+        reverse=True,
+    )
+
+
+def combined_source_key(source_slugs: list[str] | tuple[str, ...]) -> str:
+    return "+".join(sorted(str(source_slug) for source_slug in source_slugs))
+
+
+def expected_combined_snapshot_targets(
+    ecosystem_slug: str,
+    ecosystem_config: Mapping[str, Any] | None = None,
+) -> list[tuple[str, str]]:
+    config = ecosystem_config or ECOSYSTEM_REGISTRY.get(ecosystem_slug) or {}
+    sources = config.get("sources", {}) if isinstance(config, Mapping) else {}
+    source_configs = {
+        str(source_slug): source_config
+        for source_slug, source_config in sources.items()
+        if isinstance(source_config, Mapping)
+    }
+    source_slugs = sorted(source_configs)
+    if len(source_slugs) < 2:
+        return []
+
+    snapshot_sets = {
+        source_slug: set(_snapshot_labels(Path(str(source_config.get("analysis", "")))))
+        for source_slug, source_config in source_configs.items()
+    }
+
+    targets: list[tuple[str, str]] = []
+    for size in range(2, len(source_slugs) + 1):
+        for combo in combinations(source_slugs, size):
+            common_snapshots = set.intersection(*(snapshot_sets[source_slug] for source_slug in combo))
+            for snapshot in sorted(common_snapshots, reverse=True):
+                targets.append((combined_source_key(combo), snapshot))
+
+    return targets
 
 
 def _target_error(

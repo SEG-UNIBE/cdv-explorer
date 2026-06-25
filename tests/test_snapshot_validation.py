@@ -5,6 +5,7 @@ import unittest
 from pathlib import Path
 
 from analysis.validation.snapshots import (
+    expected_combined_snapshot_targets,
     validate_ground_truth_curated_file,
     validate_ground_truth_ips_file,
     validate_preprocess_snapshot,
@@ -241,6 +242,36 @@ class SnapshotValidationTests(unittest.TestCase):
         warning_text = "\n".join(result.warnings)
         self.assertIn("expects source `bips`", warning_text)
         self.assertIn("expects proposal type `Specification`", warning_text)
+
+    def test_expected_combined_snapshot_targets_uses_source_snapshot_intersection(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            root = Path(tmp_dir)
+            bips = self._source_config(root, "bips")
+            slips = self._source_config(root, "slips")
+            nips = self._source_config(root, "nips")
+
+            for snapshot in ("2026-05-28", "2026-03-16", "2021-01-01"):
+                (Path(bips["analysis"]) / snapshot).mkdir(parents=True)
+            for snapshot in ("2026-05-28", "2026-03-16"):
+                (Path(slips["analysis"]) / snapshot).mkdir(parents=True)
+            for snapshot in ("2026-05-28",):
+                (Path(nips["analysis"]) / snapshot).mkdir(parents=True)
+
+            targets = expected_combined_snapshot_targets(
+                "bitcoin",
+                ecosystem_config={"sources": {"bips": bips, "slips": slips, "nips": nips}},
+            )
+
+        self.assertEqual(
+            targets,
+            [
+                ("bips+nips", "2026-05-28"),
+                ("bips+slips", "2026-05-28"),
+                ("bips+slips", "2026-03-16"),
+                ("nips+slips", "2026-05-28"),
+                ("bips+nips+slips", "2026-05-28"),
+            ],
+        )
 
 
 if __name__ == "__main__":

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { fetchDatasetForSelection, isDatasetCached } from '../data';
 
 export function useDashboardDatasetLoader({
@@ -15,9 +15,19 @@ export function useDashboardDatasetLoader({
   const [contentEntered, setContentEntered] = useState(false);
   const [fetchError, setFetchError] = useState(null);
   const [retryCounter, setRetryCounter] = useState(0);
+  const selectedSourceKey = useMemo(
+    () => orderedSelectedSourceIds.join('|'),
+    [orderedSelectedSourceIds],
+  );
+  const canLoadDataset = Boolean(
+    ecosystem
+    && ecosystem.status === 'available'
+    && selectedSnapshot
+    && orderedSelectedSourceIds.length > 0
+  );
 
   useEffect(() => {
-    if (!ecosystem || ecosystem.status !== 'available' || !selectedSnapshot || orderedSelectedSourceIds.length === 0) {
+    if (!canLoadDataset) {
       setSelectedDataset(emptyDataset);
       setDataLoading(false);
       setFetchError(null);
@@ -51,7 +61,12 @@ export function useDashboardDatasetLoader({
         }
       });
     return () => { cancelled = true; };
-  }, [ecosystem, ecosystemId, selectedSnapshot, orderedSelectedSourceIds, emptyDataset, retryCounter]);
+  }, [canLoadDataset, ecosystemId, selectedSnapshot, orderedSelectedSourceIds, selectedSourceKey, emptyDataset, retryCounter]);
+
+  const retryLoad = useCallback(() => {
+    setSkeletonActive(true);
+    setRetryCounter((current) => current + 1);
+  }, []);
 
   return {
     selectedDataset,
@@ -62,9 +77,6 @@ export function useDashboardDatasetLoader({
     contentEntered,
     setContentEntered,
     fetchError,
-    retryLoad: () => {
-      setSkeletonActive(true);
-      setRetryCounter((current) => current + 1);
-    },
+    retryLoad,
   };
 }

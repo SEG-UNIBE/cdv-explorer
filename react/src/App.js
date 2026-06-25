@@ -116,7 +116,7 @@ function AboutPage() {
       <div className="about-page__intro">
         <h1>About CDV-Explorer</h1>
         <p>
-          CDV-Explorer is a research tool for analyzing improvement proposals (IPs) in decentralized open-source ecosystems. It supports the study of Community-Driven Variability (CDV) by making proposal histories, authorship, classifications, status evolution, and inter-proposal relations explorable across IP sources and historic snapshots.
+          CDV-Explorer is a research tool for analyzing improvement proposals (IPs) in decentralized open-source software ecosystems. It supports the study of Community-Driven Variability (CDV) by making proposal histories, authorship, classifications, status evolution, and inter-proposal relations explorable across IP sources and historic snapshots.
         </p>
       </div>
 

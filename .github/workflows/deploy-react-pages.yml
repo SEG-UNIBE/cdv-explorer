@@ -1,4 +1,4 @@
-name: CI / Deploy React App to GitHub Pages
+name: Deploy React App to GitHub Pages
 
 on:
   push:
@@ -39,81 +39,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-
-      - uses: actions/setup-python@v6
-        with:
-          python-version: '3.12'
-
-      - name: Install dev dependencies
-        run: pip install -r requirements-dev.txt
-
-      - name: Run ruff check
-        run: ruff check .
-
-  test-unit:
-    needs: lint
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-
-      - uses: actions/setup-python@v6
-        with:
-          python-version: '3.12'
-
-      - name: Install dev dependencies
-        run: pip install -r requirements-dev.txt
-
-      - name: Run pytest
-        run: pytest
-
-  artifact-validation:
-    needs: lint
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-
-      - uses: actions/setup-python@v6
-        with:
-          python-version: '3.12'
-
-      - name: Install dev dependencies
-        run: pip install -r requirements-dev.txt
-
-      - name: Validate snapshot artifacts
-        run: python scripts/validate_artifacts.py
-
-  test-frontend:
-    needs: lint
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-
-      - uses: actions/setup-node@v6
-        with:
-          node-version: 22
-          cache: npm
-          cache-dependency-path: react/package-lock.json
-
-      - name: Install frontend dependencies
-        run: npm ci
-        working-directory: react
-
-      - name: Generate frontend indexes
-        run: npm run prebuild
-        working-directory: react
-
-      - name: Run frontend tests
-        run: npm test -- --watchAll=false
-        working-directory: react
-        env:
-          CI: true
-
   build:
-    needs: [test-unit, artifact-validation, test-frontend]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5

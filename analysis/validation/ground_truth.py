@@ -7,6 +7,8 @@ from datetime import date
 from pathlib import Path
 from typing import Any, Dict, List, Mapping, Sequence
 
+from analysis.reference_ids import normalize_reference_id_for_config
+
 
 GROUND_TRUTH_CSV_COLUMNS = (
     "source",
@@ -42,51 +44,12 @@ REVIEWED_IP_ALLOWED_SAMPLING_STRATEGIES = {"sampler", "manual"}
 REVIEWED_IP_ALLOWED_DENSITY_BUCKETS = {"none", "low", "high"}
 REVIEWED_IP_ALLOWED_DENSITY_BASIS = {"all_methods", "regex_only", "llm_only", "preamble_only"}
 GROUND_TRUTH_GRAPH_KEY_RE = re.compile(r"^(?P<source>[A-Za-z0-9_-]+):(?P<id>[^:\s]+)$")
-HEX_REFERENCE_CLASS_PATTERN = re.compile(r"\[[^\]]*0-9[^\]]*A-F[^\]]*a-f[^\]]*\]")
 GROUND_TRUTH_REVIEW_POLICIES: dict[str, dict[str, Any]] = {
     "bitcoin": {
         "allowed_source_slugs": ("bips",),
         "required_type": "Specification",
     },
 }
-
-
-def _uses_hex_proposal_ids(proposal_label: str = "IP", reference_pattern: str = "") -> bool:
-    return proposal_label.upper() == "NIP" or bool(HEX_REFERENCE_CLASS_PATTERN.search(reference_pattern))
-
-
-def _normalize_reference_id_for_config(
-    value: Any,
-    config: Mapping[str, Any],
-    *,
-    max_reference_digits: int = 6,
-) -> str | None:
-    text = str(value).strip()
-    if not text:
-        return None
-
-    proposal_label = str(config.get("proposal_label") or "IP")
-    reference_pattern = str(config.get("reference_pattern") or "")
-    max_proposal_id = config.get("max_proposal_id")
-
-    if _uses_hex_proposal_ids(proposal_label, reference_pattern):
-        if not re.fullmatch(rf"[0-9A-Fa-f]{{1,{max_reference_digits}}}", text):
-            return None
-        number = int(text, 16)
-        if max_proposal_id is not None and number > int(max_proposal_id):
-            return None
-        normalized = text.upper()
-        return normalized.zfill(2) if len(normalized) == 1 else normalized
-
-    try:
-        number = int(text)
-    except (TypeError, ValueError):
-        return None
-    if number < 0:
-        return None
-    if max_proposal_id is not None and number > int(max_proposal_id):
-        return None
-    return str(number)
 
 
 def ground_truth_source_configs_by_slug(ecosystem_slug: str | None) -> Dict[str, Dict[str, Any]]:
@@ -131,7 +94,7 @@ def _validate_ground_truth_graph_key(
         known = ", ".join(sorted(source_configs_by_slug)) or "none"
         raise ValueError(f"`{field_name}` uses unknown source slug `{source_slug}`; known sources: {known}")
 
-    normalized = _normalize_reference_id_for_config(proposal_id, source_config)
+    normalized = normalize_reference_id_for_config(proposal_id, source_config)
     if normalized is None:
         raise ValueError(f"`{field_name}` has an invalid proposal id for source `{source_slug}`")
 

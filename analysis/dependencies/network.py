@@ -4,7 +4,7 @@ import re
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Mapping, Sequence
 
-from analysis.dependencies.utils import normalize_reference_id_for_config, uses_hex_proposal_ids
+from analysis.reference_ids import normalize_reference_id_for_config, uses_hex_proposal_ids
 from analysis.dependencies.constants import (
     BODY_EXTRACTED_LLM,
     BODY_EXTRACTED_REGEX,
@@ -140,12 +140,6 @@ def normalize_proposal_ids(field: Any, proposal_label: str = "IP") -> List[str]:
                 except ValueError:
                     result.append(normalized.upper())
     return result
-
-
-def _uses_hex_proposal_ids(proposal_label: str = "IP", reference_pattern: str = "") -> bool:
-    return uses_hex_proposal_ids(proposal_label, reference_pattern)
-
-
 def _source_reference_configs(
     context: SourceContext,
     proposal_label: str = "IP",
@@ -183,7 +177,7 @@ def _normalize_reference_id(value: Any, config: Mapping[str, Any]) -> str | None
 
 
 def _reference_id_chars(config: Mapping[str, Any]) -> str:
-    return r"[0-9A-Fa-f]" if _uses_hex_proposal_ids(
+    return r"[0-9A-Fa-f]" if uses_hex_proposal_ids(
         str(config.get("proposal_label") or "IP"),
         str(config.get("reference_pattern") or ""),
     ) else r"\d"

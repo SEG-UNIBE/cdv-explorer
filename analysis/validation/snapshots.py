@@ -15,7 +15,7 @@ from analysis.validation.ground_truth import (
     validate_ground_truth_curated_entries,
     validate_reviewed_ip_entries,
 )
-from analysis.dependencies.utils import normalize_reference_id_for_config
+from analysis.reference_ids import normalize_reference_id_for_config
 from ecosystems import ECOSYSTEM_REGISTRY
 from pipeline.source_context import SourceContext
 

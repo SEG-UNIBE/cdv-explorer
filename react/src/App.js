@@ -197,7 +197,7 @@ function AboutPage() {
             <div className="about-page__logo-card about-page__logo-card--seg">
               <img
                 className="about-page__logo about-page__logo--seg"
-                src={`${process.env.PUBLIC_URL}/about/SEG_logo.png`}
+                src={`${process.env.PUBLIC_URL}/about/seg_logo.png`}
                 alt="Software Engineering Group logo"
               />
             </div>

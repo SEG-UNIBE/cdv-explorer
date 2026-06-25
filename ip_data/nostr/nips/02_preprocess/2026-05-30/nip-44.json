@@ -3,13 +3,9 @@
     "preamble": {
       "nip": "44",
       "title": "Encrypted Payloads (Versioned)",
-      "author": [
-        "Jon Staab",
-        "Paul Miller",
-        "fiatjaf"
-      ],
-      "created": "2023-12-20",
       "status": "Unknown",
+      "author": null,
+      "created": "2023-12-20",
       "type": "Optional",
       "layer": null,
       "kind": null
@@ -438,11 +434,32 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 1",
-        "NIP 4"
+        {
+          "target": "nips:01",
+          "count": 5
+        },
+        {
+          "target": "nips:04",
+          "count": 1
+        },
+        {
+          "target": "nips:0B",
+          "count": 1
+        }
       ],
       "body_extracted_llm": [
-        "NIP 1"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:38Z",
+          "dependencies": [
+            {
+              "target": "nips:01",
+              "evidence": "\"MUST be used in the context of a signed event as described in NIP-01\"",
+              "reason": "The encryption format is defined for use inside NIP-01 events and relies on NIP-01 event structure and signing semantics before decryption.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

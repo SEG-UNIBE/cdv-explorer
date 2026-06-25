@@ -1,0 +1,186 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "75",
+      "title": "Zap Goals",
+      "status": "Draft",
+      "author": null,
+      "created": "2023-09-01",
+      "type": "Optional",
+      "layer": null,
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Sat Sep 28 12:26:48 2024 -0300",
+    "total_commits": 7,
+    "git_history": [
+      [
+        "a736e629be5c4c9125d98bdb4965851d8110c483",
+        "Sat Sep 28 12:26:48 2024 -0300",
+        "fiatjaf"
+      ],
+      [
+        "e6552476aa2e5ca7256be572a9aa226ec8a022ee",
+        "Tue Sep 3 20:41:31 2024 +0330",
+        "kehiy"
+      ],
+      [
+        "ca3c52e3e74f0a4679f1c6c0d9ac6461ea748d2d",
+        "Tue Aug 20 12:56:05 2024 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "1a106c6bff20a9408fe0ec51b265e3c5de86d25f",
+        "Thu Nov 23 19:17:28 2023 +0100",
+        "Alejandro"
+      ],
+      [
+        "5dcfe85306434f21ecb1e7a47edd92b2e3e64f9a",
+        "Sat Nov 18 09:13:12 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "37f6cbb775126b386414220f783ca0f5f85e7614",
+        "Wed Nov 15 21:42:51 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "08bd050598e078179eea71cb9de777d887a9e9f8",
+        "Fri Sep 1 15:07:52 2023 +0200",
+        "Alejandro"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "goal": 16,
+      "event": 12,
+      "tag": 8,
+      "tags": 7,
+      "relays": 7,
+      "zap": 6,
+      "example": 5,
+      "goals": 4,
+      "optional": 4,
+      "kind": 4,
+      "wss": 4,
+      "com": 4,
+      "image": 4,
+      "clients": 4,
+      "zapping": 3,
+      "9041": 3,
+      "content": 3,
+      "description": 3,
+      "jsonc": 3,
+      "fields": 3,
+      "closed_at": 3,
+      "timestamp": 3,
+      "url": 3,
+      "include": 3,
+      "addressable": 3,
+      "events": 3,
+      "id": 3,
+      "nip": 2,
+      "fundraising": 2,
+      "following": 2,
+      "zaps": 2,
+      "alicerelay": 2,
+      "bobrelay": 2,
+      "210000": 2,
+      "nostrasia": 2,
+      "travel": 2,
+      "expenses": 2,
+      "summary": 2,
+      "specifying": 2,
+      "relay": 2,
+      "funding": 2,
+      "request": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "08bd050598e078179eea71cb9de777d887a9e9f8",
+        "timestamp": "2023-09-01T15:07:52+02:00",
+        "date": "2023-09-01",
+        "author": "Alejandro",
+        "path": "75.md",
+        "status": "Draft",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [],
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:35Z",
+          "dependencies": [
+            {
+              "target": "nips:57",
+              "evidence": "The goal MAY include multiple beneficiary pubkeys by specifying [`zap` tags](57.md#appendix-g-zap-tag-on-other-events).",
+              "reason": "The proposal relies on the zap-tag mechanism defined by NIP 57 to specify multiple beneficiaries on the goal event.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

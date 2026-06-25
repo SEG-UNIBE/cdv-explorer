@@ -1,0 +1,150 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "12",
+      "title": "Generic Tag Queries",
+      "status": "Final",
+      "author": null,
+      "created": "2022-05-01",
+      "type": "Mandatory",
+      "layer": null,
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Wed Nov 15 21:42:51 2023 -0300",
+    "total_commits": 5,
+    "git_history": [
+      [
+        "37f6cbb775126b386414220f783ca0f5f85e7614",
+        "Wed Nov 15 21:42:51 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "72bb8a128b2d7d3c2c654644cd68d0d0fe58a3b1",
+        "Sun Aug 13 13:47:45 2023 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "3a32c0fd781bb1b6e2d23eb83da9f0b56e4a233e",
+        "Sun Jul 9 12:32:26 2023 +0900",
+        "jiftechnify"
+      ],
+      [
+        "3771186c0351656a675576051b75d253f26c0f0b",
+        "Sun Jul 10 15:32:55 2022 -0300",
+        "fiatjaf"
+      ],
+      [
+        "f25c7e672c23ca5463fa5c0fcb5e5f424d956862",
+        "Sun May 1 07:48:57 2022 -0300",
+        "fiatjaf"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "nip": 2,
+      "01": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "f25c7e672c23ca5463fa5c0fcb5e5f424d956862",
+        "timestamp": "2022-05-01T07:48:57-03:00",
+        "date": "2022-05-01",
+        "author": "fiatjaf",
+        "path": "12.md",
+        "status": "Draft",
+        "standard": ""
+      },
+      {
+        "commit": "72bb8a128b2d7d3c2c654644cd68d0d0fe58a3b1",
+        "timestamp": "2023-08-13T13:47:45-03:00",
+        "date": "2023-08-13",
+        "author": "fiatjaf_",
+        "path": "12.md",
+        "status": "Final",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        {
+          "target": "nips:01",
+          "count": 1
+        }
+      ],
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:10Z",
+          "dependencies": [
+            {
+              "target": "nips:01",
+              "evidence": "Moved to [NIP-01](01.md).",
+              "reason": "The proposal’s contents were moved to NIP-01, so its specification is dependent on and subsumed by that NIP.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

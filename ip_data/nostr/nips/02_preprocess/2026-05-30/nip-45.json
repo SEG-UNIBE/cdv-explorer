@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "45",
       "title": "Event Counts",
-      "author": [
-        "Jonathan Staab"
-      ],
-      "created": "2023-01-03",
       "status": "Draft",
+      "author": null,
+      "created": "2023-01-03",
       "type": "Optional",
       "layer": "Relay",
       "kind": null
@@ -285,12 +283,38 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 1",
-        "NIP 65"
+        {
+          "target": "nips:01",
+          "count": 1
+        },
+        {
+          "target": "nips:65",
+          "count": 1
+        },
+        {
+          "target": "nips:CA",
+          "count": 1
+        }
       ],
       "body_extracted_llm": [
-        "NIP 1",
-        "NIP 33"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:38Z",
+          "dependencies": [
+            {
+              "target": "nips:01",
+              "evidence": "filters as specified in [NIP 01](01.md) for the verb `REQ`",
+              "reason": "The COUNT request reuses NIP-01 filter syntax and REQ semantics, so its wire format depends on NIP-01.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:65",
+              "evidence": "the client has decided it will read reactions from the NIP-65 \"read\" relays of Z's author",
+              "reason": "The client-side usage relies on NIP-65 relay lists to determine which relays to query and merge counts from.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

@@ -1,7 +1,6 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import { InputText } from 'primereact/inputtext';
 import { useDashboardEcosystem, useDashboardLinkMode, useDashboardSnapshot } from './dashboard/DashboardSnapshotContext';
 import { formatProposalLabel, getProposalUrl, normalizeProposalId } from './proposalLinks';
 
@@ -46,11 +45,10 @@ function RankBadge({ rank }) {
 
 export const ProposalGraphMetricsTable = ({
   rows,
-  proposalShortLabel = 'IP',
+  proposalFilterIds = [],
   defaultSortField,
   defaultSortOrder = -1,
 }) => {
-  const [globalFilter, setGlobalFilter] = useState('');
   const snapshotLabel = useDashboardSnapshot();
   const linkMode = useDashboardLinkMode();
   const ecosystem = useDashboardEcosystem();
@@ -64,34 +62,37 @@ export const ProposalGraphMetricsTable = ({
   }, [rows]);
 
   const filteredRows = useMemo(() => {
-    const search = globalFilter.trim().toLowerCase();
-    if (!search) {
-      return rows;
-    }
-
-    return rows.filter((row) =>
-      String(row.id || '').toLowerCase().includes(search)
-      || String(row.title || '').toLowerCase().includes(search)
+    const filteredProposalKeys = new Set(
+      (proposalFilterIds || [])
+        .filter((entry) => entry && typeof entry === 'object')
+        .map((entry) => `${String(entry.source || '').trim()}|${String(entry.id || '').trim()}`)
     );
-  }, [globalFilter, rows]);
 
-  const header = useMemo(() => (
-    <div className="centrality-table__header">
-      <span className="p-input-icon-left centrality-table__filter">
-        <InputText
-          value={globalFilter}
-          onChange={(event) => setGlobalFilter(event.target.value)}
-          placeholder="Filter proposals"
-          aria-label="Filter proposals"
-        />
-      </span>
-    </div>
-  ), [globalFilter]);
+    const rowMatchesProposalFilter = (row) => {
+      if (filteredProposalKeys.size === 0) {
+        return true;
+      }
+
+      const rawId = String(row.id || '').trim();
+      const separatorIndex = rawId.indexOf(':');
+      const rowSourceSlug = separatorIndex >= 0 ? rawId.slice(0, separatorIndex) : '';
+      const rowSource = Object.values(ecosystem?.sources || {}).find(
+        (source) => String(source?.sourceSlug || source?.sourceId || '') === rowSourceSlug
+      );
+      const rowSourceId = String(rowSource?.sourceId || rowSourceSlug || '').trim();
+      const rowProposalId = normalizeProposalId(rawId, ecosystem);
+
+      return filteredProposalKeys.has(`${rowSourceId}|${rowProposalId}`);
+    };
+
+    return rows.filter((row) => (
+      rowMatchesProposalFilter(row)
+    ));
+  }, [ecosystem, proposalFilterIds, rows]);
 
   return (
     <DataTable
       value={filteredRows}
-      header={header}
       sortField={defaultSortField}
       sortOrder={defaultSortOrder}
       removableSort

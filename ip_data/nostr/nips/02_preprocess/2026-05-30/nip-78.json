@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "78",
       "title": "Arbitrary custom app data",
-      "author": [
-        "fiatjaf"
-      ],
-      "created": "2023-02-23",
       "status": "Draft",
+      "author": null,
+      "created": "2023-02-23",
       "type": "Optional",
       "layer": null,
       "kind": null
@@ -141,8 +139,11 @@
       "preamble_extracted": [],
       "body_extracted_regex": [],
       "body_extracted_llm": [
-        "NIP 1",
-        "NIP 33"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:52Z",
+          "dependencies": []
+        }
       ]
     }
   }

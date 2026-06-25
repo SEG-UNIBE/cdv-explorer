@@ -518,7 +518,7 @@ def plot_collaboration_network_from_exported_layout(
             continue
 
         x_coord, y_coord = positions[node_id]
-        text = axis.text(
+        axis.text(
             x_coord + node_radii[node_id] + 4.0,
             y_coord + 1.5,
             node_id,

@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "50",
       "title": "Search Capability",
-      "author": [
-        "Artur Brugeman"
-      ],
-      "created": "2023-01-17",
       "status": "Draft",
+      "author": null,
+      "created": "2023-01-17",
       "type": "Optional",
       "layer": "Relay",
       "kind": null
@@ -215,12 +213,17 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 5"
+        {
+          "target": "nips:05",
+          "count": 1
+        }
       ],
       "body_extracted_llm": [
-        "NIP 1",
-        "NIP 5",
-        "NIP 11"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:39Z",
+          "dependencies": []
+        }
       ]
     }
   }

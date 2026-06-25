@@ -2,11 +2,14 @@ import { useState } from 'react';
 import { ClassificationPieChart } from '../../ClassificationPieChart';
 import { ClassificationStackedTimelineChart } from '../../ClassificationStackedTimelineChart';
 import { ClassificationChordDiagram } from '../../ClassificationChordDiagram';
+import { ClassificationLegend } from '../../ClassificationLegend';
 import { ClassificationRelationTable } from '../../ClassificationRelationTable';
 import { ExportableCard } from '../ExportableCard';
+import { CollapsibleControls } from '../CollapsibleControls';
 import { CLASSIFICATION_DIMENSIONS } from '../constants';
+import { SectionSourceToggle } from './SectionSourceToggle';
 
-export function ClassificationSection({
+function ClassificationContent({
   ecosystem,
   classificationCategoryDomains,
   classificationDistributions,
@@ -17,7 +20,6 @@ export function ClassificationSection({
   const [includeThirdDim, setIncludeThirdDim] = useState(false);
   const dimensions = ecosystem.classificationDimensions || CLASSIFICATION_DIMENSIONS;
 
-  // Chord diagram only shows when every dimension has at least one non-trivial category
   const hasChordData = dimensions.length >= 2 &&
     dimensions.every(({ field }) => {
       const domain = classificationCategoryDomains[field] || [];
@@ -36,10 +38,7 @@ export function ClassificationSection({
   const dimLabels = dimensions.map((d) => d.label).join(', ');
 
   return (
-    <section className="dashboard-section">
-      <div className="dashboard-section__header">
-        <h2 className="dashboard-section__title">Classification</h2>
-      </div>
+    <>
       {dimensions.map((dimension) => (
         <ExportableCard
           key={dimension.field}
@@ -55,6 +54,13 @@ export function ClassificationSection({
                 data={classificationDistributions[dimension.field]}
                 width={400}
                 height={250}
+              />
+            </div>
+            <div className="classification-card__panel classification-card__panel--legend">
+              <ClassificationLegend
+                dimension={dimension.field}
+                colorDomain={classificationCategoryDomains[dimension.field]}
+                data={classificationDistributions[dimension.field]}
               />
             </div>
             <div className="classification-card__panel">
@@ -86,16 +92,18 @@ export function ClassificationSection({
           {hasDim3 && ` Can be expanded using the optional ${dim3.label} field.`}
         </p>
         {hasDim3 && (
-          <div className="classification-relation-toolbar">
-            <label className="dependency-filter-checkbox">
-              <input
-                type="checkbox"
-                checked={includeThirdDim}
-                onChange={(event) => setIncludeThirdDim(event.target.checked)}
-              />
-              <span>include {dim3.label}</span>
-            </label>
-          </div>
+          <CollapsibleControls>
+            <div className="classification-relation-toolbar">
+              <label className="dependency-filter-checkbox">
+                <input
+                  type="checkbox"
+                  checked={includeThirdDim}
+                  onChange={(event) => setIncludeThirdDim(event.target.checked)}
+                />
+                <span>include {dim3.label}</span>
+              </label>
+            </div>
+          </CollapsibleControls>
         )}
         <ClassificationRelationTable
           rows={tableRows}
@@ -103,6 +111,66 @@ export function ClassificationSection({
           proposalShortLabel={ecosystem.acronym || 'IP'}
         />
       </ExportableCard>
+    </>
+  );
+}
+
+export function ClassificationSection({
+  ecosystem,
+  ecosystemBase,
+  selectedSourceIds = [],
+  perSourceDashboardData = {},
+  sectionSourceView,
+  setSectionSourceView,
+  classificationCategoryDomains,
+  classificationDistributions,
+  classificationTimeline,
+  classificationChordData,
+  classificationRelationRows,
+}) {
+  const isMultiSource = selectedSourceIds.length > 1;
+  const activeSourceId = isMultiSource && selectedSourceIds.includes(sectionSourceView)
+    ? sectionSourceView
+    : selectedSourceIds[0];
+  const activeSource = ecosystemBase?.sources?.[activeSourceId];
+  const activeData = isMultiSource ? perSourceDashboardData?.[activeSourceId] : null;
+  const activeEcosystem = isMultiSource && activeSource
+    ? { ...ecosystemBase, ...activeSource }
+    : ecosystem;
+
+  return (
+    <section className="dashboard-section">
+      <div className="dashboard-section__header">
+        <h2 className="dashboard-section__title">Classification</h2>
+        <SectionSourceToggle
+          ecosystemBase={ecosystemBase}
+          selectedSourceIds={selectedSourceIds}
+          value={activeSourceId}
+          onChange={setSectionSourceView}
+          supportsMerged={false}
+        />
+      </div>
+      {isMultiSource ? (
+        activeData && (
+          <ClassificationContent
+            ecosystem={activeEcosystem}
+            classificationCategoryDomains={activeData.classificationCategoryDomains}
+            classificationDistributions={activeData.classificationDistributions}
+            classificationTimeline={activeData.classificationTimeline}
+            classificationChordData={activeData.classificationChordData}
+            classificationRelationRows={activeData.classificationRelationRows}
+          />
+        )
+      ) : (
+        <ClassificationContent
+          ecosystem={ecosystem}
+          classificationCategoryDomains={classificationCategoryDomains}
+          classificationDistributions={classificationDistributions}
+          classificationTimeline={classificationTimeline}
+          classificationChordData={classificationChordData}
+          classificationRelationRows={classificationRelationRows}
+        />
+      )}
     </section>
   );
 }

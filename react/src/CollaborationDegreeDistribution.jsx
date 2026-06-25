@@ -1,5 +1,7 @@
 import * as d3 from 'd3';
+import { positionTooltip } from './tooltipPosition';
 import { useEffect, useRef } from 'react';
+import { renderTooltipCardHtml } from './tooltipHtml';
 
 const DEGREE_BAR_COLOR = 'var(--chart-accent-blue)';
 const DEGREE_BAR_HOVER_COLOR = 'var(--chart-accent-blue-hover)';
@@ -106,16 +108,19 @@ export function CollaborationDegreeDistribution({ data, width = 640, height = 41
         d3.select(this).attr('fill', DEGREE_BAR_HOVER_COLOR);
         tooltip
           .style('opacity', 1)
-          .html(
-            `There ${entry.authorCount === 1 ? 'is' : 'are'} <strong>${entry.authorCount}</strong> ` +
-            `author${entry.authorCount === 1 ? '' : 's'} with exactly ${entry.degree} ` +
-            `distinct co-author${entry.degree === 1 ? '' : 's'}.`
-          );
+          .html(renderTooltipCardHtml({
+            titleHtml: `<strong>${entry.degree}</strong> co-author${entry.degree === 1 ? '' : 's'}`,
+            rows: [
+              ['Authors', entry.authorCount],
+              [
+                'Meaning',
+                `There ${entry.authorCount === 1 ? 'is' : 'are'} ${entry.authorCount} author${entry.authorCount === 1 ? '' : 's'} with exactly ${entry.degree} distinct co-author${entry.degree === 1 ? '' : 's'}.`,
+              ],
+            ],
+          }));
       })
       .on('mousemove', function (event) {
-        tooltip
-          .style('left', `${event.pageX + 10}px`)
-          .style('top', `${event.pageY - 28}px`);
+        positionTooltip(tooltip, event.pageX, event.pageY);
       })
       .on('mouseout', function () {
         d3.select(this).attr('fill', DEGREE_BAR_COLOR);

@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "11",
       "title": "Relay Information Document",
-      "author": [
-        "fiatjaf"
-      ],
-      "created": "2022-05-01",
       "status": "Draft",
+      "author": null,
+      "created": "2022-05-01",
       "type": "Optional",
       "layer": "Relay",
       "kind": null
@@ -442,16 +440,56 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 1",
-        "NIP 9",
-        "NIP 13",
-        "NIP 17",
-        "NIP 42"
+        {
+          "target": "nips:01",
+          "count": 1
+        },
+        {
+          "target": "nips:09",
+          "count": 1
+        },
+        {
+          "target": "nips:0A",
+          "count": 1
+        },
+        {
+          "target": "nips:13",
+          "count": 1
+        },
+        {
+          "target": "nips:17",
+          "count": 1
+        },
+        {
+          "target": "nips:42",
+          "count": 1
+        }
       ],
       "body_extracted_llm": [
-        "NIP 1",
-        "NIP 13",
-        "NIP 42"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:25Z",
+          "dependencies": [
+            {
+              "target": "nips:13",
+              "evidence": "based on [NIP-13](13.md), or they will be rejected by this server",
+              "reason": "The relay limitation field defines behavior in terms of NIP-13 proof-of-work difficulty, so this proposal relies on that NIP’s mechanism and semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:17",
+              "evidence": "(See [NIP-17](17.md)) to a system administrator",
+              "reason": "The pubkey contact field assumes encrypted direct messaging behavior defined by NIP-17 for contacting relay administrators.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:42",
+              "evidence": "this relay requires [NIP-42] authentication",
+              "reason": "The auth_required limitation uses NIP-42 authentication as the activation requirement for relay access.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

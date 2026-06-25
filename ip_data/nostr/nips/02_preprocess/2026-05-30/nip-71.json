@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "71",
       "title": "Video Events",
-      "author": [
-        "zmeyer44"
-      ],
-      "created": "2023-12-09",
       "status": "Draft",
+      "author": null,
+      "created": "2023-12-09",
       "type": "Optional",
       "layer": null,
       "kind": null
@@ -367,15 +365,38 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 92",
-        "NIP 94",
-        "NIP 96"
+        {
+          "target": "nips:92",
+          "count": 2
+        },
+        {
+          "target": "nips:94",
+          "count": 1
+        },
+        {
+          "target": "nips:96",
+          "count": 7
+        }
       ],
       "body_extracted_llm": [
-        "NIP 33",
-        "NIP 92",
-        "NIP 94",
-        "NIP 96"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:51Z",
+          "dependencies": [
+            {
+              "target": "nips:92",
+              "evidence": "The primary source of video information is the `imeta` tags which is defined in [NIP-92](92.md)",
+              "reason": "This proposal relies on NIP-92’s `imeta` tag format as the primary carrier of video metadata and extends its properties.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:94",
+              "evidence": "This NIP defines the following additional `imeta` properties aside from those listed in [NIP-92](92.md) & [NIP-94](94.md)",
+              "reason": "The proposal explicitly depends on NIP-94 as an existing source of `imeta` property definitions that it amends with additional fields.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

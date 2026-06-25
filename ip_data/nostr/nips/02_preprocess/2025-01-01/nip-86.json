@@ -1,0 +1,163 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "86",
+      "title": "Relay Management API",
+      "status": "Draft",
+      "author": null,
+      "created": "2024-11-25",
+      "type": "Optional",
+      "layer": null,
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Mon Nov 25 13:21:47 2024 -0300",
+    "total_commits": 1,
+    "git_history": [
+      [
+        "73f65133fcdcbf9f4d27cc7097963797c6250cd7",
+        "Mon Nov 25 13:21:47 2024 -0300",
+        "fiatjaf_"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "true": 22,
+      "params": 19,
+      "result": 19,
+      "reason": 15,
+      "optional": 12,
+      "boolean": 11,
+      "set": 11,
+      "array": 8,
+      "32": 8,
+      "byte": 8,
+      "hex": 8,
+      "json": 5,
+      "objects": 5,
+      "relay": 4,
+      "request": 4,
+      "method": 4,
+      "id": 4,
+      "ip": 4,
+      "response": 3,
+      "event": 3,
+      "new": 3,
+      "kind": 3,
+      "number": 3,
+      "address": 3,
+      "authorization": 3,
+      "nip": 2,
+      "management": 2,
+      "api": 2,
+      "rpc": 2,
+      "http": 2,
+      "uri": 2,
+      "s": 2,
+      "websocket": 2,
+      "header": 2,
+      "return": 2,
+      "error": 2,
+      "methods": 2,
+      "supported": 2,
+      "public": 2,
+      "key": 2,
+      "pubkey": 2,
+      "url": 2,
+      "98": 2,
+      "tag": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "73f65133fcdcbf9f4d27cc7097963797c6250cd7",
+        "timestamp": "2024-11-25T13:21:47-03:00",
+        "date": "2024-11-25",
+        "author": "fiatjaf_",
+        "path": "86.md",
+        "status": "Draft",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        {
+          "target": "nips:98",
+          "count": 1
+        }
+      ],
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:32Z",
+          "dependencies": [
+            {
+              "target": "nips:98",
+              "evidence": "The request must contain an `Authorization` header with a valid [NIP-98](./98.md) event",
+              "reason": "This proposal’s authorization mechanism relies on NIP-98 events and their validation rules, with an added payload requirement and relay URL tag usage.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

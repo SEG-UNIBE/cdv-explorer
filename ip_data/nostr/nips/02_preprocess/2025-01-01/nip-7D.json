@@ -1,0 +1,132 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "7D",
+      "title": "Threads",
+      "status": "Draft",
+      "author": null,
+      "created": "2024-11-21",
+      "type": "Optional",
+      "layer": null,
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Thu Nov 21 06:55:23 2024 -0800",
+    "total_commits": 1,
+    "git_history": [
+      [
+        "1e47fd75572704b84cf484ce52394fc7ea7d4067",
+        "Thu Nov 21 06:55:23 2024 -0800",
+        "hodlbod"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "kind": 6,
+      "11": 5,
+      "nip": 2,
+      "threads": 2,
+      "thread": 2,
+      "event": 2,
+      "subject": 2,
+      "json": 2,
+      "content": 2,
+      "tags": 2,
+      "replies": 2,
+      "22": 2,
+      "1111": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "1e47fd75572704b84cf484ce52394fc7ea7d4067",
+        "timestamp": "2024-11-21T11:55:23-03:00",
+        "date": "2024-11-21",
+        "author": "hodlbod",
+        "path": "7D.md",
+        "status": "Draft",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        {
+          "target": "nips:22",
+          "count": 1
+        }
+      ],
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:31Z",
+          "dependencies": [
+            {
+              "target": "nips:22",
+              "evidence": "Replies to `kind 11` MUST use [NIP-22](./22.md) `kind 1111` comments.",
+              "reason": "The proposal defines thread replies in terms of NIP-22 comment events and their semantics.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

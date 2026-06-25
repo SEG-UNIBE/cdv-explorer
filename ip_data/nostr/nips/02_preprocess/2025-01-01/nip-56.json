@@ -1,0 +1,214 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "56",
+      "title": "Reporting",
+      "status": "Unknown",
+      "author": null,
+      "created": "2023-02-07",
+      "type": "Optional",
+      "layer": null,
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Tue Sep 3 20:41:31 2024 +0330",
+    "total_commits": 12,
+    "git_history": [
+      [
+        "e6552476aa2e5ca7256be572a9aa226ec8a022ee",
+        "Tue Sep 3 20:41:31 2024 +0330",
+        "kehiy"
+      ],
+      [
+        "2b490b168e4b51e1c441d985ca89e5e1f426a610",
+        "Wed May 1 23:29:14 2024 -0300",
+        "Lucas Nuic"
+      ],
+      [
+        "ef5eacd48904a5cee0b4e51c4b7d46a9606a7351",
+        "Wed May 1 22:48:11 2024 -0300",
+        "Lucas Nuic"
+      ],
+      [
+        "b224f6d05d5b208b632e8e1f5ac489b7f27079ae",
+        "Wed Apr 3 10:59:37 2024 -0400",
+        "Matthew Lorentz"
+      ],
+      [
+        "3c75180fb7947c133a063ba475067a3b8f42d619",
+        "Wed Apr 3 10:50:02 2024 -0400",
+        "Matthew Lorentz"
+      ],
+      [
+        "5dcfe85306434f21ecb1e7a47edd92b2e3e64f9a",
+        "Sat Nov 18 09:13:12 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "37f6cbb775126b386414220f783ca0f5f85e7614",
+        "Wed Nov 15 21:42:51 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "e58a40d2e7a1ea7a096b2d88919cd8cbf0daa219",
+        "Tue Jul 25 12:33:16 2023 +0900",
+        "Asai Toshiya"
+      ],
+      [
+        "d0cb9d0c24ec9815b0668bffff246a19352b9ca2",
+        "Fri Jul 21 00:48:55 2023 +0900",
+        "erechorse"
+      ],
+      [
+        "b31d3077f6655f150cca9bb07f5fba895dc815ca",
+        "Mon Jul 3 01:23:47 2023 -0400",
+        "Terry Yiu"
+      ],
+      [
+        "92ce49dda0acce1f661868316a9858521d4bc974",
+        "Wed Jun 7 16:09:26 2023 -0700",
+        "Jonathan Staab"
+      ],
+      [
+        "f9e38ed00f5b11694ff93c368aacbf47ec21437a",
+        "Tue Feb 7 13:15:38 2023 -0800",
+        "William Casarin"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "content": 7,
+      "report": 6,
+      "tags": 6,
+      "p": 5,
+      "pubkey": 5,
+      "reports": 5,
+      "reporting": 4,
+      "kind": 4,
+      "1984": 4,
+      "etc": 4,
+      "nudity": 4,
+      "illegal": 4,
+      "l": 4,
+      "relays": 3,
+      "tag": 3,
+      "e": 3,
+      "impersonation": 3,
+      "profile": 3,
+      "jsonc": 3,
+      "fields": 3,
+      "nip": 2,
+      "event": 2,
+      "users": 2,
+      "objectionable": 2,
+      "fit": 2,
+      "referencing": 2,
+      "note": 2,
+      "included": 2,
+      "profanity": 2,
+      "spam": 2,
+      "32": 2,
+      "social": 2,
+      "nos": 2,
+      "ontology": 2,
+      "behavior": 2,
+      "clients": 2,
+      "use": 2,
+      "friends": 2,
+      "moderation": 2,
+      "relay": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "f9e38ed00f5b11694ff93c368aacbf47ec21437a",
+        "timestamp": "2023-02-07T18:15:38-03:00",
+        "date": "2023-02-07",
+        "author": "William Casarin",
+        "path": "56.md",
+        "status": "Draft",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        {
+          "target": "nips:32",
+          "count": 1
+        }
+      ],
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:26Z",
+          "dependencies": [
+            {
+              "target": "nips:32",
+              "evidence": "“`l` and `L` tags MAY be also be used as defined in [NIP-32](32.md) to support further qualification and querying.”",
+              "reason": "The proposal explicitly reuses NIP-32 tag semantics for additional labeling and query support in report events.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

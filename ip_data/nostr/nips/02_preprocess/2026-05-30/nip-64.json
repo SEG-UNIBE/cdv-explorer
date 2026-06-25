@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "64",
       "title": "Chess (Portable Game Notation)",
-      "author": [
-        "theborakompanioni"
-      ],
-      "created": "2023-12-28",
       "status": "Draft",
+      "author": null,
+      "created": "2023-12-28",
       "type": "Optional",
       "layer": null,
       "kind": null
@@ -355,7 +353,18 @@
       "preamble_extracted": [],
       "body_extracted_regex": [],
       "body_extracted_llm": [
-        "NIP 1"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:47Z",
+          "dependencies": [
+            {
+              "target": "nips:31",
+              "evidence": "Clients MAY include additional tags (e.g. like [`\"alt\"`](31.md))",
+              "reason": "The proposal relies on the alt tag mechanism from this NIP to provide fallback metadata for non-supporting clients.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

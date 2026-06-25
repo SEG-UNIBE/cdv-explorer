@@ -1,0 +1,1104 @@
+{
+  "raw": {
+    "preamble": {
+      "slip": "39",
+      "title": "Shamir's Secret-Sharing for Mnemonic Codes",
+      "author": [
+        "Pavol Rusnak <stick@satoshilabs.com>",
+        "Andrew Kozlik <andrew.kozlik@satoshilabs.com>",
+        "Ondrej Vejpustek <ondrej.vejpustek@satoshilabs.com>",
+        "Tomas Susanka <tomas.susanka@satoshilabs.com>",
+        "Marek Palatinus <slush@satoshilabs.com>",
+        "Jochen Hoenicke <hoenicke@gmail.com>"
+      ],
+      "status": "Final",
+      "type": "Standard",
+      "created": "2017-12-18"
+    }
+  },
+  "meta": {
+    "last_commit": "Thu Nov 7 14:26:13 2024 +0100",
+    "total_commits": 92,
+    "git_history": [
+      [
+        "d51c65118aab93a82f7e65d4debe9bf6e581691d",
+        "Thu Nov 7 14:26:13 2024 +0100",
+        "Andrew Kozlik"
+      ],
+      [
+        "bff8cf7430ce410eee3417909abd274123ad67f4",
+        "Tue Sep 24 10:05:03 2024 +0200",
+        "Andrew Kozlik"
+      ],
+      [
+        "d10aa841d8c779e85a8920daf5f836ba9a9dd41f",
+        "Fri Sep 20 13:44:29 2024 +0200",
+        "Juraj Bednar"
+      ],
+      [
+        "222cb0b0b0018ce4617fd3f7f80beae591b1d752",
+        "Mon Jul 29 14:57:06 2024 +1000",
+        "Gavin Carr"
+      ],
+      [
+        "36357b6058b8ae43dcb28ee9f4e836eee7c56141",
+        "Mon Jul 29 09:22:03 2024 +0200",
+        "Andrew Kozlik"
+      ],
+      [
+        "8d060706b549af6443e04f55605b71f65c981663",
+        "Tue May 7 20:04:01 2024 +0200",
+        "Andrew Kozlik"
+      ],
+      [
+        "9118b2009f8f06494b9fd8d3f0d2669c0d697a2d",
+        "Thu May 9 17:45:16 2024 +0200",
+        "M1nd3r"
+      ],
+      [
+        "2a40d4559e32054c7774b5a06b6ffba2f248a689",
+        "Thu Feb 2 19:51:12 2023 +0000",
+        "Pavol Rusnak"
+      ],
+      [
+        "40a55141e8ee8bc8fe90b091a44ab40408b42d58",
+        "Fri Dec 9 12:38:19 2022 +0100",
+        "Andrew Kozlik"
+      ],
+      [
+        "d82732fd3a56850a492e4e7eeaa94a789c889eff",
+        "Tue Jul 20 15:32:47 2021 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "a96374cb0901c07969dcb85c74dfc32f4d82e915",
+        "Wed May 12 20:01:17 2021 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "78f4a07a889f8607aa5a22b9874216dc75d98c07",
+        "Thu Apr 29 18:52:50 2021 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "508968da89aeb23a07d14109207cbd49aa0ca12a",
+        "Tue Mar 9 17:28:27 2021 +0100",
+        "Andrew Kozlik"
+      ],
+      [
+        "d45e924b1eb575e57f270082fdb313b44b4350ee",
+        "Thu Dec 31 01:20:47 2020 +0200",
+        "secinthenet"
+      ],
+      [
+        "cffd27f250b7b88f39685b1f67be4f1c47e995a0",
+        "Sun Nov 1 21:41:52 2020 +0100",
+        "Andrew Kozlik"
+      ],
+      [
+        "832c68e34ea329a05ca839e9f6b7a1a8f47c7584",
+        "Thu Oct 3 17:39:39 2019 +0200",
+        "Andrew Kozlik"
+      ],
+      [
+        "814593ab01b4706fef268aa869bd2ab08027c34a",
+        "Fri Sep 20 19:17:11 2019 +0200",
+        "Tamás Blummer"
+      ],
+      [
+        "39efdb6abe8ce3371dca94db9da7eaba36b3be63",
+        "Tue Aug 27 10:18:50 2019 +0200",
+        "Andrew Kozlik"
+      ],
+      [
+        "41e69ae48e57e05aa17c2592f1299176e238782a",
+        "Fri Aug 9 12:38:47 2019 +0200",
+        "Andrew Kozlik"
+      ],
+      [
+        "733061dbb04e42d4e1abf85ec7eb5cccbf9f25eb",
+        "Thu Jun 20 11:40:42 2019 +0200",
+        "Andrew Kozlik"
+      ],
+      [
+        "ab901ca948df5c65a2161a2c39460ad0445baaf7",
+        "Mon Jun 10 17:14:22 2019 +0200",
+        "Andrew Kozlik"
+      ],
+      [
+        "df51ea144948cd4bcb65bd4b85065ed2bbe4bf42",
+        "Tue May 14 19:42:40 2019 +0200",
+        "Andrew Kozlik"
+      ],
+      [
+        "418657e5c2656ebc7c114c9d9eeb667b32e183d2",
+        "Fri May 3 15:57:46 2019 +0200",
+        "Andrew Kozlik"
+      ],
+      [
+        "c0342b284d5a93ca6965871c33e41baa674dc966",
+        "Fri May 3 14:35:14 2019 +0200",
+        "Andrew Kozlik"
+      ],
+      [
+        "4b4d554318c219f518f63635249b83ea124224b1",
+        "Thu May 2 13:44:57 2019 +0200",
+        "Andrew Kozlik"
+      ],
+      [
+        "605f956be2d95e5bf6aa4c2e52a1b56a8d88dd6c",
+        "Mon Apr 15 17:40:34 2019 +0200",
+        "Andrew Kozlik"
+      ],
+      [
+        "812d3cc0428bbfec91e712b758a322a497f93199",
+        "Fri Apr 12 20:56:00 2019 +0200",
+        "Andrew Kozlik"
+      ],
+      [
+        "aa0e811a9933392387c150a938da48213e3dd8bd",
+        "Fri Apr 12 16:52:52 2019 +0200",
+        "Andrew Kozlik"
+      ],
+      [
+        "a2b70b88e9fac1dabe97cacf3fbd705ca9843777",
+        "Mon Apr 8 15:29:49 2019 +0200",
+        "Andrew Kozlik"
+      ],
+      [
+        "64397e3f00f1084ab7fe68d5f9d312032970ce67",
+        "Wed Apr 3 16:25:42 2019 +0200",
+        "Andrew Kozlik"
+      ],
+      [
+        "0dba2a47414a3c4f41bc305ca8dc1e1ae6ef9c0e",
+        "Wed Apr 3 16:18:13 2019 +0200",
+        "Andrew Kozlik"
+      ],
+      [
+        "d8464e52b07b81678c632b10660e509e8dba2261",
+        "Fri Mar 29 18:38:15 2019 +0100",
+        "Andrew Kozlik"
+      ],
+      [
+        "3738eda938918031678dbfc0de607901489ab2c8",
+        "Thu Mar 28 19:32:16 2019 +0100",
+        "Andrew Kozlik"
+      ],
+      [
+        "8f0f5fa4f39cc08305ca276967108f2e03e377e8",
+        "Wed Mar 27 16:49:59 2019 +0100",
+        "Andrew Kozlik"
+      ],
+      [
+        "efb1a3746f9583489f7d03463523f4dd507a7925",
+        "Fri Mar 22 17:44:34 2019 +0100",
+        "Andrew Kozlik"
+      ],
+      [
+        "376704550e70aa3528763f9bc362f7d0968c61ad",
+        "Thu Mar 21 11:40:43 2019 +0100",
+        "Andrew Kozlik"
+      ],
+      [
+        "d4b86da2b906d7c08e7b20afb8d7b84c9b872501",
+        "Mon Mar 18 15:22:34 2019 +0100",
+        "Andrew Kozlik"
+      ],
+      [
+        "35164581cc2750c9ee51a41b024a47c021b5c7fe",
+        "Fri Mar 15 16:33:37 2019 +0100",
+        "Andrew Kozlik"
+      ],
+      [
+        "fb6911a051e75c8a5552fce6cc95c536bede2211",
+        "Fri Mar 8 14:26:42 2019 +0100",
+        "Andrew Kozlik"
+      ],
+      [
+        "24b609efce6b229ef2d2e9e67bb520ab384450bb",
+        "Thu Mar 7 14:58:44 2019 +0100",
+        "Andrew Kozlik"
+      ],
+      [
+        "6a62afc334937561c407d9e71be0385ef8d67371",
+        "Thu Mar 7 14:58:12 2019 +0100",
+        "Andrew Kozlik"
+      ],
+      [
+        "6b7d1fdf38de99ec487a67d650aa8ec9f32a8ae7",
+        "Sun Mar 3 18:35:01 2019 +0100",
+        "Andrew Kozlik"
+      ],
+      [
+        "e2d5cd95d0af6524c9df9809b485e13b0ecbcf46",
+        "Sat Mar 2 15:39:05 2019 +0100",
+        "Andrew Kozlik"
+      ],
+      [
+        "0106f483a47649871f70eb13c1ba07dbde30d8c8",
+        "Tue Feb 26 12:15:19 2019 +0100",
+        "Andrew Kozlik"
+      ],
+      [
+        "a768973147902bcdc8a485bbb597f3d1d995892a",
+        "Tue Feb 12 13:45:35 2019 +0100",
+        "Tomas Susanka"
+      ],
+      [
+        "43ade0d6157320778816498361e8b83b150f0f9a",
+        "Wed Oct 10 16:08:55 2018 +0200",
+        "andrew"
+      ],
+      [
+        "484aa6a9c2f945d39e9cc5dac02778999ff126c6",
+        "Wed Oct 10 15:57:48 2018 +0200",
+        "andrew"
+      ],
+      [
+        "4bbdb5e911fa80932ec0c8d1efc3b043955bf180",
+        "Wed Oct 10 10:40:39 2018 +0200",
+        "andrew"
+      ],
+      [
+        "392249c8dd6a0e59a861f3f71e16765026348104",
+        "Thu Oct 4 18:09:32 2018 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "4a7a746df7a9b492c9bd8ba57ff83f182ae915f3",
+        "Thu Oct 4 18:04:59 2018 +0200",
+        "Andrew Kozlik"
+      ],
+      [
+        "77846d9a7e55a2c912b4ce20f154727191520c7a",
+        "Thu Oct 4 17:12:44 2018 +0200",
+        "andrew"
+      ],
+      [
+        "7f884e1fea02c5feaadcd47a71eb4839a758951f",
+        "Thu Sep 20 17:56:53 2018 +0200",
+        "andrew"
+      ],
+      [
+        "e7182f655dceec848630c941b4fdbc6fdef80588",
+        "Wed Sep 19 21:08:46 2018 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "9be12a1c4493f65ad79f8ae6a70c20355b4bb33c",
+        "Wed Sep 19 21:07:04 2018 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "a9c803537949f760268d30d0bdc7d50f1e33047f",
+        "Mon Jul 30 22:33:42 2018 -0700",
+        "rkagerer"
+      ],
+      [
+        "c4f38978b51df9be51e0afcb4757bdc7ada1e400",
+        "Fri Jul 27 17:41:46 2018 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "35ccf1a9872b1cdedb122f77866c71e34a425b78",
+        "Fri Jul 27 17:40:13 2018 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "c49fa8402f9a9b50affe0153d7f869d262b4d1b6",
+        "Thu Jul 26 18:47:06 2018 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "52bb7c6198d1aa428bd6027cf39fea1690b84e02",
+        "Thu Jul 26 18:26:15 2018 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "d2e1a6cd2cc80f456e4aba3f2be634bcd2df6aed",
+        "Wed Jul 25 17:55:14 2018 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "de1189efa9a46570a7d210aa351d4c892e3532e7",
+        "Wed Jul 25 17:10:56 2018 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "f8573bcd31f22706122c28097ee2aebec7adddb5",
+        "Wed Jul 25 14:15:47 2018 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "868cdd0ad04d170f1502fc4aeabc3f86203ab155",
+        "Tue Jul 24 22:02:23 2018 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "fba247f3eda80495241f75b8f59bbbd59f7900c9",
+        "Tue Jul 24 20:21:49 2018 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "0022472bceb054e40b39c098264ccfb2eb9be45b",
+        "Tue Jul 24 18:17:20 2018 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "f4628438277ba91c488b983a4d57f020858ee338",
+        "Mon Jul 23 18:26:29 2018 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "86b4f3f710fdb370aff293333eb9c46faafdff6b",
+        "Mon Jul 23 16:29:25 2018 +0200",
+        "Tomas Susanka"
+      ],
+      [
+        "04647bfa72a8e7da8c9182b802b250b5f2268c63",
+        "Tue Jan 9 16:15:30 2018 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "63ab98b7255da84554101350c33d1fb585490bc8",
+        "Sun Jan 7 21:55:07 2018 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "f0d2d1a0370814fb2067450c8e5ba48b1ddcaa2b",
+        "Sun Jan 7 16:20:16 2018 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "93876a65158fac7bd02f655c2f4eed722b55c71a",
+        "Fri Jan 5 20:57:57 2018 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "808f6b9c649dd3c0bdb07fc5444182e8ec529db2",
+        "Fri Jan 5 20:49:37 2018 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "f64d399169d3290e0cd54933adfcba57747aad37",
+        "Fri Jan 5 18:41:38 2018 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "48d8bc0c230bd22398f87d246b7aadaa68742417",
+        "Wed Jan 3 11:42:25 2018 +0100",
+        "Tomas Susanka"
+      ],
+      [
+        "3270c69def5e923d9b550f98aa0657ea9e9df52c",
+        "Tue Jan 2 22:06:32 2018 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "5cd018cd38cda544cb624fa74e6d1734c301ba37",
+        "Tue Jan 2 18:38:54 2018 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "0e803adba1a5fe926297088f760a2503508453dc",
+        "Tue Jan 2 15:52:58 2018 +0100",
+        "Tomas Susanka"
+      ],
+      [
+        "8b3c1e0d5c868293ecb550a86e915f106866ee01",
+        "Tue Jan 2 00:06:23 2018 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "a5b30c47b75d92b39c6932b3297aaaa30d36662a",
+        "Mon Jan 1 23:50:36 2018 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "e980e5d91c13f85736b9806366ab4b67ee653393",
+        "Mon Jan 1 23:29:31 2018 +0100",
+        "Daan Sprenkels"
+      ],
+      [
+        "6bd1f1db32272eceb925dba605705a1509feabd8",
+        "Fri Dec 29 17:23:28 2017 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "381f3ba470164183dd6780264869a2aabd41e431",
+        "Fri Dec 29 00:26:53 2017 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "4fa476f375e279784121a3ed26c09ddc5b90002b",
+        "Fri Dec 29 00:13:43 2017 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "8ff0c379ab52a9f8c89a817ef1bae1f92cd1ab92",
+        "Fri Dec 29 00:11:07 2017 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "92b69332def600685225b0b19684b17330cf9913",
+        "Thu Dec 28 21:39:13 2017 +0100",
+        "Tomas Susanka"
+      ],
+      [
+        "9be0c57a8ed7a8709cfc4096cb4637d56b7585d4",
+        "Thu Dec 28 12:00:46 2017 +0100",
+        "Tomas Susanka"
+      ],
+      [
+        "e497e7c98c319a3ec3c0a34276fed7b9751cbad9",
+        "Thu Dec 28 10:54:17 2017 +0100",
+        "Tomas Susanka"
+      ],
+      [
+        "89466bbea29c3077b1b905acb7d594f43fceaad7",
+        "Thu Dec 28 20:32:29 2017 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "b4b07ba36c6196439f2380bf6bf17c489ab7d53c",
+        "Thu Dec 28 19:00:54 2017 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "7790297d74f5ad9e9cd5a15abe4e28febe50ec6e",
+        "Sun Dec 24 21:48:15 2017 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "a8124d327bede0203cd66d74d94211191328fed8",
+        "Tue Dec 19 22:17:30 2017 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "c03e42521a0ab71970b19b326059cabcaa5a36e7",
+        "Tue Dec 19 20:49:56 2017 +0100",
+        "Pavol Rusnak"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 85.71,
+      "passed_checks": 6,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 7,
+      "slip": {
+        "score": 85.71,
+        "passed_checks": 6,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 7,
+        "checks": [
+          {
+            "id": "slip.required_field.slip",
+            "label": "Required field 'slip' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.author",
+            "label": "Required field 'author' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.type",
+            "label": "Required field 'type' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.created",
+            "label": "Required field 'created' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "slip",
+            "passed": false,
+            "details": "Missing: abstract"
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "sub": 196,
+      "secret": 102,
+      "1": 100,
+      "shares": 78,
+      "master": 70,
+      "sup": 66,
+      "s": 51,
+      "n": 48,
+      "t": 47,
+      "group": 44,
+      "0039": 42,
+      "x": 41,
+      "2": 40,
+      "bip": 39,
+      "value": 37,
+      "share": 36,
+      "bits": 35,
+      "scheme": 34,
+      "le": 33,
+      "mnemonic": 31,
+      "4": 31,
+      "m": 31,
+      "slip": 29,
+      "com": 27,
+      "minus": 27,
+      "3": 27,
+      "y": 27,
+      "https": 25,
+      "passphrase": 23,
+      "length": 23,
+      "0": 23,
+      "r": 23,
+      "sharing": 22,
+      "g": 22,
+      "index": 22,
+      "checksum": 21,
+      "member": 21,
+      "shared": 21,
+      "words": 21,
+      "github": 20,
+      "gt": 20,
+      "threshold": 20,
+      "bit": 20,
+      "ext": 20,
+      "wallet": 20,
+      "shamir": 19,
+      "gf": 19,
+      "number": 18,
+      "bytes": 18,
+      "polynomial": 17,
+      "ems": 17,
+      "id": 16,
+      "e": 16,
+      "f": 16,
+      "field": 16,
+      "values": 16,
+      "digest": 15,
+      "key": 15,
+      "encryption": 14,
+      "use": 14,
+      "implementations": 14,
+      "possible": 14,
+      "set": 14,
+      "user": 14,
+      "specification": 13,
+      "0032": 13,
+      "string": 13,
+      "given": 13,
+      "256": 13,
+      "10": 13,
+      "function": 13,
+      "encrypted": 12,
+      "code": 12,
+      "level": 11,
+      "blob": 11,
+      "let": 11,
+      "p": 11,
+      "wordlist": 10,
+      "wallets": 10,
+      "implementation": 10,
+      "design": 10,
+      "indicates": 10,
+      "list": 10,
+      "mnemonics": 10,
+      "32": 10,
+      "generating": 9,
+      "bitcoin": 9,
+      "ms": 9,
+      "5": 9,
+      "equal": 9,
+      "multiple": 9,
+      "d": 9,
+      "single": 9,
+      "pbkdf2": 9,
+      "k": 9,
+      "data": 9,
+      "return": 9,
+      "compute": 9,
+      "new": 9,
+      "l": 9,
+      "seed": 9,
+      "interpolation": 8,
+      "sss": 8,
+      "16": 8,
+      "input": 8,
+      "different": 8,
+      "c": 8,
+      "j": 8,
+      "hmac": 8,
+      "slip39": 8,
+      "combining": 7,
+      "hierarchical": 7,
+      "deterministic": 7,
+      "bips": 7,
+      "mediawiki": 7,
+      "required": 7,
+      "order": 7,
+      "reconstruct": 7,
+      "integer": 7,
+      "random": 7,
+      "identifier": 7,
+      "iteration": 7,
+      "exponent": 7,
+      "need": 7,
+      "obtain": 7,
+      "gi": 7,
+      "iterations": 7,
+      "encoded": 7,
+      "word": 7,
+      "128": 7,
+      "support": 7,
+      "valid": 7,
+      "allows": 7,
+      "created": 6,
+      "backing": 6,
+      "test": 6,
+      "parts": 6,
+      "knowledge": 6,
+      "total": 6,
+      "members": 6,
+      "backup": 6,
+      "flag": 6,
+      "case": 6,
+      "split": 6,
+      "output": 6,
+      "indexencoding": 6,
+      "org": 6,
+      "way": 6,
+      "byte": 6,
+      "8": 6,
+      "alice": 6,
+      "count": 6,
+      "padded": 6,
+      "cs": 6,
+      "entropy": 6,
+      "sha256": 6,
+      "error": 6,
+      "chk": 6,
+      "derivation": 6,
+      "invalid": 6,
+      "attacker": 6,
+      "attacks": 6,
+      "sha": 6,
+      "codes": 5,
+      "standard": 5,
+      "satoshilabs": 5,
+      "format": 5,
+      "decryption": 5,
+      "vectors": 5,
+      "described": 5,
+      "information": 5,
+      "groups": 5,
+      "extendable": 5,
+      "secrets": 5,
+      "stored": 5,
+      "255": 5,
+      "randomly": 5,
+      "254": 5,
+      "makes": 5,
+      "owner": 5,
+      "shareholders": 5,
+      "example": 5,
+      "family": 5,
+      "6": 5,
+      "needed": 5,
+      "rs1024": 5,
+      "customization": 5,
+      "1024": 5,
+      "check": 5,
+      "gm": 5,
+      "reed": 5,
+      "solomon": 5,
+      "pseudorandom": 5,
+      "users": 5,
+      "available": 5,
+      "512": 5,
+      "multi": 5,
+      "advantage": 5,
+      "funds": 5,
+      "force": 5,
+      "notation": 4,
+      "versioning": 4,
+      "localization": 4,
+      "reference": 4,
+      "splits": 4,
+      "unique": 4,
+      "positive": 4,
+      "15": 4,
+      "recovery": 4,
+      "future": 4,
+      "propose": 4,
+      "corresponding": 4,
+      "point": 4,
+      "found": 4,
+      "wikipedia": 4,
+      "en": 4,
+      "generated": 4,
+      "encoding": 4,
+      "verify": 4,
+      "splitting": 4,
+      "recover": 4,
+      "finite": 4,
+      "aes": 4,
+      "able": 4,
+      "friends": 4,
+      "b": 4,
+      "following": 4,
+      "actual": 4,
+      "correct": 4,
+      "conditions": 4,
+      "vector": 4,
+      "abort": 4,
+      "msg": 4,
+      "correction": 4,
+      "suggesting": 4,
+      "form": 4,
+      "errors": 4,
+      "passphrases": 4,
+      "permutation": 4,
+      "based": 4,
+      "len": 4,
+      "sets": 4,
+      "rust": 4,
+      "prime": 4,
+      "arithmetic": 4,
+      "fact": 4,
+      "require": 4,
+      "access": 4,
+      "uses": 4,
+      "brute": 4,
+      "partial": 4,
+      "running": 4,
+      "step": 4,
+      "abstract": 3,
+      "motivation": 3,
+      "rationale": 3,
+      "references": 3,
+      "original": 3,
+      "compatible": 3,
+      "octet": 3,
+      "concatenation": 3,
+      "xor": 3,
+      "loss": 3,
+      "asset": 3,
+      "risk": 3,
+      "provides": 3,
+      "better": 3,
+      "change": 3,
+      "degree": 3,
+      "points": 3,
+      "provided": 3,
+      "exactly": 3,
+      "wiki": 3,
+      "encodes": 3,
+      "applied": 3,
+      "modulo": 3,
+      "fips": 3,
+      "197": 3,
+      "social": 3,
+      "th": 3,
+      "second": 3,
+      "creator": 3,
+      "grouppolicies": 3,
+      "create": 3,
+      "size": 3,
+      "ps": 3,
+      "padding": 3,
+      "salt": 3,
+      "times": 3,
+      "big": 3,
+      "endian": 3,
+      "containing": 3,
+      "security": 3,
+      "lagrange": 3,
+      "desired": 3,
+      "pairs": 3,
+      "splitsecret": 3,
+      "indices": 3,
+      "generate": 3,
+      "recoversecret": 3,
+      "7": 3,
+      "implement": 3,
+      "potentially": 3,
+      "checksumdesign": 3,
+      "distinct": 3,
+      "decrypt": 3,
+      "criteria": 3,
+      "def": 3,
+      "rs1024_polymod": 3,
+      "range": 3,
+      "chance": 3,
+      "detect": 3,
+      "processed": 3,
+      "round": 3,
+      "feistel": 3,
+      "means": 3,
+      "making": 3,
+      "salt_prefix": 3,
+      "difference": 3,
+      "intentional": 3,
+      "trezor": 3,
+      "http": 3,
+      "choice": 3,
+      "considered": 3,
+      "chosen": 3,
+      "precision": 3,
+      "recommended": 3,
+      "failure": 3,
+      "disadvantage": 3,
+      "attack": 3,
+      "regardless": 3,
+      "bech32": 3,
+      "0173": 3,
+      "hardware": 3,
+      "64": 3,
+      "platforms": 3,
+      "larger": 3,
+      "high": 3,
+      "adversary": 3,
+      "concern": 3,
+      "real": 3,
+      "decoy": 3,
+      "later": 3,
+      "converting": 3,
+      "convert": 3,
+      "old": 3,
+      "conversion": 3,
+      "andrew": 2,
+      "kozlik": 2,
+      "ondrej": 2,
+      "vejpustek": 2,
+      "tomas": 2,
+      "susanka": 2,
+      "hoenicke": 2,
+      "interoperable": 2,
+      "distributed": 2,
+      "specified": 2,
+      "minimum": 2,
+      "supplied": 2,
+      "fewer": 2,
+      "leak": 2,
+      "bip39compatibility": 2,
+      "unsigned": 2,
+      "124": 2,
+      "strings": 2,
+      "digital": 2,
+      "assets": 2,
+      "generally": 2,
+      "important": 2,
+      "systems": 2,
+      "usual": 2,
+      "approach": 2,
+      "protecting": 2,
+      "backups": 2,
+      "significant": 2,
+      "mechanism": 2,
+      "parties": 2,
+      "perform": 2,
+      "cryptographic": 2,
+      "details": 2,
+      "remaining": 2,
+      "computed": 2,
+      "diagram": 2,
+      "curve": 2,
+      "separately": 2,
+      "finitefield": 2,
+      "elements": 2,
+      "operations": 2,
+      "irreducible": 2,
+      "doi": 2,
+      "6028": 2,
+      "nist": 2,
+      "trust": 2,
+      "furthermore": 2,
+      "allen": 2,
+      "friedenbach": 2,
+      "weboftrustinfo": 2,
+      "rwot8": 2,
+      "barcelona": 2,
+      "topics": 2,
+      "advance": 2,
+      "readings": 2,
+      "md": 2,
+      "combinations": 2,
+      "likely": 2,
+      "collude": 2,
+      "aka": 2,
+      "sufficient": 2,
+      "accommodate": 2,
+      "cases": 2,
+      "maintaining": 2,
+      "comprehensive": 2,
+      "wants": 2,
+      "greater": 2,
+      "accordance": 2,
+      "extendablebackup": 2,
+      "10000": 2,
+      "20": 2,
+      "construction": 2,
+      "property": 2,
+      "tell": 2,
+      "start": 2,
+      "lowest": 2,
+      "satisfies": 2,
+      "formula": 2,
+      "work": 2,
+      "x_j": 2,
+      "lt": 2,
+      "uniform": 2,
+      "distribution": 2,
+      "suitable": 2,
+      "pairwise": 2,
+      "fails": 2,
+      "python3": 2,
+      "snippet": 2,
+      "rs1024_verify_checksum": 2,
+      "gen": 2,
+      "v": 2,
+      "ord": 2,
+      "implements": 2,
+      "detection": 2,
+      "9": 2,
+      "ascii": 2,
+      "polymod": 2,
+      "allow": 2,
+      "additional": 2,
+      "protection": 2,
+      "passphraseverification": 2,
+      "interoperability": 2,
+      "wide": 2,
+      "blocksize": 2,
+      "consists": 2,
+      "kdfparam": 2,
+      "choose": 2,
+      "long": 2,
+      "follows": 2,
+      "defined": 2,
+      "password": 2,
+      "2500": 2,
+      "doesn": 2,
+      "avoid": 2,
+      "compatibility": 2,
+      "english": 2,
+      "attempts": 2,
+      "creation": 2,
+      "letters": 2,
+      "common": 2,
+      "application": 2,
+      "sha512": 2,
+      "fourth": 2,
+      "private": 2,
+      "python": 2,
+      "xecrets": 2,
+      "dart": 2,
+      "ilap": 2,
+      "bluewallet": 2,
+      "easy": 2,
+      "programming": 2,
+      "cipher": 2,
+      "log": 2,
+      "store": 2,
+      "admissible": 2,
+      "fly": 2,
+      "determine": 2,
+      "provide": 2,
+      "experience": 2,
+      "produce": 2,
+      "reduce": 2,
+      "instead": 2,
+      "protected": 2,
+      "encode": 2,
+      "appear": 2,
+      "eliminating": 2,
+      "large": 2,
+      "impractical": 2,
+      "creating": 2,
+      "maximum": 2,
+      "bch": 2,
+      "primitive": 2,
+      "corrections": 2,
+      "problem": 2,
+      "algorithm": 2,
+      "operates": 2,
+      "platform": 2,
+      "proof": 2,
+      "obtains": 2,
+      "strong": 2,
+      "protects": 2,
+      "slow": 2,
+      "reveal": 2,
+      "feature": 2,
+      "existing": 2,
+      "upgrades": 2,
+      "lead": 2,
+      "device": 2,
+      "computer": 2,
+      "software": 2,
+      "incompatible": 2
+    },
+    "changes_in_status": [],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        {
+          "target": "bips:32",
+          "count": 18
+        },
+        {
+          "target": "bips:39",
+          "count": 20
+        },
+        {
+          "target": "bips:173",
+          "count": 3
+        }
+      ],
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:00:08Z",
+          "dependencies": []
+        }
+      ]
+    }
+  }
+}

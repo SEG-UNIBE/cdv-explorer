@@ -1,0 +1,123 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - dev
+    paths:
+      - '.github/workflows/ci.yml'
+      - '.github/workflows/deploy-dev.yml'
+      - '.github/workflows/deploy-prod.yml'
+      - 'react/**'
+      - 'scripts/validate_artifacts.py'
+      - 'ip_data/**/01_harvest/**'
+      - 'ip_data/**/02_preprocess/**'
+      - 'ip_data/**/03_analysis/**'
+      - 'ip_data/**/04_postprocess/**'
+      - 'analysis/**'
+      - 'pipeline/**'
+      - 'ecosystems/**'
+      - 'tests/**'
+      - 'requirements*.txt'
+      - 'main.py'
+  pull_request:
+    branches:
+      - main
+      - master
+      - dev
+    paths:
+      - '.github/workflows/ci.yml'
+      - '.github/workflows/deploy-dev.yml'
+      - '.github/workflows/deploy-prod.yml'
+      - 'react/**'
+      - 'scripts/validate_artifacts.py'
+      - 'ip_data/**/01_harvest/**'
+      - 'ip_data/**/02_preprocess/**'
+      - 'ip_data/**/03_analysis/**'
+      - 'ip_data/**/04_postprocess/**'
+      - 'analysis/**'
+      - 'pipeline/**'
+      - 'ecosystems/**'
+      - 'tests/**'
+      - 'requirements*.txt'
+      - 'main.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Install dev dependencies
+        run: pip install -r requirements-dev.txt
+
+      - name: Run ruff check
+        run: ruff check .
+
+  test-unit:
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Install dev dependencies
+        run: pip install -r requirements-dev.txt
+
+      - name: Run pytest
+        run: pytest
+
+  artifact-validation:
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Install dev dependencies
+        run: pip install -r requirements-dev.txt
+
+      - name: Validate snapshot artifacts
+        run: python scripts/validate_artifacts.py
+
+  test-frontend:
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: react/package-lock.json
+
+      - name: Install frontend dependencies
+        run: npm ci
+        working-directory: react
+
+      - name: Generate frontend indexes
+        run: npm run prebuild
+        working-directory: react
+
+      - name: Run frontend tests
+        run: npm test -- --watchAll=false
+        working-directory: react
+        env:
+          CI: true

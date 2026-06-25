@@ -16,6 +16,7 @@ from analysis.conformity.compliance import (
 from pipeline.preprocess.checkers import get_checker
 from analysis.classification.preprocess import normalize_classification_fields
 from analysis.proposal_schema import normalize_proposal_document
+from pipeline.source_context import SourceContext
 
 # Matches a line that consists entirely of backtick-wrapped tokens: `draft` `mandatory` `relay`
 _TAG_LINE_PATTERN = re.compile(r"^(\s*`[^`]+`)+\s*$")
@@ -140,7 +141,9 @@ def _save_json(
     required_fields: List[str],
     optional_fields: List[str],
     compliance_payload: Optional[Dict[str, Any]],
-) -> None:
+    source_context: SourceContext | None = None,
+) -> Path:
+    context = source_context or SourceContext.default()
     output_dir.mkdir(parents=True, exist_ok=True)
     nip_id = str(preamble.get(id_field, "unknown")).upper()
     json_filename = f"{file_prefix}-{nip_id}.json"
@@ -149,7 +152,10 @@ def _save_json(
     existing: Dict[str, Any] = {}
     if output_path.exists():
         try:
-            existing = normalize_proposal_document(json.loads(output_path.read_text(encoding="utf-8")))
+            existing = normalize_proposal_document(
+                json.loads(output_path.read_text(encoding="utf-8")),
+                source_context=context,
+            )
         except (json.JSONDecodeError, OSError):
             existing = {}
 
@@ -157,7 +163,7 @@ def _save_json(
     for field in required_fields + optional_fields:
         ordered_preamble[field] = preamble.get(field)
 
-    json_data = normalize_proposal_document(existing)
+    json_data = normalize_proposal_document(existing, source_context=context)
     json_data["raw"]["preamble"] = ordered_preamble
     json_data["insights"]["formal_compliance"] = compliance_payload or {}
 
@@ -166,6 +172,7 @@ def _save_json(
             json_data[key] = value
 
     output_path.write_text(json.dumps(json_data, ensure_ascii=False, indent=2), encoding="utf-8")
+    return output_path
 
 
 def extract(
@@ -180,6 +187,7 @@ def extract(
     optional_fields: List[str] = preamble_config["optional_fields"]
     file_prefix: str = src_config["document_prefix"]
     id_field: str = src_config["primary_id_field"]
+    source_context = SourceContext.from_config(src_config)
 
     file_pattern = re.compile(src_config["document_file_pattern"], re.IGNORECASE)
     proposal_files = sorted(
@@ -201,6 +209,8 @@ def extract(
         mininterval=0.5,
     )
 
+    written_paths: set[Path] = set()
+
     for proposal_file in progress:
         if local_progress:
             progress.set_postfix_str(proposal_file.name, refresh=False)
@@ -209,18 +219,22 @@ def extract(
 
         content = proposal_file.read_text(encoding="utf-8")
         preamble = _parse_nip_file(content, proposal_file.name, src_config)
-        preamble = normalize_classification_fields(preamble)
+        preamble = normalize_classification_fields(preamble, source_context=source_context)
         _check_required(preamble, required_fields)
         _add_missing_optional(preamble, optional_fields)
         checker = get_checker(src_config.get("compliance_checker", "nip"))
         compliance_payload = build_compliance_payload(checker(preamble, content, src_config))
         preamble["Compliance Score"] = compliance_payload["score"]
-        _save_json(
+        written_paths.add(_save_json(
             preamble, output_dir, file_prefix, id_field,
-            required_fields, optional_fields, compliance_payload,
-        )
+            required_fields, optional_fields, compliance_payload, source_context,
+        ))
 
         if progress_callback is not None:
             progress_callback(proposal_file.name, 1)
 
     progress.close()
+
+    for stale_path in output_dir.glob(f"{file_prefix}-*.json"):
+        if stale_path not in written_paths:
+            stale_path.unlink()

@@ -1,0 +1,324 @@
+{
+  "raw": {
+    "preamble": {
+      "slip": "15",
+      "title": "Format for Bitcoin metadata and its encryption in HD wallets",
+      "author": [
+        "Karel Bilek <kb@karelbilek.com>"
+      ],
+      "status": "Final",
+      "type": "Standard",
+      "created": "2015-01-12"
+    }
+  },
+  "meta": {
+    "last_commit": "Tue Mar 9 17:28:27 2021 +0100",
+    "total_commits": 9,
+    "git_history": [
+      [
+        "508968da89aeb23a07d14109207cbd49aa0ca12a",
+        "Tue Mar 9 17:28:27 2021 +0100",
+        "Andrew Kozlik"
+      ],
+      [
+        "541f85eaff448326b29af2635fefc0b8511fc5ae",
+        "Sun May 12 17:58:17 2019 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "6428068ab9b4a33d8d0f2f5188cd028940357c17",
+        "Fri Jul 20 14:27:26 2018 +0530",
+        "Rohan Agarwal"
+      ],
+      [
+        "40c88470be714e81a5149b50adf2db25ab230bf4",
+        "Tue Mar 14 21:54:43 2017 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "bff6ca0cfc0500e03c70f9b9a954bbcdbb32964a",
+        "Wed Jun 8 18:44:49 2016 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "dd0515ea647f86428f581c533b4818f7cb6f0425",
+        "Thu Feb 18 18:02:25 2016 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "1964e3cb51719ff6f583041ca7e9794327711e44",
+        "Mon Feb 1 16:07:37 2016 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "fba5141f5504f1f2b5877db6e3ef186e7846442e",
+        "Mon Feb 1 16:06:01 2016 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "b76151348a7430013a4b147725ed94b0f6b72994",
+        "Mon Feb 1 16:02:09 2016 +0100",
+        "Pavol Rusnak"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 85.71,
+      "passed_checks": 6,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 7,
+      "slip": {
+        "score": 85.71,
+        "passed_checks": 6,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 7,
+        "checks": [
+          {
+            "id": "slip.required_field.slip",
+            "label": "Required field 'slip' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.author",
+            "label": "Required field 'author' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.type",
+            "label": "Required field 'type' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.created",
+            "label": "Required field 'created' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "slip",
+            "passed": false,
+            "details": "Missing: abstract"
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "key": 32,
+      "account": 18,
+      "metadata": 13,
+      "master": 12,
+      "slip": 11,
+      "file": 9,
+      "labels": 8,
+      "device": 8,
+      "string": 8,
+      "deriving": 8,
+      "0": 8,
+      "example": 8,
+      "py": 8,
+      "0015": 7,
+      "want": 7,
+      "filename": 7,
+      "format": 6,
+      "wallets": 6,
+      "use": 6,
+      "derive": 6,
+      "bytes": 6,
+      "trezor": 6,
+      "bitcoin": 5,
+      "encryption": 5,
+      "hd": 5,
+      "hardware": 5,
+      "1": 5,
+      "byte": 5,
+      "sequence": 5,
+      "hexadecimal": 5,
+      "defined": 5,
+      "hmac": 5,
+      "api": 5,
+      "keys": 5,
+      "label": 5,
+      "code": 5,
+      "wallet": 4,
+      "don": 4,
+      "t": 4,
+      "able": 4,
+      "following": 4,
+      "xpub": 4,
+      "previous": 4,
+      "object": 4,
+      "version": 4,
+      "12": 3,
+      "save": 3,
+      "transaction": 3,
+      "accounts": 3,
+      "secure": 3,
+      "data": 3,
+      "cloud": 3,
+      "applications": 3,
+      "json": 3,
+      "iv": 3,
+      "random": 3,
+      "function": 3,
+      "gcm": 3,
+      "outputlabels": 3,
+      "described": 3,
+      "addresslabels": 3,
+      "addresses": 3,
+      "values": 3,
+      "output": 3,
+      "argument": 3,
+      "com": 2,
+      "way": 2,
+      "goals": 2,
+      "mytrezor": 2,
+      "saved": 2,
+      "dropbox": 2,
+      "usage": 2,
+      "effortless": 2,
+      "3": 2,
+      "files": 2,
+      "general": 2,
+      "connected": 2,
+      "encrypt": 2,
+      "unsecure": 2,
+      "read": 2,
+      "storage": 2,
+      "operator": 2,
+      "design": 2,
+      "party": 2,
+      "cipherkeyvalue": 2,
+      "path": 2,
+      "bip32": 2,
+      "true": 2,
+      "0011": 2,
+      "256": 2,
+      "bits": 2,
+      "long": 2,
+      "treated": 2,
+      "section": 2,
+      "result": 2,
+      "converted": 2,
+      "base58check": 2,
+      "encoding": 2,
+      "password": 2,
+      "constant": 2,
+      "half": 2,
+      "mtdt": 2,
+      "second": 2,
+      "tag": 2,
+      "looks": 2,
+      "like": 2,
+      "accountlabel": 2,
+      "indexes": 2,
+      "receiving": 2,
+      "saving": 2,
+      "equivalent": 2,
+      "set": 2,
+      "1_masterkey": 2,
+      "python": 2,
+      "stress": 2,
+      "test": 2,
+      "0014": 2,
+      "hex": 2,
+      "2_accountkey": 2,
+      "step": 2,
+      "v5kcxskltsnwmgpbearyfdweg9zxouf34l72763zjlrs4lwy8": 2,
+      "3_decrypt": 2,
+      "4_encrypt": 2
+    },
+    "changes_in_status": [],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        {
+          "target": "bips:32",
+          "count": 2
+        },
+        {
+          "target": "slips:1",
+          "count": 1
+        },
+        {
+          "target": "slips:2",
+          "count": 1
+        },
+        {
+          "target": "slips:3",
+          "count": 1
+        },
+        {
+          "target": "slips:4",
+          "count": 1
+        },
+        {
+          "target": "slips:11",
+          "count": 2
+        },
+        {
+          "target": "slips:14",
+          "count": 2
+        }
+      ],
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:55:17Z",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "path: `m/10015'/0'` (hardened path, see BIP32)",
+              "reason": "The proposal uses BIP32 hardened derivation syntax and xpub semantics to define master and account key derivation.",
+              "confidence": "high"
+            },
+            {
+              "target": "slips:11",
+              "evidence": "CipherKeyValue is defined in [SLIP-0011]",
+              "reason": "The master key derivation relies on the CipherKeyValue device command defined by this proposal.",
+              "confidence": "high"
+            },
+            {
+              "target": "slips:14",
+              "evidence": "For the \"stress test\" wallet, defined in SLIP-0014",
+              "reason": "The document’s example values and test vectors are specialized for the wallet defined by SLIP-0014, making it an input assumption for the examples.",
+              "confidence": "medium"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

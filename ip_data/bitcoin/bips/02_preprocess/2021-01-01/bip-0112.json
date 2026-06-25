@@ -1,0 +1,858 @@
+{
+  "raw": {
+    "preamble": {
+      "bip": "112",
+      "title": "CHECKSEQUENCEVERIFY",
+      "author": [
+        "BtcDrak <btcdrak@gmail.com>",
+        "Mark Friedenbach <mark@friedenbach.org>",
+        "Eric Lombrozo <elombrozo@gmail.com>"
+      ],
+      "comments_uri": "https://github.com/bitcoin/bips/wiki/Comments:BIP-0112",
+      "status": "Final",
+      "type": "Standards Track",
+      "created": "2015-08-10",
+      "license": [
+        "PD"
+      ],
+      "layer": "Consensus (soft fork)",
+      "discussions_to": null,
+      "comments_summary": "No comments yet.",
+      "license_code": null,
+      "post_history": null,
+      "requires": null,
+      "replaces": null,
+      "proposed_replacement": null
+    }
+  },
+  "meta": {
+    "last_commit": "Wed May 16 19:23:22 2018 +0200",
+    "total_commits": 33,
+    "git_history": [
+      [
+        "a5c5c7622093ee758f7bae3156b9f79a51da65fb",
+        "Wed May 16 19:23:22 2018 +0200",
+        "Federico Tenga"
+      ],
+      [
+        "959fecc15bdad070afa63455468b1dba54655fa6",
+        "Wed Nov 30 09:47:31 2016 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "Wed Nov 30 09:45:33 2016 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "1402ca99cba8c7b370248e5b7e09603d80c5c491",
+        "Wed Jul 27 17:11:09 2016 +0800",
+        "Johnson Lau"
+      ],
+      [
+        "c98859fe20617df141da0dd08d399921c7097be9",
+        "Mon Jul 18 23:37:42 2016 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "7478ee3260c0d3c0cef39233931b307691764edc",
+        "Fri Jun 24 01:59:25 2016 +0800",
+        "jl2012"
+      ],
+      [
+        "bffcc0c29a25e3fcbf92ee15fa6f23fe53a7c469",
+        "Sat Apr 30 22:19:43 2016 -0700",
+        "Chris Moore"
+      ],
+      [
+        "63660c0fb738271cc2b56973e4ce942cf04fcdce",
+        "Thu Mar 17 20:14:31 2016 +0000",
+        "BtcDrak"
+      ],
+      [
+        "a712fe5e22eb05968a5862fe4efebed9fb0c5ce7",
+        "Sat Feb 13 12:14:03 2016 +0000",
+        "BtcDrak"
+      ],
+      [
+        "545017feb4bcb9ad00c435c528643a483d6ffa16",
+        "Fri Feb 12 19:01:52 2016 +0100",
+        "paveljanik"
+      ],
+      [
+        "cde1e50d9d3cd522463216889485fe5324a4df3d",
+        "Fri Feb 12 18:52:13 2016 +0100",
+        "paveljanik"
+      ],
+      [
+        "4edd6d2badd9a6ad2ff09bb6792fe0d0e365a7de",
+        "Wed Feb 3 07:02:36 2016 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "ac4cd1d46cf64b67f6d2d4376119a7d18728ce4b",
+        "Tue Dec 1 01:47:16 2015 +0800",
+        "jl2012"
+      ],
+      [
+        "dd208025cd608bfb43139a7fa7aefb2b0c52deeb",
+        "Sat Nov 28 19:14:04 2015 +0000",
+        "Luke-Jr"
+      ],
+      [
+        "86d135825603f64c6b03df86a356f98969b811d3",
+        "Wed Nov 25 18:53:09 2015 +0000",
+        "BtcDrak"
+      ],
+      [
+        "0026fcb929c430c9211631aa9277d417c532bb34",
+        "Wed Nov 25 18:48:39 2015 +0000",
+        "BtcDrak"
+      ],
+      [
+        "8d85335f2a09413e3d365b0e329e2c22f879af30",
+        "Tue Nov 24 17:44:54 2015 +0000",
+        "BtcDrak"
+      ],
+      [
+        "d30f1c6d0b02f1c22086852e274b3c4ba98d2434",
+        "Tue Nov 24 13:08:54 2015 +0000",
+        "BtcDrak"
+      ],
+      [
+        "4048f45316faa85f8327d1febe080c83b72fc2e7",
+        "Mon Nov 23 20:21:32 2015 +0000",
+        "BtcDrak"
+      ],
+      [
+        "cc90614074444d1bff1a60e1511c051e336eaab8",
+        "Tue Nov 17 07:37:03 2015 -0500",
+        "Eric Lombrozo"
+      ],
+      [
+        "2a685b018499606251e2711aa9b50221b660daea",
+        "Mon Oct 5 16:39:01 2015 -0700",
+        "Mark Friedenbach"
+      ],
+      [
+        "88507b49da209f886212e9237d0ec50e23216a71",
+        "Mon Oct 5 16:37:54 2015 -0700",
+        "Mark Friedenbach"
+      ],
+      [
+        "748f33ccfb88f904287a076abffc6469bc097995",
+        "Sun Oct 4 19:23:12 2015 +0100",
+        "BtcDrak"
+      ],
+      [
+        "d80b70554399e1f5125773466bb276224bc0b295",
+        "Sun Oct 4 07:55:20 2015 -0700",
+        "Eric Lombrozo"
+      ],
+      [
+        "bb6869a336e63d4720d59da833666e11447a3cef",
+        "Sun Oct 4 15:21:03 2015 +0100",
+        "BtcDrak"
+      ],
+      [
+        "39c269cb0de9fdf89e7959a3fde104a6268f114f",
+        "Sun Oct 4 04:43:25 2015 -0700",
+        "Eric Lombrozo"
+      ],
+      [
+        "e2d6ffbadd36db4395e29fea61804fd8fc945c16",
+        "Sun Oct 4 03:51:17 2015 -0700",
+        "Eric Lombrozo"
+      ],
+      [
+        "9c0df8fd0d1b4e9ff94f6e3d8799c69d17473066",
+        "Sun Oct 4 10:42:51 2015 +0100",
+        "BtcDrak"
+      ],
+      [
+        "315bd227d717cb57aa42abb14816671bd07bee8f",
+        "Sat Oct 3 23:26:22 2015 +0100",
+        "BtcDrak"
+      ],
+      [
+        "4b0c6dc4ad23fce54b75182b43ec314fc8889ef3",
+        "Sat Oct 3 23:24:17 2015 +0100",
+        "BtcDrak"
+      ],
+      [
+        "5273cdc3b902022da35b0e673a87efa820270cd1",
+        "Sat Oct 3 23:14:20 2015 +0100",
+        "BtcDrak"
+      ],
+      [
+        "b962c479b3276ccb00a6c71d66532c5bdf6bacf8",
+        "Sat Sep 26 09:54:13 2015 +0100",
+        "BtcDrak"
+      ],
+      [
+        "6902f790f174c8af934869dcc5f10f94f816f65d",
+        "Thu Aug 13 08:14:38 2015 +0100",
+        "฿tcDrak"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 86.21,
+      "passed_checks": 25,
+      "failed_checks": 4,
+      "skipped_checks": 12,
+      "total_checks": 29,
+      "bip2": {
+        "score": 100.0,
+        "passed_checks": 12,
+        "failed_checks": 0,
+        "skipped_checks": 0,
+        "total_checks": 12,
+        "checks": [
+          {
+            "id": "bip2.required_field.bip",
+            "label": "Required field 'bip' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.author",
+            "label": "Required field 'author' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.comments_uri",
+            "label": "Required field 'comments_uri' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.type",
+            "label": "Required field 'type' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.created",
+            "label": "Required field 'created' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.license",
+            "label": "Required field 'license' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.heading.motivation",
+            "label": "Heading 'motivation' exists at level 2",
+            "category": "heading",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.heading.specification",
+            "label": "Heading 'specification' exists at level 2",
+            "category": "heading",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.heading.copyright",
+            "label": "Heading 'copyright' exists at level 2",
+            "category": "heading",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          }
+        ]
+      },
+      "bip3": {
+        "score": 76.47,
+        "passed_checks": 13,
+        "failed_checks": 4,
+        "skipped_checks": 12,
+        "total_checks": 17,
+        "checks": [
+          {
+            "id": "bip3.preamble.top_rfc822",
+            "label": "Preamble exists as RFC-822-style metadata at the top",
+            "category": "preamble",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.bip",
+            "label": "Required header 'bip' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.title",
+            "label": "Required header 'title' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.authors",
+            "label": "Required header 'authors' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": false,
+            "details": "Missing required header 'authors'"
+          },
+          {
+            "id": "bip3.required_header.status",
+            "label": "Required header 'status' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.type",
+            "label": "Required header 'type' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.assigned",
+            "label": "Required header 'assigned' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": false,
+            "details": "Missing required header 'assigned'"
+          },
+          {
+            "id": "bip3.required_header.license",
+            "label": "Required header 'license' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_order",
+            "label": "Headers appear in the expected BIP3 order",
+            "category": "header_order",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.bip",
+            "label": "Header 'BIP' is an integer without leading zeros or '?'",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.title",
+            "label": "Header 'Title' is 50 characters or fewer",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.authors",
+            "label": "Header 'authors' uses 'Name <email>' entries",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.deputies",
+            "label": "Header 'deputies' uses 'Name <email>' entries",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.status",
+            "label": "Header 'Status' is one of Draft, Complete, Deployed, Closed",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": false,
+            "details": "Invalid Status 'Final'"
+          },
+          {
+            "id": "bip3.header_value.type",
+            "label": "Header 'Type' is one of Specification, Informational, Process",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": false,
+            "details": "Invalid Type 'Standards Track'"
+          },
+          {
+            "id": "bip3.header_value.assigned",
+            "label": "Header 'Assigned' is yyyy-mm-dd or '?'",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.license",
+            "label": "Header 'License' is non-empty",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.discussion",
+            "label": "Header 'Discussion' uses 'yyyy-mm-dd: URL' lines",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.version",
+            "label": "Header 'Version' uses MAJOR.MINOR.PATCH",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.requires",
+            "label": "Header 'requires' uses comma+space separated BIP numbers",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.replaces",
+            "label": "Header 'replaces' uses comma+space separated BIP numbers",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.proposed_replacement",
+            "label": "Header 'proposed_replacement' uses comma+space separated BIP numbers",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.required_section.abstract",
+            "label": "Required section 'abstract' is present",
+            "category": "required_section",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_section.motivation",
+            "label": "Required section 'motivation' is present",
+            "category": "required_section",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_section.copyright",
+            "label": "Required section 'copyright' is present",
+            "category": "required_section",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.type_specific.specification_section",
+            "label": "Type 'Specification' includes a 'Specification' section",
+            "category": "type_specific",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.changelog.changelog_section",
+            "label": "Complete/Deployed proposals include a 'Changelog' section",
+            "category": "changelog",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.changelog.version_header",
+            "label": "Complete/Deployed proposals include a 'Version' header",
+            "category": "changelog",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.changelog.version_matches",
+            "label": "Latest changelog version matches the 'Version' header",
+            "category": "changelog",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "transaction": 29,
+      "time": 27,
+      "alice": 26,
+      "bip": 22,
+      "s": 21,
+      "checksequenceverify": 19,
+      "bob": 19,
+      "bitcoin": 16,
+      "lock": 15,
+      "nsequence": 15,
+      "commitment": 15,
+      "2": 12,
+      "relative": 12,
+      "pubkey": 12,
+      "lightning": 12,
+      "ctxin": 12,
+      "com": 11,
+      "1": 11,
+      "https": 10,
+      "sequence": 10,
+      "return": 10,
+      "const": 10,
+      "github": 9,
+      "2015": 8,
+      "output": 8,
+      "set": 7,
+      "escrow": 7,
+      "timeout": 7,
+      "endif": 7,
+      "hash": 7,
+      "revocation": 7,
+      "equal": 7,
+      "sequence_locktime_type_flag": 7,
+      "nsequencemasked": 7,
+      "68": 6,
+      "script": 6,
+      "spent": 6,
+      "0": 6,
+      "number": 6,
+      "block": 6,
+      "field": 6,
+      "funds": 6,
+      "invalidation": 6,
+      "revoked": 6,
+      "secret": 6,
+      "channel": 6,
+      "hash160": 6,
+      "blob": 6,
+      "master": 6,
+      "consensus": 5,
+      "bips": 5,
+      "10": 5,
+      "new": 5,
+      "allows": 5,
+      "execution": 5,
+      "following": 5,
+      "stack": 5,
+      "flag": 5,
+      "31": 5,
+      "version": 5,
+      "input": 5,
+      "way": 5,
+      "payment": 5,
+      "contracts": 5,
+      "drop": 5,
+      "checksig": 5,
+      "branch": 5,
+      "counterparty": 5,
+      "transactions": 5,
+      "network": 5,
+      "checklocktimeverify": 5,
+      "reference": 5,
+      "implementation": 5,
+      "uint32_t": 5,
+      "cscriptnum": 5,
+      "bip9": 5,
+      "pre": 4,
+      "org": 4,
+      "comments": 4,
+      "based": 4,
+      "age": 4,
+      "pathway": 4,
+      "numbers": 4,
+      "semantics": 4,
+      "channels": 4,
+      "bidirectional": 4,
+      "like": 4,
+      "event": 4,
+      "provide": 4,
+      "delayed": 4,
+      "use": 4,
+      "anchor": 4,
+      "spend": 4,
+      "latest": 4,
+      "deployable": 4,
+      "set_error": 4,
+      "serror": 4,
+      "false": 4,
+      "txtosequencemasked": 4,
+      "apples": 4,
+      "midnight": 4,
+      "1st": 4,
+      "utc": 4,
+      "epoch": 4,
+      "timestamp": 4,
+      "mediawiki": 4,
+      "http": 4,
+      "btcdrak": 3,
+      "mark": 3,
+      "friedenbach": 3,
+      "final": 3,
+      "type": 3,
+      "opcode": 3,
+      "item": 3,
+      "reached": 3,
+      "comparing": 3,
+      "fail": 3,
+      "enforced": 3,
+      "code": 3,
+      "retroactive": 3,
+      "case": 3,
+      "blockchain": 3,
+      "mechanism": 3,
+      "window": 3,
+      "party": 3,
+      "htlcs": 3,
+      "allow": 3,
+      "claim": 3,
+      "locktime": 3,
+      "look": 3,
+      "24h": 3,
+      "r": 3,
+      "pdf": 3,
+      "flags": 3,
+      "static": 3,
+      "sequence_locktime_disable_flag": 3,
+      "break": 3,
+      "int64_t": 3,
+      "txtosequence": 3,
+      "bit": 3,
+      "nlocktimemask": 3,
+      "deployment": 3,
+      "lists": 3,
+      "linuxfoundation": 3,
+      "pipermail": 3,
+      "dev": 3,
+      "html": 3,
+      "soft": 2,
+      "fork": 2,
+      "gmail": 2,
+      "eric": 2,
+      "lombrozo": 2,
+      "summary": 2,
+      "pathways": 2,
+      "nop3": 2,
+      "executed": 2,
+      "true": 2,
+      "disable": 2,
+      "bip68": 2,
+      "nop": 2,
+      "prevents": 2,
+      "selected": 2,
+      "inclusion": 2,
+      "specified": 2,
+      "argument": 2,
+      "minimum": 2,
+      "meaning": 2,
+      "giving": 2,
+      "scripts": 2,
+      "making": 2,
+      "accessible": 2,
+      "possible": 2,
+      "proof": 2,
+      "applications": 2,
+      "times": 2,
+      "30": 2,
+      "days": 2,
+      "create": 2,
+      "3": 2,
+      "address": 2,
+      "clock": 2,
+      "ticking": 2,
+      "confirms": 2,
+      "future": 2,
+      "limitation": 2,
+      "past": 2,
+      "multiple": 2,
+      "branches": 2,
+      "condition": 2,
+      "effectively": 2,
+      "contract": 2,
+      "idea": 2,
+      "locked": 2,
+      "immediately": 2,
+      "wait": 2,
+      "provides": 2,
+      "means": 2,
+      "know": 2,
+      "blocks": 2,
+      "payments": 2,
+      "requires": 2,
+      "able": 2,
+      "slightly": 2,
+      "pay": 2,
+      "delay": 2,
+      "reveal": 2,
+      "old": 2,
+      "simple": 2,
+      "paying": 2,
+      "revokehash": 2,
+      "publish": 2,
+      "24": 2,
+      "hours": 2,
+      "12": 2,
+      "deadline": 2,
+      "principle": 2,
+      "dup": 2,
+      "2drop": 2,
+      "commit": 2,
+      "20": 2,
+      "33": 2,
+      "note": 2,
+      "elementsproject": 2,
+      "doc": 2,
+      "paper": 2,
+      "pegged": 2,
+      "reorgproofverify": 2,
+      "passed": 2,
+      "encodes": 2,
+      "mask": 2,
+      "sequence_locktime_mask": 2,
+      "numeric": 2,
+      "opcodes": 2,
+      "range": 2,
+      "byte": 2,
+      "limit": 2,
+      "5": 2,
+      "operand": 2,
+      "compare": 2,
+      "checksequence": 2,
+      "txto": 2,
+      "bits": 2,
+      "pull": 2,
+      "deployed": 2,
+      "versionbits": 2,
+      "starttime": 2,
+      "2016": 2,
+      "2017": 2,
+      "1493596800": 2,
+      "65": 2,
+      "document": 2,
+      "scaling": 2,
+      "billions": 2,
+      "day": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "ae46943f11faf80c1f69542f0976989c09cfa192",
+        "timestamp": "2015-09-07T00:03:50+01:00",
+        "date": "2015-09-07",
+        "author": "BtcDrak",
+        "path": "bip-csv.mediawiki",
+        "status": "Draft",
+        "standard": "bip2"
+      },
+      {
+        "commit": "c98859fe20617df141da0dd08d399921c7097be9",
+        "timestamp": "2016-07-18T23:37:42Z",
+        "date": "2016-07-18",
+        "author": "Luke Dashjr",
+        "path": "bip-0112.mediawiki",
+        "status": "Final",
+        "standard": "bip2"
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        {
+          "target": "bips:9",
+          "count": 7
+        },
+        {
+          "target": "bips:65",
+          "count": 3
+        },
+        {
+          "target": "bips:68",
+          "count": 9
+        },
+        {
+          "target": "bips:113",
+          "count": 3
+        }
+      ],
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:01:06Z",
+          "dependencies": []
+        }
+      ]
+    }
+  }
+}

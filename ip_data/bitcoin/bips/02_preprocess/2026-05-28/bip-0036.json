@@ -1,0 +1,647 @@
+{
+  "raw": {
+    "preamble": {
+      "bip": "36",
+      "title": "Custom Services",
+      "author": [
+        "Stefan Thomas <justmoon@members.fsf.org>"
+      ],
+      "comments_uri": null,
+      "status": "Closed",
+      "type": "Specification",
+      "created": "2012-08-03",
+      "license": [
+        "PD"
+      ],
+      "layer": "Peer Services",
+      "discussions_to": null,
+      "comments_summary": null,
+      "license_code": null,
+      "post_history": null,
+      "requires": null,
+      "replaces": null,
+      "proposed_replacement": null
+    }
+  },
+  "meta": {
+    "last_commit": "Fri Feb 27 14:12:41 2026 -0800",
+    "total_commits": 12,
+    "git_history": [
+      [
+        "b3a069464a8879dd858c392a788c9d19a9f7a075",
+        "Fri Feb 27 14:12:41 2026 -0800",
+        "Murch"
+      ],
+      [
+        "24e96e870fffaa257b465ce1f0370c14aac588e8",
+        "Wed Oct 8 14:59:36 2025 -0700",
+        "Murch"
+      ],
+      [
+        "5207ef92a52d0b8902895b0dbb40823a4d698ec9",
+        "Fri Apr 11 20:08:17 2025 -0700",
+        "Murch"
+      ],
+      [
+        "59730dec4fb641a41589aa1b91d3c452f13e0e36",
+        "Fri Apr 11 20:05:13 2025 -0700",
+        "Murch"
+      ],
+      [
+        "a233bde4af52c6a11269e2e6dd9707abce441ffe",
+        "Fri Apr 11 18:19:21 2025 -0700",
+        "Murch"
+      ],
+      [
+        "66defbdc03ad64ccddfd373e1c59af9a41ab990f",
+        "Fri Apr 11 18:11:55 2025 -0700",
+        "Murch"
+      ],
+      [
+        "29fcdcac132a387d1b9ca0a5a0a72cfd408fc057",
+        "Fri Mar 13 17:10:23 2020 -0600",
+        "Janus"
+      ],
+      [
+        "959fecc15bdad070afa63455468b1dba54655fa6",
+        "Wed Nov 30 09:47:31 2016 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "Wed Nov 30 09:45:33 2016 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "1647c7e6d3e3866454b803fd874df2d0c4991f4a",
+        "Sat Apr 5 13:46:56 2014 +0200",
+        "Wladimir J. van der Laan"
+      ],
+      [
+        "d9e890a8f27e46806238e298a346397871fd7e87",
+        "Mon Oct 21 02:18:47 2013 -0400",
+        "Peter Todd"
+      ],
+      [
+        "5772008309fd0d0c81dc3e10bc41ed2f49e8af5b",
+        "Mon Oct 21 00:55:26 2013 -0400",
+        "Peter Todd"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 96.88,
+      "passed_checks": 31,
+      "failed_checks": 1,
+      "skipped_checks": 9,
+      "total_checks": 32,
+      "bip2": {
+        "score": 91.67,
+        "passed_checks": 11,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 12,
+        "checks": [
+          {
+            "id": "bip2.required_field.bip",
+            "label": "Required field 'bip' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.author",
+            "label": "Required field 'author' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.comments_uri",
+            "label": "Required field 'comments_uri' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": false,
+            "details": "Missing required field 'comments_uri'"
+          },
+          {
+            "id": "bip2.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.type",
+            "label": "Required field 'type' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.created",
+            "label": "Required field 'created' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.license",
+            "label": "Required field 'license' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.heading.motivation",
+            "label": "Heading 'motivation' exists at level 2",
+            "category": "heading",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.heading.specification",
+            "label": "Heading 'specification' exists at level 2",
+            "category": "heading",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.heading.copyright",
+            "label": "Heading 'copyright' exists at level 2",
+            "category": "heading",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          }
+        ]
+      },
+      "bip3": {
+        "score": 100.0,
+        "passed_checks": 20,
+        "failed_checks": 0,
+        "skipped_checks": 9,
+        "total_checks": 20,
+        "checks": [
+          {
+            "id": "bip3.preamble.top_rfc822",
+            "label": "Preamble exists as RFC-822-style metadata at the top",
+            "category": "preamble",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.bip",
+            "label": "Required header 'bip' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.title",
+            "label": "Required header 'title' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.authors",
+            "label": "Required header 'authors' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.status",
+            "label": "Required header 'status' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.type",
+            "label": "Required header 'type' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.assigned",
+            "label": "Required header 'assigned' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.license",
+            "label": "Required header 'license' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_order",
+            "label": "Headers appear in the expected BIP3 order",
+            "category": "header_order",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.bip",
+            "label": "Header 'BIP' is an integer without leading zeros or '?'",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.title",
+            "label": "Header 'Title' is 50 characters or fewer",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.authors",
+            "label": "Header 'authors' uses 'Name <email>' entries",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.deputies",
+            "label": "Header 'deputies' uses 'Name <email>' entries",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.status",
+            "label": "Header 'Status' is one of Draft, Complete, Deployed, Closed",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.type",
+            "label": "Header 'Type' is one of Specification, Informational, Process",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.assigned",
+            "label": "Header 'Assigned' is yyyy-mm-dd or '?'",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.license",
+            "label": "Header 'License' is non-empty",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.discussion",
+            "label": "Header 'Discussion' uses 'yyyy-mm-dd: URL' lines",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.version",
+            "label": "Header 'Version' uses MAJOR.MINOR.PATCH",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.requires",
+            "label": "Header 'requires' uses comma+space separated BIP numbers",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.replaces",
+            "label": "Header 'replaces' uses comma+space separated BIP numbers",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.proposed_replacement",
+            "label": "Header 'proposed_replacement' uses comma+space separated BIP numbers",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.required_section.abstract",
+            "label": "Required section 'abstract' is present",
+            "category": "required_section",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_section.motivation",
+            "label": "Required section 'motivation' is present",
+            "category": "required_section",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_section.copyright",
+            "label": "Required section 'copyright' is present",
+            "category": "required_section",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.type_specific.specification_section",
+            "label": "Type 'Specification' includes a 'Specification' section",
+            "category": "type_specific",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.changelog.changelog_section",
+            "label": "Complete/Deployed proposals include a 'Changelog' section",
+            "category": "changelog",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.changelog.version_header",
+            "label": "Complete/Deployed proposals include a 'Version' header",
+            "category": "changelog",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.changelog.version_matches",
+            "label": "Latest changelog version matches the 'Version' header",
+            "category": "changelog",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "code": 94,
+      "service": 43,
+      "services": 35,
+      "custom": 21,
+      "00": 18,
+      "bip": 12,
+      "protocol": 11,
+      "message": 10,
+      "field": 10,
+      "version": 9,
+      "use": 9,
+      "bitcoin": 9,
+      "clients": 8,
+      "command": 8,
+      "identifier": 8,
+      "data": 7,
+      "format": 7,
+      "service_data": 7,
+      "12": 7,
+      "messages": 7,
+      "subcommand": 7,
+      "search": 7,
+      "new": 6,
+      "standardized": 6,
+      "identifiers": 6,
+      "length": 5,
+      "node": 5,
+      "mysamplesvc": 5,
+      "pre": 4,
+      "type": 4,
+      "announce": 4,
+      "like": 4,
+      "examples": 4,
+      "following": 4,
+      "string": 4,
+      "specific": 4,
+      "node_": 4,
+      "transitional": 4,
+      "period": 4,
+      "standard": 4,
+      "way": 4,
+      "example": 4,
+      "ascii": 4,
+      "avoid": 4,
+      "payload": 4,
+      "bytes": 4,
+      "53": 4,
+      "61": 4,
+      "65": 4,
+      "63": 4,
+      "73": 4,
+      "56": 4,
+      "assigned": 3,
+      "fields": 3,
+      "non": 3,
+      "include": 3,
+      "support": 3,
+      "class": 3,
+      "wikitable": 3,
+      "size": 3,
+      "description": 3,
+      "comments": 3,
+      "variable": 3,
+      "service_version": 3,
+      "future": 3,
+      "corresponding": 3,
+      "characters": 3,
+      "long": 3,
+      "commands": 3,
+      "collisions": 3,
+      "_mysamplesvc": 3,
+      "header": 3,
+      "subpayload": 3,
+      "subcommands": 3,
+      "api": 3,
+      "peer": 2,
+      "authors": 2,
+      "specification": 2,
+      "adds": 2,
+      "limited": 2,
+      "bit": 2,
+      "makes": 2,
+      "useful": 2,
+      "distributed": 2,
+      "lightweight": 2,
+      "client": 2,
+      "framework": 2,
+      "1": 2,
+      "integer": 2,
+      "number": 2,
+      "extra": 2,
+      "service_list": 2,
+      "definitions": 2,
+      "service_name": 2,
+      "var_str": 2,
+      "higher": 2,
+      "versions": 2,
+      "constant": 2,
+      "flag": 2,
+      "rely": 2,
+      "mechanism": 2,
+      "choose": 2,
+      "recommended": 2,
+      "register": 2,
+      "accepted": 2,
+      "specified": 2,
+      "valid": 2,
+      "names": 2,
+      "invalid": 2,
+      "t": 2,
+      "network": 2,
+      "current": 2,
+      "null": 2,
+      "explicitly": 2,
+      "understand": 2,
+      "followed": 2,
+      "colon": 2,
+      "f9": 2,
+      "b4": 2,
+      "d9": 2,
+      "5f": 2,
+      "4d": 2,
+      "79": 2,
+      "6d": 2,
+      "70": 2,
+      "6c": 2,
+      "76": 2,
+      "14": 2,
+      "d5": 2,
+      "77": 2,
+      "72": 2,
+      "68": 2,
+      "34": 2,
+      "78": 2,
+      "9a": 2,
+      "bc": 2,
+      "de": 2,
+      "f0": 2,
+      "standardization": 2,
+      "fulfill": 2,
+      "process": 2,
+      "place": 2,
+      "methods": 2,
+      "wrapped": 2,
+      "send": 2,
+      "changes": 2,
+      "adding": 2,
+      "rationale": 2,
+      "goals": 2,
+      "minimum": 2,
+      "allow": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "5772008309fd0d0c81dc3e10bc41ed2f49e8af5b",
+        "timestamp": "2013-10-21T00:55:26-04:00",
+        "date": "2013-10-21",
+        "author": "Peter Todd",
+        "path": "bip-0036.mediawiki",
+        "status": "Draft",
+        "standard": "bip2"
+      },
+      {
+        "commit": "29fcdcac132a387d1b9ca0a5a0a72cfd408fc057",
+        "timestamp": "2020-03-13T17:10:23-06:00",
+        "date": "2020-03-13",
+        "author": "Janus",
+        "path": "bip-0036.mediawiki",
+        "status": "Rejected",
+        "standard": "bip2"
+      },
+      {
+        "commit": "66defbdc03ad64ccddfd373e1c59af9a41ab990f",
+        "timestamp": "2026-01-12T14:22:36-08:00",
+        "date": "2026-01-12",
+        "author": "Murch",
+        "path": "bip-0036.mediawiki",
+        "status": "Closed",
+        "standard": "bip3"
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [],
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:52:55Z",
+          "dependencies": [
+            {
+              "target": "bips:31",
+              "evidence": "same as the `services` field in `addr` messages",
+              "reason": "The proposal uses the existing peer-service bitfield semantics from BIP 31 as the model for standard services and their transition rules.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

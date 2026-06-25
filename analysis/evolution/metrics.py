@@ -1,36 +1,18 @@
 from collections import Counter, defaultdict
 from datetime import date, timedelta
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Mapping
 
 from analysis.classification.preprocess import normalize_classification_fields
 from analysis.proposal_schema import get_changes_in_status
 from analysis.evolution.mining import extract_status_timeline
-from pipeline.ecosystem_config import ACTIVE_ECOSYSTEM
+from pipeline.source_context import SourceContext
 
-
-_CLASSIFICATION_CONFIG = ACTIVE_ECOSYSTEM.get("classification", {})
-BIP2_PRIMARY_STATUS_ORDER = [
-    "Draft",
-    "Active",
-    "Proposed",
-    "Deferred",
-    "Rejected",
-    "Withdrawn",
-    "Final",
-    "Replaced",
-    "Obsolete",
-]
-BIP3_PRIMARY_STATUS_ORDER = ["Draft", "Complete", "Deployed", "Closed"]
-BIP2_EXCLUSIVE_STATUSES = set(BIP2_PRIMARY_STATUS_ORDER) - {"Draft"}
-BIP3_EXCLUSIVE_STATUSES = {"Complete", "Deployed", "Closed"}
-
-
-def _normalize_status(status: Any) -> str:
+def _normalize_status(status: Any, source_context: SourceContext) -> str:
     text = str(status or "").strip()
     if not text:
         return ""
-    normalized = normalize_classification_fields({"status": text})
+    normalized = normalize_classification_fields({"status": text}, source_context=source_context)
     return str(normalized.get("status") or "").strip()
 
 
@@ -55,25 +37,237 @@ def _normalize_proposal_id(value: Any) -> str:
     return text
 
 
-def _infer_standard(status: str) -> str:
-    return "bip3" if status in BIP3_EXCLUSIVE_STATUSES else "bip2"
+def _regime_entries(source_context: SourceContext) -> List[Dict[str, Any]]:
+    entries: List[Dict[str, Any]] = []
+    for index, raw_entry in enumerate(source_context.classification_config.get("regimes", [])):
+        if not isinstance(raw_entry, Mapping):
+            continue
+
+        standard = str(raw_entry.get("standard") or "").strip()
+        if not standard:
+            continue
+
+        status_order = [
+            str(status).strip()
+            for status in raw_entry.get("status_order", [])
+            if str(status).strip()
+        ]
+        label = str(raw_entry.get("label") or "").strip() or standard.upper()
+        milestone_label = str(raw_entry.get("milestone_label") or "").strip()
+        status_aliases: Dict[str, str] = {}
+        for mapping in raw_entry.get("status_aliases") or []:
+            if not isinstance(mapping, Mapping):
+                continue
+            source_status = str(mapping.get("from") or "").strip()
+            target_status = str(mapping.get("to") or "").strip()
+            if not source_status or not target_status:
+                continue
+            status_aliases[source_status] = target_status
+
+        transition_status_map: Dict[str, str] = {}
+        for mapping in raw_entry.get("transition_status_map") or []:
+            if not isinstance(mapping, Mapping):
+                continue
+            source_status = str(mapping.get("from") or "").strip()
+            target_status = str(mapping.get("to") or "").strip()
+            if not source_status or not target_status:
+                continue
+            transition_status_map[source_status] = target_status
+
+        entries.append(
+            {
+                "index": index,
+                "standard": standard,
+                "label": label,
+                "milestone_label": milestone_label,
+                "status_order": status_order,
+                "status_aliases": status_aliases,
+                "transition_status_map": transition_status_map,
+                "valid_from": _parse_event_date(raw_entry.get("valid_from")),
+                "valid_until": _parse_event_date(raw_entry.get("valid_until")),
+            }
+        )
+
+    return entries
 
 
-def _fallback_timeline(proposal: Dict[str, Any], id_field: str) -> List[Dict[str, Any]]:
+def _regime_order(source_context: SourceContext) -> List[str]:
+    return [entry["standard"] for entry in _regime_entries(source_context)]
+
+
+def _regime_label_by_standard(source_context: SourceContext) -> Dict[str, str]:
+    return {
+        entry["standard"]: entry["label"]
+        for entry in _regime_entries(source_context)
+    }
+
+
+def _status_order_by_standard(source_context: SourceContext) -> Dict[str, List[str]]:
+    return {
+        entry["standard"]: list(entry["status_order"])
+        for entry in _regime_entries(source_context)
+    }
+
+
+def _is_official_status_for_standard(
+    status: str,
+    standard: str,
+    source_context: SourceContext,
+) -> bool:
+    return status in set(_status_order_by_standard(source_context).get(standard, []))
+
+
+def _regime_entry_by_standard(source_context: SourceContext) -> Dict[str, Dict[str, Any]]:
+    return {
+        entry["standard"]: entry
+        for entry in _regime_entries(source_context)
+    }
+
+
+def _build_unique_status_to_standard(source_context: SourceContext) -> Dict[str, str]:
+    standards_by_status: Dict[str, set[str]] = defaultdict(set)
+    for entry in _regime_entries(source_context):
+        for status in entry["status_order"]:
+            standards_by_status[status].add(entry["standard"])
+    return {
+        status: next(iter(standards))
+        for status, standards in standards_by_status.items()
+        if len(standards) == 1
+    }
+
+
+def _map_status_for_standard(
+    status: str,
+    target_standard: str,
+    source_context: SourceContext,
+) -> str:
+    regime_entry = _regime_entry_by_standard(source_context).get(target_standard) or {}
+    alias_map = regime_entry.get("status_aliases") or {}
+    if status in alias_map:
+        return str(alias_map[status]).strip()
+
+    transition_map = regime_entry.get("transition_status_map") or {}
+    if status in transition_map:
+        return str(transition_map[status]).strip()
+
+    valid_statuses = set(regime_entry.get("status_order") or [])
+    if status in valid_statuses:
+        return status
+
+    return status
+
+
+def _build_synthetic_regime_transition_event(
+    prior_event: Dict[str, Any],
+    milestone: Dict[str, Any],
+    source_context: SourceContext,
+) -> Dict[str, Any] | None:
+    target_standard = str(milestone.get("standard") or "").strip()
+    if not target_standard:
+        return None
+
+    previous_status = str(prior_event.get("status") or "").strip()
+    if not previous_status:
+        return None
+
+    next_status = _map_status_for_standard(previous_status, target_standard, source_context)
+    if not next_status:
+        return None
+
+    transition_date = milestone["date"]
+    previous_standard = str(prior_event.get("standard") or "").strip()
+    if previous_standard == target_standard and previous_status == next_status:
+        return None
+
+    return {
+        "proposal_id": prior_event["proposal_id"],
+        "date": transition_date,
+        "status": next_status,
+        "standard": target_standard,
+        "commit": "",
+        "timestamp": f"{transition_date.isoformat()}T00:00:00Z",
+        "author": "",
+        "path": "",
+        "synthetic": True,
+        "transition_label": str(milestone.get("label") or "").strip(),
+        "previous_standard": previous_standard,
+    }
+
+
+def _inject_regime_transition_events(
+    timeline: List[Dict[str, Any]],
+    source_context: SourceContext,
+    *,
+    anchor_event: Dict[str, Any] | None = None,
+) -> List[Dict[str, Any]]:
+    if not timeline:
+        return timeline
+
+    augmented = list(timeline)
+    working_timeline = list(timeline)
+    if (
+        anchor_event is not None
+        and anchor_event.get("date") is not None
+        and anchor_event["date"] < timeline[0]["date"]
+    ):
+        working_timeline = [{**anchor_event, "_anchor": True}, *working_timeline]
+    milestones = _resolve_regime_milestones(source_context)
+
+    for milestone in milestones:
+        activation_date = milestone["date"]
+        if any(event["date"] == activation_date for event in working_timeline):
+            continue
+
+        prior_index = -1
+        for index, event in enumerate(working_timeline):
+            if event["date"] < activation_date:
+                prior_index = index
+                continue
+            break
+
+        if prior_index < 0:
+            continue
+
+        synthetic_event = _build_synthetic_regime_transition_event(
+            working_timeline[prior_index],
+            milestone,
+            source_context,
+        )
+        if synthetic_event is None:
+            continue
+
+        insert_at = prior_index + 1
+        working_timeline.insert(insert_at, synthetic_event)
+
+        visible_insert_at = sum(1 for event in working_timeline[:insert_at] if not event.get("_anchor"))
+        augmented.insert(visible_insert_at, synthetic_event)
+
+    return augmented
+
+
+def _fallback_timeline(
+    proposal: Dict[str, Any],
+    id_field: str,
+    source_context: SourceContext,
+) -> List[Dict[str, Any]]:
     preamble = proposal.get("raw", {}).get("preamble", {})
     proposal_id = _normalize_proposal_id(preamble.get(id_field))
-    status = _normalize_status(preamble.get("status"))
+    status = _normalize_status(preamble.get("status"), source_context)
     created_date = _parse_event_date(preamble.get("created"))
 
     if not proposal_id or not status or created_date is None:
         return []
+
+    standard = _resolve_event_standard(None, created_date, status, source_context)
+    if standard:
+        status = _map_status_for_standard(status, standard, source_context)
 
     return [
         {
             "proposal_id": proposal_id,
             "date": created_date,
             "status": status,
-            "standard": _resolve_event_standard(None, created_date, status),
+            "standard": standard,
             "commit": "",
             "timestamp": created_date.isoformat(),
             "author": "",
@@ -103,9 +297,13 @@ def _timeline_needs_path_rehydration(raw_timeline: Any) -> bool:
     )
 
 
-def _normalize_timeline_event(proposal_id: str, event: Dict[str, Any]) -> Dict[str, Any] | None:
+def _normalize_timeline_event(
+    proposal_id: str,
+    event: Dict[str, Any],
+    source_context: SourceContext,
+) -> Dict[str, Any] | None:
     event_date = _parse_event_date(event.get("date") or event.get("timestamp"))
-    status = _normalize_status(event.get("status"))
+    status = _normalize_status(event.get("status"), source_context)
     if event_date is None or not status or not proposal_id:
         return None
 
@@ -113,7 +311,10 @@ def _normalize_timeline_event(proposal_id: str, event: Dict[str, Any]) -> Dict[s
         event.get("standard"),
         event_date,
         status,
+        source_context,
     )
+    if standard:
+        status = _map_status_for_standard(status, standard, source_context)
     return {
         "proposal_id": proposal_id,
         "date": event_date,
@@ -130,6 +331,7 @@ def _build_created_seed_event(
     proposal: Dict[str, Any],
     source_event: Dict[str, Any] | None,
     snapshot_date: date | None,
+    source_context: SourceContext,
 ) -> Dict[str, Any] | None:
     if source_event is None:
         return None
@@ -147,11 +349,15 @@ def _build_created_seed_event(
     if not status or not proposal_id:
         return None
 
+    standard = _resolve_event_standard(None, created_date, status, source_context)
+    if standard:
+        status = _map_status_for_standard(status, standard, source_context)
+
     return {
         "proposal_id": proposal_id,
         "date": created_date,
         "status": status,
-        "standard": _resolve_event_standard(None, created_date, status),
+        "standard": standard,
         "commit": "",
         "timestamp": created_date.isoformat(),
         "author": "",
@@ -163,6 +369,7 @@ def _build_countable_timeline(
     proposal: Dict[str, Any],
     timeline: List[Dict[str, Any]],
     snapshot_date: date | None,
+    source_context: SourceContext,
 ) -> List[Dict[str, Any]]:
     visible_timeline = [
         event for event in timeline
@@ -172,6 +379,7 @@ def _build_countable_timeline(
         proposal,
         timeline[0] if timeline else None,
         snapshot_date,
+        source_context,
     )
 
     if created_seed is not None:
@@ -183,6 +391,7 @@ def _serialize_proposal_timeline(
     proposal: Dict[str, Any],
     timeline: List[Dict[str, Any]],
     snapshot_date: date | None,
+    source_context: SourceContext,
 ) -> Dict[str, Any] | None:
     visible_timeline = [
         event for event in timeline
@@ -202,13 +411,17 @@ def _serialize_proposal_timeline(
     creation_event = None
     if created_date is not None and (snapshot_date is None or created_date <= snapshot_date) and timeline:
         creation_source = timeline[0]
+        creation_status = str(creation_source.get("status", "") or "").strip()
+        creation_standard = _resolve_event_standard(None, created_date, creation_status, source_context)
+        if creation_standard:
+            creation_status = _map_status_for_standard(creation_status, creation_standard, source_context)
         creation_event = {
             "kind": "creation",
             "label": "Created",
             "date": created_date.isoformat(),
             "timestamp": creation_source.get("timestamp", ""),
-            "status": creation_source.get("status", ""),
-            "standard": _resolve_event_standard(None, created_date, creation_source.get("status", "")),
+            "status": creation_status,
+            "standard": creation_standard,
             "commit": creation_source.get("commit", ""),
             "author": creation_source.get("author", ""),
             "path": creation_source.get("path", ""),
@@ -232,20 +445,22 @@ def _serialize_proposal_timeline(
             continue
 
         previous_status = prior_status or (visible_timeline[index - 1]["status"] if index > 0 else "")
-        events.append(
-            {
-                "kind": "status_change",
-                "label": event["status"],
-                "date": event["date"].isoformat(),
-                "timestamp": event.get("timestamp", ""),
-                "status": event["status"],
-                "standard": event["standard"],
-                "commit": event.get("commit", ""),
-                "author": event.get("author", ""),
-                "path": event.get("path", ""),
-                "previous_status": previous_status,
-            }
-        )
+        serialized_event = {
+            "kind": "regime_transition" if event.get("synthetic") else "status_change",
+            "label": event.get("transition_label") or event["status"],
+            "date": event["date"].isoformat(),
+            "timestamp": event.get("timestamp", ""),
+            "status": event["status"],
+            "standard": event["standard"],
+            "commit": event.get("commit", ""),
+            "author": event.get("author", ""),
+            "path": event.get("path", ""),
+            "previous_status": previous_status,
+        }
+        if event.get("synthetic"):
+            serialized_event["synthetic"] = True
+            serialized_event["previous_standard"] = str(event.get("previous_standard") or "")
+        events.append(serialized_event)
         prior_status = event["status"]
 
     if not events:
@@ -267,10 +482,10 @@ def _serialize_proposal_timeline(
     }
 
 
-def _build_status_order(categories: List[str]) -> List[str]:
+def _build_status_order(categories: List[str], source_context: SourceContext) -> List[str]:
     configured_order: List[str] = []
-    for entry in _CLASSIFICATION_CONFIG.get("regimes", []):
-        for status in entry.get("status_order", []):
+    for entry in _regime_entries(source_context):
+        for status in entry["status_order"]:
             if status not in configured_order:
                 configured_order.append(status)
 
@@ -278,51 +493,61 @@ def _build_status_order(categories: List[str]) -> List[str]:
     return [status for status in configured_order if status in categories] + remaining
 
 
-def _resolve_bip3_start_date() -> date | None:
-    for entry in _CLASSIFICATION_CONFIG.get("regimes", []):
-        if str(entry.get("standard") or "").strip() != "bip3":
+def _resolve_regime_milestones(source_context: SourceContext) -> List[Dict[str, Any]]:
+    milestones: List[Dict[str, Any]] = []
+    for entry in _regime_entries(source_context):
+        start_date = entry["valid_from"]
+        if start_date is None:
             continue
-        start_date = _parse_event_date(entry.get("valid_from"))
-        if start_date is not None:
-            return start_date
-    return None
+
+        label = entry["milestone_label"] or f"{entry['label']} Activation"
+        milestones.append(
+            {
+                "standard": entry["standard"],
+                "standard_label": entry["label"],
+                "date": start_date,
+                "label": label,
+            }
+        )
+
+    milestones.sort(key=lambda item: item["date"])
+    return milestones
 
 
-def _resolve_standard_from_date(event_date: date | None) -> str | None:
+def _resolve_standard_from_date(event_date: date | None, source_context: SourceContext) -> str | None:
     if event_date is None:
         return None
 
-    matched_standard = None
-    for entry in _CLASSIFICATION_CONFIG.get("regimes", []):
-        standard = str(entry.get("standard") or "").strip()
-        if not standard:
+    for entry in _regime_entries(source_context):
+        if entry["valid_from"] is not None and event_date < entry["valid_from"]:
+            continue
+        if entry["valid_until"] is not None and event_date > entry["valid_until"]:
             continue
 
-        start_date = _parse_event_date(entry.get("valid_from"))
-        end_date = _parse_event_date(entry.get("valid_until"))
+        return entry["standard"]
 
-        if start_date is not None and event_date < start_date:
-            continue
-        if end_date is not None and event_date > end_date:
-            continue
-
-        matched_standard = standard
-        break
-
-    return matched_standard
+    return None
 
 
-def _resolve_event_standard(raw_standard: Any, event_date: date | None, status: str) -> str:
+def _resolve_event_standard(
+    raw_standard: Any,
+    event_date: date | None,
+    status: str,
+    source_context: SourceContext,
+) -> str:
+    by_date = _resolve_standard_from_date(event_date, source_context)
+    if by_date:
+        return by_date
+
     standard = str(raw_standard or "").strip()
     if standard:
         return standard
 
-    if status in BIP3_EXCLUSIVE_STATUSES:
-        return "bip3"
-    if status in BIP2_EXCLUSIVE_STATUSES:
-        return "bip2"
+    unique_status_to_standard = _build_unique_status_to_standard(source_context)
+    if status in unique_status_to_standard:
+        return unique_status_to_standard[status]
 
-    return _resolve_standard_from_date(event_date) or _infer_standard(status)
+    return ""
 
 
 def _quarter_start(value: date) -> date:
@@ -354,26 +579,43 @@ def _format_quarter_label(value: date) -> str:
     return f"{value.year}-Q{_quarter_number(value)}"
 
 
-def _build_periods(start_date: date, end_date: date, *, breakpoint_date: date | None = None) -> List[Dict[str, Any]]:
+def _build_periods(
+    start_date: date,
+    end_date: date,
+    *,
+    milestones: List[Dict[str, Any]] | None = None,
+) -> List[Dict[str, Any]]:
     periods: List[Dict[str, Any]] = []
     current = _quarter_start(start_date)
     final = _quarter_start(end_date)
+    milestone_entries = list(milestones or [])
 
     while current <= final:
         quarter_end = _quarter_end(current)
         quarter_label = _format_quarter_label(current)
+        quarter_milestone = next(
+            (
+                milestone
+                for milestone in milestone_entries
+                if current <= milestone["date"] <= quarter_end
+            ),
+            None,
+        )
 
-        if breakpoint_date is not None and current <= breakpoint_date <= quarter_end:
+        if quarter_milestone is not None:
+            breakpoint_date = quarter_milestone["date"]
+            standard_key = str(quarter_milestone.get("standard") or "").strip() or "milestone"
             pre_breakpoint_end = breakpoint_date - timedelta(days=1)
             if current <= pre_breakpoint_end:
                 periods.append(
                     {
-                        "key": f"{quarter_label}-pre-bip3",
+                        "key": f"{quarter_label}-pre-{standard_key}",
                         "label": quarter_label,
+                        "display_suffix": "a",
                         "start": current,
                         "end": pre_breakpoint_end,
                         "kind": "milestone",
-                        "milestone_label": "BIP3 Activation",
+                        "milestone_label": quarter_milestone["label"],
                     }
                 )
 
@@ -381,8 +623,9 @@ def _build_periods(start_date: date, end_date: date, *, breakpoint_date: date | 
             if remainder_start <= quarter_end:
                 periods.append(
                     {
-                        "key": f"{quarter_label}-post-bip3",
+                        "key": f"{quarter_label}-post-{standard_key}",
                         "label": quarter_label,
+                        "display_suffix": "b",
                         "start": remainder_start,
                         "end": quarter_end,
                         "kind": "milestone_remainder",
@@ -394,6 +637,7 @@ def _build_periods(start_date: date, end_date: date, *, breakpoint_date: date | 
                 {
                     "key": quarter_label,
                     "label": quarter_label,
+                    "display_suffix": "",
                     "start": current,
                     "end": quarter_end,
                     "kind": "quarter",
@@ -410,6 +654,7 @@ def _build_evolution_series(
     proposal_timelines: List[List[Dict[str, Any]]],
     periods: List[Dict[str, Any]],
     ordered_categories: List[str],
+    source_context: SourceContext,
     *,
     standard_filter: str | None = None,
 ) -> Dict[str, Any]:
@@ -433,7 +678,12 @@ def _build_evolution_series(
             if not active_status:
                 continue
 
-            effective_standard = active_standard or _resolve_event_standard(None, period_end, active_status)
+            effective_standard = active_standard or _resolve_event_standard(
+                None,
+                period_end,
+                active_status,
+                source_context,
+            )
 
             if standard_filter is not None and effective_standard != standard_filter:
                 continue
@@ -458,6 +708,7 @@ def _build_evolution_series(
             {
                 "period": period_label,
                 "period_key": period_key,
+                "period_display_suffix": period.get("display_suffix", ""),
                 "period_start": period["start"].isoformat(),
                 "period_end": period["end"].isoformat(),
                 "period_kind": period["kind"],
@@ -473,19 +724,35 @@ def _build_evolution_series(
     }
 
 
-def _order_statuses_for_standard(statuses: List[str], standard: str) -> List[str]:
-    primary_order = BIP2_PRIMARY_STATUS_ORDER if standard == "bip2" else BIP3_PRIMARY_STATUS_ORDER
+def _order_statuses_for_standard(
+    statuses: List[str],
+    standard: str,
+    source_context: SourceContext,
+) -> List[str]:
+    primary_order = _status_order_by_standard(source_context).get(standard, [])
     remaining = sorted(status for status in statuses if status not in primary_order)
     return [status for status in primary_order if status in statuses] + remaining
 
 
 def _build_segmented_evolution_series(
     series_by_standard: Dict[str, Dict[str, Any]],
+    *,
+    standard_order: List[str],
+    standard_labels: Dict[str, str],
+    source_context: SourceContext,
 ) -> Dict[str, Any]:
-    segment_definitions: List[Dict[str, str]] = []
+    segment_definitions: List[Dict[str, Any]] = []
     categories: List[str] = []
+    ordered_standards = [
+        standard for standard in standard_order
+        if standard in series_by_standard
+    ]
+    ordered_standards.extend(
+        standard for standard in series_by_standard
+        if standard not in ordered_standards
+    )
 
-    for standard in ("bip2", "bip3"):
+    for standard in ordered_standards:
         counter = Counter()
         for row in series_by_standard.get(standard, {}).get("rows", []):
             for status, value in (row.get("values") or {}).items():
@@ -494,20 +761,28 @@ def _build_segmented_evolution_series(
         ordered_statuses = _order_statuses_for_standard(
             [status for status, total in counter.items() if total > 0],
             standard,
+            source_context,
         )
         for status in ordered_statuses:
-            key = f"{standard}:{status}"
+            key = f"{standard}:{status}" if standard else status
             categories.append(key)
             segment_definitions.append(
                 {
                     "key": key,
                     "status": status,
                     "standard": standard,
+                    "standardLabel": standard_labels.get(standard, standard.upper() if standard else ""),
                     "label": status,
+                    "isOfficial": _is_official_status_for_standard(status, standard, source_context),
                 }
             )
 
-    base_rows = series_by_standard.get("bip2", {}).get("rows") or series_by_standard.get("bip3", {}).get("rows") or []
+    base_rows = []
+    for standard in ordered_standards:
+        candidate_rows = series_by_standard.get(standard, {}).get("rows") or []
+        if candidate_rows:
+            base_rows = candidate_rows
+            break
     rows = []
 
     for index, base_row in enumerate(base_rows):
@@ -526,6 +801,7 @@ def _build_segmented_evolution_series(
             {
                 "period": base_row.get("period"),
                 "period_key": base_row.get("period_key"),
+                "period_display_suffix": base_row.get("period_display_suffix", ""),
                 "period_start": base_row.get("period_start"),
                 "period_end": base_row.get("period_end"),
                 "period_kind": base_row.get("period_kind"),
@@ -542,6 +818,35 @@ def _build_segmented_evolution_series(
     }
 
 
+def _empty_evolution_payload(source_context: SourceContext) -> Dict[str, Any]:
+    standard_keys = _regime_order(source_context)
+    return {
+        "meta": {
+            "proposal_count": 0,
+            "timeline_count": 0,
+            "first_year": None,
+            "last_year": None,
+            "first_period": None,
+            "last_period": None,
+            "milestones": [],
+        },
+        "status_evolution": {
+            "categories": [],
+            "rows": [],
+        },
+        "status_evolution_segmented": {
+            "categories": [],
+            "segmentDefinitions": [],
+            "rows": [],
+        },
+        "status_evolution_by_standard": {
+            standard: {"categories": [], "rows": []}
+            for standard in standard_keys
+        },
+        "proposal_timelines": [],
+    }
+
+
 def prepare_evolution_payload(
     proposal_data: List[Dict[str, Any]],
     snapshot_label: str | None,
@@ -549,10 +854,15 @@ def prepare_evolution_payload(
     *,
     repo_dir: Path | None = None,
     file_prefix: str = "bip",
+    source_context: SourceContext | None = None,
 ) -> Dict[str, Any]:
+    context = source_context or SourceContext.default()
+    standard_order = _regime_order(context)
+    standard_labels = _regime_label_by_standard(context)
     proposal_timelines: List[List[Dict[str, Any]]] = []
     serialized_timelines: List[Dict[str, Any]] = []
     category_set = set()
+    observed_standard_set = set()
     min_date = None
     max_date = None
     snapshot_date = _parse_event_date(snapshot_label)
@@ -565,25 +875,41 @@ def prepare_evolution_payload(
         if proposal_id and repo_dir is not None and _timeline_needs_path_rehydration(raw_timeline):
             proposal_file_path = _find_proposal_file(repo_dir, proposal_id, file_prefix)
             if proposal_file_path is not None:
-                raw_timeline = extract_status_timeline(repo_dir, proposal_file_path)
+                raw_timeline = extract_status_timeline(repo_dir, proposal_file_path, source_context=context)
 
         timeline = []
         for event in raw_timeline if isinstance(raw_timeline, list) else []:
-            normalized_event = _normalize_timeline_event(proposal_id, event) if isinstance(event, dict) else None
+            normalized_event = (
+                _normalize_timeline_event(proposal_id, event, context)
+                if isinstance(event, dict)
+                else None
+            )
             if normalized_event is not None:
                 timeline.append(normalized_event)
 
         if not timeline:
-            timeline = _fallback_timeline(proposal, id_field=id_field)
+            timeline = _fallback_timeline(proposal, id_field=id_field, source_context=context)
 
         if not timeline:
             continue
 
-        timeline.sort(key=lambda entry: entry["date"])
+        timeline.sort(key=lambda entry: (entry["date"], str(entry.get("timestamp") or "")))
+        created_anchor = _build_created_seed_event(
+            proposal,
+            timeline[0] if timeline else None,
+            None,
+            context,
+        )
+        timeline = _inject_regime_transition_events(
+            timeline,
+            context,
+            anchor_event=created_anchor,
+        )
         countable_timeline = _build_countable_timeline(
             proposal,
             timeline,
             snapshot_date,
+            context,
         )
         if countable_timeline:
             proposal_timelines.append(countable_timeline)
@@ -591,12 +917,16 @@ def prepare_evolution_payload(
             proposal,
             timeline,
             snapshot_date,
+            context,
         )
         if serialized_timeline is not None:
             serialized_timelines.append(serialized_timeline)
 
         for event in countable_timeline:
             category_set.add(event["status"])
+            observed_standard = str(event.get("standard") or "").strip()
+            if observed_standard:
+                observed_standard_set.add(observed_standard)
             event_date = event["date"]
             min_date = event_date if min_date is None else min(min_date, event_date)
             max_date = event_date if max_date is None else max(max_date, event_date)
@@ -605,40 +935,17 @@ def prepare_evolution_payload(
         max_date = snapshot_date if max_date is None else max(max_date, snapshot_date)
 
     if min_date is None or max_date is None:
-        return {
-            "meta": {
-                "proposal_count": 0,
-                "timeline_count": 0,
-                "first_year": None,
-                "last_year": None,
-                "first_period": None,
-                "last_period": None,
-                "milestones": [],
-            },
-            "status_evolution": {
-                "categories": [],
-                "rows": [],
-            },
-            "status_evolution_segmented": {
-                "categories": [],
-                "segmentDefinitions": [],
-                "rows": [],
-            },
-            "status_evolution_by_standard": {
-                "bip2": {"categories": [], "rows": []},
-                "bip3": {"categories": [], "rows": []},
-            },
-            "proposal_timelines": [],
-        }
+        return _empty_evolution_payload(context)
 
-    bip3_start_date = _resolve_bip3_start_date()
-    ordered_categories = _build_status_order(list(category_set))
-    periods = _build_periods(min_date, max_date, breakpoint_date=bip3_start_date)
+    milestones = _resolve_regime_milestones(context)
+    ordered_categories = _build_status_order(list(category_set), context)
+    periods = _build_periods(min_date, max_date, milestones=milestones)
     first_period = periods[0]
     last_period = periods[-1]
+    series_standard_keys = standard_order or sorted(observed_standard_set) or [""]
     ordered_categories_by_standard = {
-        "bip2": _order_statuses_for_standard(list(category_set), "bip2"),
-        "bip3": _order_statuses_for_standard(list(category_set), "bip3"),
+        standard: _order_statuses_for_standard(list(category_set), standard, context)
+        for standard in series_standard_keys
     }
 
     proposal_ids = {
@@ -651,20 +958,17 @@ def prepare_evolution_payload(
         proposal_timelines,
         periods,
         ordered_categories,
+        context,
     )
     status_evolution_by_standard = {
-        "bip2": _build_evolution_series(
+        standard: _build_evolution_series(
             proposal_timelines,
             periods,
-            ordered_categories_by_standard["bip2"],
-            standard_filter="bip2",
-        ),
-        "bip3": _build_evolution_series(
-            proposal_timelines,
-            periods,
-            ordered_categories_by_standard["bip3"],
-            standard_filter="bip3",
-        ),
+            ordered_categories_by_standard[standard],
+            context,
+            standard_filter=standard,
+        )
+        for standard in series_standard_keys
     }
     serialized_timelines.sort(
         key=lambda entry: (
@@ -683,13 +987,21 @@ def prepare_evolution_payload(
             "last_period": last_period["label"],
             "milestones": [
                 {
-                    "date": bip3_start_date.isoformat(),
-                    "label": "BIP3 Activation",
+                    "date": milestone["date"].isoformat(),
+                    "label": milestone["label"],
+                    "standard": milestone["standard"],
+                    "standard_label": milestone["standard_label"],
                 }
-            ] if bip3_start_date is not None else [],
+                for milestone in milestones
+            ],
         },
         "status_evolution": status_evolution,
-        "status_evolution_segmented": _build_segmented_evolution_series(status_evolution_by_standard),
+        "status_evolution_segmented": _build_segmented_evolution_series(
+            status_evolution_by_standard,
+            standard_order=series_standard_keys,
+            standard_labels=standard_labels,
+            source_context=context,
+        ),
         "status_evolution_by_standard": status_evolution_by_standard,
         "proposal_timelines": serialized_timelines,
     }

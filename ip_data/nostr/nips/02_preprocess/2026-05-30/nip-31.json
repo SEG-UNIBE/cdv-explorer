@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "31",
       "title": "Dealing with unknown event kinds",
-      "author": [
-        "fiatjaf"
-      ],
-      "created": "2023-05-05",
       "status": "Draft",
+      "author": null,
+      "created": "2023-05-05",
       "type": "Optional",
       "layer": null,
       "kind": null
@@ -129,10 +127,24 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 89"
+        {
+          "target": "nips:89",
+          "count": 1
+        }
       ],
       "body_extracted_llm": [
-        "NIP 1"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:32Z",
+          "dependencies": [
+            {
+              "target": "nips:89",
+              "evidence": "clients can make interacting with these event kinds more functional by supporting [NIP-89]",
+              "reason": "The proposal extends the usability of unknown event kinds by relying on NIP-89 metadata/support to help clients handle them more functionally.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

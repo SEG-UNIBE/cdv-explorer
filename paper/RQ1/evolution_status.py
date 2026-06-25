@@ -50,14 +50,15 @@ REACT_CLASSIFICATION_PALETTE = [
     "#ffed6f",
 ]
 
-HATCH_BIP3 = "/////"
-HATCH_LINEWIDTH = 0.2
-BIP3_ALLOWED_STATUSES = {"Draft", "Complete", "Deployed", "Closed"}
-BIP3_DRAFT_START_PERIOD = "2026-Q1"
 ACTIVATION_GAP = 0.45
 ACTIVATION_YEAR_LABEL_NUDGE_POINTS = 6
 BAR_WIDTH = 0.82
 EVOLUTION_BAR_EDGE_WIDTH = 0.5
+LEGEND_FONT_SIZE = 8.25
+LEGEND_TITLE_FONT_SIZE = 8.75
+LEGEND_LABEL_SPACING = 0.35
+LEGEND_SECTION_TOP = 1.0
+LEGEND_SECTION_BOTTOM = 0.01
 FIXED_STATUS_COLORS = {
     "Draft": "#4e79a7",
     "Active": "#f28e2c",
@@ -92,17 +93,20 @@ def _react_color_map(categories: list[str]) -> dict[str, str]:
 
 
 def _format_period_display_label(period_key: str, period_label: str) -> str:
-    if period_key.endswith("-pre-bip3"):
+    if "-pre-" in period_key:
         return f"{period_label}a"
-    if period_key.endswith("-post-bip3"):
+    if "-post-" in period_key:
         return f"{period_label}b"
     return period_label
 
 
 def _format_milestone_label(label: str) -> str:
-    if label.strip() == "BIP3 Activation":
-        return "BIP3 activation"
-    return label
+    text = label.strip()
+    if text.startswith("BIP") and text.endswith(" Activation"):
+        number = text[3:-11]
+        if number.isdigit():
+            return f"BIP-{number} activation"
+    return text
 
 
 def _normalize_evolution_series(
@@ -158,28 +162,9 @@ def _normalize_evolution_series(
     return periods, ordered_categories, series
 
 
-def _normalize_standard_rows(
-    status_evolution_by_standard: dict[str, Any] | None,
-) -> dict[str, dict[str, dict[str, int]]]:
-    normalized: dict[str, dict[str, dict[str, int]]] = {}
-    for standard in ("bip2", "bip3"):
-        standard_data = (status_evolution_by_standard or {}).get(standard) or {}
-        rows = standard_data.get("rows") or []
-        normalized[standard] = {
-            str(row.get("period") or row.get("year") or "").strip(): {
-                str(status).strip(): int(value)
-                for status, value in (row.get("values") or {}).items()
-                if str(status).strip()
-            }
-            for row in rows
-            if str(row.get("period") or row.get("year") or "").strip()
-        }
-    return normalized
-
-
 def _normalize_segmented_rows(
     status_evolution_segmented: dict[str, Any] | None,
-) -> tuple[list[dict[str, Any]], list[dict[str, str]], list[str], dict[str, list[int]], dict[str, list[str]]]:
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[str], dict[str, list[int]], list[dict[str, Any]], bool]:
     segmented = status_evolution_segmented or {}
     raw_segment_definitions = segmented.get("segmentDefinitions") or []
     raw_rows = segmented.get("rows") or []
@@ -213,6 +198,8 @@ def _normalize_segmented_rows(
             "key": str(segment.get("key") or "").strip(),
             "status": str(segment.get("status") or "").strip(),
             "standard": str(segment.get("standard") or "").strip(),
+            "standard_label": str(segment.get("standardLabel") or "").strip(),
+            "is_official": bool(segment.get("isOfficial", True)),
         }
         for segment in raw_segment_definitions
         if str(segment.get("key") or "").strip()
@@ -237,65 +224,24 @@ def _normalize_segmented_rows(
         segment["key"]: [int(row["values"].get(segment["key"], 0)) for row in rows]
         for segment in visible_segment_definitions
     }
-    legend_statuses = {
-        "bip2": list(dict.fromkeys(
-            segment["status"] for segment in visible_segment_definitions if segment["standard"] == "bip2"
-        )),
-        "bip3": list(dict.fromkeys(
-            segment["status"] for segment in visible_segment_definitions if segment["standard"] == "bip3"
-        )),
-    }
+    legend_sections: list[dict[str, Any]] = []
+    for segment in visible_segment_definitions:
+        standard = segment["standard"]
+        section = next((entry for entry in legend_sections if entry["key"] == standard), None)
+        if section is None:
+            section = {
+                "key": standard,
+                "label": segment["standard_label"] or (standard.upper() if standard else ""),
+                "segments": [],
+            }
+            legend_sections.append(section)
+        section["segments"].append(segment)
 
     for row in rows:
         row["display_label"] = _format_period_display_label(row["period_key"], row["period"])
 
-    return rows, visible_segment_definitions, ordered_statuses, segment_series, legend_statuses
-
-
-def _can_render_as_bip3(status: str, period: str) -> bool:
-    if status not in BIP3_ALLOWED_STATUSES:
-        return False
-    if status == "Draft" and period < BIP3_DRAFT_START_PERIOD:
-        return False
-    return True
-
-
-def _build_segment_definitions(
-    periods: list[str],
-    ordered_statuses: list[str],
-    series: dict[str, list[int]],
-    status_evolution_by_standard: dict[str, Any] | None,
-) -> tuple[list[tuple[str, str]], dict[str, list[int]], dict[str, list[str]]]:
-    standard_rows = _normalize_standard_rows(status_evolution_by_standard)
-    segment_order: list[tuple[str, str]] = []
-    segment_series: dict[str, list[int]] = {}
-    legend_statuses = {"bip2": [], "bip3": []}
-
-    for status in ordered_statuses:
-        total_counts = series[status]
-        bip3_counts = []
-        bip2_counts = []
-
-        for index, period in enumerate(periods):
-            total_count = int(total_counts[index])
-            raw_bip3_count = int(standard_rows["bip3"].get(period, {}).get(status, 0))
-            bip3_count = raw_bip3_count if _can_render_as_bip3(status, period) else 0
-            bip3_count = max(0, min(total_count, bip3_count))
-            bip2_count = total_count - bip3_count
-            bip3_counts.append(bip3_count)
-            bip2_counts.append(bip2_count)
-
-        if any(count > 0 for count in bip2_counts):
-            segment_order.append((status, "bip2"))
-            segment_series[f"{status}|||bip2"] = bip2_counts
-            legend_statuses["bip2"].append(status)
-
-        if any(count > 0 for count in bip3_counts):
-            segment_order.append((status, "bip3"))
-            segment_series[f"{status}|||bip3"] = bip3_counts
-            legend_statuses["bip3"].append(status)
-
-    return segment_order, segment_series, legend_statuses
+    has_non_official = any(not segment["is_official"] for segment in visible_segment_definitions)
+    return rows, visible_segment_definitions, ordered_statuses, segment_series, legend_sections, has_non_official
 
 
 def _build_period_positions(rows: list[dict[str, Any]]) -> np.ndarray:
@@ -315,7 +261,7 @@ def _select_tick_positions(rows: list[dict[str, Any]], x_positions: np.ndarray) 
     activation_years = {
         str(row.get("period") or "").strip().split("-", 1)[0]
         for row in rows
-        if str(row.get("period_key") or "").strip().endswith("-post-bip3")
+        if str(row.get("period_kind") or "").strip() == "milestone_remainder"
         and str(row.get("period") or "").strip()
         and "-" in str(row.get("period") or "").strip()
     }
@@ -325,10 +271,9 @@ def _select_tick_positions(rows: list[dict[str, Any]], x_positions: np.ndarray) 
         if not period_label or "-" not in period_label:
             continue
         year = period_label.split("-", 1)[0]
-        period_key = str(row.get("period_key") or "").strip()
 
-        if year in activation_years:
-            tick_label = year[-2:] if period_key.endswith("-pre-bip3") else f"{year[-2:]}'"
+        if year in activation_years and row.get("period_kind") in {"milestone", "milestone_remainder"}:
+            tick_label = year[-2:] if row.get("period_kind") == "milestone" else f"{year[-2:]}'"
         else:
             tick_label = year
 
@@ -363,36 +308,12 @@ def plot_evolution_status(
     del meta
 
     try:
-        rows, visible_segment_definitions, ordered_statuses, segment_series, legend_statuses = _normalize_segmented_rows(
+        rows, visible_segment_definitions, ordered_statuses, segment_series, legend_sections, has_non_official = _normalize_segmented_rows(
             status_evolution_segmented,
         )
-        plot_segments = [
-            {
-                "key": segment["key"],
-                "status": segment["status"],
-                "standard": segment["standard"] or "bip2",
-            }
-            for segment in visible_segment_definitions
-        ]
+        plot_segments = list(visible_segment_definitions)
     except ValueError:
         periods, ordered_statuses, series = _normalize_evolution_series(status_evolution)
-        segment_order, segment_series, legend_statuses = _build_segment_definitions(
-            periods,
-            ordered_statuses,
-            series,
-            status_evolution_by_standard,
-        )
-        if not segment_order:
-            segment_order = [(status, "bip2") for status in ordered_statuses]
-            segment_series = {
-                f"{status}|||bip2": counts
-                for status, counts in series.items()
-            }
-            legend_statuses = {
-                "bip2": list(ordered_statuses),
-                "bip3": [],
-            }
-
         rows = [
             {
                 "period_key": period,
@@ -405,40 +326,23 @@ def plot_evolution_status(
         ]
         plot_segments = [
             {
-                "key": f"{status}|||{standard}",
+                "key": status,
                 "status": status,
-                "standard": standard,
+                "standard": "",
+                "standard_label": "",
+                "is_official": True,
             }
-            for status, standard in segment_order
+            for status in ordered_statuses
         ]
+        segment_series = {status: counts for status, counts in series.items()}
+        legend_sections = [{"key": "all", "label": "", "segments": plot_segments}]
+        has_non_official = False
 
     x_positions = _build_period_positions(rows)
     color_map = _react_color_map(ordered_statuses)
 
-    bip2_handles = [
-        Patch(
-            facecolor=_evolution_bar_style(color_map[status])["color"],
-            edgecolor=BAR_EDGE_COLOR,
-            linewidth=EVOLUTION_BAR_EDGE_WIDTH,
-            label=status,
-        )
-        for status in reversed(legend_statuses["bip2"])
-    ]
-    bip3_handles = [
-        Patch(
-            facecolor=_evolution_bar_style(color_map[status])["color"],
-            edgecolor=BAR_EDGE_COLOR,
-            linewidth=EVOLUTION_BAR_EDGE_WIDTH,
-            hatch=HATCH_BIP3,
-            label=status,
-        )
-        for status in reversed(legend_statuses["bip3"])
-    ]
-
     bar_bottom = np.zeros(len(rows), dtype=int)
-
-    matplotlib.rcParams["hatch.linewidth"] = HATCH_LINEWIDTH
-    figure, axis = plt.subplots(figsize=(10, 5))
+    figure, axis = plt.subplots(figsize=(12.0, 5))
 
     for segment in plot_segments:
         counts = np.array(segment_series[segment["key"]], dtype=int)
@@ -450,7 +354,6 @@ def plot_evolution_status(
                 bottom=bar_bottom[positive_mask],
                 width=BAR_WIDTH,
                 zorder=3,
-                hatch=HATCH_BIP3 if segment["standard"] == "bip3" else None,
                 **_evolution_bar_style(color_map[segment["status"]]),
             )
         bar_bottom = bar_bottom + counts
@@ -494,6 +397,17 @@ def plot_evolution_status(
     match_axis_label_fontsize(axis)
     despine(axis)
 
+    if has_non_official:
+        figure.text(
+            0.01,
+            0.01,
+            "* non-official status labels observed in repository history",
+            ha="left",
+            va="bottom",
+            fontsize=8.5,
+            color="#495057",
+        )
+
     for index, row in enumerate(rows):
         if row.get("period_kind") != "milestone" or index >= len(rows) - 1:
             continue
@@ -523,34 +437,53 @@ def plot_evolution_status(
                 zorder=5,
             )
 
-    if bip2_handles:
-        bip2_legend = axis.legend(
-            handles=bip2_handles,
+    rendered_legends = []
+    for section in legend_sections:
+        handles = [
+            Patch(
+                facecolor=_evolution_bar_style(color_map[segment["status"]])["color"],
+                edgecolor=BAR_EDGE_COLOR,
+                linewidth=EVOLUTION_BAR_EDGE_WIDTH,
+                label=f"{segment['status']}*" if not segment.get("is_official", True) else segment["status"],
+            )
+            for segment in section["segments"]
+        ]
+        if not handles:
+            continue
+        legend = axis.legend(
+            handles=handles,
             loc="upper left",
-            bbox_to_anchor=(1.0, 0.94),
+            bbox_to_anchor=(1.0, LEGEND_SECTION_TOP),
             frameon=False,
-            title="BIP2 Status:",
+            title=f"{section['label']} Status:" if section["label"] else None,
             borderaxespad=0,
-            fontsize=9,
-            title_fontsize=9.5,
+            fontsize=LEGEND_FONT_SIZE,
+            title_fontsize=LEGEND_TITLE_FONT_SIZE,
+            labelspacing=LEGEND_LABEL_SPACING,
         )
-        bip2_legend._legend_box.align = "left"
-        axis.add_artist(bip2_legend)
+        legend._legend_box.align = "left"
+        rendered_legends.append(legend)
 
-    if bip3_handles:
-        bip3_legend = axis.legend(
-            handles=bip3_handles,
-            loc="upper left",
-            bbox_to_anchor=(1.0, 0.30),
-            frameon=False,
-            title="BIP3 Status:",
-            borderaxespad=0,
-            fontsize=9,
-            title_fontsize=9.5,
-        )
-        bip3_legend._legend_box.align = "left"
+    if len(rendered_legends) > 1:
+        figure.canvas.draw()
+        renderer = figure.canvas.get_renderer()
+        legend_heights = [
+            axis.transAxes.inverted().transform_bbox(legend.get_window_extent(renderer)).height
+            for legend in rendered_legends
+        ]
+        available_height = LEGEND_SECTION_TOP - LEGEND_SECTION_BOTTOM
+        total_legend_height = sum(legend_heights)
+        section_gap = max(0.0, (available_height - total_legend_height) / (len(rendered_legends) - 1))
 
-    figure.tight_layout()
+        current_top = LEGEND_SECTION_TOP
+        for legend, legend_height in zip(rendered_legends, legend_heights, strict=False):
+            legend.set_bbox_to_anchor((1.0, current_top), transform=axis.transAxes)
+            current_top -= legend_height + section_gap
+
+    for legend in rendered_legends[:-1]:
+        axis.add_artist(legend)
+
+    figure.tight_layout(rect=(0, 0.04 if has_non_official else 0, 1, 1))
     output_path.parent.mkdir(parents=True, exist_ok=True)
     figure.savefig(output_path, format="pdf", bbox_inches="tight", pad_inches=0.08)
     plt.close(figure)

@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "46",
       "title": "Nostr Remote Signing",
-      "author": [
-        "Marco Argentieri"
-      ],
-      "created": "2023-02-20",
       "status": "Unknown",
+      "author": null,
+      "created": "2023-02-20",
       "type": null,
       "layer": null,
       "kind": null
@@ -438,15 +436,56 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 4",
-        "NIP 5",
-        "NIP 44",
-        "NIP 89"
+        {
+          "target": "nips:04",
+          "count": 4
+        },
+        {
+          "target": "nips:05",
+          "count": 3
+        },
+        {
+          "target": "nips:0A",
+          "count": 2
+        },
+        {
+          "target": "nips:44",
+          "count": 13
+        },
+        {
+          "target": "nips:89",
+          "count": 4
+        },
+        {
+          "target": "nips:DE",
+          "count": 1
+        }
       ],
       "body_extracted_llm": [
-        "NIP 1",
-        "NIP 4",
-        "NIP 44"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:39Z",
+          "dependencies": [
+            {
+              "target": "nips:05",
+              "evidence": "\"remote-signer\" MAY publish its metadata by using [NIP-05]",
+              "reason": "This proposal defines optional discovery and metadata publication via NIP-05 records, relying on its naming/lookup mechanism.",
+              "confidence": "low"
+            },
+            {
+              "target": "nips:44",
+              "evidence": "The content field is a JSON-RPC-like message that is [NIP-44] encrypted",
+              "reason": "The proposal’s request/response transport uses NIP-44 encryption for all message contents and defines methods around that encrypted channel.",
+              "confidence": "low"
+            },
+            {
+              "target": "nips:89",
+              "evidence": "\"remote-signer\" MAY publish its metadata by using [NIP-05] and [NIP-89]",
+              "reason": "Remote-signer discovery is extended through NIP-89 events and tag semantics to advertise relays and connection URLs.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

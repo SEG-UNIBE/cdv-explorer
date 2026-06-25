@@ -1,6 +1,8 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { useLocalStorageState } from '../useLocalStorageState';
 import { Dropdown } from 'primereact/dropdown';
 import { InputSwitch } from 'primereact/inputswitch';
+import { MultiSelect } from 'primereact/multiselect';
 import { Link, useParams } from 'react-router-dom';
 import { DEFAULT_DEPENDENCY_APPROACH } from '../dependencyApproaches';
 import { LINK_TYPE_OPTIONS } from '../NetworkDiagram';
@@ -9,7 +11,6 @@ import { getAvailableSnapshots, fetchDatasetForSelection, isDatasetCached } from
 import {
   buildDashboardData,
   buildWordCloudData,
-  normalizeProposalFilterValue,
   parseProposalFilterExpression,
 } from './dashboardData';
 import { AuthorshipSection } from './sections/AuthorshipSection';
@@ -19,6 +20,8 @@ import { ConformitySection } from './sections/ConformitySection';
 import { EvolutionSection } from './sections/EvolutionSection';
 import { DashboardSnapshotProvider } from './DashboardSnapshotContext';
 import { DashboardSkeleton } from './DashboardSkeleton';
+import { SECTION_VIEW_MERGED } from './sections/SectionSourceToggle';
+import { getDefaultExperimentalFeaturesEnabled, getRuntimeEnvironment } from '../runtimeEnvironment';
 
 function getSourceRepositoryHref(repository) {
   const text = String(repository || '').trim();
@@ -29,6 +32,34 @@ function getSourceRepositoryHref(repository) {
   }
 
   return null;
+}
+
+function normalizeSectionSourceView(view, selectedSourceIds, supportsMerged) {
+  if (selectedSourceIds.length <= 1) {
+    return SECTION_VIEW_MERGED;
+  }
+  if (supportsMerged && view === SECTION_VIEW_MERGED) {
+    return SECTION_VIEW_MERGED;
+  }
+  if (selectedSourceIds.includes(view)) {
+    return view;
+  }
+  return supportsMerged ? SECTION_VIEW_MERGED : selectedSourceIds[0];
+}
+
+function getSectionDataset(selectedDataset, sectionSourceView) {
+  if (sectionSourceView === SECTION_VIEW_MERGED) {
+    return selectedDataset;
+  }
+  return selectedDataset?.bySource?.[sectionSourceView] || selectedDataset;
+}
+
+function getSectionEcosystem(ecosystem, activeEcosystem, sectionSourceView) {
+  if (sectionSourceView === SECTION_VIEW_MERGED) {
+    return activeEcosystem;
+  }
+  const source = ecosystem?.sources?.[sectionSourceView];
+  return source ? { ...ecosystem, ...source } : activeEcosystem;
 }
 
 export function EcosystemDashboard() {
@@ -42,8 +73,42 @@ export function EcosystemDashboard() {
     conformity: {},
     meta: {},
   }), []);
-  const availableSnapshots = useMemo(() => getAvailableSnapshots(ecosystemId), [ecosystemId]);
-  const [selectedSnapshot, setSelectedSnapshot] = useState(availableSnapshots[0] ?? null);
+  const sourceOptions = useMemo(
+    () => (ecosystem?.sourceOrder || [])
+      .map((sourceId) => ecosystem?.sources?.[sourceId])
+      .filter(Boolean),
+    [ecosystem],
+  );
+  const defaultSelectedSourceIds = useMemo(
+    () => (ecosystem?.defaultSourceId ? [ecosystem.defaultSourceId] : []),
+    [ecosystem],
+  );
+  const [selectedSourceIds, setSelectedSourceIds] = useLocalStorageState(
+    `cdv-explorer-${ecosystemId}-sources`,
+    defaultSelectedSourceIds,
+  );
+  const orderedSelectedSourceIds = useMemo(
+    () => (ecosystem?.sourceOrder || []).filter((id) => selectedSourceIds.includes(id)),
+    [ecosystem, selectedSourceIds],
+  );
+  const primarySourceId = orderedSelectedSourceIds[0] || null;
+  const activeSource = useMemo(
+    () => (primarySourceId ? ecosystem?.sources?.[primarySourceId] || null : null),
+    [ecosystem, primarySourceId],
+  );
+  const runtimeEnvironment = useMemo(() => getRuntimeEnvironment(), []);
+  const activeEcosystem = useMemo(
+    () => (activeSource ? { ...ecosystem, ...activeSource } : ecosystem),
+    [ecosystem, activeSource],
+  );
+  const availableSnapshots = useMemo(
+    () => getAvailableSnapshots(ecosystemId, orderedSelectedSourceIds),
+    [ecosystemId, orderedSelectedSourceIds],
+  );
+  const [selectedSnapshot, setSelectedSnapshot] = useLocalStorageState(
+    `cdv-explorer-${ecosystemId}-snapshot`,
+    availableSnapshots[0] ?? null,
+  );
   const [highlightedAuthor, setHighlightedAuthor] = useState('');
   const [collaborationLayoutMode, setCollaborationLayoutMode] = useState('balanced');
   const [collaborationMinClusterCollaborations, setCollaborationMinClusterCollaborations] = useState('0');
@@ -55,7 +120,26 @@ export function EcosystemDashboard() {
   const [selectedDependencyMetricsApproach, setSelectedDependencyMetricsApproach] = useState(DEFAULT_DEPENDENCY_APPROACH);
   const [wordCloudFilterText, setWordCloudFilterText] = useState('');
   const [highlightedConformityProposal, setHighlightedConformityProposal] = useState('');
-  const [linkMode, setLinkMode] = useState('history');
+  const [linkMode, setLinkMode] = useLocalStorageState('cdv-explorer-linkmode', 'history');
+  const [activeTocSection, setActiveTocSection] = useState('dashboard-authorship');
+  const [authorshipSourceView, setAuthorshipSourceView] = useState(SECTION_VIEW_MERGED);
+  const [classificationSourceView, setClassificationSourceView] = useState('');
+  const [evolutionSourceView, setEvolutionSourceView] = useState('');
+  const [dependenciesSourceView, setDependenciesSourceView] = useState(SECTION_VIEW_MERGED);
+  const [conformitySourceView, setConformitySourceView] = useState('');
+  const [showExperimentalFeatures, setShowExperimentalFeatures] = useLocalStorageState(
+    `cdv-explorer-show-experimental-features-${runtimeEnvironment}`,
+    getDefaultExperimentalFeaturesEnabled(),
+  );
+  const dashboardScrollRef = useRef(null);
+
+  useEffect(() => {
+    setSelectedSourceIds((current) => {
+      const valid = current.filter((id) => ecosystem?.sources?.[id]);
+      if (valid.length > 0) return valid;
+      return defaultSelectedSourceIds;
+    });
+  }, [ecosystem, defaultSelectedSourceIds, setSelectedSourceIds]);
 
   useEffect(() => {
     setSelectedSnapshot((current) => {
@@ -64,28 +148,32 @@ export function EcosystemDashboard() {
       }
       return availableSnapshots[0] ?? null;
     });
-  }, [ecosystemId, availableSnapshots]);
+  }, [ecosystemId, availableSnapshots, setSelectedSnapshot]);
 
   const [selectedDataset, setSelectedDataset] = useState(emptyDataset);
   const [dataLoading, setDataLoading] = useState(true);
   const [dataReady, setDataReady] = useState(false);
   const [skeletonActive, setSkeletonActive] = useState(true);
   const [contentEntered, setContentEntered] = useState(false);
+  const [fetchError, setFetchError] = useState(null);
+  const [retryCounter, setRetryCounter] = useState(0);
 
   useEffect(() => {
-    if (!ecosystem || ecosystem.status !== 'available' || !selectedSnapshot) {
+    if (!ecosystem || ecosystem.status !== 'available' || !selectedSnapshot || orderedSelectedSourceIds.length === 0) {
       setSelectedDataset(emptyDataset);
       setDataLoading(false);
+      setFetchError(null);
       return undefined;
     }
-    if (!isDatasetCached(ecosystemId, selectedSnapshot)) {
+    if (!isDatasetCached(ecosystemId, selectedSnapshot, orderedSelectedSourceIds)) {
       setDataReady(false);
       setSkeletonActive(true);
       setContentEntered(false);
     }
     let cancelled = false;
     setDataLoading(true);
-    fetchDatasetForSelection(ecosystemId, selectedSnapshot)
+    setFetchError(null);
+    fetchDatasetForSelection(ecosystemId, selectedSnapshot, orderedSelectedSourceIds)
       .then((dataset) => {
         if (!cancelled) {
           setSelectedDataset(dataset);
@@ -93,69 +181,104 @@ export function EcosystemDashboard() {
           setDataReady(true);
         }
       })
-      .catch(() => {
+      .catch((error) => {
         if (!cancelled) {
-          setSelectedDataset(emptyDataset);
           setDataLoading(false);
-          setDataReady(true);
+          setSkeletonActive(false);
+          setFetchError({
+            snapshot: selectedSnapshot,
+            sourceIds: orderedSelectedSourceIds,
+            message: error instanceof Error ? error.message : String(error),
+          });
         }
       });
     return () => { cancelled = true; };
-  }, [ecosystemId, selectedSnapshot, ecosystem, emptyDataset]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ecosystemId, orderedSelectedSourceIds, selectedSnapshot, ecosystem, emptyDataset, retryCounter]);
+  const dashboardData = useMemo(() => buildDashboardData(selectedDataset, activeEcosystem), [selectedDataset, activeEcosystem]);
   const {
-    yearData,
-    wordCloudData,
-    conformityRows,
-    conformityFailedChecks,
     classificationDistributions,
     classificationTimeline,
     classificationCategoryDomains,
     classificationChordData,
     classificationRelationRows,
     evolutionPayload,
-    topAuthors,
-    authorContributionHistogram,
-    bipAuthorCountHistogram,
-    collaborationNetwork,
-    collaborationMetricsSummary,
-    collaborationMetricsRows,
-    collaborationClusterSizeDistribution,
-    collaborationDegreeDistribution,
-    dependencyMetrics,
-  } = useMemo(() => buildDashboardData(selectedDataset, ecosystem), [selectedDataset, ecosystem]);
+  } = dashboardData;
+  const perSourceDashboardData = useMemo(() => {
+    const bySource = selectedDataset?.bySource || {};
+    return orderedSelectedSourceIds.reduce((acc, sourceId) => {
+      const sourceDataset = bySource[sourceId];
+      const source = ecosystem?.sources?.[sourceId];
+      if (sourceDataset && source) {
+        acc[sourceId] = buildDashboardData(sourceDataset, { ...ecosystem, ...source });
+      }
+      return acc;
+    }, {});
+  }, [selectedDataset, ecosystem, orderedSelectedSourceIds]);
+
+  const activeAuthorshipSourceView = normalizeSectionSourceView(authorshipSourceView, orderedSelectedSourceIds, true);
+  const activeClassificationSourceView = normalizeSectionSourceView(classificationSourceView, orderedSelectedSourceIds, false);
+  const activeEvolutionSourceView = normalizeSectionSourceView(evolutionSourceView, orderedSelectedSourceIds, false);
+  const activeDependenciesSourceView = normalizeSectionSourceView(dependenciesSourceView, orderedSelectedSourceIds, true);
+  const activeConformitySourceView = normalizeSectionSourceView(conformitySourceView, orderedSelectedSourceIds, false);
+
+  const authorshipViewDataset = getSectionDataset(selectedDataset, activeAuthorshipSourceView);
+  const dependencyViewDataset = getSectionDataset(selectedDataset, activeDependenciesSourceView);
+  const conformityViewDataset = getSectionDataset(selectedDataset, activeConformitySourceView);
+  const authorshipViewEcosystem = getSectionEcosystem(ecosystem, activeEcosystem, activeAuthorshipSourceView);
+  const dependencyViewEcosystem = getSectionEcosystem(ecosystem, activeEcosystem, activeDependenciesSourceView);
+  const authorshipDashboardData = activeAuthorshipSourceView === SECTION_VIEW_MERGED
+    ? dashboardData
+    : (perSourceDashboardData[activeAuthorshipSourceView] || dashboardData);
+  const dependencyDashboardData = activeDependenciesSourceView === SECTION_VIEW_MERGED
+    ? dashboardData
+    : (perSourceDashboardData[activeDependenciesSourceView] || dashboardData);
+  const conformityDashboardData = activeConformitySourceView === SECTION_VIEW_MERGED
+    ? dashboardData
+    : (perSourceDashboardData[activeConformitySourceView] || dashboardData);
+
+  const dependencyViewMetrics = dependencyDashboardData.dependencyMetrics;
   const dependencyMetricsApproachOptions = useMemo(
     () => LINK_TYPE_OPTIONS.filter(
-      (option) => dependencyMetrics?.by_approach?.[option.value]
+      (option) => dependencyViewMetrics?.by_approach?.[option.value]
     ),
-    [dependencyMetrics]
+    [dependencyViewMetrics]
   );
   const activeDependencyMetricsApproach = dependencyMetricsApproachOptions.some(
     (option) => option.value === selectedDependencyMetricsApproach
   )
     ? selectedDependencyMetricsApproach
     : (dependencyMetricsApproachOptions[0]?.value || DEFAULT_DEPENDENCY_APPROACH);
-  const activeDependencyMetrics = dependencyMetrics?.by_approach?.[activeDependencyMetricsApproach] || {
+  const activeDependencyMetrics = dependencyViewMetrics?.by_approach?.[activeDependencyMetricsApproach] || {
     summary: {},
     per_bip: [],
   };
-  const availableProposalIds = useMemo(
-    () => (selectedDataset?.nodes || [])
-      .map((node) => normalizeProposalFilterValue(node?.id))
-      .filter(Boolean)
-      .sort((left, right) => Number(left) - Number(right)),
-    [selectedDataset]
+  const authorshipAvailableProposalNodes = useMemo(
+    () => (authorshipViewDataset?.nodes || [])
+      .filter((node) => node?.id != null),
+    [authorshipViewDataset]
+  );
+  const dependencyAvailableProposalNodes = useMemo(
+    () => (dependencyViewDataset?.nodes || [])
+      .filter((node) => node?.id != null),
+    [dependencyViewDataset]
+  );
+  const conformityAvailableProposalNodes = useMemo(
+    () => (conformityViewDataset?.nodes || [])
+      .filter((node) => node?.id != null),
+    [conformityViewDataset]
   );
   const selectedWordCloudProposalIds = useMemo(
-    () => parseProposalFilterExpression(wordCloudFilterText, availableProposalIds),
-    [availableProposalIds, wordCloudFilterText]
+    () => parseProposalFilterExpression(wordCloudFilterText, authorshipAvailableProposalNodes, ecosystem),
+    [authorshipAvailableProposalNodes, ecosystem, wordCloudFilterText]
   );
   const selectedDependencyProposalIds = useMemo(
-    () => parseProposalFilterExpression(dependencyFilterText, availableProposalIds),
-    [availableProposalIds, dependencyFilterText]
+    () => parseProposalFilterExpression(dependencyFilterText, dependencyAvailableProposalNodes, ecosystem),
+    [dependencyAvailableProposalNodes, dependencyFilterText, ecosystem]
   );
   const filteredWordCloudData = useMemo(
-    () => buildWordCloudData(selectedDataset?.nodes || [], selectedWordCloudProposalIds),
-    [selectedDataset, selectedWordCloudProposalIds]
+    () => buildWordCloudData(authorshipViewDataset?.nodes || [], selectedWordCloudProposalIds, ecosystem),
+    [ecosystem, authorshipViewDataset, selectedWordCloudProposalIds]
   );
   const hasWordCloudFilter = wordCloudFilterText.trim().length > 0;
   const hasDependencyFilter = dependencyFilterText.trim().length > 0;
@@ -166,10 +289,10 @@ export function EcosystemDashboard() {
         return current;
       }
 
-      const normalized = parseProposalFilterExpression(current, availableProposalIds);
+      const normalized = parseProposalFilterExpression(current, authorshipAvailableProposalNodes, ecosystem);
       return normalized.length ? current : '';
     });
-  }, [availableProposalIds]);
+  }, [authorshipAvailableProposalNodes, ecosystem]);
 
   useEffect(() => {
     setDependencyFilterText((current) => {
@@ -177,10 +300,10 @@ export function EcosystemDashboard() {
         return current;
       }
 
-      const normalized = parseProposalFilterExpression(current, availableProposalIds);
+      const normalized = parseProposalFilterExpression(current, dependencyAvailableProposalNodes, ecosystem);
       return normalized.length ? current : '';
     });
-  }, [availableProposalIds]);
+  }, [dependencyAvailableProposalNodes, ecosystem]);
 
   useEffect(() => {
     setHighlightedConformityProposal((current) => {
@@ -188,16 +311,63 @@ export function EcosystemDashboard() {
         return current;
       }
 
-      const normalized = normalizeProposalFilterValue(current);
-      return availableProposalIds.includes(normalized) ? current : '';
+      const normalized = parseProposalFilterExpression(current, conformityAvailableProposalNodes, ecosystem);
+      return normalized.length ? current : '';
     });
-  }, [availableProposalIds]);
+  }, [conformityAvailableProposalNodes, ecosystem]);
 
   useEffect(() => {
     if (!dependencyMetricsApproachOptions.some((option) => option.value === selectedDependencyMetricsApproach)) {
       setSelectedDependencyMetricsApproach(dependencyMetricsApproachOptions[0]?.value || DEFAULT_DEPENDENCY_APPROACH);
     }
   }, [dependencyMetricsApproachOptions, selectedDependencyMetricsApproach]);
+
+  useEffect(() => {
+    document.documentElement.classList.add('dashboard-route-active');
+    document.body.classList.add('dashboard-route-active');
+    return () => {
+      document.documentElement.classList.remove('dashboard-route-active');
+      document.body.classList.remove('dashboard-route-active');
+    };
+  }, []);
+
+  const showConformitySection = useMemo(() => {
+    if (!showExperimentalFeatures) return false;
+    if (!ecosystem) return false;
+    if (orderedSelectedSourceIds.length > 1) {
+      return orderedSelectedSourceIds.some((sourceId) => (
+        (ecosystem.sources?.[sourceId]?.complianceStandards || []).length > 0
+      ));
+    }
+    return (activeEcosystem?.complianceStandards || []).length > 0;
+  }, [activeEcosystem, ecosystem, orderedSelectedSourceIds, showExperimentalFeatures]);
+  const dashboardTocItems = useMemo(() => [
+    { id: 'dashboard-authorship', label: 'Authorship' },
+    { id: 'dashboard-classification', label: 'Classification' },
+    { id: 'dashboard-evolution', label: 'Evolution' },
+    { id: 'dashboard-dependencies', label: 'Dependencies' },
+    ...(showConformitySection ? [{ id: 'dashboard-conformity', label: 'Conformity' }] : []),
+  ], [showConformitySection]);
+
+  useEffect(() => {
+    const scrollPane = dashboardScrollRef.current;
+    if (!scrollPane || dashboardTocItems.length === 0) return undefined;
+
+    const updateActiveSection = () => {
+      const paneTop = scrollPane.getBoundingClientRect().top;
+      const current = dashboardTocItems.reduce((active, item) => {
+        const section = document.getElementById(item.id);
+        if (!section) return active;
+        const offset = section.getBoundingClientRect().top - paneTop;
+        return offset <= 120 ? item.id : active;
+      }, dashboardTocItems[0].id);
+      setActiveTocSection(current);
+    };
+
+    updateActiveSection();
+    scrollPane.addEventListener('scroll', updateActiveSection, { passive: true });
+    return () => scrollPane.removeEventListener('scroll', updateActiveSection);
+  }, [dashboardTocItems]);
 
   if (!ecosystem) {
     return (
@@ -219,86 +389,188 @@ export function EcosystemDashboard() {
     );
   }
 
-  const collaborationAuthorOptions = collaborationNetwork.nodes
+  const collaborationAuthorOptions = (authorshipDashboardData.collaborationNetwork?.nodes || [])
     .map((node) => String(node.id || ''))
     .filter(Boolean)
     .sort((left, right) => left.localeCompare(right));
-  const dependencyProposalOptions = availableProposalIds;
   const snapshotOptions = availableSnapshots.map((snapshot) => ({
     label: snapshot === 'current' ? 'Current' : snapshot,
     value: snapshot,
   }));
-  const sourceRepositories = ecosystem.sourceRepositories || [];
+  const selectedSources = orderedSelectedSourceIds
+    .map((id) => ecosystem.sources?.[id])
+    .filter(Boolean);
+  const sourceRepositories = Array.from(
+    new Set(selectedSources.flatMap((s) => s.sourceRepositories || [])),
+  );
+  const sourcePickerOptions = sourceOptions.map((source) => ({
+    label: source.shortLabel || source.acronym,
+    value: source.sourceId,
+  }));
+  const showSourcePicker = sourcePickerOptions.length > 1;
+  const showMultiSourceSnapshotHelp = orderedSelectedSourceIds.length > 1;
+  const dashboardTitle = `${ecosystem.name} Ecosystem`;
+  const dashboardDescription = ecosystem.ecosystemDescription;
+
+  const scrollToDashboardSection = (sectionId) => {
+    const target = document.getElementById(sectionId);
+    if (!target) return;
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setActiveTocSection(sectionId);
+  };
 
   return (
     <DashboardSnapshotProvider
       snapshot={selectedDataset?.snapshot || selectedSnapshot}
       linkMode={linkMode}
-      ecosystem={ecosystem}
+      ecosystem={activeEcosystem}
     >
-      <section className="content">
+      <section className="content content--dashboard">
       {dataLoading && <div className="dashboard-loading-bar" />}
-      <div className="dashboard-toolbar">
-        <div className="dashboard-toolbar__copy">
-          <div className="dashboard-title-row">
+      <div className="dashboard-shell">
+        <aside className="dashboard-ribbon" aria-label="Dashboard controls">
+          <div className="dashboard-ribbon__brand">
             <img className="dashboard-title-logo" src={ecosystem.logo} alt={`${ecosystem.name} logo`} />
-            <h1>{ecosystem.proposalPlural}</h1>
+            <div>
+              <div className="dashboard-ribbon__title">{dashboardTitle}</div>
+              <span>{selectedSnapshot === 'current' ? 'Current' : selectedSnapshot}</span>
+            </div>
           </div>
-          {ecosystem.dashboardDescription && (
-            <p>{ecosystem.dashboardDescription}</p>
+          <nav className="dashboard-ribbon__toc" aria-label="Dashboard sections">
+            <div className="dashboard-ribbon__label">Contents</div>
+            {dashboardTocItems.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                className={`dashboard-ribbon__toc-item${activeTocSection === item.id ? ' is-active' : ''}`}
+                onClick={() => scrollToDashboardSection(item.id)}
+              >
+                {item.label}
+              </button>
+            ))}
+          </nav>
+          <div className="dashboard-ribbon__controls">
+            <div className="dashboard-ribbon__label">Controls</div>
+            {showSourcePicker && (
+              <div className="dashboard-ribbon__field">
+                <label htmlFor="source-select">Sources</label>
+                <MultiSelect
+                  inputId="source-select"
+                  value={selectedSourceIds}
+                  options={sourcePickerOptions}
+                  onChange={(event) => {
+                    if (Array.isArray(event.value) && event.value.length > 0) {
+                      setSelectedSourceIds(event.value);
+                    }
+                  }}
+                  display="chip"
+                  placeholder="Select sources"
+                  className="dashboard-source-picker w-full"
+                  maxSelectedLabels={sourcePickerOptions.length}
+                />
+              </div>
+            )}
+            <div className="dashboard-ribbon__field">
+              <label htmlFor="snapshot-select">Snapshot</label>
+              <Dropdown
+                inputId="snapshot-select"
+                value={selectedSnapshot}
+                options={snapshotOptions}
+                onChange={(event) => setSelectedSnapshot(event.value)}
+                placeholder="Select snapshot date"
+                className="w-full"
+              />
+              {showMultiSourceSnapshotHelp && (
+                <p className="dashboard-ribbon__help">
+                  Dates are limited to snapshots available for all selected sources.
+                </p>
+              )}
+            </div>
+            <div className="dashboard-ribbon__link-row">
+              <span className="dashboard-ribbon__label-inline">IP Links</span>
+              <span className={`dashboard-link-mode-text${linkMode === 'history' ? ' is-active' : ''}`}>
+                Historic
+              </span>
+              <InputSwitch
+                checked={linkMode === 'current'}
+                onChange={(event) => setLinkMode(event.value ? 'current' : 'history')}
+                inputId="link-mode-switch"
+                aria-label="IP links mode"
+                className="dashboard-link-mode-switch"
+              />
+              <span className={`dashboard-link-mode-text${linkMode === 'current' ? ' is-active' : ''}`}>
+                Current
+              </span>
+            </div>
+          </div>
+          <div className="dashboard-ribbon__footer">
+            <div className="dashboard-ribbon__link-row">
+              <span className="dashboard-ribbon__label-inline">Experimental Features</span>
+              <InputSwitch
+                checked={showExperimentalFeatures}
+                onChange={(event) => setShowExperimentalFeatures(Boolean(event.value))}
+                inputId="experimental-features-switch"
+                aria-label="Enable experimental features"
+                className="dashboard-link-mode-switch"
+              />
+            </div>
+          </div>
+        </aside>
+
+        <main className="dashboard-main" ref={dashboardScrollRef}>
+          <div className="dashboard-main__inner">
+          <div className="dashboard-toolbar">
+            <div className="dashboard-toolbar__copy">
+              <div className="dashboard-title-row">
+                <img className="dashboard-title-logo" src={ecosystem.logo} alt={`${ecosystem.name} logo`} />
+                <h1>{dashboardTitle}</h1>
+              </div>
+              {dashboardDescription && (
+                <p>{dashboardDescription}</p>
+              )}
+              <ul>
+                {sourceRepositories.map((repository) => {
+                  const href = getSourceRepositoryHref(repository);
+
+                  return (
+                    <li key={repository}>
+                      {href ? (
+                        <a href={href} target="_blank" rel="noreferrer">
+                          {repository}
+                        </a>
+                      ) : repository}
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          </div>
+
+      {fetchError ? (
+        <div className="dashboard-fetch-error">
+          <div className="dashboard-fetch-error__icon" aria-hidden="true">⚠</div>
+          <p className="dashboard-fetch-error__title">Failed to load dashboard data</p>
+          <p className="dashboard-fetch-error__detail">
+            Snapshot: <code>{fetchError.snapshot}</code>
+            {fetchError.sourceIds.length > 0 && (
+              <> · Sources: <code>{fetchError.sourceIds.join(', ')}</code></>
+            )}
+          </p>
+          {fetchError.message && (
+            <p className="dashboard-fetch-error__message">{fetchError.message}</p>
           )}
-          <ul>
-            {sourceRepositories.map((repository) => {
-              const href = getSourceRepositoryHref(repository);
-
-              return (
-                <li key={repository}>
-                  {href ? (
-                    <a href={href} target="_blank" rel="noreferrer">
-                      {repository}
-                    </a>
-                  ) : repository}
-                </li>
-              );
-            })}
-          </ul>
+          <button
+            type="button"
+            className="dashboard-fetch-error__retry"
+            onClick={() => {
+              setSkeletonActive(true);
+              setRetryCounter((c) => c + 1);
+            }}
+          >
+            Try again
+          </button>
         </div>
-      </div>
-      <div className="dashboard-sticky-controls">
-        <span className="dashboard-sticky-controls__indicator" aria-hidden="true">
-          <i className="pi pi-sliders-h" />
-        </span>
-        <div className="dashboard-sticky-controls__panel">
-          <label htmlFor="snapshot-select" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>
-            SNAPSHOT
-          </label>
-          <Dropdown
-            inputId="snapshot-select"
-            value={selectedSnapshot}
-            options={snapshotOptions}
-            onChange={(event) => setSelectedSnapshot(event.value)}
-            placeholder="Select snapshot date"
-            className="w-full"
-          />
-          <div className="dashboard-sticky-controls__link-row">
-            <span className="dashboard-sticky-controls__label-inline">IP Links:</span>
-            <span className={`dashboard-link-mode-text${linkMode === 'history' ? ' is-active' : ''}`}>
-              Historic
-            </span>
-            <InputSwitch
-              checked={linkMode === 'current'}
-              onChange={(event) => setLinkMode(event.value ? 'current' : 'history')}
-              inputId="link-mode-switch"
-              aria-label="IP links mode"
-              className="dashboard-link-mode-switch"
-            />
-            <span className={`dashboard-link-mode-text${linkMode === 'current' ? ' is-active' : ''}`}>
-              Current
-            </span>
-          </div>
-        </div>
-      </div>
-
+      ) : (
       <div className="sk-crossfade">
         {skeletonActive && (
           <div
@@ -313,74 +585,114 @@ export function EcosystemDashboard() {
             className={`sk-crossfade__layer${contentEntered ? '' : ' sk-enter'}`}
             onAnimationEnd={(e) => e.animationName === 'sk-fade-in' && setContentEntered(true)}
           >
-            <AuthorshipSection
-              ecosystem={ecosystem}
-              yearData={yearData}
-              topAuthors={topAuthors}
-              authorContributionHistogram={authorContributionHistogram}
-              bipAuthorCountHistogram={bipAuthorCountHistogram}
-              collaborationNetwork={collaborationNetwork}
-              collaborationMetricsSummary={collaborationMetricsSummary}
-              collaborationMetricsRows={collaborationMetricsRows}
-              collaborationClusterSizeDistribution={collaborationClusterSizeDistribution}
-              collaborationDegreeDistribution={collaborationDegreeDistribution}
-              highlightedAuthor={highlightedAuthor}
-              setHighlightedAuthor={setHighlightedAuthor}
-              collaborationLayoutMode={collaborationLayoutMode}
-              setCollaborationLayoutMode={setCollaborationLayoutMode}
-              collaborationMinClusterCollaborations={collaborationMinClusterCollaborations}
-              setCollaborationMinClusterCollaborations={setCollaborationMinClusterCollaborations}
-              collaborationAuthorOptions={collaborationAuthorOptions}
-              wordCloudFilterText={wordCloudFilterText}
-              setWordCloudFilterText={setWordCloudFilterText}
-              hasWordCloudFilter={hasWordCloudFilter}
-              filteredWordCloudData={filteredWordCloudData}
-              wordCloudData={wordCloudData}
-            />
-            <ClassificationSection
-              ecosystem={ecosystem}
-              classificationCategoryDomains={classificationCategoryDomains}
-              classificationDistributions={classificationDistributions}
-              classificationTimeline={classificationTimeline}
-              classificationChordData={classificationChordData}
-              classificationRelationRows={classificationRelationRows}
-            />
-            <EvolutionSection
-              ecosystem={ecosystem}
-              evolutionPayload={evolutionPayload}
-            />
-            <DependenciesSection
-              ecosystem={ecosystem}
-              selectedDataset={selectedDataset}
-              highlightedDependencyProposal={highlightedDependencyProposal}
-              setHighlightedDependencyProposal={setHighlightedDependencyProposal}
-              dependencyProposalOptions={dependencyProposalOptions}
-              dependencyMinRelations={dependencyMinRelations}
-              setDependencyMinRelations={setDependencyMinRelations}
-              dependencyMinRelationsIncludeConnections={dependencyMinRelationsIncludeConnections}
-              setDependencyMinRelationsIncludeConnections={setDependencyMinRelationsIncludeConnections}
-              dependencyFilterText={dependencyFilterText}
-              setDependencyFilterText={setDependencyFilterText}
-              dependencyIncludeConnections={dependencyIncludeConnections}
-              setDependencyIncludeConnections={setDependencyIncludeConnections}
-              hasDependencyFilter={hasDependencyFilter}
-              selectedDependencyProposalIds={selectedDependencyProposalIds}
-              dependencyMetricsApproachOptions={dependencyMetricsApproachOptions}
-              activeDependencyMetricsApproach={activeDependencyMetricsApproach}
-              setSelectedDependencyMetricsApproach={setSelectedDependencyMetricsApproach}
-              activeDependencyMetrics={activeDependencyMetrics}
-              dependencyMetrics={dependencyMetrics}
-            />
-            <ConformitySection
-              ecosystem={ecosystem}
-              dependencyProposalOptions={dependencyProposalOptions}
-              highlightedConformityProposal={highlightedConformityProposal}
-              setHighlightedConformityProposal={setHighlightedConformityProposal}
-              conformityRows={conformityRows}
-              conformityFailedChecks={conformityFailedChecks}
-            />
+            <div id="dashboard-authorship" className="dashboard-anchor">
+              <AuthorshipSection
+                ecosystem={authorshipViewEcosystem}
+                ecosystemBase={ecosystem}
+                selectedSourceIds={orderedSelectedSourceIds}
+                sectionSourceView={activeAuthorshipSourceView}
+                setSectionSourceView={setAuthorshipSourceView}
+                showExperimentalFeatures={showExperimentalFeatures}
+                yearData={authorshipDashboardData.yearData}
+                topAuthors={authorshipDashboardData.topAuthors}
+                authorContributionHistogram={authorshipDashboardData.authorContributionHistogram}
+                bipAuthorCountHistogram={authorshipDashboardData.bipAuthorCountHistogram}
+                collaborationNetwork={authorshipDashboardData.collaborationNetwork}
+                collaborationMetricsSummary={authorshipDashboardData.collaborationMetricsSummary}
+                collaborationMetricsRows={authorshipDashboardData.collaborationMetricsRows}
+                collaborationClusterSizeDistribution={authorshipDashboardData.collaborationClusterSizeDistribution}
+                collaborationDegreeDistribution={authorshipDashboardData.collaborationDegreeDistribution}
+                highlightedAuthor={highlightedAuthor}
+                setHighlightedAuthor={setHighlightedAuthor}
+                collaborationLayoutMode={collaborationLayoutMode}
+                setCollaborationLayoutMode={setCollaborationLayoutMode}
+                collaborationMinClusterCollaborations={collaborationMinClusterCollaborations}
+                setCollaborationMinClusterCollaborations={setCollaborationMinClusterCollaborations}
+                collaborationAuthorOptions={collaborationAuthorOptions}
+                wordCloudFilterText={wordCloudFilterText}
+                setWordCloudFilterText={setWordCloudFilterText}
+                hasWordCloudFilter={hasWordCloudFilter}
+                filteredWordCloudData={filteredWordCloudData}
+                wordCloudData={authorshipDashboardData.wordCloudData}
+              />
+            </div>
+            <div id="dashboard-classification" className="dashboard-anchor">
+              <ClassificationSection
+                ecosystem={activeEcosystem}
+                ecosystemBase={ecosystem}
+                selectedSourceIds={orderedSelectedSourceIds}
+                perSourceDashboardData={perSourceDashboardData}
+                sectionSourceView={activeClassificationSourceView}
+                setSectionSourceView={setClassificationSourceView}
+                classificationCategoryDomains={classificationCategoryDomains}
+                classificationDistributions={classificationDistributions}
+                classificationTimeline={classificationTimeline}
+                classificationChordData={classificationChordData}
+                classificationRelationRows={classificationRelationRows}
+              />
+            </div>
+            <div id="dashboard-evolution" className="dashboard-anchor">
+              <EvolutionSection
+                ecosystem={activeEcosystem}
+                ecosystemBase={ecosystem}
+                selectedSourceIds={orderedSelectedSourceIds}
+                perSourceDashboardData={perSourceDashboardData}
+                sectionSourceView={activeEvolutionSourceView}
+                setSectionSourceView={setEvolutionSourceView}
+                evolutionPayload={evolutionPayload}
+              />
+            </div>
+            <div id="dashboard-dependencies" className="dashboard-anchor">
+              <DependenciesSection
+                ecosystem={dependencyViewEcosystem}
+                ecosystemBase={ecosystem}
+                selectedSourceIds={orderedSelectedSourceIds}
+                sectionSourceView={activeDependenciesSourceView}
+                setSectionSourceView={setDependenciesSourceView}
+                selectedDataset={dependencyViewDataset}
+                highlightedDependencyProposal={highlightedDependencyProposal}
+                setHighlightedDependencyProposal={setHighlightedDependencyProposal}
+                dependencyMinRelations={dependencyMinRelations}
+                setDependencyMinRelations={setDependencyMinRelations}
+                dependencyMinRelationsIncludeConnections={dependencyMinRelationsIncludeConnections}
+                setDependencyMinRelationsIncludeConnections={setDependencyMinRelationsIncludeConnections}
+                dependencyFilterText={dependencyFilterText}
+                setDependencyFilterText={setDependencyFilterText}
+                dependencyIncludeConnections={dependencyIncludeConnections}
+                setDependencyIncludeConnections={setDependencyIncludeConnections}
+                hasDependencyFilter={hasDependencyFilter}
+                selectedDependencyProposalIds={selectedDependencyProposalIds}
+                dependencyMetricsApproachOptions={dependencyMetricsApproachOptions}
+                activeDependencyMetricsApproach={activeDependencyMetricsApproach}
+                setSelectedDependencyMetricsApproach={setSelectedDependencyMetricsApproach}
+                activeDependencyMetrics={activeDependencyMetrics}
+                dependencyMetrics={dependencyViewMetrics}
+                showExperimentalFeatures={showExperimentalFeatures}
+              />
+            </div>
+            {showConformitySection && (
+              <div id="dashboard-conformity" className="dashboard-anchor">
+	                <ConformitySection
+	                  ecosystem={activeEcosystem}
+	                  ecosystemBase={ecosystem}
+	                  selectedSourceIds={orderedSelectedSourceIds}
+	                  perSourceDashboardData={perSourceDashboardData}
+	                  sectionSourceView={activeConformitySourceView}
+	                  setSectionSourceView={setConformitySourceView}
+	                  showExperimentalFeatures={showExperimentalFeatures}
+	                  highlightedConformityProposal={highlightedConformityProposal}
+	                  setHighlightedConformityProposal={setHighlightedConformityProposal}
+	                  conformityRows={conformityDashboardData.conformityRows}
+	                  conformityFailedChecks={conformityDashboardData.conformityFailedChecks}
+	                />
+              </div>
+            )}
           </div>
         )}
+      </div>
+      )}
+          </div>
+        </main>
       </div>
       </section>
     </DashboardSnapshotProvider>

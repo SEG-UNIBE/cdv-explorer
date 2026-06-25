@@ -1,0 +1,530 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "51",
+      "title": "Lists",
+      "status": "Draft",
+      "author": null,
+      "created": "2023-03-09",
+      "type": "Optional",
+      "layer": null,
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Tue Dec 10 14:11:43 2024 -0800",
+    "total_commits": 44,
+    "git_history": [
+      [
+        "a1ca7a194b6d8f249b7437c0082682c2a7c074ab",
+        "Tue Dec 10 14:11:43 2024 -0800",
+        "Jon Staab"
+      ],
+      [
+        "624b989f9f3b0c07d338ec42765351c24f2123cf",
+        "Mon Dec 9 10:00:04 2024 -0500",
+        "Josh Brown"
+      ],
+      [
+        "64624a62eac4b2ee3e6b9da34c1aa77a33e20852",
+        "Fri Nov 22 13:58:49 2024 -0800",
+        "Jon Staab"
+      ],
+      [
+        "e6552476aa2e5ca7256be572a9aa226ec8a022ee",
+        "Tue Sep 3 20:41:31 2024 +0330",
+        "kehiy"
+      ],
+      [
+        "ca3c52e3e74f0a4679f1c6c0d9ac6461ea748d2d",
+        "Tue Aug 20 12:56:05 2024 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "61d251b3a49cb7a1fcc7524855b760f369696471",
+        "Tue Aug 20 19:28:17 2024 +0900",
+        "Asai Toshiya"
+      ],
+      [
+        "428a4779d7c4f4c2ff53815e8958e7cf99d69d26",
+        "Mon Aug 5 10:43:24 2024 -0300",
+        "fiatjaf"
+      ],
+      [
+        "218fbb1cc7ac900fd256f666cb6add590cabb24a",
+        "Thu May 2 11:04:55 2024 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "e97df1410391dd04fdbf9695932275a9d763940c",
+        "Sat Apr 13 12:39:24 2024 +0900",
+        "雪猫"
+      ],
+      [
+        "5b2461eb01f784d546f77cfc21af26bf7e4b6670",
+        "Wed Feb 28 11:50:54 2024 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "3f13eb34bf21f693ee7a8ddaba19229600fd323e",
+        "Tue Feb 13 12:40:57 2024 +0000",
+        "franzap"
+      ],
+      [
+        "d8d75d9b19e6c66f7d75c771e784cd9dee4d2320",
+        "Tue Jan 16 23:28:23 2024 +0900",
+        "Asai Toshiya"
+      ],
+      [
+        "884ea3d8b87fc9c1e0059045aa69f35648dd3593",
+        "Tue Jan 9 18:20:21 2024 -0500",
+        "Vitor Pamplona"
+      ],
+      [
+        "ad40fbdab3c01be0fe553d8da41ff60863b9c4f0",
+        "Sun Jan 7 20:00:04 2024 +0000",
+        "zmeyer44"
+      ],
+      [
+        "13c9202ba39e351a08d034db6cd9194d7c989949",
+        "Sun Jan 7 15:32:03 2024 +0000",
+        "zmeyer44"
+      ],
+      [
+        "3d8652ea147facb07adb51031e6b21f7e663dc10",
+        "Mon Jan 1 12:21:50 2024 -0600",
+        "Alex Gleason"
+      ],
+      [
+        "7822a8b12670312aff104ddc03066425882f739d",
+        "Sun Nov 19 14:47:02 2023 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "33a719f34507bf2cbc6717eb5e4b9464daaad23a",
+        "Sun Nov 19 07:17:11 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "5e6e7a2bc85de7d251b2d7d111c355a9e5ddd0e4",
+        "Sat Nov 18 11:36:20 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "2d678bcd5a1beb56097fb9af037e1fe2b2598c5e",
+        "Sat Nov 18 11:35:32 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "4a77fc5c402ec6c4cbdb574f9260e62fd2fc7bf4",
+        "Thu Nov 16 15:50:39 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "2a0b701ff77d4ffd686661d829b7b7091e29589b",
+        "Thu Nov 16 12:26:50 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "37f6cbb775126b386414220f783ca0f5f85e7614",
+        "Wed Nov 15 21:42:51 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "31382e57a1fabea855300461e7ef2dc751aaba61",
+        "Wed Nov 15 20:52:10 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "6c3eebf510cd7adb5db6a2598ffb5796693fc4dd",
+        "Wed Nov 15 20:06:49 2023 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "cd598bad5b90eba56eea67bfa512038112fb1ac8",
+        "Wed Nov 15 20:06:00 2023 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "804ee187c2c18d6896ff2ef4e001eb55bd1e7af6",
+        "Wed Nov 15 15:39:23 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "4db99145d7ae9df84f3d99681fa2df8320702a75",
+        "Wed Nov 15 15:34:46 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "61b736574cde8e954efe70da3c8c9116297cebf0",
+        "Wed Nov 15 15:32:22 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "54befcc09a3fdd804ee3f98a8a670c582cd101cc",
+        "Wed Nov 15 15:32:09 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "cf1b17280f5ba97c7f3bf1f699494f1551de8064",
+        "Wed Nov 15 08:24:46 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "1bbd87c42fe6ca6caa7582fdb89a355b6dfc70f4",
+        "Wed Nov 15 07:33:26 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "da05b5d9150200cec5a498ac180b6391abeddd69",
+        "Wed Nov 15 00:47:15 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "5dc6071978bc7c2dcee807d16ef085192971ac27",
+        "Wed Nov 15 00:22:09 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "f1433e0f0cb28d17102b530081b48d47e0ee38ac",
+        "Tue Nov 14 18:38:48 2023 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "867132ce9ac889258cdb46cf73531e8892f46ec4",
+        "Thu Aug 17 16:21:21 2023 +0200",
+        "gzuuus"
+      ],
+      [
+        "50b63c26c83ffe892c8698e9ea2eed88a3e6b9a0",
+        "Thu Aug 17 13:45:44 2023 +0200",
+        "gzuuus"
+      ],
+      [
+        "2ba0eca44344a770b5ad24f20e749864cddf3518",
+        "Tue Aug 15 18:32:30 2023 +0200",
+        "gzuuus"
+      ],
+      [
+        "72bb8a128b2d7d3c2c654644cd68d0d0fe58a3b1",
+        "Sun Aug 13 13:47:45 2023 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "97b58ccc36a8360a099e4f905fc9bc616bc03f31",
+        "Fri Apr 14 21:24:25 2023 +0900",
+        "Yasuhiro Matsumoto"
+      ],
+      [
+        "3cec80d99ebbee6b72aae31f1856181d04971244",
+        "Fri Apr 7 17:38:03 2023 +0530",
+        "vivganes"
+      ],
+      [
+        "8b70e83b377d835b5ae570c14b697da2881d40d9",
+        "Mon Mar 13 11:53:06 2023 +0900",
+        "jiftechnify"
+      ],
+      [
+        "92d087bbc3883eec1962146f016f12649f6baf9b",
+        "Thu Mar 9 15:56:17 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "30daaedbdb48c7583843a12d3496ced311b9986a",
+        "Thu Mar 9 11:16:57 2023 -0600",
+        "monlovesmango"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "kind": 27,
+      "nip": 13,
+      "user": 13,
+      "relay": 13,
+      "sets": 13,
+      "md": 12,
+      "e": 12,
+      "lists": 11,
+      "relays": 9,
+      "groups": 9,
+      "users": 8,
+      "p": 8,
+      "items": 7,
+      "example": 7,
+      "t": 7,
+      "public": 6,
+      "list": 6,
+      "tags": 6,
+      "clients": 6,
+      "standard": 6,
+      "list_": 6,
+      "hashtags": 6,
+      "notes": 6,
+      "1": 6,
+      "30023": 6,
+      "articles": 6,
+      "urls": 6,
+      "emoji": 6,
+      "d": 6,
+      "event": 5,
+      "content": 5,
+      "tag": 5,
+      "pubkeys": 5,
+      "app": 5,
+      "json": 4,
+      "use": 4,
+      "mute": 4,
+      "29": 4,
+      "id": 4,
+      "30": 4,
+      "17": 4,
+      "54": 4,
+      "things": 3,
+      "private": 3,
+      "array": 3,
+      "events": 3,
+      "meaning": 3,
+      "_mute": 3,
+      "description": 3,
+      "expected": 3,
+      "10000": 3,
+      "bookmarks": 3,
+      "r": 3,
+      "communities": 3,
+      "group": 3,
+      "topics": 3,
+      "interest": 3,
+      "set": 3,
+      "wiki": 3,
+      "defined": 3,
+      "ui": 3,
+      "different": 3,
+      "identifier": 3,
+      "30001": 3,
+      "pubkey": 3,
+      "created_at": 3,
+      "sig": 3,
+      "com": 3,
+      "optional": 2,
+      "contain": 2,
+      "references": 2,
+      "specified": 2,
+      "encrypted": 2,
+      "04": 2,
+      "key": 2,
+      "s": 2,
+      "stored": 2,
+      "rely": 2,
+      "profile": 2,
+      "want": 2,
+      "feeds": 2,
+      "receive": 2,
+      "string": 2,
+      "10001": 2,
+      "showcase": 2,
+      "10003": 2,
+      "10004": 2,
+      "72": 2,
+      "definitions": 2,
+      "28": 2,
+      "40": 2,
+      "search": 2,
+      "pointers": 2,
+      "30015": 2,
+      "emojis": 2,
+      "30030": 2,
+      "good": 2,
+      "authors": 2,
+      "enhance": 2,
+      "sets_": 2,
+      "_curation": 2,
+      "apps": 2,
+      "title": 2,
+      "image": 2,
+      "30000": 2,
+      "categorized": 2,
+      "choose": 2,
+      "bookmark": 2,
+      "curation": 2,
+      "30004": 2,
+      "picked": 2,
+      "interesting": 2,
+      "belonging": 2,
+      "category": 2,
+      "videos": 2,
+      "release": 2,
+      "artifact": 2,
+      "30063": 2,
+      "version": 2,
+      "07caba282f76441955b695551c3c5c742e5b9202a3784780f8086fdcdc1da3a9": 2,
+      "a55c15f5e41d5aebd236eca5e0142789c5385703f1a7485aa4b38d94fd18dcc4": 2,
+      "set_": 2,
+      "yaks": 2,
+      "567b41fc9060c758c4216fe5f8d3df7c57daad7ae757fa4606f0c39d4dd220ef": 2,
+      "d6dc95542e18b8b7aec2f14610f55c335abebec76f3db9e58c254661d0593a0c": 2,
+      "1695327657": 2,
+      "cdn": 2,
+      "yak": 2,
+      "ox": 2,
+      "cattle": 2,
+      "d78ba0d5dce22bfff9db0a9e996c9ef27e2c91051de0c4e1da340e0326b4941e": 2,
+      "a9a4e2192eede77e6c9d24ddfab95ba3ff7c03fbd07ad011fff245abea431fb4d3787c2d04aad001cb039cb8de91d83ce30e9a94f82ac3c5a2372aa1294a96bd": 2,
+      "0": 2,
+      "val": 2,
+      "private_items": 2,
+      "base64blob": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "30daaedbdb48c7583843a12d3496ced311b9986a",
+        "timestamp": "2023-03-09T14:16:57-03:00",
+        "date": "2023-03-09",
+        "author": "monlovesmango",
+        "path": "51.md",
+        "status": "Draft",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        {
+          "target": "nips:04",
+          "count": 2
+        },
+        {
+          "target": "nips:17",
+          "count": 2
+        },
+        {
+          "target": "nips:28",
+          "count": 1
+        },
+        {
+          "target": "nips:29",
+          "count": 2
+        },
+        {
+          "target": "nips:30",
+          "count": 2
+        },
+        {
+          "target": "nips:54",
+          "count": 2
+        },
+        {
+          "target": "nips:72",
+          "count": 1
+        }
+      ],
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:26Z",
+          "dependencies": [
+            {
+              "target": "nips:04",
+              "evidence": "encrypted using the same scheme from [NIP-04](04.md)",
+              "reason": "Private list items are defined to use NIP-04 encryption semantics and key agreement.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:17",
+              "evidence": "\"relay\" (see [NIP-17](17.md))",
+              "reason": "The DM relays list uses the relay reference meaning introduced by NIP-17.",
+              "confidence": "low"
+            },
+            {
+              "target": "nips:28",
+              "evidence": "[NIP-28](28.md) chat channels the user is in",
+              "reason": "The public chats list item type is specialized for NIP-28 channel definitions.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:29",
+              "evidence": "[NIP-29](29.md) groups the user is in",
+              "reason": "The simple groups list uses NIP-29 group identifiers and relay URL structure.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:30",
+              "evidence": "see [NIP-30](30.md)",
+              "reason": "Emoji lists and emoji sets rely on the emoji tag semantics defined by NIP-30.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:54",
+              "evidence": "[NIP-54](54.md) user recommended wiki authors",
+              "reason": "The good wiki authors and relays lists are defined specifically in terms of NIP-54 wiki concepts.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:72",
+              "evidence": "[NIP-72](72.md) communities the user belongs to",
+              "reason": "The communities list entries are specialized to NIP-72 community identifiers.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

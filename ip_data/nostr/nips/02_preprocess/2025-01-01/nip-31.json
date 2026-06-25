@@ -1,0 +1,147 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "31",
+      "title": "Dealing with unknown event kinds",
+      "status": "Draft",
+      "author": null,
+      "created": "2023-05-05",
+      "type": "Optional",
+      "layer": null,
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Wed Nov 15 21:42:51 2023 -0300",
+    "total_commits": 3,
+    "git_history": [
+      [
+        "37f6cbb775126b386414220f783ca0f5f85e7614",
+        "Wed Nov 15 21:42:51 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "964bc5b5ce946ab66aae945084549f26ffdef70f",
+        "Thu Jun 8 22:27:00 2023 +0200",
+        "pablof7z"
+      ],
+      [
+        "b8aec7dad561a8b27e22a91638dd04f2851a0c5c",
+        "Fri May 5 09:18:02 2023 -0300",
+        "fiatjaf"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "event": 7,
+      "kind": 6,
+      "custom": 4,
+      "1": 4,
+      "clients": 4,
+      "kinds": 3,
+      "notes": 3,
+      "nip": 2,
+      "protocol": 2,
+      "t": 2,
+      "text": 2,
+      "alt": 2,
+      "tag": 2,
+      "context": 2,
+      "user": 2,
+      "know": 2,
+      "events": 2,
+      "89": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "b8aec7dad561a8b27e22a91638dd04f2851a0c5c",
+        "timestamp": "2023-05-05T09:18:02-03:00",
+        "date": "2023-05-05",
+        "author": "fiatjaf",
+        "path": "31.md",
+        "status": "Draft",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        {
+          "target": "nips:89",
+          "count": 1
+        }
+      ],
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:17Z",
+          "dependencies": [
+            {
+              "target": "nips:89",
+              "evidence": "clients can make interacting with these event kinds more functional by supporting NIP-89",
+              "reason": "The proposal relies on NIP-89 as an optional mechanism that improves how clients handle unknown custom event kinds; it is the only named technical extension it builds on.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

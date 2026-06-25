@@ -1,0 +1,284 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "59",
+      "title": "Gift Wrap",
+      "status": "Unknown",
+      "author": null,
+      "created": "2023-08-11",
+      "type": "Optional",
+      "layer": null,
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Sun Nov 3 22:33:48 2024 +0100",
+    "total_commits": 6,
+    "git_history": [
+      [
+        "087437042be0dac04a5fce9ea243b6babd31fb63",
+        "Sun Nov 3 22:33:48 2024 +0100",
+        "Terry Yiu"
+      ],
+      [
+        "e6552476aa2e5ca7256be572a9aa226ec8a022ee",
+        "Tue Sep 3 20:41:31 2024 +0330",
+        "kehiy"
+      ],
+      [
+        "1da44a5b712363da6ed2aa149f498da08d087782",
+        "Fri May 17 08:13:02 2024 -0400",
+        "Terry Yiu"
+      ],
+      [
+        "f3589b99b0e5e297eea2de6b3686f81541b7d3db",
+        "Thu Feb 1 00:11:14 2024 +0900",
+        "Asai Toshiya"
+      ],
+      [
+        "1a2b21b67eeae2eba8c03215826a32d4a03ae172",
+        "Tue Jan 9 13:39:58 2024 -0800",
+        "Jon Staab"
+      ],
+      [
+        "d7293a3924143b222ffbda0dba11a373136e1269",
+        "Fri Aug 11 08:34:56 2023 -0700",
+        "Jonathan Staab"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "event": 35,
+      "rumor": 26,
+      "kind": 24,
+      "const": 19,
+      "s": 17,
+      "content": 17,
+      "seal": 15,
+      "recipient": 15,
+      "key": 13,
+      "pubkey": 13,
+      "json": 12,
+      "tags": 12,
+      "13": 12,
+      "wrap": 11,
+      "author": 11,
+      "privatekey": 11,
+      "gift": 10,
+      "nip": 9,
+      "id": 9,
+      "created_at": 9,
+      "relays": 8,
+      "1059": 8,
+      "events": 8,
+      "recipientpublickey": 8,
+      "data": 7,
+      "encrypted": 6,
+      "1": 6,
+      "p": 6,
+      "wrapped": 6,
+      "protocol": 5,
+      "private": 5,
+      "random": 5,
+      "string": 5,
+      "uint8array": 5,
+      "nostr": 4,
+      "metadata": 4,
+      "44": 4,
+      "md": 4,
+      "signed": 4,
+      "field": 4,
+      "clients": 4,
+      "sig": 4,
+      "time": 4,
+      "party": 4,
+      "nip44": 4,
+      "publickey": 4,
+      "recipientprivatekey": 4,
+      "possible": 3,
+      "messaging": 3,
+      "encryption": 3,
+      "protect": 3,
+      "note": 3,
+      "information": 3,
+      "unsigned": 3,
+      "signature": 3,
+      "2": 3,
+      "wraps": 3,
+      "receiver": 3,
+      "tag": 3,
+      "public": 3,
+      "intended": 3,
+      "use": 3,
+      "encoded": 3,
+      "place": 3,
+      "wrapper": 3,
+      "single": 3,
+      "serve": 3,
+      "send": 3,
+      "example": 3,
+      "going": 3,
+      "tonight": 3,
+      "sign": 3,
+      "encrypt": 3,
+      "import": 3,
+      "unsignedevent": 3,
+      "getpublickey": 3,
+      "nip19": 3,
+      "finalizeevent": 3,
+      "math": 3,
+      "randomnow": 3,
+      "nip44conversationkey": 3,
+      "v2": 3,
+      "nip44encrypt": 3,
+      "nip44decrypt": 3,
+      "return": 3,
+      "randomkey": 3,
+      "senderprivatekey": 3,
+      "signing": 2,
+      "regular": 2,
+      "means": 2,
+      "leaked": 2,
+      "serialized": 2,
+      "placed": 2,
+      "publicly": 2,
+      "t": 2,
+      "revealing": 2,
+      "add": 2,
+      "sender": 2,
+      "real": 2,
+      "1686840217": 2,
+      "3": 2,
+      "proof": 2,
+      "work": 2,
+      "timestamps": 2,
+      "choose": 2,
+      "auth": 2,
+      "message": 2,
+      "ephemeral": 2,
+      "create": 2,
+      "611df01bfcf85c26ae65453b772d8f1dfd25c264621c0277e1fc1518686faef9": 2,
+      "result": 2,
+      "broadcast": 2,
+      "javascript": 2,
+      "bytestohex": 2,
+      "utils": 2,
+      "type": 2,
+      "eventtemplate": 2,
+      "tools": 2,
+      "geteventhash": 2,
+      "generatesecretkey": 2,
+      "two_days": 2,
+      "60": 2,
+      "round": 2,
+      "createrumor": 2,
+      "createseal": 2,
+      "createwrap": 2,
+      "decode": 2,
+      "unwrappedseal": 2
+    },
+    "changes_in_status": [],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        {
+          "target": "nips:0C",
+          "count": 1
+        },
+        {
+          "target": "nips:0F",
+          "count": 2
+        },
+        {
+          "target": "nips:13",
+          "count": 2
+        },
+        {
+          "target": "nips:19",
+          "count": 3
+        },
+        {
+          "target": "nips:44",
+          "count": 6
+        }
+      ],
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:27Z",
+          "dependencies": [
+            {
+              "target": "nips:13",
+              "evidence": "including the recipient's `p` tag or [NIP-13] proof of work",
+              "reason": "The wrapper event optionally uses proof-of-work as part of its routing/spam-mitigation semantics, so the proposal depends on NIP-13 for that mechanism.",
+              "confidence": "low"
+            },
+            {
+              "target": "nips:44",
+              "evidence": "This NIP relies on [NIP-44]'s versioned encryption algorithms.",
+              "reason": "Gift Wrap uses NIP-44 encryption for sealing and wrapping event JSON, making NIP-44 a core cryptographic dependency.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

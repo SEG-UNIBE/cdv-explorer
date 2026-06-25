@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "72",
       "title": "Moderated Communities (Reddit Style)",
-      "author": [
-        "fiatjaf"
-      ],
-      "created": "2023-08-08",
       "status": "Draft",
+      "author": null,
+      "created": "2023-08-08",
       "type": "Optional",
       "layer": null,
       "kind": null
@@ -259,16 +257,44 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 9",
-        "NIP 18",
-        "NIP 22"
+        {
+          "target": "nips:09",
+          "count": 1
+        },
+        {
+          "target": "nips:18",
+          "count": 1
+        },
+        {
+          "target": "nips:22",
+          "count": 2
+        }
       ],
       "body_extracted_llm": [
-        "NIP 9",
-        "NIP 16",
-        "NIP 18",
-        "NIP 22",
-        "NIP 33"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:53Z",
+          "dependencies": [
+            {
+              "target": "nips:09",
+              "evidence": "Moderators MAY request deletion of their approval of a post at any time using [NIP-09 event deletion requests](09.md).",
+              "reason": "The moderation model relies on event deletion requests to withdraw approvals, which affects how approval events are managed.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:18",
+              "evidence": "Clients MAY support cross-posting between communities by posting a NIP 18 `kind 6` or `kind 16` repost",
+              "reason": "Cross-posting is defined in terms of NIP 18 repost events and reuses that event type as the mechanism.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:22",
+              "evidence": "[NIP-22](22.md) kind 1111 events SHOULD be used for text notes posted to a community",
+              "reason": "Community posting is explicitly built on NIP-22 note semantics and its tag structure for community-scoped posts and replies.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

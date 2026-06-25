@@ -14,7 +14,6 @@ from matplotlib.patches import FancyArrowPatch
 from analysis.dependencies.constants import (
     BODY_EXTRACTED_LLM,
     BODY_EXTRACTED_REGEX,
-    LEGACY_APPROACH_ALIASES,
     PREAMBLE_DEPENDENCY_SUBTYPES,
     PREAMBLE_EXTRACTED,
 )
@@ -192,33 +191,43 @@ def _slugify(parts) -> str:
     return "-".join(str(part).replace("_", "-") for part in parts)
 
 
-def get_links_by_type(network_links, link_type):
-    explicit = network_links.get(PREAMBLE_EXTRACTED, {}) or network_links.get(LEGACY_APPROACH_ALIASES[PREAMBLE_EXTRACTED], {})
+def _local_proposal_id(graph_key):
+    text = str(graph_key)
+    return text.split(":", 1)[1] if ":" in text else text
+
+
+def _plot_link(edge):
+    return {
+        "source": _local_proposal_id(edge.get("source")),
+        "target": _local_proposal_id(edge.get("target")),
+        "value": edge.get("value", 1),
+    }
+
+
+def get_links_by_type(dependency_edges, link_type):
     if link_type in PREAMBLE_DEPENDENCY_SUBTYPES:
-        return explicit.get(link_type, [])
+        return [
+            _plot_link(edge)
+            for edge in dependency_edges
+            if edge.get("extraction_method") == PREAMBLE_EXTRACTED
+            and edge.get("relation_type") == link_type
+        ]
     if link_type == PREAMBLE_EXTRACTED:
-        seen = set()
-        merged = []
-        for subtype in PREAMBLE_DEPENDENCY_SUBTYPES:
-            for link in explicit.get(subtype, []):
-                key = (link.get("source"), link.get("target"))
-                if key in seen:
-                    continue
-                seen.add(key)
-                merged.append(link)
-        return merged
-    return network_links.get(link_type, network_links.get(LEGACY_APPROACH_ALIASES.get(link_type, ""), []))
+        return [
+            _plot_link(edge)
+            for edge in dependency_edges
+            if edge.get("extraction_method") == PREAMBLE_EXTRACTED
+        ]
+    return [
+        _plot_link(edge)
+        for edge in dependency_edges
+        if edge.get("extraction_method") == link_type
+    ]
 
 
-def iter_all_links(network_links):
-    for link_type, links in network_links.items():
-        if link_type in {PREAMBLE_EXTRACTED, LEGACY_APPROACH_ALIASES[PREAMBLE_EXTRACTED]} and isinstance(links, dict):
-            for subtype_links in links.values():
-                for link in subtype_links:
-                    yield link
-            continue
-        for link in links:
-            yield link
+def iter_all_links(dependency_edges):
+    for edge in dependency_edges:
+        yield _plot_link(edge)
 
 
 def resolve_near_overlaps(pos, threshold=0.02, max_iterations=10):
@@ -383,7 +392,7 @@ def draw_static_network_with_layouts(
     if bips_to_show is not None:
         core_bips_set = set(bips_to_show)
         nodes_to_display_set = set(core_bips_set)
-        for link_data in iter_all_links(network_data["links"]):
+        for link_data in iter_all_links(network_data["dependency_edges"]):
             source_id = int(link_data["source"])
             target_id = int(link_data["target"])
             if source_id in core_bips_set:
@@ -409,7 +418,7 @@ def draw_static_network_with_layouts(
 
     edges_by_type = {lt: [] for lt in link_type}
     for lt in link_type:
-        for link_data in get_links_by_type(network_data["links"], lt):
+        for link_data in get_links_by_type(network_data["dependency_edges"], lt):
             source_id = int(link_data["source"])
             target_id = int(link_data["target"])
             if graph.has_node(source_id) and graph.has_node(target_id):
@@ -418,7 +427,6 @@ def draw_static_network_with_layouts(
 
     group_attr = nx.get_node_attributes(graph, "group")
     group_counts = Counter(group_attr.values())
-    sorted_groups = sorted(group_counts.items(), key=lambda item: item[1], reverse=True)
 
     node_colors_data = []
     cmap_for_plot = None

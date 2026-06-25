@@ -1,7 +1,9 @@
 import * as d3 from 'd3';
+import { positionTooltip } from './tooltipPosition';
 import { useEffect, useRef } from 'react';
-import { renderProposalListHtml } from './bipTooltipContent';
+import { renderProposalListRow } from './bipTooltipContent';
 import { useDashboardEcosystem, useDashboardLinkMode, useDashboardSnapshot } from './dashboard/DashboardSnapshotContext';
+import { renderTooltipCardHtml } from './tooltipHtml';
 
 function truncateTextToWidth(text, maxWidth, measurer) {
   const value = String(text || '');
@@ -118,15 +120,17 @@ export const ConformityFailedChecksHistogram = ({
       .style('pointer-events', 'none');
 
     const setTooltipPosition = (pageX, pageY) => {
-      tooltip
-        .style('left', `${pageX + 10}px`)
-        .style('top', `${pageY - 28}px`);
+      positionTooltip(tooltip, pageX, pageY);
     };
 
     const renderTooltipHtml = (entry) => (
-      `<strong>${entry.label}</strong><br/>` +
-      `Failed in ${entry.count} ${proposalShortLabel}${entry.count === 1 ? '' : 's'}<br/>` +
-      renderProposalListHtml(entry.proposals, snapshotLabel, { ecosystem, label: 'Affected:', linkMode })
+      renderTooltipCardHtml({
+        titleHtml: `<strong>${entry.label}</strong>`,
+        rows: [
+          ['Failed In', `${entry.count} ${proposalShortLabel}${entry.count === 1 ? '' : 's'}`],
+          renderProposalListRow(entry.proposals, snapshotLabel, { ecosystem, label: 'Affected:', linkMode }),
+        ],
+      })
     );
 
     const resetBarStyles = () => {

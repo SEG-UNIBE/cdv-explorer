@@ -1,0 +1,253 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "04",
+      "title": "Encrypted Direct Message",
+      "status": "Final",
+      "author": null,
+      "created": "2022-05-01",
+      "type": "Optional",
+      "layer": null,
+      "kind": "unrecommended"
+    }
+  },
+  "meta": {
+    "last_commit": "Wed Apr 24 15:31:45 2024 -0400",
+    "total_commits": 14,
+    "git_history": [
+      [
+        "df30012430c88d49fb5b124992b04d5c61b6338b",
+        "Wed Apr 24 15:31:45 2024 -0400",
+        "Vitor Pamplona"
+      ],
+      [
+        "822b70a565678222706dd6284eb7abcaadfc5115",
+        "Wed Dec 20 13:22:02 2023 +0100",
+        "Paul Miller"
+      ],
+      [
+        "37f6cbb775126b386414220f783ca0f5f85e7614",
+        "Wed Nov 15 21:42:51 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "3cec80d99ebbee6b72aae31f1856181d04971244",
+        "Fri Apr 7 17:38:03 2023 +0530",
+        "vivganes"
+      ],
+      [
+        "56f84f79bd720912d08f5a7172011f7bf647b253",
+        "Thu Mar 23 08:54:22 2023 -0600",
+        "Bartholomew Joyce"
+      ],
+      [
+        "a886b43b48d3e52441bf97e1aa0de39ac2560843",
+        "Mon Mar 13 18:29:24 2023 +0100",
+        "fcked"
+      ],
+      [
+        "b2c21ab10c06be0976a08920c07f5421d17c0654",
+        "Mon Mar 13 16:59:29 2023 +0100",
+        "fcked"
+      ],
+      [
+        "a4ed9689032a6e16eff92994195f273e74475f45",
+        "Thu Mar 9 11:05:45 2023 -0500",
+        "Jeff Thibault"
+      ],
+      [
+        "a8fab58526f3cafa9d511512e2881f505fbe1626",
+        "Tue Mar 7 07:31:21 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "d97928bd9024a988be6c9f7ec18c0fcf93a8b9a3",
+        "Sun Mar 5 21:43:14 2023 +0100",
+        "ennmichael"
+      ],
+      [
+        "2a4c44035e56580fb22929972a69280236663557",
+        "Wed Feb 22 19:14:07 2023 -0500",
+        "Brandon Lucas"
+      ],
+      [
+        "ffe6a49557253a1f6227793787c6fcf58565a980",
+        "Fri Feb 10 08:18:40 2023 -0500",
+        "Jeff Thibault"
+      ],
+      [
+        "743e43a8d4bf4a37022e3b6551524b12e7cc54a0",
+        "Tue Nov 22 08:59:10 2022 -0300",
+        "fiatjaf"
+      ],
+      [
+        "f25c7e672c23ca5463fa5c0fcb5e5f424d956862",
+        "Sun May 1 07:48:57 2022 -0300",
+        "fiatjaf"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "message": 6,
+      "iv": 6,
+      "let": 6,
+      "encrypted": 5,
+      "base64": 5,
+      "event": 4,
+      "content": 4,
+      "cipher": 4,
+      "tags": 4,
+      "crypto": 4,
+      "kind": 3,
+      "4": 3,
+      "shared": 3,
+      "key": 3,
+      "p": 3,
+      "note": 3,
+      "secp256k1": 3,
+      "secret": 3,
+      "x": 3,
+      "buffer": 3,
+      "encryptedmessage": 3,
+      "unrecommended": 2,
+      "nip": 2,
+      "17": 2,
+      "direct": 2,
+      "final": 2,
+      "following": 2,
+      "encoded": 2,
+      "aes": 2,
+      "256": 2,
+      "cbc": 2,
+      "string": 2,
+      "user": 2,
+      "s": 2,
+      "public": 2,
+      "contain": 2,
+      "entry": 2,
+      "identifying": 2,
+      "relays": 2,
+      "form": 2,
+      "pubkey": 2,
+      "libsecp256k1": 2,
+      "https": 2,
+      "github": 2,
+      "com": 2,
+      "bitcoin": 2,
+      "core": 2,
+      "ecdh": 2,
+      "implementation": 2,
+      "point": 2,
+      "coordinate": 2,
+      "import": 2,
+      "secp": 2,
+      "sharedpoint": 2,
+      "theirpublickey": 2,
+      "sharedx": 2,
+      "text": 2,
+      "ivbase64": 2,
+      "warning": 2,
+      "events": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "f25c7e672c23ca5463fa5c0fcb5e5f424d956862",
+        "timestamp": "2022-05-01T07:48:57-03:00",
+        "date": "2022-05-01",
+        "author": "fiatjaf",
+        "path": "04.md",
+        "status": "Draft",
+        "standard": ""
+      },
+      {
+        "commit": "743e43a8d4bf4a37022e3b6551524b12e7cc54a0",
+        "timestamp": "2022-11-22T14:52:34-03:00",
+        "date": "2022-11-22",
+        "author": "fiatjaf",
+        "path": "04.md",
+        "status": "Final",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        {
+          "target": "nips:17",
+          "count": 1
+        }
+      ],
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:08Z",
+          "dependencies": [
+            {
+              "target": "nips:17",
+              "evidence": "deprecated in favor of [NIP-17](17.md)",
+              "reason": "The proposal is explicitly superseded by NIP-17, indicating its semantics are replaced by that specification.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

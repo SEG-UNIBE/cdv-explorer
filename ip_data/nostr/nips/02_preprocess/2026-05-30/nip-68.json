@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "68",
       "title": "Picture-first feeds",
-      "author": [
-        "Vitor Pamplona"
-      ],
-      "created": "2024-10-27",
       "status": "Draft",
+      "author": null,
+      "created": "2024-10-27",
       "type": "Optional",
       "layer": null,
       "kind": null
@@ -211,13 +209,34 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 71",
-        "NIP 94"
+        {
+          "target": "nips:71",
+          "count": 1
+        },
+        {
+          "target": "nips:94",
+          "count": 2
+        }
       ],
       "body_extracted_llm": [
-        "NIP 1",
-        "NIP 36",
-        "NIP 94"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:51Z",
+          "dependencies": [
+            {
+              "target": "nips:71",
+              "evidence": "might be used with [NIP-71](71.md)'s kind `22`",
+              "reason": "The proposal extends the same picture-first feed concept to short vertical videos using NIP-71's kind 22, so it relies on that event kind and its media semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:94",
+              "evidence": "`x <sha256 hash as specified in NIP 94>`",
+              "reason": "The `imeta` tag format reuses the SHA-256 hash specification from NIP 94 for image references, making that hash definition part of the event data semantics.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

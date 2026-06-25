@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "5A",
       "title": "Static Websites (nsites)",
-      "author": [
-        "hzrd149"
-      ],
-      "created": "2026-03-25",
       "status": "Draft",
+      "author": null,
+      "created": "2026-03-25",
       "type": "Optional",
       "layer": null,
       "kind": null
@@ -227,11 +225,33 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 1",
-        "NIP 5",
-        "NIP 65"
+        {
+          "target": "nips:01",
+          "count": 1
+        },
+        {
+          "target": "nips:65",
+          "count": 1
+        },
+        {
+          "target": "nips:DE",
+          "count": 1
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:45Z",
+          "dependencies": [
+            {
+              "target": "nips:01",
+              "evidence": "must be a replaceable or an addressable event as defined in [NIP-01](01.md)",
+              "reason": "The proposal relies on NIP-01's event types to define valid manifest events.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

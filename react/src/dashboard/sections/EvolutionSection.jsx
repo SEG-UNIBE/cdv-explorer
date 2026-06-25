@@ -3,7 +3,14 @@ import { Dropdown } from 'primereact/dropdown';
 import { RadioButton } from 'primereact/radiobutton';
 import { EvolutionStatusStackedBarChart } from '../../EvolutionStatusStackedBarChart';
 import { ProposalEventTimeline } from '../../ProposalEventTimeline';
+import {
+  DashboardSnapshotProvider,
+  useDashboardLinkMode,
+  useDashboardSnapshot,
+} from '../DashboardSnapshotContext';
 import { ExportableCard } from '../ExportableCard';
+import { CollapsibleControls } from '../CollapsibleControls';
+import { SectionSourceToggle } from './SectionSourceToggle';
 
 function hasPositiveValues(series) {
   return Array.isArray(series?.rows) && series.rows.some((row) => (
@@ -11,23 +18,22 @@ function hasPositiveValues(series) {
   ));
 }
 
-export function EvolutionSection({
-  ecosystem,
-  evolutionPayload,
-}) {
+function EvolutionContent({ ecosystem, evolutionPayload }) {
   const [chartMode, setChartMode] = useState('absolute');
   const [selectedProposalId, setSelectedProposalId] = useState('');
-  const overallEvolution = evolutionPayload?.status_evolution_segmented
+  const snapshot = useDashboardSnapshot();
+  const linkMode = useDashboardLinkMode();
+  const overallEvolution = useMemo(() => (
+    evolutionPayload?.status_evolution_segmented
     || evolutionPayload?.status_evolution
-    || { categories: [], rows: [] };
+    || { categories: [], rows: [] }
+  ), [evolutionPayload]);
   const proposalTimelines = useMemo(() => (
     Array.isArray(evolutionPayload?.proposal_timelines) ? evolutionPayload.proposal_timelines : []
   ), [evolutionPayload]);
-  const milestoneLabel = evolutionPayload?.meta?.milestones?.[0]?.label || '';
-  const milestoneDate = evolutionPayload?.meta?.milestones?.[0]?.date || '';
-  const formattedMilestoneLabel = milestoneLabel === 'BIP3 Activation'
-    ? 'BIP-3 activation'
-    : (milestoneLabel || 'the process change');
+  const milestones = useMemo(() => (
+    Array.isArray(evolutionPayload?.meta?.milestones) ? evolutionPayload.meta.milestones : []
+  ), [evolutionPayload]);
   const hasData = hasPositiveValues(overallEvolution);
   const proposalTimelineOptions = useMemo(() => proposalTimelines.map((entry) => {
     const eventCount = Number(entry?.event_count ?? entry?.events?.length ?? 0);
@@ -57,40 +63,38 @@ export function EvolutionSection({
   }
 
   return (
-    <section className="dashboard-section">
-      <div className="dashboard-section__header">
-        <h2 className="dashboard-section__title">Evolution</h2>
-      </div>
+    <DashboardSnapshotProvider snapshot={snapshot} linkMode={linkMode} ecosystem={ecosystem}>
+      <>
       <ExportableCard className="mb-4" exportTitle={`${ecosystem.acronym} Status Evolution`}>
         <h3>{ecosystem.acronym} Status Evolution</h3>
         <p>
           Stacked status counts reconstructed from proposal git history using commit dates.
-          Each bar assigns a {ecosystem.acronym} to the status it had at the end of that quarter, not the status it held for the largest share of days within that quarter. {milestoneDate
-            ? `If the selected snapshot extends beyond ${milestoneDate}, the chart also marks ${formattedMilestoneLabel} with a separate breakpoint inside that quarter.`
-            : ''}
+          Each bar assigns a {ecosystem.acronym} to the status it had at the end of that quarter, not the status it held for the largest share of days within that quarter. Labels marked with `*` denote non-official status names observed in repository history.
         </p>
-        <div className="network-layout-controls">
-          <div className="network-layout-picker">
-            <div className="network-layout-picker__label">Mode</div>
-            <div className="network-layout-picker__options">
-              {[
-                { label: 'Absolute', value: 'absolute' },
-                { label: 'Relative', value: 'relative' },
-              ].map((option) => (
-                <label key={option.value} className="network-layout-picker__option">
-                  <RadioButton
-                    inputId={`evolution-mode-${option.value}`}
-                    name="evolution-mode"
-                    value={option.value}
-                    onChange={(event) => setChartMode(event.value)}
-                    checked={chartMode === option.value}
-                  />
-                  <span>{option.label}</span>
-                </label>
-              ))}
+        <CollapsibleControls>
+          <div className="network-layout-controls">
+            <div className="network-layout-picker">
+              <div className="network-layout-picker__label">Mode</div>
+              <div className="network-layout-picker__options">
+                {[
+                  { label: 'Absolute', value: 'absolute' },
+                  { label: 'Relative', value: 'relative' },
+                ].map((option) => (
+                  <label key={option.value} className="network-layout-picker__option">
+                    <RadioButton
+                      inputId={`evolution-mode-${ecosystem.sourceId || 'default'}-${option.value}`}
+                      name={`evolution-mode-${ecosystem.sourceId || 'default'}`}
+                      value={option.value}
+                      onChange={(event) => setChartMode(event.value)}
+                      checked={chartMode === option.value}
+                    />
+                    <span>{option.label}</span>
+                  </label>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
+        </CollapsibleControls>
         <div>
           <EvolutionStatusStackedBarChart
             data={overallEvolution}
@@ -107,29 +111,85 @@ export function EvolutionSection({
           <p>
             Visualizes the status changes of a specific {ecosystem.acronym}. Timeline markers open the historic repository version for the corresponding git commit.
           </p>
-          <div className="dependency-metrics-toolbar">
-            <div className="dependency-metrics-toolbar__copy">
-              <strong>Select proposal.</strong>
-              <span>Choose a {ecosystem.acronym} to inspect its event-level history.</span>
+          <CollapsibleControls className="proposal-timeline-controls">
+            <div className="proposal-timeline-control">
+              <label className="proposal-timeline-control__label" htmlFor={`timeline-proposal-${ecosystem.sourceId || 'default'}`}>
+                Select proposal.
+              </label>
+              <Dropdown
+                inputId={`timeline-proposal-${ecosystem.sourceId || 'default'}`}
+                value={selectedProposalId}
+                options={proposalTimelineOptions}
+                onChange={(event) => setSelectedProposalId(event.value)}
+                placeholder={`Select ${ecosystem.acronym}`}
+                aria-label={`Select ${ecosystem.acronym} to inspect its event history`}
+                filter
+                className="proposal-timeline-control__dropdown"
+              />
             </div>
-            <Dropdown
-              value={selectedProposalId}
-              options={proposalTimelineOptions}
-              onChange={(event) => setSelectedProposalId(event.value)}
-              placeholder={`Select ${ecosystem.acronym}`}
-              aria-label={`Select ${ecosystem.acronym} to inspect its event history`}
-              filter
-              className="dependency-metrics-toolbar__dropdown"
-            />
-          </div>
+          </CollapsibleControls>
           <ProposalEventTimeline
             timeline={selectedProposalTimeline}
             proposalShortLabel={ecosystem.acronym}
-            milestoneDate={milestoneDate}
-            milestoneLabel={milestoneLabel}
+            milestones={milestones}
           />
         </ExportableCard>
       ) : null}
+      </>
+    </DashboardSnapshotProvider>
+  );
+}
+
+export function EvolutionSection({
+  ecosystem,
+  ecosystemBase,
+  selectedSourceIds = [],
+  perSourceDashboardData = {},
+  sectionSourceView,
+  setSectionSourceView,
+  evolutionPayload,
+}) {
+  const isMultiSource = selectedSourceIds.length > 1;
+  const activeSourceId = isMultiSource && selectedSourceIds.includes(sectionSourceView)
+    ? sectionSourceView
+    : selectedSourceIds[0];
+  const activeSource = ecosystemBase?.sources?.[activeSourceId];
+  const activeData = isMultiSource ? perSourceDashboardData?.[activeSourceId] : null;
+  const activeEcosystem = isMultiSource && activeSource
+    ? { ...ecosystemBase, ...activeSource }
+    : ecosystem;
+
+  if (!isMultiSource) {
+    const overall = evolutionPayload?.status_evolution_segmented || evolutionPayload?.status_evolution;
+    if (!hasPositiveValues(overall)) return null;
+    return (
+      <section className="dashboard-section">
+        <div className="dashboard-section__header">
+          <h2 className="dashboard-section__title">Evolution</h2>
+        </div>
+        <EvolutionContent ecosystem={ecosystem} evolutionPayload={evolutionPayload} />
+      </section>
+    );
+  }
+
+  return (
+    <section className="dashboard-section">
+      <div className="dashboard-section__header">
+        <h2 className="dashboard-section__title">Evolution</h2>
+        <SectionSourceToggle
+          ecosystemBase={ecosystemBase}
+          selectedSourceIds={selectedSourceIds}
+          value={activeSourceId}
+          onChange={setSectionSourceView}
+          supportsMerged={false}
+        />
+      </div>
+      {activeData && (
+        <EvolutionContent
+          ecosystem={activeEcosystem}
+          evolutionPayload={activeData.evolutionPayload}
+        />
+      )}
     </section>
   );
 }

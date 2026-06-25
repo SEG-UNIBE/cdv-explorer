@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "07",
       "title": "`window.nostr` capability for web browsers",
-      "author": [
-        "fiatjaf"
-      ],
-      "created": "2022-05-06",
       "status": "Draft",
+      "author": null,
+      "created": "2022-05-06",
       "type": "Optional",
       "layer": null,
       "kind": null
@@ -268,13 +266,34 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 4",
-        "NIP 44"
+        {
+          "target": "nips:04",
+          "count": 4
+        },
+        {
+          "target": "nips:44",
+          "count": 4
+        }
       ],
       "body_extracted_llm": [
-        "NIP 1",
-        "NIP 4",
-        "NIP 44"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:23Z",
+          "dependencies": [
+            {
+              "target": "nips:04",
+              "evidence": "window.nostr.nip04.encrypt(pubkey, plaintext):string // returns ciphertext and iv as specified in nip-04",
+              "reason": "The optional encryption/decryption methods are defined to follow NIP-04's ciphertext/IV format, so this proposal extends that specification.",
+              "confidence": "low"
+            },
+            {
+              "target": "nips:44",
+              "evidence": "window.nostr.nip44.encrypt(pubkey, plaintext):string // returns ciphertext as specified in nip-44",
+              "reason": "The optional encryption/decryption methods are defined to use NIP-44's ciphertext format, so this proposal depends on that message format and semantics.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

@@ -1,0 +1,859 @@
+{
+  "raw": {
+    "preamble": {
+      "bip": "370",
+      "title": "PSBT Version 2",
+      "author": [
+        "Ava Chow <me@achow101.com>"
+      ],
+      "comments_uri": null,
+      "status": "Deployed",
+      "type": "Specification",
+      "created": "2021-01-14",
+      "license": [
+        "BSD-2-Clause"
+      ],
+      "layer": "Applications",
+      "discussions_to": null,
+      "comments_summary": null,
+      "license_code": null,
+      "post_history": null,
+      "requires": null,
+      "replaces": null,
+      "proposed_replacement": null
+    }
+  },
+  "meta": {
+    "last_commit": "Tue Apr 7 08:26:19 2026 -0700",
+    "total_commits": 38,
+    "git_history": [
+      [
+        "e3874ca825bcd2d0975ffaffb97f1194b3661ad6",
+        "Tue Apr 7 08:26:19 2026 -0700",
+        "Murch"
+      ],
+      [
+        "1e15fc6fae9c16d13ba7e36854542b5a77f10a8a",
+        "Sun Apr 5 19:22:34 2026 -0400",
+        "Andrew Toth"
+      ],
+      [
+        "a07ffa8ccbb9dfaa0f61efbe7450499899a62ec7",
+        "Sun Apr 5 19:22:01 2026 -0400",
+        "Andrew Toth"
+      ],
+      [
+        "87522e80e37fecedde464285fea4306c768fbdb5",
+        "Sun Apr 5 19:21:43 2026 -0400",
+        "Andrew Toth"
+      ],
+      [
+        "175790ee7fea3c358217e80894b867a1fbb1974d",
+        "Tue Mar 3 16:45:12 2026 -0500",
+        "Antoine Poinsot"
+      ],
+      [
+        "68df14bf8ca49ceeaa520001c2c607eb85512083",
+        "Wed Jan 14 12:44:17 2026 -0900",
+        "Jack D"
+      ],
+      [
+        "24e96e870fffaa257b465ce1f0370c14aac588e8",
+        "Wed Oct 8 14:59:36 2025 -0700",
+        "Murch"
+      ],
+      [
+        "5207ef92a52d0b8902895b0dbb40823a4d698ec9",
+        "Fri Apr 11 20:08:17 2025 -0700",
+        "Murch"
+      ],
+      [
+        "59730dec4fb641a41589aa1b91d3c452f13e0e36",
+        "Fri Apr 11 20:05:13 2025 -0700",
+        "Murch"
+      ],
+      [
+        "a233bde4af52c6a11269e2e6dd9707abce441ffe",
+        "Fri Apr 11 18:19:21 2025 -0700",
+        "Murch"
+      ],
+      [
+        "5d3ceb37734f80b2ec206fc94245e3bfd6d5b0f0",
+        "Fri Apr 11 18:08:44 2025 -0700",
+        "Murch"
+      ],
+      [
+        "bc300dddd9bf070bb90a3ece4a5373de16196498",
+        "Sat Dec 21 14:46:35 2024 +0000",
+        "Jesus Christ"
+      ],
+      [
+        "4c7d1292dd87c03bc3c71400d0e0aa7f05c52269",
+        "Tue Dec 17 14:18:20 2024 +0100",
+        "Maks"
+      ],
+      [
+        "968c4ee20064dcf4223bbe183b81f685bfd79941",
+        "Wed Jul 10 18:56:44 2024 -0400",
+        "Ava Chow"
+      ],
+      [
+        "e7286a53566c83cf5d796fbc2285732338a500d9",
+        "Wed Jul 10 20:37:40 2024 -0400",
+        "Ava Chow"
+      ],
+      [
+        "f61885edcf5e63ac205b1ca5f08173f1336bff74",
+        "Wed May 1 06:54:05 2024 +1000",
+        "John Bampton"
+      ],
+      [
+        "a28b021b9933cb6b035cbb94fc1a15c30da3f6fd",
+        "Wed Dec 13 11:12:08 2023 -0500",
+        "Ava Chow"
+      ],
+      [
+        "5cf651155d8b7d2a53dd19084f299247ce03e5bc",
+        "Sat Mar 4 11:24:05 2023 +0000",
+        "Salvatore Ingala"
+      ],
+      [
+        "be78b633e3561ba0f9b0696d2acd0b2c16067c8c",
+        "Thu Feb 23 09:11:04 2023 -0600",
+        "cmd"
+      ],
+      [
+        "1c5572b61757344b1fd76cedb7aebaefabffd75f",
+        "Wed Feb 8 08:51:28 2023 -0900",
+        "Jack"
+      ],
+      [
+        "af1587371519ff37c373df975a108fa155aac302",
+        "Thu Sep 29 22:30:01 2022 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "e6c08f3fac1cb7c2ce67797ff8f671bef9d4097d",
+        "Thu Sep 1 13:04:00 2022 -0400",
+        "Andrew Chow"
+      ],
+      [
+        "a924d032982495e8c77186742a682208f1edd05f",
+        "Sun Aug 28 14:04:22 2022 +0900",
+        "joemphilips"
+      ],
+      [
+        "15a888dabec69a6393251f3792390c913962b688",
+        "Sun Aug 28 13:10:02 2022 +0900",
+        "joemphilips"
+      ],
+      [
+        "bf657ddcac8cd02c6f4b04e800c44d9b5fc7e36e",
+        "Mon Jul 25 21:24:26 2022 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "dc8d688d7b82552c5edb985e019077920a7e128e",
+        "Mon Jul 25 21:21:33 2022 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "7d309564f9cb00b106237034d124afc6359dbe56",
+        "Mon Jul 25 21:13:40 2022 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "7cd8ecd111ff89d03729011feb8265a6ff25c59d",
+        "Wed Jul 13 15:02:21 2022 -0400",
+        "Andrew Chow"
+      ],
+      [
+        "62e305bf281a83112fd4944f500cf38d97e86835",
+        "Tue Jul 5 17:53:02 2022 -0400",
+        "Andrew Chow"
+      ],
+      [
+        "02ab2bfd79d860208fe09e7b2afa12541aba5eb2",
+        "Mon Jun 13 12:21:42 2022 -0400",
+        "Andrew Chow"
+      ],
+      [
+        "5861862f598a7837a101dada50ee22aaa09e5c4f",
+        "Thu Jun 2 19:31:32 2022 -0400",
+        "Andrew Chow"
+      ],
+      [
+        "aa807d5a139cb36cf258553da4510142edf53edb",
+        "Wed Jun 1 21:14:25 2022 -0400",
+        "Andrew Chow"
+      ],
+      [
+        "1c8afe6ea4769c3efd42bd7c10b738fbe5263d7f",
+        "Wed Jun 1 19:56:23 2022 -0400",
+        "Andrew Chow"
+      ],
+      [
+        "96bcfef0505911634118eec1d63bb5646c9e2351",
+        "Thu May 26 09:26:54 2022 -0700",
+        "Alex Bosworth"
+      ],
+      [
+        "c81ed9dab34e9d8fdc4a674b388d8851a68f0c30",
+        "Fri Oct 1 09:23:22 2021 +0200",
+        "Kalle Rosenbaum"
+      ],
+      [
+        "70e37e025daa21bb2287efa7dd5c17fe80b003d3",
+        "Mon Jun 21 17:09:14 2021 -0400",
+        "Andrew Chow"
+      ],
+      [
+        "4edd978046234f9f7e88b4879422ea527f072e8b",
+        "Mon Mar 15 20:16:20 2021 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "b3d224f384f3bae6e38d4fcf0028b046b414784b",
+        "Thu Jan 14 15:04:06 2021 -0500",
+        "Andrew Chow"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 82.35,
+      "passed_checks": 28,
+      "failed_checks": 6,
+      "skipped_checks": 7,
+      "total_checks": 34,
+      "bip2": {
+        "score": 66.67,
+        "passed_checks": 8,
+        "failed_checks": 4,
+        "skipped_checks": 0,
+        "total_checks": 12,
+        "checks": [
+          {
+            "id": "bip2.required_field.bip",
+            "label": "Required field 'bip' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.author",
+            "label": "Required field 'author' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.comments_uri",
+            "label": "Required field 'comments_uri' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": false,
+            "details": "Missing required field 'comments_uri'"
+          },
+          {
+            "id": "bip2.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.type",
+            "label": "Required field 'type' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.created",
+            "label": "Required field 'created' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.license",
+            "label": "Required field 'license' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "bip2",
+            "passed": false,
+            "details": "Expected level 2, found level 3"
+          },
+          {
+            "id": "bip2.heading.motivation",
+            "label": "Heading 'motivation' exists at level 2",
+            "category": "heading",
+            "standard": "bip2",
+            "passed": false,
+            "details": "Expected level 2, found level 3"
+          },
+          {
+            "id": "bip2.heading.specification",
+            "label": "Heading 'specification' exists at level 2",
+            "category": "heading",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.heading.copyright",
+            "label": "Heading 'copyright' exists at level 2",
+            "category": "heading",
+            "standard": "bip2",
+            "passed": false,
+            "details": "Expected level 2, found level 3"
+          }
+        ]
+      },
+      "bip3": {
+        "score": 90.91,
+        "passed_checks": 20,
+        "failed_checks": 2,
+        "skipped_checks": 7,
+        "total_checks": 22,
+        "checks": [
+          {
+            "id": "bip3.preamble.top_rfc822",
+            "label": "Preamble exists as RFC-822-style metadata at the top",
+            "category": "preamble",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.bip",
+            "label": "Required header 'bip' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.title",
+            "label": "Required header 'title' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.authors",
+            "label": "Required header 'authors' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.status",
+            "label": "Required header 'status' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.type",
+            "label": "Required header 'type' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.assigned",
+            "label": "Required header 'assigned' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.license",
+            "label": "Required header 'license' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_order",
+            "label": "Headers appear in the expected BIP3 order",
+            "category": "header_order",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.bip",
+            "label": "Header 'BIP' is an integer without leading zeros or '?'",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.title",
+            "label": "Header 'Title' is 50 characters or fewer",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.authors",
+            "label": "Header 'authors' uses 'Name <email>' entries",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.deputies",
+            "label": "Header 'deputies' uses 'Name <email>' entries",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.status",
+            "label": "Header 'Status' is one of Draft, Complete, Deployed, Closed",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.type",
+            "label": "Header 'Type' is one of Specification, Informational, Process",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.assigned",
+            "label": "Header 'Assigned' is yyyy-mm-dd or '?'",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.license",
+            "label": "Header 'License' is non-empty",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.discussion",
+            "label": "Header 'Discussion' uses 'yyyy-mm-dd: URL' lines",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.version",
+            "label": "Header 'Version' uses MAJOR.MINOR.PATCH",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.requires",
+            "label": "Header 'requires' uses comma+space separated BIP numbers",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.replaces",
+            "label": "Header 'replaces' uses comma+space separated BIP numbers",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.proposed_replacement",
+            "label": "Header 'proposed_replacement' uses comma+space separated BIP numbers",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.required_section.abstract",
+            "label": "Required section 'abstract' is present",
+            "category": "required_section",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_section.motivation",
+            "label": "Required section 'motivation' is present",
+            "category": "required_section",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_section.copyright",
+            "label": "Required section 'copyright' is present",
+            "category": "required_section",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.type_specific.specification_section",
+            "label": "Type 'Specification' includes a 'Specification' section",
+            "category": "type_specific",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.changelog.changelog_section",
+            "label": "Complete/Deployed proposals include a 'Changelog' section",
+            "category": "changelog",
+            "standard": "bip3",
+            "passed": false,
+            "details": "Missing required 'changelog' section"
+          },
+          {
+            "id": "bip3.changelog.version_header",
+            "label": "Complete/Deployed proposals include a 'Version' header",
+            "category": "changelog",
+            "standard": "bip3",
+            "passed": false,
+            "details": "Missing required 'version' header"
+          },
+          {
+            "id": "bip3.changelog.version_matches",
+            "label": "Latest changelog version matches the 'Version' header",
+            "category": "changelog",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "pre": 194,
+      "tt": 90,
+      "2": 61,
+      "input": 53,
+      "bytes": 49,
+      "hex": 48,
+      "base64": 48,
+      "string": 48,
+      "case": 47,
+      "psbtv2": 40,
+      "inputs": 36,
+      "transaction": 35,
+      "output": 32,
+      "set": 32,
+      "1": 32,
+      "bit": 30,
+      "0": 28,
+      "tb7vd5lecegv": 28,
+      "version": 27,
+      "wfi1mrvq3khj2nyc": 26,
+      "added": 22,
+      "t3kk": 22,
+      "87xz": 22,
+      "40fgtbunrxxuvpegfssaaaaaad": 22,
+      "psbt": 21,
+      "outputs": 21,
+      "number": 21,
+      "locktime": 20,
+      "flag": 19,
+      "psbt_in_required_height_locktime": 19,
+      "i9ht4utaa": 19,
+      "psbtv0": 17,
+      "9t3vnacm": 17,
+      "p05zhrodzv6m4xbc0c": 17,
+      "hpp0xsrxs0ay9p2hplqaaiabaacaaaaagaeaaabkaaaaaqmii73rcwaaaaabbbyafe3rk6ywslasg54cyoru": 17,
+      "psbt_global_tx_modifiable": 16,
+      "time": 16,
+      "vaaagaeaaiaaaacaaaaaacoaaaabawgack8vaaaaaaeefgauxdd2tedw2jenvroivxlvkzkmjywaigic42": 16,
+      "modifiable": 15,
+      "psbt_in_required_time_locktime": 15,
+      "32": 14,
+      "unsigned": 13,
+      "data": 13,
+      "little": 13,
+      "endian": 13,
+      "lock": 13,
+      "chnidp8bahecaaaaaqsk2sfbnbyhgxndctxzn56p4gonh": 13,
+      "iaaaaaad": 13,
+      "arjgmjsaaaaafgauskovfeiiqsatyn0wafk1lbcu8g4aaaaaaqefgmaaowaaaaawabswo68uqghbjppkfrzourutsk7wbgeoiask2sfbnbyhgxndctxzn56p4gonh": 13,
+      "updated": 13,
+      "key": 12,
+      "fields": 11,
+      "field": 11,
+      "constructor": 11,
+      "timelock": 11,
+      "integer": 10,
+      "vaaagaeaaiaaaacaaaaaacoaaaaaigidbv4sjvyhmgvtup1lw93gqwxkfdbgwqnatg6wjfhpew0y9p2hplqaaiabaacaaaaagaeaaabiaaaaaa": 10,
+      "versions": 9,
+      "sighash_single": 9,
+      "sequence": 9,
+      "iaq8eaaaaaaaiaglwafhirqz1x3dr4a49nej7ekzjnfudxf": 9,
+      "chnidp8bagqcaaaaaqmeaaaaaaeeaqibbqebafseagaaaaabdiapdy2": 9,
+      "types": 8,
+      "representing": 8,
+      "uint": 8,
+      "required": 8,
+      "s": 8,
+      "o18": 8,
+      "nbrkwbjuv11faxobbegaaaaaa": 8,
+      "bitcoin": 7,
+      "new": 7,
+      "inclusion": 7,
+      "based": 7,
+      "height": 7,
+      "creator": 7,
+      "following": 7,
+      "agairy8aaaaafgauxdd2tedw2jenvroivxlvkzkmjyylveslaaaaabyafkb9riq2ypqtn57xlfg1unhjzgifaaaaaaabaficaaaaacgqjw4hs5ahgi": 7,
+      "arjgmjsaaaaafgauskovfeiiqsatyn0wafk1lbcu8g4aaaaaaqefgmaaowaaaaawabswo68uqghbjppkfrzourutsk7wbgeiawjhmeqciaunwkhxnocuhzuxejdybw5y3iwdpsemdkdm0jeswppeaibrbiydzrw8qdc5pmfadhhc7b0ddqbbcagl4rmlusvfeweha3ynzkbfozfczbktbg9": 7,
+      "wqcaaaaaaeaugiaaaabwaolbifllqgcl5peqr": 7,
+      "ztfp": 7,
+      "jquzmg41fddrwl6awxiaaaaaap": 7,
+      "missing": 7,
+      "10000": 7,
+      "bip": 6,
+      "ref": 6,
+      "keydata": 6,
+      "description": 6,
+      "valuedata": 6,
+      "requiring": 6,
+      "psbt_global_fallback_locktime": 6,
+      "use": 6,
+      "flags": 6,
+      "psbt_in_sequence": 6,
+      "psbts": 6,
+      "weyxpo7aaaaabyaflcjrxrcceemk8p9fmhsts2wrvbuaaaaaaebhxjgmjsaaaaafgauskovfeiiqsatyn0wafk1lbcu8g4bcgscrzbeaiafj1pivztgrh87lxi3wg8octyfgz0nja5htnixesd6xgigawsmg868pehqutzh2nyyxo29aw0awwgbi": 6,
+      "k5i7rl33sbiqn2dcygxzmx3gwykwypfynxuuymunbi4sgcsehu": 6,
+      "dqkjwaiaglwafhirqz1x3dr4a49nej7ekzjnfudxf": 6,
+      "chnidp8bagqcaaaaaqqbaqefaqib": 6,
+      "1657048460": 6,
+      "type": 5,
+      "psbt_in_previous_txid": 5,
+      "psbt_in_output_index": 5,
+      "computed": 5,
+      "signer": 5,
+      "aopz3o": 5,
+      "waiaglwafhirqz1x3dr4a49nej7ekzjnfudxf": 5,
+      "ehgpnvfd2vgdj2d6psqrmk1": 5,
+      "v": 5,
+      "l0dphrma": 5,
+      "chnidp8bagqcaaaaaqmeaaaaaaeeaqebbqecafseagaaaaabaficaaaaacgqjw4hs5ahgi": 5,
+      "signed": 4,
+      "described": 4,
+      "information": 4,
+      "map": 4,
+      "exclusion": 4,
+      "psbt_global_version": 4,
+      "specify": 4,
+      "count": 4,
+      "psbt_global_input_count": 4,
+      "compact": 4,
+      "size": 4,
+      "psbt_global_output_count": 4,
+      "8": 4,
+      "signature": 4,
+      "defined": 4,
+      "txid": 4,
+      "byte": 4,
+      "500000000": 4,
+      "determined": 4,
+      "chosen": 4,
+      "signatures": 4,
+      "true": 4,
+      "8bgmaaowaaaaawabswo68uqghbjppkfrzourutsk7wbgaaaaabar8yxpo7aaaaabyaflcjrxrcceemk8p9fmhsts2wrvbuaq4gcwrziugchiczc11y3hofnqngy40f5mhu8pmuqisbx8gbdwqaaaaaarae": 4,
+      "1pdu0bwz4": 4,
+      "tlmfggpnxqbhdtzql8c": 4,
+      "nrdktezqbj2nyc": 4,
+      "vaaagaeaaiaaaacaaqaaagqaaaabawilveslaaaaaaeefgautdgtrjzkvqwbnhzkhft": 4,
+      "tnxcaaaaaaqqwabqle1lkzqppaqg388jwoizxs0peeqa": 4,
+      "9000": 4,
+      "format": 3,
+      "174": 3,
+      "global": 3,
+      "provided": 3,
+      "need": 3,
+      "psbt_global_unsigned_tx": 3,
+      "follows": 3,
+      "keytype": 3,
+      "allowing": 3,
+      "psbt_global_tx_version": 3,
+      "indicate": 3,
+      "removed": 3,
+      "iterate": 3,
+      "add": 3,
+      "spent": 3,
+      "index": 3,
+      "greater": 3,
+      "psbt_out_amount": 3,
+      "script": 3,
+      "psbt_out_script": 3,
+      "present": 3,
+      "possible": 3,
+      "able": 3,
+      "psbtv2s": 3,
+      "roles": 3,
+      "existing": 3,
+      "features": 3,
+      "4pex7awluytwresgpadhz5uaacaaqaagaaaaiaaaaaakgaaaaedcaairy8aaaaaaqqwabtempzmr1bamq29gghvcu8pmsynlaaiagljb7": 3,
+      "iaq8eaaaaaaeqbp7": 3,
+      "pi1jigcbnkxhea": 3,
+      "1657048459": 3,
+      "com": 2,
+      "specification": 2,
+      "license": 2,
+      "bsd": 2,
+      "clause": 2,
+      "partially": 2,
+      "changed": 2,
+      "additional": 2,
+      "given": 2,
+      "specifies": 2,
+      "colloquially": 2,
+      "referred": 2,
+      "change": 2,
+      "int": 2,
+      "specified": 2,
+      "fallback": 2,
+      "0x03": 2,
+      "0x04": 2,
+      "previous": 2,
+      "order": 2,
+      "omitted": 2,
+      "assumed": 2,
+      "final": 2,
+      "equal": 2,
+      "minimum": 2,
+      "requires": 2,
+      "block": 2,
+      "64": 2,
+      "determining": 2,
+      "looking": 2,
+      "choosing": 2,
+      "locktimes": 2,
+      "choose": 2,
+      "invalid": 2,
+      "initializes": 2,
+      "backwards": 2,
+      "compatible": 2,
+      "support": 2,
+      "corresponding": 2,
+      "ensure": 2,
+      "newly": 2,
+      "incompatible": 2,
+      "changes": 2,
+      "updater": 2,
+      "false": 2,
+      "extractor": 2,
+      "valid": 2,
+      "lcvwizhlu7qdzcpdxkflyhq24fqjwkxuscrrz3ltgpadhz5uaacaaqaagaaaaiabaaaaygaaaaa": 2,
+      "kffrtixscejhkakwqdt8naonacicatyb": 2,
+      "8aigic1gh4seamdv93a": 2,
+      "chnidp8bagqcaaaaaqmeaaaaaaeeaqebbqecaqybbwh7baiaaaaaaqbsagaaaahbqivuiuuwoyivk95cv": 2,
+      "weyxpo7aaaaabyaflcjrxrcceemk8p9fmhsts2wrvbuaaaaaaebhxjgmjsaaaaafgauskovfeiiqsatyn0wafk1lbcu8g4bdialctkhqzwchxlzxxlcc5": 2,
+      "eqebjjr": 2,
+      "kwe7w": 2,
+      "zrahiffyaepbaaaaaabeat": 2,
+      "xcsytx7g8rfsbyttk1at5iy9p2hplqaaiabaacaaaaagaaaaaaqaaaaaqmiaaivlwaaaaabbbyafmqw9kxhvtoxdb0acfvy7ymzjicsacicaunvv": 2,
+      "u91tqhdpj9owyuaa81epuf23navxz6df0q17nagpadhz5uaacaaqaagaaaaiabaaaazaaaaaedciu96wsaaaaaaqqwabrn0zoslkpwrbuehmqevp4vr0": 2,
+      "fewa": 2,
+      "70736274ff01020402000000010401010105010201fb040200000000010e200b0ad921419c1c8719735d72dc739f9ea9e0638d1fe4c1eef0f9944084815fc8010f0400000000000103080008af2f000000000104160014c430f64c4756da310dbd1a085572ef299926272c000103088bbdeb0b0000000001041600144dd193ac964a56ac1b9e1cca8454fe2f474f851300": 2,
+      "wqcaaaaaaeoiask2sfbnbyhgxndctxzn56p4gonh": 2,
+      "iaq8eaaaaaaabawgack8vaaaaaaeefgauxdd2tedw2jenvroivxlvkzkmjywaaqmii73rcwaaaaabbbyafe3rk6ywslasg54cyoru": 2,
+      "vu2nwwykmwndyb4rapvh6mrttbaxussf4b3enwepbaeaaaaaaq4gohs7pin9zinqejhy5sfdudwag": 2,
+      "reference": 2,
+      "implementation": 2,
+      "21283": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "b3d224f384f3bae6e38d4fcf0028b046b414784b",
+        "timestamp": "2021-02-12T16:09:35-05:00",
+        "date": "2021-02-12",
+        "author": "Andrew Chow",
+        "path": "bip-0370.mediawiki",
+        "status": "Draft",
+        "standard": "bip2"
+      },
+      {
+        "commit": "968c4ee20064dcf4223bbe183b81f685bfd79941",
+        "timestamp": "2024-07-11T14:25:43-04:00",
+        "date": "2024-07-11",
+        "author": "Ava Chow",
+        "path": "bip-0370.mediawiki",
+        "status": "Final",
+        "standard": "bip2"
+      },
+      {
+        "commit": "5d3ceb37734f80b2ec206fc94245e3bfd6d5b0f0",
+        "timestamp": "2026-01-12T14:22:33-08:00",
+        "date": "2026-01-12",
+        "author": "Murch",
+        "path": "bip-0370.mediawiki",
+        "status": "Deployed",
+        "standard": "bip3"
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        {
+          "target": "bips:174",
+          "count": 3
+        }
+      ],
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:54:44Z",
+          "dependencies": []
+        }
+      ]
+    }
+  }
+}

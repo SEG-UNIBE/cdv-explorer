@@ -1,0 +1,173 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "16",
+      "title": "Event Treatment",
+      "status": "Final",
+      "author": null,
+      "created": "2022-05-26",
+      "type": "Mandatory",
+      "layer": null,
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Wed Nov 15 21:42:51 2023 -0300",
+    "total_commits": 11,
+    "git_history": [
+      [
+        "37f6cbb775126b386414220f783ca0f5f85e7614",
+        "Wed Nov 15 21:42:51 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "72bb8a128b2d7d3c2c654644cd68d0d0fe58a3b1",
+        "Sun Aug 13 13:47:45 2023 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "fe9ed69dc3aec54ae437ca09a6d61aa2ce175577",
+        "Fri May 19 00:54:44 2023 -0400",
+        "Doug Hoyte"
+      ],
+      [
+        "dced433f9c6f7151121f28f3824b2ee11e446ca8",
+        "Sun Mar 26 12:10:29 2023 -0300",
+        "Leo Wandersleb"
+      ],
+      [
+        "67c021ae9718e423f1ac6ba691dc277440096e65",
+        "Thu Dec 8 09:21:09 2022 -0800",
+        "Jonathan Staab"
+      ],
+      [
+        "f09362695dde79719059a3b70ae96529d3e7726b",
+        "Thu Nov 10 23:06:11 2022 +0100",
+        "alex"
+      ],
+      [
+        "497d5d9ddfcc10b23c7ae77cf1b7dea2ad888390",
+        "Sun Oct 16 20:24:21 2022 +0300",
+        "Semisol"
+      ],
+      [
+        "1b94488742494d8f9f3d2fefc908e6541562ca39",
+        "Tue Jul 26 04:33:33 2022 +0300",
+        "Semisol"
+      ],
+      [
+        "501fd5ce2286e7e7f5e3d7d8b14697486309e7a8",
+        "Fri May 27 19:56:31 2022 +0300",
+        "Semisol"
+      ],
+      [
+        "1a1e3e74ec40c23e4e5ce0046dd547c847f9a595",
+        "Thu May 26 21:22:51 2022 +0300",
+        "Semisol"
+      ],
+      [
+        "62fde6c098efa4fcbf57eae4321b346c21fc6687",
+        "Thu May 26 21:16:49 2022 +0300",
+        "Semisol"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "nip": 2,
+      "01": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "62fde6c098efa4fcbf57eae4321b346c21fc6687",
+        "timestamp": "2022-05-26T21:17:27+03:00",
+        "date": "2022-05-26",
+        "author": "Semisol",
+        "path": "16.md",
+        "status": "Draft",
+        "standard": ""
+      },
+      {
+        "commit": "72bb8a128b2d7d3c2c654644cd68d0d0fe58a3b1",
+        "timestamp": "2023-08-13T13:47:45-03:00",
+        "date": "2023-08-13",
+        "author": "fiatjaf_",
+        "path": "16.md",
+        "status": "Final",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        {
+          "target": "nips:01",
+          "count": 1
+        }
+      ],
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:11Z",
+          "dependencies": []
+        }
+      ]
+    }
+  }
+}

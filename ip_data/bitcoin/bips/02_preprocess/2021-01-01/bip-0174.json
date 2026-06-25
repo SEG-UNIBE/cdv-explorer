@@ -1,0 +1,1262 @@
+{
+  "raw": {
+    "preamble": {
+      "bip": "174",
+      "title": "Partially Signed Bitcoin Transaction Format",
+      "author": [
+        "Andrew Chow <achow101@gmail.com>"
+      ],
+      "comments_uri": "https://github.com/bitcoin/bips/wiki/Comments:BIP-0174",
+      "status": "Proposed",
+      "type": "Standards Track",
+      "created": "2017-07-12",
+      "license": [
+        "BSD-2-Clause"
+      ],
+      "layer": "Applications",
+      "discussions_to": null,
+      "comments_summary": "No comments yet.",
+      "license_code": null,
+      "post_history": null,
+      "requires": null,
+      "replaces": null,
+      "proposed_replacement": null
+    }
+  },
+  "meta": {
+    "last_commit": "Mon Oct 5 16:31:18 2020 +0000",
+    "total_commits": 62,
+    "git_history": [
+      [
+        "1b7bf8e6aa5ac04f9f4915adf467eae8a52aaae1",
+        "Mon Oct 5 16:31:18 2020 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "602f4971eed6e3cd574369e7d652250884c23ae1",
+        "Mon Oct 5 16:19:38 2020 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "6b3b636490af725e69e326b2ee99e0e4961d348c",
+        "Tue Sep 8 15:00:07 2020 +0200",
+        "Dr. Maxim Orlovsky"
+      ],
+      [
+        "a159cca11fc04976ec8acfbc844385a2b9170e13",
+        "Mon Sep 7 13:17:44 2020 +0200",
+        "Dr. Maxim Orlovsky"
+      ],
+      [
+        "983b9840b3fec3330990a71893b5a5c918a9e35e",
+        "Thu Aug 27 15:02:44 2020 +0000",
+        "Andrew Poelstra"
+      ],
+      [
+        "e30d465a6a6f1dfbeb46539cce8872ea0fc94335",
+        "Wed Aug 26 13:49:42 2020 +0000",
+        "Andrew Poelstra"
+      ],
+      [
+        "76c3ced4b074866ffd3ae7bd28dbb96dd4cadd8a",
+        "Thu Aug 20 22:17:04 2020 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "f6e11640e76338fef2c728225d6a4fb9b0f77d67",
+        "Thu Aug 20 22:16:52 2020 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "277be22357a0b51fa77113277a6cc057484a6507",
+        "Wed Jul 29 21:25:51 2020 +0000",
+        "Andrew Poelstra"
+      ],
+      [
+        "8d3b41936f061fb1e86917f9f6f33182a277b42c",
+        "Tue Aug 4 13:27:31 2020 -0500",
+        "Sanket Kanjalkar"
+      ],
+      [
+        "5ac2cb5b93bf2ac1f1dac7337d93176a5edadd97",
+        "Tue Jul 21 18:27:20 2020 -0400",
+        "Andrew Chow"
+      ],
+      [
+        "3dbd4866b71fcf38e5852bf74bf3048d2fcd552b",
+        "Tue Mar 19 10:01:28 2019 -0500",
+        "Mike Schmidt"
+      ],
+      [
+        "24eddbb48a1d686f70bf33172de602d865a244b4",
+        "Fri Jan 3 04:31:58 2020 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "8faf97e720f0800953e71cf156c899b1446ff455",
+        "Sat Dec 14 20:39:40 2019 +0500",
+        "Dmitry Petukhov"
+      ],
+      [
+        "0a388fac4619e4405c40449e4e86416b4b167fe0",
+        "Fri Dec 13 16:07:25 2019 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "56fe789358ddf207daa0587f41449ce5d2668eaf",
+        "Fri Dec 13 16:06:41 2019 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "feb5395fe024f830fa7eb774a5b73d0fd65f11ce",
+        "Fri Dec 13 16:06:26 2019 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "e097b1d38adc8643a8e0b1bb00e94a97b175314e",
+        "Wed Dec 11 15:53:06 2019 -0600",
+        "Ben Carman"
+      ],
+      [
+        "65f0b3dd62ecc55e43436173c5f84e893809d0fa",
+        "Mon Dec 9 17:30:47 2019 +0500",
+        "Dmitry Petukhov"
+      ],
+      [
+        "c7191c935e253506d6710d73b3d721f7b66ae371",
+        "Mon Dec 9 01:44:43 2019 -0600",
+        "Ben Carman"
+      ],
+      [
+        "267c02a4b5c5550309b84bd60b6f72d9989ffb9b",
+        "Mon Dec 9 12:21:09 2019 +0500",
+        "Dmitry Petukhov"
+      ],
+      [
+        "87a85402ae23f087496883c757a066f4857b13f8",
+        "Thu Nov 14 11:53:05 2019 +0900",
+        "azuchi"
+      ],
+      [
+        "ba804c9d52dad25fd60a594e179720c9e16b7163",
+        "Mon Nov 4 15:00:38 2019 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "daed7bfa8d6db2982c2c61692aa6bd3908ed3e56",
+        "Mon Nov 4 14:06:54 2019 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "bc3a81e69819364af5c76f73762da2c95d6069ab",
+        "Wed Oct 2 15:09:51 2019 -0400",
+        "Andrew Chow"
+      ],
+      [
+        "f1aff33f46a8787d54813b25b6792d3d16902934",
+        "Fri Sep 20 18:57:17 2019 +0200",
+        "Kalle Rosenbaum"
+      ],
+      [
+        "7e9fab150f2e4b33c6195d2734e38f9e51721ea0",
+        "Fri Sep 20 00:35:24 2019 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "c7057971e1501e648ccb1095a9d4bee74e8072c3",
+        "Fri Sep 20 00:35:04 2019 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "9e7d213e8281d18f3ee5fa6be9bc0f1e1a333442",
+        "Thu Sep 19 22:18:45 2019 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "b4e6b0fac257b773afd370d23f243ae22f8ab142",
+        "Mon Sep 16 13:16:11 2019 +0200",
+        "darosior"
+      ],
+      [
+        "20fdf77a2bcb04886b2b1d4d1b20b0135388ac4b",
+        "Thu Aug 1 14:36:25 2019 -0400",
+        "Andrew Chow"
+      ],
+      [
+        "503f35a9a066a51be29d9c81e73f72f54a403b76",
+        "Thu Aug 1 14:28:37 2019 -0400",
+        "Andrew Chow"
+      ],
+      [
+        "d832c51e82a321e4721cb9e8cc3e69e8e20aa57f",
+        "Thu Jul 25 23:00:16 2019 +0900",
+        "nicolas.dorier"
+      ],
+      [
+        "6a36d8e1b4e763bf42c8403f598e0bf07048408f",
+        "Thu Jul 25 13:37:06 2019 -0400",
+        "Andrew Chow"
+      ],
+      [
+        "6a25c1478fa54fc873a3530c60841d8c5cd6c3d5",
+        "Tue Jul 23 14:51:01 2019 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "97447f981fb9e2b0c4c0c8c095464c4dbd91da29",
+        "Wed Jul 10 08:30:23 2019 +0900",
+        "Jonathan Underwood"
+      ],
+      [
+        "7ab9ef95c67051dcf6418ecd4310e63b036bc6f0",
+        "Wed Jun 26 16:47:04 2019 +0700",
+        "Luke Childs"
+      ],
+      [
+        "e1f770e23617ddb5d9d78597c7377fd6f956f67d",
+        "Sun Jun 9 10:44:32 2019 +0200",
+        "Andrew Chow"
+      ],
+      [
+        "19d3b9dc829ca52133dd71497f0768118d7462d2",
+        "Mon May 13 22:00:26 2019 -0400",
+        "Andrew Chow"
+      ],
+      [
+        "e65e3fadc6a256261459671e422401e6b95e7482",
+        "Thu Apr 4 02:50:14 2019 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "7276e9ae7b0f2a4fcbdd79bce484ce4953d2ee05",
+        "Fri Nov 30 11:50:49 2018 +0000",
+        "Steven Roose"
+      ],
+      [
+        "d7ba77ced5b1109753837eb76248c241f5590d8c",
+        "Tue Feb 26 21:32:44 2019 +0100",
+        "Kalle Rosenbaum"
+      ],
+      [
+        "b6b19894c211e2ef10edac20c86e509ac06e8f65",
+        "Sun Feb 10 15:42:35 2019 -0800",
+        "Dustin Dettmer"
+      ],
+      [
+        "2b7b95996a8e5f3f81d4a746969f9a123ba7b999",
+        "Wed Aug 29 16:46:44 2018 +0200",
+        "Thomas Kerin"
+      ],
+      [
+        "63baffca9e68dc11eb7c41817843e89d106577f5",
+        "Thu Aug 9 18:14:46 2018 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "131fc2cebb40945721220e2d0d67b13dbb7ba351",
+        "Wed Aug 8 15:08:24 2018 -0700",
+        "Andrew Chow"
+      ],
+      [
+        "72e60d2116b34f7be5a893794cf88117e36a9ae8",
+        "Mon Jul 30 18:10:27 2018 +0900",
+        "azuchi"
+      ],
+      [
+        "6107b01428656a9a04dd5bb81f01ecb4bf06e91a",
+        "Thu Jul 19 18:54:54 2018 -0700",
+        "Andrew Chow"
+      ],
+      [
+        "0a1574fe49d66a7db3316184d8948351c47506af",
+        "Wed Jul 11 15:46:56 2018 -0700",
+        "Andrew Chow"
+      ],
+      [
+        "cb426bfdae601954c5eea865d328d2af8313bd69",
+        "Wed Jul 11 11:52:55 2018 -0700",
+        "Andrew Chow"
+      ],
+      [
+        "72657b416cae2cc42ba3cc2447763217acbf0b14",
+        "Wed Jul 11 11:52:42 2018 -0700",
+        "Andrew Chow"
+      ],
+      [
+        "4fcd8bf0083b960cd30d92890cf705a5394c0a0e",
+        "Tue Jun 26 18:08:56 2018 -0700",
+        "Andrew Chow"
+      ],
+      [
+        "81c20a635e0af6a56977e73ce94fd56b634cab74",
+        "Fri Jun 22 12:07:11 2018 -0700",
+        "Andrew Chow"
+      ],
+      [
+        "f515da055266c259e4e77fcd42a71c68783ff95e",
+        "Fri Jun 22 12:06:33 2018 -0700",
+        "Andrew Chow"
+      ],
+      [
+        "45df4247594db391b72e7b2dcbb50a09b90be87b",
+        "Tue Jun 26 18:08:10 2018 -0700",
+        "Andrew Chow"
+      ],
+      [
+        "bfae1799d3ac8e8c118f0d9ff762dd6fefc91fe2",
+        "Tue Jun 26 18:07:27 2018 -0700",
+        "Andrew Chow"
+      ],
+      [
+        "478f20f87161244307fd881caa6beb3d706b1d2b",
+        "Wed Apr 4 11:21:54 2018 -0400",
+        "Andrew Chow"
+      ],
+      [
+        "a925cbb632f7d91c1f88358f87d2c1695a01a2e4",
+        "Sat Jan 6 15:14:12 2018 -0500",
+        "Andrew Chow"
+      ],
+      [
+        "597c5afda54580c448b0353ba493e924a946b404",
+        "Tue Jan 2 21:59:47 2018 -0500",
+        "Andrew Chow"
+      ],
+      [
+        "53891fc7ed6691acb27e2921b06959625fcff85b",
+        "Thu Jan 4 13:15:46 2018 -0500",
+        "Andrew Chow"
+      ],
+      [
+        "4b06d2b30ac98d29ab6a17074cfa7ab7371a6485",
+        "Tue Dec 12 19:00:35 2017 +1100",
+        "Daniel Cousens"
+      ],
+      [
+        "958641741b02e042b8d858304e29bbc781f647cb",
+        "Wed Jul 12 12:11:09 2017 -0700",
+        "Andrew Chow"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 75.86,
+      "passed_checks": 22,
+      "failed_checks": 7,
+      "skipped_checks": 12,
+      "total_checks": 29,
+      "bip2": {
+        "score": 75.0,
+        "passed_checks": 9,
+        "failed_checks": 3,
+        "skipped_checks": 0,
+        "total_checks": 12,
+        "checks": [
+          {
+            "id": "bip2.required_field.bip",
+            "label": "Required field 'bip' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.author",
+            "label": "Required field 'author' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.comments_uri",
+            "label": "Required field 'comments_uri' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.type",
+            "label": "Required field 'type' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.created",
+            "label": "Required field 'created' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.license",
+            "label": "Required field 'license' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "bip2",
+            "passed": false,
+            "details": "Expected level 2, found level 3"
+          },
+          {
+            "id": "bip2.heading.motivation",
+            "label": "Heading 'motivation' exists at level 2",
+            "category": "heading",
+            "standard": "bip2",
+            "passed": false,
+            "details": "Expected level 2, found level 3"
+          },
+          {
+            "id": "bip2.heading.specification",
+            "label": "Heading 'specification' exists at level 2",
+            "category": "heading",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.heading.copyright",
+            "label": "Heading 'copyright' exists at level 2",
+            "category": "heading",
+            "standard": "bip2",
+            "passed": false,
+            "details": "Expected level 2, found level 3"
+          }
+        ]
+      },
+      "bip3": {
+        "score": 76.47,
+        "passed_checks": 13,
+        "failed_checks": 4,
+        "skipped_checks": 12,
+        "total_checks": 17,
+        "checks": [
+          {
+            "id": "bip3.preamble.top_rfc822",
+            "label": "Preamble exists as RFC-822-style metadata at the top",
+            "category": "preamble",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.bip",
+            "label": "Required header 'bip' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.title",
+            "label": "Required header 'title' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.authors",
+            "label": "Required header 'authors' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": false,
+            "details": "Missing required header 'authors'"
+          },
+          {
+            "id": "bip3.required_header.status",
+            "label": "Required header 'status' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.type",
+            "label": "Required header 'type' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.assigned",
+            "label": "Required header 'assigned' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": false,
+            "details": "Missing required header 'assigned'"
+          },
+          {
+            "id": "bip3.required_header.license",
+            "label": "Required header 'license' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_order",
+            "label": "Headers appear in the expected BIP3 order",
+            "category": "header_order",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.bip",
+            "label": "Header 'BIP' is an integer without leading zeros or '?'",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.title",
+            "label": "Header 'Title' is 50 characters or fewer",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.authors",
+            "label": "Header 'authors' uses 'Name <email>' entries",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.deputies",
+            "label": "Header 'deputies' uses 'Name <email>' entries",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.status",
+            "label": "Header 'Status' is one of Draft, Complete, Deployed, Closed",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": false,
+            "details": "Invalid Status 'Proposed'"
+          },
+          {
+            "id": "bip3.header_value.type",
+            "label": "Header 'Type' is one of Specification, Informational, Process",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": false,
+            "details": "Invalid Type 'Standards Track'"
+          },
+          {
+            "id": "bip3.header_value.assigned",
+            "label": "Header 'Assigned' is yyyy-mm-dd or '?'",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.license",
+            "label": "Header 'License' is non-empty",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.discussion",
+            "label": "Header 'Discussion' uses 'yyyy-mm-dd: URL' lines",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.version",
+            "label": "Header 'Version' uses MAJOR.MINOR.PATCH",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.requires",
+            "label": "Header 'requires' uses comma+space separated BIP numbers",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.replaces",
+            "label": "Header 'replaces' uses comma+space separated BIP numbers",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.proposed_replacement",
+            "label": "Header 'proposed_replacement' uses comma+space separated BIP numbers",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.required_section.abstract",
+            "label": "Required section 'abstract' is present",
+            "category": "required_section",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_section.motivation",
+            "label": "Required section 'motivation' is present",
+            "category": "required_section",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_section.copyright",
+            "label": "Required section 'copyright' is present",
+            "category": "required_section",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.type_specific.specification_section",
+            "label": "Type 'Specification' includes a 'Specification' section",
+            "category": "type_specific",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.changelog.changelog_section",
+            "label": "Complete/Deployed proposals include a 'Changelog' section",
+            "category": "changelog",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.changelog.version_header",
+            "label": "Complete/Deployed proposals include a 'Version' header",
+            "category": "changelog",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.changelog.version_matches",
+            "label": "Latest changelog version matches the 'Version' header",
+            "category": "changelog",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "tt": 254,
+      "pre": 180,
+      "key": 139,
+      "psbt": 103,
+      "input": 80,
+      "type": 75,
+      "value": 69,
+      "transaction": 59,
+      "bytes": 46,
+      "string": 45,
+      "bip": 44,
+      "base64": 41,
+      "hex": 41,
+      "data": 39,
+      "byte": 33,
+      "signer": 31,
+      "0": 31,
+      "1": 31,
+      "case": 30,
+      "output": 28,
+      "public": 27,
+      "use": 26,
+      "inputs": 25,
+      "format": 24,
+      "keys": 24,
+      "32": 24,
+      "outputs": 24,
+      "witness": 24,
+      "174": 23,
+      "redeemscript": 22,
+      "utxo": 21,
+      "invalid": 21,
+      "derivation": 21,
+      "provided": 20,
+      "unsigned": 20,
+      "types": 20,
+      "version": 18,
+      "hash": 17,
+      "ref": 16,
+      "path": 16,
+      "non": 16,
+      "preimage": 16,
+      "script": 15,
+      "typed": 15,
+      "0x00": 14,
+      "global": 14,
+      "defined": 14,
+      "contain": 14,
+      "proprietary": 14,
+      "witnessscript": 14,
+      "psbts": 14,
+      "chnidp8bajocaaaaaljoeig1ba8mi76ochbfbdnvflqlyhv5jpvfihuyq911aaaaaad": 14,
+      "g40ej9dszqpoqka7cwmk6kqiwhgyyng1kgd5wdb86h0baaaaap": 14,
+      "8cckrwcaaaaaawabtyxctx0aylccmiauubxlczhdostqdh9quaaaaafgauak6pouxw": 14,
+      "signatures": 13,
+      "sign": 13,
+      "map": 13,
+      "integer": 13,
+      "bit": 13,
+      "sighash": 13,
+      "2": 12,
+      "signers": 12,
+      "size": 12,
+      "pairs": 12,
+      "signature": 12,
+      "halin9vruh0lr2hai8aaaaaaaeauwiaaaabqtc5mqgl0l": 12,
+      "erkalaisl4j23burcrbgpi6vucatlb4saaaaasecwraigwpb8fgoz4bmvsnsbycbafb0we1qtqs1neq2rztktjdscieoc7syexnnby5pltbar3xiwdwxzqvufdrhw": 12,
+      "qk4fx26af7": 12,
+      "create": 11,
+      "number": 11,
+      "scriptpubkey": 11,
+      "following": 11,
+      "combiner": 11,
+      "esymstbtlta5nui": 11,
+      "extended": 10,
+      "length": 10,
+      "network": 10,
+      "scriptsig": 10,
+      "specified": 10,
+      "m": 10,
+      "produce": 9,
+      "separator": 9,
+      "master": 9,
+      "subtype": 9,
+      "user": 9,
+      "segwit": 9,
+      "order": 9,
+      "finalized": 9,
+      "updater": 9,
+      "bitcoin": 8,
+      "necessary": 8,
+      "followed": 8,
+      "serialized": 8,
+      "fingerprint": 8,
+      "algorithm": 8,
+      "need": 8,
+      "change": 8,
+      "sighash_type": 8,
+      "extractor": 8,
+      "safntqfqkwzr": 8,
+      "7epxlgderw05u2utbovv": 8,
+      "signed": 7,
+      "able": 7,
+      "field": 7,
+      "prefix": 7,
+      "match": 7,
+      "uint": 7,
+      "0xfc": 7,
+      "p2sh": 7,
+      "scripts": 7,
+      "available": 7,
+      "oa4kyjdhrrma3dy0": 7,
+      "meivz1sxnobtcgd8auw4h8hatq2h": 7,
+      "gnvtawrx8fknvloqj3rqql9woledvqigf3jha60e25zocyhlvtt": 7,
+      "y4j3": 7,
+      "1whnq0cxosxg4tlvuxxtrncgqlla1afejyq2qxqtwaaaiaaaacabqaagaa": 7,
+      "0mhtban0csm0fu3j8sxgxk1tovnrk26l7": 7,
+      "given": 7,
+      "information": 6,
+      "transactions": 6,
+      "combine": 6,
+      "signing": 6,
+      "unserializer": 6,
+      "pair": 6,
+      "follows": 6,
+      "compact": 6,
+      "align": 6,
+      "encoded": 6,
+      "represented": 6,
+      "serialization": 6,
+      "0x01": 6,
+      "concatenated": 6,
+      "psbt_in_non_witness_utxo": 6,
+      "psbt_in_witness_utxo": 6,
+      "scriptwitness": 6,
+      "values": 6,
+      "valid": 6,
+      "final": 6,
+      "single": 6,
+      "add": 6,
+      "p2pkh": 6,
+      "kwmh7": 6,
+      "blmavpbqv4sf": 6,
+      "sr": 6,
+      "hj": 6,
+      "chnidp8bafucaaaaaseaiyol37ufxf8id6wld8e": 6,
+      "hjncesqf1": 6,
+      "ns1jm7xlw5aaaaaad": 6,
+      "aaba6gsaaaaagxapfp": 6,
+      "partially": 5,
+      "comments": 5,
+      "contains": 5,
+      "software": 5,
+      "pass": 5,
+      "0xff": 5,
+      "scope": 5,
+      "fixed": 5,
+      "index": 5,
+      "variable": 5,
+      "present": 5,
+      "fail": 5,
+      "resulting": 5,
+      "verify": 5,
+      "4": 5,
+      "5": 5,
+      "required": 5,
+      "duplicated": 5,
+      "creator": 5,
+      "accept": 5,
+      "sighash_all": 5,
+      "exists": 5,
+      "assert": 5,
+      "tx": 5,
+      "finalizer": 5,
+      "atpf9quaaaaagxapfndfmqpfuskgh2dpd9uhpgzap2ugikwa4fufaaaaabepfdvf5um7gyxhbq8k0": 5,
+      "htpmti": 5,
+      "vz": 5,
+      "ubaaaafxyafl4y0vkpsbidna89p95puzse7lmf": 5,
+      "4b4qkonhf8usik6uwpyn": 5,
+      "9rrgi7st0taxhmouxqsjc0aqaaabcwabt": 5,
+      "pp7xp0xpdnkcxdvzq6vlnl1tu": 5,
+      "8camlrcwaaaaazdqkuhc": 5,
+      "xcx": 5,
+      "z4ai7nk9wngizezixikiirhl": 5,
+      "e4saaaaf6kum5cluihv1irhu6m80gfwx6ajnqwhakcwraigjxk": 5,
+      "iuandzlpvomr3hyppolwuajf3tskainwf4pfoiqciaglonfc0xtnnmkna9b7qpzzmlveuqfeyads8vatsnzcased0ufwdjqbruqzy3llh": 5,
+      "gfbtzsyg2yvi": 5,
+      "jnf6efke": 5,
+      "iqucsdbfaiea0suflyxc2whs9fsrzgzu327tzhlmddpoxmmj": 5,
+      "7x85y0cigczio4ofyxbl": 5,
+      "saik9z9r5e5cvbibz8hoqdhaxr8lkqaseci7cr7vcwxrc": 5,
+      "lxwrp1wz3pftghqbofh3pbe": 5,
+      "pwayql8w7y28sseypppxcfstfikwaaaaaaaebijve6gsaaaaaf6kuy0ugd2jriegtwn8ctrbqjxta2": 5,
+      "rmpr2fzm9s4jorqwjh3izedg5kdcwlciqi63zbppw3pwd25brde4jupt": 5,
+      "fz10l": 5,
+      "71ntcq2qxqtwaaaiaaaacaaqaagaabasaawuslaaaaabepflf1": 5,
+      "complete": 4,
+      "multiple": 4,
+      "currently": 4,
+      "implementation": 4,
+      "allow": 4,
+      "wallets": 4,
+      "maps": 4,
+      "class": 4,
+      "wikitable": 4,
+      "style": 4,
+      "width": 4,
+      "auto": 4,
+      "text": 4,
+      "center": 4,
+      "font": 4,
+      "smaller": 4,
+      "table": 4,
+      "layout": 4,
+      "specify": 4,
+      "varies": 4,
+      "scriptsigs": 4,
+      "indexes": 4,
+      "identifier": 4,
+      "spends": 4,
+      "spend": 4,
+      "partial": 4,
+      "0x02": 4,
+      "0x07": 4,
+      "0x08": 4,
+      "vector": 4,
+      "equal": 4,
+      "run": 4,
+      "sha256": 4,
+      "chosen": 4,
+      "normal": 4,
+      "separators": 4,
+      "example": 4,
+      "private": 4,
+      "wish": 4,
+      "additional": 4,
+      "entity": 4,
+      "paths": 4,
+      "txid": 4,
+      "check": 4,
+      "prevout": 4,
+      "script_code": 4,
+      "non_witness_utxo": 4,
+      "policy": 4,
+      "know": 4,
+      "fa": 4,
+      "fb": 4,
+      "workflow": 4,
+      "img": 4,
+      "3": 4,
+      "multisig": 4,
+      "chnidp8bahucaaaaasabctce3": 4,
+      "kf6tet7qsze3gadavmy7otzgqxe8pcfxv2aaaaaad": 4,
+      "65pjwdlivhh7muewaaaqd9pqebaaaaaaeciaphhqtnioa3g7ukzgmpopxjrjr6ljl": 4,
+      "qwljoixa98sbghl0f": 4,
+      "qbaaaaap7": 4,
+      "8cydvqcwaaaaazdqkudopau9day": 4,
+      "gdmi5x3ipnxhe5ax2iri4kaaaaaaaagxapfg9gilvt": 4,
+      "glechue4o": 4,
+      "p": 4,
+      "cwfvafrefx5i1hvbhenvvuyha95v0ehayaxj": 4,
+      "kszxyb4iio9uq4ibgoxnbzlp2g7avtxi4zw6x5xz9vp": 4,
+      "hkjudugeq1w9rhc0prpnaaaagaaaaiaeaacaigyd3lxr4dribep4pywfv5uuwc89uq": 4,
+      "78pjlfjvggg70qtka6zwaaaiaaaacabqaagaaa": 4,
+      "uhigidstqcy6doo2r08som1ul": 4,
+      "cwfvafrefx5i1hvbhenvvuzgmemciaqkty7": 4,
+      "qqau4vwepck7v9sokgqiqfxn8hc2dxrprc0hah9cjrd": 4,
+      "plftylisszrwtt5g6hhb": 4,
+      "zqps5m9": 4,
+      "tt3o": 4,
+      "0ohtyuo5c43l9p06h": 4,
+      "3hlyyaiambdu3rw2": 4,
+      "lwhvfdnwxzjchtmje": 4,
+      "p2wpkh": 4,
+      "chnidp8bad8caaaaaf": 4,
+      "aaaaaad": 4,
+      "8cgpd6agaaaaaxqrqpuuy0iwlrgsgzryqcemf9295jnifq8gonaqaaabepfcnkdpigj4gzlcgyxje12flkbj9hh2uaaaaiaglath": 4,
+      "vu210gwrqihapyqolmi3b2ozaniunrvavdyk0iixtjevdk82zvfihd3aiafbmdaz1ptcgk4wxtl4pb02kjam1dgvqkbb2yzekag6gebawqbaaaaaqrhuieclyo": 4,
+      "vqopuclpfmx2zu18rcvqshohyicajrdke89bc9z3bkgsn7insm3": 4,
+      "7ntuoxoyvgsagaihw5zrzbeaibl9fulmytzon": 4,
+      "3weq74iqjdym4utg9ibaqmeaqaaaaeeigagjcntfzddtzxftkb7crqoqun5fadoh": 4,
+      "7ntuoxoyvgsagaihw5zenkmak8aaacaaaaagamaaiaibgmincemesbbvpktka9hczpboizq0mix9ym3nruzawsc3bdzdgppaaaagaaaaiacaacaacica6mkw39zltoqjdusa1ck8gudlekpqkylnudt7z7spydxenkmak8aaacaaaaagaqaaiaaigicf2ozdx0u": 4,
+      "9tbxuq4ibgkvg785rgpgl0etgzrd1jt6yqhvnwxc05tmiypxq5bgfxdzdgppaaaagaaaaiaaaacaigyc2ryf9jou22p9ardnh7t4": 4,
+      "com": 3,
+      "https": 3,
+      "0174": 3,
+      "created": 3,
+      "document": 3,
+      "binary": 3,
+      "set": 3,
+      "different": 3,
+      "access": 3,
+      "utxos": 3,
+      "specification": 3,
+      "mean": 3,
+      "indicates": 3,
+      "representing": 3,
+      "description": 3,
+      "array": 3,
+      "e": 3,
+      "psbt_global_xpub": 3,
+      "derive": 3,
+      "highest": 3,
+      "little": 3,
+      "endian": 3,
+      "current": 3,
+      "previous": 3,
+      "redeem": 3,
+      "needed": 3,
+      "fully": 3,
+      "validation": 3,
+      "ripemd160": 3,
+      "determine": 3,
+      "place": 3,
+      "magic": 3,
+      "header": 3,
+      "unserialized": 3,
+      "described": 3,
+      "duplicate": 3,
+      "fields": 3,
+      "choose": 3,
+      "particular": 3,
+      "general": 3,
+      "roles": 3,
+      "new": 3,
+      "likely": 3,
+      "matches": 3,
+      "possible": 3,
+      "sign_witness": 3,
+      "sign_non_witness": 3,
+      "witness_utxo": 3,
+      "p2wsh": 3,
+      "construct": 3,
+      "unknown": 3,
+      "backwards": 3,
+      "filled": 3,
+      "gfr25qaaqeeigagdx": 3,
+      "xj1lpp": 3,
+      "od7": 3,
+      "94s8sgigdaxbt0cnvy8ivx3tvscyxb7tcrppls04qjrdssio2l8brzbeaibl9fulmytzon": 3,
+      "3weq74iqjdym4utg9ibr1ihawidwqx6xttu": 3,
+      "57vdl6gfrkmhgih8oc1kuacica6mkw39zltoqjdusa1ck8gudlekpqkylnudt7z7spydxenkmak8aaacaaaaagaqaaiaaigicf2ozdx0u": 3,
+      "8cgpd6agaaaaaxqrqpuuy0iwlrgsgzryqcemf9295jnifq8gonaqaaabepfcnkdpigj4gzlcgyxje12flkbj9hh2uaaaabb9oarzbeaib0ayrugacxuhmypaavcgs2hmybi4kqsofbzztvrwecmqigc9npt0dj61pc76m4i8ghbrtkvafdlutxv8fnktjheywbsdbfaiea9ha4swjchahlo0hsdg8bv3ktqgjg0kruotzzm98if3cciavuz1pnwm0karhbfoxikhtyolqbv2c": 3,
+      "oofvzhkqoabqaudsiqkvg785rgpgl0etgzrd1jt6yqhvnwxc05tmiypxq5bgfyec2ryf9jou22p9ardnh7t4": 3,
+      "71ntdsrgabasaawuslaaaaabepflf1": 3,
+      "vqopuclpfmx2zu18rcvqshohwehiyiaiiwjuxc3q7wv37sge3k6jkljex2ntof": 3,
+      "chnidp8bahmcaaaaataa6yblfqhsisw0vgvz0y": 3,
+      "dtgxiotdhz9aloocwtnvbaaaaaad": 3,
+      "anr7aqaaaaaaf6kua6oxrogrxq1usl1jee5p": 3,
+      "s57nqkhyeozowaaaaaxqrs5ibg6b3ius": 3,
+      "chnidp8bakacaaaaaqsjsacmwvfem4is9bfi8vqz9cm9zxu4iagtn4d6w3vkaaaaaad": 3,
+      "59nxsx47iciqmbbudsiqmincemesbbvpktka9hczpboizq0mix9ym3nruzawsc3cecot2qtz1tz1nduqaw3ui1kbf": 3,
+      "ue1q5ehhuzjoycifdnnsriigajrdke89bc9z3bkgsn7insm3": 3,
+      "71ntdsriigapwdvzmucmcxr60zmt3wnpphcfwdbfztm0whg": 3,
+      "grlub": 3,
+      "enkmak8aaacaaaaagaaaaiaibglath": 3,
+      "vu21xdzdgppaaaagaaaaiabaacaaaebiadc6wsaaaaaf6kut": 3,
+      "x69a49qkwkwbhbntxyty": 3,
+      "y5l1fs7": 3,
+      "vae2rqlghlgdi2vw5fg2s0kcqutruauqlhdzdgppaaaagaaaaiafaacaaa": 3,
+      "252": 3,
+      "achow101": 2,
+      "github": 2,
+      "12": 2,
+      "license": 2,
+      "bsd": 2,
+      "clause": 2,
+      "offline": 2,
+      "creating": 2,
+      "passed": 2,
+      "people": 2,
+      "easily": 2,
+      "designed": 2,
+      "future": 2,
+      "requires": 2,
+      "users": 2,
+      "consists": 2,
+      "sequence": 2,
+      "records": 2,
+      "occur": 2,
+      "unique": 2,
+      "allowed": 2,
+      "note": 2,
+      "long": 2,
+      "char": 2,
+      "s": 2,
+      "psbt_global_unsigned_tx": 2,
+      "witnesses": 2,
+      "hardened": 2,
+      "derived": 2,
+      "psbt_global_version": 2,
+      "0xfb": 2,
+      "psbt_global_proprietary": 2,
+      "requiring": 2,
+      "psbt_in_partial_sig": 2,
+      "psbt_in_sighash_type": 2,
+      "0x03": 2,
+      "psbt_in_redeem_script": 2,
+      "0x04": 2,
+      "psbt_in_witness_script": 2,
+      "0x05": 2,
+      "psbt_in_bip32_derivation": 2,
+      "0x06": 2,
+      "psbt_in_final_scriptsig": 2,
+      "constructed": 2,
+      "psbt_in_final_scriptwitness": 2,
+      "proof": 2,
+      "reserves": 2,
+      "commitment": 2,
+      "psbt_in_por_commitment": 2,
+      "0x09": 2,
+      "8": 2,
+      "0127": 2,
+      "mediawiki": 2,
+      "127": 2,
+      "psbt_in_ripemd160": 2,
+      "0x0a": 2,
+      "20": 2,
+      "psbt_in_sha256": 2,
+      "0x0b": 2,
+      "psbt_in_hash160": 2,
+      "0x0c": 2,
+      "psbt_in_hash256": 2,
+      "0x0d": 2,
+      "psbt_in_proprietary": 2,
+      "psbt_out_redeem_script": 2,
+      "psbt_out_witness_script": 2,
+      "psbt_out_bip32_derivation": 2,
+      "psbt_out_proprietary": 2,
+      "0x70736274": 2,
+      "ascii": 2,
+      "uniquely": 2,
+      "properly": 2,
+      "likewise": 2,
+      "corresponding": 2,
+      "knows": 2,
+      "encounters": 2,
+      "understand": 2,
+      "specifier": 2,
+      "combining": 2,
+      "event": 2,
+      "arbitrarily": 2,
+      "identify": 2,
+      "processes": 2,
+      "useful": 2,
+      "creates": 2,
+      "adds": 2,
+      "amounts": 2,
+      "added": 2,
+      "simple": 2,
+      "items": 2,
+      "ismine": 2,
+      "isacceptable": 2,
+      "vout": 2,
+      "n": 2,
+      "extract": 2,
+      "identified": 2,
+      "conflicts": 2,
+      "interpret": 2,
+      "result": 2,
+      "participants": 2,
+      "b": 2,
+      "checks": 2,
+      "scriptwitnesses": 2,
+      "encoding": 2,
+      "file": 2,
+      "rfc4648": 2,
+      "ignored": 2,
+      "incompatible": 2,
+      "introduced": 2,
+      "expected": 2,
+      "coinjoin": 2,
+      "src": 2,
+      "svg": 2,
+      "middle": 2,
+      "b3jv7nyfysb3mk6hatkzghnezphpkrmaaaaaaa": 2,
+      "ref3xm286kdqgbx": 2,
+      "ehtdvrs7tr5mzasedxnxh": 2,
+      "hupccc1aazgoqg7ecy0oiehfkac3ibi1z": 2,
+      "6qmlofvnqxjo7": 2,
+      "uqjbkikbvzfbwtncuauqtbwifxi6w": 2,
+      "qzrbwc4rlm61k7eyoh4w": 2,
+      "s6quuzvfhhuduamgebbciaihcf0yruwwzt1j89vk49vel0yed042ctowgwqo1ijvabaqvhuiedstqcy6doo2r08som1ul": 2,
+      "pubkey": 2,
+      "iljb": 2,
+      "m5talz26r": 2,
+      "en": 2,
+      "vykmv8m": 2,
+      "kszxyb4iio9elsmumcaaacaaaaagauaaiaaaa": 2,
+      "ritrzzm3unz1wtj28qvtir3tjyk2habao7uinvoebbudsiqoxnbzlp2g7avtxi4zw6x5xz9vp": 2,
+      "hkjudugeq1w9ried3lxr4dribep4pywfv5uuwc89uq": 2,
+      "jocpibwuuylwn3zve8vfbz5eyyrgmaugwrqihapyqolmi3b2ozaniunrvavdyk0iixtjevdk82zvfihd3aiafbmdaz1ptcgk4wxtl4pb02kjam1dgvqkbb2yzekag6gfhuieclyo": 2,
+      "9tbxuq4aaqegamlrcwaaaaaxqrs39fr0dj1aparzsds1nfk3l6kh6icbbymiaccmi1mxn0o1ld": 2,
+      "n2ddjfjsgkjawei2gqarzbeaibi63pvyqenxz9freq1od3fb3b1": 2,
+      "oyaokdaqjababhmeqciglrelvhb6fhp0wssrwh3d9vchx7enwwmn84pv": 2,
+      "mwzthalf2xiijaxwfhmeqcigx0w6wzi1mif": 2,
+      "4ae": 2,
+      "0bavhx": 2,
+      "q1us6qpdfcqx1aiuqo9aib": 2,
+      "ckcdrr7blmglketw1p": 2,
+      "lipf7dz6rvgiqmpkbhrod0gfhuiedcj3bdhrg21t5eymvyxmz2zim6tdcmfcjn50bmqmlatwhajrdke89bc9z3bkgsn7insm3": 2,
+      "ztdgjlhaxawkm0qo3r8saaqaiaccha62dlx0wgbxtqsmqnqzagbxz7xpa74dz9ktbkyekzqebjveha7foi6acw0vwcmqln836uzfbzomyhnr471ewnsvvf4qhua4a": 2,
+      "keypaths": 2,
+      "n2ddjfjsgkjawefr1ihawidwqx6xttu": 2,
+      "57vdl6gfrkmhgih8oc1kuigycot2qtz1tz1nduqaw3ui1kbf": 2,
+      "ue1q5ehhuzjoycifdnmq2qxqtwaaaiaaaacaawaagcigawidwqx6xttu": 2,
+      "rmpr2fzm9s4jorqwjh3izedg5kdcwlcenkmak8aaacaaaaagaiaaiaaigidqatdf1mw06ol26xrvwrwzqousslcrgs1r1ptnuylh3eq2qxqtwaaaiaaaacabaaagaaiagj": 2,
+      "oyaokdaqvhuiedcj3bdhrg21t5eymvyxmz2zim6tdcmfcjn50bmqmlatwhajrdke89bc9z3bkgsn7insm3": 2,
+      "7ntuoxoyvgsagaihw5zuq4ibgi63zbppw3pwd25brde4jupt": 2,
+      "57vdl6gfrkmhgih8ocxdzdgppaaaagaaaaiadaacaigydcj3bdhrg21t5eymvyxmz2zim6tdcmfcjn50bmqmlatwq2qxqtwaaaiaaaacaagaagaaiagoppmn": 2,
+      "wzbtqixbrgtxcvbla5rjkujgczvhu": 2,
+      "2e7kwhcrdzdgppaaaagaaaaiaeaacaacican9jmxv9lv9votatasaesyolzvbl8bazqokps2tqbrcwenkmak8aaacaaaaagauaaiaa": 2,
+      "updated": 2,
+      "8cgpd6agaaaaaxqrqpuuy0iwlrgsgzryqcemf9295jnifq8gonaqaaabepfcnkdpigj4gzlcgyxje12flkbj9hh2uaaaaiagkvg785rgpgl0etgzrd1jt6yqhvnwxc05tmiypxq5bgf0cwraigdagk1bgal7hzmjwafxilnotmgsojeejn282bva1nnjkcihptabda4": 2,
+      "pieihigidcj3bdhrg21t5eymvyxmz2zim6tdcmfcjn50bmqmlatxhmeqciglrelvhb6fhp0wssrwh3d9vchx7enwwmn84pv": 2,
+      "reference": 2,
+      "thanks": 2,
+      "pieter": 2,
+      "wuille": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "958641741b02e042b8d858304e29bbc781f647cb",
+        "timestamp": "2017-09-18T00:24:47-04:00",
+        "date": "2017-09-18",
+        "author": "Andrew Chow",
+        "path": "bip-0174.mediawiki",
+        "status": "Draft",
+        "standard": "bip2"
+      },
+      {
+        "commit": "cb426bfdae601954c5eea865d328d2af8313bd69",
+        "timestamp": "2018-07-11T14:01:20-07:00",
+        "date": "2018-07-11",
+        "author": "Andrew Chow",
+        "path": "bip-0174.mediawiki",
+        "status": "Proposed",
+        "standard": "bip2"
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        {
+          "target": "bips:32",
+          "count": 10
+        },
+        {
+          "target": "bips:127",
+          "count": 4
+        },
+        {
+          "target": "bips:173",
+          "count": 1
+        }
+      ],
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:01:41Z",
+          "dependencies": []
+        }
+      ]
+    }
+  }
+}

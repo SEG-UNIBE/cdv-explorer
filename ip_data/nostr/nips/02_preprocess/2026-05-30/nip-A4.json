@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "A4",
       "title": "Public Messages",
-      "author": [
-        "Vitor Pamplona"
-      ],
-      "created": "2025-12-18",
       "status": "Draft",
+      "author": null,
+      "created": "2025-12-18",
       "type": "Optional",
       "layer": null,
       "kind": null
@@ -134,17 +132,105 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 17",
-        "NIP 18",
-        "NIP 19",
-        "NIP 21",
-        "NIP 25",
-        "NIP 40",
-        "NIP 57",
-        "NIP 65",
-        "NIP 92"
+        {
+          "target": "nips:17",
+          "count": 1
+        },
+        {
+          "target": "nips:18",
+          "count": 1
+        },
+        {
+          "target": "nips:19",
+          "count": 1
+        },
+        {
+          "target": "nips:21",
+          "count": 2
+        },
+        {
+          "target": "nips:25",
+          "count": 1
+        },
+        {
+          "target": "nips:40",
+          "count": 1
+        },
+        {
+          "target": "nips:57",
+          "count": 1
+        },
+        {
+          "target": "nips:65",
+          "count": 1
+        },
+        {
+          "target": "nips:92",
+          "count": 1
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:01Z",
+          "dependencies": [
+            {
+              "target": "nips:17",
+              "evidence": "Avoid confusing this kind with Kind `14` rumors in [NIP-17](17.md) DMs.",
+              "reason": "The proposal constrains its semantics by distinguishing itself from the DM model defined in this NIP.",
+              "confidence": "medium"
+            },
+            {
+              "target": "nips:18",
+              "evidence": "[NIP-18](18.md) quote repost `q` tags MAY be used when citing events in the `.content`",
+              "reason": "It permits use of the quote-repost tag format from this NIP when citing events in message content.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:19",
+              "evidence": "[NIP-21](21.md) links that use [NIP-19](19.md)'s `nevent1` MUST include a `kind` of `24`",
+              "reason": "The proposal defines how NIP-19 `nevent1` links are interpreted and rendered for this kind.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:21",
+              "evidence": "[NIP-21](21.md) links that use [NIP-19](19.md)'s `nevent1` MUST include a `kind` of `24`",
+              "reason": "It relies on the link syntax and rendering semantics defined by this NIP for event references in content.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:25",
+              "evidence": "[NIP-25](25.md) reactions MUST add a `k` tag to `24`.",
+              "reason": "This kind requires reactions to use the reaction tagging rules introduced by this NIP.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:40",
+              "evidence": "[NIP-40](40.md) `expiration` tags are recommended.",
+              "reason": "The proposal adopts the expiration tag mechanism from this NIP as an optional support feature for these messages.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:57",
+              "evidence": "[NIP-57](57.md) zaps MUST include the `k` tag to `24`",
+              "reason": "Zaps to this kind must use the zap tagging semantics defined by this NIP.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:65",
+              "evidence": "Messages MUST be sent to the [NIP-65](65.md) inbox relays of each receiver and the outbox relay of the sender.",
+              "reason": "The delivery requirement depends on the inbox/outbox relay model defined by this NIP.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:92",
+              "evidence": "[NIP-92](92.md) `imeta` tags SHOULD be added for image and video links.",
+              "reason": "The proposal recommends the media metadata tag format introduced by this NIP for links in message content.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

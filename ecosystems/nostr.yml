@@ -1,5 +1,16 @@
 slug: nostr
 display_name: Nostr
+frontend:
+  status: available
+  description: Improvement proposals across the Nostr ecosystem
+  ecosystem_description: >
+    Nostr is a decentralized messaging protocol built on relays and clients. NIPs
+    (Nostr Implementation Possibilities) define the rules of this protocol,
+    specifying message formats, event kinds, and relay behaviors.
+
+llm:
+  model: gpt-5.4-mini
+  reasoning_effort: 
 
 sources:
   nips:
@@ -29,6 +40,15 @@ sources:
     reference_pattern: '\bNIP-([0-9A-Fa-f]{1,3})\b'
     max_proposal_id: 255
     stop_words_file: assets/stopwords/en_basic.txt
+    frontend:
+      classification_chord_badge_offsets:
+        layer:
+          x: -20
+      compliance_standards:
+        - key: nip
+          label: NIP Conformity
+          color: "#4c72b0"
+          hoverColor: "#3a5a8e"
 
     # NIPs do NOT use RFC-style key:value preambles.  Metadata is expressed as
     # backtick-tagged tokens on the first content line after the title, e.g.:
@@ -47,9 +67,11 @@ sources:
         - title
         - status
       optional_fields:
+        - author
         - type
         - layer
         - kind
+      interrelation_types: []
       field_aliases:
         optionality: type
       expected_headlines:

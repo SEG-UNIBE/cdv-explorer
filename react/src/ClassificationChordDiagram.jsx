@@ -1,7 +1,9 @@
 import * as d3 from 'd3';
+import { positionTooltip } from './tooltipPosition';
 import { useEffect, useRef } from 'react';
-import { renderProposalListHtml } from './bipTooltipContent';
+import { renderProposalListRow } from './bipTooltipContent';
 import { useDashboardEcosystem, useDashboardLinkMode, useDashboardSnapshot } from './dashboard/DashboardSnapshotContext';
+import { renderTooltipCardHtml } from './tooltipHtml';
 
 const CHORD_DIMENSION_ORDER = ['type', 'layer', 'status'];
 const CHORD_GLOBAL_ROTATION_DEGREES = 3;
@@ -227,9 +229,7 @@ export const ClassificationChordDiagram = ({ data, width = 1000, height = 700 })
       .radius(innerRadius);
 
     const setTooltipPosition = (pageX, pageY) => {
-      tooltip
-        .style('left', `${pageX + 10}px`)
-        .style('top', `${pageY - 28}px`);
+      positionTooltip(tooltip, pageX, pageY);
     };
 
     const getGroupColor = (group) => colorMaps[group.dimension]?.[group.category] || '#64748b';
@@ -241,10 +241,10 @@ export const ClassificationChordDiagram = ({ data, width = 1000, height = 700 })
 
     const renderGroupTooltipHtml = (groupDatum) => {
       const group = displayGroups[groupDatum.index];
-      return (
-        `<strong>${group.label}</strong><br/>` +
-        `Total pairwise links: ${Math.round(groupDatum.value)}`
-      );
+      return renderTooltipCardHtml({
+        titleHtml: `<strong>${group.label}</strong>`,
+        rows: [['Total Pairwise Links', Math.round(groupDatum.value)]],
+      });
     };
 
     const renderRibbonTooltipHtml = (chordDatum) => {
@@ -252,11 +252,13 @@ export const ClassificationChordDiagram = ({ data, width = 1000, height = 700 })
       const target = displayGroups[chordDatum.target.index];
       const bips = pairBips[getPairKey(source.originalIndex, target.originalIndex)] || [];
 
-      return (
-        `<strong>${source.label}</strong> × <strong>${target.label}</strong><br/>` +
-        `Count: ${Math.round(chordDatum.source.value)}<br/>` +
-        renderProposalListHtml(bips, snapshotLabel, { ecosystem, linkMode })
-      );
+      return renderTooltipCardHtml({
+        titleHtml: `<strong>${source.label}</strong> <span class="tooltip-card__arrow">&times;</span> <strong>${target.label}</strong>`,
+        rows: [
+          ['Count', Math.round(chordDatum.source.value)],
+          renderProposalListRow(bips, snapshotLabel, { ecosystem, linkMode }),
+        ],
+      });
     };
 
     const resetStyles = () => {

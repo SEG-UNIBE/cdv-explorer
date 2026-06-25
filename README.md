@@ -23,14 +23,20 @@ _Modern decentralized software ecosystems evolve through crowdsourced improvemen
 </br>
 
 <div align="center">
-  <a href="https://github.com/SEG-UNIBE/cdv-explorer/actions/workflows/deploy-react-pages.yml">
-    <img src="https://img.shields.io/github/actions/workflow/status/SEG-UNIBE/cdv-explorer/deploy-react-pages.yml?style=flat&label=deploy&logo=githubactions&logoColor=white" alt="Deploy" />
+  <a href="https://github.com/SEG-UNIBE/cdv-explorer/releases">
+    <img src="https://img.shields.io/github/v/release/SEG-UNIBE/cdv-explorer?display_name=tag&style=flat" alt="Release" />
   </a>
   <a href="https://seg-unibe.github.io/cdv-explorer/#/">
-    <img src="https://img.shields.io/badge/GitHub%20Pages-live-brightgreen?style=flat&logo=githubpages&logoColor=white" alt="Live Demo" />
+    <img src="https://img.shields.io/badge/PROD-live-brightgreen?style=flat&logo=githubpages&logoColor=white" alt="PROD Live" />
   </a>
-  <a href="./LICENSE">
-    <img src="https://img.shields.io/badge/License-GPL--3.0-red?style=flat" alt="GPL-3.0" />
+  <a href="https://cdv-explorer.pages.dev/">
+    <img src="https://img.shields.io/badge/DEV-live-blue?style=flat&logo=cloudflarepages&logoColor=white" alt="DEV Live" />
+  </a>
+  <a href="https://github.com/SEG-UNIBE/cdv-explorer/actions/workflows/ci.yml">
+    <img src="https://img.shields.io/github/actions/workflow/status/SEG-UNIBE/cdv-explorer/ci.yml?style=flat&label=tests&logo=githubactions&logoColor=white" alt="Tests" />
+  </a>
+  <a href="https://github.com/SEG-UNIBE/cdv-explorer/actions/workflows/deploy-prod.yml">
+    <img src="https://img.shields.io/github/actions/workflow/status/SEG-UNIBE/cdv-explorer/deploy-prod.yml?style=flat&label=deploy&logo=githubactions&logoColor=white" alt="Deploy" />
   </a>
 </div>
 
@@ -39,6 +45,12 @@ _Modern decentralized software ecosystems evolve through crowdsourced improvemen
   <img src="https://img.shields.io/badge/React-18-3776AB?style=flat&logo=react&logoColor=white" alt="React 18" />
   <img src="https://img.shields.io/badge/Node.js-22%2B-3776AB?style=flat&logo=nodedotjs&logoColor=white" alt="Node.js 22+" />
   <img src="https://img.shields.io/badge/D3.js-v7-3776AB?style=flat&logo=d3dotjs&logoColor=white" alt="D3.js" />
+</div>
+
+<div align="center">
+  <a href="./LICENSE">
+    <img src="https://img.shields.io/badge/License-GPL--3.0-red?style=flat" alt="GPL-3.0" />
+  </a>
   <a href="https://youtu.be/56GKRexRuoI"><img src="https://img.shields.io/badge/Demo-Video-red.svg?logo=youtube&logoColor=white" alt="Demo Video" /></a>
 </div>
 
@@ -48,7 +60,7 @@ _Modern decentralized software ecosystems evolve through crowdsourced improvemen
 ## Introduction
 
 CDV-Explorer is an ecosystem-agnostic pipeline for mining and analysing improvement proposals (IPs).
-As of now, two CDV-exhibiting ecosystems are integrated:
+At the moment, the explorer ships with active source integrations for the following two CDV-exhibiting ecosystems:
 
 | Ecosystem | Proposals | Source repository |
 |-----------|-----------|-------------------|
@@ -106,7 +118,7 @@ python main.py run -e nostr -s 2026-03-16 --skipllm
 ```
 
 > [!NOTE]
-> Omit `--skipllm` to also run the OpenAI-based inter-proposal relation extraction. Provide the API key via the `OPENAI_API_KEY` environment variable, or by creating a file named `apikey.secret` in the project root containing only the key. The pipeline picks up the file automatically when the environment variable is not set.
+> Omit `--skipllm` to also run the OpenAI-based inter-proposal relation extraction. Set the model in the ecosystem YAML under `llm.model`, and provide the API key via the `OPENAI_API_KEY` environment variable or an `apikey.secret` file in the project root. The pipeline picks up the file automatically when the environment variable is not set.
 
 > **Snapshot date:** `-s` is required. The pipeline resolves to the last commit whose committer timestamp falls on or before `YYYY-MM-DD 23:59:59` and checks out the repository at that point.
 
@@ -118,7 +130,8 @@ npm install
 npm start        # dev server at http://localhost:3000
 ```
 
-`npm start` also regenerates the proposal link indexes (BIP and NIP) automatically before launching the dev server.
+`npm start` also regenerates the snapshot index and generic proposal link index automatically before launching the dev server.
+It also refreshes the generated ecosystem metadata used by the frontend.
 
 For a production build:
 
@@ -143,7 +156,26 @@ Options:
       --source TEXT      Source slug (default: all sources for that ecosystem)
   -s, --snapshot TEXT    Snapshot date YYYY-MM-DD  [required]
       --skipllm          Skip LLM-based extraction
+      --focus TEXT       Process only specific proposals (e.g. '1-9,30-44,85,A0')
 ```
+
+**Snapshot rebuild workflow:**
+
+When updating LLM extraction, dependency analysis, or other enrichment logic, rebuild only the affected proposals to avoid re-processing large snapshots:
+
+```bash
+# Rebuild analysis and postprocess for a specific proposal
+python main.py run -e bitcoin -s 2026-03-16 --focus 340 --skipllm
+
+# Rebuild analysis for multiple proposals
+python main.py run -e bitcoin -s 2026-03-16 --focus 1-10,320-340 --skipllm
+
+# Rebuild an entire snapshot (regenerate all four pipeline stages)
+python main.py run -e bitcoin -s 2026-03-16 --skipllm
+```
+
+> [!NOTE]
+> The `--focus` flag **skips harvest and preprocess** stages, re-running only analysis and postprocess on the targeted proposals. This preserves existing enrichment (compliance checks, Git history, word clouds) while updating derived metrics.
 
 ### `snapshots` - list available snapshots
 
@@ -151,6 +183,31 @@ Options:
 python main.py snapshots
 python main.py snapshots -e bitcoin
 ```
+
+### `doctor` - check the local environment
+
+```bash
+python main.py doctor
+```
+
+Runs read-only checks for required tooling, installed Python packages, configured ecosystem sources, snapshot artifacts, generated frontend indexes, and optional LLM credentials.
+
+### `artifacts rebuild` - regenerate derived artifacts from existing preprocess JSON
+
+```bash
+python main.py artifacts rebuild -e bitcoin -s 2026-03-16
+python main.py artifacts rebuild -e bitcoin --all
+```
+
+Use this when the raw/preprocessed proposal JSON is already available and you only want to rebuild analysis and React-facing exports after changing downstream logic.
+
+### `ground-truth sample-ips` - prefill reviewed IPs for benchmarking
+
+```bash
+python main.py ground-truth sample-ips --wizard
+```
+
+This interactive helper pre-fills `ground_truth/ips.csv` from a stratified sample of IPs, thereby enlarging the ground truth data set of manually reviewed IPs and their interrelations (maintained in `ground_truth/interrelations.csv`).
 
 ### `ecosystems` - manage ecosystem configs
 
@@ -164,6 +221,15 @@ python main.py ecosystems add-source bitcoin  # add a second IP catalog to an ec
 </br>
 
 ## Developer Notes
+
+### Development dependencies
+
+For local test/development work, install the dev requirements instead of the runtime-only set:
+
+```bash
+pip install -r requirements-dev.txt
+python -m pytest
+```
 
 ### Pipeline architecture
 
@@ -189,11 +255,14 @@ Ecosystem-specific logic is confined to the first two stages, keeping the analys
 │   └── wordcloud/
 ├── react/                   # interactive frontend (D3, PrimeReact)
 └── ip_data/
-    └── <ecosystem>/
-        ├── 01_harvest/      # raw IP documents             [gitignored]
-        ├── 02_preprocess/   # IP object model (JSON)       ← Stage II output
-        ├── 03_analysis/     # analysis artifacts           ← Stage III output
-        └── 04_postprocess/  # frontend payloads            ← Stage IV output
+    └── <ecosystem>/         # e.g. bitcoin, nostr, ...
+        ├── <source>/        # e.g. bips, slips, ...
+        │   ├── 01_harvest/      # raw IP documents             [gitignored]
+        │   ├── 02_preprocess/   # IP object model (JSON)       ← Stage II output
+        │   ├── 03_analysis/     # analysis artifacts           ← Stage III output
+        │   └── 04_postprocess/  # frontend payloads            ← Stage IV output
+        ├── _combined/           # precomputed multi-source artifacts
+        └── ground_truth/        # curated benchmark CSVs
 ```
 
 ### Preprocess schema
@@ -224,7 +293,10 @@ The schema has three top-level blocks: **`raw`** (verbatim preamble), **`meta`**
 }
 ```
 
-Concrete examples: [`bip-0340.json`](ip_data/bitcoin/02_preprocess/2026-03-16/bip-0340.json) (Schnorr Signatures) · [`nip-10.json`](ip_data/nostr/nips/02_preprocess/2026-05-30/nip-10.json) (Text Notes and Threads)
+The exact object shapes inside `interrelations` are source-aware and method-specific. 
+In particular, targets use `source_slug:id` keys, regex-derived entries carry occurrence counts, and LLM-derived entries are stored as timestamped runs with per-dependency metadata.
+
+Concrete examples: [`bip-0340.json`](ip_data/bitcoin/bips/02_preprocess/2026-03-16/bip-0340.json) (Schnorr Signatures) · [`nip-10.json`](ip_data/nostr/nips/02_preprocess/2026-05-30/nip-10.json) (Text Notes and Threads)
 
 ### Adding a new ecosystem
 
@@ -238,8 +310,9 @@ Concrete examples: [`bip-0340.json`](ip_data/bitcoin/02_preprocess/2026-03-16/bi
 
 ### Deployment
 
-The app is deployed to GitHub Pages via [`.github/workflows/deploy-react-pages.yml`](.github/workflows/deploy-react-pages.yml) on every push to `main` that touches `react/` or `ip_data/`.
-To enable Pages on a fork, go to `Settings > Pages` and set the source to `GitHub Actions`.
+Production is deployed to GitHub Pages via [`.github/workflows/deploy-prod.yml`](.github/workflows/deploy-prod.yml) after a successful `CI` run on `main` or `master`.
+Development builds are deployed to Cloudflare Pages via [`.github/workflows/deploy-dev.yml`](.github/workflows/deploy-dev.yml) after a successful `CI` run on `dev`.
+To enable GitHub Pages on a fork, go to `Settings > Pages` and set the source to `GitHub Actions`.
 
 </br>
 

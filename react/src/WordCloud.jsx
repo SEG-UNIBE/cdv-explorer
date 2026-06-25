@@ -1,6 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { positionTooltip } from './tooltipPosition';
 import * as d3 from 'd3';
 import cloud from 'd3-cloud';
+import { renderTooltipCardHtml } from './tooltipHtml';
+
+function allowVisualZoomGesture(event) {
+  if (event?.type === 'wheel') {
+    return event.ctrlKey || event.metaKey;
+  }
+  return !event?.button;
+}
 
 export const WordCloud = ({ words, width = 1250, height = 750 }) => {
   const containerRef = useRef();
@@ -112,6 +121,7 @@ export const WordCloud = ({ words, width = 1250, height = 750 }) => {
 
       const zoom = d3.zoom()
         .scaleExtent([0.6, 4])
+        .filter(allowVisualZoomGesture)
         .on('start', () => {
           svg.style('cursor', 'grabbing');
         })
@@ -152,12 +162,13 @@ export const WordCloud = ({ words, width = 1250, height = 750 }) => {
 
           tooltip
             .style('opacity', 1)
-            .html(`<strong>${d.text}</strong><br/>Count: ${d.count}`);
+            .html(renderTooltipCardHtml({
+              titleHtml: `<strong>${d.text}</strong>`,
+              rows: [['Count', d.count]],
+            }));
         })
         .on('mousemove', function (event) {
-          tooltip
-            .style('left', `${event.pageX + 10}px`)
-            .style('top', `${event.pageY - 28}px`);
+          positionTooltip(tooltip, event.pageX, event.pageY);
         })
         .on('mouseout', function (event, d) {
           d3.select(this)

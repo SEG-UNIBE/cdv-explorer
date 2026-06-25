@@ -1,0 +1,298 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "07",
+      "title": "`window.nostr` capability for web browsers",
+      "status": "Draft",
+      "author": null,
+      "created": "2022-05-06",
+      "type": "Optional",
+      "layer": null,
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Mon Jul 15 09:50:25 2024 -0700",
+    "total_commits": 28,
+    "git_history": [
+      [
+        "8b75d7be7c45f5867ea6541095f7322fe7d77a26",
+        "Mon Jul 15 09:50:25 2024 -0700",
+        "hodlbod"
+      ],
+      [
+        "68c9e484ea1fdfa48e7a62da4a1e0b1e4a29a937",
+        "Mon Jul 15 20:41:56 2024 +0530",
+        "Vivek Ganesan"
+      ],
+      [
+        "2390058a3260d778e62df066c0d5bb5e803d2527",
+        "Tue Feb 20 12:09:40 2024 -0600",
+        "Alex Gleason"
+      ],
+      [
+        "71b0cbc2de50ca9088398bb3cbf8f9eb6d5a7b53",
+        "Tue Feb 20 12:06:06 2024 -0600",
+        "Alex Gleason"
+      ],
+      [
+        "0266d86b41d9b0684fa181700069d7553af505ef",
+        "Wed Dec 27 19:37:20 2023 +0900",
+        "Asai Toshiya"
+      ],
+      [
+        "ff533d7a99715b0524f93a182f6c2169fe3b25b1",
+        "Wed Dec 20 14:39:35 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "822b70a565678222706dd6284eb7abcaadfc5115",
+        "Wed Dec 20 13:22:02 2023 +0100",
+        "Paul Miller"
+      ],
+      [
+        "fb87a03d5f2d0aee4f3916e1cf8338ee69b314a9",
+        "Thu Nov 30 18:38:48 2023 +0800",
+        "Leon"
+      ],
+      [
+        "37f6cbb775126b386414220f783ca0f5f85e7614",
+        "Wed Nov 15 21:42:51 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "cee69773473a9f6fed2cd7a150d70e77837a42b4",
+        "Wed Nov 1 08:55:45 2023 -0400",
+        "Ryan Breen"
+      ],
+      [
+        "ca73c5dd5ea19dec29a2781f1d3bd93ef95985f9",
+        "Fri Oct 20 22:56:29 2023 +0200",
+        "Mike O'Bank"
+      ],
+      [
+        "4216f0bf2f73b4a395568b6874132aca94f55094",
+        "Thu Oct 19 14:27:56 2023 +0200",
+        "Egge"
+      ],
+      [
+        "e9f8bc27b7f14355a3c4a321e4368046125a3dc0",
+        "Tue Oct 10 20:12:21 2023 +0300",
+        "Nostr.Band"
+      ],
+      [
+        "cabbaadb69ecf28c2a91ced63359e1bd15b14ea9",
+        "Mon May 29 15:47:09 2023 +0800",
+        "haorendashu"
+      ],
+      [
+        "4f04de2afda831ef339ad225e4e08a5b1d075e3c",
+        "Sat May 27 08:44:19 2023 +0900",
+        "Akiomi Kamakura"
+      ],
+      [
+        "1c916953c1a3a47edeac32ea015c32c450194423",
+        "Sat May 20 12:26:46 2023 +0800",
+        "heipacker"
+      ],
+      [
+        "9bf8bb0054f236533c8bc04f6a2966970c7d5bd9",
+        "Tue May 16 04:05:24 2023 +0530",
+        "Vivek Ganesan"
+      ],
+      [
+        "4ea0e8e9f276c03e298f466fb3074342f0ec01c3",
+        "Mon May 15 09:30:27 2023 -0700",
+        "Neil"
+      ],
+      [
+        "b8f2e14e6dc6b688605e55c86e68ac17b53338f0",
+        "Thu May 11 20:39:40 2023 +0530",
+        "Vivek Ganesan"
+      ],
+      [
+        "d74ac8654efeb85bd04555b5c334722394c7326c",
+        "Mon Mar 13 22:31:25 2023 +0200",
+        "Vlad Stan"
+      ],
+      [
+        "b99723efcca383affd43eb2efb5b25c949346588",
+        "Tue Feb 28 20:36:21 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "ab1f26a3fd8fa0703a4be76091566c92aeadbd4b",
+        "Sat Feb 25 12:23:46 2023 +0100",
+        "Callum Macdonald"
+      ],
+      [
+        "e5ae318984bdc2f28932420be976183c9a0cd3ff",
+        "Sun Jan 15 20:05:52 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "230f63dd5fb1e0d3465c6962ffafbc7fa29e4983",
+        "Sun Jan 15 15:37:42 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "745297e8c4cbb742f9252cfdd654844d1cad4040",
+        "Sun Dec 18 06:35:30 2022 -0300",
+        "fiatjaf"
+      ],
+      [
+        "c840d75ce023f64918f57a519417e39f57f0f53b",
+        "Sat Dec 17 21:43:17 2022 +0100",
+        "alex"
+      ],
+      [
+        "9302c35573239c1778234769d070dfff0e87038a",
+        "Sun Nov 27 12:03:46 2022 -0300",
+        "fiatjaf"
+      ],
+      [
+        "37eb53e3d93367e76c332c25a0c652922588ceb8",
+        "Fri May 6 20:54:45 2022 -0300",
+        "fiatjaf"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "nostr": 12,
+      "window": 10,
+      "string": 8,
+      "async": 7,
+      "nip": 6,
+      "ciphertext": 6,
+      "returns": 5,
+      "pubkey": 5,
+      "specified": 4,
+      "web": 3,
+      "object": 3,
+      "extensions": 3,
+      "event": 3,
+      "takes": 3,
+      "07": 2,
+      "browsers": 2,
+      "available": 2,
+      "following": 2,
+      "number": 2,
+      "basic": 2,
+      "boolean": 2,
+      "relay": 2,
+      "nip04": 2,
+      "encrypt": 2,
+      "plaintext": 2,
+      "iv": 2,
+      "04": 2,
+      "deprecated": 2,
+      "decrypt": 2,
+      "nip44": 2,
+      "44": 2,
+      "extension": 2,
+      "authors": 2,
+      "load": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "37eb53e3d93367e76c332c25a0c652922588ceb8",
+        "timestamp": "2022-05-06T20:54:45-03:00",
+        "date": "2022-05-06",
+        "author": "fiatjaf",
+        "path": "07.md",
+        "status": "Draft",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        {
+          "target": "nips:04",
+          "count": 4
+        },
+        {
+          "target": "nips:44",
+          "count": 4
+        }
+      ],
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:09Z",
+          "dependencies": [
+            {
+              "target": "nips:04",
+              "evidence": "window.nostr.nip04.encrypt(pubkey, plaintext): string // returns ciphertext and iv as specified in nip-04",
+              "reason": "The optional API explicitly reuses the NIP-04 encryption format and semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:44",
+              "evidence": "window.nostr.nip44.encrypt(pubkey, plaintext): string // returns ciphertext as specified in nip-44",
+              "reason": "The optional API explicitly depends on the NIP-44 ciphertext format and encryption semantics.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -5,16 +5,7 @@ from pathlib import Path
 from typing import Any, Dict, List
 
 from analysis.classification.preprocess import normalize_classification_fields
-from pipeline.ecosystem_config import ACTIVE_ECOSYSTEM
-
-
-PREAMBLE_CONFIG = ACTIVE_ECOSYSTEM.get("preamble", {})
-FIELD_ALIASES = PREAMBLE_CONFIG.get("field_aliases", {})
-LIST_VALUED_FIELDS = set(PREAMBLE_CONFIG.get("list_valued_fields", []))
-_CLASSIFICATION_CONFIG = ACTIVE_ECOSYSTEM.get("classification", {})
-PRIMARY_ID_FIELD = str(ACTIVE_ECOSYSTEM.get("primary_id_field") or "").strip()
-DOCUMENT_PREFIX = str(ACTIVE_ECOSYSTEM.get("document_prefix") or "").strip()
-PREPROCESSOR = str(ACTIVE_ECOSYSTEM.get("preprocessor") or "").strip()
+from pipeline.source_context import SourceContext
 
 PRE_BLOCK_PATTERN = re.compile(r"<pre>(.*?)</pre>", re.DOTALL | re.IGNORECASE)
 FENCED_BLOCK_PATTERN = re.compile(r"^\s*```[^\n]*\n(.*?)\n```\s*(?:\n|$)", re.DOTALL)
@@ -27,8 +18,8 @@ PLACEHOLDER_PATH_PATTERN = re.compile(r"-(?:x{3,}|\?{3,})(?:[-.]|$)", re.IGNOREC
 PATH_NUMERIC_ID_PATTERN = re.compile(r"(\d+)")
 
 
-def _format_value(key: str, value: str) -> Any:
-    if key in LIST_VALUED_FIELDS:
+def _format_value(key: str, value: str, source_context: SourceContext) -> Any:
+    if key in source_context.list_valued_fields:
         return [line.strip() for line in value.split("\n") if line.strip()]
     return value.strip()
 
@@ -45,7 +36,7 @@ def _extract_raw_pre_block(file_content: str) -> str:
     return ""
 
 
-def _parse_pre_block_preamble(file_content: str) -> Dict[str, Any]:
+def _parse_pre_block_preamble(file_content: str, source_context: SourceContext) -> Dict[str, Any]:
     pre_block = _extract_raw_pre_block(file_content)
     if not pre_block:
         return {}
@@ -58,7 +49,7 @@ def _parse_pre_block_preamble(file_content: str) -> Dict[str, Any]:
         match = PRE_BLOCK_LINE_PATTERN.match(line)
         if match:
             if current_key:
-                preamble[current_key] = _format_value(current_key, current_value)
+                preamble[current_key] = _format_value(current_key, current_value, source_context)
             current_key = match.group(1).strip().lower().replace("-", "_")
             current_value = match.group(2).strip()
             continue
@@ -67,7 +58,7 @@ def _parse_pre_block_preamble(file_content: str) -> Dict[str, Any]:
             current_value += "\n" + line.strip()
 
     if current_key:
-        preamble[current_key] = _format_value(current_key, current_value)
+        preamble[current_key] = _format_value(current_key, current_value, source_context)
 
     return preamble
 
@@ -132,8 +123,13 @@ def _parse_rfc822_preamble(file_content: str) -> Dict[str, Any]:
     return preamble
 
 
-def _parse_nip_tag_preamble(file_content: str, *, fallback_path: str | None = None) -> Dict[str, Any]:
-    if PREPROCESSOR != "nip_tags":
+def _parse_nip_tag_preamble(
+    file_content: str,
+    source_context: SourceContext,
+    *,
+    fallback_path: str | None = None,
+) -> Dict[str, Any]:
+    if source_context.preprocessor != "nip_tags":
         return {}
 
     lines = file_content.splitlines()
@@ -187,7 +183,7 @@ def _parse_nip_tag_preamble(file_content: str, *, fallback_path: str | None = No
 
         index += 1
 
-    dims = _CLASSIFICATION_CONFIG.get("dimensions", {})
+    dims = source_context.classification_dimensions
     status_aliases = {k.lower(): v for k, v in (dims.get("status", {}).get("aliases") or {}).items()}
     type_aliases = {k.lower(): v for k, v in (dims.get("type", {}).get("aliases") or {}).items()}
     layer_aliases = {k.lower(): v for k, v in (dims.get("layer", {}).get("aliases") or {}).items()}
@@ -211,13 +207,14 @@ def _parse_nip_tag_preamble(file_content: str, *, fallback_path: str | None = No
     proposal_id = ""
     if fallback_path:
         proposal_id = Path(fallback_path).stem
-        if DOCUMENT_PREFIX and proposal_id.lower().startswith(f"{DOCUMENT_PREFIX.lower()}-"):
-            proposal_id = proposal_id[len(DOCUMENT_PREFIX) + 1:]
+        document_prefix = source_context.document_prefix
+        if document_prefix and proposal_id.lower().startswith(f"{document_prefix.lower()}-"):
+            proposal_id = proposal_id[len(document_prefix) + 1:]
         proposal_id = proposal_id.upper()
 
     preamble: Dict[str, Any] = {}
     if proposal_id:
-        preamble[PRIMARY_ID_FIELD or "id"] = proposal_id
+        preamble[source_context.primary_id_field or "id"] = proposal_id
     if title:
         preamble["title"] = title
     if status:
@@ -232,35 +229,43 @@ def _parse_nip_tag_preamble(file_content: str, *, fallback_path: str | None = No
     return preamble
 
 
-def _normalize_preamble(preamble: Dict[str, Any]) -> Dict[str, Any]:
+def _normalize_preamble(preamble: Dict[str, Any], source_context: SourceContext) -> Dict[str, Any]:
     normalized = dict(preamble)
 
-    for source_key, canonical_key in FIELD_ALIASES.items():
+    for source_key, canonical_key in source_context.field_aliases.items():
         if canonical_key in normalized or source_key not in normalized:
             continue
         normalized[canonical_key] = normalized[source_key]
 
-    return normalize_classification_fields(normalized)
+    return normalize_classification_fields(normalized, source_context=source_context)
 
 
-def _extract_snapshot_preamble(file_content: str, *, fallback_path: str | None = None) -> Dict[str, Any]:
-    pre_block_preamble = _parse_pre_block_preamble(file_content)
+def _extract_snapshot_preamble(
+    file_content: str,
+    source_context: SourceContext,
+    *,
+    fallback_path: str | None = None,
+) -> Dict[str, Any]:
+    pre_block_preamble = _parse_pre_block_preamble(file_content, source_context)
     if pre_block_preamble:
-        return _normalize_preamble(pre_block_preamble)
+        return _normalize_preamble(pre_block_preamble, source_context)
 
     rfc822_preamble = _parse_rfc822_preamble(file_content)
     if rfc822_preamble:
-        return _normalize_preamble(rfc822_preamble)
+        return _normalize_preamble(rfc822_preamble, source_context)
 
-    nip_tag_preamble = _parse_nip_tag_preamble(file_content, fallback_path=fallback_path)
+    nip_tag_preamble = _parse_nip_tag_preamble(file_content, source_context, fallback_path=fallback_path)
     if nip_tag_preamble:
-        return _normalize_preamble(nip_tag_preamble)
+        return _normalize_preamble(nip_tag_preamble, source_context)
 
     return {}
 
 
-def _extract_status_snapshot(file_content: str) -> str | None:
-    normalized = _extract_snapshot_preamble(file_content)
+def _extract_status_snapshot(
+    file_content: str,
+    source_context: SourceContext | None = None,
+) -> str | None:
+    normalized = _extract_snapshot_preamble(file_content, source_context or SourceContext.default())
     status = str(normalized.get("status") or "").strip()
     if status:
         return status
@@ -281,6 +286,8 @@ def _normalize_title(value: Any) -> str:
 def _normalize_proposal_id(value: Any) -> str:
     text = _normalize_identity_text(value)
     if not text:
+        return ""
+    if re.fullmatch(r"x+", text):
         return ""
     if text.isdigit():
         return str(int(text))
@@ -304,13 +311,14 @@ def _normalize_authors(value: Any) -> set[str]:
     }
 
 
-def _extract_path_proposal_id(file_path: Path) -> str:
+def _extract_path_proposal_id(file_path: Path, source_context: SourceContext) -> str:
     if _is_placeholder_path(str(file_path)):
         return ""
 
     stem = file_path.stem.strip()
-    if DOCUMENT_PREFIX and stem.lower().startswith(f"{DOCUMENT_PREFIX.lower()}-"):
-        stem = stem[len(DOCUMENT_PREFIX) + 1:]
+    document_prefix = source_context.document_prefix
+    if document_prefix and stem.lower().startswith(f"{document_prefix.lower()}-"):
+        stem = stem[len(document_prefix) + 1:]
 
     normalized = _normalize_proposal_id(stem)
     if normalized:
@@ -322,10 +330,22 @@ def _extract_path_proposal_id(file_path: Path) -> str:
     return str(int(match.group(1)))
 
 
-def _build_snapshot_identity(preamble: Dict[str, Any], *, fallback_path: str | None = None) -> Dict[str, Any]:
-    proposal_id = _normalize_proposal_id(preamble.get(PRIMARY_ID_FIELD))
-    if not proposal_id and fallback_path:
-        proposal_id = _extract_path_proposal_id(Path(fallback_path))
+def _build_snapshot_identity(
+    preamble: Dict[str, Any],
+    source_context: SourceContext,
+    *,
+    fallback_path: str | None = None,
+) -> Dict[str, Any]:
+    primary_id_field = source_context.primary_id_field
+    raw_proposal_id = preamble.get(primary_id_field)
+    has_declared_proposal_id = (
+        bool(primary_id_field)
+        and primary_id_field in preamble
+        and bool(_normalize_identity_text(raw_proposal_id))
+    )
+    proposal_id = _normalize_proposal_id(raw_proposal_id)
+    if not proposal_id and not has_declared_proposal_id and fallback_path:
+        proposal_id = _extract_path_proposal_id(Path(fallback_path), source_context)
 
     created = _normalize_identity_text(preamble.get("created"))[:10]
     if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", created):
@@ -390,9 +410,9 @@ def _parse_snapshot_date(value: str | None) -> date | None:
         return None
 
 
-def _resolve_reporting_standard(event_date_text: str) -> str:
+def _resolve_reporting_standard(event_date_text: str, source_context: SourceContext) -> str:
     event_date = _parse_snapshot_date(event_date_text[:10])
-    regimes = _CLASSIFICATION_CONFIG.get("regimes", [])
+    regimes = source_context.classification_config.get("regimes", [])
     last_seen = ""
 
     for entry in regimes:
@@ -448,7 +468,12 @@ def _parse_git_history_with_paths(stdout: str) -> List[Dict[str, str]]:
     return entries
 
 
-def extract_status_timeline(repo_dir: Path, file_path: Path) -> List[Dict[str, str]]:
+def extract_status_timeline(
+    repo_dir: Path,
+    file_path: Path,
+    source_context: SourceContext | None = None,
+) -> List[Dict[str, str]]:
+    context = source_context or SourceContext.default()
     try:
         relative_file_path = file_path.relative_to(repo_dir)
     except ValueError:
@@ -461,10 +486,12 @@ def extract_status_timeline(repo_dir: Path, file_path: Path) -> List[Dict[str, s
 
     target_preamble = _extract_snapshot_preamble(
         target_content,
+        context,
         fallback_path=str(relative_file_path),
     )
     target_identity = _build_snapshot_identity(
         target_preamble,
+        context,
         fallback_path=str(relative_file_path),
     )
 
@@ -515,10 +542,12 @@ def extract_status_timeline(repo_dir: Path, file_path: Path) -> List[Dict[str, s
 
         snapshot_preamble = _extract_snapshot_preamble(
             content_result.stdout,
+            context,
             fallback_path=entry["path"],
         )
         snapshot_identity = _build_snapshot_identity(
             snapshot_preamble,
+            context,
             fallback_path=entry["path"],
         )
         if not _is_same_proposal_snapshot(
@@ -532,7 +561,7 @@ def extract_status_timeline(repo_dir: Path, file_path: Path) -> List[Dict[str, s
         if not status:
             continue
 
-        standard = _resolve_reporting_standard(entry["timestamp"])
+        standard = _resolve_reporting_standard(entry["timestamp"], context)
         snapshot = (status, standard)
         if snapshot == previous_snapshot:
             continue

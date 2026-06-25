@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "56",
       "title": "Reporting",
-      "author": [
-        "William Casarin"
-      ],
-      "created": "2023-02-07",
       "status": "Unknown",
+      "author": null,
+      "created": "2023-02-07",
       "type": "Optional",
       "layer": null,
       "kind": null
@@ -210,11 +208,24 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 32"
+        {
+          "target": "nips:32",
+          "count": 1
+        }
       ],
       "body_extracted_llm": [
-        "NIP 1",
-        "NIP 32"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:42Z",
+          "dependencies": [
+            {
+              "target": "nips:32",
+              "evidence": "`l` and `L` tags MAY be also be used as defined in [NIP-32](32.md)",
+              "reason": "This proposal extends report events with the NIP-32 label and label namespace tags for qualification and querying.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

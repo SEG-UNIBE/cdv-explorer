@@ -3,12 +3,9 @@
     "preamble": {
       "nip": "51",
       "title": "Lists",
-      "author": [
-        "fiatjaf",
-        "monlovesmango"
-      ],
-      "created": "2023-03-09",
       "status": "Draft",
+      "author": null,
+      "created": "2023-03-09",
       "type": "Optional",
       "layer": null,
       "kind": null
@@ -600,36 +597,146 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 2",
-        "NIP 4",
-        "NIP 17",
-        "NIP 28",
-        "NIP 29",
-        "NIP 30",
-        "NIP 34",
-        "NIP 37",
-        "NIP 44",
-        "NIP 54",
-        "NIP 58",
-        "NIP 65",
-        "NIP 72"
+        {
+          "target": "nips:02",
+          "count": 1
+        },
+        {
+          "target": "nips:04",
+          "count": 2
+        },
+        {
+          "target": "nips:17",
+          "count": 2
+        },
+        {
+          "target": "nips:28",
+          "count": 1
+        },
+        {
+          "target": "nips:29",
+          "count": 2
+        },
+        {
+          "target": "nips:30",
+          "count": 2
+        },
+        {
+          "target": "nips:34",
+          "count": 2
+        },
+        {
+          "target": "nips:37",
+          "count": 1
+        },
+        {
+          "target": "nips:44",
+          "count": 4
+        },
+        {
+          "target": "nips:54",
+          "count": 2
+        },
+        {
+          "target": "nips:58",
+          "count": 2
+        },
+        {
+          "target": "nips:65",
+          "count": 1
+        },
+        {
+          "target": "nips:72",
+          "count": 1
+        },
+        {
+          "target": "nips:B7",
+          "count": 1
+        },
+        {
+          "target": "nips:F4",
+          "count": 2
+        }
       ],
       "body_extracted_llm": [
-        "NIP 2",
-        "NIP 16",
-        "NIP 17",
-        "NIP 28",
-        "NIP 29",
-        "NIP 30",
-        "NIP 33",
-        "NIP 34",
-        "NIP 37",
-        "NIP 44",
-        "NIP 54",
-        "NIP 58",
-        "NIP 65",
-        "NIP 72",
-        "NIP 94"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:44Z",
+          "dependencies": [
+            {
+              "target": "nips:04",
+              "evidence": "An earlier version of this specification used [NIP-04](04.md) for encryptions.",
+              "reason": "The proposal’s backward-compatibility and decryption logic explicitly accounts for NIP-04-encrypted private list content.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:17",
+              "evidence": "\"relay\" (see [NIP-17](17.md))",
+              "reason": "The DM relays standard list specializes the relay tag semantics defined by NIP-17 for direct messages.",
+              "confidence": "low"
+            },
+            {
+              "target": "nips:28",
+              "evidence": "[NIP-28](28.md) chat channels the user is in",
+              "reason": "The public chats list depends on NIP-28 channel definitions as the event references stored in the list.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:29",
+              "evidence": "[NIP-29](29.md) groups the user is in",
+              "reason": "The simple groups list uses NIP-29 group identifiers and relay URLs as its list items.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:30",
+              "evidence": "\"emoji\" (see [NIP-30](30.md))",
+              "reason": "The emoji lists rely on NIP-30’s emoji reference format for valid tag items.",
+              "confidence": "low"
+            },
+            {
+              "target": "nips:34",
+              "evidence": "code (people who produce NIP-34 events) follow list",
+              "reason": "The git authors and repositories lists rely on NIP-34 repository event semantics to define what is being tracked.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:37",
+              "evidence": "(nip44-encrypted) [NIP-37](37.md) draft relays",
+              "reason": "The draft relays list is defined as NIP-44-encrypted data and specifically as a NIP-37-related relay list.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:44",
+              "evidence": "encrypted using the same scheme from [NIP-44](44.md)",
+              "reason": "Private list items are required to use NIP-44 encryption and the pseudocode calls nip44.encrypt.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:54",
+              "evidence": "[NIP-54](54.md) user recommended wiki authors",
+              "reason": "The good wiki authors and good wiki relays standard lists depend on NIP-54’s wiki article ecosystem.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:58",
+              "evidence": "[NIP-58](58.md) badges a user has accepted and chosen to display",
+              "reason": "The profile badges and badge sets entries use NIP-58 badge definitions and awards as list items.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:65",
+              "evidence": "see [NIP-65](65.md)",
+              "reason": "The read/write relays list uses NIP-65 relay set semantics for its expected contents.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:72",
+              "evidence": "[NIP-72](72.md) communities the user belongs to",
+              "reason": "The communities list references NIP-72 community definitions as the items stored in the list.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

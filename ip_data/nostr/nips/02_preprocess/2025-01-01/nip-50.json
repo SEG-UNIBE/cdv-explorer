@@ -1,0 +1,225 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "50",
+      "title": "Search Capability",
+      "status": "Draft",
+      "author": null,
+      "created": "2023-01-17",
+      "type": "Optional",
+      "layer": null,
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Tue Sep 3 20:41:31 2024 +0330",
+    "total_commits": 15,
+    "git_history": [
+      [
+        "e6552476aa2e5ca7256be572a9aa226ec8a022ee",
+        "Tue Sep 3 20:41:31 2024 +0330",
+        "kehiy"
+      ],
+      [
+        "61ed2716a812abda1c46ff59035b69099b7078b3",
+        "Fri Jun 7 11:53:06 2024 -0400",
+        "Vitor Pamplona"
+      ],
+      [
+        "cfcc2e48cd3555e9e458a32f816e0d1ea4994a40",
+        "Fri Jun 7 10:47:58 2024 -0400",
+        "Vitor Pamplona"
+      ],
+      [
+        "0438236268194cfec1e0e02579e29e75bd52b173",
+        "Fri Mar 8 12:05:49 2024 -0500",
+        "nostr.wine"
+      ],
+      [
+        "d11f50bd0ad6663eb53e1da495f8a8b91bb194f5",
+        "Fri Mar 8 11:23:22 2024 -0500",
+        "nostr.wine"
+      ],
+      [
+        "1166fb9fb5e359a023de613417861ae2cb23e6a7",
+        "Wed Mar 6 13:59:36 2024 -0600",
+        "Alex Gleason"
+      ],
+      [
+        "8bfcbebae4d423cbf7b1b0c24ff4d1ad3964dca1",
+        "Fri Jan 5 11:59:58 2024 +0800",
+        "GoodDaisy"
+      ],
+      [
+        "37f6cbb775126b386414220f783ca0f5f85e7614",
+        "Wed Nov 15 21:42:51 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "57d758b07fbe7d3bf95558c93abdbd9eef6a9b42",
+        "Fri Jan 27 21:15:00 2023 +0000",
+        "Luiz Picanço"
+      ],
+      [
+        "f89187a2581aceb99c436d5919391622a82b0713",
+        "Fri Jan 27 15:44:51 2023 +0300",
+        "Artur Brugeman"
+      ],
+      [
+        "6708a73bbcd141094c75f739c8b31446620b30e1",
+        "Fri Jan 27 15:43:06 2023 +0300",
+        "Artur Brugeman"
+      ],
+      [
+        "f6cf3b6c3c76d15f9b17e42ea05b72deff359183",
+        "Thu Jan 26 15:14:44 2023 +0300",
+        "Artur Brugeman"
+      ],
+      [
+        "d534df39c05f26e26d47f1813cbacbb02c9d7718",
+        "Wed Jan 25 14:46:28 2023 +0300",
+        "Artur Brugeman"
+      ],
+      [
+        "a5a4f312ccb44a33dd2c685d735a96bf0acb8838",
+        "Tue Jan 24 09:03:59 2023 +0300",
+        "Artur Brugeman"
+      ],
+      [
+        "086d224e1d75366ec45d23544159ed9c5610010a",
+        "Tue Jan 17 18:49:10 2023 +0300",
+        "Artur Brugeman"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "search": 15,
+      "relays": 8,
+      "filter": 7,
+      "clients": 7,
+      "field": 6,
+      "events": 6,
+      "include": 6,
+      "query": 5,
+      "nip": 4,
+      "kinds": 4,
+      "extensions": 4,
+      "support": 4,
+      "relay": 4,
+      "spam": 4,
+      "domain": 4,
+      "use": 3,
+      "form": 3,
+      "queries": 3,
+      "event": 3,
+      "string": 3,
+      "matching": 3,
+      "results": 3,
+      "default": 3,
+      "language": 3,
+      "nostr": 2,
+      "general": 2,
+      "ids": 2,
+      "req": 2,
+      "fields": 2,
+      "e": 2,
+      "best": 2,
+      "match": 2,
+      "perform": 2,
+      "specific": 2,
+      "returned": 2,
+      "implementation": 2,
+      "1": 2,
+      "specified": 2,
+      "exclude": 2,
+      "filtering": 2,
+      "sentiment": 2,
+      "nsfw": 2,
+      "true": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "086d224e1d75366ec45d23544159ed9c5610010a",
+        "timestamp": "2023-01-17T18:49:10+03:00",
+        "date": "2023-01-17",
+        "author": "Artur Brugeman",
+        "path": "50.md",
+        "status": "Draft",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        {
+          "target": "nips:05",
+          "count": 1
+        }
+      ],
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:23Z",
+          "dependencies": []
+        }
+      ]
+    }
+  }
+}

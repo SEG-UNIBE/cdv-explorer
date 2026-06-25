@@ -1,0 +1,410 @@
+{
+  "raw": {
+    "preamble": {
+      "slip": "10",
+      "title": "Universal private key derivation from master private key",
+      "author": [
+        "Jochen Hoenicke <hoenicke@gmail.com>",
+        "Pavol Rusnak <stick@satoshilabs.com>"
+      ],
+      "status": "Final",
+      "type": "Standard",
+      "created": "2016-04-26"
+    }
+  },
+  "meta": {
+    "last_commit": "Tue Apr 15 21:01:38 2025 +0400",
+    "total_commits": 18,
+    "git_history": [
+      [
+        "a00312491693714d9bc1b6e4cb5b2e356e6c511e",
+        "Tue Apr 15 21:01:38 2025 +0400",
+        "John Water"
+      ],
+      [
+        "e95a0d74b2c9798ac8491ff5870b4d5cdf10132a",
+        "Wed Aug 7 11:14:52 2024 +0200",
+        "Andrew Kozlik"
+      ],
+      [
+        "a078d060eecb603273136c11288c0ddbefd3e687",
+        "Wed Aug 7 11:12:53 2024 +0200",
+        "Andrew Kozlik"
+      ],
+      [
+        "3d32cde5b7fece41bf5759f59f3005c0b1daa15a",
+        "Thu Jan 11 22:42:57 2024 +0100",
+        "Aleksandr Karbyshev"
+      ],
+      [
+        "063cb2fdedb517ed162a6afae6eb293316c24cc6",
+        "Fri Oct 27 21:10:29 2023 +0200",
+        "Alexander Cyon"
+      ],
+      [
+        "133ea52a8e43d338b98be208907e144277e44c0e",
+        "Thu Mar 17 23:05:32 2022 +0100",
+        "Andrew Kozlik"
+      ],
+      [
+        "dc3b6597afe443b3efc3f409d1071cf0c046d8c0",
+        "Fri Jan 7 18:13:59 2022 -0600",
+        "Tarak Ben Youssef"
+      ],
+      [
+        "5b7a092d5b19d35df8bca1641485b7917a1c95ff",
+        "Thu May 13 20:49:47 2021 +0200",
+        "Andrew Kozlik"
+      ],
+      [
+        "508968da89aeb23a07d14109207cbd49aa0ca12a",
+        "Tue Mar 9 17:28:27 2021 +0100",
+        "Andrew Kozlik"
+      ],
+      [
+        "b9b0c4ec9dfb25f2108b2cc91988df21f8ce7224",
+        "Wed Aug 29 13:51:37 2018 +0200",
+        "Simon Warta"
+      ],
+      [
+        "519bc84945c87635220ea6f672d23aec7a58141b",
+        "Tue Jul 31 01:32:27 2018 -0400",
+        "Eric Malamisura"
+      ],
+      [
+        "705976efa3feb6c45ab005e35a2155925b2d839a",
+        "Thu Jun 21 17:11:00 2018 +0200",
+        "Simon Warta"
+      ],
+      [
+        "40c88470be714e81a5149b50adf2db25ab230bf4",
+        "Tue Mar 14 21:54:43 2017 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "dbb9d25b2f1fdaae80ce1a7897fe088e11193265",
+        "Tue Apr 26 13:58:14 2016 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "bb3a288a9f120f8f144d7b0f54962ea05f7a1c97",
+        "Tue Apr 26 12:02:13 2016 +0200",
+        "Jochen Hoenicke"
+      ],
+      [
+        "c5b6871c4ca2afdd9eff4b0cb67df97e58ec3364",
+        "Tue Apr 26 11:37:30 2016 +0200",
+        "Jochen Hoenicke"
+      ],
+      [
+        "0a7fcef651cffd6adf39365c07fbc04139c2a259",
+        "Sun Apr 24 20:10:05 2016 +0200",
+        "Jochen Hoenicke"
+      ],
+      [
+        "b76151348a7430013a4b147725ed94b0f6b72994",
+        "Mon Feb 1 16:02:09 2016 +0100",
+        "Pavol Rusnak"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 85.71,
+      "passed_checks": 6,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 7,
+      "slip": {
+        "score": 85.71,
+        "passed_checks": 6,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 7,
+        "checks": [
+          {
+            "id": "slip.required_field.slip",
+            "label": "Required field 'slip' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.author",
+            "label": "Required field 'author' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.type",
+            "label": "Required field 'type' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.created",
+            "label": "Required field 'created' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "slip",
+            "passed": false,
+            "details": "Missing: abstract"
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "sub": 304,
+      "chain": 107,
+      "h": 90,
+      "private": 76,
+      "public": 64,
+      "code": 56,
+      "key": 55,
+      "m": 52,
+      "fingerprint": 52,
+      "0": 43,
+      "2": 40,
+      "1": 37,
+      "curve": 30,
+      "seed": 25,
+      "bip": 22,
+      "child": 21,
+      "p": 19,
+      "master": 18,
+      "256": 16,
+      "ed25519": 16,
+      "0032": 16,
+      "keys": 16,
+      "k": 16,
+      "2147483647": 16,
+      "curve25519": 15,
+      "par": 15,
+      "slip": 14,
+      "https": 14,
+      "derivation": 13,
+      "sup": 12,
+      "test": 12,
+      "com": 11,
+      "ser": 11,
+      "32": 11,
+      "l": 11,
+      "c": 11,
+      "0039": 10,
+      "hex": 10,
+      "00000000": 10,
+      "curves": 9,
+      "github": 9,
+      "byte": 9,
+      "0010": 8,
+      "secp256k1": 8,
+      "different": 8,
+      "hmac": 8,
+      "r": 8,
+      "wallet": 8,
+      "vector": 8,
+      "2147483646": 8,
+      "nist": 7,
+      "n": 7,
+      "point": 7,
+      "parse": 7,
+      "invalid": 7,
+      "let": 7,
+      "sha512": 7,
+      "hardened": 7,
+      "extended": 7,
+      "blob": 6,
+      "mnemonic": 6,
+      "s": 6,
+      "data": 6,
+      "parent": 6,
+      "bitcoin": 5,
+      "elliptic": 5,
+      "generation": 5,
+      "sequence": 5,
+      "rfc": 5,
+      "datatracker": 5,
+      "ietf": 5,
+      "org": 5,
+      "doc": 5,
+      "html": 5,
+      "nist256p1": 5,
+      "returned": 5,
+      "000102030405060708090a0b0c0d0e0f": 5,
+      "implementation": 5,
+      "scheme": 4,
+      "bips": 4,
+      "mediawiki": 4,
+      "passphrase": 4,
+      "uses": 4,
+      "algorithm": 4,
+      "0x00": 4,
+      "defined": 4,
+      "sequences": 4,
+      "step": 4,
+      "rarr": 4,
+      "function": 4,
+      "minus": 4,
+      "assets": 4,
+      "1000000000": 4,
+      "fffcf9f6f3f0edeae7e4e1dedbd8d5d2cfccc9c6c3c0bdbab7b4b1aeaba8a5a29f9c999693908d8a8784817e7b7875726f6c696663605d5a5754514e4b484542": 4,
+      "satoshilabs": 3,
+      "deterministic": 3,
+      "trezor": 3,
+      "e": 3,
+      "set": 3,
+      "use": 3,
+      "hash": 3,
+      "group": 3,
+      "define": 3,
+      "secret": 3,
+      "split": 3,
+      "3": 3,
+      "4": 3,
+      "restart": 3,
+      "supported": 3,
+      "valid": 3,
+      "resulting": 3,
+      "retry": 3,
+      "index": 3,
+      "31": 3,
+      "normal": 3,
+      "probability": 3,
+      "definition": 3,
+      "universal": 2,
+      "standard": 2,
+      "hoenicke": 2,
+      "describes": 2,
+      "pairs": 2,
+      "hierarchical": 2,
+      "wallets": 2,
+      "security": 2,
+      "generates": 2,
+      "slips": 2,
+      "md": 2,
+      "compute": 2,
+      "practically": 2,
+      "compatible": 2,
+      "domain": 2,
+      "parameters": 2,
+      "denote": 2,
+      "order": 2,
+      "scalar": 2,
+      "generator": 2,
+      "operation": 2,
+      "reason": 2,
+      "serializes": 2,
+      "x": 2,
+      "y": 2,
+      "edwards": 2,
+      "enc": 2,
+      "8032": 2,
+      "rfc8032": 2,
+      "u": 2,
+      "encodeucoordinate": 2,
+      "7748": 2,
+      "rfc7748": 2,
+      "avoid": 2,
+      "value": 2,
+      "obtained": 2,
+      "optional": 2,
+      "identical": 2,
+      "given": 2,
+      "possible": 2,
+      "computes": 2,
+      "check": 2,
+      "return": 2,
+      "failure": 2,
+      "5": 2,
+      "mod": 2,
+      "0x01": 2,
+      "result": 2,
+      "case": 2,
+      "undefined": 2,
+      "127": 2,
+      "receive": 2,
+      "ported": 2,
+      "discovered": 2,
+      "vectors": 2,
+      "beeb672fe4621673f722f38529c07392fecaa61015c80c34f29ce8b41b3cb6ea": 2,
+      "612091aaa12e22dd2abef664f8a01a82cae99ad7441b7ef8110424915c268bc2": 2,
+      "0266874dc6ade47b3ecd096745ca09bcd29638dd52c2c12117b11ed3e458cfa9e8": 2,
+      "be6105b5": 2,
+      "28578": 2,
+      "radixdlt": 2,
+      "slip10": 2
+    },
+    "changes_in_status": [],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        {
+          "target": "bips:32",
+          "count": 18
+        },
+        {
+          "target": "bips:39",
+          "count": 5
+        },
+        {
+          "target": "slips:39",
+          "count": 5
+        }
+      ],
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:55:16Z",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "generalizing the derivation scheme used in BIP-0032",
+              "reason": "The proposal explicitly extends BIP-32 master and child key derivation mechanics, including retry behavior and compatibility semantics.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:39",
+              "evidence": "Trezor generates all keys from a BIP-0039 mnemonic",
+              "reason": "The seed input to this derivation scheme is defined as the output of BIP-39 mnemonic processing.",
+              "confidence": "low"
+            },
+            {
+              "target": "slips:39",
+              "evidence": "or from a set of SLIP-0039 mnemonic shares",
+              "reason": "The derivation scheme accepts seeds produced by SLIP-39, so it depends on its mnemonic-share-to-seed process.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

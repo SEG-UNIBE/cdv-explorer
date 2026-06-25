@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "CC",
       "title": "Geocaching Events",
-      "author": [
-        "fiatjaf"
-      ],
-      "created": "2026-05-28",
       "status": "Draft",
+      "author": null,
+      "created": "2026-05-28",
       "type": "Optional",
       "layer": null,
       "kind": null
@@ -241,9 +239,29 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 1"
+        {
+          "target": "nips:01",
+          "count": 1
+        },
+        {
+          "target": "nips:0B",
+          "count": 1
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:02Z",
+          "dependencies": [
+            {
+              "target": "nips:01",
+              "evidence": "Reference to the geocache being logged using NIP-01 `a` tag format",
+              "reason": "The log event’s core reference syntax is defined by NIP-01’s addressable event tag format.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

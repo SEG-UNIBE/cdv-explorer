@@ -1,0 +1,303 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "24",
+      "title": "Extra metadata fields and tags",
+      "status": "Draft",
+      "author": null,
+      "created": "2023-09-24",
+      "type": "Optional",
+      "layer": null,
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Thu Nov 21 12:11:32 2024 -0300",
+    "total_commits": 19,
+    "git_history": [
+      [
+        "ef1746dd2cea9ec5d62d00f16f0fd5695d895d0b",
+        "Thu Nov 21 12:11:32 2024 -0300",
+        "fiatjaf"
+      ],
+      [
+        "03c64a6e959ae91b727bcaea8198d08ee4860359",
+        "Thu Nov 21 12:11:13 2024 -0300",
+        "fiatjaf"
+      ],
+      [
+        "bbcea0c86175fd344132964345944d3479c3d4d0",
+        "Tue Nov 19 21:20:20 2024 -0500",
+        "Vitor Pamplona"
+      ],
+      [
+        "e30eb40eefbcef319a74a5531473f412987fca6a",
+        "Tue Aug 20 09:42:59 2024 -0500",
+        "Alex Gleason"
+      ],
+      [
+        "1d3744784c0faf3e3c43b7a16e657499476e19c5",
+        "Thu Aug 15 20:28:53 2024 -0500",
+        "Alex Gleason"
+      ],
+      [
+        "4d9eb32dc9062868d0d61c15456935dad39364de",
+        "Mon Aug 5 23:51:04 2024 +0100",
+        "Oscar Merry"
+      ],
+      [
+        "45351b561dcc15b9d3c09b64967a5e30a80ddabe",
+        "Mon Jun 17 13:38:45 2024 +0100",
+        "Oscar Merry"
+      ],
+      [
+        "326ad34690c707b983a28524d85d8da3441ca7b3",
+        "Thu Jun 13 21:02:35 2024 +0900",
+        "Asai Toshiya"
+      ],
+      [
+        "32004283da0f0893d7b697c9a0b1a1f8611e9929",
+        "Mon May 20 11:12:03 2024 +0100",
+        "Oscar Merry"
+      ],
+      [
+        "caee48316f811f928d92c44892ea173d990b2ebc",
+        "Fri May 17 19:45:27 2024 +0900",
+        "Asai Toshiya"
+      ],
+      [
+        "280eb498e0ac56b8f9356c1b7a88cc8b31579801",
+        "Fri Apr 19 14:30:45 2024 +0100",
+        "Oscar Merry"
+      ],
+      [
+        "4f33dbc2b86684f9bf26dd1b0fc9789e3cbf2165",
+        "Mon Mar 18 08:01:06 2024 +0100",
+        "silberengel"
+      ],
+      [
+        "ec08d65665fd533be685702501b69fe9ce7bdd24",
+        "Fri Dec 8 09:59:44 2023 -0800",
+        "Terry Yiu"
+      ],
+      [
+        "37f6cbb775126b386414220f783ca0f5f85e7614",
+        "Wed Nov 15 21:42:51 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "05cad663f8f4eb022620e2e27f0761733f05ce14",
+        "Fri Nov 10 07:00:40 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "84f1915cecc10cfca6584eacfbeecb35bddc65f9",
+        "Thu Sep 28 08:07:30 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "cf144593f1d350dabb61aa808b36118a6b3b03ec",
+        "Thu Sep 28 19:24:36 2023 +0900",
+        "Asai Toshiya"
+      ],
+      [
+        "f3bafe5f872be937060071585296b62584a4f416",
+        "Sun Sep 24 19:48:05 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "44c21c9d82dfa9fbe04655668c03400fa0ac1e34",
+        "Sun Sep 24 16:48:55 2023 -0300",
+        "fiatjaf"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "nip": 12,
+      "fields": 7,
+      "event": 6,
+      "md": 6,
+      "extra": 4,
+      "url": 4,
+      "metadata": 3,
+      "tags": 3,
+      "events": 3,
+      "specified": 3,
+      "present": 3,
+      "display_name": 3,
+      "way": 3,
+      "instead": 3,
+      "optional": 2,
+      "kind": 2,
+      "stringified": 2,
+      "json": 2,
+      "web": 2,
+      "deprecated": 2,
+      "use": 2,
+      "read": 2,
+      "true": 2,
+      "false": 2,
+      "write": 2,
+      "65": 2,
+      "referring": 2,
+      "73": 2,
+      "51": 2,
+      "52": 2,
+      "53": 2,
+      "99": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "44c21c9d82dfa9fbe04655668c03400fa0ac1e34",
+        "timestamp": "2023-09-25T23:00:01-03:00",
+        "date": "2023-09-25",
+        "author": "fiatjaf",
+        "path": "24.md",
+        "status": "Draft",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        {
+          "target": "nips:01",
+          "count": 1
+        },
+        {
+          "target": "nips:02",
+          "count": 1
+        },
+        {
+          "target": "nips:0A",
+          "count": 1
+        },
+        {
+          "target": "nips:51",
+          "count": 1
+        },
+        {
+          "target": "nips:52",
+          "count": 1
+        },
+        {
+          "target": "nips:53",
+          "count": 1
+        },
+        {
+          "target": "nips:65",
+          "count": 1
+        },
+        {
+          "target": "nips:73",
+          "count": 1
+        },
+        {
+          "target": "nips:99",
+          "count": 1
+        }
+      ],
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:16Z",
+          "dependencies": [
+            {
+              "target": "nips:51",
+              "evidence": "name of [NIP-51](51.md) sets",
+              "reason": "The meaning of the `title` tag is defined by reference to NIP-51 sets, so the tag semantics depend on that NIP.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:52",
+              "evidence": "[NIP-52](52.md) calendar event",
+              "reason": "The `title` tag is specialized for NIP-52 calendar events, relying on that proposal's event type and semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:53",
+              "evidence": "[NIP-53](53.md) live event",
+              "reason": "The `title` tag is specialized for NIP-53 live events, so this proposal depends on that event definition.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:65",
+              "evidence": "[NIP-65](65.md) should be used instead",
+              "reason": "The proposal deprecates the embedded relay map in kind 3 and replaces it with NIP-65, which constrains the allowed format.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:73",
+              "evidence": "`i`: an external id the event is referring to in some way - see [NIP-73](73.md)",
+              "reason": "The `i` tag's meaning is defined by NIP-73, so this proposal depends on that tag specification.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:99",
+              "evidence": "[NIP-99](99.md) listing",
+              "reason": "The `title` tag is specialized for NIP-99 listings, relying on that proposal's listing semantics.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

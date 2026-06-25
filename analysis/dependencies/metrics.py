@@ -3,46 +3,111 @@ from typing import Any, Dict, Iterable, List
 import networkx as nx
 
 from analysis.dependencies.constants import (
+    BODY_EXTRACTED_LLM,
     BODY_EXTRACTED_REGEX,
     DEPENDENCY_APPROACH_LABELS,
     DEPENDENCY_APPROACH_ORDER,
-    LEGACY_APPROACH_ALIASES,
-    PREAMBLE_DEPENDENCY_SUBTYPES,
+    DEPENDENCY_PAIRWISE_COMPARISON_ORDER,
+    GROUND_TRUTH_CURATED,
     PREAMBLE_EXTRACTED,
 )
 
 
+def _canonical_dependency_edges(network_data: Dict[str, Any]) -> List[Dict[str, Any]]:
+    edges = network_data.get("dependency_edges")
+    if not isinstance(edges, list):
+        return []
+    return [
+        edge
+        for edge in edges
+        if isinstance(edge, dict) and edge.get("source") is not None and edge.get("target") is not None
+    ]
+
+
 def _links_for_type(network_data: Dict[str, Any], link_type: str) -> List[Dict[str, Any]]:
-    links = network_data.get("links", {})
-    explicit = links.get(PREAMBLE_EXTRACTED, {}) or links.get(LEGACY_APPROACH_ALIASES[PREAMBLE_EXTRACTED], {})
-
-    if link_type in PREAMBLE_DEPENDENCY_SUBTYPES:
-        return explicit.get(link_type, [])
-
+    dependency_edges = _canonical_dependency_edges(network_data)
     if link_type == PREAMBLE_EXTRACTED:
-        seen = set()
-        merged: List[Dict[str, Any]] = []
-        for subtype in PREAMBLE_DEPENDENCY_SUBTYPES:
-            for link in explicit.get(subtype, []):
-                key = (str(link.get("source")), str(link.get("target")))
-                if key in seen:
-                    continue
-                seen.add(key)
-                merged.append(link)
-        return merged
+        return [
+            edge
+            for edge in dependency_edges
+            if edge.get("extraction_method") == PREAMBLE_EXTRACTED
+        ]
 
-    return links.get(link_type, links.get(LEGACY_APPROACH_ALIASES.get(link_type, ""), []))
+    if link_type in (BODY_EXTRACTED_REGEX, BODY_EXTRACTED_LLM, GROUND_TRUTH_CURATED):
+        return [
+            edge
+            for edge in dependency_edges
+            if edge.get("extraction_method") == link_type
+        ]
+
+    return [
+        edge
+        for edge in dependency_edges
+        if edge.get("extraction_method") == PREAMBLE_EXTRACTED
+        and edge.get("relation_type") == link_type
+    ]
+
+
+def _split_graph_key(value: Any) -> tuple[str | None, str]:
+    text = str(value)
+    if ":" not in text:
+        return None, text
+    source_slug, proposal_id = text.split(":", 1)
+    return source_slug or None, proposal_id
+
+
+def _network_edge_keys(network_data: Dict[str, Any]) -> set[str]:
+    return {
+        str(value)
+        for edge in _canonical_dependency_edges(network_data)
+        for value in (edge.get("source"), edge.get("target"))
+        if value is not None
+    }
+
+
+def _node_graph_id(node: Dict[str, Any], edge_keys: set[str]) -> str:
+    raw_id = str(node.get("id"))
+    graph_key = node.get("graph_key") or node.get("graphId") or node.get("graph_id")
+    if graph_key is not None:
+        return str(graph_key)
+
+    source_slugs = {
+        source_slug
+        for source_slug, _proposal_id in (_split_graph_key(value) for value in edge_keys)
+        if source_slug
+    }
+    single_edge_source_slug = next(iter(source_slugs)) if len(source_slugs) == 1 else None
+
+    node_source_slug = node.get("graphSource") or node.get("source_slug") or node.get("sourceSlug")
+    if node_source_slug:
+        return f"{node_source_slug}:{raw_id}"
+
+    matching_edge_keys = [
+        key
+        for key in edge_keys
+        if _split_graph_key(key)[1] == raw_id
+    ]
+    if len(matching_edge_keys) == 1:
+        return matching_edge_keys[0]
+    if single_edge_source_slug:
+        return f"{single_edge_source_slug}:{raw_id}"
+    return raw_id
 
 
 def build_graph(network_data: Dict[str, Any], link_type: str = BODY_EXTRACTED_REGEX) -> nx.DiGraph:
     graph = nx.DiGraph()
+    use_canonical_edges = bool(_canonical_dependency_edges(network_data))
+    edge_keys = _network_edge_keys(network_data) if use_canonical_edges else set()
 
     for node in network_data.get("nodes", []):
+        raw_id = str(node["id"])
+        graph_id = _node_graph_id(node, edge_keys) if use_canonical_edges else raw_id
         graph.add_node(
-            str(node["id"]),
+            graph_id,
             title=node.get("title"),
             layer=node.get("layer"),
             compliance_score=node.get("compliance_score", 0),
+            local_id=raw_id,
         )
 
     for link in _links_for_type(network_data, link_type):
@@ -144,22 +209,26 @@ def _approach_labels() -> Dict[str, str]:
 
 
 def _build_pairwise_comparisons(network_data: Dict[str, Any]) -> Dict[str, Any]:
+    use_canonical_edges = bool(_canonical_dependency_edges(network_data))
+    edge_keys = _network_edge_keys(network_data) if use_canonical_edges else set()
     nodes_by_id = {
-        str(node.get("id")): node
+        (_node_graph_id(node, edge_keys) if use_canonical_edges else str(node.get("id"))): node
         for node in network_data.get("nodes", [])
         if node.get("id") is not None
     }
     approach_labels = _approach_labels()
     pairwise: Dict[str, Any] = {}
 
-    for approach_key, approach_label in approach_labels.items():
+    for approach_key in DEPENDENCY_PAIRWISE_COMPARISON_ORDER:
+        approach_label = approach_labels[approach_key]
         approach_links = _links_for_type(network_data, approach_key)
         approach_edge_keys = {
             (str(link.get("source")), str(link.get("target")))
             for link in approach_links
         }
 
-        for baseline_key, baseline_label in approach_labels.items():
+        for baseline_key in DEPENDENCY_PAIRWISE_COMPARISON_ORDER:
+            baseline_label = approach_labels[baseline_key]
             baseline_links = _links_for_type(network_data, baseline_key)
             baseline_edge_keys = {
                 (str(link.get("source")), str(link.get("target")))

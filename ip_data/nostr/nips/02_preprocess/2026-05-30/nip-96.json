@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "96",
       "title": "HTTP File Storage Integration",
-      "author": [
-        "arthurfranca"
-      ],
-      "created": "2024-01-08",
       "status": "Draft",
+      "author": null,
+      "created": "2024-01-08",
       "type": "Optional",
       "layer": null,
       "kind": null
@@ -360,13 +358,38 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 94",
-        "NIP 98"
+        {
+          "target": "nips:94",
+          "count": 18
+        },
+        {
+          "target": "nips:98",
+          "count": 2
+        },
+        {
+          "target": "nips:B7",
+          "count": 1
+        }
       ],
       "body_extracted_llm": [
-        "NIP 16",
-        "NIP 94",
-        "NIP 98"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:58Z",
+          "dependencies": [
+            {
+              "target": "nips:94",
+              "evidence": "This uses the NIP-94 event format",
+              "reason": "The proposal reuses NIP-94 tags and event structure for upload responses and file listings, so it depends on NIP-94's metadata format.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:98",
+              "evidence": "clients must add an [NIP-98](98.md) `Authorization` header",
+              "reason": "The authentication flow for upload and deletion is based on NIP-98 Authorization headers, making it a direct technical dependency.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

@@ -1,0 +1,302 @@
+{
+  "raw": {
+    "preamble": {
+      "slip": "10",
+      "title": "Universal private key derivation from master private key",
+      "author": [
+        "Jochen Hoenicke <hoenicke@gmail.com>",
+        "Pavol Rusnak <stick@satoshilabs.com>"
+      ],
+      "status": "Draft",
+      "type": "Standard",
+      "created": "2016-04-26"
+    }
+  },
+  "meta": {
+    "last_commit": "Wed Aug 29 13:51:37 2018 +0200",
+    "total_commits": 9,
+    "git_history": [
+      [
+        "b9b0c4ec9dfb25f2108b2cc91988df21f8ce7224",
+        "Wed Aug 29 13:51:37 2018 +0200",
+        "Simon Warta"
+      ],
+      [
+        "519bc84945c87635220ea6f672d23aec7a58141b",
+        "Tue Jul 31 01:32:27 2018 -0400",
+        "Eric Malamisura"
+      ],
+      [
+        "705976efa3feb6c45ab005e35a2155925b2d839a",
+        "Thu Jun 21 17:11:00 2018 +0200",
+        "Simon Warta"
+      ],
+      [
+        "40c88470be714e81a5149b50adf2db25ab230bf4",
+        "Tue Mar 14 21:54:43 2017 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "dbb9d25b2f1fdaae80ce1a7897fe088e11193265",
+        "Tue Apr 26 13:58:14 2016 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "bb3a288a9f120f8f144d7b0f54962ea05f7a1c97",
+        "Tue Apr 26 12:02:13 2016 +0200",
+        "Jochen Hoenicke"
+      ],
+      [
+        "c5b6871c4ca2afdd9eff4b0cb67df97e58ec3364",
+        "Tue Apr 26 11:37:30 2016 +0200",
+        "Jochen Hoenicke"
+      ],
+      [
+        "0a7fcef651cffd6adf39365c07fbc04139c2a259",
+        "Sun Apr 24 20:10:05 2016 +0200",
+        "Jochen Hoenicke"
+      ],
+      [
+        "b76151348a7430013a4b147725ed94b0f6b72994",
+        "Mon Feb 1 16:02:09 2016 +0100",
+        "Pavol Rusnak"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 85.71,
+      "passed_checks": 6,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 7,
+      "slip": {
+        "score": 85.71,
+        "passed_checks": 6,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 7,
+        "checks": [
+          {
+            "id": "slip.required_field.slip",
+            "label": "Required field 'slip' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.author",
+            "label": "Required field 'author' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.type",
+            "label": "Required field 'type' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.created",
+            "label": "Required field 'created' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "slip",
+            "passed": false,
+            "details": "Missing: abstract"
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "sub": 238,
+      "chain": 83,
+      "private": 62,
+      "h": 60,
+      "public": 50,
+      "key": 49,
+      "code": 44,
+      "m": 40,
+      "fingerprint": 40,
+      "0": 34,
+      "2": 31,
+      "1": 27,
+      "curve": 18,
+      "child": 18,
+      "seed": 16,
+      "par": 15,
+      "k": 14,
+      "256": 13,
+      "ed25519": 13,
+      "master": 12,
+      "bip": 12,
+      "2147483647": 12,
+      "l": 11,
+      "c": 11,
+      "different": 10,
+      "keys": 10,
+      "test": 10,
+      "32": 9,
+      "derivation": 8,
+      "hmac": 8,
+      "r": 8,
+      "ser": 8,
+      "hex": 8,
+      "00000000": 8,
+      "0032": 7,
+      "n": 7,
+      "sha512": 7,
+      "parse": 7,
+      "hardened": 7,
+      "p": 6,
+      "curves": 6,
+      "data": 6,
+      "parent": 6,
+      "extended": 6,
+      "sup": 6,
+      "let": 6,
+      "vector": 6,
+      "2147483646": 6,
+      "slip": 5,
+      "com": 5,
+      "secp256k1": 5,
+      "invalid": 5,
+      "nist256p1": 5,
+      "returned": 5,
+      "0010": 4,
+      "nist": 4,
+      "0039": 4,
+      "uses": 4,
+      "generation": 4,
+      "order": 4,
+      "byte": 4,
+      "step": 4,
+      "rarr": 4,
+      "function": 4,
+      "000102030405060708090a0b0c0d0e0f": 4,
+      "standard": 3,
+      "describes": 3,
+      "trezor": 3,
+      "use": 3,
+      "hash": 3,
+      "group": 3,
+      "algorithm": 3,
+      "s": 3,
+      "3": 3,
+      "split": 3,
+      "sequences": 3,
+      "4": 3,
+      "5": 3,
+      "supported": 3,
+      "bitcoin": 3,
+      "valid": 3,
+      "resulting": 3,
+      "retry": 3,
+      "31": 3,
+      "normal": 3,
+      "point": 3,
+      "1000000000": 3,
+      "fffcf9f6f3f0edeae7e4e1dedbd8d5d2cfccc9c6c3c0bdbab7b4b1aeaba8a5a29f9c999693908d8a8784817e7b7875726f6c696663605d5a5754514e4b484542": 3,
+      "implementation": 3,
+      "https": 3,
+      "github": 3,
+      "universal": 2,
+      "number": 2,
+      "hoenicke": 2,
+      "derive": 2,
+      "pairs": 2,
+      "types": 2,
+      "generates": 2,
+      "mnemonic": 2,
+      "sequence": 2,
+      "passphrase": 2,
+      "compute": 2,
+      "512": 2,
+      "bit": 2,
+      "compatible": 2,
+      "elliptic": 2,
+      "denote": 2,
+      "generate": 2,
+      "computes": 2,
+      "check": 2,
+      "0x00": 2,
+      "return": 2,
+      "failure": 2,
+      "mod": 2,
+      "0x01": 2,
+      "restart": 2,
+      "vectors": 2,
+      "beeb672fe4621673f722f38529c07392fecaa61015c80c34f29ce8b41b3cb6ea": 2,
+      "612091aaa12e22dd2abef664f8a01a82cae99ad7441b7ef8110424915c268bc2": 2,
+      "0266874dc6ade47b3ecd096745ca09bcd29638dd52c2c12117b11ed3e458cfa9e8": 2,
+      "be6105b5": 2,
+      "28578": 2,
+      "deterministic": 2,
+      "bips": 2,
+      "blob": 2,
+      "mediawiki": 2
+    },
+    "changes_in_status": [],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        {
+          "target": "bips:32",
+          "count": 9
+        },
+        {
+          "target": "bips:39",
+          "count": 4
+        }
+      ],
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:01:59Z",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "how a BIP-0032 like derivation is used",
+              "reason": "The proposal adapts and remains compatible with BIP-32 derivation structure and child-key rules.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:39",
+              "evidence": "The BIP-0039 standard describes the procedure to compute a 512 bit seed",
+              "reason": "The master key generation starts from the seed produced by BIP-39 mnemonic/passphrase processing.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

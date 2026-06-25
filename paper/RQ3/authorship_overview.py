@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from paper.RQ3._plotting import (
-    add_bar_label_headroom,
     bar_style,
     despine,
     match_axis_label_fontsize,

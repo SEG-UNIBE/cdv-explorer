@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "47",
       "title": "Nostr Wallet Connect (NWC)",
-      "author": [
-        "Semisol"
-      ],
-      "created": "2023-03-30",
       "status": "Draft",
+      "author": null,
+      "created": "2023-03-30",
       "type": "Optional",
       "layer": null,
       "kind": null
@@ -533,16 +531,56 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 4",
-        "NIP 44",
-        "NIP 57"
+        {
+          "target": "nips:04",
+          "count": 17
+        },
+        {
+          "target": "nips:0A",
+          "count": 1
+        },
+        {
+          "target": "nips:0D",
+          "count": 1
+        },
+        {
+          "target": "nips:44",
+          "count": 21
+        },
+        {
+          "target": "nips:57",
+          "count": 1
+        },
+        {
+          "target": "nips:DE",
+          "count": 1
+        }
       ],
       "body_extracted_llm": [
-        "NIP 1",
-        "NIP 4",
-        "NIP 16",
-        "NIP 40",
-        "NIP 44"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:41Z",
+          "dependencies": [
+            {
+              "target": "nips:04",
+              "evidence": "The content of requests and responses is encrypted with [NIP44](44.md)... initial version... used [NIP04](04.md)",
+              "reason": "Defines fallback encryption semantics and legacy compatibility used by request, response, and notification payloads.",
+              "confidence": "low"
+            },
+            {
+              "target": "nips:44",
+              "evidence": "The content of requests and responses is encrypted with [NIP44](44.md)...",
+              "reason": "The protocol relies on NIP-44 for encrypting direct-message payloads and negotiation of supported encryption schemes.",
+              "confidence": "low"
+            },
+            {
+              "target": "nips:57",
+              "evidence": "similar to LUD-18 payer data, but to record recipient data e.g. the lightning address of the recipient),  // NIP-57 Zap Request event (kind 9734)",
+              "reason": "The metadata section explicitly reuses Zap Request event structure inside NWC transaction metadata.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

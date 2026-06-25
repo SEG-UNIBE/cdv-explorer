@@ -60,6 +60,9 @@ class NormalizeNipIdsTests(unittest.TestCase):
     def test_nip_space_prefix_stripped(self):
         self.assertEqual(normalize_proposal_ids(["NIP A0"], "NIP"), ["A0"])
 
+    def test_single_digit_nip_id_padded(self):
+        self.assertEqual(normalize_proposal_ids(["NIP 1"], "NIP"), ["01"])
+
     def test_mixed_hex_and_numeric(self):
         result = normalize_proposal_ids(["NIP-01", "NIP-CC", "NIP-B7"], "NIP")
         self.assertEqual(result, ["01", "CC", "B7"])

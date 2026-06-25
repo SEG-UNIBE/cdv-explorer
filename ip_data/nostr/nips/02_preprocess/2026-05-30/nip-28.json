@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "28",
       "title": "Public Chat",
-      "author": [
-        "Christopher David"
-      ],
-      "created": "2022-09-10",
       "status": "Draft",
+      "author": null,
+      "created": "2022-09-10",
       "type": "Optional",
       "layer": null,
       "kind": null
@@ -234,11 +232,28 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 10",
-        "NIP 16"
+        {
+          "target": "nips:10",
+          "count": 3
+        },
+        {
+          "target": "nips:16",
+          "count": 1
+        }
       ],
       "body_extracted_llm": [
-        "NIP 10"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:30Z",
+          "dependencies": [
+            {
+              "target": "nips:10",
+              "evidence": "Clients SHOULD use [NIP-10](10.md) marked \"e\" tags",
+              "reason": "The proposal relies on NIP-10 tag semantics to mark roots and replies and to recommend relays in chat events.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

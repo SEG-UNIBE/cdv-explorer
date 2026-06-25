@@ -12,11 +12,19 @@ import { CollaborationClusterSizeDistribution } from '../../CollaborationCluster
 import { CollaborationDegreeDistribution } from '../../CollaborationDegreeDistribution';
 import { AuthorCentralityTable } from '../../AuthorCentralityTable';
 import { WordCloud } from '../../WordCloud';
+import { ProposalFilterControl } from '../../ProposalFilterControl';
 import { useAnalysisMetricTooltip } from '../../useAnalysisMetricTooltip';
 import { ExportableCard } from '../ExportableCard';
+import { CollapsibleControls } from '../CollapsibleControls';
+import { SectionSourceToggle } from './SectionSourceToggle';
 
 export function AuthorshipSection({
   ecosystem,
+  ecosystemBase,
+  selectedSourceIds = [],
+  sectionSourceView,
+  setSectionSourceView,
+  showExperimentalFeatures,
   yearData,
   topAuthors,
   authorContributionHistogram,
@@ -76,14 +84,21 @@ export function AuthorshipSection({
     <section className="dashboard-section">
       <div className="dashboard-section__header">
         <h2 className="dashboard-section__title">Authorship Diversity</h2>
+        <SectionSourceToggle
+          ecosystemBase={ecosystemBase}
+          selectedSourceIds={selectedSourceIds}
+          value={sectionSourceView}
+          onChange={setSectionSourceView}
+          supportsMerged
+        />
       </div>
       <div className="dashboard-grid dashboard-grid--wide-left">
         <ExportableCard className="mb-4" exportTitle="Creation Over Time">
           <h3>Creation Timeline</h3>
           <p>
-            Creation date of {ecosystem.proposalShortPlural} according to date provided in preamble.
+            Creation date of proposals according to date provided in preamble.
           </p>
-          <ProposalTimelineChart data={yearData} width={800} height={320} />
+          <ProposalTimelineChart data={yearData} width={800} height={380} />
         </ExportableCard>
         <ExportableCard className="mb-4" exportTitle="Top 10 Authors">
           <h3>Top 10 Authors</h3>
@@ -91,24 +106,24 @@ export function AuthorshipSection({
             Preamble authorship counts for the most mentioned contributors.
           </p>
           <div>
-            <TopAuthorsChart data={{ topAuthors }} width={340} height={300} />
+            <TopAuthorsChart data={{ topAuthors }} width={340} height={325} />
           </div>
         </ExportableCard>
       </div>
       <div className="dashboard-grid dashboard-grid--two-up">
-        <ExportableCard className="mb-4" exportTitle={`${ecosystem.proposalShortPlural} per Author`}>
-          <h3>{ecosystem.proposalShortPlural} per Author</h3>
+        <ExportableCard className="mb-4" exportTitle="Proposals per Author">
+          <h3>Proposals per Author</h3>
           <p>
-            Number of preamble authors who have written a given number of {ecosystem.proposalShortPlural}.
+            Number of preamble authors who have written a given number of proposals.
           </p>
           <div>
             <AuthorContributionHistogram data={authorContributionHistogram} width={640} height={380} />
           </div>
         </ExportableCard>
-        <ExportableCard className="mb-4" exportTitle={`Authors per ${ecosystem.acronym}`}>
-          <h3>Authors per {ecosystem.acronym}</h3>
+        <ExportableCard className="mb-4" exportTitle="Authors per Proposal">
+          <h3>Authors per Proposal</h3>
           <p>
-            Distribution of {ecosystem.proposalShortPlural} by their preamble author count.
+            Distribution of proposals by their preamble author count.
           </p>
           <div>
             <BipAuthorCountHistogram data={bipAuthorCountHistogram} width={640} height={380} />
@@ -119,35 +134,8 @@ export function AuthorshipSection({
       <ExportableCard className="mb-4" exportTitle="Author Collaboration Graph">
         <h3>Author Collaboration Graph</h3>
         <p>
-          {ecosystem.acronym} co-authorship based on preambles, shown as a collaboration graph. Larger nodes indicate authors of more {ecosystem.proposalShortPlural}, while thicker edges indicate more co-authored BIPs. Colors encode connected components, while authors without collaborations are grouped into one shared component.
+          Co-authorship across the selected proposal corpus, shown as a collaboration graph. Larger nodes indicate authors of more proposals, while thicker edges indicate more co-authored proposals. Colors encode connected components, while authors without collaborations are grouped into one shared component.
         </p>
-        <div className="network-finder">
-          <div className="network-finder__copy">
-            <strong>Author Search</strong>
-          </div>
-          <div className="network-finder__controls">
-            <InputText
-              value={highlightedAuthor}
-              onChange={(event) => setHighlightedAuthor(event.target.value)}
-              placeholder="Type an author name"
-              aria-label="Author search: type a name to highlight in the collaboration graph"
-              list="author-collaboration-options"
-            />
-            <datalist id="author-collaboration-options">
-              {collaborationAuthorOptions.map((author) => (
-                <option key={author} value={author} />
-              ))}
-            </datalist>
-            <Button
-              type="button"
-              label="Clear"
-              severity="secondary"
-              text
-              onClick={() => setHighlightedAuthor('')}
-              disabled={!highlightedAuthor.trim()}
-            />
-          </div>
-        </div>
         <div>
           <AuthorCollaborationNetwork
             data={collaborationNetwork}
@@ -158,14 +146,43 @@ export function AuthorshipSection({
             setLayoutMode={setCollaborationLayoutMode}
             minClusterCollaborations={collaborationMinClusterCollaborations}
             setMinClusterCollaborations={setCollaborationMinClusterCollaborations}
+            extraControls={(
+              <div className="network-finder author-collaboration-search">
+                <div className="network-finder__copy">
+                  <strong>Author Search</strong>
+                </div>
+                <div className="network-finder__controls">
+                  <InputText
+                    value={highlightedAuthor}
+                    onChange={(event) => setHighlightedAuthor(event.target.value)}
+                    placeholder="Type an author name"
+                    aria-label="Author search: type a name to highlight in the collaboration graph"
+                    list="author-collaboration-options"
+                  />
+                  <datalist id="author-collaboration-options">
+                    {collaborationAuthorOptions.map((author) => (
+                      <option key={author} value={author} />
+                    ))}
+                  </datalist>
+                  <Button
+                    type="button"
+                    label="Clear"
+                    severity="secondary"
+                    text
+                    onClick={() => setHighlightedAuthor('')}
+                    disabled={!highlightedAuthor.trim()}
+                  />
+                </div>
+              </div>
+            )}
           />
         </div>
       </ExportableCard>
       <Card className="mb-4">
         <h3>Author Collaboration Metrics</h3>
         <p>
-          {ecosystem.acronym} co-authorship according to preamble. 
-          Author names marked with <strong><code>*</code></strong> are in the top 10 by authored {ecosystem.proposalShortPlural}. <strong>Cluster</strong>
+          Co-authorship according to preamble across the selected proposal corpus.
+          Author names marked with <strong><code>*</code></strong> are in the top 10 by authored proposals. <strong>Cluster</strong>
           {' '}and <strong>Cluster Size</strong> show the connected co-authorship group an author belongs to and how large
           that group is. Authors with no co-authorship links are grouped into one shared display cluster for readability.{' '} 
           <strong>Degree</strong> measures how many different co-authors an author has. 
@@ -174,17 +191,17 @@ export function AuthorshipSection({
           <strong>Betweenness</strong> measures how often an author lies on the shortest paths between other authors, indicating their role in connecting otherwise separate groups.
           Each metric value is annotated with its rank among all authors in the network (e.g. <code>#1</code> = highest).
         </p>
-        <div className="analysis-grid collaboration-metrics-summary">
+        <div className="collaboration-metrics-summary">
           {collaborationMetricCards.map((metric) => (
             <div
               key={metric.label}
-              className="analysis-stat analysis-stat--interactive"
+              className="metric-badge"
               onMouseEnter={(event) => showMetricTooltip(event, metric.description)}
               onMouseMove={moveMetricTooltip}
               onMouseLeave={hideMetricTooltip}
             >
-              <h4>{metric.label}</h4>
-              <p>{metric.value}</p>
+              <span className="metric-badge__label">{metric.label}</span>
+              <span className="metric-badge__value">{metric.value}</span>
             </div>
           ))}
         </div>
@@ -237,43 +254,45 @@ export function AuthorshipSection({
           </div>
         </ExportableCard>
       </div>
-      <ExportableCard className="mb-4" exportTitle="Word Cloud of Document Text">
-        <h3 className="card-title-with-badge">
-          Word Cloud of Document Text
-          <Tag
-            className="dashboard-section__tag card-title-with-badge__tag"
-            severity="warning"
-            value="Experimental"
-          />
-        </h3>
-        <p>
-          Highlighting the most frequent terms across the selected proposal corpus.
-        </p>
-        <div className="wordcloud-filter">
-          <div className="wordcloud-filter__copy">
-            <strong>Filter proposals:</strong>
-          </div>
-          <div className="wordcloud-filter__controls">
-            <InputText
+      {showExperimentalFeatures ? (
+        <ExportableCard className="mb-4" exportTitle="Word Cloud of Document Text">
+          <h3 className="card-title-with-badge">
+            Word Cloud of Document Text
+            <Tag
+              className="dashboard-section__tag card-title-with-badge__tag"
+              severity="warning"
+              value="Experimental"
+            />
+          </h3>
+          <p>
+            Highlighting the most frequent terms across the selected proposal corpus.
+          </p>
+          <CollapsibleControls>
+            <ProposalFilterControl
               value={wordCloudFilterText}
-              onChange={(event) => setWordCloudFilterText(event.target.value)}
-              placeholder="e.g. 2,4,30-35,99"
-              aria-label="Filter proposals by ID for word cloud (e.g. 2,4,30-35,99)"
+              onChange={setWordCloudFilterText}
+              ecosystem={ecosystem}
+              aria-label="Filter proposals by ID for word cloud (e.g. BIP32, SLIP44, BIP30-BIP35)"
+              layout="split"
+              entryLabel="Filter proposals"
+              className="wordcloud-filter--chips-right"
+              trailingControl={(
+                <Button
+                  type="button"
+                  label="Clear"
+                  severity="secondary"
+                  text
+                  onClick={() => setWordCloudFilterText('')}
+                  disabled={!hasWordCloudFilter}
+                />
+              )}
             />
-            <Button
-              type="button"
-              label="Clear"
-              severity="secondary"
-              text
-              onClick={() => setWordCloudFilterText('')}
-              disabled={!hasWordCloudFilter}
-            />
+          </CollapsibleControls>
+          <div>
+            <WordCloud words={hasWordCloudFilter ? filteredWordCloudData : wordCloudData} width={1250} height={500} />
           </div>
-        </div>
-        <div>
-          <WordCloud words={hasWordCloudFilter ? filteredWordCloudData : wordCloudData} width={1250} height={500} />
-        </div>
-      </ExportableCard>
+        </ExportableCard>
+      ) : null}
     </section>
   );
 }

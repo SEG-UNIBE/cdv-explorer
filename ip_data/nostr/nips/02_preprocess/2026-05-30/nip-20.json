@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "20",
       "title": "Command Results",
-      "author": [
-        "William Casarin"
-      ],
-      "created": "2022-11-10",
       "status": "Final",
+      "author": null,
+      "created": "2022-11-10",
       "type": "Mandatory",
       "layer": null,
       "kind": null
@@ -153,10 +151,17 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 1"
+        {
+          "target": "nips:01",
+          "count": 1
+        }
       ],
       "body_extracted_llm": [
-        "NIP 1"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:27Z",
+          "dependencies": []
+        }
       ]
     }
   }

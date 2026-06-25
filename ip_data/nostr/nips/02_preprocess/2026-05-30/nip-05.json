@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "05",
       "title": "Mapping Nostr keys to DNS-based internet identifiers",
-      "author": [
-        "fiatjaf"
-      ],
-      "created": "2022-05-01",
       "status": "Final",
+      "author": null,
+      "created": "2022-05-01",
       "type": "Optional",
       "layer": null,
       "kind": null
@@ -302,10 +300,17 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 19"
+        {
+          "target": "nips:19",
+          "count": 1
+        }
       ],
       "body_extracted_llm": [
-        "NIP 1"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:21Z",
+          "dependencies": []
+        }
       ]
     }
   }

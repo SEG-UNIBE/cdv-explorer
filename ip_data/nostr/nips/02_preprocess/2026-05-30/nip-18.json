@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "18",
       "title": "Reposts",
-      "author": [
-        "fiatjaf"
-      ],
-      "created": "2023-01-02",
       "status": "Draft",
+      "author": null,
+      "created": "2023-01-02",
       "type": "Optional",
       "layer": null,
       "kind": null
@@ -239,14 +237,34 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 21",
-        "NIP 70"
+        {
+          "target": "nips:21",
+          "count": 1
+        },
+        {
+          "target": "nips:70",
+          "count": 1
+        }
       ],
       "body_extracted_llm": [
-        "NIP 16",
-        "NIP 21",
-        "NIP 33",
-        "NIP 70"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:27Z",
+          "dependencies": [
+            {
+              "target": "nips:21",
+              "evidence": "Mentions to NIP-21 entities like `nevent`, `note` and `naddr` on any event must be converted into `q` tags.",
+              "reason": "The quote-repost rules depend on NIP-21 entity syntax being converted into the new q-tag format.",
+              "confidence": "low"
+            },
+            {
+              "target": "nips:70",
+              "evidence": "Reposts of [NIP-70](70.md)-protected events SHOULD always have an empty `content`.",
+              "reason": "The repost content rule explicitly changes behavior for events protected by NIP-70.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

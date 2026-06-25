@@ -32,6 +32,25 @@ function compareProposalIds(a, b) {
   return String(a).localeCompare(String(b));
 }
 
+function makeProposalRef(node) {
+  return { source: node?.source || '', id: String(node?.id ?? '') };
+}
+
+function proposalRefKey(ref) {
+  return `${ref.source}|${ref.id}`;
+}
+
+function compareProposalRefs(a, b) {
+  const sa = String(a?.source || '');
+  const sb = String(b?.source || '');
+  if (sa !== sb) return sa.localeCompare(sb);
+  return compareProposalIds(a?.id, b?.id);
+}
+
+function collectProposalRefs(refMap) {
+  return Array.from((refMap || new Map()).values()).sort(compareProposalRefs);
+}
+
 export function normalizeProposalFilterValue(value) {
   const text = String(value || '').trim();
   if (!text) {
@@ -81,39 +100,162 @@ function normalizeChordValueForField(field, value) {
   return text || 'Unspecified';
 }
 
-export function parseProposalFilterExpression(text, availableProposalIds = []) {
-  const availableSet = new Set((availableProposalIds || []).map(normalizeProposalFilterValue));
-  const selected = new Set();
+function normalizeIdForSource(id, source) {
+  if (source && typeof source.normalizeProposalId === 'function') {
+    return source.normalizeProposalId(id, { lowercaseFallback: true });
+  }
+  return normalizeProposalFilterValue(id);
+}
 
-  String(text || '')
+function refKey(ref) {
+  return `${ref?.source || ''}|${ref?.id ?? ''}`;
+}
+
+function normalizeAvailableProposalNode(entry, fallbackSource = '') {
+  if (entry && typeof entry === 'object') {
+    return entry;
+  }
+  return { source: fallbackSource, id: entry };
+}
+
+// Parses a free-form filter expression into a list of {source, id} refs.
+// Supported token forms (case-insensitive, comma-separated):
+//   "BIP32" / "BIP-32" / "bip 32"        — a specific proposal in BIP
+//   "SLIP16-44" / "slip 16 - 44"         — a range within SLIP
+//   "BIP" / "slip"                       — every proposal from that source
+//   "3-12"                               — bare range, matched against every present source
+//   "32"                                 — bare id, matched against every present source
+// Multiple tokens are union'd. Tokens that don't match anything are skipped.
+export function parseProposalFilterExpression(text, availableNodes = [], ecosystem = null) {
+  const tokens = String(text || '')
     .split(',')
     .map((token) => token.trim())
-    .filter(Boolean)
-    .forEach((token) => {
-      const rangeMatch = token.match(/^(?:bip\s*[- ]*)?0*(\d+)\s*-\s*(?:bip\s*[- ]*)?0*(\d+)$/i);
+    .filter(Boolean);
+  if (tokens.length === 0) return [];
 
-      if (rangeMatch) {
-        const start = Number(rangeMatch[1]);
-        const end = Number(rangeMatch[2]);
-        const lower = Math.min(start, end);
-        const upper = Math.max(start, end);
+  const sources = ecosystem?.sources || {};
+  const sourceOrder = ecosystem?.sourceOrder || Object.keys(sources);
+  const fallbackSource = ecosystem?.defaultSourceId || '';
+  const hasSourceAwareInputs = Boolean(ecosystem)
+    || (availableNodes || []).some((entry) => entry && typeof entry === 'object');
+  const sourceByAcronym = {};
+  sourceOrder.forEach((id) => {
+    const acronym = sources[id]?.acronym;
+    if (acronym) sourceByAcronym[acronym.toUpperCase()] = id;
+  });
 
-        for (let value = lower; value <= upper; value += 1) {
-          const normalized = String(value);
-          if (availableSet.has(normalized)) {
-            selected.add(normalized);
-          }
+  const presentSources = new Set();
+  const normalizedIdsBySource = new Map();
+  (availableNodes || []).map((node) => normalizeAvailableProposalNode(node, fallbackSource)).forEach((node) => {
+    if (node?.id == null) return;
+    const sourceId = node.source || '';
+    presentSources.add(sourceId);
+    const source = sources[sourceId];
+    const norm = normalizeIdForSource(node.id, source);
+    if (!normalizedIdsBySource.has(sourceId)) {
+      normalizedIdsBySource.set(sourceId, new Set());
+    }
+    normalizedIdsBySource.get(sourceId).add(norm);
+  });
+
+  const refs = [];
+  const seen = new Set();
+  const addRef = (source, id) => {
+    const key = `${source}|${id}`;
+    if (seen.has(key)) return;
+    seen.add(key);
+    refs.push({ source, id });
+  };
+
+  const acronymPattern = '[A-Za-z]+';
+
+  for (const token of tokens) {
+    // Source-prefixed range: "BIP3-44" or "BIP3-BIP44".
+    let m = token.match(new RegExp(`^(${acronymPattern})\\s*[- ]*0*(\\d+)\\s*-\\s*(?:\\1\\s*[- ]*)?0*(\\d+)$`, 'i'));
+    if (m) {
+      const sourceId = sourceByAcronym[m[1].toUpperCase()];
+      if (sourceId) {
+        const lo = Math.min(Number(m[2]), Number(m[3]));
+        const hi = Math.max(Number(m[2]), Number(m[3]));
+        const present = normalizedIdsBySource.get(sourceId) || new Set();
+        for (let n = lo; n <= hi; n += 1) {
+          const norm = normalizeIdForSource(String(n), sources[sourceId]);
+          if (present.has(norm)) addRef(sourceId, norm);
         }
-        return;
+        continue;
       }
+    }
 
-      const normalized = normalizeProposalFilterValue(token);
-      if (availableSet.has(normalized)) {
-        selected.add(normalized);
+    // Bare numeric range: "3-44" — matches every present source.
+    m = token.match(/^0*(\d+)\s*-\s*0*(\d+)$/);
+    if (m) {
+      const lo = Math.min(Number(m[1]), Number(m[2]));
+      const hi = Math.max(Number(m[1]), Number(m[2]));
+      presentSources.forEach((sourceId) => {
+        const present = normalizedIdsBySource.get(sourceId) || new Set();
+        for (let n = lo; n <= hi; n += 1) {
+          const norm = normalizeIdForSource(String(n), sources[sourceId]);
+          if (present.has(norm)) addRef(sourceId, norm);
+        }
+      });
+      continue;
+    }
+
+    // Source-prefixed id: "BIP-32", "slip16".
+    m = token.match(new RegExp(`^(${acronymPattern})\\s*[- ]*0*([\\w]+)$`, 'i'));
+    if (m) {
+      const sourceId = sourceByAcronym[m[1].toUpperCase()];
+      if (sourceId) {
+        const norm = normalizeIdForSource(m[2], sources[sourceId]);
+        const present = normalizedIdsBySource.get(sourceId) || new Set();
+        if (present.has(norm)) addRef(sourceId, norm);
+        continue;
       }
-    });
+    }
 
-  return Array.from(selected).sort(compareProposalIds);
+    // Source-only token: "BIP" / "slip" — every proposal from that source.
+    m = token.match(new RegExp(`^(${acronymPattern})$`, 'i'));
+    if (m) {
+      const sourceId = sourceByAcronym[m[1].toUpperCase()];
+      if (sourceId) {
+        const present = normalizedIdsBySource.get(sourceId) || new Set();
+        present.forEach((norm) => addRef(sourceId, norm));
+        continue;
+      }
+    }
+
+    // Bare numeric / hex id: "32" — matches every present source that has it.
+    m = token.match(/^0*([\w]+)$/);
+    if (m) {
+      const candidate = m[1];
+      presentSources.forEach((sourceId) => {
+        const norm = normalizeIdForSource(candidate, sources[sourceId]);
+        const present = normalizedIdsBySource.get(sourceId) || new Set();
+        if (present.has(norm)) addRef(sourceId, norm);
+      });
+      continue;
+    }
+  }
+
+  const sortedRefs = refs.sort((a, b) => {
+    const sa = String(a.source || '');
+    const sb = String(b.source || '');
+    if (sa !== sb) return sa.localeCompare(sb);
+    return compareProposalIds(a.id, b.id);
+  });
+  return hasSourceAwareInputs ? sortedRefs : sortedRefs.map((ref) => ref.id);
+}
+
+// Build a quick-lookup set of normalized "source|id" keys from a refs list.
+// Use this in chart consumers to filter dataset nodes against the user's selection.
+export function buildProposalRefKeySet(refs) {
+  return new Set((refs || []).map(refKey));
+}
+
+export function nodeRefKey(node, ecosystem = null) {
+  const sourceId = node?.source || '';
+  const source = ecosystem?.sources?.[sourceId];
+  return refKey({ source: sourceId, id: normalizeIdForSource(node?.id, source) });
 }
 
 function computeWeightedEigenvectorCentrality(nodeIds, adjacency, maxIterations = 1000, tolerance = 1e-6) {
@@ -449,9 +591,10 @@ function buildFacetDistribution(nodes, field) {
 
     if (node?.id != null) {
       if (!bipsByCategory.has(category)) {
-        bipsByCategory.set(category, new Set());
+        bipsByCategory.set(category, new Map());
       }
-      bipsByCategory.get(category).add(String(node.id));
+      const ref = makeProposalRef(node);
+      bipsByCategory.get(category).set(proposalRefKey(ref), ref);
     }
   });
 
@@ -459,7 +602,7 @@ function buildFacetDistribution(nodes, field) {
     .map(([id, value]) => ({
       id,
       value,
-      bips: Array.from(bipsByCategory.get(id) || []).sort(compareProposalIds),
+      bips: collectProposalRefs(bipsByCategory.get(id)),
     }))
     .sort((left, right) => right.value - left.value || left.id.localeCompare(right.id));
 }
@@ -481,7 +624,7 @@ function buildFacetTimeline(nodes, field) {
 
     const category = normalizeCategoryValue(node?.[field]);
     allCategories.add(category);
-    const bipId = node?.id != null ? String(node.id) : null;
+    const hasId = node?.id != null;
 
     if (!countsByYear.has(year)) {
       countsByYear.set(year, new Map());
@@ -493,12 +636,13 @@ function buildFacetTimeline(nodes, field) {
     const yearMap = countsByYear.get(year);
     yearMap.set(category, (yearMap.get(category) || 0) + 1);
 
-    if (bipId) {
+    if (hasId) {
       const yearBipsMap = bipsByYear.get(year);
       if (!yearBipsMap.has(category)) {
-        yearBipsMap.set(category, new Set());
+        yearBipsMap.set(category, new Map());
       }
-      yearBipsMap.get(category).add(bipId);
+      const ref = makeProposalRef(node);
+      yearBipsMap.get(category).set(proposalRefKey(ref), ref);
     }
   });
 
@@ -511,9 +655,7 @@ function buildFacetTimeline(nodes, field) {
       const yearBipsMap = bipsByYear.get(year) || new Map();
       categories.forEach((category) => {
         values[category] = categoryMap.get(category) || 0;
-        bips[category] = Array.from(yearBipsMap.get(category) || []).sort(
-          (left, right) => Number(left) - Number(right)
-        );
+        bips[category] = collectProposalRefs(yearBipsMap.get(category));
       });
 
       return {
@@ -529,15 +671,27 @@ function buildFacetTimeline(nodes, field) {
   };
 }
 
-export function buildWordCloudData(nodes, selectedProposalIds = []) {
-  const selectedSet = new Set(
-    (selectedProposalIds || []).map(normalizeProposalFilterValue).filter(Boolean)
+export function buildWordCloudData(nodes, selectedProposalRefs = [], ecosystem = null) {
+  const selectedRefs = selectedProposalRefs || [];
+  const selectedRefKeySet = buildProposalRefKeySet(
+    selectedRefs.filter((entry) => entry && typeof entry === 'object')
   );
+  const selectedIdSet = new Set(
+    selectedRefs
+      .filter((entry) => !entry || typeof entry !== 'object')
+      .map(normalizeProposalFilterValue)
+      .filter(Boolean)
+  );
+  const hasSourceAwareFilter = selectedRefKeySet.size > 0;
+  const hasLegacyFilter = selectedIdSet.size > 0;
   const wordCounts = {};
 
   (nodes || []).forEach((node) => {
     const proposalId = normalizeProposalFilterValue(node?.id);
-    if (selectedSet.size > 0 && !selectedSet.has(proposalId)) {
+    if (hasSourceAwareFilter && !selectedRefKeySet.has(nodeRefKey(node, ecosystem))) {
+      return;
+    }
+    if (!hasSourceAwareFilter && hasLegacyFilter && !selectedIdSet.has(proposalId)) {
       return;
     }
 
@@ -565,7 +719,10 @@ function buildClassificationChordData(nodes, categoryDomains = {}, dimensions = 
   const pairBips = new Map();
 
   dimensions.forEach(({ field, label }) => {
-    const categories = Array.isArray(categoryDomains[field]) ? categoryDomains[field] : [];
+    const categories = Array.from(new Set(
+      (Array.isArray(categoryDomains[field]) ? categoryDomains[field] : [])
+        .map((category) => normalizeChordValueForField(field, category))
+    ));
     categories.forEach((category) => {
       const key = `${field}|||${category}`;
       groupIndexByKey.set(key, groups.length);
@@ -587,7 +744,9 @@ function buildClassificationChordData(nodes, categoryDomains = {}, dimensions = 
   }
 
   (nodes || []).forEach((node) => {
-    const bipId = node?.id != null ? String(node.id) : null;
+    const hasId = node?.id != null;
+    const ref = hasId ? makeProposalRef(node) : null;
+    const refKey = hasId ? proposalRefKey(ref) : null;
     const values = {};
     dimensions.forEach(({ field }) => {
       values[field] = normalizeChordValueForField(field, node?.[field]);
@@ -606,11 +765,11 @@ function buildClassificationChordData(nodes, categoryDomains = {}, dimensions = 
       const pairKey = [leftIndex, rightIndex].sort((left, right) => left - right).join('|||');
       pairCounts.set(pairKey, (pairCounts.get(pairKey) || 0) + 1);
 
-      if (bipId) {
+      if (hasId) {
         if (!pairBips.has(pairKey)) {
-          pairBips.set(pairKey, new Set());
+          pairBips.set(pairKey, new Map());
         }
-        pairBips.get(pairKey).add(bipId);
+        pairBips.get(pairKey).set(refKey, ref);
       }
     });
   });
@@ -626,9 +785,9 @@ function buildClassificationChordData(nodes, categoryDomains = {}, dimensions = 
     groups,
     matrix,
     pairBips: Object.fromEntries(
-      Array.from(pairBips.entries()).map(([key, bipSet]) => [
+      Array.from(pairBips.entries()).map(([key, bipMap]) => [
         key,
-        Array.from(bipSet).sort(compareProposalIds),
+        collectProposalRefs(bipMap),
       ])
     ),
   };
@@ -647,38 +806,39 @@ function buildClassificationRelationRows(nodes, dimensions = CLASSIFICATION_DIME
   }
 
   (nodes || []).forEach((node) => {
-    const bipId = node?.id != null ? String(node.id) : null;
-    if (!bipId) {
+    if (node?.id == null) {
       return;
     }
+    const ref = makeProposalRef(node);
+    const refKey = proposalRefKey(ref);
 
     const v0 = normalizeChordValueForField(dim0.field, node?.[dim0.field]);
     const v1 = normalizeChordValueForField(dim1.field, node?.[dim1.field]);
 
     const pairKey = `${v0}|||${v1}`;
     if (!pairsMap.has(pairKey)) {
-      pairsMap.set(pairKey, { [dim0.field]: v0, [dim1.field]: v1, count: 0, bips: new Set() });
+      pairsMap.set(pairKey, { [dim0.field]: v0, [dim1.field]: v1, count: 0, bips: new Map() });
     }
     const pairEntry = pairsMap.get(pairKey);
     pairEntry.count += 1;
-    pairEntry.bips.add(bipId);
+    pairEntry.bips.set(refKey, ref);
 
     if (dim2) {
       const v2 = normalizeChordValueForField(dim2.field, node?.[dim2.field]);
       const tripletKey = `${v0}|||${v1}|||${v2}`;
       if (!tripletsMap.has(tripletKey)) {
-        tripletsMap.set(tripletKey, { [dim0.field]: v0, [dim1.field]: v1, [dim2.field]: v2, count: 0, bips: new Set() });
+        tripletsMap.set(tripletKey, { [dim0.field]: v0, [dim1.field]: v1, [dim2.field]: v2, count: 0, bips: new Map() });
       }
       const tripletEntry = tripletsMap.get(tripletKey);
       tripletEntry.count += 1;
-      tripletEntry.bips.add(bipId);
+      tripletEntry.bips.set(refKey, ref);
     }
   });
 
   const finalize = (map) => Array.from(map.values())
     .map((entry) => ({
       ...entry,
-      bips: Array.from(entry.bips).sort(compareProposalIds),
+      bips: collectProposalRefs(entry.bips),
     }))
     .sort((left, right) => (
       right.count - left.count ||
@@ -702,10 +862,11 @@ export function buildDashboardData(dataset, ecosystem = {}) {
   const bipsByYear = new Map();
 
   dataset.nodes.forEach((node) => {
-    const bipId = node?.id != null ? String(node.id) : null;
-    if (!bipId) {
+    if (node?.id == null) {
       return;
     }
+    const ref = makeProposalRef(node);
+    const refKey = proposalRefKey(ref);
 
     const authors = Array.isArray(node.author)
       ? node.author.map(cleanAuthorName).filter(Boolean)
@@ -713,27 +874,33 @@ export function buildDashboardData(dataset, ecosystem = {}) {
 
     authors.forEach((author) => {
       if (!authorBipsByAuthor.has(author)) {
-        authorBipsByAuthor.set(author, new Set());
+        authorBipsByAuthor.set(author, new Map());
       }
-      authorBipsByAuthor.get(author).add(bipId);
+      authorBipsByAuthor.get(author).set(refKey, ref);
     });
 
     if (node?.created) {
       const year = new Date(node.created).getFullYear();
       if (Number.isFinite(year) && year > 1900) {
         if (!bipsByYear.has(year)) {
-          bipsByYear.set(year, new Set());
+          bipsByYear.set(year, new Map());
         }
-        bipsByYear.get(year).add(bipId);
+        bipsByYear.get(year).set(refKey, ref);
       }
     }
   });
 
-  const yearData = (authorship.bips_per_year || []).length
-    ? (authorship.bips_per_year || []).map((entry) => ({
-      ...entry,
-      bips: Array.from(bipsByYear.get(Number(entry.year)) || []).sort(compareProposalIds),
-    }))
+  const computeBySource = (refs) => (refs || []).reduce((acc, ref) => {
+    const key = ref?.source || '';
+    acc[key] = (acc[key] || 0) + 1;
+    return acc;
+  }, {});
+
+  const yearData = ((authorship.bips_per_year || []).length
+    ? (authorship.bips_per_year || []).map((entry) => {
+      const refs = collectProposalRefs(bipsByYear.get(Number(entry.year)));
+      return { ...entry, bips: refs, bySource: computeBySource(refs) };
+    })
     : Array.from(
       d3.rollup(
         dataset.nodes.filter((node) => {
@@ -746,12 +913,11 @@ export function buildDashboardData(dataset, ecosystem = {}) {
         (values) => values.length,
         (node) => new Date(node.created).getFullYear()
       ),
-      ([year, count]) => ({
-        year,
-        count,
-        bips: Array.from(bipsByYear.get(Number(year)) || []).sort(compareProposalIds),
-      })
-    ).sort((a, b) => a.year - b.year);
+      ([year, count]) => {
+        const refs = collectProposalRefs(bipsByYear.get(Number(year)));
+        return { year, count, bips: refs, bySource: computeBySource(refs) };
+      }
+    ).sort((a, b) => a.year - b.year));
 
   const wordCloudData = buildWordCloudData(dataset.nodes);
   const conformityRows = (conformity.per_proposal || [])
@@ -767,14 +933,20 @@ export function buildDashboardData(dataset, ecosystem = {}) {
       return left.id.localeCompare(right.id);
     });
 
+  const datasetSource = Array.isArray(dataset.sourceIds) && dataset.sourceIds.length > 0
+    ? dataset.sourceIds[0]
+    : '';
   const buildFailedChecksSeries = (standardKey) => {
     const failuresByCheck = new Map();
 
     conformityRows.forEach((entry) => {
-      const complianceDetails = entry?.formal_compliance || entry?.compliance || {};
+      const complianceDetails = entry?.formal_compliance || {};
       const checks = Array.isArray(complianceDetails?.[standardKey]?.checks)
         ? complianceDetails[standardKey].checks
         : [];
+
+      const ref = { source: datasetSource, id: String(entry.id) };
+      const refKey = proposalRefKey(ref);
 
       checks
         .filter((check) => check?.passed === false)
@@ -787,20 +959,20 @@ export function buildDashboardData(dataset, ecosystem = {}) {
               id,
               label,
               count: 0,
-              proposals: new Set(),
+              proposals: new Map(),
             });
           }
 
           const current = failuresByCheck.get(id);
           current.count += 1;
-          current.proposals.add(String(entry.id));
+          current.proposals.set(refKey, ref);
         });
     });
 
     return Array.from(failuresByCheck.values())
       .map((entry) => ({
         ...entry,
-        proposals: Array.from(entry.proposals).sort(compareProposalIds),
+        proposals: collectProposalRefs(entry.proposals),
       }))
       .sort((left, right) => right.count - left.count || left.label.localeCompare(right.label))
       .slice(0, 10);
@@ -828,7 +1000,7 @@ export function buildDashboardData(dataset, ecosystem = {}) {
 
   const topAuthors = (authorship.top_authors || []).map((entry) => ({
     ...entry,
-    bips: Array.from(authorBipsByAuthor.get(entry.author) || []).sort(compareProposalIds),
+    bips: collectProposalRefs(authorBipsByAuthor.get(entry.author)),
   }));
   const topCollaborationAuthors = new Set(
     Array.from(authorBipsByAuthor.entries())
@@ -853,14 +1025,16 @@ export function buildDashboardData(dataset, ecosystem = {}) {
     if (!node.id || uniqueAuthors.length < 2) {
       return;
     }
+    const ref = makeProposalRef(node);
+    const refKey = proposalRefKey(ref);
 
     for (let i = 0; i < uniqueAuthors.length; i += 1) {
       for (let j = i + 1; j < uniqueAuthors.length; j += 1) {
         const pairKey = [uniqueAuthors[i], uniqueAuthors[j]].sort().join('|||');
         if (!sharedBipsByAuthorPair.has(pairKey)) {
-          sharedBipsByAuthorPair.set(pairKey, new Set());
+          sharedBipsByAuthorPair.set(pairKey, new Map());
         }
-        sharedBipsByAuthorPair.get(pairKey).add(String(node.id));
+        sharedBipsByAuthorPair.get(pairKey).set(refKey, ref);
       }
     }
   });
@@ -874,20 +1048,19 @@ export function buildDashboardData(dataset, ecosystem = {}) {
     nodes: [
       ...(rawCollaborationNetwork.nodes || []).map((node) => ({
         ...node,
-        bips: Array.from(authorBipsByAuthor.get(node.id) || []).sort(compareProposalIds),
+        bips: collectProposalRefs(authorBipsByAuthor.get(node.id)),
       })),
       ...Array.from(authorBipsByAuthor.entries())
         .filter(([author]) => !rawCollaborationNodeIds.has(author))
-        .map(([author, bipSet]) => ({
+        .map(([author, bipMap]) => ({
           id: author,
           degree: 0,
-          bips: Array.from(bipSet).sort(compareProposalIds),
+          bips: collectProposalRefs(bipMap),
         })),
     ],
     edges: (rawCollaborationNetwork.edges || []).map((edge) => {
       const pairKey = [edge.source, edge.target].sort().join('|||');
-      const bips = Array.from(sharedBipsByAuthorPair.get(pairKey) || [])
-        .sort(compareProposalIds);
+      const bips = collectProposalRefs(sharedBipsByAuthorPair.get(pairKey));
 
       return {
         ...edge,
@@ -921,20 +1094,44 @@ export function buildDashboardData(dataset, ecosystem = {}) {
     classificationRelationRows,
     evolutionPayload,
     topAuthors,
-    authorContributionHistogram: authorship.author_contribution_histogram || [],
+    authorContributionHistogram: (() => {
+      // Count proposals per distinct author across all selected sources.
+      // (Re-deriving from nodes avoids the per-source histogram sum, which
+      //  would double-count authors who appear in more than one source.)
+      const proposalsPerAuthor = new Map();
+      dataset.nodes.forEach((node) => {
+        const authors = Array.isArray(node.author)
+          ? node.author.map(cleanAuthorName).filter(Boolean)
+          : [];
+        new Set(authors).forEach((author) => {
+          proposalsPerAuthor.set(author, (proposalsPerAuthor.get(author) || 0) + 1);
+        });
+      });
+      const histogram = new Map();
+      proposalsPerAuthor.forEach((count) => {
+        histogram.set(count, (histogram.get(count) || 0) + 1);
+      });
+      return Array.from(histogram.entries())
+        .map(([bipsWritten, authors]) => ({ bips_written: bipsWritten, authors }))
+        .sort((a, b) => a.bips_written - b.bips_written);
+    })(),
     bipAuthorCountHistogram: (() => {
-      const bipsMap = new Map();
+      const bipsByAuthorCount = new Map();
       dataset.nodes.forEach((node) => {
         if (node?.id == null) return;
         const authors = Array.isArray(node.author)
           ? node.author.map(cleanAuthorName).filter(Boolean)
           : [];
         const n = authors.length;
-        if (!bipsMap.has(n)) bipsMap.set(n, []);
-        bipsMap.get(n).push(String(node.id));
+        if (!bipsByAuthorCount.has(n)) bipsByAuthorCount.set(n, new Map());
+        const ref = makeProposalRef(node);
+        bipsByAuthorCount.get(n).set(proposalRefKey(ref), ref);
       });
-      return Array.from(bipsMap.entries())
-        .map(([authorCount, bips]) => ({ authorCount, bipCount: bips.length, bips }))
+      return Array.from(bipsByAuthorCount.entries())
+        .map(([authorCount, refMap]) => {
+          const bips = collectProposalRefs(refMap);
+          return { authorCount, bipCount: bips.length, bips };
+        })
         .sort((a, b) => a.authorCount - b.authorCount);
     })(),
     collaborationNetwork,

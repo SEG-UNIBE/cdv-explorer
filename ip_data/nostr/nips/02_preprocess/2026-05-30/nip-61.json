@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "61",
       "title": "Nutzaps",
-      "author": [
-        "Pablo Fernandez"
-      ],
-      "created": "2024-10-25",
       "status": "Draft",
+      "author": null,
+      "created": "2024-10-25",
       "type": "Optional",
       "layer": null,
       "kind": null
@@ -245,16 +243,44 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 44",
-        "NIP 60",
-        "NIP 65"
+        {
+          "target": "nips:44",
+          "count": 1
+        },
+        {
+          "target": "nips:60",
+          "count": 2
+        },
+        {
+          "target": "nips:65",
+          "count": 3
+        }
       ],
       "body_extracted_llm": [
-        "NIP 10",
-        "NIP 12",
-        "NIP 44",
-        "NIP 60",
-        "NIP 65"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:48Z",
+          "dependencies": [
+            {
+              "target": "nips:44",
+              "evidence": "`content`: nip44_encrypt([",
+              "reason": "The redemption-history event content is explicitly encrypted using NIP-44, so the proposal relies on that payload format and encryption mechanism.",
+              "confidence": "low"
+            },
+            {
+              "target": "nips:60",
+              "evidence": "the `privkey` field encrypted in a user's [nip-60](60.md) _wallet event_",
+              "reason": "The recipient pubkey in kind:10019 is defined as corresponding to data stored in the NIP-60 wallet event, making the proposal depend on NIP-60 wallet-event structure.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:65",
+              "evidence": "Events that redeem a nutzap SHOULD be published to the sender's [NIP-65](65.md) \"read\" relays.",
+              "reason": "The proposal uses NIP-65 relay lists to determine where redemption events are published and where nutzaps are discovered.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

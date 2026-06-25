@@ -1,0 +1,467 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "57",
+      "title": "Lightning Zaps",
+      "status": "Draft",
+      "author": null,
+      "created": "2023-02-13",
+      "type": "Optional",
+      "layer": null,
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Sun Nov 3 22:33:48 2024 +0100",
+    "total_commits": 30,
+    "git_history": [
+      [
+        "087437042be0dac04a5fce9ea243b6babd31fb63",
+        "Sun Nov 3 22:33:48 2024 +0100",
+        "Terry Yiu"
+      ],
+      [
+        "e6552476aa2e5ca7256be572a9aa226ec8a022ee",
+        "Tue Sep 3 20:41:31 2024 +0330",
+        "kehiy"
+      ],
+      [
+        "ca3c52e3e74f0a4679f1c6c0d9ac6461ea748d2d",
+        "Tue Aug 20 12:56:05 2024 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "c30971ff0c79da57dd011df9906ae0a4ad487aca",
+        "Fri Jun 7 18:44:33 2024 -0300",
+        "P. Reis"
+      ],
+      [
+        "27fef638e2460139cc9078427a0aec0ce4470517",
+        "Mon Jan 1 02:08:56 2024 +0000",
+        "Pablo Fernandez"
+      ],
+      [
+        "5ae5a6d0553e34afc3cf19e96043f7e0e2b349ef",
+        "Fri Nov 24 02:44:12 2023 +0900",
+        "Asai Toshiya"
+      ],
+      [
+        "37f6cbb775126b386414220f783ca0f5f85e7614",
+        "Wed Nov 15 21:42:51 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "21c6c12c524cb71f18e068c9bcf223cda0214b5f",
+        "Wed Oct 11 00:57:12 2023 -0400",
+        "Vic"
+      ],
+      [
+        "423dda195b5251ffac5ec82c4129fe2f916c4d2b",
+        "Thu Sep 28 15:43:03 2023 -0500",
+        "Keyan"
+      ],
+      [
+        "c6b6eea96a85aa6c9b5ce579685214fea3de0282",
+        "Wed Aug 23 12:55:31 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "5d63b1570c490007252b10e757f7f68ef1f4b717",
+        "Mon Jul 31 08:26:15 2023 -0700",
+        "Jon Staab"
+      ],
+      [
+        "d0cb9d0c24ec9815b0668bffff246a19352b9ca2",
+        "Fri Jul 21 00:48:55 2023 +0900",
+        "erechorse"
+      ],
+      [
+        "b12c93c452814ffa5f06aef95b60775bc86eaf58",
+        "Sun May 28 05:58:48 2023 -0400",
+        "Jose Mateo"
+      ],
+      [
+        "91bdf63b130cadb89c3908cab09305526e9f2092",
+        "Wed May 24 12:22:16 2023 -0400",
+        "Vitor Pamplona"
+      ],
+      [
+        "5834c054398b39404868746db973ea7f373d1392",
+        "Wed May 24 12:20:53 2023 -0400",
+        "Vitor Pamplona"
+      ],
+      [
+        "2f8be7c32b7b624ed65b3238d3ada9f2f8859777",
+        "Wed May 24 10:41:14 2023 -0400",
+        "Vitor Pamplona"
+      ],
+      [
+        "9c97736066a131442a5e43420f0600904959d1cf",
+        "Wed May 24 10:10:18 2023 -0400",
+        "Vitor Pamplona"
+      ],
+      [
+        "7c3e5902471b2eccf8032c06ab4e07940dd56ae7",
+        "Wed May 24 09:46:36 2023 -0400",
+        "Vitor Pamplona"
+      ],
+      [
+        "dd5c9c54ae33c0480b2f12b604353b738c827115",
+        "Tue May 23 13:50:55 2023 -0400",
+        "Vitor Pamplona"
+      ],
+      [
+        "a56d650333c03a51b1f2d7852670216489ff35d6",
+        "Tue May 23 13:46:05 2023 -0400",
+        "Vitor Pamplona"
+      ],
+      [
+        "e4937befd6fc29482387ab18a7fab98338dba55d",
+        "Tue May 23 13:44:58 2023 -0400",
+        "Vitor Pamplona"
+      ],
+      [
+        "89e3c01b1438cedfb8d1ebbed3e320b8a6f3a582",
+        "Sun May 14 13:16:10 2023 +0900",
+        "jiftechnify"
+      ],
+      [
+        "9076b8486da293f56e725ec593fcfb09a7bc2edf",
+        "Sun May 14 12:04:47 2023 +0900",
+        "jiftechnify"
+      ],
+      [
+        "64ac0710dea1af432051ef70698979bff106b9c2",
+        "Sun May 14 11:55:07 2023 +0900",
+        "jiftechnify"
+      ],
+      [
+        "8b39976e78f90fe766ad7149e250777cddacbb5e",
+        "Mon Apr 3 16:53:27 2023 +0300",
+        "Pablo Fernandez"
+      ],
+      [
+        "60412bf7a55c32ed55eec2e9adda834f968fa00b",
+        "Fri Mar 24 12:02:35 2023 -0500",
+        "Jonathan Staab"
+      ],
+      [
+        "23cec80e31f6b41df14f51533de6292d6cb8c9b0",
+        "Thu Mar 23 17:12:29 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "050317409d92aaab9007408f4bd5b206cdada1d7",
+        "Tue Feb 21 20:08:46 2023 +0100",
+        "Alejandro Gomez"
+      ],
+      [
+        "6849f3bdf4739c4fe52199504092cea7247fc615",
+        "Tue Feb 14 09:38:19 2023 +0300",
+        "Semisol"
+      ],
+      [
+        "17ffd3ee4efa33c3f6abb4304d1c4dd998efc523",
+        "Mon Feb 13 03:36:04 2023 -0800",
+        "William Casarin"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "zap": 72,
+      "request": 39,
+      "lnurl": 37,
+      "s": 31,
+      "event": 28,
+      "receipt": 24,
+      "invoice": 22,
+      "nostr": 22,
+      "recipient": 19,
+      "tag": 17,
+      "pay": 16,
+      "appendix": 15,
+      "wss": 15,
+      "description": 13,
+      "relays": 13,
+      "tags": 13,
+      "optional": 11,
+      "clients": 11,
+      "pubkey": 11,
+      "server": 10,
+      "p": 10,
+      "lightning": 9,
+      "1": 9,
+      "e": 9,
+      "encoded": 9,
+      "const": 9,
+      "client": 8,
+      "url": 8,
+      "user": 8,
+      "callback": 8,
+      "json": 8,
+      "9734": 7,
+      "paid": 7,
+      "example": 7,
+      "note": 7,
+      "content": 7,
+      "kind": 7,
+      "following": 7,
+      "bolt11": 7,
+      "nip": 6,
+      "com": 6,
+      "sender": 6,
+      "hash": 6,
+      "payment": 6,
+      "response": 5,
+      "2": 5,
+      "endpoint": 5,
+      "use": 5,
+      "instead": 5,
+      "created_at": 5,
+      "present": 5,
+      "relay": 5,
+      "zaps": 4,
+      "9735": 4,
+      "display": 4,
+      "send": 4,
+      "nostrpubkey": 4,
+      "valid": 4,
+      "hex": 4,
+      "described": 4,
+      "query": 4,
+      "parameter": 4,
+      "include": 4,
+      "id": 4,
+      "events": 4,
+      "0": 4,
+      "equal": 4,
+      "receiver": 4,
+      "wallet": 3,
+      "flow": 3,
+      "field": 3,
+      "profile": 3,
+      "https": 3,
+      "github": 3,
+      "luds": 3,
+      "parse": 3,
+      "true": 3,
+      "key": 3,
+      "3": 3,
+      "sent": 3,
+      "received": 3,
+      "details": 3,
+      "validate": 3,
+      "d": 3,
+      "additional": 3,
+      "publish": 3,
+      "reference": 3,
+      "pub": 3,
+      "97c70a44366a6535c145b333f973ea86dfdc2d7a99da618c40c64705ad98e322": 3,
+      "date": 3,
+      "validated": 3,
+      "implementation": 3,
+      "io": 3,
+      "weight": 3,
+      "weights": 3,
+      "draft": 2,
+      "payments": 2,
+      "users": 2,
+      "representing": 2,
+      "receipts": 2,
+      "allows": 2,
+      "protocol": 2,
+      "zapped": 2,
+      "g": 2,
+      "lud06": 2,
+      "according": 2,
+      "allowsnostr": 2,
+      "exists": 2,
+      "information": 2,
+      "create": 2,
+      "sign": 2,
+      "4": 2,
+      "b": 2,
+      "5": 2,
+      "c": 2,
+      "6": 2,
+      "fetch": 2,
+      "metadata": 2,
+      "included": 2,
+      "7": 2,
+      "receiving": 2,
+      "8": 2,
+      "f": 2,
+      "contains": 2,
+      "published": 2,
+      "list": 2,
+      "_millisats_": 2,
+      "intends": 2,
+      "string": 2,
+      "recommended": 2,
+      "bech32": 2,
+      "prefix": 2,
+      "coordinate": 2,
+      "notes": 2,
+      "wellorder": 2,
+      "sig": 2,
+      "http": 2,
+      "uri": 2,
+      "pr": 2,
+      "javascript": 2,
+      "senderpubkey": 2,
+      "recipientpubkey": 2,
+      "sats": 2,
+      "1000": 2,
+      "await": 2,
+      "configuration": 2,
+      "add": 2,
+      "set": 2,
+      "value": 2,
+      "created": 2,
+      "steps": 2,
+      "saved": 2,
+      "cln": 2,
+      "based": 2,
+      "contain": 2,
+      "match": 2,
+      "preimage": 2,
+      "proof": 2,
+      "real": 2,
+      "author": 2,
+      "jb55": 2,
+      "32e1827635450ebb3c5a7d12c1f8e7b2b514439ac10a67eef3d9fd9c5c68e245": 2,
+      "3624762a1274dd9636e0c552b53086d70bc88c165bc4dc0f9e836a1eaf86c3b8": 2,
+      "oxtr": 2,
+      "dev": 2,
+      "social": 2,
+      "calculate": 2,
+      "argument": 2,
+      "percentage": 2,
+      "receivers": 2,
+      "25": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "17ffd3ee4efa33c3f6abb4304d1c4dd998efc523",
+        "timestamp": "2023-02-13T08:36:04-03:00",
+        "date": "2023-02-13",
+        "author": "William Casarin",
+        "path": "57.md",
+        "status": "Draft",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        {
+          "target": "nips:01",
+          "count": 1
+        },
+        {
+          "target": "nips:0A",
+          "count": 1
+        },
+        {
+          "target": "nips:23",
+          "count": 1
+        }
+      ],
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:27Z",
+          "dependencies": [
+            {
+              "target": "nips:01",
+              "evidence": "retrieve `zap receipt`s on events and pubkeys using a NIP-01 filter",
+              "reason": "The proposal relies on NIP-01 filter semantics to discover zap receipts.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:23",
+              "evidence": "tipping addressable events such as NIP-23 long-form notes",
+              "reason": "The zap request adds the `a` tag specifically to support addressable events defined by NIP-23.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:29",
+              "evidence": "the `zap` tag on the event being zapped",
+              "reason": "The protocol introduces and consumes a `zap` tag format to direct payments, which is the core mechanism from the referenced proposal.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:39",
+              "evidence": "decode their lud06 or lud16 field on their profile according to the [lnurl specifications]",
+              "reason": "Zap discovery and callback flow depend on LNURL pay metadata and callback behavior defined by LNURL/LUD06 and LUD16.",
+              "confidence": "low"
+            },
+            {
+              "target": "nips:65",
+              "evidence": "a valid BIP 340 public key in hex",
+              "reason": "Validation of the recipient's nostr identity requires BIP-340 public keys as specified by the referenced proposal.",
+              "confidence": "medium"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

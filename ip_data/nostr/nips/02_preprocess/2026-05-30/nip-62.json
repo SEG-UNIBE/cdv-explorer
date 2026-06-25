@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "62",
       "title": "Request to Vanish",
-      "author": [
-        "Vitor Pamplona"
-      ],
-      "created": "2025-02-18",
       "status": "Draft",
+      "author": null,
+      "created": "2025-02-18",
       "type": "Optional",
       "layer": "Relay",
       "kind": null
@@ -138,13 +136,34 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 9",
-        "NIP 59"
+        {
+          "target": "nips:09",
+          "count": 1
+        },
+        {
+          "target": "nips:59",
+          "count": 1
+        }
       ],
       "body_extracted_llm": [
-        "NIP 1",
-        "NIP 9",
-        "NIP 59"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:47Z",
+          "dependencies": [
+            {
+              "target": "nips:09",
+              "evidence": "including [NIP-09](09.md) Deletion Events",
+              "reason": "The proposal's deletion scope explicitly relies on NIP-09 delete event semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:59",
+              "evidence": "SHOULD delete all [NIP-59](59.md) Gift Wraps",
+              "reason": "The proposal extends its deletion requirements to gift wraps defined by NIP-59.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

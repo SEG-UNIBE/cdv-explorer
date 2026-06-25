@@ -1,0 +1,657 @@
+{
+  "raw": {
+    "preamble": {
+      "bip": "79",
+      "title": "Bustapay :: a practical coinjoin protocol",
+      "author": [
+        "Ryan Havar <rhavar@protonmail.com>"
+      ],
+      "comments_uri": "https://github.com/bitcoin/bips/wiki/Comments:BIP-0079",
+      "status": "Replaced",
+      "type": "Informational",
+      "created": "2018-10-05",
+      "license": [
+        "CC0-1.0"
+      ],
+      "layer": "Applications",
+      "discussions_to": null,
+      "comments_summary": "No comments yet.",
+      "license_code": null,
+      "post_history": null,
+      "requires": null,
+      "replaces": null,
+      "proposed_replacement": "78"
+    }
+  },
+  "meta": {
+    "last_commit": "Wed Aug 5 20:20:11 2020 +0100",
+    "total_commits": 10,
+    "git_history": [
+      [
+        "30e70e49741d19860511668a44b33a76e503725d",
+        "Wed Aug 5 20:20:11 2020 +0100",
+        "Yahia Chiheb"
+      ],
+      [
+        "58e737617cc5efbc73c85bd4c89fce67d448b0c7",
+        "Sat May 18 16:47:40 2019 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "e2c91c81cc67d17c1ec5312ff1f46c2da9ad3d52",
+        "Fri Feb 15 14:57:54 2019 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "cc122a76ef50b1a8607a5c4541f352a705bd112e",
+        "Tue Jan 29 12:19:16 2019 -0800",
+        "Steve Lee"
+      ],
+      [
+        "1bd594e6592c59315dd9750a012bc1e6b309c76b",
+        "Sat Jan 26 21:01:16 2019 -0800",
+        "Ryan Havar"
+      ],
+      [
+        "a9647e01781015c419227ccb28f292526b5b2964",
+        "Thu Jan 24 12:47:33 2019 +0100",
+        "AdamISZ"
+      ],
+      [
+        "9f4922ae3f051ab9858cdff2c51a539a9b3cbefd",
+        "Mon Oct 29 15:18:23 2018 +1100",
+        "Ryan Havar"
+      ],
+      [
+        "f83011f40da2a147d3f7e87d73c82d8cd85cf3e5",
+        "Tue Oct 23 09:10:10 2018 -0700",
+        "Ryan Havar"
+      ],
+      [
+        "1e0d7376207a9273017c89b64ab91822cf33eac0",
+        "Sat Oct 20 09:22:30 2018 +1100",
+        "Ryan Havar"
+      ],
+      [
+        "4a05f299ce399a6ac47551abfdfeca2c8cb61131",
+        "Fri Oct 19 01:27:42 2018 -0400",
+        "Ryan Havar"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 89.66,
+      "passed_checks": 26,
+      "failed_checks": 3,
+      "skipped_checks": 12,
+      "total_checks": 29,
+      "bip2": {
+        "score": 100.0,
+        "passed_checks": 12,
+        "failed_checks": 0,
+        "skipped_checks": 0,
+        "total_checks": 12,
+        "checks": [
+          {
+            "id": "bip2.required_field.bip",
+            "label": "Required field 'bip' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.author",
+            "label": "Required field 'author' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.comments_uri",
+            "label": "Required field 'comments_uri' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.type",
+            "label": "Required field 'type' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.created",
+            "label": "Required field 'created' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.license",
+            "label": "Required field 'license' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.heading.motivation",
+            "label": "Heading 'motivation' exists at level 2",
+            "category": "heading",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.heading.specification",
+            "label": "Heading 'specification' exists at level 2",
+            "category": "heading",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.heading.copyright",
+            "label": "Heading 'copyright' exists at level 2",
+            "category": "heading",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          }
+        ]
+      },
+      "bip3": {
+        "score": 82.35,
+        "passed_checks": 14,
+        "failed_checks": 3,
+        "skipped_checks": 12,
+        "total_checks": 17,
+        "checks": [
+          {
+            "id": "bip3.preamble.top_rfc822",
+            "label": "Preamble exists as RFC-822-style metadata at the top",
+            "category": "preamble",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.bip",
+            "label": "Required header 'bip' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.title",
+            "label": "Required header 'title' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.authors",
+            "label": "Required header 'authors' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": false,
+            "details": "Missing required header 'authors'"
+          },
+          {
+            "id": "bip3.required_header.status",
+            "label": "Required header 'status' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.type",
+            "label": "Required header 'type' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.assigned",
+            "label": "Required header 'assigned' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": false,
+            "details": "Missing required header 'assigned'"
+          },
+          {
+            "id": "bip3.required_header.license",
+            "label": "Required header 'license' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_order",
+            "label": "Headers appear in the expected BIP3 order",
+            "category": "header_order",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.bip",
+            "label": "Header 'BIP' is an integer without leading zeros or '?'",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.title",
+            "label": "Header 'Title' is 50 characters or fewer",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.authors",
+            "label": "Header 'authors' uses 'Name <email>' entries",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.deputies",
+            "label": "Header 'deputies' uses 'Name <email>' entries",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.status",
+            "label": "Header 'Status' is one of Draft, Complete, Deployed, Closed",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": false,
+            "details": "Invalid Status 'Replaced'"
+          },
+          {
+            "id": "bip3.header_value.type",
+            "label": "Header 'Type' is one of Specification, Informational, Process",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.assigned",
+            "label": "Header 'Assigned' is yyyy-mm-dd or '?'",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.license",
+            "label": "Header 'License' is non-empty",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.discussion",
+            "label": "Header 'Discussion' uses 'yyyy-mm-dd: URL' lines",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.version",
+            "label": "Header 'Version' uses MAJOR.MINOR.PATCH",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.requires",
+            "label": "Header 'requires' uses comma+space separated BIP numbers",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.replaces",
+            "label": "Header 'replaces' uses comma+space separated BIP numbers",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.proposed_replacement",
+            "label": "Header 'proposed_replacement' uses comma+space separated BIP numbers",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.required_section.abstract",
+            "label": "Required section 'abstract' is present",
+            "category": "required_section",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_section.motivation",
+            "label": "Required section 'motivation' is present",
+            "category": "required_section",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_section.copyright",
+            "label": "Required section 'copyright' is present",
+            "category": "required_section",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.type_specific.specification_section",
+            "label": "Type 'Specification' includes a 'Specification' section",
+            "category": "type_specific",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.changelog.changelog_section",
+            "label": "Complete/Deployed proposals include a 'Changelog' section",
+            "category": "changelog",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.changelog.version_header",
+            "label": "Complete/Deployed proposals include a 'Version' header",
+            "category": "changelog",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.changelog.version_matches",
+            "label": "Latest changelog version matches the 'Version' header",
+            "category": "changelog",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "transaction": 64,
+      "receiver": 38,
+      "sender": 32,
+      "inputs": 24,
+      "bitcoin": 16,
+      "bustapay": 15,
+      "template": 13,
+      "partial": 11,
+      "network": 10,
+      "contributed": 9,
+      "input": 7,
+      "coinjoin": 6,
+      "important": 6,
+      "s": 6,
+      "final": 6,
+      "way": 5,
+      "transactions": 5,
+      "payment": 5,
+      "sign": 5,
+      "utxo": 5,
+      "output": 5,
+      "propagate": 5,
+      "send": 5,
+      "step": 5,
+      "segwit": 5,
+      "http": 5,
+      "normal": 5,
+      "com": 4,
+      "comments": 4,
+      "1": 4,
+      "analysis": 4,
+      "useful": 4,
+      "valid": 4,
+      "sent": 4,
+      "returns": 4,
+      "pays": 4,
+      "generally": 4,
+      "signs": 4,
+      "finalized": 4,
+      "address": 4,
+      "protocol": 3,
+      "https": 3,
+      "created": 3,
+      "0": 3,
+      "assumptions": 3,
+      "gives": 3,
+      "set": 3,
+      "single": 3,
+      "party": 3,
+      "prevent": 3,
+      "dos": 3,
+      "given": 3,
+      "outputs": 3,
+      "payments": 3,
+      "amounts": 3,
+      "use": 3,
+      "signed": 3,
+      "post": 3,
+      "original": 3,
+      "anti": 3,
+      "encoded": 3,
+      "creating": 3,
+      "feerate": 3,
+      "e": 3,
+      "fees": 3,
+      "add": 3,
+      "compatibility": 3,
+      "careful": 3,
+      "publish": 3,
+      "pre": 2,
+      "bip": 2,
+      "layer": 2,
+      "practical": 2,
+      "rhavar": 2,
+      "github": 2,
+      "status": 2,
+      "type": 2,
+      "license": 2,
+      "cc0": 2,
+      "normally": 2,
+      "information": 2,
+      "result": 2,
+      "unreasonably": 2,
+      "blockchain": 2,
+      "techniques": 2,
+      "control": 2,
+      "manage": 2,
+      "size": 2,
+      "problem": 2,
+      "assume": 2,
+      "controlled": 2,
+      "known": 2,
+      "structure": 2,
+      "tracking": 2,
+      "spy": 2,
+      "sending": 2,
+      "fully": 2,
+      "process": 2,
+      "entire": 2,
+      "fact": 2,
+      "specification": 2,
+      "potentially": 2,
+      "creates": 2,
+      "2": 2,
+      "url": 2,
+      "validates": 2,
+      "sum": 2,
+      "validate": 2,
+      "allow": 2,
+      "seen": 2,
+      "like": 2,
+      "functions": 2,
+      "bpu": 2,
+      "short": 2,
+      "encouraged": 2,
+      "replace": 2,
+      "fee": 2,
+      "required": 2,
+      "binary": 2,
+      "validating": 2,
+      "g": 2,
+      "response": 2,
+      "code": 2,
+      "directly": 2,
+      "time": 2,
+      "error": 2,
+      "client": 2,
+      "therefor": 2,
+      "adding": 2,
+      "attack": 2,
+      "receivers": 2,
+      "contribute": 2,
+      "remove": 2,
+      "need": 2,
+      "ensure": 2,
+      "based": 2,
+      "validation": 2,
+      "owned": 2,
+      "increased": 2,
+      "hope": 2,
+      "blindly": 2,
+      "publishing": 2,
+      "implementation": 2,
+      "notes": 2,
+      "testmempoolaccept": 2,
+      "core": 2,
+      "txid": 2,
+      "sure": 2,
+      "deposit": 2,
+      "backwards": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "6322865e9d9101207725842381387afb8e241d17",
+        "timestamp": "2018-10-16T20:02:01-02:00",
+        "date": "2018-10-16",
+        "author": "Ryan Havar",
+        "path": "bip-bustapay.mediawiki",
+        "status": "Proposed",
+        "standard": "bip2"
+      },
+      {
+        "commit": "30e70e49741d19860511668a44b33a76e503725d",
+        "timestamp": "2020-08-05T20:20:11+01:00",
+        "date": "2020-08-05",
+        "author": "Yahia Chiheb",
+        "path": "bip-0079.mediawiki",
+        "status": "Replaced",
+        "standard": "bip2"
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [
+        {
+          "target": "bips:78",
+          "type": "proposed_replacement"
+        }
+      ],
+      "body_extracted_regex": [
+        {
+          "target": "bips:21",
+          "count": 1
+        },
+        {
+          "target": "bips:69",
+          "count": 1
+        },
+        {
+          "target": "bips:125",
+          "count": 1
+        }
+      ],
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:00:55Z",
+          "dependencies": [
+            {
+              "target": "bips:21",
+              "evidence": "The standard way of letting a sender know where to send a bustapay transaction is done via a bip21 encoded address.",
+              "reason": "BustaPay defines its discovery parameter as a BIP21 URI extension, so it relies on BIP21 address encoding and parsing.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:69",
+              "evidence": "Check if the transaction was already sorted according to BIP69",
+              "reason": "The receiver is instructed to preserve BIP69 ordering if present, so the protocol must handle transactions using that canonical ordering rule.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:125",
+              "evidence": "encouraged to use a slightly more aggressive feerate than usual as well as BIP125 (Opt-in Full Replace-by-Fee Signaling)",
+              "reason": "The protocol’s replace-by-fee fallback and propagation behavior depend on BIP125 opt-in RBF signaling semantics.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

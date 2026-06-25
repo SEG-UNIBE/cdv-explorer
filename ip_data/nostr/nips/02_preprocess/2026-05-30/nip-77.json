@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "77",
       "title": "Negentropy Syncing",
-      "author": [
-        "fiatjaf_"
-      ],
-      "created": "2025-05-26",
       "status": "Draft",
+      "author": null,
+      "created": "2025-05-26",
       "type": "Optional",
       "layer": "Relay",
       "kind": null
@@ -244,10 +242,28 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 1"
+        {
+          "target": "nips:01",
+          "count": 2
+        },
+        {
+          "target": "nips:BE",
+          "count": 1
+        }
       ],
       "body_extracted_llm": [
-        "NIP 1"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:53Z",
+          "dependencies": [
+            {
+              "target": "nips:01",
+              "evidence": "The filter is as described in [NIP-01](01.md).",
+              "reason": "The proposal relies on NIP-01 filter semantics and NIP-01 error reason formatting for its NEG-OPEN and NEG-ERR messages.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

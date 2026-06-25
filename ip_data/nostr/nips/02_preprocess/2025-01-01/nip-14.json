@@ -1,0 +1,134 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "14",
+      "title": "Subject tag in Text events",
+      "status": "Draft",
+      "author": null,
+      "created": "2022-05-24",
+      "type": "Optional",
+      "layer": null,
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Sat Nov 18 09:13:12 2023 -0300",
+    "total_commits": 4,
+    "git_history": [
+      [
+        "5dcfe85306434f21ecb1e7a47edd92b2e3e64f9a",
+        "Sat Nov 18 09:13:12 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "37f6cbb775126b386414220f783ca0f5f85e7614",
+        "Wed Nov 15 21:42:51 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "ed32c93c9f17ddbfb855e94539a446ba37ec4db3",
+        "Wed Jul 12 12:38:43 2023 +0900",
+        "Asai Toshiya"
+      ],
+      [
+        "ebacbccda8c27ce259e3288af0f51026904ba5a7",
+        "Tue May 24 07:33:11 2022 -0500",
+        "Robert C. Martin"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "subject": 8,
+      "tag": 4,
+      "lists": 3,
+      "clients": 3,
+      "nip": 2,
+      "text": 2,
+      "events": 2,
+      "browsers": 2,
+      "display": 2,
+      "contents": 2,
+      "message": 2,
+      "subjects": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "0c6b5a8b640341aae6b9f489dafde85002187221",
+        "timestamp": "2022-05-21T14:17:49-05:00",
+        "date": "2022-05-21",
+        "author": "Robert C. Martin",
+        "path": "Proposal-Subject-Discussion.md",
+        "status": "Draft",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [],
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:10Z",
+          "dependencies": []
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,611 @@
+{
+  "raw": {
+    "preamble": {
+      "bip": "124",
+      "title": "Hierarchical Deterministic Script Templates",
+      "author": [
+        "Eric Lombrozo <eric@ciphrex.com>",
+        "William Swanson <swansontec@gmail.com>"
+      ],
+      "comments_uri": null,
+      "status": "Closed",
+      "type": "Informational",
+      "created": "2015-11-20",
+      "license": [
+        "PD"
+      ],
+      "layer": "Applications",
+      "discussions_to": null,
+      "comments_summary": null,
+      "license_code": null,
+      "post_history": null,
+      "requires": null,
+      "replaces": null,
+      "proposed_replacement": null
+    }
+  },
+  "meta": {
+    "last_commit": "Wed Oct 8 14:59:36 2025 -0700",
+    "total_commits": 10,
+    "git_history": [
+      [
+        "24e96e870fffaa257b465ce1f0370c14aac588e8",
+        "Wed Oct 8 14:59:36 2025 -0700",
+        "Murch"
+      ],
+      [
+        "5207ef92a52d0b8902895b0dbb40823a4d698ec9",
+        "Fri Apr 11 20:08:17 2025 -0700",
+        "Murch"
+      ],
+      [
+        "59730dec4fb641a41589aa1b91d3c452f13e0e36",
+        "Fri Apr 11 20:05:13 2025 -0700",
+        "Murch"
+      ],
+      [
+        "01352f7f40cb7f61d0aa177341f8804de2f8fed9",
+        "Fri Apr 11 20:07:37 2025 -0700",
+        "Murch"
+      ],
+      [
+        "66defbdc03ad64ccddfd373e1c59af9a41ab990f",
+        "Fri Apr 11 18:11:55 2025 -0700",
+        "Murch"
+      ],
+      [
+        "a4a427ac8cfffc1eeecec308ff3a4dc57d01d705",
+        "Fri Aug 21 08:10:08 2020 +0200",
+        "Janus"
+      ],
+      [
+        "959fecc15bdad070afa63455468b1dba54655fa6",
+        "Wed Nov 30 09:47:31 2016 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "Wed Nov 30 09:45:33 2016 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "4edd6d2badd9a6ad2ff09bb6792fe0d0e365a7de",
+        "Wed Feb 3 07:02:36 2016 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "a8ace6d608b2068ce949993d4dd048fd759820ce",
+        "Tue Jan 12 19:06:32 2016 -0500",
+        "Eric Lombrozo"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 93.75,
+      "passed_checks": 30,
+      "failed_checks": 2,
+      "skipped_checks": 9,
+      "total_checks": 32,
+      "bip2": {
+        "score": 91.67,
+        "passed_checks": 11,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 12,
+        "checks": [
+          {
+            "id": "bip2.required_field.bip",
+            "label": "Required field 'bip' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.author",
+            "label": "Required field 'author' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.comments_uri",
+            "label": "Required field 'comments_uri' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": false,
+            "details": "Missing required field 'comments_uri'"
+          },
+          {
+            "id": "bip2.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.type",
+            "label": "Required field 'type' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.created",
+            "label": "Required field 'created' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.license",
+            "label": "Required field 'license' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.heading.motivation",
+            "label": "Heading 'motivation' exists at level 2",
+            "category": "heading",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.heading.specification",
+            "label": "Heading 'specification' exists at level 2",
+            "category": "heading",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.heading.copyright",
+            "label": "Heading 'copyright' exists at level 2",
+            "category": "heading",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          }
+        ]
+      },
+      "bip3": {
+        "score": 95.0,
+        "passed_checks": 19,
+        "failed_checks": 1,
+        "skipped_checks": 9,
+        "total_checks": 20,
+        "checks": [
+          {
+            "id": "bip3.preamble.top_rfc822",
+            "label": "Preamble exists as RFC-822-style metadata at the top",
+            "category": "preamble",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.bip",
+            "label": "Required header 'bip' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.title",
+            "label": "Required header 'title' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.authors",
+            "label": "Required header 'authors' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.status",
+            "label": "Required header 'status' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.type",
+            "label": "Required header 'type' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.assigned",
+            "label": "Required header 'assigned' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.license",
+            "label": "Required header 'license' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_order",
+            "label": "Headers appear in the expected BIP3 order",
+            "category": "header_order",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.bip",
+            "label": "Header 'BIP' is an integer without leading zeros or '?'",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.title",
+            "label": "Header 'Title' is 50 characters or fewer",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.authors",
+            "label": "Header 'authors' uses 'Name <email>' entries",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.deputies",
+            "label": "Header 'deputies' uses 'Name <email>' entries",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.status",
+            "label": "Header 'Status' is one of Draft, Complete, Deployed, Closed",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.type",
+            "label": "Header 'Type' is one of Specification, Informational, Process",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.assigned",
+            "label": "Header 'Assigned' is yyyy-mm-dd or '?'",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.license",
+            "label": "Header 'License' is non-empty",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.discussion",
+            "label": "Header 'Discussion' uses 'yyyy-mm-dd: URL' lines",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": false,
+            "details": "Invalid Discussion entry 'http://lists.linuxfoundation.org/pipermail/bitcoin-dev/2015-November/011795.html'"
+          },
+          {
+            "id": "bip3.header_value.version",
+            "label": "Header 'Version' uses MAJOR.MINOR.PATCH",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.requires",
+            "label": "Header 'requires' uses comma+space separated BIP numbers",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.replaces",
+            "label": "Header 'replaces' uses comma+space separated BIP numbers",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.proposed_replacement",
+            "label": "Header 'proposed_replacement' uses comma+space separated BIP numbers",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.required_section.abstract",
+            "label": "Required section 'abstract' is present",
+            "category": "required_section",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_section.motivation",
+            "label": "Required section 'motivation' is present",
+            "category": "required_section",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_section.copyright",
+            "label": "Required section 'copyright' is present",
+            "category": "required_section",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.type_specific.specification_section",
+            "label": "Type 'Specification' includes a 'Specification' section",
+            "category": "type_specific",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.changelog.changelog_section",
+            "label": "Complete/Deployed proposals include a 'Changelog' section",
+            "category": "changelog",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.changelog.version_header",
+            "label": "Complete/Deployed proposals include a 'Version' header",
+            "category": "changelog",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.changelog.version_matches",
+            "label": "Latest changelog version matches the 'Version' header",
+            "category": "changelog",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "nbsp": 64,
+      "sub": 62,
+      "k": 43,
+      "script": 25,
+      "key": 16,
+      "br": 13,
+      "m": 12,
+      "keys": 9,
+      "derivation": 8,
+      "bip": 7,
+      "scripts": 7,
+      "2": 7,
+      "opcodes": 7,
+      "wallets": 6,
+      "3": 6,
+      "b": 6,
+      "template": 5,
+      "bip32": 5,
+      "notation": 5,
+      "1": 5,
+      "t": 5,
+      "templates": 4,
+      "defined": 4,
+      "n": 4,
+      "use": 4,
+      "lightning": 4,
+      "network": 4,
+      "set": 4,
+      "following": 4,
+      "groups": 4,
+      "hash160": 4,
+      "mediawiki": 4,
+      "generate": 3,
+      "pay": 3,
+      "hash": 3,
+      "different": 3,
+      "given": 3,
+      "paths": 3,
+      "index": 3,
+      "define": 3,
+      "group": 3,
+      "sorting": 3,
+      "th": 3,
+      "op_dup": 3,
+      "op_checksig": 3,
+      "pre": 2,
+      "layer": 2,
+      "applications": 2,
+      "hierarchical": 2,
+      "deterministic": 2,
+      "eric": 2,
+      "com": 2,
+      "2015": 2,
+      "format": 2,
+      "formats": 2,
+      "bip16": 2,
+      "construct": 2,
+      "timelocked": 2,
+      "bip65": 2,
+      "bip112": 2,
+      "able": 2,
+      "generalized": 2,
+      "constructing": 2,
+      "specification": 2,
+      "path": 2,
+      "introduce": 2,
+      "let": 2,
+      "denote": 2,
+      "symmetric": 2,
+      "todo": 2,
+      "encoding": 2,
+      "sorted": 2,
+      "placeholders": 2,
+      "x1": 2,
+      "x2": 2,
+      "xn": 2,
+      "want": 2,
+      "insert": 2,
+      "x": 2,
+      "op_notif": 2,
+      "op_endif": 2,
+      "authorize": 2,
+      "transactions": 2,
+      "output": 2,
+      "private": 2,
+      "timeout": 2,
+      "op_hash160": 2,
+      "op_equalverify": 2,
+      "op_checklocktimeverify": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "a8ace6d608b2068ce949993d4dd048fd759820ce",
+        "timestamp": "2016-01-12T19:06:57-05:00",
+        "date": "2016-01-12",
+        "author": "Eric Lombrozo",
+        "path": "bip-0124.mediawiki",
+        "status": "Draft",
+        "standard": "bip2"
+      },
+      {
+        "commit": "a4a427ac8cfffc1eeecec308ff3a4dc57d01d705",
+        "timestamp": "2020-08-21T08:10:08+02:00",
+        "date": "2020-08-21",
+        "author": "Janus",
+        "path": "bip-0124.mediawiki",
+        "status": "Rejected",
+        "standard": "bip2"
+      },
+      {
+        "commit": "66defbdc03ad64ccddfd373e1c59af9a41ab990f",
+        "timestamp": "2026-01-12T14:22:36-08:00",
+        "date": "2026-01-12",
+        "author": "Murch",
+        "path": "bip-0124.mediawiki",
+        "status": "Closed",
+        "standard": "bip3"
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        {
+          "target": "bips:16",
+          "count": 3
+        },
+        {
+          "target": "bips:32",
+          "count": 6
+        },
+        {
+          "target": "bips:65",
+          "count": 3
+        },
+        {
+          "target": "bips:112",
+          "count": 3
+        }
+      ],
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T08:58:26Z",
+          "dependencies": [
+            {
+              "target": "bips:16",
+              "evidence": "The most popular formats are pay-to-pubkey-hash and m-of-n pay-to-script-hash (BIP16).",
+              "reason": "The proposal’s script-template motivation explicitly relies on the P2SH script format as an existing output type to generalize.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:32",
+              "evidence": "using the key derivation mechanism defined in BIP32",
+              "reason": "The core template format and all key/group notation are built on BIP32 derivation paths and deterministic child keys.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:65",
+              "evidence": "with the advent of hashlocked and timelocked contracts (BIP65, BIP112)",
+              "reason": "The timelocked contract example uses OP_CHECKLOCKTIMEVERIFY, a semantic introduced by BIP65.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:112",
+              "evidence": "with the advent of hashlocked and timelocked contracts (BIP65, BIP112)",
+              "reason": "The proposal’s contract design depends on the CHECKSEQUENCEVERIFY functionality introduced by BIP112.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

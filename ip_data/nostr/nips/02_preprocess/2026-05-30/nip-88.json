@@ -3,12 +3,9 @@
     "preamble": {
       "nip": "88",
       "title": "Polls",
-      "author": [
-        "fiatjaf",
-        "Alex Gleason"
-      ],
-      "created": "2024-09-17",
       "status": "Draft",
+      "author": null,
+      "created": "2024-09-17",
       "type": "Optional",
       "layer": null,
       "kind": null
@@ -180,9 +177,24 @@
       "preamble_extracted": [],
       "body_extracted_regex": [],
       "body_extracted_llm": [
-        "NIP 1",
-        "NIP 9",
-        "NIP 51"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:56Z",
+          "dependencies": [
+            {
+              "target": "nips:05",
+              "evidence": "do not honor kind:5 (delete) requests for vote events",
+              "reason": "The poll integrity guidance relies on the semantics of the deletion event kind to decide whether vote events can be removed.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:29",
+              "evidence": "creating `kind:30000` follow sets, and fetching results only from the follow set",
+              "reason": "The curation mechanism depends on the replaceable list/follow-set event kind to define the selectable set used for result fetching.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

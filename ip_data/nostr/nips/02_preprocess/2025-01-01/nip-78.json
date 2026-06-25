@@ -1,0 +1,147 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "78",
+      "title": "Arbitrary custom app data",
+      "status": "Draft",
+      "author": null,
+      "created": "2023-02-23",
+      "type": "Optional",
+      "layer": null,
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Tue Aug 20 12:56:05 2024 -0300",
+    "total_commits": 4,
+    "git_history": [
+      [
+        "ca3c52e3e74f0a4679f1c6c0d9ac6461ea748d2d",
+        "Tue Aug 20 12:56:05 2024 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "37f6cbb775126b386414220f783ca0f5f85e7614",
+        "Wed Nov 15 21:42:51 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "3cec80d99ebbee6b72aae31f1856181d04971244",
+        "Fri Apr 7 17:38:03 2023 +0530",
+        "vivganes"
+      ],
+      [
+        "c4949ea7078ec96a373f77f725267b36316ee9e4",
+        "Thu Feb 23 18:25:55 2023 -0300",
+        "fiatjaf"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "nostr": 6,
+      "apps": 5,
+      "data": 4,
+      "nip": 3,
+      "app": 3,
+      "interoperability": 3,
+      "event": 3,
+      "use": 3,
+      "personal": 3,
+      "arbitrary": 2,
+      "custom": 2,
+      "enable": 2,
+      "remotestorage": 2,
+      "storage": 2,
+      "database": 2,
+      "way": 2,
+      "user": 2,
+      "users": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "c4949ea7078ec96a373f77f725267b36316ee9e4",
+        "timestamp": "2023-03-01T10:03:25-03:00",
+        "date": "2023-03-01",
+        "author": "fiatjaf",
+        "path": "78.md",
+        "status": "Draft",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [],
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:31Z",
+          "dependencies": [
+            {
+              "target": "nips:33",
+              "evidence": "use of event kind `30078` (an _addressable_ event) with a `d` tag",
+              "reason": "It relies on the addressable event model and `d`-tag semantics defined by the referenced proposal.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,4739 @@
+{
+  "raw": {
+    "preamble": {
+      "slip": "44",
+      "title": "Registered coin types for BIP-0044",
+      "author": [
+        "Pavol Rusnak <stick@satoshilabs.com>",
+        "Marek Palatinus <slush@satoshilabs.com>"
+      ],
+      "status": "Draft",
+      "type": "Standard",
+      "created": "2014-07-09"
+    }
+  },
+  "meta": {
+    "last_commit": "Thu Dec 31 12:42:05 2020 +0100",
+    "total_commits": 778,
+    "git_history": [
+      [
+        "5a4c3c16116e85c2a5293384be986b2b736a8b91",
+        "Thu Dec 31 12:42:05 2020 +0100",
+        "Glenn Vandeuren"
+      ],
+      [
+        "a2ef4810eff07ac34872a5c1cf8f33aa62c2cde2",
+        "Thu Dec 31 19:41:23 2020 +0800",
+        "kvh"
+      ],
+      [
+        "a2b52489f3c4016afc6d0f2b50545175422016fc",
+        "Wed Dec 30 17:28:32 2020 +0100",
+        "Pierre K"
+      ],
+      [
+        "3507f9203599c7b58c266615c87e9eaef36b081b",
+        "Tue Dec 29 14:40:48 2020 +0100",
+        "Jenova7"
+      ],
+      [
+        "d1c6f005db74fd67689ef37587c91a1e87e6d410",
+        "Tue Dec 22 15:06:06 2020 -0500",
+        "Lyman Snow"
+      ],
+      [
+        "089af8e39b3c83c95f990cae229b42763932fb82",
+        "Mon Dec 21 15:28:40 2020 -0500",
+        "turcol"
+      ],
+      [
+        "610138507bf0ec1397052dd6f82e1b5388f49a87",
+        "Mon Dec 21 13:52:48 2020 +0000",
+        "Adam Dossa"
+      ],
+      [
+        "9ef2298ede38c33b8e1060b85c5ede31ae5e3c24",
+        "Fri Dec 18 19:49:26 2020 +0530",
+        "Lovesh Harchandani"
+      ],
+      [
+        "76e84ec7b13a61416cc6638d56e6d74e08bf766c",
+        "Thu Dec 17 19:05:58 2020 +0330",
+        "Rhonin"
+      ],
+      [
+        "b6926d8b7bdb49eab94d2f7008f69dd22ae7fcfe",
+        "Thu Dec 17 16:00:09 2020 +0700",
+        "Trieu Nguyen"
+      ],
+      [
+        "c952ecf3c5e4789b1f67c780b89f3bf7559e6ca2",
+        "Wed Dec 9 12:56:13 2020 +0100",
+        "Peter-Jan Brone"
+      ],
+      [
+        "70514d148d5f5fff9a2e1719aad830de3d3f73ac",
+        "Wed Dec 9 17:46:25 2020 +0800",
+        "rickey"
+      ],
+      [
+        "f3700896c2701191c2d8cf995a026c25a15a8ffb",
+        "Wed Dec 9 17:45:27 2020 +0800",
+        "sage-wu"
+      ],
+      [
+        "7e22c6e5ed267e47d67bc09217db5d680f2b6010",
+        "Sat Dec 5 12:14:26 2020 +0100",
+        "xazab"
+      ],
+      [
+        "34e7b6fc7dd0bca418bcc99ff0774ba287b3c400",
+        "Fri Dec 4 16:56:32 2020 +0800",
+        "cpucorecore"
+      ],
+      [
+        "18a5d22423f1104d21f63f26ad56887ee8332658",
+        "Tue Dec 1 19:05:29 2020 +0800",
+        "rickey"
+      ],
+      [
+        "1340c8f4127550859c63303193420033230e3940",
+        "Fri Nov 27 23:38:30 2020 +0200",
+        "RentalChain"
+      ],
+      [
+        "04e0bb5b2c9c99aa50a3b5a2f9464137bea2be19",
+        "Thu Nov 26 14:56:58 2020 +0500",
+        "genterium-project"
+      ],
+      [
+        "f8608ce76a80fa967af9687d966bb04a05ca05ca",
+        "Thu Nov 26 17:35:59 2020 +0900",
+        "Donghwan Aidan Kwon"
+      ],
+      [
+        "40eefbb330d89a057b41d78b7bfa71f1a5d9de71",
+        "Thu Nov 26 16:35:14 2020 +0800",
+        "Jhon Kus"
+      ],
+      [
+        "c6b629d3f0aa0d87a307674755be64480f639bdc",
+        "Tue Nov 24 15:27:49 2020 -0700",
+        "Adam Androulidakis"
+      ],
+      [
+        "248bc85f6d8024f41eb7ebfbea03e343f1d261d8",
+        "Tue Nov 24 12:24:07 2020 +0300",
+        "Erdem Değer"
+      ],
+      [
+        "2b83ebbe295c430630d22058a616923390f2ed0b",
+        "Tue Nov 24 22:20:22 2020 +1300",
+        "Xiliang Chen"
+      ],
+      [
+        "cc8f06637e7669a2aacaa1468fcec998d1605b3b",
+        "Mon Nov 23 21:10:48 2020 +1300",
+        "Xiliang Chen"
+      ],
+      [
+        "be3a68d76a07cd2a0e60c7e049991ff3c9c574ea",
+        "Mon Nov 16 12:23:40 2020 +0300",
+        "mikolajsobolewski"
+      ],
+      [
+        "31c0ee2404172db66b8ddaef97c469fde14ee023",
+        "Sun Nov 15 10:40:38 2020 +0200",
+        "SafeCapital"
+      ],
+      [
+        "e86445ba739c16c0e8629ba0e78905652d568145",
+        "Thu Nov 12 17:24:51 2020 +0800",
+        "Tore19"
+      ],
+      [
+        "22af60510c570ae2923efbcb81f2abbb1e42cd9b",
+        "Wed Nov 11 15:20:42 2020 +0000",
+        "Dan Gershony"
+      ],
+      [
+        "08832e40b9e1ee00ebb175492bbd001b605b7867",
+        "Wed Nov 11 16:19:32 2020 +0100",
+        "Charles Wire"
+      ],
+      [
+        "675e6b99c4512f13c893d486cc3dd2cb68aaad6e",
+        "Wed Nov 11 17:19:10 2020 +0200",
+        "zeptin"
+      ],
+      [
+        "77d8b4cb09e36d2aca8cd09836c7f89d4219337d",
+        "Wed Nov 11 23:18:45 2020 +0800",
+        "Eric Huang"
+      ],
+      [
+        "bf67a8aed9e41cd94b232b2cdb94bc0ba7fb7451",
+        "Thu Nov 12 02:17:58 2020 +1100",
+        "dpickering006"
+      ],
+      [
+        "c05879c4614c1ebb4f45b443faab7249197eb349",
+        "Thu Nov 12 00:17:42 2020 +0900",
+        "yoshi"
+      ],
+      [
+        "9362d96cc8555dc16312f62a31040006a7588206",
+        "Wed Nov 11 07:17:03 2020 -0800",
+        "Gabriel Cardona"
+      ],
+      [
+        "f33d50f954586eee36976bbcb43993973dca9b12",
+        "Tue Nov 10 11:30:44 2020 -0500",
+        "Matt"
+      ],
+      [
+        "0b7ac75012c6f3428c8c41aaf45d045776bf40aa",
+        "Mon Oct 26 01:09:57 2020 +0800",
+        "Holt666"
+      ],
+      [
+        "d92f34d0b9ce142cf28ff11f5a94fc8608cee1fa",
+        "Fri Oct 23 16:16:25 2020 -0700",
+        "Gene Hoffman"
+      ],
+      [
+        "db3d4cb93f961217ac82967aa469f7af9190b854",
+        "Mon Oct 19 14:59:59 2020 +0530",
+        "Sri Ram Bandi"
+      ],
+      [
+        "6ca33a5e8f2b1e8b29ef7cd9884d6189f2980731",
+        "Mon Oct 19 17:27:05 2020 +0800",
+        "Guten Ye"
+      ],
+      [
+        "8104158ddf4deb631739f4f7b26a4d22a8d597cd",
+        "Thu Oct 15 17:01:01 2020 +0800",
+        "jiguangin"
+      ],
+      [
+        "a3d1dc7a68b475187fdb7323cebec79b308fe6f3",
+        "Wed Oct 14 12:13:26 2020 +0330",
+        "Rhonin"
+      ],
+      [
+        "a49f358d7e2c615fa6a6b13d82adbf2142df89aa",
+        "Mon Oct 12 18:56:49 2020 -0400",
+        "RA80533"
+      ],
+      [
+        "ead525decf0be8eaa420ff4c33afeab132472808",
+        "Sun Oct 11 19:35:29 2020 +0330",
+        "Rhonin"
+      ],
+      [
+        "641469feabdf818f172b7cf37b5b915eb519fc53",
+        "Sat Oct 10 12:56:29 2020 +0330",
+        "Rhonin"
+      ],
+      [
+        "1140ce26a621a23cd99460497e08aa4aab6e9f8c",
+        "Fri Oct 9 12:50:29 2020 +0300",
+        "Erdem Değer"
+      ],
+      [
+        "89e2351f1144d4b9a9fa346eb84a6581ff2cc937",
+        "Fri Oct 9 12:28:07 2020 +0330",
+        "Rhonin"
+      ],
+      [
+        "3e9a0cd770136e369cbfba7751f736e1b5d8cae2",
+        "Fri Oct 9 02:57:38 2020 -0600",
+        "Stoner19"
+      ],
+      [
+        "584d4fd5b3e93f734365a7feb756b867dc4aafaf",
+        "Thu Oct 8 13:13:33 2020 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "8c718099a20ebaf930537db017291978dc860cc7",
+        "Thu Oct 8 16:55:35 2020 +0900",
+        "JCKim"
+      ],
+      [
+        "8255e3a2f2fe0a2094578deacbad85f3dc375c75",
+        "Wed Oct 7 12:46:55 2020 +0330",
+        "Rhonin"
+      ],
+      [
+        "2d6bf4dcb09e526c665d646006506362f18b8813",
+        "Wed Oct 7 01:19:22 2020 -0700",
+        "Wagx Chung"
+      ],
+      [
+        "b2c19dfdd818ea024ae8f5519a9a01ad4fff323b",
+        "Sat Oct 3 01:20:30 2020 -0600",
+        "Michael FIG"
+      ],
+      [
+        "aaa6276278d0c6afc79b317ea355933eaa2d2a2c",
+        "Fri Oct 2 18:38:44 2020 -0600",
+        "Michael FIG"
+      ],
+      [
+        "c04e4c19950738ec0b6b75b201fc83967db67573",
+        "Wed Sep 30 12:14:04 2020 -0400",
+        "Shane Vitarana"
+      ],
+      [
+        "3df7e043669f80fa63fb2b1e9fc157ce4c29aabe",
+        "Wed Sep 30 16:44:44 2020 +0800",
+        "wishwen"
+      ],
+      [
+        "ec535a772e945c7da8086e0d6b3184569a67a088",
+        "Thu Sep 24 12:21:25 2020 +0330",
+        "Mehdi"
+      ],
+      [
+        "203478add2fba72033d861d2f2e8479a12a02022",
+        "Thu Sep 17 12:03:09 2020 -0400",
+        "bitcoin-pos"
+      ],
+      [
+        "c176f686d6ce89ab418ef00b52413945c6854abb",
+        "Tue Sep 15 19:18:08 2020 +0300",
+        "Panagiotis David"
+      ],
+      [
+        "ec090889506ca6432af7efd191af2458411fd84f",
+        "Thu Sep 3 22:31:17 2020 +0800",
+        "aquarius-kuchain"
+      ],
+      [
+        "9f4808d954d2d81a7b4cc833edfc2e76811bb200",
+        "Wed Sep 2 22:19:36 2020 +0800",
+        "Guten Ye"
+      ],
+      [
+        "7cd7e1268336b057e2fc1fab5bd7f4ddcc3aac2d",
+        "Mon Aug 31 21:07:05 2020 +0100",
+        "FrediDealCash"
+      ],
+      [
+        "3b873055657ea14a93eb2e6698ee807d70d298a5",
+        "Fri Aug 28 22:37:15 2020 +0800",
+        "somereason"
+      ],
+      [
+        "3dad4f5f9b505fda1532970687e4f84ace11056a",
+        "Thu Aug 27 03:59:20 2020 -0400",
+        "Sunny Aggarwal"
+      ],
+      [
+        "87b1a6f125cd9a961c48ba291ee41d378bde6e81",
+        "Tue Aug 25 16:43:51 2020 +0800",
+        "OuYun"
+      ],
+      [
+        "ccab7b125ed788f448a524746cb83c799bc35ac6",
+        "Mon Aug 24 16:51:27 2020 +0800",
+        "OuYun"
+      ],
+      [
+        "7523eb6e12c549eef511be212bb9f1f41748c60e",
+        "Tue Aug 18 21:55:07 2020 +0800",
+        "Finn"
+      ],
+      [
+        "a9ce58a1a09dfb4e0c7ae027e451812ae21eeab8",
+        "Sat Aug 15 04:04:25 2020 -0600",
+        "Sumcoin"
+      ],
+      [
+        "702fead2b94cc6033efa21fdf5ec4da82f2360ca",
+        "Fri Aug 14 16:17:44 2020 +0800",
+        "infinitefuture01"
+      ],
+      [
+        "29a8f0a00230c9af853ab410237fd60c360fff9d",
+        "Fri Aug 14 16:15:45 2020 +0800",
+        "moyaying"
+      ],
+      [
+        "c61fc3ec073b4df3a7da3b0308b6b24ec5e06fd6",
+        "Fri Aug 14 01:44:48 2020 +0800",
+        "Mostafa Sedaghat Joo"
+      ],
+      [
+        "c5eb94d5146ce0badc19adf9d7b40dd212c815b7",
+        "Sat Aug 8 16:42:41 2020 +0200",
+        "scribenetwork"
+      ],
+      [
+        "c366c80270b259aae3ac849cd807dc8e5075dc7d",
+        "Thu Aug 6 14:07:53 2020 -0400",
+        "Oleg Mitrakhovich"
+      ],
+      [
+        "2a1a867f41469cc28f1f568b5aef19f27db96d18",
+        "Thu Aug 6 17:27:12 2020 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "14f9dcd3769f7fe085709a6fce25fc1ff7d55d7a",
+        "Thu Aug 6 17:26:35 2020 +0200",
+        "Dean van Dugteren"
+      ],
+      [
+        "3816c4abbdbd859166e38d38b276545a5d1dc102",
+        "Wed Aug 5 01:49:08 2020 -0700",
+        "coinevo"
+      ],
+      [
+        "9bbafb904a1e79973e725a0de4f1c20aa2acbe7a",
+        "Fri Jul 31 20:09:49 2020 +0530",
+        "Zynecoin"
+      ],
+      [
+        "6c1984521cece1263750da414621266a7e424868",
+        "Fri Jul 31 11:59:36 2020 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "bc49ccd41b39f0be22d4bd4195b06388f31bc55f",
+        "Tue Jul 28 15:49:23 2020 +0200",
+        "IQ.CASH (PoS) Test project"
+      ],
+      [
+        "12c5882d856899d584f6949b432f7d0e0a429872",
+        "Mon Jul 27 13:43:21 2020 -0700",
+        "muyiy"
+      ],
+      [
+        "32a8a8b6c2e577e171de5870a0bad80260839b1a",
+        "Sat Jul 25 02:40:19 2020 -0700",
+        "Layne Lafrance"
+      ],
+      [
+        "c30d7423c83c70021065bbea8ead7c0caa69953a",
+        "Wed Jul 22 12:19:28 2020 +0300",
+        "Sergey Zhdanoff"
+      ],
+      [
+        "740c9c6fdfd49ff334b4e3b13b017e1c3bcbcb13",
+        "Wed Jul 22 02:53:24 2020 -0600",
+        "Kristian Kramer"
+      ],
+      [
+        "88961b51a779fbf80ef25bbad668f2666ce0dba9",
+        "Tue Jul 21 13:02:52 2020 -0600",
+        "Adam Androulidakis"
+      ],
+      [
+        "5fa5d2c7e62bf43581f060752af301494edad4bc",
+        "Tue Jul 7 21:24:40 2020 +0800",
+        "deepyu"
+      ],
+      [
+        "1cee8e2f540aa046fb87abf540293b64f4572be4",
+        "Mon Jul 6 20:37:10 2020 +0300",
+        "Akshay CM"
+      ],
+      [
+        "ea9e178088a964d7934f23b2a793d019cd86fada",
+        "Mon Jul 6 18:16:54 2020 +0800",
+        "HS Chain"
+      ],
+      [
+        "00b5aa6b885222fa0bdfcc7e127732c78df583b3",
+        "Sat Jun 27 01:56:02 2020 -0700",
+        "valorbit"
+      ],
+      [
+        "4778ac25c06943ecd3aa4883d21a7d18eda9d097",
+        "Tue Jun 16 11:50:31 2020 +0200",
+        "Malcolm James MacLeod"
+      ],
+      [
+        "5d82960dd261070e57a15285553c47f0e9a63826",
+        "Sat Jun 13 16:55:09 2020 +0300",
+        "Cashmaney"
+      ],
+      [
+        "a662a0d0b6e48c2112ba533f7756d6f56dbd1829",
+        "Sat Jun 13 20:49:17 2020 +1000",
+        "THORChain Admin"
+      ],
+      [
+        "bff76230637acfc706d588377c2e4731e52107d2",
+        "Thu Jun 11 15:04:03 2020 +0300",
+        "1221"
+      ],
+      [
+        "8c2c7b1b13f1d2e1a23efd3a888b128080247079",
+        "Wed Jun 10 10:03:11 2020 -0700",
+        "Michael Straka"
+      ],
+      [
+        "ec6d1b3128fc9ba33d30f961e2a82b05cfe9c37b",
+        "Sun Jun 7 14:55:23 2020 +0300",
+        "Aviv Eyal"
+      ],
+      [
+        "cad4327058f0d6760b14e1726461e84594f8fa39",
+        "Wed Jun 3 21:48:15 2020 +0200",
+        "GOSSIP Blockchain"
+      ],
+      [
+        "d95b9630d36199105ae8b4f1b647b862ba114ad0",
+        "Sat May 30 12:54:47 2020 +0300",
+        "remzrn"
+      ],
+      [
+        "af9106e600fa559828f0d84a65d91533f86a8cea",
+        "Thu May 28 20:42:12 2020 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "72c888720850954569ae3faffb89f9c88851a00b",
+        "Thu May 28 19:28:12 2020 +0200",
+        "Stakecube"
+      ],
+      [
+        "92bf4d9d5aca0dd30e85ef9ed9f46a2586aaeefb",
+        "Wed May 20 10:48:44 2020 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "390c7e59f76134cc62491b61d7dbb0949ebea86a",
+        "Wed May 20 04:47:18 2020 -0400",
+        "Boyma"
+      ],
+      [
+        "1e2e7716d5134b077f4fb35537799ee173ea8948",
+        "Tue May 19 16:07:54 2020 +0800",
+        "zombieWings"
+      ],
+      [
+        "c2adc960304d5eb97be7b42b86e62ee63e1cb8b6",
+        "Mon May 18 19:28:34 2020 +0300",
+        "SIERRA Foundation Team"
+      ],
+      [
+        "5cf70de16d678b565559b8f3d7d716f99ecd8f85",
+        "Sun May 17 23:56:33 2020 -0700",
+        "muyiy"
+      ],
+      [
+        "457d1906223a6af1d51d70d5423f68f4e4463a1e",
+        "Fri May 15 11:56:32 2020 +0300",
+        "ychaim"
+      ],
+      [
+        "1fce61cd49668bce77b794b35179260695259b42",
+        "Mon May 11 13:22:05 2020 +0100",
+        "Paul Hodgson"
+      ],
+      [
+        "26cf18cfdd4a749281883e308bcb9a321518c7a1",
+        "Wed May 6 15:53:11 2020 +0800",
+        "zccst"
+      ],
+      [
+        "7291e0884522bc285c8d0457048ae6a18d9a0dbd",
+        "Wed May 6 09:51:14 2020 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "70d0035e5d39ee2dc37d862f7ce6dba5693e66c8",
+        "Tue May 5 15:48:04 2020 +0530",
+        "Anil Chinchawale"
+      ],
+      [
+        "3054552d40156d818f2d630ce075a33daea29bc4",
+        "Mon Apr 27 12:22:12 2020 +0200",
+        "Daniel Kraft"
+      ],
+      [
+        "429ad69cb48608fc2ff604fcb87d86140c8ec536",
+        "Fri Apr 24 12:28:19 2020 -0400",
+        "arisac"
+      ],
+      [
+        "c8f07e634bfda637a5e2c261a44e8c99e08e1e04",
+        "Tue Apr 21 22:26:38 2020 +0300",
+        "Andrei Băncioiu"
+      ],
+      [
+        "634eec5a69b307ea1b043bb68c2ae1df23b6d738",
+        "Tue Apr 21 04:48:40 2020 -0700",
+        "Tao Network Repository"
+      ],
+      [
+        "dbb4d9b13a662fc6a8a16ada2b76a3edda1000b6",
+        "Wed Apr 15 23:28:53 2020 +0800",
+        "Bz3r0"
+      ],
+      [
+        "b0bb114cd7f160a875be17c4d8f5e0959c1961bc",
+        "Wed Apr 8 10:59:32 2020 +0200",
+        "Angainor Development"
+      ],
+      [
+        "51b1f2f77a6843312ff53df9284be5f33a816a3f",
+        "Thu Apr 2 16:35:32 2020 +0800",
+        "Vincent Shen"
+      ],
+      [
+        "9f2355aee80ee2c6b68035eb655699f02d2e47c9",
+        "Wed Apr 1 01:40:01 2020 -0700",
+        "Medha Parlikar"
+      ],
+      [
+        "906f254678fd66338359c850d56f5a19d74be599",
+        "Fri Mar 27 13:52:28 2020 +0100",
+        "Kees de Wit"
+      ],
+      [
+        "9c22d3fd208d997e6af89d637048a6ab1217c14b",
+        "Sat Mar 21 00:18:39 2020 -1000",
+        "Ira Miller"
+      ],
+      [
+        "cf1504bd759b894c21d688041caa073058ade694",
+        "Fri Mar 20 01:47:25 2020 +0900",
+        "namuyang"
+      ],
+      [
+        "ddd46746d587b6f2d9c90a90c791b6b74de98a1d",
+        "Wed Mar 18 16:26:45 2020 +0800",
+        "yqrashawn"
+      ],
+      [
+        "b02dc94be4361ed89862b7b524d30e9def7423ca",
+        "Tue Mar 17 19:08:51 2020 -0400",
+        "Andrew J Hacker"
+      ],
+      [
+        "54bbf1fd73a250bf6a248cc82686a012fb5baa45",
+        "Fri Mar 13 13:08:55 2020 +0000",
+        "rupayaproject"
+      ],
+      [
+        "5d813fb27602e59a91e120b55dc46ac6b7e92964",
+        "Thu Mar 12 17:29:11 2020 +0300",
+        "Alexander Avramenko"
+      ],
+      [
+        "3b8e2205bad12cea8b214c6fe636fa7f32ab5ce0",
+        "Wed Mar 11 14:07:00 2020 +0100",
+        "turinglabs"
+      ],
+      [
+        "aa9216fb613bda6c2d17ce3531f289b174f4f49e",
+        "Wed Mar 11 14:04:51 2020 +0100",
+        "Chris D'Costa"
+      ],
+      [
+        "ee7251cea007551607789a019c116489004a4dce",
+        "Mon Mar 9 06:08:00 2020 -0700",
+        "dropil"
+      ],
+      [
+        "f11bb416259512ff263caf712dd1a99066b353f8",
+        "Mon Mar 9 06:07:08 2020 -0700",
+        "kai@bhex"
+      ],
+      [
+        "6549f77a0c187e317c47ad15ab4b40ae916af5cc",
+        "Sun Mar 8 19:20:15 2020 +0800",
+        "tyGavinZJU"
+      ],
+      [
+        "a0b3a7af6ee311bcad576f9caea0ee0a26274f17",
+        "Fri Mar 6 16:15:57 2020 +0700",
+        "Sorawit Suriyakarn"
+      ],
+      [
+        "e931b254fe5dbe88efd5dc53dfcd3b55e8f30373",
+        "Fri Mar 6 18:14:38 2020 +0900",
+        "finlchain"
+      ],
+      [
+        "fbb6d7ee58a0f7f2fb4c34c0807d61b6d8a11bac",
+        "Sun Mar 1 18:57:55 2020 +0800",
+        "鲲鹏公有链"
+      ],
+      [
+        "638d0906ea7c9aca96fd919e757c61461bc8668a",
+        "Fri Feb 28 15:51:23 2020 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "c15ad5bd20038407c420c4a7e2a7b297034bc719",
+        "Fri Feb 28 08:50:22 2020 -0600",
+        "tohsnoom"
+      ],
+      [
+        "0dc49bd1e199fcf401f41894957e63026b692694",
+        "Fri Feb 28 15:48:31 2020 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "a91e99bc246e2c4f075464e881da8eeceaa36f11",
+        "Fri Feb 28 19:32:45 2020 +0800",
+        "lishenglin"
+      ],
+      [
+        "ef555840945306048cd2183bc91c56776e0e8a3a",
+        "Thu Feb 27 12:56:47 2020 +0100",
+        "Grégory Saive"
+      ],
+      [
+        "e172b461d3c9c70b898dd802faebc9e2081e4924",
+        "Thu Feb 27 14:46:10 2020 +0300",
+        "1221"
+      ],
+      [
+        "27c7bcb2891bc74e16f92faff4ad4b2ab9f2d66d",
+        "Thu Feb 27 19:39:28 2020 +0800",
+        "lishenglin"
+      ],
+      [
+        "ffc55b7572e3a79fddf51c03a8a8859ad9276df6",
+        "Thu Feb 27 19:38:57 2020 +0800",
+        "Kwun Yeung"
+      ],
+      [
+        "a361cc003931e691e0402eb76749564b06c9c1f4",
+        "Sat Feb 22 16:27:17 2020 +0800",
+        "hbyscpp"
+      ],
+      [
+        "df8ca28d244c3025640388dd68ea704f16083af4",
+        "Fri Feb 21 18:33:04 2020 +0800",
+        "Kwun Yeung"
+      ],
+      [
+        "7362e452576df3e757181e522641b781d264a1df",
+        "Tue Feb 18 10:40:08 2020 +0900",
+        "Yeon-Hyeong Yang"
+      ],
+      [
+        "f6674db62e6cd67d34433fcd911c0a4affe390ef",
+        "Tue Feb 18 02:45:03 2020 -0800",
+        "Neeraj Murarka"
+      ],
+      [
+        "21cb08af78ff929a86676111aa6fbc526aa87fc1",
+        "Mon Feb 17 13:06:44 2020 +0100",
+        "Matthias Kretschmann"
+      ],
+      [
+        "7427b24d783b6aa40cd30fb7333a55c091465414",
+        "Thu Feb 13 04:18:03 2020 -0800",
+        "Christopher Allen"
+      ],
+      [
+        "ce2e6dc17d27ca1571711de9c62b663116868aff",
+        "Sun Feb 9 04:07:27 2020 -0800",
+        "MoonCoinCore"
+      ],
+      [
+        "0f92d0cb73a032387ea2bd649b3693a7bc5c93e3",
+        "Fri Feb 7 04:41:46 2020 -0700",
+        "Ryan Hein"
+      ],
+      [
+        "46a520bd314b3f8499bb1f2eb7d6b5d6e82fdcf8",
+        "Wed Feb 5 18:30:30 2020 +0800",
+        "axengine"
+      ],
+      [
+        "38fff4af0ce9b355206d6a010c42e696f74a62ab",
+        "Tue Feb 4 22:11:50 2020 +0000",
+        "Litecoin Cash"
+      ],
+      [
+        "e4f45ce0b2e53785064f2a55304eacfcd9c963cd",
+        "Tue Feb 4 21:13:05 2020 +0900",
+        "Nikolay Pakulin"
+      ],
+      [
+        "bcaa2d869e3f230b892f35bb1c3a9fd38872c1d5",
+        "Mon Feb 3 23:33:33 2020 +0600",
+        "Forhad Shamim"
+      ],
+      [
+        "05a8234eafceda5e0eba225c26deb2ede17c6a9e",
+        "Tue Jan 28 19:27:27 2020 +0100",
+        "theother guylikeme"
+      ],
+      [
+        "2032c1495fd575cdff647243987506061ecc5214",
+        "Tue Jan 21 13:56:25 2020 -0800",
+        "Afauvre"
+      ],
+      [
+        "7a75e2569cf2cd85c931a3f0d2cfbde475a9cd50",
+        "Sun Jan 19 04:57:10 2020 -0800",
+        "yijia-origo"
+      ],
+      [
+        "93ab92d90c62f82d28fd5e0e1894e9bc811f11b1",
+        "Tue Jan 14 19:55:40 2020 +0000",
+        "aidanok"
+      ],
+      [
+        "9b5424c59831473932bd472e5bf3737758817b96",
+        "Mon Jan 13 18:01:26 2020 +0100",
+        "Dennis de Klerk"
+      ],
+      [
+        "52dff5c6d75d5f2b4d045cf8882a0cda8975a9e7",
+        "Sat Jan 11 20:19:25 2020 +0700",
+        "Nicolas Mahé"
+      ],
+      [
+        "3c5b69b19a940e5c5cdfd449eba8dc062e7691d5",
+        "Sat Jan 11 05:19:12 2020 -0800",
+        "mzhangdx"
+      ],
+      [
+        "2528c1abb2881a7539e7889eb3c781504751ee29",
+        "Mon Jan 6 07:55:54 2020 -0500",
+        "Dondrey Taylor"
+      ],
+      [
+        "39981dbc0a3f597fda6eec13cd658abae6c20449",
+        "Thu Jan 2 14:59:32 2020 +0000",
+        "Codegnosis"
+      ],
+      [
+        "9d3a9f223f584e39977346a46907cdb48d9f82e0",
+        "Wed Jan 1 23:58:42 2020 +0900",
+        "EtherCore Contributor"
+      ],
+      [
+        "e45acb610ba169fc11ba288ea65f697a225b0864",
+        "Thu Jan 2 01:57:57 2020 +1100",
+        "Peter Williams"
+      ],
+      [
+        "15b85fae7f69288b8d3837b1309e27aebbc37442",
+        "Wed Jan 1 20:27:42 2020 +0530",
+        "cryptoprofutonium"
+      ],
+      [
+        "a82f3d39a191d0fd22ef4944ece1197dc1828853",
+        "Sun Dec 29 16:25:28 2019 +0100",
+        "Juan Leni"
+      ],
+      [
+        "2d43886ea8beaa96b4649b47e699358cd00bb8f2",
+        "Mon Dec 23 08:37:33 2019 -0500",
+        "turcol"
+      ],
+      [
+        "0e95bf618e335a999edba814a1baa466e6d946da",
+        "Thu Dec 19 13:52:04 2019 +0100",
+        "Juan Leni"
+      ],
+      [
+        "edc879cc504010d5d642d20df306d8a13367a1fa",
+        "Thu Dec 19 11:40:50 2019 +0200",
+        "Gleec"
+      ],
+      [
+        "a748f0fb2f2e383d4ba81b4c82386c43b489f997",
+        "Wed Dec 18 12:20:59 2019 +0000",
+        "Ruaridh"
+      ],
+      [
+        "ba84a7e1b91a5b82059dd30694e153990adfd1eb",
+        "Wed Dec 18 03:09:42 2019 -0800",
+        "Louis Thiery"
+      ],
+      [
+        "e1b3aa492574ade9e3ecdfa26483013765745ff4",
+        "Mon Dec 16 14:39:34 2019 -0800",
+        "mstraka100"
+      ],
+      [
+        "668ce14464cfa9505e0faabb8a32f262cad1bda8",
+        "Sun Dec 15 19:10:05 2019 +0100",
+        "CapricoinPlus"
+      ],
+      [
+        "7dd43cb6250379dcc7f2e0fd258069bae08c6855",
+        "Tue Dec 10 19:15:11 2019 +0000",
+        "Dan Gershony"
+      ],
+      [
+        "56fbb7848701a7efd9d69c2bafb2a35c25cf89e9",
+        "Mon Dec 9 13:00:50 2019 -0800",
+        "muyiy"
+      ],
+      [
+        "30de49b3bbd2b70cc2b5001c6a2eb0681bd224ba",
+        "Mon Dec 9 14:21:18 2019 +0200",
+        "sibcool"
+      ],
+      [
+        "2c4a66093a9160caf6d32c0aa179dfe79b7047f7",
+        "Mon Dec 9 02:03:19 2019 +0700",
+        "Empow Blockchain"
+      ],
+      [
+        "2f0687539a73755d910d66f4c27abb7b871d5439",
+        "Sat Dec 7 07:28:41 2019 -0800",
+        "Gabriel Cardona"
+      ],
+      [
+        "4c942a19342de9bd9f798c4c36bc93a0e513ad33",
+        "Wed Dec 4 19:22:29 2019 +0300",
+        "Andrey Bronin"
+      ],
+      [
+        "418e81cb4e98942496866605c021c26ca50b9744",
+        "Sat Nov 23 16:59:40 2019 +0000",
+        "Tom Trevethan"
+      ],
+      [
+        "0b81634348b131b08fe89c0a7bf0e6bf6a30ec90",
+        "Sat Nov 23 09:59:20 2019 -0700",
+        "John"
+      ],
+      [
+        "7c52d78a2f19396ecb888f45a5f0f287f4ff97a5",
+        "Wed Nov 20 17:45:49 2019 +0700",
+        "Binh Do"
+      ],
+      [
+        "1d63c0d6106f1a4dc65892b8c28d9af4db8d918b",
+        "Wed Nov 20 00:16:55 2019 +0800",
+        "Install_B"
+      ],
+      [
+        "1500156d799f9bd0e6475bebcbc93e6a7455b933",
+        "Tue Nov 19 18:08:01 2019 +0800",
+        "remembermeLiu"
+      ],
+      [
+        "b9481add579da9f9cee93b8158e3b717c780c583",
+        "Sun Nov 17 13:16:46 2019 +0300",
+        "Akshay CM"
+      ],
+      [
+        "594e062cd70462a54d8e0a061d45fd6be37a1291",
+        "Sat Nov 16 14:07:10 2019 +0200",
+        "vbecas"
+      ],
+      [
+        "87ed7fb9a9a32f72fb22c344685d39e156b3724a",
+        "Sat Nov 16 07:05:29 2019 -0500",
+        "coranos"
+      ],
+      [
+        "5f916e7d068d2f83a98c8130bd36cd268471ba7c",
+        "Tue Nov 12 16:15:30 2019 +0300",
+        "Yurec"
+      ],
+      [
+        "19ae21ea485dad3ae2ff1f9a5f3b470ae7c10aa9",
+        "Fri Nov 8 12:08:31 2019 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "efed54d2f98fc9ad9bf6de8cce40ccd3600a68a1",
+        "Fri Nov 8 10:51:24 2019 +0800",
+        "jiraiyav5@126.com"
+      ],
+      [
+        "07cefc60c75637d4af1eb37d9a75f8646be6e881",
+        "Wed Nov 6 18:38:14 2019 +0900",
+        "jungsoo827"
+      ],
+      [
+        "0ab9f46365cf3560d3589ff10b7497a97b685796",
+        "Tue Nov 5 18:23:33 2019 +0900",
+        "JCKim"
+      ],
+      [
+        "58de75c4adb12896293400f7bc7ed1fa0c34d5c6",
+        "Tue Nov 5 15:25:08 2019 +0800",
+        "jiraiyav5@126.com"
+      ],
+      [
+        "011405f995c7e1d62c02b59cb80fa9a033289e2f",
+        "Mon Nov 4 21:54:10 2019 +0800",
+        "jiraiyav5@126.com"
+      ],
+      [
+        "d178243d0573c841e3352bd54f1294616f38a42d",
+        "Sun Nov 3 19:26:25 2019 +0900",
+        "chipo"
+      ],
+      [
+        "444df0298fde0d9dd3363c4cb1a8dbd66aed59d2",
+        "Fri Nov 1 00:16:09 2019 +0100",
+        "Mitchel van Amstel"
+      ],
+      [
+        "6d6457ea73da671bf00200a1135b85a826ba9eaa",
+        "Thu Oct 31 16:27:38 2019 +0800",
+        "iavl"
+      ],
+      [
+        "7ccfdb7b75d9341080bdce74803fe387ad0e5d44",
+        "Mon Oct 28 17:15:00 2019 +0100",
+        "Kees de Wit"
+      ],
+      [
+        "eabd422ad7ddc0f3a13afb434f6b09065ea1a561",
+        "Mon Oct 28 18:14:36 2019 +0200",
+        "sibcool"
+      ],
+      [
+        "cdf5283b678790099796a2dea6afee20dcb17e88",
+        "Sat Oct 26 17:09:00 2019 +0800",
+        "GB"
+      ],
+      [
+        "d602e8f37cec52f8ee9b59bf874e4662bcdf5dac",
+        "Sat Oct 19 13:49:49 2019 +0200",
+        "Reto Trinkler"
+      ],
+      [
+        "a00de853d34f730960ce6d021be9b0d597786dfd",
+        "Sat Oct 19 17:36:46 2019 +0900",
+        "Talha Cross"
+      ],
+      [
+        "0f6232e116dfc5e62fb27c5cbc66d290f724a35b",
+        "Tue Oct 15 19:27:11 2019 +0530",
+        "Maulik Vora"
+      ],
+      [
+        "b13c52109201a5f01d3f3f8763036534558dcde3",
+        "Tue Oct 15 19:04:09 2019 +0530",
+        "Maulik Vora"
+      ],
+      [
+        "f3762c9754c09a44d6d2c5d8afdd92e2380ab978",
+        "Tue Oct 15 19:09:20 2019 +0800",
+        "XRPHD"
+      ],
+      [
+        "c82f6c770f331d3fa35ef9be523e000dee80f989",
+        "Mon Oct 14 19:35:47 2019 +0800",
+        "Bitc2org"
+      ],
+      [
+        "960fec52c9019d837b132ebef783739b1ed849ef",
+        "Mon Oct 14 13:08:59 2019 +0300",
+        "Yuri Gagarin"
+      ],
+      [
+        "6b2084fbeeebeb2fcf06e2edd6c6bab2cee8a9a7",
+        "Fri Oct 11 14:55:16 2019 -0300",
+        "apollo"
+      ],
+      [
+        "c0295836d3eb4a71289529b1f443168285338843",
+        "Mon Oct 7 11:56:33 2019 -0400",
+        "Proteus"
+      ],
+      [
+        "ed2c7b158af8848119c4e75abedb2e8364d790c9",
+        "Sat Oct 5 10:24:42 2019 -0500",
+        "Carmelo Campos"
+      ],
+      [
+        "063c6017b43e5bf041632769a2304928af7fe315",
+        "Fri Oct 4 13:50:17 2019 -0500",
+        "Enrique"
+      ],
+      [
+        "4d88703f488e5652848ef7f01d9613ff0cf9ff08",
+        "Fri Oct 4 12:27:18 2019 +0000",
+        "Ian Duoteli Fleming"
+      ],
+      [
+        "5e72fa5012c92162a12956891e5e6d2c864c848f",
+        "Thu Oct 3 07:40:57 2019 -0400",
+        "Elpidio Moreno"
+      ],
+      [
+        "1903eda5fa4af8777704d7d7eebe6ecd569fa5b9",
+        "Wed Oct 2 15:37:49 2019 +0800",
+        "Ryan"
+      ],
+      [
+        "20b8db5863dbca3e137ce0542e65bed56eaea3f8",
+        "Tue Oct 1 21:55:05 2019 +0300",
+        "Dmitry Goroshevsky"
+      ],
+      [
+        "cbc4b5e439bf937d7c7f12d6f958f0096a95d8d3",
+        "Fri Sep 27 19:28:17 2019 +0800",
+        "Ryan"
+      ],
+      [
+        "edd38f75b828d9163afdff69769693de76a45826",
+        "Wed Sep 25 12:56:35 2019 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "996c8b13fc21930b025fc8fa4dbe097d3276fe2a",
+        "Wed Sep 25 12:54:05 2019 +0200",
+        "Sebastian Dechant"
+      ],
+      [
+        "36b5608c54c3bd1bd9ae6c144091f16888c54551",
+        "Wed Sep 25 18:51:54 2019 +0800",
+        "Hongmin"
+      ],
+      [
+        "304448522f717815634a7a13149f854c84a31608",
+        "Mon Sep 23 17:13:25 2019 +0800",
+        "Ryan"
+      ],
+      [
+        "ff211719190fe2c1d12506da78fb835f7f6c8e7e",
+        "Fri Sep 20 17:24:27 2019 +0800",
+        "Ryan"
+      ],
+      [
+        "04f8439f336aa8d169b3c99f5544779116023803",
+        "Fri Sep 20 02:47:51 2019 +1100",
+        "hatchpay"
+      ],
+      [
+        "c01ef6334c6b5dfce35bd2426c97ffce37a98b53",
+        "Thu Sep 19 21:39:11 2019 +0800",
+        "Ryan"
+      ],
+      [
+        "8ad8091a22856839c6a3fc63f2fc798071542b23",
+        "Thu Sep 19 00:18:57 2019 +0800",
+        "Ryan"
+      ],
+      [
+        "8e3be14280c2de4d60bcdddc8a953e4c44d64ed8",
+        "Wed Sep 18 23:13:30 2019 +0800",
+        "Ryan"
+      ],
+      [
+        "bf76776331f99480d29ee175e6cce061526b928e",
+        "Wed Sep 18 00:28:27 2019 +0800",
+        "gz-c"
+      ],
+      [
+        "5190bbfabf07d47f68d3f0c0ebf8193f6c0c9877",
+        "Wed Sep 18 00:27:17 2019 +0800",
+        "Wei-Ning Huang"
+      ],
+      [
+        "c42446c64d10cfa2e9aafc28fd2c166c0c095b55",
+        "Tue Sep 17 01:35:35 2019 -0500",
+        "Enrique"
+      ],
+      [
+        "c258752dd343d84aed29492483279073cdc3d640",
+        "Tue Sep 17 05:48:08 2019 +0900",
+        "Aile Coin"
+      ],
+      [
+        "846ee985f481614b3b28e0f3061a7d74b531236d",
+        "Mon Sep 16 18:25:41 2019 +0900",
+        "ilmango"
+      ],
+      [
+        "e74e811c636440176d48019cfd950b6829906dc9",
+        "Sun Sep 15 17:43:16 2019 +0800",
+        "HDDCASH"
+      ],
+      [
+        "e3290d44146f6d4e3397dc52641bbafdcf87a6fb",
+        "Sat Sep 14 21:48:49 2019 +1100",
+        "earthspay"
+      ],
+      [
+        "92da3692120844e48bce341b9fefbf5197617291",
+        "Tue Sep 10 18:26:58 2019 +0300",
+        "Panagiotis David"
+      ],
+      [
+        "7e6ebd5fd6d6a43337b8b8ff62797ec8e18380b1",
+        "Tue Sep 10 05:18:14 2019 -0400",
+        "harshad1ledger"
+      ],
+      [
+        "7ae771429058991b6dc706f7d2497f5698ceb79b",
+        "Sun Sep 8 12:44:10 2019 +0200",
+        "Maik Broemme"
+      ],
+      [
+        "19f735dcabf619c181fbd01c44b334772abc79ff",
+        "Thu Sep 5 22:46:39 2019 +0800",
+        "JoeyHanks"
+      ],
+      [
+        "f166108fc92fc0345e6882a33ce1a004d10de7c3",
+        "Thu Sep 5 10:34:46 2019 +0100",
+        "Ca.Men"
+      ],
+      [
+        "6da894953d0d7a3c15d927621a2e81e3c286dafd",
+        "Tue Sep 3 01:01:02 2019 -0700",
+        "Peter DePaulo"
+      ],
+      [
+        "899b4602142123c6762424db4a8a8efb38aab425",
+        "Mon Sep 2 12:04:06 2019 +0200",
+        "Adam R"
+      ],
+      [
+        "7eec7369da6b59ff4569213331a99b6a6aaaef1e",
+        "Sun Sep 1 19:46:15 2019 +0800",
+        "Kwun Yeung"
+      ],
+      [
+        "c2e917beee2cd74fecf15c2a325a1ce3fe583be4",
+        "Tue Aug 27 20:34:56 2019 +0200",
+        "Asmodat"
+      ],
+      [
+        "f1f90085e3fd42c9cf1b54b2aa469083015d1904",
+        "Wed Aug 21 20:49:50 2019 +1200",
+        "Ryxor"
+      ],
+      [
+        "349831959ba5644a0d8d1147bc8416d2ae437776",
+        "Wed Aug 21 01:49:34 2019 -0700",
+        "coolcottontail"
+      ],
+      [
+        "1e18606c808904bc69554fcc0a7c0b284e78ffbd",
+        "Wed Aug 21 00:14:56 2019 +0800",
+        "Tomas Tauber"
+      ],
+      [
+        "5d126f6ef8803628a16ae1b01725a4d9f97fd433",
+        "Tue Aug 20 16:36:25 2019 +0800",
+        "HSN"
+      ],
+      [
+        "16de0602be068b3db5aeee0cdccd4ac99a206103",
+        "Mon Aug 19 12:22:20 2019 -0400",
+        "Mochimo Development Team"
+      ],
+      [
+        "d4b343939dc82a2c9bb556771c4727a2034ecae3",
+        "Sat Aug 17 16:10:52 2019 +0800",
+        "ltchd2019"
+      ],
+      [
+        "49f1e0b1413b53bfbb309908b444009c7eb813da",
+        "Fri Aug 16 00:26:51 2019 +0800",
+        "AprocySanae"
+      ],
+      [
+        "e77096cb887d3458c68c0f3dbde76eff84ce1a44",
+        "Thu Aug 15 18:26:10 2019 +0200",
+        "Caleb James DeLisle"
+      ],
+      [
+        "74cc32a0e4bdf0a628d67dbfbe0c1fd7632e1abc",
+        "Tue Aug 13 16:21:09 2019 -0600",
+        "Tyera Eulberg"
+      ],
+      [
+        "2efa25a4404c9dcae1015adeba243b89eded2623",
+        "Wed Aug 14 02:08:39 2019 +0800",
+        "wangzhiyong"
+      ],
+      [
+        "76da95b655ab89bedffc97912b90daa4bbafa659",
+        "Tue Aug 13 14:08:20 2019 -0400",
+        "morinpa"
+      ],
+      [
+        "5c7f8d8bb73fa1843edc1b80d39bfaecceae3033",
+        "Mon Aug 12 18:53:29 2019 +0800",
+        "felix"
+      ],
+      [
+        "c0f97a8aa5f58e3d6174823ab6fd192d6d509811",
+        "Sun Aug 11 13:40:26 2019 +0100",
+        "mceme"
+      ],
+      [
+        "72fe69c9fc68df716f1e0edc2fb578be298fa584",
+        "Sat Aug 10 12:45:03 2019 -0400",
+        "Matteo Bruni"
+      ],
+      [
+        "4c0c55b59226b87f5a6c95c8abbf1de86fcd2a61",
+        "Thu Aug 8 16:23:49 2019 +0300",
+        "Akshay CM"
+      ],
+      [
+        "159ae881b84eaed05b8c16f8f5efb1d2b1931550",
+        "Thu Aug 8 15:23:27 2019 +0200",
+        "Giacomo Milligan"
+      ],
+      [
+        "915a2451395bad82049fd99ecab24f0bde555126",
+        "Thu Aug 8 17:39:27 2019 +0800",
+        "Kell Benet"
+      ],
+      [
+        "f64d5f8bdbfb6b519326208ffb8bf4d46cc5f61f",
+        "Wed Aug 7 23:27:09 2019 +0800",
+        "Ryan"
+      ],
+      [
+        "1e641e4e45b7a229dfa6b1b347df0ba69b8bf19a",
+        "Mon Aug 5 20:54:32 2019 +0300",
+        "Vladyslav Makarian"
+      ],
+      [
+        "95e0ef94a3c2ab178b7b038cc58aef9e59afe3a0",
+        "Fri Aug 2 19:54:52 2019 +0800",
+        "ulchain"
+      ],
+      [
+        "f25f44a668e88c6896cfd3d6b75cd5da04ce2637",
+        "Wed Jul 31 03:20:28 2019 -0500",
+        "jimtalksdata"
+      ],
+      [
+        "e8c67006de5e042156d17a59bf69da42ecb75970",
+        "Wed Jul 24 20:03:23 2019 +0800",
+        "sjxqqq"
+      ],
+      [
+        "d67ea03426de54ff7c79f47d1270313723329f6b",
+        "Wed Jul 24 11:35:41 2019 +0100",
+        "Kitty"
+      ],
+      [
+        "9f1456cb2474f6140dde08712b1e46913e17db4c",
+        "Wed Jul 24 16:57:42 2019 +0800",
+        "Mostafa Sedaghat Joo"
+      ],
+      [
+        "4bf6777b8cbe6bbd36063cbe25294d856432b7fa",
+        "Wed Jul 24 15:12:43 2019 +0800",
+        "FlavoredYoghurt"
+      ],
+      [
+        "77277d519594a1f1f14f7257919b2b563a360f70",
+        "Mon Jul 22 11:01:43 2019 +0200",
+        "Ethan van Ballegooyen"
+      ],
+      [
+        "94baf5373158fddc0c2b644370d663172726bbd6",
+        "Thu Jul 18 01:36:20 2019 -0700",
+        "Dark Raven"
+      ],
+      [
+        "63871034e00dcfc1b95c563a89fff1437fb06301",
+        "Wed Jul 17 15:26:36 2019 +0200",
+        "anonymouszar"
+      ],
+      [
+        "287d48bc8bea9976f1b04ada31281d62e8bd6768",
+        "Tue Jul 16 04:39:53 2019 +0800",
+        "ysh0566"
+      ],
+      [
+        "47c312b61127cbbf33e1f35b56bc0cf4986aa9cd",
+        "Fri Jul 12 02:29:01 2019 -0700",
+        "Green Appers, Inc"
+      ],
+      [
+        "08596f63bd83de92c1451e58df4e61e5ce96d512",
+        "Fri Jul 12 18:27:37 2019 +0900",
+        "Cha Minkyoo"
+      ],
+      [
+        "465053b26609bb37e5221be1325bd60e900c9546",
+        "Thu Jul 11 05:21:25 2019 -0400",
+        "Corey M"
+      ],
+      [
+        "ad7556d2d7f96d66c263785b19209daafe316e86",
+        "Wed Jul 10 12:17:04 2019 +0300",
+        "ABBC Foundation"
+      ],
+      [
+        "97058a5405dc93fe3137b9d0f7723472fd7de39a",
+        "Tue Jul 9 10:51:25 2019 -0400",
+        "Kent Quirk"
+      ],
+      [
+        "a5a51a311f4f50d99f9f7b6bd7fc1b8a75c0655b",
+        "Tue Jul 9 22:50:59 2019 +0800",
+        "hebingqing"
+      ],
+      [
+        "8440e7849a1ed50845f210d00dfab986f155a64b",
+        "Tue Jul 9 21:50:35 2019 +0700",
+        "ducnd412"
+      ],
+      [
+        "461325425906d6eab48617aa89c79f8a082dc57e",
+        "Tue Jul 9 02:11:48 2019 +0900",
+        "Min Khang Aung"
+      ],
+      [
+        "6dfeba160bcea8df102565c369bceb17b990871b",
+        "Mon Jul 8 16:48:41 2019 +0700",
+        "SonicX Blockchain"
+      ],
+      [
+        "4e46d5ee76d71590292df4a987422390a4e61d13",
+        "Mon Jul 8 11:47:44 2019 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "6456bedd4670c40e73ef4e6a2d03d483e9e435bc",
+        "Mon Jul 8 19:45:30 2019 +1000",
+        "Trent"
+      ],
+      [
+        "a04ee3dbf7d5b62123ca17d90de9092109358bb8",
+        "Thu Jul 4 10:38:58 2019 +0100",
+        "FlyFoxUK"
+      ],
+      [
+        "13fe4222c7412065509a8276725aebf2f9dc368b",
+        "Thu Jul 4 04:37:23 2019 -0500",
+        "Rasikh Morani"
+      ],
+      [
+        "1c4dbcbf1ce9ed67c5b494e0812f042d643e20c3",
+        "Sat Jun 29 00:23:33 2019 +0300",
+        "onnateldome"
+      ],
+      [
+        "12ebe811921a53550026c70cc28cf30719c4c76d",
+        "Fri Jun 28 18:25:00 2019 +0200",
+        "Solar Designer"
+      ],
+      [
+        "89f73e0dd1ea9f5b7e56ea984ca0085adabe5bf1",
+        "Fri Jun 28 10:06:46 2019 -0500",
+        "George"
+      ],
+      [
+        "99ebedaf39a322f0b7f15045c788089e3a4c4647",
+        "Thu Jun 27 16:43:45 2019 +0800",
+        "revotu"
+      ],
+      [
+        "5c17783d4a2f2a9fe7ed4492884e18bae132da68",
+        "Wed Jun 26 16:36:20 2019 +0200",
+        "Sven"
+      ],
+      [
+        "040b3d1ccf673107bd5b8bfe139260d6648ccdef",
+        "Wed Jun 26 16:22:52 2019 +0800",
+        "yoyo"
+      ],
+      [
+        "a71326ffbd792243d4d388dbb79f258b4aa5f34e",
+        "Mon Jun 24 21:00:16 2019 +0800",
+        "gaoxiangxyz"
+      ],
+      [
+        "2927d268f7db00ae480a6cea9c0a04d2d5f1b272",
+        "Mon Jun 24 21:59:55 2019 +0900",
+        "Jin Hur"
+      ],
+      [
+        "f5318397cfc55ab868c2aecae73194ae78dc1ca1",
+        "Mon Jun 24 02:38:10 2019 +0800",
+        "ariesunny"
+      ],
+      [
+        "29187c1e775bbf45c24bf0d9dabaeae7f2b7b384",
+        "Mon Jun 24 01:37:03 2019 +0700",
+        "Truong Hong Thi"
+      ],
+      [
+        "c169258fc34f9f2ccf9995482bfaf299e5a3c6c3",
+        "Tue Jun 18 11:34:20 2019 -0700",
+        "Arjun"
+      ],
+      [
+        "e287ec3435671d5e122457122cd059469979ae31",
+        "Mon Jun 17 08:01:15 2019 -0700",
+        "Arjun"
+      ],
+      [
+        "c6f8ecfd631ee8f3beddff8c2d3e9814afdad7f9",
+        "Sun Jun 16 15:51:04 2019 +0000",
+        "yorugac"
+      ],
+      [
+        "c83076143e46cc70d1465ca71398aec12644e516",
+        "Thu Jun 13 13:42:01 2019 +0200",
+        "Richard Roznovjak"
+      ],
+      [
+        "90e24c9311063dc4f264c9b49528c26afb8c0d44",
+        "Tue Jun 11 16:42:07 2019 +0530",
+        "Mohak Shah"
+      ],
+      [
+        "98e09813361a955e89b9d1bf106a0b78bf9b0e93",
+        "Mon Jun 10 18:43:35 2019 -0400",
+        "Yatendra"
+      ],
+      [
+        "da9ef18251eab519547cb7a6439e3dc8238aba8e",
+        "Sat Jun 8 23:56:52 2019 +0900",
+        "omtns"
+      ],
+      [
+        "dd62ceb79a548dfbb24c8c5fd760a13fab18b583",
+        "Wed Jun 5 18:33:15 2019 -0400",
+        "Bit Yoda"
+      ],
+      [
+        "e59be91c110fa1f13a4c0f61ccee7559d2c3a59c",
+        "Wed Jun 5 19:58:05 2019 +0800",
+        "894346784"
+      ],
+      [
+        "cb0261cf4bed24ff36c083efba6d3f09246b2970",
+        "Tue Jun 4 21:33:26 2019 +0800",
+        "cpchainbot"
+      ],
+      [
+        "1c205766d92ef187d0841b93f8c5e15e3a70d400",
+        "Tue Jun 4 14:57:13 2019 +0300",
+        "Y"
+      ],
+      [
+        "697991b83a2c7cd4cba635175569c52c6d4b2ab3",
+        "Mon Jun 3 22:05:22 2019 +0800",
+        "bluesky0125"
+      ],
+      [
+        "3682c3b5b2d0c23f4c38d0f3907818f926148ff7",
+        "Sun Jun 2 19:35:33 2019 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "4a0c83131c409c4f722c8cc9d97e45cc9c36c009",
+        "Sun Jun 2 11:34:26 2019 +0200",
+        "Gregory Lemercier"
+      ],
+      [
+        "6ad31b4382e3ce68dce9adbf547a12f1058d6ae6",
+        "Fri May 31 17:14:03 2019 +0800",
+        "轩辕焮痕"
+      ],
+      [
+        "8194d1485eb3a85479ef2341057428be97164ca7",
+        "Thu May 30 17:28:12 2019 +0200",
+        "Marian Gheorghe"
+      ],
+      [
+        "e2b9a82a7e7903ded8029a9f892b4e55e0c312c9",
+        "Thu May 30 10:27:49 2019 -0500",
+        "Sean McGary"
+      ],
+      [
+        "13b6fdfa3fd85049aa50356e07b16674ee88a2f3",
+        "Thu May 30 11:42:03 2019 +0200",
+        "Timo"
+      ],
+      [
+        "5bf94fcedc2292f3484c3cbd63bca4fcb12ba03e",
+        "Mon May 27 20:53:09 2019 +0200",
+        "DEVCØN"
+      ],
+      [
+        "abb5a2f1194c648b424d305eb01a47e688f5e57f",
+        "Mon May 27 20:51:24 2019 +0200",
+        "koirider"
+      ],
+      [
+        "e1df06ebea95e5c1c10e05ffdd538274a7713d7f",
+        "Thu May 23 23:32:46 2019 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "37e21a8a9c77cba6fb43b98d3045b7832bee7277",
+        "Fri May 24 02:13:03 2019 +0800",
+        "evesnow91"
+      ],
+      [
+        "c12590df173251f073162a4a4d0613ad9f0ecf26",
+        "Thu May 23 13:12:42 2019 -0500",
+        "anthony19114"
+      ],
+      [
+        "b558ddd731c351cb18c1b98c6d7ec14b0aadc492",
+        "Wed May 22 06:14:36 2019 -0400",
+        "Matt Smith"
+      ],
+      [
+        "756d2051b61f9a7c6856fea8e68c2f7ce243787a",
+        "Wed May 22 19:04:40 2019 +0900",
+        "Trustfarm-heart"
+      ],
+      [
+        "3181a4b654da9c7c4dbeeeb797800f16324cc421",
+        "Sun May 19 11:22:41 2019 -0700",
+        "CryptoForge"
+      ],
+      [
+        "3e7cbcfa47df08a33c4aa629936a2062eb904250",
+        "Fri May 17 14:42:49 2019 +0100",
+        "Shard Coin"
+      ],
+      [
+        "a6ae01b60cbb21f3624b2bfbf6be546dbd077ccb",
+        "Thu May 16 22:09:57 2019 +0200",
+        "Markus Nebel"
+      ],
+      [
+        "3dba50e951591dc18f25d08ba4d19467b0795812",
+        "Thu May 16 03:33:16 2019 -0400",
+        "Matt"
+      ],
+      [
+        "4839218726bd0dc640f8ec78f535bfd14ef7c0f3",
+        "Tue May 14 23:37:45 2019 +0200",
+        "Juan Leni"
+      ],
+      [
+        "4ef829b16795f44eeac730f3abfec651bcd6b88c",
+        "Tue May 14 10:49:05 2019 -0400",
+        "Yatendra"
+      ],
+      [
+        "0aa5f20f087eaded58bd226695590896a97919df",
+        "Tue May 14 12:54:00 2019 +0300",
+        "Lior Yaffe"
+      ],
+      [
+        "2c24924dfba48ac982cc651cfe139de1fa5711d3",
+        "Mon May 13 18:16:41 2019 +0800",
+        "revotu"
+      ],
+      [
+        "245dd6c3f9eea9e605108ff61ce42a458a8e051f",
+        "Mon May 13 19:16:14 2019 +0900",
+        "James Chen"
+      ],
+      [
+        "d4e39992e18226c33aa8e0c82c6dfd1a94b2032a",
+        "Mon May 13 18:15:48 2019 +0800",
+        "Sheldon"
+      ],
+      [
+        "fbc4b1d2bddee6e473d4bc456dd00934e7443fe8",
+        "Mon May 13 04:15:29 2019 -0600",
+        "Jayson Jacobs"
+      ],
+      [
+        "69052856c687aed7ae01021a50bba4235a80d786",
+        "Mon May 13 03:15:08 2019 -0700",
+        "AW"
+      ],
+      [
+        "139337d3a72bd1cfc1d17af52edee08ac1edcbf0",
+        "Sun May 12 17:56:03 2019 +0200",
+        "Reto Trinkler"
+      ],
+      [
+        "d6b7f9135e307060855800afc28fd241ef99fbbf",
+        "Tue May 7 12:03:57 2019 +0200",
+        "dustinface"
+      ],
+      [
+        "e6fa429463a37e5725cb64feecdacc3b3491f3e1",
+        "Tue Apr 30 03:37:56 2019 -0700",
+        "BeachM"
+      ],
+      [
+        "96607b0c54bf2c7eecbc1a0c44062529848ae014",
+        "Tue Apr 30 22:37:09 2019 +1200",
+        "Ian He"
+      ],
+      [
+        "89537dca5399a95233c547058592177d011bd0cf",
+        "Mon Apr 29 14:07:13 2019 +0530",
+        "Mohak Shah"
+      ],
+      [
+        "66a671b5c86630c4e8ef67640f995fe31eb8bad0",
+        "Fri Apr 26 18:56:33 2019 +0800",
+        "wcc19840827"
+      ],
+      [
+        "06985687ef4a74f4f8136b87e1d0d4003619365a",
+        "Thu Apr 25 14:21:04 2019 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "1b1a9b7232091a843bca74d209eae5c1cc7f696a",
+        "Wed Apr 24 21:50:59 2019 +0200",
+        "Harris Brakmić"
+      ],
+      [
+        "9fea069ed811cfd666e27553e8d78e377a958cc7",
+        "Sat Apr 20 06:14:11 2019 -0400",
+        "Proteus"
+      ],
+      [
+        "189ae36ad6d6ac3ba4383f8aef64f48a2d9e597b",
+        "Sat Apr 20 19:13:05 2019 +0900",
+        "人畜無害"
+      ],
+      [
+        "1e9624b373ebc7169f49314899550cadd4de9a8f",
+        "Thu Apr 18 16:59:14 2019 +0100",
+        "Liam Alford"
+      ],
+      [
+        "32b417c81054193dc2fcd4e5983c6aa19965e63e",
+        "Wed Apr 17 11:23:48 2019 -0700",
+        "Frank"
+      ],
+      [
+        "e4bc9cbf0fdaa4d1f0bdf6f2b23c32c356dfadfa",
+        "Tue Apr 16 19:47:36 2019 +0300",
+        "Nikolay Kuzin"
+      ],
+      [
+        "c92935e4c9676ef9eb68763c40843f9d943f93c6",
+        "Tue Apr 16 05:32:16 2019 -0400",
+        "Do Kwon"
+      ],
+      [
+        "a0e61cca24d68d15dbf11e6124437e8161ea8771",
+        "Tue Apr 16 17:31:08 2019 +0800",
+        "eyestudio"
+      ],
+      [
+        "c11384e68a30933c33726f6a2b35e41b0bc5a9de",
+        "Mon Apr 15 23:42:32 2019 +0300",
+        "Angelos Veglektsis"
+      ],
+      [
+        "1354f4d4cf23442b344278ec3da66d998c37e92c",
+        "Mon Apr 15 22:41:40 2019 +0200",
+        "Jose Luis Estevez"
+      ],
+      [
+        "0a02be05ffdcd65aadcc45fa7ae1a11711b3b9af",
+        "Mon Apr 15 21:41:11 2019 +0100",
+        "Dassus"
+      ],
+      [
+        "742cc6b35f5f1455da460f7e671f1b7b9d635317",
+        "Mon Apr 15 22:40:33 2019 +0200",
+        "Santi"
+      ],
+      [
+        "1fc2e39561ffd6bf0b6edc083fe4cee82bbf37fa",
+        "Tue Apr 16 04:39:28 2019 +0800",
+        "Eric Huang"
+      ],
+      [
+        "edc525f9c1a88e1d20336b8d41dc26789194e9a6",
+        "Fri Apr 12 16:21:54 2019 -0400",
+        "iocrypto"
+      ],
+      [
+        "3c8b82e0511817cd24d5459ee7c27696e7842747",
+        "Fri Apr 12 08:25:40 2019 -0400",
+        "turcol"
+      ],
+      [
+        "9e134d0d5b1c775a6cfc2929767057d876e4f569",
+        "Fri Apr 12 14:25:06 2019 +0200",
+        "DEVCØN"
+      ],
+      [
+        "80cdb0768a9d3aa2c76b70ea166a1a2dcc096114",
+        "Wed Apr 10 19:47:19 2019 +0800",
+        "ablozhou"
+      ],
+      [
+        "fa1f99a03d8a4b8e2a7dbc8405ae63934525f5ae",
+        "Tue Apr 9 20:26:39 2019 +0300",
+        "jino5577"
+      ],
+      [
+        "5c24bc4661f1f157681ef372049a827290c7fa44",
+        "Tue Apr 9 04:48:14 2019 -0600",
+        "theboldproject"
+      ],
+      [
+        "291b9467c87adc868617a8e00a8ae503b57083ad",
+        "Wed Apr 3 06:13:57 2019 -0500",
+        "Pawel Cioch"
+      ],
+      [
+        "43f82c86da813e96018de44a980f4f7c3bac0399",
+        "Sun Mar 31 19:46:13 2019 +0200",
+        "Giacomo Milligan"
+      ],
+      [
+        "0f11c69f04ba7f76828db2319094208e417ee3a6",
+        "Sat Mar 30 20:05:02 2019 +0100",
+        "Dennis de Klerk"
+      ],
+      [
+        "72daa8ca01205196da1fbd456ee6578b593caf8a",
+        "Thu Mar 28 18:25:10 2019 +0100",
+        "Cevap Master"
+      ],
+      [
+        "73b02b32f77bd53b9a80d7e998fd08b4fb1f66cc",
+        "Thu Mar 28 14:15:14 2019 +0100",
+        "Slate Random Dev"
+      ],
+      [
+        "5735f00aa1c6882912ab47ba524d2dbf33239300",
+        "Wed Mar 27 14:57:08 2019 +0100",
+        "2infinity-gh"
+      ],
+      [
+        "d32f92f9738a615cc1ae6a7442413f1122bf60a1",
+        "Wed Mar 27 14:55:51 2019 +0100",
+        "DEVCØN"
+      ],
+      [
+        "7fdc248cc7e607d86a4dd4a573910a28feb2b16d",
+        "Wed Mar 27 14:55:36 2019 +0100",
+        "OBSERVER"
+      ],
+      [
+        "82a88f645b05dfe1f68dc0fcf3dc520d741c7ce6",
+        "Tue Mar 26 13:12:06 2019 +0200",
+        "cranepay"
+      ],
+      [
+        "0096ca111d1fa01e2b1fe74b08c17ccf58d89d8e",
+        "Wed Mar 20 02:45:57 2019 -0400",
+        "Nickolai Zeldovich"
+      ],
+      [
+        "bf57b976e788b891956782b40c8e0e76c57a7453",
+        "Mon Mar 18 03:38:55 2019 -0700",
+        "Adam Barlam"
+      ],
+      [
+        "c153595919ba9ba2fd435e2a1181358ade02b5a5",
+        "Thu Mar 14 00:03:17 2019 +0800",
+        "Frank Yang"
+      ],
+      [
+        "2ec4372d4f2a910e3e6d1a13563119788f59bcf8",
+        "Wed Mar 13 19:36:32 2019 +0800",
+        "Yang LIU"
+      ],
+      [
+        "824c3ac7b2f4e98a4a406ca872129a2aaf2e727b",
+        "Wed Mar 13 19:35:57 2019 +0800",
+        "yqsy"
+      ],
+      [
+        "40c9d2304cfe92d1423e009c6969551851b78d47",
+        "Thu Mar 7 20:45:05 2019 +0800",
+        "eddyCais"
+      ],
+      [
+        "b2cf66feef3f30a8b81fa8a97e6f004f7e4115af",
+        "Tue Mar 5 05:58:14 2019 -0600",
+        "Brian Deery"
+      ],
+      [
+        "7353db8b87743e85a86719d4908cb908956d11a2",
+        "Mon Mar 4 14:36:46 2019 -0800",
+        "Jose Luis Estevez"
+      ],
+      [
+        "d95d0548ff4d8334f0881f47895d86ce0292968e",
+        "Mon Mar 4 01:12:05 2019 -0800",
+        "Jose Luis Estevez"
+      ],
+      [
+        "78e9724b70fcd20b922366516c60a9c7d442ebac",
+        "Sun Mar 3 08:53:29 2019 -0800",
+        "Jose Luis Estevez"
+      ],
+      [
+        "e990728230ac4e349b74a7b17d445910380c5df9",
+        "Sun Mar 3 05:40:42 2019 -0800",
+        "Jose Luis Estevez"
+      ],
+      [
+        "9c12241f8a23b7813045684a5a0f1b89a55639a0",
+        "Sun Mar 3 22:38:29 2019 +0900",
+        "Shinya Furusake"
+      ],
+      [
+        "d5a77ae2a7cd8fcf02bcf1c6b673eb00439cdb70",
+        "Fri Mar 1 13:33:17 2019 +0100",
+        "Adrián Matejov"
+      ],
+      [
+        "ddedde5236c0e9c53faad05a4301e6b7599a4d73",
+        "Fri Mar 1 18:29:42 2019 +0800",
+        "BC-Chain"
+      ],
+      [
+        "46b3828304cb33a7dac4a4ab1165215531d1f16c",
+        "Wed Feb 27 18:19:24 2019 +0100",
+        "Viktor"
+      ],
+      [
+        "c9c4cf0f33224f430babdcc189b487a3c4dda88a",
+        "Wed Feb 27 03:27:22 2019 -0500",
+        "PTYX11"
+      ],
+      [
+        "67fbe7874f138bcafddd1a022adedf38203dbe97",
+        "Tue Feb 26 13:58:12 2019 -0300",
+        "EndlessLoop"
+      ],
+      [
+        "9001a439224f7c97c4eefcafa1e49c4066f69fdb",
+        "Tue Feb 26 22:58:19 2019 +0900",
+        "セリシア"
+      ],
+      [
+        "1bd33f9f3cbab61d81712250a2594d7927455e8c",
+        "Tue Feb 26 05:37:12 2019 -0800",
+        "J62"
+      ],
+      [
+        "efaeb9ba6b9ab43a104c41ceb4aedc5bd5b3c9d5",
+        "Sun Feb 24 19:47:52 2019 +0900",
+        "Garrett MacDonald"
+      ],
+      [
+        "e8623ac4f9f318d97748e6c3cff83cfb936552b8",
+        "Sat Feb 23 13:17:04 2019 -0800",
+        "Robert Mao"
+      ],
+      [
+        "75ed760d41f9d8eb698513405f5f17523026372b",
+        "Sat Feb 23 20:38:08 2019 +0400",
+        "DreamTeam3"
+      ],
+      [
+        "e0afc70e24ca5742d735428c32a3dd7a807f896d",
+        "Wed Feb 20 09:56:05 2019 -0600",
+        "Pawel Cioch"
+      ],
+      [
+        "23ed0adaf2f569824f4daced4a7cac7c3c65d990",
+        "Tue Feb 12 16:47:02 2019 +0000",
+        "redstone-admin"
+      ],
+      [
+        "abf9da7d944c015a30fe2ce6f9f4069e96b4cc3d",
+        "Tue Feb 12 13:40:02 2019 +0100",
+        "Jenova7"
+      ],
+      [
+        "c2162e9646f62492cf1c945ffad87a18983b7399",
+        "Tue Feb 12 17:16:45 2019 +0900",
+        "Kikyou Akino"
+      ],
+      [
+        "32f5f9b9a9bd8ec5099546c2a3341ef07a3b4895",
+        "Mon Feb 11 16:01:20 2019 +0530",
+        "Pion Coin Core"
+      ],
+      [
+        "0eee9d261c61b66d5ed225ab0e82412815cbd0df",
+        "Fri Feb 8 19:55:40 2019 +0900",
+        "shyun-comcom"
+      ],
+      [
+        "10468a29472c8fb00a71cc46b2960e36c6385462",
+        "Fri Feb 8 04:22:31 2019 +0800",
+        "IoTE"
+      ],
+      [
+        "c254ad530c8141cf10642a83c0e1b9f4376df8d4",
+        "Wed Feb 6 01:56:04 2019 -0800",
+        "Clueless"
+      ],
+      [
+        "e46b0eed3b155a655839cca7ee6bc14ad4cf0db1",
+        "Mon Feb 4 17:22:30 2019 +0100",
+        "Garrett MacDonald"
+      ],
+      [
+        "9d2f1bbe98bc929eded51b68fcc0c534b7331835",
+        "Sat Feb 2 03:44:39 2019 +0100",
+        "konez2k"
+      ],
+      [
+        "dbbd849405799241f9081cd8402d3034f9244ae5",
+        "Tue Jan 29 07:51:50 2019 +0800",
+        "weijia"
+      ],
+      [
+        "85b07080b2eb484363bd849194ca472b4a20e95a",
+        "Mon Jan 28 11:30:23 2019 -0500",
+        "zhengpeng li"
+      ],
+      [
+        "bed64d9d5b8c7d8c2937b3fc5abd6588797c698d",
+        "Mon Jan 28 17:28:13 2019 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "5a57d983257ee34b983dbc2f266aadd3cbe4c6cf",
+        "Tue Jan 22 14:54:11 2019 +0100",
+        "Julian Fleischer"
+      ],
+      [
+        "8e10371150d11b9a3e4a07d26c8034d63fe71528",
+        "Tue Jan 22 15:00:06 2019 +0200",
+        "Kozlov Oleksandr"
+      ],
+      [
+        "7b023fc39ce7f287a38174de76b1061e8a7eceed",
+        "Tue Jan 22 17:47:18 2019 +0800",
+        "Kandy Ye"
+      ],
+      [
+        "3c8748ad277fd5e22dd179b426afaa8f4264dea3",
+        "Mon Jan 21 16:06:36 2019 -0200",
+        "Marcelo Salhab Brogliato"
+      ],
+      [
+        "57736e32352fc1a943396c962504b19471f58b1a",
+        "Fri Jan 18 16:48:15 2019 +0100",
+        "Peter Grassberger"
+      ],
+      [
+        "47d53573e5abe319ed1f7526eb764e7ae33b7cbd",
+        "Wed Jan 16 19:37:19 2019 +0800",
+        "cong"
+      ],
+      [
+        "279d20d097c12418613e44a7ebfee61bfe7bbf5d",
+        "Wed Jan 16 05:35:21 2019 -0600",
+        "Cronos"
+      ],
+      [
+        "64f62048fd1a500990b3c489910bd305cfa69be5",
+        "Wed Jan 16 19:34:04 2019 +0800",
+        "revotu"
+      ],
+      [
+        "812989e8e9cfcf37f3557a4d8214c5880ad939d3",
+        "Tue Jan 15 17:34:00 2019 +0900",
+        "mansud"
+      ],
+      [
+        "935c8186798dd6566095ff1a850de06e61a7fc6c",
+        "Fri Jan 11 14:10:23 2019 +0100",
+        "Maciej Pilarczyk"
+      ],
+      [
+        "c97704d5ac073dd29d4cc04202462d59ead43379",
+        "Thu Jan 10 23:30:48 2019 +0100",
+        "FxTC Core"
+      ],
+      [
+        "cbbfd203a81c039d8524aa5ac69dc8f6b44cdd83",
+        "Thu Jan 10 12:40:20 2019 +0200",
+        "Y"
+      ],
+      [
+        "c14fc7ab260948d5d0d4c72b0244b1e741a814c1",
+        "Wed Jan 9 15:34:28 2019 +0200",
+        "Euno DevTeam"
+      ],
+      [
+        "ab025405105bb2b55a6f7c6ee29bec4583cc83fd",
+        "Wed Jan 9 00:07:28 2019 +0100",
+        "Reto Trinkler"
+      ],
+      [
+        "08b1a38d5c21f11c8422656e7e273758afdefa82",
+        "Mon Jan 7 19:39:09 2019 +0330",
+        "Amin Mazinani"
+      ],
+      [
+        "8abd17df6abe3dda7eae0e4aa61a240ca8561b54",
+        "Thu Jan 3 13:20:06 2019 +0100",
+        "Altcoin Cash"
+      ],
+      [
+        "9681e0ed07a105b0d54aa95a1964a3fc388c86c0",
+        "Wed Dec 26 21:16:04 2018 +0800",
+        "Rey Li"
+      ],
+      [
+        "fa3ae7ab3b86fa017a98b0183a9162bc55d4c1f3",
+        "Wed Dec 26 02:14:03 2018 +0200",
+        "gadisr"
+      ],
+      [
+        "344ec4612858638d7a8b94e0785c9b508797b474",
+        "Mon Dec 24 12:54:46 2018 +1300",
+        "Ian He"
+      ],
+      [
+        "b4cd12704ae4b810a47010c1b39e829b7757edae",
+        "Sat Dec 22 12:10:10 2018 +0200",
+        "dominantcoin"
+      ],
+      [
+        "05ad2ac3ed2ddd068589335690e7af52c6bc6856",
+        "Fri Dec 21 12:10:15 2018 -0700",
+        "Kolby Moroz"
+      ],
+      [
+        "f80e0099d5f9ed81dd165b6488a6fcdf59e610fd",
+        "Fri Dec 21 19:26:53 2018 +0300",
+        "Bytecoin Developers Team"
+      ],
+      [
+        "83912a3e49f5fc96d26d19eea8c7294fd912446a",
+        "Thu Dec 20 13:46:21 2018 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "66a693e1034066123544eb35719184ea8826573a",
+        "Thu Dec 20 23:45:40 2018 +1100",
+        "Kee Jefferys"
+      ],
+      [
+        "1bdc87467e342b82fb1089c880c367ea659b4961",
+        "Wed Dec 19 17:46:39 2018 +0100",
+        "TheTrunk"
+      ],
+      [
+        "0e1c1ec2b330e06510f0ae2aff80499322f14ebe",
+        "Sun Dec 16 20:24:44 2018 +0100",
+        "WagerrTor"
+      ],
+      [
+        "86912afd4ce66520bd5a96c5dca71d09f741b965",
+        "Sun Dec 16 21:34:35 2018 +0800",
+        "zccst"
+      ],
+      [
+        "77b9ca07f27b3d43ea3dbb871b4a87265f8c6d36",
+        "Sun Dec 16 21:22:17 2018 +0800",
+        "zccst"
+      ],
+      [
+        "503dd8861fd3bc97ac52a1eaca5088d14b7eef87",
+        "Sun Dec 16 06:58:09 2018 -0600",
+        "Ritocoin Project"
+      ],
+      [
+        "35cf6ceca1e24a2038ce8172bc217e034df0c7f7",
+        "Fri Dec 14 14:55:26 2018 +0200",
+        "George-Theodor Serbana"
+      ],
+      [
+        "351faad07a1187902e51ace69915a3a7c1763da5",
+        "Wed Dec 12 15:10:03 2018 +0000",
+        "Wampum"
+      ],
+      [
+        "8d892d911ad95c7f2c0288f1b81da9fdd17b84a0",
+        "Wed Dec 12 05:51:14 2018 -0500",
+        "kodiak"
+      ],
+      [
+        "252d8d114203e8a1dbd33d4297259697a334f8fd",
+        "Wed Dec 12 18:50:45 2018 +0800",
+        "Jimmy Hu"
+      ],
+      [
+        "bd263c390d6f0a3ea99e894bf652fabc8c81d0f8",
+        "Tue Dec 11 12:59:19 2018 -0300",
+        "galimba"
+      ],
+      [
+        "c01a45a12f98d5d5cbd8bbe0176856253cf41a56",
+        "Tue Dec 11 14:37:42 2018 +0300",
+        "Alexander Kolotov"
+      ],
+      [
+        "5b6e6f8f0b842f02a28e7d4dff1b376fa957eb74",
+        "Mon Dec 10 19:51:49 2018 +0800",
+        "IPChain"
+      ],
+      [
+        "98eeb27ec2848b0ea79b37f8e82a9cad86025703",
+        "Mon Dec 10 19:51:10 2018 +0800",
+        "Liu-Cheng Xu"
+      ],
+      [
+        "68fcf267260a5798a218fc66e6c7de16c58c5da7",
+        "Sun Dec 9 03:23:38 2018 +1000",
+        "REOSC"
+      ],
+      [
+        "106ee4337e6df830400691e997b25d35d389ef85",
+        "Mon Dec 3 21:37:22 2018 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "787c8df089d23533cb564a804223f3966eb02379",
+        "Tue Dec 4 02:33:28 2018 +1300",
+        "ballzcoin"
+      ],
+      [
+        "9c8160a38a6d27ecdd17cfa4607c81184cec6519",
+        "Mon Dec 3 21:33:08 2018 +0800",
+        "Scott Chou"
+      ],
+      [
+        "749d1d73cf5570dc39f270abf1e4f26392b5e8ae",
+        "Mon Dec 3 00:43:52 2018 +1300",
+        "ballzcoin"
+      ],
+      [
+        "74631f093c2ac010fb2d101741b04da7974584ef",
+        "Fri Nov 30 05:19:42 2018 -0800",
+        "ryannichols"
+      ],
+      [
+        "07597ea2f13e25af5e05f5b7a73bb60621f150b7",
+        "Fri Nov 30 14:19:34 2018 +0100",
+        "veilgets"
+      ],
+      [
+        "076e0099019630510f4ec51cd4b1b4ecbadc053d",
+        "Fri Nov 30 15:19:00 2018 +0200",
+        "Saulius Grigaitis"
+      ],
+      [
+        "4a89424e5034f0a39ab3326a2d384c11ae8802b7",
+        "Fri Nov 30 21:17:35 2018 +0800",
+        "Peili Liang"
+      ],
+      [
+        "c28ababe9ce8530f5145744608cfc033cd6795ab",
+        "Fri Nov 30 21:17:07 2018 +0800",
+        "evesnow91"
+      ],
+      [
+        "9ab0bbf1b5406d9429f9c32bf24d957b63f41fe5",
+        "Fri Nov 30 23:16:51 2018 +1000",
+        "Denis Davidyuk"
+      ],
+      [
+        "8f8f2679fc2a606ad6656c7cf416e7d37fc2b223",
+        "Fri Nov 30 05:16:27 2018 -0800",
+        "orogvany"
+      ],
+      [
+        "0a7b5785a9965d425f58e8d8d44e5506671222ac",
+        "Fri Nov 30 16:15:57 2018 +0300",
+        "EternityTula"
+      ],
+      [
+        "7e05e95d9dcec11b3ad8c32358d8ee0727557410",
+        "Fri Nov 30 07:15:39 2018 -0600",
+        "mattt21"
+      ],
+      [
+        "9eacf4675bd63c6cd6ddf300e40127f7e5627a1c",
+        "Fri Nov 30 15:12:47 2018 +0200",
+        "John L. Jegutanis"
+      ],
+      [
+        "52549c97f9093bdac3f3fe8149507f72324c7877",
+        "Fri Nov 16 06:14:56 2018 -0600",
+        "Amir Abrams"
+      ],
+      [
+        "e5a9ef0951aa93f823a625b5cc2bad7deeb873e8",
+        "Fri Nov 16 17:37:45 2018 +0800",
+        "BitcoinVIP"
+      ],
+      [
+        "fd7665a409f7954538f65a1d5cb539ad4b07eb65",
+        "Thu Nov 15 00:22:57 2018 +0100",
+        "Altcoin Cash"
+      ],
+      [
+        "0c62ca96e5edc9b9d946d1feb945e93ee3f98b2c",
+        "Wed Nov 14 14:11:52 2018 +0100",
+        "Juan Leni"
+      ],
+      [
+        "9c786d9249b2fc6abfa7724d391d9c15a1551da0",
+        "Mon Nov 12 19:42:13 2018 +0300",
+        "Mikhail"
+      ],
+      [
+        "31873defb8bca7458e72061b542ab64fb797d457",
+        "Mon Nov 12 06:06:37 2018 -0500",
+        "turcol"
+      ],
+      [
+        "71332b016a04bbbc7986d6be1f39069866444e35",
+        "Sun Nov 11 14:17:02 2018 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "ae1816bc96acbb6dd98395dded3c271cb735542b",
+        "Sun Nov 11 14:08:48 2018 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "f3f138038dea8de6ac7afc0ae9451d9aaa50323a",
+        "Sun Nov 11 14:03:12 2018 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "575d9b5b00b314511c8dee0c6bc09b0f58e2737d",
+        "Sat Nov 10 11:04:05 2018 -0600",
+        "Cronos"
+      ],
+      [
+        "4a794897550c0d4e670a10193eaecfc22ec76708",
+        "Sat Nov 10 21:41:13 2018 +0530",
+        "Suryansh Kumar"
+      ],
+      [
+        "fb2ae105827e390c4c07a1f162928ce8f20a6ae4",
+        "Fri Nov 9 12:45:26 2018 +0100",
+        "WillyTheCat"
+      ],
+      [
+        "5a126c1e3b30a1b84315404b105476ad7de9df5c",
+        "Fri Nov 9 11:57:44 2018 +0100",
+        "Nicemanss"
+      ],
+      [
+        "49f60bb19383a5766313011ce33a264691a3fd22",
+        "Fri Nov 9 18:57:19 2018 +0800",
+        "zhiyuan.wu"
+      ],
+      [
+        "39f978f59bf417fe60cf254c239636e17bdc8b45",
+        "Thu Nov 8 19:32:23 2018 +0100",
+        "moshemalawach"
+      ],
+      [
+        "982e7f8415e82ad3a7b0bd19634d751bf0078273",
+        "Thu Nov 8 19:48:39 2018 +0800",
+        "daring5920"
+      ],
+      [
+        "61fe9bb1eccb6d8519c97f37e31c933e3e960322",
+        "Wed Nov 7 18:15:27 2018 +0100",
+        "Simon Warta"
+      ],
+      [
+        "5af891e4672694ec5cd7ce4a691f33e5c5e435ec",
+        "Wed Nov 7 07:42:38 2018 -0800",
+        "Derek May"
+      ],
+      [
+        "ec3af4edf6950529ad7e3540f9845259d4b1d457",
+        "Tue Nov 6 07:40:18 2018 -0800",
+        "Ethan Buchman"
+      ],
+      [
+        "85fd7bbbfc5c405cea4a7bef054cc2029cb9f65d",
+        "Tue Nov 6 11:00:36 2018 +0100",
+        "SondreB"
+      ],
+      [
+        "604bc91da10bd28b1195c5e8d8957275f3e6108e",
+        "Mon Nov 5 22:56:46 2018 +0800",
+        "cong"
+      ],
+      [
+        "29b95bc48383e5d61bb705e199f6b9642aa1d95c",
+        "Mon Nov 5 20:34:37 2018 +0900",
+        "c0ban-project"
+      ],
+      [
+        "20d3d5e07eb209f600b039534e7cd9f7d68df318",
+        "Sat Nov 3 12:41:28 2018 +0000",
+        "CCob"
+      ],
+      [
+        "c93d2f8bc640f84a3a06af61df0a8fb7ad62232a",
+        "Fri Nov 2 21:38:12 2018 +0700",
+        "walkjivefly"
+      ],
+      [
+        "34d98e273f0077330f09f31d2bcfd85453ea9533",
+        "Thu Nov 1 21:03:12 2018 +0300",
+        "Denis Voskvitsov"
+      ],
+      [
+        "e1c8110f0a7f27b4202291805b79df0935235213",
+        "Wed Oct 31 21:36:15 2018 +0800",
+        "zhaojun.sh"
+      ],
+      [
+        "4097e56b801ff908bf93f4086c520b57406e11d0",
+        "Sun Oct 28 12:51:36 2018 +0200",
+        "Andrey Galkin"
+      ],
+      [
+        "7da5f48aaac101625d07ca5a863fecebb63de681",
+        "Fri Oct 26 17:08:03 2018 -0600",
+        "Adam Androulidakis"
+      ],
+      [
+        "987a705c494041de5dc1012648671d9c002169c8",
+        "Fri Oct 26 17:38:27 2018 +0800",
+        "Yu"
+      ],
+      [
+        "c1ffe750e0e5ccae56d79bf60ef37cf2b561aea8",
+        "Wed Oct 24 15:17:47 2018 +0200",
+        "rob234"
+      ],
+      [
+        "c6ffe6fb09bd1591468039b55be94fb0c3c0f209",
+        "Tue Oct 23 17:21:42 2018 +0200",
+        "Harris Brakmić"
+      ],
+      [
+        "85358457f99b5715aa38a2a30b4bb6f1def17286",
+        "Tue Oct 23 15:28:08 2018 +0200",
+        "ChekaZ"
+      ],
+      [
+        "31d5545b0295e1efa95282f8ee58b968e08a32b3",
+        "Sun Oct 21 16:44:38 2018 -0500",
+        "Pawel Cioch"
+      ],
+      [
+        "a39c0c94792458a561a9142b8d1db5a5f13e6900",
+        "Sat Oct 20 17:10:18 2018 +0200",
+        "Tibor Arpas"
+      ],
+      [
+        "8d20a579fb793e4ffe40580bce9beafc4382af9f",
+        "Thu Oct 18 11:52:46 2018 +0200",
+        "Mark LTZ"
+      ],
+      [
+        "d5c85437855348f3dad81299e630413d77da2142",
+        "Thu Oct 18 18:36:17 2018 +0900",
+        "Hyunsik Jeong"
+      ],
+      [
+        "c2b21c68916c6fe9c866350712e3fea51700eeee",
+        "Wed Oct 17 05:38:38 2018 -0400",
+        "James Cramer"
+      ],
+      [
+        "128504269a52bb98f0400515a5518069c0b4d773",
+        "Wed Oct 17 11:37:25 2018 +0200",
+        "Łukasz Matczak"
+      ],
+      [
+        "60c3b81999ac1583ea1a85088ffd6e8071ae719b",
+        "Mon Oct 15 12:00:09 2018 +0200",
+        "woodyjon"
+      ],
+      [
+        "03759e1e6d42a7f1e3079884f666347e5adaa812",
+        "Thu Oct 11 15:53:45 2018 -0500",
+        "JP Richardson"
+      ],
+      [
+        "f44e7e634e42f1ff63ddcbff9b2739f026e47951",
+        "Wed Oct 10 18:05:42 2018 -0400",
+        "kpp"
+      ],
+      [
+        "535ae4d7946c518a503b4afd254786fd514a95d9",
+        "Thu Oct 11 00:29:31 2018 +0900",
+        "Christophe Wang"
+      ],
+      [
+        "7e612707990273cd0c333f5e6aca6eb2d41f4164",
+        "Wed Oct 10 04:39:42 2018 -0700",
+        "a e r t h"
+      ],
+      [
+        "123327204a43b32fbd7a2184877018e9383eff91",
+        "Tue Oct 9 14:49:14 2018 +0200",
+        "Reto Trinkler"
+      ],
+      [
+        "75dcd1fc629bb00eaee47b1bbcfb68f2607d3758",
+        "Tue Oct 9 01:10:10 2018 +0300",
+        "Vladyslav Makarian"
+      ],
+      [
+        "a745b25ce184842cf126c6842e97f752a4a981b1",
+        "Mon Oct 8 00:40:46 2018 +0300",
+        "John L. Jegutanis"
+      ],
+      [
+        "6168c75c64db3978d103163ba95b9307e422ab05",
+        "Mon Oct 8 00:30:59 2018 +0300",
+        "John L. Jegutanis"
+      ],
+      [
+        "41de33dcb6b2676a943a56891d95dc870b98e55e",
+        "Mon Oct 8 18:25:56 2018 +0800",
+        "Jazys"
+      ],
+      [
+        "642dcb513a0ff1840b93d09f46cf5421e7a7dcda",
+        "Thu Oct 4 12:32:37 2018 +0300",
+        "Sergei Zubov"
+      ],
+      [
+        "bc101bdb37511027186ddbcabe97cacb84c12e77",
+        "Tue Oct 2 05:27:59 2018 -0400",
+        "turcol"
+      ],
+      [
+        "6d986ef770de6e5c8162784310acaaacb6d83678",
+        "Sun Sep 30 18:19:28 2018 +0800",
+        "Shijiang Guo"
+      ],
+      [
+        "74ad6730f9318e5688d60bfac8563e23f5284251",
+        "Thu Sep 27 16:28:20 2018 +0200",
+        "Kent Quirk"
+      ],
+      [
+        "383a8654ee218019cf7bdfc2e266a9b6f3b8acf0",
+        "Thu Sep 27 05:25:51 2018 -0700",
+        "Boyma"
+      ],
+      [
+        "7b0a91ebc40e3c11880b081bca92e6654bb266cd",
+        "Wed Sep 26 10:19:06 2018 -0700",
+        "Divi Project"
+      ],
+      [
+        "278452d64b51387d0bad50751eb7de99cad1a020",
+        "Wed Sep 26 19:27:02 2018 +0800",
+        "YuanXingqiang"
+      ],
+      [
+        "b28f993251f3464befbf3f42e05ba8742151cb86",
+        "Fri Sep 21 16:19:15 2018 +0300",
+        "Yura"
+      ],
+      [
+        "8d7d941ac44c2701032f2e6b13b89f5fdf3315a1",
+        "Fri Sep 21 12:40:51 2018 +0200",
+        "Andrea"
+      ],
+      [
+        "74178fb61bc2c2cd051dc1b9a479a28191a8cb47",
+        "Fri Sep 21 18:40:31 2018 +0800",
+        "wuqignyun1014"
+      ],
+      [
+        "3e8838b6b82c2756471e596adf3f817e55149c89",
+        "Wed Sep 19 13:45:36 2018 -0400",
+        "ThunderCore"
+      ],
+      [
+        "2b4c3c7057f69fe03914b3c39deacb78bf5f6777",
+        "Wed Sep 19 20:04:53 2018 +0800",
+        "stone"
+      ],
+      [
+        "15b15b5ffdb2b3a46813a11efe09b047ea4ce420",
+        "Wed Sep 19 05:03:13 2018 -0700",
+        "Mykola"
+      ],
+      [
+        "568f235c21ef69c788bad88f66e7643ab629bcc2",
+        "Wed Sep 19 14:02:12 2018 +0200",
+        "David"
+      ],
+      [
+        "b516bd3592f07b93bcb31b13dc30ac74fb87729e",
+        "Wed Sep 19 21:02:01 2018 +0900",
+        "sandegodev"
+      ],
+      [
+        "5ec52df1063a7a770f3c705d4c1147f8e1e0167a",
+        "Wed Sep 19 14:01:37 2018 +0200",
+        "Jose Luis Estevez"
+      ],
+      [
+        "d2a48b49f78dc6d5220f47560f37439af3db10e2",
+        "Tue Sep 18 04:00:01 2018 +0700",
+        "Nguyen Sy Thanh Son"
+      ],
+      [
+        "e49b8819afb630bdf8531bb24da862584c0839e3",
+        "Fri Sep 14 02:39:08 2018 -0500",
+        "Pawel Cioch"
+      ],
+      [
+        "f036f24a85515d5d6fdf9e10afc9e9bcc1ab786c",
+        "Thu Sep 13 22:08:23 2018 +0800",
+        "Shawn Xie"
+      ],
+      [
+        "d577b8ba6a3ce32f75890348db9c6259ef1157a1",
+        "Tue Sep 11 10:33:43 2018 -0500",
+        "Cronos"
+      ],
+      [
+        "71b99f2b2ca554da74d4d864cf76c57d8d1cf136",
+        "Wed Sep 5 17:57:46 2018 +0800",
+        "luzengLET"
+      ],
+      [
+        "c0d6e86dc8ce2cf67972630c89cbd186e0158e4a",
+        "Fri Aug 31 19:21:21 2018 +0800",
+        "Baoliang Zhang"
+      ],
+      [
+        "a146dd511c1cbecf0f23a7a453bb7bbe1d38d86b",
+        "Wed Aug 29 11:43:44 2018 +0200",
+        "teknex"
+      ],
+      [
+        "ee44af6f505e3d5fd138e1ebae55b7d8a3a561cf",
+        "Mon Aug 27 03:40:42 2018 -0400",
+        "xagau"
+      ],
+      [
+        "42d68c3d062231451858ad38e9ac530a5782b566",
+        "Thu Aug 23 21:59:48 2018 +0900",
+        "soom-4th-blockchain"
+      ],
+      [
+        "5034354b4a37303f60cdf212cb8a0cd5156b6674",
+        "Thu Aug 23 12:59:32 2018 +0000",
+        "Emmanuel"
+      ],
+      [
+        "48e4e7363898e096b8bef14a7edcba7fe0756431",
+        "Mon Aug 20 20:19:22 2018 +0800",
+        "Arthur"
+      ],
+      [
+        "1f718f4ab0cddecdfd69a2cb24bf2010ccea281e",
+        "Sun Aug 12 21:34:13 2018 +0800",
+        "superbigfu"
+      ],
+      [
+        "60f66bf62f8350e853989432a8adada9666138f3",
+        "Sun Aug 12 14:33:50 2018 +0100",
+        "Romano"
+      ],
+      [
+        "634867b8862f171ae86b602e4d559abb96952cba",
+        "Fri Aug 10 15:37:05 2018 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "b5129f228091959f4c7ff9ed7107d595639482fa",
+        "Fri Aug 10 21:36:31 2018 +0800",
+        "guantau"
+      ],
+      [
+        "c5347eb6402813321489f3c6a31fb51475706002",
+        "Fri Aug 10 15:36:04 2018 +0200",
+        "henryBTR"
+      ],
+      [
+        "4740d17bc7730a83a93f1eb19e4cb6d30630c214",
+        "Mon Aug 6 03:31:10 2018 -0700",
+        "E1Code"
+      ],
+      [
+        "266d70f1807bd2be4a3d99d1669ef225506e53be",
+        "Sun Aug 5 20:52:13 2018 +0700",
+        "nongrain"
+      ],
+      [
+        "b8406b22ec21174a6cf4c6981d5f32c492991ca6",
+        "Sat Aug 4 06:46:55 2018 -0700",
+        "Berran"
+      ],
+      [
+        "32b4d96a9d3092feadc7a10d35216bbac8273d82",
+        "Thu Aug 2 10:41:51 2018 -0600",
+        "DennisM"
+      ],
+      [
+        "3208ae7e887adab6b19fbef8fb1c01c838c34322",
+        "Fri Aug 3 00:25:50 2018 +0900",
+        "fish-en"
+      ],
+      [
+        "ae6cfc795c448ff6b4e4b16c0f1f7877608c998a",
+        "Tue Jul 31 13:31:46 2018 +0800",
+        "superbigfu"
+      ],
+      [
+        "45bcb4665c75b1621af26fafb7c0bb262710fa50",
+        "Mon Jul 30 17:31:39 2018 +0800",
+        "cngotom"
+      ],
+      [
+        "2ea33d335c769cfa076bb8296859ddf722c060ff",
+        "Sun Jul 29 22:19:59 2018 +0800",
+        "yiyong"
+      ],
+      [
+        "e8204f0b2ce3d9dbc5c34db32e85f9b2f273d7c7",
+        "Fri Jul 27 19:13:56 2018 +0800",
+        "superbigfu"
+      ],
+      [
+        "1110414d1834966ae81c0f0f648eaf6b99aa5e51",
+        "Thu Jul 26 12:24:56 2018 -0400",
+        "Eric Polerecky"
+      ],
+      [
+        "7bf2974920ea1a0b0ac2a9ad71348062572e7a92",
+        "Thu Jul 26 19:15:12 2018 +0300",
+        "Vladimir Goncharov"
+      ],
+      [
+        "ee5a5858af32e5b3d6712fc7fb2f7bb39f66a84f",
+        "Mon Jul 16 11:48:35 2018 +0300",
+        "John L. Jegutanis"
+      ],
+      [
+        "a42019453c1d83bdcb51fca52434acce4a1b4ae2",
+        "Mon Jul 9 21:08:18 2018 +0300",
+        "Krister Viirsaar"
+      ],
+      [
+        "47c9490b5299948f56beb1f50aba533833128d01",
+        "Fri Jul 6 04:40:06 2018 -0400",
+        "Yao Sun"
+      ],
+      [
+        "5411f34f6b8001d02dfe81def2b2597ddb5bbf7b",
+        "Thu Jul 5 23:56:07 2018 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "63d2206c7aa6854352ebdc73b85c783b1b172f8f",
+        "Mon Jul 2 17:55:22 2018 +0800",
+        "echo"
+      ],
+      [
+        "dc2b518b118561c0ca4bca7646d99cbde383aa11",
+        "Fri Jun 29 17:36:06 2018 +0300",
+        "Akuukis"
+      ],
+      [
+        "9e95489ba7c8d318f7555a13c0841ff0e92f2508",
+        "Fri Jun 29 18:27:52 2018 +0800",
+        "MickWang"
+      ],
+      [
+        "1d26fa80c869701342cae85cd33d0abca53970a6",
+        "Wed Jun 27 16:45:58 2018 +0800",
+        "flowfire"
+      ],
+      [
+        "a367aba834b57561a286f652f9a84e0c8fe88ebd",
+        "Tue Jun 26 13:32:31 2018 -0600",
+        "Sky Young"
+      ],
+      [
+        "9c4f71b2c0d853a0af757288fd93ff40dd355dec",
+        "Tue Jun 26 16:51:53 2018 +0800",
+        "howewang"
+      ],
+      [
+        "9f383d3453a45a3164116e03347869cf2e5ba89a",
+        "Tue Jun 26 03:51:31 2018 -0500",
+        "Plainkoin"
+      ],
+      [
+        "0fb6d378ee20d9f679be032ddef6e9c33373ab1d",
+        "Mon Jun 25 19:07:45 2018 +0800",
+        "ceeji"
+      ],
+      [
+        "14ae829155af55a2a3c1d28cd26db446fc8a2102",
+        "Mon Jun 25 12:07:27 2018 +0100",
+        "Jim McDonald"
+      ],
+      [
+        "cb56f20b747f96020f7c62af54c252a8df2bb339",
+        "Fri Jun 22 02:31:34 2018 -0500",
+        "Plainkoin"
+      ],
+      [
+        "ceb622522b10c393c9d3a2e14c222ba5b43cb0ab",
+        "Fri Jun 22 15:31:09 2018 +0800",
+        "xixisese"
+      ],
+      [
+        "96bb925fcaab74e122a295010508a5d4eaa43b46",
+        "Wed Jun 20 06:39:32 2018 -0500",
+        "Teslacoin"
+      ],
+      [
+        "c85ae6e8d226487a50fabf9dd54971e8f15f517c",
+        "Wed Jun 20 20:39:14 2018 +0900",
+        "Team Hycon"
+      ],
+      [
+        "a597d10ba414ec50a17656891e02d3210164bdd2",
+        "Wed Jun 20 12:38:55 2018 +0100",
+        "TheHolyRoger"
+      ],
+      [
+        "dc8920dd67b74110b8a28d13ba8d6889085e1a49",
+        "Wed Jun 20 19:37:48 2018 +0800",
+        "onechainone"
+      ],
+      [
+        "0f46f6f96881d0921300c954dc33f25713ea690a",
+        "Mon Jun 18 05:27:02 2018 -0400",
+        "Aaron Blankstein"
+      ],
+      [
+        "5f296198f983987b1853f4e7dadf4303417203d7",
+        "Fri Jun 15 16:10:47 2018 +0800",
+        "onechainone"
+      ],
+      [
+        "93402fe322b50738c5da9cf5535ebaac141ffaa3",
+        "Wed Jun 13 17:01:23 2018 +0600",
+        "r-kononov"
+      ],
+      [
+        "5db0d2910ed42f4f5dfed3bfc2503c02a81080dc",
+        "Mon Jun 11 04:51:03 2018 +0900",
+        "Senioris"
+      ],
+      [
+        "513654b86b7b1ca69be52a3c8dd50f3ab74e1424",
+        "Fri Jun 8 19:08:29 2018 +0800",
+        "matrixelement"
+      ],
+      [
+        "54a4cafa290e022a43ac91f7979da733660433dd",
+        "Thu Jun 7 23:31:27 2018 +0900",
+        "WO"
+      ],
+      [
+        "6835c999877481a07cfe9b780eb1d7967b9c6c7a",
+        "Wed Jun 6 15:35:26 2018 +0900",
+        "EOS Classic"
+      ],
+      [
+        "bca13917be9f586bebd1d257a895cfcdbebb0755",
+        "Thu May 31 03:37:45 2018 -0600",
+        "Tyler Hann"
+      ],
+      [
+        "cb3411217daffa9f34386dc054f59bd02b996c47",
+        "Wed May 30 16:37:43 2018 +0900",
+        "Kim Myeonghun"
+      ],
+      [
+        "dcbe8e1d166b65f75319777c965125554d3fc05c",
+        "Mon May 28 14:41:59 2018 +0900",
+        "yapstonegithub"
+      ],
+      [
+        "b932695a7af8eb10592b9f31c24b5235b46a79f7",
+        "Sun May 27 16:37:49 2018 -0700",
+        "Kevin Britz"
+      ],
+      [
+        "0b20d97b58d9ef18801b4f731a3bc1468a3f105d",
+        "Fri May 25 14:52:23 2018 +0100",
+        "Paul M Fox"
+      ],
+      [
+        "8eaf3bc8bc4f1fd13922c696e240ae869a1377c5",
+        "Fri May 25 20:04:35 2018 +0900",
+        "a.b"
+      ],
+      [
+        "1f8f9a13deb076cb1e2160d4a18030e8acd4391b",
+        "Fri May 25 20:04:15 2018 +0900",
+        "Nekonium project"
+      ],
+      [
+        "b35137aeb9f86e6d16cb543c816a8c77dd0bcb92",
+        "Mon May 21 19:19:39 2018 +0900",
+        "Koutarou Tanaka"
+      ],
+      [
+        "a02309fce3aca59bf2bafb84f3a44abc48cf9d01",
+        "Fri May 18 19:03:51 2018 +0800",
+        "冉俊雄"
+      ],
+      [
+        "37b844860a77b47d91f515bbb2a5728f6c7df854",
+        "Thu May 17 13:49:05 2018 +0000",
+        "ZestDevCoin"
+      ],
+      [
+        "883146679577eba4528f2fc83ff58c52e2a91c4d",
+        "Wed May 16 10:25:46 2018 -0500",
+        "zeusthealmighty"
+      ],
+      [
+        "729400fb2310f3887f6988df126e8e1c60c63f07",
+        "Wed May 16 04:33:27 2018 -0600",
+        "Jeffrey Esquivel S"
+      ],
+      [
+        "a8bc469fbf1d51d1924acf9e0b93708608d4a9a0",
+        "Mon May 14 23:15:17 2018 +0900",
+        "Akira Takizawa"
+      ],
+      [
+        "0754d68566ae6108d9c95a00473fc004012e30ea",
+        "Fri May 11 12:41:41 2018 +0300",
+        "xarakas"
+      ],
+      [
+        "b05ed506d2ae28bc59ebb879c657c74d397d21e4",
+        "Wed May 9 23:39:03 2018 +0900",
+        "East Coin"
+      ],
+      [
+        "887a080d19035da06e817a05d350f5269447b91d",
+        "Wed May 9 12:44:06 2018 +0200",
+        "cryptonodes-core"
+      ],
+      [
+        "23c45f2f9c914d3354445a56264c8cfd52e07ec3",
+        "Fri May 4 21:50:10 2018 +0800",
+        "david-selfsell"
+      ],
+      [
+        "6da1c361652cbb6841219ea6ae5cea34eeabfed0",
+        "Sat Apr 28 10:11:06 2018 -0300",
+        "Adrián Eidelman"
+      ],
+      [
+        "30d02875d8c54054ccca99722cac1698fb3048e5",
+        "Sat Apr 28 21:10:46 2018 +0800",
+        "yiyong"
+      ],
+      [
+        "9964fe6d3182a032f39b7252edf5a9757f403c06",
+        "Mon Apr 23 22:08:55 2018 +0800",
+        "冉俊雄"
+      ],
+      [
+        "41488911d259f60253b2e581d50f4af6d1b8956e",
+        "Mon Apr 23 12:14:48 2018 +0100",
+        "Peter Bushnell"
+      ],
+      [
+        "05e35f83390d312f88cc11f39321a4c5e98386b6",
+        "Wed Apr 18 21:49:32 2018 +0800",
+        "hhwill"
+      ],
+      [
+        "911b13f4647857da27c75c8a7af5d3b4070f6daf",
+        "Mon Apr 16 18:43:43 2018 +0800",
+        "superbigfu"
+      ],
+      [
+        "95469e76bfa8b54e57cb6fc232dc390df982d27e",
+        "Thu Apr 12 16:54:58 2018 +0300",
+        "xarakas"
+      ],
+      [
+        "32d2e2d2000b152141f2da6dfc9859b08e038c17",
+        "Thu Apr 12 16:37:44 2018 +0300",
+        "xarakas"
+      ],
+      [
+        "f039b8e774ad8857c6c83d916a0eebc1161009a9",
+        "Thu Apr 12 04:30:41 2018 -0500",
+        "chainshome"
+      ],
+      [
+        "f5d186aeb01166ed303272e7b408efdf6ed1da9c",
+        "Wed Apr 11 19:42:35 2018 +0800",
+        "bopochain"
+      ],
+      [
+        "4d977bdb76b2fffba9a3dda10237d15ec7a93154",
+        "Tue Apr 10 18:20:30 2018 +0300",
+        "xarakas"
+      ],
+      [
+        "78bd18aad9795b1646cabe2b512195301e91b038",
+        "Tue Apr 10 20:19:51 2018 +0800",
+        "bitcoinfile"
+      ],
+      [
+        "80552a3e611ce75c639cd3747bef3a261dd3bcda",
+        "Fri Apr 6 08:10:16 2018 -0700",
+        "Tim Uy"
+      ],
+      [
+        "e3ec0605bc51ade03ddedef5756ae24610ebebb9",
+        "Fri Apr 6 23:09:20 2018 +0800",
+        "Marcus"
+      ],
+      [
+        "e90cc2868dbc6f113b69bd71dd6bd85a83358ae8",
+        "Wed Apr 4 05:30:10 2018 -0500",
+        "Heinoc"
+      ],
+      [
+        "12c1002c296aa622ffcebdf9be9a48c4cd4a92c0",
+        "Thu Mar 29 14:41:33 2018 +0200",
+        "Arthur B"
+      ],
+      [
+        "fc1febbdc9d7e9e30ee79362acc280da9837b5c2",
+        "Thu Mar 29 20:41:03 2018 +0800",
+        "WaykiChain"
+      ],
+      [
+        "018a65652f9c286c480ce5d1ef10f35e973869f4",
+        "Sun Mar 25 22:59:42 2018 +0100",
+        "Jack"
+      ],
+      [
+        "e2774302321f7675ab1fd68eee552a9a6a6f754c",
+        "Tue Mar 20 18:57:01 2018 +0200",
+        "williamersatz"
+      ],
+      [
+        "1596239b61bcda4460d6fdf7b621b0cd94551f85",
+        "Tue Mar 20 09:56:38 2018 -0700",
+        "Derek May"
+      ],
+      [
+        "b27e2612f4e90a881e7d94e68c3299120864b20e",
+        "Mon Mar 19 00:47:53 2018 +0800",
+        "sunshineben"
+      ],
+      [
+        "94a765beedf3ba55a56faaead3fad3732bf43943",
+        "Sun Mar 18 06:02:38 2018 -0500",
+        "coranos"
+      ],
+      [
+        "e62b33cba534260e205b63cb72d42ccae76befcb",
+        "Thu Mar 15 05:24:42 2018 -0700",
+        "Tim Uy"
+      ],
+      [
+        "13a322eb95c2f056c28b706cd810d39dba8aed30",
+        "Thu Mar 15 07:23:56 2018 -0500",
+        "jimhsu"
+      ],
+      [
+        "c06330b435ffe02ce847cb74846a7a3fc0685344",
+        "Sun Mar 11 05:16:19 2018 +0900",
+        "Masao Hidemitsu"
+      ],
+      [
+        "36b49c8dddfe6a7965e0992ebc01965c12e10d70",
+        "Sun Mar 11 04:15:37 2018 +0800",
+        "bitcoinvote"
+      ],
+      [
+        "f29613afaa646322306a3d16658844562f13d6e5",
+        "Sun Mar 11 04:15:01 2018 +0800",
+        "hoito"
+      ],
+      [
+        "2db4e8d59ea61f08a296535f61a37c93c6d25bde",
+        "Tue Mar 6 16:40:35 2018 +0400",
+        "Dexaran"
+      ],
+      [
+        "7e9fb6c49dd31fdaebd6ea97228ecc8cfbad6402",
+        "Sat Mar 3 18:22:57 2018 -0500",
+        "Greg Lee"
+      ],
+      [
+        "cf263feb2306dcbd340a9c62a99b381b785c5d6c",
+        "Wed Feb 28 03:35:34 2018 +0800",
+        "Dmitry Semenov"
+      ],
+      [
+        "adec63a3d16bd2983e6f4399d6572a1348958357",
+        "Tue Feb 27 13:35:19 2018 -0600",
+        "Pawel Cioch"
+      ],
+      [
+        "6f4c1e2ab4962954012c3ac1cebb19eb88b77edd",
+        "Mon Feb 26 23:37:52 2018 +0700",
+        "Chakphanu Komasathit"
+      ],
+      [
+        "8ef1339ccf4b688169588595267008e16d617141",
+        "Sun Feb 25 15:45:55 2018 -0800",
+        "Maku Mori"
+      ],
+      [
+        "04a5fdc0bd36abfce8b92a58a3f28fa7a60b432d",
+        "Fri Feb 23 10:05:28 2018 -0600",
+        "RaptureCore"
+      ],
+      [
+        "540632633b4bd6cb512e3f58592aa559210f2187",
+        "Wed Feb 21 15:43:37 2018 +0000",
+        "Jack"
+      ],
+      [
+        "64aa1f72a40ab068a972a43c287a32b15c176749",
+        "Wed Feb 21 00:47:07 2018 +0200",
+        "xarakas"
+      ],
+      [
+        "f9d25ff6d57da00d23fc40d089af091c781c2925",
+        "Thu Feb 15 10:31:44 2018 -0600",
+        "Samad Sajanlal"
+      ],
+      [
+        "fa6a8fec572e57326f087f7dd074aa6f9d1bdcfe",
+        "Thu Feb 15 17:13:27 2018 +0200",
+        "xarakas"
+      ],
+      [
+        "637f6a221de4685cba0c10bcc8622bc0b84d6d0d",
+        "Wed Feb 14 05:57:06 2018 -0700",
+        "YouStock"
+      ],
+      [
+        "9157503d99a6a3404c5ce7f28977ee34e66ad21c",
+        "Wed Feb 14 12:56:30 2018 +0000",
+        "squbs"
+      ],
+      [
+        "b8528c6318a58f8ba2249139bf2b678c4a9ea3d4",
+        "Tue Feb 13 15:28:07 2018 +0200",
+        "xarakas"
+      ],
+      [
+        "104f368e0c7009ef9376f27eff8aed25f1883837",
+        "Mon Feb 12 16:18:36 2018 +0200",
+        "xarakas"
+      ],
+      [
+        "8fa0fd7512c76b2951c256f27bde6aaf6ed6da8f",
+        "Thu Feb 8 21:14:04 2018 +0800",
+        "superbigfu"
+      ],
+      [
+        "a3d7c080e658a68b78450d119cd2168897957434",
+        "Wed Feb 7 18:05:44 2018 +0800",
+        "zhumingu"
+      ],
+      [
+        "a304c7aec0a108aca95dbe0ec0f31d3fbbc59d6f",
+        "Tue Feb 6 20:27:08 2018 +0800",
+        "Ulord"
+      ],
+      [
+        "9916d374209b6337e72fbbf03893c12b46464a42",
+        "Tue Feb 6 20:26:11 2018 +0800",
+        "tony"
+      ],
+      [
+        "cdc4bc85a922f31e7d54f8b721c5c9200e8902ed",
+        "Mon Feb 5 17:39:27 2018 +0200",
+        "xarakas"
+      ],
+      [
+        "a7d864a2671b7ba6596449dc472a74fe5564e967",
+        "Sun Feb 4 07:40:35 2018 +0700",
+        "FreeTrade"
+      ],
+      [
+        "fe93c6722d5e0a0504ff1e1adeb727f0a3dc7467",
+        "Fri Feb 2 19:31:53 2018 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "2ffb1908035a22beecc6103ab40d7be5c6a5a611",
+        "Fri Feb 2 21:31:11 2018 +0300",
+        "Sergey Tolmachev"
+      ],
+      [
+        "97e03b0550ba629777d185f36fb7073609943c02",
+        "Sat Feb 3 02:30:36 2018 +0800",
+        "Fuling"
+      ],
+      [
+        "28f79184d166ef34212b13ddc7c7f401c55ca923",
+        "Fri Feb 2 19:28:34 2018 +0100",
+        "Morris Winkler"
+      ],
+      [
+        "19931c02bf852370c3db3dea1ff5f5e84a6846c8",
+        "Tue Jan 30 23:08:26 2018 +0900",
+        "kotodev"
+      ],
+      [
+        "4fb9d796565c139adaef55842496b5bc3b011537",
+        "Tue Jan 30 14:49:08 2018 +0200",
+        "Valeriy"
+      ],
+      [
+        "89d5f0d5759ca36440b3ca411fe914c889bab657",
+        "Tue Jan 30 20:48:51 2018 +0800",
+        "BigBitcoin"
+      ],
+      [
+        "8d22c9a8031e8d15fefde84310435423453077d6",
+        "Fri Jan 26 12:14:42 2018 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "52d5e8d2167a4768c8b9252ad246723641f84970",
+        "Fri Jan 26 12:10:12 2018 +0100",
+        "Morris Winkler"
+      ],
+      [
+        "01ee04eaf5c070ec52d95c28e7aa84af41d5e15e",
+        "Thu Jan 25 17:17:25 2018 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "79473ddab8303e2da98ff804cb77d5c25f542cea",
+        "Thu Jan 25 19:42:09 2018 +0800",
+        "DAGBPA"
+      ],
+      [
+        "b5595949d0aadc5ed21b1d622003b6ef320fa179",
+        "Wed Jan 24 19:52:18 2018 +0800",
+        "bitcoinnano"
+      ],
+      [
+        "c22787b7434bbfca554f582eab2656dbc37864cd",
+        "Wed Jan 24 02:28:55 2018 +0800",
+        "bruce-bitcoinquark"
+      ],
+      [
+        "c41788703e156db5cb30a0a92735f48018a3d576",
+        "Mon Jan 22 05:49:48 2018 +0800",
+        "bitcoinvote"
+      ],
+      [
+        "22b123cf74b273b9b957d1fc99e934a5337a966e",
+        "Sun Jan 21 22:46:35 2018 +0100",
+        "konez2k"
+      ],
+      [
+        "1525e3d321df12cac37b11ff2e4cdda142745378",
+        "Thu Jan 18 14:58:51 2018 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "2b833dea889242891133818aa0389ac21bc9c4c0",
+        "Tue Jan 16 18:29:15 2018 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "486fb03dc29707d5b38c6a952909ea54a8f77b39",
+        "Wed Jan 17 01:22:19 2018 +0800",
+        "宋辰文"
+      ],
+      [
+        "b0228814e77a8135c4c0a5a33993676fcc16e4c4",
+        "Tue Jan 16 12:12:16 2018 +1100",
+        "BoxyCoin"
+      ],
+      [
+        "eaeafee5ee4d97a1e6e93c62b9ed6c5ede3f5bba",
+        "Tue Jan 16 03:09:53 2018 +0200",
+        "John L. Jegutanis"
+      ],
+      [
+        "3abab59e303db6a474927cb66d7b945e0c5bce5c",
+        "Mon Jan 15 11:17:41 2018 -0600",
+        "coranos"
+      ],
+      [
+        "77559084da2ef833acfaec265781c1dda7d4fab7",
+        "Tue Jan 16 01:16:52 2018 +0800",
+        "worldbitcoin"
+      ],
+      [
+        "a65a980a33c220f09fdab48086d63ae7084fd544",
+        "Mon Jan 15 18:15:44 2018 +0100",
+        "konez2k"
+      ],
+      [
+        "b88ed6c1c1b1658ef72edd1b4f3c3a2711aba9fd",
+        "Fri Jan 12 09:58:19 2018 -0500",
+        "-k"
+      ],
+      [
+        "175aa7664a91c81a8eed51df948f399332657dc2",
+        "Sun Jan 7 02:40:57 2018 +0100",
+        "Oliver Gugger"
+      ],
+      [
+        "fe88fc37001de5df37618bfbd2bd3d8a6c90a1d9",
+        "Fri Jan 5 18:04:46 2018 +0800",
+        "btceasypay"
+      ],
+      [
+        "85c5a8c27d3efa4706529e3f9de2b9e624e021be",
+        "Thu Dec 28 11:54:23 2017 -0600",
+        "tohsnoom"
+      ],
+      [
+        "c7ca63b6b8537ebea74b280ceb7d808189be190d",
+        "Wed Dec 27 08:15:52 2017 +0800",
+        "bitcoinfaith"
+      ],
+      [
+        "bfd09fb1dd3f88ebf7d9f0f324fbffdc50593652",
+        "Sat Dec 23 15:41:26 2017 +0300",
+        "technolog"
+      ],
+      [
+        "6b9ed3cf7dec8e594890927617a4ac16198d0987",
+        "Sat Dec 23 20:40:53 2017 +0800",
+        "btwone"
+      ],
+      [
+        "246a7985a469f3f926396e17c5bbab59ceb379be",
+        "Sat Dec 23 20:40:36 2017 +0800",
+        "宋辰文"
+      ],
+      [
+        "1c24df12282ad0bde11d0dc3451df7e477892ae6",
+        "Wed Dec 20 09:35:57 2017 -0700",
+        "Baby Goat"
+      ],
+      [
+        "3c42fda724cabd1784d57c99ac9e0403eb217a9d",
+        "Tue Dec 19 16:41:27 2017 -0400",
+        "Heber Bastidas"
+      ],
+      [
+        "222635cdbb0904c9efd66ae0916c8930c3eb5556",
+        "Tue Dec 19 07:32:10 2017 +0800",
+        "宋辰文"
+      ],
+      [
+        "afa37afb5b1a5647b334dc3865f43e4336b3b7f3",
+        "Mon Dec 18 22:18:51 2017 +0200",
+        "Mikalai Ramanovich"
+      ],
+      [
+        "181fc4410493b1039b649fc65a0e161d421416c4",
+        "Wed Dec 13 22:07:43 2017 +0800",
+        "superbitcoin"
+      ],
+      [
+        "8fa5cf5b9439cf659bfef03ece6ee73b29172973",
+        "Sat Dec 9 03:16:45 2017 -0800",
+        "Nopslide"
+      ],
+      [
+        "6e12f9b709f7dec2011608e74bd5e104b8dce2ef",
+        "Fri Dec 8 02:22:02 2017 -0600",
+        "唐厅"
+      ],
+      [
+        "da880ed822415410d2d4a6b5b0d4a8fed2d83827",
+        "Fri Dec 8 08:21:45 2017 +0000",
+        "Dan Gershony"
+      ],
+      [
+        "8f7405c818da609670205b11952e12fbef440542",
+        "Sun Nov 26 22:50:04 2017 +0100",
+        "Oliver Gugger"
+      ],
+      [
+        "078f7bcafdfd89777cacb533f4da6d128d0216c3",
+        "Sun Nov 26 02:20:37 2017 +0100",
+        "Nicolas Bacca"
+      ],
+      [
+        "63ed6688adacefdc71c2c660803ba3c777fd519f",
+        "Sat Nov 25 11:37:41 2017 +0100",
+        "Oliver Gugger"
+      ],
+      [
+        "ce90f5b31dbca891fe7a255de23c976e3a656c8f",
+        "Wed Nov 22 18:55:40 2017 +0100",
+        "John L. Jegutanis"
+      ],
+      [
+        "474a1f5add495aad0f1a43ed5c872c19e2e211ba",
+        "Wed Nov 22 20:01:43 2017 +0800",
+        "eveybcd"
+      ],
+      [
+        "1831ba947c77bfeb3f09fa68874b13039fbcbf86",
+        "Mon Nov 20 10:59:55 2017 -0500",
+        "BrianPugh"
+      ],
+      [
+        "a40292a317c9fb014060481a14be081c1b83e170",
+        "Mon Nov 20 19:41:03 2017 +0800",
+        "btd-team"
+      ],
+      [
+        "75bc16301929ca1e3861f6edfdd3bff251bc4e07",
+        "Mon Nov 13 21:30:53 2017 +0100",
+        "chr1sn0"
+      ],
+      [
+        "e28151cce7d18d0171ec854a44fe800facf39ea8",
+        "Thu Nov 9 16:54:36 2017 +0200",
+        "topynate"
+      ],
+      [
+        "3b8a5dab78d63cf74a855a555d9e70cd943b1212",
+        "Thu Nov 9 05:07:37 2017 +0800",
+        "ellaismer"
+      ],
+      [
+        "795ca24cfae224edae42f2886cef50f28d1fa8c7",
+        "Fri Nov 3 18:31:15 2017 +0100",
+        "Alfredo Di Napoli"
+      ],
+      [
+        "f197703597b49366c9e130e8c68bd014618fc4c0",
+        "Fri Oct 27 17:50:52 2017 +0700",
+        "Jonathan Brown"
+      ],
+      [
+        "728f2e66bace98411518caa46820b7d9b58564a7",
+        "Thu Oct 19 15:49:04 2017 +0300",
+        "John L. Jegutanis"
+      ],
+      [
+        "ac78fb2697aabdf7af8f47c8f402a72a4718d2a7",
+        "Fri Oct 13 08:15:09 2017 -0500",
+        "yager"
+      ],
+      [
+        "9ee7b4b020ae1fc76855f7cfd0d691619c8f6c3a",
+        "Sun Oct 8 23:30:15 2017 +0200",
+        "Nicolas Bacca"
+      ],
+      [
+        "d8fb518ae9061a9c5cdd8e5d2c1fe3b5c53c39fe",
+        "Mon Oct 2 12:44:17 2017 +0200",
+        "Oizopower"
+      ],
+      [
+        "864f371dfe581d1f75083ae958a9b3ee4010effb",
+        "Sun Oct 1 15:40:33 2017 -0500",
+        "Rhett Creighton"
+      ],
+      [
+        "5bf0ca3382b7204657be670b153225ffb9880770",
+        "Wed Sep 27 14:00:30 2017 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "28a72d945c29e8c48a0d5f4a96dfc652a9a486e7",
+        "Sun Sep 24 05:49:13 2017 +0530",
+        "Sambhav Sharma"
+      ],
+      [
+        "5f494a0d05dbd191dd757ec8ef640881ebc7f295",
+        "Fri Sep 22 13:38:20 2017 +0200",
+        "Bartek Nowotarski"
+      ],
+      [
+        "a17bac489f8f3f3569d7e2ee6e14ac72158695d6",
+        "Thu Sep 14 12:36:04 2017 +0700",
+        "Jonathan Brown"
+      ],
+      [
+        "c2db465a1d37b2aba87ee2364ffa6b4efddfa168",
+        "Wed Sep 13 16:16:38 2017 +0300",
+        "Blackithart"
+      ],
+      [
+        "a4591ddfa8aecd37cbcb5a397336199e290f786f",
+        "Thu Sep 7 09:56:33 2017 -0600",
+        "Chris Priest"
+      ],
+      [
+        "ec221a8afaf8171c8c8b38d23a2df4a9dd6b77b0",
+        "Thu Aug 31 02:05:05 2017 +0800",
+        "Blockmeta-区块元"
+      ],
+      [
+        "268c9acfcce85e685ad1def73af084fe5781aff6",
+        "Wed Aug 30 21:03:59 2017 +0300",
+        "John L. Jegutanis"
+      ],
+      [
+        "8b7e13d3f9f072f98f7e7770d38e30b24eee5606",
+        "Thu Aug 31 02:03:07 2017 +0800",
+        "sanbit"
+      ],
+      [
+        "1ccaf0bbda3446c63a3645537b936ae7ac92f8b2",
+        "Mon Aug 28 18:05:54 2017 -0400",
+        "Neblio Team"
+      ],
+      [
+        "73c409e54920ef1bb17d82b075f01c34c110eebf",
+        "Wed Aug 23 19:43:33 2017 +0800",
+        "CikeQiu"
+      ],
+      [
+        "2168808eddaf6f04f809a518038c465f5a715e33",
+        "Wed Aug 23 05:43:25 2017 -0600",
+        "BreakoutCoin"
+      ],
+      [
+        "f3aa073cf208d3b98d29ca42eef1dda5bdb51eee",
+        "Thu Aug 17 14:31:28 2017 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "3dfcd2377b1307dbd1b4327d84400c9c62b32529",
+        "Mon Jul 31 22:17:21 2017 +0200",
+        "Cryptorunner"
+      ],
+      [
+        "f40dab965a72f05fb9b6103747ec73ac0befb3f2",
+        "Fri Jul 28 20:54:22 2017 +0900",
+        "slowfx"
+      ],
+      [
+        "4b7d5ae0dd7ef8e3d992da31efbdcb9df2862099",
+        "Sun Jul 23 23:43:33 2017 +0200",
+        "Nicolas Bacca"
+      ],
+      [
+        "2dfe2f3a643102fa1615367ea9c6e51e8c680c8a",
+        "Mon Jul 24 00:41:45 2017 +0300",
+        "John L. Jegutanis"
+      ],
+      [
+        "6e0c2ecf7d46e12b2d02ba129ea7b03bef40c3f6",
+        "Sun Jul 23 22:17:32 2017 +0300",
+        "John L. Jegutanis"
+      ],
+      [
+        "cbd580006f935ea585b9deac5ee494d358f38848",
+        "Wed Jun 28 03:36:31 2017 -0600",
+        "Chris Priest"
+      ],
+      [
+        "64d8cdb00aa39200e76a953d6d79202ec7df185a",
+        "Thu Jun 22 16:36:29 2017 +0200",
+        "François-Xavier Thoorens"
+      ],
+      [
+        "384b8a6aa571d320c209c8ba0307305f30109b57",
+        "Mon Jun 19 12:41:35 2017 -0600",
+        "Chris Priest"
+      ],
+      [
+        "fbcc922acdce1088cbc4412ade989c062e6b862e",
+        "Mon Jun 19 11:11:09 2017 +0200",
+        "Luke Williams"
+      ],
+      [
+        "bbb158a8232dd35723bb7e92ee3f85dcf994224b",
+        "Mon Jun 5 11:04:49 2017 -0600",
+        "Chris Priest"
+      ],
+      [
+        "7a955ad474e1d4036dafa6754a6befa34b60d1f5",
+        "Sat Jun 3 02:50:49 2017 +0700",
+        "Jonathan Brown"
+      ],
+      [
+        "0d179c38716cf2bd35943aff0a38ac6ed7af0397",
+        "Fri Jun 2 00:06:58 2017 +0300",
+        "John L. Jegutanis"
+      ],
+      [
+        "d6df2ad38982204891760e7963e453c155f18ec4",
+        "Thu May 18 17:17:29 2017 +0200",
+        "Nicolas Bacca"
+      ],
+      [
+        "3101c5a859d38439caa604f73d7bf3e8340c8c9c",
+        "Sun May 14 17:29:33 2017 -0400",
+        "VERGE/XVG"
+      ],
+      [
+        "0c94078d48995468ea94e134d93689b2aee86c92",
+        "Wed Apr 26 22:17:31 2017 +0200",
+        "John L. Jegutanis"
+      ],
+      [
+        "719ae294cddf8a58aa355a79407490be44b63e3e",
+        "Tue Apr 11 17:40:21 2017 +0100",
+        "Dan Gershony"
+      ],
+      [
+        "4c71ef9e278eb6ca7dd1537cbd341e40c1cc884e",
+        "Mon Apr 10 20:38:20 2017 +0900",
+        "S.Kamon"
+      ],
+      [
+        "d6e9e1cfacba0a3b5ba914e0a0d7bed48e3bd908",
+        "Fri Mar 31 02:34:48 2017 +0300",
+        "John L. Jegutanis"
+      ],
+      [
+        "e74140cbbb5817551c46ad9f97c53b5838aa98ac",
+        "Thu Mar 23 22:45:51 2017 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "6b3d99e6e193578302a9fc4d02800f1e7e96cbcb",
+        "Thu Mar 23 14:37:53 2017 -0700",
+        "Charlie Lee"
+      ],
+      [
+        "49fa6aef36009d1a03483fb5278a84411e3fe735",
+        "Thu Mar 23 05:14:06 2017 -0700",
+        "Chris Priest"
+      ],
+      [
+        "d91f6ee14722b5a74b5a5f946fa3fa59754707d7",
+        "Sun Mar 19 15:47:58 2017 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "7999d6f0a7f8effee66047cf947a2f43cd8d4419",
+        "Sun Mar 19 15:46:59 2017 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "40c88470be714e81a5149b50adf2db25ab230bf4",
+        "Tue Mar 14 21:54:43 2017 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "907daffa5976ab9a2114ecce28cf0bd9d928d918",
+        "Thu Mar 2 08:05:38 2017 -0500",
+        "Manfred Karrer"
+      ],
+      [
+        "ce3d3ff2fbc61d385c2f734fdca3e238bb5cf659",
+        "Tue Jan 31 23:19:25 2017 +1100",
+        "pondsea"
+      ],
+      [
+        "5bea56286fa38d64132927c9bbb82d630d484972",
+        "Wed Jan 25 02:27:50 2017 -0800",
+        "spiralus"
+      ],
+      [
+        "53df1f1d88c8fca2e0a086988f8cc69aead321ed",
+        "Sun Jan 22 12:37:19 2017 -0500",
+        "Thomas Zarebczan"
+      ],
+      [
+        "8950d5d9d59f8426290a544e777cdfeed2772009",
+        "Fri Jan 20 23:27:39 2017 +0200",
+        "vbecas"
+      ],
+      [
+        "0cd3630c6dc32cf25f6ed16d07493b0851a1da4a",
+        "Mon Jan 2 14:29:28 2017 +0100",
+        "dev0tion"
+      ],
+      [
+        "11f55345692edb6f65f0027cfdaea00aceb0ee9c",
+        "Mon Jan 2 13:14:27 2017 +0100",
+        "dev0tion"
+      ],
+      [
+        "7e762d8a6b04393be3432fc88918b1f2592aac09",
+        "Mon Jan 2 14:13:37 2017 +0200",
+        "vetal20600"
+      ],
+      [
+        "02fd70e6df3012a1fd60ef00e98a9cef093fcf33",
+        "Fri Dec 9 10:35:26 2016 -0700",
+        "mikeyb"
+      ],
+      [
+        "e488787c95ce412217af5bf03fb660988154d748",
+        "Wed Oct 19 15:44:16 2016 +0200",
+        "Fabian Schuh"
+      ],
+      [
+        "ee8e256c438472886217ba83af2bb3ed700084ee",
+        "Wed Nov 16 01:39:21 2016 -0800",
+        "Martin Treurnicht"
+      ],
+      [
+        "20e1120aea9a1310601cb61ea7841f1a26c18f63",
+        "Tue Nov 15 21:04:42 2016 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "111e39c8929718b47b64810345a78d9ceb21f45f",
+        "Mon Oct 24 16:14:38 2016 +0300",
+        "vbecas"
+      ],
+      [
+        "a2cdaba5ceef223a13eba87db5ff197e85d5b2a9",
+        "Wed Oct 19 00:10:15 2016 +0700",
+        "Nopslide"
+      ],
+      [
+        "bc8d1ab56a8b4737cdda2b200b65a6b40717e93e",
+        "Thu Oct 13 13:29:42 2016 +0200",
+        "Max Kordek"
+      ],
+      [
+        "c8b32fcf7ef92cfbe533e378f5a9920afeb3fcbf",
+        "Thu Oct 13 12:03:00 2016 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "d97589d49722f84d42bcdbd47a9d05f480456948",
+        "Wed Oct 5 15:45:54 2016 +0200",
+        "slush0"
+      ],
+      [
+        "17379c9da2c1faab961b40bf1ac4abd306545c6f",
+        "Wed Sep 28 02:33:52 2016 -0700",
+        "Leigh Phillips"
+      ],
+      [
+        "7d6c4afb69cb9db6145371c1c029165ec681312c",
+        "Mon Sep 26 13:32:18 2016 +0100",
+        "Dan Gershony"
+      ],
+      [
+        "fb0a449a41454d4986a5828247456016ac26a042",
+        "Fri Sep 23 00:10:33 2016 -0500",
+        "Brian Deery"
+      ],
+      [
+        "a5096ae46a1fc3759b2e5bd584e235f8d934ab75",
+        "Thu Sep 22 18:53:53 2016 -0500",
+        "Brian Deery"
+      ],
+      [
+        "e802ebca93e3eafcf4736e0b97b6c75d1d8a3ef1",
+        "Tue Sep 20 17:40:06 2016 -0500",
+        "Brian Deery"
+      ],
+      [
+        "87232bd3c35f844d9856a8a209ba20da9f16854c",
+        "Mon Sep 19 14:16:17 2016 +0100",
+        "Dan Gershony"
+      ],
+      [
+        "1a3a8b8908a3a33d4566bfd38702fecb4bc1636b",
+        "Mon Sep 19 16:16:07 2016 +0300",
+        "vbecas"
+      ],
+      [
+        "62f0129dcdf53ba4c060439af0e077aec2dcf1dd",
+        "Wed Sep 14 17:49:16 2016 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "568586f830942a61f608d23919f845e86eb846fb",
+        "Wed Sep 14 15:45:29 2016 +0100",
+        "Dan Gershony"
+      ],
+      [
+        "58d169ec960291ed71a407f272f41620b4ac7cbd",
+        "Sat Sep 10 01:56:32 2016 +0100",
+        "Dan Gershony"
+      ],
+      [
+        "86953db1a86db427a7ea0fb25b6bfcdbf34da61f",
+        "Tue Sep 6 06:48:34 2016 -0700",
+        "mikeyb"
+      ],
+      [
+        "eb75a320aa77fab6c7ed8355a242a54bd6f41e51",
+        "Sun Sep 4 08:28:02 2016 -0500",
+        "protonn"
+      ],
+      [
+        "e876856e31a996777c8f3f58514778d5dac54bdb",
+        "Fri Aug 26 18:36:07 2016 +0100",
+        "Dan Gershony"
+      ],
+      [
+        "47d99988a021a0ccc89388151974b15d7587f043",
+        "Fri Aug 26 03:41:32 2016 +0300",
+        "Vitali Grabovkski"
+      ],
+      [
+        "94e7140a73ea798e16eed891d0650aff4d7d9739",
+        "Wed Aug 17 16:11:32 2016 +0100",
+        "Dan Gershony"
+      ],
+      [
+        "abdf9d125c96b19edca785b316cfaac61a895cc5",
+        "Tue Aug 16 18:10:10 2016 +0100",
+        "Dan Gershony"
+      ],
+      [
+        "f82a53f8ed54536147fb50dad7da61f47eabb4d2",
+        "Wed Jul 13 13:55:01 2016 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "4023b839e0451e8cbd1e14c181efe606d2c3595f",
+        "Wed Jul 13 09:43:52 2016 +0530",
+        "sherlockcoin"
+      ],
+      [
+        "ae90557b90dd0e6aaa5d1357e967f4244be0613a",
+        "Tue Jul 12 18:11:17 2016 +0100",
+        "Dan Gershony"
+      ],
+      [
+        "6bd674948436ac6c6e481d979fc03d007682ee26",
+        "Wed Jun 29 17:29:38 2016 +0300",
+        "John L. Jegutanis"
+      ],
+      [
+        "c331df9e51c53a2b875de6688e7feb3883a7d598",
+        "Mon Jun 20 21:54:25 2016 -0700",
+        "Chris Priest"
+      ],
+      [
+        "38ece2ad8f8396ff84af94e3430d50154fed9ae7",
+        "Sat Jun 4 17:10:21 2016 +0100",
+        "KingCaper"
+      ],
+      [
+        "8b1773de98ee3467c123c352a9e8329a0ec97603",
+        "Thu May 26 23:02:30 2016 +0300",
+        "lateminer"
+      ],
+      [
+        "672d6ee40e01428614b5cf521fddf3d80eaddf07",
+        "Wed May 4 15:54:22 2016 -0500",
+        "Oktoshi"
+      ],
+      [
+        "49da1b04d8f2bb9ff77b6d953a5b989d880afe82",
+        "Mon Apr 25 07:59:10 2016 -0500",
+        "cryptapus"
+      ],
+      [
+        "20b41f372cfd2be2c8b5743099a086df89955727",
+        "Fri Apr 15 19:55:52 2016 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "735b48e535287f505585340f88935ea29f6a1bb8",
+        "Fri Apr 15 14:41:03 2016 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "b289b25556f3d18241909f63d114d5349e6d88c0",
+        "Fri Apr 15 13:29:11 2016 +1000",
+        "Bata.io"
+      ],
+      [
+        "03838e775cdffd844d0d0c832610bfd3a73e3871",
+        "Thu Apr 14 13:33:05 2016 -0400",
+        "BigUP Life"
+      ],
+      [
+        "8b6dfc7bdb7e64636cec87d015225074a82fc43a",
+        "Mon Mar 21 15:34:25 2016 +0200",
+        "Riccardo Spagni"
+      ],
+      [
+        "9e3d3178b88cc041fab45d60cc662819b04e8244",
+        "Mon Mar 21 15:30:09 2016 +0200",
+        "Riccardo Spagni"
+      ],
+      [
+        "a59ba6d94deb02fee661e5c4cbc5ee897b13a3e3",
+        "Sat Mar 19 20:46:03 2016 +1300",
+        "Hypermist"
+      ],
+      [
+        "1f3ff09eeb63a328346ee961bfb2718ebb53c585",
+        "Mon Mar 7 09:48:33 2016 +0200",
+        "Malcolm MacLeod"
+      ],
+      [
+        "efec67dc74ac468bad70329ce3588e199d7de494",
+        "Sun Mar 6 12:39:04 2016 +0000",
+        "ahmedbodi"
+      ],
+      [
+        "0d970f5251a7d56b974e14a66139c63b23a2a0be",
+        "Tue Mar 1 23:29:41 2016 +0100",
+        "Myckel Habets"
+      ],
+      [
+        "706d56f9083687108c7d38a4312b018ce71f683f",
+        "Thu Feb 18 17:33:54 2016 +0300",
+        "Kirill Fomichev"
+      ],
+      [
+        "b76151348a7430013a4b147725ed94b0f6b72994",
+        "Mon Feb 1 16:02:09 2016 +0100",
+        "Pavol Rusnak"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 85.71,
+      "passed_checks": 6,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 7,
+      "slip": {
+        "score": 85.71,
+        "passed_checks": 6,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 7,
+        "checks": [
+          {
+            "id": "slip.required_field.slip",
+            "label": "Required field 'slip' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.author",
+            "label": "Required field 'author' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.type",
+            "label": "Required field 'type' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.created",
+            "label": "Required field 'created' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "slip",
+            "passed": false,
+            "details": "Missing: abstract"
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "https": 683,
+      "com": 226,
+      "www": 207,
+      "org": 169,
+      "io": 166,
+      "http": 97,
+      "github": 79,
+      "network": 68,
+      "bitcoin": 35,
+      "coin": 34,
+      "cash": 19,
+      "net": 18,
+      "info": 17,
+      "protocol": 14,
+      "chain": 13,
+      "token": 13,
+      "tech": 11,
+      "co": 10,
+      "cc": 9,
+      "0044": 8,
+      "bip": 8,
+      "world": 8,
+      "types": 7,
+      "project": 7,
+      "foundation": 6,
+      "credits": 6,
+      "nano": 5,
+      "nos": 5,
+      "core": 5,
+      "pro": 5,
+      "registered": 4,
+      "2": 4,
+      "bip44": 4,
+      "constants": 4,
+      "global": 4,
+      "web": 4,
+      "ether": 4,
+      "pivx": 4,
+      "whitecoin": 4,
+      "en": 4,
+      "poa": 4,
+      "eos": 4,
+      "jp": 4,
+      "loki": 4,
+      "capricoin": 4,
+      "devault": 4,
+      "ryo": 4,
+      "btcr": 4,
+      "counos": 4,
+      "theta": 4,
+      "tao": 4,
+      "slip": 3,
+      "title": 3,
+      "type": 3,
+      "hierarchy": 3,
+      "deal": 3,
+      "dogecoin": 3,
+      "dash": 3,
+      "open": 3,
+      "ecoin": 3,
+      "currency": 3,
+      "novacoin": 3,
+      "btcd": 3,
+      "aib": 3,
+      "edrcoin": 3,
+      "classic": 3,
+      "source": 3,
+      "mix": 3,
+      "blockchain": 3,
+      "gulden": 3,
+      "ubiq": 3,
+      "zayedcoin": 3,
+      "ark": 3,
+      "atom": 3,
+      "factom": 3,
+      "factomproject": 3,
+      "steem": 3,
+      "riecoin": 3,
+      "zclassic": 3,
+      "pirl": 3,
+      "html": 3,
+      "ch": 3,
+      "atn": 3,
+      "vision": 3,
+      "flo": 3,
+      "ask": 3,
+      "smart": 3,
+      "helium": 3,
+      "iov": 3,
+      "ledger": 3,
+      "chainx": 3,
+      "live": 3,
+      "crypto": 3,
+      "hpb": 3,
+      "iost": 3,
+      "euno": 3,
+      "8bit": 3,
+      "moac": 3,
+      "swtc": 3,
+      "ai": 3,
+      "fix": 3,
+      "usdp": 3,
+      "lto": 3,
+      "aeon": 3,
+      "v": 3,
+      "nollar": 3,
+      "nyzo": 3,
+      "qos": 3,
+      "pkt": 3,
+      "link": 3,
+      "umbru": 3,
+      "donu": 3,
+      "earths": 3,
+      "bytz": 3,
+      "aion": 3,
+      "xrphd": 3,
+      "aergo": 3,
+      "bcx": 3,
+      "dgld": 3,
+      "seele": 3,
+      "kava": 3,
+      "gleec": 3,
+      "mesg": 3,
+      "fimk": 3,
+      "wallet": 3,
+      "bare": 3,
+      "eco": 3,
+      "amo": 3,
+      "fch": 3,
+      "earth": 3,
+      "aeth": 3,
+      "joys": 3,
+      "coinevo": 3,
+      "scribe": 3,
+      "nkn": 3,
+      "xdag": 3,
+      "grin": 3,
+      "mw": 3,
+      "dock": 3,
+      "egem": 3,
+      "voken": 3,
+      "veil": 3,
+      "br": 3,
+      "cruzbit": 3,
+      "neo": 3,
+      "bcha": 3,
+      "xazab": 3,
+      "aioz": 3,
+      "lbtc": 3,
+      "rise": 3,
+      "beam": 3,
+      "city": 3,
+      "pkc": 3,
+      "iote": 3,
+      "qtum": 3,
+      "reosc": 3,
+      "iota": 3,
+      "axe": 3,
+      "blockstack": 3,
+      "safe": 3,
+      "nuls": 3,
+      "celo": 3,
+      "genom": 3,
+      "x42": 3,
+      "vite": 3,
+      "xds": 3,
+      "hatch": 3,
+      "satoshilabs": 2,
+      "deterministic": 2,
+      "wallets": 2,
+      "level": 2,
+      "use": 2,
+      "described": 2,
+      "symbol": 2,
+      "btc": 2,
+      "1": 2,
+      "coins": 2,
+      "litecoin": 2,
+      "peercoin": 2,
+      "namecoin": 2,
+      "feathercoin": 2,
+      "counterparty": 2,
+      "blackcoin": 2,
+      "nushares": 2,
+      "nubits": 2,
+      "xch": 2,
+      "assets": 2,
+      "nxt": 2,
+      "burst": 2,
+      "zoom": 2,
+      "virtual": 2,
+      "canada": 2,
+      "parkbyte": 2,
+      "moin": 2,
+      "expanse": 2,
+      "emc2": 2,
+      "decred": 2,
+      "particl": 2,
+      "argentum": 2,
+      "libertas": 2,
+      "shreeji": 2,
+      "asiacoin": 2,
+      "dopecoin": 2,
+      "dev": 2,
+      "templecoin": 2,
+      "syscoin": 2,
+      "solarcoin": 2,
+      "smileycoin": 2,
+      "eth": 2,
+      "ethereum": 2,
+      "pesobit": 2,
+      "landcoin": 2,
+      "bitcoinplus": 2,
+      "iop": 2,
+      "insanecoin": 2,
+      "britcoin": 2,
+      "compcoin": 2,
+      "crown": 2,
+      "belacoin": 2,
+      "icon": 2,
+      "fujicoin": 2,
+      "verge": 2,
+      "clubcoin": 2,
+      "richcoin": 2,
+      "potcoin": 2,
+      "terracoin": 2,
+      "auroracoin": 2,
+      "bitbean": 2,
+      "bata": 2,
+      "myriadcoin": 2,
+      "bitsend": 2,
+      "uno": 2,
+      "unobtanium": 2,
+      "mtr": 2,
+      "goldblocks": 2,
+      "sahamdev": 2,
+      "chronoscoin": 2,
+      "ubiquoin": 2,
+      "evotion": 2,
+      "bigup": 2,
+      "gamecredits": 2,
+      "dollarcoins": 2,
+      "dubaicoin": 2,
+      "stratisplatform": 2,
+      "sh": 2,
+      "shilling": 2,
+      "marscoin": 2,
+      "pesetacoin": 2,
+      "neurocoin": 2,
+      "hempcoin": 2,
+      "linx": 2,
+      "denarius": 2,
+      "pink": 2,
+      "flashcoin": 2,
+      "zen": 2,
+      "putincoin": 2,
+      "bitzeny": 2,
+      "unify": 2,
+      "stealthcoin": 2,
+      "vcash": 2,
+      "blob": 2,
+      "master": 2,
+      "z": 2,
+      "lisk": 2,
+      "zcoin": 2,
+      "rsk": 2,
+      "giftblock": 2,
+      "lbry": 2,
+      "bisq": 2,
+      "ripple": 2,
+      "nebl": 2,
+      "stellar": 2,
+      "whalecoin": 2,
+      "europecoin": 2,
+      "eu": 2,
+      "diamond": 2,
+      "bit": 2,
+      "bytom": 2,
+      "bio": 2,
+      "biocoin": 2,
+      "medium": 2,
+      "2017": 2,
+      "superskynet": 2,
+      "toacoin": 2,
+      "bitcore": 2,
+      "bco": 2,
+      "bridgecoin": 2,
+      "ellaism": 2,
+      "vivo": 2,
+      "helleniccoin": 2,
+      "buzz": 2,
+      "htmlcoin": 2,
+      "onixcoin": 2,
+      "ravencoin": 2,
+      "gobyte": 2,
+      "btcz": 2,
+      "martexcoin": 2,
+      "wincoin": 2,
+      "minexcoin": 2,
+      "musicoin": 2,
+      "crave": 2,
+      "straks": 2,
+      "litecash": 2,
+      "exclusivecoin": 2,
+      "feirm": 2,
+      "tron": 2,
+      "kobocoin": 2,
+      "hush": 2,
+      "banano": 2,
+      "etf": 2,
+      "omni": 2,
+      "bitcoinfile": 2,
+      "cryptonodes": 2,
+      "bytecoin": 2,
+      "ringo": 2,
+      "platon": 2,
+      "everitoken": 2,
+      "bismuth": 2,
+      "neetcoin": 2,
+      "bopochain": 2,
+      "utrum": 2,
+      "monkey": 2,
+      "boxycoin": 2,
+      "megacoin": 2,
+      "anon": 2,
+      "litecoinz": 2,
+      "askcoin": 2,
+      "smartcash": 2,
+      "xuez": 2,
+      "webchain": 2,
+      "actinium": 2,
+      "trezarcoin": 2,
+      "varda": 2,
+      "fio": 2,
+      "bitcoinsv": 2,
+      "dexon": 2,
+      "imagewallet": 2,
+      "nimiq": 2,
+      "jibital": 2,
+      "simple": 2,
+      "uc": 2,
+      "ulord": 2,
+      "exos": 2,
+      "economy": 2,
+      "electra": 2,
+      "soom": 2,
+      "xrd": 2,
+      "free": 2,
+      "biz": 2,
+      "npw": 2,
+      "blockstamp": 2,
+      "smartholdem": 2,
+      "zest": 2,
+      "arcblock": 2,
+      "pion": 2,
+      "zbux": 2,
+      "kepler": 2,
+      "tokenpay": 2,
+      "chainzilla": 2,
+      "bcc": 2,
+      "bc": 2,
+      "sbc": 2,
+      "dominantchain": 2,
+      "onegram": 2,
+      "shitcoin": 2,
+      "andes": 2,
+      "hathor": 2,
+      "id": 2,
+      "bravo": 2,
+      "algorand": 2,
+      "gravitycoin": 2,
+      "heat": 2,
+      "digitalnote": 2,
+      "fusion": 2,
+      "cpc": 2,
+      "bold": 2,
+      "tkeycoin": 2,
+      "usechain": 2,
+      "bitcoincz": 2,
+      "iocoin": 2,
+      "asofe": 2,
+      "mass": 2,
+      "faircoin": 2,
+      "nekonium": 2,
+      "genaro": 2,
+      "divi": 2,
+      "cmt": 2,
+      "community": 2,
+      "iotex": 2,
+      "deeponion": 2,
+      "atoken": 2,
+      "bitshares": 2,
+      "ckb": 2,
+      "nervos": 2,
+      "ultrain": 2,
+      "adshares": 2,
+      "zilliqa": 2,
+      "vnscoin": 2,
+      "matrix": 2,
+      "ecc": 2,
+      "rapture": 2,
+      "hashgard": 2,
+      "zero": 2,
+      "eboost": 2,
+      "shard": 2,
+      "linda": 2,
+      "commercium": 2,
+      "blocknet": 2,
+      "audax": 2,
+      "terra": 2,
+      "zprime": 2,
+      "kuva": 2,
+      "memcoin": 2,
+      "cs": 2,
+      "swiftcash": 2,
+      "cpchain": 2,
+      "vgo": 2,
+      "n8vcoin": 2,
+      "omotenashicoin": 2,
+      "site": 2,
+      "blast": 2,
+      "decent": 2,
+      "auxilium": 2,
+      "htdf": 2,
+      "ycash": 2,
+      "xyz": 2,
+      "qlc": 2,
+      "icetea": 2,
+      "arrowchain": 2,
+      "cybex": 2,
+      "polkadot": 2,
+      "resistance": 2,
+      "aryacoin": 2,
+      "casinocoin": 2,
+      "systems": 2,
+      "cpuchain": 2,
+      "lambda": 2,
+      "valuecyber": 2,
+      "canonchain": 2,
+      "abbc": 2,
+      "het": 2,
+      "asch": 2,
+      "vidulum": 2,
+      "medibloc": 2,
+      "zvchain": 2,
+      "vestx": 2,
+      "supereos": 2,
+      "maxonrow": 2,
+      "zenzo": 2,
+      "sonicx": 2,
+      "kaleidochain": 2,
+      "dogec": 2,
+      "quebecoin": 2,
+      "imagecoin": 2,
+      "hsn": 2,
+      "ton": 2,
+      "near": 2,
+      "xpchain": 2,
+      "01coin": 2,
+      "nix": 2,
+      "utopiacoin": 2,
+      "galilel": 2,
+      "oneledger": 2,
+      "xbi": 2,
+      "ga": 2,
+      "hdd": 2,
+      "sugarchain": 2,
+      "ailecoin": 2,
+      "snowgem": 2,
+      "tangerine": 2,
+      "ain": 2,
+      "sumokoin": 2,
+      "electroneum": 2,
+      "wownero": 2,
+      "xtendcash": 2,
+      "lethean": 2,
+      "nodehost": 2,
+      "argoneum": 2,
+      "conceal": 2,
+      "teloscoin": 2,
+      "zcore": 2,
+      "criptopeso": 2,
+      "kusama": 2,
+      "peepcoin": 2,
+      "netcloth": 2,
+      "icu": 2,
+      "chipo": 2,
+      "dothereum": 2,
+      "phore": 2,
+      "vitae": 2,
+      "cocos": 2,
+      "simplicity": 2,
+      "myce": 2,
+      "kts": 2,
+      "klimatas": 2,
+      "insolar": 2,
+      "empow": 2,
+      "shineblocks": 2,
+      "filecoin": 2,
+      "rutanio": 2,
+      "csdt": 2,
+      "zslp": 2,
+      "ethercore": 2,
+      "dxchain": 2,
+      "bithereum": 2,
+      "arweave": 2,
+      "origo": 2,
+      "oasis": 2,
+      "gleecbtc": 2,
+      "color": 2,
+      "pexa": 2,
+      "mooncoin": 2,
+      "ocean": 2,
+      "bluzelle": 2,
+      "freecash": 2,
+      "latticex": 2,
+      "amoveo": 2,
+      "minter": 2,
+      "kunpeng": 2,
+      "finl": 2,
+      "band": 2,
+      "bluehelix": 2,
+      "rupx": 2,
+      "solana": 2,
+      "kumacoin": 2,
+      "provenance": 2,
+      "casperlabs": 2,
+      "elrond": 2,
+      "xaya": 2,
+      "koto": 2,
+      "otc": 2,
+      "radiant": 2,
+      "seelen": 2,
+      "idena": 2,
+      "vee": 2,
+      "sierracoin": 2,
+      "linkeye": 2,
+      "bsc": 2,
+      "dabacus": 2,
+      "amsterdamcoin": 2,
+      "bumo": 2,
+      "gram": 2,
+      "yapstone": 2,
+      "scrt": 2,
+      "novo": 2,
+      "ghost": 2,
+      "hst": 2,
+      "projectcoin": 2,
+      "youchain": 2,
+      "beyondcoin": 2,
+      "digital": 2,
+      "valorbit": 2,
+      "flow": 2,
+      "spacemesh": 2,
+      "scdo": 2,
+      "iq": 2,
+      "compendia": 2,
+      "hyn": 2,
+      "bhp": 2,
+      "bbc": 2,
+      "mkf": 2,
+      "xinfin": 2,
+      "sum": 2,
+      "sumcoin": 2,
+      "huobichain": 2,
+      "flare": 2,
+      "bcs": 2,
+      "kratos": 2,
+      "lkrcoin": 2,
+      "nexty": 2,
+      "stakebird": 2,
+      "agoric": 2,
+      "cico": 2,
+      "coinicles": 2,
+      "irisnet": 2,
+      "chronicles": 2,
+      "sero": 2,
+      "super": 2,
+      "beldex": 2,
+      "saluscoin": 2,
+      "velas": 2,
+      "bitcoinpos": 2,
+      "bonorum": 2,
+      "platincoin": 2,
+      "dune": 2,
+      "darmacash": 2,
+      "creditcoin": 2,
+      "haidai": 2,
+      "goldbcr": 2,
+      "incognito": 2,
+      "safecapital": 2,
+      "tfuel": 2,
+      "rentalchain": 2,
+      "mwc": 2,
+      "divergenti": 2,
+      "unit": 2,
+      "e": 2,
+      "smartshare": 2,
+      "leofcoin": 2,
+      "ethergem": 2,
+      "achain": 2,
+      "selfsell": 2,
+      "gatechain": 2,
+      "karura": 2,
+      "coinex": 2,
+      "xdai": 2,
+      "chaincoin": 2,
+      "binance": 2,
+      "sinovate": 2,
+      "ballzcoin": 2,
+      "btw": 2,
+      "acala": 2,
+      "dst": 2,
+      "dstra": 2,
+      "qvolta": 2,
+      "vechain": 2,
+      "callisto": 2,
+      "desmos": 2,
+      "infinitefuture": 2,
+      "zoobc": 2,
+      "adfunds": 2,
+      "tomo": 2,
+      "bitcoinabc": 2,
+      "lumeneo": 2,
+      "stafi": 2,
+      "metadium": 2,
+      "findora": 2,
+      "rune": 2,
+      "thorchain": 2,
+      "twins": 2,
+      "win": 2,
+      "okchain": 2,
+      "solidum": 2,
+      "new": 2,
+      "thundercore": 2,
+      "bankitt": 2,
+      "harmony": 2,
+      "ont": 2,
+      "exchange": 2,
+      "mochimo": 2,
+      "cybermiles": 2,
+      "defcoin": 2,
+      "hycon": 2,
+      "taler": 2,
+      "aelf": 2,
+      "audl": 2,
+      "atheios": 2,
+      "tezos": 2,
+      "liquid": 2,
+      "classica": 2,
+      "vipstarcoin": 2,
+      "turtlecoin": 2,
+      "hodlcoin": 2,
+      "sia": 2,
+      "polis": 2,
+      "monoeci": 2,
+      "colossusxt": 2,
+      "gincoin": 2,
+      "mnpcoin": 2,
+      "kin": 2,
+      "mcash": 2,
+      "truechain": 2,
+      "cranepay": 2,
+      "elastos": 2,
+      "snowblossom": 2,
+      "lux": 2,
+      "hedera": 2,
+      "contentos": 2,
+      "dynamic": 2,
+      "duality": 2,
+      "solutions": 2,
+      "sequence": 2,
+      "destream": 2,
+      "nebulas": 2,
+      "blocknode": 2,
+      "codechain": 2,
+      "roi": 2,
+      "yeeco": 2,
+      "fic": 2,
+      "handshake": 2,
+      "unification": 2,
+      "gochain": 2,
+      "theholyrogercoin": 2,
+      "bitvote": 2,
+      "skycoin": 2,
+      "klay": 2,
+      "bitcoinquark": 2,
+      "chia": 2,
+      "energi": 2,
+      "god": 2,
+      "fibos": 2,
+      "essentia": 2,
+      "ipos": 2,
+      "bityuan": 2,
+      "yuan": 2,
+      "sandego": 2,
+      "totem": 2,
+      "safecoin": 2,
+      "zel": 2,
+      "ritocoin": 2,
+      "ndau": 2,
+      "pwrcoin": 2,
+      "bellcoin": 2,
+      "ethersocial": 2,
+      "thepower": 2,
+      "bytetrade": 2,
+      "fixedtradecoin": 2,
+      "amabig": 2,
+      "evan": 2,
+      "stash": 2,
+      "krypton": 2,
+      "wethio": 2,
+      "c0ban": 2,
+      "waykichain": 2,
+      "strax": 2,
+      "akroma": 2,
+      "artis": 2,
+      "iolite": 2,
+      "xerom": 2,
+      "lapo": 2,
+      "epik": 2,
+      "hydra": 2,
+      "bitcoinore": 2,
+      "wanchain": 2,
+      "waves": 2,
+      "semux": 2,
+      "ion": 2,
+      "wgr": 2,
+      "obsr": 2,
+      "aquachain": 2,
+      "kusd": 2,
+      "eq": 2,
+      "fluid": 2,
+      "quarkchain": 2,
+      "package": 2
+    },
+    "changes_in_status": [],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        {
+          "target": "bips:44",
+          "count": 10
+        }
+      ],
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:02:12Z",
+          "dependencies": []
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,266 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "65",
+      "title": "Relay List Metadata",
+      "status": "Draft",
+      "author": null,
+      "created": "2023-02-03",
+      "type": "Optional",
+      "layer": null,
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Thu Sep 19 08:33:11 2024 +0900",
+    "total_commits": 19,
+    "git_history": [
+      [
+        "ff39a11611a7f4732550e55d03286c5b1d17467e",
+        "Thu Sep 19 08:33:11 2024 +0900",
+        "Asai Toshiya"
+      ],
+      [
+        "e6552476aa2e5ca7256be572a9aa226ec8a022ee",
+        "Tue Sep 3 20:41:31 2024 +0330",
+        "kehiy"
+      ],
+      [
+        "d9eb17ce86e1f11d0919f192ed61ab23045cfc03",
+        "Tue Sep 3 01:16:36 2024 +0900",
+        "Asai Toshiya"
+      ],
+      [
+        "35ba0092ac2b75891b49173cafce750236bb43bb",
+        "Thu Jul 11 18:35:12 2024 -0300",
+        "P. Reis"
+      ],
+      [
+        "4313fbf7a5c1d7d2c29e414ed68104641f3286fa",
+        "Thu Feb 22 12:30:18 2024 +0900",
+        "Asai Toshiya"
+      ],
+      [
+        "37f6cbb775126b386414220f783ca0f5f85e7614",
+        "Wed Nov 15 21:42:51 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "2392dfc9a8b10873cf81c9366291e5971cb9d28c",
+        "Fri Nov 10 05:45:29 2023 +0900",
+        "Akiomi Kamakura"
+      ],
+      [
+        "6b566e897cf0a75d9b6671e73bc614333b89d7ae",
+        "Wed Oct 25 12:27:18 2023 +0900",
+        "jiftechnify"
+      ],
+      [
+        "749c9b0a2d49d09ccbd00f6bdb4843182e334ddf",
+        "Wed Oct 25 12:21:24 2023 +0900",
+        "jiftechnify"
+      ],
+      [
+        "0d267aab5a74a7f63275f47ceb3c2773ce437f97",
+        "Mon Oct 2 15:34:24 2023 -0700",
+        "git"
+      ],
+      [
+        "4de43f65a1bc5f312dba039d8b405358ad1f7397",
+        "Fri Sep 29 12:00:07 2023 -0700",
+        "git"
+      ],
+      [
+        "3b5d3ca677829333779bb46874bb0dc816283dc9",
+        "Fri Sep 29 11:46:30 2023 -0700",
+        "git"
+      ],
+      [
+        "5eb51d5278f758d92a4fd5ab881dfb30199df412",
+        "Thu Sep 28 13:02:03 2023 -0700",
+        "git"
+      ],
+      [
+        "a5047326d4d7c28e66c5d1262c252b86a1c8fe67",
+        "Fri Aug 11 06:12:50 2023 -0400",
+        "Vitor Pamplona"
+      ],
+      [
+        "d0cb9d0c24ec9815b0668bffff246a19352b9ca2",
+        "Fri Jul 21 00:48:55 2023 +0900",
+        "erechorse"
+      ],
+      [
+        "524caa38563f49fc2aacbbe48b212fde0f24f97e",
+        "Mon Feb 20 09:28:39 2023 +1300",
+        "Mike Dilger"
+      ],
+      [
+        "870f96b988697d6ae59ea74223b6d3b549e6af83",
+        "Sun Feb 5 03:56:07 2023 +1300",
+        "Mike Dilger"
+      ],
+      [
+        "251382552355258f19403c8ddc8bd63a7c74bd19",
+        "Sun Feb 5 03:50:26 2023 +1300",
+        "Mike Dilger"
+      ],
+      [
+        "69438fc3445490a7081a09f0de65ff8c6abe723b",
+        "Fri Feb 3 18:52:56 2023 +1300",
+        "Mike Dilger"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "relays": 20,
+      "relay": 15,
+      "user": 11,
+      "kind": 10,
+      "10002": 9,
+      "s": 9,
+      "read": 8,
+      "write": 8,
+      "clients": 8,
+      "events": 7,
+      "event": 6,
+      "nip": 5,
+      "r": 5,
+      "com": 5,
+      "use": 5,
+      "list": 4,
+      "content": 4,
+      "wss": 4,
+      "lists": 4,
+      "model": 4,
+      "users": 4,
+      "author": 3,
+      "https": 3,
+      "advertise": 2,
+      "preferred": 2,
+      "tags": 2,
+      "uris": 2,
+      "marker": 2,
+      "example": 2,
+      "client": 2,
+      "3": 2,
+      "seeking": 2,
+      "tagged": 2,
+      "broadcasting": 2,
+      "broadcast": 2,
+      "large": 2,
+      "popular": 2,
+      "data": 2,
+      "2": 2,
+      "4": 2,
+      "11": 2,
+      "6": 2,
+      "outbox": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "69438fc3445490a7081a09f0de65ff8c6abe723b",
+        "timestamp": "2023-02-03T18:52:56+13:00",
+        "date": "2023-02-03",
+        "author": "Mike Dilger",
+        "path": "65.md",
+        "status": "Draft",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        {
+          "target": "nips:0A",
+          "count": 1
+        },
+        {
+          "target": "nips:0D",
+          "count": 1
+        },
+        {
+          "target": "nips:11",
+          "count": 1
+        }
+      ],
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:30Z",
+          "dependencies": [
+            {
+              "target": "nips:03",
+              "evidence": "This NIP doesn't fully replace relay lists that are designed to configure a client's usage of relays (such as `kind:3` style relay lists).",
+              "reason": "The proposal explicitly constrains its behavior relative to kind 3 relay lists, which are the preexisting relay-list format it complements rather than replaces.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:11",
+              "evidence": "If a relay signals support for this NIP in their [NIP-11](11.md) document",
+              "reason": "The proposal uses NIP-11 relay metadata as the mechanism for relays to signal support for accepting kind 10002 events.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

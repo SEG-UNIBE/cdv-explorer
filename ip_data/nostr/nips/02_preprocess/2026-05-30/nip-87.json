@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "87",
       "title": "Ecash Mint Discoverability",
-      "author": [
-        "benthecarman"
-      ],
-      "created": "2025-07-16",
       "status": "Draft",
+      "author": null,
+      "created": "2025-07-16",
       "type": "Optional",
       "layer": null,
       "kind": null
@@ -185,12 +183,28 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 1"
+        {
+          "target": "nips:01",
+          "count": 1
+        },
+        {
+          "target": "nips:DE",
+          "count": 1
+        }
       ],
       "body_extracted_llm": [
-        "NIP 1",
-        "NIP 12",
-        "NIP 33"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:57Z",
+          "dependencies": [
+            {
+              "target": "nips:01",
+              "evidence": "“content” is an optional `metadata`-like stringified JSON object, as described in NIP-01",
+              "reason": "The mint information event format and metadata handling directly reuse the kind:0 metadata semantics defined by this NIP.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

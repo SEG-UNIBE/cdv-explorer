@@ -1,0 +1,262 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "19",
+      "title": "bech32-encoded entities",
+      "status": "Draft",
+      "author": null,
+      "created": "2022-12-16",
+      "type": "Optional",
+      "layer": null,
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Tue Aug 20 12:56:05 2024 -0300",
+    "total_commits": 18,
+    "git_history": [
+      [
+        "ca3c52e3e74f0a4679f1c6c0d9ac6461ea748d2d",
+        "Tue Aug 20 12:56:05 2024 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "ecee40df17929abdf187bb49952cc40ed1a6702a",
+        "Tue Jul 23 20:59:50 2024 -0300",
+        "fiatjaf"
+      ],
+      [
+        "37f6cbb775126b386414220f783ca0f5f85e7614",
+        "Wed Nov 15 21:42:51 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "208dee210249f84496ddfa823542d023e23b3edb",
+        "Thu Aug 24 15:18:50 2023 -0700",
+        "Jonathan Staab"
+      ],
+      [
+        "72bb8a128b2d7d3c2c654644cd68d0d0fe58a3b1",
+        "Sun Aug 13 13:47:45 2023 -0300",
+        "fiatjaf_"
+      ],
+      [
+        "01f90d105d995df7308ef6bea46cc93cdef16ec3",
+        "Sun Apr 9 21:21:59 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "dee546ed9ead06135522307c7effafb8e7095afd",
+        "Sun Apr 9 10:24:50 2023 +1200",
+        "Mike Dilger"
+      ],
+      [
+        "e1004d3d4bca4542f1862886b20c6a1c8b4d9e0b",
+        "Wed Mar 15 08:06:33 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "2a2c665e2719ff2e37e4aadc81a8002ebcc5c1f2",
+        "Tue Feb 14 23:39:08 2023 +0100",
+        "SondreB"
+      ],
+      [
+        "b4493aa56abdea4b05780651e7af06ea13bbfafa",
+        "Mon Feb 13 08:47:23 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "5a5ef4a82d4e9f289ee15939deda3caf87ebde73",
+        "Mon Feb 6 08:11:11 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "16b50a481fa7c373ba8dfbdc92c3b880fecd235a",
+        "Sun Feb 5 20:23:59 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "7c444e3474167f7dcdcecf28b8679b022996e958",
+        "Fri Feb 3 15:59:07 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "524ff9b8052d7e8c0515f63baae218dc40c6f696",
+        "Fri Jan 27 20:49:43 2023 +0300",
+        "Semisol"
+      ],
+      [
+        "329cd8d8a19fd1dcb12df7eb7a5d640b2a5b6bf8",
+        "Fri Dec 30 11:55:09 2022 +0100",
+        "Blake Jakopovic"
+      ],
+      [
+        "0ca9be82247d9c1f93ac4319042d2364b7d18b30",
+        "Thu Dec 29 21:02:32 2022 -0300",
+        "fiatjaf"
+      ],
+      [
+        "81a87f7bf2f7afc2d77b469db56f81e635f58a6a",
+        "Tue Dec 27 07:55:03 2022 -0300",
+        "fiatjaf"
+      ],
+      [
+        "9e13889deee1b33565652e1204ad0667a0805cd4",
+        "Fri Dec 16 11:56:12 2022 -0300",
+        "fiatjaf"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "keys": 10,
+      "event": 9,
+      "bech32": 8,
+      "32": 7,
+      "ids": 6,
+      "hex": 6,
+      "relay": 6,
+      "nip": 5,
+      "public": 5,
+      "profile": 5,
+      "bytes": 5,
+      "nevent": 5,
+      "naddr": 5,
+      "meant": 4,
+      "key": 4,
+      "tlv": 4,
+      "nostr": 4,
+      "encoded": 3,
+      "entities": 3,
+      "display": 3,
+      "formats": 3,
+      "format": 3,
+      "private": 3,
+      "prefixes": 3,
+      "possible": 3,
+      "npub": 3,
+      "events": 3,
+      "nprofile": 3,
+      "_optionally_": 3,
+      "pubkey": 3,
+      "kind": 3,
+      "decode": 3,
+      "formatted": 2,
+      "strings": 2,
+      "information": 2,
+      "clients": 2,
+      "core": 2,
+      "protocol": 2,
+      "sharing": 2,
+      "binary": 2,
+      "byte": 2,
+      "note": 2,
+      "3bf0c63fcb93463407af97a5e5ee64fa883d107ef9e558472c4eb9aaaefa459d": 2,
+      "inside": 2,
+      "01": 2,
+      "metadata": 2,
+      "l": 2,
+      "1": 2,
+      "0": 2,
+      "indicated": 2,
+      "string": 2,
+      "bit": 2,
+      "unsigned": 2,
+      "integer": 2,
+      "big": 2,
+      "endian": 2,
+      "vice": 2,
+      "versa": 2,
+      "wss": 2,
+      "com": 2,
+      "supported": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "9e13889deee1b33565652e1204ad0667a0805cd4",
+        "timestamp": "2022-12-16T11:56:12-03:00",
+        "date": "2022-12-16",
+        "author": "fiatjaf",
+        "path": "19.md",
+        "status": "Draft",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        {
+          "target": "nips:01",
+          "count": 2
+        },
+        {
+          "target": "nips:05",
+          "count": 1
+        }
+      ],
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:12Z",
+          "dependencies": []
+        }
+      ]
+    }
+  }
+}

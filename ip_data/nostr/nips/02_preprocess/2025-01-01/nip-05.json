@@ -1,0 +1,319 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "05",
+      "title": "Mapping Nostr keys to DNS-based internet identifiers",
+      "status": "Final",
+      "author": null,
+      "created": "2022-05-01",
+      "type": "Optional",
+      "layer": null,
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Sun Nov 17 15:22:47 2024 +0000",
+    "total_commits": 22,
+    "git_history": [
+      [
+        "108b6314299f71540190a7abf37074787fa6d698",
+        "Sun Nov 17 15:22:47 2024 +0000",
+        "小原晴太"
+      ],
+      [
+        "087437042be0dac04a5fce9ea243b6babd31fb63",
+        "Sun Nov 3 22:33:48 2024 +0100",
+        "Terry Yiu"
+      ],
+      [
+        "e6552476aa2e5ca7256be572a9aa226ec8a022ee",
+        "Tue Sep 3 20:41:31 2024 +0330",
+        "kehiy"
+      ],
+      [
+        "da34c57e99dbf6cadfb3b4176b7c4ff33ac5674c",
+        "Thu Aug 29 16:25:15 2024 +0200",
+        "dtonon"
+      ],
+      [
+        "1728f93d17fe399fa6e0911e7bb69d2e159ca572",
+        "Mon Jun 17 12:38:57 2024 -0300",
+        "fiatjaf"
+      ],
+      [
+        "4f787adcd1cf23ec4d395b26c3a54cd1188fef49",
+        "Sun Jun 16 23:42:45 2024 +1000",
+        "Arman The Parman"
+      ],
+      [
+        "965eb45b30b6000da976addcf3163858abadcf07",
+        "Thu Mar 21 10:18:42 2024 -0400",
+        "utxo"
+      ],
+      [
+        "46a6bf331ae823dad079a9740f37d57e58b92358",
+        "Thu Mar 21 10:15:02 2024 -0400",
+        "utxo"
+      ],
+      [
+        "37f6cbb775126b386414220f783ca0f5f85e7614",
+        "Wed Nov 15 21:42:51 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "50945f7150c8b100f92fdfdffba32894ba5a831f",
+        "Fri Aug 25 23:17:05 2023 +0900",
+        "Asai Toshiya"
+      ],
+      [
+        "1c728516dfdc7508ce27eda222bde78466e3457d",
+        "Sat Jan 7 11:11:19 2023 +0100",
+        "VictorieeMan"
+      ],
+      [
+        "01a3090c6ab872621e01019c58f8cac38c354c25",
+        "Fri Jan 6 19:37:55 2023 +0700",
+        "Luke Childs"
+      ],
+      [
+        "8c3c42171503fd07e24bb8681fc01419974a2ac0",
+        "Wed Jan 4 10:34:24 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "0ca9be82247d9c1f93ac4319042d2364b7d18b30",
+        "Thu Dec 29 21:02:32 2022 -0300",
+        "fiatjaf"
+      ],
+      [
+        "a37a27afb905b71c1beda7c5a9ec12938d8b8a87",
+        "Thu Dec 29 17:38:14 2022 -0600",
+        "Lyle Pratt"
+      ],
+      [
+        "d41834fa5169d15ffd1519a773ee495c6076ecd3",
+        "Thu Dec 29 09:01:35 2022 -0500",
+        "majestrate"
+      ],
+      [
+        "997254ad7a8a655beff17d28ce42b649066ea04d",
+        "Thu Dec 29 10:54:37 2022 -0300",
+        "fiatjaf"
+      ],
+      [
+        "4f67f5c9990c4cd6594d453a5404af9cd1fd5951",
+        "Fri Dec 16 22:35:56 2022 -0800",
+        "sgmoore"
+      ],
+      [
+        "743e43a8d4bf4a37022e3b6551524b12e7cc54a0",
+        "Tue Nov 22 08:59:10 2022 -0300",
+        "fiatjaf"
+      ],
+      [
+        "a4aea5337fe6b93e55f9dae1974ead962c1997e8",
+        "Sun May 8 21:31:29 2022 -0300",
+        "fiatjaf"
+      ],
+      [
+        "57b86d2482509bad04067e646b130c41f9433923",
+        "Sat May 7 08:31:02 2022 -1000",
+        "David A. Harding"
+      ],
+      [
+        "f25c7e672c23ca5463fa5c0fcb5e5f424d956862",
+        "Sun May 1 07:48:57 2022 -0300",
+        "fiatjaf"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "bob": 22,
+      "json": 16,
+      "nostr": 15,
+      "user": 14,
+      "com": 14,
+      "known": 12,
+      "identifier": 11,
+      "client": 11,
+      "example": 10,
+      "public": 9,
+      "nip": 8,
+      "keys": 8,
+      "domain": 7,
+      "05": 6,
+      "key": 6,
+      "https": 6,
+      "names": 6,
+      "cors": 6,
+      "nip05": 5,
+      "like": 5,
+      "local": 5,
+      "pubkey": 5,
+      "relays": 5,
+      "users": 5,
+      "js": 5,
+      "given": 4,
+      "b0635d6a9851d3aed0cd6c495b282167acf761729078d975fc341b22650b07b9": 4,
+      "clients": 4,
+      "servers": 4,
+      "format": 4,
+      "access": 4,
+      "apps": 4,
+      "http": 4,
+      "internet": 3,
+      "kind": 3,
+      "0": 3,
+      "_": 3,
+      "use": 3,
+      "hex": 3,
+      "event": 3,
+      "serve": 3,
+      "finding": 3,
+      "search": 3,
+      "e": 3,
+      "g": 3,
+      "allow": 3,
+      "abc": 3,
+      "def": 3,
+      "control": 3,
+      "mapping": 2,
+      "based": 2,
+      "metadata": 2,
+      "org": 2,
+      "address": 2,
+      "restricted": 2,
+      "values": 2,
+      "request": 2,
+      "object": 2,
+      "matches": 2,
+      "sees": 2,
+      "recommended": 2,
+      "attribute": 2,
+      "wss": 2,
+      "relay": 2,
+      "contain": 2,
+      "web": 2,
+      "files": 2,
+      "query": 2,
+      "string": 2,
+      "support": 2,
+      "check": 2,
+      "profiles": 2,
+      "follow": 2,
+      "display": 2,
+      "treat": 2,
+      "want": 2,
+      "instead": 2,
+      "javascript": 2,
+      "resource": 2,
+      "network": 2,
+      "failure": 2,
+      "pure": 2,
+      "origin": 2,
+      "ensure": 2,
+      "endpoint": 2,
+      "redirects": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "f25c7e672c23ca5463fa5c0fcb5e5f424d956862",
+        "timestamp": "2022-05-01T07:48:57-03:00",
+        "date": "2022-05-01",
+        "author": "fiatjaf",
+        "path": "05.md",
+        "status": "Draft",
+        "standard": ""
+      },
+      {
+        "commit": "743e43a8d4bf4a37022e3b6551524b12e7cc54a0",
+        "timestamp": "2022-11-22T14:52:34-03:00",
+        "date": "2022-11-22",
+        "author": "fiatjaf",
+        "path": "05.md",
+        "status": "Final",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        {
+          "target": "nips:19",
+          "count": 1
+        }
+      ],
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:07Z",
+          "dependencies": [
+            {
+              "target": "nips:19",
+              "evidence": "Keys in NIP-19 `npub` format are only meant to be used for display",
+              "reason": "The proposal constrains how NIP-19 bech32-encoded keys may be used in clients, distinguishing display-only usage from the hex key format required here.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

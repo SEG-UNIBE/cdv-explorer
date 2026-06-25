@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "BE",
       "title": "Nostr BLE Communications Protocol",
-      "author": [
-        "KoalaSat"
-      ],
-      "created": "2025-11-11",
       "status": "Draft",
+      "author": null,
+      "created": "2025-11-11",
       "type": "Optional",
       "layer": null,
       "kind": null
@@ -199,10 +197,39 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 1",
-        "NIP 77"
+        {
+          "target": "nips:01",
+          "count": 1
+        },
+        {
+          "target": "nips:0E",
+          "count": 1
+        },
+        {
+          "target": "nips:77",
+          "count": 1
+        }
       ],
-      "body_extracted_llm": []
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:00Z",
+          "dependencies": [
+            {
+              "target": "nips:01",
+              "evidence": "All messages will follow [NIP-01](/01.md) message structure",
+              "reason": "The BLE protocol relies on NIP-01 event/message structure for its message encoding and synchronization exchange.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:77",
+              "evidence": "define a synchronization process by following [NIP-77](./77.md) but with an adaptation to the limitations of the technology",
+              "reason": "The proposal directly adapts NIP-77's synchronization workflow and message semantics for BLE half-duplex sync.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
     }
   }
 }

@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "35",
       "title": "Torrents",
-      "author": [
-        "Michael Dilger"
-      ],
-      "created": "2022-11-19",
       "status": "Draft",
+      "author": null,
+      "created": "2022-11-19",
       "type": "Optional",
       "layer": null,
       "kind": null
@@ -208,11 +206,24 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 10"
+        {
+          "target": "nips:10",
+          "count": 1
+        }
       ],
       "body_extracted_llm": [
-        "NIP 1",
-        "NIP 10"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:33Z",
+          "dependencies": [
+            {
+              "target": "nips:10",
+              "evidence": "should follow `NIP-10` for tagging",
+              "reason": "Torrent comments inherit and require the event tagging/reply semantics defined by NIP-10.",
+              "confidence": "high"
+            }
+          ]
+        }
       ]
     }
   }

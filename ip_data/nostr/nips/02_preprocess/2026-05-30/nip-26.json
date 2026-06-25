@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "26",
       "title": "Delegated Event Signing",
-      "author": [
-        "Mark Harding"
-      ],
-      "created": "2022-08-04",
       "status": "Draft",
+      "author": null,
+      "created": "2022-08-04",
       "type": "Optional",
       "layer": "Relay",
       "kind": null
@@ -245,8 +243,18 @@
       "preamble_extracted": [],
       "body_extracted_regex": [],
       "body_extracted_llm": [
-        "NIP 1",
-        "NIP 9"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:29Z",
+          "dependencies": [
+            {
+              "target": "nips:01",
+              "evidence": "Relays should answer requests such as `['REQ', '', {'authors': ['A']}]`",
+              "reason": "The proposal relies on the event/query model and request filtering defined by NIP-01 to specify relay support for delegated events.",
+              "confidence": "low"
+            }
+          ]
+        }
       ]
     }
   }

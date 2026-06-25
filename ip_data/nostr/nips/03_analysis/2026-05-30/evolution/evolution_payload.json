@@ -18,6 +18,7 @@
       {
         "period": "2022-Q2",
         "period_key": "2022-Q2",
+        "period_display_suffix": "",
         "period_start": "2022-04-01",
         "period_end": "2022-06-30",
         "period_kind": "quarter",
@@ -53,6 +54,7 @@
       {
         "period": "2022-Q3",
         "period_key": "2022-Q3",
+        "period_display_suffix": "",
         "period_start": "2022-07-01",
         "period_end": "2022-09-30",
         "period_kind": "quarter",
@@ -93,6 +95,7 @@
       {
         "period": "2022-Q4",
         "period_key": "2022-Q4",
+        "period_display_suffix": "",
         "period_start": "2022-10-01",
         "period_end": "2022-12-31",
         "period_kind": "quarter",
@@ -139,6 +142,7 @@
       {
         "period": "2023-Q1",
         "period_key": "2023-Q1",
+        "period_display_suffix": "",
         "period_start": "2023-01-01",
         "period_end": "2023-03-31",
         "period_kind": "quarter",
@@ -203,6 +207,7 @@
       {
         "period": "2023-Q2",
         "period_key": "2023-Q2",
+        "period_display_suffix": "",
         "period_start": "2023-04-01",
         "period_end": "2023-06-30",
         "period_kind": "quarter",
@@ -272,6 +277,7 @@
       {
         "period": "2023-Q3",
         "period_key": "2023-Q3",
+        "period_display_suffix": "",
         "period_start": "2023-07-01",
         "period_end": "2023-09-30",
         "period_kind": "quarter",
@@ -352,6 +358,7 @@
       {
         "period": "2023-Q4",
         "period_key": "2023-Q4",
+        "period_display_suffix": "",
         "period_start": "2023-10-01",
         "period_end": "2023-12-31",
         "period_kind": "quarter",
@@ -437,6 +444,7 @@
       {
         "period": "2024-Q1",
         "period_key": "2024-Q1",
+        "period_display_suffix": "",
         "period_start": "2024-01-01",
         "period_end": "2024-03-31",
         "period_kind": "quarter",
@@ -526,12 +534,13 @@
       {
         "period": "2024-Q2",
         "period_key": "2024-Q2",
+        "period_display_suffix": "",
         "period_start": "2024-04-01",
         "period_end": "2024-06-30",
         "period_kind": "quarter",
         "milestone_label": "",
         "values": {
-          "Draft": 61,
+          "Draft": 63,
           "Final": 8,
           "Unknown": 2
         },
@@ -587,8 +596,10 @@
             "58",
             "64",
             "65",
+            "69",
             "71",
             "72",
+            "73",
             "75",
             "78",
             "84",
@@ -618,12 +629,13 @@
       {
         "period": "2024-Q3",
         "period_key": "2024-Q3",
+        "period_display_suffix": "",
         "period_start": "2024-07-01",
         "period_end": "2024-09-30",
         "period_kind": "quarter",
         "milestone_label": "",
         "values": {
-          "Draft": 64,
+          "Draft": 65,
           "Final": 8,
           "Unknown": 2
         },
@@ -679,6 +691,7 @@
             "58",
             "64",
             "65",
+            "69",
             "70",
             "71",
             "72",
@@ -713,6 +726,7 @@
       {
         "period": "2024-Q4",
         "period_key": "2024-Q4",
+        "period_display_suffix": "",
         "period_start": "2024-10-01",
         "period_end": "2024-12-31",
         "period_kind": "quarter",
@@ -815,6 +829,7 @@
       {
         "period": "2025-Q1",
         "period_key": "2025-Q1",
+        "period_display_suffix": "",
         "period_start": "2025-01-01",
         "period_end": "2025-03-31",
         "period_kind": "quarter",
@@ -920,6 +935,7 @@
       {
         "period": "2025-Q2",
         "period_key": "2025-Q2",
+        "period_display_suffix": "",
         "period_start": "2025-04-01",
         "period_end": "2025-06-30",
         "period_kind": "quarter",
@@ -1028,6 +1044,7 @@
       {
         "period": "2025-Q3",
         "period_key": "2025-Q3",
+        "period_display_suffix": "",
         "period_start": "2025-07-01",
         "period_end": "2025-09-30",
         "period_kind": "quarter",
@@ -1139,6 +1156,7 @@
       {
         "period": "2025-Q4",
         "period_key": "2025-Q4",
+        "period_display_suffix": "",
         "period_start": "2025-10-01",
         "period_end": "2025-12-31",
         "period_kind": "quarter",
@@ -1253,6 +1271,7 @@
       {
         "period": "2026-Q1",
         "period_key": "2026-Q1",
+        "period_display_suffix": "",
         "period_start": "2026-01-01",
         "period_end": "2026-03-31",
         "period_kind": "quarter",
@@ -1369,6 +1388,7 @@
       {
         "period": "2026-Q2",
         "period_key": "2026-Q2",
+        "period_display_suffix": "",
         "period_start": "2026-04-01",
         "period_end": "2026-06-30",
         "period_kind": "quarter",
@@ -1488,45 +1508,52 @@
   },
   "status_evolution_segmented": {
     "categories": [
-      "bip2:Draft",
-      "bip2:Final",
-      "bip2:Unknown"
+      "Draft",
+      "Final",
+      "Unknown"
     ],
     "segmentDefinitions": [
       {
-        "key": "bip2:Draft",
+        "key": "Draft",
         "status": "Draft",
-        "standard": "bip2",
-        "label": "Draft"
+        "standard": "",
+        "standardLabel": "",
+        "label": "Draft",
+        "isOfficial": false
       },
       {
-        "key": "bip2:Final",
+        "key": "Final",
         "status": "Final",
-        "standard": "bip2",
-        "label": "Final"
+        "standard": "",
+        "standardLabel": "",
+        "label": "Final",
+        "isOfficial": false
       },
       {
-        "key": "bip2:Unknown",
+        "key": "Unknown",
         "status": "Unknown",
-        "standard": "bip2",
-        "label": "Unknown"
+        "standard": "",
+        "standardLabel": "",
+        "label": "Unknown",
+        "isOfficial": false
       }
     ],
     "rows": [
       {
         "period": "2022-Q2",
         "period_key": "2022-Q2",
+        "period_display_suffix": "",
         "period_start": "2022-04-01",
         "period_end": "2022-06-30",
         "period_kind": "quarter",
         "milestone_label": "",
         "values": {
-          "bip2:Draft": 16,
-          "bip2:Final": 0,
-          "bip2:Unknown": 0
+          "Draft": 16,
+          "Final": 0,
+          "Unknown": 0
         },
         "bips": {
-          "bip2:Draft": [
+          "Draft": [
             "1",
             "2",
             "3",
@@ -1544,24 +1571,25 @@
             "15",
             "16"
           ],
-          "bip2:Final": [],
-          "bip2:Unknown": []
+          "Final": [],
+          "Unknown": []
         }
       },
       {
         "period": "2022-Q3",
         "period_key": "2022-Q3",
+        "period_display_suffix": "",
         "period_start": "2022-07-01",
         "period_end": "2022-09-30",
         "period_kind": "quarter",
         "milestone_label": "",
         "values": {
-          "bip2:Draft": 21,
-          "bip2:Final": 0,
-          "bip2:Unknown": 0
+          "Draft": 21,
+          "Final": 0,
+          "Unknown": 0
         },
         "bips": {
-          "bip2:Draft": [
+          "Draft": [
             "1",
             "2",
             "3",
@@ -1584,24 +1612,25 @@
             "27",
             "28"
           ],
-          "bip2:Final": [],
-          "bip2:Unknown": []
+          "Final": [],
+          "Unknown": []
         }
       },
       {
         "period": "2022-Q4",
         "period_key": "2022-Q4",
+        "period_display_suffix": "",
         "period_start": "2022-10-01",
         "period_end": "2022-12-31",
         "period_kind": "quarter",
         "milestone_label": "",
         "values": {
-          "bip2:Draft": 21,
-          "bip2:Final": 5,
-          "bip2:Unknown": 0
+          "Draft": 21,
+          "Final": 5,
+          "Unknown": 0
         },
         "bips": {
-          "bip2:Draft": [
+          "Draft": [
             "1",
             "3",
             "6",
@@ -1624,30 +1653,31 @@
             "36",
             "40"
           ],
-          "bip2:Final": [
+          "Final": [
             "2",
             "4",
             "5",
             "8",
             "15"
           ],
-          "bip2:Unknown": []
+          "Unknown": []
         }
       },
       {
         "period": "2023-Q1",
         "period_key": "2023-Q1",
+        "period_display_suffix": "",
         "period_start": "2023-01-01",
         "period_end": "2023-03-31",
         "period_kind": "quarter",
         "milestone_label": "",
         "values": {
-          "bip2:Draft": 39,
-          "bip2:Final": 5,
-          "bip2:Unknown": 0
+          "Draft": 39,
+          "Final": 5,
+          "Unknown": 0
         },
         "bips": {
-          "bip2:Draft": [
+          "Draft": [
             "1",
             "3",
             "6",
@@ -1688,30 +1718,31 @@
             "78",
             "94"
           ],
-          "bip2:Final": [
+          "Final": [
             "2",
             "4",
             "5",
             "8",
             "15"
           ],
-          "bip2:Unknown": []
+          "Unknown": []
         }
       },
       {
         "period": "2023-Q2",
         "period_key": "2023-Q2",
+        "period_display_suffix": "",
         "period_start": "2023-04-01",
         "period_end": "2023-06-30",
         "period_kind": "quarter",
         "milestone_label": "",
         "values": {
-          "bip2:Draft": 45,
-          "bip2:Final": 4,
-          "bip2:Unknown": 0
+          "Draft": 45,
+          "Final": 4,
+          "Unknown": 0
         },
         "bips": {
-          "bip2:Draft": [
+          "Draft": [
             "1",
             "3",
             "6",
@@ -1758,29 +1789,30 @@
             "94",
             "98"
           ],
-          "bip2:Final": [
+          "Final": [
             "2",
             "4",
             "5",
             "8"
           ],
-          "bip2:Unknown": []
+          "Unknown": []
         }
       },
       {
         "period": "2023-Q3",
         "period_key": "2023-Q3",
+        "period_display_suffix": "",
         "period_start": "2023-07-01",
         "period_end": "2023-09-30",
         "period_kind": "quarter",
         "milestone_label": "",
         "values": {
-          "bip2:Draft": 50,
-          "bip2:Final": 8,
-          "bip2:Unknown": 1
+          "Draft": 50,
+          "Final": 8,
+          "Unknown": 1
         },
         "bips": {
-          "bip2:Draft": [
+          "Draft": [
             "1",
             "3",
             "6",
@@ -1832,7 +1864,7 @@
             "98",
             "99"
           ],
-          "bip2:Final": [
+          "Final": [
             "2",
             "4",
             "5",
@@ -1842,7 +1874,7 @@
             "20",
             "33"
           ],
-          "bip2:Unknown": [
+          "Unknown": [
             "59"
           ]
         }
@@ -1850,17 +1882,18 @@
       {
         "period": "2023-Q4",
         "period_key": "2023-Q4",
+        "period_display_suffix": "",
         "period_start": "2023-10-01",
         "period_end": "2023-12-31",
         "period_kind": "quarter",
         "milestone_label": "",
         "values": {
-          "bip2:Draft": 55,
-          "bip2:Final": 8,
-          "bip2:Unknown": 1
+          "Draft": 55,
+          "Final": 8,
+          "Unknown": 1
         },
         "bips": {
-          "bip2:Draft": [
+          "Draft": [
             "1",
             "3",
             "6",
@@ -1917,7 +1950,7 @@
             "98",
             "99"
           ],
-          "bip2:Final": [
+          "Final": [
             "2",
             "4",
             "5",
@@ -1927,7 +1960,7 @@
             "20",
             "33"
           ],
-          "bip2:Unknown": [
+          "Unknown": [
             "59"
           ]
         }
@@ -1935,17 +1968,18 @@
       {
         "period": "2024-Q1",
         "period_key": "2024-Q1",
+        "period_display_suffix": "",
         "period_start": "2024-01-01",
         "period_end": "2024-03-31",
         "period_kind": "quarter",
         "milestone_label": "",
         "values": {
-          "bip2:Draft": 58,
-          "bip2:Final": 8,
-          "bip2:Unknown": 2
+          "Draft": 58,
+          "Final": 8,
+          "Unknown": 2
         },
         "bips": {
-          "bip2:Draft": [
+          "Draft": [
             "1",
             "3",
             "6",
@@ -2005,7 +2039,7 @@
             "98",
             "99"
           ],
-          "bip2:Final": [
+          "Final": [
             "2",
             "4",
             "5",
@@ -2015,7 +2049,7 @@
             "20",
             "33"
           ],
-          "bip2:Unknown": [
+          "Unknown": [
             "59",
             "92"
           ]
@@ -2024,17 +2058,18 @@
       {
         "period": "2024-Q2",
         "period_key": "2024-Q2",
+        "period_display_suffix": "",
         "period_start": "2024-04-01",
         "period_end": "2024-06-30",
         "period_kind": "quarter",
         "milestone_label": "",
         "values": {
-          "bip2:Draft": 61,
-          "bip2:Final": 8,
-          "bip2:Unknown": 2
+          "Draft": 63,
+          "Final": 8,
+          "Unknown": 2
         },
         "bips": {
-          "bip2:Draft": [
+          "Draft": [
             "1",
             "3",
             "6",
@@ -2085,8 +2120,10 @@
             "58",
             "64",
             "65",
+            "69",
             "71",
             "72",
+            "73",
             "75",
             "78",
             "84",
@@ -2097,7 +2134,7 @@
             "98",
             "99"
           ],
-          "bip2:Final": [
+          "Final": [
             "2",
             "4",
             "5",
@@ -2107,7 +2144,7 @@
             "20",
             "33"
           ],
-          "bip2:Unknown": [
+          "Unknown": [
             "59",
             "92"
           ]
@@ -2116,17 +2153,18 @@
       {
         "period": "2024-Q3",
         "period_key": "2024-Q3",
+        "period_display_suffix": "",
         "period_start": "2024-07-01",
         "period_end": "2024-09-30",
         "period_kind": "quarter",
         "milestone_label": "",
         "values": {
-          "bip2:Draft": 64,
-          "bip2:Final": 8,
-          "bip2:Unknown": 2
+          "Draft": 65,
+          "Final": 8,
+          "Unknown": 2
         },
         "bips": {
-          "bip2:Draft": [
+          "Draft": [
             "1",
             "3",
             "6",
@@ -2177,6 +2215,7 @@
             "58",
             "64",
             "65",
+            "69",
             "70",
             "71",
             "72",
@@ -2192,7 +2231,7 @@
             "98",
             "99"
           ],
-          "bip2:Final": [
+          "Final": [
             "2",
             "4",
             "5",
@@ -2202,7 +2241,7 @@
             "20",
             "33"
           ],
-          "bip2:Unknown": [
+          "Unknown": [
             "59",
             "92"
           ]
@@ -2211,17 +2250,18 @@
       {
         "period": "2024-Q4",
         "period_key": "2024-Q4",
+        "period_display_suffix": "",
         "period_start": "2024-10-01",
         "period_end": "2024-12-31",
         "period_kind": "quarter",
         "milestone_label": "",
         "values": {
-          "bip2:Draft": 71,
-          "bip2:Final": 8,
-          "bip2:Unknown": 2
+          "Draft": 71,
+          "Final": 8,
+          "Unknown": 2
         },
         "bips": {
-          "bip2:Draft": [
+          "Draft": [
             "1",
             "3",
             "6",
@@ -2294,7 +2334,7 @@
             "7D",
             "C7"
           ],
-          "bip2:Final": [
+          "Final": [
             "2",
             "4",
             "5",
@@ -2304,7 +2344,7 @@
             "20",
             "33"
           ],
-          "bip2:Unknown": [
+          "Unknown": [
             "59",
             "92"
           ]
@@ -2313,17 +2353,18 @@
       {
         "period": "2025-Q1",
         "period_key": "2025-Q1",
+        "period_display_suffix": "",
         "period_start": "2025-01-01",
         "period_end": "2025-03-31",
         "period_kind": "quarter",
         "milestone_label": "",
         "values": {
-          "bip2:Draft": 74,
-          "bip2:Final": 8,
-          "bip2:Unknown": 2
+          "Draft": 74,
+          "Final": 8,
+          "Unknown": 2
         },
         "bips": {
-          "bip2:Draft": [
+          "Draft": [
             "1",
             "3",
             "6",
@@ -2399,7 +2440,7 @@
             "C0",
             "C7"
           ],
-          "bip2:Final": [
+          "Final": [
             "2",
             "4",
             "5",
@@ -2409,7 +2450,7 @@
             "20",
             "33"
           ],
-          "bip2:Unknown": [
+          "Unknown": [
             "59",
             "92"
           ]
@@ -2418,17 +2459,18 @@
       {
         "period": "2025-Q2",
         "period_key": "2025-Q2",
+        "period_display_suffix": "",
         "period_start": "2025-04-01",
         "period_end": "2025-06-30",
         "period_kind": "quarter",
         "milestone_label": "",
         "values": {
-          "bip2:Draft": 77,
-          "bip2:Final": 8,
-          "bip2:Unknown": 2
+          "Draft": 77,
+          "Final": 8,
+          "Unknown": 2
         },
         "bips": {
-          "bip2:Draft": [
+          "Draft": [
             "1",
             "3",
             "6",
@@ -2507,7 +2549,7 @@
             "C0",
             "C7"
           ],
-          "bip2:Final": [
+          "Final": [
             "2",
             "4",
             "5",
@@ -2517,7 +2559,7 @@
             "20",
             "33"
           ],
-          "bip2:Unknown": [
+          "Unknown": [
             "59",
             "92"
           ]
@@ -2526,17 +2568,18 @@
       {
         "period": "2025-Q3",
         "period_key": "2025-Q3",
+        "period_display_suffix": "",
         "period_start": "2025-07-01",
         "period_end": "2025-09-30",
         "period_kind": "quarter",
         "milestone_label": "",
         "values": {
-          "bip2:Draft": 80,
-          "bip2:Final": 8,
-          "bip2:Unknown": 2
+          "Draft": 80,
+          "Final": 8,
+          "Unknown": 2
         },
         "bips": {
-          "bip2:Draft": [
+          "Draft": [
             "1",
             "3",
             "6",
@@ -2618,7 +2661,7 @@
             "C7",
             "EE"
           ],
-          "bip2:Final": [
+          "Final": [
             "2",
             "4",
             "5",
@@ -2628,7 +2671,7 @@
             "20",
             "33"
           ],
-          "bip2:Unknown": [
+          "Unknown": [
             "59",
             "92"
           ]
@@ -2637,17 +2680,18 @@
       {
         "period": "2025-Q4",
         "period_key": "2025-Q4",
+        "period_display_suffix": "",
         "period_start": "2025-10-01",
         "period_end": "2025-12-31",
         "period_kind": "quarter",
         "milestone_label": "",
         "values": {
-          "bip2:Draft": 82,
-          "bip2:Final": 9,
-          "bip2:Unknown": 2
+          "Draft": 82,
+          "Final": 9,
+          "Unknown": 2
         },
         "bips": {
-          "bip2:Draft": [
+          "Draft": [
             "1",
             "3",
             "6",
@@ -2731,7 +2775,7 @@
             "C0",
             "C7"
           ],
-          "bip2:Final": [
+          "Final": [
             "2",
             "4",
             "5",
@@ -2742,7 +2786,7 @@
             "33",
             "EE"
           ],
-          "bip2:Unknown": [
+          "Unknown": [
             "59",
             "92"
           ]
@@ -2751,17 +2795,18 @@
       {
         "period": "2026-Q1",
         "period_key": "2026-Q1",
+        "period_display_suffix": "",
         "period_start": "2026-01-01",
         "period_end": "2026-03-31",
         "period_kind": "quarter",
         "milestone_label": "",
         "values": {
-          "bip2:Draft": 84,
-          "bip2:Final": 9,
-          "bip2:Unknown": 2
+          "Draft": 84,
+          "Final": 9,
+          "Unknown": 2
         },
         "bips": {
-          "bip2:Draft": [
+          "Draft": [
             "1",
             "3",
             "6",
@@ -2847,7 +2892,7 @@
             "C0",
             "C7"
           ],
-          "bip2:Final": [
+          "Final": [
             "2",
             "4",
             "5",
@@ -2858,7 +2903,7 @@
             "33",
             "EE"
           ],
-          "bip2:Unknown": [
+          "Unknown": [
             "59",
             "92"
           ]
@@ -2867,17 +2912,18 @@
       {
         "period": "2026-Q2",
         "period_key": "2026-Q2",
+        "period_display_suffix": "",
         "period_start": "2026-04-01",
         "period_end": "2026-06-30",
         "period_kind": "quarter",
         "milestone_label": "",
         "values": {
-          "bip2:Draft": 86,
-          "bip2:Final": 9,
-          "bip2:Unknown": 2
+          "Draft": 86,
+          "Final": 9,
+          "Unknown": 2
         },
         "bips": {
-          "bip2:Draft": [
+          "Draft": [
             "1",
             "3",
             "6",
@@ -2965,7 +3011,7 @@
             "CC",
             "F4"
           ],
-          "bip2:Final": [
+          "Final": [
             "2",
             "4",
             "5",
@@ -2976,7 +3022,7 @@
             "33",
             "EE"
           ],
-          "bip2:Unknown": [
+          "Unknown": [
             "59",
             "92"
           ]
@@ -2985,7 +3031,7 @@
     ]
   },
   "status_evolution_by_standard": {
-    "bip2": {
+    "": {
       "categories": [
         "Draft",
         "Final",
@@ -2995,6 +3041,7 @@
         {
           "period": "2022-Q2",
           "period_key": "2022-Q2",
+          "period_display_suffix": "",
           "period_start": "2022-04-01",
           "period_end": "2022-06-30",
           "period_kind": "quarter",
@@ -3030,6 +3077,7 @@
         {
           "period": "2022-Q3",
           "period_key": "2022-Q3",
+          "period_display_suffix": "",
           "period_start": "2022-07-01",
           "period_end": "2022-09-30",
           "period_kind": "quarter",
@@ -3070,6 +3118,7 @@
         {
           "period": "2022-Q4",
           "period_key": "2022-Q4",
+          "period_display_suffix": "",
           "period_start": "2022-10-01",
           "period_end": "2022-12-31",
           "period_kind": "quarter",
@@ -3116,6 +3165,7 @@
         {
           "period": "2023-Q1",
           "period_key": "2023-Q1",
+          "period_display_suffix": "",
           "period_start": "2023-01-01",
           "period_end": "2023-03-31",
           "period_kind": "quarter",
@@ -3180,6 +3230,7 @@
         {
           "period": "2023-Q2",
           "period_key": "2023-Q2",
+          "period_display_suffix": "",
           "period_start": "2023-04-01",
           "period_end": "2023-06-30",
           "period_kind": "quarter",
@@ -3249,6 +3300,7 @@
         {
           "period": "2023-Q3",
           "period_key": "2023-Q3",
+          "period_display_suffix": "",
           "period_start": "2023-07-01",
           "period_end": "2023-09-30",
           "period_kind": "quarter",
@@ -3329,6 +3381,7 @@
         {
           "period": "2023-Q4",
           "period_key": "2023-Q4",
+          "period_display_suffix": "",
           "period_start": "2023-10-01",
           "period_end": "2023-12-31",
           "period_kind": "quarter",
@@ -3414,6 +3467,7 @@
         {
           "period": "2024-Q1",
           "period_key": "2024-Q1",
+          "period_display_suffix": "",
           "period_start": "2024-01-01",
           "period_end": "2024-03-31",
           "period_kind": "quarter",
@@ -3503,12 +3557,13 @@
         {
           "period": "2024-Q2",
           "period_key": "2024-Q2",
+          "period_display_suffix": "",
           "period_start": "2024-04-01",
           "period_end": "2024-06-30",
           "period_kind": "quarter",
           "milestone_label": "",
           "values": {
-            "Draft": 61,
+            "Draft": 63,
             "Final": 8,
             "Unknown": 2
           },
@@ -3564,8 +3619,10 @@
               "58",
               "64",
               "65",
+              "69",
               "71",
               "72",
+              "73",
               "75",
               "78",
               "84",
@@ -3595,12 +3652,13 @@
         {
           "period": "2024-Q3",
           "period_key": "2024-Q3",
+          "period_display_suffix": "",
           "period_start": "2024-07-01",
           "period_end": "2024-09-30",
           "period_kind": "quarter",
           "milestone_label": "",
           "values": {
-            "Draft": 64,
+            "Draft": 65,
             "Final": 8,
             "Unknown": 2
           },
@@ -3656,6 +3714,7 @@
               "58",
               "64",
               "65",
+              "69",
               "70",
               "71",
               "72",
@@ -3690,6 +3749,7 @@
         {
           "period": "2024-Q4",
           "period_key": "2024-Q4",
+          "period_display_suffix": "",
           "period_start": "2024-10-01",
           "period_end": "2024-12-31",
           "period_kind": "quarter",
@@ -3792,6 +3852,7 @@
         {
           "period": "2025-Q1",
           "period_key": "2025-Q1",
+          "period_display_suffix": "",
           "period_start": "2025-01-01",
           "period_end": "2025-03-31",
           "period_kind": "quarter",
@@ -3897,6 +3958,7 @@
         {
           "period": "2025-Q2",
           "period_key": "2025-Q2",
+          "period_display_suffix": "",
           "period_start": "2025-04-01",
           "period_end": "2025-06-30",
           "period_kind": "quarter",
@@ -4005,6 +4067,7 @@
         {
           "period": "2025-Q3",
           "period_key": "2025-Q3",
+          "period_display_suffix": "",
           "period_start": "2025-07-01",
           "period_end": "2025-09-30",
           "period_kind": "quarter",
@@ -4116,6 +4179,7 @@
         {
           "period": "2025-Q4",
           "period_key": "2025-Q4",
+          "period_display_suffix": "",
           "period_start": "2025-10-01",
           "period_end": "2025-12-31",
           "period_kind": "quarter",
@@ -4230,6 +4294,7 @@
         {
           "period": "2026-Q1",
           "period_key": "2026-Q1",
+          "period_display_suffix": "",
           "period_start": "2026-01-01",
           "period_end": "2026-03-31",
           "period_kind": "quarter",
@@ -4346,6 +4411,7 @@
         {
           "period": "2026-Q2",
           "period_key": "2026-Q2",
+          "period_display_suffix": "",
           "period_start": "2026-04-01",
           "period_end": "2026-06-30",
           "period_kind": "quarter",
@@ -4462,321 +4528,6 @@
           }
         }
       ]
-    },
-    "bip3": {
-      "categories": [
-        "Draft",
-        "Final",
-        "Unknown"
-      ],
-      "rows": [
-        {
-          "period": "2022-Q2",
-          "period_key": "2022-Q2",
-          "period_start": "2022-04-01",
-          "period_end": "2022-06-30",
-          "period_kind": "quarter",
-          "milestone_label": "",
-          "values": {
-            "Draft": 0,
-            "Final": 0,
-            "Unknown": 0
-          },
-          "bips": {
-            "Draft": [],
-            "Final": [],
-            "Unknown": []
-          }
-        },
-        {
-          "period": "2022-Q3",
-          "period_key": "2022-Q3",
-          "period_start": "2022-07-01",
-          "period_end": "2022-09-30",
-          "period_kind": "quarter",
-          "milestone_label": "",
-          "values": {
-            "Draft": 0,
-            "Final": 0,
-            "Unknown": 0
-          },
-          "bips": {
-            "Draft": [],
-            "Final": [],
-            "Unknown": []
-          }
-        },
-        {
-          "period": "2022-Q4",
-          "period_key": "2022-Q4",
-          "period_start": "2022-10-01",
-          "period_end": "2022-12-31",
-          "period_kind": "quarter",
-          "milestone_label": "",
-          "values": {
-            "Draft": 0,
-            "Final": 0,
-            "Unknown": 0
-          },
-          "bips": {
-            "Draft": [],
-            "Final": [],
-            "Unknown": []
-          }
-        },
-        {
-          "period": "2023-Q1",
-          "period_key": "2023-Q1",
-          "period_start": "2023-01-01",
-          "period_end": "2023-03-31",
-          "period_kind": "quarter",
-          "milestone_label": "",
-          "values": {
-            "Draft": 0,
-            "Final": 0,
-            "Unknown": 0
-          },
-          "bips": {
-            "Draft": [],
-            "Final": [],
-            "Unknown": []
-          }
-        },
-        {
-          "period": "2023-Q2",
-          "period_key": "2023-Q2",
-          "period_start": "2023-04-01",
-          "period_end": "2023-06-30",
-          "period_kind": "quarter",
-          "milestone_label": "",
-          "values": {
-            "Draft": 0,
-            "Final": 0,
-            "Unknown": 0
-          },
-          "bips": {
-            "Draft": [],
-            "Final": [],
-            "Unknown": []
-          }
-        },
-        {
-          "period": "2023-Q3",
-          "period_key": "2023-Q3",
-          "period_start": "2023-07-01",
-          "period_end": "2023-09-30",
-          "period_kind": "quarter",
-          "milestone_label": "",
-          "values": {
-            "Draft": 0,
-            "Final": 0,
-            "Unknown": 0
-          },
-          "bips": {
-            "Draft": [],
-            "Final": [],
-            "Unknown": []
-          }
-        },
-        {
-          "period": "2023-Q4",
-          "period_key": "2023-Q4",
-          "period_start": "2023-10-01",
-          "period_end": "2023-12-31",
-          "period_kind": "quarter",
-          "milestone_label": "",
-          "values": {
-            "Draft": 0,
-            "Final": 0,
-            "Unknown": 0
-          },
-          "bips": {
-            "Draft": [],
-            "Final": [],
-            "Unknown": []
-          }
-        },
-        {
-          "period": "2024-Q1",
-          "period_key": "2024-Q1",
-          "period_start": "2024-01-01",
-          "period_end": "2024-03-31",
-          "period_kind": "quarter",
-          "milestone_label": "",
-          "values": {
-            "Draft": 0,
-            "Final": 0,
-            "Unknown": 0
-          },
-          "bips": {
-            "Draft": [],
-            "Final": [],
-            "Unknown": []
-          }
-        },
-        {
-          "period": "2024-Q2",
-          "period_key": "2024-Q2",
-          "period_start": "2024-04-01",
-          "period_end": "2024-06-30",
-          "period_kind": "quarter",
-          "milestone_label": "",
-          "values": {
-            "Draft": 0,
-            "Final": 0,
-            "Unknown": 0
-          },
-          "bips": {
-            "Draft": [],
-            "Final": [],
-            "Unknown": []
-          }
-        },
-        {
-          "period": "2024-Q3",
-          "period_key": "2024-Q3",
-          "period_start": "2024-07-01",
-          "period_end": "2024-09-30",
-          "period_kind": "quarter",
-          "milestone_label": "",
-          "values": {
-            "Draft": 0,
-            "Final": 0,
-            "Unknown": 0
-          },
-          "bips": {
-            "Draft": [],
-            "Final": [],
-            "Unknown": []
-          }
-        },
-        {
-          "period": "2024-Q4",
-          "period_key": "2024-Q4",
-          "period_start": "2024-10-01",
-          "period_end": "2024-12-31",
-          "period_kind": "quarter",
-          "milestone_label": "",
-          "values": {
-            "Draft": 0,
-            "Final": 0,
-            "Unknown": 0
-          },
-          "bips": {
-            "Draft": [],
-            "Final": [],
-            "Unknown": []
-          }
-        },
-        {
-          "period": "2025-Q1",
-          "period_key": "2025-Q1",
-          "period_start": "2025-01-01",
-          "period_end": "2025-03-31",
-          "period_kind": "quarter",
-          "milestone_label": "",
-          "values": {
-            "Draft": 0,
-            "Final": 0,
-            "Unknown": 0
-          },
-          "bips": {
-            "Draft": [],
-            "Final": [],
-            "Unknown": []
-          }
-        },
-        {
-          "period": "2025-Q2",
-          "period_key": "2025-Q2",
-          "period_start": "2025-04-01",
-          "period_end": "2025-06-30",
-          "period_kind": "quarter",
-          "milestone_label": "",
-          "values": {
-            "Draft": 0,
-            "Final": 0,
-            "Unknown": 0
-          },
-          "bips": {
-            "Draft": [],
-            "Final": [],
-            "Unknown": []
-          }
-        },
-        {
-          "period": "2025-Q3",
-          "period_key": "2025-Q3",
-          "period_start": "2025-07-01",
-          "period_end": "2025-09-30",
-          "period_kind": "quarter",
-          "milestone_label": "",
-          "values": {
-            "Draft": 0,
-            "Final": 0,
-            "Unknown": 0
-          },
-          "bips": {
-            "Draft": [],
-            "Final": [],
-            "Unknown": []
-          }
-        },
-        {
-          "period": "2025-Q4",
-          "period_key": "2025-Q4",
-          "period_start": "2025-10-01",
-          "period_end": "2025-12-31",
-          "period_kind": "quarter",
-          "milestone_label": "",
-          "values": {
-            "Draft": 0,
-            "Final": 0,
-            "Unknown": 0
-          },
-          "bips": {
-            "Draft": [],
-            "Final": [],
-            "Unknown": []
-          }
-        },
-        {
-          "period": "2026-Q1",
-          "period_key": "2026-Q1",
-          "period_start": "2026-01-01",
-          "period_end": "2026-03-31",
-          "period_kind": "quarter",
-          "milestone_label": "",
-          "values": {
-            "Draft": 0,
-            "Final": 0,
-            "Unknown": 0
-          },
-          "bips": {
-            "Draft": [],
-            "Final": [],
-            "Unknown": []
-          }
-        },
-        {
-          "period": "2026-Q2",
-          "period_key": "2026-Q2",
-          "period_start": "2026-04-01",
-          "period_end": "2026-06-30",
-          "period_kind": "quarter",
-          "milestone_label": "",
-          "values": {
-            "Draft": 0,
-            "Final": 0,
-            "Unknown": 0
-          },
-          "bips": {
-            "Draft": [],
-            "Final": [],
-            "Unknown": []
-          }
-        }
-      ]
     }
   },
   "proposal_timelines": [
@@ -4785,7 +4536,7 @@
       "title": "Basic protocol flow description",
       "created": "2022-05-01",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -4794,7 +4545,7 @@
           "date": "2022-05-01",
           "timestamp": "2022-05-01T07:48:57-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "f25c7e672c23ca5463fa5c0fcb5e5f424d956862",
           "author": "fiatjaf",
           "path": "01.md",
@@ -4807,7 +4558,7 @@
       "title": "Follow List",
       "created": "2022-05-01",
       "current_status": "Final",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 2,
       "events": [
         {
@@ -4816,7 +4567,7 @@
           "date": "2022-05-01",
           "timestamp": "2022-05-01T07:48:57-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "f25c7e672c23ca5463fa5c0fcb5e5f424d956862",
           "author": "fiatjaf",
           "path": "02.md",
@@ -4828,7 +4579,7 @@
           "date": "2022-11-22",
           "timestamp": "2022-11-22T14:52:34-03:00",
           "status": "Final",
-          "standard": "bip2",
+          "standard": "",
           "commit": "743e43a8d4bf4a37022e3b6551524b12e7cc54a0",
           "author": "fiatjaf",
           "path": "02.md",
@@ -4841,7 +4592,7 @@
       "title": "OpenTimestamps Attestations for Events",
       "created": "2022-05-01",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -4850,7 +4601,7 @@
           "date": "2022-05-01",
           "timestamp": "2022-05-01T07:48:57-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "f25c7e672c23ca5463fa5c0fcb5e5f424d956862",
           "author": "fiatjaf",
           "path": "03.md",
@@ -4863,7 +4614,7 @@
       "title": "Encrypted Direct Message",
       "created": "2022-05-01",
       "current_status": "Final",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 2,
       "events": [
         {
@@ -4872,7 +4623,7 @@
           "date": "2022-05-01",
           "timestamp": "2022-05-01T07:48:57-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "f25c7e672c23ca5463fa5c0fcb5e5f424d956862",
           "author": "fiatjaf",
           "path": "04.md",
@@ -4884,7 +4635,7 @@
           "date": "2022-11-22",
           "timestamp": "2022-11-22T14:52:34-03:00",
           "status": "Final",
-          "standard": "bip2",
+          "standard": "",
           "commit": "743e43a8d4bf4a37022e3b6551524b12e7cc54a0",
           "author": "fiatjaf",
           "path": "04.md",
@@ -4897,7 +4648,7 @@
       "title": "Mapping Nostr keys to DNS-based internet identifiers",
       "created": "2022-05-01",
       "current_status": "Final",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 2,
       "events": [
         {
@@ -4906,7 +4657,7 @@
           "date": "2022-05-01",
           "timestamp": "2022-05-01T07:48:57-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "f25c7e672c23ca5463fa5c0fcb5e5f424d956862",
           "author": "fiatjaf",
           "path": "05.md",
@@ -4918,7 +4669,7 @@
           "date": "2022-11-22",
           "timestamp": "2022-11-22T14:52:34-03:00",
           "status": "Final",
-          "standard": "bip2",
+          "standard": "",
           "commit": "743e43a8d4bf4a37022e3b6551524b12e7cc54a0",
           "author": "fiatjaf",
           "path": "05.md",
@@ -4931,7 +4682,7 @@
       "title": "Basic key derivation from mnemonic seed phrase",
       "created": "2022-05-01",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -4940,7 +4691,7 @@
           "date": "2022-05-01",
           "timestamp": "2022-05-01T07:48:57-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "f25c7e672c23ca5463fa5c0fcb5e5f424d956862",
           "author": "fiatjaf",
           "path": "06.md",
@@ -4953,7 +4704,7 @@
       "title": "`window.nostr` capability for web browsers",
       "created": "2022-05-06",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -4962,7 +4713,7 @@
           "date": "2022-05-06",
           "timestamp": "2022-05-06T20:54:45-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "37eb53e3d93367e76c332c25a0c652922588ceb8",
           "author": "fiatjaf",
           "path": "07.md",
@@ -4975,7 +4726,7 @@
       "title": "Handling Mentions",
       "created": "2022-05-01",
       "current_status": "Final",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 2,
       "events": [
         {
@@ -4984,7 +4735,7 @@
           "date": "2022-05-01",
           "timestamp": "2022-05-01T07:48:57-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "f25c7e672c23ca5463fa5c0fcb5e5f424d956862",
           "author": "fiatjaf",
           "path": "08.md",
@@ -4996,7 +4747,7 @@
           "date": "2022-11-22",
           "timestamp": "2022-11-22T14:52:34-03:00",
           "status": "Final",
-          "standard": "bip2",
+          "standard": "",
           "commit": "743e43a8d4bf4a37022e3b6551524b12e7cc54a0",
           "author": "fiatjaf",
           "path": "08.md",
@@ -5009,7 +4760,7 @@
       "title": "Event Deletion Request",
       "created": "2022-05-01",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -5018,7 +4769,7 @@
           "date": "2022-05-01",
           "timestamp": "2022-05-01T07:48:57-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "f25c7e672c23ca5463fa5c0fcb5e5f424d956862",
           "author": "fiatjaf",
           "path": "09.md",
@@ -5031,7 +4782,7 @@
       "title": "Text Notes and Threads",
       "created": "2022-05-04",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 2,
       "events": [
         {
@@ -5040,7 +4791,7 @@
           "date": "2022-05-04",
           "timestamp": "2022-05-05T11:06:03-05:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "b66b82e66cf0ee666d3a6daf91d21e830841afc7",
           "author": "Robert C. Martin",
           "path": "10.md",
@@ -5052,7 +4803,7 @@
           "date": "2022-05-05",
           "timestamp": "2022-05-05T11:06:03-05:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "b66b82e66cf0ee666d3a6daf91d21e830841afc7",
           "author": "Robert C. Martin",
           "path": "10.md",
@@ -5065,7 +4816,7 @@
       "title": "Relay Information Document",
       "created": "2022-05-01",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -5074,7 +4825,7 @@
           "date": "2022-05-01",
           "timestamp": "2022-05-01T07:48:57-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "f25c7e672c23ca5463fa5c0fcb5e5f424d956862",
           "author": "fiatjaf",
           "path": "11.md",
@@ -5087,7 +4838,7 @@
       "title": "Generic Tag Queries",
       "created": "2022-05-01",
       "current_status": "Final",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 2,
       "events": [
         {
@@ -5096,7 +4847,7 @@
           "date": "2022-05-01",
           "timestamp": "2022-05-01T07:48:57-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "f25c7e672c23ca5463fa5c0fcb5e5f424d956862",
           "author": "fiatjaf",
           "path": "12.md",
@@ -5108,7 +4859,7 @@
           "date": "2023-08-13",
           "timestamp": "2023-08-13T13:47:45-03:00",
           "status": "Final",
-          "standard": "bip2",
+          "standard": "",
           "commit": "72bb8a128b2d7d3c2c654644cd68d0d0fe58a3b1",
           "author": "fiatjaf_",
           "path": "12.md",
@@ -5121,7 +4872,7 @@
       "title": "Proof of Work",
       "created": "2022-05-05",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 2,
       "events": [
         {
@@ -5130,7 +4881,7 @@
           "date": "2022-05-05",
           "timestamp": "2022-05-06T22:04:57-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "d7a4aad4a0039285f2bc4723c2898593dca0d6c4",
           "author": "William Casarin",
           "path": "13.md",
@@ -5142,7 +4893,7 @@
           "date": "2022-05-06",
           "timestamp": "2022-05-06T22:04:57-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "d7a4aad4a0039285f2bc4723c2898593dca0d6c4",
           "author": "William Casarin",
           "path": "13.md",
@@ -5155,7 +4906,7 @@
       "title": "Subject tag in Text events",
       "created": "2022-05-24",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 2,
       "events": [
         {
@@ -5164,7 +4915,7 @@
           "date": "2022-05-24",
           "timestamp": "2022-05-21T14:17:49-05:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "0c6b5a8b640341aae6b9f489dafde85002187221",
           "author": "Robert C. Martin",
           "path": "Proposal-Subject-Discussion.md",
@@ -5176,7 +4927,7 @@
           "date": "2022-05-21",
           "timestamp": "2022-05-21T14:17:49-05:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "0c6b5a8b640341aae6b9f489dafde85002187221",
           "author": "Robert C. Martin",
           "path": "Proposal-Subject-Discussion.md",
@@ -5189,7 +4940,7 @@
       "title": "Nostr Marketplace",
       "created": "2022-05-26",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 3,
       "events": [
         {
@@ -5198,7 +4949,7 @@
           "date": "2022-05-26",
           "timestamp": "2022-05-26T20:21:23+03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "a787093c528a6c2727d90b98d44ff0b17ee77c33",
           "author": "Semisol",
           "path": "15.md",
@@ -5210,7 +4961,7 @@
           "date": "2022-11-22",
           "timestamp": "2022-11-22T14:52:34-03:00",
           "status": "Final",
-          "standard": "bip2",
+          "standard": "",
           "commit": "743e43a8d4bf4a37022e3b6551524b12e7cc54a0",
           "author": "fiatjaf",
           "path": "15.md",
@@ -5222,7 +4973,7 @@
           "date": "2023-04-13",
           "timestamp": "2023-04-13T07:13:04-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "bf0a0da6a48b96467172414d8e41dc72b0ca379c",
           "author": "Arc",
           "path": "15.md",
@@ -5235,7 +4986,7 @@
       "title": "Event Treatment",
       "created": "2022-05-26",
       "current_status": "Final",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 2,
       "events": [
         {
@@ -5244,7 +4995,7 @@
           "date": "2022-05-26",
           "timestamp": "2022-05-26T21:17:27+03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "62fde6c098efa4fcbf57eae4321b346c21fc6687",
           "author": "Semisol",
           "path": "16.md",
@@ -5256,7 +5007,7 @@
           "date": "2023-08-13",
           "timestamp": "2023-08-13T13:47:45-03:00",
           "status": "Final",
-          "standard": "bip2",
+          "standard": "",
           "commit": "72bb8a128b2d7d3c2c654644cd68d0d0fe58a3b1",
           "author": "fiatjaf_",
           "path": "16.md",
@@ -5269,7 +5020,7 @@
       "title": "Private Direct Messages",
       "created": "2023-08-09",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 2,
       "events": [
         {
@@ -5278,7 +5029,7 @@
           "date": "2023-08-09",
           "timestamp": "2024-04-24T16:31:45-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "df30012430c88d49fb5b124992b04d5c61b6338b",
           "author": "Vitor Pamplona",
           "path": "17.md",
@@ -5290,7 +5041,7 @@
           "date": "2024-04-24",
           "timestamp": "2024-04-24T16:31:45-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "df30012430c88d49fb5b124992b04d5c61b6338b",
           "author": "Vitor Pamplona",
           "path": "17.md",
@@ -5303,7 +5054,7 @@
       "title": "Reposts",
       "created": "2023-01-02",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -5312,7 +5063,7 @@
           "date": "2023-01-02",
           "timestamp": "2023-01-02T16:15:42-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "39aec23a1d79067e6449d4af16f89aae37d62ca6",
           "author": "fiatjaf",
           "path": "18.md",
@@ -5325,7 +5076,7 @@
       "title": "bech32-encoded entities",
       "created": "2022-12-16",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -5334,7 +5085,7 @@
           "date": "2022-12-16",
           "timestamp": "2022-12-16T11:56:12-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "9e13889deee1b33565652e1204ad0667a0805cd4",
           "author": "fiatjaf",
           "path": "19.md",
@@ -5347,7 +5098,7 @@
       "title": "Command Results",
       "created": "2022-11-10",
       "current_status": "Final",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 2,
       "events": [
         {
@@ -5356,7 +5107,7 @@
           "date": "2022-11-10",
           "timestamp": "2022-11-10T10:29:11-08:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "15514283f3a5c51e21e596ff413da2ccc4a70b6e",
           "author": "William Casarin",
           "path": "20.md",
@@ -5368,7 +5119,7 @@
           "date": "2023-08-13",
           "timestamp": "2023-08-13T13:47:45-03:00",
           "status": "Final",
-          "standard": "bip2",
+          "standard": "",
           "commit": "72bb8a128b2d7d3c2c654644cd68d0d0fe58a3b1",
           "author": "fiatjaf_",
           "path": "20.md",
@@ -5381,7 +5132,7 @@
       "title": "`nostr:` URI scheme",
       "created": "2023-01-24",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 2,
       "events": [
         {
@@ -5390,7 +5141,7 @@
           "date": "2023-01-24",
           "timestamp": "2023-01-25T13:08:20-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "45649d7b4d40fda4b4db8a02d007e6243a1153c9",
           "author": "fiatjaf",
           "path": "21.md",
@@ -5402,7 +5153,7 @@
           "date": "2023-01-25",
           "timestamp": "2023-01-25T13:08:20-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "45649d7b4d40fda4b4db8a02d007e6243a1153c9",
           "author": "fiatjaf",
           "path": "21.md",
@@ -5415,7 +5166,7 @@
       "title": "Comment",
       "created": "2022-07-22",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -5424,7 +5175,7 @@
           "date": "2022-07-22",
           "timestamp": "2022-07-22T11:50:07-04:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "f51ce9dc0efaf61f39a76e112c310a9f58af1c87",
           "author": "Jeff Thibault",
           "path": "22.md",
@@ -5437,7 +5188,7 @@
       "title": "Long-form Content",
       "created": "2023-02-03",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -5446,7 +5197,7 @@
           "date": "2023-02-03",
           "timestamp": "2023-02-03T17:31:56-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "7c444e3474167f7dcdcecf28b8679b022996e958",
           "author": "fiatjaf",
           "path": "23.md",
@@ -5459,7 +5210,7 @@
       "title": "Extra metadata fields and tags",
       "created": "2023-09-24",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 2,
       "events": [
         {
@@ -5468,7 +5219,7 @@
           "date": "2023-09-24",
           "timestamp": "2023-09-25T23:00:01-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "44c21c9d82dfa9fbe04655668c03400fa0ac1e34",
           "author": "fiatjaf",
           "path": "24.md",
@@ -5480,7 +5231,7 @@
           "date": "2023-09-25",
           "timestamp": "2023-09-25T23:00:01-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "44c21c9d82dfa9fbe04655668c03400fa0ac1e34",
           "author": "fiatjaf",
           "path": "24.md",
@@ -5493,7 +5244,7 @@
       "title": "Reactions",
       "created": "2022-07-30",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -5502,7 +5253,7 @@
           "date": "2022-07-30",
           "timestamp": "2022-07-30T09:50:26-07:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "dcbd504639d20d1b0ae6bb837609710645781b88",
           "author": "William Casarin",
           "path": "25.md",
@@ -5515,7 +5266,7 @@
       "title": "Delegated Event Signing",
       "created": "2022-08-04",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 2,
       "events": [
         {
@@ -5524,7 +5275,7 @@
           "date": "2022-08-04",
           "timestamp": "2023-06-12T12:45:52+09:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "fb5f5a1a974655eca7603b8b0f81b96922813eb2",
           "author": "Asai Toshiya",
           "path": "26.md",
@@ -5536,7 +5287,7 @@
           "date": "2023-06-12",
           "timestamp": "2023-06-12T12:45:52+09:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "fb5f5a1a974655eca7603b8b0f81b96922813eb2",
           "author": "Asai Toshiya",
           "path": "26.md",
@@ -5549,7 +5300,7 @@
       "title": "Text Note References",
       "created": "2022-08-16",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -5558,7 +5309,7 @@
           "date": "2022-08-16",
           "timestamp": "2022-08-16T22:57:22-04:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "ef059e0fdee06686d2a1f996aebeb092749fc976",
           "author": "Ricardo Arturo Cabral Mejía",
           "path": "27.md",
@@ -5571,7 +5322,7 @@
       "title": "Public Chat",
       "created": "2022-09-10",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -5580,7 +5331,7 @@
           "date": "2022-09-10",
           "timestamp": "2022-09-10T14:28:08-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "3423a6dfbc36c2039bb32a32e34186af875f820a",
           "author": "Christopher David",
           "path": "28.md",
@@ -5593,7 +5344,7 @@
       "title": "Relay-based Groups",
       "created": "2023-11-27",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 2,
       "events": [
         {
@@ -5602,7 +5353,7 @@
           "date": "2023-11-27",
           "timestamp": "2024-02-28T11:50:54-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "5b2461eb01f784d546f77cfc21af26bf7e4b6670",
           "author": "fiatjaf_",
           "path": "29.md",
@@ -5614,7 +5365,7 @@
           "date": "2024-02-28",
           "timestamp": "2024-02-28T11:50:54-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "5b2461eb01f784d546f77cfc21af26bf7e4b6670",
           "author": "fiatjaf_",
           "path": "29.md",
@@ -5627,7 +5378,7 @@
       "title": "Custom Emoji",
       "created": "2023-04-29",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 2,
       "events": [
         {
@@ -5636,7 +5387,7 @@
           "date": "2023-04-29",
           "timestamp": "2023-03-29T15:43:11-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "5b1640c64815d9c288dd30b7c690b1afecf48930",
           "author": "arthurfranca",
           "path": "30.md",
@@ -5648,7 +5399,7 @@
           "date": "2023-03-29",
           "timestamp": "2023-03-29T15:43:11-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "5b1640c64815d9c288dd30b7c690b1afecf48930",
           "author": "arthurfranca",
           "path": "30.md",
@@ -5661,7 +5412,7 @@
       "title": "Dealing with unknown event kinds",
       "created": "2023-05-05",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -5670,7 +5421,7 @@
           "date": "2023-05-05",
           "timestamp": "2023-05-05T09:18:02-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "b8aec7dad561a8b27e22a91638dd04f2851a0c5c",
           "author": "fiatjaf",
           "path": "31.md",
@@ -5683,7 +5434,7 @@
       "title": "Labeling",
       "created": "2023-05-15",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 2,
       "events": [
         {
@@ -5692,7 +5443,7 @@
           "date": "2023-05-15",
           "timestamp": "2023-06-13T09:31:14-07:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "a9f2c6a2f128e9dda70716ace7ba72c7a3c88c3f",
           "author": "Jonathan Staab",
           "path": "32.md",
@@ -5704,7 +5455,7 @@
           "date": "2023-06-13",
           "timestamp": "2023-06-13T09:31:14-07:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "a9f2c6a2f128e9dda70716ace7ba72c7a3c88c3f",
           "author": "Jonathan Staab",
           "path": "32.md",
@@ -5717,7 +5468,7 @@
       "title": "Parameterized Replaceable Events",
       "created": "2023-01-04",
       "current_status": "Final",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 2,
       "events": [
         {
@@ -5726,7 +5477,7 @@
           "date": "2023-01-04",
           "timestamp": "2023-01-04T10:20:27-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "018c45966e4fbd21f26718e4ca17a9e16f36bb31",
           "author": "Semisol",
           "path": "33.md",
@@ -5738,7 +5489,7 @@
           "date": "2023-08-13",
           "timestamp": "2023-08-13T13:47:45-03:00",
           "status": "Final",
-          "standard": "bip2",
+          "standard": "",
           "commit": "72bb8a128b2d7d3c2c654644cd68d0d0fe58a3b1",
           "author": "fiatjaf_",
           "path": "33.md",
@@ -5751,7 +5502,7 @@
       "title": "`git` stuff",
       "created": "2024-03-05",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -5760,7 +5511,7 @@
           "date": "2024-03-05",
           "timestamp": "2024-03-05T08:57:59-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "9a283796ce95261c960d1b9ffc13e8f278079956",
           "author": "fiatjaf_",
           "path": "34.md",
@@ -5773,7 +5524,7 @@
       "title": "Torrents",
       "created": "2022-11-19",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -5782,7 +5533,7 @@
           "date": "2022-11-19",
           "timestamp": "2022-11-19T11:28:47-08:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "631e9760bfa6ab44804a8ca28ca913dfacdbb5cc",
           "author": "Michael Dilger",
           "path": "35.md",
@@ -5795,7 +5546,7 @@
       "title": "Sensitive Content / Content Warning",
       "created": "2022-12-01",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -5804,7 +5555,7 @@
           "date": "2022-12-01",
           "timestamp": "2022-12-01T20:41:15-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "27c6652e0e682dade7b1ae6b3e329c365a35ea91",
           "author": "Fernando López Guevara",
           "path": "36.md",
@@ -5817,7 +5568,7 @@
       "title": "Draft Wraps",
       "created": "2024-05-30",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -5826,7 +5577,7 @@
           "date": "2024-05-30",
           "timestamp": "2024-05-30T15:31:33-04:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "48674e563865b1cb7bb3c5c7869d20055446f408",
           "author": "Vitor Pamplona",
           "path": "37.md",
@@ -5839,7 +5590,7 @@
       "title": "User Statuses",
       "created": "2023-08-25",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -5848,7 +5599,7 @@
           "date": "2023-08-25",
           "timestamp": "2023-08-25T08:42:49-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "7dc1f02fa70a5b9da7b3867e3faa37f48571d5e1",
           "author": "fiatjaf",
           "path": "38.md",
@@ -5861,7 +5612,7 @@
       "title": "External Identities in Profiles",
       "created": "2023-03-09",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -5870,7 +5621,7 @@
           "date": "2023-03-09",
           "timestamp": "2023-03-09T15:53:32+03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "354c93aea363b053d9a91371cc62386b7e4e7302",
           "author": "pseudozach",
           "path": "39.md",
@@ -5883,7 +5634,7 @@
       "title": "Expiration Timestamp",
       "created": "2022-12-04",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -5892,7 +5643,7 @@
           "date": "2022-12-04",
           "timestamp": "2022-12-04T16:14:31+01:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "91bb09d1d374afbb6d5cffa25f5e71b6c7ad2a10",
           "author": "Thomas",
           "path": "40.md",
@@ -5905,7 +5656,7 @@
       "title": "Authentication of clients to relays",
       "created": "2023-01-02",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -5914,7 +5665,7 @@
           "date": "2023-01-02",
           "timestamp": "2023-01-02T16:56:44-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "c80be21cd44aa74efa42ead23a12343bf33ade34",
           "author": "fiatjaf",
           "path": "42.md",
@@ -5927,7 +5678,7 @@
       "title": "Relay Access Metadata and Requests",
       "created": "2025-10-30",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -5936,7 +5687,7 @@
           "date": "2025-10-30",
           "timestamp": "2025-10-30T07:44:48-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "8054526b874a90a83aca2dc6c9c5cd17682f8703",
           "author": "hodlbod",
           "path": "43.md",
@@ -5949,7 +5700,7 @@
       "title": "Encrypted Payloads (Versioned)",
       "created": "2023-12-20",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 2,
       "events": [
         {
@@ -5958,7 +5709,7 @@
           "date": "2023-12-20",
           "timestamp": "2023-12-07T20:09:08-05:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "7646386956927cea8be78747b1dda4fead8b1f32",
           "author": "zmeyer44",
           "path": "44.md",
@@ -5970,7 +5721,7 @@
           "date": "2023-12-07",
           "timestamp": "2023-12-07T20:09:08-05:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "7646386956927cea8be78747b1dda4fead8b1f32",
           "author": "zmeyer44",
           "path": "44.md",
@@ -5983,7 +5734,7 @@
       "title": "Event Counts",
       "created": "2023-01-03",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 2,
       "events": [
         {
@@ -5992,7 +5743,7 @@
           "date": "2023-01-03",
           "timestamp": "2023-04-05T18:41:14-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "e219ec64701d89e6b2c3f3ca8fd426d0aefdcb9c",
           "author": "Jonathan Staab",
           "path": "45.md",
@@ -6004,7 +5755,7 @@
           "date": "2023-04-05",
           "timestamp": "2023-04-05T18:41:14-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "e219ec64701d89e6b2c3f3ca8fd426d0aefdcb9c",
           "author": "Jonathan Staab",
           "path": "45.md",
@@ -6017,7 +5768,7 @@
       "title": "Nostr Remote Signing",
       "created": "2023-02-20",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -6026,7 +5777,7 @@
           "date": "2023-02-20",
           "timestamp": "2023-02-20T16:26:13-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "b1a5ad355a8b376170471a41817d8722ba7443b1",
           "author": "Marco Argentieri",
           "path": "46.md",
@@ -6039,7 +5790,7 @@
       "title": "Nostr Wallet Connect (NWC)",
       "created": "2023-03-30",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -6048,7 +5799,7 @@
           "date": "2023-03-30",
           "timestamp": "2023-03-30T00:35:13+03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "e2f088286fcd324bb4754dcdf5ff10f4dc823b5b",
           "author": "Semisol",
           "path": "47.md",
@@ -6061,7 +5812,7 @@
       "title": "Bridged events",
       "created": "2023-08-03",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -6070,7 +5821,7 @@
           "date": "2023-08-03",
           "timestamp": "2023-08-03T14:40:45-05:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "064a79f6142326fa09cda411c15ceca997d37a03",
           "author": "Alex Gleason",
           "path": "48.md",
@@ -6083,7 +5834,7 @@
       "title": "Private Key Encryption",
       "created": "2024-01-30",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 2,
       "events": [
         {
@@ -6092,7 +5843,7 @@
           "date": "2024-01-30",
           "timestamp": "2024-01-29T12:45:16-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "7ec060375c5aa8697e8b26c2d1088c9077bfa910",
           "author": "Michael Dilger",
           "path": "49.md",
@@ -6104,7 +5855,7 @@
           "date": "2024-01-29",
           "timestamp": "2024-01-29T12:45:16-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "7ec060375c5aa8697e8b26c2d1088c9077bfa910",
           "author": "Michael Dilger",
           "path": "49.md",
@@ -6117,7 +5868,7 @@
       "title": "Search Capability",
       "created": "2023-01-17",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -6126,7 +5877,7 @@
           "date": "2023-01-17",
           "timestamp": "2023-01-17T18:49:10+03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "086d224e1d75366ec45d23544159ed9c5610010a",
           "author": "Artur Brugeman",
           "path": "50.md",
@@ -6139,7 +5890,7 @@
       "title": "Lists",
       "created": "2023-03-09",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -6148,7 +5899,7 @@
           "date": "2023-03-09",
           "timestamp": "2023-03-09T14:16:57-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "30daaedbdb48c7583843a12d3496ced311b9986a",
           "author": "monlovesmango",
           "path": "51.md",
@@ -6161,7 +5912,7 @@
       "title": "Calendar Events",
       "created": "2023-06-10",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 2,
       "events": [
         {
@@ -6170,7 +5921,7 @@
           "date": "2023-06-10",
           "timestamp": "2023-08-01T12:28:54-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "b4cdc1a73d415c79c35655fa02f5e55cd1f2a60c",
           "author": "Terry Yiu",
           "path": "52.md",
@@ -6182,7 +5933,7 @@
           "date": "2023-08-01",
           "timestamp": "2023-08-01T12:28:54-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "b4cdc1a73d415c79c35655fa02f5e55cd1f2a60c",
           "author": "Terry Yiu",
           "path": "52.md",
@@ -6195,7 +5946,7 @@
       "title": "Live Activities",
       "created": "2023-07-08",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -6204,7 +5955,7 @@
           "date": "2023-07-08",
           "timestamp": "2023-07-08T09:11:22-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "141197c564d97073f0293e3b2f367f0b6b3619c2",
           "author": "Vitor Pamplona",
           "path": "53.md",
@@ -6217,7 +5968,7 @@
       "title": "Wiki",
       "created": "2024-05-02",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -6226,7 +5977,7 @@
           "date": "2024-05-02",
           "timestamp": "2024-05-02T11:04:55-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "218fbb1cc7ac900fd256f666cb6add590cabb24a",
           "author": "fiatjaf_",
           "path": "54.md",
@@ -6239,7 +5990,7 @@
       "title": "Android Signer Application",
       "created": "2024-06-05",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -6248,7 +5999,7 @@
           "date": "2024-06-05",
           "timestamp": "2024-06-05T15:24:43-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "a6dfc7b5e513ea3070abcded3608b28e4d4a1512",
           "author": "fiatjaf",
           "path": "55.md",
@@ -6261,7 +6012,7 @@
       "title": "Reporting",
       "created": "2023-02-07",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -6270,7 +6021,7 @@
           "date": "2023-02-07",
           "timestamp": "2023-02-07T18:15:38-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "f9e38ed00f5b11694ff93c368aacbf47ec21437a",
           "author": "William Casarin",
           "path": "56.md",
@@ -6283,7 +6034,7 @@
       "title": "Lightning Zaps",
       "created": "2023-02-13",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -6292,7 +6043,7 @@
           "date": "2023-02-13",
           "timestamp": "2023-02-13T08:36:04-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "17ffd3ee4efa33c3f6abb4304d1c4dd998efc523",
           "author": "William Casarin",
           "path": "57.md",
@@ -6305,7 +6056,7 @@
       "title": "Badges",
       "created": "2023-02-22",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -6314,7 +6065,7 @@
           "date": "2023-02-22",
           "timestamp": "2023-02-22T22:11:55-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "405cf480e9f6d419eb5b3516b7acdd1fc5759248",
           "author": "Ricardo Arturo Cabral Mejía",
           "path": "58.md",
@@ -6327,7 +6078,7 @@
       "title": "Gift Wrap",
       "created": "2023-08-11",
       "current_status": "Unknown",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -6336,7 +6087,7 @@
           "date": "2023-08-11",
           "timestamp": "2023-08-11",
           "status": "Unknown",
-          "standard": "bip2",
+          "standard": "",
           "commit": "",
           "author": "",
           "path": "",
@@ -6349,7 +6100,7 @@
       "title": "Cashu Wallets",
       "created": "2024-10-25",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -6358,7 +6109,7 @@
           "date": "2024-10-25",
           "timestamp": "2024-10-25T13:54:49-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "ba46b23d95b186c9a8fedabf8324af2ae40e8ce4",
           "author": "Pablo Fernandez",
           "path": "60.md",
@@ -6371,7 +6122,7 @@
       "title": "Nutzaps",
       "created": "2024-10-25",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 2,
       "events": [
         {
@@ -6380,7 +6131,7 @@
           "date": "2024-10-25",
           "timestamp": "2025-02-03T22:36:27-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "5a857e8bf8b88e14a98b1fcff4932034091c9b5c",
           "author": "fiatjaf_",
           "path": "61.md",
@@ -6392,7 +6143,7 @@
           "date": "2025-02-03",
           "timestamp": "2025-02-03T22:36:27-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "5a857e8bf8b88e14a98b1fcff4932034091c9b5c",
           "author": "fiatjaf_",
           "path": "61.md",
@@ -6405,7 +6156,7 @@
       "title": "Request to Vanish",
       "created": "2025-02-18",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -6414,7 +6165,7 @@
           "date": "2025-02-18",
           "timestamp": "2025-02-18T19:08:36-08:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "619e3bea57860d4c3b1d3f97587727a94b12a82e",
           "author": "Vitor Pamplona",
           "path": "62.md",
@@ -6427,7 +6178,7 @@
       "title": "Chess (Portable Game Notation)",
       "created": "2023-12-28",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 2,
       "events": [
         {
@@ -6436,7 +6187,7 @@
           "date": "2023-12-28",
           "timestamp": "2024-08-12T13:26:22+02:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "e44491466836abfc567a9652392205d02b803ca7",
           "author": "theborakompanioni",
           "path": "64.md",
@@ -6448,7 +6199,7 @@
           "date": "2024-08-12",
           "timestamp": "2024-08-12T13:26:22+02:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "e44491466836abfc567a9652392205d02b803ca7",
           "author": "theborakompanioni",
           "path": "64.md",
@@ -6461,7 +6212,7 @@
       "title": "Relay List Metadata",
       "created": "2023-02-03",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -6470,7 +6221,7 @@
           "date": "2023-02-03",
           "timestamp": "2023-02-03T18:52:56+13:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "69438fc3445490a7081a09f0de65ff8c6abe723b",
           "author": "Mike Dilger",
           "path": "65.md",
@@ -6483,7 +6234,7 @@
       "title": "Relay Liveness Monitoring",
       "created": "2025-03-03",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 2,
       "events": [
         {
@@ -6492,7 +6243,7 @@
           "date": "2025-03-03",
           "timestamp": "2025-04-23T09:31:08-07:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "8cdfe98e7497716b3b211641e7137437212d193b",
           "author": "Awiteb",
           "path": "66.md",
@@ -6504,7 +6255,7 @@
           "date": "2025-04-23",
           "timestamp": "2025-04-23T09:31:08-07:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "8cdfe98e7497716b3b211641e7137437212d193b",
           "author": "Awiteb",
           "path": "66.md",
@@ -6517,7 +6268,7 @@
       "title": "Picture-first feeds",
       "created": "2024-10-27",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -6526,7 +6277,7 @@
           "date": "2024-10-27",
           "timestamp": "2024-10-27T19:43:43-04:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "66c5cc637f118add2d2cade2210d21da7e25917b",
           "author": "Vitor Pamplona",
           "path": "68.md",
@@ -6539,20 +6290,32 @@
       "title": "Peer-to-peer Order events",
       "created": "2024-11-04",
       "current_status": "Draft",
-      "current_standard": "bip2",
-      "event_count": 1,
+      "current_standard": "",
+      "event_count": 2,
       "events": [
         {
           "kind": "creation",
           "label": "Created",
           "date": "2024-11-04",
-          "timestamp": "2024-11-04T16:38:09-03:00",
+          "timestamp": "2024-06-27T11:31:34-03:00",
           "status": "Draft",
-          "standard": "bip2",
-          "commit": "bff61dd310828758651389940dbcebb7fb9ef0ee",
+          "standard": "",
+          "commit": "f57d559dc08bf4b59ddefe9416f7569f751f75dd",
           "author": "Francisco Calderón",
-          "path": "69.md",
+          "path": "xx.md",
           "previous_status": ""
+        },
+        {
+          "kind": "status_change",
+          "label": "Draft",
+          "date": "2024-06-27",
+          "timestamp": "2024-06-27T11:31:34-03:00",
+          "status": "Draft",
+          "standard": "",
+          "commit": "f57d559dc08bf4b59ddefe9416f7569f751f75dd",
+          "author": "Francisco Calderón",
+          "path": "xx.md",
+          "previous_status": "Draft"
         }
       ]
     },
@@ -6561,7 +6324,7 @@
       "title": "Protected Events",
       "created": "2024-07-10",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -6570,7 +6333,7 @@
           "date": "2024-07-10",
           "timestamp": "2024-07-10T09:00:26-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "ae1906ec7943a6bd756f05d2cd2fb2a041398921",
           "author": "fiatjaf_",
           "path": "70.md",
@@ -6583,7 +6346,7 @@
       "title": "Video Events",
       "created": "2023-12-09",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -6592,7 +6355,7 @@
           "date": "2023-12-09",
           "timestamp": "2023-12-09T17:46:53-05:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "7afd1049d98a82aa7754f80de80d97dd686cf40e",
           "author": "zmeyer44",
           "path": "71.md",
@@ -6605,7 +6368,7 @@
       "title": "Moderated Communities (Reddit Style)",
       "created": "2023-08-08",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -6614,7 +6377,7 @@
           "date": "2023-08-08",
           "timestamp": "2023-08-08T13:31:54-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "892fe9e4004dbb515d71729b92d0432665f8e823",
           "author": "fiatjaf",
           "path": "72.md",
@@ -6627,20 +6390,32 @@
       "title": "External Content IDs",
       "created": "2024-08-05",
       "current_status": "Draft",
-      "current_standard": "bip2",
-      "event_count": 1,
+      "current_standard": "",
+      "event_count": 2,
       "events": [
         {
           "kind": "creation",
           "label": "Created",
           "date": "2024-08-05",
-          "timestamp": "2024-08-05T23:51:04+01:00",
+          "timestamp": "2024-04-19T14:30:45+01:00",
           "status": "Draft",
-          "standard": "bip2",
-          "commit": "4d9eb32dc9062868d0d61c15456935dad39364de",
+          "standard": "",
+          "commit": "280eb498e0ac56b8f9356c1b7a88cc8b31579801",
           "author": "Oscar Merry",
-          "path": "73.md",
+          "path": "XX.md",
           "previous_status": ""
+        },
+        {
+          "kind": "status_change",
+          "label": "Draft",
+          "date": "2024-04-19",
+          "timestamp": "2024-04-19T14:30:45+01:00",
+          "status": "Draft",
+          "standard": "",
+          "commit": "280eb498e0ac56b8f9356c1b7a88cc8b31579801",
+          "author": "Oscar Merry",
+          "path": "XX.md",
+          "previous_status": "Draft"
         }
       ]
     },
@@ -6649,7 +6424,7 @@
       "title": "Zap Goals",
       "created": "2023-09-01",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -6658,7 +6433,7 @@
           "date": "2023-09-01",
           "timestamp": "2023-09-01T15:07:52+02:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "08bd050598e078179eea71cb9de777d887a9e9f8",
           "author": "Alejandro",
           "path": "75.md",
@@ -6671,7 +6446,7 @@
       "title": "Negentropy Syncing",
       "created": "2025-05-26",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -6680,7 +6455,7 @@
           "date": "2025-05-26",
           "timestamp": "2025-05-26T23:13:50-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "569f55a90fb30a9bc3e1c0c130951ab6d738cc5e",
           "author": "fiatjaf_",
           "path": "77.md",
@@ -6693,7 +6468,7 @@
       "title": "Arbitrary custom app data",
       "created": "2023-02-23",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 2,
       "events": [
         {
@@ -6702,7 +6477,7 @@
           "date": "2023-02-23",
           "timestamp": "2023-03-01T10:03:25-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "c4949ea7078ec96a373f77f725267b36316ee9e4",
           "author": "fiatjaf",
           "path": "78.md",
@@ -6714,7 +6489,7 @@
           "date": "2023-03-01",
           "timestamp": "2023-03-01T10:03:25-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "c4949ea7078ec96a373f77f725267b36316ee9e4",
           "author": "fiatjaf",
           "path": "78.md",
@@ -6727,7 +6502,7 @@
       "title": "Highlights",
       "created": "2023-11-07",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -6736,7 +6511,7 @@
           "date": "2023-11-07",
           "timestamp": "2023-11-07T09:16:43-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "b128ad98ade41b2b1f029e7460329554748fea73",
           "author": "Pablo Fernandez",
           "path": "84.md",
@@ -6749,7 +6524,7 @@
       "title": "Trusted Assertions",
       "created": "2026-01-22",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -6758,7 +6533,7 @@
           "date": "2026-01-22",
           "timestamp": "2026-01-22T13:47:55-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "b58a6048b12e6cbbb64250664a9e78ee85579ff0",
           "author": "Vitor Pamplona",
           "path": "85.md",
@@ -6771,7 +6546,7 @@
       "title": "Relay Management API",
       "created": "2024-11-25",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -6780,7 +6555,7 @@
           "date": "2024-11-25",
           "timestamp": "2024-11-25T13:21:47-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "73f65133fcdcbf9f4d27cc7097963797c6250cd7",
           "author": "fiatjaf_",
           "path": "86.md",
@@ -6793,7 +6568,7 @@
       "title": "Ecash Mint Discoverability",
       "created": "2025-07-16",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -6802,7 +6577,7 @@
           "date": "2025-07-16",
           "timestamp": "2025-07-16T12:13:09+01:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "1afb6da049e57dd628ef46a3b0f90300653a66ee",
           "author": "benthecarman",
           "path": "87.md",
@@ -6815,7 +6590,7 @@
       "title": "Polls",
       "created": "2024-09-17",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -6824,7 +6599,7 @@
           "date": "2024-09-17",
           "timestamp": "2024-09-17T11:04:01-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "d534bade7184966df7335a8867b97cd879ee58cd",
           "author": "fiatjaf",
           "path": "88.md",
@@ -6837,7 +6612,7 @@
       "title": "Recommended Application Handlers",
       "created": "2023-06-07",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -6846,7 +6621,7 @@
           "date": "2023-06-07",
           "timestamp": "2023-06-07T16:56:17-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "867c8bb334b0d9bb22a6af5c16ce6d186852af5a",
           "author": "Pablo Fernandez",
           "path": "89.md",
@@ -6859,7 +6634,7 @@
       "title": "Data Vending Machine",
       "created": "2023-07-25",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 2,
       "events": [
         {
@@ -6868,7 +6643,7 @@
           "date": "2023-07-25",
           "timestamp": "2023-07-05T11:14:50+02:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "ce552554a08bb5b9878621abfdde3207d54cae62",
           "author": "pablof7z",
           "path": "vending-machine.md",
@@ -6880,7 +6655,7 @@
           "date": "2023-07-05",
           "timestamp": "2023-07-05T11:14:50+02:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "ce552554a08bb5b9878621abfdde3207d54cae62",
           "author": "pablof7z",
           "path": "vending-machine.md",
@@ -6893,7 +6668,7 @@
       "title": "Media Attachments Metadata",
       "created": "2024-02-01",
       "current_status": "Unknown",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -6902,7 +6677,7 @@
           "date": "2024-02-01",
           "timestamp": "2024-02-01",
           "status": "Unknown",
-          "standard": "bip2",
+          "standard": "",
           "commit": "",
           "author": "",
           "path": "",
@@ -6915,7 +6690,7 @@
       "title": "File Metadata",
       "created": "2023-03-09",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 2,
       "events": [
         {
@@ -6924,7 +6699,7 @@
           "date": "2023-03-09",
           "timestamp": "2023-04-24T14:57:37-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "5d0cbcbebfde5b3a32bf8c6fda12cfde40c1bb65",
           "author": "fiatjaf",
           "path": "94.md",
@@ -6936,7 +6711,7 @@
           "date": "2023-04-24",
           "timestamp": "2023-04-24T14:57:37-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "5d0cbcbebfde5b3a32bf8c6fda12cfde40c1bb65",
           "author": "fiatjaf",
           "path": "94.md",
@@ -6949,7 +6724,7 @@
       "title": "HTTP File Storage Integration",
       "created": "2024-01-08",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -6958,7 +6733,7 @@
           "date": "2024-01-08",
           "timestamp": "2024-01-08T14:05:01-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "b0e6c01321633f5e0de6ebf6676f018a218459a9",
           "author": "arthurfranca",
           "path": "96.md",
@@ -6971,7 +6746,7 @@
       "title": "HTTP Auth",
       "created": "2023-04-24",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 2,
       "events": [
         {
@@ -6980,7 +6755,7 @@
           "date": "2023-04-24",
           "timestamp": "2023-05-08T12:22:53+01:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "29f26e72b5fd4e918c8d0d9f9d9ae384f7052a0a",
           "author": "Kieran",
           "path": "98.md",
@@ -6992,7 +6767,7 @@
           "date": "2023-05-08",
           "timestamp": "2023-05-08T12:22:53+01:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "29f26e72b5fd4e918c8d0d9f9d9ae384f7052a0a",
           "author": "Kieran",
           "path": "98.md",
@@ -7005,7 +6780,7 @@
       "title": "Classified Listings",
       "created": "2023-07-18",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -7014,7 +6789,7 @@
           "date": "2023-07-18",
           "timestamp": "2023-07-18T22:48:23+02:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "859bd471fe22ce18bcf208581040fbfa3b06dee4",
           "author": "Jeff Gardner",
           "path": "99.md",
@@ -7027,7 +6802,7 @@
       "title": "Static Websites (nsites)",
       "created": "2026-03-25",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -7036,7 +6811,7 @@
           "date": "2026-03-25",
           "timestamp": "2026-03-25T11:07:23-05:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "f9c48b38c0e58119fb9b1cdc38a9179586826414",
           "author": "hzrd149",
           "path": "5A.md",
@@ -7049,7 +6824,7 @@
       "title": "Forum Threads",
       "created": "2024-11-21",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -7058,7 +6833,7 @@
           "date": "2024-11-21",
           "timestamp": "2024-11-21T11:55:23-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "1e47fd75572704b84cf484ce52394fc7ea7d4067",
           "author": "hodlbod",
           "path": "7D.md",
@@ -7071,7 +6846,7 @@
       "title": "Voice Messages",
       "created": "2025-07-23",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -7080,7 +6855,7 @@
           "date": "2025-07-23",
           "timestamp": "2025-07-23T17:31:55-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "e50f37a527ace39cc3057827d52295c6b6de1112",
           "author": "Fabian",
           "path": "A0.md",
@@ -7093,7 +6868,7 @@
       "title": "Public Messages",
       "created": "2025-12-18",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -7102,7 +6877,7 @@
           "date": "2025-12-18",
           "timestamp": "2025-12-18T23:30:04-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "65a827dab317181760f6d1812b0cc17020b8c97b",
           "author": "Vitor Pamplona",
           "path": "A4.md",
@@ -7115,7 +6890,7 @@
       "title": "Web Bookmarking",
       "created": "2025-04-24",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -7124,7 +6899,7 @@
           "date": "2025-04-24",
           "timestamp": "2025-04-24T13:52:29-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "121258a611f43b24e62b00dffb1f2b9bcebfbb3f",
           "author": "Sebastian Hagens",
           "path": "b0.md",
@@ -7137,7 +6912,7 @@
       "title": "Blossom media",
       "created": "2025-04-24",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -7146,7 +6921,7 @@
           "date": "2025-04-24",
           "timestamp": "2025-04-24T13:47:04-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "5a371a5b92f497a59ce23eb320a2d5c1cca29eb4",
           "author": "fiatjaf_",
           "path": "b7.md",
@@ -7159,7 +6934,7 @@
       "title": "Nostr BLE Communications Protocol",
       "created": "2025-11-11",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -7168,7 +6943,7 @@
           "date": "2025-11-11",
           "timestamp": "2025-11-11T11:05:09-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "a47c460415bf46635d6ae83aac40e6c4db8a9ca1",
           "author": "KoalaSat",
           "path": "BE.md",
@@ -7181,7 +6956,7 @@
       "title": "Code Snippets",
       "created": "2025-03-29",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 2,
       "events": [
         {
@@ -7190,7 +6965,7 @@
           "date": "2025-03-29",
           "timestamp": "2025-04-23T11:57:55-07:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "4f09333ab538de527f693dd18f14726a879bc594",
           "author": "Awiteb",
           "path": "C0.md",
@@ -7202,7 +6977,7 @@
           "date": "2025-04-23",
           "timestamp": "2025-04-23T11:57:55-07:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "4f09333ab538de527f693dd18f14726a879bc594",
           "author": "Awiteb",
           "path": "C0.md",
@@ -7215,7 +6990,7 @@
       "title": "Chats",
       "created": "2024-11-21",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -7224,7 +6999,7 @@
           "date": "2024-11-21",
           "timestamp": "2024-11-21T11:55:23-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "1e47fd75572704b84cf484ce52394fc7ea7d4067",
           "author": "hodlbod",
           "path": "C7.md",
@@ -7237,7 +7012,7 @@
       "title": "Geocaching Events",
       "created": "2026-05-28",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -7246,7 +7021,7 @@
           "date": "2026-05-28",
           "timestamp": "2026-05-28T17:15:11-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "9c6b1d95d585f2c41e097b8c87f3d58dadb7dfdf",
           "author": "fiatjaf",
           "path": "CC.md",
@@ -7259,7 +7034,7 @@
       "title": "E2EE Messaging using the Messaging Layer Security (MLS) Protocol",
       "created": "2025-08-27",
       "current_status": "Final",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 2,
       "events": [
         {
@@ -7268,7 +7043,7 @@
           "date": "2025-08-27",
           "timestamp": "2025-08-27T09:03:06-07:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "581452e8459e84caef8fa080eb8d7940468754fb",
           "author": "Jeff Gardner",
           "path": "EE.md",
@@ -7280,7 +7055,7 @@
           "date": "2025-12-11",
           "timestamp": "2025-12-11T11:54:19-03:00",
           "status": "Final",
-          "standard": "bip2",
+          "standard": "",
           "commit": "247205a155e5fd5e8ca39f4b3e7b76796ea6a8a6",
           "author": "JeffG",
           "path": "EE.md",
@@ -7293,7 +7068,7 @@
       "title": "Podcasts",
       "created": "2026-05-28",
       "current_status": "Draft",
-      "current_standard": "bip2",
+      "current_standard": "",
       "event_count": 1,
       "events": [
         {
@@ -7302,7 +7077,7 @@
           "date": "2026-05-28",
           "timestamp": "2026-05-28T16:51:13-03:00",
           "status": "Draft",
-          "standard": "bip2",
+          "standard": "",
           "commit": "06cccbca3b190304650ac2efb0caff0325486348",
           "author": "fiatjaf",
           "path": "F4.md",

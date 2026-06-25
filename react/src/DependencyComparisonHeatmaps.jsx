@@ -1,15 +1,18 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { positionTooltip } from './tooltipPosition';
 import { Button } from 'primereact/button';
-import { InputText } from 'primereact/inputtext';
 import {
   BODY_EXTRACTED_REGEX,
   DEFAULT_DEPENDENCY_APPROACH,
   DEPENDENCY_SHORT_LABELS,
+  PAIRWISE_LINK_TYPE_OPTIONS,
 } from './dependencyApproaches';
-import { LINK_TYPE_OPTIONS } from './NetworkDiagram';
+import { ProposalFilterControl } from './ProposalFilterControl';
+import { CollapsibleControls } from './dashboard/CollapsibleControls';
 import { useDashboardEcosystem, useDashboardLinkMode, useDashboardSnapshot } from './dashboard/DashboardSnapshotContext';
-import { normalizeProposalFilterValue, parseProposalFilterExpression } from './dashboard/dashboardData';
-import { formatProposalLabel, getProposalUrl } from './proposalLinks';
+import { parseProposalFilterExpression } from './dashboard/dashboardData';
+import { formatProposalLabel, getProposalUrl, normalizeProposalId } from './proposalLinks';
+import { renderTooltipCardHtml } from './tooltipHtml';
 
 const SHORT_LABELS = DEPENDENCY_SHORT_LABELS;
 
@@ -51,6 +54,49 @@ function buildDefaultSelection(pairwiseComparisons) {
   return comparisons.find(
     (entry) => entry.approach === BODY_EXTRACTED_REGEX && entry.baseline === DEFAULT_DEPENDENCY_APPROACH
   ) || comparisons.find((entry) => entry.approach !== entry.baseline) || comparisons[0] || null;
+}
+
+function resolveSourceIdForGraphKey(value, ecosystem) {
+  const text = String(value || '').trim();
+  const separatorIndex = text.indexOf(':');
+  if (separatorIndex < 0) {
+    return '';
+  }
+  const sourceSlug = text.slice(0, separatorIndex);
+  const sourceEntry = Object.values(ecosystem?.sources || {}).find(
+    (source) => String(source?.sourceSlug || source?.sourceId || '') === sourceSlug
+  );
+  return String(sourceEntry?.sourceId || sourceSlug || '').trim();
+}
+
+function buildProposalRefKey(ref) {
+  return `${String(ref?.source || '').trim()}|${String(ref?.id || '').trim()}`;
+}
+
+function buildComparisonMetricCards(comparison) {
+  if (!comparison) {
+    return [];
+  }
+
+  const approachShortLabel = SHORT_LABELS[comparison.approach] || comparison.approach;
+  return [
+    {
+      label: 'Approach',
+      value: `${getApproachDisplayLabel(comparison.approach)} vs ${getApproachDisplayLabel(comparison.baseline)}`,
+    },
+    {
+      label: 'Same',
+      value: `${comparison.summary.overlap} (${formatPercent(comparison.summary.hit_rate)})`,
+    },
+    {
+      label: `Not in ${approachShortLabel}`,
+      value: `${comparison.summary.baseline_only} (${formatPercent(comparison.summary.missed_rate)})`,
+    },
+    {
+      label: `Only in ${approachShortLabel}`,
+      value: `${comparison.summary.approach_only} (${formatPercent(getApproachOnlyRate(comparison))})`,
+    },
+  ];
 }
 
 function buildCellExplanation(metric, comparison) {
@@ -97,11 +143,15 @@ function renderCellTooltipHtml(metric, comparison) {
       : `Only in ${approachShortLabel}`;
 
   return (
-    `<strong>${metricLabel}</strong><br/>` +
-    `${buildCellExplanation(metric, comparison)}<br/>` +
-    `Same: ${comparison.summary.overlap} (${formatPercent(comparison.summary.hit_rate)})<br/>` +
-    `Not in ${approachShortLabel}: ${comparison.summary.baseline_only} (${formatPercent(comparison.summary.missed_rate)})<br/>` +
-    `Only in ${approachShortLabel}: ${comparison.summary.approach_only} (${formatPercent(getApproachOnlyRate(comparison))})`
+    renderTooltipCardHtml({
+      titleHtml: `<strong>${metricLabel}</strong>`,
+      rows: [
+        ['Same', `${comparison.summary.overlap} (${formatPercent(comparison.summary.hit_rate)})`],
+        [`Not in ${approachShortLabel}`, `${comparison.summary.baseline_only} (${formatPercent(comparison.summary.missed_rate)})`],
+        [`Only in ${approachShortLabel}`, `${comparison.summary.approach_only} (${formatPercent(getApproachOnlyRate(comparison))})`],
+      ],
+      bodyHtml: buildCellExplanation(metric, comparison),
+    })
   );
 }
 
@@ -147,7 +197,7 @@ function ComparisonTable({
   onMoveTooltip,
   onHideTooltip,
 }) {
-  const approachKeys = LINK_TYPE_OPTIONS.map((option) => option.value);
+  const approachKeys = PAIRWISE_LINK_TYPE_OPTIONS.map((option) => option.value);
 
   return (
     <table className="dependency-heatmap-table dependency-heatmap-table--triple">
@@ -258,8 +308,7 @@ export function DependencyComparisonHeatmaps({
 
     tooltip.innerHTML = html;
     tooltip.style.opacity = '1';
-    tooltip.style.left = `${event.pageX + 10}px`;
-    tooltip.style.top = `${event.pageY - 28}px`;
+    positionTooltip(tooltip, event.pageX, event.pageY);
   };
 
   const moveTooltip = (event) => {
@@ -268,8 +317,7 @@ export function DependencyComparisonHeatmaps({
       return;
     }
 
-    tooltip.style.left = `${event.pageX + 10}px`;
-    tooltip.style.top = `${event.pageY - 28}px`;
+    positionTooltip(tooltip, event.pageX, event.pageY);
   };
 
   const hideTooltip = () => {
@@ -284,12 +332,6 @@ export function DependencyComparisonHeatmaps({
   const handleSelectComparisonMetric = (comparisonKey, status) => {
     setSelectedComparisonKey(comparisonKey);
     setStatusFilter(status);
-  };
-
-  const handleShowAll = () => {
-    setStatusFilter('');
-    setSourceFilterText('');
-    setTargetFilterText('');
   };
 
   useEffect(() => {
@@ -309,27 +351,49 @@ export function DependencyComparisonHeatmaps({
   const selectedComparison = selectedComparisonKey
     ? pairwiseComparisons?.[selectedComparisonKey]
     : buildDefaultSelection(pairwiseComparisons);
-  const availableEdgeIds = useMemo(() => {
-    const ids = new Set();
+  const comparisonMetricCards = useMemo(
+    () => buildComparisonMetricCards(selectedComparison),
+    [selectedComparison]
+  );
+  const availableSourceNodes = useMemo(() => {
+    const refs = new Map();
     (selectedComparison?.edges || []).forEach((edge) => {
-      const source = normalizeProposalFilterValue(edge.source);
-      const target = normalizeProposalFilterValue(edge.target);
-      if (source) {
-        ids.add(source);
-      }
-      if (target) {
-        ids.add(target);
+      const ref = {
+        source: resolveSourceIdForGraphKey(edge.source, ecosystem),
+        id: normalizeProposalId(edge.source, ecosystem),
+      };
+      if (ref.id) {
+        refs.set(buildProposalRefKey(ref), ref);
       }
     });
-    return Array.from(ids).sort((left, right) => Number(left) - Number(right));
-  }, [selectedComparison]);
+    return Array.from(refs.values()).sort((left, right) => (
+      String(left.source || '').localeCompare(String(right.source || ''))
+      || String(left.id || '').localeCompare(String(right.id || ''), undefined, { numeric: true })
+    ));
+  }, [ecosystem, selectedComparison]);
+  const availableTargetNodes = useMemo(() => {
+    const refs = new Map();
+    (selectedComparison?.edges || []).forEach((edge) => {
+      const ref = {
+        source: resolveSourceIdForGraphKey(edge.target, ecosystem),
+        id: normalizeProposalId(edge.target, ecosystem),
+      };
+      if (ref.id) {
+        refs.set(buildProposalRefKey(ref), ref);
+      }
+    });
+    return Array.from(refs.values()).sort((left, right) => (
+      String(left.source || '').localeCompare(String(right.source || ''))
+      || String(left.id || '').localeCompare(String(right.id || ''), undefined, { numeric: true })
+    ));
+  }, [ecosystem, selectedComparison]);
   const selectedSourceIds = useMemo(
-    () => parseProposalFilterExpression(sourceFilterText, availableEdgeIds),
-    [availableEdgeIds, sourceFilterText]
+    () => parseProposalFilterExpression(sourceFilterText, availableSourceNodes, ecosystem),
+    [availableSourceNodes, ecosystem, sourceFilterText]
   );
   const selectedTargetIds = useMemo(
-    () => parseProposalFilterExpression(targetFilterText, availableEdgeIds),
-    [availableEdgeIds, targetFilterText]
+    () => parseProposalFilterExpression(targetFilterText, availableTargetNodes, ecosystem),
+    [availableTargetNodes, ecosystem, targetFilterText]
   );
 
   useEffect(() => {
@@ -337,21 +401,23 @@ export function DependencyComparisonHeatmaps({
       if (!current.trim()) {
         return current;
       }
-      return parseProposalFilterExpression(current, availableEdgeIds).length ? current : '';
+      return parseProposalFilterExpression(current, availableSourceNodes, ecosystem).length ? current : '';
     });
-  }, [availableEdgeIds]);
+  }, [availableSourceNodes, ecosystem]);
 
   useEffect(() => {
     setTargetFilterText((current) => {
       if (!current.trim()) {
         return current;
       }
-      return parseProposalFilterExpression(current, availableEdgeIds).length ? current : '';
+      return parseProposalFilterExpression(current, availableTargetNodes, ecosystem).length ? current : '';
     });
-  }, [availableEdgeIds]);
+  }, [availableTargetNodes, ecosystem]);
 
   const filteredEdges = useMemo(() => {
     const edges = selectedComparison?.edges || [];
+    const selectedSourceRefKeys = new Set((selectedSourceIds || []).map(buildProposalRefKey));
+    const selectedTargetRefKeys = new Set((selectedTargetIds || []).map(buildProposalRefKey));
 
     return edges.filter((edge) => {
       if (statusFilter && edge.status !== statusFilter) {
@@ -359,22 +425,28 @@ export function DependencyComparisonHeatmaps({
       }
 
       if (sourceFilterText.trim()) {
-        const source = normalizeProposalFilterValue(edge.source);
-        if (!selectedSourceIds.includes(source)) {
+        const sourceRef = {
+          source: resolveSourceIdForGraphKey(edge.source, ecosystem),
+          id: normalizeProposalId(edge.source, ecosystem),
+        };
+        if (!selectedSourceRefKeys.has(buildProposalRefKey(sourceRef))) {
           return false;
         }
       }
 
       if (targetFilterText.trim()) {
-        const target = normalizeProposalFilterValue(edge.target);
-        if (!selectedTargetIds.includes(target)) {
+        const targetRef = {
+          source: resolveSourceIdForGraphKey(edge.target, ecosystem),
+          id: normalizeProposalId(edge.target, ecosystem),
+        };
+        if (!selectedTargetRefKeys.has(buildProposalRefKey(targetRef))) {
           return false;
         }
       }
 
       return true;
     });
-  }, [selectedComparison, selectedSourceIds, selectedTargetIds, sourceFilterText, statusFilter, targetFilterText]);
+  }, [ecosystem, selectedComparison, selectedSourceIds, selectedTargetIds, sourceFilterText, statusFilter, targetFilterText]);
 
   const sortedEdges = useMemo(() => {
     const direction = sortDirection === 'desc' ? -1 : 1;
@@ -382,7 +454,7 @@ export function DependencyComparisonHeatmaps({
       if (field === 'status') {
         return String(edge.status || '').toLowerCase();
       }
-      const normalized = normalizeProposalFilterValue(edge[field]);
+      const normalized = normalizeProposalId(edge[field], ecosystem);
       if (/^\d+$/.test(normalized)) {
         return Number(normalized);
       }
@@ -410,7 +482,7 @@ export function DependencyComparisonHeatmaps({
       const secondaryField = sortField === 'source' ? 'target' : 'source';
       return String(left[secondaryField] || '').localeCompare(String(right[secondaryField] || ''), undefined, { numeric: true });
     });
-  }, [filteredEdges, sortDirection, sortField]);
+  }, [ecosystem, filteredEdges, sortDirection, sortField]);
 
   const handleSortChange = (field) => {
     if (field === sortField) {
@@ -448,35 +520,60 @@ export function DependencyComparisonHeatmaps({
       {selectedComparison ? (
         <div className="dependency-comparison-detail">
           <div className="dependency-comparison-detail__header">
-            <div>
-              <h4>{getApproachDisplayLabel(selectedComparison.approach)} vs {getApproachDisplayLabel(selectedComparison.baseline)}</h4>
-              <div className="dependency-comparison-detail__summary">
-                Same: {selectedComparison.summary.overlap} ({formatPercent(selectedComparison.summary.hit_rate)}) | Not in {SHORT_LABELS[selectedComparison.approach] || 'approach'}: {selectedComparison.summary.baseline_only} ({formatPercent(selectedComparison.summary.missed_rate)}) | Only in {SHORT_LABELS[selectedComparison.approach] || 'approach'}: {selectedComparison.summary.approach_only} ({formatPercent(getApproachOnlyRate(selectedComparison))})
-              </div>
-            </div>
-            <div className="dependency-comparison-detail__filters">
-              <Button
-                type="button"
-                label="Show all"
-                severity="secondary"
-                text
-                onClick={handleShowAll}
-                disabled={!statusFilter && !sourceFilterText.trim() && !targetFilterText.trim()}
-              />
-              <InputText
-                value={sourceFilterText}
-                onChange={(event) => setSourceFilterText(event.target.value)}
-                placeholder="Filter Source (e.g. 1,3-5,7)"
-                aria-label="Filter source nodes (e.g. 1,3-5,7)"
-              />
-              <InputText
-                value={targetFilterText}
-                onChange={(event) => setTargetFilterText(event.target.value)}
-                placeholder="Filter Target (e.g. 1,3-5,7)"
-                aria-label="Filter target nodes (e.g. 1,3-5,7)"
-              />
+            <div className="dependency-comparison-detail__summary dependency-comparison-detail__summary--badges">
+              {comparisonMetricCards.map((metric) => (
+                <div
+                  key={metric.label}
+                  className={`metric-badge${metric.label === 'Approach' ? ' metric-badge--wide-value' : ''}`}
+                >
+                  <span className="metric-badge__label">{metric.label}</span>
+                  <span className="metric-badge__value">{metric.value}</span>
+                </div>
+              ))}
             </div>
           </div>
+          <CollapsibleControls className="dependency-comparison-controls">
+            <div className="dependency-comparison-controls__grid">
+              <ProposalFilterControl
+                value={sourceFilterText}
+                onChange={setSourceFilterText}
+                ecosystem={ecosystem}
+                ariaLabel="Filter source proposals for dependency comparison details"
+                layout="split"
+                entryLabel="Filter Proposals (Source)"
+                trailingControl={(
+                  <Button
+                    type="button"
+                    label="Clear"
+                    severity="secondary"
+                    text
+                    onClick={() => setSourceFilterText('')}
+                    disabled={!sourceFilterText.trim()}
+                  />
+                )}
+                className="dependency-comparison-controls__filter"
+              />
+              <ProposalFilterControl
+                value={targetFilterText}
+                onChange={setTargetFilterText}
+                ecosystem={ecosystem}
+                ariaLabel="Filter target proposals for dependency comparison details"
+                layout="split"
+                entryLabel="Filter Proposals (Target)"
+                trailingControl={(
+                  <Button
+                    type="button"
+                    label="Clear"
+                    severity="secondary"
+                    text
+                    onClick={() => setTargetFilterText('')}
+                    disabled={!targetFilterText.trim()}
+                  />
+                )}
+                className="dependency-comparison-controls__filter"
+              />
+            </div>
+          </CollapsibleControls>
           <div className="dependency-comparison-table-wrap">
             <table className="analysis-table">
               <thead>

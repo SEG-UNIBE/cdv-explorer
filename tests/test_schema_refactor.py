@@ -53,13 +53,12 @@ from pipeline.preprocess.checkers.nip import check as check_nip_compliance
 from pipeline.preprocess.rfc_preamble import _save_json as save_preamble_to_json_new
 
 
-def legacy_proposal(
+def proposal_document(
     proposal_id: str,
     *,
     requires: str | None = None,
     superseded_by: str | None = None,
-    explicit_references: list[str] | None = None,
-    implicit_dependencies: list[str] | None = None,
+    interrelations: dict | None = None,
 ) -> dict:
     return {
         "raw": {
@@ -76,58 +75,76 @@ def legacy_proposal(
                 "superseded_by": superseded_by,
             }
         },
-        "metadata": {
+        "meta": {
             "last_commit": "2020-01-02",
             "total_commits": 1,
             "git_history": [["abc", "2020-01-02", "Author"]],
-            "contributors": 1,
         },
-        "compliance": {
-            "score": 75.0,
-            "bip2": {
-                "score": 70.0,
-                "checks": [
-                    {
-                        "id": "bip2.required_field.bip",
-                        "label": "Required field 'bip' is present",
-                        "category": "required_field",
-                        "standard": "bip2",
-                        "passed": True,
-                    }
-                ],
+        "insights": {
+            "formal_compliance": {
+                "score": 75.0,
+                "bip2": {
+                    "score": 70.0,
+                    "checks": [
+                        {
+                            "id": "bip2.required_field.bip",
+                            "label": "Required field 'bip' is present",
+                            "category": "required_field",
+                            "standard": "bip2",
+                            "passed": True,
+                        }
+                    ],
+                },
+                "bip3": {
+                    "score": 80.0,
+                    "checks": [],
+                },
             },
-            "bip3": {
-                "score": 80.0,
-                "checks": [],
-            },
-        },
-        "history": {
-            "status_timeline": [
+            "changes_in_status": [
                 {
                     "proposal_id": proposal_id,
                     "date": "2020-01-01",
                     "status": "Draft",
                     "standard": "bip2",
                 }
-            ]
-        },
-        "insights": {
+            ],
             "word_list": {"bitcoin": 3, "proposal": 2},
-            "explicit_references": explicit_references or [],
-            "explicit_dependencies": [f"BIP {requires}"] if requires else [],
-            "implicit_dependencies": implicit_dependencies or [],
+            "interrelations": interrelations or {
+                "preamble_extracted": [],
+                "body_extracted_regex": [],
+                "body_extracted_llm": [],
+            },
         },
     }
 
 
 class SchemaRefactorTests(unittest.TestCase):
-    def test_normalize_legacy_document_into_canonical_shape(self) -> None:
+    def test_normalize_document_keeps_only_canonical_interrelations(self) -> None:
         normalized = normalize_proposal_document(
-            legacy_proposal(
+            proposal_document(
                 "1",
                 requires="2",
-                explicit_references=["BIP 2"],
-                implicit_dependencies=["BIP 3"],
+                interrelations={
+                    "preamble_extracted": [{"target": "bips:2", "type": "requires"}],
+                    "body_extracted_regex": [{"target": "bips:2", "count": 1}],
+                    "body_extracted_llm": [
+                        {
+                            "model": "gpt-5",
+                            "timestamp": "2026-06-01T00:00:00Z",
+                            "dependencies": [
+                                {
+                                    "target": "bips:3",
+                                    "evidence": "depends on BIP 3",
+                                    "reason": "It relies on BIP 3.",
+                                    "confidence": "high",
+                                }
+                            ],
+                        }
+                    ],
+                    "explicit_dependencies": ["BIP 99"],
+                    "explicit_references": ["BIP 99"],
+                    "implicit_dependencies": ["BIP 99"],
+                },
             )
         )
 
@@ -139,13 +156,38 @@ class SchemaRefactorTests(unittest.TestCase):
         self.assertEqual(normalized["insights"]["formal_compliance"]["score"], 75.0)
         self.assertEqual(normalized["insights"]["changes_in_status"][0]["status"], "Draft")
         self.assertNotIn("interrelations", normalized["raw"]["preamble"])
-        self.assertEqual(normalized["insights"]["interrelations"]["preamble_extracted"], ["BIP 2"])
-        self.assertEqual(normalized["insights"]["interrelations"]["body_extracted_regex"], ["BIP 2"])
-        self.assertEqual(normalized["insights"]["interrelations"]["body_extracted_llm"], ["BIP 3"])
+        self.assertEqual(
+            normalized["insights"]["interrelations"]["preamble_extracted"],
+            [{"target": "bips:2", "type": "requires"}],
+        )
+        self.assertEqual(
+            normalized["insights"]["interrelations"]["body_extracted_regex"],
+            [{"target": "bips:2", "count": 1}],
+        )
+        self.assertEqual(
+            normalized["insights"]["interrelations"]["body_extracted_llm"],
+            [
+                {
+                    "model": "gpt-5",
+                    "timestamp": "2026-06-01T00:00:00Z",
+                    "dependencies": [
+                        {
+                            "target": "bips:3",
+                            "evidence": "depends on BIP 3",
+                            "reason": "It relies on BIP 3.",
+                            "confidence": "high",
+                        }
+                    ],
+                }
+            ],
+        )
+        self.assertNotIn("explicit_dependencies", normalized["insights"])
+        self.assertNotIn("explicit_references", normalized["insights"])
+        self.assertNotIn("implicit_dependencies", normalized["insights"])
 
     def test_normalize_legacy_preamble_aliases_to_proposed_replacement(self) -> None:
         normalized = normalize_proposal_document(
-            legacy_proposal("1", superseded_by="7")
+            proposal_document("1", superseded_by="7")
         )
 
         self.assertEqual(normalized["raw"]["preamble"]["proposed_replacement"], "7")
@@ -258,30 +300,46 @@ class SchemaRefactorTests(unittest.TestCase):
         self.assertEqual(preamble["title"], "Voice Messages")
         self.assertEqual(preamble["status"], "Draft")
 
-    def test_analysis_builders_accept_old_and_new_shapes(self) -> None:
-        legacy_documents = [
-            legacy_proposal(
+    def test_analysis_builders_accept_canonical_normalized_shapes(self) -> None:
+        documents = [
+            proposal_document(
                 "1",
                 requires="2",
                 superseded_by="2",
-                explicit_references=["BIP 2"],
-                implicit_dependencies=["BIP 2"],
+                interrelations={
+                    "preamble_extracted": [{"target": "bips:2", "type": "requires"}],
+                    "body_extracted_regex": [{"target": "bips:2", "count": 1}],
+                    "body_extracted_llm": [
+                        {
+                            "model": "gpt-5",
+                            "timestamp": "2026-06-01T00:00:00Z",
+                            "dependencies": [
+                                {
+                                    "target": "bips:2",
+                                    "evidence": "depends on BIP 2",
+                                    "reason": "It relies on BIP 2.",
+                                    "confidence": "high",
+                                }
+                            ],
+                        }
+                    ],
+                },
             ),
-            legacy_proposal("2"),
+            proposal_document("2"),
         ]
-        canonical_documents = [normalize_proposal_document(document) for document in legacy_documents]
+        normalized_documents = [normalize_proposal_document(document) for document in documents]
 
         self.assertEqual(
-            build_network_data(legacy_documents, id_field="bip", proposal_label="BIP"),
-            build_network_data(canonical_documents, id_field="bip", proposal_label="BIP"),
+            build_network_data(documents, id_field="bip", proposal_label="BIP"),
+            build_network_data(normalized_documents, id_field="bip", proposal_label="BIP"),
         )
         self.assertEqual(
-            extract_conformity_metrics(legacy_documents, id_field="bip"),
-            extract_conformity_metrics(canonical_documents, id_field="bip"),
+            extract_conformity_metrics(documents, id_field="bip"),
+            extract_conformity_metrics(normalized_documents, id_field="bip"),
         )
         self.assertEqual(
-            prepare_evolution_payload(legacy_documents, snapshot_label="2020-12-31", id_field="bip"),
-            prepare_evolution_payload(canonical_documents, snapshot_label="2020-12-31", id_field="bip"),
+            prepare_evolution_payload(documents, snapshot_label="2020-12-31", id_field="bip"),
+            prepare_evolution_payload(normalized_documents, snapshot_label="2020-12-31", id_field="bip"),
         )
 
     def test_process_ip_files_writes_canonical_meta_and_insights(self) -> None:
@@ -340,11 +398,11 @@ class SchemaRefactorTests(unittest.TestCase):
                 "pipeline.preprocess._enrich.extract_status_timeline",
                 return_value=[{"date": "2020-01-01", "status": "Draft", "standard": "bip2"}],
             ), patch(
-                "pipeline.preprocess._enrich.create_reference_list",
-                return_value=["BIP 2"],
+                "pipeline.preprocess._enrich.create_reference_targets",
+                return_value=[{"target": "bips:2", "count": 1}],
             ), patch(
-                "pipeline.preprocess._enrich.create_explicit_dependency_list",
-                return_value=["BIP 2"],
+                "pipeline.preprocess._enrich.create_explicit_dependency_targets",
+                return_value=[{"target": "bips:2", "type": "requires"}],
             ):
                 enrich_ip_files(
                     src_config=src_config,
@@ -364,8 +422,14 @@ class SchemaRefactorTests(unittest.TestCase):
             self.assertIsInstance(payload["insights"]["word_list"], dict)
             self.assertEqual(payload["insights"]["changes_in_status"][0]["status"], "Draft")
             self.assertNotIn("interrelations", payload["raw"]["preamble"])
-            self.assertEqual(payload["insights"]["interrelations"]["preamble_extracted"], ["BIP 2"])
-            self.assertEqual(payload["insights"]["interrelations"]["body_extracted_regex"], ["BIP 2"])
+            self.assertEqual(
+                payload["insights"]["interrelations"]["preamble_extracted"],
+                [{"target": "bips:2", "type": "requires"}],
+            )
+            self.assertEqual(
+                payload["insights"]["interrelations"]["body_extracted_regex"],
+                [{"target": "bips:2", "count": 1}],
+            )
             self.assertEqual(payload["insights"]["interrelations"]["body_extracted_llm"], [])
 
 

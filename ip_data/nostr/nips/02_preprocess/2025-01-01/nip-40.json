@@ -1,0 +1,230 @@
+{
+  "raw": {
+    "preamble": {
+      "nip": "40",
+      "title": "Expiration Timestamp",
+      "status": "Draft",
+      "author": null,
+      "created": "2022-12-04",
+      "type": "Optional",
+      "layer": null,
+      "kind": null
+    }
+  },
+  "meta": {
+    "last_commit": "Sat Nov 18 09:13:12 2023 -0300",
+    "total_commits": 19,
+    "git_history": [
+      [
+        "5dcfe85306434f21ecb1e7a47edd92b2e3e64f9a",
+        "Sat Nov 18 09:13:12 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "37f6cbb775126b386414220f783ca0f5f85e7614",
+        "Wed Nov 15 21:42:51 2023 -0300",
+        "fiatjaf"
+      ],
+      [
+        "3cec80d99ebbee6b72aae31f1856181d04971244",
+        "Fri Apr 7 17:38:03 2023 +0530",
+        "vivganes"
+      ],
+      [
+        "04a84aa5453ddce1dadcefba331fb1657447d600",
+        "Fri Dec 16 12:03:07 2022 +0100",
+        "Thomas"
+      ],
+      [
+        "7ad1812b46ea6fca461f17d52d9c349ef931adc7",
+        "Thu Dec 15 20:00:22 2022 +0100",
+        "Thomas"
+      ],
+      [
+        "2561c2d1e611b972e19453d88c0aae629d41acf3",
+        "Thu Dec 15 19:59:17 2022 +0100",
+        "Thomas"
+      ],
+      [
+        "0d93f3033ecdc7dd0fe7ff1d5082156fe0d06aa0",
+        "Thu Dec 15 19:58:40 2022 +0100",
+        "Thomas"
+      ],
+      [
+        "8d3f5c6e79cc25a59e8148b6a98c1cac8f960159",
+        "Wed Dec 14 23:52:12 2022 +0100",
+        "Thomas"
+      ],
+      [
+        "b859ae589b740f41ba41dab1e4bb003225db3478",
+        "Wed Dec 14 09:18:52 2022 +0100",
+        "Thomas"
+      ],
+      [
+        "26e518da670b0ea827390de3cccda1644548b716",
+        "Wed Dec 14 09:15:44 2022 +0100",
+        "Thomas"
+      ],
+      [
+        "e9553eef4db686116b1e7b73eda7fcb229565d4c",
+        "Wed Dec 14 09:12:44 2022 +0100",
+        "Thomas"
+      ],
+      [
+        "7aad54ae7ad4e843a410cb01017eeb5608983d3d",
+        "Wed Dec 14 09:12:15 2022 +0100",
+        "Thomas"
+      ],
+      [
+        "07f13674f1f63c684cd75a3c4c72c3d81e26a732",
+        "Wed Dec 14 09:11:49 2022 +0100",
+        "Thomas"
+      ],
+      [
+        "512aba18db9a21c1cb70566bdbfb4b1c0fa9a86c",
+        "Mon Dec 12 08:55:57 2022 +0100",
+        "Thomas"
+      ],
+      [
+        "3cfe0ef8acf8528a911a38cbb5ce632234646bcd",
+        "Sat Dec 10 23:51:04 2022 +0100",
+        "Thomas"
+      ],
+      [
+        "a8caa033738bf73a35fc0b7812f138a1f4bef6f1",
+        "Sat Dec 10 23:49:59 2022 +0100",
+        "Thomas"
+      ],
+      [
+        "2cb5ddd910c88ad82e1a34deae3e9fbaec0ee645",
+        "Wed Dec 7 08:53:52 2022 +0100",
+        "Thomas"
+      ],
+      [
+        "1bbae4d66b279bafad7304ddc8386f23bbaf3604",
+        "Sun Dec 4 16:16:00 2022 +0100",
+        "Thomas"
+      ],
+      [
+        "91bb09d1d374afbb6d5cffa25f5e71b6c7ad2a10",
+        "Sun Dec 4 16:14:31 2022 +0100",
+        "Thomas"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 80.0,
+      "passed_checks": 4,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 5,
+      "nip": {
+        "score": 80.0,
+        "passed_checks": 4,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 5,
+        "checks": [
+          {
+            "id": "nip.required_field.nip",
+            "label": "Required field 'nip' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "nip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "nip",
+            "passed": false,
+            "details": "Missing heading 'abstract'"
+          },
+          {
+            "id": "nip.field_present.type",
+            "label": "Classification tag 'type' (mandatory/optional) is present",
+            "category": "field_present",
+            "standard": "nip",
+            "passed": true,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "relays": 9,
+      "expiration": 7,
+      "timestamp": 7,
+      "tag": 6,
+      "time": 6,
+      "events": 6,
+      "expired": 5,
+      "clients": 5,
+      "use": 4,
+      "nip": 3,
+      "message": 3,
+      "deleted": 3,
+      "example": 3,
+      "event": 3,
+      "announcements": 3,
+      "limited": 3,
+      "unix": 2,
+      "created_at": 2,
+      "expire": 2,
+      "id": 2,
+      "behavior": 2,
+      "relay": 2,
+      "send": 2,
+      "messages": 2,
+      "temporary": 2,
+      "offers": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "91bb09d1d374afbb6d5cffa25f5e71b6c7ad2a10",
+        "timestamp": "2022-12-04T16:14:31+01:00",
+        "date": "2022-12-04",
+        "author": "Thomas",
+        "path": "40.md",
+        "status": "Draft",
+        "standard": ""
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [],
+      "body_extracted_llm": [
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:08:21Z",
+          "dependencies": [
+            {
+              "target": "nips:11",
+              "evidence": "Clients SHOULD use the `supported_nips` field to learn if a relay supports this NIP.",
+              "reason": "The proposal relies on relay capability advertisement via supported NIPs to determine whether clients may send expiration-tagged events.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

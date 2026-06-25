@@ -6,6 +6,7 @@ from unittest.mock import patch
 
 from analysis.evolution.metrics import prepare_evolution_payload
 from analysis.evolution.mining import extract_status_timeline
+from pipeline.source_context import SourceContext
 
 
 class EvolutionStatusTests(unittest.TestCase):
@@ -54,26 +55,28 @@ class EvolutionStatusTests(unittest.TestCase):
             file_path = repo_dir / "EE.md"
             file_path.write_text(current_content, encoding="utf-8")
 
-            with patch.multiple(
-                "analysis.evolution.mining",
-                PREPROCESSOR="nip_tags",
-                DOCUMENT_PREFIX="nip",
-                PRIMARY_ID_FIELD="nip",
-                FIELD_ALIASES={"optionality": "type"},
-                _CLASSIFICATION_CONFIG={
-                    "dimensions": {
-                        "status": {"aliases": {"draft": "Draft", "final": "Final"}},
-                        "type": {"aliases": {"mandatory": "Mandatory", "optional": "Optional"}},
-                        "layer": {"aliases": {"relay": "Relay"}},
+            source_context = SourceContext.from_config(
+                {
+                    "preprocessor": "nip_tags",
+                    "document_prefix": "nip",
+                    "primary_id_field": "nip",
+                    "preamble": {"field_aliases": {"optionality": "type"}},
+                    "classification": {
+                        "dimensions": {
+                            "status": {"aliases": {"draft": "Draft", "final": "Final"}},
+                            "type": {"aliases": {"mandatory": "Mandatory", "optional": "Optional"}},
+                            "layer": {"aliases": {"relay": "Relay"}},
+                        },
+                        "regimes": [],
                     },
-                    "regimes": [],
-                },
-            ):
-                with patch("analysis.evolution.mining.subprocess.run", side_effect=fake_run):
-                    timeline = extract_status_timeline(
-                        repo_dir=repo_dir,
-                        file_path=file_path,
-                    )
+                }
+            )
+            with patch("analysis.evolution.mining.subprocess.run", side_effect=fake_run):
+                timeline = extract_status_timeline(
+                    repo_dir=repo_dir,
+                    file_path=file_path,
+                    source_context=source_context,
+                )
 
         self.assertEqual(
             timeline,
@@ -152,6 +155,74 @@ class EvolutionStatusTests(unittest.TestCase):
             ],
         )
 
+    def test_extract_status_timeline_keeps_pre_assignment_history_with_placeholder_id(self) -> None:
+        log_stdout = "\n".join(
+            [
+                "__COMMIT__assigncommit|2016-01-08T17:56:02+00:00|Luke Dashjr",
+                "R099\tbip-segwitaddress.mediawiki\tbip-0142.mediawiki",
+                "__COMMIT__createcommit|2015-12-24T21:45:11+08:00|Johnson Lau",
+                "A\tbip-segwitaddress.mediawiki",
+            ]
+        )
+
+        current_content = """<pre>
+  BIP: 142
+  Title: Address Format for Segregated Witness
+  Author: Johnson Lau <jl2012@xbt.hk>
+  Status: Draft
+  Created: 2015-12-24
+</pre>
+"""
+        initial_content = """<pre>
+  BIP: x
+  Title: Address Format for Witness Program
+  Author: Johnson Lau <jl2012@xbt.hk>
+  Status: Draft
+  Created: 2015-12-24
+</pre>
+"""
+        show_stdout_by_spec = {
+            "assigncommit:bip-0142.mediawiki": current_content,
+            "createcommit:bip-segwitaddress.mediawiki": initial_content,
+        }
+
+        def fake_run(args, **kwargs):
+            if "log" in args:
+                return subprocess.CompletedProcess(args=args, returncode=0, stdout=log_stdout)
+            if "show" in args:
+                spec = args[-1]
+                stdout = show_stdout_by_spec.get(spec)
+                if stdout is None:
+                    raise AssertionError(f"Unexpected git show spec: {spec}")
+                return subprocess.CompletedProcess(args=args, returncode=0, stdout=stdout)
+            raise AssertionError(f"Unexpected subprocess invocation: {args}")
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            repo_dir = Path(tmp_dir)
+            file_path = repo_dir / "bip-0142.mediawiki"
+            file_path.write_text(current_content, encoding="utf-8")
+
+            with patch("analysis.evolution.mining.subprocess.run", side_effect=fake_run):
+                timeline = extract_status_timeline(
+                    repo_dir=repo_dir,
+                    file_path=file_path,
+                )
+
+        self.assertEqual(
+            timeline,
+            [
+                {
+                    "commit": "createcommit",
+                    "timestamp": "2015-12-24T21:45:11+08:00",
+                    "date": "2015-12-24",
+                    "author": "Johnson Lau",
+                    "path": "bip-segwitaddress.mediawiki",
+                    "status": "Draft",
+                    "standard": "bip1",
+                }
+            ],
+        )
+
     def test_prepare_evolution_payload_splits_bip3_cutover_period(self) -> None:
         proposal_data = [
             {
@@ -199,7 +270,23 @@ class EvolutionStatusTests(unittest.TestCase):
         )
         self.assertEqual(payload["meta"]["first_period"], "2025-Q4")
         self.assertEqual(payload["meta"]["last_period"], "2026-Q1")
-        self.assertEqual(payload["meta"]["milestones"], [{"date": "2026-01-12", "label": "BIP3 Activation"}])
+        self.assertEqual(
+            payload["meta"]["milestones"],
+            [
+                {
+                    "date": "2016-11-30",
+                    "label": "BIP2 Activation",
+                    "standard": "bip2",
+                    "standard_label": "BIP2",
+                },
+                {
+                    "date": "2026-01-12",
+                    "label": "BIP3 Activation",
+                    "standard": "bip3",
+                    "standard_label": "BIP3",
+                },
+            ],
+        )
 
         segmented_rows = {
             row["period_key"]: row for row in payload["status_evolution_segmented"]["rows"]
@@ -219,6 +306,219 @@ class EvolutionStatusTests(unittest.TestCase):
         self.assertEqual(segmented_rows["2026-Q1-post-bip3"]["values"]["bip3:Draft"], 1)
         self.assertEqual(segmented_rows["2026-Q1-post-bip3"]["values"]["bip3:Deployed"], 1)
         self.assertEqual(segmented_rows["2026-Q1-post-bip3"]["values"]["bip3:Complete"], 1)
+
+    def test_prepare_evolution_payload_splits_bip2_cutover_period_and_keeps_bip1_statuses(self) -> None:
+        proposal_data = [
+            {
+                "raw": {"preamble": {"bip": "1"}},
+                "insights": {
+                    "changes_in_status": [
+                        {"date": "2016-10-01", "status": "Accepted", "standard": "bip2"},
+                        {"date": "2016-11-30", "status": "Replaced", "standard": "bip2"},
+                    ]
+                },
+            },
+            {
+                "raw": {"preamble": {"bip": "2"}},
+                "insights": {
+                    "changes_in_status": [
+                        {"date": "2016-10-01", "status": "Draft", "standard": "bip2"},
+                        {"date": "2016-11-30", "status": "Active", "standard": "bip2"},
+                    ]
+                },
+            },
+        ]
+
+        payload = prepare_evolution_payload(
+            proposal_data=proposal_data,
+            snapshot_label="2016-12-31",
+            id_field="bip",
+        )
+
+        self.assertEqual(
+            [row["period_key"] for row in payload["status_evolution"]["rows"]],
+            ["2016-Q4-pre-bip2", "2016-Q4-post-bip2"],
+        )
+        self.assertEqual(
+            payload["meta"]["milestones"][0],
+            {
+                "date": "2016-11-30",
+                "label": "BIP2 Activation",
+                "standard": "bip2",
+                "standard_label": "BIP2",
+            },
+        )
+
+        segmented_rows = {
+            row["period_key"]: row for row in payload["status_evolution_segmented"]["rows"]
+        }
+
+        self.assertEqual(segmented_rows["2016-Q4-pre-bip2"]["period_end"], "2016-11-29")
+        self.assertEqual(segmented_rows["2016-Q4-pre-bip2"]["values"]["bip1:Accepted"], 1)
+        self.assertEqual(segmented_rows["2016-Q4-pre-bip2"]["values"]["bip1:Draft"], 1)
+        self.assertEqual(segmented_rows["2016-Q4-post-bip2"]["period_start"], "2016-11-30")
+        self.assertEqual(segmented_rows["2016-Q4-post-bip2"]["values"]["bip1:Accepted"], 0)
+        self.assertEqual(segmented_rows["2016-Q4-post-bip2"]["values"]["bip1:Draft"], 0)
+        self.assertEqual(segmented_rows["2016-Q4-post-bip2"]["values"]["bip2:Replaced"], 1)
+        self.assertEqual(segmented_rows["2016-Q4-post-bip2"]["values"]["bip2:Active"], 1)
+
+    def test_prepare_evolution_payload_reassigns_legacy_accepted_event_to_bip1_by_date(self) -> None:
+        proposal_data = [
+            {
+                "raw": {"preamble": {"bip": "1"}},
+                "insights": {
+                    "changes_in_status": [
+                        {"date": "2013-10-21", "status": "Accepted", "standard": "bip2"},
+                    ]
+                },
+            }
+        ]
+
+        payload = prepare_evolution_payload(
+            proposal_data=proposal_data,
+            snapshot_label="2014-01-01",
+            id_field="bip",
+        )
+
+        segmented_row = payload["status_evolution_segmented"]["rows"][0]
+        self.assertEqual(segmented_row["values"]["bip1:Accepted"], 1)
+
+    def test_prepare_evolution_payload_preserves_non_official_bip1_status_labels(self) -> None:
+        proposal_data = [
+            {
+                "raw": {
+                    "preamble": {
+                        "bip": "20",
+                        "title": "Preserve historical label",
+                        "created": "2012-03-19",
+                    }
+                },
+                "insights": {
+                    "changes_in_status": [
+                        {"date": "2012-03-19", "status": "Draft", "standard": "bip1"},
+                        {"date": "2013-10-01", "status": "Replaced", "standard": "bip1"},
+                        {"date": "2016-11-30", "status": "Replaced", "standard": "bip2"},
+                    ]
+                },
+            }
+        ]
+
+        payload = prepare_evolution_payload(
+            proposal_data=proposal_data,
+            snapshot_label="2017-01-01",
+            id_field="bip",
+        )
+
+        segment_definitions = {
+            entry["key"]: entry for entry in payload["status_evolution_segmented"]["segmentDefinitions"]
+        }
+        self.assertIn("bip1:Replaced", segment_definitions)
+        self.assertFalse(segment_definitions["bip1:Replaced"]["isOfficial"])
+        self.assertEqual(segment_definitions["bip1:Replaced"]["label"], "Replaced")
+
+        segmented_rows = {
+            row["period_key"]: row for row in payload["status_evolution_segmented"]["rows"]
+        }
+        self.assertEqual(segmented_rows["2016-Q4-pre-bip2"]["values"]["bip1:Replaced"], 1)
+        self.assertEqual(segmented_rows["2016-Q4-post-bip2"]["values"]["bip2:Replaced"], 1)
+
+    def test_prepare_evolution_payload_injects_synthetic_regime_transition_event(self) -> None:
+        proposal_data = [
+            {
+                "raw": {
+                    "preamble": {
+                        "bip": "30",
+                        "title": "Duplicate transactions",
+                        "created": "2012-02-22",
+                    }
+                },
+                "insights": {
+                    "changes_in_status": [
+                        {"date": "2012-02-27", "status": "Draft", "standard": "bip1"},
+                        {"date": "2013-10-21", "status": "Final", "standard": "bip1"},
+                    ]
+                },
+            }
+        ]
+
+        payload = prepare_evolution_payload(
+            proposal_data=proposal_data,
+            snapshot_label="2017-01-01",
+            id_field="bip",
+        )
+
+        timeline = payload["proposal_timelines"][0]
+        self.assertEqual(timeline["current_status"], "Final")
+        self.assertEqual(timeline["current_standard"], "bip2")
+        self.assertEqual(
+            timeline["events"][-1],
+            {
+                "kind": "regime_transition",
+                "label": "BIP2 Activation",
+                "date": "2016-11-30",
+                "timestamp": "2016-11-30T00:00:00Z",
+                "status": "Final",
+                "standard": "bip2",
+                "commit": "",
+                "author": "",
+                "path": "",
+                "previous_status": "Final",
+                "synthetic": True,
+                "previous_standard": "bip1",
+            },
+        )
+
+    def test_prepare_evolution_payload_injects_transition_from_created_anchor_before_first_observed_event(self) -> None:
+        proposal_data = [
+            {
+                "raw": {
+                    "preamble": {
+                        "bip": "100",
+                        "title": "Anchor-based transition",
+                        "created": "2015-06-11",
+                    }
+                },
+                "insights": {
+                    "changes_in_status": [
+                        {"date": "2017-03-08", "status": "Draft", "standard": "bip2"},
+                    ]
+                },
+            }
+        ]
+
+        payload = prepare_evolution_payload(
+            proposal_data=proposal_data,
+            snapshot_label="2017-04-01",
+            id_field="bip",
+        )
+
+        segmented_rows = {
+            row["period_key"]: row for row in payload["status_evolution_segmented"]["rows"]
+        }
+        self.assertEqual(segmented_rows["2016-Q4-pre-bip2"]["values"]["bip1:Draft"], 1)
+        self.assertEqual(segmented_rows["2016-Q4-post-bip2"]["values"]["bip1:Draft"], 0)
+        self.assertEqual(segmented_rows["2016-Q4-post-bip2"]["values"]["bip2:Draft"], 1)
+
+        timeline = payload["proposal_timelines"][0]
+        self.assertEqual(timeline["current_status"], "Draft")
+        self.assertEqual(timeline["current_standard"], "bip2")
+        self.assertEqual(
+            timeline["events"][1],
+            {
+                "kind": "regime_transition",
+                "label": "BIP2 Activation",
+                "date": "2016-11-30",
+                "timestamp": "2016-11-30T00:00:00Z",
+                "status": "Draft",
+                "standard": "bip2",
+                "commit": "",
+                "author": "",
+                "path": "",
+                "previous_status": "Draft",
+                "synthetic": True,
+                "previous_standard": "bip1",
+            },
+        )
 
     def test_prepare_evolution_payload_does_not_project_bip3_before_harvested_transition(self) -> None:
         proposal_data = [

@@ -3,11 +3,9 @@
     "preamble": {
       "nip": "34",
       "title": "`git` stuff",
-      "author": [
-        "fiatjaf_"
-      ],
-      "created": "2024-03-05",
       "status": "Draft",
+      "author": null,
+      "created": "2024-03-05",
       "type": "Optional",
       "layer": null,
       "kind": null
@@ -374,17 +372,52 @@
     "interrelations": {
       "preamble_extracted": [],
       "body_extracted_regex": [
-        "NIP 5",
-        "NIP 10",
-        "NIP 22",
-        "NIP 65"
+        {
+          "target": "nips:05",
+          "count": 2
+        },
+        {
+          "target": "nips:10",
+          "count": 2
+        },
+        {
+          "target": "nips:22",
+          "count": 2
+        },
+        {
+          "target": "nips:65",
+          "count": 1
+        },
+        {
+          "target": "nips:B7",
+          "count": 1
+        }
       ],
       "body_extracted_llm": [
-        "NIP 5",
-        "NIP 10",
-        "NIP 19",
-        "NIP 22",
-        "NIP 33"
+        {
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-11T09:07:35Z",
+          "dependencies": [
+            {
+              "target": "nips:10",
+              "evidence": "Patches in a patch set SHOULD include a [NIP-10](10.md) `e` `reply` tag",
+              "reason": "This proposal relies on NIP-10 comment threading tags to link patch revisions and replies.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:22",
+              "evidence": "Replies to either a `kind:1621` (_issue_), `kind:1617` (_patch_) or `kind:1618` (_pull request_) event should follow [NIP-22 comment](22.md).",
+              "reason": "Issue, patch, and PR reply semantics are defined by NIP-22 and are required for the conversation model here.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:65",
+              "evidence": "It is similar in function to the NIP-65 relay list and NIP-B7 blossom list.",
+              "reason": "The user grasp list is a relay-preference list with the same functional role as NIP-65's relay list, so the proposal extends that relay-list concept.",
+              "confidence": "medium"
+            }
+          ]
+        }
       ]
     }
   }

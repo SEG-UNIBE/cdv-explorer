@@ -1,8 +1,10 @@
 import * as d3 from 'd3';
+import { positionTooltip } from './tooltipPosition';
 import { useEffect, useRef } from 'react';
-import { renderProposalListHtml } from './bipTooltipContent';
+import { renderProposalListRow } from './bipTooltipContent';
 import { getClassificationColorMap } from './classificationColors';
 import { useDashboardEcosystem, useDashboardLinkMode, useDashboardSnapshot } from './dashboard/DashboardSnapshotContext';
+import { renderTooltipCardHtml } from './tooltipHtml';
 
 export const ClassificationPieChart = ({ dimension, colorDomain, data, width = 360, height = 320 }) => {
   const ref = useRef();
@@ -24,9 +26,10 @@ export const ClassificationPieChart = ({ dimension, colorDomain, data, width = 3
     }
 
     svg
-      .attr('viewBox', `0 0 ${width} ${height}`)
       .style('width', '100%')
-      .style('height', 'auto');
+      .style('max-width', '260px')
+      .style('height', 'auto')
+      .style('display', 'block');
 
     const tooltipNode = document.createElement('div');
     document.body.appendChild(tooltipNode);
@@ -49,22 +52,27 @@ export const ClassificationPieChart = ({ dimension, colorDomain, data, width = 3
     let pinnedCategory = null;
 
     const renderTooltipHtml = (entry) => {
-      return (
-        `<strong>${entry.id}</strong><br/>` +
-        `Count: ${entry.value}<br/>` +
-        `Share: ${((entry.value / total) * 100).toFixed(1)}%<br/>` +
-        renderProposalListHtml(entry.bips, snapshotLabel, { ecosystem, linkMode })
-      );
+      return renderTooltipCardHtml({
+        titleHtml: `<strong>${entry.id}</strong>`,
+        rows: [
+          ['Count', entry.value],
+          ['Share', `${((entry.value / total) * 100).toFixed(1)}%`],
+          renderProposalListRow(entry.bips, snapshotLabel, { ecosystem, linkMode }),
+        ],
+      });
     };
 
     const setTooltipPosition = (pageX, pageY) => {
-      tooltip
-        .style('left', `${pageX + 10}px`)
-        .style('top', `${pageY - 28}px`);
+      positionTooltip(tooltip, pageX, pageY);
     };
 
     const total = d3.sum(chartData, (entry) => Number(entry.value || 0));
     const radius = Math.min(width * 0.4, height * 0.48);
+    const padding = 4;
+    // Tight viewBox around the pie itself — no built-in empty space — so when
+    // the SVG scales to its column the pie scales with it 1:1.
+    const viewBoxSize = radius * 2 + padding * 2;
+    svg.attr('viewBox', `0 0 ${viewBoxSize} ${viewBoxSize}`);
     const colorMap = getClassificationColorMap(
       dimension,
       Array.isArray(colorDomain) && colorDomain.length
@@ -91,7 +99,7 @@ export const ClassificationPieChart = ({ dimension, colorDomain, data, width = 3
     };
 
     const g = svg.append('g')
-      .attr('transform', `translate(${width * 0.5}, ${height * 0.5})`);
+      .attr('transform', `translate(${viewBoxSize / 2}, ${viewBoxSize / 2})`);
 
     g.selectAll('path')
       .data(pie(chartData))

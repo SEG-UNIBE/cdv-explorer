@@ -1,4 +1,4 @@
-from collections import Counter, defaultdict
+from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -7,9 +7,9 @@ import matplotlib.patheffects as pe
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib.patches import PathPatch, Rectangle
-from matplotlib.path import Path
+from matplotlib.path import Path as MplPath
 
-from paper.RQ3._plotting import BAR_EDGE_COLOR, BAR_EDGE_WIDTH, bar_style, save_figure
+from paper.RQ3._plotting import BAR_EDGE_COLOR, bar_style, save_figure
 from paper.RQ1.classification_status import STATUS_COLORS, resolve_rq1_status_order
 from paper.RQ1.classification_type import TYPE_COLORS, TYPE_ORDER
 
@@ -104,18 +104,18 @@ def _ribbon_patch(
         (x0, left_y1),
     ]
     codes = [
-        Path.MOVETO,
-        Path.CURVE4,
-        Path.CURVE4,
-        Path.CURVE4,
-        Path.LINETO,
-        Path.CURVE4,
-        Path.CURVE4,
-        Path.CURVE4,
-        Path.CLOSEPOLY,
+        MplPath.MOVETO,
+        MplPath.CURVE4,
+        MplPath.CURVE4,
+        MplPath.CURVE4,
+        MplPath.LINETO,
+        MplPath.CURVE4,
+        MplPath.CURVE4,
+        MplPath.CURVE4,
+        MplPath.CLOSEPOLY,
     ]
     return PathPatch(
-        Path(vertices, codes),
+        MplPath(vertices, codes),
         facecolor=facecolor,
         edgecolor=BAR_EDGE_COLOR,
         linewidth=0.5,

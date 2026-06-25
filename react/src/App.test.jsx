@@ -1,4 +1,6 @@
-jest.mock('d3', () => ({}));
+import { vi } from 'vitest';
+
+vi.mock('d3', () => ({}));
 
 import { fireEvent, render, screen } from '@testing-library/react';
 import {
@@ -238,7 +240,7 @@ test('multi-source fetch uses combined dependency metrics when combined artifact
     throw new Error(`Unexpected fetch URL: ${url}`);
   };
   const previousFetch = global.fetch;
-  global.fetch = jest.fn((url) => Promise.resolve({
+  global.fetch = vi.fn((url) => Promise.resolve({
     ok: true,
     json: () => Promise.resolve(payloadForUrl(url)),
   }));
@@ -1044,7 +1046,7 @@ describe('proposal filter parsing', () => {
 
 describe('proposal filter control', () => {
   test('builds grouped source-prefixed filter expressions via enter workflow', () => {
-    const handleChange = jest.fn();
+    const handleChange = vi.fn();
     const { rerender } = render(
       <ProposalFilterControl value="" onChange={handleChange} ecosystem={bitcoinEcosystem} />
     );
@@ -1063,7 +1065,7 @@ describe('proposal filter control', () => {
   });
 
   test('compacts numeric selections into succinct ranges', () => {
-    const handleChange = jest.fn();
+    const handleChange = vi.fn();
     render(
       <ProposalFilterControl value="BIP2-4,BIP11" onChange={handleChange} ecosystem={bitcoinEcosystem} />
     );

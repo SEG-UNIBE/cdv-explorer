@@ -109,7 +109,8 @@ Variability (CDV), a novel paradigm that extends beyond traditional variability-
 
 function AboutPage() {
   const { resolvedTheme } = useTheme();
-  const unibeLogoSrc = `${process.env.PUBLIC_URL}/about/${resolvedTheme === 'dark' ? 'unibe_logo_darkmode.png' : 'unibe_logo_lightmode.png'}`;
+  const publicBase = import.meta.env.BASE_URL;
+  const unibeLogoSrc = `${publicBase}about/${resolvedTheme === 'dark' ? 'unibe_logo_darkmode.png' : 'unibe_logo_lightmode.png'}`;
 
   return (
     <section className="content about-page">
@@ -197,7 +198,7 @@ function AboutPage() {
             <div className="about-page__logo-card about-page__logo-card--seg">
               <img
                 className="about-page__logo about-page__logo--seg"
-                src={`${process.env.PUBLIC_URL}/about/SEG_logo.png`}
+                src={`${publicBase}about/seg_logo.png`}
                 alt="Software Engineering Group logo"
               />
             </div>
@@ -206,8 +207,7 @@ function AboutPage() {
             <div className="about-page__organization-split">
               <p className="about-page__organization-copy">
                 SEG is part of the Institute of Computer Science at the{' '}
-                <a href="https://www.unibe.ch/" target="_blank" rel="noreferrer">University of Bern</a>,
-                Switzerland.
+                <a href="https://www.unibe.ch/" target="_blank" rel="noreferrer">University of Bern</a> in Switzerland🇨🇭.
               </p>
               <div className="about-page__logo-card about-page__logo-card--unibe">
                 <img

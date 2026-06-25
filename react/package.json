@@ -21,24 +21,19 @@
     "react-dom": "^18.2.0",
     "react-icons": "^5.5.0",
     "react-router-dom": "^7.18.0",
-    "react-scripts": "5.0.1",
-    "sass": "^1.87.0",
-    "web-vitals": "^2.1.4"
+    "sass": "^1.87.0"
   },
   "scripts": {
     "postinstall": "patch-package",
-    "prestart": "node scripts/generateEcosystemConfig.js && node scripts/generateSnapshotIndex.js && node scripts/generateProposalLinkIndex.js",
-    "start": "react-scripts start",
-    "prebuild": "node scripts/generateEcosystemConfig.js && node scripts/generateSnapshotIndex.js && node scripts/generateProposalLinkIndex.js",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "generate:indexes": "node scripts/generateEcosystemConfig.js && node scripts/generateSnapshotIndex.js && node scripts/generateProposalLinkIndex.js",
+    "prestart": "npm run generate:indexes",
+    "start": "vite",
+    "predev": "npm run generate:indexes",
+    "dev": "vite",
+    "prebuild": "npm run generate:indexes",
+    "build": "vite build",
+    "test": "vitest",
+    "preview": "vite preview"
   },
   "browserslist": {
     "production": [
@@ -53,6 +48,10 @@
     ]
   },
   "devDependencies": {
-    "patch-package": "^8.0.1"
+    "@vitejs/plugin-react": "^5.2.0",
+    "jsdom": "^29.1.1",
+    "patch-package": "^8.0.1",
+    "vite": "^7.3.6",
+    "vitest": "^4.1.9"
   }
 }

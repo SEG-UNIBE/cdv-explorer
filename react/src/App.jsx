@@ -191,7 +191,7 @@ function AboutPage() {
         <div className="about-page__cards about-page__cards--two-column">
           <Card className="about-page__card about-page__card--organization">
             <p className="about-page__organization-copy">
-              CDV-Explorer is developed and maintained by{' '}
+              CDV-Explorer is primarily maintained by{' '}
               <a href="https://romanboegli.ch" target="_blank" rel="noreferrer">Roman Bögli</a>.
               {' '}The project is part of his PhD work at the Software Engineering Group (SEG).
             </p>

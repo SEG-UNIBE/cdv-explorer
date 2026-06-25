@@ -5,16 +5,34 @@ updates:
     directory: /
     schedule:
       interval: weekly
+      day: monday
     target-branch: dev
+    open-pull-requests-limit: 1
+    groups:
+      github-actions:
+        patterns:
+          - "*"
 
   - package-ecosystem: pip
     directory: /
     schedule:
       interval: weekly
+      day: monday
     target-branch: dev
+    open-pull-requests-limit: 1
+    groups:
+      python-dependencies:
+        patterns:
+          - "*"
 
   - package-ecosystem: npm
     directory: /react
     schedule:
       interval: weekly
+      day: monday
     target-branch: dev
+    open-pull-requests-limit: 1
+    groups:
+      frontend-dependencies:
+        patterns:
+          - "*"

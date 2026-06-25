@@ -35,8 +35,8 @@ _Modern decentralized software ecosystems evolve through crowdsourced improvemen
   <a href="https://github.com/SEG-UNIBE/cdv-explorer/actions/workflows/ci.yml">
     <img src="https://img.shields.io/github/actions/workflow/status/SEG-UNIBE/cdv-explorer/ci.yml?style=flat&label=tests&logo=githubactions&logoColor=white" alt="Tests" />
   </a>
-  <a href="https://github.com/SEG-UNIBE/cdv-explorer/actions/workflows/deploy-react-pages.yml">
-    <img src="https://img.shields.io/github/actions/workflow/status/SEG-UNIBE/cdv-explorer/deploy-react-pages.yml?style=flat&label=deploy&logo=githubactions&logoColor=white" alt="Deploy" />
+  <a href="https://github.com/SEG-UNIBE/cdv-explorer/actions/workflows/deploy-prod.yml">
+    <img src="https://img.shields.io/github/actions/workflow/status/SEG-UNIBE/cdv-explorer/deploy-prod.yml?style=flat&label=deploy&logo=githubactions&logoColor=white" alt="Deploy" />
   </a>
 </div>
 
@@ -310,8 +310,9 @@ Concrete examples: [`bip-0340.json`](ip_data/bitcoin/bips/02_preprocess/2026-03-
 
 ### Deployment
 
-The app is deployed to GitHub Pages via [`.github/workflows/deploy-react-pages.yml`](.github/workflows/deploy-react-pages.yml) on every push to `main` that touches `react/` or `ip_data/`.
-To enable Pages on a fork, go to `Settings > Pages` and set the source to `GitHub Actions`.
+Production is deployed to GitHub Pages via [`.github/workflows/deploy-prod.yml`](.github/workflows/deploy-prod.yml) after a successful `CI` run on `main` or `master`.
+Development builds are deployed to Cloudflare Pages via [`.github/workflows/deploy-dev.yml`](.github/workflows/deploy-dev.yml) after a successful `CI` run on `dev`.
+To enable GitHub Pages on a fork, go to `Settings > Pages` and set the source to `GitHub Actions`.
 
 </br>
 

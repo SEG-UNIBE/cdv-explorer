@@ -1,32 +1,11 @@
-name: Deploy React App to GitHub Pages
+name: Deploy PROD
 
 on:
-  push:
-    branches:
-      - main
-      - master
-      - dev
-    paths:
-      - '.github/workflows/deploy-react-pages.yml'
-      - 'react/**'
-      - 'scripts/validate_artifacts.py'
-      - 'ip_data/**/01_harvest/**'
-      - 'ip_data/**/02_preprocess/**'
-      - 'ip_data/**/03_analysis/**'
-      - 'ip_data/**/04_postprocess/**'
-  pull_request:
-    branches:
-      - main
-      - master
-      - dev
-    paths:
-      - '.github/workflows/deploy-react-pages.yml'
-      - 'react/**'
-      - 'scripts/validate_artifacts.py'
-      - 'ip_data/**/01_harvest/**'
-      - 'ip_data/**/02_preprocess/**'
-      - 'ip_data/**/03_analysis/**'
-      - 'ip_data/**/04_postprocess/**'
+  workflow_run:
+    workflows:
+      - CI
+    types:
+      - completed
   workflow_dispatch:
 
 permissions:
@@ -35,14 +14,26 @@ permissions:
   id-token: write
 
 concurrency:
-  group: github-pages
+  group: deploy-prod
   cancel-in-progress: true
 
 jobs:
   build:
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      (
+        github.event.workflow_run.conclusion == 'success' &&
+        github.event.workflow_run.event == 'push' &&
+        (
+          github.event.workflow_run.head_branch == 'main' ||
+          github.event.workflow_run.head_branch == 'master'
+        )
+      )
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.ref }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v6
@@ -73,7 +64,6 @@ jobs:
 
   deploy:
     needs: build
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

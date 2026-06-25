@@ -8,7 +8,8 @@ on:
       - dev
     paths:
       - '.github/workflows/ci.yml'
-      - '.github/workflows/deploy-react-pages.yml'
+      - '.github/workflows/deploy-dev.yml'
+      - '.github/workflows/deploy-prod.yml'
       - 'react/**'
       - 'scripts/validate_artifacts.py'
       - 'ip_data/**/01_harvest/**'
@@ -28,7 +29,8 @@ on:
       - dev
     paths:
       - '.github/workflows/ci.yml'
-      - '.github/workflows/deploy-react-pages.yml'
+      - '.github/workflows/deploy-dev.yml'
+      - '.github/workflows/deploy-prod.yml'
       - 'react/**'
       - 'scripts/validate_artifacts.py'
       - 'ip_data/**/01_harvest/**'

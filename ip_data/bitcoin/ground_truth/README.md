@@ -6,6 +6,7 @@ Used as the canonical reference against which `llm`, `preamble`, and `regex` ext
 ## File layout
 
 - One CSV per ecosystem: [`interrelations.csv`](./interrelations.csv).
+- Reviewed source IP scope: [`ips.csv`](./ips.csv).
 - Inter-source edges (e.g. `bips:N → slips:M`) live in the same file.
 - Lines starting with `#` are treated as comments and skipped during import.
 

@@ -357,11 +357,11 @@ def load_ground_truth_curated_entries(ecosystem_slug: str | None, *, strict: boo
     return entries
 
 
-def load_ground_truth_reviewed_ips(ecosystem_slug: str | None, *, strict: bool = True) -> List[Dict[str, str]]:
+def load_ground_truth_ips(ecosystem_slug: str | None, *, strict: bool = True) -> List[Dict[str, str]]:
     if not ecosystem_slug:
         return []
 
-    csv_path = Path("ip_data") / str(ecosystem_slug) / "ground_truth" / "reviewed_ips.csv"
+    csv_path = Path("ip_data") / str(ecosystem_slug) / "ground_truth" / "ips.csv"
     entries = [
         entry
         for entry in _load_csv_rows(csv_path, columns=REVIEWED_IPS_CSV_COLUMNS)

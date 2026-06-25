@@ -6,7 +6,7 @@ from pathlib import Path
 
 from analysis.validation.snapshots import (
     validate_ground_truth_curated_file,
-    validate_ground_truth_reviewed_ips_file,
+    validate_ground_truth_ips_file,
     validate_preprocess_snapshot,
     validate_react_generated_indexes,
     validate_react_snapshot_exports,
@@ -157,10 +157,10 @@ class SnapshotValidationTests(unittest.TestCase):
         self.assertIn("invalid `reviewed_at` date `2026-99-99`", error_text)
         self.assertIn("missing `relation_type`", error_text)
 
-    def test_reviewed_ips_validation_rejects_invalid_rows(self) -> None:
+    def test_ips_validation_rejects_invalid_rows(self) -> None:
         with tempfile.TemporaryDirectory() as tmp_dir:
             root = Path(tmp_dir)
-            csv_path = root / "ip_data" / "bitcoin" / "ground_truth" / "reviewed_ips.csv"
+            csv_path = root / "ip_data" / "bitcoin" / "ground_truth" / "ips.csv"
             csv_path.parent.mkdir(parents=True)
             csv_path.write_text(
                 "\n".join([
@@ -185,7 +185,7 @@ class SnapshotValidationTests(unittest.TestCase):
             previous_cwd = Path.cwd()
             os.chdir(root)
             try:
-                result = validate_ground_truth_reviewed_ips_file("bitcoin", ecosystem_config=ecosystem_config)
+                result = validate_ground_truth_ips_file("bitcoin", ecosystem_config=ecosystem_config)
             finally:
                 os.chdir(previous_cwd)
 

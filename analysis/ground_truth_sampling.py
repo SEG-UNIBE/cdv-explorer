@@ -10,7 +10,7 @@ from typing import Any, Dict, List, Mapping, Sequence
 from analysis.dependencies.constants import GROUND_TRUTH_CURATED
 from analysis.validation.ground_truth import (
     REVIEWED_IPS_CSV_COLUMNS,
-    load_ground_truth_reviewed_ips,
+    load_ground_truth_ips,
 )
 
 ALL_METHODS = "all_methods"
@@ -185,7 +185,7 @@ def build_reviewed_ip_sample(
     return _sample_candidates(candidates, count=count, seed=seed)
 
 
-def write_reviewed_ips_csv(rows: Sequence[Mapping[str, Any]], output_path: Path) -> None:
+def write_ips_csv(rows: Sequence[Mapping[str, Any]], output_path: Path) -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     sorted_rows = sorted(
         rows,
@@ -198,7 +198,7 @@ def write_reviewed_ips_csv(rows: Sequence[Mapping[str, Any]], output_path: Path)
             writer.writerow({field: row.get(field, "") for field in REVIEWED_IPS_CSV_COLUMNS})
 
 
-def prefill_reviewed_ips_csv(
+def prefill_ips_csv(
     ecosystem_slug: str,
     *,
     source_slug: str,
@@ -213,8 +213,8 @@ def prefill_reviewed_ips_csv(
     replace: bool = False,
 ) -> Dict[str, Any]:
     network_data = _load_network_data(network_path)
-    output_path = Path("ip_data") / ecosystem_slug / "ground_truth" / "reviewed_ips.csv"
-    existing_rows = [] if replace else load_ground_truth_reviewed_ips(ecosystem_slug, strict=False)
+    output_path = Path("ip_data") / ecosystem_slug / "ground_truth" / "ips.csv"
+    existing_rows = [] if replace else load_ground_truth_ips(ecosystem_slug, strict=False)
     existing_ips = [str(row.get("ip") or "").strip() for row in existing_rows]
 
     sampled = build_reviewed_ip_sample(
@@ -252,7 +252,7 @@ def prefill_reviewed_ips_csv(
     ]
 
     rows_to_write = existing_rows + new_rows
-    write_reviewed_ips_csv(rows_to_write, output_path)
+    write_ips_csv(rows_to_write, output_path)
 
     return {
         "output_path": output_path,

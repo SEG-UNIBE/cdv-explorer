@@ -5,7 +5,7 @@ from analysis.dependencies.network import build_network_data
 from analysis.pipeline import combined_source_key, merge_source_network_data
 from analysis.validation.ground_truth import (
     load_ground_truth_curated_entries,
-    load_ground_truth_reviewed_ips,
+    load_ground_truth_ips,
     validate_ground_truth_curated_entries,
     validate_reviewed_ip_entries,
 )
@@ -284,8 +284,8 @@ class BuildNetworkDataTests(unittest.TestCase):
         self.assertIn("conflicting relation types", error_text)
         self.assertIn("unknown source slug `bogus`", error_text)
 
-    def test_reviewed_ips_loader_trims_headers_and_skips_comments(self):
-        rows = load_ground_truth_reviewed_ips("bitcoin", strict=False)
+    def test_ips_loader_trims_headers_and_skips_comments(self):
+        rows = load_ground_truth_ips("bitcoin", strict=False)
 
         self.assertIsInstance(rows, list)
 

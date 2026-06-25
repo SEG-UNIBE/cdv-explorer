@@ -32,7 +32,7 @@ const MATCH_MODE_TOOLTIP = '<strong>Edge Only</strong> matches directed source-t
   + '<br /><br /><strong>Exact Type</strong> additionally requires the relation type to match. Choose which extracted '
   + 'subtypes to score and how they map to a ground-truth type in the table below.';
 
-const SCOPE_TOOLTIP = 'Reviewed scores only completed benchmark reviews from reviewed_ips.csv, while All scores every extracted source IP in the dataset.';
+const SCOPE_TOOLTIP = 'Reviewed scores only completed benchmark reviews from ips.csv, while All scores every extracted source IP in the dataset.';
 
 const GT_CUTOFF_TOOLTIP = '<strong>All completed reviews</strong>: use the full reviewed benchmark scope and all curated GT edges.'
   + '<br /><br /><strong>Reviewed on or before</strong>: include only reviewed IPs and curated GT edges whose '

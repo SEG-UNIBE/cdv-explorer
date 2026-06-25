@@ -13,7 +13,7 @@ from analysis.dependencies.constants import (
 )
 from analysis.authorship.mining import get_git_authors_on_first_day
 from analysis.proposal_schema import get_formal_compliance, get_interrelations, normalize_proposal_document
-from analysis.validation.ground_truth import load_ground_truth_curated_entries, load_ground_truth_reviewed_ips
+from analysis.validation.ground_truth import load_ground_truth_curated_entries, load_ground_truth_ips
 from pipeline.source_context import SourceContext
 from analysis.utils import parse_date_ymd as _parse_date_ymd
 
@@ -514,7 +514,7 @@ def build_network_data(
             )
         )
 
-    reviewed_ip_rows = list(reviewed_ips_entries) if reviewed_ips_entries is not None else load_ground_truth_reviewed_ips(context.ecosystem_slug)
+    reviewed_ip_rows = list(reviewed_ips_entries) if reviewed_ips_entries is not None else load_ground_truth_ips(context.ecosystem_slug)
     ground_truth_reviewed_ips = []
     seen_reviewed_ips: set[str] = set()
     for entry in reviewed_ip_rows:

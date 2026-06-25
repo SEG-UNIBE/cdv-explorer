@@ -8,7 +8,7 @@ from typing import Any, Mapping
 
 from analysis.dependencies.constants import BODY_EXTRACTED_LLM, BODY_EXTRACTED_REGEX, PREAMBLE_EXTRACTED
 from analysis.validation.ground_truth import (
-    load_ground_truth_reviewed_ips,
+    load_ground_truth_ips,
     load_ground_truth_curated_entries,
     validate_ground_truth_curated_entries,
     validate_reviewed_ip_entries,
@@ -404,18 +404,18 @@ def validate_ground_truth_curated_file(
     return result
 
 
-def validate_ground_truth_reviewed_ips_file(
+def validate_ground_truth_ips_file(
     ecosystem_slug: str,
     ecosystem_config: Mapping[str, Any] | None = None,
 ) -> SnapshotValidationResult:
     result = SnapshotValidationResult()
-    csv_path = Path("ip_data") / ecosystem_slug / "ground_truth" / "reviewed_ips.csv"
+    csv_path = Path("ip_data") / ecosystem_slug / "ground_truth" / "ips.csv"
     if not csv_path.exists():
         result.file_status["reviewed_ips"] = "⚠️ missing"
         return result
 
     try:
-        entries = load_ground_truth_reviewed_ips(ecosystem_slug, strict=False)
+        entries = load_ground_truth_ips(ecosystem_slug, strict=False)
     except ValueError as exc:
         result.file_status["reviewed_ips"] = "❌ bad CSV"
         result.fail(str(exc))
@@ -481,7 +481,7 @@ def validate_source_snapshot(
 ) -> SnapshotValidationResult:
     result = SnapshotValidationResult()
     result.merge(validate_ground_truth_curated_file(ecosystem_slug, ecosystem_config))
-    result.merge(validate_ground_truth_reviewed_ips_file(ecosystem_slug, ecosystem_config))
+    result.merge(validate_ground_truth_ips_file(ecosystem_slug, ecosystem_config))
     result.merge(
         validate_preprocess_snapshot(
             Path(str(source_config["preprocess"])) / snapshot,
@@ -500,7 +500,7 @@ def validate_combined_snapshot(*, ecosystem_slug: str, combo_key: str, snapshot:
     combo_root = Path("ip_data") / ecosystem_slug / "_combined" / combo_key
     result = SnapshotValidationResult()
     result.merge(validate_ground_truth_curated_file(ecosystem_slug))
-    result.merge(validate_ground_truth_reviewed_ips_file(ecosystem_slug))
+    result.merge(validate_ground_truth_ips_file(ecosystem_slug))
     result.merge(validate_analysis_snapshot(combo_root / "03_analysis" / snapshot))
     result.merge(validate_react_snapshot_exports(combo_root / "04_postprocess" / snapshot / "react"))
     return result

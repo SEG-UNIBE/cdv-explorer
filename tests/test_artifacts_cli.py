@@ -102,7 +102,7 @@ class ArtifactRebuildTests(unittest.TestCase):
             self.assertEqual(result.exit_code, 0, result.output)
             self.assertEqual([call.args[3] for call in rebuild.call_args_list], ["2026-03-16", "2026-05-28"])
 
-    def test_ground_truth_sampling_prefills_reviewed_ips_csv(self) -> None:
+    def test_ground_truth_sampling_prefills_ips_csv(self) -> None:
         with tempfile.TemporaryDirectory() as tmp_dir:
             root = Path(tmp_dir)
             analysis_root = root / "bips" / "03_analysis" / "2026-05-28" / "dependencies"
@@ -142,7 +142,7 @@ class ArtifactRebuildTests(unittest.TestCase):
                         app,
                         [
                             "ground-truth",
-                            "sample-reviewed-ips",
+                            "sample-ips",
                             "-e",
                             "bitcoin",
                             "--source",
@@ -159,7 +159,7 @@ class ArtifactRebuildTests(unittest.TestCase):
                 os.chdir(previous_cwd)
 
             self.assertEqual(result.exit_code, 0, result.output)
-            reviewed_csv = root / "ip_data" / "bitcoin" / "ground_truth" / "reviewed_ips.csv"
+            reviewed_csv = root / "ip_data" / "bitcoin" / "ground_truth" / "ips.csv"
             self.assertTrue(reviewed_csv.exists())
             content = reviewed_csv.read_text(encoding="utf-8")
             self.assertIn("ip\treviewer\treviewed_at\tsampling_strategy", content)
@@ -204,7 +204,7 @@ class ArtifactRebuildTests(unittest.TestCase):
                         app,
                         [
                             "ground-truth",
-                            "sample-reviewed-ips",
+                            "sample-ips",
                             "-e",
                             "bitcoin",
                             "--source",
@@ -223,7 +223,7 @@ class ArtifactRebuildTests(unittest.TestCase):
                 os.chdir(previous_cwd)
 
             self.assertEqual(result.exit_code, 0, result.output)
-            reviewed_csv = root / "ip_data" / "bitcoin" / "ground_truth" / "reviewed_ips.csv"
+            reviewed_csv = root / "ip_data" / "bitcoin" / "ground_truth" / "ips.csv"
             rows = reviewed_csv.read_text(encoding="utf-8").splitlines()
             self.assertEqual(len(rows), 3)
             self.assertTrue(all("Specification" in row for row in rows[1:]))

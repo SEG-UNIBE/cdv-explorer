@@ -274,7 +274,7 @@ def _rebuild_source_artifacts(eco_slug: str, src_slug: str, src: dict, snapshot:
     from analysis.pipeline import prepare_ecosystem_artifacts
     from analysis.validation import (
         validate_ground_truth_curated_file,
-        validate_ground_truth_reviewed_ips_file,
+        validate_ground_truth_ips_file,
         validate_source_snapshot,
     )
 
@@ -299,7 +299,7 @@ def _rebuild_source_artifacts(eco_slug: str, src_slug: str, src: dict, snapshot:
         raise typer.Exit(1)
 
     ground_truth_validation = validate_ground_truth_curated_file(eco_slug, _get_ecosystem(eco_slug))
-    reviewed_ips_validation = validate_ground_truth_reviewed_ips_file(eco_slug, _get_ecosystem(eco_slug))
+    reviewed_ips_validation = validate_ground_truth_ips_file(eco_slug, _get_ecosystem(eco_slug))
     ground_truth_errors = ground_truth_validation.errors + reviewed_ips_validation.errors
     if not ground_truth_validation.ok or not reviewed_ips_validation.ok:
         console.print(f"[red]Ground-truth validation failed for {eco_slug}:[/red]")
@@ -671,7 +671,7 @@ def doctor() -> None:
             continue
         gt_dir = Path("ip_data") / eco_slug / "ground_truth"
         interrelations_csv = gt_dir / "interrelations.csv"
-        reviewed_ips_csv = gt_dir / "reviewed_ips.csv"
+        reviewed_ips_csv = gt_dir / "ips.csv"
         if interrelations_csv.exists() and not reviewed_ips_csv.exists():
             reviewed_ip_warnings.append(eco_slug)
     ok &= _doctor_row(
@@ -679,8 +679,8 @@ def doctor() -> None:
         "WARN" if reviewed_ip_warnings else "OK",
         "Ground-truth reviewed IP scope",
         (
-            f"Missing ground_truth/reviewed_ips.csv for ecosystems: {', '.join(reviewed_ip_warnings)}"
-        ) if reviewed_ip_warnings else "reviewed_ips.csv present wherever ground-truth edges exist",
+            f"Missing ground_truth/ips.csv for ecosystems: {', '.join(reviewed_ip_warnings)}"
+        ) if reviewed_ip_warnings else "ips.csv present wherever ground-truth edges exist",
     )
 
     validate_script = Path("scripts/validate_artifacts.py")
@@ -833,8 +833,8 @@ def artifacts_rebuild(
 # ground-truth
 # ---------------------------------------------------------------------------
 
-@ground_truth_app.command("sample-reviewed-ips", rich_help_panel="Manage")
-def ground_truth_sample_reviewed_ips(
+@ground_truth_app.command("sample-ips", rich_help_panel="Manage")
+def ground_truth_sample_ips(
     ecosystem: Annotated[Optional[str], typer.Option("--ecosystem", "-e", help="Ecosystem slug.")] = None,
     source: Annotated[Optional[str], typer.Option("--source", help="Source slug to sample from.")] = None,
     snapshot: Annotated[Optional[str], typer.Option("--snapshot", "-s", help="Snapshot date (YYYY-MM-DD).")] = None,
@@ -845,19 +845,19 @@ def ground_truth_sample_reviewed_ips(
     density_low_max: Annotated[Optional[int], typer.Option("--density-low-max", min=0, help="Upper bound for the `low` extracted-density bucket; values above this become `high`.")] = None,
     proposal_type: Annotated[Optional[str], typer.Option("--proposal-type", help="Optional exact proposal type filter (e.g. Specification).")] = None,
     reviewer: Annotated[Optional[str], typer.Option("--reviewer", help="Optional reviewer name to prefill in new rows.")] = None,
-    replace: Annotated[Optional[bool], typer.Option("--replace/--append", help="Overwrite reviewed_ips.csv or append new rows.")] = None,
+    replace: Annotated[Optional[bool], typer.Option("--replace/--append", help="Overwrite ips.csv or append new rows.")] = None,
     wizard: Annotated[bool, typer.Option("--wizard", help="Force interactive step-by-step prompts.")] = False,
 ) -> None:
-    """Prefill ground_truth/reviewed_ips.csv from a stratified source-IP sample."""
+    """Prefill ground_truth/ips.csv from a stratified source-IP sample."""
     from analysis.ground_truth_sampling import (
         ALL_METHODS,
         DENSITY_BASIS_OPTIONS,
         LLM_ONLY,
         PREAMBLE_ONLY,
         REGEX_ONLY,
-        prefill_reviewed_ips_csv,
+        prefill_ips_csv,
     )
-    from analysis.validation import validate_ground_truth_reviewed_ips_file
+    from analysis.validation import validate_ground_truth_ips_file
 
     interactive = wizard or ecosystem is None or source is None or snapshot is None
     available_ecosystems = [
@@ -954,7 +954,7 @@ def ground_truth_sample_reviewed_ips(
         )
         raise typer.Exit(1)
 
-    result = prefill_reviewed_ips_csv(
+    result = prefill_ips_csv(
         ecosystem,
         source_slug=source,
         network_path=network_path,
@@ -968,7 +968,7 @@ def ground_truth_sample_reviewed_ips(
         replace=replace,
     )
 
-    validation = validate_ground_truth_reviewed_ips_file(ecosystem, ecosystem_config=eco)
+    validation = validate_ground_truth_ips_file(ecosystem, ecosystem_config=eco)
     if not validation.ok:
         console.print(f"[red]Reviewed-IP validation failed for {ecosystem}:[/red]")
         for error in validation.errors[:20]:

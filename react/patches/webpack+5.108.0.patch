@@ -1,0 +1,21 @@
+--- a/node_modules/webpack/lib/ConcatenationScope.js
++++ b/node_modules/webpack/lib/ConcatenationScope.js
+@@ -192,10 +192,14 @@
+ 		const asiSafe = match[7];
+ 		return {
+ 			index,
+-			ids:
+-				match[2] === "ns"
+-					? []
+-					: JSON.parse(Buffer.from(match[2], "hex").toString("utf8")),
++			ids: (() => {
++				if (match[2] === "ns" || !match[2]) return [];
++				try {
++					return JSON.parse(Buffer.from(match[2], "hex").toString("utf8"));
++				} catch (_error) {
++					return [];
++				}
++			})(),
+ 			call: Boolean(match[3]),
+ 			directImport: Boolean(match[4]),
+ 			deferredImport: Boolean(match[5]),

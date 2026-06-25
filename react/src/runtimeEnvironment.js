@@ -25,7 +25,7 @@ export function getEnvironmentBadge(hostname = window.location.hostname) {
     return 'DEV';
   }
 
-  return null;
+  return 'PROD';
 }
 
 export function getDefaultExperimentalFeaturesEnabled(hostname = window.location.hostname) {

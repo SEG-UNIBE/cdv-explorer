@@ -582,10 +582,10 @@ test('runtime environment detection distinguishes local dev and prod hosts', () 
   expect(getRuntimeEnvironment('seg-unibe.github.io')).toBe('prod');
 });
 
-test('environment badge is shown only for local and pages dev hosts', () => {
+test('environment badge is shown for local, dev, and prod hosts', () => {
   expect(getEnvironmentBadge('localhost')).toBe('LOCAL');
   expect(getEnvironmentBadge('preview.pages.dev')).toBe('DEV');
-  expect(getEnvironmentBadge('seg-unibe.github.io')).toBeNull();
+  expect(getEnvironmentBadge('seg-unibe.github.io')).toBe('PROD');
 });
 
 test('experimental features default to enabled outside production only', () => {

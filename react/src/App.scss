@@ -3435,6 +3435,117 @@
   background: var(--app-surface-subtle);
 }
 
+.centrality-table__wrap {
+  overflow: auto;
+  max-height: 420px;
+  border: 1px solid color-mix(in srgb, var(--app-border) 72%, transparent);
+  border-radius: 0.7rem;
+}
+
+.centrality-table--empty {
+  padding: 0.9rem 0 0;
+}
+
+.centrality-table__empty {
+  margin: 0;
+  color: var(--app-text-muted);
+}
+
+.centrality-table .analysis-table th,
+.centrality-table .analysis-table td {
+  padding: 0.5rem 0.6rem;
+}
+
+.centrality-table__paginator {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.7rem;
+  padding: 0.45rem 0.05rem 0;
+  color: var(--app-text-muted);
+  font-size: 0.78rem;
+}
+
+.centrality-table__paginator-summary {
+  white-space: nowrap;
+}
+
+.centrality-table__paginator-controls {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.2rem;
+  flex-wrap: wrap;
+}
+
+.centrality-table__page-size {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-right: 0.35rem;
+  white-space: nowrap;
+}
+
+.centrality-table__page-size select {
+  height: 1.8rem;
+  padding: 0 0.45rem;
+  border: 1px solid color-mix(in srgb, var(--app-border) 85%, transparent);
+  border-radius: 0.45rem;
+  background: color-mix(in srgb, var(--app-surface) 94%, transparent);
+  color: var(--app-text-muted);
+  font: inherit;
+}
+
+.centrality-table__page-button {
+  min-width: 1.8rem;
+  height: 1.8rem;
+  padding: 0 0.45rem;
+  border: 0;
+  border-radius: 0.45rem;
+  background: transparent;
+  color: var(--app-text-muted);
+  font: inherit;
+  cursor: pointer;
+}
+
+.centrality-table__page-button:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--app-surface-subtle) 92%, transparent);
+  color: var(--app-text);
+}
+
+.centrality-table__page-button.is-active {
+  background: color-mix(in srgb, var(--primary-color) 12%, var(--app-surface-elevated));
+  color: var(--app-text);
+  font-weight: 700;
+}
+
+.centrality-table__page-button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.centrality-table__page-button:focus-visible,
+.centrality-table__page-size select:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--primary-color) 34%, transparent);
+  outline-offset: 2px;
+}
+
+.centrality-table__page-gap {
+  padding: 0 0.1rem;
+  color: var(--app-text-muted);
+}
+
+@media (max-width: 720px) {
+  .centrality-table__paginator {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .centrality-table__paginator-controls {
+    justify-content: flex-start;
+  }
+}
+
 .rank-badge {
   font-family: monospace;
   font-size: 0.72em;

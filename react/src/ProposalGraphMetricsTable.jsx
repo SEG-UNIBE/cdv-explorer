@@ -1,8 +1,8 @@
-import { useMemo } from 'react';
-import { DataTable } from 'primereact/datatable';
-import { Column } from 'primereact/column';
+import { useEffect, useMemo, useState } from 'react';
 import { useDashboardEcosystem, useDashboardLinkMode, useDashboardSnapshot } from './dashboard/DashboardSnapshotContext';
 import { formatProposalLabel, getProposalUrl, normalizeProposalId } from './proposalLinks';
+
+const PAGE_SIZE_OPTIONS = [25, 50, 100, 200];
 
 function truncateTitle(value, maxLength = 40) {
   const text = String(value || '').trim();
@@ -28,15 +28,52 @@ function RankBadge({ rank }) {
   return <span className="rank-badge">#{rank}</span>;
 }
 
-export const ProposalGraphMetricsTable = ({
+function compareValues(left, right, direction) {
+  if (typeof left === 'number' && typeof right === 'number') {
+    return (left - right) * direction;
+  }
+  return String(left || '').localeCompare(String(right || ''), undefined, { numeric: true }) * direction;
+}
+
+function getSortableValue(row, field) {
+  if (field === 'id') {
+    return String(row.displayLabel || row.id || '');
+  }
+  return Number(row[field] || 0);
+}
+
+function PaginationButton({
+  label,
+  active = false,
+  disabled = false,
+  onClick,
+}) {
+  return (
+    <button
+      type="button"
+      className={`centrality-table__page-button${active ? ' is-active' : ''}`}
+      onClick={onClick}
+      disabled={disabled}
+    >
+      {label}
+    </button>
+  );
+}
+
+export function ProposalGraphMetricsTable({
   rows,
   proposalFilterIds = [],
   defaultSortField,
   defaultSortOrder = -1,
-}) => {
+}) {
   const snapshotLabel = useDashboardSnapshot();
   const linkMode = useDashboardLinkMode();
   const ecosystem = useDashboardEcosystem();
+  const [sortField, setSortField] = useState(defaultSortField);
+  const [sortDirection, setSortDirection] = useState(defaultSortOrder === -1 ? 'desc' : 'asc');
+  const [pageSize, setPageSize] = useState(25);
+  const [pageIndex, setPageIndex] = useState(0);
+
   const sourceSlugToSourceId = useMemo(() => (
     Object.fromEntries(
       Object.values(ecosystem?.sources || {}).map((source) => [
@@ -67,63 +104,183 @@ export const ProposalGraphMetricsTable = ({
       return filteredProposalKeys.has(`${rowSourceId}|${rowProposalId}`);
     };
 
-    return rows.filter((row) => (
-      rowMatchesProposalFilter(row)
-    ));
-  }, [ecosystem, proposalFilterIds, rows, sourceSlugToSourceId]);
+    return rows
+      .filter((row) => rowMatchesProposalFilter(row))
+      .map((row) => {
+        const title = String(row.title || '').trim();
+        const normalized = normalizeProposalId(row.id, ecosystem);
+        return {
+          ...row,
+          displayLabel: normalized ? formatProposalLabel(row.id, ecosystem) : String(row.id || ''),
+          displayUrl: getProposalUrl(row.id, snapshotLabel, { linkMode }, ecosystem),
+          displayTitle: title,
+          displayShortTitle: truncateTitle(title, 50),
+        };
+      });
+  }, [ecosystem, linkMode, proposalFilterIds, rows, snapshotLabel, sourceSlugToSourceId]);
+
+  const sortedRows = useMemo(() => {
+    const direction = sortDirection === 'desc' ? -1 : 1;
+    return [...filteredRows].sort((left, right) => {
+      const primary = compareValues(
+        getSortableValue(left, sortField),
+        getSortableValue(right, sortField),
+        direction,
+      );
+      if (primary !== 0) {
+        return primary;
+      }
+      return String(left.displayLabel || left.id || '').localeCompare(
+        String(right.displayLabel || right.id || ''),
+        undefined,
+        { numeric: true }
+      );
+    });
+  }, [filteredRows, sortDirection, sortField]);
+
+  const pageCount = Math.max(1, Math.ceil(sortedRows.length / pageSize));
+
+  useEffect(() => {
+    setPageIndex(0);
+  }, [pageSize, sortDirection, sortField, proposalFilterIds, rows]);
+
+  useEffect(() => {
+    if (pageIndex > pageCount - 1) {
+      setPageIndex(Math.max(0, pageCount - 1));
+    }
+  }, [pageCount, pageIndex]);
+
+  const pagedRows = useMemo(() => {
+    const start = pageIndex * pageSize;
+    return sortedRows.slice(start, start + pageSize);
+  }, [pageIndex, pageSize, sortedRows]);
+
+  const visibleStart = sortedRows.length === 0 ? 0 : (pageIndex * pageSize) + 1;
+  const visibleEnd = Math.min(sortedRows.length, (pageIndex + 1) * pageSize);
+
+  const pageWindow = useMemo(() => {
+    const radius = 2;
+    const start = Math.max(0, pageIndex - radius);
+    const end = Math.min(pageCount - 1, pageIndex + radius);
+    const values = [];
+    for (let index = start; index <= end; index += 1) {
+      values.push(index);
+    }
+    return values;
+  }, [pageCount, pageIndex]);
+
+  const handleSortChange = (field) => {
+    if (field === sortField) {
+      setSortDirection((current) => (current === 'asc' ? 'desc' : 'asc'));
+      return;
+    }
+    setSortField(field);
+    setSortDirection('desc');
+  };
+
+  const getSortIndicator = (field) => {
+    if (field !== sortField) {
+      return '';
+    }
+    return sortDirection === 'asc' ? ' ↑' : ' ↓';
+  };
+
+  if (sortedRows.length === 0) {
+    return (
+      <div className="centrality-table centrality-table--empty">
+        <p className="centrality-table__empty">No proposals found.</p>
+      </div>
+    );
+  }
 
   return (
-    <DataTable
-      value={filteredRows}
-      sortField={defaultSortField}
-      sortOrder={defaultSortOrder}
-      removableSort
-      scrollable
-      scrollHeight="420px"
-      size="small"
-      className="centrality-table"
-      emptyMessage="No proposals found."
-    >
-      <Column
-        field="id"
-        header="IP"
-        sortable
-        body={(row) => {
-          const normalized = normalizeProposalId(row.id, ecosystem);
-          const title = String(row.title || '').trim();
-          const shortTitle = truncateTitle(title, 50);
-          return (
-            <span>
-              <a href={getProposalUrl(row.id, snapshotLabel, { linkMode }, ecosystem)} target="_blank" rel="noreferrer">
-                {normalized ? formatProposalLabel(row.id, ecosystem) : String(row.id || '')}
-              </a>
-              {shortTitle ? (
-                <span title={title}>{` ${shortTitle}`}</span>
-              ) : null}
-            </span>
-          );
-        }}
-      />
-      <Column field="in_degree" header="In Degree" sortable body={(row) => <span>{Number(row.in_degree || 0)}<RankBadge rank={row.in_degree_rank} /></span>} />
-      <Column field="out_degree" header="Out Degree" sortable body={(row) => <span>{Number(row.out_degree || 0)}<RankBadge rank={row.out_degree_rank} /></span>} />
-      <Column
-        field="weighted_eigenvector"
-        header="Weighted Eigenvector"
-        sortable
-        body={(row) => <span>{formatNumber(row.weighted_eigenvector, 4)}<RankBadge rank={row.weighted_eigenvector_rank} /></span>}
-      />
-      <Column
-        field="pagerank"
-        header="PageRank"
-        sortable
-        body={(row) => <span>{formatNumber(row.pagerank, 4)}<RankBadge rank={row.pagerank_rank} /></span>}
-      />
-      <Column
-        field="betweenness"
-        header="Betweenness"
-        sortable
-        body={(row) => <span>{formatNumber(row.betweenness, 4)}<RankBadge rank={row.betweenness_rank} /></span>}
-      />
-    </DataTable>
+    <div className="centrality-table">
+      <div className="centrality-table__wrap">
+        <table className="analysis-table">
+          <thead>
+            <tr>
+              <th>
+                <button type="button" className="analysis-table__sort-button" onClick={() => handleSortChange('id')}>
+                  {`IP${getSortIndicator('id')}`}
+                </button>
+              </th>
+              <th>
+                <button type="button" className="analysis-table__sort-button" onClick={() => handleSortChange('in_degree')}>
+                  {`In Degree${getSortIndicator('in_degree')}`}
+                </button>
+              </th>
+              <th>
+                <button type="button" className="analysis-table__sort-button" onClick={() => handleSortChange('out_degree')}>
+                  {`Out Degree${getSortIndicator('out_degree')}`}
+                </button>
+              </th>
+              <th>
+                <button type="button" className="analysis-table__sort-button" onClick={() => handleSortChange('weighted_eigenvector')}>
+                  {`Weighted Eigenvector${getSortIndicator('weighted_eigenvector')}`}
+                </button>
+              </th>
+              <th>
+                <button type="button" className="analysis-table__sort-button" onClick={() => handleSortChange('pagerank')}>
+                  {`PageRank${getSortIndicator('pagerank')}`}
+                </button>
+              </th>
+              <th>
+                <button type="button" className="analysis-table__sort-button" onClick={() => handleSortChange('betweenness')}>
+                  {`Betweenness${getSortIndicator('betweenness')}`}
+                </button>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {pagedRows.map((row) => (
+              <tr key={row.id}>
+                <td>
+                  <span>
+                    <a href={row.displayUrl} target="_blank" rel="noreferrer">
+                      {row.displayLabel}
+                    </a>
+                    {row.displayShortTitle ? (
+                      <span title={row.displayTitle}>{` ${row.displayShortTitle}`}</span>
+                    ) : null}
+                  </span>
+                </td>
+                <td>{Number(row.in_degree || 0)}<RankBadge rank={row.in_degree_rank} /></td>
+                <td>{Number(row.out_degree || 0)}<RankBadge rank={row.out_degree_rank} /></td>
+                <td>{formatNumber(row.weighted_eigenvector, 4)}<RankBadge rank={row.weighted_eigenvector_rank} /></td>
+                <td>{formatNumber(row.pagerank, 4)}<RankBadge rank={row.pagerank_rank} /></td>
+                <td>{formatNumber(row.betweenness, 4)}<RankBadge rank={row.betweenness_rank} /></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className="centrality-table__paginator" aria-label="Proposal metrics pagination">
+        <div className="centrality-table__paginator-summary">
+          {`${visibleStart}-${visibleEnd} of ${sortedRows.length}`}
+        </div>
+        <div className="centrality-table__paginator-controls">
+          <label className="centrality-table__page-size">
+            <span>Rows</span>
+            <select value={pageSize} onChange={(event) => setPageSize(Number(event.target.value))}>
+              {PAGE_SIZE_OPTIONS.map((option) => (
+                <option key={option} value={option}>{option}</option>
+              ))}
+            </select>
+          </label>
+          <PaginationButton label="‹" disabled={pageIndex === 0} onClick={() => setPageIndex((current) => Math.max(0, current - 1))} />
+          {pageWindow[0] > 0 ? <span className="centrality-table__page-gap">…</span> : null}
+          {pageWindow.map((page) => (
+            <PaginationButton
+              key={page}
+              label={page + 1}
+              active={page === pageIndex}
+              onClick={() => setPageIndex(page)}
+            />
+          ))}
+          {pageWindow[pageWindow.length - 1] < pageCount - 1 ? <span className="centrality-table__page-gap">…</span> : null}
+          <PaginationButton label="›" disabled={pageIndex >= pageCount - 1} onClick={() => setPageIndex((current) => Math.min(pageCount - 1, current + 1))} />
+        </div>
+      </div>
+    </div>
   );
-};
+}

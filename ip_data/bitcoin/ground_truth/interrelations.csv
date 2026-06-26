@@ -33,13 +33,17 @@ must also be included in the count)."	References BIP16 simply to provide the mot
 bips:22	bips:23	references	high	See Also BIP 23: getblocktemplate - Pooled Mining	"Reference since BIP23 ""describes extensions to the getblocktemplate JSON-RPC call to enhance pooled mining"" and is to be undertsood as ""extensions to the getblocktemplate JSON-RPC call to enhance pooled mining.""  "	rbo	2026-06-26
 bips:49	bips:141	depends_on	high	This BIP defines the derivation scheme for HD wallets using the P2WPKH-nested-in-P2SH (BIP 141) serialization format.		rbo	2026-06-26
 bips:49	bips:32	depends_on	high	This BIP defines the derivation scheme for HD wallets using the P2WPKH-nested-in-P2SH (BIP 141) serialization format.	HD wallets are fundamentally specified in BIP32	rbo	2026-06-26
-
-
-
-
-
-
-
+bips:73	bips:70	references	high	"This BIP describes an enhancement to the payment protocol (BIP 70) that addresses the need for short URLs when scanning from QR codes. It generalizes the specification for the behavior of a payment request URL [...] Implementation of this BIP does not require full payment request (BIP 70) support. "	"Although BIP73 enhances BIP70 (which implies dependency), it explicitly states that ""this BIP does not require full payment request (BIP 70) support."""	rbo	2026-06-26
+bips:74	bips:70	depends_on	high	The Payment Protocol (defined in BIP70) gives merchants a way to build sophisticated transactions by serializing one or more outputs in the form of a PaymentRequest. [...] While the Payment Protocol allows for any valid script in its outputs, it also ignores outputs with zero value. This means BIP70 implementations can encode an OP_RETURN script but must provide a greater than dust value for that output. [...] This BIP allows for zero value OP_RETURN outputs in serialized PaymentRequests. [...] The specification for this BIP is straightforward. BIP70 should be fully implemented with the following changes [...]	BIP74 simply relaxes a condition that is defined in BIP70 (i.e. zero value OP_RETURN outputs in serialized PaymentRequests)	rbo	2026-06-26
+bips:111	bips:37	depends_on	high	This BIP extends BIP 37, Connection Bloom filtering, by defining a service bit to allow peers to advertise that they support bloom filters explicitly. [...] BIP 37 did not specify a service bit for the bloom filter service, thus implicitly assuming that all nodes that serve peers data support it.		rbo	2026-06-26
+bips:112	bips:9	depends_on	high	"This BIP is to be deployed by ""versionbits"" BIP9 using bit 0.
+"	BIP112 mandates the use of a concrete version bit, which were defined in BIP9	rbo	2026-06-26
+bips:112	bips:68	depends_on	high	"This BIP describes a new opcode (CHECKSEQUENCEVERIFY) for the Bitcoin scripting system that in combination with BIP 68 allows execution pathways of a script to be restricted based on the age of the output being spent.
+"		rbo	2026-06-26
+bips:112	bips:65	references	low	"References [...] BIP 65 OP_CHECKLOCKTIMEVERIFY
+"	References serving contextual embedding	rbo	2026-06-26
+bips:112	bips:113	references	low	"References [...] BIP 113 Median past block time for time-lock constraints
+"	References serving contextual embedding	rbo	2026-06-26
 
 
 

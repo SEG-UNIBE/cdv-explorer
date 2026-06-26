@@ -40,6 +40,7 @@ import {
   getEnvironmentBadge,
   getRuntimeEnvironment,
 } from './runtimeEnvironment';
+import { APP_BUILD_LABEL, APP_COMMIT_FULL_SHA, APP_COMMIT_SHA, APP_VERSION } from './buildInfo';
 import {
   buildClassificationRelationProposalLabel,
   buildClassificationRelationProposalUrl,
@@ -588,6 +589,13 @@ test('environment badge is shown for local, dev, and prod hosts', () => {
   expect(getEnvironmentBadge('localhost')).toBe('LOCAL');
   expect(getEnvironmentBadge('preview.pages.dev')).toBe('DEV');
   expect(getEnvironmentBadge('seg-unibe.github.io')).toBe('PROD');
+});
+
+test('build metadata exposes version and short commit label', () => {
+  expect(APP_VERSION).toMatch(/^\d+\.\d+\.\d+$/);
+  expect(APP_COMMIT_SHA).toMatch(/^[0-9a-f]+$|^unknown$|^dev$/);
+  expect(APP_COMMIT_FULL_SHA).toMatch(/^[0-9a-f]+$|^unknown$|^dev$/);
+  expect(APP_BUILD_LABEL).toBe(`v${APP_VERSION} @ ${APP_COMMIT_SHA}`);
 });
 
 test('experimental features default to enabled outside production only', () => {

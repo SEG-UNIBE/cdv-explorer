@@ -1,8 +1,6 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useDashboardEcosystem, useDashboardLinkMode, useDashboardSnapshot } from './dashboard/DashboardSnapshotContext';
 import { formatProposalLabel, getProposalUrl, normalizeProposalId } from './proposalLinks';
-
-const PAGE_SIZE_OPTIONS = [25, 50, 100, 200];
 
 function truncateTitle(value, maxLength = 40) {
   const text = String(value || '').trim();
@@ -42,24 +40,6 @@ function getSortableValue(row, field) {
   return Number(row[field] || 0);
 }
 
-function PaginationButton({
-  label,
-  active = false,
-  disabled = false,
-  onClick,
-}) {
-  return (
-    <button
-      type="button"
-      className={`centrality-table__page-button${active ? ' is-active' : ''}`}
-      onClick={onClick}
-      disabled={disabled}
-    >
-      {label}
-    </button>
-  );
-}
-
 export function ProposalGraphMetricsTable({
   rows,
   proposalFilterIds = [],
@@ -71,8 +51,6 @@ export function ProposalGraphMetricsTable({
   const ecosystem = useDashboardEcosystem();
   const [sortField, setSortField] = useState(defaultSortField);
   const [sortDirection, setSortDirection] = useState(defaultSortOrder === -1 ? 'desc' : 'asc');
-  const [pageSize, setPageSize] = useState(25);
-  const [pageIndex, setPageIndex] = useState(0);
 
   const sourceSlugToSourceId = useMemo(() => (
     Object.fromEntries(
@@ -138,37 +116,6 @@ export function ProposalGraphMetricsTable({
     });
   }, [filteredRows, sortDirection, sortField]);
 
-  const pageCount = Math.max(1, Math.ceil(sortedRows.length / pageSize));
-
-  useEffect(() => {
-    setPageIndex(0);
-  }, [pageSize, sortDirection, sortField, proposalFilterIds, rows]);
-
-  useEffect(() => {
-    if (pageIndex > pageCount - 1) {
-      setPageIndex(Math.max(0, pageCount - 1));
-    }
-  }, [pageCount, pageIndex]);
-
-  const pagedRows = useMemo(() => {
-    const start = pageIndex * pageSize;
-    return sortedRows.slice(start, start + pageSize);
-  }, [pageIndex, pageSize, sortedRows]);
-
-  const visibleStart = sortedRows.length === 0 ? 0 : (pageIndex * pageSize) + 1;
-  const visibleEnd = Math.min(sortedRows.length, (pageIndex + 1) * pageSize);
-
-  const pageWindow = useMemo(() => {
-    const radius = 2;
-    const start = Math.max(0, pageIndex - radius);
-    const end = Math.min(pageCount - 1, pageIndex + radius);
-    const values = [];
-    for (let index = start; index <= end; index += 1) {
-      values.push(index);
-    }
-    return values;
-  }, [pageCount, pageIndex]);
-
   const handleSortChange = (field) => {
     if (field === sortField) {
       setSortDirection((current) => (current === 'asc' ? 'desc' : 'asc'));
@@ -232,7 +179,7 @@ export function ProposalGraphMetricsTable({
             </tr>
           </thead>
           <tbody>
-            {pagedRows.map((row) => (
+            {sortedRows.map((row) => (
               <tr key={row.id}>
                 <td>
                   <span>
@@ -253,33 +200,6 @@ export function ProposalGraphMetricsTable({
             ))}
           </tbody>
         </table>
-      </div>
-      <div className="centrality-table__paginator" aria-label="Proposal metrics pagination">
-        <div className="centrality-table__paginator-summary">
-          {`${visibleStart}-${visibleEnd} of ${sortedRows.length}`}
-        </div>
-        <div className="centrality-table__paginator-controls">
-          <label className="centrality-table__page-size">
-            <span>Rows</span>
-            <select value={pageSize} onChange={(event) => setPageSize(Number(event.target.value))}>
-              {PAGE_SIZE_OPTIONS.map((option) => (
-                <option key={option} value={option}>{option}</option>
-              ))}
-            </select>
-          </label>
-          <PaginationButton label="‹" disabled={pageIndex === 0} onClick={() => setPageIndex((current) => Math.max(0, current - 1))} />
-          {pageWindow[0] > 0 ? <span className="centrality-table__page-gap">…</span> : null}
-          {pageWindow.map((page) => (
-            <PaginationButton
-              key={page}
-              label={page + 1}
-              active={page === pageIndex}
-              onClick={() => setPageIndex(page)}
-            />
-          ))}
-          {pageWindow[pageWindow.length - 1] < pageCount - 1 ? <span className="centrality-table__page-gap">…</span> : null}
-          <PaginationButton label="›" disabled={pageIndex >= pageCount - 1} onClick={() => setPageIndex((current) => Math.min(pageCount - 1, current + 1))} />
-        </div>
       </div>
     </div>
   );

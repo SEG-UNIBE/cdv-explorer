@@ -255,7 +255,7 @@ def _build_true_components(node_ids: List[str], adjacency: Dict[str, List[Dict[s
 
         components.append(members)
 
-    return sorted(components, key=lambda members: len(members), reverse=True)
+    return sorted(components, key=len, reverse=True)
 
 
 def _build_display_components(node_ids: List[str], adjacency: Dict[str, List[Dict[str, Any]]]) -> List[List[str]]:

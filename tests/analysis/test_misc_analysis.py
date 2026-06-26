@@ -153,6 +153,7 @@ class LlmRunsFormatTests(unittest.TestCase):
                     "extraction_method": "body_extracted_llm",
                     "relation_type": "implicit_dependency",
                     "value": 1,
+                    "llm_model": "gpt-5",
                 }
             ],
         )

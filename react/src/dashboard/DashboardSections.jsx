@@ -194,10 +194,6 @@ export function DashboardSections({
           hasDependencyFilter,
           selectedDependencyProposalIds,
           activeDependencyLlmModel: dependencyMetrics.activeDependencyLlmModel,
-          dependencyMetricsApproachOptions: dependencyMetrics.dependencyMetricsApproachOptions,
-          activeDependencyMetricsApproach: dependencyMetrics.activeDependencyMetricsApproach,
-          setSelectedDependencyMetricsApproach: dependencyMetrics.setSelectedDependencyMetricsApproach,
-          activeDependencyMetrics: dependencyMetrics.activeDependencyMetrics,
           dependencyMetrics: dependencyMetrics.dependencyViewMetrics,
           showExperimentalFeatures,
         }}

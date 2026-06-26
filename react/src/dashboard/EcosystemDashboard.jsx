@@ -4,7 +4,6 @@ import { Dropdown } from 'primereact/dropdown';
 import { InputSwitch } from 'primereact/inputswitch';
 import { MultiSelect } from 'primereact/multiselect';
 import { Link, useParams } from 'react-router-dom';
-import { buildDependencyLinkTypeOptions, DEFAULT_DEPENDENCY_APPROACH } from '../dependencyApproaches';
 import { ecosystemsById } from '../ecosystems';
 import {
   getAvailableSnapshots,
@@ -89,7 +88,6 @@ export function EcosystemDashboard() {
   const [dependencyMinRelationsIncludeConnections, setDependencyMinRelationsIncludeConnections] = useState(false);
   const [dependencyFilterText, setDependencyFilterText] = useState('');
   const [dependencyIncludeConnections, setDependencyIncludeConnections] = useState(true);
-  const [selectedDependencyMetricsApproach, setSelectedDependencyMetricsApproach] = useState(DEFAULT_DEPENDENCY_APPROACH);
   const [wordCloudFilterText, setWordCloudFilterText] = useState('');
   const [highlightedConformityProposal, setHighlightedConformityProposal] = useState('');
   const [linkMode, setLinkMode] = useLocalStorageState('cdv-explorer-linkmode', 'history');
@@ -217,21 +215,6 @@ export function EcosystemDashboard() {
   };
 
   const dependencyViewMetrics = dependencyDashboardData.dependencyMetrics;
-  const dependencyMetricsApproachOptions = useMemo(
-    () => buildDependencyLinkTypeOptions(activeDependencyLlmModel).filter(
-      (option) => dependencyViewMetrics?.by_approach?.[option.value]
-    ),
-    [activeDependencyLlmModel, dependencyViewMetrics]
-  );
-  const activeDependencyMetricsApproach = dependencyMetricsApproachOptions.some(
-    (option) => option.value === selectedDependencyMetricsApproach
-  )
-    ? selectedDependencyMetricsApproach
-    : (dependencyMetricsApproachOptions[0]?.value || DEFAULT_DEPENDENCY_APPROACH);
-  const activeDependencyMetrics = dependencyViewMetrics?.by_approach?.[activeDependencyMetricsApproach] || {
-    summary: {},
-    per_bip: [],
-  };
   const authorshipAvailableProposalNodes = useMemo(
     () => (authorshipViewDataset?.nodes || [])
       .filter((node) => node?.id != null),
@@ -294,12 +277,6 @@ export function EcosystemDashboard() {
       return normalized.length ? current : '';
     });
   }, [conformityAvailableProposalNodes, ecosystem]);
-
-  useEffect(() => {
-    if (!dependencyMetricsApproachOptions.some((option) => option.value === selectedDependencyMetricsApproach)) {
-      setSelectedDependencyMetricsApproach(dependencyMetricsApproachOptions[0]?.value || DEFAULT_DEPENDENCY_APPROACH);
-    }
-  }, [dependencyMetricsApproachOptions, selectedDependencyMetricsApproach]);
 
   useEffect(() => {
     document.documentElement.classList.add('dashboard-route-active');
@@ -597,10 +574,6 @@ export function EcosystemDashboard() {
               dependencyMetrics={{
                 dependencyViewMetrics,
                 activeDependencyLlmModel,
-                dependencyMetricsApproachOptions,
-                activeDependencyMetricsApproach,
-                setSelectedDependencyMetricsApproach,
-                activeDependencyMetrics,
               }}
               filteredWordCloudData={filteredWordCloudData}
               hasWordCloudFilter={hasWordCloudFilter}

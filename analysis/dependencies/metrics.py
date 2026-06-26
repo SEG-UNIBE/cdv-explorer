@@ -13,6 +13,15 @@ from analysis.dependencies.constants import (
 )
 
 
+RANK_FIELDS = (
+    "in_degree",
+    "out_degree",
+    "weighted_eigenvector",
+    "pagerank",
+    "betweenness",
+)
+
+
 def _canonical_dependency_edges(network_data: Dict[str, Any]) -> List[Dict[str, Any]]:
     edges = network_data.get("dependency_edges")
     if not isinstance(edges, list):
@@ -208,6 +217,22 @@ def _approach_labels() -> Dict[str, str]:
     return dict(DEPENDENCY_APPROACH_LABELS)
 
 
+def _rank_rows(rows: List[Dict[str, Any]], field: str) -> Dict[str, int]:
+    sorted_rows = sorted(rows, key=lambda row: float(row.get(field, 0.0)), reverse=True)
+    ranks: Dict[str, int] = {}
+    current_rank = 0
+    previous_value = None
+
+    for index, row in enumerate(sorted_rows, start=1):
+        value = float(row.get(field, 0.0))
+        if previous_value is None or value != previous_value:
+            current_rank = index
+            previous_value = value
+        ranks[str(row.get("id"))] = current_rank
+
+    return ranks
+
+
 def _build_pairwise_comparisons(network_data: Dict[str, Any]) -> Dict[str, Any]:
     use_canonical_edges = bool(_canonical_dependency_edges(network_data))
     edge_keys = _network_edge_keys(network_data) if use_canonical_edges else set()
@@ -309,6 +334,14 @@ def _extract_dependency_metrics_payload(network_data: Dict[str, Any]) -> Dict[st
             ],
             key=lambda row: (int(row["id"]) if str(row["id"]).isdigit() else float("inf"), str(row["id"])),
         )
+        rank_maps = {
+            field: _rank_rows(per_bip, field)
+            for field in RANK_FIELDS
+        }
+        for row in per_bip:
+            row_id = str(row.get("id"))
+            for field in RANK_FIELDS:
+                row[f"{field}_rank"] = int(rank_maps[field].get(row_id, 0))
 
         by_approach[approach_key] = {
             "label": approach_label,

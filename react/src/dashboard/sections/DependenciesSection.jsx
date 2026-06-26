@@ -21,7 +21,12 @@ import {
   GROUND_TRUTH_MATCH_MODE_OPTIONS,
   GT_TYPE_ALL,
 } from '../../dependencyGroundTruthEvaluation';
-import { getDependencyApproachLabel, GROUND_TRUTH_CURATED } from '../../dependencyApproaches';
+import {
+  buildDependencyLinkTypeOptions,
+  DEFAULT_DEPENDENCY_APPROACH,
+  getDependencyApproachLabel,
+  GROUND_TRUTH_CURATED,
+} from '../../dependencyApproaches';
 import { resolveRelationOntology } from '../../dependencyRelationOntology';
 import { useAnalysisMetricTooltip } from '../../useAnalysisMetricTooltip';
 import { ExportableCard } from '../ExportableCard';
@@ -39,44 +44,41 @@ const GT_CUTOFF_TOOLTIP = '<strong>All completed reviews</strong>: use the full 
   + '<code>reviewed_at</code> date is on or before the selected cutoff. Review dates refer to the latest available proposal '
   + 'version at review time.';
 
-export function DependenciesSection({
+function DependencyMetricsCard({
   ecosystem,
-  ecosystemBase,
-  selectedSourceIds = [],
-  sectionSourceView,
-  setSectionSourceView,
-  selectedDataset,
-  highlightedDependencyProposal,
-  setHighlightedDependencyProposal,
-  dependencyMinRelations,
-  setDependencyMinRelations,
-  dependencyMinRelationsIncludeConnections,
-  setDependencyMinRelationsIncludeConnections,
+  activeDependencyLlmModel,
+  dependencyMetrics,
   dependencyFilterText,
   setDependencyFilterText,
-  dependencyIncludeConnections,
-  setDependencyIncludeConnections,
   hasDependencyFilter,
   selectedDependencyProposalIds,
-  activeDependencyLlmModel,
-  dependencyMetricsApproachOptions,
-  activeDependencyMetricsApproach,
-  setSelectedDependencyMetricsApproach,
-  activeDependencyMetrics,
-  dependencyMetrics,
-  showExperimentalFeatures,
+  showMetricTooltip,
+  moveMetricTooltip,
+  hideMetricTooltip,
 }) {
-  const [groundTruthMatchMode, setGroundTruthMatchMode] = useState(GROUND_TRUTH_MATCH_MODE_EDGE_ONLY);
-  const [restrictToReviewedSources, setRestrictToReviewedSources] = useState(true);
-  const [groundTruthCutoffMode, setGroundTruthCutoffMode] = useState(GROUND_TRUTH_CUTOFF_MODE_ALL);
-  const [groundTruthCutoffDate, setGroundTruthCutoffDate] = useState('');
-  const {
-    showTooltip: showMetricTooltip,
-    showHtmlTooltip: showHtmlMetricTooltip,
-    moveTooltip: moveMetricTooltip,
-    hideTooltip: hideMetricTooltip,
-  } = useAnalysisMetricTooltip();
+  const [selectedApproach, setSelectedApproach] = useState(DEFAULT_DEPENDENCY_APPROACH);
+  const dependencyMetricsApproachOptions = useMemo(
+    () => buildDependencyLinkTypeOptions(activeDependencyLlmModel).filter(
+      (option) => dependencyMetrics?.by_approach?.[option.value]
+    ),
+    [activeDependencyLlmModel, dependencyMetrics],
+  );
+  const activeDependencyMetricsApproach = dependencyMetricsApproachOptions.some(
+    (option) => option.value === selectedApproach
+  )
+    ? selectedApproach
+    : (dependencyMetricsApproachOptions[0]?.value || DEFAULT_DEPENDENCY_APPROACH);
 
+  useEffect(() => {
+    if (!dependencyMetricsApproachOptions.some((option) => option.value === selectedApproach)) {
+      setSelectedApproach(dependencyMetricsApproachOptions[0]?.value || DEFAULT_DEPENDENCY_APPROACH);
+    }
+  }, [dependencyMetricsApproachOptions, selectedApproach]);
+
+  const activeDependencyMetrics = dependencyMetrics?.by_approach?.[activeDependencyMetricsApproach] || {
+    summary: {},
+    per_bip: [],
+  };
   const dependencyMetricCards = useMemo(() => ([
     {
       label: 'Nodes',
@@ -104,6 +106,116 @@ export function DependenciesSection({
       description: 'Share of all possible directed proposal-to-proposal links that actually exist. Higher density means a more interconnected graph.',
     },
   ]), [activeDependencyMetrics.summary]);
+
+  return (
+    <Card className="mb-4">
+      <h3>Proposal Interrelation Metrics</h3>
+      <p>
+        Compare simple graph-level structure and per-proposal centrality measures across
+        {' '}Preamble, Regex, and LLM.{' '}
+        <strong>In Degree</strong> measures how many other proposals refer to a given one (incoming relation).{' '}
+        <strong>Out Degree</strong> measures how many other proposals a given one refers to (outgoing relation).{' '}
+        <strong>Weighted Eigenvector</strong> measures how central a proposal is by considering how well-connected the ones it is linked to are.{' '}
+        <strong>PageRank</strong> is similar, but additionally accounts for direction and distributes importance across outgoing links.{' '}
+        <strong>Betweenness</strong> measures how often a proposal lies on the shortest paths between others, indicating its role in connecting otherwise separate parts of the dependency graph.
+      </p>
+      <div className="dependency-metrics-summary">
+        {dependencyMetricCards.map((metric) => (
+          <div
+            key={metric.label}
+            className="metric-badge"
+            onMouseEnter={(event) => showMetricTooltip(event, metric.description)}
+            onMouseMove={moveMetricTooltip}
+            onMouseLeave={hideMetricTooltip}
+          >
+            <span className="metric-badge__label">{metric.label}</span>
+            <span className="metric-badge__value">{metric.value}</span>
+          </div>
+        ))}
+      </div>
+      <CollapsibleControls>
+        <div className="dependency-metrics-toolbar">
+          <div className="dependency-metrics-toolbar__field">
+            <label className="dependency-metrics-toolbar__label" htmlFor="dependency-metrics-approach">
+              Approach
+            </label>
+            <div className="dependency-metrics-toolbar__dropdown-row">
+              <Dropdown
+                inputId="dependency-metrics-approach"
+                value={activeDependencyMetricsApproach}
+                options={dependencyMetricsApproachOptions}
+                onChange={(event) => setSelectedApproach(event.value)}
+                placeholder="Select approach"
+                aria-label="Approach for dependency metrics"
+                className="dependency-metrics-toolbar__dropdown"
+              />
+            </div>
+          </div>
+          <ProposalFilterControl
+            value={dependencyFilterText}
+            onChange={setDependencyFilterText}
+            ecosystem={ecosystem}
+            ariaLabel="Filter proposals for dependency metrics"
+            layout="split"
+            entryLabel="Filter Proposals"
+            trailingControl={(
+              <Button
+                type="button"
+                label="Clear"
+                severity="secondary"
+                text
+                onClick={() => setDependencyFilterText('')}
+                disabled={!hasDependencyFilter}
+              />
+            )}
+            className="dependency-metrics-toolbar__filter"
+          />
+        </div>
+      </CollapsibleControls>
+      <ProposalGraphMetricsTable
+        rows={activeDependencyMetrics.per_bip || []}
+        proposalFilterIds={selectedDependencyProposalIds}
+        defaultSortField="pagerank"
+        defaultSortOrder={-1}
+      />
+    </Card>
+  );
+}
+
+export function DependenciesSection({
+  ecosystem,
+  ecosystemBase,
+  selectedSourceIds = [],
+  sectionSourceView,
+  setSectionSourceView,
+  selectedDataset,
+  highlightedDependencyProposal,
+  setHighlightedDependencyProposal,
+  dependencyMinRelations,
+  setDependencyMinRelations,
+  dependencyMinRelationsIncludeConnections,
+  setDependencyMinRelationsIncludeConnections,
+  dependencyFilterText,
+  setDependencyFilterText,
+  dependencyIncludeConnections,
+  setDependencyIncludeConnections,
+  hasDependencyFilter,
+  selectedDependencyProposalIds,
+  activeDependencyLlmModel,
+  dependencyMetrics,
+  showExperimentalFeatures,
+}) {
+  const [groundTruthMatchMode, setGroundTruthMatchMode] = useState(GROUND_TRUTH_MATCH_MODE_EDGE_ONLY);
+  const [restrictToReviewedSources, setRestrictToReviewedSources] = useState(true);
+  const [groundTruthCutoffMode, setGroundTruthCutoffMode] = useState(GROUND_TRUTH_CUTOFF_MODE_ALL);
+  const [groundTruthCutoffDate, setGroundTruthCutoffDate] = useState('');
+  const {
+    showTooltip: showMetricTooltip,
+    showHtmlTooltip: showHtmlMetricTooltip,
+    moveTooltip: moveMetricTooltip,
+    hideTooltip: hideMetricTooltip,
+  } = useAnalysisMetricTooltip();
+
   const relationOntology = useMemo(
     () => resolveRelationOntology(ecosystem?.id, {
       sourceIds: selectedSourceIds.length ? selectedSourceIds : null,
@@ -321,77 +433,18 @@ export function DependenciesSection({
           )}
         />
       </ExportableCard>
-      <Card className="mb-4">
-        <h3>Proposal Interrelation Metrics</h3>
-        <p>
-          Compare simple graph-level structure and per-proposal centrality measures across
-          {' '}Preamble, Regex, and LLM.{' '}
-          <strong>In Degree</strong> measures how many other proposals refer to a given one (incoming relation).{' '}
-          <strong>Out Degree</strong> measures how many other proposals a given one refers to (outgoing relation).{' '}
-          <strong>Weighted Eigenvector</strong> measures how central a proposal is by considering how well-connected the ones it is linked to are.{' '}
-          <strong>PageRank</strong> is similar, but additionally accounts for direction and distributes importance across outgoing links.{' '}
-          <strong>Betweenness</strong> measures how often a proposal lies on the shortest paths between others, indicating its role in connecting otherwise separate parts of the dependency graph. 
-        </p>
-        <div className="dependency-metrics-summary">
-          {dependencyMetricCards.map((metric) => (
-            <div
-              key={metric.label}
-              className="metric-badge"
-              onMouseEnter={(event) => showMetricTooltip(event, metric.description)}
-              onMouseMove={moveMetricTooltip}
-              onMouseLeave={hideMetricTooltip}
-            >
-              <span className="metric-badge__label">{metric.label}</span>
-              <span className="metric-badge__value">{metric.value}</span>
-            </div>
-          ))}
-        </div>
-        <CollapsibleControls>
-          <div className="dependency-metrics-toolbar">
-            <div className="dependency-metrics-toolbar__field">
-              <label className="dependency-metrics-toolbar__label" htmlFor="dependency-metrics-approach">
-                Approach
-              </label>
-              <div className="dependency-metrics-toolbar__dropdown-row">
-                <Dropdown
-                  inputId="dependency-metrics-approach"
-                  value={activeDependencyMetricsApproach}
-                  options={dependencyMetricsApproachOptions}
-                  onChange={(event) => setSelectedDependencyMetricsApproach(event.value)}
-                  placeholder="Select approach"
-                  aria-label="Approach for dependency metrics"
-                  className="dependency-metrics-toolbar__dropdown"
-                />
-              </div>
-            </div>
-            <ProposalFilterControl
-              value={dependencyFilterText}
-              onChange={setDependencyFilterText}
-              ecosystem={ecosystem}
-              ariaLabel="Filter proposals for dependency metrics"
-              layout="split"
-              entryLabel="Filter Proposals"
-              trailingControl={(
-                <Button
-                  type="button"
-                  label="Clear"
-                  severity="secondary"
-                  text
-                  onClick={() => setDependencyFilterText('')}
-                  disabled={!hasDependencyFilter}
-                />
-              )}
-              className="dependency-metrics-toolbar__filter"
-            />
-          </div>
-        </CollapsibleControls>
-        <ProposalGraphMetricsTable
-          rows={activeDependencyMetrics.per_bip || []}
-          proposalFilterIds={selectedDependencyProposalIds}
-          defaultSortField="pagerank"
-          defaultSortOrder={-1}
-        />
-      </Card>
+      <DependencyMetricsCard
+        ecosystem={ecosystem}
+        activeDependencyLlmModel={activeDependencyLlmModel}
+        dependencyMetrics={dependencyMetrics}
+        dependencyFilterText={dependencyFilterText}
+        setDependencyFilterText={setDependencyFilterText}
+        hasDependencyFilter={hasDependencyFilter}
+        selectedDependencyProposalIds={selectedDependencyProposalIds}
+        showMetricTooltip={showMetricTooltip}
+        moveMetricTooltip={moveMetricTooltip}
+        hideMetricTooltip={hideMetricTooltip}
+      />
       <ExportableCard className="mb-4" exportTitle="Comparison of Pairwise Interrelation Extraction Approach">
         <h3>Comparison of Pairwise Interrelation Extraction Approach</h3>
         <p>

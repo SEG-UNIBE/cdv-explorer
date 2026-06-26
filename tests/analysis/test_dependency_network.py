@@ -468,6 +468,47 @@ class BuildNetworkDataTests(unittest.TestCase):
         per_bip_ids = {row["id"] for row in metrics["by_approach"]["preamble_extracted"]["per_bip"]}
         self.assertEqual(per_bip_ids, {"bips:1", "bips:2"})
 
+    def test_dependency_metrics_precompute_rank_fields(self):
+        network_data = {
+            "nodes": [
+                {"id": "1", "graph_key": "bips:1", "title": "BIP 1"},
+                {"id": "2", "graph_key": "bips:2", "title": "BIP 2"},
+                {"id": "3", "graph_key": "bips:3", "title": "BIP 3"},
+            ],
+            "dependency_edges": [
+                {
+                    "source": "bips:1",
+                    "target": "bips:2",
+                    "extraction_method": "body_extracted_regex",
+                    "relation_type": "reference",
+                    "value": 1,
+                },
+                {
+                    "source": "bips:3",
+                    "target": "bips:2",
+                    "extraction_method": "body_extracted_regex",
+                    "relation_type": "reference",
+                    "value": 1,
+                },
+            ],
+        }
+
+        metrics = extract_dependency_metrics(network_data)
+        rows = {
+            row["id"]: row
+            for row in metrics["by_approach"]["body_extracted_regex"]["per_bip"]
+        }
+
+        self.assertEqual(rows["bips:2"]["in_degree_rank"], 1)
+        self.assertEqual(rows["bips:1"]["in_degree_rank"], 2)
+        self.assertEqual(rows["bips:3"]["in_degree_rank"], 2)
+        self.assertEqual(rows["bips:1"]["out_degree_rank"], 1)
+        self.assertEqual(rows["bips:3"]["out_degree_rank"], 1)
+        self.assertEqual(rows["bips:2"]["out_degree_rank"], 3)
+        self.assertIn("pagerank_rank", rows["bips:1"])
+        self.assertIn("betweenness_rank", rows["bips:1"])
+        self.assertIn("weighted_eigenvector_rank", rows["bips:1"])
+
     def test_dependency_metrics_preserve_duplicate_ids_across_sources(self):
         network_data = {
             "nodes": [

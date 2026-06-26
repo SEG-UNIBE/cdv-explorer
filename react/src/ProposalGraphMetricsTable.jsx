@@ -15,31 +15,16 @@ function truncateTitle(value, maxLength = 40) {
   return `${text.slice(0, maxLength).trimEnd()}...`;
 }
 
-const RANK_FIELDS = ['in_degree', 'out_degree', 'weighted_eigenvector', 'pagerank', 'betweenness'];
-
 function formatNumber(value, digits = 4) {
   return Number(value || 0)
     .toFixed(digits)
     .replace(/\.?0+$/, '');
 }
 
-function buildRankMap(rows, field) {
-  const sorted = [...rows].sort((a, b) => (b[field] || 0) - (a[field] || 0));
-  const rankMap = {};
-  let currentRank = 0;
-  let prevVal = null;
-  sorted.forEach((row, i) => {
-    const val = row[field] || 0;
-    if (val !== prevVal) {
-      currentRank = i + 1;
-      prevVal = val;
-    }
-    rankMap[row.id] = currentRank;
-  });
-  return rankMap;
-}
-
 function RankBadge({ rank }) {
+  if (!Number.isFinite(Number(rank)) || Number(rank) <= 0) {
+    return null;
+  }
   return <span className="rank-badge">#{rank}</span>;
 }
 
@@ -52,14 +37,14 @@ export const ProposalGraphMetricsTable = ({
   const snapshotLabel = useDashboardSnapshot();
   const linkMode = useDashboardLinkMode();
   const ecosystem = useDashboardEcosystem();
-
-  const ranksByField = useMemo(() => {
-    const result = {};
-    RANK_FIELDS.forEach((field) => {
-      result[field] = buildRankMap(rows, field);
-    });
-    return result;
-  }, [rows]);
+  const sourceSlugToSourceId = useMemo(() => (
+    Object.fromEntries(
+      Object.values(ecosystem?.sources || {}).map((source) => [
+        String(source?.sourceSlug || source?.sourceId || '').trim(),
+        String(source?.sourceId || source?.sourceSlug || '').trim(),
+      ])
+    )
+  ), [ecosystem]);
 
   const filteredRows = useMemo(() => {
     const filteredProposalKeys = new Set(
@@ -76,10 +61,7 @@ export const ProposalGraphMetricsTable = ({
       const rawId = String(row.id || '').trim();
       const separatorIndex = rawId.indexOf(':');
       const rowSourceSlug = separatorIndex >= 0 ? rawId.slice(0, separatorIndex) : '';
-      const rowSource = Object.values(ecosystem?.sources || {}).find(
-        (source) => String(source?.sourceSlug || source?.sourceId || '') === rowSourceSlug
-      );
-      const rowSourceId = String(rowSource?.sourceId || rowSourceSlug || '').trim();
+      const rowSourceId = sourceSlugToSourceId[rowSourceSlug] || rowSourceSlug;
       const rowProposalId = normalizeProposalId(rawId, ecosystem);
 
       return filteredProposalKeys.has(`${rowSourceId}|${rowProposalId}`);
@@ -88,7 +70,7 @@ export const ProposalGraphMetricsTable = ({
     return rows.filter((row) => (
       rowMatchesProposalFilter(row)
     ));
-  }, [ecosystem, proposalFilterIds, rows]);
+  }, [ecosystem, proposalFilterIds, rows, sourceSlugToSourceId]);
 
   return (
     <DataTable
@@ -122,25 +104,25 @@ export const ProposalGraphMetricsTable = ({
           );
         }}
       />
-      <Column field="in_degree" header="In Degree" sortable body={(row) => <span>{Number(row.in_degree || 0)}<RankBadge rank={ranksByField.in_degree[row.id]} /></span>} />
-      <Column field="out_degree" header="Out Degree" sortable body={(row) => <span>{Number(row.out_degree || 0)}<RankBadge rank={ranksByField.out_degree[row.id]} /></span>} />
+      <Column field="in_degree" header="In Degree" sortable body={(row) => <span>{Number(row.in_degree || 0)}<RankBadge rank={row.in_degree_rank} /></span>} />
+      <Column field="out_degree" header="Out Degree" sortable body={(row) => <span>{Number(row.out_degree || 0)}<RankBadge rank={row.out_degree_rank} /></span>} />
       <Column
         field="weighted_eigenvector"
         header="Weighted Eigenvector"
         sortable
-        body={(row) => <span>{formatNumber(row.weighted_eigenvector, 4)}<RankBadge rank={ranksByField.weighted_eigenvector[row.id]} /></span>}
+        body={(row) => <span>{formatNumber(row.weighted_eigenvector, 4)}<RankBadge rank={row.weighted_eigenvector_rank} /></span>}
       />
       <Column
         field="pagerank"
         header="PageRank"
         sortable
-        body={(row) => <span>{formatNumber(row.pagerank, 4)}<RankBadge rank={ranksByField.pagerank[row.id]} /></span>}
+        body={(row) => <span>{formatNumber(row.pagerank, 4)}<RankBadge rank={row.pagerank_rank} /></span>}
       />
       <Column
         field="betweenness"
         header="Betweenness"
         sortable
-        body={(row) => <span>{formatNumber(row.betweenness, 4)}<RankBadge rank={ranksByField.betweenness[row.id]} /></span>}
+        body={(row) => <span>{formatNumber(row.betweenness, 4)}<RankBadge rank={row.betweenness_rank} /></span>}
       />
     </DataTable>
   );

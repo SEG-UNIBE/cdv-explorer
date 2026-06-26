@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { formatProposalReference, getProposalUrl } from './proposalLinks';
+import { getDependencyApproachLabel } from './dependencyApproaches';
 import {
   useDashboardEcosystem,
   useDashboardLinkMode,
@@ -312,7 +313,7 @@ function GroupedBarChart({
   );
 }
 
-export function DependencyGroundTruthEvaluationCharts({ evaluation }) {
+export function DependencyGroundTruthEvaluationCharts({ evaluation, activeLlmModel = '' }) {
   const {
     showHtmlTooltip,
     moveTooltip,
@@ -337,8 +338,12 @@ export function DependencyGroundTruthEvaluationCharts({ evaluation }) {
     );
   }
 
-  const evaluatedApproaches = evaluation.approaches.filter((approach) => approach.evaluated !== false);
-  const unmappedApproaches = evaluation.approaches.filter((approach) => approach.evaluated === false);
+  const displayApproaches = evaluation.approaches.map((approach) => ({
+    ...approach,
+    label: getDependencyApproachLabel(approach.approach, activeLlmModel),
+  }));
+  const evaluatedApproaches = displayApproaches.filter((approach) => approach.evaluated !== false);
+  const unmappedApproaches = displayApproaches.filter((approach) => approach.evaluated === false);
 
   return (
     <>

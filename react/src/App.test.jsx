@@ -10,6 +10,7 @@ import {
   GROUND_TRUTH_CURATED,
   LINK_TYPE_OPTIONS,
   PREAMBLE_EXTRACTED,
+  getDependencyApproachLabel,
   normalizeDependencyLinks,
 } from './dependencyApproaches';
 import { getBipCommitUrl, getBipUrl } from './bipLinks';
@@ -30,6 +31,7 @@ import { buildDashboardData, buildWordCloudData, parseProposalFilterExpression }
 import {
   buildProposalGraphId,
   fetchDatasetForSelection,
+  getPublishedDependencyLlmModel,
   getSourceCombinationKey,
   scopeDependencyLinksForSource,
 } from './data';
@@ -47,6 +49,9 @@ import {
   buildClassificationRelationProposalUrl,
 } from './ClassificationRelationTable';
 import { ProposalFilterControl } from './ProposalFilterControl';
+import { DependencyComparisonHeatmaps } from './DependencyComparisonHeatmaps';
+import { DependencyGroundTruthEvaluationCharts } from './DependencyGroundTruthEvaluationCharts';
+import { DashboardSnapshotProvider } from './dashboard/DashboardSnapshotContext';
 import proposalLinkIndex from './generated/proposalLinkIndex.json';
 import bitcoinEcosystem from './ecosystems/bitcoin';
 import nostrEcosystem from './ecosystems/nostr';
@@ -59,6 +64,66 @@ test('dependency link options default to the canonical preamble approach', () =>
     BODY_EXTRACTED_LLM,
     GROUND_TRUTH_CURATED,
   ]);
+});
+
+test('formats llm dependency labels with the selected model', () => {
+  expect(getDependencyApproachLabel(BODY_EXTRACTED_LLM, 'gpt-5.4-mini')).toBe('LLM (gpt-5.4-mini)');
+  expect(getDependencyApproachLabel(BODY_EXTRACTED_REGEX, 'gpt-5.4-mini')).toBe('Regex');
+});
+
+test('renders the selected llm model label in dependency comparison and ground-truth charts', () => {
+  const pairwiseComparisons = {
+    [`${BODY_EXTRACTED_REGEX}__vs__${PREAMBLE_EXTRACTED}`]: {
+      approach: BODY_EXTRACTED_REGEX,
+      baseline: PREAMBLE_EXTRACTED,
+      summary: {
+        overlap: 1,
+        hit_rate: 1,
+        baseline_only: 0,
+        missed_rate: 0,
+        approach_only: 0,
+        approach_total: 1,
+      },
+      edges: [],
+    },
+  };
+  const evaluation = {
+    restrictToReviewedSources: true,
+    approaches: [
+      {
+        approach: BODY_EXTRACTED_LLM,
+        label: 'LLM',
+        evaluated: true,
+        tp: 2,
+        fp: 1,
+        fn: 1,
+        precision: 2 / 3,
+        recall: 2 / 3,
+        f1: 2 / 3,
+        matchedEdges: [],
+        falsePositiveEdges: [],
+        falseNegativeEdges: [],
+      },
+    ],
+  };
+
+  render(
+    <DashboardSnapshotProvider snapshot="2026-06-01" ecosystem={bitcoinEcosystem}>
+      <>
+        <DependencyComparisonHeatmaps
+          pairwiseComparisons={pairwiseComparisons}
+          proposalShortLabel="BIP"
+          activeLlmModel="gpt-5.4-mini"
+        />
+        <DependencyGroundTruthEvaluationCharts
+          evaluation={evaluation}
+          activeLlmModel="gpt-5.4-mini"
+        />
+      </>
+    </DashboardSnapshotProvider>
+  );
+
+  expect(screen.getAllByText('LLM (gpt-5.4-mini)').length).toBeGreaterThan(0);
 });
 
 test('normalizes canonical dependency edges into grouped dependency links', () => {
@@ -262,6 +327,68 @@ test('multi-source fetch uses combined dependency metrics when combined artifact
       targetSourceId: 'slip',
     });
     expect(global.fetch).toHaveBeenCalledWith(expect.stringContaining('/_combined/bips+slips/03_analysis/2026-03-16/dependencies/dependency_metrics.json'));
+  } finally {
+    global.fetch = previousFetch;
+  }
+});
+
+test('single-source fetch exposes the published LLM model without extra selection state', async () => {
+  const previousFetch = global.fetch;
+  global.fetch = vi.fn((url) => Promise.resolve({
+    ok: true,
+    json: () => Promise.resolve(
+      url.endsWith('/dependencies/network_data.json')
+        ? {
+          nodes: [{ id: '1', graph_key: 'bips:1' }, { id: '2', graph_key: 'bips:2' }],
+          dependency_edges: [
+            {
+              source: 'bips:1',
+              target: 'bips:2',
+              extraction_method: BODY_EXTRACTED_LLM,
+              relation_type: 'implicit_dependency',
+              value: 1,
+              llm_model: 'gpt-5.4-mini',
+            },
+          ],
+          llm_models: {
+            default_model: 'gpt-5.4-mini',
+            available_models: [
+              { model: 'gpt-5.4', document_count: 1, edge_count: 0 },
+              { model: 'gpt-5.4-mini', document_count: 2, edge_count: 1 },
+            ],
+            dependency_edges_by_model: {
+              'gpt-5.4-mini': [
+                {
+                  source: 'bips:1',
+                  target: 'bips:2',
+                  extraction_method: BODY_EXTRACTED_LLM,
+                  relation_type: 'implicit_dependency',
+                  value: 1,
+                  llm_model: 'gpt-5.4-mini',
+                },
+              ],
+              'gpt-5.4': [],
+            },
+          },
+        }
+        : url.endsWith('/dependencies/dependency_metrics.json')
+          ? {
+            by_approach: {
+              [BODY_EXTRACTED_LLM]: { summary: { edge_count: 1 }, per_bip: [{ id: 'bips:1', out_degree: 1 }] },
+            },
+            pairwise_comparisons: {},
+            llm_model: 'gpt-5.4-mini',
+          }
+          : {}
+    ),
+  }));
+
+  try {
+    const dataset = await fetchDatasetForSelection('bitcoin', '2099-01-01', ['bip']);
+
+    expect(getPublishedDependencyLlmModel(dataset)).toBe('gpt-5.4-mini');
+    expect(dataset.links[BODY_EXTRACTED_LLM]).toHaveLength(1);
+    expect(dataset.dependencyMetrics.llm_model).toBe('gpt-5.4-mini');
   } finally {
     global.fetch = previousFetch;
   }

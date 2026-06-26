@@ -13,6 +13,15 @@ from analysis.dependencies.constants import (
 )
 
 
+RANK_FIELDS = (
+    "in_degree",
+    "out_degree",
+    "weighted_eigenvector",
+    "pagerank",
+    "betweenness",
+)
+
+
 def _canonical_dependency_edges(network_data: Dict[str, Any]) -> List[Dict[str, Any]]:
     edges = network_data.get("dependency_edges")
     if not isinstance(edges, list):
@@ -208,6 +217,22 @@ def _approach_labels() -> Dict[str, str]:
     return dict(DEPENDENCY_APPROACH_LABELS)
 
 
+def _rank_rows(rows: List[Dict[str, Any]], field: str) -> Dict[str, int]:
+    sorted_rows = sorted(rows, key=lambda row: float(row.get(field, 0.0)), reverse=True)
+    ranks: Dict[str, int] = {}
+    current_rank = 0
+    previous_value = None
+
+    for index, row in enumerate(sorted_rows, start=1):
+        value = float(row.get(field, 0.0))
+        if previous_value is None or value != previous_value:
+            current_rank = index
+            previous_value = value
+        ranks[str(row.get("id"))] = current_rank
+
+    return ranks
+
+
 def _build_pairwise_comparisons(network_data: Dict[str, Any]) -> Dict[str, Any]:
     use_canonical_edges = bool(_canonical_dependency_edges(network_data))
     edge_keys = _network_edge_keys(network_data) if use_canonical_edges else set()
@@ -282,7 +307,7 @@ def _build_pairwise_comparisons(network_data: Dict[str, Any]) -> Dict[str, Any]:
     return pairwise
 
 
-def extract_dependency_metrics(network_data: Dict[str, Any]) -> Dict[str, Any]:
+def _extract_dependency_metrics_payload(network_data: Dict[str, Any]) -> Dict[str, Any]:
     approaches = _approach_labels()
     by_approach: Dict[str, Dict[str, Any]] = {}
 
@@ -309,6 +334,14 @@ def extract_dependency_metrics(network_data: Dict[str, Any]) -> Dict[str, Any]:
             ],
             key=lambda row: (int(row["id"]) if str(row["id"]).isdigit() else float("inf"), str(row["id"])),
         )
+        rank_maps = {
+            field: _rank_rows(per_bip, field)
+            for field in RANK_FIELDS
+        }
+        for row in per_bip:
+            row_id = str(row.get("id"))
+            for field in RANK_FIELDS:
+                row[f"{field}_rank"] = int(rank_maps[field].get(row_id, 0))
 
         by_approach[approach_key] = {
             "label": approach_label,
@@ -326,3 +359,45 @@ def extract_dependency_metrics(network_data: Dict[str, Any]) -> Dict[str, Any]:
         "by_approach": by_approach,
         "pairwise_comparisons": _build_pairwise_comparisons(network_data),
     }
+
+
+def _network_data_with_llm_model(network_data: Dict[str, Any], llm_model: str) -> Dict[str, Any]:
+    llm_models = network_data.get("llm_models", {}) if isinstance(network_data, dict) else {}
+    model_edges = (llm_models.get("dependency_edges_by_model", {}) or {}).get(llm_model, [])
+    base_edges = [
+        edge
+        for edge in _canonical_dependency_edges(network_data)
+        if edge.get("extraction_method") != BODY_EXTRACTED_LLM
+    ]
+    return {
+        **network_data,
+        "dependency_edges": base_edges + list(model_edges or []),
+    }
+
+
+def extract_dependency_metrics(network_data: Dict[str, Any]) -> Dict[str, Any]:
+    payload = _extract_dependency_metrics_payload(network_data)
+    published_llm_model = str(network_data.get("llm_model") or "").strip()
+    if published_llm_model:
+        payload["llm_model"] = published_llm_model
+
+    llm_models = network_data.get("llm_models", {}) if isinstance(network_data, dict) else {}
+    available_models = llm_models.get("available_models", []) if isinstance(llm_models, dict) else []
+    if not available_models:
+        return payload
+
+    payload["llm_models"] = {
+        "default_model": llm_models.get("default_model"),
+        "available_models": list(available_models),
+        "by_model": {},
+    }
+    for entry in available_models:
+        if not isinstance(entry, dict):
+            continue
+        llm_model = str(entry.get("model") or "").strip()
+        if not llm_model:
+            continue
+        payload["llm_models"]["by_model"][llm_model] = _extract_dependency_metrics_payload(
+            _network_data_with_llm_model(network_data, llm_model)
+        )
+    return payload

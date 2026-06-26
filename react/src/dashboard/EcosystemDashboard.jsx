@@ -4,9 +4,11 @@ import { Dropdown } from 'primereact/dropdown';
 import { InputSwitch } from 'primereact/inputswitch';
 import { MultiSelect } from 'primereact/multiselect';
 import { Link, useParams } from 'react-router-dom';
-import { DEFAULT_DEPENDENCY_APPROACH, LINK_TYPE_OPTIONS } from '../dependencyApproaches';
 import { ecosystemsById } from '../ecosystems';
-import { getAvailableSnapshots } from '../data';
+import {
+  getAvailableSnapshots,
+  getPublishedDependencyLlmModel,
+} from '../data';
 import {
   buildDashboardData,
   buildWordCloudData,
@@ -86,7 +88,6 @@ export function EcosystemDashboard() {
   const [dependencyMinRelationsIncludeConnections, setDependencyMinRelationsIncludeConnections] = useState(false);
   const [dependencyFilterText, setDependencyFilterText] = useState('');
   const [dependencyIncludeConnections, setDependencyIncludeConnections] = useState(true);
-  const [selectedDependencyMetricsApproach, setSelectedDependencyMetricsApproach] = useState(DEFAULT_DEPENDENCY_APPROACH);
   const [wordCloudFilterText, setWordCloudFilterText] = useState('');
   const [highlightedConformityProposal, setHighlightedConformityProposal] = useState('');
   const [linkMode, setLinkMode] = useLocalStorageState('cdv-explorer-linkmode', 'history');
@@ -164,16 +165,20 @@ export function EcosystemDashboard() {
   const activeConformitySourceView = normalizeSectionSourceView(conformitySourceView, orderedSelectedSourceIds, false);
 
   const authorshipViewDataset = getSectionDataset(selectedDataset, activeAuthorshipSourceView);
-  const dependencyViewDataset = getSectionDataset(selectedDataset, activeDependenciesSourceView);
+  const rawDependencyViewDataset = getSectionDataset(selectedDataset, activeDependenciesSourceView);
   const conformityViewDataset = getSectionDataset(selectedDataset, activeConformitySourceView);
+  const activeDependencyLlmModel = useMemo(() => {
+    return getPublishedDependencyLlmModel(rawDependencyViewDataset) || '';
+  }, [rawDependencyViewDataset]);
+  const dependencyViewDataset = rawDependencyViewDataset;
   const authorshipViewEcosystem = getSectionEcosystem(ecosystem, activeEcosystem, activeAuthorshipSourceView);
   const dependencyViewEcosystem = getSectionEcosystem(ecosystem, activeEcosystem, activeDependenciesSourceView);
   const authorshipDashboardData = activeAuthorshipSourceView === SECTION_VIEW_MERGED
     ? dashboardData
     : (perSourceDashboardData[activeAuthorshipSourceView] || dashboardData);
   const dependencyDashboardData = activeDependenciesSourceView === SECTION_VIEW_MERGED
-    ? dashboardData
-    : (perSourceDashboardData[activeDependenciesSourceView] || dashboardData);
+    ? buildDashboardData(dependencyViewDataset, dependencyViewEcosystem)
+    : buildDashboardData(dependencyViewDataset, dependencyViewEcosystem);
   const conformityDashboardData = activeConformitySourceView === SECTION_VIEW_MERGED
     ? dashboardData
     : (perSourceDashboardData[activeConformitySourceView] || dashboardData);
@@ -210,21 +215,6 @@ export function EcosystemDashboard() {
   };
 
   const dependencyViewMetrics = dependencyDashboardData.dependencyMetrics;
-  const dependencyMetricsApproachOptions = useMemo(
-    () => LINK_TYPE_OPTIONS.filter(
-      (option) => dependencyViewMetrics?.by_approach?.[option.value]
-    ),
-    [dependencyViewMetrics]
-  );
-  const activeDependencyMetricsApproach = dependencyMetricsApproachOptions.some(
-    (option) => option.value === selectedDependencyMetricsApproach
-  )
-    ? selectedDependencyMetricsApproach
-    : (dependencyMetricsApproachOptions[0]?.value || DEFAULT_DEPENDENCY_APPROACH);
-  const activeDependencyMetrics = dependencyViewMetrics?.by_approach?.[activeDependencyMetricsApproach] || {
-    summary: {},
-    per_bip: [],
-  };
   const authorshipAvailableProposalNodes = useMemo(
     () => (authorshipViewDataset?.nodes || [])
       .filter((node) => node?.id != null),
@@ -287,12 +277,6 @@ export function EcosystemDashboard() {
       return normalized.length ? current : '';
     });
   }, [conformityAvailableProposalNodes, ecosystem]);
-
-  useEffect(() => {
-    if (!dependencyMetricsApproachOptions.some((option) => option.value === selectedDependencyMetricsApproach)) {
-      setSelectedDependencyMetricsApproach(dependencyMetricsApproachOptions[0]?.value || DEFAULT_DEPENDENCY_APPROACH);
-    }
-  }, [dependencyMetricsApproachOptions, selectedDependencyMetricsApproach]);
 
   useEffect(() => {
     document.documentElement.classList.add('dashboard-route-active');
@@ -589,10 +573,7 @@ export function EcosystemDashboard() {
               }}
               dependencyMetrics={{
                 dependencyViewMetrics,
-                dependencyMetricsApproachOptions,
-                activeDependencyMetricsApproach,
-                setSelectedDependencyMetricsApproach,
-                activeDependencyMetrics,
+                activeDependencyLlmModel,
               }}
               filteredWordCloudData={filteredWordCloudData}
               hasWordCloudFilter={hasWordCloudFilter}

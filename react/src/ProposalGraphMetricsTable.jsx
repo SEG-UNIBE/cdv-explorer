@@ -1,6 +1,4 @@
-import { useMemo } from 'react';
-import { DataTable } from 'primereact/datatable';
-import { Column } from 'primereact/column';
+import { useMemo, useState } from 'react';
 import { useDashboardEcosystem, useDashboardLinkMode, useDashboardSnapshot } from './dashboard/DashboardSnapshotContext';
 import { formatProposalLabel, getProposalUrl, normalizeProposalId } from './proposalLinks';
 
@@ -15,51 +13,53 @@ function truncateTitle(value, maxLength = 40) {
   return `${text.slice(0, maxLength).trimEnd()}...`;
 }
 
-const RANK_FIELDS = ['in_degree', 'out_degree', 'weighted_eigenvector', 'pagerank', 'betweenness'];
-
 function formatNumber(value, digits = 4) {
   return Number(value || 0)
     .toFixed(digits)
     .replace(/\.?0+$/, '');
 }
 
-function buildRankMap(rows, field) {
-  const sorted = [...rows].sort((a, b) => (b[field] || 0) - (a[field] || 0));
-  const rankMap = {};
-  let currentRank = 0;
-  let prevVal = null;
-  sorted.forEach((row, i) => {
-    const val = row[field] || 0;
-    if (val !== prevVal) {
-      currentRank = i + 1;
-      prevVal = val;
-    }
-    rankMap[row.id] = currentRank;
-  });
-  return rankMap;
-}
-
 function RankBadge({ rank }) {
+  if (!Number.isFinite(Number(rank)) || Number(rank) <= 0) {
+    return null;
+  }
   return <span className="rank-badge">#{rank}</span>;
 }
 
-export const ProposalGraphMetricsTable = ({
+function compareValues(left, right, direction) {
+  if (typeof left === 'number' && typeof right === 'number') {
+    return (left - right) * direction;
+  }
+  return String(left || '').localeCompare(String(right || ''), undefined, { numeric: true }) * direction;
+}
+
+function getSortableValue(row, field) {
+  if (field === 'id') {
+    return String(row.displayLabel || row.id || '');
+  }
+  return Number(row[field] || 0);
+}
+
+export function ProposalGraphMetricsTable({
   rows,
   proposalFilterIds = [],
   defaultSortField,
   defaultSortOrder = -1,
-}) => {
+}) {
   const snapshotLabel = useDashboardSnapshot();
   const linkMode = useDashboardLinkMode();
   const ecosystem = useDashboardEcosystem();
+  const [sortField, setSortField] = useState(defaultSortField);
+  const [sortDirection, setSortDirection] = useState(defaultSortOrder === -1 ? 'desc' : 'asc');
 
-  const ranksByField = useMemo(() => {
-    const result = {};
-    RANK_FIELDS.forEach((field) => {
-      result[field] = buildRankMap(rows, field);
-    });
-    return result;
-  }, [rows]);
+  const sourceSlugToSourceId = useMemo(() => (
+    Object.fromEntries(
+      Object.values(ecosystem?.sources || {}).map((source) => [
+        String(source?.sourceSlug || source?.sourceId || '').trim(),
+        String(source?.sourceId || source?.sourceSlug || '').trim(),
+      ])
+    )
+  ), [ecosystem]);
 
   const filteredRows = useMemo(() => {
     const filteredProposalKeys = new Set(
@@ -76,72 +76,131 @@ export const ProposalGraphMetricsTable = ({
       const rawId = String(row.id || '').trim();
       const separatorIndex = rawId.indexOf(':');
       const rowSourceSlug = separatorIndex >= 0 ? rawId.slice(0, separatorIndex) : '';
-      const rowSource = Object.values(ecosystem?.sources || {}).find(
-        (source) => String(source?.sourceSlug || source?.sourceId || '') === rowSourceSlug
-      );
-      const rowSourceId = String(rowSource?.sourceId || rowSourceSlug || '').trim();
+      const rowSourceId = sourceSlugToSourceId[rowSourceSlug] || rowSourceSlug;
       const rowProposalId = normalizeProposalId(rawId, ecosystem);
 
       return filteredProposalKeys.has(`${rowSourceId}|${rowProposalId}`);
     };
 
-    return rows.filter((row) => (
-      rowMatchesProposalFilter(row)
-    ));
-  }, [ecosystem, proposalFilterIds, rows]);
+    return rows
+      .filter((row) => rowMatchesProposalFilter(row))
+      .map((row) => {
+        const title = String(row.title || '').trim();
+        const normalized = normalizeProposalId(row.id, ecosystem);
+        return {
+          ...row,
+          displayLabel: normalized ? formatProposalLabel(row.id, ecosystem) : String(row.id || ''),
+          displayUrl: getProposalUrl(row.id, snapshotLabel, { linkMode }, ecosystem),
+          displayTitle: title,
+          displayShortTitle: truncateTitle(title, 50),
+        };
+      });
+  }, [ecosystem, linkMode, proposalFilterIds, rows, snapshotLabel, sourceSlugToSourceId]);
+
+  const sortedRows = useMemo(() => {
+    const direction = sortDirection === 'desc' ? -1 : 1;
+    return [...filteredRows].sort((left, right) => {
+      const primary = compareValues(
+        getSortableValue(left, sortField),
+        getSortableValue(right, sortField),
+        direction,
+      );
+      if (primary !== 0) {
+        return primary;
+      }
+      return String(left.displayLabel || left.id || '').localeCompare(
+        String(right.displayLabel || right.id || ''),
+        undefined,
+        { numeric: true }
+      );
+    });
+  }, [filteredRows, sortDirection, sortField]);
+
+  const handleSortChange = (field) => {
+    if (field === sortField) {
+      setSortDirection((current) => (current === 'asc' ? 'desc' : 'asc'));
+      return;
+    }
+    setSortField(field);
+    setSortDirection('desc');
+  };
+
+  const getSortIndicator = (field) => {
+    if (field !== sortField) {
+      return '';
+    }
+    return sortDirection === 'asc' ? ' ↑' : ' ↓';
+  };
+
+  if (sortedRows.length === 0) {
+    return (
+      <div className="centrality-table centrality-table--empty">
+        <p className="centrality-table__empty">No proposals found.</p>
+      </div>
+    );
+  }
 
   return (
-    <DataTable
-      value={filteredRows}
-      sortField={defaultSortField}
-      sortOrder={defaultSortOrder}
-      removableSort
-      scrollable
-      scrollHeight="420px"
-      size="small"
-      className="centrality-table"
-      emptyMessage="No proposals found."
-    >
-      <Column
-        field="id"
-        header="IP"
-        sortable
-        body={(row) => {
-          const normalized = normalizeProposalId(row.id, ecosystem);
-          const title = String(row.title || '').trim();
-          const shortTitle = truncateTitle(title, 50);
-          return (
-            <span>
-              <a href={getProposalUrl(row.id, snapshotLabel, { linkMode }, ecosystem)} target="_blank" rel="noreferrer">
-                {normalized ? formatProposalLabel(row.id, ecosystem) : String(row.id || '')}
-              </a>
-              {shortTitle ? (
-                <span title={title}>{` ${shortTitle}`}</span>
-              ) : null}
-            </span>
-          );
-        }}
-      />
-      <Column field="in_degree" header="In Degree" sortable body={(row) => <span>{Number(row.in_degree || 0)}<RankBadge rank={ranksByField.in_degree[row.id]} /></span>} />
-      <Column field="out_degree" header="Out Degree" sortable body={(row) => <span>{Number(row.out_degree || 0)}<RankBadge rank={ranksByField.out_degree[row.id]} /></span>} />
-      <Column
-        field="weighted_eigenvector"
-        header="Weighted Eigenvector"
-        sortable
-        body={(row) => <span>{formatNumber(row.weighted_eigenvector, 4)}<RankBadge rank={ranksByField.weighted_eigenvector[row.id]} /></span>}
-      />
-      <Column
-        field="pagerank"
-        header="PageRank"
-        sortable
-        body={(row) => <span>{formatNumber(row.pagerank, 4)}<RankBadge rank={ranksByField.pagerank[row.id]} /></span>}
-      />
-      <Column
-        field="betweenness"
-        header="Betweenness"
-        sortable
-        body={(row) => <span>{formatNumber(row.betweenness, 4)}<RankBadge rank={ranksByField.betweenness[row.id]} /></span>}
-      />
-    </DataTable>
+    <div className="centrality-table">
+      <div className="centrality-table__wrap">
+        <table className="analysis-table">
+          <thead>
+            <tr>
+              <th>
+                <button type="button" className="analysis-table__sort-button" onClick={() => handleSortChange('id')}>
+                  {`IP${getSortIndicator('id')}`}
+                </button>
+              </th>
+              <th>
+                <button type="button" className="analysis-table__sort-button" onClick={() => handleSortChange('in_degree')}>
+                  {`In Degree${getSortIndicator('in_degree')}`}
+                </button>
+              </th>
+              <th>
+                <button type="button" className="analysis-table__sort-button" onClick={() => handleSortChange('out_degree')}>
+                  {`Out Degree${getSortIndicator('out_degree')}`}
+                </button>
+              </th>
+              <th>
+                <button type="button" className="analysis-table__sort-button" onClick={() => handleSortChange('weighted_eigenvector')}>
+                  {`Weighted Eigenvector${getSortIndicator('weighted_eigenvector')}`}
+                </button>
+              </th>
+              <th>
+                <button type="button" className="analysis-table__sort-button" onClick={() => handleSortChange('pagerank')}>
+                  {`PageRank${getSortIndicator('pagerank')}`}
+                </button>
+              </th>
+              <th>
+                <button type="button" className="analysis-table__sort-button" onClick={() => handleSortChange('betweenness')}>
+                  {`Betweenness${getSortIndicator('betweenness')}`}
+                </button>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {sortedRows.map((row) => (
+              <tr key={row.id}>
+                <td>
+                  <span>
+                    <a href={row.displayUrl} target="_blank" rel="noreferrer">
+                      {row.displayLabel}
+                    </a>
+                    {row.displayShortTitle ? (
+                      <span title={row.displayTitle}>{` ${row.displayShortTitle}`}</span>
+                    ) : null}
+                  </span>
+                </td>
+                <td>{Number(row.in_degree || 0)}<RankBadge rank={row.in_degree_rank} /></td>
+                <td>{Number(row.out_degree || 0)}<RankBadge rank={row.out_degree_rank} /></td>
+                <td>{formatNumber(row.weighted_eigenvector, 4)}<RankBadge rank={row.weighted_eigenvector_rank} /></td>
+                <td>{formatNumber(row.pagerank, 4)}<RankBadge rank={row.pagerank_rank} /></td>
+                <td>{formatNumber(row.betweenness, 4)}<RankBadge rank={row.betweenness_rank} /></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
   );
-};
+}

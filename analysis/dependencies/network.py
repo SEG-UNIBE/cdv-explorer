@@ -12,7 +12,12 @@ from analysis.dependencies.constants import (
     PREAMBLE_EXTRACTED,
 )
 from analysis.authorship.mining import get_git_authors_on_first_day
-from analysis.proposal_schema import get_formal_compliance, get_interrelations, normalize_proposal_document
+from analysis.proposal_schema import (
+    get_formal_compliance,
+    get_interrelations,
+    is_llm_runs_format,
+    normalize_proposal_document,
+)
 from analysis.validation.ground_truth import load_ground_truth_curated_entries, load_ground_truth_ips
 from pipeline.source_context import SourceContext
 from analysis.utils import parse_date_ymd as _parse_date_ymd
@@ -111,6 +116,98 @@ def normalize_dependency_edges(network_data: Dict[str, Any]) -> List[Dict[str, A
             if edge.get("source") is not None and edge.get("target") is not None
         ]
     return []
+
+
+def available_llm_model_entries(network_data: Mapping[str, Any]) -> List[Dict[str, Any]]:
+    llm_models = network_data.get("llm_models")
+    if not isinstance(llm_models, Mapping):
+        return []
+    available = llm_models.get("available_models")
+    if not isinstance(available, list):
+        return []
+    return [
+        dict(entry)
+        for entry in available
+        if isinstance(entry, Mapping) and str(entry.get("model") or "").strip()
+    ]
+
+
+def collapse_network_data_to_llm_model(
+    network_data: Dict[str, Any],
+    llm_model: str | None,
+) -> Dict[str, Any]:
+    model = str(llm_model or "").strip()
+    if not model:
+        collapsed = dict(network_data)
+        collapsed.pop("llm_models", None)
+        collapsed.pop("llm_model", None)
+        return collapsed
+
+    llm_models = network_data.get("llm_models")
+    if not isinstance(llm_models, Mapping):
+        raise ValueError("No per-model LLM artifact data is available in the dependency network payload.")
+
+    edges_by_model = llm_models.get("dependency_edges_by_model")
+    if not isinstance(edges_by_model, Mapping) or model not in edges_by_model:
+        available = sorted(str(entry.get("model") or "").strip() for entry in available_llm_model_entries(network_data))
+        raise ValueError(
+            f"LLM model '{model}' is not available in the dependency network payload. "
+            f"Available models: {', '.join(available) if available else '(none)'}"
+        )
+
+    base_edges = [
+        edge
+        for edge in normalize_dependency_edges(network_data)
+        if edge.get("extraction_method") != BODY_EXTRACTED_LLM
+    ]
+    model_edges = [
+        make_dependency_edge(
+            edge.get("source"),
+            edge.get("target"),
+            str(edge.get("extraction_method") or ""),
+            str(edge.get("relation_type") or ""),
+            edge.get("value", 1),
+            **{
+                key: value
+                for key, value in edge.items()
+                if key not in EDGE_BASE_FIELDS
+            },
+        )
+        for edge in (edges_by_model.get(model) or [])
+        if isinstance(edge, Mapping)
+    ]
+
+    collapsed = dict(network_data)
+    collapsed["dependency_edges"] = base_edges + model_edges
+    collapsed["llm_model"] = model
+    collapsed.pop("llm_models", None)
+    return collapsed
+
+
+def _llm_runs_by_model(interrelations: Mapping[str, Any]) -> Dict[str, Dict[str, Any]]:
+    raw_llm = interrelations.get(BODY_EXTRACTED_LLM)
+    if not is_llm_runs_format(raw_llm):
+        return {}
+    return {
+        str(run.get("model") or "").strip(): dict(run)
+        for run in raw_llm
+        if isinstance(run, Mapping) and str(run.get("model") or "").strip()
+    }
+
+
+def _default_llm_run(
+    llm_runs_by_model: Mapping[str, Dict[str, Any]],
+    configured_model: str | None,
+) -> Dict[str, Any] | None:
+    configured = str(configured_model or "").strip()
+    if configured and configured in llm_runs_by_model:
+        return llm_runs_by_model[configured]
+    if not llm_runs_by_model:
+        return None
+    return max(
+        llm_runs_by_model.values(),
+        key=lambda run: str(run.get("timestamp") or ""),
+    )
 
 
 def normalize_proposal_ids(field: Any, proposal_label: str = "IP") -> List[str]:
@@ -329,6 +426,8 @@ def build_network_data(
     nodes = []
     explicit_reference_links = []
     implicit_dependency_links = []
+    implicit_dependency_links_by_model: Dict[str, List[Dict[str, Any]]] = {}
+    llm_model_stats: Dict[str, Dict[str, Any]] = {}
     ground_truth_links = []
     explicit_dependency_links: Dict[str, List[Dict[str, Any]]] = {
         relation_type: [] for relation_type in context.preamble_interrelation_types
@@ -417,6 +516,7 @@ def build_network_data(
 
         preamble = proposal.get("raw", {}).get("preamble", {})
         interrelations = get_interrelations(proposal)
+        raw_interrelations = proposal.get("insights", {}).get("interrelations", {})
         proposal_id = preamble.get(id_field)
 
         if not proposal_id:
@@ -432,13 +532,36 @@ def build_network_data(
             if target_exists(proposal_id, ref.get("source_slug"), ref["proposal_id"]):
                 explicit_reference_links.append(make_link(proposal_id, ref.get("source_slug"), ref["proposal_id"], ref.get("count", 1)))
 
-        for dep in normalize_proposal_references(
-            interrelations.get(BODY_EXTRACTED_LLM),
-            proposal_label=proposal_label,
-            source_context=context,
-        ):
-            if target_exists(proposal_id, dep.get("source_slug"), dep["proposal_id"]):
-                implicit_dependency_links.append(make_link(proposal_id, dep.get("source_slug"), dep["proposal_id"]))
+        llm_runs_by_model = _llm_runs_by_model(raw_interrelations)
+        default_llm_run = _default_llm_run(llm_runs_by_model, context.llm_model)
+        for llm_model, llm_run in llm_runs_by_model.items():
+            llm_model_stats.setdefault(
+                llm_model,
+                {
+                    "model": llm_model,
+                    "document_count": 0,
+                    "edge_count": 0,
+                },
+            )
+            llm_model_stats[llm_model]["document_count"] += 1
+            model_links = implicit_dependency_links_by_model.setdefault(llm_model, [])
+            for dep in normalize_proposal_references(
+                llm_run.get("dependencies"),
+                proposal_label=proposal_label,
+                source_context=context,
+            ):
+                if not target_exists(proposal_id, dep.get("source_slug"), dep["proposal_id"]):
+                    continue
+                edge = make_link(
+                    proposal_id,
+                    dep.get("source_slug"),
+                    dep["proposal_id"],
+                    llm_model=llm_model,
+                )
+                model_links.append(edge)
+                llm_model_stats[llm_model]["edge_count"] += 1
+                if default_llm_run is llm_run:
+                    implicit_dependency_links.append(edge)
 
         preamble_interrelations = interrelations.get(PREAMBLE_EXTRACTED, [])
         relation_entries_by_type: Dict[str, List[Any]] = {}
@@ -561,10 +684,28 @@ def build_network_data(
         GROUND_TRUTH_CURATED: ground_truth_links,
     }
     dependency_edges = dependency_edges_from_links(raw_links, source_slug=context.source_slug)
+    dependency_edges_by_model = {
+        model: dependency_edges_from_links(
+            {BODY_EXTRACTED_LLM: links},
+            source_slug=context.source_slug,
+        )
+        for model, links in implicit_dependency_links_by_model.items()
+    }
+    default_model = str(context.llm_model or "").strip()
+    if not default_model and llm_model_stats:
+        default_model = sorted(llm_model_stats)[0]
 
     return {
         "nodes": nodes,
         "dependency_edges": dependency_edges,
+        "llm_models": {
+            "default_model": default_model or None,
+            "available_models": sorted(
+                llm_model_stats.values(),
+                key=lambda item: str(item.get("model") or ""),
+            ),
+            "dependency_edges_by_model": dependency_edges_by_model,
+        },
         "ground_truth_reviewed_ips": ground_truth_reviewed_ips,
     }
 

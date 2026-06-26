@@ -28,7 +28,7 @@ def build_author_bip_map(network_data: dict) -> dict[str, list[str]]:
                 author_bips[cleaned].add(str(bip_id))
 
     return {
-        author: sorted(bips, key=lambda value: int(value))
+        author: sorted(bips, key=int)
         for author, bips in author_bips.items()
     }
 

@@ -713,42 +713,6 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:53:30Z",
-          "dependencies": [
-            {
-              "target": "bips:8",
-              "evidence": "This BIP will be deployed by BIP8 (Version bits with lock-in by height)",
-              "reason": "The proposal depends on BIP8 for its activation/deployment mechanism and lock-in timing.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:16",
-              "evidence": "BIP16 (Pay to Script Hash) ... provide mechanisms by which script policy can be revealed at spend time",
-              "reason": "The proposal extends the script-revelation model introduced by P2SH and constrains its semantics for tail-call execution.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:114",
-              "evidence": "When combined with BIP116 (MERKLEBRANCHVERIFY), tail-call semantics allows for generalized MAST capabilities",
-              "reason": "The proposal implements generalized MAST behavior that is the functional domain of BIP114, using a different mechanism but relying on the same MAST concept and policy-script commitment model.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:116",
-              "evidence": "This BIP, in conjunction with BIP116 (MERKLEBRANCHVERIFY) allows for a script to commit to a practically unbounded number of code pathways",
-              "reason": "The proposal directly relies on MERKLEBRANCHVERIFY as the commitment/proof mechanism needed to select and validate the executed subscript.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:141",
-              "evidence": "BIP141 (Segregated Witness) ... provide mechanisms by which script policy can be revealed at spend time as part of the execution witness",
-              "reason": "The proposal restricts tail-call semantics to segwit redeem scripts and uses witness-stack execution rules as part of its validation model.",
-              "confidence": "low"
-            }
-          ]
-        },
-        {
-          "model": "gpt-5.4-mini",
           "timestamp": "2026-06-11T09:59:52Z",
           "dependencies": [
             {

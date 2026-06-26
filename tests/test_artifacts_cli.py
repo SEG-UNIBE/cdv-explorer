@@ -1,3 +1,4 @@
+import json
 import os
 import tempfile
 import unittest
@@ -8,7 +9,15 @@ import typer
 from typer.testing import CliRunner
 
 from analysis.validation import SnapshotValidationResult
-from main import app, _common_preprocess_snapshot_labels, _rebuild_source_artifacts
+from main import (
+    app,
+    _available_llm_models_in_preprocess_dir,
+    _common_preprocess_snapshot_labels,
+    _existing_llm_model_run_counts,
+    _rebuild_source_artifacts,
+    _resolve_artifact_llm_model,
+)
+from pipeline.preprocess._enrich import _preserved_llm_runs
 
 
 runner = CliRunner()
@@ -57,6 +66,7 @@ class ArtifactRebuildTests(unittest.TestCase):
             self.assertEqual(kwargs["file_prefix"], "bip")
             self.assertEqual(kwargs["source_context"].ecosystem_slug, "bitcoin")
             self.assertEqual(kwargs["source_context"].source_slug, "bips")
+            self.assertIsNone(kwargs["artifact_llm_model"])
 
     def test_rebuild_fails_when_preprocess_snapshot_is_missing(self) -> None:
         with tempfile.TemporaryDirectory() as tmp_dir:
@@ -80,6 +90,139 @@ class ArtifactRebuildTests(unittest.TestCase):
             snapshots = _common_preprocess_snapshot_labels({"bips": bips, "slips": slips})
 
             self.assertEqual(snapshots, ["2026-03-16", "2026-05-28"])
+
+    def test_existing_llm_model_run_counts_only_matching_model(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            preprocess_dir = Path(tmp_dir) / "02_preprocess" / "2026-05-28"
+            preprocess_dir.mkdir(parents=True)
+            (preprocess_dir / "bip-0001.json").write_text(
+                json.dumps({
+                    "raw": {"preamble": {"bip": "1"}},
+                    "insights": {"interrelations": {"body_extracted_llm": [
+                        {"model": "gpt-5.4-mini", "timestamp": "2026-06-01T00:00:00Z", "dependencies": []},
+                        {"model": "gpt-5.4", "timestamp": "2026-06-02T00:00:00Z", "dependencies": []},
+                    ]}},
+                }),
+                encoding="utf-8",
+            )
+            (preprocess_dir / "bip-0002.json").write_text(
+                json.dumps({
+                    "raw": {"preamble": {"bip": "2"}},
+                    "insights": {"interrelations": {"body_extracted_llm": [
+                        {"model": "gpt-5.4-mini", "timestamp": "2026-06-03T00:00:00Z", "dependencies": []},
+                    ]}},
+                }),
+                encoding="utf-8",
+            )
+
+            docs, runs = _existing_llm_model_run_counts(
+                preprocess_dir,
+                id_field="bip",
+                llm_model="gpt-5.4-mini",
+            )
+
+        self.assertEqual((docs, runs), (2, 2))
+
+    def test_existing_llm_model_run_counts_respects_focus(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            preprocess_dir = Path(tmp_dir) / "02_preprocess" / "2026-05-28"
+            preprocess_dir.mkdir(parents=True)
+            for bip_id in ("1", "2"):
+                (preprocess_dir / f"bip-{bip_id.zfill(4)}.json").write_text(
+                    json.dumps({
+                        "raw": {"preamble": {"bip": bip_id}},
+                        "insights": {"interrelations": {"body_extracted_llm": [
+                            {"model": "gpt-5.4-mini", "timestamp": "2026-06-01T00:00:00Z", "dependencies": []},
+                        ]}},
+                    }),
+                    encoding="utf-8",
+                )
+
+            docs, runs = _existing_llm_model_run_counts(
+                preprocess_dir,
+                id_field="bip",
+                llm_model="gpt-5.4-mini",
+                focus={"1"},
+            )
+
+        self.assertEqual((docs, runs), (1, 1))
+
+    def test_available_llm_models_in_preprocess_dir_discovers_distinct_models(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            preprocess_dir = Path(tmp_dir) / "02_preprocess" / "2026-05-28"
+            preprocess_dir.mkdir(parents=True)
+            (preprocess_dir / "bip-0001.json").write_text(
+                json.dumps({
+                    "insights": {"interrelations": {"body_extracted_llm": [
+                        {"model": "gpt-5.4-mini", "timestamp": "2026-06-01T00:00:00Z", "dependencies": []},
+                        {"model": "gpt-5.4", "timestamp": "2026-06-02T00:00:00Z", "dependencies": []},
+                    ]}},
+                }),
+                encoding="utf-8",
+            )
+
+            models = _available_llm_models_in_preprocess_dir(preprocess_dir)
+
+        self.assertEqual(models, ["gpt-5.4", "gpt-5.4-mini"])
+
+    def test_resolve_artifact_llm_model_fails_without_explicit_choice_when_multiple_exist(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            preprocess_dir = Path(tmp_dir) / "02_preprocess" / "2026-05-28"
+            preprocess_dir.mkdir(parents=True)
+            (preprocess_dir / "bip-0001.json").write_text(
+                json.dumps({
+                    "insights": {"interrelations": {"body_extracted_llm": [
+                        {"model": "gpt-5.4-mini", "timestamp": "2026-06-01T00:00:00Z", "dependencies": []},
+                        {"model": "gpt-5.4", "timestamp": "2026-06-02T00:00:00Z", "dependencies": []},
+                    ]}},
+                }),
+                encoding="utf-8",
+            )
+
+            with self.assertRaises(typer.Exit):
+                _resolve_artifact_llm_model(
+                    eco_slug="bitcoin",
+                    src_slug="bips",
+                    snapshot="2026-05-28",
+                    preprocess_dir=preprocess_dir,
+                    requested_model=None,
+                )
+
+    def test_resolve_artifact_llm_model_accepts_requested_model(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            preprocess_dir = Path(tmp_dir) / "02_preprocess" / "2026-05-28"
+            preprocess_dir.mkdir(parents=True)
+            (preprocess_dir / "bip-0001.json").write_text(
+                json.dumps({
+                    "insights": {"interrelations": {"body_extracted_llm": [
+                        {"model": "gpt-5.4-mini", "timestamp": "2026-06-01T00:00:00Z", "dependencies": []},
+                        {"model": "gpt-5.4", "timestamp": "2026-06-02T00:00:00Z", "dependencies": []},
+                    ]}},
+                }),
+                encoding="utf-8",
+            )
+
+            model = _resolve_artifact_llm_model(
+                eco_slug="bitcoin",
+                src_slug="bips",
+                snapshot="2026-05-28",
+                preprocess_dir=preprocess_dir,
+                requested_model="gpt-5.4-mini",
+            )
+
+        self.assertEqual(model, "gpt-5.4-mini")
+
+    def test_preserved_llm_runs_replaces_only_same_model(self) -> None:
+        raw_llm = [
+            {"model": "gpt-5.4-mini", "timestamp": "2026-06-01T00:00:00Z", "dependencies": [{"target": "bips:1"}]},
+            {"model": "gpt-5.4", "timestamp": "2026-06-02T00:00:00Z", "dependencies": [{"target": "bips:2"}]},
+        ]
+
+        preserved = _preserved_llm_runs(raw_llm, "gpt-5.4-mini", True)
+
+        self.assertEqual(preserved, [
+            {"model": "gpt-5.4", "timestamp": "2026-06-02T00:00:00Z", "dependencies": [{"target": "bips:2"}]},
+        ])
 
     def test_rebuild_all_artifacts_rebuilds_every_common_preprocess_snapshot(self) -> None:
         with tempfile.TemporaryDirectory() as tmp_dir:

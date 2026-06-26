@@ -24,6 +24,29 @@ export const DEPENDENCY_SHORT_LABELS = {
   [GROUND_TRUTH_CURATED]: 'Ground Truth',
 };
 
+export function getDependencyApproachLabel(approach, llmModel = '') {
+  const baseLabel = DEPENDENCY_SHORT_LABELS[approach] || approach;
+  if (approach !== BODY_EXTRACTED_LLM) {
+    return baseLabel;
+  }
+  const model = String(llmModel || '').trim();
+  return model ? `${baseLabel} (${model})` : baseLabel;
+}
+
+export function buildDependencyLinkTypeOptions(llmModel = '') {
+  return LINK_TYPE_OPTIONS.map((option) => ({
+    ...option,
+    label: getDependencyApproachLabel(option.value, llmModel),
+  }));
+}
+
+export function buildPairwiseLinkTypeOptions(llmModel = '') {
+  return PAIRWISE_LINK_TYPE_OPTIONS.map((option) => ({
+    ...option,
+    label: getDependencyApproachLabel(option.value, llmModel),
+  }));
+}
+
 function linkFromDependencyEdge(edge) {
   return {
     ...edge,

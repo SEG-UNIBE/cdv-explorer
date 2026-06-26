@@ -4,8 +4,8 @@ import { Button } from 'primereact/button';
 import {
   BODY_EXTRACTED_REGEX,
   DEFAULT_DEPENDENCY_APPROACH,
-  DEPENDENCY_SHORT_LABELS,
   PAIRWISE_LINK_TYPE_OPTIONS,
+  getDependencyApproachLabel,
 } from './dependencyApproaches';
 import { ProposalFilterControl } from './ProposalFilterControl';
 import { CollapsibleControls } from './dashboard/CollapsibleControls';
@@ -13,12 +13,6 @@ import { useDashboardEcosystem, useDashboardLinkMode, useDashboardSnapshot } fro
 import { parseProposalFilterExpression } from './dashboard/dashboardData';
 import { formatProposalLabel, getProposalUrl, normalizeProposalId } from './proposalLinks';
 import { renderTooltipCardHtml } from './tooltipHtml';
-
-const SHORT_LABELS = DEPENDENCY_SHORT_LABELS;
-
-function getApproachDisplayLabel(approachKey) {
-  return SHORT_LABELS[approachKey] || approachKey;
-}
 
 function truncateTitle(value, maxLength = 45) {
   const text = String(value || '').trim();
@@ -73,16 +67,16 @@ function buildProposalRefKey(ref) {
   return `${String(ref?.source || '').trim()}|${String(ref?.id || '').trim()}`;
 }
 
-function buildComparisonMetricCards(comparison) {
+function buildComparisonMetricCards(comparison, llmModel) {
   if (!comparison) {
     return [];
   }
 
-  const approachShortLabel = SHORT_LABELS[comparison.approach] || comparison.approach;
+  const approachShortLabel = getDependencyApproachLabel(comparison.approach, llmModel);
   return [
     {
       label: 'Approach',
-      value: `${getApproachDisplayLabel(comparison.approach)} vs ${getApproachDisplayLabel(comparison.baseline)}`,
+      value: `${getDependencyApproachLabel(comparison.approach, llmModel)} vs ${getDependencyApproachLabel(comparison.baseline, llmModel)}`,
     },
     {
       label: 'Same',
@@ -99,24 +93,24 @@ function buildComparisonMetricCards(comparison) {
   ];
 }
 
-function buildCellExplanation(metric, comparison) {
+function buildCellExplanation(metric, comparison, llmModel) {
   if (!comparison) {
     return '';
   }
 
   if (metric === 'overlap') {
-    return `${getApproachDisplayLabel(comparison.approach)} captures ${formatPercent(comparison.summary.hit_rate)} of the edges present in ${getApproachDisplayLabel(comparison.baseline)}.`;
+    return `${getDependencyApproachLabel(comparison.approach, llmModel)} captures ${formatPercent(comparison.summary.hit_rate)} of the edges present in ${getDependencyApproachLabel(comparison.baseline, llmModel)}.`;
   }
 
   if (metric === 'baseline_only') {
-    return `${formatPercent(comparison.summary.missed_rate)} of the edges present in ${getApproachDisplayLabel(comparison.baseline)} are missing from ${getApproachDisplayLabel(comparison.approach)}.`;
+    return `${formatPercent(comparison.summary.missed_rate)} of the edges present in ${getDependencyApproachLabel(comparison.baseline, llmModel)} are missing from ${getDependencyApproachLabel(comparison.approach, llmModel)}.`;
   }
 
   if (metric === 'approach_only') {
     const approachOnlyRate = comparison.summary.approach_total
       ? Number(comparison.summary.approach_only || 0) / Number(comparison.summary.approach_total)
       : 0;
-    return `${formatPercent(approachOnlyRate)} of the edges found by ${getApproachDisplayLabel(comparison.approach)} are absent from ${getApproachDisplayLabel(comparison.baseline)}.`;
+    return `${formatPercent(approachOnlyRate)} of the edges found by ${getDependencyApproachLabel(comparison.approach, llmModel)} are absent from ${getDependencyApproachLabel(comparison.baseline, llmModel)}.`;
   }
 
   return '';
@@ -130,12 +124,12 @@ function getApproachOnlyRate(comparison) {
   return Number(comparison.summary.approach_only || 0) / Number(comparison.summary.approach_total || 1);
 }
 
-function renderCellTooltipHtml(metric, comparison) {
+function renderCellTooltipHtml(metric, comparison, llmModel) {
   if (!comparison) {
     return '';
   }
 
-  const approachShortLabel = SHORT_LABELS[comparison.approach] || comparison.approach;
+  const approachShortLabel = getDependencyApproachLabel(comparison.approach, llmModel);
   const metricLabel = metric === 'overlap'
     ? 'Same'
     : metric === 'baseline_only'
@@ -150,7 +144,7 @@ function renderCellTooltipHtml(metric, comparison) {
         [`Not in ${approachShortLabel}`, `${comparison.summary.baseline_only} (${formatPercent(comparison.summary.missed_rate)})`],
         [`Only in ${approachShortLabel}`, `${comparison.summary.approach_only} (${formatPercent(getApproachOnlyRate(comparison))})`],
       ],
-      bodyHtml: buildCellExplanation(metric, comparison),
+      bodyHtml: buildCellExplanation(metric, comparison, llmModel),
     })
   );
 }
@@ -178,7 +172,7 @@ const CELL_METRICS = [
 ];
 
 function getMetricLabel(metric, comparison) {
-  const approachShortLabel = SHORT_LABELS[comparison?.approach] || 'Approach';
+  const approachShortLabel = getDependencyApproachLabel(comparison?.approach, comparison?.llm_model || '') || 'Approach';
   if (metric === 'overlap') {
     return 'Same';
   }
@@ -190,6 +184,7 @@ function getMetricLabel(metric, comparison) {
 
 function ComparisonTable({
   comparisons,
+  llmModel,
   selectedKey,
   selectedStatus,
   onSelect,
@@ -205,8 +200,8 @@ function ComparisonTable({
         <tr>
           <th>Approach \ Baseline</th>
           {approachKeys.map((baseline) => (
-            <th key={baseline} title={SHORT_LABELS[baseline]}>
-              {SHORT_LABELS[baseline]}
+            <th key={baseline} title={getDependencyApproachLabel(baseline, llmModel)}>
+              {getDependencyApproachLabel(baseline, llmModel)}
             </th>
           ))}
         </tr>
@@ -214,7 +209,7 @@ function ComparisonTable({
       <tbody>
         {approachKeys.map((approach) => (
           <tr key={approach}>
-            <th title={SHORT_LABELS[approach]}>{SHORT_LABELS[approach]}</th>
+            <th title={getDependencyApproachLabel(approach, llmModel)}>{getDependencyApproachLabel(approach, llmModel)}</th>
             {approachKeys.map((baseline) => {
               const comparisonKey = `${approach}__vs__${baseline}`;
               const comparison = comparisons?.[comparisonKey];
@@ -233,10 +228,16 @@ function ComparisonTable({
                           className={`dependency-heatmap-cell__metric${isSelected ? ' is-selected' : ''}`}
                           style={{ backgroundColor: getCellColor(metric.colorMetric, metricValue) }}
                           onClick={() => onSelect(comparisonKey, metric.status)}
-                          onMouseEnter={(event) => onShowTooltip(event, renderCellTooltipHtml(metric.key, comparison))}
+                          onMouseEnter={(event) => onShowTooltip(event, renderCellTooltipHtml(metric.key, {
+                            ...comparison,
+                            llm_model: llmModel,
+                          }, llmModel))}
                           onMouseMove={onMoveTooltip}
                           onMouseLeave={onHideTooltip}
-                          aria-label={getMetricLabel(metric.key, comparison)}
+                          aria-label={getMetricLabel(metric.key, {
+                            ...comparison,
+                            llm_model: llmModel,
+                          })}
                         >
                           <span className="dependency-heatmap-cell__metric-value">
                             {formatPercent(metricValue)}
@@ -258,6 +259,7 @@ function ComparisonTable({
 export function DependencyComparisonHeatmaps({
   pairwiseComparisons,
   proposalShortLabel = 'BIP',
+  activeLlmModel = '',
 }) {
   const snapshotLabel = useDashboardSnapshot();
   const linkMode = useDashboardLinkMode();
@@ -352,8 +354,8 @@ export function DependencyComparisonHeatmaps({
     ? pairwiseComparisons?.[selectedComparisonKey]
     : buildDefaultSelection(pairwiseComparisons);
   const comparisonMetricCards = useMemo(
-    () => buildComparisonMetricCards(selectedComparison),
-    [selectedComparison]
+    () => buildComparisonMetricCards(selectedComparison, activeLlmModel),
+    [activeLlmModel, selectedComparison]
   );
   const availableSourceNodes = useMemo(() => {
     const refs = new Map();
@@ -509,6 +511,7 @@ export function DependencyComparisonHeatmaps({
     <div>
       <ComparisonTable
         comparisons={pairwiseComparisons}
+        llmModel={activeLlmModel}
         selectedKey={selectedComparisonKey}
         selectedStatus={statusFilter}
         onSelect={handleSelectComparisonMetric}

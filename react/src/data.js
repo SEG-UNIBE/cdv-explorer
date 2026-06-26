@@ -19,6 +19,8 @@ const EMPTY_DATASET = {
   snapshot: null,
   sourceIds: [],
   bySource: {},
+  llmModel: null,
+  llmModels: { defaultModel: null, availableModels: [], edgesByModel: {} },
   nodes: [],
   groundTruthReviewedIps: [],
   links: EMPTY_LINKS,
@@ -127,6 +129,138 @@ function countAllLinks(linksByType) {
   );
 }
 
+function normalizeLlmModels(rawValue, sourceId, sourceSlug, sourceIdBySlug = {}) {
+  const raw = rawValue && typeof rawValue === 'object' ? rawValue : {};
+  const edgesByModel = Object.fromEntries(
+    Object.entries(raw.dependency_edges_by_model || {})
+      .filter(([, edges]) => Array.isArray(edges))
+      .map(([model, edges]) => [
+        model,
+        edges.map((edge) => scopeDependencyEdge(edge, sourceId, sourceSlug, sourceIdBySlug)),
+      ])
+  );
+  const availableModels = Array.isArray(raw.available_models)
+    ? raw.available_models
+      .filter((entry) => entry && typeof entry === 'object' && String(entry.model || '').trim())
+      .map((entry) => ({
+        model: String(entry.model).trim(),
+        documentCount: Number(entry.document_count || 0),
+        edgeCount: Number(entry.edge_count || 0),
+      }))
+    : [];
+  const defaultModel = String(raw.default_model || '').trim() || availableModels[0]?.model || null;
+  return { defaultModel, availableModels, edgesByModel };
+}
+
+function resolvePublishedLlmModel(network, dependencyMetrics, llmModels) {
+  const networkModel = String(network?.llm_model || '').trim();
+  if (networkModel) {
+    return networkModel;
+  }
+  const metricsModel = String(dependencyMetrics?.llm_model || '').trim();
+  if (metricsModel) {
+    return metricsModel;
+  }
+  return llmModels?.defaultModel || null;
+}
+
+function mergeLlmModels(perSourceDatasets) {
+  const statsByModel = new Map();
+  const edgesByModel = {};
+  const defaultModels = [];
+
+  perSourceDatasets.forEach((dataset) => {
+    const llmModels = dataset?.llmModels || {};
+    if (llmModels.defaultModel) {
+      defaultModels.push(llmModels.defaultModel);
+    }
+    (llmModels.availableModels || []).forEach((entry) => {
+      const model = String(entry?.model || '').trim();
+      if (!model) return;
+      const current = statsByModel.get(model) || { model, documentCount: 0, edgeCount: 0 };
+      current.documentCount += Number(entry.documentCount || 0);
+      current.edgeCount += Number(entry.edgeCount || 0);
+      statsByModel.set(model, current);
+    });
+    Object.entries(llmModels.edgesByModel || {}).forEach(([model, edges]) => {
+      if (!edgesByModel[model]) {
+        edgesByModel[model] = [];
+      }
+      edgesByModel[model].push(...(edges || []));
+    });
+  });
+
+  const availableModels = Array.from(statsByModel.values()).sort((left, right) => left.model.localeCompare(right.model));
+  const defaultModel = defaultModels.length > 0 && new Set(defaultModels).size === 1
+    ? defaultModels[0]
+    : (availableModels[0]?.model || null);
+
+  return { defaultModel, availableModels, edgesByModel };
+}
+
+function resolveDependencyMetricsForLlmModel(dependencyMetrics, llmModel) {
+  const metrics = dependencyMetrics || EMPTY_DATASET.dependencyMetrics;
+  const llmModels = metrics.llm_models || {};
+  const byModel = llmModels.by_model || {};
+  if (!llmModel || !byModel[llmModel]) {
+    return metrics;
+  }
+  return {
+    ...metrics,
+    by_approach: byModel[llmModel].by_approach || metrics.by_approach || {},
+    pairwise_comparisons: byModel[llmModel].pairwise_comparisons || metrics.pairwise_comparisons || {},
+  };
+}
+
+export function getAvailableDependencyLlmModels(dataset) {
+  return dataset?.llmModels?.availableModels || [];
+}
+
+export function getDefaultDependencyLlmModel(dataset) {
+  return dataset?.llmModels?.defaultModel || null;
+}
+
+export function getPublishedDependencyLlmModel(dataset) {
+  return String(dataset?.llmModel || '').trim() || null;
+}
+
+export function applyDependencyLlmModel(dataset, llmModel) {
+  if (!dataset || typeof dataset !== 'object') {
+    return dataset;
+  }
+
+  const resolveOne = (value) => {
+    if (!value || typeof value !== 'object') {
+      return value;
+    }
+    const nextLinks = {
+      ...(value.links || EMPTY_LINKS),
+      [BODY_EXTRACTED_LLM]: llmModel
+        ? (value?.llmModels?.edgesByModel?.[llmModel] || [])
+        : (value?.links?.[BODY_EXTRACTED_LLM] || []),
+    };
+    const nextBySource = Object.fromEntries(
+      Object.entries(value.bySource || {}).map(([sourceId, sourceDataset]) => [
+        sourceId,
+        resolveOne(sourceDataset),
+      ])
+    );
+    return {
+      ...value,
+      bySource: nextBySource,
+      activeLlmModel: llmModel || value?.llmModels?.defaultModel || null,
+      links: nextLinks,
+      network: {
+        ...(value.network || {}),
+        links: nextLinks,
+      },
+      dependencyMetrics: resolveDependencyMetricsForLlmModel(value.dependencyMetrics, llmModel),
+    };
+  };
+
+  return resolveOne(dataset);
+}
+
 function ensureSingleSourceShape(snapshotLabel, sourceId, sourceSlug, snapshotData, ecosystem = null) {
   const network = snapshotData.network || { nodes: [], links: EMPTY_LINKS };
   const graphSource = sourceSlug || sourceId;
@@ -142,14 +276,18 @@ function ensureSingleSourceShape(snapshotLabel, sourceId, sourceSlug, snapshotDa
   const groundTruthReviewedIps = Array.isArray(network.ground_truth_reviewed_ips)
     ? network.ground_truth_reviewed_ips.filter(Boolean)
     : [];
+  const llmModels = normalizeLlmModels(network.llm_models, sourceId, graphSource, sourceIdBySlug);
+  const llmModel = resolvePublishedLlmModel(network, snapshotData.dependencyMetrics, llmModels);
 
   return {
     snapshot: snapshotLabel,
     sourceIds: [sourceId],
+    llmModel,
+    llmModels,
     nodes,
     groundTruthReviewedIps,
     links,
-    network: { ...network, nodes, links, ground_truth_reviewed_ips: groundTruthReviewedIps },
+    network: { ...network, nodes, links, llm_models: llmModels, ground_truth_reviewed_ips: groundTruthReviewedIps },
     dependencyMetrics: snapshotData.dependencyMetrics || EMPTY_DATASET.dependencyMetrics,
     authorship: snapshotData.authorship || EMPTY_DATASET.authorship,
     classification: snapshotData.classification || EMPTY_DATASET.classification,
@@ -189,16 +327,20 @@ function ensureCombinedSourceShape(snapshotLabel, sourceEntries, combinationKey,
   const groundTruthReviewedIps = Array.isArray(network.ground_truth_reviewed_ips)
     ? network.ground_truth_reviewed_ips.filter(Boolean)
     : [];
+  const llmModels = normalizeLlmModels(network.llm_models, '', '', sourceIdBySlug);
+  const llmModel = resolvePublishedLlmModel(network, snapshotData.dependencyMetrics, llmModels);
 
   return {
     snapshot: snapshotLabel,
     sourceIds,
     combinationKey,
     isMergedSelection: true,
+    llmModel,
+    llmModels,
     nodes,
     groundTruthReviewedIps,
     links,
-    network: { ...network, nodes, links, ground_truth_reviewed_ips: groundTruthReviewedIps },
+    network: { ...network, nodes, links, llm_models: llmModels, ground_truth_reviewed_ips: groundTruthReviewedIps },
     dependencyMetrics: snapshotData.dependencyMetrics || EMPTY_DATASET.dependencyMetrics,
     authorship: snapshotData.authorship || EMPTY_DATASET.authorship,
     classification: snapshotData.classification || EMPTY_DATASET.classification,
@@ -357,15 +499,23 @@ function buildMergedDataset(snapshotLabel, entries, combinedDataset = null) {
   const nodes = perSourceDatasets.flatMap((d) => d.nodes || []);
   const links = mergeLinks(perSourceDatasets);
   const groundTruthReviewedIps = mergeGroundTruthReviewedIps(perSourceDatasets);
+  const llmModels = mergeLlmModels(perSourceDatasets);
+  const llmModelCandidates = Array.from(new Set(
+    perSourceDatasets
+      .map((dataset) => String(dataset?.llmModel || '').trim())
+      .filter(Boolean)
+  ));
 
   return {
     snapshot: snapshotLabel,
     sourceIds,
     bySource,
+    llmModel: llmModelCandidates.length === 1 ? llmModelCandidates[0] : null,
+    llmModels,
     nodes,
     groundTruthReviewedIps,
     links,
-    network: { nodes, links, ground_truth_reviewed_ips: groundTruthReviewedIps },
+    network: { nodes, links, llm_models: llmModels, ground_truth_reviewed_ips: groundTruthReviewedIps },
     authorship: mergeAuthorship(perSourceDatasets),
     classification: {
       ...EMPTY_DATASET.classification,

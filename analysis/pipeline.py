@@ -10,6 +10,8 @@ from analysis.classification import prepare_classification_payload
 from analysis.conformity import extract_conformity_metrics
 from analysis.dependencies import (
     build_network_data,
+    collapse_network_data_to_llm_model,
+    available_llm_model_entries,
     extract_dependency_metrics,
     load_proposal_json_documents,
     save_network_data_artifacts,
@@ -121,10 +123,27 @@ def _node_graph_key(node: Mapping[str, Any], source_slug: str) -> str:
     return f"{source_slug}:{node.get('id')}"
 
 
+def _published_llm_model_from_network_data(network_data: Mapping[str, Any]) -> str | None:
+    model = str(network_data.get("llm_model") or "").strip()
+    if model:
+        return model
+    available = [str(entry.get("model") or "").strip() for entry in available_llm_model_entries(network_data)]
+    available = [model_name for model_name in available if model_name]
+    if len(available) == 1:
+        return available[0]
+    if len(available) > 1:
+        raise ValueError(
+            "Source artifact still exposes multiple LLM models. Rebuild source artifacts with "
+            "`--artifact-llm-model <model>` before building combined-source artifacts."
+        )
+    return None
+
+
 def merge_source_network_data(networks_by_source: Sequence[tuple[str, Dict[str, Any]]]) -> Dict[str, Any]:
     nodes: List[Dict[str, Any]] = []
     edges: List[Dict[str, Any]] = []
     reviewed_ips: List[Dict[str, Any]] = []
+    published_llm_models: set[str] = set()
     seen_nodes: set[str] = set()
     seen_reviewed_ips: set[str] = set()
     source_slugs = [source_slug for source_slug, _network_data in networks_by_source]
@@ -144,6 +163,9 @@ def merge_source_network_data(networks_by_source: Sequence[tuple[str, Dict[str, 
             })
 
         edges.extend(normalize_dependency_edges(network_data))
+        published_model = _published_llm_model_from_network_data(network_data)
+        if published_model:
+            published_llm_models.add(published_model)
         for reviewed_ip in network_data.get("ground_truth_reviewed_ips", []):
             if not isinstance(reviewed_ip, dict):
                 continue
@@ -153,9 +175,17 @@ def merge_source_network_data(networks_by_source: Sequence[tuple[str, Dict[str, 
             seen_reviewed_ips.add(graph_key)
             reviewed_ips.append(reviewed_ip)
 
+    if len(published_llm_models) > 1:
+        raise ValueError(
+            "Cannot build combined-source artifacts from mixed published LLM models: "
+            f"{', '.join(sorted(published_llm_models))}. Rebuild the selected sources with the same "
+            "`--artifact-llm-model` value."
+        )
+
     return {
         "nodes": nodes,
         "dependency_edges": edges,
+        **({"llm_model": next(iter(published_llm_models))} if published_llm_models else {}),
         "ground_truth_reviewed_ips": reviewed_ips,
         "meta": {
             "node_count": len(nodes),
@@ -413,6 +443,7 @@ def prepare_ecosystem_artifacts(
     repo_dir: Path | None = None,
     file_prefix: str = "bip",
     source_context: SourceContext | None = None,
+    artifact_llm_model: str | None = None,
     status_callback=None,
     progress_callback=None,
 ) -> Dict[str, Path]:
@@ -439,6 +470,24 @@ def prepare_ecosystem_artifacts(
         source_context=context,
         known_proposal_ids_by_source=_known_proposal_ids_by_source(context, snapshot),
     )
+    available_llm_models = [
+        str(entry.get("model") or "").strip()
+        for entry in available_llm_model_entries(network_data)
+        if str(entry.get("model") or "").strip()
+    ]
+    if artifact_llm_model:
+        network_data = collapse_network_data_to_llm_model(network_data, artifact_llm_model)
+    elif len(available_llm_models) == 1:
+        network_data = collapse_network_data_to_llm_model(network_data, available_llm_models[0])
+    elif len(available_llm_models) > 1:
+        raise ValueError(
+            "Multiple LLM models are present in the preprocessed data for "
+            f"{context.ecosystem_slug}/{context.source_slug}/{snapshot}: {', '.join(sorted(available_llm_models))}. "
+            "Re-run with `--artifact-llm-model <model>` to choose which model should be published into the web artifacts."
+        )
+    else:
+        network_data = collapse_network_data_to_llm_model(network_data, None)
+
     snapshot_root = artifact_root / snapshot
 
     network_stem = snapshot_root / "dependencies" / "network_data"

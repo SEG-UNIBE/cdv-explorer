@@ -1,9 +1,18 @@
 import re
 from collections import Counter, defaultdict
 from datetime import datetime
+import math
 from typing import Any, Dict, Iterable, List, Tuple
 
 import networkx as nx
+
+
+AUTHOR_RANK_FIELDS = (
+    "rawDegree",
+    "weightedDegree",
+    "weightedEigenvector",
+    "betweenness",
+)
 
 
 def _clean_author_name(author: str) -> str:
@@ -144,9 +153,298 @@ def compute_centrality_scores(graph: nx.Graph) -> List[Dict[str, Any]]:
     return sorted(centrality_data, key=lambda x: x["eigenvector"], reverse=True)
 
 
+def _compute_weighted_eigenvector(node_ids: List[str], adjacency: Dict[str, List[Dict[str, Any]]], max_iterations: int = 1000, tolerance: float = 1e-6) -> Dict[str, float]:
+    author_ids = list(dict.fromkeys(str(node_id) for node_id in node_ids if str(node_id)))
+    node_count = len(author_ids)
+    if node_count == 0:
+        return {}
+
+    values = {author_id: 1 / math.sqrt(node_count) for author_id in author_ids}
+
+    for _ in range(max_iterations):
+        next_values = {author_id: 0.0 for author_id in author_ids}
+
+        for author_id in author_ids:
+            for neighbor in adjacency.get(author_id, []):
+                neighbor_id = str(neighbor.get("id") or "")
+                weight = float(neighbor.get("weight") or 0.0)
+                next_values[author_id] += weight * values.get(neighbor_id, 0.0)
+
+        norm = math.sqrt(sum(value ** 2 for value in next_values.values()))
+        if norm == 0:
+            return {author_id: 0.0 for author_id in author_ids}
+
+        delta = 0.0
+        for author_id in author_ids:
+            normalized_value = next_values[author_id] / norm
+            delta += abs(normalized_value - values.get(author_id, 0.0))
+            values[author_id] = normalized_value
+
+        if delta < node_count * tolerance:
+            break
+
+    return values
+
+
+def _compute_weighted_pagerank(node_ids: List[str], adjacency: Dict[str, List[Dict[str, Any]]], damping: float = 0.85, max_iterations: int = 1000, tolerance: float = 1e-6) -> Dict[str, float]:
+    author_ids = list(dict.fromkeys(str(node_id) for node_id in node_ids if str(node_id)))
+    node_count = len(author_ids)
+    if node_count == 0:
+        return {}
+
+    ranks = {author_id: 1 / node_count for author_id in author_ids}
+    outgoing_weight_by_author = {
+        author_id: sum(float(neighbor.get("weight") or 0.0) for neighbor in adjacency.get(author_id, []))
+        for author_id in author_ids
+    }
+
+    for _ in range(max_iterations):
+        dangling_mass = sum(
+            ranks.get(author_id, 0.0)
+            for author_id in author_ids
+            if outgoing_weight_by_author.get(author_id, 0.0) == 0.0
+        )
+        base_score = ((1 - damping) + (damping * dangling_mass)) / node_count
+        next_ranks = {author_id: base_score for author_id in author_ids}
+
+        for author_id in author_ids:
+            neighbors = adjacency.get(author_id, [])
+            total_outgoing_weight = outgoing_weight_by_author.get(author_id, 0.0)
+            if total_outgoing_weight == 0.0:
+                continue
+            for neighbor in neighbors:
+                neighbor_id = str(neighbor.get("id") or "")
+                weight = float(neighbor.get("weight") or 0.0)
+                contribution = damping * ranks.get(author_id, 0.0) * (weight / total_outgoing_weight)
+                next_ranks[neighbor_id] = next_ranks.get(neighbor_id, base_score) + contribution
+
+        delta = 0.0
+        for author_id in author_ids:
+            delta += abs(next_ranks.get(author_id, 0.0) - ranks.get(author_id, 0.0))
+            ranks[author_id] = next_ranks.get(author_id, 0.0)
+        if delta < tolerance:
+            break
+
+    return ranks
+
+
+def _build_true_components(node_ids: List[str], adjacency: Dict[str, List[Dict[str, Any]]]) -> List[List[str]]:
+    visited = set()
+    components: List[List[str]] = []
+
+    for node_id in node_ids:
+        if node_id in visited:
+            continue
+
+        queue = [node_id]
+        members: List[str] = []
+        visited.add(node_id)
+        head = 0
+
+        while head < len(queue):
+            current = queue[head]
+            head += 1
+            members.append(current)
+
+            for neighbor in adjacency.get(current, []):
+                neighbor_id = str(neighbor.get("id") or "")
+                if not neighbor_id or neighbor_id in visited:
+                    continue
+                visited.add(neighbor_id)
+                queue.append(neighbor_id)
+
+        components.append(members)
+
+    return sorted(components, key=len, reverse=True)
+
+
+def _build_display_components(node_ids: List[str], adjacency: Dict[str, List[Dict[str, Any]]]) -> List[List[str]]:
+    isolated_ids: List[str] = []
+    components: List[List[str]] = []
+
+    for members in _build_true_components(node_ids, adjacency):
+        if len(members) == 1:
+            isolated_ids.append(members[0])
+        else:
+            components.append(members)
+
+    if isolated_ids:
+        components.append(sorted(isolated_ids))
+
+    return components
+
+
+def _rank_author_rows(rows: List[Dict[str, Any]], field: str) -> Dict[str, int]:
+    sorted_rows = sorted(rows, key=lambda row: float(row.get(field, 0.0)), reverse=True)
+    ranks: Dict[str, int] = {}
+    current_rank = 0
+    previous_value = None
+
+    for index, row in enumerate(sorted_rows, start=1):
+        value = float(row.get(field, 0.0))
+        if previous_value is None or value != previous_value:
+            current_rank = index
+            previous_value = value
+        ranks[str(row.get("author"))] = current_rank
+
+    return ranks
+
+
+def build_collaboration_metrics_payload(collaboration_network: Dict[str, Any], collaboration_centrality: List[Dict[str, Any]]) -> Dict[str, Any]:
+    raw_nodes = collaboration_network.get("nodes", []) if isinstance(collaboration_network, dict) else []
+    raw_edges = collaboration_network.get("edges", []) if isinstance(collaboration_network, dict) else []
+    node_ids = [str(node.get("id")) for node in raw_nodes if node.get("id") is not None]
+    adjacency: Dict[str, List[Dict[str, Any]]] = {node_id: [] for node_id in node_ids}
+    weighted_degree_by_author: Dict[str, float] = {node_id: 0.0 for node_id in node_ids}
+
+    for edge in raw_edges:
+        source = str(edge.get("source") or "")
+        target = str(edge.get("target") or "")
+        weight = float(edge.get("weight") or 1.0)
+        if not source or not target:
+            continue
+        adjacency.setdefault(source, [])
+        adjacency.setdefault(target, [])
+        weighted_degree_by_author.setdefault(source, 0.0)
+        weighted_degree_by_author.setdefault(target, 0.0)
+        adjacency[source].append({"id": target, "weight": weight})
+        adjacency[target].append({"id": source, "weight": weight})
+        weighted_degree_by_author[source] += weight
+        weighted_degree_by_author[target] += weight
+
+    true_components = _build_true_components(node_ids, adjacency)
+    display_components = _build_display_components(node_ids, adjacency)
+    cluster_meta_by_author: Dict[str, Dict[str, int | None]] = {}
+    for index, members in enumerate(display_components, start=1):
+        for author in members:
+            cluster_meta_by_author[author] = {
+                "clusterId": index,
+                "clusterSize": len(members),
+            }
+
+    centrality_by_author = {
+        str(entry.get("author")): entry
+        for entry in (collaboration_centrality or [])
+        if entry.get("author") is not None
+    }
+    weighted_eigenvector_by_author = _compute_weighted_eigenvector(node_ids, adjacency)
+    pagerank_by_author = _compute_weighted_pagerank(node_ids, adjacency)
+
+    degree_rows = sorted(
+        [
+            {
+                "author": author,
+                "clusterId": cluster_meta_by_author.get(author, {}).get("clusterId"),
+                "clusterSize": cluster_meta_by_author.get(author, {}).get("clusterSize", 1),
+                "rawDegree": int(len(adjacency.get(author, []))),
+                "weightedDegree": float(weighted_degree_by_author.get(author, 0.0)),
+                "betweenness": float(centrality_by_author.get(author, {}).get("betweenness", 0.0)),
+                "normalizedDegree": float(centrality_by_author.get(author, {}).get("degree", 0.0)),
+                "pagerank": float(pagerank_by_author.get(author, 0.0)),
+            }
+            for author in node_ids
+        ],
+        key=lambda row: (-int(row["rawDegree"]), str(row["author"])),
+    )
+
+    eigenvector_by_author = {
+        str(author): {
+            "eigenvector": float(centrality_by_author.get(author, {}).get("eigenvector", 0.0)),
+            "weightedEigenvector": float(weighted_eigenvector_by_author.get(author, 0.0)),
+        }
+        for author in node_ids
+    }
+
+    metrics_rows = []
+    for row in degree_rows:
+        eigenvector_row = eigenvector_by_author.get(str(row["author"]), {})
+        metrics_rows.append(
+            {
+                **row,
+                "eigenvector": float(eigenvector_row.get("eigenvector", 0.0)),
+                "weightedEigenvector": float(eigenvector_row.get("weightedEigenvector", 0.0)),
+            }
+        )
+
+    rank_maps = {
+        field: _rank_author_rows(metrics_rows, field)
+        for field in AUTHOR_RANK_FIELDS
+    }
+    for row in metrics_rows:
+        author = str(row.get("author"))
+        for field in AUTHOR_RANK_FIELDS:
+            row[f"{field}Rank"] = int(rank_maps[field].get(author, 0))
+
+    cluster_size_distribution = [
+        {
+            "clusterSize": int(cluster_size),
+            "clusterCount": int(cluster_count),
+            "authorCount": int(cluster_size) * int(cluster_count),
+        }
+        for cluster_size, cluster_count in sorted(
+            Counter(len(members) for members in true_components).items(),
+            key=lambda item: item[0],
+        )
+    ]
+
+    degree_distribution = [
+        {
+            "degree": int(degree),
+            "authorCount": int(author_count),
+        }
+        for degree, author_count in sorted(
+            Counter(int(row.get("rawDegree", 0)) for row in degree_rows).items(),
+            key=lambda item: item[0],
+        )
+    ]
+
+    node_count = len(node_ids)
+    edge_count = len(raw_edges)
+    isolated_author_count = sum(1 for row in degree_rows if int(row.get("rawDegree", 0)) == 0)
+    cluster_count = len(display_components)
+    density = float(edge_count / ((node_count * (node_count - 1)) / 2)) if node_count > 1 else 0.0
+    largest_cluster_size = len(true_components[0]) if true_components else 0
+    true_cluster_count = len(true_components)
+    solo_cluster_count = next((entry["clusterCount"] for entry in cluster_size_distribution if entry["clusterSize"] == 1), 0)
+    pair_cluster_count = next((entry["clusterCount"] for entry in cluster_size_distribution if entry["clusterSize"] == 2), 0)
+    single_coauthor_count = next((entry["authorCount"] for entry in degree_distribution if entry["degree"] == 1), 0)
+    low_degree_author_count = sum(entry["authorCount"] for entry in degree_distribution if entry["degree"] <= 1)
+    average_degree = float(sum(int(row.get("rawDegree", 0)) for row in degree_rows) / node_count) if node_count > 0 else 0.0
+    max_degree = int(degree_distribution[-1]["degree"]) if degree_distribution else 0
+
+    return {
+        "summary": {
+            "nodeCount": node_count,
+            "edgeCount": edge_count,
+            "isolatedAuthorCount": isolated_author_count,
+            "clusterCount": cluster_count,
+            "density": density,
+            "trueClusterCount": true_cluster_count,
+            "soloClusterCount": solo_cluster_count,
+            "pairClusterCount": pair_cluster_count,
+            "largestClusterSize": largest_cluster_size,
+            "singleCoauthorCount": single_coauthor_count,
+            "lowDegreeAuthorCount": low_degree_author_count,
+            "averageDegree": average_degree,
+            "maxDegree": max_degree,
+        },
+        "metricsRows": metrics_rows,
+        "clusterSizeDistribution": cluster_size_distribution,
+        "degreeDistribution": degree_distribution,
+    }
+
+
 def prepare_authorship_payload(network_data: Dict[str, Any]) -> Dict[str, Any]:
     nodes = network_data.get("nodes", [])
     authorship = extract_authorship_metrics(nodes)
+    collaboration_network = authorship["collaboration_network"]
+    collaboration_centrality = compute_centrality_scores(
+        build_collaboration_network(nodes)
+    )
+    collaboration_metrics = build_collaboration_metrics_payload(
+        collaboration_network,
+        collaboration_centrality,
+    )
 
     return {
         "meta": {
@@ -159,6 +457,10 @@ def prepare_authorship_payload(network_data: Dict[str, Any]) -> Dict[str, Any]:
                 "top_10_share",
                 "collaboration_network",
                 "collaboration_centrality",
+                "collaboration_metrics_summary",
+                "collaboration_metrics_rows",
+                "collaboration_cluster_size_distribution",
+                "collaboration_degree_distribution",
             ],
         },
         "top_authors": authorship["top_authors"],
@@ -170,8 +472,10 @@ def prepare_authorship_payload(network_data: Dict[str, Any]) -> Dict[str, Any]:
             "bips_by_top_10_authors": authorship["top_10_share"]["proposals_by_top_10_authors"],
             "percentage": authorship["top_10_share"]["percentage"],
         },
-        "collaboration_network": authorship["collaboration_network"],
-        "collaboration_centrality": compute_centrality_scores(
-            build_collaboration_network(nodes)
-        ),
+        "collaboration_network": collaboration_network,
+        "collaboration_centrality": collaboration_centrality,
+        "collaboration_metrics_summary": collaboration_metrics["summary"],
+        "collaboration_metrics_rows": collaboration_metrics["metricsRows"],
+        "collaboration_cluster_size_distribution": collaboration_metrics["clusterSizeDistribution"],
+        "collaboration_degree_distribution": collaboration_metrics["degreeDistribution"],
     }

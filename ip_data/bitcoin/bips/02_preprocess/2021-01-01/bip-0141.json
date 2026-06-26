@@ -1014,6 +1014,15 @@
         "author": "jl2012",
         "path": "bip-codeshark-jl2012-segwit.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0141.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -1104,37 +1113,61 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:27Z",
+          "timestamp": "2026-06-26T11:23:13Z",
           "dependencies": [
             {
+              "target": "bips:9",
+              "evidence": "deployed by \"version bits\" BIP9 with the name \"segwit\"",
+              "reason": "Activation of this soft fork uses BIP9 version-bits deployment rules.",
+              "confidence": "high"
+            },
+            {
               "target": "bips:16",
-              "evidence": "Triggered when a scriptPubKey is a P2SH script, and the BIP16 redeemScript pushed in the scriptSig",
-              "reason": "BIP 141 defines P2SH-wrapped witness programs by reusing P2SH redeemScript handling and validation rules from BIP 16.",
+              "evidence": "redeemScript as defined in BIP16/P2SH",
+              "reason": "The witness-program-in-P2SH path relies on BIP16’s P2SH redeemScript/scriptSig evaluation rules.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:68",
+              "evidence": "BIP68 enables per-input relative-lock-time using the nSequence field",
+              "reason": "The proposal’s per-input relative-lock-time extension explicitly builds on BIP68’s relative-locktime semantics.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:70",
+              "evidence": "through BIP70 payment protocol",
+              "reason": "The backward-compatibility discussion relies on BIP70 for delivering native witness payments to non-upgraded wallets.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:112",
+              "evidence": "like BIP65 and BIP112",
+              "reason": "The proposed future witness-based script system for relative lock-time is modeled on script-enforced locktime behavior introduced by this proposal.",
               "confidence": "low"
             },
             {
               "target": "bips:143",
-              "evidence": "A major difference at consensus level is described in BIP143, as a new transaction digest algorithm",
-              "reason": "BIP 141 version-0 witness validation relies on the signature digest algorithm introduced by BIP 143.",
-              "confidence": "low"
+              "evidence": "a new transaction digest algorithm for signature verification in version 0 witness program",
+              "reason": "Version-0 witness validation depends on the signature digest algorithm and key restrictions defined by this proposal.",
+              "confidence": "high"
             },
             {
               "target": "bips:144",
-              "evidence": "serialized as described in BIP144, including base data and witness data",
-              "reason": "BIP 141’s block and transaction size accounting depends on the serialization format defined by BIP 144.",
+              "evidence": "transactions serialized as described in BIP144, including base data and witness data",
+              "reason": "The block-weight and transaction-size rules depend on BIP144’s serialization and peer-service handling of witness data.",
               "confidence": "low"
             },
             {
               "target": "bips:146",
               "evidence": "Signature(s) must be null vector(s) if an OP_CHECKSIG or OP_CHECKMULTISIG is failed",
-              "reason": "BIP 141’s witness script validation semantics incorporate the failed-signature NULLDUMMY-like rule from BIP 146.",
+              "reason": "The new witness script semantics incorporate the failed-signature null-vector rule defined by this proposal.",
               "confidence": "high"
             },
             {
               "target": "bips:173",
-              "evidence": "BIP173 Base32 address format for native v0-16 witness outputs",
-              "reason": "BIP 141 introduces native witness outputs whose address encoding is specified by BIP 173.",
-              "confidence": "high"
+              "evidence": "Base32 address format for native v0-16 witness outputs",
+              "reason": "Native witness outputs require the address format defined by this proposal for encoding versioned witness programs.",
+              "confidence": "medium"
             }
           ]
         }

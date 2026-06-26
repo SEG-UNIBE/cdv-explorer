@@ -754,6 +754,15 @@
         "author": "jl2012",
         "path": "bip-mast.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0114.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -789,25 +798,25 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:07Z",
+          "timestamp": "2026-06-26T11:23:02Z",
           "dependencies": [
             {
               "target": "bips:9",
-              "evidence": "will be deployed by version-bits [[bip-0009.mediawiki|BIP9]] after BIP141 is enforced",
-              "reason": "The proposal’s activation mechanism relies on BIP9 version-bits deployment semantics.",
-              "confidence": "high"
+              "evidence": "“will be deployed by version-bits BIP9 after BIP141 is enforced”",
+              "reason": "The proposal’s activation mechanism depends on BIP9 version-bits deployment rules.",
+              "confidence": "low"
             },
             {
               "target": "bips:112",
-              "evidence": "This is the \"Escrow with Timeout\" example in [[bip-0112.mediawiki|BIP112]]",
-              "reason": "The proposal’s MAST examples and branch rules depend on the CHECKLOCKTIMEVERIFY/CHECKSEQUENCEVERIFY semantics introduced by this proposal.",
+              "evidence": "“The following is the ‘Escrow with Timeout’ example in BIP112”",
+              "reason": "The proposal uses BIP112 script patterns and timelock semantics as a concrete contract structure to be flattened into MAST branches.",
               "confidence": "low"
             },
             {
               "target": "bips:141",
-              "evidence": "In [[bip-0141.mediawiki|BIP141]], witness programs with a version byte of 1 or larger are considered to be anyone-can-spend scripts",
-              "reason": "The proposal defines a new v1 witness program and explicitly uses BIP141’s witness program structure and validation rules.",
-              "confidence": "high"
+              "evidence": "“This BIP depends on BIP141”",
+              "reason": "The new witness program type and validation rules are defined in terms of SegWit witness versions and program handling from BIP141.",
+              "confidence": "low"
             }
           ]
         }

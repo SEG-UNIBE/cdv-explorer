@@ -219,19 +219,19 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:59Z",
+          "timestamp": "2026-06-26T11:24:38Z",
           "dependencies": [
             {
               "target": "bips:32",
               "evidence": "Derive the HD node `m/13'/A'/B'/C'/D'` according to BIP32.",
-              "reason": "The proposal’s key-derivation structure explicitly relies on BIP32 hierarchical deterministic wallet derivation.",
+              "reason": "The proposal’s key derivation path and hierarchical wallet structure rely on BIP32 derivation rules.",
               "confidence": "high"
             },
             {
               "target": "bips:43",
-              "evidence": "BIP-0043: Purpose Field for Deterministic Wallets",
-              "reason": "The path format includes a dedicated purpose level (`m/13'`), which uses the purpose-field convention introduced by BIP43.",
-              "confidence": "medium"
+              "evidence": "* BIP-0043: Purpose Field for Deterministic Wallets",
+              "reason": "The proposal reserves and uses a purpose field in the derivation path, which is defined by BIP43.",
+              "confidence": "low"
             }
           ]
         }

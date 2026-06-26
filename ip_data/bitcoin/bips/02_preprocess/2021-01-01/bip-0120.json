@@ -554,6 +554,15 @@
         "author": "Kalle Rosenbaum",
         "path": "bip-0120.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0120.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -585,8 +594,27 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:10Z",
-          "dependencies": []
+          "timestamp": "2026-06-26T11:23:05Z",
+          "dependencies": [
+            {
+              "target": "bips:21",
+              "evidence": "amount, label, message or other information from a BIP0021 URI",
+              "reason": "The request/transaction identification process relies on the BIP 21 URI fields as hints for selecting the payment to prove.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:70",
+              "evidence": "In BIP0070, the PaymentRequest together with the transactions fulfilling the request",
+              "reason": "The proposal uses BIP 70 payment request data as a source of hints and as an existing payment context for proof construction.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:121",
+              "evidence": "that is specified in separate specifications, see BIP0121",
+              "reason": "The proposal delegates PoP request transport to the URI scheme defined by BIP 121, so implementation depends on that transport format.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

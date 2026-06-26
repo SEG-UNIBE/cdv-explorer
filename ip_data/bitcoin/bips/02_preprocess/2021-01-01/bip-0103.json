@@ -521,6 +521,15 @@
         "author": "Jonathan Wilkins",
         "path": "bip-0103.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0103.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -539,15 +548,8 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:00:59Z",
-          "dependencies": [
-            {
-              "target": "bips:113",
-              "evidence": "Using the \"median time past\" guarantees monotonic behaviour",
-              "reason": "The proposal relies on the consensus-defined median-time-past rule to determine block size limits by time, so the schedule depends on that mechanism.",
-              "confidence": "high"
-            }
-          ]
+          "timestamp": "2026-06-26T11:22:58Z",
+          "dependencies": []
         }
       ]
     }

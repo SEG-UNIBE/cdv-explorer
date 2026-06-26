@@ -625,6 +625,15 @@
         "author": "Luke Dashjr",
         "path": "bip-0140.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0140.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -664,36 +673,36 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:24Z",
+          "timestamp": "2026-06-26T11:23:12Z",
           "dependencies": [
             {
               "target": "bips:11",
               "evidence": "This is the standard ''m-of-n'' script defined in BIP 11",
-              "reason": "The proposal adopts BIP 11’s multisig script structure as the basis for its new OP_CHECKSIGEX script format.",
+              "reason": "The proposal adopts BIP 11's multisig script structure and extends it with a version parameter and new opcode.",
               "confidence": "low"
             },
             {
               "target": "bips:30",
-              "evidence": "coinbase transactions in blocks at heights 91842 and 91880 ... and motivated the introduction of BIP 34",
-              "reason": "The proposal relies on BIP 30’s duplicate-coinbase transaction issue as part of its rationale for handling coinbase normalized IDs safely.",
+              "evidence": "the coinbase transactions in blocks at heights 91842 and 91880 ... motivated the introduction of BIP 34",
+              "reason": "The proposal's coinbase handling and collision discussion rely on BIP 30's duplicate-transaction constraint as part of the safety assumptions.",
               "confidence": "low"
             },
             {
               "target": "bips:34",
               "evidence": "motivated the introduction of BIP 34",
-              "reason": "The proposal uses BIP 34 as the historical fix that made coinbase transaction uniqueness safe, supporting its coinbase handling assumptions.",
+              "reason": "The proposal uses BIP 34 as the follow-on rule that resolved the coinbase collision issue relevant to normalized transaction ID safety.",
               "confidence": "medium"
             },
             {
               "target": "bips:62",
-              "evidence": "BIPs 62 ... alleviate the problem of third-party modification",
-              "reason": "The proposal’s malleability design is positioned as a replacement/extension of BIP 62’s canonical-signature approach and builds on that problem domain.",
+              "evidence": "BIPs 62 and 66 alleviate the problem of third-party modification",
+              "reason": "The proposal explicitly builds on BIP 62's malleability mitigation context and positions normalized transaction IDs as an alternative mechanism for the same problem space.",
               "confidence": "low"
             },
             {
               "target": "bips:66",
-              "evidence": "BIPs 62 ... and 66 ... alleviate the problem of third-party modification",
-              "reason": "The proposal’s malleability design is positioned as a replacement/extension of BIP 66’s strict-DER approach and builds on that problem domain.",
+              "evidence": "BIPs 62 and 66 alleviate the problem of third-party modification",
+              "reason": "The proposal explicitly relies on BIP 66's strict-DER malleability reduction as prior art and contrasts its own normalization-based approach with it.",
               "confidence": "low"
             }
           ]

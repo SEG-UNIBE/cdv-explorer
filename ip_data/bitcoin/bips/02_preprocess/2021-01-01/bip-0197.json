@@ -591,24 +591,36 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:47Z",
+          "timestamp": "2026-06-26T11:23:29Z",
           "dependencies": [
             {
-              "target": "bips:65",
-              "evidence": "[TIMEOUTOP] is either OP_CHECKSEQUENCEVERIFY or OP_CHECKLOCKTIMEVERIFY.",
-              "reason": "The script explicitly relies on the time-lock opcodes introduced by the target to enforce repayment, bidding, and seizure deadlines.",
+              "target": "bips:16",
+              "evidence": "collateral is locked in a P2SH",
+              "reason": "The proposal’s contract outputs are explicitly P2SH-based, so it relies on the P2SH script-hash spending model defined by this BIP.",
               "confidence": "high"
             },
             {
-              "target": "bips:68",
-              "evidence": "This BIP describes a script ... based on Hashed Time-Lock Contract (BIP 199) transactions",
-              "reason": "The proposal builds its collateral contract script on HTLC transaction mechanics introduced by the target.",
-              "confidence": "low"
+              "target": "bips:65",
+              "evidence": "[TIMEOUTOP] is either OP_CHECKSEQUENCEVERIFY or OP_CHECKLOCKTIMEVERIFY.",
+              "reason": "The script’s timeout branches depend on the relative/absolute locktime opcodes introduced by this BIP.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:112",
+              "evidence": "[TIMEOUTOP] is either OP_CHECKSEQUENCEVERIFY or OP_CHECKLOCKTIMEVERIFY.",
+              "reason": "The script can use CSV for its time-based spend conditions, so it depends on the semantics added by this BIP.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:174",
+              "evidence": "This BIP describes a script for generalized debt agreement contract based on Hashed Time-Lock Contract (BIP 199) transactions",
+              "reason": "The proposal builds on the generalized HTLC-related script constructs defined here for its secret-and-time-lock contract logic.",
+              "confidence": "high"
             },
             {
               "target": "bips:199",
               "evidence": "based on Hashed Time-Lock Contract (BIP 199) transactions",
-              "reason": "The proposal directly depends on the HTLC construction defined by the target as the basis for its contract design.",
+              "reason": "The proposal explicitly says it is based on BIP 199 transactions, so its contract design depends on that HTLC transaction pattern.",
               "confidence": "high"
             }
           ]

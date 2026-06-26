@@ -489,6 +489,15 @@
         "author": "Chris Priest",
         "path": "bip-tx-ver2.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0131.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -507,8 +516,15 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:16Z",
-          "dependencies": []
+          "timestamp": "2026-06-26T11:23:09Z",
+          "dependencies": [
+            {
+              "target": "bips:11",
+              "evidence": "This specification defines a new type of transaction",
+              "reason": "The proposal depends on Bitcoin transaction serialization and type handling conventions introduced by the transaction format proposal.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

@@ -443,8 +443,27 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:02:02Z",
-          "dependencies": []
+          "timestamp": "2026-06-26T11:24:40Z",
+          "dependencies": [
+            {
+              "target": "bips:174",
+              "evidence": "The following new global field type is added to the BIP-0174 specification",
+              "reason": "The proposal extends PSBT by defining new global and input field types, so it depends on the PSBT format and semantics from BIP 174.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:322",
+              "evidence": "signed using the Generic Signed Message Format as defined in the original BIP-0322",
+              "reason": "The proof signature format and verification rely on BIP 322 signing and sighash rules.",
+              "confidence": "low"
+            },
+            {
+              "target": "slips:21",
+              "evidence": "derived from the wallet's master secret using the SLIP-0021 method for hierarchical derivation of symmetric keys",
+              "reason": "The ownership identification key derivation is built directly on SLIP 21 key derivation.",
+              "confidence": "low"
+            }
+          ]
         }
       ]
     }

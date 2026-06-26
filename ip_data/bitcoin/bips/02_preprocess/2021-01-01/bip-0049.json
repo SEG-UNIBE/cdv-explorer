@@ -542,6 +542,15 @@
         "author": "Daniel Weigl",
         "path": "bip-p2sh-accounts.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0049.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -585,8 +594,45 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:00:40Z",
-          "dependencies": []
+          "timestamp": "2026-06-26T11:22:47Z",
+          "dependencies": [
+            {
+              "target": "bips:16",
+              "evidence": "P2WPKH-nested-in-P2SH",
+              "reason": "The proposal uses the P2SH wrapping and script/address construction defined by BIP16 for nested witness outputs.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:32",
+              "evidence": "based on a [[bip-0032.mediawiki|BIP 32]] root account",
+              "reason": "The derivation scheme is built on BIP32 hierarchical key derivation from a root account.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:43",
+              "evidence": "The rest of the levels are used as defined in BIP44.",
+              "reason": "BIP44's purpose-field account structure is itself defined by BIP43, which this proposal relies on for the derivation path semantics.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:44",
+              "evidence": "uses the same account-structure as defined in [[bip-0044.mediawiki|BIP 44]]",
+              "reason": "The proposal directly reuses BIP44's account hierarchy and path layout, changing only the purpose value.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "uses the encapsulation defined in [[bip-0141.mediawiki#p2wpkh-nested-in-bip16-p2sh|BIP 141]]",
+              "reason": "The address and script derivation for nested P2WPKH-in-P2SH outputs depends on BIP141's witness and script encoding.",
+              "confidence": "low"
+            },
+            {
+              "target": "slips:132",
+              "evidence": "Additional registered version bytes are listed in [[https://github.com/satoshilabs/slips/blob/master/slip-0132.md|SLIP-0132]].",
+              "reason": "The proposal relies on SLIP132's alternate extended key version-byte registry for ypub/yprv and testnet prefixes.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

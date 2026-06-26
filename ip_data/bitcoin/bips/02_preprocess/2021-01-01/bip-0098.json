@@ -726,12 +726,12 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:00:57Z",
+          "timestamp": "2026-06-26T11:22:57Z",
           "dependencies": [
             {
               "target": "bips:116",
               "evidence": "This BIP is used by BIP116 (MERKLEBRANCHVERIFY) to add Merkle inclusion proof verification to script",
-              "reason": "The proposal explicitly relies on BIP 116 for on-chain verification of the Merkle proof format it defines.",
+              "reason": "The proposal explicitly relies on BIP 116 to deploy its proof-verification semantics into script, making BIP 116 a direct technical dependency.",
               "confidence": "low"
             }
           ]

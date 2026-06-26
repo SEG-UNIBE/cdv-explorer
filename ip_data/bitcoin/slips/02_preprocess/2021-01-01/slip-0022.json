@@ -374,24 +374,24 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:02:09Z",
+          "timestamp": "2026-06-26T11:24:47Z",
           "dependencies": [
             {
               "target": "bips:39",
-              "evidence": "such as that defined in SLIP-0039 or the binary seed defined in BIP-0039",
-              "reason": "The proposal relies on BIP-39 seed material as a supported master secret source for deriving credential-related keys.",
-              "confidence": "low"
+              "evidence": "the binary seed defined in [BIP-0039]",
+              "reason": "The proposal uses BIP-39 seed material as an input master secret for deriving credential keys.",
+              "confidence": "high"
             },
             {
               "target": "slips:10",
-              "evidence": "derived from a master secret and from the version and authentication tag of the credential ID using the SLIP-0010 key derivation scheme",
-              "reason": "The proposal uses SLIP-0010 to derive the credential key pair along a specific key path.",
+              "evidence": "derived from a master secret and from the version and authentication tag ... using the [SLIP-0010] key derivation scheme",
+              "reason": "The credential key pair derivation explicitly relies on SLIP-0010 derivation rules and key-path semantics.",
               "confidence": "low"
             },
             {
               "target": "slips:21",
-              "evidence": "the master secret using the SLIP-0021 method for hierarchical derivation of symmetric keys",
-              "reason": "The proposal defines both the encryption key and CredRandom via SLIP-0021 hierarchical symmetric-key derivation.",
+              "evidence": "The key is derived from the master secret using the [SLIP-0021] method for hierarchical derivation of symmetric keys",
+              "reason": "The encryption key and CredRandom are derived using SLIP-0021 hierarchical symmetric-key derivation.",
               "confidence": "low"
             }
           ]

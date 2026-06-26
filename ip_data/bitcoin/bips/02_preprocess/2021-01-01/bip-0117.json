@@ -679,24 +679,30 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:09Z",
+          "timestamp": "2026-06-26T11:23:05Z",
           "dependencies": [
             {
               "target": "bips:8",
-              "evidence": "“This BIP will be deployed by BIP8 (Version bits with lock-in by height)”",
-              "reason": "The proposal’s activation and deployment depend on the BIP8 version-bits lock-in-by-height mechanism.",
+              "evidence": "\"This BIP will be deployed by BIP8 (Version bits with lock-in by height)\"",
+              "reason": "The deployment and activation rules are defined using BIP8 version-bits lock-in-by-height, making it the activation mechanism for this proposal.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:16",
+              "evidence": "\"BIP16 (Pay to Script Hash) and BIP141 ... provide mechanisms by which script policy can be revealed at spend time\"",
+              "reason": "The proposal explicitly generalizes the pay-to-script-hash style deferred revelation model and compares its script execution semantics to P2SH.",
               "confidence": "low"
             },
             {
               "target": "bips:116",
-              "evidence": "“This BIP, in conjunction with BIP116 (MERKLEBRANCHVERIFY) allows for a script to commit to a practically unbounded number of code pathways”",
-              "reason": "The proposal’s generalized MAST and branch-selection mechanism relies on MERKLEBRANCHVERIFY to commit to and verify the chosen policy script.",
+              "evidence": "\"This BIP, in conjunction with BIP116 (MERKLEBRANCHVERIFY)\"",
+              "reason": "The proposal’s generalized MAST and policy-script selection mechanism relies on MERKLEBRANCHVERIFY to commit to and prove the chosen script.",
               "confidence": "low"
             },
             {
               "target": "bips:141",
-              "evidence": "“only from within a segwit redeem script”",
-              "reason": "Tail-call semantics are constrained to SegWit redemption paths and the proposal’s execution model is built around SegWit witness/redeem-script behavior.",
+              "evidence": "\"BIP141 (Segregated Witness) provide mechanisms by which script policy can be revealed at spend time\"",
+              "reason": "The tail-call execution is restricted to segwit redeem scripts and the proposal’s spend-time script revelation semantics build on SegWit witness execution.",
               "confidence": "low"
             }
           ]

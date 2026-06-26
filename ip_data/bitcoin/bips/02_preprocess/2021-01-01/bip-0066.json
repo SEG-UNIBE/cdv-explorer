@@ -574,13 +574,22 @@
         "author": "Pieter Wuille",
         "path": "bip-0066.mediawiki",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "8e5fe7a23d0620eda32b8f185b5ef631e88fb179",
         "timestamp": "2015-08-14T09:52:24+10:00",
         "date": "2015-08-14",
         "author": "Daniel Cousens",
+        "path": "bip-0066.mediawiki",
+        "status": "Final",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
         "path": "bip-0066.mediawiki",
         "status": "Final",
         "standard": "bip2"
@@ -601,19 +610,19 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:00:44Z",
+          "timestamp": "2026-06-26T11:22:48Z",
           "dependencies": [
             {
               "target": "bips:34",
               "evidence": "We reuse the double-threshold switchover mechanism from BIP 34",
-              "reason": "The deployment logic explicitly adopts BIP 34’s activation mechanism and thresholds.",
+              "reason": "The deployment mechanism directly reuses BIP 34’s activation threshold and version-based switchover rules.",
               "confidence": "high"
             },
             {
               "target": "bips:62",
               "evidence": "reducing transaction malleability (see BIP 62)",
-              "reason": "The proposal references BIP 62 as the source of the malleability context that this rule change helps address, but this is a related effect rather than a required technical mechanism.",
-              "confidence": "low"
+              "reason": "The proposal explicitly relies on BIP 62 as the source of the malleability context and relationship to strict DER enforcement.",
+              "confidence": "medium"
             }
           ]
         }

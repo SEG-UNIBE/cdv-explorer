@@ -743,12 +743,21 @@
         "author": "Mark Friedenbach",
         "path": "bip-0068.mediawiki",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "c98859fe20617df141da0dd08d399921c7097be9",
         "timestamp": "2016-07-18T23:37:42Z",
         "date": "2016-07-18",
+        "author": "Luke Dashjr",
+        "path": "bip-0068.mediawiki",
+        "status": "Final",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
         "author": "Luke Dashjr",
         "path": "bip-0068.mediawiki",
         "status": "Final",
@@ -774,24 +783,24 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:00:48Z",
+          "timestamp": "2026-06-26T11:22:50Z",
           "dependencies": [
             {
               "target": "bips:9",
-              "evidence": "This BIP is to be deployed by \"versionbits\" BIP9 using bit 0.",
-              "reason": "Activation is specified using BIP9 versionbits, so the proposal depends on that deployment mechanism.",
+              "evidence": "deployed by \"versionbits\" BIP9 using bit 0",
+              "reason": "The activation mechanism for this proposal depends on BIP 9 versionbits signaling and deployment parameters.",
               "confidence": "high"
             },
             {
               "target": "bips:112",
               "evidence": "This BIP must be deployed simultaneously with BIP112",
-              "reason": "The proposal’s deployment and semantics are coordinated with BIP112, which defines the opcode that interprets the sequence-lock data.",
+              "reason": "The proposal is designed to activate together with BIP 112 and relies on its script semantics for sequence-based lock enforcement.",
               "confidence": "high"
             },
             {
               "target": "bips:113",
               "evidence": "All references to median-time-past (MTP) are as defined by BIP113.",
-              "reason": "The relative time-lock semantics rely on the median-time-past definition introduced by BIP113.",
+              "reason": "The time-based relative lock calculation uses BIP 113's median-time-past definition as part of its consensus rules.",
               "confidence": "high"
             }
           ]

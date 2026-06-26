@@ -804,33 +804,8 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:43Z",
-          "dependencies": [
-            {
-              "target": "bips:16",
-              "evidence": "their scope was extended in BIP13 for Pay-to-script-hash (P2SH)",
-              "reason": "The proposal relies on the existing base58 address ecosystem that was extended for P2SH, since it contrasts native segwit addresses with P2SH fallback usage.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:141",
-              "evidence": "Included in the Segregated Witness proposal are a new class of outputs (witness programs, see BIP141)",
-              "reason": "The address format encodes witness programs and witness versions defined by this proposal.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:142",
-              "evidence": "This replaces BIP142",
-              "reason": "The document states it supersedes BIP142, so it amends the prior segwit address specification.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:143",
-              "evidence": "and two instances of it (\"P2WPKH\" and \"P2WSH\", see BIP143)",
-              "reason": "The address format is specialized for the P2WPKH and P2WSH segwit output types introduced there.",
-              "confidence": "low"
-            }
-          ]
+          "timestamp": "2026-06-26T11:23:22Z",
+          "dependencies": []
         }
       ]
     }

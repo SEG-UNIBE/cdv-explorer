@@ -531,12 +531,21 @@
         "author": "Thomas Kerin",
         "path": "bip-median-past-timelock.mediawiki",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "c98859fe20617df141da0dd08d399921c7097be9",
         "timestamp": "2016-07-18T23:37:42Z",
         "date": "2016-07-18",
+        "author": "Luke Dashjr",
+        "path": "bip-0113.mediawiki",
+        "status": "Final",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
         "author": "Luke Dashjr",
         "path": "bip-0113.mediawiki",
         "status": "Final",
@@ -566,30 +575,30 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:07Z",
+          "timestamp": "2026-06-26T11:23:02Z",
           "dependencies": [
             {
               "target": "bips:9",
               "evidence": "deployed by \"versionbits\" BIP9 using bit 0",
-              "reason": "The activation mechanism is versionbits signaling as defined by BIP9, which this proposal uses for deployment.",
+              "reason": "The proposal’s activation mechanism is specified using BIP9 versionbits, so deployment depends on that signaling and activation framework.",
               "confidence": "high"
             },
             {
               "target": "bips:65",
               "evidence": "required by BIP65 (CHECKLOCKTIMEVERIFY)",
-              "reason": "The proposal changes the time source used for locktime evaluation, directly affecting CHECKLOCKTIMEVERIFY semantics.",
+              "reason": "The proposal changes locktime semantics that BIP65 relies on for consensus validity.",
               "confidence": "high"
             },
             {
               "target": "bips:68",
               "evidence": "matching the behavior of BIP68 (sequence numbers)",
-              "reason": "The proposal explicitly aligns locktime calculation behavior with the sequence-lock rules introduced by BIP68.",
+              "reason": "The proposal is intended to align locktime checking with BIP68's sequence-lock behavior, which depends on the same time semantics.",
               "confidence": "high"
             },
             {
               "target": "bips:112",
               "evidence": "matching the behavior of BIP68 (sequence numbers) and BIP112 (CHECKSEQUENCEVERIFY)",
-              "reason": "The proposal explicitly aligns locktime calculation behavior with CHECKSEQUENCEVERIFY semantics introduced by BIP112.",
+              "reason": "The proposal aligns consensus locktime checks with BIP112's sequence-lock semantics, so its behavior is tied to that rule set.",
               "confidence": "high"
             }
           ]

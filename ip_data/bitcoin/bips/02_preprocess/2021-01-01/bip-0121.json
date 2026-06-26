@@ -553,6 +553,15 @@
         "author": "Kalle Rosenbaum",
         "path": "bip-0121.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0121.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -584,30 +593,18 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:12Z",
+          "timestamp": "2026-06-26T11:23:06Z",
           "dependencies": [
             {
               "target": "bips:21",
               "evidence": "The specification is the same as BIP0021, with the following differences",
-              "reason": "The URI format, query handling, extensibility, and req-* rules are inherited from BIP 21 and modified here.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:70",
-              "evidence": "BIP70 PaymentDetails data",
-              "reason": "The transaction-hint matching rules map URI parameters to BIP70 PaymentDetails fields, relying on that payment request data model.",
+              "reason": "The proposal directly inherits BIP 21's URI parsing, extensibility, and query encoding rules, modifying them for the new scheme.",
               "confidence": "high"
             },
             {
               "target": "bips:120",
-              "evidence": "[https://github.com/bitcoin/bips/blob/master/bip-0120.mediawiki BIP0120]: Proof of Payment",
-              "reason": "The proposal defines a URI scheme specifically for the Proof of Payment process introduced by BIP 120.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:173",
-              "evidence": "The transaction hash of the payment",
-              "reason": "The txid parameter is used as a transaction identifier to match the payment transaction, depending on standard transaction hash semantics.",
+              "evidence": "BIP0120: Proof of Payment",
+              "reason": "The proposal defines a URI scheme specifically for the Proof of Payment process and uses the PoP terminology, destination, and transaction proof workflow introduced by BIP 120.",
               "confidence": "low"
             }
           ]

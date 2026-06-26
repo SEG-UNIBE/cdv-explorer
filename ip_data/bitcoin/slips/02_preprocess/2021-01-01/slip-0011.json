@@ -238,13 +238,13 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:58Z",
+          "timestamp": "2026-06-26T11:24:38Z",
           "dependencies": [
             {
               "target": "slips:32",
-              "evidence": "\"private_key = BIP32(self.storage.get_node()).get_private_node(list(address_n)).private_key\"",
-              "reason": "The encryption key is derived from a BIP32 node private key, so the proposal depends on BIP32 hierarchy and derivation semantics.",
-              "confidence": "low"
+              "evidence": "BIP 32 path",
+              "reason": "The proposal derives the encryption key from a BIP32 node private key, so the hierarchical derivation structure is required.",
+              "confidence": "high"
             }
           ]
         }

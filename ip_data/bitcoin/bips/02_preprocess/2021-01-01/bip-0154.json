@@ -848,13 +848,13 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:32Z",
+          "timestamp": "2026-06-26T11:23:19Z",
           "dependencies": [
             {
-              "target": "bips:32",
-              "evidence": "The other is where the whole or parts of the data chunk are given as input (a \"big nonce\"). In this case, the internal nonce size is zero bytes",
-              "reason": "The proposal’s SHA256 POW format explicitly defines a zero-byte nonce mode and uses predecessor/successor chaining semantics, which rely on the broader nonce/input handling introduced here.",
-              "confidence": "high"
+              "target": "bips:141",
+              "evidence": "The challenge must match the given challenge up to and including the signature bytes",
+              "reason": "The proposal’s challenge/solution serialization and message handling are built around SegWit-style witness-like serialization constraints, but this is not a substantive reliance on BIP 141; no technical dependence is established.",
+              "confidence": "low"
             }
           ]
         }

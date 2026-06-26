@@ -896,6 +896,15 @@
         "author": "Matt Corallo",
         "path": "bip-0152.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0152.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -927,24 +936,24 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:37Z",
+          "timestamp": "2026-06-26T11:23:19Z",
           "dependencies": [
             {
               "target": "bips:130",
               "evidence": "invs or headers, as defined by BIP130",
-              "reason": "The proposal relies on BIP 130's announcement mechanism for the low-bandwidth compact block flow.",
+              "reason": "Compact blocks in low-bandwidth mode rely on the existing inv/headers announcement behavior defined by this proposal.",
               "confidence": "high"
             },
             {
               "target": "bips:141",
               "evidence": "supports segregated witness transactions (BIP 141 and BIP 144)",
-              "reason": "Version 2 compact blocks use wtxid and witness-aware transaction encoding defined by BIP 141.",
+              "reason": "Version 2 compact blocks require wtxid-based short IDs and witness-inclusive transaction encoding introduced by this proposal.",
               "confidence": "high"
             },
             {
               "target": "bips:144",
               "evidence": "responses to getdata MSG_WITNESS_TX, specified in BIP144",
-              "reason": "Compact block version 2 reuses the witness transaction serialization and related message semantics from BIP 144.",
+              "reason": "Version 2 compact blocks reuse the witness transaction/block message encodings and witness-aware relay semantics defined here.",
               "confidence": "high"
             }
           ]

@@ -951,8 +951,21 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:00:51Z",
-          "dependencies": []
+          "timestamp": "2026-06-26T11:22:53Z",
+          "dependencies": [
+            {
+              "target": "bips:21",
+              "evidence": "presents a BIP 21 URI ... with a parameter pj=",
+              "reason": "The protocol relies on BIP21 URIs and new URI parameters to advertise and carry the payjoin endpoint.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:174",
+              "evidence": "signed, finalized PSBT",
+              "reason": "The proposal is built around PSBT creation, exchange, validation, and finalization semantics.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

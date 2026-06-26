@@ -533,6 +533,15 @@
         "author": "Suhas Daftuar",
         "path": "bip-buried-deployments.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "0fc3fe20ca138821f81cf454c0f0ed50e7c94229",
+        "timestamp": "2016-11-30T12:25:52-05:00",
+        "date": "2016-11-30",
+        "author": "Suhas Daftuar",
+        "path": "bip-buried-deployments.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -568,24 +577,24 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:00:56Z",
+          "timestamp": "2026-06-26T11:22:56Z",
           "dependencies": [
             {
               "target": "bips:34",
               "evidence": "replace the trigger mechanism by caching the block heights at which those consensus rules became enforced",
-              "reason": "The proposal changes how BIP 34’s activation and enforcement are determined, relying on its activation height and coinbase-height rule.",
+              "reason": "The proposal changes validation by replacing BIP 34's version-signaling activation with cached activation heights and height-based enforcement.",
               "confidence": "high"
             },
             {
               "target": "bips:65",
               "evidence": "replace the trigger mechanism by caching the block heights at which those consensus rules became enforced",
-              "reason": "The proposal changes how BIP 65’s activation and enforcement are determined, relying on its activation height and CHECKLOCKTIMEVERIFY rule.",
+              "reason": "The proposal changes validation by replacing BIP 65's version-signaling activation with cached activation heights and height-based enforcement.",
               "confidence": "high"
             },
             {
               "target": "bips:66",
               "evidence": "replace the trigger mechanism by caching the block heights at which those consensus rules became enforced",
-              "reason": "The proposal changes how BIP 66’s activation and enforcement are determined, relying on its activation height and DER signature rule.",
+              "reason": "The proposal changes validation by replacing BIP 66's version-signaling activation with cached activation heights and height-based enforcement.",
               "confidence": "high"
             }
           ]

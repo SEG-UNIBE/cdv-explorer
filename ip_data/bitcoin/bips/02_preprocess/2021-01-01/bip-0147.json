@@ -482,6 +482,15 @@
         "author": "Johnson Lau",
         "path": "bip-nulldummy.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0147.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -530,30 +539,30 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:30Z",
+          "timestamp": "2026-06-26T11:23:16Z",
           "dependencies": [
             {
               "target": "bips:9",
-              "evidence": "deployed by \"version bits\" ... BIP9",
-              "reason": "The proposal uses BIP 9 version-bits activation machinery for deployment, so its activation depends on that mechanism.",
+              "evidence": "deployed by \"version bits\" BIP9",
+              "reason": "The activation mechanism relies on the version-bits soft-fork deployment framework defined by BIP9.",
               "confidence": "low"
             },
             {
               "target": "bips:62",
-              "evidence": "extracted from the previous ... BIP62 proposal",
-              "reason": "The document states it is extracted from BIP 62, indicating it inherits and specializes a rule originally proposed there.",
+              "evidence": "extracted from the previous BIP62 proposal",
+              "reason": "The proposal is derived from BIP62, indicating it inherits and amends that proposal’s script validity concepts.",
               "confidence": "low"
             },
             {
               "target": "bips:141",
               "evidence": "also pay-to-witness-script-hash scripts described in BIP141",
-              "reason": "The rule extends the dummy-element consensus constraint to SegWit P2WSH scripts defined by BIP 141.",
+              "reason": "The rule explicitly extends consensus behavior into P2WSH as defined by BIP141.",
               "confidence": "high"
             },
             {
               "target": "bips:143",
               "evidence": "using the same parameters for BIP141 and BIP143",
-              "reason": "The deployment section says it reuses the same version-bits activation parameters as BIP 143, making activation dependent on that proposal's deployment setup.",
+              "reason": "The deployment section reuses the activation parameters associated with this proposal.",
               "confidence": "medium"
             }
           ]

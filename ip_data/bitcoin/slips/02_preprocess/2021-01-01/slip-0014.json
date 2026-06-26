@@ -217,8 +217,39 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:02:01Z",
-          "dependencies": []
+          "timestamp": "2026-06-26T11:24:40Z",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "References - BIP-0032: Hierarchical Deterministic Wallets",
+              "reason": "The stress test wallet uses hierarchical deterministic derivation and extended keys defined by BIP32.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:39",
+              "evidence": "References - BIP-0039: Mnemonic code for generating deterministic keys",
+              "reason": "The wallet data is based on a mnemonic seed phrase generated per BIP39.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:44",
+              "evidence": "Bitcoin Legacy P2PKH (BIP44)",
+              "reason": "The proposal defines an account structure and derivation paths for legacy deterministic wallets using BIP44 semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:49",
+              "evidence": "Bitcoin Segwit P2SH (BIP49)",
+              "reason": "The proposal includes account derivation and address format for nested SegWit wallets as specified by BIP49.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:84",
+              "evidence": "Bitcoin Native Segwit P2SH (BIP84)",
+              "reason": "The proposal includes account derivation and bech32 address format for native SegWit wallets as specified by BIP84.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

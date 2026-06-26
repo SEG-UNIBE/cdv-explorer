@@ -674,12 +674,21 @@
         "author": "Peter Todd",
         "path": "bip-0023.mediawiki",
         "status": "Accepted",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "f31f7d43473fadcfafbc886b15e8c488654839c2",
         "timestamp": "2016-02-01T20:14:22Z",
         "date": "2016-02-01",
+        "author": "Luke Dashjr",
+        "path": "bip-0023.mediawiki",
+        "status": "Final",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
         "author": "Luke Dashjr",
         "path": "bip-0023.mediawiki",
         "status": "Final",
@@ -697,8 +706,15 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:00:30Z",
-          "dependencies": []
+          "timestamp": "2026-06-26T11:22:38Z",
+          "dependencies": [
+            {
+              "target": "bips:22",
+              "evidence": "all sections of this specification are optional extensions on top of BIP 22",
+              "reason": "BIP 23 is defined as an extension layer over BIP 22 and depends on its base getblocktemplate semantics and optional long polling behavior.",
+              "confidence": "low"
+            }
+          ]
         }
       ]
     }

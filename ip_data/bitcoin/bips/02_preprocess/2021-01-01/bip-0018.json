@@ -578,12 +578,21 @@
         "author": "Peter Todd",
         "path": "bip-0018.mediawiki",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "387fc6011bd804609fd751786e50439d5c11a097",
         "timestamp": "2016-08-23T19:47:29Z",
         "date": "2016-08-23",
+        "author": "Luke Dashjr",
+        "path": "bip-0018.mediawiki",
+        "status": "Accepted",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
         "author": "Luke Dashjr",
         "path": "bip-0018.mediawiki",
         "status": "Accepted",
@@ -635,36 +644,36 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:00:28Z",
+          "timestamp": "2026-06-26T11:22:38Z",
           "dependencies": [
             {
               "target": "bips:11",
               "evidence": "This BIP replaces BIPs 12 and 17",
-              "reason": "The proposal explicitly supersedes prior script-system extensions, indicating it builds on and constrains those earlier mechanisms.",
-              "confidence": "high"
+              "reason": "BIP 18 explicitly supersedes BIP 11's multisignature transaction format as part of the same pay-to-script-hash design context, making it a substantive technical predecessor.",
+              "confidence": "medium"
             },
             {
               "target": "bips:12",
               "evidence": "This BIP replaces BIPs 12 and 17",
-              "reason": "The proposal explicitly supersedes prior script-system extensions, indicating it builds on and constrains those earlier mechanisms.",
+              "reason": "The proposal is described as replacing BIP 12, so it relies on and amends the earlier script extension mechanism introduced there.",
               "confidence": "high"
             },
             {
               "target": "bips:13",
               "evidence": "The Motivation for this BIP (and BIP 13, the pay-to-script-hash address type)",
-              "reason": "The proposal relies on the pay-to-script-hash address type as part of the same deployment and infrastructure change.",
-              "confidence": "high"
+              "reason": "BIP 18 depends on the pay-to-script-hash address type as part of the overall P2SH mechanism and compatibility story.",
+              "confidence": "medium"
             },
             {
               "target": "bips:16",
               "evidence": "It also replaces BIP 16, which is identical in terms of protocol",
-              "reason": "The proposal adopts the same pay-to-script-hash protocol semantics and changes the behavior from the target.",
+              "reason": "The proposal directly amends and supersedes BIP 16's P2SH protocol rules and activation behavior.",
               "confidence": "high"
             },
             {
               "target": "bips:17",
               "evidence": "This BIP replaces BIPs 12 and 17",
-              "reason": "The proposal explicitly supersedes prior script-system extensions, indicating it builds on and constrains those earlier mechanisms.",
+              "reason": "The proposal explicitly replaces BIP 17, making it a direct technical predecessor to the same script verification mechanism.",
               "confidence": "high"
             }
           ]

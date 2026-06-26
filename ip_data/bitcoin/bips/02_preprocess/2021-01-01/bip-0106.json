@@ -494,6 +494,15 @@
         "author": "UpalChakraborty",
         "path": "bip-0106.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0106.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -521,8 +530,21 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:02Z",
-          "dependencies": []
+          "timestamp": "2026-06-26T11:23:00Z",
+          "dependencies": [
+            {
+              "target": "bips:100",
+              "evidence": "Other solutions considered ... \"Making Decentralized Economic Policy\"",
+              "reason": "The proposal is evaluated as a block-size policy alternative to BIP 100's dynamic block size mechanism, which is the substantive prior work in this area it relates to.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:101",
+              "evidence": "Other solutions considered ... \"Increase maximum block size\"",
+              "reason": "The proposal directly concerns changing the block size limit and references BIP 101 as an earlier block-size limit amendment in the same technical domain.",
+              "confidence": "low"
+            }
+          ]
         }
       ]
     }

@@ -596,8 +596,15 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:47Z",
-          "dependencies": []
+          "timestamp": "2026-06-26T11:23:28Z",
+          "dependencies": [
+            {
+              "target": "bips:7",
+              "evidence": "one new message to the stratum protocol ('''\"mining.configure\"''')",
+              "reason": "The proposal defines a Stratum mining protocol extension mechanism and message semantics, but it does not materially build on BIP 7 itself; no dependency is established.",
+              "confidence": "low"
+            }
+          ]
         }
       ]
     }

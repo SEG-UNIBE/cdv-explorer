@@ -291,25 +291,25 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:02:00Z",
+          "timestamp": "2026-06-26T11:24:40Z",
           "dependencies": [
             {
               "target": "bips:32",
-              "evidence": "m/10015'/0' (hardened path, see BIP32)",
-              "reason": "The proposal’s master-key derivation uses BIP32 hardened path semantics and xpub terminology.",
-              "confidence": "low"
+              "evidence": "path: `m/10015'/0'` (hardened path, see BIP32)",
+              "reason": "The proposal relies on BIP32 hardened derivation path semantics for generating the master key.",
+              "confidence": "high"
             },
             {
               "target": "slips:11",
               "evidence": "CipherKeyValue is defined in [SLIP-0011]",
-              "reason": "The proposal relies on the CipherKeyValue mechanism defined by this target to derive the master key from the device.",
+              "reason": "The master-key derivation explicitly uses the CipherKeyValue mechanism defined by this proposal.",
               "confidence": "high"
             },
             {
               "target": "slips:14",
               "evidence": "For the \"stress test\" wallet, defined in SLIP-0014",
-              "reason": "The example derivations and expected outputs are specialized to the wallet definition introduced by this target.",
-              "confidence": "high"
+              "reason": "The document’s example derivation and test vector depend on the wallet definition introduced by this proposal.",
+              "confidence": "medium"
             }
           ]
         }

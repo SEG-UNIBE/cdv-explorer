@@ -706,27 +706,8 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:34Z",
-          "dependencies": [
-            {
-              "target": "bips:37",
-              "evidence": "The standard light client protocol in use today, defined in BIP 37",
-              "reason": "This proposal replaces and interoperates with the BIP 37 light-client model, so it depends on that protocol as the prior baseline it supersedes.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:111",
-              "evidence": "similar to attacks against BIP 37 enabled nodes noted in BIP 111",
-              "reason": "The proposal explicitly relies on the DoS characteristics identified in BIP 111 to motivate node behavior and resource-handling constraints.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:158",
-              "evidence": "The initial filter types are defined separately in BIP 158",
-              "reason": "The filter messages and filter type codes in this proposal require the filter construction and serialization defined by BIP 158.",
-              "confidence": "low"
-            }
-          ]
+          "timestamp": "2026-06-26T11:23:22Z",
+          "dependencies": []
         }
       ]
     }

@@ -482,12 +482,21 @@
         "author": "Peter Todd",
         "path": "bip-0073.mediawiki",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "a74ea14bc66d6be699f3e3d5aae2fa308ad7adad",
         "timestamp": "2016-02-24T05:27:08Z",
         "date": "2016-02-24",
+        "author": "Luke Dashjr",
+        "path": "bip-0073.mediawiki",
+        "status": "Final",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
         "author": "Luke Dashjr",
         "path": "bip-0073.mediawiki",
         "status": "Final",
@@ -505,8 +514,15 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:00:50Z",
-          "dependencies": []
+          "timestamp": "2026-06-26T11:22:52Z",
+          "dependencies": [
+            {
+              "target": "bips:70",
+              "evidence": "This BIP describes an enhancement to the payment protocol (BIP 70)",
+              "reason": "The proposal extends the payment protocol defined by BIP 70 and relies on its payment request behavior.",
+              "confidence": "low"
+            }
+          ]
         }
       ]
     }

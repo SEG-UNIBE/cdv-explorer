@@ -566,7 +566,7 @@
         "author": "genjix",
         "path": "bip-0017.md",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "d0c10bae34af073b8a0e06aa496b5afc5e84b24d",
@@ -575,7 +575,7 @@
         "author": "Luke Dashjr",
         "path": "bip-0017.md",
         "status": "Withdrawn",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "16fe80c1c61b0d78581af78854e419f7ab544c69",
@@ -584,12 +584,21 @@
         "author": "Peter Todd",
         "path": "bip-0017.mediawiki",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "5866744d0ebe8fe40bf7d0ea79eb7fa67d562794",
         "timestamp": "2015-09-04T02:13:37Z",
         "date": "2015-09-04",
+        "author": "Luke Dashjr",
+        "path": "bip-0017.mediawiki",
+        "status": "Withdrawn",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
         "author": "Luke Dashjr",
         "path": "bip-0017.mediawiki",
         "status": "Withdrawn",
@@ -619,8 +628,33 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:00:26Z",
-          "dependencies": []
+          "timestamp": "2026-06-26T11:22:37Z",
+          "dependencies": [
+            {
+              "target": "bips:11",
+              "evidence": "The [[bip-0011.mediawiki|M-of-N Multisignature Transactions (BIP 11)]]",
+              "reason": "The proposal's standard transaction examples and supported redeem scripts rely on the multisignature script type defined by BIP 11.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:12",
+              "evidence": "This BIP replaces BIP 12 and BIP 16, which propose evaluating a Script from the stack after verifying its hash.",
+              "reason": "The proposal directly supersedes BIP 12's hash-then-execute mechanism and uses its conceptual model for pay-to-script-hash behavior.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:13",
+              "evidence": "The Motivation for this BIP (and BIP 13, the pay-to-script-hash address type)",
+              "reason": "The proposal depends on the pay-to-script-hash address format for the fixed 20-byte hash transaction type it defines.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:16",
+              "evidence": "This BIP replaces BIP 12 and BIP 16, which propose evaluating a Script from the stack after verifying its hash.",
+              "reason": "The proposed script and transaction type are a replacement for BIP 16-style pay-to-script-hash semantics, so it substantively relies on and amends that mechanism.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

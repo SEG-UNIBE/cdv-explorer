@@ -499,36 +499,36 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:30Z",
+          "timestamp": "2026-06-26T11:23:17Z",
           "dependencies": [
             {
               "target": "bips:8",
-              "evidence": "This BIP will be deployed by BIP8",
-              "reason": "The deployment mechanism and activation parameters are explicitly defined through BIP8.",
+              "evidence": "This BIP will be deployed by BIP8 with the name \"segwit\" and using bit 1.",
+              "reason": "The proposal’s activation method is explicitly defined using BIP8 deployment parameters and semantics.",
               "confidence": "high"
             },
             {
               "target": "bips:9",
-              "evidence": "This BIP should only be deployed if BIP9-segwit fails to lock-in or activate",
-              "reason": "The proposal’s activation conditions and incompatibility are defined relative to the BIP9 versionbits deployment.",
+              "evidence": "using versionbits with guaranteed lock-in",
+              "reason": "The proposal reuses and constrains the versionbits deployment mechanism introduced by BIP9, including lock-in/timeout behavior.",
               "confidence": "high"
             },
             {
               "target": "bips:141",
               "evidence": "a user activated soft fork for BIP141",
-              "reason": "The proposal activates the segwit rules introduced by BIP141.",
+              "reason": "The proposal activates SegWit rules defined by BIP141, so its purpose and effect depend on that soft fork specification.",
               "confidence": "low"
             },
             {
               "target": "bips:143",
-              "evidence": "a user activated soft fork for BIP143",
-              "reason": "The proposal activates the segregated witness signature hashing rules introduced by BIP143.",
+              "evidence": "a user activated soft fork for BIP141, BIP143 and BIP147",
+              "reason": "The proposal activates the transaction digest changes defined by BIP143 as part of the SegWit activation package.",
               "confidence": "low"
             },
             {
               "target": "bips:147",
-              "evidence": "a user activated soft fork for BIP147",
-              "reason": "The proposal activates the null dummy/scriptSig rules introduced by BIP147.",
+              "evidence": "a user activated soft fork for BIP141, BIP143 and BIP147",
+              "reason": "The proposal activates the SegWit script and witness semantics defined by BIP147 as part of the package.",
               "confidence": "low"
             }
           ]

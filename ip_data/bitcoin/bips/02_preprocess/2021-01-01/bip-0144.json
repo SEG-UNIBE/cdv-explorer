@@ -565,6 +565,15 @@
         "author": "Eric Lombrozo",
         "path": "bip-codeshark-segwit-peer-services.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0144.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -610,18 +619,18 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:25Z",
+          "timestamp": "2026-06-26T11:23:14Z",
           "dependencies": [
             {
               "target": "bips:130",
-              "evidence": "with 'sendheaders' BIP 130",
-              "reason": "The relay design assumes header announcements instead of inventory advertisement, which affects how witness data is requested and propagated.",
-              "confidence": "high"
+              "evidence": "similar to MSG_FILTERED_BLOCK, ... with 'sendheaders' BIP 130",
+              "reason": "The relay rationale depends on the sendheaders mechanism from BIP 130, which changes how inventory announcements are used.",
+              "confidence": "low"
             },
             {
               "target": "bips:141",
-              "evidence": "defining witness structures and requiring commitments in future blocks (BIP141",
-              "reason": "This proposal’s new witness serialization, hashes, and relay rules are introduced to carry the witness structures defined by the referenced consensus proposal.",
+              "evidence": "In addition to defining witness structures and requiring commitments in future blocks (BIP141",
+              "reason": "This proposal relies on Segregated Witness consensus rules and witness commitments introduced by BIP 141 to define the new witness-aware transaction and block relay formats.",
               "confidence": "low"
             }
           ]

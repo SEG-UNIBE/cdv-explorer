@@ -1122,7 +1122,7 @@
         "author": "Luke Dashjr",
         "path": "bip-biprevised.mediawiki",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "2fd18113315d9675bfcfca23e8f25656f7088606",
@@ -1131,7 +1131,7 @@
         "author": "Luke Dashjr",
         "path": "bip-0002.mediawiki",
         "status": "Deferred",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "e89b98facd4b52e0d248ca7dfc6f60a030d4cc59",
@@ -1140,7 +1140,7 @@
         "author": "Luke Dashjr",
         "path": "bip-0002.mediawiki",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "959fecc15bdad070afa63455468b1dba54655fa6",
@@ -1176,8 +1176,21 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:00:20Z",
-          "dependencies": []
+          "timestamp": "2026-06-26T11:22:32Z",
+          "dependencies": [
+            {
+              "target": "bips:1",
+              "evidence": "This particular BIP replaces BIP 1 with a more well-defined and clear process.",
+              "reason": "The document explicitly amends and supersedes the BIP 1 process and status rules, so BIP 1 is a direct technical basis being revised.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:123",
+              "evidence": "See [[bip-0123.mediawiki|BIP 123]] for definitions of the various BIP layers. Activation of this BIP implies activation of BIP 123.",
+              "reason": "This proposal adopts the Layer header and its definitions from BIP 123, making that classification scheme part of its specification.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

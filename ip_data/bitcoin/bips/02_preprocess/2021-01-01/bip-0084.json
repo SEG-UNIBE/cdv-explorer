@@ -524,8 +524,45 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:00:54Z",
-          "dependencies": []
+          "timestamp": "2026-06-26T11:22:57Z",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "based on a BIP 32 root account",
+              "reason": "The derivation scheme relies on BIP 32 hierarchical deterministic key derivation as its root mechanism.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:43",
+              "evidence": "the same account-structure as defined in BIP 44 and BIP 49, but only uses a different purpose value",
+              "reason": "The proposal uses the BIP 43 purpose-field derivation pattern to namespace this wallet scheme via a dedicated purpose value.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:44",
+              "evidence": "uses the same account-structure as defined in BIP 44 and BIP 49",
+              "reason": "The account and path structure are inherited from BIP 44, which this proposal specializes by changing the purpose field.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:49",
+              "evidence": "uses the same account-structure as defined in BIP 44 and BIP 49",
+              "reason": "The proposal explicitly reuses BIP 49's account-structure rationale and path semantics for segregated witness accounts.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "we use the encapsulation defined in BIP 141",
+              "reason": "P2WPKH address construction and script serialization depend on BIP 141's witness/output format.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:173",
+              "evidence": "using the P2WPKH (BIP 173) serialization format",
+              "reason": "The proposal’s native SegWit address representation depends on the Bech32 address format defined by BIP 173.",
+              "confidence": "low"
+            }
+          ]
         }
       ]
     }

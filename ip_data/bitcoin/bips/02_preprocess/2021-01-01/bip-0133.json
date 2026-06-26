@@ -468,6 +468,15 @@
         "author": "Alex Morcos",
         "path": "bip-0133.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0133.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       }
     ],
@@ -477,13 +486,19 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:19Z",
+          "timestamp": "2026-06-26T11:23:09Z",
           "dependencies": [
             {
               "target": "bips:37",
-              "evidence": "\"The fee filter is additive with a bloom filter for transactions\"",
-              "reason": "The proposal explicitly composes its relay filtering semantics with the Bloom filter mechanism defined by BIP 37.",
-              "confidence": "low"
+              "evidence": "The fee filter is additive with a bloom filter for transactions",
+              "reason": "The proposal explicitly composes its transaction relay behavior with the bloom-filter-based filtering defined by BIP 37.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:111",
+              "evidence": "Feature discovery is enabled by checking protocol version >= 70013",
+              "reason": "The proposal relies on the protocol version signaling mechanism introduced by BIP 111 to detect support for the new message.",
+              "confidence": "high"
             }
           ]
         }

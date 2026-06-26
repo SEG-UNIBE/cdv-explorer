@@ -464,6 +464,15 @@
         "author": "slush0",
         "path": "bip-0043.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0043.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -491,19 +500,13 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:00:37Z",
+          "timestamp": "2026-06-26T11:22:42Z",
           "dependencies": [
             {
               "target": "bips:32",
               "evidence": "based on algorithm described in BIP-0032",
-              "reason": "The proposal defines its purpose field within the BIP32 hierarchical deterministic wallet tree and depends on BIP32 derivation and node serialization concepts.",
+              "reason": "The proposal defines a purpose field within BIP32 hierarchical deterministic wallet trees and relies on BIP32 hardened derivation and serialization concepts.",
               "confidence": "high"
-            },
-            {
-              "target": "bips:44",
-              "evidence": "Example: Scheme described in BIP44 should use 44'",
-              "reason": "BIP44 is used as the concrete scheme that instantiates this proposal's purpose field convention, relying on its assigned purpose number.",
-              "confidence": "medium"
             }
           ]
         }

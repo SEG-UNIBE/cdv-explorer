@@ -492,6 +492,15 @@
         "author": "BtcDrak",
         "path": "bip-cbbrsa.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0105.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -519,8 +528,15 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:02Z",
-          "dependencies": []
+          "timestamp": "2026-06-26T11:22:59Z",
+          "dependencies": [
+            {
+              "target": "bips:34",
+              "evidence": "“As per BIP34, the coinbase transaction scriptSig starts with a push of the block height.”",
+              "reason": "The proposal relies on BIP34’s coinbase height commitment and specifically uses the post-BIP34 scriptSig structure to encode voting data.",
+              "confidence": "low"
+            }
+          ]
         }
       ]
     }

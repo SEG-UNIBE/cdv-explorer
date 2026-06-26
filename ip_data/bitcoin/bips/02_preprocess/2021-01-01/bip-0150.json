@@ -544,6 +544,15 @@
         "author": "Jonas Schnelli",
         "path": "bip-0150.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0150.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       }
     ],
@@ -558,12 +567,12 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:31Z",
+          "timestamp": "2026-06-26T11:23:16Z",
           "dependencies": [
             {
               "target": "bips:151",
               "evidence": "Authentication initialization must only happen if encrypted channels have been established (according to BIP-151 [1]).",
-              "reason": "The authentication protocol requires encrypted channels and uses the encryption-session-ID defined by the referenced proposal.",
+              "reason": "The authentication protocol depends on encrypted channels and the encryption-session-ID provided by BIP 151.",
               "confidence": "high"
             }
           ]

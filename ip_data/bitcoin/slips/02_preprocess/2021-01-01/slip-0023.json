@@ -281,30 +281,30 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:02:18Z",
+          "timestamp": "2026-06-26T11:24:47Z",
           "dependencies": [
             {
               "target": "bips:32",
               "evidence": "adapts the master node derivation used in BIP-0032",
-              "reason": "The proposal reuses and modifies BIP-0032-style master node derivation and key hierarchy assumptions.",
+              "reason": "The proposal explicitly reuses and modifies the BIP-0032 master node derivation mechanism and its domain-separation approach.",
               "confidence": "high"
             },
             {
               "target": "bips:39",
-              "evidence": "a BIP-0039 mnemonic or a set of SLIP-0039 mnemonics",
-              "reason": "The proposal’s Icarus derivation is defined from a BIP-0039 mnemonic and passphrase.",
-              "confidence": "low"
+              "evidence": "When BIP-0039 is used as the source of the master secret",
+              "reason": "The proposal defines a separate derivation path and compatibility behavior specifically for BIP-0039 mnemonics.",
+              "confidence": "high"
             },
             {
               "target": "slips:10",
               "evidence": "adapts the master node derivation used in BIP-0032 and SLIP-0010",
-              "reason": "The proposed universal derivation is explicitly modeled on SLIP-0010-style master-node derivation.",
+              "reason": "The proposal relies on SLIP-0010-style master node derivation semantics and extends them with a new curve salt and output handling.",
               "confidence": "high"
             },
             {
               "target": "slips:39",
-              "evidence": "primarily intended for use with SLIP-0039 Shamir's Secret-Sharing for Mnemonic Codes",
-              "reason": "The new universal master-node derivation is designed to work with SLIP-0039-derived master secrets and is mandated for that source.",
+              "evidence": "the master secret obtained from the following three SLIP-0039 share mnemonics",
+              "reason": "The proposal’s universal master node derivation is defined to take SLIP-0039-derived master secrets as its input source.",
               "confidence": "high"
             }
           ]

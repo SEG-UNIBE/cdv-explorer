@@ -600,8 +600,33 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:00:57Z",
-          "dependencies": []
+          "timestamp": "2026-06-26T11:22:56Z",
+          "dependencies": [
+            {
+              "target": "bips:9",
+              "evidence": "\"version bits\" ... BIP9 with the name \"segsignal\"",
+              "reason": "The proposal's activation mechanism is a modification of BIP9 version-bits deployment behavior and thresholds.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "the existing \"segwit\" deployment ... activate BIP141",
+              "reason": "The proposal is specifically about forcing activation of the BIP141 segwit deployment.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:143",
+              "evidence": "activate BIP141, BIP143 and BIP147",
+              "reason": "The proposal ties its signaling requirements to the existing segwit deployment that activates BIP143.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:147",
+              "evidence": "activate BIP141, BIP143 and BIP147",
+              "reason": "The proposal ties its signaling requirements to the existing segwit deployment that activates BIP147.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

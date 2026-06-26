@@ -556,36 +556,36 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:32Z",
+          "timestamp": "2026-06-26T11:23:19Z",
           "dependencies": [
             {
               "target": "bips:9",
-              "evidence": "the existing \"segwit\" deployment",
-              "reason": "The proposal’s activation logic explicitly depends on the BIP9 version-bits deployment state and lock-in/activation semantics.",
-              "confidence": "high"
+              "evidence": "the existing segwit deployment known as \"segwit\"",
+              "reason": "The proposal's activation logic relies on the BIP9 version-bits deployment state and signaling mechanism.",
+              "confidence": "low"
             },
             {
               "target": "bips:16",
               "evidence": "A BIP16 like soft fork flag day activation",
-              "reason": "The proposal directly models its enforcement and activation approach on BIP16-style flag-day soft fork activation.",
+              "reason": "The proposal explicitly models its enforcement and activation approach on BIP16's flag-day soft fork style.",
               "confidence": "high"
             },
             {
               "target": "bips:141",
-              "evidence": "existing segwit deployment ... to activate BIP141",
-              "reason": "The proposal’s enforced signaling is specifically intended to activate the segwit rules introduced by BIP141.",
+              "evidence": "the existing segwit deployment ... to activate BIP141",
+              "reason": "The proposal's purpose is to force activation of this consensus change through the referenced segwit deployment.",
               "confidence": "low"
             },
             {
               "target": "bips:143",
-              "evidence": "existing segwit deployment ... to activate BIP143",
-              "reason": "The proposal relies on the segwit deployment that activates BIP143’s witness signature verification rules.",
+              "evidence": "the existing segwit deployment ... to activate BIP141, BIP143 and BIP147",
+              "reason": "The proposal depends on the segwit deployment that activates this consensus rule change.",
               "confidence": "low"
             },
             {
               "target": "bips:147",
-              "evidence": "existing segwit deployment ... to activate BIP147",
-              "reason": "The proposal relies on the segwit deployment that activates BIP147’s malleability-related consensus rules.",
+              "evidence": "the existing segwit deployment ... to activate BIP141, BIP143 and BIP147",
+              "reason": "The proposal depends on the segwit deployment that activates this consensus rule change.",
               "confidence": "low"
             }
           ]

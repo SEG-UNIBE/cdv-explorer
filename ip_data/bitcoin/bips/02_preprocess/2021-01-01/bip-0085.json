@@ -575,8 +575,21 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:00:57Z",
-          "dependencies": []
+          "timestamp": "2026-06-26T11:22:55Z",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "This specification relies on BIP32",
+              "reason": "The proposal’s derivation scheme is built on BIP32 master/root keys and hardened child derivation paths.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:39",
+              "evidence": "BIP39 was designed solve this problem",
+              "reason": "The proposal defines an application mode that generates BIP39 entropy/mnemonics and specifies BIP39 word-length and language handling.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

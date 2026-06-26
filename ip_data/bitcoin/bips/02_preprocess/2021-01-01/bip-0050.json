@@ -563,12 +563,21 @@
         "author": "Peter Todd",
         "path": "bip-0050.mediawiki",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "a74ea14bc66d6be699f3e3d5aae2fa308ad7adad",
         "timestamp": "2016-02-24T05:27:08Z",
         "date": "2016-02-24",
+        "author": "Luke Dashjr",
+        "path": "bip-0050.mediawiki",
+        "status": "Final",
+        "standard": "bip1"
+      },
+      {
+        "commit": "959fecc15bdad070afa63455468b1dba54655fa6",
+        "timestamp": "2016-11-30T09:51:01Z",
+        "date": "2016-11-30",
         "author": "Luke Dashjr",
         "path": "bip-0050.mediawiki",
         "status": "Final",
@@ -581,8 +590,15 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:00:40Z",
-          "dependencies": []
+          "timestamp": "2026-06-26T11:22:45Z",
+          "dependencies": [
+            {
+              "target": "bips:31",
+              "evidence": "implement a new bitcoind feature so services can get timely notification of alerts",
+              "reason": "This relies on the existing alert mechanism and extends it with a notification hook for alert reception.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

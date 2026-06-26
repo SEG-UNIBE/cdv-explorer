@@ -1006,19 +1006,25 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:02:08Z",
+          "timestamp": "2026-06-26T11:24:47Z",
           "dependencies": [
             {
               "target": "bips:32",
-              "evidence": "specification for its use in backing up Hierarchical Deterministic Wallets described in BIP-0032",
-              "reason": "The share scheme is defined to back up BIP-32 master seeds and uses the BIP-32 seed as the master secret input.",
-              "confidence": "low"
+              "evidence": "a specification for its use in backing up Hierarchical Deterministic Wallets described in [BIP-0032]",
+              "reason": "The proposal defines how to back up BIP-32 wallet master seeds and requires BIP-32 seed semantics in its wallet backup specification.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:39",
+              "evidence": "This SLIP is mainly intended as a replacement for [BIP-0039]",
+              "reason": "The proposal is positioned as a replacement for BIP-39 and discusses interoperability and conversion constraints relative to BIP-39 mnemonics.",
+              "confidence": "medium"
             },
             {
               "target": "bips:173",
-              "evidence": "heavily inspired by Bech32 defined in BIP-0173",
-              "reason": "The checksum design explicitly relies on the Bech32 checksum model and its error-detection properties.",
-              "confidence": "low"
+              "evidence": "The checksum design is heavily inspired by Bech32 defined in [BIP-0173]",
+              "reason": "SLIP-39's RS1024 checksum design relies on the checksum model introduced by BIP-173.",
+              "confidence": "high"
             }
           ]
         }

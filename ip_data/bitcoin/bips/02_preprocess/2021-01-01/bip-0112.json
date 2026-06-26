@@ -814,12 +814,21 @@
         "author": "BtcDrak",
         "path": "bip-csv.mediawiki",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "c98859fe20617df141da0dd08d399921c7097be9",
         "timestamp": "2016-07-18T23:37:42Z",
         "date": "2016-07-18",
+        "author": "Luke Dashjr",
+        "path": "bip-0112.mediawiki",
+        "status": "Final",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
         "author": "Luke Dashjr",
         "path": "bip-0112.mediawiki",
         "status": "Final",
@@ -849,8 +858,33 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:06Z",
-          "dependencies": []
+          "timestamp": "2026-06-26T11:23:02Z",
+          "dependencies": [
+            {
+              "target": "bips:9",
+              "evidence": "deployed by \"versionbits\" BIP9",
+              "reason": "The activation mechanism is defined by BIP 9 versionbits, which this proposal uses for deployment.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:65",
+              "evidence": "based heavily on work done by Peter Todd for the closely related BIP 65",
+              "reason": "The proposal reuses the same script-enforced locktime design pattern and is an extension of that opcode-based mechanism.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:68",
+              "evidence": "in combination with BIP 68",
+              "reason": "CHECKSEQUENCEVERIFY depends on BIP 68’s consensus-enforced sequence-number semantics and uses them for relative locktime checks.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:113",
+              "evidence": "must be deployed simultaneously with BIP68 and BIP113",
+              "reason": "The deployment explicitly requires simultaneous activation with BIP 113, tying its consensus rollout to that proposal’s time-lock semantics.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

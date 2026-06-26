@@ -546,13 +546,22 @@
         "author": "Johnson Lau",
         "path": "bip-segwitaddress.mediawiki",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "159cc9bd0eb1bdf97facac7f839069c81a4cc301",
         "timestamp": "2016-03-16T23:20:58+08:00",
         "date": "2016-03-16",
         "author": "Johnson Lau",
+        "path": "bip-0142.mediawiki",
+        "status": "Deferred",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
         "path": "bip-0142.mediawiki",
         "status": "Deferred",
         "standard": "bip2"
@@ -598,30 +607,24 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:23Z",
+          "timestamp": "2026-06-26T11:23:12Z",
           "dependencies": [
             {
               "target": "bips:13",
-              "evidence": "Considering the BIP13 P2SH address has been defined in 2012",
-              "reason": "The proposal uses BIP13 as the existing address-format model that this new witness address format extends and parallels.",
+              "evidence": "The drawbacks of Bitcoin addresses have been extensively discussed in BIP13.",
+              "reason": "The proposal defines a new address format by extending the existing Bitcoin address scheme introduced by BIP 13.",
               "confidence": "high"
             },
             {
               "target": "bips:16",
               "evidence": "Segwit-in-P2SH is a BIP16 P2SH redeemScript",
-              "reason": "The proposal relies on BIP16’s P2SH redeemScript structure for the wrapped segwit variant described in the rationale.",
+              "reason": "The proposal relies on BIP 16's P2SH redeemScript structure for the segwit-in-P2SH encoding path.",
               "confidence": "high"
-            },
-            {
-              "target": "bips:70",
-              "evidence": "BIP70 Payment protocol",
-              "reason": "The proposal discusses BIP70 as a payment method in the address-format rationale, but does not depend on it technically, so this is not included.",
-              "confidence": "low"
             },
             {
               "target": "bips:141",
               "evidence": "The new Bitcoin address format defined is for the Pay-to-Witness-Public-Key-Hash (P2WPKH) and Pay-to-Witness-Script-Hash (P2WSH) transaction described in segregated witness soft fork (BIP141).",
-              "reason": "The address format is defined specifically for witness programs introduced by BIP141, including versioning and scriptPubKey semantics.",
+              "reason": "The address format is specifically designed around witness programs and versioning rules defined by BIP 141.",
               "confidence": "high"
             }
           ]

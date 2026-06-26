@@ -488,8 +488,15 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:37Z",
-          "dependencies": []
+          "timestamp": "2026-06-26T11:23:21Z",
+          "dependencies": [
+            {
+              "target": "bips:31",
+              "evidence": "the <code>addr</code> message",
+              "reason": "The proposal changes how peers relay and interpret address/service information in the existing addr message and service bits defined by this protocol.",
+              "confidence": "low"
+            }
+          ]
         }
       ]
     }

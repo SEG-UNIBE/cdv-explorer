@@ -641,8 +641,27 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:47Z",
-          "dependencies": []
+          "timestamp": "2026-06-26T11:23:28Z",
+          "dependencies": [
+            {
+              "target": "bips:9",
+              "evidence": "This BIP will be deployed by \"version bits\" BIP9",
+              "reason": "Activation is defined using BIP9 versionbits deployment semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:68",
+              "evidence": "We borrow the dummy vin & \"flag\" trick from SegWit style transactions.",
+              "reason": "The transaction serialization and validation approach explicitly reuses the SegWit dummy vin/flag mechanism.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "very similar to how SegWit handles witness data (the witness stack)",
+              "reason": "The proposal’s extended serialization and mempool/validation rules are modeled on SegWit witness handling introduced by this BIP.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

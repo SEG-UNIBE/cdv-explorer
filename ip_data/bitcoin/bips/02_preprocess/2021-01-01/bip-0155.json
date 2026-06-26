@@ -605,12 +605,12 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:36Z",
+          "timestamp": "2026-06-26T11:23:19Z",
           "dependencies": [
             {
-              "target": "bips:31",
-              "evidence": "Introduce a new message type sendaddrv2",
-              "reason": "The proposal adds a new P2P message and signaling flow that extends the existing Bitcoin network messaging protocol defined by the target.",
+              "target": "bips:32",
+              "evidence": "changed to CompactSize, to make the message more compact",
+              "reason": "The proposal adopts CompactSize encoding defined by the target for a core field in the new message format.",
               "confidence": "low"
             }
           ]

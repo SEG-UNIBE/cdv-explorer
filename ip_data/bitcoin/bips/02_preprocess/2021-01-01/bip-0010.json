@@ -532,13 +532,22 @@
         "author": "genjix",
         "path": "bip-0010.md",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "770a061e60a83bda4c6c5a8cba2540050ca2e1e0",
         "timestamp": "2014-11-26T11:51:15-06:00",
         "date": "2014-11-26",
         "author": "Umpei Kay Kurokawa",
+        "path": "bip-0010.mediawiki",
+        "status": "Withdrawn",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
         "path": "bip-0010.mediawiki",
         "status": "Withdrawn",
         "standard": "bip2"
@@ -550,8 +559,21 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:00:20Z",
-          "dependencies": []
+          "timestamp": "2026-06-26T11:22:31Z",
+          "dependencies": [
+            {
+              "target": "bips:11",
+              "evidence": "“multi-signature transaction”",
+              "reason": "This proposal’s transaction distribution format is specifically for multisignature spending, which relies on the multisig script construction and semantics introduced by the target.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:16",
+              "evidence": "“the subsequent transaction that spends these coins will require each party involved ... to see the proposed transaction and sign it”",
+              "reason": "The proposal depends on standard transaction signing and script evaluation behavior for spending encumbered outputs, which is the core mechanism established by the target.",
+              "confidence": "low"
+            }
+          ]
         }
       ]
     }

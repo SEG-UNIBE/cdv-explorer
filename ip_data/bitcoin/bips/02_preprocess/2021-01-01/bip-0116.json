@@ -668,8 +668,57 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:09Z",
-          "dependencies": []
+          "timestamp": "2026-06-26T11:23:05Z",
+          "dependencies": [
+            {
+              "target": "bips:8",
+              "evidence": "This BIP will be deployed by BIP8 (Version bits with lock-in by height)",
+              "reason": "The activation method is explicitly specified to use BIP8 version-bits deployment rules.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:16",
+              "evidence": "Although BIP16 (Pay to Script Hash) ... allow the redeem script to be kept out of the scriptPubKey",
+              "reason": "The proposal relies on P2SH as an existing spending-format context for where MERKLEBRANCHVERIFY scripts can be used.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:65",
+              "evidence": "the more familiar NOP-expansion soft-fork mechanism used by BIP65 (CHECKLOCKTIMEVERIFY)",
+              "reason": "The proposal uses BIP65 as the precedent for the NOP-expansion deployment mechanism it adopts.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:68",
+              "evidence": "with, for example, with BIP68 (Relative lock-time using consensus-enforced sequence numbers)",
+              "reason": "The proposal references BIP68 as the comparable prior consensus-upgrade context for deployment via DISCOURAGE_UPGRADABLE_NOPS.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:98",
+              "evidence": "a serialized Merkle tree inclusion proof as specified by BIP98",
+              "reason": "The opcode's proof format and fast Merkle root verification are defined by BIP98 and are required for validation.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:112",
+              "evidence": "used by BIP65 ... and BIP112 (CHECKSEQUENCEVERIFY)",
+              "reason": "The proposal relies on BIP112 as another precedent for the same NOP-expansion soft-fork deployment method.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "Although BIP16 ... and BIP141 (Segregated Witness) both allow the redeem script to be kept out of the scriptPubKey",
+              "reason": "The proposal depends on SegWit witness/script structure and script versioning assumptions when describing how MERKLEBRANCHVERIFY is used and deployed.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:143",
+              "evidence": "without the need for BIP143 signing code",
+              "reason": "The deployment and address-compatibility discussion depends on the signing semantics of BIP143 for P2WSH-nested-in-P2SH usage.",
+              "confidence": "low"
+            }
+          ]
         }
       ]
     }

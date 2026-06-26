@@ -511,7 +511,7 @@
         "author": "genjix",
         "path": "bip-0011.txt",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "12627baeea94a377bb94612beeec9b9cc4bd978e",
@@ -520,12 +520,21 @@
         "author": "genjix",
         "path": "bip-0011.md",
         "status": "Accepted",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "f31f7d43473fadcfafbc886b15e8c488654839c2",
         "timestamp": "2016-02-01T20:14:22Z",
         "date": "2016-02-01",
+        "author": "Luke Dashjr",
+        "path": "bip-0011.mediawiki",
+        "status": "Final",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
         "author": "Luke Dashjr",
         "path": "bip-0011.mediawiki",
         "status": "Final",
@@ -538,13 +547,13 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:00:20Z",
+          "timestamp": "2026-06-26T11:22:33Z",
           "dependencies": [
             {
               "target": "bips:12",
-              "evidence": "scriptSig larger than 200 bytes; to accommodate 3-signature transactions, this will be increased to 500 bytes",
-              "reason": "This proposal changes the standard scriptSig size limit needed for the multi-signature redemption format to be accepted and relayed.",
-              "confidence": "low"
+              "evidence": "will be used in combination with OP_EVAL (see the OP_EVAL BIP)",
+              "reason": "The proposal anticipates relying on OP_EVAL to enforce these multisig transactions and sigop counting accurately.",
+              "confidence": "high"
             }
           ]
         }

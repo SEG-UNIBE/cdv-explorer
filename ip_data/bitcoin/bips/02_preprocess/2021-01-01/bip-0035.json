@@ -447,12 +447,21 @@
         "author": "Amir Taaki",
         "path": "bip-0035.md",
         "status": "Accepted",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "f31f7d43473fadcfafbc886b15e8c488654839c2",
         "timestamp": "2016-02-01T20:14:22Z",
         "date": "2016-02-01",
+        "author": "Luke Dashjr",
+        "path": "bip-0035.mediawiki",
+        "status": "Final",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
         "author": "Luke Dashjr",
         "path": "bip-0035.mediawiki",
         "status": "Final",
@@ -465,13 +474,13 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:00:36Z",
+          "timestamp": "2026-06-26T11:22:41Z",
           "dependencies": [
             {
-              "target": "bips:31",
-              "evidence": "Feature discovery is enabled by checking two \"version\" message attributes:",
-              "reason": "The proposal relies on the version-message service bits mechanism introduced by the peer-to-peer protocol update in BIP 31 for feature discovery and compatibility signaling.",
-              "confidence": "high"
+              "target": "bips:9",
+              "evidence": "Feature discovery is enabled by checking two \"version\" message attributes",
+              "reason": "The proposal relies on the existing network version-message and service-bit mechanism introduced by the versioning/protocol negotiation proposal.",
+              "confidence": "medium"
             }
           ]
         }

@@ -582,12 +582,21 @@
         "author": "Manuel Araoz",
         "path": "bip-0045.mediawiki",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "04e1a86f513f9662c63656d220301aaca77eeaa9",
         "timestamp": "2016-08-25T21:10:19Z",
         "date": "2016-08-25",
+        "author": "Luke Dashjr",
+        "path": "bip-0045.mediawiki",
+        "status": "Accepted",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
         "author": "Luke Dashjr",
         "path": "bip-0045.mediawiki",
         "status": "Accepted",
@@ -622,19 +631,19 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:00:38Z",
+          "timestamp": "2026-06-26T11:22:45Z",
           "dependencies": [
             {
               "target": "bips:32",
               "evidence": "based on the algorithm described in BIP-0032",
-              "reason": "BIP32 provides the hierarchical deterministic key derivation and path structure this proposal uses for all wallet branches.",
+              "reason": "The proposal’s derivation path structure, hardened/non-hardened child derivation, and key generation all rely on BIP32 semantics.",
               "confidence": "high"
             },
             {
               "target": "bips:43",
-              "evidence": "purpose scheme described in BIP-0043",
-              "reason": "BIP43 defines the purpose-field derivation convention that this proposal adopts by setting purpose 45' as the root branch.",
-              "confidence": "high"
+              "evidence": "based on the algorithm described in BIP-0043",
+              "reason": "The proposal uses BIP43’s purpose field scheme and explicitly sets purpose 45 as the top-level path component.",
+              "confidence": "low"
             }
           ]
         }

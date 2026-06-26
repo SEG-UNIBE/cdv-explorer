@@ -491,6 +491,15 @@
         "author": "Pieter Wuille",
         "path": "bip-0042.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0042.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -522,8 +531,27 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:00:39Z",
-          "dependencies": []
+          "timestamp": "2026-06-26T11:22:42Z",
+          "dependencies": [
+            {
+              "target": "bips:16",
+              "evidence": "A softfork (see BIP16, BIP34, BIP62)",
+              "reason": "The proposal relies on the softfork mechanism introduced by BIP 16 to activate the subsidy change.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:34",
+              "evidence": "A softfork (see BIP16, BIP34, BIP62)",
+              "reason": "The proposal references BIP 34 as part of the softfork framework it proposes to use for the consensus change.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:62",
+              "evidence": "A softfork (see BIP16, BIP34, BIP62)",
+              "reason": "The proposal references BIP 62 as part of the softfork framework it proposes to use for the consensus change.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

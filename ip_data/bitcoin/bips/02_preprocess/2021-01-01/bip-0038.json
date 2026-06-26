@@ -880,6 +880,15 @@
         "author": "Wladimir J. van der Laan",
         "path": "bip-0038.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0038.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       }
     ],
@@ -889,8 +898,21 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:00:35Z",
-          "dependencies": []
+          "timestamp": "2026-06-26T11:22:42Z",
+          "dependencies": [
+            {
+              "target": "bips:13",
+              "evidence": "with deference to the existing prefix '5' most commonly observed in Wallet Import Format",
+              "reason": "The encoding and prefix choice are explicitly constrained by the existing Wallet Import Format used for private keys, which BIP 13 defines.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:32",
+              "evidence": "''ECMultiply'': Multiplication of an elliptic curve point by a scalar integer with respect to the [[secp256k1]] elliptic curve",
+              "reason": "The EC-multiply mode relies on the secp256k1 point/scalar derivation and public-key generation semantics established for hierarchical key derivation.",
+              "confidence": "low"
+            }
+          ]
         }
       ]
     }

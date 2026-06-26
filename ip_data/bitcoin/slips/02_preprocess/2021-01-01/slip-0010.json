@@ -280,18 +280,18 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:59Z",
+          "timestamp": "2026-06-26T11:24:38Z",
           "dependencies": [
             {
               "target": "bips:32",
               "evidence": "how a BIP-0032 like derivation is used",
-              "reason": "The proposal adapts and remains compatible with BIP-32 derivation structure and child-key rules.",
+              "reason": "The proposal adapts and extends BIP-32 derivation rules for master and child key generation.",
               "confidence": "high"
             },
             {
               "target": "bips:39",
-              "evidence": "The BIP-0039 standard describes the procedure to compute a 512 bit seed",
-              "reason": "The master key generation starts from the seed produced by BIP-39 mnemonic/passphrase processing.",
+              "evidence": "The BIP-0039 standard describes the procedure to compute a 512 bit seed from this passphrase.",
+              "reason": "The proposal requires BIP-39 seed generation as the input to its derivation algorithm.",
               "confidence": "high"
             }
           ]

@@ -518,8 +518,15 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:11Z",
-          "dependencies": []
+          "timestamp": "2026-06-26T11:23:04Z",
+          "dependencies": [
+            {
+              "target": "bips:143",
+              "evidence": "The transaction digest algorithm from BIP 143 is used when verifying a SIGHASH_NOINPUT signature",
+              "reason": "This proposal directly reuses and modifies the BIP 143 segwit signature digest algorithm.",
+              "confidence": "low"
+            }
+          ]
         }
       ]
     }

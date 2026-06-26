@@ -491,18 +491,24 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:46Z",
+          "timestamp": "2026-06-26T11:23:26Z",
           "dependencies": [
             {
-              "target": "bips:112",
-              "evidence": "[TIMEOUTOP] is either OP_CHECKSEQUENCEVERIFY or OP_CHECKLOCKTIMEVERIFY.",
-              "reason": "The HTLC script explicitly relies on the timeout semantics introduced by this proposal's relative-locktime opcode.",
+              "target": "bips:11",
+              "evidence": "Both parties can now construct the script and P2SH address for the HTLC.",
+              "reason": "The proposal relies on pay-to-script-hash addresses as the funding mechanism for HTLC outputs.",
               "confidence": "high"
             },
             {
-              "target": "bips:117",
+              "target": "bips:65",
               "evidence": "[TIMEOUTOP] is either OP_CHECKSEQUENCEVERIFY or OP_CHECKLOCKTIMEVERIFY.",
-              "reason": "The HTLC script can use the relative timelock opcode defined by this proposal to enforce the refund timeout.",
+              "reason": "The timeout branch is explicitly parameterized by CHECKLOCKTIMEVERIFY, which constrains the spending conditions used by the HTLC script.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:112",
+              "evidence": "[TIMEOUTOP] is either OP_CHECKSEQUENCEVERIFY or OP_CHECKLOCKTIMEVERIFY.",
+              "reason": "The timeout branch is explicitly parameterized by CHECKSEQUENCEVERIFY, which constrains the spending conditions used by the HTLC script.",
               "confidence": "high"
             }
           ]

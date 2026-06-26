@@ -563,12 +563,12 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:43Z",
+          "timestamp": "2026-06-26T11:23:25Z",
           "dependencies": [
             {
               "target": "bips:141",
-              "evidence": "the block weight defined by BIP 141 is the size of the block stripped of its segwit signatures times 3, plus the full size of the block",
-              "reason": "The proposal's weight-proof calculation depends on the block weight definition introduced by BIP 141 and uses it as the verification target.",
+              "evidence": "The block weight defined by BIP 141 is the size of the block stripped of its segwit signatures times 3, plus the full size of the block.",
+              "reason": "This proposal’s weight-proof calculation directly relies on the block weight definition introduced by BIP 141.",
               "confidence": "low"
             }
           ]

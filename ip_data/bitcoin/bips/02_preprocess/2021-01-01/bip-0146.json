@@ -553,6 +553,15 @@
         "author": "Johnson Lau",
         "path": "bip-lows.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0146.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -592,36 +601,36 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:27Z",
+          "timestamp": "2026-06-26T11:23:17Z",
           "dependencies": [
             {
               "target": "bips:9",
-              "evidence": "This BIP will be deployed by \"version bits\" [https://github.com/bitcoin/bips/blob/master/bip-0009.mediawiki BIP9].",
-              "reason": "The activation method relies on version-bits deployment semantics defined by BIP9.",
-              "confidence": "high"
+              "evidence": "This BIP will be deployed by \"version bits\" BIP9",
+              "reason": "Activation is specified using the version-bits deployment mechanism defined by BIP9.",
+              "confidence": "low"
             },
             {
               "target": "bips:62",
               "evidence": "This document is extracted from the previous BIP62 proposal",
-              "reason": "The proposal is derived from BIP62 and inherits its malleability-fix context and ruleset lineage.",
+              "reason": "The proposal’s rules are derived from and amend the earlier malleability proposal, so it substantively depends on its concepts.",
               "confidence": "low"
             },
             {
               "target": "bips:66",
               "evidence": "with strict DER encoding (see BIP66)",
-              "reason": "The LOW_S and NULLFAIL rules apply to signatures already constrained by BIP66 DER encoding, so the validity rules depend on that signature format.",
+              "reason": "LOW_S enforcement is defined together with strict DER signature encoding introduced by BIP66.",
               "confidence": "low"
             },
             {
               "target": "bips:141",
-              "evidence": "segregated witness ([... BIP141]) transactions",
-              "reason": "The proposal explicitly applies its new rules to segregated witness scripts and references P2WPKH as part of that witness system.",
+              "evidence": "segregated witness ([... ] BIP141) transactions",
+              "reason": "The proposal explicitly applies its validity rules to segwit scripts defined by BIP141.",
               "confidence": "low"
             },
             {
               "target": "bips:152",
-              "evidence": "may reduce the efficiency of compact block relay ([... BIP152])",
-              "reason": "The motivation depends on the wtxid behavior introduced by compact block relay for segregated witness transactions.",
+              "evidence": "may reduce the efficiency of compact block relay ([... ] BIP152)",
+              "reason": "The malleability concern for wtxid is framed in terms of compact block relay behavior introduced by BIP152.",
               "confidence": "low"
             }
           ]

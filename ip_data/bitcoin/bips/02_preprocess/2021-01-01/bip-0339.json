@@ -486,24 +486,24 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:49Z",
+          "timestamp": "2026-06-26T11:23:31Z",
           "dependencies": [
             {
               "target": "bips:141",
-              "evidence": "support transaction relay based on the BIP 141 wtxid",
-              "reason": "The proposal changes transaction relay to reference wtxid, a concept defined by Segregated Witness in the target BIP.",
+              "evidence": "based on the BIP 141 wtxid of a transaction",
+              "reason": "The proposal’s relay semantics depend on the wtxid definition introduced by Segregated Witness in this BIP.",
               "confidence": "high"
             },
             {
               "target": "bips:143",
               "evidence": "Segregated Witness (BIP 141/143/144) has been adopted by the network",
-              "reason": "The proposal's witness-aware relay assumptions depend on the transaction digest and witness semantics introduced by this BIP.",
+              "reason": "The proposal relies on SegWit-era witness data and transaction malleability assumptions introduced by this BIP.",
               "confidence": "medium"
             },
             {
               "target": "bips:144",
               "evidence": "serialized with witness as well, as described in BIP 144",
-              "reason": "The proposal explicitly relies on this BIP's witness serialization rules for getdata requests.",
+              "reason": "The proposal requires witness-inclusive transaction serialization for MSG_WTX getdata requests as defined by this BIP.",
               "confidence": "high"
             }
           ]

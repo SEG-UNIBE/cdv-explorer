@@ -491,8 +491,15 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:44Z",
-          "dependencies": []
+          "timestamp": "2026-06-26T11:23:25Z",
+          "dependencies": [
+            {
+              "target": "bips:16",
+              "evidence": "Segwit nested in BIP16 P2SH",
+              "reason": "The proposal defines one of its WIF suffix types in terms of P2SH, so it relies on the address/script type introduced by BIP 16.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

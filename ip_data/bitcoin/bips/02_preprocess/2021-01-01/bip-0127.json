@@ -570,8 +570,15 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:14Z",
-          "dependencies": []
+          "timestamp": "2026-06-26T11:23:07Z",
+          "dependencies": [
+            {
+              "target": "bips:174",
+              "evidence": "The proposal also includes the description of a PSBT extension",
+              "reason": "The PSBT commitment-input extension is defined as an amendment to PSBT, so it depends on PSBT input-map structure and signing semantics from BIP 174.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

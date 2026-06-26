@@ -689,8 +689,15 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:35Z",
-          "dependencies": []
+          "timestamp": "2026-06-26T11:23:19Z",
+          "dependencies": [
+            {
+              "target": "bips:155",
+              "evidence": "Bitcoin nodes that support Dandelion can identify feature support through a probe message",
+              "reason": "The proposal’s feature detection and interoperability rely on the probe-message mechanism introduced by the referenced BIP.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

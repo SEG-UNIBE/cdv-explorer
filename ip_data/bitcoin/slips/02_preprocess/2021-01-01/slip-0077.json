@@ -189,18 +189,18 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:02:11Z",
+          "timestamp": "2026-06-26T11:24:49Z",
           "dependencies": [
             {
               "target": "bips:39",
               "evidence": "The above seed should be derived using [BIP-0039] mnemonic and passphrase",
-              "reason": "The proposal relies on BIP 39 seed generation as the input to its master blinding key derivation.",
+              "reason": "The proposal relies on BIP 39 seed derivation as the input to its master blinding key derivation.",
               "confidence": "low"
             },
             {
               "target": "slips:21",
               "evidence": "we suggest using [SLIP-0021] derivation scheme for `master_blinding_key`",
-              "reason": "The proposal builds its master blinding key derivation directly on the SLIP 21 hierarchical HMAC-based derivation scheme.",
+              "reason": "The proposal explicitly uses SLIP 21 to derive the master blinding key.",
               "confidence": "low"
             }
           ]

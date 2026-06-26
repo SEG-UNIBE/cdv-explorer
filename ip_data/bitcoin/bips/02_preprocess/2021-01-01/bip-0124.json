@@ -511,6 +511,15 @@
         "author": "Eric Lombrozo",
         "path": "bip-0124.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0124.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -546,8 +555,33 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:13Z",
-          "dependencies": []
+          "timestamp": "2026-06-26T11:23:07Z",
+          "dependencies": [
+            {
+              "target": "bips:16",
+              "evidence": "The most popular formats are pay-to-pubkey-hash and m-of-n pay-to-script-hash (BIP16).",
+              "reason": "The proposal’s template system is motivated partly by and interoperates with pay-to-script-hash multisig scripts defined by BIP16.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:32",
+              "evidence": "using the key derivation mechanism defined in BIP32",
+              "reason": "The script template format depends on BIP32 derivation paths and indexes to deterministically generate keys and scripts.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:65",
+              "evidence": "with the advent of hashlocked and timelocked contracts (BIP65, BIP112)",
+              "reason": "The proposal includes timelocked contract templates that rely on OP_CHECKLOCKTIMEVERIFY from BIP65.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:112",
+              "evidence": "with the advent of hashlocked and timelocked contracts (BIP65, BIP112)",
+              "reason": "The proposal depends on the CHECKSEQUENCEVERIFY semantics introduced by BIP112 for advanced contract scripts.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

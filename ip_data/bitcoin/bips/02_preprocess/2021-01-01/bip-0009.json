@@ -795,12 +795,21 @@
         "author": "Rusty Russell",
         "path": "bip-wuille-todd-maxwell-russell.mediawiki",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "d35a3d33da628fb3da543bb8652a2153d65562c5",
         "timestamp": "2016-08-20T23:50:14Z",
         "date": "2016-08-20",
+        "author": "Luke Dashjr",
+        "path": "bip-0009.mediawiki",
+        "status": "Final",
+        "standard": "bip1"
+      },
+      {
+        "commit": "959fecc15bdad070afa63455468b1dba54655fa6",
+        "timestamp": "2016-11-30T09:51:01Z",
+        "date": "2016-11-30",
         "author": "Luke Dashjr",
         "path": "bip-0009.mediawiki",
         "status": "Final",
@@ -838,8 +847,33 @@
       "body_extracted_llm": [
         {
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:00:20Z",
-          "dependencies": []
+          "timestamp": "2026-06-26T11:22:35Z",
+          "dependencies": [
+            {
+              "target": "bips:16",
+              "evidence": "This approach was later reused in BIP 66 and BIP 65",
+              "reason": "The proposal depends on BIP 16 as part of the sequence of prior soft-fork version-number usage it generalizes from, but only as historical motivation, so it is a weak dependency and omitted under the rules.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:34",
+              "evidence": "BIP 34 introduced a mechanism for doing soft-forking changes",
+              "reason": "The versionbits mechanism is explicitly designed as a new deployment scheme in response to BIP 34's soft-fork signaling model, making BIP 34 the immediate technical antecedent.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:65",
+              "evidence": "This approach was later reused in BIP 66 and BIP 65",
+              "reason": "Referenced as prior usage of the integer version-number approach that versionbits replaces; it does not define a required mechanism for this proposal.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:66",
+              "evidence": "This approach was later reused in BIP 66 and BIP 65",
+              "reason": "Referenced as prior usage of the integer version-number approach that versionbits replaces; it does not define a required mechanism for this proposal.",
+              "confidence": "low"
+            }
+          ]
         }
       ]
     }

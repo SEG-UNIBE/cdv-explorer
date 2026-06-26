@@ -20,6 +20,7 @@ from rich.console import Console
 from rich.table import Table
 from tqdm import tqdm
 
+from analysis.proposal_schema import is_llm_runs_format
 from ecosystems import ECOSYSTEM_REGISTRY
 from pipeline.source_context import SourceContext
 
@@ -488,6 +489,54 @@ def _parse_focus(focus_str: str | None) -> set[str] | None:
     return ids or None
 
 
+def _existing_llm_model_run_counts(
+    preprocess_dir: Path,
+    *,
+    id_field: str,
+    llm_model: str,
+    focus: set[str] | None = None,
+) -> tuple[int, int]:
+    matching_documents = 0
+    matching_runs = 0
+
+    for json_file in sorted(preprocess_dir.glob("*.json")):
+        raw_json = json.loads(json_file.read_text(encoding="utf-8"))
+        preamble = raw_json.get("raw", {}).get("preamble", {})
+        raw_id = str(preamble.get(id_field, ""))
+        try:
+            proposal_number = str(int(raw_id))
+        except ValueError:
+            proposal_number = raw_id
+        if focus is not None:
+            in_focus = (
+                proposal_number in focus
+                or raw_id in focus
+                or proposal_number.upper() in focus
+                or raw_id.upper() in focus
+            )
+            if not in_focus:
+                continue
+
+        raw_llm = (
+            raw_json.get("insights", {})
+                    .get("interrelations", {})
+                    .get("body_extracted_llm", [])
+        )
+        if not is_llm_runs_format(raw_llm):
+            continue
+
+        doc_counted = False
+        for run in raw_llm:
+            if str(run.get("model") or "").strip() != llm_model:
+                continue
+            matching_runs += 1
+            if not doc_counted:
+                matching_documents += 1
+                doc_counted = True
+
+    return matching_documents, matching_runs
+
+
 def _run_source_pipeline(eco_slug: str, src_slug: str, src: dict, snapshot: str, skipllm: bool, focus: set[str] | None = None) -> None:
     """Run the full pipeline for one source."""
     from pipeline.harvest import get_harvester
@@ -529,6 +578,24 @@ def _run_source_pipeline(eco_slug: str, src_slug: str, src: dict, snapshot: str,
                    lambda u: extractor(src_config=src, harvest_dir=harvest_root, output_dir=output_dir, progress_callback=u))
 
     json_files = list(output_dir.glob("*.json")) if output_dir.exists() else []
+    replace_llm_model_runs = False
+    if not skipllm and source_context.llm_model and output_dir.exists():
+        matching_docs, matching_runs = _existing_llm_model_run_counts(
+            output_dir,
+            id_field=src["primary_id_field"],
+            llm_model=source_context.llm_model,
+            focus=focus,
+        )
+        if matching_runs:
+            focus_scope = f" among {matching_docs} focused IPs" if focus is not None else f" in {matching_docs} IPs"
+            console.print(
+                f"[yellow]LLM model '{source_context.llm_model}' already has {matching_runs} stored run(s){focus_scope} "
+                f"for {eco_slug}/{src_slug}/{snapshot}. Re-running will replace those same-model records and keep runs from other models.[/yellow]"
+            )
+            if not typer.confirm("Proceed and overwrite same-model LLM runs?", default=True):
+                raise typer.Exit(1)
+            replace_llm_model_runs = True
+
     focus_note = f"  (focus: {len(focus)}/{len(json_files)} ip)" if focus else ""
     _run_stage(f"{'Step 3/4 · III. Analysis'.ljust(28)}{focus_note}", len(json_files), "ip",
                lambda u: enricher(
@@ -537,6 +604,7 @@ def _run_source_pipeline(eco_slug: str, src_slug: str, src: dict, snapshot: str,
                    harvest_dir=harvest_root,
                    skip_llm=skipllm,
                    focus=focus,
+                   replace_llm_model_runs=replace_llm_model_runs,
                    source_context=source_context,
                    progress_callback=u))
 

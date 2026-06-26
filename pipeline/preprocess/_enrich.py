@@ -33,6 +33,16 @@ MIN_WORD_OCCURRENCE = 2
 LLM_MAX_CONCURRENCY = 5
 
 
+def _preserved_llm_runs(raw_llm: Any, llm_model: str | None, replace_model_runs: bool) -> list[dict[str, Any]]:
+    runs = list(raw_llm) if is_llm_runs_format(raw_llm) else []
+    if not replace_model_runs or not llm_model:
+        return runs
+    return [
+        run for run in runs
+        if str(run.get("model") or "").strip() != llm_model
+    ]
+
+
 def _load_stop_words(path_value: str | None) -> set[str]:
     if not path_value:
         return set()
@@ -169,6 +179,7 @@ def enrich(
     harvest_dir: Path,
     skip_llm: bool = False,
     focus: set[str] | None = None,
+    replace_llm_model_runs: bool = False,
     source_context: SourceContext | None = None,
     progress_callback=None,
 ) -> None:
@@ -271,7 +282,7 @@ def enrich(
                         .get("interrelations", {})
                         .get(BODY_EXTRACTED_LLM, [])
             )
-            preserved_runs = raw_llm if is_llm_runs_format(raw_llm) else []
+            preserved_runs = _preserved_llm_runs(raw_llm, llm_model, replace_llm_model_runs)
             json_data = normalize_proposal_document(raw_json, source_context=source_context)
             preamble = json_data.get("raw", {}).get("preamble", {})
             id_value = str(preamble.get(id_field, ""))

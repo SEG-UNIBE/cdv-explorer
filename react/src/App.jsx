@@ -122,7 +122,7 @@ function AboutPage() {
       </div>
 
       <div className="about-page__section">
-        <div className="about-page__cards about-page__cards--two-column">
+        <div className="about-page__cards about-page__cards--link-grid">
           <Card className="about-page__card about-page__card--link">
             <a
               className="about-page__link-tile"
@@ -152,6 +152,44 @@ function AboutPage() {
               <span className="about-page__link-copy">
                 <span className="about-page__link-label">Demo Video</span>
                 <span className="about-page__link-target">youtu.be/56GKRexRuoI</span>
+              </span>
+            </a>
+          </Card>
+          <Card className="about-page__card about-page__card--link">
+            <a
+              className="about-page__link-tile"
+              href="https://seg-unibe.github.io/cdv-explorer/#/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <span className="about-page__link-icon-wrap">
+                <i className="pi pi-globe about-page__link-icon" aria-hidden="true" />
+              </span>
+              <span className="about-page__link-copy">
+                <span className="about-page__link-label about-page__link-label-row">
+                  <span className="about-page__env-badge about-page__env-badge--prod">PROD</span>
+                  <span>Instance</span>
+                </span>
+                <span className="about-page__link-target">seg-unibe.github.io/cdv-explorer</span>
+              </span>
+            </a>
+          </Card>
+          <Card className="about-page__card about-page__card--link">
+            <a
+              className="about-page__link-tile"
+              href="https://cdv-explorer.pages.dev/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <span className="about-page__link-icon-wrap">
+                <i className="pi pi-globe about-page__link-icon" aria-hidden="true" />
+              </span>
+              <span className="about-page__link-copy">
+                <span className="about-page__link-label about-page__link-label-row">
+                  <span className="about-page__env-badge about-page__env-badge--dev">DEV</span>
+                  <span>Instance</span>
+                </span>
+                <span className="about-page__link-target">cdv-explorer.pages.dev</span>
               </span>
             </a>
           </Card>

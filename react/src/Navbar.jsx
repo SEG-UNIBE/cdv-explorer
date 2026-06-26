@@ -4,13 +4,12 @@ import { Button } from 'primereact/button';
 import { Link } from 'react-router-dom';
 import { FaGithub } from 'react-icons/fa';
 import { useTheme } from './theme.jsx';
-import { getEnvironmentBadge } from './runtimeEnvironment';
+import { getEnvironmentBadge, getRepositoryUrl } from './runtimeEnvironment';
 import { APP_COMMIT_SHA, APP_COMMIT_URL, APP_VERSION } from './buildInfo';
 import './Navbar.scss';
 
-const REPOSITORY_URL = 'https://github.com/SEG-UNIBE/cdv-explorer';
-
 const envBadge = getEnvironmentBadge();
+const repositoryUrl = getRepositoryUrl();
 
 const Navbar = () => {
   const [mobileMenuVisible, setMobileMenuVisible] = useState(false);
@@ -81,7 +80,7 @@ const Navbar = () => {
         </button>
 
         <a
-          href={REPOSITORY_URL}
+          href={repositoryUrl}
           className="nav-action-button nav-github-button"
           target="_blank"
           rel="noreferrer"
@@ -134,7 +133,7 @@ const Navbar = () => {
           </button>
 
           <a
-            href={REPOSITORY_URL}
+            href={repositoryUrl}
             className="mobile-nav-action"
             target="_blank"
             rel="noreferrer"

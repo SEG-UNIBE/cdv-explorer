@@ -115,14 +115,14 @@ function AboutPage() {
   return (
     <section className="content about-page">
       <div className="about-page__intro">
-        <h1>About CDV-Explorer</h1>
+        <h1>About CDV Explorer</h1>
         <p>
-          CDV-Explorer is a research tool for analyzing improvement proposals (IPs) in decentralized open-source software ecosystems. It supports the study of Community-Driven Variability (CDV) by making proposal histories, authorship, classifications, status evolution, and inter-proposal relations explorable across IP sources and historic snapshots.
+          CDV Explorer is a research tool for analyzing improvement proposals (IPs) in decentralized open-source software ecosystems. It supports the study of Community-Driven Variability (CDV) by making proposal histories, authorship, classifications, status evolution, and inter-proposal relations explorable across IP sources and historic snapshots.
         </p>
       </div>
 
       <div className="about-page__section">
-        <div className="about-page__cards about-page__cards--two-column">
+        <div className="about-page__cards about-page__cards--link-grid">
           <Card className="about-page__card about-page__card--link">
             <a
               className="about-page__link-tile"
@@ -152,6 +152,44 @@ function AboutPage() {
               <span className="about-page__link-copy">
                 <span className="about-page__link-label">Demo Video</span>
                 <span className="about-page__link-target">youtu.be/56GKRexRuoI</span>
+              </span>
+            </a>
+          </Card>
+          <Card className="about-page__card about-page__card--link">
+            <a
+              className="about-page__link-tile"
+              href="https://seg-unibe.github.io/cdv-explorer/#/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <span className="about-page__link-icon-wrap">
+                <i className="pi pi-globe about-page__link-icon" aria-hidden="true" />
+              </span>
+              <span className="about-page__link-copy">
+                <span className="about-page__link-label about-page__link-label-row">
+                  <span className="about-page__env-badge about-page__env-badge--prod">PROD</span>
+                  <span>Instance</span>
+                </span>
+                <span className="about-page__link-target">seg-unibe.github.io/cdv-explorer</span>
+              </span>
+            </a>
+          </Card>
+          <Card className="about-page__card about-page__card--link">
+            <a
+              className="about-page__link-tile"
+              href="https://cdv-explorer.pages.dev/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <span className="about-page__link-icon-wrap">
+                <i className="pi pi-globe about-page__link-icon" aria-hidden="true" />
+              </span>
+              <span className="about-page__link-copy">
+                <span className="about-page__link-label about-page__link-label-row">
+                  <span className="about-page__env-badge about-page__env-badge--dev">DEV</span>
+                  <span>Instance</span>
+                </span>
+                <span className="about-page__link-target">cdv-explorer.pages.dev</span>
               </span>
             </a>
           </Card>
@@ -191,7 +229,7 @@ function AboutPage() {
         <div className="about-page__cards about-page__cards--two-column">
           <Card className="about-page__card about-page__card--organization">
             <p className="about-page__organization-copy">
-              CDV-Explorer is primarily maintained by{' '}
+              CDV Explorer is primarily maintained by{' '}
               <a href="https://romanboegli.ch" target="_blank" rel="noreferrer">Roman Bögli</a>.
               {' '}The project is part of his PhD work at the Software Engineering Group (SEG).
             </p>
@@ -206,8 +244,9 @@ function AboutPage() {
           <Card className="about-page__card about-page__card--organization">
             <div className="about-page__organization-split">
               <p className="about-page__organization-copy">
-                SEG is part of the Institute of Computer Science at the{' '}
-                <a href="https://www.unibe.ch/" target="_blank" rel="noreferrer">University of Bern</a> in Switzerland🇨🇭.
+                SEG is part of the{' '} 
+                <a href="https://www.inf.unibe.ch/index_eng.html" target="_blank" rel="noreferrer">Institute of Computer Science</a> at the{' '}
+                <a href="https://www.unibe.ch/index_eng.html" target="_blank" rel="noreferrer">University of Bern</a> in Switzerland🇨🇭.
               </p>
               <div className="about-page__logo-card about-page__logo-card--unibe">
                 <img

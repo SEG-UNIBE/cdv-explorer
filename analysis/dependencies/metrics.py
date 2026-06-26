@@ -282,7 +282,7 @@ def _build_pairwise_comparisons(network_data: Dict[str, Any]) -> Dict[str, Any]:
     return pairwise
 
 
-def extract_dependency_metrics(network_data: Dict[str, Any]) -> Dict[str, Any]:
+def _extract_dependency_metrics_payload(network_data: Dict[str, Any]) -> Dict[str, Any]:
     approaches = _approach_labels()
     by_approach: Dict[str, Dict[str, Any]] = {}
 
@@ -326,3 +326,45 @@ def extract_dependency_metrics(network_data: Dict[str, Any]) -> Dict[str, Any]:
         "by_approach": by_approach,
         "pairwise_comparisons": _build_pairwise_comparisons(network_data),
     }
+
+
+def _network_data_with_llm_model(network_data: Dict[str, Any], llm_model: str) -> Dict[str, Any]:
+    llm_models = network_data.get("llm_models", {}) if isinstance(network_data, dict) else {}
+    model_edges = (llm_models.get("dependency_edges_by_model", {}) or {}).get(llm_model, [])
+    base_edges = [
+        edge
+        for edge in _canonical_dependency_edges(network_data)
+        if edge.get("extraction_method") != BODY_EXTRACTED_LLM
+    ]
+    return {
+        **network_data,
+        "dependency_edges": base_edges + list(model_edges or []),
+    }
+
+
+def extract_dependency_metrics(network_data: Dict[str, Any]) -> Dict[str, Any]:
+    payload = _extract_dependency_metrics_payload(network_data)
+    published_llm_model = str(network_data.get("llm_model") or "").strip()
+    if published_llm_model:
+        payload["llm_model"] = published_llm_model
+
+    llm_models = network_data.get("llm_models", {}) if isinstance(network_data, dict) else {}
+    available_models = llm_models.get("available_models", []) if isinstance(llm_models, dict) else []
+    if not available_models:
+        return payload
+
+    payload["llm_models"] = {
+        "default_model": llm_models.get("default_model"),
+        "available_models": list(available_models),
+        "by_model": {},
+    }
+    for entry in available_models:
+        if not isinstance(entry, dict):
+            continue
+        llm_model = str(entry.get("model") or "").strip()
+        if not llm_model:
+            continue
+        payload["llm_models"]["by_model"][llm_model] = _extract_dependency_metrics_payload(
+            _network_data_with_llm_model(network_data, llm_model)
+        )
+    return payload

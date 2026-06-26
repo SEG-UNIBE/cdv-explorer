@@ -21,7 +21,7 @@ import {
   edgeTargetProposalId,
   edgeTargetSourceId,
   formatRelationTypeLabel,
-  getLinkTypeLabel,
+  getLinkTypeLabelForModel,
   getDependencyNodeAttributeFallbackLabel,
   getPreambleRelationDasharray,
   getPreambleRelationStroke,
@@ -47,6 +47,7 @@ export function NetworkDiagramCanvas({
   colorBy,
   linkType,
   baselineType,
+  activeLlmModel,
   layoutMode,
   isDifferentialMode,
   onlyCrossSource,
@@ -516,7 +517,7 @@ export function NetworkDiagramCanvas({
       const sourceId = edgeSourceProposalId(edge);
       const targetId = edgeTargetProposalId(edge);
       const approachType = edge.approachType || linkType;
-      const approachLabel = getLinkTypeLabel(approachType);
+      const approachLabel = getLinkTypeLabelForModel(approachType, activeLlmModel);
       const relationLabel = formatRelationTypeLabel(edge.semanticRelationType || edge.relationType);
       const metadataRows = !isDifferentialMode
         ? [
@@ -536,17 +537,17 @@ export function NetworkDiagramCanvas({
         : [
           ['Approach', (
             edge.comparisonStatus === 'overlap'
-              ? `${getLinkTypeLabel(linkType)} + ${getLinkTypeLabel(baselineType)}`
+              ? `${getLinkTypeLabelForModel(linkType, activeLlmModel)} + ${getLinkTypeLabelForModel(baselineType, activeLlmModel)}`
               : edge.comparisonStatus === 'baseline_only'
-                ? `${getLinkTypeLabel(baselineType)} only`
-                : `${getLinkTypeLabel(linkType)} only`
+                ? `${getLinkTypeLabelForModel(baselineType, activeLlmModel)} only`
+                : `${getLinkTypeLabelForModel(linkType, activeLlmModel)} only`
           )],
           ['Comparison', (
             edge.comparisonStatus === 'overlap'
-              ? `Exists in baseline (${getLinkTypeLabel(baselineType)})`
+              ? `Exists in baseline (${getLinkTypeLabelForModel(baselineType, activeLlmModel)})`
               : edge.comparisonStatus === 'baseline_only'
-                ? `Missing from ${getLinkTypeLabel(linkType)}`
-                : `Only in ${getLinkTypeLabel(linkType)}`
+                ? `Missing from ${getLinkTypeLabelForModel(linkType, activeLlmModel)}`
+                : `Only in ${getLinkTypeLabelForModel(linkType, activeLlmModel)}`
           )],
         ];
 

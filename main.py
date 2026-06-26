@@ -280,7 +280,15 @@ def _validate_snapshot_date(snapshot: str) -> None:
         raise typer.Exit(1)
 
 
-def _rebuild_source_artifacts(eco_slug: str, src_slug: str, src: dict, snapshot: str, *, stage_label: str = "Build analysis and postprocess artifacts") -> None:
+def _rebuild_source_artifacts(
+    eco_slug: str,
+    src_slug: str,
+    src: dict,
+    snapshot: str,
+    *,
+    artifact_llm_model: str | None = None,
+    stage_label: str = "Build analysis and postprocess artifacts",
+) -> None:
     """Rebuild analysis/postprocess artifacts for one source from existing preprocess JSON."""
     from analysis.pipeline import prepare_ecosystem_artifacts
     from analysis.validation import (
@@ -309,6 +317,14 @@ def _rebuild_source_artifacts(eco_slug: str, src_slug: str, src: dict, snapshot:
         )
         raise typer.Exit(1)
 
+    resolved_artifact_llm_model = _resolve_artifact_llm_model(
+        eco_slug=eco_slug,
+        src_slug=src_slug,
+        snapshot=snapshot,
+        preprocess_dir=preprocess_dir,
+        requested_model=artifact_llm_model,
+    )
+
     ground_truth_validation = validate_ground_truth_curated_file(eco_slug, _get_ecosystem(eco_slug))
     reviewed_ips_validation = validate_ground_truth_ips_file(eco_slug, _get_ecosystem(eco_slug))
     ground_truth_errors = ground_truth_validation.errors + reviewed_ips_validation.errors
@@ -334,6 +350,7 @@ def _rebuild_source_artifacts(eco_slug: str, src_slug: str, src: dict, snapshot:
             repo_dir=harvest_root if harvest_root.exists() else None,
             file_prefix=src["document_prefix"],
             source_context=source_context,
+            artifact_llm_model=resolved_artifact_llm_model,
             progress_callback=u,
         ),
     )
@@ -399,15 +416,48 @@ def _rebuild_combined_source_artifacts(eco_slug: str, eco: dict, snapshot: str) 
             raise typer.Exit(1)
 
 
-def _rebuild_artifacts_for_targets(eco_slug: str, eco: dict, targets: dict[str, dict], snapshot: str) -> None:
+def _rebuild_artifacts_for_targets(
+    eco_slug: str,
+    eco: dict,
+    targets: dict[str, dict],
+    snapshot: str,
+    *,
+    artifact_llm_model: str | None = None,
+) -> None:
     if len(targets) == 1:
         src_slug, src_cfg = next(iter(targets.items()))
-        _rebuild_source_artifacts(eco_slug, src_slug, src_cfg, snapshot)
+        _rebuild_source_artifacts(eco_slug, src_slug, src_cfg, snapshot, artifact_llm_model=artifact_llm_model)
         return
+
+    resolved_models_by_source = {
+        src_slug: _resolve_artifact_llm_model(
+            eco_slug=eco_slug,
+            src_slug=src_slug,
+            snapshot=snapshot,
+            preprocess_dir=Path(src_cfg["preprocess"]) / snapshot,
+            requested_model=artifact_llm_model,
+        )
+        for src_slug, src_cfg in targets.items()
+    }
+    distinct_models = sorted({model for model in resolved_models_by_source.values() if model})
+    if len(distinct_models) > 1:
+        model_lines = ", ".join(
+            f"{src_slug}={model}"
+            for src_slug, model in sorted(resolved_models_by_source.items())
+            if model
+        )
+        console.print(
+            f"[red]Selected sources would publish different LLM models for {eco_slug}/{snapshot}: "
+            f"{model_lines}[/red]"
+        )
+        console.print(
+            "[yellow]Re-run with `--artifact-llm-model <model>` after ensuring that model exists in every selected source.[/yellow]"
+        )
+        raise typer.Exit(1)
 
     for src_slug, src_cfg in targets.items():
         console.rule(f"[bold]{eco_slug} / {src_slug}[/bold]")
-        _rebuild_source_artifacts(eco_slug, src_slug, src_cfg, snapshot)
+        _rebuild_source_artifacts(eco_slug, src_slug, src_cfg, snapshot, artifact_llm_model=artifact_llm_model)
     _rebuild_combined_source_artifacts(eco_slug, eco, snapshot)
 
 
@@ -537,7 +587,68 @@ def _existing_llm_model_run_counts(
     return matching_documents, matching_runs
 
 
-def _run_source_pipeline(eco_slug: str, src_slug: str, src: dict, snapshot: str, skipllm: bool, focus: set[str] | None = None) -> None:
+def _available_llm_models_in_preprocess_dir(preprocess_dir: Path) -> list[str]:
+    models: set[str] = set()
+    for json_file in sorted(preprocess_dir.glob("*.json")):
+        raw_json = json.loads(json_file.read_text(encoding="utf-8"))
+        raw_llm = (
+            raw_json.get("insights", {})
+                    .get("interrelations", {})
+                    .get("body_extracted_llm", [])
+        )
+        if not is_llm_runs_format(raw_llm):
+            continue
+        for run in raw_llm:
+            model = str(run.get("model") or "").strip()
+            if model:
+                models.add(model)
+    return sorted(models)
+
+
+def _resolve_artifact_llm_model(
+    *,
+    eco_slug: str,
+    src_slug: str,
+    snapshot: str,
+    preprocess_dir: Path,
+    requested_model: str | None,
+) -> str | None:
+    available_models = _available_llm_models_in_preprocess_dir(preprocess_dir)
+    requested = str(requested_model or "").strip()
+
+    if requested:
+        if requested not in available_models:
+            console.print(
+                f"[red]Requested artifact LLM model '{requested}' is not available for "
+                f"{eco_slug}/{src_slug}/{snapshot}. Available models: "
+                f"{', '.join(available_models) if available_models else '(none)'}[/red]"
+            )
+            raise typer.Exit(1)
+        return requested
+
+    if len(available_models) <= 1:
+        return available_models[0] if available_models else None
+
+    console.print(
+        f"[red]Multiple LLM models are present for {eco_slug}/{src_slug}/{snapshot}: "
+        f"{', '.join(available_models)}[/red]"
+    )
+    console.print(
+        "[yellow]Choose which model should be published into the web artifacts with "
+        "`--artifact-llm-model <model>`.[/yellow]"
+    )
+    raise typer.Exit(1)
+
+
+def _run_source_pipeline(
+    eco_slug: str,
+    src_slug: str,
+    src: dict,
+    snapshot: str,
+    skipllm: bool,
+    focus: set[str] | None = None,
+    artifact_llm_model: str | None = None,
+) -> None:
     """Run the full pipeline for one source."""
     from pipeline.harvest import get_harvester
     from pipeline.preprocess import get_extractor, get_enricher
@@ -608,7 +719,14 @@ def _run_source_pipeline(eco_slug: str, src_slug: str, src: dict, snapshot: str,
                    source_context=source_context,
                    progress_callback=u))
 
-    _rebuild_source_artifacts(eco_slug, src_slug, src, snapshot, stage_label="Step 4/4 · IV. Postprocess".ljust(28))
+    _rebuild_source_artifacts(
+        eco_slug,
+        src_slug,
+        src,
+        snapshot,
+        artifact_llm_model=artifact_llm_model,
+        stage_label="Step 4/4 · IV. Postprocess".ljust(28),
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -834,6 +952,7 @@ def run(
     snapshot: Annotated[str, typer.Option("--snapshot", "-s", help="Snapshot date (YYYY-MM-DD). Required.")] = ...,
     skipllm: Annotated[bool, typer.Option("--skipllm", help="Skip LLM-based extraction.")] = False,
     focus: Annotated[Optional[str], typer.Option("--focus", help="Comma-separated list of proposal IDs to process (e.g. '1-9,30-44,85,A0'). All others are skipped.")] = None,
+    artifact_llm_model: Annotated[Optional[str], typer.Option("--artifact-llm-model", help="LLM model to publish into web artifacts when multiple stored LLM runs exist.")] = None,
 ) -> None:
     """Run the full pipeline for a snapshot. Runs all sources unless --source is given."""
     eco_slug = ecosystem or next(iter(ECOSYSTEM_REGISTRY), None)
@@ -856,14 +975,14 @@ def run(
     if len(targets) == 1:
         src_slug, src_cfg = next(iter(targets.items()))
         run_started = time.monotonic()
-        _run_source_pipeline(eco_slug, src_slug, src_cfg, snapshot, skipllm, focus_ids)
+        _run_source_pipeline(eco_slug, src_slug, src_cfg, snapshot, skipllm, focus_ids, artifact_llm_model)
         elapsed = time.monotonic() - run_started
         console.print(f"\n[green]Done in {elapsed:.1f}s[/green]")
     else:
         run_started = time.monotonic()
         for src_slug, src_cfg in targets.items():
             console.rule(f"[bold]{eco_slug} / {src_slug}[/bold]")
-            _run_source_pipeline(eco_slug, src_slug, src_cfg, snapshot, skipllm, focus_ids)
+            _run_source_pipeline(eco_slug, src_slug, src_cfg, snapshot, skipllm, focus_ids, artifact_llm_model)
         _rebuild_combined_source_artifacts(eco_slug, eco, snapshot)
         elapsed = time.monotonic() - run_started
         console.print(f"\n[green]All sources done in {elapsed:.1f}s[/green]")
@@ -879,6 +998,7 @@ def artifacts_rebuild(
     source: Annotated[Optional[str], typer.Option("--source", help="Source slug (default: all sources).")] = None,
     snapshot: Annotated[Optional[str], typer.Option("--snapshot", "-s", help="Snapshot date (YYYY-MM-DD). Required unless --all is used.")] = None,
     all_snapshots: Annotated[bool, typer.Option("--all", help="Rebuild every existing preprocessed snapshot for the selected ecosystem/source.")] = False,
+    artifact_llm_model: Annotated[Optional[str], typer.Option("--artifact-llm-model", help="LLM model to publish into web artifacts when multiple stored LLM runs exist.")] = None,
 ) -> None:
     """Rebuild analysis and postprocess artifacts from existing preprocessed JSON."""
     eco_slug = ecosystem or next(iter(ECOSYSTEM_REGISTRY), None)
@@ -913,12 +1033,24 @@ def artifacts_rebuild(
 
         for snapshot_label in snapshots:
             console.rule(f"[bold]{eco_slug} / {snapshot_label}[/bold]")
-            _rebuild_artifacts_for_targets(eco_slug, eco, targets, snapshot_label)
+            _rebuild_artifacts_for_targets(
+                eco_slug,
+                eco,
+                targets,
+                snapshot_label,
+                artifact_llm_model=artifact_llm_model,
+            )
         elapsed = time.monotonic() - rebuild_started
         console.print(f"\n[green]Artifacts rebuilt for {len(snapshots)} snapshot(s) in {elapsed:.1f}s[/green]")
         return
 
-    _rebuild_artifacts_for_targets(eco_slug, eco, targets, snapshot)
+    _rebuild_artifacts_for_targets(
+        eco_slug,
+        eco,
+        targets,
+        snapshot,
+        artifact_llm_model=artifact_llm_model,
+    )
     elapsed = time.monotonic() - rebuild_started
     if len(targets) == 1:
         console.print(f"\n[green]Artifacts rebuilt in {elapsed:.1f}s[/green]")

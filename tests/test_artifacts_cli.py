@@ -11,9 +11,11 @@ from typer.testing import CliRunner
 from analysis.validation import SnapshotValidationResult
 from main import (
     app,
+    _available_llm_models_in_preprocess_dir,
     _common_preprocess_snapshot_labels,
     _existing_llm_model_run_counts,
     _rebuild_source_artifacts,
+    _resolve_artifact_llm_model,
 )
 from pipeline.preprocess._enrich import _preserved_llm_runs
 
@@ -64,6 +66,7 @@ class ArtifactRebuildTests(unittest.TestCase):
             self.assertEqual(kwargs["file_prefix"], "bip")
             self.assertEqual(kwargs["source_context"].ecosystem_slug, "bitcoin")
             self.assertEqual(kwargs["source_context"].source_slug, "bips")
+            self.assertIsNone(kwargs["artifact_llm_model"])
 
     def test_rebuild_fails_when_preprocess_snapshot_is_missing(self) -> None:
         with tempfile.TemporaryDirectory() as tmp_dir:
@@ -143,6 +146,71 @@ class ArtifactRebuildTests(unittest.TestCase):
             )
 
         self.assertEqual((docs, runs), (1, 1))
+
+    def test_available_llm_models_in_preprocess_dir_discovers_distinct_models(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            preprocess_dir = Path(tmp_dir) / "02_preprocess" / "2026-05-28"
+            preprocess_dir.mkdir(parents=True)
+            (preprocess_dir / "bip-0001.json").write_text(
+                json.dumps({
+                    "insights": {"interrelations": {"body_extracted_llm": [
+                        {"model": "gpt-5.4-mini", "timestamp": "2026-06-01T00:00:00Z", "dependencies": []},
+                        {"model": "gpt-5.4", "timestamp": "2026-06-02T00:00:00Z", "dependencies": []},
+                    ]}},
+                }),
+                encoding="utf-8",
+            )
+
+            models = _available_llm_models_in_preprocess_dir(preprocess_dir)
+
+        self.assertEqual(models, ["gpt-5.4", "gpt-5.4-mini"])
+
+    def test_resolve_artifact_llm_model_fails_without_explicit_choice_when_multiple_exist(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            preprocess_dir = Path(tmp_dir) / "02_preprocess" / "2026-05-28"
+            preprocess_dir.mkdir(parents=True)
+            (preprocess_dir / "bip-0001.json").write_text(
+                json.dumps({
+                    "insights": {"interrelations": {"body_extracted_llm": [
+                        {"model": "gpt-5.4-mini", "timestamp": "2026-06-01T00:00:00Z", "dependencies": []},
+                        {"model": "gpt-5.4", "timestamp": "2026-06-02T00:00:00Z", "dependencies": []},
+                    ]}},
+                }),
+                encoding="utf-8",
+            )
+
+            with self.assertRaises(typer.Exit):
+                _resolve_artifact_llm_model(
+                    eco_slug="bitcoin",
+                    src_slug="bips",
+                    snapshot="2026-05-28",
+                    preprocess_dir=preprocess_dir,
+                    requested_model=None,
+                )
+
+    def test_resolve_artifact_llm_model_accepts_requested_model(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            preprocess_dir = Path(tmp_dir) / "02_preprocess" / "2026-05-28"
+            preprocess_dir.mkdir(parents=True)
+            (preprocess_dir / "bip-0001.json").write_text(
+                json.dumps({
+                    "insights": {"interrelations": {"body_extracted_llm": [
+                        {"model": "gpt-5.4-mini", "timestamp": "2026-06-01T00:00:00Z", "dependencies": []},
+                        {"model": "gpt-5.4", "timestamp": "2026-06-02T00:00:00Z", "dependencies": []},
+                    ]}},
+                }),
+                encoding="utf-8",
+            )
+
+            model = _resolve_artifact_llm_model(
+                eco_slug="bitcoin",
+                src_slug="bips",
+                snapshot="2026-05-28",
+                preprocess_dir=preprocess_dir,
+                requested_model="gpt-5.4-mini",
+            )
+
+        self.assertEqual(model, "gpt-5.4-mini")
 
     def test_preserved_llm_runs_replaces_only_same_model(self) -> None:
         raw_llm = [

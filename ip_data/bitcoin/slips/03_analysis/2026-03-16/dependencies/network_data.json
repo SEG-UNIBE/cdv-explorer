@@ -4320,139 +4320,6 @@
     {
       "source": "slips:10",
       "target": "bips:32",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1
-    },
-    {
-      "source": "slips:10",
-      "target": "bips:39",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1
-    },
-    {
-      "source": "slips:10",
-      "target": "slips:39",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1
-    },
-    {
-      "source": "slips:13",
-      "target": "bips:43",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1
-    },
-    {
-      "source": "slips:13",
-      "target": "slips:10",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1
-    },
-    {
-      "source": "slips:24",
-      "target": "bips:21",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1
-    },
-    {
-      "source": "slips:24",
-      "target": "bips:32",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1
-    },
-    {
-      "source": "slips:24",
-      "target": "bips:70",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1
-    },
-    {
-      "source": "slips:24",
-      "target": "slips:21",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1
-    },
-    {
-      "source": "slips:24",
-      "target": "slips:44",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1
-    },
-    {
-      "source": "slips:32",
-      "target": "bips:32",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1
-    },
-    {
-      "source": "slips:32",
-      "target": "bips:173",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1
-    },
-    {
-      "source": "slips:77",
-      "target": "bips:39",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1
-    },
-    {
-      "source": "slips:77",
-      "target": "slips:21",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1
-    },
-    {
-      "source": "slips:132",
-      "target": "bips:32",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1
-    },
-    {
-      "source": "slips:132",
-      "target": "slips:32",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1
-    },
-    {
-      "source": "slips:173",
-      "target": "bips:93",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1
-    },
-    {
-      "source": "slips:173",
-      "target": "bips:173",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1
-    },
-    {
-      "source": "slips:173",
-      "target": "bips:350",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1
-    },
-    {
-      "source": "slips:10",
-      "target": "bips:32",
       "extraction_method": "ground_truth_curated",
       "relation_type": "depends_on",
       "value": 1,
@@ -4545,7 +4412,160 @@
       "note": null,
       "reviewer": "rbo",
       "reviewed_at": "2026-06-22"
+    },
+    {
+      "source": "slips:10",
+      "target": "bips:32",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "slips:10",
+      "target": "bips:39",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "slips:10",
+      "target": "slips:39",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "slips:13",
+      "target": "bips:43",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "slips:13",
+      "target": "slips:10",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "slips:24",
+      "target": "bips:21",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "slips:24",
+      "target": "bips:32",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "slips:24",
+      "target": "bips:70",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "slips:24",
+      "target": "slips:21",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "slips:24",
+      "target": "slips:44",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "slips:32",
+      "target": "bips:32",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "slips:32",
+      "target": "bips:173",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "slips:77",
+      "target": "bips:39",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "slips:77",
+      "target": "slips:21",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "slips:132",
+      "target": "bips:32",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "slips:132",
+      "target": "slips:32",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "slips:173",
+      "target": "bips:93",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "slips:173",
+      "target": "bips:173",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "slips:173",
+      "target": "bips:350",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
     }
   ],
-  "ground_truth_reviewed_ips": []
+  "ground_truth_reviewed_ips": [],
+  "llm_model": "gpt-5.4-mini"
 }

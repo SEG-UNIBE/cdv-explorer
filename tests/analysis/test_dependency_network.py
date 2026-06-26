@@ -1,7 +1,7 @@
 import unittest
 
 from analysis.dependencies.metrics import build_graph, extract_dependency_metrics
-from analysis.dependencies.network import build_network_data
+from analysis.dependencies.network import build_network_data, collapse_network_data_to_llm_model
 from analysis.pipeline import combined_source_key, merge_source_network_data
 from analysis.validation.ground_truth import (
     load_ground_truth_curated_entries,
@@ -101,17 +101,73 @@ class BuildNetworkDataTests(unittest.TestCase):
             known_proposal_ids_by_source={"slips": {"132"}},
         )
 
-        self.assertIn(
-            {
-                "source": "bips:1",
-                "target": "slips:132",
-                "extraction_method": "body_extracted_llm",
-                "relation_type": "implicit_dependency",
-                "value": 1,
-            },
-            result["dependency_edges"],
+        self.assertTrue(
+            any(
+                edge.get("source") == "bips:1"
+                and edge.get("target") == "slips:132"
+                and edge.get("extraction_method") == "body_extracted_llm"
+                and edge.get("relation_type") == "implicit_dependency"
+                and edge.get("value") == 1
+                and edge.get("llm_model") == "test-model"
+                for edge in result["dependency_edges"]
+            )
         )
         self.assertNotIn("links", result)
+
+    def test_llm_model_variants_are_exposed_per_model(self):
+        source_context = SourceContext.from_config(
+            ECOSYSTEM_REGISTRY["bitcoin"]["sources"]["bips"],
+            ecosystem_slug="bitcoin",
+            source_slug="bips",
+        )
+        proposal = {
+            "raw": {"preamble": {"bip": "1", "title": "Proposal 1", "status": "Draft"}},
+            "insights": {
+                "interrelations": {
+                    "body_extracted_regex": [],
+                    "body_extracted_llm": [
+                        {
+                            "model": "gpt-5.4-mini",
+                            "timestamp": "2026-06-01T00:00:00Z",
+                            "dependencies": [{"target": "bips:2"}],
+                        },
+                        {
+                            "model": "gpt-5.4",
+                            "timestamp": "2026-06-02T00:00:00Z",
+                            "dependencies": [],
+                        },
+                    ],
+                    "preamble_extracted": [],
+                }
+            },
+        }
+
+        result = build_network_data(
+            [proposal, _proposal("2")],
+            id_field="bip",
+            proposal_label="BIP",
+            source_context=source_context,
+        )
+
+        self.assertEqual(result["llm_models"]["default_model"], "gpt-5.4-mini")
+        self.assertEqual(
+            [entry["model"] for entry in result["llm_models"]["available_models"]],
+            ["gpt-5.4", "gpt-5.4-mini"],
+        )
+        self.assertEqual(result["llm_models"]["dependency_edges_by_model"]["gpt-5.4"], [])
+        self.assertEqual(
+            result["llm_models"]["dependency_edges_by_model"]["gpt-5.4-mini"],
+            [
+                {
+                    "source": "bips:1",
+                    "target": "bips:2",
+                    "extraction_method": "body_extracted_llm",
+                    "relation_type": "implicit_dependency",
+                    "value": 1,
+                    "llm_model": "gpt-5.4-mini",
+                }
+            ],
+        )
 
     def test_source_qualified_references_create_cross_source_edges(self):
         context = SourceContext.from_config(
@@ -442,6 +498,98 @@ class BuildNetworkDataTests(unittest.TestCase):
 
         self.assertEqual(per_bip_ids, {"bips:32", "slips:32", "slips:132"})
 
+    def test_dependency_metrics_include_llm_model_variants(self):
+        network_data = {
+            "nodes": [
+                {"id": "1", "graph_key": "bips:1", "title": "BIP 1"},
+                {"id": "2", "graph_key": "bips:2", "title": "BIP 2"},
+            ],
+            "dependency_edges": [
+                {
+                    "source": "bips:1",
+                    "target": "bips:2",
+                    "extraction_method": "body_extracted_llm",
+                    "relation_type": "implicit_dependency",
+                    "value": 1,
+                    "llm_model": "gpt-5.4-mini",
+                },
+            ],
+            "llm_models": {
+                "default_model": "gpt-5.4-mini",
+                "available_models": [
+                    {"model": "gpt-5.4", "document_count": 1, "edge_count": 0},
+                    {"model": "gpt-5.4-mini", "document_count": 1, "edge_count": 1},
+                ],
+                "dependency_edges_by_model": {
+                    "gpt-5.4": [],
+                    "gpt-5.4-mini": [
+                        {
+                            "source": "bips:1",
+                            "target": "bips:2",
+                            "extraction_method": "body_extracted_llm",
+                            "relation_type": "implicit_dependency",
+                            "value": 1,
+                            "llm_model": "gpt-5.4-mini",
+                        }
+                    ],
+                },
+            },
+        }
+
+        metrics = extract_dependency_metrics(network_data)
+
+        self.assertEqual(metrics["llm_models"]["default_model"], "gpt-5.4-mini")
+        self.assertEqual(
+            metrics["llm_models"]["by_model"]["gpt-5.4"]["by_approach"]["body_extracted_llm"]["summary"]["edge_count"],
+            0,
+        )
+        self.assertEqual(
+            metrics["llm_models"]["by_model"]["gpt-5.4-mini"]["by_approach"]["body_extracted_llm"]["summary"]["edge_count"],
+            1,
+        )
+
+    def test_collapse_network_data_to_published_llm_model(self):
+        network_data = {
+            "nodes": [
+                {"id": "1", "graph_key": "bips:1", "title": "BIP 1"},
+                {"id": "2", "graph_key": "bips:2", "title": "BIP 2"},
+            ],
+            "dependency_edges": [],
+            "llm_models": {
+                "default_model": "gpt-5.4-mini",
+                "available_models": [
+                    {"model": "gpt-5.4", "document_count": 1, "edge_count": 0},
+                    {"model": "gpt-5.4-mini", "document_count": 1, "edge_count": 1},
+                ],
+                "dependency_edges_by_model": {
+                    "gpt-5.4": [],
+                    "gpt-5.4-mini": [
+                        {
+                            "source": "bips:1",
+                            "target": "bips:2",
+                            "extraction_method": "body_extracted_llm",
+                            "relation_type": "implicit_dependency",
+                            "value": 1,
+                            "llm_model": "gpt-5.4-mini",
+                        }
+                    ],
+                },
+            },
+        }
+
+        collapsed = collapse_network_data_to_llm_model(network_data, "gpt-5.4-mini")
+        metrics = extract_dependency_metrics(collapsed)
+
+        self.assertEqual(collapsed["llm_model"], "gpt-5.4-mini")
+        self.assertNotIn("llm_models", collapsed)
+        self.assertEqual(len(collapsed["dependency_edges"]), 1)
+        self.assertEqual(metrics["llm_model"], "gpt-5.4-mini")
+        self.assertNotIn("llm_models", metrics)
+        self.assertEqual(
+            metrics["by_approach"]["body_extracted_llm"]["summary"]["edge_count"],
+            1,
+        )
+
     def test_merge_source_network_data_preserves_source_scoped_nodes_and_edges(self):
         self.assertEqual(combined_source_key(["slips", "bips"]), "bips+slips")
 
@@ -477,6 +625,49 @@ class BuildNetworkDataTests(unittest.TestCase):
         self.assertEqual(merged["meta"]["combination_key"], "bips+slips")
         self.assertEqual(merged["dependency_edges"][0]["source"], "bips:32")
         self.assertEqual(merged["dependency_edges"][0]["target"], "slips:132")
+
+    def test_merge_source_network_data_requires_one_shared_published_llm_model(self):
+        merged = merge_source_network_data([
+            (
+                "bips",
+                {
+                    "nodes": [{"id": "1", "graph_key": "bips:1", "title": "BIP 1"}],
+                    "dependency_edges": [],
+                    "llm_model": "gpt-5.4-mini",
+                },
+            ),
+            (
+                "slips",
+                {
+                    "nodes": [{"id": "2", "graph_key": "slips:2", "title": "SLIP 2"}],
+                    "dependency_edges": [],
+                    "llm_model": "gpt-5.4-mini",
+                },
+            ),
+        ])
+
+        self.assertEqual(merged["llm_model"], "gpt-5.4-mini")
+
+    def test_merge_source_network_data_rejects_mixed_published_llm_models(self):
+        with self.assertRaises(ValueError):
+            merge_source_network_data([
+                (
+                    "bips",
+                    {
+                        "nodes": [{"id": "1", "graph_key": "bips:1", "title": "BIP 1"}],
+                        "dependency_edges": [],
+                        "llm_model": "gpt-5.4-mini",
+                    },
+                ),
+                (
+                    "slips",
+                    {
+                        "nodes": [{"id": "2", "graph_key": "slips:2", "title": "SLIP 2"}],
+                        "dependency_edges": [],
+                        "llm_model": "gpt-5.4",
+                    },
+                ),
+            ])
 
     def test_dependency_metrics_can_filter_custom_preamble_relation_type(self):
         network_data = {

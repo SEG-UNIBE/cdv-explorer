@@ -21,7 +21,7 @@ import {
   GROUND_TRUTH_MATCH_MODE_OPTIONS,
   GT_TYPE_ALL,
 } from '../../dependencyGroundTruthEvaluation';
-import { DEPENDENCY_SHORT_LABELS, GROUND_TRUTH_CURATED } from '../../dependencyApproaches';
+import { getDependencyApproachLabel, GROUND_TRUTH_CURATED } from '../../dependencyApproaches';
 import { resolveRelationOntology } from '../../dependencyRelationOntology';
 import { useAnalysisMetricTooltip } from '../../useAnalysisMetricTooltip';
 import { ExportableCard } from '../ExportableCard';
@@ -58,6 +58,7 @@ export function DependenciesSection({
   setDependencyIncludeConnections,
   hasDependencyFilter,
   selectedDependencyProposalIds,
+  activeDependencyLlmModel,
   dependencyMetricsApproachOptions,
   activeDependencyMetricsApproach,
   setSelectedDependencyMetricsApproach,
@@ -261,6 +262,7 @@ export function DependenciesSection({
         </p>
         <NetworkDiagram
           data={selectedDataset}
+          activeLlmModel={activeDependencyLlmModel}
           width={1200}
           height={700}
           controlsClassName="dependency-graph-controls"
@@ -350,15 +352,17 @@ export function DependenciesSection({
               <label className="dependency-metrics-toolbar__label" htmlFor="dependency-metrics-approach">
                 Approach
               </label>
-              <Dropdown
-                inputId="dependency-metrics-approach"
-                value={activeDependencyMetricsApproach}
-                options={dependencyMetricsApproachOptions}
-                onChange={(event) => setSelectedDependencyMetricsApproach(event.value)}
-                placeholder="Select approach"
-                aria-label="Approach for dependency metrics"
-                className="dependency-metrics-toolbar__dropdown"
-              />
+              <div className="dependency-metrics-toolbar__dropdown-row">
+                <Dropdown
+                  inputId="dependency-metrics-approach"
+                  value={activeDependencyMetricsApproach}
+                  options={dependencyMetricsApproachOptions}
+                  onChange={(event) => setSelectedDependencyMetricsApproach(event.value)}
+                  placeholder="Select approach"
+                  aria-label="Approach for dependency metrics"
+                  className="dependency-metrics-toolbar__dropdown"
+                />
+              </div>
             </div>
             <ProposalFilterControl
               value={dependencyFilterText}
@@ -397,6 +401,7 @@ export function DependenciesSection({
         <DependencyComparisonHeatmaps
           pairwiseComparisons={dependencyMetrics?.pairwise_comparisons || {}}
           proposalShortLabel={ecosystem.acronym || 'BIP'}
+          activeLlmModel={activeDependencyLlmModel}
         />
       </ExportableCard>
       {showExperimentalFeatures && groundTruthEvaluation ? (
@@ -482,7 +487,7 @@ export function DependenciesSection({
                                 <td>
                                   <input type="checkbox" checked={false} disabled aria-label="No relations extracted" />
                                 </td>
-                                <td>{DEPENDENCY_SHORT_LABELS[row.approach] || row.approach}</td>
+                                <td>{getDependencyApproachLabel(row.approach, activeDependencyLlmModel)}</td>
                                 <td colSpan={2}><span className="gt-type-mapping__muted">no relations extracted</span></td>
                               </tr>
                             ) : (
@@ -495,7 +500,7 @@ export function DependenciesSection({
                                     onChange={(event) => updateTypeMappingRow(index, { include: event.target.checked })}
                                   />
                                 </td>
-                                <td>{DEPENDENCY_SHORT_LABELS[row.approach] || row.approach}</td>
+                                <td>{getDependencyApproachLabel(row.approach, activeDependencyLlmModel)}</td>
                                 <td><code>{row.subtype}</code></td>
                                 <td>
                                   <select
@@ -584,7 +589,10 @@ export function DependenciesSection({
               </div>
             </div>
           </CollapsibleControls>
-          <DependencyGroundTruthEvaluationCharts evaluation={groundTruthEvaluation} />
+          <DependencyGroundTruthEvaluationCharts
+            evaluation={groundTruthEvaluation}
+            activeLlmModel={activeDependencyLlmModel}
+          />
         </ExportableCard>
       ) : null}
     </section>

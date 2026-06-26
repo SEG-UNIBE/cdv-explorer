@@ -1290,6 +1290,24 @@
   min-width: 0;
 }
 
+.dependency-metrics-toolbar__dropdown-row,
+.network-layout-picker__dropdown-row {
+  display: grid;
+  grid-template-columns: minmax(260px, 280px) minmax(220px, 250px);
+  justify-content: start;
+  gap: 0.65rem;
+  align-items: center;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.dependency-metrics-toolbar__dropdown-row > .p-dropdown,
+.network-layout-picker__dropdown-row > .p-dropdown {
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+}
+
 .dependency-metrics-toolbar > * {
   min-width: 0;
 }
@@ -2206,7 +2224,7 @@
 }
 
 .dependency-metrics-toolbar__dropdown {
-  min-width: min(280px, 100%);
+  min-width: 0;
 }
 
 .proposal-timeline-controls {
@@ -3311,6 +3329,11 @@
   .dependency-metrics-toolbar__field {
     grid-template-columns: 1fr;
     gap: 0.35rem;
+  }
+
+  .dependency-metrics-toolbar__dropdown-row,
+  .network-layout-picker__dropdown-row {
+    grid-template-columns: 1fr;
   }
 
   .dependency-metrics-toolbar__filter .proposal-filter-control__entry {

@@ -1,5 +1,6 @@
 import {
   BODY_EXTRACTED_LLM,
+  buildDependencyLinkTypeOptions,
   BODY_EXTRACTED_REGEX,
   GROUND_TRUTH_CURATED,
   LINK_TYPE_OPTIONS as DEPENDENCY_LINK_TYPE_OPTIONS,
@@ -7,7 +8,7 @@ import {
 } from '../dependencyApproaches';
 import { formatProposalReference, normalizeProposalId } from '../proposalLinks';
 
-export { GROUND_TRUTH_CURATED, PREAMBLE_EXTRACTED, normalizeProposalId };
+export { BODY_EXTRACTED_LLM, GROUND_TRUTH_CURATED, PREAMBLE_EXTRACTED, normalizeProposalId };
 
 export const LINK_TYPE_OPTIONS = DEPENDENCY_LINK_TYPE_OPTIONS;
 
@@ -64,6 +65,21 @@ export const PINNED_LINK_WIDTH = 2.6;
 
 export function getLinkTypeLabel(linkType) {
   return LINK_TYPE_OPTIONS.find((option) => option.value === linkType)?.label || linkType;
+}
+
+export function getLinkTypeOptions(llmModel = '') {
+  return buildDependencyLinkTypeOptions(llmModel);
+}
+
+export function getBaselineOptions(llmModel = '') {
+  return [
+    { label: '(none)', value: BASELINE_NONE_VALUE },
+    ...buildDependencyLinkTypeOptions(llmModel),
+  ];
+}
+
+export function getLinkTypeLabelForModel(linkType, llmModel = '') {
+  return getLinkTypeOptions(llmModel).find((option) => option.value === linkType)?.label || linkType;
 }
 
 export function formatRelationTypeLabel(relationType) {

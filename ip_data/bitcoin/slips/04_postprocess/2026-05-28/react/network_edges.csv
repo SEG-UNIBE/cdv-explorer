@@ -75,6 +75,14 @@ slips:173,bips:32,body_extracted_regex,reference,2
 slips:173,bips:93,body_extracted_regex,reference,2
 slips:173,bips:173,body_extracted_regex,reference,5
 slips:173,bips:350,body_extracted_regex,reference,3
+slips:10,bips:32,ground_truth_curated,depends_on,1
+slips:21,bips:32,ground_truth_curated,depends_on,1
+slips:21,bips:39,ground_truth_curated,depends_on,1
+slips:21,slips:10,ground_truth_curated,depends_on,1
+slips:21,slips:39,ground_truth_curated,depends_on,1
+slips:39,bips:32,ground_truth_curated,depends_on,1
+slips:39,bips:39,ground_truth_curated,supersedes,1
+slips:44,bips:44,ground_truth_curated,depends_on,1
 slips:10,bips:32,body_extracted_llm,implicit_dependency,1
 slips:10,bips:39,body_extracted_llm,implicit_dependency,1
 slips:10,slips:39,body_extracted_llm,implicit_dependency,1
@@ -113,11 +121,3 @@ slips:77,bips:39,body_extracted_llm,implicit_dependency,1
 slips:77,slips:21,body_extracted_llm,implicit_dependency,1
 slips:132,bips:32,body_extracted_llm,implicit_dependency,1
 slips:132,slips:32,body_extracted_llm,implicit_dependency,1
-slips:10,bips:32,ground_truth_curated,depends_on,1
-slips:21,bips:32,ground_truth_curated,depends_on,1
-slips:21,bips:39,ground_truth_curated,depends_on,1
-slips:21,slips:10,ground_truth_curated,depends_on,1
-slips:21,slips:39,ground_truth_curated,depends_on,1
-slips:39,bips:32,ground_truth_curated,depends_on,1
-slips:39,bips:39,ground_truth_curated,supersedes,1
-slips:44,bips:44,ground_truth_curated,depends_on,1

@@ -1,18 +1,17 @@
 import { Dropdown } from 'primereact/dropdown';
 import { InputSwitch } from 'primereact/inputswitch';
-import { InputText } from 'primereact/inputtext';
 import { MultiSelect } from 'primereact/multiselect';
 import {
   ATTRIBUTE_FILTER_DIMENSION_OPTIONS,
-  BASELINE_OPTIONS,
   COLOR_BY_OPTIONS,
   DIFFERENTIAL_EDGE_COLORS,
   DEFAULT_EDGE_COLORS,
+  getBaselineOptions,
+  getLinkTypeLabelForModel,
+  getLinkTypeOptions,
   LAYOUT_OPTIONS,
-  LINK_TYPE_OPTIONS,
   PREAMBLE_EXTRACTED,
   formatRelationTypeLabel,
-  getLinkTypeLabel,
   getPreambleRelationDasharray,
   getPreambleRelationStroke,
   getPreambleRelationTypes,
@@ -42,6 +41,7 @@ export function NetworkDiagramToolbar({
   setLinkType,
   baselineType,
   setBaselineType,
+  activeLlmModel,
   layoutMode,
   setLayoutMode,
   physicsEnabled,
@@ -69,12 +69,14 @@ export function NetworkDiagramToolbar({
   setAttributeFilterValues,
   attributeFilterOptions,
 }) {
+  const linkTypeOptions = getLinkTypeOptions(activeLlmModel);
+  const baselineOptions = getBaselineOptions(activeLlmModel);
   const preambleRelationTypes = getPreambleRelationTypes(linksByType);
   const edgeLegendItems = isDifferentialMode
     ? [
-      { label: getLinkTypeLabel(linkType), dasharray: null, stroke: DIFFERENTIAL_EDGE_COLORS.approach_only },
-      { label: `Also in ${getLinkTypeLabel(baselineType)}`, dasharray: null, stroke: DIFFERENTIAL_EDGE_COLORS.overlap },
-      { label: `Missing from ${getLinkTypeLabel(linkType)}`, dasharray: '7 5', stroke: DIFFERENTIAL_EDGE_COLORS.baseline_only },
+      { label: getLinkTypeLabelForModel(linkType, activeLlmModel), dasharray: null, stroke: DIFFERENTIAL_EDGE_COLORS.approach_only },
+      { label: `Also in ${getLinkTypeLabelForModel(baselineType, activeLlmModel)}`, dasharray: null, stroke: DIFFERENTIAL_EDGE_COLORS.overlap },
+      { label: `Missing from ${getLinkTypeLabelForModel(linkType, activeLlmModel)}`, dasharray: '7 5', stroke: DIFFERENTIAL_EDGE_COLORS.baseline_only },
     ]
     : linkType === PREAMBLE_EXTRACTED
       ? preambleRelationTypes.map((relationType) => ({
@@ -82,16 +84,16 @@ export function NetworkDiagramToolbar({
         dasharray: getPreambleRelationDasharray(relationType, preambleRelationTypes),
         stroke: getPreambleRelationStroke(),
       }))
-      : [{ label: getLinkTypeLabel(linkType), dasharray: null, stroke: DEFAULT_EDGE_COLORS[linkType] || '#667085' }];
+      : [{ label: getLinkTypeLabelForModel(linkType, activeLlmModel), dasharray: null, stroke: DEFAULT_EDGE_COLORS[linkType] || '#667085' }];
 
   const approachLegendItems = isDifferentialMode
-    ? [{ label: getLinkTypeLabel(linkType), dasharray: null, stroke: DIFFERENTIAL_EDGE_COLORS.approach_only }]
+    ? [{ label: getLinkTypeLabelForModel(linkType, activeLlmModel), dasharray: null, stroke: DIFFERENTIAL_EDGE_COLORS.approach_only }]
     : edgeLegendItems;
 
   const baselineLegendItems = isDifferentialMode
     ? [
-      { label: `Also in ${getLinkTypeLabel(baselineType)}`, dasharray: null, stroke: DIFFERENTIAL_EDGE_COLORS.overlap },
-      { label: `Missing from ${getLinkTypeLabel(linkType)}`, dasharray: '7 5', stroke: DIFFERENTIAL_EDGE_COLORS.baseline_only },
+      { label: `Also in ${getLinkTypeLabelForModel(baselineType, activeLlmModel)}`, dasharray: null, stroke: DIFFERENTIAL_EDGE_COLORS.overlap },
+      { label: `Missing from ${getLinkTypeLabelForModel(linkType, activeLlmModel)}`, dasharray: '7 5', stroke: DIFFERENTIAL_EDGE_COLORS.baseline_only },
     ]
     : [];
 
@@ -230,15 +232,17 @@ export function NetworkDiagramToolbar({
           <div className="dependency-graph-detail-field">
             <div className="network-layout-picker">
               <label className="network-layout-picker__label" htmlFor="linkType">Approach</label>
-              <Dropdown
-                inputId="linkType"
-                value={linkType}
-                options={LINK_TYPE_OPTIONS}
-                onChange={(event) => setLinkType(event.value)}
-                placeholder="Approach"
-                className="w-full md:w-18rem"
-                style={{ minWidth: '260px' }}
-              />
+              <div className="network-layout-picker__dropdown-row">
+                <Dropdown
+                  inputId="linkType"
+                  value={linkType}
+                  options={linkTypeOptions}
+                  onChange={(event) => setLinkType(event.value)}
+                  placeholder="Approach"
+                  className="w-full md:w-18rem"
+                  style={{ minWidth: '260px' }}
+                />
+              </div>
             </div>
             <div className="dependency-edge-legend">
               {approachLegendItems.map((item) => (
@@ -253,15 +257,17 @@ export function NetworkDiagramToolbar({
           <div className="dependency-graph-detail-field">
             <div className="network-layout-picker">
               <label className="network-layout-picker__label" htmlFor="baselineType">Baseline</label>
-              <Dropdown
-                inputId="baselineType"
-                value={baselineType}
-                options={BASELINE_OPTIONS}
-                onChange={(event) => setBaselineType(event.value)}
-                placeholder="Baseline"
-                className="w-full md:w-18rem"
-                style={{ minWidth: '260px' }}
-              />
+              <div className="network-layout-picker__dropdown-row">
+                <Dropdown
+                  inputId="baselineType"
+                  value={baselineType}
+                  options={baselineOptions}
+                  onChange={(event) => setBaselineType(event.value)}
+                  placeholder="Baseline"
+                  className="w-full md:w-18rem"
+                  style={{ minWidth: '260px' }}
+                />
+              </div>
             </div>
             {baselineLegendItems.length > 0 ? (
               <div className="dependency-edge-legend">

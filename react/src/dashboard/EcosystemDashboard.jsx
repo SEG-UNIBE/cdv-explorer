@@ -4,9 +4,12 @@ import { Dropdown } from 'primereact/dropdown';
 import { InputSwitch } from 'primereact/inputswitch';
 import { MultiSelect } from 'primereact/multiselect';
 import { Link, useParams } from 'react-router-dom';
-import { DEFAULT_DEPENDENCY_APPROACH, LINK_TYPE_OPTIONS } from '../dependencyApproaches';
+import { buildDependencyLinkTypeOptions, DEFAULT_DEPENDENCY_APPROACH } from '../dependencyApproaches';
 import { ecosystemsById } from '../ecosystems';
-import { getAvailableSnapshots } from '../data';
+import {
+  getAvailableSnapshots,
+  getPublishedDependencyLlmModel,
+} from '../data';
 import {
   buildDashboardData,
   buildWordCloudData,
@@ -164,16 +167,20 @@ export function EcosystemDashboard() {
   const activeConformitySourceView = normalizeSectionSourceView(conformitySourceView, orderedSelectedSourceIds, false);
 
   const authorshipViewDataset = getSectionDataset(selectedDataset, activeAuthorshipSourceView);
-  const dependencyViewDataset = getSectionDataset(selectedDataset, activeDependenciesSourceView);
+  const rawDependencyViewDataset = getSectionDataset(selectedDataset, activeDependenciesSourceView);
   const conformityViewDataset = getSectionDataset(selectedDataset, activeConformitySourceView);
+  const activeDependencyLlmModel = useMemo(() => {
+    return getPublishedDependencyLlmModel(rawDependencyViewDataset) || '';
+  }, [rawDependencyViewDataset]);
+  const dependencyViewDataset = rawDependencyViewDataset;
   const authorshipViewEcosystem = getSectionEcosystem(ecosystem, activeEcosystem, activeAuthorshipSourceView);
   const dependencyViewEcosystem = getSectionEcosystem(ecosystem, activeEcosystem, activeDependenciesSourceView);
   const authorshipDashboardData = activeAuthorshipSourceView === SECTION_VIEW_MERGED
     ? dashboardData
     : (perSourceDashboardData[activeAuthorshipSourceView] || dashboardData);
   const dependencyDashboardData = activeDependenciesSourceView === SECTION_VIEW_MERGED
-    ? dashboardData
-    : (perSourceDashboardData[activeDependenciesSourceView] || dashboardData);
+    ? buildDashboardData(dependencyViewDataset, dependencyViewEcosystem)
+    : buildDashboardData(dependencyViewDataset, dependencyViewEcosystem);
   const conformityDashboardData = activeConformitySourceView === SECTION_VIEW_MERGED
     ? dashboardData
     : (perSourceDashboardData[activeConformitySourceView] || dashboardData);
@@ -211,10 +218,10 @@ export function EcosystemDashboard() {
 
   const dependencyViewMetrics = dependencyDashboardData.dependencyMetrics;
   const dependencyMetricsApproachOptions = useMemo(
-    () => LINK_TYPE_OPTIONS.filter(
+    () => buildDependencyLinkTypeOptions(activeDependencyLlmModel).filter(
       (option) => dependencyViewMetrics?.by_approach?.[option.value]
     ),
-    [dependencyViewMetrics]
+    [activeDependencyLlmModel, dependencyViewMetrics]
   );
   const activeDependencyMetricsApproach = dependencyMetricsApproachOptions.some(
     (option) => option.value === selectedDependencyMetricsApproach
@@ -589,6 +596,7 @@ export function EcosystemDashboard() {
               }}
               dependencyMetrics={{
                 dependencyViewMetrics,
+                activeDependencyLlmModel,
                 dependencyMetricsApproachOptions,
                 activeDependencyMetricsApproach,
                 setSelectedDependencyMetricsApproach,

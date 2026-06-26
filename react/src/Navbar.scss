@@ -18,8 +18,9 @@
 
   .nav-logo {
     display: flex;
-    align-items: baseline;
-    gap: 0.4rem;
+    align-items: center;
+    min-width: 0;
+    gap: 0.45rem;
 
     .nav-version {
       font-size: 11px;
@@ -28,6 +29,17 @@
       opacity: 0.4;
       letter-spacing: 0.02em;
       white-space: nowrap;
+    }
+
+    .nav-version-link {
+      color: inherit;
+      text-decoration: none;
+
+      &:hover,
+      &:focus-visible {
+        text-decoration: underline;
+        text-underline-offset: 0.14em;
+      }
     }
 
     .nav-brand {
@@ -40,6 +52,7 @@
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
+      min-width: 0;
     }
 
     .nav-env-badge {
@@ -174,10 +187,13 @@
 
     .nav-logo {
       min-width: 0;
+      gap: 0.35rem;
     }
 
     .nav-brand {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
       max-width: calc(100vw - 132px);
       overflow: hidden;
       text-overflow: ellipsis;

@@ -5,10 +5,8 @@ import { Link } from 'react-router-dom';
 import { FaGithub } from 'react-icons/fa';
 import { useTheme } from './theme.jsx';
 import { getEnvironmentBadge } from './runtimeEnvironment';
-import pkg from '../package.json';
+import { APP_COMMIT_SHA, APP_COMMIT_URL, APP_VERSION } from './buildInfo';
 import './Navbar.scss';
-
-const { version } = pkg;
 
 const REPOSITORY_URL = 'https://github.com/SEG-UNIBE/cdv-explorer';
 
@@ -43,7 +41,23 @@ const Navbar = () => {
           CDV Explorer
           {envBadge && <span className={`nav-env-badge nav-env-badge--${envBadge.toLowerCase()}`}>{envBadge}</span>}
         </Link>
-        <span className="nav-version">v{version}</span>
+        <span className="nav-version">
+          {`v${APP_VERSION} @ `}
+          {APP_COMMIT_URL ? (
+            <a
+              href={APP_COMMIT_URL}
+              className="nav-version-link"
+              target="_blank"
+              rel="noreferrer"
+              aria-label={`Open commit ${APP_COMMIT_SHA} on GitHub`}
+              title={`Open commit ${APP_COMMIT_SHA} on GitHub`}
+            >
+              {APP_COMMIT_SHA}
+            </a>
+          ) : (
+            APP_COMMIT_SHA
+          )}
+        </span>
       </div>
 
       <div className="nav-items">

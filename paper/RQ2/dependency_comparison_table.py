@@ -78,7 +78,9 @@ def _get_pairwise_summary(
     approach: str,
     baseline: str,
 ) -> Dict[str, Any]:
-    return (pairwise_comparisons.get(f"{approach}__vs__{baseline}") or {}).get("summary", {})
+    return (pairwise_comparisons.get(f"{approach}__vs__{baseline}") or {}).get(
+        "summary", {}
+    )
 
 
 def _format_approach_label_with_total(label: str, total: int) -> str:
@@ -122,26 +124,29 @@ def _build_partial_dependency_comparison_tabular(
         else _format_bold_label_with_plain_total
     )
 
-    header_line = " & ".join(
-        [
-            r"\diagbox{\textbf{$A$}}{\textbf{$B$}}",
-            r"\textbf{Metric}",
-            *[
-                label_formatter(
-                    SHORT_LABELS[key],
-                    int(
-                        _get_pairwise_summary(
-                            pairwise_comparisons,
-                            approach=row_approach,
-                            baseline=key,
-                        ).get("baseline_total", 0)
-                        or 0
-                    ),
-                )
-                for key in column_approaches
-            ],
-        ]
-    ) + r" \\"
+    header_line = (
+        " & ".join(
+            [
+                r"\diagbox{\textbf{$A$}}{\textbf{$B$}}",
+                r"\textbf{Metric}",
+                *[
+                    label_formatter(
+                        SHORT_LABELS[key],
+                        int(
+                            _get_pairwise_summary(
+                                pairwise_comparisons,
+                                approach=row_approach,
+                                baseline=key,
+                            ).get("baseline_total", 0)
+                            or 0
+                        ),
+                    )
+                    for key in column_approaches
+                ],
+            ]
+        )
+        + r" \\"
+    )
 
     metric_values_by_baseline = [
         _build_cell(pairwise_comparisons.get(f"{row_approach}__vs__{baseline}", {}))
@@ -184,10 +189,16 @@ def export_dependency_comparison_latex_table(
 ) -> None:
     pairwise_comparisons = _build_pairwise_comparisons(network_data)
 
-    header_line = " & ".join(
-        [r"\diagbox{\textbf{$A$}}{\textbf{$B$}}", r"\textbf{Metric}"]
-        + [rf"\textbf{{{_latex_escape(SHORT_LABELS[key])}}}" for key in APPROACH_ORDER]
-    ) + r" \\"
+    header_line = (
+        " & ".join(
+            [r"\diagbox{\textbf{$A$}}{\textbf{$B$}}", r"\textbf{Metric}"]
+            + [
+                rf"\textbf{{{_latex_escape(SHORT_LABELS[key])}}}"
+                for key in APPROACH_ORDER
+            ]
+        )
+        + r" \\"
+    )
 
     body_lines = []
     metric_order = [r"$A \cap B$", r"$A' \cap B$", r"$A \cap B'$"]
@@ -201,7 +212,9 @@ def export_dependency_comparison_latex_table(
         for metric_index, metric_label in enumerate(metric_order):
             row_cells = []
             if metric_index == 0:
-                row_cells.append(rf"\multirow{{3}}{{*}}{{\textbf{{{_latex_escape(SHORT_LABELS[approach])}}}}}")
+                row_cells.append(
+                    rf"\multirow{{3}}{{*}}{{\textbf{{{_latex_escape(SHORT_LABELS[approach])}}}}}"
+                )
             else:
                 row_cells.append("")
             row_cells.append(metric_label)

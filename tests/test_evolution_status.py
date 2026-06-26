@@ -10,7 +10,9 @@ from pipeline.source_context import SourceContext
 
 
 class EvolutionStatusTests(unittest.TestCase):
-    def test_extract_status_timeline_parses_nip_tag_history_without_affecting_bitcoin_path(self) -> None:
+    def test_extract_status_timeline_parses_nip_tag_history_without_affecting_bitcoin_path(
+        self,
+    ) -> None:
         log_stdout = "\n".join(
             [
                 "__COMMIT__newcommit|2025-12-11T14:54:19+01:00|JeffG",
@@ -32,7 +34,9 @@ class EvolutionStatusTests(unittest.TestCase):
                 "Body.",
             ]
         )
-        old_content = current_content.replace("`final` `unrecommended` `optional`", "`draft` `optional`")
+        old_content = current_content.replace(
+            "`final` `unrecommended` `optional`", "`draft` `optional`"
+        )
         new_content = current_content
         show_stdout_by_spec = {
             "oldcommit:EE.md": old_content,
@@ -41,13 +45,17 @@ class EvolutionStatusTests(unittest.TestCase):
 
         def fake_run(args, **kwargs):
             if "log" in args:
-                return subprocess.CompletedProcess(args=args, returncode=0, stdout=log_stdout)
+                return subprocess.CompletedProcess(
+                    args=args, returncode=0, stdout=log_stdout
+                )
             if "show" in args:
                 spec = args[-1]
                 stdout = show_stdout_by_spec.get(spec)
                 if stdout is None:
                     raise AssertionError(f"Unexpected git show spec: {spec}")
-                return subprocess.CompletedProcess(args=args, returncode=0, stdout=stdout)
+                return subprocess.CompletedProcess(
+                    args=args, returncode=0, stdout=stdout
+                )
             raise AssertionError(f"Unexpected subprocess invocation: {args}")
 
         with tempfile.TemporaryDirectory() as tmp_dir:
@@ -64,14 +72,21 @@ class EvolutionStatusTests(unittest.TestCase):
                     "classification": {
                         "dimensions": {
                             "status": {"aliases": {"draft": "Draft", "final": "Final"}},
-                            "type": {"aliases": {"mandatory": "Mandatory", "optional": "Optional"}},
+                            "type": {
+                                "aliases": {
+                                    "mandatory": "Mandatory",
+                                    "optional": "Optional",
+                                }
+                            },
                             "layer": {"aliases": {"relay": "Relay"}},
                         },
                         "regimes": [],
                     },
                 }
             )
-            with patch("analysis.evolution.mining.subprocess.run", side_effect=fake_run):
+            with patch(
+                "analysis.evolution.mining.subprocess.run", side_effect=fake_run
+            ):
                 timeline = extract_status_timeline(
                     repo_dir=repo_dir,
                     file_path=file_path,
@@ -102,7 +117,9 @@ class EvolutionStatusTests(unittest.TestCase):
             ],
         )
 
-    def test_extract_status_timeline_uses_committer_dates_and_keeps_standard_transitions(self) -> None:
+    def test_extract_status_timeline_uses_committer_dates_and_keeps_standard_transitions(
+        self,
+    ) -> None:
         log_stdout = "\n".join(
             [
                 "__COMMIT__newcommit|2026-01-12T14:22:25-08:00|Murch",
@@ -115,9 +132,13 @@ class EvolutionStatusTests(unittest.TestCase):
 
         def fake_run(args, **kwargs):
             if "log" in args:
-                return subprocess.CompletedProcess(args=args, returncode=0, stdout=log_stdout)
+                return subprocess.CompletedProcess(
+                    args=args, returncode=0, stdout=log_stdout
+                )
             if "show" in args:
-                return subprocess.CompletedProcess(args=args, returncode=0, stdout=show_stdout)
+                return subprocess.CompletedProcess(
+                    args=args, returncode=0, stdout=show_stdout
+                )
             raise AssertionError(f"Unexpected subprocess invocation: {args}")
 
         with tempfile.TemporaryDirectory() as tmp_dir:
@@ -125,7 +146,9 @@ class EvolutionStatusTests(unittest.TestCase):
             file_path = repo_dir / "bip-0001.mediawiki"
             file_path.write_text(show_stdout, encoding="utf-8")
 
-            with patch("analysis.evolution.mining.subprocess.run", side_effect=fake_run):
+            with patch(
+                "analysis.evolution.mining.subprocess.run", side_effect=fake_run
+            ):
                 timeline = extract_status_timeline(
                     repo_dir=repo_dir,
                     file_path=file_path,
@@ -155,7 +178,9 @@ class EvolutionStatusTests(unittest.TestCase):
             ],
         )
 
-    def test_extract_status_timeline_keeps_pre_assignment_history_with_placeholder_id(self) -> None:
+    def test_extract_status_timeline_keeps_pre_assignment_history_with_placeholder_id(
+        self,
+    ) -> None:
         log_stdout = "\n".join(
             [
                 "__COMMIT__assigncommit|2016-01-08T17:56:02+00:00|Luke Dashjr",
@@ -188,13 +213,17 @@ class EvolutionStatusTests(unittest.TestCase):
 
         def fake_run(args, **kwargs):
             if "log" in args:
-                return subprocess.CompletedProcess(args=args, returncode=0, stdout=log_stdout)
+                return subprocess.CompletedProcess(
+                    args=args, returncode=0, stdout=log_stdout
+                )
             if "show" in args:
                 spec = args[-1]
                 stdout = show_stdout_by_spec.get(spec)
                 if stdout is None:
                     raise AssertionError(f"Unexpected git show spec: {spec}")
-                return subprocess.CompletedProcess(args=args, returncode=0, stdout=stdout)
+                return subprocess.CompletedProcess(
+                    args=args, returncode=0, stdout=stdout
+                )
             raise AssertionError(f"Unexpected subprocess invocation: {args}")
 
         with tempfile.TemporaryDirectory() as tmp_dir:
@@ -202,7 +231,9 @@ class EvolutionStatusTests(unittest.TestCase):
             file_path = repo_dir / "bip-0142.mediawiki"
             file_path.write_text(current_content, encoding="utf-8")
 
-            with patch("analysis.evolution.mining.subprocess.run", side_effect=fake_run):
+            with patch(
+                "analysis.evolution.mining.subprocess.run", side_effect=fake_run
+            ):
                 timeline = extract_status_timeline(
                     repo_dir=repo_dir,
                     file_path=file_path,
@@ -239,7 +270,11 @@ class EvolutionStatusTests(unittest.TestCase):
                 "insights": {
                     "changes_in_status": [
                         {"date": "2025-10-01", "status": "Final", "standard": "bip2"},
-                        {"date": "2026-01-12", "status": "Deployed", "standard": "bip3"},
+                        {
+                            "date": "2026-01-12",
+                            "status": "Deployed",
+                            "standard": "bip3",
+                        },
                     ]
                 },
             },
@@ -247,8 +282,16 @@ class EvolutionStatusTests(unittest.TestCase):
                 "raw": {"preamble": {"bip": "3"}},
                 "insights": {
                     "changes_in_status": [
-                        {"date": "2025-10-01", "status": "Proposed", "standard": "bip2"},
-                        {"date": "2026-01-12", "status": "Complete", "standard": "bip3"},
+                        {
+                            "date": "2025-10-01",
+                            "status": "Proposed",
+                            "standard": "bip2",
+                        },
+                        {
+                            "date": "2026-01-12",
+                            "status": "Complete",
+                            "standard": "bip3",
+                        },
                     ]
                 },
             },
@@ -289,7 +332,8 @@ class EvolutionStatusTests(unittest.TestCase):
         )
 
         segmented_rows = {
-            row["period_key"]: row for row in payload["status_evolution_segmented"]["rows"]
+            row["period_key"]: row
+            for row in payload["status_evolution_segmented"]["rows"]
         }
 
         self.assertEqual(segmented_rows["2025-Q4"]["values"]["bip2:Draft"], 1)
@@ -298,23 +342,45 @@ class EvolutionStatusTests(unittest.TestCase):
         self.assertEqual(segmented_rows["2026-Q1-pre-bip3"]["period_end"], "2026-01-11")
         self.assertEqual(segmented_rows["2026-Q1-pre-bip3"]["values"]["bip2:Draft"], 1)
         self.assertEqual(segmented_rows["2026-Q1-pre-bip3"]["values"]["bip2:Final"], 1)
-        self.assertEqual(segmented_rows["2026-Q1-pre-bip3"]["values"]["bip2:Proposed"], 1)
+        self.assertEqual(
+            segmented_rows["2026-Q1-pre-bip3"]["values"]["bip2:Proposed"], 1
+        )
         self.assertEqual(segmented_rows["2026-Q1-pre-bip3"]["values"]["bip3:Draft"], 0)
-        self.assertEqual(segmented_rows["2026-Q1-pre-bip3"]["values"]["bip3:Deployed"], 0)
-        self.assertEqual(segmented_rows["2026-Q1-pre-bip3"]["values"]["bip3:Complete"], 0)
-        self.assertEqual(segmented_rows["2026-Q1-post-bip3"]["period_start"], "2026-01-12")
+        self.assertEqual(
+            segmented_rows["2026-Q1-pre-bip3"]["values"]["bip3:Deployed"], 0
+        )
+        self.assertEqual(
+            segmented_rows["2026-Q1-pre-bip3"]["values"]["bip3:Complete"], 0
+        )
+        self.assertEqual(
+            segmented_rows["2026-Q1-post-bip3"]["period_start"], "2026-01-12"
+        )
         self.assertEqual(segmented_rows["2026-Q1-post-bip3"]["values"]["bip3:Draft"], 1)
-        self.assertEqual(segmented_rows["2026-Q1-post-bip3"]["values"]["bip3:Deployed"], 1)
-        self.assertEqual(segmented_rows["2026-Q1-post-bip3"]["values"]["bip3:Complete"], 1)
+        self.assertEqual(
+            segmented_rows["2026-Q1-post-bip3"]["values"]["bip3:Deployed"], 1
+        )
+        self.assertEqual(
+            segmented_rows["2026-Q1-post-bip3"]["values"]["bip3:Complete"], 1
+        )
 
-    def test_prepare_evolution_payload_splits_bip2_cutover_period_and_keeps_bip1_statuses(self) -> None:
+    def test_prepare_evolution_payload_splits_bip2_cutover_period_and_keeps_bip1_statuses(
+        self,
+    ) -> None:
         proposal_data = [
             {
                 "raw": {"preamble": {"bip": "1"}},
                 "insights": {
                     "changes_in_status": [
-                        {"date": "2016-10-01", "status": "Accepted", "standard": "bip2"},
-                        {"date": "2016-11-30", "status": "Replaced", "standard": "bip2"},
+                        {
+                            "date": "2016-10-01",
+                            "status": "Accepted",
+                            "standard": "bip2",
+                        },
+                        {
+                            "date": "2016-11-30",
+                            "status": "Replaced",
+                            "standard": "bip2",
+                        },
                     ]
                 },
             },
@@ -350,25 +416,42 @@ class EvolutionStatusTests(unittest.TestCase):
         )
 
         segmented_rows = {
-            row["period_key"]: row for row in payload["status_evolution_segmented"]["rows"]
+            row["period_key"]: row
+            for row in payload["status_evolution_segmented"]["rows"]
         }
 
         self.assertEqual(segmented_rows["2016-Q4-pre-bip2"]["period_end"], "2016-11-29")
-        self.assertEqual(segmented_rows["2016-Q4-pre-bip2"]["values"]["bip1:Accepted"], 1)
+        self.assertEqual(
+            segmented_rows["2016-Q4-pre-bip2"]["values"]["bip1:Accepted"], 1
+        )
         self.assertEqual(segmented_rows["2016-Q4-pre-bip2"]["values"]["bip1:Draft"], 1)
-        self.assertEqual(segmented_rows["2016-Q4-post-bip2"]["period_start"], "2016-11-30")
-        self.assertEqual(segmented_rows["2016-Q4-post-bip2"]["values"]["bip1:Accepted"], 0)
+        self.assertEqual(
+            segmented_rows["2016-Q4-post-bip2"]["period_start"], "2016-11-30"
+        )
+        self.assertEqual(
+            segmented_rows["2016-Q4-post-bip2"]["values"]["bip1:Accepted"], 0
+        )
         self.assertEqual(segmented_rows["2016-Q4-post-bip2"]["values"]["bip1:Draft"], 0)
-        self.assertEqual(segmented_rows["2016-Q4-post-bip2"]["values"]["bip2:Replaced"], 1)
-        self.assertEqual(segmented_rows["2016-Q4-post-bip2"]["values"]["bip2:Active"], 1)
+        self.assertEqual(
+            segmented_rows["2016-Q4-post-bip2"]["values"]["bip2:Replaced"], 1
+        )
+        self.assertEqual(
+            segmented_rows["2016-Q4-post-bip2"]["values"]["bip2:Active"], 1
+        )
 
-    def test_prepare_evolution_payload_reassigns_legacy_accepted_event_to_bip1_by_date(self) -> None:
+    def test_prepare_evolution_payload_reassigns_legacy_accepted_event_to_bip1_by_date(
+        self,
+    ) -> None:
         proposal_data = [
             {
                 "raw": {"preamble": {"bip": "1"}},
                 "insights": {
                     "changes_in_status": [
-                        {"date": "2013-10-21", "status": "Accepted", "standard": "bip2"},
+                        {
+                            "date": "2013-10-21",
+                            "status": "Accepted",
+                            "standard": "bip2",
+                        },
                     ]
                 },
             }
@@ -383,7 +466,9 @@ class EvolutionStatusTests(unittest.TestCase):
         segmented_row = payload["status_evolution_segmented"]["rows"][0]
         self.assertEqual(segmented_row["values"]["bip1:Accepted"], 1)
 
-    def test_prepare_evolution_payload_preserves_non_official_bip1_status_labels(self) -> None:
+    def test_prepare_evolution_payload_preserves_non_official_bip1_status_labels(
+        self,
+    ) -> None:
         proposal_data = [
             {
                 "raw": {
@@ -396,8 +481,16 @@ class EvolutionStatusTests(unittest.TestCase):
                 "insights": {
                     "changes_in_status": [
                         {"date": "2012-03-19", "status": "Draft", "standard": "bip1"},
-                        {"date": "2013-10-01", "status": "Replaced", "standard": "bip1"},
-                        {"date": "2016-11-30", "status": "Replaced", "standard": "bip2"},
+                        {
+                            "date": "2013-10-01",
+                            "status": "Replaced",
+                            "standard": "bip1",
+                        },
+                        {
+                            "date": "2016-11-30",
+                            "status": "Replaced",
+                            "standard": "bip2",
+                        },
                     ]
                 },
             }
@@ -410,19 +503,27 @@ class EvolutionStatusTests(unittest.TestCase):
         )
 
         segment_definitions = {
-            entry["key"]: entry for entry in payload["status_evolution_segmented"]["segmentDefinitions"]
+            entry["key"]: entry
+            for entry in payload["status_evolution_segmented"]["segmentDefinitions"]
         }
         self.assertIn("bip1:Replaced", segment_definitions)
         self.assertFalse(segment_definitions["bip1:Replaced"]["isOfficial"])
         self.assertEqual(segment_definitions["bip1:Replaced"]["label"], "Replaced")
 
         segmented_rows = {
-            row["period_key"]: row for row in payload["status_evolution_segmented"]["rows"]
+            row["period_key"]: row
+            for row in payload["status_evolution_segmented"]["rows"]
         }
-        self.assertEqual(segmented_rows["2016-Q4-pre-bip2"]["values"]["bip1:Replaced"], 1)
-        self.assertEqual(segmented_rows["2016-Q4-post-bip2"]["values"]["bip2:Replaced"], 1)
+        self.assertEqual(
+            segmented_rows["2016-Q4-pre-bip2"]["values"]["bip1:Replaced"], 1
+        )
+        self.assertEqual(
+            segmented_rows["2016-Q4-post-bip2"]["values"]["bip2:Replaced"], 1
+        )
 
-    def test_prepare_evolution_payload_injects_synthetic_regime_transition_event(self) -> None:
+    def test_prepare_evolution_payload_injects_synthetic_regime_transition_event(
+        self,
+    ) -> None:
         proposal_data = [
             {
                 "raw": {
@@ -468,7 +569,9 @@ class EvolutionStatusTests(unittest.TestCase):
             },
         )
 
-    def test_prepare_evolution_payload_injects_transition_from_created_anchor_before_first_observed_event(self) -> None:
+    def test_prepare_evolution_payload_injects_transition_from_created_anchor_before_first_observed_event(
+        self,
+    ) -> None:
         proposal_data = [
             {
                 "raw": {
@@ -493,7 +596,8 @@ class EvolutionStatusTests(unittest.TestCase):
         )
 
         segmented_rows = {
-            row["period_key"]: row for row in payload["status_evolution_segmented"]["rows"]
+            row["period_key"]: row
+            for row in payload["status_evolution_segmented"]["rows"]
         }
         self.assertEqual(segmented_rows["2016-Q4-pre-bip2"]["values"]["bip1:Draft"], 1)
         self.assertEqual(segmented_rows["2016-Q4-post-bip2"]["values"]["bip1:Draft"], 0)
@@ -520,7 +624,9 @@ class EvolutionStatusTests(unittest.TestCase):
             },
         )
 
-    def test_prepare_evolution_payload_does_not_project_bip3_before_harvested_transition(self) -> None:
+    def test_prepare_evolution_payload_does_not_project_bip3_before_harvested_transition(
+        self,
+    ) -> None:
         proposal_data = [
             {
                 "raw": {"preamble": {"bip": "1"}},
@@ -540,7 +646,8 @@ class EvolutionStatusTests(unittest.TestCase):
         )
 
         segmented_rows = {
-            row["period_key"]: row for row in payload["status_evolution_segmented"]["rows"]
+            row["period_key"]: row
+            for row in payload["status_evolution_segmented"]["rows"]
         }
 
         self.assertEqual(segmented_rows["2025-Q4"]["values"]["bip2:Draft"], 1)
@@ -548,7 +655,9 @@ class EvolutionStatusTests(unittest.TestCase):
         self.assertEqual(segmented_rows["2026-Q1-pre-bip3"]["values"]["bip3:Draft"], 0)
         self.assertEqual(segmented_rows["2026-Q1-post-bip3"]["values"]["bip3:Draft"], 1)
 
-    def test_prepare_evolution_payload_resolves_ambiguous_draft_by_event_date_when_standard_is_missing(self) -> None:
+    def test_prepare_evolution_payload_resolves_ambiguous_draft_by_event_date_when_standard_is_missing(
+        self,
+    ) -> None:
         proposal_data = [
             {
                 "raw": {"preamble": {"bip": "1"}},
@@ -568,14 +677,17 @@ class EvolutionStatusTests(unittest.TestCase):
         )
 
         segmented_rows = {
-            row["period_key"]: row for row in payload["status_evolution_segmented"]["rows"]
+            row["period_key"]: row
+            for row in payload["status_evolution_segmented"]["rows"]
         }
 
         self.assertEqual(segmented_rows["2025-Q4"]["values"]["bip2:Draft"], 1)
         self.assertEqual(segmented_rows["2026-Q1-pre-bip3"]["values"]["bip2:Draft"], 1)
         self.assertEqual(segmented_rows["2026-Q1-post-bip3"]["values"]["bip3:Draft"], 1)
 
-    def test_prepare_evolution_payload_serializes_per_proposal_event_timelines(self) -> None:
+    def test_prepare_evolution_payload_serializes_per_proposal_event_timelines(
+        self,
+    ) -> None:
         proposal_data = [
             {
                 "raw": {
@@ -652,7 +764,9 @@ class EvolutionStatusTests(unittest.TestCase):
             ],
         )
 
-    def test_prepare_evolution_payload_counts_from_created_date_before_first_observed_status(self) -> None:
+    def test_prepare_evolution_payload_counts_from_created_date_before_first_observed_status(
+        self,
+    ) -> None:
         proposal_data = [
             {
                 "raw": {
@@ -687,7 +801,9 @@ class EvolutionStatusTests(unittest.TestCase):
         self.assertEqual(payload["meta"]["first_period"], "2024-Q1")
         self.assertEqual(payload["meta"]["last_period"], "2024-Q1")
         self.assertEqual(payload["status_evolution"]["rows"][0]["values"]["Draft"], 1)
-        self.assertEqual(payload["status_evolution_segmented"]["rows"][0]["values"]["bip2:Draft"], 1)
+        self.assertEqual(
+            payload["status_evolution_segmented"]["rows"][0]["values"]["bip2:Draft"], 1
+        )
         self.assertEqual(payload["proposal_timelines"][0]["current_status"], "Draft")
         self.assertEqual(payload["proposal_timelines"][0]["current_standard"], "bip2")
         self.assertEqual(
@@ -708,7 +824,9 @@ class EvolutionStatusTests(unittest.TestCase):
             ],
         )
 
-    def test_prepare_evolution_payload_truncates_status_series_for_any_snapshot(self) -> None:
+    def test_prepare_evolution_payload_truncates_status_series_for_any_snapshot(
+        self,
+    ) -> None:
         proposal_data = [
             {
                 "raw": {"preamble": {"bip": "1", "created": "2020-09-15"}},
@@ -768,10 +886,17 @@ class EvolutionStatusTests(unittest.TestCase):
                 [row["period_key"] for row in payload["status_evolution"]["rows"]],
                 expected["period_keys"],
             )
-            self.assertEqual(payload["status_evolution"]["categories"], expected["categories"])
-            self.assertEqual(payload["proposal_timelines"][0]["current_status"], expected["current_status"])
+            self.assertEqual(
+                payload["status_evolution"]["categories"], expected["categories"]
+            )
+            self.assertEqual(
+                payload["proposal_timelines"][0]["current_status"],
+                expected["current_status"],
+            )
 
-    def test_extract_status_timeline_ignores_reused_placeholder_history_from_other_proposals(self) -> None:
+    def test_extract_status_timeline_ignores_reused_placeholder_history_from_other_proposals(
+        self,
+    ) -> None:
         log_stdout = "\n".join(
             [
                 "__COMMIT__finalcommit|2025-09-01T09:08:50-06:00|Jon Atack",
@@ -827,13 +952,17 @@ class EvolutionStatusTests(unittest.TestCase):
 
         def fake_run(args, **kwargs):
             if "log" in args:
-                return subprocess.CompletedProcess(args=args, returncode=0, stdout=log_stdout)
+                return subprocess.CompletedProcess(
+                    args=args, returncode=0, stdout=log_stdout
+                )
             if "show" in args:
                 spec = args[-1]
                 stdout = show_stdout_by_spec.get(spec)
                 if stdout is None:
                     raise AssertionError(f"Unexpected git show spec: {spec}")
-                return subprocess.CompletedProcess(args=args, returncode=0, stdout=stdout)
+                return subprocess.CompletedProcess(
+                    args=args, returncode=0, stdout=stdout
+                )
             raise AssertionError(f"Unexpected subprocess invocation: {args}")
 
         with tempfile.TemporaryDirectory() as tmp_dir:
@@ -841,7 +970,9 @@ class EvolutionStatusTests(unittest.TestCase):
             file_path = repo_dir / "bip-0155.mediawiki"
             file_path.write_text(current_content, encoding="utf-8")
 
-            with patch("analysis.evolution.mining.subprocess.run", side_effect=fake_run):
+            with patch(
+                "analysis.evolution.mining.subprocess.run", side_effect=fake_run
+            ):
                 timeline = extract_status_timeline(
                     repo_dir=repo_dir,
                     file_path=file_path,

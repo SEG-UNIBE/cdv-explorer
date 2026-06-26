@@ -18,24 +18,46 @@ _NIP_CONFIG = {
     },
     "classification": {
         "dimensions": {
-            "status": {"aliases": {"draft": "Draft", "final": "Final", "deprecated": "Deprecated"}},
-            "type": {"aliases": {"mandatory": "Mandatory", "optional": "Optional", "unrecommended": "Unrecommended"}},
-            "layer": {"aliases": {"relay": "Relay", "client": "Client", "cryptography": "Cryptography"}},
+            "status": {
+                "aliases": {
+                    "draft": "Draft",
+                    "final": "Final",
+                    "deprecated": "Deprecated",
+                }
+            },
+            "type": {
+                "aliases": {
+                    "mandatory": "Mandatory",
+                    "optional": "Optional",
+                    "unrecommended": "Unrecommended",
+                }
+            },
+            "layer": {
+                "aliases": {
+                    "relay": "Relay",
+                    "client": "Client",
+                    "cryptography": "Cryptography",
+                }
+            },
         }
     },
 }
 
 
-def _nip_content(identifier="01", title="Basic Protocol Flow", tags="`draft` `mandatory` `relay`"):
-    return "\n".join([
-        f"NIP-{identifier}",
-        "======",
-        "",
-        title,
-        "-" * len(title),
-        "",
-        tags,
-    ])
+def _nip_content(
+    identifier="01", title="Basic Protocol Flow", tags="`draft` `mandatory` `relay`"
+):
+    return "\n".join(
+        [
+            f"NIP-{identifier}",
+            "======",
+            "",
+            title,
+            "-" * len(title),
+            "",
+            tags,
+        ]
+    )
 
 
 class NipExtractionTests(unittest.TestCase):
@@ -48,7 +70,9 @@ class NipExtractionTests(unittest.TestCase):
 
             extract(_NIP_CONFIG, harvest_dir, output_dir)
 
-            output = json.loads((output_dir / "nip-01.json").read_text(encoding="utf-8"))
+            output = json.loads(
+                (output_dir / "nip-01.json").read_text(encoding="utf-8")
+            )
 
         self.assertEqual("01", output["raw"]["preamble"]["nip"])
         self.assertEqual("Basic Protocol Flow", output["raw"]["preamble"]["title"])
@@ -63,12 +87,17 @@ class NipExtractionTests(unittest.TestCase):
             output_dir = Path(tmp) / "out"
             harvest_dir.mkdir()
             (harvest_dir / "README.md").write_text("# NIPs\n", encoding="utf-8")
-            (harvest_dir / "F4.md").write_text(_nip_content("F4", "Private Direct Messages", "`draft` `optional`"), encoding="utf-8")
+            (harvest_dir / "F4.md").write_text(
+                _nip_content("F4", "Private Direct Messages", "`draft` `optional`"),
+                encoding="utf-8",
+            )
 
             extract(_NIP_CONFIG, harvest_dir, output_dir)
 
             output_files = sorted(path.name for path in output_dir.iterdir())
-            output = json.loads((output_dir / "nip-F4.json").read_text(encoding="utf-8"))
+            output = json.loads(
+                (output_dir / "nip-F4.json").read_text(encoding="utf-8")
+            )
 
         self.assertEqual(["nip-F4.json"], output_files)
         self.assertEqual("F4", output["raw"]["preamble"]["nip"])

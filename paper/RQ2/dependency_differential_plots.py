@@ -36,7 +36,13 @@ from paper.RQ2.dependency_plots import (
 )
 from paper._utils.io import resolve_output_dir, snapshot_prefix
 from paper.config import SNAPSHOT
-from paper.plot_colors import BIP_TYPE_COLORS, BIP_TYPE_ORDER, NEUTRAL_PLOT_COLOR, PLOT_COLOR_ALPHA, with_plot_alpha
+from paper.plot_colors import (
+    BIP_TYPE_COLORS,
+    BIP_TYPE_ORDER,
+    NEUTRAL_PLOT_COLOR,
+    PLOT_COLOR_ALPHA,
+    with_plot_alpha,
+)
 
 DEFAULT_FOCUS_BIPS = [1, 2, 3]
 DEFAULT_EXCLUDE_BIPS: list[int] = []
@@ -105,11 +111,25 @@ COMBINED_NODE_LEGEND_FONT_SIZE = 7
 COMBINED_NODE_LEGEND_TITLE_FONT_SIZE = 7
 
 
-def _build_edge_styles(*, comparison_ordered: bool = False) -> dict[str, dict[str, Any]]:
+def _build_edge_styles(
+    *, comparison_ordered: bool = False
+) -> dict[str, dict[str, Any]]:
     return {
-        "approach_only": {"color": with_plot_alpha(APPROACH_ONLY_EDGE_COLOR), "style": APPROACH_ONLY_EDGE_STYLE, "alpha": 1.0},
-        "overlap": {"color": with_plot_alpha(OVERLAP_EDGE_COLOR), "style": "solid", "alpha": 1.0},
-        "baseline_only": {"color": with_plot_alpha(BASELINE_ONLY_EDGE_COLOR), "style": BASELINE_ONLY_EDGE_STYLE, "alpha": 1.0},
+        "approach_only": {
+            "color": with_plot_alpha(APPROACH_ONLY_EDGE_COLOR),
+            "style": APPROACH_ONLY_EDGE_STYLE,
+            "alpha": 1.0,
+        },
+        "overlap": {
+            "color": with_plot_alpha(OVERLAP_EDGE_COLOR),
+            "style": "solid",
+            "alpha": 1.0,
+        },
+        "baseline_only": {
+            "color": with_plot_alpha(BASELINE_ONLY_EDGE_COLOR),
+            "style": BASELINE_ONLY_EDGE_STYLE,
+            "alpha": 1.0,
+        },
     }
 
 
@@ -133,7 +153,9 @@ def _type_color(value: Any) -> str:
     return TYPE_COLORS.get(str(value).strip(), FALLBACK_TYPE_COLOR)
 
 
-def _edge_in_focus_neighborhood(source_id: str, target_id: str, focus_ids: set[str]) -> bool:
+def _edge_in_focus_neighborhood(
+    source_id: str, target_id: str, focus_ids: set[str]
+) -> bool:
     if not focus_ids:
         return True
     return source_id in focus_ids or target_id in focus_ids
@@ -157,7 +179,9 @@ def _collect_display_node_ids(
 
     display_ids = {node_id for node_id in node_ids if node_id in focus_ids}
     for link_type in LAYOUT_EDGE_TYPES:
-        for edge in get_links_by_type(network_data.get("dependency_edges", []), link_type):
+        for edge in get_links_by_type(
+            network_data.get("dependency_edges", []), link_type
+        ):
             source_id = str(edge.get("source"))
             target_id = str(edge.get("target"))
             if _edge_in_focus_neighborhood(source_id, target_id, focus_ids):
@@ -174,7 +198,9 @@ def _assign_multipartite_subsets(graph: nx.DiGraph, focus_ids: set[str]) -> None
             graph.nodes[node_id]["subset"] = 0
         return
 
-    ordered_focus_ids = sorted((node_id for node_id in graph.nodes() if node_id in focus_ids), key=int)
+    ordered_focus_ids = sorted(
+        (node_id for node_id in graph.nodes() if node_id in focus_ids), key=int
+    )
     focus_rank = {node_id: index for index, node_id in enumerate(ordered_focus_ids)}
 
     for focus_id, rank in focus_rank.items():
@@ -187,7 +213,9 @@ def _assign_multipartite_subsets(graph: nx.DiGraph, focus_ids: set[str]) -> None
 
         scored_focuses = []
         for focus_id in ordered_focus_ids:
-            relation_score = int(graph.has_edge(node_id, focus_id)) + int(graph.has_edge(focus_id, node_id))
+            relation_score = int(graph.has_edge(node_id, focus_id)) + int(
+                graph.has_edge(focus_id, node_id)
+            )
             if relation_score <= 0:
                 continue
             scored_focuses.append((relation_score, -focus_rank[focus_id], focus_id))
@@ -202,7 +230,9 @@ def _assign_multipartite_subsets(graph: nx.DiGraph, focus_ids: set[str]) -> None
         graph.nodes[node_id]["subset"] = 2 * focus_rank[anchor_focus] + 1
 
 
-def _build_layout_graph(network_data: Dict[str, Any], display_ids: set[str], focus_ids: set[str]) -> nx.DiGraph:
+def _build_layout_graph(
+    network_data: Dict[str, Any], display_ids: set[str], focus_ids: set[str]
+) -> nx.DiGraph:
     graph = nx.DiGraph()
 
     for node in network_data.get("nodes", []):
@@ -214,7 +244,9 @@ def _build_layout_graph(network_data: Dict[str, Any], display_ids: set[str], foc
 
     seen_edges = set()
     for link_type in LAYOUT_EDGE_TYPES:
-        for edge in get_links_by_type(network_data.get("dependency_edges", []), link_type):
+        for edge in get_links_by_type(
+            network_data.get("dependency_edges", []), link_type
+        ):
             source_id = str(edge.get("source"))
             target_id = str(edge.get("target"))
             key = _build_edge_key(source_id, target_id)
@@ -232,7 +264,9 @@ def _build_layout_graph(network_data: Dict[str, Any], display_ids: set[str], foc
     return graph
 
 
-def _compute_base_positions(graph: nx.DiGraph, layout_name: str = DEFAULT_LAYOUT_NAME) -> dict[str, Any]:
+def _compute_base_positions(
+    graph: nx.DiGraph, layout_name: str = DEFAULT_LAYOUT_NAME
+) -> dict[str, Any]:
     if graph.number_of_nodes() == 0:
         return {}
     try:
@@ -256,7 +290,9 @@ def _compact_positions(pos: dict[str, Any], compaction: float) -> dict[str, Any]
         )
         for node_id, coords in pos.items()
     }
-    resolve_near_overlaps(compacted, threshold=DIFF_LAYOUT_OVERLAP_THRESHOLD, max_iterations=20)
+    resolve_near_overlaps(
+        compacted, threshold=DIFF_LAYOUT_OVERLAP_THRESHOLD, max_iterations=20
+    )
     return compacted
 
 
@@ -264,7 +300,9 @@ def _get_layout_compaction(layout_name: str) -> float:
     return DIFF_LAYOUT_COMPACTION_BY_LAYOUT.get(layout_name, DIFF_LAYOUT_COMPACTION)
 
 
-def _load_exported_positions(layout_export_path: Path, required_node_ids: Iterable[str]) -> dict[str, tuple[float, float]]:
+def _load_exported_positions(
+    layout_export_path: Path, required_node_ids: Iterable[str]
+) -> dict[str, tuple[float, float]]:
     payload = json.loads(layout_export_path.read_text(encoding="utf8"))
     raw_positions = payload.get("positions")
     normalized_positions: dict[str, tuple[float, float]] = {}
@@ -272,7 +310,10 @@ def _load_exported_positions(layout_export_path: Path, required_node_ids: Iterab
     if isinstance(raw_positions, dict):
         for node_id, coords in raw_positions.items():
             if isinstance(coords, SequenceABC) and len(coords) >= 2:
-                normalized_positions[str(node_id)] = (float(coords[0]), float(coords[1]))
+                normalized_positions[str(node_id)] = (
+                    float(coords[0]),
+                    float(coords[1]),
+                )
 
     if not normalized_positions:
         for node in payload.get("nodes", []):
@@ -284,7 +325,11 @@ def _load_exported_positions(layout_export_path: Path, required_node_ids: Iterab
             normalized_positions[str(node_id)] = (float(x_coord), float(y_coord))
 
     required_ids = {str(node_id) for node_id in required_node_ids}
-    return {node_id: normalized_positions[node_id] for node_id in required_ids if node_id in normalized_positions}
+    return {
+        node_id: normalized_positions[node_id]
+        for node_id in required_ids
+        if node_id in normalized_positions
+    }
 
 
 def _project_fallback_positions_into_export_space(
@@ -365,7 +410,9 @@ def _build_comparison_edges(
         if (
             str(edge.get("source")) in display_ids
             and str(edge.get("target")) in display_ids
-            and _edge_in_focus_neighborhood(str(edge.get("source")), str(edge.get("target")), focus_ids)
+            and _edge_in_focus_neighborhood(
+                str(edge.get("source")), str(edge.get("target")), focus_ids
+            )
         )
     }
     baseline_edges = {
@@ -374,13 +421,21 @@ def _build_comparison_edges(
         if (
             str(edge.get("source")) in display_ids
             and str(edge.get("target")) in display_ids
-            and _edge_in_focus_neighborhood(str(edge.get("source")), str(edge.get("target")), focus_ids)
+            and _edge_in_focus_neighborhood(
+                str(edge.get("source")), str(edge.get("target")), focus_ids
+            )
         )
     }
 
-    overlap = sorted(approach_edges & baseline_edges, key=lambda item: (int(item[0]), int(item[1])))
-    approach_only = sorted(approach_edges - baseline_edges, key=lambda item: (int(item[0]), int(item[1])))
-    baseline_only = sorted(baseline_edges - approach_edges, key=lambda item: (int(item[0]), int(item[1])))
+    overlap = sorted(
+        approach_edges & baseline_edges, key=lambda item: (int(item[0]), int(item[1]))
+    )
+    approach_only = sorted(
+        approach_edges - baseline_edges, key=lambda item: (int(item[0]), int(item[1]))
+    )
+    baseline_only = sorted(
+        baseline_edges - approach_edges, key=lambda item: (int(item[0]), int(item[1]))
+    )
 
     return {
         "approach_only": approach_only,
@@ -486,11 +541,15 @@ def _compute_node_sizes(graph: nx.DiGraph, ordered_nodes: Sequence[str]) -> list
     sizes = []
     for degree in degree_values:
         normalized = (degree - min_degree) / (max_degree - min_degree)
-        sizes.append(DIFF_NODE_SIZE_MIN + normalized * (DIFF_NODE_SIZE_MAX - DIFF_NODE_SIZE_MIN))
+        sizes.append(
+            DIFF_NODE_SIZE_MIN + normalized * (DIFF_NODE_SIZE_MAX - DIFF_NODE_SIZE_MIN)
+        )
     return sizes
 
 
-def _compute_label_positions(pos: dict[str, Any], ordered_nodes: Sequence[str], node_sizes: Sequence[float]) -> dict[str, tuple[float, float, str, str]]:
+def _compute_label_positions(
+    pos: dict[str, Any], ordered_nodes: Sequence[str], node_sizes: Sequence[float]
+) -> dict[str, tuple[float, float, str, str]]:
     if not pos:
         return {}
 
@@ -565,7 +624,9 @@ def _draw_comparison_plot(
     ordered_nodes = sorted(graph.nodes(), key=int)
     node_groups = nx.get_node_attributes(graph, "group")
     node_colors = [
-        with_plot_alpha(_type_color(node_groups.get(node_id, "Unknown Type")), NODE_FILL_ALPHA)
+        with_plot_alpha(
+            _type_color(node_groups.get(node_id, "Unknown Type")), NODE_FILL_ALPHA
+        )
         for node_id in ordered_nodes
     ]
     node_sizes = _compute_node_sizes(graph, ordered_nodes)
@@ -587,17 +648,15 @@ def _draw_comparison_plot(
         ax=ax,
     )
 
-    all_edges = {
-        edge
-        for edgelist in comparison_edges.values()
-        for edge in edgelist
-    }
+    all_edges = {edge for edgelist in comparison_edges.values() for edge in edgelist}
     for status, edgelist in comparison_edges.items():
         if not edgelist:
             continue
         style_info = styles[status]
         for edge in edgelist:
-            connectionstyle = _edge_connectionstyle(edge, all_edges, layout_name=layout_name)
+            connectionstyle = _edge_connectionstyle(
+                edge, all_edges, layout_name=layout_name
+            )
             nx.draw_networkx_edges(
                 graph,
                 pos,
@@ -810,25 +869,44 @@ def render_differential_dependency_plots(
 ) -> list[Path]:
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    display_ids, focus_ids = _collect_display_node_ids(network_data, focus_bips, exclude_bips)
+    display_ids, focus_ids = _collect_display_node_ids(
+        network_data, focus_bips, exclude_bips
+    )
     layout_graph = _build_layout_graph(network_data, display_ids, focus_ids)
 
     # Keep one shared union-layout graph so both plots inherit identical node positions.
     if layout_export_path is not None:
-        exported_pos = _load_exported_positions(layout_export_path, layout_graph.nodes())
+        exported_pos = _load_exported_positions(
+            layout_export_path, layout_graph.nodes()
+        )
         if not exported_pos:
-            base_pos = _compute_base_positions(layout_graph, layout_name=DEFAULT_LAYOUT_NAME)
+            base_pos = _compute_base_positions(
+                layout_graph, layout_name=DEFAULT_LAYOUT_NAME
+            )
         else:
-            missing_ids = sorted((str(node_id) for node_id in layout_graph.nodes() if str(node_id) not in exported_pos), key=int)
+            missing_ids = sorted(
+                (
+                    str(node_id)
+                    for node_id in layout_graph.nodes()
+                    if str(node_id) not in exported_pos
+                ),
+                key=int,
+            )
             if missing_ids:
-                fallback_pos = _compute_base_positions(layout_graph, layout_name=DEFAULT_LAYOUT_NAME)
+                fallback_pos = _compute_base_positions(
+                    layout_graph, layout_name=DEFAULT_LAYOUT_NAME
+                )
                 projected_fallback = _project_fallback_positions_into_export_space(
                     fallback_pos,
                     exported_pos,
                     layout_graph.nodes(),
                 )
                 base_pos = {
-                    **{node_id: projected_fallback[node_id] for node_id in missing_ids if node_id in projected_fallback},
+                    **{
+                        node_id: projected_fallback[node_id]
+                        for node_id in missing_ids
+                        if node_id in projected_fallback
+                    },
                     **exported_pos,
                 }
             else:
@@ -836,9 +914,13 @@ def render_differential_dependency_plots(
         pos = base_pos
     else:
         base_pos = _compute_base_positions(layout_graph, layout_name=layout_name)
-        pos = _compact_positions(base_pos, compaction=_get_layout_compaction(layout_name))
+        pos = _compact_positions(
+            base_pos, compaction=_get_layout_compaction(layout_name)
+        )
     axis_limits = _compute_axis_limits(base_pos)
-    combined_axis_limits = _compute_axis_limits(base_pos, margin_scale=COMBINED_AXIS_MARGIN_SCALE)
+    combined_axis_limits = _compute_axis_limits(
+        base_pos, margin_scale=COMBINED_AXIS_MARGIN_SCALE
+    )
 
     plot_payloads: list[dict[str, Any]] = []
     output_paths: list[Path] = []
@@ -859,7 +941,10 @@ def render_differential_dependency_plots(
             }
         )
         prefix = f"{filename_prefix}_" if filename_prefix else ""
-        output_path = output_dir / f"{prefix}diffdep_{layout_name}_{plot_spec['filename_stem']}.pdf"
+        output_path = (
+            output_dir
+            / f"{prefix}diffdep_{layout_name}_{plot_spec['filename_stem']}.pdf"
+        )
         _save_single_comparison_plot(
             layout_graph,
             pos,
@@ -875,7 +960,10 @@ def render_differential_dependency_plots(
 
     if layout_export_path is not None and len(plot_payloads) > 1:
         prefix = f"{filename_prefix}_" if filename_prefix else ""
-        combined_output_path = output_dir / f"{prefix}diffdep_{layout_name}_{COMBINED_REACT_DIFFDEP_FILENAME_STEM}.pdf"
+        combined_output_path = (
+            output_dir
+            / f"{prefix}diffdep_{layout_name}_{COMBINED_REACT_DIFFDEP_FILENAME_STEM}.pdf"
+        )
         _save_combined_comparison_plot(
             layout_graph,
             pos,
@@ -896,9 +984,17 @@ def _parse_bips_argument(raw_value: str | None) -> list[int]:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Render differential dependency comparison plots for RQ2.")
-    parser.add_argument("--snapshot", default=SNAPSHOT, help="Snapshot label to load, defaults to paper.config.SNAPSHOT.")
-    parser.add_argument("--output-dir", default=None, help="Optional output directory override.")
+    parser = argparse.ArgumentParser(
+        description="Render differential dependency comparison plots for RQ2."
+    )
+    parser.add_argument(
+        "--snapshot",
+        default=SNAPSHOT,
+        help="Snapshot label to load, defaults to paper.config.SNAPSHOT.",
+    )
+    parser.add_argument(
+        "--output-dir", default=None, help="Optional output directory override."
+    )
     parser.add_argument(
         "--layout-export",
         default=None,
@@ -922,7 +1018,18 @@ def main() -> None:
     parser.add_argument(
         "--layout",
         default=DEFAULT_LAYOUT_NAME,
-        choices=["spring_default", "spring_spread", "spring_scaled", "planar", "spectral", "shell", "circular", "bipartite", "multipartite", "kamada_kawai"],
+        choices=[
+            "spring_default",
+            "spring_spread",
+            "spring_scaled",
+            "planar",
+            "spectral",
+            "shell",
+            "circular",
+            "bipartite",
+            "multipartite",
+            "kamada_kawai",
+        ],
         help="Layout algorithm for the shared node positions.",
     )
     args = parser.parse_args()

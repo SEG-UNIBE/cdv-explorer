@@ -17,7 +17,9 @@ def save_payload(payload: Dict[str, Any], output_path: Path) -> None:
 
 def main() -> None:
     source_context = SourceContext.default()
-    parser = argparse.ArgumentParser(description="Prepare authorship artifact from network_data.")
+    parser = argparse.ArgumentParser(
+        description="Prepare authorship artifact from network_data."
+    )
     parser.add_argument("--snapshot", help="Snapshot label YYYY-MM-DD.")
     parser.add_argument(
         "--output-dir",
@@ -31,7 +33,13 @@ def main() -> None:
 
     snapshot_label = args.snapshot or "latest"
     repo_root = Path(__file__).resolve().parents[2]
-    out_path = repo_root / args.output_dir / snapshot_label / "authorship" / "authorship_payload.json"
+    out_path = (
+        repo_root
+        / args.output_dir
+        / snapshot_label
+        / "authorship"
+        / "authorship_payload.json"
+    )
     save_payload(payload, out_path)
 
 

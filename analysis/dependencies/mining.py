@@ -6,7 +6,11 @@ from typing import Any, Dict, List, Mapping
 
 from openai import OpenAI
 
-from analysis.reference_ids import normalize_reference_id, normalize_reference_id_for_config, uses_hex_proposal_ids
+from analysis.reference_ids import (
+    normalize_reference_id,
+    normalize_reference_id_for_config,
+    uses_hex_proposal_ids,
+)
 from analysis.proposal_schema import get_preamble_interrelations
 from pipeline.source_context import SourceContext
 
@@ -23,11 +27,18 @@ def _strip_top_preamble_block(text: str) -> str:
         return without_pre
     return TOP_FENCED_BLOCK_PATTERN.sub("", text, count=1)
 
+
 def prepare_llm_dependency_text(raw_content: str) -> str:
     if not raw_content:
         return ""
 
-    return _strip_top_preamble_block(raw_content).replace("\r\n", "\n").replace("\r", "\n").strip()
+    return (
+        _strip_top_preamble_block(raw_content)
+        .replace("\r\n", "\n")
+        .replace("\r", "\n")
+        .strip()
+    )
+
 
 def _reference_configs_for_context(
     context: SourceContext,
@@ -64,8 +75,7 @@ def _reference_configs_for_context(
     active_label = proposal_label or context.proposal_label
     active_pattern = reference_pattern or context.reference_pattern
     has_active = any(
-        config["proposal_label"].upper() == active_label.upper()
-        for config in configs
+        config["proposal_label"].upper() == active_label.upper() for config in configs
     )
     if not has_active and active_label and active_pattern:
         configs.insert(
@@ -134,10 +144,14 @@ def _format_reference(label: str, normalized_id: str) -> str:
 
 
 def _id_chars_for_reference_config(config: Dict[str, Any]) -> str:
-    return r"[0-9A-Fa-f]" if uses_hex_proposal_ids(
-        str(config["proposal_label"]),
-        str(config["reference_pattern"]),
-    ) else r"\d"
+    return (
+        r"[0-9A-Fa-f]"
+        if uses_hex_proposal_ids(
+            str(config["proposal_label"]),
+            str(config["reference_pattern"]),
+        )
+        else r"\d"
+    )
 
 
 def _normalize_with_reference_config(value: Any, config: Dict[str, Any]) -> str | None:
@@ -168,7 +182,11 @@ def _match_reference_item(
     if not match:
         return None
     normalized_id = _normalize_with_reference_config(match.group(1), config)
-    return None if normalized_id is None else _format_reference(str(config["proposal_label"]), normalized_id)
+    return (
+        None
+        if normalized_id is None
+        else _format_reference(str(config["proposal_label"]), normalized_id)
+    )
 
 
 def create_reference_list(
@@ -178,7 +196,9 @@ def create_reference_list(
     source_context: SourceContext | None = None,
 ) -> List[str]:
     context = source_context or SourceContext.default()
-    reference_configs = _reference_configs_for_context(context, proposal_label, reference_pattern)
+    reference_configs = _reference_configs_for_context(
+        context, proposal_label, reference_pattern
+    )
     label_order = _reference_label_order(reference_configs)
     reference_patterns_by_label = _reference_patterns_by_label(reference_configs)
     proposal_references = set()
@@ -186,13 +206,19 @@ def create_reference_list(
     for config in reference_configs:
         active_proposal_label = str(config["proposal_label"])
         active_reference_pattern = str(config["reference_pattern"])
-        normalized_reference_pattern = active_reference_pattern.replace(r"\d+", rf"\d{{1,{MAX_REFERENCE_DIGITS}}}")
-        single_reference_pattern = re.compile(normalized_reference_pattern, re.IGNORECASE)
+        normalized_reference_pattern = active_reference_pattern.replace(
+            r"\d+", rf"\d{{1,{MAX_REFERENCE_DIGITS}}}"
+        )
+        single_reference_pattern = re.compile(
+            normalized_reference_pattern, re.IGNORECASE
+        )
 
         for num in single_reference_pattern.findall(raw_content):
             normalized_id = _normalize_with_reference_config(num, config)
             if normalized_id is not None:
-                proposal_references.add(_format_reference(active_proposal_label, normalized_id))
+                proposal_references.add(
+                    _format_reference(active_proposal_label, normalized_id)
+                )
 
         if uses_hex_proposal_ids(active_proposal_label, active_reference_pattern):
             list_pattern = re.compile(
@@ -209,12 +235,16 @@ def create_reference_list(
             for raw_id in re.findall(token_pattern, match):
                 normalized_id = _normalize_with_reference_config(raw_id, config)
                 if normalized_id is not None:
-                    proposal_references.add(_format_reference(active_proposal_label, normalized_id))
+                    proposal_references.add(
+                        _format_reference(active_proposal_label, normalized_id)
+                    )
 
     active_label = proposal_label or context.proposal_label
     return sorted(
         proposal_references,
-        key=lambda value: _reference_sort_key(value, active_label, label_order, reference_patterns_by_label),
+        key=lambda value: _reference_sort_key(
+            value, active_label, label_order, reference_patterns_by_label
+        ),
     )
 
 
@@ -232,16 +262,24 @@ def _resolve_target_reference(
         if isinstance(target, str) and ":" in target:
             source_slug, proposal_id = target.split(":", 1)
             matching_config = next(
-                (config for config in reference_configs if str(config["source_slug"]) == source_slug),
+                (
+                    config
+                    for config in reference_configs
+                    if str(config["source_slug"]) == source_slug
+                ),
                 active_config,
             )
-            normalized_id = _normalize_with_reference_config(proposal_id, matching_config)
+            normalized_id = _normalize_with_reference_config(
+                proposal_id, matching_config
+            )
             if normalized_id is None:
                 return None
             return {
                 "source_slug": str(matching_config["source_slug"]),
                 "proposal_id": normalized_id,
-                "label": _format_reference(str(matching_config["proposal_label"]), normalized_id),
+                "label": _format_reference(
+                    str(matching_config["proposal_label"]), normalized_id
+                ),
             }
 
     for config in reference_configs:
@@ -271,7 +309,9 @@ def create_reference_targets(
     source_context: SourceContext | None = None,
 ) -> List[Dict[str, Any]]:
     context = source_context or SourceContext.default()
-    reference_configs = _reference_configs_for_context(context, proposal_label, reference_pattern)
+    reference_configs = _reference_configs_for_context(
+        context, proposal_label, reference_pattern
+    )
     active_label = proposal_label or context.proposal_label
     label_order = _reference_label_order(reference_configs)
     reference_patterns_by_label = _reference_patterns_by_label(reference_configs)
@@ -303,13 +343,17 @@ def create_reference_targets(
                     {
                         "target": target,
                         "count": 0,
-                        "_label": _format_reference(active_proposal_label, normalized_id),
+                        "_label": _format_reference(
+                            active_proposal_label, normalized_id
+                        ),
                     },
                 )["count"] += 1
 
     items = sorted(
         counts.values(),
-        key=lambda item: _reference_sort_key(item["_label"], active_label, label_order, reference_patterns_by_label),
+        key=lambda item: _reference_sort_key(
+            item["_label"], active_label, label_order, reference_patterns_by_label
+        ),
     )
     return [{"target": item["target"], "count": item["count"]} for item in items]
 
@@ -320,7 +364,9 @@ def create_explicit_dependency_list(
     source_context: SourceContext | None = None,
 ) -> List[str]:
     context = source_context or SourceContext.default()
-    reference_configs = _reference_configs_for_context(context, proposal_label, context.reference_pattern)
+    reference_configs = _reference_configs_for_context(
+        context, proposal_label, context.reference_pattern
+    )
     active_label = proposal_label or context.proposal_label
     active_config = next(
         (
@@ -333,7 +379,9 @@ def create_explicit_dependency_list(
     label_order = _reference_label_order(reference_configs)
     reference_patterns_by_label = _reference_patterns_by_label(reference_configs)
     dependency_ids = set()
-    preamble_interrelations = get_preamble_interrelations(preamble, source_context=context)
+    preamble_interrelations = get_preamble_interrelations(
+        preamble, source_context=context
+    )
 
     for value in preamble_interrelations.values():
         if not value:
@@ -355,7 +403,9 @@ def create_explicit_dependency_list(
 
     return sorted(
         dependency_ids,
-        key=lambda value: _reference_sort_key(value, active_label, label_order, reference_patterns_by_label),
+        key=lambda value: _reference_sort_key(
+            value, active_label, label_order, reference_patterns_by_label
+        ),
     )
 
 
@@ -365,7 +415,9 @@ def create_explicit_dependency_targets(
     source_context: SourceContext | None = None,
 ) -> List[Dict[str, str]]:
     context = source_context or SourceContext.default()
-    reference_configs = _reference_configs_for_context(context, proposal_label, context.reference_pattern)
+    reference_configs = _reference_configs_for_context(
+        context, proposal_label, context.reference_pattern
+    )
     active_label = proposal_label or context.proposal_label
     active_config = next(
         (
@@ -377,7 +429,9 @@ def create_explicit_dependency_targets(
     )
     label_order = _reference_label_order(reference_configs)
     reference_patterns_by_label = _reference_patterns_by_label(reference_configs)
-    preamble_interrelations = get_preamble_interrelations(preamble, source_context=context)
+    preamble_interrelations = get_preamble_interrelations(
+        preamble, source_context=context
+    )
     result: List[Dict[str, str]] = []
 
     for subtype in context.preamble_interrelation_types:
@@ -387,14 +441,20 @@ def create_explicit_dependency_targets(
         raw_items = value if isinstance(value, list) else str(value).split(",")
         targets: Dict[str, Dict[str, str]] = {}
         for item in raw_items:
-            reference = _resolve_target_reference(item, reference_configs, active_config)
+            reference = _resolve_target_reference(
+                item, reference_configs, active_config
+            )
             if reference is None:
                 continue
-            target = _format_target_key(reference["source_slug"], reference["proposal_id"])
+            target = _format_target_key(
+                reference["source_slug"], reference["proposal_id"]
+            )
             targets[target] = {"target": target, "_label": reference["label"]}
         ordered = sorted(
             targets.values(),
-            key=lambda item: _reference_sort_key(item["_label"], active_label, label_order, reference_patterns_by_label),
+            key=lambda item: _reference_sort_key(
+                item["_label"], active_label, label_order, reference_patterns_by_label
+            ),
         )
         result.extend({"target": item["target"], "type": subtype} for item in ordered)
 
@@ -424,7 +484,9 @@ def normalize_dependency_output(
         return []
 
     context = source_context or SourceContext.default()
-    reference_configs = _reference_configs_for_context(context, proposal_label, context.reference_pattern)
+    reference_configs = _reference_configs_for_context(
+        context, proposal_label, context.reference_pattern
+    )
     active_proposal_label = proposal_label or context.proposal_label
     active_config = next(
         (
@@ -436,13 +498,19 @@ def normalize_dependency_output(
     )
     label_order = _reference_label_order(reference_configs)
     reference_patterns_by_label = _reference_patterns_by_label(reference_configs)
-    current_id = None if current_proposal_number is None else _normalize_reference_id(
-        current_proposal_number,
-        active_proposal_label,
-        str(active_config["reference_pattern"]),
-        active_config.get("max_proposal_id"),
+    current_id = (
+        None
+        if current_proposal_number is None
+        else _normalize_reference_id(
+            current_proposal_number,
+            active_proposal_label,
+            str(active_config["reference_pattern"]),
+            active_config.get("max_proposal_id"),
+        )
     )
-    current_normalized = None if current_id is None else f"{active_proposal_label} {current_id}"
+    current_normalized = (
+        None if current_id is None else f"{active_proposal_label} {current_id}"
+    )
     normalized_ids = set()
 
     for item in payload:
@@ -461,7 +529,9 @@ def normalize_dependency_output(
 
     return sorted(
         normalized_ids,
-        key=lambda value: _reference_sort_key(value, active_proposal_label, label_order, reference_patterns_by_label),
+        key=lambda value: _reference_sort_key(
+            value, active_proposal_label, label_order, reference_patterns_by_label
+        ),
     )
 
 
@@ -481,7 +551,11 @@ def _resolve_llm_target(
 
     if raw_source and raw_id is not None:
         matching_config = next(
-            (config for config in reference_configs if str(config.get("source_slug")) == str(raw_source)),
+            (
+                config
+                for config in reference_configs
+                if str(config.get("source_slug")) == str(raw_source)
+            ),
             active_config,
         )
         normalized_id = _normalize_with_reference_config(raw_id, matching_config)
@@ -490,7 +564,9 @@ def _resolve_llm_target(
         return {
             "source_slug": str(matching_config["source_slug"]),
             "proposal_id": normalized_id,
-            "label": _format_reference(str(matching_config["proposal_label"]), normalized_id),
+            "label": _format_reference(
+                str(matching_config["proposal_label"]), normalized_id
+            ),
         }
 
     if raw_target is None:
@@ -503,7 +579,11 @@ def _resolve_llm_target(
     if ":" in target_text:
         target_source, target_id = target_text.split(":", 1)
         matching_config = next(
-            (config for config in reference_configs if str(config.get("source_slug")) == target_source),
+            (
+                config
+                for config in reference_configs
+                if str(config.get("source_slug")) == target_source
+            ),
             active_config,
         )
         normalized_id = _normalize_with_reference_config(target_id, matching_config)
@@ -512,7 +592,9 @@ def _resolve_llm_target(
         return {
             "source_slug": str(matching_config["source_slug"]),
             "proposal_id": normalized_id,
-            "label": _format_reference(str(matching_config["proposal_label"]), normalized_id),
+            "label": _format_reference(
+                str(matching_config["proposal_label"]), normalized_id
+            ),
         }
 
     for config in reference_configs:
@@ -545,7 +627,9 @@ def normalize_llm_dependency_output(
         return []
 
     context = source_context or SourceContext.default()
-    reference_configs = _reference_configs_for_context(context, proposal_label, context.reference_pattern)
+    reference_configs = _reference_configs_for_context(
+        context, proposal_label, context.reference_pattern
+    )
     active_proposal_label = proposal_label or context.proposal_label
     active_config = next(
         (
@@ -557,11 +641,17 @@ def normalize_llm_dependency_output(
     )
     label_order = _reference_label_order(reference_configs)
     reference_patterns_by_label = _reference_patterns_by_label(reference_configs)
-    current_id = None if current_proposal_number is None else _normalize_with_reference_config(
-        current_proposal_number,
-        active_config,
+    current_id = (
+        None
+        if current_proposal_number is None
+        else _normalize_with_reference_config(
+            current_proposal_number,
+            active_config,
+        )
     )
-    current_target = None if current_id is None else f"{active_config['source_slug']}:{current_id}"
+    current_target = (
+        None if current_id is None else f"{active_config['source_slug']}:{current_id}"
+    )
     normalized_entries: List[Dict[str, str]] = []
     seen_targets = set()
 
@@ -574,9 +664,15 @@ def normalize_llm_dependency_output(
             continue
         seen_targets.add(target_key)
 
-        evidence = str(item.get("evidence", "")).strip() if isinstance(item, dict) else ""
+        evidence = (
+            str(item.get("evidence", "")).strip() if isinstance(item, dict) else ""
+        )
         reason = str(item.get("reason", "")).strip() if isinstance(item, dict) else ""
-        confidence = str(item.get("confidence", "low")).strip().lower() if isinstance(item, dict) else "low"
+        confidence = (
+            str(item.get("confidence", "low")).strip().lower()
+            if isinstance(item, dict)
+            else "low"
+        )
         if confidence not in {"low", "medium", "high"}:
             confidence = "low"
 
@@ -605,7 +701,9 @@ def normalize_llm_dependency_output(
     ]
 
 
-def _ground_evidence(entries: List[Dict[str, str]], source_text: str) -> List[Dict[str, str]]:
+def _ground_evidence(
+    entries: List[Dict[str, str]], source_text: str
+) -> List[Dict[str, str]]:
     """Lower confidence to 'low' when the LLM's evidence quote cannot be found verbatim in the source."""
     if not source_text:
         return entries
@@ -648,7 +746,10 @@ def _extract_response_content(response: Any) -> str | None:
 
 def _to_responses_text_format(response_format: Dict[str, Any]) -> Dict[str, Any]:
     """Convert a Chat Completions response_format dict to Responses API text.format shape."""
-    if response_format.get("type") == "json_schema" and "json_schema" in response_format:
+    if (
+        response_format.get("type") == "json_schema"
+        and "json_schema" in response_format
+    ):
         return {"type": "json_schema", **response_format["json_schema"]}
     return dict(response_format)
 
@@ -684,10 +785,14 @@ def llm_extract_implicit_dependencies(
     context = source_context or SourceContext.default()
     resolved_model = model or context.llm_model
     if not resolved_model:
-        raise RuntimeError("No LLM model configured. Set `llm.model` in the ecosystem YAML.")
+        raise RuntimeError(
+            "No LLM model configured. Set `llm.model` in the ecosystem YAML."
+        )
     active_proposal_label = proposal_label or context.proposal_label
     active_proposal_singular = proposal_singular or context.proposal_singular
-    reference_configs = _reference_configs_for_context(context, active_proposal_label, context.reference_pattern)
+    reference_configs = _reference_configs_for_context(
+        context, active_proposal_label, context.reference_pattern
+    )
     active_config = next(
         (
             config
@@ -705,14 +810,18 @@ def llm_extract_implicit_dependencies(
         for config in reference_configs
     )
     sibling_config = next(
-        (c for c in reference_configs if c["source_slug"] != active_config["source_slug"]),
+        (
+            c
+            for c in reference_configs
+            if c["source_slug"] != active_config["source_slug"]
+        ),
         None,
     )
     if sibling_config:
         cross_source_example = f"""
 <example>
-<text>This proposal uses the version byte registry from {sibling_config['proposal_label']} 132 and builds on {active_proposal_label} 32 for key derivation.</text>
-<output>{{"dependencies":[{{"target":"{active_config['source_slug']}:32","evidence":"builds on {active_proposal_label} 32 for key derivation","reason":"The proposal extends key derivation mechanisms from the target.","confidence":"high"}},{{"target":"{sibling_config['source_slug']}:132","evidence":"uses the version byte registry from {sibling_config['proposal_label']} 132","reason":"The proposal relies on version byte definitions established by the target.","confidence":"high"}}]}}</output>
+<text>This proposal uses the version byte registry from {sibling_config["proposal_label"]} 132 and builds on {active_proposal_label} 32 for key derivation.</text>
+<output>{{"dependencies":[{{"target":"{active_config["source_slug"]}:32","evidence":"builds on {active_proposal_label} 32 for key derivation","reason":"The proposal extends key derivation mechanisms from the target.","confidence":"high"}},{{"target":"{sibling_config["source_slug"]}:132","evidence":"uses the version byte registry from {sibling_config["proposal_label"]} 132","reason":"The proposal relies on version byte definitions established by the target.","confidence":"high"}}]}}</output>
 </example>
 """
     else:
@@ -754,11 +863,11 @@ Analyze {active_proposal_singular} {active_proposal_label}{f" {current_proposal_
 <examples>
 <example>
 <text>This proposal depends on {active_proposal_label} 39 and 32.</text>
-<output>{{"dependencies":[{{"target":"{active_config['source_slug']}:32","evidence":"depends on {active_proposal_label} 39 and 32","reason":"The proposal explicitly says it depends on this target.","confidence":"high"}},{{"target":"{active_config['source_slug']}:39","evidence":"depends on {active_proposal_label} 39 and 32","reason":"The proposal explicitly says it depends on this target.","confidence":"high"}}]}}</output>
+<output>{{"dependencies":[{{"target":"{active_config["source_slug"]}:32","evidence":"depends on {active_proposal_label} 39 and 32","reason":"The proposal explicitly says it depends on this target.","confidence":"high"}},{{"target":"{active_config["source_slug"]}:39","evidence":"depends on {active_proposal_label} 39 and 32","reason":"The proposal explicitly says it depends on this target.","confidence":"high"}}]}}</output>
 </example>
 <example>
 <text>This proposal builds upon {active_proposal_label}-0016 for partially signed transactions.</text>
-<output>{{"dependencies":[{{"target":"{active_config['source_slug']}:16","evidence":"builds upon {active_proposal_label}-0016 for partially signed transactions","reason":"The proposal builds on mechanisms introduced by the target.","confidence":"high"}}]}}</output>
+<output>{{"dependencies":[{{"target":"{active_config["source_slug"]}:16","evidence":"builds upon {active_proposal_label}-0016 for partially signed transactions","reason":"The proposal builds on mechanisms introduced by the target.","confidence":"high"}}]}}</output>
 </example>
 <example>
 <text>Unlike {active_proposal_label} 44, which defines a symmetric encryption scheme, this proposal introduces a standalone asymmetric key agreement protocol. No primitives or formats from {active_proposal_label} 44 are reused.</text>
@@ -788,7 +897,10 @@ Now apply the same rules to the actual proposal text below.
                                 "target": {"type": "string"},
                                 "evidence": {"type": "string"},
                                 "reason": {"type": "string"},
-                                "confidence": {"type": "string", "enum": ["low", "medium", "high"]},
+                                "confidence": {
+                                    "type": "string",
+                                    "enum": ["low", "medium", "high"],
+                                },
                             },
                             "required": ["target", "evidence", "reason", "confidence"],
                             "additionalProperties": False,
@@ -834,7 +946,15 @@ Now apply the same rules to the actual proposal text below.
                 kwargs["reasoning"] = llm_reasoning
             response = client.responses.create(**kwargs)
             return _parse(response)
-        except (JSONDecodeError, TypeError, ValueError, KeyError, OSError, TimeoutError, ConnectionError) as exc:
+        except (
+            JSONDecodeError,
+            TypeError,
+            ValueError,
+            KeyError,
+            OSError,
+            TimeoutError,
+            ConnectionError,
+        ) as exc:
             raise RuntimeError(f"LLM API call failed: {exc}") from exc
     else:
         # Chat Completions API path
@@ -852,5 +972,13 @@ Now apply the same rules to the actual proposal text below.
                     response_format={"type": "json_object"},
                 )
             return _parse(response)
-        except (JSONDecodeError, TypeError, ValueError, KeyError, OSError, TimeoutError, ConnectionError) as exc:
+        except (
+            JSONDecodeError,
+            TypeError,
+            ValueError,
+            KeyError,
+            OSError,
+            TimeoutError,
+            ConnectionError,
+        ) as exc:
             raise RuntimeError(f"LLM API call failed: {exc}") from exc

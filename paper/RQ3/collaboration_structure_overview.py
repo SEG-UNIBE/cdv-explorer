@@ -35,10 +35,7 @@ def _expand_integer_series(
     sorted_points = sorted(points, key=lambda entry: int(entry[x_key]))
     min_x = int(sorted_points[0][x_key])
     max_x = int(sorted_points[-1][x_key])
-    y_by_x = {
-        int(entry[x_key]): int(entry[y_key])
-        for entry in sorted_points
-    }
+    y_by_x = {int(entry[x_key]): int(entry[y_key]) for entry in sorted_points}
 
     return [
         {
@@ -76,9 +73,7 @@ def _compress_zero_gaps(
         zero_runs.append((run_start, len(series) - 1))
 
     eligible_runs = [
-        (start, end)
-        for start, end in zero_runs
-        if (end - start + 1) >= min_gap_length
+        (start, end) for start, end in zero_runs if (end - start + 1) >= min_gap_length
     ]
     if not eligible_runs:
         return [
@@ -93,11 +88,7 @@ def _compress_zero_gaps(
     compressed = []
     for index, entry in enumerate(series):
         matching_run = next(
-            (
-                (start, end)
-                for start, end in eligible_runs
-                if start <= index <= end
-            ),
+            ((start, end) for start, end in eligible_runs if start <= index <= end),
             None,
         )
         if matching_run is None:
@@ -127,13 +118,19 @@ def _compress_zero_gaps(
 def _prepare_component_and_degree_series(
     collaboration_network: dict,
 ) -> tuple[list[dict[str, int | str | bool]], list[dict[str, int]]]:
-    component_distribution = build_collaboration_component_size_distribution(collaboration_network)
+    component_distribution = build_collaboration_component_size_distribution(
+        collaboration_network
+    )
     degree_distribution = build_collaboration_degree_distribution(collaboration_network)
 
     if not component_distribution:
-        raise ValueError("Collaboration structure overview requires non-empty component-size data.")
+        raise ValueError(
+            "Collaboration structure overview requires non-empty component-size data."
+        )
     if not degree_distribution:
-        raise ValueError("Collaboration structure overview requires non-empty degree-distribution data.")
+        raise ValueError(
+            "Collaboration structure overview requires non-empty degree-distribution data."
+        )
 
     full_component_series = _expand_integer_series(
         component_distribution,
@@ -158,8 +155,14 @@ def _prepare_component_and_degree_series(
 def prepare_component_distribution(
     collaboration_network: dict,
 ) -> tuple[list[dict[str, int | str | bool]], int]:
-    displayed_component_series, _ = _prepare_component_and_degree_series(collaboration_network)
-    total = sum(int(e["cluster_count"]) for e in displayed_component_series if "cluster_count" in e)
+    displayed_component_series, _ = _prepare_component_and_degree_series(
+        collaboration_network
+    )
+    total = sum(
+        int(e["cluster_count"])
+        for e in displayed_component_series
+        if "cluster_count" in e
+    )
     return displayed_component_series, total
 
 
@@ -171,8 +174,12 @@ def _draw_component_distribution_axis(
     total: int | None = None,
 ) -> None:
     component_positions = np.arange(len(displayed_component_series))
-    component_counts = [int(entry["cluster_count"]) for entry in displayed_component_series]
-    component_labels = [str(entry["axis_label"]) for entry in displayed_component_series]
+    component_counts = [
+        int(entry["cluster_count"]) for entry in displayed_component_series
+    ]
+    component_labels = [
+        str(entry["axis_label"]) for entry in displayed_component_series
+    ]
 
     axis.bar(
         component_positions,
@@ -188,7 +195,11 @@ def _draw_component_distribution_axis(
     if title:
         axis.set_title(title)
     axis.set_xlabel("# Authors in component")
-    axis.set_ylabel("# Connected components" if total is None else f"# Connected components ({total})")
+    axis.set_ylabel(
+        "# Connected components"
+        if total is None
+        else f"# Connected components ({total})"
+    )
     axis.set_xticks(component_positions)
     axis.set_xticklabels(component_labels)
     axis.set_xlim(-0.6, len(component_positions) - 0.4)
@@ -196,7 +207,9 @@ def _draw_component_distribution_axis(
     axis.grid(axis="y", alpha=0.35)
     axis.grid(axis="x", visible=False)
     match_axis_label_fontsize(axis)
-    for x_position, count, entry in zip(component_positions, component_counts, displayed_component_series):
+    for x_position, count, entry in zip(
+        component_positions, component_counts, displayed_component_series
+    ):
         if count <= 0 or bool(entry.get("is_gap")):
             continue
         axis.text(
@@ -261,7 +274,9 @@ def plot_connected_component_size_distribution(
     collaboration_network: dict,
     output_path: Path,
 ) -> None:
-    displayed_component_series, _ = _prepare_component_and_degree_series(collaboration_network)
+    displayed_component_series, _ = _prepare_component_and_degree_series(
+        collaboration_network
+    )
     figure, axis = plt.subplots(figsize=(3.6, 2.8))
     _draw_component_distribution_axis(axis, displayed_component_series, title=None)
     figure.tight_layout()
@@ -284,7 +299,9 @@ def plot_collaboration_structure_overview(
     output_path: Path,
     snapshot_label: str,
 ) -> None:
-    displayed_component_series, full_degree_series = _prepare_component_and_degree_series(collaboration_network)
+    displayed_component_series, full_degree_series = (
+        _prepare_component_and_degree_series(collaboration_network)
+    )
 
     figure, (axis_left, axis_right) = plt.subplots(
         1,

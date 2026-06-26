@@ -47,7 +47,9 @@ def _merge_results(*results: SnapshotValidationResult) -> SnapshotValidationResu
 def _source_rows() -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     for ecosystem, ecosystem_config in sorted(ECOSYSTEM_REGISTRY.items()):
-        for source, source_config in sorted((ecosystem_config.get("sources") or {}).items()):
+        for source, source_config in sorted(
+            (ecosystem_config.get("sources") or {}).items()
+        ):
             analysis_root = Path(str(source_config.get("analysis", "")))
             if not analysis_root.is_dir():
                 continue
@@ -65,7 +67,9 @@ def _source_rows() -> list[dict[str, Any]]:
                     ),
                     validate_analysis_snapshot(snapshot_dir),
                     validate_react_snapshot_exports(
-                        Path(str(source_config.get("postprocess", ""))) / snapshot / "react"
+                        Path(str(source_config.get("postprocess", "")))
+                        / snapshot
+                        / "react"
                     ),
                 )
                 rows.append(
@@ -89,7 +93,9 @@ def _combined_rows() -> list[dict[str, Any]]:
         sources = ecosystem_config.get("sources") or {}
         if len(sources) < 2:
             continue
-        for combo_key, snapshot in expected_combined_snapshot_targets(ecosystem, ecosystem_config):
+        for combo_key, snapshot in expected_combined_snapshot_targets(
+            ecosystem, ecosystem_config
+        ):
             result = validate_combined_snapshot(
                 ecosystem_slug=ecosystem,
                 combo_key=combo_key,
@@ -113,8 +119,12 @@ def _combined_rows() -> list[dict[str, Any]]:
 def _ground_truth_rows() -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     for ecosystem, ecosystem_config in sorted(ECOSYSTEM_REGISTRY.items()):
-        result = validate_ground_truth_curated_file(ecosystem, ecosystem_config=ecosystem_config)
-        result.merge(validate_ground_truth_ips_file(ecosystem, ecosystem_config=ecosystem_config))
+        result = validate_ground_truth_curated_file(
+            ecosystem, ecosystem_config=ecosystem_config
+        )
+        result.merge(
+            validate_ground_truth_ips_file(ecosystem, ecosystem_config=ecosystem_config)
+        )
         rows.append(
             {
                 "ecosystem": ecosystem,
@@ -142,7 +152,13 @@ def build_summary(
         lines.append("")
 
         file_cols = ["preprocess"] + list(ANALYSIS_COLUMN_LABELS.values()) + ["react"]
-        header = ["Ecosystem", "Source", "Snapshot", "Proposals", "LLM edges"] + file_cols
+        header = [
+            "Ecosystem",
+            "Source",
+            "Snapshot",
+            "Proposals",
+            "LLM edges",
+        ] + file_cols
         lines.append("| " + " | ".join(header) + " |")
         lines.append("|:---|:---|:---|---:|---:" + "|:---:" * len(file_cols) + "|")
 
@@ -160,19 +176,23 @@ def build_summary(
     lines.append("")
     lines.append("### Ground Truth Validation")
     lines.append("")
-    lines.append("| Ecosystem | GT CSV | IPs CSV | Curated edges | Reviewed IPs | Completed reviews |")
+    lines.append(
+        "| Ecosystem | GT CSV | IPs CSV | Curated edges | Reviewed IPs | Completed reviews |"
+    )
     lines.append("|:---|:---:|:---:|---:|---:|---:|")
     for row in ground_truth_rows:
         lines.append(
             "| "
-            + " | ".join([
-                row["ecosystem"],
-                row["file_status"].get("ground_truth", "—"),
-                row["file_status"].get("reviewed_ips", "—"),
-                str(row["stats"].get("ground_truth_edges", "—")),
-                str(row["stats"].get("reviewed_ips", "—")),
-                str(row["stats"].get("completed_reviewed_ips", "—")),
-            ])
+            + " | ".join(
+                [
+                    row["ecosystem"],
+                    row["file_status"].get("ground_truth", "—"),
+                    row["file_status"].get("reviewed_ips", "—"),
+                    str(row["stats"].get("ground_truth_edges", "—")),
+                    str(row["stats"].get("reviewed_ips", "—")),
+                    str(row["stats"].get("completed_reviewed_ips", "—")),
+                ]
+            )
             + " |"
         )
 
@@ -186,11 +206,13 @@ def build_summary(
         for row in rows
         if row["errors"]
     }
-    errors_by_snapshot.update({
-        f"{row['ecosystem']}/ground_truth": row["errors"]
-        for row in ground_truth_rows
-        if row["errors"]
-    })
+    errors_by_snapshot.update(
+        {
+            f"{row['ecosystem']}/ground_truth": row["errors"]
+            for row in ground_truth_rows
+            if row["errors"]
+        }
+    )
     if generated_result.errors:
         errors_by_snapshot["react/src/generated"] = generated_result.errors
 
@@ -209,11 +231,13 @@ def build_summary(
         for row in rows
         if row.get("warnings")
     }
-    warnings_by_snapshot.update({
-        f"{row['ecosystem']}/ground_truth": row["warnings"]
-        for row in ground_truth_rows
-        if row.get("warnings")
-    })
+    warnings_by_snapshot.update(
+        {
+            f"{row['ecosystem']}/ground_truth": row["warnings"]
+            for row in ground_truth_rows
+            if row.get("warnings")
+        }
+    )
 
     if warnings_by_snapshot:
         lines.append("")
@@ -232,7 +256,11 @@ def main() -> None:
     rows = _source_rows() + _combined_rows()
     ground_truth_rows = _ground_truth_rows()
     generated_result = validate_react_generated_indexes()
-    all_ok = generated_result.ok and all(row["ok"] for row in rows) and all(row["ok"] for row in ground_truth_rows)
+    all_ok = (
+        generated_result.ok
+        and all(row["ok"] for row in rows)
+        and all(row["ok"] for row in ground_truth_rows)
+    )
 
     summary = build_summary(rows, ground_truth_rows, generated_result)
     print(summary)

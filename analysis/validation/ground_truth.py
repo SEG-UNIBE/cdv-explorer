@@ -38,11 +38,21 @@ REVIEWED_IPS_CSV_COLUMNS = (
     "extracted_target_count",
     "note",
 )
-GROUND_TRUTH_ALLOWED_RELATION_TYPES = {"depends_on", "supersedes", "superseded_by", "references"}
+GROUND_TRUTH_ALLOWED_RELATION_TYPES = {
+    "depends_on",
+    "supersedes",
+    "superseded_by",
+    "references",
+}
 GROUND_TRUTH_ALLOWED_CONFIDENCE = {"low", "medium", "high"}
 REVIEWED_IP_ALLOWED_SAMPLING_STRATEGIES = {"sampler", "manual"}
 REVIEWED_IP_ALLOWED_DENSITY_BUCKETS = {"none", "low", "high"}
-REVIEWED_IP_ALLOWED_DENSITY_BASIS = {"all_methods", "regex_only", "llm_only", "preamble_only"}
+REVIEWED_IP_ALLOWED_DENSITY_BASIS = {
+    "all_methods",
+    "regex_only",
+    "llm_only",
+    "preamble_only",
+}
 GROUND_TRUTH_GRAPH_KEY_RE = re.compile(r"^(?P<source>[A-Za-z0-9_-]+):(?P<id>[^:\s]+)$")
 GROUND_TRUTH_REVIEW_POLICIES: dict[str, dict[str, Any]] = {
     "bitcoin": {
@@ -52,7 +62,9 @@ GROUND_TRUTH_REVIEW_POLICIES: dict[str, dict[str, Any]] = {
 }
 
 
-def ground_truth_source_configs_by_slug(ecosystem_slug: str | None) -> Dict[str, Dict[str, Any]]:
+def ground_truth_source_configs_by_slug(
+    ecosystem_slug: str | None,
+) -> Dict[str, Dict[str, Any]]:
     if not ecosystem_slug:
         return {}
 
@@ -92,11 +104,15 @@ def _validate_ground_truth_graph_key(
     source_config = source_configs_by_slug.get(source_slug)
     if source_config is None:
         known = ", ".join(sorted(source_configs_by_slug)) or "none"
-        raise ValueError(f"`{field_name}` uses unknown source slug `{source_slug}`; known sources: {known}")
+        raise ValueError(
+            f"`{field_name}` uses unknown source slug `{source_slug}`; known sources: {known}"
+        )
 
     normalized = normalize_reference_id_for_config(proposal_id, source_config)
     if normalized is None:
-        raise ValueError(f"`{field_name}` has an invalid proposal id for source `{source_slug}`")
+        raise ValueError(
+            f"`{field_name}` has an invalid proposal id for source `{source_slug}`"
+        )
 
     return source_slug, normalized
 
@@ -111,7 +127,11 @@ def validate_ground_truth_curated_entries(
     relation_types_by_pair: dict[tuple[str, str], str] = {}
 
     for index, entry in enumerate(entries):
-        row_label = f"row {entry.get('__line__')}" if isinstance(entry, Mapping) and entry.get("__line__") else f"row {index + 2}"
+        row_label = (
+            f"row {entry.get('__line__')}"
+            if isinstance(entry, Mapping) and entry.get("__line__")
+            else f"row {index + 2}"
+        )
         if not isinstance(entry, Mapping):
             errors.append(f"{row_label}: entry must be an object")
             continue
@@ -141,7 +161,9 @@ def validate_ground_truth_curated_entries(
             row_errors.append("missing `relation_type`")
         elif relation_type not in GROUND_TRUTH_ALLOWED_RELATION_TYPES:
             allowed = ", ".join(sorted(GROUND_TRUTH_ALLOWED_RELATION_TYPES))
-            row_errors.append(f"unknown relation type `{relation_type}`; allowed: {allowed}")
+            row_errors.append(
+                f"unknown relation type `{relation_type}`; allowed: {allowed}"
+            )
 
         confidence = str(entry.get("confidence") or "").strip().lower()
         if confidence and confidence not in GROUND_TRUTH_ALLOWED_CONFIDENCE:
@@ -153,7 +175,9 @@ def validate_ground_truth_curated_entries(
             try:
                 date.fromisoformat(reviewed_at)
             except ValueError:
-                row_errors.append(f"invalid `reviewed_at` date `{reviewed_at}`; use YYYY-MM-DD")
+                row_errors.append(
+                    f"invalid `reviewed_at` date `{reviewed_at}`; use YYYY-MM-DD"
+                )
 
         if row_errors:
             errors.extend(f"{row_label}: {message}" for message in row_errors)
@@ -161,7 +185,9 @@ def validate_ground_truth_curated_entries(
 
         typed_edge = (source, target, relation_type)
         if typed_edge in seen_typed_edges:
-            errors.append(f"{row_label}: duplicate curated edge `{source} -> {target}` with relation type `{relation_type}`")
+            errors.append(
+                f"{row_label}: duplicate curated edge `{source} -> {target}` with relation type `{relation_type}`"
+            )
             continue
         seen_typed_edges.add(typed_edge)
 
@@ -195,7 +221,9 @@ def _load_csv_rows(
         return []
 
     delimiter = "\t" if "\t" in lines[0] else ","
-    reader = csv.DictReader(io.StringIO("\n".join(lines)), skipinitialspace=True, delimiter=delimiter)
+    reader = csv.DictReader(
+        io.StringIO("\n".join(lines)), skipinitialspace=True, delimiter=delimiter
+    )
     if reader.fieldnames is None:
         return []
     reader.fieldnames = [str(field or "").strip() for field in reader.fieldnames]
@@ -207,10 +235,12 @@ def _load_csv_rows(
             for key, value in row.items()
             if key is not None and value is not None
         }
-        entries.append({
-            **{column: normalized.get(column, "") for column in columns},
-            "__line__": reader.line_num,
-        })
+        entries.append(
+            {
+                **{column: normalized.get(column, "") for column in columns},
+                "__line__": reader.line_num,
+            }
+        )
 
     return entries
 
@@ -226,7 +256,9 @@ def _normalize_iso_date(text: Any) -> str | None:
     return value
 
 
-def reviewed_ip_policy_for_ecosystem(ecosystem_slug: str | None) -> Dict[str, Any] | None:
+def reviewed_ip_policy_for_ecosystem(
+    ecosystem_slug: str | None,
+) -> Dict[str, Any] | None:
     if not ecosystem_slug:
         return None
     policy = GROUND_TRUTH_REVIEW_POLICIES.get(str(ecosystem_slug))
@@ -243,7 +275,11 @@ def validate_reviewed_ip_policy(
         return []
 
     warnings: List[str] = []
-    allowed_source_slugs = {str(value).strip() for value in policy.get("allowed_source_slugs", ()) if str(value).strip()}
+    allowed_source_slugs = {
+        str(value).strip()
+        for value in policy.get("allowed_source_slugs", ())
+        if str(value).strip()
+    }
     required_type = str(policy.get("required_type") or "").strip()
 
     source_scope_violations: List[str] = []
@@ -272,7 +308,11 @@ def validate_reviewed_ip_policy(
     if source_scope_violations:
         expected = ", ".join(sorted(allowed_source_slugs))
         examples = ", ".join(source_scope_violations[:5])
-        more = "" if len(source_scope_violations) <= 5 else f", +{len(source_scope_violations) - 5} more"
+        more = (
+            ""
+            if len(source_scope_violations) <= 5
+            else f", +{len(source_scope_violations) - 5} more"
+        )
         warnings.append(
             f"reviewed IP scope for `{ecosystem_slug}` currently expects source `{expected}`, "
             f"but {len(source_scope_violations)} row(s) use other source slugs: {examples}{more}"
@@ -280,7 +320,11 @@ def validate_reviewed_ip_policy(
 
     if type_scope_violations:
         examples = ", ".join(type_scope_violations[:5])
-        more = "" if len(type_scope_violations) <= 5 else f", +{len(type_scope_violations) - 5} more"
+        more = (
+            ""
+            if len(type_scope_violations) <= 5
+            else f", +{len(type_scope_violations) - 5} more"
+        )
         warnings.append(
             f"reviewed IP scope for `{ecosystem_slug}` currently expects proposal type `{required_type}`, "
             f"but {len(type_scope_violations)} row(s) use another type: {examples}{more}"
@@ -306,7 +350,11 @@ def validate_reviewed_ip_entries(
     seen_ips: set[str] = set()
 
     for index, entry in enumerate(entries):
-        row_label = f"row {entry.get('__line__')}" if isinstance(entry, Mapping) and entry.get("__line__") else f"row {index + 2}"
+        row_label = (
+            f"row {entry.get('__line__')}"
+            if isinstance(entry, Mapping) and entry.get("__line__")
+            else f"row {index + 2}"
+        )
         if not isinstance(entry, Mapping):
             errors.append(f"{row_label}: entry must be an object")
             continue
@@ -329,7 +377,9 @@ def validate_reviewed_ip_entries(
             try:
                 date.fromisoformat(reviewed_at)
             except ValueError:
-                row_errors.append(f"invalid `reviewed_at` date `{reviewed_at}`; use YYYY-MM-DD")
+                row_errors.append(
+                    f"invalid `reviewed_at` date `{reviewed_at}`; use YYYY-MM-DD"
+                )
 
         extracted_target_count = str(entry.get("extracted_target_count") or "").strip()
         if extracted_target_count:
@@ -337,22 +387,41 @@ def validate_reviewed_ip_entries(
                 if int(extracted_target_count) < 0:
                     raise ValueError
             except ValueError:
-                row_errors.append("`extracted_target_count` must be a non-negative integer")
+                row_errors.append(
+                    "`extracted_target_count` must be a non-negative integer"
+                )
 
         sampling_strategy = str(entry.get("sampling_strategy") or "").strip()
-        if sampling_strategy and sampling_strategy not in REVIEWED_IP_ALLOWED_SAMPLING_STRATEGIES:
+        if (
+            sampling_strategy
+            and sampling_strategy not in REVIEWED_IP_ALLOWED_SAMPLING_STRATEGIES
+        ):
             allowed = ", ".join(sorted(REVIEWED_IP_ALLOWED_SAMPLING_STRATEGIES))
-            row_errors.append(f"invalid `sampling_strategy` `{sampling_strategy}`; allowed: {allowed}")
+            row_errors.append(
+                f"invalid `sampling_strategy` `{sampling_strategy}`; allowed: {allowed}"
+            )
 
         density_bucket = str(entry.get("density_bucket") or "").strip()
-        if density_bucket and density_bucket != "-" and density_bucket not in REVIEWED_IP_ALLOWED_DENSITY_BUCKETS:
+        if (
+            density_bucket
+            and density_bucket != "-"
+            and density_bucket not in REVIEWED_IP_ALLOWED_DENSITY_BUCKETS
+        ):
             allowed = ", ".join(sorted(REVIEWED_IP_ALLOWED_DENSITY_BUCKETS))
-            row_errors.append(f"invalid `density_bucket` `{density_bucket}`; allowed: {allowed}")
+            row_errors.append(
+                f"invalid `density_bucket` `{density_bucket}`; allowed: {allowed}"
+            )
 
         density_basis = str(entry.get("density_basis") or "").strip()
-        if density_basis and density_basis != "-" and density_basis not in REVIEWED_IP_ALLOWED_DENSITY_BASIS:
+        if (
+            density_basis
+            and density_basis != "-"
+            and density_basis not in REVIEWED_IP_ALLOWED_DENSITY_BASIS
+        ):
             allowed = ", ".join(sorted(REVIEWED_IP_ALLOWED_DENSITY_BASIS))
-            row_errors.append(f"invalid `density_basis` `{density_basis}`; allowed: {allowed}")
+            row_errors.append(
+                f"invalid `density_basis` `{density_basis}`; allowed: {allowed}"
+            )
 
         created = str(entry.get("created") or "").strip()
         if created:
@@ -373,11 +442,15 @@ def validate_reviewed_ip_entries(
     return errors
 
 
-def load_ground_truth_curated_entries(ecosystem_slug: str | None, *, strict: bool = True) -> List[Dict[str, str]]:
+def load_ground_truth_curated_entries(
+    ecosystem_slug: str | None, *, strict: bool = True
+) -> List[Dict[str, str]]:
     if not ecosystem_slug:
         return []
 
-    csv_path = Path("ip_data") / str(ecosystem_slug) / "ground_truth" / "interrelations.csv"
+    csv_path = (
+        Path("ip_data") / str(ecosystem_slug) / "ground_truth" / "interrelations.csv"
+    )
     entries = [
         entry
         for entry in _load_csv_rows(csv_path, columns=GROUND_TRUTH_CSV_COLUMNS)
@@ -391,13 +464,16 @@ def load_ground_truth_curated_entries(ecosystem_slug: str | None, *, strict: boo
         )
         if errors:
             raise ValueError(
-                f"Ground-truth validation failed for `{csv_path}`:\n- " + "\n- ".join(errors)
+                f"Ground-truth validation failed for `{csv_path}`:\n- "
+                + "\n- ".join(errors)
             )
 
     return entries
 
 
-def load_ground_truth_ips(ecosystem_slug: str | None, *, strict: bool = True) -> List[Dict[str, str]]:
+def load_ground_truth_ips(
+    ecosystem_slug: str | None, *, strict: bool = True
+) -> List[Dict[str, str]]:
     if not ecosystem_slug:
         return []
 
@@ -415,13 +491,16 @@ def load_ground_truth_ips(ecosystem_slug: str | None, *, strict: bool = True) ->
         )
         if errors:
             raise ValueError(
-                f"Reviewed-IP validation failed for `{csv_path}`:\n- " + "\n- ".join(errors)
+                f"Reviewed-IP validation failed for `{csv_path}`:\n- "
+                + "\n- ".join(errors)
             )
 
     return entries
 
 
-def completed_reviewed_ip_entries(entries: Sequence[Mapping[str, Any]]) -> List[Dict[str, str]]:
+def completed_reviewed_ip_entries(
+    entries: Sequence[Mapping[str, Any]],
+) -> List[Dict[str, str]]:
     completed: List[Dict[str, str]] = []
     for entry in entries:
         if not isinstance(entry, Mapping):
@@ -429,5 +508,11 @@ def completed_reviewed_ip_entries(entries: Sequence[Mapping[str, Any]]) -> List[
         reviewed_at = _normalize_iso_date(entry.get("reviewed_at"))
         if not reviewed_at:
             continue
-        completed.append({str(key): str(value) for key, value in entry.items() if key is not None and value is not None})
+        completed.append(
+            {
+                str(key): str(value)
+                for key, value in entry.items()
+                if key is not None and value is not None
+            }
+        )
     return completed

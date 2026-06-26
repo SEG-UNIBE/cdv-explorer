@@ -42,8 +42,7 @@ def _stretch_positions(
     scale_y: float = 1.28,
 ) -> dict[str, tuple[float, float]]:
     return {
-        node_id: (x * scale_x, y * scale_y)
-        for node_id, (x, y) in positions.items()
+        node_id: (x * scale_x, y * scale_y) for node_id, (x, y) in positions.items()
     }
 
 
@@ -107,10 +106,7 @@ def _resolve_node_overlaps(
     if not positions:
         return positions
 
-    adjusted = {
-        author: [coords[0], coords[1]]
-        for author, coords in positions.items()
-    }
+    adjusted = {author: [coords[0], coords[1]] for author, coords in positions.items()}
     authors = list(adjusted.keys())
 
     for _ in range(iterations):
@@ -120,7 +116,7 @@ def _resolve_node_overlaps(
             x_a, y_a = adjusted[author_a]
             radius_a = node_radius_by_author.get(author_a, 0.2)
 
-            for author_b in authors[index + 1:]:
+            for author_b in authors[index + 1 :]:
                 x_b, y_b = adjusted[author_b]
                 radius_b = node_radius_by_author.get(author_b, 0.2)
 
@@ -150,10 +146,7 @@ def _resolve_node_overlaps(
         if not moved:
             break
 
-    return {
-        author: (coords[0], coords[1])
-        for author, coords in adjusted.items()
-    }
+    return {author: (coords[0], coords[1]) for author, coords in adjusted.items()}
 
 
 def plot_collaboration_network(
@@ -167,7 +160,9 @@ def plot_collaboration_network(
     raw_nodes = collaboration_network.get("nodes", []) or []
     raw_edges = collaboration_network.get("edges", []) or []
     if not raw_nodes or not raw_edges:
-        raise ValueError("Collaboration network plot requires non-empty collaboration network data.")
+        raise ValueError(
+            "Collaboration network plot requires non-empty collaboration network data."
+        )
 
     author_bip_map = build_author_bip_map(network_data)
 
@@ -199,7 +194,9 @@ def plot_collaboration_network(
     )[:10]
     top_author_set = set(top_authors)
 
-    authored_counts = [max(1, int(graph.nodes[author].get("bip_count", 0))) for author in graph.nodes()]
+    authored_counts = [
+        max(1, int(graph.nodes[author].get("bip_count", 0))) for author in graph.nodes()
+    ]
     node_sizes = [90 + (count**0.95) * 58 for count in authored_counts]
     node_radius_by_author = {}
     for author, node_size in zip(graph.nodes(), node_sizes):
@@ -211,15 +208,28 @@ def plot_collaboration_network(
         node_radius_by_author[author] = radius
 
     positions = _build_layout(graph, layout_name)
-    positions = _resolve_node_overlaps(positions, node_radius_by_author, iterations=260, padding=0.24)
-    positions = _resolve_node_overlaps(positions, node_radius_by_author, iterations=200, padding=0.32)
-    edge_widths = [0.65 + float(data.get("weight", 1)) * 0.65 for _, _, data in graph.edges(data=True)]
+    positions = _resolve_node_overlaps(
+        positions, node_radius_by_author, iterations=260, padding=0.24
+    )
+    positions = _resolve_node_overlaps(
+        positions, node_radius_by_author, iterations=200, padding=0.32
+    )
+    edge_widths = [
+        0.65 + float(data.get("weight", 1)) * 0.65
+        for _, _, data in graph.edges(data=True)
+    ]
     cluster_colors = {
         author: CLUSTER_COLORS[cluster_by_author.get(author, 0) % len(CLUSTER_COLORS)]
         for author in graph.nodes()
     }
-    node_facecolors = [with_plot_alpha(cluster_colors[author], PLOT_COLOR_ALPHA) for author in graph.nodes()]
-    node_edgecolors = [with_plot_alpha(cluster_colors[author], PLOT_COLOR_ALPHA) for author in graph.nodes()]
+    node_facecolors = [
+        with_plot_alpha(cluster_colors[author], PLOT_COLOR_ALPHA)
+        for author in graph.nodes()
+    ]
+    node_edgecolors = [
+        with_plot_alpha(cluster_colors[author], PLOT_COLOR_ALPHA)
+        for author in graph.nodes()
+    ]
     edge_colors = [cluster_colors[source] for source, _, _ in graph.edges(data=True)]
 
     figure, axis = plt.subplots(figsize=(11, 6.5))
@@ -283,7 +293,8 @@ def render_collaboration_network_layout_suite(
         plot_collaboration_network(
             network_data=network_data,
             authorship_payload=authorship_payload,
-            output_path=output_dir / f"{filename_prefix}_collaboration_network_{layout_name}.pdf",
+            output_path=output_dir
+            / f"{filename_prefix}_collaboration_network_{layout_name}.pdf",
             snapshot_label=snapshot_label,
             layout_name=layout_name,
         )

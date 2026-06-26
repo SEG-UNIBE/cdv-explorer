@@ -36,7 +36,9 @@ def _extract_raw_pre_block(file_content: str) -> str:
     return ""
 
 
-def _parse_pre_block_preamble(file_content: str, source_context: SourceContext) -> Dict[str, Any]:
+def _parse_pre_block_preamble(
+    file_content: str, source_context: SourceContext
+) -> Dict[str, Any]:
     pre_block = _extract_raw_pre_block(file_content)
     if not pre_block:
         return {}
@@ -49,7 +51,9 @@ def _parse_pre_block_preamble(file_content: str, source_context: SourceContext) 
         match = PRE_BLOCK_LINE_PATTERN.match(line)
         if match:
             if current_key:
-                preamble[current_key] = _format_value(current_key, current_value, source_context)
+                preamble[current_key] = _format_value(
+                    current_key, current_value, source_context
+                )
             current_key = match.group(1).strip().lower().replace("-", "_")
             current_value = match.group(2).strip()
             continue
@@ -58,7 +62,9 @@ def _parse_pre_block_preamble(file_content: str, source_context: SourceContext) 
             current_value += "\n" + line.strip()
 
     if current_key:
-        preamble[current_key] = _format_value(current_key, current_value, source_context)
+        preamble[current_key] = _format_value(
+            current_key, current_value, source_context
+        )
 
     return preamble
 
@@ -184,9 +190,15 @@ def _parse_nip_tag_preamble(
         index += 1
 
     dims = source_context.classification_dimensions
-    status_aliases = {k.lower(): v for k, v in (dims.get("status", {}).get("aliases") or {}).items()}
-    type_aliases = {k.lower(): v for k, v in (dims.get("type", {}).get("aliases") or {}).items()}
-    layer_aliases = {k.lower(): v for k, v in (dims.get("layer", {}).get("aliases") or {}).items()}
+    status_aliases = {
+        k.lower(): v for k, v in (dims.get("status", {}).get("aliases") or {}).items()
+    }
+    type_aliases = {
+        k.lower(): v for k, v in (dims.get("type", {}).get("aliases") or {}).items()
+    }
+    layer_aliases = {
+        k.lower(): v for k, v in (dims.get("layer", {}).get("aliases") or {}).items()
+    }
 
     status: str | None = None
     proposal_type: str | None = None
@@ -208,8 +220,10 @@ def _parse_nip_tag_preamble(
     if fallback_path:
         proposal_id = Path(fallback_path).stem
         document_prefix = source_context.document_prefix
-        if document_prefix and proposal_id.lower().startswith(f"{document_prefix.lower()}-"):
-            proposal_id = proposal_id[len(document_prefix) + 1:]
+        if document_prefix and proposal_id.lower().startswith(
+            f"{document_prefix.lower()}-"
+        ):
+            proposal_id = proposal_id[len(document_prefix) + 1 :]
         proposal_id = proposal_id.upper()
 
     preamble: Dict[str, Any] = {}
@@ -229,7 +243,9 @@ def _parse_nip_tag_preamble(
     return preamble
 
 
-def _normalize_preamble(preamble: Dict[str, Any], source_context: SourceContext) -> Dict[str, Any]:
+def _normalize_preamble(
+    preamble: Dict[str, Any], source_context: SourceContext
+) -> Dict[str, Any]:
     normalized = dict(preamble)
 
     for source_key, canonical_key in source_context.field_aliases.items():
@@ -254,7 +270,9 @@ def _extract_snapshot_preamble(
     if rfc822_preamble:
         return _normalize_preamble(rfc822_preamble, source_context)
 
-    nip_tag_preamble = _parse_nip_tag_preamble(file_content, source_context, fallback_path=fallback_path)
+    nip_tag_preamble = _parse_nip_tag_preamble(
+        file_content, source_context, fallback_path=fallback_path
+    )
     if nip_tag_preamble:
         return _normalize_preamble(nip_tag_preamble, source_context)
 
@@ -265,7 +283,9 @@ def _extract_status_snapshot(
     file_content: str,
     source_context: SourceContext | None = None,
 ) -> str | None:
-    normalized = _extract_snapshot_preamble(file_content, source_context or SourceContext.default())
+    normalized = _extract_snapshot_preamble(
+        file_content, source_context or SourceContext.default()
+    )
     status = str(normalized.get("status") or "").strip()
     if status:
         return status
@@ -318,7 +338,7 @@ def _extract_path_proposal_id(file_path: Path, source_context: SourceContext) ->
     stem = file_path.stem.strip()
     document_prefix = source_context.document_prefix
     if document_prefix and stem.lower().startswith(f"{document_prefix.lower()}-"):
-        stem = stem[len(document_prefix) + 1:]
+        stem = stem[len(document_prefix) + 1 :]
 
     normalized = _normalize_proposal_id(stem)
     if normalized:
@@ -390,7 +410,8 @@ def _is_same_proposal_snapshot(
         and target_identity["title"] == candidate_identity["title"]
     )
     author_matches = bool(
-        set(target_identity.get("authors") or set()) & set(candidate_identity.get("authors") or set())
+        set(target_identity.get("authors") or set())
+        & set(candidate_identity.get("authors") or set())
     )
 
     if created_matches and (title_matches or author_matches):
@@ -410,7 +431,9 @@ def _parse_snapshot_date(value: str | None) -> date | None:
         return None
 
 
-def _resolve_reporting_standard(event_date_text: str, source_context: SourceContext) -> str:
+def _resolve_reporting_standard(
+    event_date_text: str, source_context: SourceContext
+) -> str:
     event_date = _parse_snapshot_date(event_date_text[:10])
     regimes = source_context.classification_config.get("regimes", [])
     last_seen = ""
@@ -448,7 +471,7 @@ def _parse_git_history_with_paths(stdout: str) -> List[Dict[str, str]]:
         if line.startswith("__COMMIT__"):
             if current and current.get("path"):
                 entries.append(current)
-            commit, timestamp, author = line[len("__COMMIT__"):].split("|", 2)
+            commit, timestamp, author = line[len("__COMMIT__") :].split("|", 2)
             current = {
                 "commit": commit,
                 "timestamp": timestamp,

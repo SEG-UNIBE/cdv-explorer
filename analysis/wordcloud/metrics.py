@@ -1,6 +1,7 @@
 from collections import Counter
 from typing import Any, Dict, List
 
+
 def extract_wordcloud_metrics(
     proposal_data: List[Dict[str, Any]],
     id_field: str,

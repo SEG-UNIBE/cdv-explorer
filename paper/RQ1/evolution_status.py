@@ -3,6 +3,7 @@ from typing import Any
 
 import matplotlib
 import numpy as np
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
@@ -139,9 +140,7 @@ def _normalize_evolution_series(
         )
     )
     ordered_categories = [
-        category
-        for category in preferred_categories
-        if category in observed_categories
+        category for category in preferred_categories if category in observed_categories
     ]
     ordered_categories.extend(
         category
@@ -149,14 +148,13 @@ def _normalize_evolution_series(
         if category not in ordered_categories
     )
     if not ordered_categories:
-        raise ValueError("Status evolution plot requires at least one positive status count.")
+        raise ValueError(
+            "Status evolution plot requires at least one positive status count."
+        )
 
     periods = [row["period"] for row in rows]
     series = {
-        category: [
-            int(row["values"].get(category, 0))
-            for row in rows
-        ]
+        category: [int(row["values"].get(category, 0)) for row in rows]
         for category in ordered_categories
     }
     return periods, ordered_categories, series
@@ -164,7 +162,14 @@ def _normalize_evolution_series(
 
 def _normalize_segmented_rows(
     status_evolution_segmented: dict[str, Any] | None,
-) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[str], dict[str, list[int]], list[dict[str, Any]], bool]:
+) -> tuple[
+    list[dict[str, Any]],
+    list[dict[str, Any]],
+    list[str],
+    dict[str, list[int]],
+    list[dict[str, Any]],
+    bool,
+]:
     segmented = status_evolution_segmented or {}
     raw_segment_definitions = segmented.get("segmentDefinitions") or []
     raw_rows = segmented.get("rows") or []
@@ -173,7 +178,9 @@ def _normalize_segmented_rows(
 
     rows = [
         {
-            "period_key": str(row.get("period_key") or row.get("period") or row.get("year") or "").strip(),
+            "period_key": str(
+                row.get("period_key") or row.get("period") or row.get("year") or ""
+            ).strip(),
             "period": str(row.get("period") or row.get("year") or "").strip(),
             "period_end": str(row.get("period_end") or "").strip(),
             "period_kind": str(row.get("period_kind") or "quarter").strip(),
@@ -186,7 +193,9 @@ def _normalize_segmented_rows(
             "index": index,
         }
         for index, row in enumerate(raw_rows)
-        if str(row.get("period_key") or row.get("period") or row.get("year") or "").strip()
+        if str(
+            row.get("period_key") or row.get("period") or row.get("year") or ""
+        ).strip()
     ]
     if not rows:
         raise ValueError("Segmented evolution data is missing rows.")
@@ -217,9 +226,13 @@ def _normalize_segmented_rows(
         if totals_by_segment.get(segment["key"], 0) > 0
     ]
     if not visible_segment_definitions:
-        raise ValueError("Segmented evolution plot requires at least one positive segment.")
+        raise ValueError(
+            "Segmented evolution plot requires at least one positive segment."
+        )
 
-    ordered_statuses = list(dict.fromkeys(segment["status"] for segment in visible_segment_definitions))
+    ordered_statuses = list(
+        dict.fromkeys(segment["status"] for segment in visible_segment_definitions)
+    )
     segment_series = {
         segment["key"]: [int(row["values"].get(segment["key"], 0)) for row in rows]
         for segment in visible_segment_definitions
@@ -227,21 +240,35 @@ def _normalize_segmented_rows(
     legend_sections: list[dict[str, Any]] = []
     for segment in visible_segment_definitions:
         standard = segment["standard"]
-        section = next((entry for entry in legend_sections if entry["key"] == standard), None)
+        section = next(
+            (entry for entry in legend_sections if entry["key"] == standard), None
+        )
         if section is None:
             section = {
                 "key": standard,
-                "label": segment["standard_label"] or (standard.upper() if standard else ""),
+                "label": segment["standard_label"]
+                or (standard.upper() if standard else ""),
                 "segments": [],
             }
             legend_sections.append(section)
         section["segments"].append(segment)
 
     for row in rows:
-        row["display_label"] = _format_period_display_label(row["period_key"], row["period"])
+        row["display_label"] = _format_period_display_label(
+            row["period_key"], row["period"]
+        )
 
-    has_non_official = any(not segment["is_official"] for segment in visible_segment_definitions)
-    return rows, visible_segment_definitions, ordered_statuses, segment_series, legend_sections, has_non_official
+    has_non_official = any(
+        not segment["is_official"] for segment in visible_segment_definitions
+    )
+    return (
+        rows,
+        visible_segment_definitions,
+        ordered_statuses,
+        segment_series,
+        legend_sections,
+        has_non_official,
+    )
 
 
 def _build_period_positions(rows: list[dict[str, Any]]) -> np.ndarray:
@@ -255,7 +282,9 @@ def _build_period_positions(rows: list[dict[str, Any]]) -> np.ndarray:
     return np.array(positions, dtype=float)
 
 
-def _select_tick_positions(rows: list[dict[str, Any]], x_positions: np.ndarray) -> tuple[np.ndarray, list[str]]:
+def _select_tick_positions(
+    rows: list[dict[str, Any]], x_positions: np.ndarray
+) -> tuple[np.ndarray, list[str]]:
     positions_by_label: dict[str, list[float]] = {}
     label_order: list[str] = []
     activation_years = {
@@ -272,8 +301,13 @@ def _select_tick_positions(rows: list[dict[str, Any]], x_positions: np.ndarray) 
             continue
         year = period_label.split("-", 1)[0]
 
-        if year in activation_years and row.get("period_kind") in {"milestone", "milestone_remainder"}:
-            tick_label = year[-2:] if row.get("period_kind") == "milestone" else f"{year[-2:]}'"
+        if year in activation_years and row.get("period_kind") in {
+            "milestone",
+            "milestone_remainder",
+        }:
+            tick_label = (
+                year[-2:] if row.get("period_kind") == "milestone" else f"{year[-2:]}'"
+            )
         else:
             tick_label = year
 
@@ -308,12 +342,21 @@ def plot_evolution_status(
     del meta
 
     try:
-        rows, visible_segment_definitions, ordered_statuses, segment_series, legend_sections, has_non_official = _normalize_segmented_rows(
+        (
+            rows,
+            visible_segment_definitions,
+            ordered_statuses,
+            segment_series,
+            legend_sections,
+            has_non_official,
+        ) = _normalize_segmented_rows(
             status_evolution_segmented,
         )
         plot_segments = list(visible_segment_definitions)
     except ValueError:
-        periods, ordered_statuses, series = _normalize_evolution_series(status_evolution)
+        periods, ordered_statuses, series = _normalize_evolution_series(
+            status_evolution
+        )
         rows = [
             {
                 "period_key": period,
@@ -422,7 +465,9 @@ def plot_evolution_status(
             zorder=4,
         )
 
-        milestone_label = _format_milestone_label(str(row.get("milestone_label") or "").strip())
+        milestone_label = _format_milestone_label(
+            str(row.get("milestone_label") or "").strip()
+        )
         if milestone_label:
             axis.text(
                 boundary_x - 0.08,
@@ -444,7 +489,9 @@ def plot_evolution_status(
                 facecolor=_evolution_bar_style(color_map[segment["status"]])["color"],
                 edgecolor=BAR_EDGE_COLOR,
                 linewidth=EVOLUTION_BAR_EDGE_WIDTH,
-                label=f"{segment['status']}*" if not segment.get("is_official", True) else segment["status"],
+                label=f"{segment['status']}*"
+                if not segment.get("is_official", True)
+                else segment["status"],
             )
             for segment in section["segments"]
         ]
@@ -468,15 +515,21 @@ def plot_evolution_status(
         figure.canvas.draw()
         renderer = figure.canvas.get_renderer()
         legend_heights = [
-            axis.transAxes.inverted().transform_bbox(legend.get_window_extent(renderer)).height
+            axis.transAxes.inverted()
+            .transform_bbox(legend.get_window_extent(renderer))
+            .height
             for legend in rendered_legends
         ]
         available_height = LEGEND_SECTION_TOP - LEGEND_SECTION_BOTTOM
         total_legend_height = sum(legend_heights)
-        section_gap = max(0.0, (available_height - total_legend_height) / (len(rendered_legends) - 1))
+        section_gap = max(
+            0.0, (available_height - total_legend_height) / (len(rendered_legends) - 1)
+        )
 
         current_top = LEGEND_SECTION_TOP
-        for legend, legend_height in zip(rendered_legends, legend_heights, strict=False):
+        for legend, legend_height in zip(
+            rendered_legends, legend_heights, strict=False
+        ):
             legend.set_bbox_to_anchor((1.0, current_top), transform=axis.transAxes)
             current_top -= legend_height + section_gap
 

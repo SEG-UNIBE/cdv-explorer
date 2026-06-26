@@ -1,4 +1,5 @@
 """CDV Explorer - comprehend and navigate your community-driven variability (CDV) exhibiting software ecosystem."""
+
 from __future__ import annotations
 
 import os
@@ -85,6 +86,7 @@ app.add_typer(ground_truth_app, name="ground-truth", rich_help_panel="Pipeline")
 # Helpers
 # ---------------------------------------------------------------------------
 
+
 def _get_ecosystem(slug: str) -> dict:
     eco = ECOSYSTEM_REGISTRY.get(slug)
     if eco is None:
@@ -139,7 +141,9 @@ def _build_file_manifest(harvest_root: Path, src: dict) -> dict:
         if not file_pattern.match(p.name):
             continue
         stem = p.stem
-        id_part = stem[len(prefix) + 1:] if stem.lower().startswith(f"{prefix}-") else stem
+        id_part = (
+            stem[len(prefix) + 1 :] if stem.lower().startswith(f"{prefix}-") else stem
+        )
         try:
             id_key = str(int(id_part))
         except ValueError:
@@ -206,7 +210,11 @@ def _latest_snapshot_labels(analysis_root: Path) -> list[str]:
     if not analysis_root.is_dir():
         return []
     return sorted(
-        (p.name for p in analysis_root.iterdir() if p.is_dir() and re.match(r"^\d{4}-\d{2}-\d{2}$", p.name)),
+        (
+            p.name
+            for p in analysis_root.iterdir()
+            if p.is_dir() and re.match(r"^\d{4}-\d{2}-\d{2}$", p.name)
+        ),
         reverse=True,
     )
 
@@ -215,7 +223,11 @@ def _snapshot_labels(root: Path) -> list[str]:
     if not root.is_dir():
         return []
     return sorted(
-        (p.name for p in root.iterdir() if p.is_dir() and re.match(r"^\d{4}-\d{2}-\d{2}$", p.name)),
+        (
+            p.name
+            for p in root.iterdir()
+            if p.is_dir() and re.match(r"^\d{4}-\d{2}-\d{2}$", p.name)
+        ),
     )
 
 
@@ -253,7 +265,9 @@ def _collect_snapshot_removal_targets(
     snapshot: str,
 ) -> list[tuple[str, Path]]:
     sources: dict = eco.get("sources", {})
-    selected_sources = {source_slug: _get_source(eco, source_slug)} if source_slug else sources
+    selected_sources = (
+        {source_slug: _get_source(eco, source_slug)} if source_slug else sources
+    )
     targets: list[tuple[str, Path]] = []
 
     for src_slug, src in selected_sources.items():
@@ -301,7 +315,9 @@ def _rebuild_source_artifacts(
     preprocess_dir = Path(src["preprocess"]) / snapshot
     analysis_root = Path(src["analysis"])
     postprocess_root = Path(src["postprocess"])
-    source_context = SourceContext.from_config(src, ecosystem_slug=eco_slug, source_slug=src_slug)
+    source_context = SourceContext.from_config(
+        src, ecosystem_slug=eco_slug, source_slug=src_slug
+    )
 
     if not preprocess_dir.is_dir():
         console.print(
@@ -325,15 +341,23 @@ def _rebuild_source_artifacts(
         requested_model=artifact_llm_model,
     )
 
-    ground_truth_validation = validate_ground_truth_curated_file(eco_slug, _get_ecosystem(eco_slug))
-    reviewed_ips_validation = validate_ground_truth_ips_file(eco_slug, _get_ecosystem(eco_slug))
-    ground_truth_errors = ground_truth_validation.errors + reviewed_ips_validation.errors
+    ground_truth_validation = validate_ground_truth_curated_file(
+        eco_slug, _get_ecosystem(eco_slug)
+    )
+    reviewed_ips_validation = validate_ground_truth_ips_file(
+        eco_slug, _get_ecosystem(eco_slug)
+    )
+    ground_truth_errors = (
+        ground_truth_validation.errors + reviewed_ips_validation.errors
+    )
     if not ground_truth_validation.ok or not reviewed_ips_validation.ok:
         console.print(f"[red]Ground-truth validation failed for {eco_slug}:[/red]")
         for error in ground_truth_errors[:20]:
             console.print(f"  [red]-[/red] {error}")
         if len(ground_truth_errors) > 20:
-            console.print(f"  [red]-[/red] ... and {len(ground_truth_errors) - 20} more")
+            console.print(
+                f"  [red]-[/red] ... and {len(ground_truth_errors) - 20} more"
+            )
         raise typer.Exit(1)
 
     _run_stage(
@@ -363,7 +387,9 @@ def _rebuild_source_artifacts(
         snapshot=snapshot,
     )
     if not validation.ok:
-        console.print(f"[red]Snapshot validation failed for {eco_slug}/{src_slug}/{snapshot}:[/red]")
+        console.print(
+            f"[red]Snapshot validation failed for {eco_slug}/{src_slug}/{snapshot}:[/red]"
+        )
         for error in validation.errors[:20]:
             console.print(f"  [red]-[/red] {error}")
         if len(validation.errors) > 20:
@@ -374,7 +400,7 @@ def _rebuild_source_artifacts(
 def _count_source_combinations(source_count: int) -> int:
     if source_count < 2:
         return 0
-    return (2 ** source_count) - source_count - 1
+    return (2**source_count) - source_count - 1
 
 
 def _rebuild_combined_source_artifacts(eco_slug: str, eco: dict, snapshot: str) -> None:
@@ -406,13 +432,19 @@ def _rebuild_combined_source_artifacts(eco_slug: str, eco: dict, snapshot: str) 
     )
 
     for combo_key in saved:
-        validation = validate_combined_snapshot(ecosystem_slug=eco_slug, combo_key=combo_key, snapshot=snapshot)
+        validation = validate_combined_snapshot(
+            ecosystem_slug=eco_slug, combo_key=combo_key, snapshot=snapshot
+        )
         if not validation.ok:
-            console.print(f"[red]Snapshot validation failed for {eco_slug}/{combo_key}/{snapshot}:[/red]")
+            console.print(
+                f"[red]Snapshot validation failed for {eco_slug}/{combo_key}/{snapshot}:[/red]"
+            )
             for error in validation.errors[:20]:
                 console.print(f"  [red]-[/red] {error}")
             if len(validation.errors) > 20:
-                console.print(f"  [red]-[/red] ... and {len(validation.errors) - 20} more")
+                console.print(
+                    f"  [red]-[/red] ... and {len(validation.errors) - 20} more"
+                )
             raise typer.Exit(1)
 
 
@@ -426,7 +458,9 @@ def _rebuild_artifacts_for_targets(
 ) -> None:
     if len(targets) == 1:
         src_slug, src_cfg = next(iter(targets.items()))
-        _rebuild_source_artifacts(eco_slug, src_slug, src_cfg, snapshot, artifact_llm_model=artifact_llm_model)
+        _rebuild_source_artifacts(
+            eco_slug, src_slug, src_cfg, snapshot, artifact_llm_model=artifact_llm_model
+        )
         return
 
     resolved_models_by_source = {
@@ -439,7 +473,9 @@ def _rebuild_artifacts_for_targets(
         )
         for src_slug, src_cfg in targets.items()
     }
-    distinct_models = sorted({model for model in resolved_models_by_source.values() if model})
+    distinct_models = sorted(
+        {model for model in resolved_models_by_source.values() if model}
+    )
     if len(distinct_models) > 1:
         model_lines = ", ".join(
             f"{src_slug}={model}"
@@ -457,15 +493,21 @@ def _rebuild_artifacts_for_targets(
 
     for src_slug, src_cfg in targets.items():
         console.rule(f"[bold]{eco_slug} / {src_slug}[/bold]")
-        _rebuild_source_artifacts(eco_slug, src_slug, src_cfg, snapshot, artifact_llm_model=artifact_llm_model)
+        _rebuild_source_artifacts(
+            eco_slug, src_slug, src_cfg, snapshot, artifact_llm_model=artifact_llm_model
+        )
     _rebuild_combined_source_artifacts(eco_slug, eco, snapshot)
 
 
-def _analysis_dirs_for_ecosystem(eco_dir: Path, eco_config: dict | None = None) -> list[tuple[str | None, Path]]:
+def _analysis_dirs_for_ecosystem(
+    eco_dir: Path, eco_config: dict | None = None
+) -> list[tuple[str | None, Path]]:
     direct = eco_dir / "03_analysis"
     if direct.is_dir():
         matched_source = None
-        for source_slug, source in sorted((eco_config or {}).get("sources", {}).items()):
+        for source_slug, source in sorted(
+            (eco_config or {}).get("sources", {}).items()
+        ):
             if Path(source.get("analysis", "")) == direct:
                 matched_source = source_slug
                 break
@@ -474,14 +516,22 @@ def _analysis_dirs_for_ecosystem(eco_dir: Path, eco_config: dict | None = None) 
     source_dirs = [
         (source_dir.name, source_dir / "03_analysis")
         for source_dir in sorted(eco_dir.iterdir())
-        if source_dir.is_dir() and source_dir.name != "_combined" and (source_dir / "03_analysis").is_dir()
+        if source_dir.is_dir()
+        and source_dir.name != "_combined"
+        and (source_dir / "03_analysis").is_dir()
     ]
     combined_root = eco_dir / "_combined"
-    combo_dirs = [
-        (combo_dir.name, combo_dir / "03_analysis")
-        for combo_dir in sorted(combined_root.iterdir())
-        if combined_root.is_dir() and combo_dir.is_dir() and (combo_dir / "03_analysis").is_dir()
-    ] if combined_root.is_dir() else []
+    combo_dirs = (
+        [
+            (combo_dir.name, combo_dir / "03_analysis")
+            for combo_dir in sorted(combined_root.iterdir())
+            if combined_root.is_dir()
+            and combo_dir.is_dir()
+            and (combo_dir / "03_analysis").is_dir()
+        ]
+        if combined_root.is_dir()
+        else []
+    )
     return source_dirs + combo_dirs
 
 
@@ -569,8 +619,8 @@ def _existing_llm_model_run_counts(
 
         raw_llm = (
             raw_json.get("insights", {})
-                    .get("interrelations", {})
-                    .get("body_extracted_llm", [])
+            .get("interrelations", {})
+            .get("body_extracted_llm", [])
         )
         if not is_llm_runs_format(raw_llm):
             continue
@@ -593,8 +643,8 @@ def _available_llm_models_in_preprocess_dir(preprocess_dir: Path) -> list[str]:
         raw_json = json.loads(json_file.read_text(encoding="utf-8"))
         raw_llm = (
             raw_json.get("insights", {})
-                    .get("interrelations", {})
-                    .get("body_extracted_llm", [])
+            .get("interrelations", {})
+            .get("body_extracted_llm", [])
         )
         if not is_llm_runs_format(raw_llm):
             continue
@@ -658,18 +708,31 @@ def _run_source_pipeline(
     analysis_root = Path(src["analysis"])
     output_dir = preprocess_root / snapshot
     prefix = src["document_prefix"]
-    source_context = SourceContext.from_config(src, ecosystem_slug=eco_slug, source_slug=src_slug)
+    source_context = SourceContext.from_config(
+        src, ecosystem_slug=eco_slug, source_slug=src_slug
+    )
 
     harvester = get_harvester(src.get("harvester", "github_repo"))
     extractor = get_extractor(src.get("preprocessor", "rfc_preamble"))
     enricher = get_enricher()
 
-    _run_stage("Step 1/4 · I. Harvest".ljust(28), 3, "step",
-               lambda u: harvester(src_config=src, snapshot=snapshot, local_dir=harvest_root, progress_callback=u))
+    _run_stage(
+        "Step 1/4 · I. Harvest".ljust(28),
+        3,
+        "step",
+        lambda u: harvester(
+            src_config=src,
+            snapshot=snapshot,
+            local_dir=harvest_root,
+            progress_callback=u,
+        ),
+    )
 
     commit = subprocess.run(
         ["git", "-C", str(harvest_root), "rev-parse", "HEAD"],
-        capture_output=True, text=True, check=True,
+        capture_output=True,
+        text=True,
+        check=True,
     ).stdout.strip()
     manifest = {
         "commit": commit,
@@ -677,16 +740,31 @@ def _run_source_pipeline(
     }
     manifest_path = analysis_root / snapshot / f"{prefix}_files.json"
     manifest_path.parent.mkdir(parents=True, exist_ok=True)
-    manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True), encoding="utf-8")
+    manifest_path.write_text(
+        json.dumps(manifest, indent=2, sort_keys=True), encoding="utf-8"
+    )
 
     preprocess_exists = output_dir.exists() and any(output_dir.glob("*.json"))
     if focus is not None and preprocess_exists:
-        console.print(f"  [green]✓[/green]  {'Step 2/4 · II. Preprocess'.ljust(28)}  [dim]skipped — focus run, existing preambles preserved[/dim]")
+        console.print(
+            f"  [green]✓[/green]  {'Step 2/4 · II. Preprocess'.ljust(28)}  [dim]skipped — focus run, existing preambles preserved[/dim]"
+        )
     else:
         file_pattern = re.compile(src["document_file_pattern"], re.IGNORECASE)
-        proposal_files = [p for p in harvest_root.iterdir() if file_pattern.match(p.name)]
-        _run_stage("Step 2/4 · II. Preprocess".ljust(28), len(proposal_files), "ip",
-                   lambda u: extractor(src_config=src, harvest_dir=harvest_root, output_dir=output_dir, progress_callback=u))
+        proposal_files = [
+            p for p in harvest_root.iterdir() if file_pattern.match(p.name)
+        ]
+        _run_stage(
+            "Step 2/4 · II. Preprocess".ljust(28),
+            len(proposal_files),
+            "ip",
+            lambda u: extractor(
+                src_config=src,
+                harvest_dir=harvest_root,
+                output_dir=output_dir,
+                progress_callback=u,
+            ),
+        )
 
     json_files = list(output_dir.glob("*.json")) if output_dir.exists() else []
     replace_llm_model_runs = False
@@ -698,26 +776,37 @@ def _run_source_pipeline(
             focus=focus,
         )
         if matching_runs:
-            focus_scope = f" among {matching_docs} focused IPs" if focus is not None else f" in {matching_docs} IPs"
+            focus_scope = (
+                f" among {matching_docs} focused IPs"
+                if focus is not None
+                else f" in {matching_docs} IPs"
+            )
             console.print(
                 f"[yellow]LLM model '{source_context.llm_model}' already has {matching_runs} stored run(s){focus_scope} "
                 f"for {eco_slug}/{src_slug}/{snapshot}. Re-running will replace those same-model records and keep runs from other models.[/yellow]"
             )
-            if not typer.confirm("Proceed and overwrite same-model LLM runs?", default=True):
+            if not typer.confirm(
+                "Proceed and overwrite same-model LLM runs?", default=True
+            ):
                 raise typer.Exit(1)
             replace_llm_model_runs = True
 
     focus_note = f"  (focus: {len(focus)}/{len(json_files)} ip)" if focus else ""
-    _run_stage(f"{'Step 3/4 · III. Analysis'.ljust(28)}{focus_note}", len(json_files), "ip",
-               lambda u: enricher(
-                   src_config=src,
-                   preprocess_dir=output_dir,
-                   harvest_dir=harvest_root,
-                   skip_llm=skipllm,
-                   focus=focus,
-                   replace_llm_model_runs=replace_llm_model_runs,
-                   source_context=source_context,
-                   progress_callback=u))
+    _run_stage(
+        f"{'Step 3/4 · III. Analysis'.ljust(28)}{focus_note}",
+        len(json_files),
+        "ip",
+        lambda u: enricher(
+            src_config=src,
+            preprocess_dir=output_dir,
+            harvest_dir=harvest_root,
+            skip_llm=skipllm,
+            focus=focus,
+            replace_llm_model_runs=replace_llm_model_runs,
+            source_context=source_context,
+            progress_callback=u,
+        ),
+    )
 
     _rebuild_source_artifacts(
         eco_slug,
@@ -733,10 +822,14 @@ def _run_source_pipeline(
 # run
 # ---------------------------------------------------------------------------
 
+
 @app.command(rich_help_panel="Discovery")
 def doctor() -> None:
     """Check local tools, dependencies, configs, and snapshot artifacts without changing files."""
-    from analysis.validation import reviewed_ip_policy_for_ecosystem, validate_ground_truth_ips_file
+    from analysis.validation import (
+        reviewed_ip_policy_for_ecosystem,
+        validate_ground_truth_ips_file,
+    )
 
     table = Table("Status", "Check", "Details", title="CDV Explorer Doctor")
     ok = True
@@ -760,7 +853,9 @@ def doctor() -> None:
         table,
         "FAIL" if missing_packages else "OK",
         "Python packages",
-        f"Missing: {', '.join(missing_packages)}" if missing_packages else f"{installed_count} packages installed",
+        f"Missing: {', '.join(missing_packages)}"
+        if missing_packages
+        else f"{installed_count} packages installed",
     )
 
     git_version = _command_version("git", "--version")
@@ -792,7 +887,9 @@ def doctor() -> None:
         table,
         "OK" if react_node_modules.is_dir() else "WARN",
         "React dependencies",
-        "react/node_modules present" if react_node_modules.is_dir() else "Run `cd react && npm install` before frontend work",
+        "react/node_modules present"
+        if react_node_modules.is_dir()
+        else "Run `cd react && npm install` before frontend work",
     )
 
     sources = _iter_configured_sources()
@@ -814,7 +911,9 @@ def doctor() -> None:
         (
             f"Missing llm.model in ecosystems: {', '.join(ecosystems_missing_llm_model)}; "
             "`run --skipllm` still works"
-        ) if ecosystems_missing_llm_model else "llm.model configured for ecosystems with sources",
+        )
+        if ecosystems_missing_llm_model
+        else "llm.model configured for ecosystems with sources",
     )
 
     required_source_keys = {
@@ -856,7 +955,9 @@ def doctor() -> None:
         table,
         "WARN" if harvest_warnings else "OK",
         "Harvest repos",
-        f"Not cloned yet: {', '.join(harvest_warnings)}" if harvest_warnings else "all configured harvest repos are git clones",
+        f"Not cloned yet: {', '.join(harvest_warnings)}"
+        if harvest_warnings
+        else "all configured harvest repos are git clones",
     )
     ok &= _doctor_row(
         table,
@@ -879,7 +980,9 @@ def doctor() -> None:
         "Ground-truth reviewed IP scope",
         (
             f"Missing ground_truth/ips.csv for ecosystems: {', '.join(reviewed_ip_warnings)}"
-        ) if reviewed_ip_warnings else "ips.csv present wherever ground-truth edges exist",
+        )
+        if reviewed_ip_warnings
+        else "ips.csv present wherever ground-truth edges exist",
     )
 
     reviewed_ip_policy_warnings: list[str] = []
@@ -888,14 +991,20 @@ def doctor() -> None:
             continue
         if not reviewed_ip_policy_for_ecosystem(eco_slug):
             continue
-        reviewed_validation = validate_ground_truth_ips_file(eco_slug, ecosystem_config=eco)
+        reviewed_validation = validate_ground_truth_ips_file(
+            eco_slug, ecosystem_config=eco
+        )
         if reviewed_validation.warnings:
-            reviewed_ip_policy_warnings.append(f"{eco_slug}: {reviewed_validation.warnings[0]}")
+            reviewed_ip_policy_warnings.append(
+                f"{eco_slug}: {reviewed_validation.warnings[0]}"
+            )
     ok &= _doctor_row(
         table,
         "WARN" if reviewed_ip_policy_warnings else "OK",
         "Ground-truth sampling policy",
-        "; ".join(reviewed_ip_policy_warnings) if reviewed_ip_policy_warnings else "reviewed IP sets match declared sampling policy",
+        "; ".join(reviewed_ip_policy_warnings)
+        if reviewed_ip_policy_warnings
+        else "reviewed IP sets match declared sampling policy",
     )
 
     validate_script = Path("scripts/validate_artifacts.py")
@@ -910,10 +1019,17 @@ def doctor() -> None:
             table,
             "OK" if result.returncode == 0 else "FAIL",
             "Snapshot artifacts",
-            "validation passed" if result.returncode == 0 else "validation failed; run `python3 scripts/validate_artifacts.py`",
+            "validation passed"
+            if result.returncode == 0
+            else "validation failed; run `python3 scripts/validate_artifacts.py`",
         )
     else:
-        ok &= _doctor_row(table, "WARN", "Snapshot artifacts", "scripts/validate_artifacts.py not found")
+        ok &= _doctor_row(
+            table,
+            "WARN",
+            "Snapshot artifacts",
+            "scripts/validate_artifacts.py not found",
+        )
 
     generated_files = [
         Path("react/src/generated/ecosystems.json"),
@@ -925,15 +1041,21 @@ def doctor() -> None:
         table,
         "WARN" if missing_generated else "OK",
         "React generated assets",
-        f"Missing: {', '.join(missing_generated)}; run `cd react && npm run prebuild`" if missing_generated else "generated indexes present",
+        f"Missing: {', '.join(missing_generated)}; run `cd react && npm run prebuild`"
+        if missing_generated
+        else "generated indexes present",
     )
 
-    api_key_present = bool(os.getenv("OPENAI_API_KEY")) or Path("apikey.secret").exists()
+    api_key_present = (
+        bool(os.getenv("OPENAI_API_KEY")) or Path("apikey.secret").exists()
+    )
     ok &= _doctor_row(
         table,
         "OK" if api_key_present else "WARN",
         "OpenAI key",
-        "available for LLM extraction" if api_key_present else "not set; `run --skipllm` still works",
+        "available for LLM extraction"
+        if api_key_present
+        else "not set; `run --skipllm` still works",
     )
 
     console.print(table)
@@ -947,17 +1069,44 @@ def doctor() -> None:
 
 @app.command(rich_help_panel="Pipeline")
 def run(
-    ecosystem: Annotated[Optional[str], typer.Option("--ecosystem", "-e", help="Ecosystem slug (default: first registered).")] = None,
-    source: Annotated[Optional[str], typer.Option("--source", help="Source slug (default: all sources).")] = None,
-    snapshot: Annotated[str, typer.Option("--snapshot", "-s", help="Snapshot date (YYYY-MM-DD). Required.")] = ...,
-    skipllm: Annotated[bool, typer.Option("--skipllm", help="Skip LLM-based extraction.")] = False,
-    focus: Annotated[Optional[str], typer.Option("--focus", help="Comma-separated list of proposal IDs to process (e.g. '1-9,30-44,85,A0'). All others are skipped.")] = None,
-    artifact_llm_model: Annotated[Optional[str], typer.Option("--artifact-llm-model", help="LLM model to publish into web artifacts when multiple stored LLM runs exist.")] = None,
+    ecosystem: Annotated[
+        Optional[str],
+        typer.Option(
+            "--ecosystem", "-e", help="Ecosystem slug (default: first registered)."
+        ),
+    ] = None,
+    source: Annotated[
+        Optional[str],
+        typer.Option("--source", help="Source slug (default: all sources)."),
+    ] = None,
+    snapshot: Annotated[
+        str,
+        typer.Option("--snapshot", "-s", help="Snapshot date (YYYY-MM-DD). Required."),
+    ] = ...,
+    skipllm: Annotated[
+        bool, typer.Option("--skipllm", help="Skip LLM-based extraction.")
+    ] = False,
+    focus: Annotated[
+        Optional[str],
+        typer.Option(
+            "--focus",
+            help="Comma-separated list of proposal IDs to process (e.g. '1-9,30-44,85,A0'). All others are skipped.",
+        ),
+    ] = None,
+    artifact_llm_model: Annotated[
+        Optional[str],
+        typer.Option(
+            "--artifact-llm-model",
+            help="LLM model to publish into web artifacts when multiple stored LLM runs exist.",
+        ),
+    ] = None,
 ) -> None:
     """Run the full pipeline for a snapshot. Runs all sources unless --source is given."""
     eco_slug = ecosystem or next(iter(ECOSYSTEM_REGISTRY), None)
     if not eco_slug:
-        console.print("[red]No ecosystems registered. Add a .yml file to the ecosystems/ directory.[/red]")
+        console.print(
+            "[red]No ecosystems registered. Add a .yml file to the ecosystems/ directory.[/red]"
+        )
         raise typer.Exit(1)
     eco = _get_ecosystem(eco_slug)
 
@@ -975,14 +1124,30 @@ def run(
     if len(targets) == 1:
         src_slug, src_cfg = next(iter(targets.items()))
         run_started = time.monotonic()
-        _run_source_pipeline(eco_slug, src_slug, src_cfg, snapshot, skipllm, focus_ids, artifact_llm_model)
+        _run_source_pipeline(
+            eco_slug,
+            src_slug,
+            src_cfg,
+            snapshot,
+            skipllm,
+            focus_ids,
+            artifact_llm_model,
+        )
         elapsed = time.monotonic() - run_started
         console.print(f"\n[green]Done in {elapsed:.1f}s[/green]")
     else:
         run_started = time.monotonic()
         for src_slug, src_cfg in targets.items():
             console.rule(f"[bold]{eco_slug} / {src_slug}[/bold]")
-            _run_source_pipeline(eco_slug, src_slug, src_cfg, snapshot, skipllm, focus_ids, artifact_llm_model)
+            _run_source_pipeline(
+                eco_slug,
+                src_slug,
+                src_cfg,
+                snapshot,
+                skipllm,
+                focus_ids,
+                artifact_llm_model,
+            )
         _rebuild_combined_source_artifacts(eco_slug, eco, snapshot)
         elapsed = time.monotonic() - run_started
         console.print(f"\n[green]All sources done in {elapsed:.1f}s[/green]")
@@ -992,25 +1157,57 @@ def run(
 # artifacts
 # ---------------------------------------------------------------------------
 
+
 @artifacts_app.command("rebuild", rich_help_panel="Manage")
 def artifacts_rebuild(
-    ecosystem: Annotated[Optional[str], typer.Option("--ecosystem", "-e", help="Ecosystem slug (default: first registered).")] = None,
-    source: Annotated[Optional[str], typer.Option("--source", help="Source slug (default: all sources).")] = None,
-    snapshot: Annotated[Optional[str], typer.Option("--snapshot", "-s", help="Snapshot date (YYYY-MM-DD). Required unless --all is used.")] = None,
-    all_snapshots: Annotated[bool, typer.Option("--all", help="Rebuild every existing preprocessed snapshot for the selected ecosystem/source.")] = False,
-    artifact_llm_model: Annotated[Optional[str], typer.Option("--artifact-llm-model", help="LLM model to publish into web artifacts when multiple stored LLM runs exist.")] = None,
+    ecosystem: Annotated[
+        Optional[str],
+        typer.Option(
+            "--ecosystem", "-e", help="Ecosystem slug (default: first registered)."
+        ),
+    ] = None,
+    source: Annotated[
+        Optional[str],
+        typer.Option("--source", help="Source slug (default: all sources)."),
+    ] = None,
+    snapshot: Annotated[
+        Optional[str],
+        typer.Option(
+            "--snapshot",
+            "-s",
+            help="Snapshot date (YYYY-MM-DD). Required unless --all is used.",
+        ),
+    ] = None,
+    all_snapshots: Annotated[
+        bool,
+        typer.Option(
+            "--all",
+            help="Rebuild every existing preprocessed snapshot for the selected ecosystem/source.",
+        ),
+    ] = False,
+    artifact_llm_model: Annotated[
+        Optional[str],
+        typer.Option(
+            "--artifact-llm-model",
+            help="LLM model to publish into web artifacts when multiple stored LLM runs exist.",
+        ),
+    ] = None,
 ) -> None:
     """Rebuild analysis and postprocess artifacts from existing preprocessed JSON."""
     eco_slug = ecosystem or next(iter(ECOSYSTEM_REGISTRY), None)
     if not eco_slug:
-        console.print("[red]No ecosystems registered. Add a .yml file to the ecosystems/ directory.[/red]")
+        console.print(
+            "[red]No ecosystems registered. Add a .yml file to the ecosystems/ directory.[/red]"
+        )
         raise typer.Exit(1)
     eco = _get_ecosystem(eco_slug)
     if all_snapshots and snapshot:
         console.print("[red]Use either --all or --snapshot, not both.[/red]")
         raise typer.Exit(1)
     if not all_snapshots and not snapshot:
-        console.print("[red]Missing option '--snapshot' / '-s'. Use --all to rebuild every preprocessed snapshot.[/red]")
+        console.print(
+            "[red]Missing option '--snapshot' / '-s'. Use --all to rebuild every preprocessed snapshot.[/red]"
+        )
         raise typer.Exit(1)
     if snapshot:
         _validate_snapshot_date(snapshot)
@@ -1028,7 +1225,9 @@ def artifacts_rebuild(
         snapshots = _common_preprocess_snapshot_labels(targets)
         if not snapshots:
             scope = f"{eco_slug}/{source}" if source else eco_slug
-            console.print(f"[yellow]No preprocessed snapshots found for {scope}.[/yellow]")
+            console.print(
+                f"[yellow]No preprocessed snapshots found for {scope}.[/yellow]"
+            )
             raise typer.Exit(0)
 
         for snapshot_label in snapshots:
@@ -1041,7 +1240,9 @@ def artifacts_rebuild(
                 artifact_llm_model=artifact_llm_model,
             )
         elapsed = time.monotonic() - rebuild_started
-        console.print(f"\n[green]Artifacts rebuilt for {len(snapshots)} snapshot(s) in {elapsed:.1f}s[/green]")
+        console.print(
+            f"\n[green]Artifacts rebuilt for {len(snapshots)} snapshot(s) in {elapsed:.1f}s[/green]"
+        )
         return
 
     _rebuild_artifacts_for_targets(
@@ -1055,27 +1256,81 @@ def artifacts_rebuild(
     if len(targets) == 1:
         console.print(f"\n[green]Artifacts rebuilt in {elapsed:.1f}s[/green]")
     else:
-        console.print(f"\n[green]Artifacts rebuilt for all sources in {elapsed:.1f}s[/green]")
+        console.print(
+            f"\n[green]Artifacts rebuilt for all sources in {elapsed:.1f}s[/green]"
+        )
 
 
 # ---------------------------------------------------------------------------
 # ground-truth
 # ---------------------------------------------------------------------------
 
+
 @ground_truth_app.command("sample-ips", rich_help_panel="Manage")
 def ground_truth_sample_ips(
-    ecosystem: Annotated[Optional[str], typer.Option("--ecosystem", "-e", help="Ecosystem slug.")] = None,
-    source: Annotated[Optional[str], typer.Option("--source", help="Source slug to sample from.")] = None,
-    snapshot: Annotated[Optional[str], typer.Option("--snapshot", "-s", help="Snapshot date (YYYY-MM-DD).")] = None,
-    count: Annotated[Optional[int], typer.Option("--count", help="Number of new reviewed IP rows to prefill.")] = None,
-    seed: Annotated[Optional[int], typer.Option("--seed", help="Random seed for reproducible stratified sampling.")] = None,
-    era_buckets: Annotated[Optional[int], typer.Option("--era-buckets", min=1, help="Number of time-based strata to use.")] = None,
-    density_basis: Annotated[Optional[str], typer.Option("--density-basis", help="Density basis: all_methods, regex_only, llm_only, or preamble_only.")] = None,
-    density_low_max: Annotated[Optional[int], typer.Option("--density-low-max", min=0, help="Upper bound for the `low` extracted-density bucket; values above this become `high`.")] = None,
-    proposal_type: Annotated[Optional[str], typer.Option("--proposal-type", help="Optional exact proposal type filter (e.g. Specification).")] = None,
-    reviewer: Annotated[Optional[str], typer.Option("--reviewer", help="Optional reviewer name to prefill in new rows.")] = None,
-    replace: Annotated[Optional[bool], typer.Option("--replace/--append", help="Overwrite ips.csv or append new rows.")] = None,
-    wizard: Annotated[bool, typer.Option("--wizard", help="Force interactive step-by-step prompts.")] = False,
+    ecosystem: Annotated[
+        Optional[str], typer.Option("--ecosystem", "-e", help="Ecosystem slug.")
+    ] = None,
+    source: Annotated[
+        Optional[str], typer.Option("--source", help="Source slug to sample from.")
+    ] = None,
+    snapshot: Annotated[
+        Optional[str],
+        typer.Option("--snapshot", "-s", help="Snapshot date (YYYY-MM-DD)."),
+    ] = None,
+    count: Annotated[
+        Optional[int],
+        typer.Option("--count", help="Number of new reviewed IP rows to prefill."),
+    ] = None,
+    seed: Annotated[
+        Optional[int],
+        typer.Option(
+            "--seed", help="Random seed for reproducible stratified sampling."
+        ),
+    ] = None,
+    era_buckets: Annotated[
+        Optional[int],
+        typer.Option(
+            "--era-buckets", min=1, help="Number of time-based strata to use."
+        ),
+    ] = None,
+    density_basis: Annotated[
+        Optional[str],
+        typer.Option(
+            "--density-basis",
+            help="Density basis: all_methods, regex_only, llm_only, or preamble_only.",
+        ),
+    ] = None,
+    density_low_max: Annotated[
+        Optional[int],
+        typer.Option(
+            "--density-low-max",
+            min=0,
+            help="Upper bound for the `low` extracted-density bucket; values above this become `high`.",
+        ),
+    ] = None,
+    proposal_type: Annotated[
+        Optional[str],
+        typer.Option(
+            "--proposal-type",
+            help="Optional exact proposal type filter (e.g. Specification).",
+        ),
+    ] = None,
+    reviewer: Annotated[
+        Optional[str],
+        typer.Option(
+            "--reviewer", help="Optional reviewer name to prefill in new rows."
+        ),
+    ] = None,
+    replace: Annotated[
+        Optional[bool],
+        typer.Option(
+            "--replace/--append", help="Overwrite ips.csv or append new rows."
+        ),
+    ] = None,
+    wizard: Annotated[
+        bool, typer.Option("--wizard", help="Force interactive step-by-step prompts.")
+    ] = False,
 ) -> None:
     """Prefill ground_truth/ips.csv from a stratified source-IP sample."""
     from analysis.ground_truth_sampling import (
@@ -1086,12 +1341,14 @@ def ground_truth_sample_ips(
         REGEX_ONLY,
         prefill_ips_csv,
     )
-    from analysis.validation import reviewed_ip_policy_for_ecosystem, validate_ground_truth_ips_file
+    from analysis.validation import (
+        reviewed_ip_policy_for_ecosystem,
+        validate_ground_truth_ips_file,
+    )
 
     interactive = wizard or ecosystem is None or source is None or snapshot is None
     available_ecosystems = [
-        slug for slug, eco in sorted(ECOSYSTEM_REGISTRY.items())
-        if eco.get("sources")
+        slug for slug, eco in sorted(ECOSYSTEM_REGISTRY.items()) if eco.get("sources")
     ]
     if not available_ecosystems:
         console.print("[red]No ecosystems with configured sources are available.[/red]")
@@ -1107,16 +1364,26 @@ def ground_truth_sample_ips(
     src = _get_source(eco, source)
     reviewed_ip_policy = reviewed_ip_policy_for_ecosystem(ecosystem)
 
-    available_snapshots = _analysis_snapshot_labels_with_networks(Path(str(src["analysis"])))
+    available_snapshots = _analysis_snapshot_labels_with_networks(
+        Path(str(src["analysis"]))
+    )
     if not available_snapshots:
-        console.print(f"[red]No analysis snapshots with dependency network artifacts found for {ecosystem}/{source}.[/red]")
+        console.print(
+            f"[red]No analysis snapshots with dependency network artifacts found for {ecosystem}/{source}.[/red]"
+        )
         raise typer.Exit(1)
     if snapshot is None:
         snapshot = _prompt_choice("Snapshot", list(reversed(available_snapshots)))
     _validate_snapshot_date(snapshot)
 
     if count is None:
-        count = int(typer.prompt("How many new reviewed IPs should be added?", default="30")) if interactive else 30
+        count = (
+            int(
+                typer.prompt("How many new reviewed IPs should be added?", default="30")
+            )
+            if interactive
+            else 30
+        )
     if count < 1:
         console.print("[red]`--count` must be at least 1.[/red]")
         raise typer.Exit(1)
@@ -1124,7 +1391,11 @@ def ground_truth_sample_ips(
     if seed is None:
         seed = int(typer.prompt("Random seed", default="42")) if interactive else 42
     if era_buckets is None:
-        era_buckets = int(typer.prompt("Number of era buckets", default="3")) if interactive else 3
+        era_buckets = (
+            int(typer.prompt("Number of era buckets", default="3"))
+            if interactive
+            else 3
+        )
     if density_basis is None:
         if interactive:
             basis_label = _prompt_choice(
@@ -1144,33 +1415,64 @@ def ground_truth_sample_ips(
         console.print(f"[red]Invalid `--density-basis`. Allowed: {allowed}[/red]")
         raise typer.Exit(1)
     if density_low_max is None:
-        density_low_max = int(typer.prompt("Largest extracted-target count still treated as `low` density", default="2")) if interactive else 2
+        density_low_max = (
+            int(
+                typer.prompt(
+                    "Largest extracted-target count still treated as `low` density",
+                    default="2",
+                )
+            )
+            if interactive
+            else 2
+        )
     if proposal_type is None:
         default_proposal_type = ""
-        if reviewed_ip_policy and source in set(reviewed_ip_policy.get("allowed_source_slugs", ())):
-            default_proposal_type = str(reviewed_ip_policy.get("required_type") or "").strip()
-        proposal_type = typer.prompt(
-            "Restrict to proposal type (optional)",
-            default=default_proposal_type,
-        ).strip() if interactive else default_proposal_type
+        if reviewed_ip_policy and source in set(
+            reviewed_ip_policy.get("allowed_source_slugs", ())
+        ):
+            default_proposal_type = str(
+                reviewed_ip_policy.get("required_type") or ""
+            ).strip()
+        proposal_type = (
+            typer.prompt(
+                "Restrict to proposal type (optional)",
+                default=default_proposal_type,
+            ).strip()
+            if interactive
+            else default_proposal_type
+        )
     if reviewer is None:
-        reviewer = typer.prompt("Reviewer name to prefill (optional)", default="") if interactive else ""
+        reviewer = (
+            typer.prompt("Reviewer name to prefill (optional)", default="")
+            if interactive
+            else ""
+        )
     if replace is None:
         if interactive:
-            replace_choice = _prompt_choice("Write mode", ["append (recommended)", "replace"])
+            replace_choice = _prompt_choice(
+                "Write mode", ["append (recommended)", "replace"]
+            )
             replace = replace_choice == "replace"
         else:
             replace = False
 
     policy_warnings: list[str] = []
     if reviewed_ip_policy:
-        allowed_source_slugs = {str(value).strip() for value in reviewed_ip_policy.get("allowed_source_slugs", ()) if str(value).strip()}
+        allowed_source_slugs = {
+            str(value).strip()
+            for value in reviewed_ip_policy.get("allowed_source_slugs", ())
+            if str(value).strip()
+        }
         required_type = str(reviewed_ip_policy.get("required_type") or "").strip()
         if allowed_source_slugs and source not in allowed_source_slugs:
             policy_warnings.append(
                 f"Current GT policy for `{ecosystem}` expects source `{', '.join(sorted(allowed_source_slugs))}`, but you selected `{source}`."
             )
-        if required_type and source in allowed_source_slugs and proposal_type != required_type:
+        if (
+            required_type
+            and source in allowed_source_slugs
+            and proposal_type != required_type
+        ):
             selected_type = proposal_type or "no type filter"
             policy_warnings.append(
                 f"Current GT policy for `{ecosystem}` expects proposal type `{required_type}`, but this run uses `{selected_type}`."
@@ -1184,8 +1486,12 @@ def ground_truth_sample_ips(
         console.print(f"  Snapshot: {snapshot}")
         console.print(f"  Count: {count}")
         console.print(f"  Seed: {seed}")
-        console.print(f"  Era buckets: {era_buckets}  [dim](created-date strata such as early/middle/recent)[/dim]")
-        console.print(f"  Density basis: {density_basis}  [dim]({_density_basis_description(density_basis)})[/dim]")
+        console.print(
+            f"  Era buckets: {era_buckets}  [dim](created-date strata such as early/middle/recent)[/dim]"
+        )
+        console.print(
+            f"  Density basis: {density_basis}  [dim]({_density_basis_description(density_basis)})[/dim]"
+        )
         console.print(f"  Low-density max: {density_low_max}")
         console.print(f"  Proposal type filter: {proposal_type or '—'}")
         console.print(f"  Reviewer: {reviewer or '—'}")
@@ -1193,7 +1499,9 @@ def ground_truth_sample_ips(
         if reviewed_ip_policy:
             policy_bits = []
             if reviewed_ip_policy.get("allowed_source_slugs"):
-                policy_bits.append(f"source in {', '.join(reviewed_ip_policy['allowed_source_slugs'])}")
+                policy_bits.append(
+                    f"source in {', '.join(reviewed_ip_policy['allowed_source_slugs'])}"
+                )
             if reviewed_ip_policy.get("required_type"):
                 policy_bits.append(f"type = {reviewed_ip_policy['required_type']}")
             console.print(f"  GT policy: {'; '.join(policy_bits)}")
@@ -1205,7 +1513,9 @@ def ground_truth_sample_ips(
         for warning in policy_warnings:
             console.print(f"[yellow]Warning:[/yellow] {warning}")
 
-    network_path = Path(str(src["analysis"])) / snapshot / "dependencies" / "network_data.json"
+    network_path = (
+        Path(str(src["analysis"])) / snapshot / "dependencies" / "network_data.json"
+    )
     if not network_path.exists():
         console.print(
             f"[red]Missing dependency network artifact for {ecosystem}/{source}/{snapshot}: "
@@ -1255,22 +1565,29 @@ def ground_truth_sample_ips(
             strata_table.add_row(stratum, str(sample_count))
         console.print(strata_table)
     else:
-        console.print("[yellow]No new IPs were added. The reviewed set already covers the available candidates.[/yellow]")
+        console.print(
+            "[yellow]No new IPs were added. The reviewed set already covers the available candidates.[/yellow]"
+        )
 
 
 # ---------------------------------------------------------------------------
 # snapshots
 # ---------------------------------------------------------------------------
 
+
 def _print_snapshots(
-    ecosystem: Annotated[Optional[str], typer.Option("--ecosystem", "-e", help="Filter by ecosystem.")] = None,
+    ecosystem: Annotated[
+        Optional[str], typer.Option("--ecosystem", "-e", help="Filter by ecosystem.")
+    ] = None,
 ) -> None:
     ip_root = Path("ip_data")
     if not ip_root.exists():
         console.print("[yellow]No ip_data directory found.[/yellow]")
         raise typer.Exit(0)
 
-    table = Table("Ecosystem", "Source", "Snapshot", "Path", title="Available Snapshots")
+    table = Table(
+        "Ecosystem", "Source", "Snapshot", "Path", title="Available Snapshots"
+    )
     found = False
 
     for eco_dir in sorted(ip_root.iterdir()):
@@ -1279,10 +1596,14 @@ def _print_snapshots(
         slug = eco_dir.name
         if ecosystem and slug != ecosystem:
             continue
-        for source_slug, analysis_dir in _analysis_dirs_for_ecosystem(eco_dir, ECOSYSTEM_REGISTRY.get(slug)):
+        for source_slug, analysis_dir in _analysis_dirs_for_ecosystem(
+            eco_dir, ECOSYSTEM_REGISTRY.get(slug)
+        ):
             for snap_dir in sorted(analysis_dir.iterdir(), reverse=True):
                 if snap_dir.is_dir():
-                    table.add_row(slug, source_slug or "—", snap_dir.name, str(snap_dir))
+                    table.add_row(
+                        slug, source_slug or "—", snap_dir.name, str(snap_dir)
+                    )
                     found = True
 
     if found:
@@ -1295,7 +1616,9 @@ def _print_snapshots(
 @snapshots_app.callback(invoke_without_command=True)
 def snapshots(
     ctx: typer.Context,
-    ecosystem: Annotated[Optional[str], typer.Option("--ecosystem", "-e", help="Filter by ecosystem.")] = None,
+    ecosystem: Annotated[
+        Optional[str], typer.Option("--ecosystem", "-e", help="Filter by ecosystem.")
+    ] = None,
 ) -> None:
     """List available snapshots found under ip_data/."""
     if ctx.invoked_subcommand is not None:
@@ -1305,7 +1628,9 @@ def snapshots(
 
 @snapshots_app.command("list", rich_help_panel="Inspect")
 def snapshots_list(
-    ecosystem: Annotated[Optional[str], typer.Option("--ecosystem", "-e", help="Filter by ecosystem.")] = None,
+    ecosystem: Annotated[
+        Optional[str], typer.Option("--ecosystem", "-e", help="Filter by ecosystem.")
+    ] = None,
 ) -> None:
     """List available snapshots found under ip_data/."""
     _print_snapshots(ecosystem=ecosystem)
@@ -1313,11 +1638,30 @@ def snapshots_list(
 
 @snapshots_app.command("remove", rich_help_panel="Manage")
 def snapshots_remove(
-    snapshot: Annotated[str, typer.Argument(help="Snapshot date to remove (YYYY-MM-DD).")],
-    ecosystem: Annotated[str, typer.Option("--ecosystem", "-e", help="Ecosystem slug.")],
-    source: Annotated[Optional[str], typer.Option("--source", help="Source slug. Omit to remove all sources in the ecosystem.")] = None,
-    dry_run: Annotated[bool, typer.Option("--dry-run", help="Show matching snapshot directories without deleting.")] = False,
-    yes: Annotated[bool, typer.Option("--yes", "-y", help="Delete without an interactive confirmation prompt.")] = False,
+    snapshot: Annotated[
+        str, typer.Argument(help="Snapshot date to remove (YYYY-MM-DD).")
+    ],
+    ecosystem: Annotated[
+        str, typer.Option("--ecosystem", "-e", help="Ecosystem slug.")
+    ],
+    source: Annotated[
+        Optional[str],
+        typer.Option(
+            "--source", help="Source slug. Omit to remove all sources in the ecosystem."
+        ),
+    ] = None,
+    dry_run: Annotated[
+        bool,
+        typer.Option(
+            "--dry-run", help="Show matching snapshot directories without deleting."
+        ),
+    ] = False,
+    yes: Annotated[
+        bool,
+        typer.Option(
+            "--yes", "-y", help="Delete without an interactive confirmation prompt."
+        ),
+    ] = False,
 ) -> None:
     """Remove generated preprocess, analysis, and postprocess directories for a snapshot."""
     _validate_snapshot_date(snapshot)
@@ -1326,7 +1670,9 @@ def snapshots_remove(
     targets = _collect_snapshot_removal_targets(ecosystem, eco, source, snapshot)
     if not targets:
         scope = f"{ecosystem}/{source}" if source else ecosystem
-        console.print(f"[yellow]No generated snapshot directories found for {scope} at {snapshot}.[/yellow]")
+        console.print(
+            f"[yellow]No generated snapshot directories found for {scope} at {snapshot}.[/yellow]"
+        )
         return
 
     table = Table("Source", "Path", title=f"Snapshot Removal: {ecosystem} / {snapshot}")
@@ -1344,12 +1690,15 @@ def snapshots_remove(
             raise typer.Exit(1)
 
     _remove_snapshot_targets(targets)
-    console.print(f"[green]Removed {len(targets)} generated snapshot director{'y' if len(targets) == 1 else 'ies'}.[/green]")
+    console.print(
+        f"[green]Removed {len(targets)} generated snapshot director{'y' if len(targets) == 1 else 'ies'}.[/green]"
+    )
 
 
 # ---------------------------------------------------------------------------
 # ecosystems
 # ---------------------------------------------------------------------------
+
 
 @eco_app.command("list", rich_help_panel="Inspect")
 def ecosystems_list() -> None:
@@ -1358,8 +1707,7 @@ def ecosystems_list() -> None:
     for slug, eco in sorted(ECOSYSTEM_REGISTRY.items()):
         sources = eco.get("sources", {})
         src_summary = ", ".join(
-            f"{s} ({v.get('proposal_acronym', '?')})"
-            for s, v in sources.items()
+            f"{s} ({v.get('proposal_acronym', '?')})" for s, v in sources.items()
         )
         table.add_row(slug, eco.get("display_name", slug), src_summary or "—")
     console.print(table)
@@ -1376,7 +1724,9 @@ def ecosystems_show(
 
 @eco_app.command("add", rich_help_panel="Register")
 def ecosystems_add(
-    slug: Annotated[Optional[str], typer.Option(help="Ecosystem slug (e.g. ethereum).")] = None,
+    slug: Annotated[
+        Optional[str], typer.Option(help="Ecosystem slug (e.g. ethereum).")
+    ] = None,
 ) -> None:
     """Scaffold a new [cyan]ecosystems/<slug>.yml[/cyan] with an initial IP source."""
     if not slug:
@@ -1385,14 +1735,18 @@ def ecosystems_add(
 
     target = ECOSYSTEMS_DIR / f"{slug}.yml"
     if target.exists():
-        console.print(f"[red]{target} already exists. Use 'ecosystems add-source' to add a source.[/red]")
+        console.print(
+            f"[red]{target} already exists. Use 'ecosystems add-source' to add a source.[/red]"
+        )
         raise typer.Exit(1)
 
     display_name = typer.prompt("Display name", default=slug.capitalize())
 
     console.print("\n[bold]Initial IP source[/bold]")
     src_slug = typer.prompt("Source slug (e.g. eips)", default="proposals")
-    src_display = typer.prompt("Source display name", default=f"{display_name} Improvement Proposals")
+    src_display = typer.prompt(
+        "Source display name", default=f"{display_name} Improvement Proposals"
+    )
     acronym = typer.prompt("Proposal acronym (e.g. EIP)").upper()
     repo_owner = typer.prompt("GitHub repository owner")
     repo_name = typer.prompt("GitHub repository name")
@@ -1408,7 +1762,9 @@ def ecosystems_add(
         },
     }
 
-    target.write_text(yaml.dump(config, allow_unicode=True, sort_keys=False), encoding="utf-8")
+    target.write_text(
+        yaml.dump(config, allow_unicode=True, sort_keys=False), encoding="utf-8"
+    )
     console.print(f"\n[green]Created {target}[/green]")
     console.print(
         f"Edit the file to complete the config, then run:\n"
@@ -1442,9 +1798,13 @@ def ecosystems_add_source(
     raw.setdefault("sources", {})[src_slug] = _build_source_scaffold(
         slug, src_slug, src_display, acronym, repo_owner, repo_name, prefix
     )
-    target.write_text(yaml.dump(raw, allow_unicode=True, sort_keys=False), encoding="utf-8")
+    target.write_text(
+        yaml.dump(raw, allow_unicode=True, sort_keys=False), encoding="utf-8"
+    )
     console.print(f"\n[green]Added source '{src_slug}' to {target}[/green]")
-    console.print(f"Edit the file to complete the config, then run:\n  python main.py run --ecosystem {slug} --source {src_slug}")
+    console.print(
+        f"Edit the file to complete the config, then run:\n  python main.py run --ecosystem {slug} --source {src_slug}"
+    )
 
 
 def _build_source_scaffold(

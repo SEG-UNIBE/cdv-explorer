@@ -140,7 +140,9 @@ LEGEND_ARROWHEAD_MARKER_SIZE = 4
 
 
 class SolidArrowHeadLegendHandler(HandlerBase):
-    def create_artists(self, legend, orig_handle, xdescent, ydescent, width, height, fontsize, trans):
+    def create_artists(
+        self, legend, orig_handle, xdescent, ydescent, width, height, fontsize, trans
+    ):
         color = orig_handle.get_edgecolor()
         x_start = xdescent + width * 0.05
         x_end = xdescent + width * 0.68
@@ -271,15 +273,30 @@ def relocate_manually(pos, node_id, relative_x=0.0, relative_y=0.0):
 
 def compute_layout_positions(graph: nx.DiGraph, layout_name: str) -> dict:
     layout_configs = {
-        "spring_default": {"algo": "spring", "params": {"k": 0.3, "iterations": 100, "seed": 41}},
-        "spring_spread": {"algo": "spring", "params": {"k": 3, "iterations": 200, "seed": 41}},
-        "spring_scaled": {"algo": "spring_scaled", "params": {"iterations": 200, "seed": 41}},
+        "spring_default": {
+            "algo": "spring",
+            "params": {"k": 0.3, "iterations": 100, "seed": 41},
+        },
+        "spring_spread": {
+            "algo": "spring",
+            "params": {"k": 3, "iterations": 200, "seed": 41},
+        },
+        "spring_scaled": {
+            "algo": "spring_scaled",
+            "params": {"iterations": 200, "seed": 41},
+        },
         "planar": {"algo": "planar", "params": {}},
         "spectral": {"algo": "spectral", "params": {"scale": 1.45}},
         "shell": {"algo": "shell", "params": {"scale": 1.2}},
         "circular": {"algo": "circular", "params": {"scale": 1.2}},
-        "bipartite": {"algo": "bipartite", "params": {"scale": 1.25, "align": "vertical"}},
-        "multipartite": {"algo": "multipartite", "params": {"scale": 1.25, "align": "vertical", "subset_key": "subset"}},
+        "bipartite": {
+            "algo": "bipartite",
+            "params": {"scale": 1.25, "align": "vertical"},
+        },
+        "multipartite": {
+            "algo": "multipartite",
+            "params": {"scale": 1.25, "align": "vertical", "subset_key": "subset"},
+        },
         "kamada_kawai": {"algo": "kamada_kawai", "params": {"scale": 0.8}},
     }
 
@@ -308,7 +325,9 @@ def compute_layout_positions(graph: nx.DiGraph, layout_name: str) -> dict:
         resolve_near_overlaps(pos, threshold=0.1)
         return pos
     if config["algo"] == "shell":
-        ordered_nodes = sorted(graph.nodes(), key=lambda node_id: (-graph.degree(node_id), int(node_id)))
+        ordered_nodes = sorted(
+            graph.nodes(), key=lambda node_id: (-graph.degree(node_id), int(node_id))
+        )
         inner_count = max(1, math.ceil(len(ordered_nodes) / 3))
         shells = [ordered_nodes[:inner_count], ordered_nodes[inner_count:]]
         shells = [shell for shell in shells if shell]
@@ -321,7 +340,11 @@ def compute_layout_positions(graph: nx.DiGraph, layout_name: str) -> dict:
         return pos
     if config["algo"] == "bipartite":
         left_nodes = sorted(
-            [node_id for node_id in graph.nodes() if graph.out_degree(node_id) >= graph.in_degree(node_id)],
+            [
+                node_id
+                for node_id in graph.nodes()
+                if graph.out_degree(node_id) >= graph.in_degree(node_id)
+            ],
             key=int,
         )
         if not left_nodes or len(left_nodes) == graph.number_of_nodes():
@@ -338,7 +361,12 @@ def compute_layout_positions(graph: nx.DiGraph, layout_name: str) -> dict:
     if config["algo"] == "kamada_kawai":
         pos = nx.kamada_kawai_layout(graph, **config["params"])
         resolve_near_overlaps(pos, threshold=0.1)
-        for node_id, dx, dy in [(142, 0.049, -0.58), (173, -0.04, -0.14), (83, 0.05, 0.08), (146, 0, 0.12)]:
+        for node_id, dx, dy in [
+            (142, 0.049, -0.58),
+            (173, -0.04, -0.14),
+            (83, 0.05, 0.08),
+            (146, 0, 0.12),
+        ]:
             if node_id in pos:
                 relocate_manually(pos, node_id=node_id, relative_x=dx, relative_y=dy)
         return pos
@@ -378,8 +406,18 @@ def draw_static_network_with_layouts(
                 "alpha": 0.6,
                 "label": "explicit references (regex)",
             },
-            "requires": {"color": "red", "style": "solid", "alpha": PLOT_COLOR_ALPHA, "label": "requires"},
-            "replaces": {"color": "blue", "style": "solid", "alpha": PLOT_COLOR_ALPHA, "label": "replaces"},
+            "requires": {
+                "color": "red",
+                "style": "solid",
+                "alpha": PLOT_COLOR_ALPHA,
+                "label": "requires",
+            },
+            "replaces": {
+                "color": "blue",
+                "style": "solid",
+                "alpha": PLOT_COLOR_ALPHA,
+                "label": "replaces",
+            },
             "proposed_replacement": {
                 "color": "green",
                 "style": "solid",
@@ -441,7 +479,10 @@ def draw_static_network_with_layouts(
         group_to_index_map = {group: i for i, group in enumerate(sorted_group_names)}
 
         if len(sorted_group_names) > len(default_colors):
-            extended_colors = [default_colors[i % len(default_colors)] for i in range(len(sorted_group_names))]
+            extended_colors = [
+                default_colors[i % len(default_colors)]
+                for i in range(len(sorted_group_names))
+            ]
             cmap_for_plot = ListedColormap(extended_colors)
         else:
             cmap_for_plot = ListedColormap(default_colors[: len(sorted_group_names)])
@@ -453,7 +494,11 @@ def draw_static_network_with_layouts(
         for i, group in enumerate(sorted_group_names):
             count = group_counts[group]
             label_with_count = f"{group} $(n={count})$"
-            color_for_legend = cmap_for_plot(i / (len(sorted_group_names) - 1) if len(sorted_group_names) > 1 else 0.5)
+            color_for_legend = cmap_for_plot(
+                i / (len(sorted_group_names) - 1)
+                if len(sorted_group_names) > 1
+                else 0.5
+            )
             legend_handles.append(
                 plt.Line2D(
                     [],
@@ -532,7 +577,16 @@ def draw_static_network_with_layouts(
 
         for node, (x, y) in pos.items():
             label = f"{node}"
-            plt.text(x, y, label, fontsize=7, fontweight="bold", family="monospace", ha="center", va="center")
+            plt.text(
+                x,
+                y,
+                label,
+                fontsize=7,
+                fontweight="bold",
+                family="monospace",
+                ha="center",
+                va="center",
+            )
 
         plt.title(full_title, pad=25, y=1.0)
 
@@ -541,12 +595,18 @@ def draw_static_network_with_layouts(
             style_info = edge_type_styles.get(lt, {})
             if style_info.get("alpha", PLOT_COLOR_ALPHA) == 0.0:
                 continue
-            color = "gray" if style_info.get("color", "black") == "outgoing-color" else style_info.get("color", "black")
+            color = (
+                "gray"
+                if style_info.get("color", "black") == "outgoing-color"
+                else style_info.get("color", "black")
+            )
             linestyle = style_info.get("style", "solid")
             base_label = style_info.get("label", lt)
             edge_count = len(edges_by_type.get(lt, []))
             label_with_count = f"{base_label} $(n={edge_count})$"
-            legend_color = with_plot_alpha(color, style_info.get("alpha", PLOT_COLOR_ALPHA))
+            legend_color = with_plot_alpha(
+                color, style_info.get("alpha", PLOT_COLOR_ALPHA)
+            )
             edge_legend_handles.append(
                 build_arrow_legend_handle(
                     color=legend_color,
@@ -575,15 +635,19 @@ def draw_static_network_with_layouts(
                 labelspacing=0.6,
             )
         elif color_by == "compliance_score" and nodes_plot:
-            cbar = plt.colorbar(nodes_plot, ax=plt.gca(), orientation="vertical", pad=0.02)
+            cbar = plt.colorbar(
+                nodes_plot, ax=plt.gca(), orientation="vertical", pad=0.02
+            )
             cbar.set_label("Compliance Score")
 
         plt.axis("off")
         plt.tight_layout(rect=[0, 0, 1, 0.99])
 
-        base_stem = filename_stem or _slugify([graph.number_of_nodes(), *link_type, color_by])
+        base_stem = filename_stem or _slugify(
+            [graph.number_of_nodes(), *link_type, color_by]
+        )
         if base_stem.startswith("dependency_"):
-            stem = f"dep_{layout_name}_{base_stem[len('dependency_'):]}"
+            stem = f"dep_{layout_name}_{base_stem[len('dependency_') :]}"
         else:
             stem = f"dep_{layout_name}_{base_stem}"
         prefix = f"{filename_prefix}_" if filename_prefix else ""
@@ -592,11 +656,18 @@ def draw_static_network_with_layouts(
         plt.close()
 
 
-def render_default_dependency_plot_suite(network_data, output_dir: Path, filename_prefix: str | None = None) -> None:
+def render_default_dependency_plot_suite(
+    network_data, output_dir: Path, filename_prefix: str | None = None
+) -> None:
     plot_specs = [
         {
             "filename_stem": "dependency_body_extracted_regex_focus",
-            "link_type": [BODY_EXTRACTED_REGEX, "requires", "replaces", "proposed_replacement"],
+            "link_type": [
+                BODY_EXTRACTED_REGEX,
+                "requires",
+                "replaces",
+                "proposed_replacement",
+            ],
             "color_by": "group",
             "bips_to_show": DEFAULT_BIPS_OF_INTEREST,
             "bips_to_exclude": DEFAULT_BIPS_TO_EXCLUDE,
@@ -630,7 +701,12 @@ def render_default_dependency_plot_suite(network_data, output_dir: Path, filenam
         },
         {
             "filename_stem": "dependency_explicit_fields_focus",
-            "link_type": ["requires", "replaces", "proposed_replacement", BODY_EXTRACTED_REGEX],
+            "link_type": [
+                "requires",
+                "replaces",
+                "proposed_replacement",
+                BODY_EXTRACTED_REGEX,
+            ],
             "color_by": "group",
             "bips_to_show": DEFAULT_BIPS_OF_INTEREST,
             "bips_to_exclude": DEFAULT_BIPS_TO_EXCLUDE,
@@ -680,7 +756,13 @@ def render_default_dependency_plot_suite(network_data, output_dir: Path, filenam
         },
         {
             "filename_stem": "dependency_full_network",
-            "link_type": [BODY_EXTRACTED_REGEX, "requires", "replaces", "proposed_replacement", BODY_EXTRACTED_LLM],
+            "link_type": [
+                BODY_EXTRACTED_REGEX,
+                "requires",
+                "replaces",
+                "proposed_replacement",
+                BODY_EXTRACTED_LLM,
+            ],
             "color_by": "group",
             "bips_to_show": None,
             "bips_to_exclude": None,

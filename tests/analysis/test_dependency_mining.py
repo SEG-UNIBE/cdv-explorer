@@ -24,27 +24,39 @@ from pipeline.source_context import SourceContext
 
 class NormalizeDependencyOutputTests(unittest.TestCase):
     def test_recognizes_various_formats_as_same_id(self):
-        result = normalize_dependency_output(["BIP 32", "BIP-32", "BIP-0032", "32"], proposal_label="BIP")
+        result = normalize_dependency_output(
+            ["BIP 32", "BIP-32", "BIP-0032", "32"], proposal_label="BIP"
+        )
         self.assertEqual(result, ["BIP 32"])
 
     def test_excludes_current_proposal(self):
-        result = normalize_dependency_output(["BIP 32", "BIP 39"], proposal_label="BIP", current_proposal_number="32")
+        result = normalize_dependency_output(
+            ["BIP 32", "BIP 39"], proposal_label="BIP", current_proposal_number="32"
+        )
         self.assertEqual(result, ["BIP 39"])
 
     def test_non_list_input_returns_empty(self):
-        self.assertEqual(normalize_dependency_output("BIP 32", proposal_label="BIP"), [])
+        self.assertEqual(
+            normalize_dependency_output("BIP 32", proposal_label="BIP"), []
+        )
         self.assertEqual(normalize_dependency_output(None, proposal_label="BIP"), [])
 
     def test_garbled_items_are_skipped(self):
-        result = normalize_dependency_output(["BIP 32", "not a bip", "", "BIP 39"], proposal_label="BIP")
+        result = normalize_dependency_output(
+            ["BIP 32", "not a bip", "", "BIP 39"], proposal_label="BIP"
+        )
         self.assertEqual(result, ["BIP 32", "BIP 39"])
 
     def test_output_is_sorted_numerically(self):
-        result = normalize_dependency_output(["BIP 200", "BIP 1", "BIP 50"], proposal_label="BIP")
+        result = normalize_dependency_output(
+            ["BIP 200", "BIP 1", "BIP 50"], proposal_label="BIP"
+        )
         self.assertEqual(result, ["BIP 1", "BIP 50", "BIP 200"])
 
     def test_ids_exceeding_ecosystem_max_are_excluded(self):
-        result = normalize_dependency_output(["BIP 999", "BIP 1000"], proposal_label="BIP")
+        result = normalize_dependency_output(
+            ["BIP 999", "BIP 1000"], proposal_label="BIP"
+        )
         self.assertEqual(result, ["BIP 999"])
 
     def test_hex_nip_ids_preserve_width_and_exclude_current_proposal(self):
@@ -292,7 +304,9 @@ class LlmModelConfigTests(unittest.TestCase):
             if kwargs["response_format"]["type"] == "json_schema":
                 raise TypeError("structured outputs unsupported")
             message = types.SimpleNamespace(content="{not json", refusal=None)
-            return types.SimpleNamespace(choices=[types.SimpleNamespace(message=message)])
+            return types.SimpleNamespace(
+                choices=[types.SimpleNamespace(message=message)]
+            )
 
         client = types.SimpleNamespace(
             chat=types.SimpleNamespace(
@@ -309,7 +323,9 @@ class LlmModelConfigTests(unittest.TestCase):
                     source_context=context,
                 )
 
-    def test_responses_api_reasoning_path_uses_responses_client_with_default_reasoning(self):
+    def test_responses_api_reasoning_path_uses_responses_client_with_default_reasoning(
+        self,
+    ):
         source_config = {
             "proposal_acronym": "BIP",
             "proposal_term_singular": "Bitcoin Improvement Proposal",
@@ -320,7 +336,9 @@ class LlmModelConfigTests(unittest.TestCase):
             "llm": {"model": "reasoning-model", "reasoning_effort": None},
             "sources": {"bips": source_config},
         }
-        context = SourceContext.from_config(source_config, ecosystem_slug="testcoin", source_slug="bips")
+        context = SourceContext.from_config(
+            source_config, ecosystem_slug="testcoin", source_slug="bips"
+        )
         calls = []
 
         def create_response(**kwargs):
@@ -334,7 +352,11 @@ class LlmModelConfigTests(unittest.TestCase):
         )
 
         with (
-            patch.dict("pipeline.source_context.ECOSYSTEM_REGISTRY", {"testcoin": ecosystem}, clear=False),
+            patch.dict(
+                "pipeline.source_context.ECOSYSTEM_REGISTRY",
+                {"testcoin": ecosystem},
+                clear=False,
+            ),
             patch("analysis.dependencies.mining.OpenAI", return_value=client),
         ):
             result = llm_extract_implicit_dependencies(
@@ -372,7 +394,9 @@ class NormalizeLlmDependencyOutputTests(unittest.TestCase):
             source_context=context,
         )
 
-        self.assertEqual([entry["target"] for entry in result], ["bips:32", "slips:132"])
+        self.assertEqual(
+            [entry["target"] for entry in result], ["bips:32", "slips:132"]
+        )
         self.assertTrue(all("_label" not in entry for entry in result))
 
     def test_excludes_current_proposal_and_deduplicates_targets(self):

@@ -26,10 +26,21 @@ def _extract_year(date_text: Any) -> int | None:
         return None
 
 
-def _node_triplet(node: Dict[str, Any], source_context: SourceContext) -> Tuple[str, str, str]:
-    layer = _apply_alias(_clean_base(node.get("layer"), "Unknown Layer"), source_context.classification_aliases("layer"))
-    status = _apply_alias(_clean_base(node.get("status"), "Unknown Status"), source_context.classification_aliases("status"))
-    kind = _apply_alias(_clean_base(node.get("type"), "Unknown Type"), source_context.classification_aliases("type"))
+def _node_triplet(
+    node: Dict[str, Any], source_context: SourceContext
+) -> Tuple[str, str, str]:
+    layer = _apply_alias(
+        _clean_base(node.get("layer"), "Unknown Layer"),
+        source_context.classification_aliases("layer"),
+    )
+    status = _apply_alias(
+        _clean_base(node.get("status"), "Unknown Status"),
+        source_context.classification_aliases("status"),
+    )
+    kind = _apply_alias(
+        _clean_base(node.get("type"), "Unknown Type"),
+        source_context.classification_aliases("type"),
+    )
     return layer, status, kind
 
 
@@ -61,7 +72,9 @@ def build_sankey_links(
 
     return [
         {"source": source, "target": target, "count": count}
-        for (source, target), count in sorted(links.items(), key=lambda x: x[1], reverse=True)
+        for (source, target), count in sorted(
+            links.items(), key=lambda x: x[1], reverse=True
+        )
     ]
 
 
@@ -76,7 +89,10 @@ def build_status_over_time(
         year = _extract_year(node.get("created"))
         if year is None:
             continue
-        status = _apply_alias(_clean_base(node.get("status"), "Unknown"), context.classification_aliases("status"))
+        status = _apply_alias(
+            _clean_base(node.get("status"), "Unknown"),
+            context.classification_aliases("status"),
+        )
         yearly[year][status] += 1
 
     out: Dict[str, Dict[str, int]] = {}
@@ -96,7 +112,10 @@ def build_type_over_time(
         year = _extract_year(node.get("created"))
         if year is None:
             continue
-        kind = _apply_alias(_clean_base(node.get("type"), "Unknown Type"), context.classification_aliases("type"))
+        kind = _apply_alias(
+            _clean_base(node.get("type"), "Unknown Type"),
+            context.classification_aliases("type"),
+        )
         yearly[year][kind] += 1
 
     out: Dict[str, Dict[str, int]] = {}
@@ -122,10 +141,14 @@ def prepare_classification_payload(
             ],
         },
         "sankey_full": {
-            "links": build_sankey_links(nodes, grouped_status=False, source_context=context),
+            "links": build_sankey_links(
+                nodes, grouped_status=False, source_context=context
+            ),
         },
         "sankey_grouped": {
-            "links": build_sankey_links(nodes, grouped_status=True, source_context=context),
+            "links": build_sankey_links(
+                nodes, grouped_status=True, source_context=context
+            ),
         },
         "status_over_time": build_status_over_time(nodes, source_context=context),
     }

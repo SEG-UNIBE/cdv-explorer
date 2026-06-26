@@ -1,4 +1,5 @@
 """Preamble extractor for Nostr NIPs using backtick-tagged metadata lines."""
+
 import json
 import re
 import sys
@@ -98,9 +99,15 @@ def _parse_nip_file(content: str, filename: str, src_config: dict) -> Dict[str, 
 
     # Map tags to classification dimensions using aliases from config
     dims = src_config.get("classification", {}).get("dimensions", {})
-    status_aliases: dict = {k.lower(): v for k, v in dims.get("status", {}).get("aliases", {}).items()}
-    type_aliases: dict = {k.lower(): v for k, v in dims.get("type", {}).get("aliases", {}).items()}
-    layer_aliases: dict = {k.lower(): v for k, v in dims.get("layer", {}).get("aliases", {}).items()}
+    status_aliases: dict = {
+        k.lower(): v for k, v in dims.get("status", {}).get("aliases", {}).items()
+    }
+    type_aliases: dict = {
+        k.lower(): v for k, v in dims.get("type", {}).get("aliases", {}).items()
+    }
+    layer_aliases: dict = {
+        k.lower(): v for k, v in dims.get("layer", {}).get("aliases", {}).items()
+    }
 
     status: str | None = None
     proposal_type: str | None = None
@@ -171,7 +178,9 @@ def _save_json(
         if key not in json_data:
             json_data[key] = value
 
-    output_path.write_text(json.dumps(json_data, ensure_ascii=False, indent=2), encoding="utf-8")
+    output_path.write_text(
+        json.dumps(json_data, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
     return output_path
 
 
@@ -191,8 +200,7 @@ def extract(
 
     file_pattern = re.compile(src_config["document_file_pattern"], re.IGNORECASE)
     proposal_files = sorted(
-        p for p in harvest_dir.iterdir()
-        if file_pattern.match(p.name)
+        p for p in harvest_dir.iterdir() if file_pattern.match(p.name)
     )
 
     live = sys.stdout.isatty()
@@ -219,16 +227,28 @@ def extract(
 
         content = proposal_file.read_text(encoding="utf-8")
         preamble = _parse_nip_file(content, proposal_file.name, src_config)
-        preamble = normalize_classification_fields(preamble, source_context=source_context)
+        preamble = normalize_classification_fields(
+            preamble, source_context=source_context
+        )
         _check_required(preamble, required_fields)
         _add_missing_optional(preamble, optional_fields)
         checker = get_checker(src_config.get("compliance_checker", "nip"))
-        compliance_payload = build_compliance_payload(checker(preamble, content, src_config))
+        compliance_payload = build_compliance_payload(
+            checker(preamble, content, src_config)
+        )
         preamble["Compliance Score"] = compliance_payload["score"]
-        written_paths.add(_save_json(
-            preamble, output_dir, file_prefix, id_field,
-            required_fields, optional_fields, compliance_payload, source_context,
-        ))
+        written_paths.add(
+            _save_json(
+                preamble,
+                output_dir,
+                file_prefix,
+                id_field,
+                required_fields,
+                optional_fields,
+                compliance_payload,
+                source_context,
+            )
+        )
 
         if progress_callback is not None:
             progress_callback(proposal_file.name, 1)

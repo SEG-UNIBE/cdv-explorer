@@ -15,10 +15,10 @@ APPROACH_ORDER = [PREAMBLE_EXTRACTED, BODY_EXTRACTED_REGEX, BODY_EXTRACTED_LLM]
 SHORT_LABELS = DEPENDENCY_APPROACH_SHORT_LABELS
 
 METRICS: List[Tuple[str, str]] = [
-    ("in_degree",           "In Deg."),
-    ("weighted_eigenvector","W. EV"),
-    ("pagerank",            "PageRank"),
-    ("betweenness",         "BC"),
+    ("in_degree", "In Deg."),
+    ("weighted_eigenvector", "W. EV"),
+    ("pagerank", "PageRank"),
+    ("betweenness", "BC"),
 ]
 
 TOP_N = 5
@@ -145,7 +145,10 @@ def _build_approach_rows(
             raw_id = str(entry["id"])
             color = color_map.get(raw_id)
             bip_cell = _bip(raw_id, color=color)
-            title = _colored_title(_latex_escape(_title_substr(entry.get("title") or "")) + r"\mydots", color=color)
+            title = _colored_title(
+                _latex_escape(_title_substr(entry.get("title") or "")) + r"\mydots",
+                color=color,
+            )
             value = _format_value(entry.get(metric, 0), metric)
             cells += [bip_cell, title, value]
         rows.append("        " + " & ".join(cells) + r" \\")

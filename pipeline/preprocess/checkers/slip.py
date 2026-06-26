@@ -1,4 +1,5 @@
 """Compliance checker for SatoshiLabs Improvement Proposals (SLIPs)."""
+
 from typing import Any, Dict, List
 
 from analysis.conformity.compliance import check_headlines, check_required_fields
@@ -34,7 +35,9 @@ def check(preamble: Dict[str, Any], content: str, src_config: dict) -> List[dict
             f"Required field '{field}' is present",
             field not in missing_fields,
             category="required_field",
-            details=None if field not in missing_fields else f"Missing required field '{field}'",
+            details=None
+            if field not in missing_fields
+            else f"Missing required field '{field}'",
         )
         for field in required_fields
     ]

@@ -9,10 +9,10 @@ def with_plot_alpha(color, alpha: float | None = None):
 
 
 ORDERED_PLOT_PALETTE = (
-    "#7195BC", #"#4e79a7",
-    "#E77476", #"#e15759",
-    "#7BBA73", #"#59a14f",
-    "#e396cd", # "#59a14f",
+    "#7195BC",  # "#4e79a7",
+    "#E77476",  # "#e15759",
+    "#7BBA73",  # "#59a14f",
+    "#e396cd",  # "#59a14f",
     "#f28e2b",
     "#b07aa1",
     "#76b7b2",

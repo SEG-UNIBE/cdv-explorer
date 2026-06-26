@@ -4,6 +4,7 @@ from pathlib import Path
 import matplotlib
 import matplotlib.patheffects as pe
 import numpy as np
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
@@ -141,7 +142,7 @@ def _monotone_cubic_curve(
 
         alpha = tangents[index] / slope
         beta = tangents[index + 1] / slope
-        scale = alpha ** 2 + beta ** 2
+        scale = alpha**2 + beta**2
         if scale > 9:
             tau = 3 / np.sqrt(scale)
             tangents[index] = tau * alpha * slope
@@ -159,10 +160,10 @@ def _monotone_cubic_curve(
 
         steps = np.linspace(0, 1, points_per_segment, endpoint=False)
         for step in steps:
-            h00 = (2 * step ** 3) - (3 * step ** 2) + 1
-            h10 = step ** 3 - (2 * step ** 2) + step
-            h01 = (-2 * step ** 3) + (3 * step ** 2)
-            h11 = step ** 3 - step ** 2
+            h00 = (2 * step**3) - (3 * step**2) + 1
+            h10 = step**3 - (2 * step**2) + step
+            h01 = (-2 * step**3) + (3 * step**2)
+            h11 = step**3 - step**2
 
             smooth_x.append(x0 + step * segment_width)
             smooth_y.append(
@@ -191,17 +192,12 @@ def _normalize_status_series(
         for status, count in yearly_statuses.items()
         if int(count) > 0
     }
-    ordered_statuses = [
-        status
-        for status in order
-        if status in observed_statuses
-    ]
+    ordered_statuses = [status for status in order if status in observed_statuses]
     ordered_statuses.extend(sorted(observed_statuses - set(ordered_statuses)))
 
     series = {
         status: [
-            int(status_over_time.get(str(year), {}).get(status, 0))
-            for year in years
+            int(status_over_time.get(str(year), {}).get(status, 0)) for year in years
         ]
         for status in ordered_statuses
     }
@@ -225,10 +221,7 @@ def plot_classification_status(
         status_over_time,
         order or resolve_rq1_status_order(snapshot_label),
     )
-    totals = {
-        status: sum(counts)
-        for status, counts in series.items()
-    }
+    totals = {status: sum(counts) for status, counts in series.items()}
     total_bips = sum(totals.values())
     if total_bips <= 0:
         raise ValueError("Classification plot requires positive category counts.")
@@ -316,22 +309,26 @@ def plot_classification_status(
     cumulative_max = 0
     for status, color in zip(ordered_statuses, colors):
         cumulative_counts = np.cumsum(series[status]).astype(float)
-        cumulative_max = max(cumulative_max, int(cumulative_counts[-1]) if len(cumulative_counts) else 0)
+        cumulative_max = max(
+            cumulative_max, int(cumulative_counts[-1]) if len(cumulative_counts) else 0
+        )
         smooth_x, smooth_y = _monotone_cubic_curve(
             x_positions.astype(float),
             cumulative_counts,
         )
-        line, = axis_right_secondary.plot(
+        (line,) = axis_right_secondary.plot(
             smooth_x,
             smooth_y,
             color=with_plot_alpha(color),
             linewidth=1,
             zorder=4,
         )
-        line.set_path_effects([
-            pe.Stroke(linewidth=2, foreground="white", alpha=0.9),
-            pe.Normal(),
-        ])
+        line.set_path_effects(
+            [
+                pe.Stroke(linewidth=2, foreground="white", alpha=0.9),
+                pe.Normal(),
+            ]
+        )
         axis_right_secondary.scatter(
             x_positions,
             cumulative_counts,

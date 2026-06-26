@@ -50,7 +50,9 @@ def resolve_network_data_artifact(snapshot: str | None = None) -> Path:
 
 
 def resolve_dependency_metrics_artifact(snapshot: str | None = None) -> Path:
-    return _resolve_snapshot_artifact(snapshot, "dependencies", "dependency_metrics.json")
+    return _resolve_snapshot_artifact(
+        snapshot, "dependencies", "dependency_metrics.json"
+    )
 
 
 def resolve_authorship_metrics_artifact(snapshot: str | None = None) -> Path:
@@ -62,7 +64,9 @@ def resolve_authorship_payload_artifact(snapshot: str | None = None) -> Path:
 
 
 def resolve_classification_payload_artifact(snapshot: str | None = None) -> Path:
-    return _resolve_snapshot_artifact(snapshot, "classification", "classification_payload.json")
+    return _resolve_snapshot_artifact(
+        snapshot, "classification", "classification_payload.json"
+    )
 
 
 def resolve_evolution_payload_artifact(snapshot: str | None = None) -> Path:

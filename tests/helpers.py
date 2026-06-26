@@ -32,13 +32,17 @@ def proposal(
         values = value if isinstance(value, list) else [value]
         return [{"target": ref} for ref in values]
 
-    llm_runs = [] if llm_deps is None else [
-        {
-            "model": "test-model",
-            "timestamp": "2026-06-01T00:00:00Z",
-            "dependencies": llm_deps,
-        }
-    ]
+    llm_runs = (
+        []
+        if llm_deps is None
+        else [
+            {
+                "model": "test-model",
+                "timestamp": "2026-06-01T00:00:00Z",
+                "dependencies": llm_deps,
+            }
+        ]
+    )
 
     return {
         "raw": {"preamble": preamble},
@@ -49,10 +53,11 @@ def proposal(
                 "body_extracted_llm": llm_runs,
                 "preamble_extracted": [
                     {**entry, "type": "requires"} for entry in target_entries(requires)
-                ] + [
-                    {**entry, "type": "replaces"} for entry in target_entries(replaces)
-                ] + [
-                    {**entry, "type": "proposed_replacement"} for entry in target_entries(proposed_replacement)
+                ]
+                + [{**entry, "type": "replaces"} for entry in target_entries(replaces)]
+                + [
+                    {**entry, "type": "proposed_replacement"}
+                    for entry in target_entries(proposed_replacement)
                 ],
             },
         },

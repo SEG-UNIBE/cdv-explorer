@@ -4,7 +4,11 @@ from pipeline.source_context import SourceContext
 
 
 META_KEYS = ("last_commit", "total_commits", "git_history")
-OBSOLETE_INTERRELATION_KEYS = {"explicit_dependencies", "explicit_references", "implicit_dependencies"}
+OBSOLETE_INTERRELATION_KEYS = {
+    "explicit_dependencies",
+    "explicit_references",
+    "implicit_dependencies",
+}
 LEGACY_TOP_LEVEL_KEYS = {"metadata", "history", "compliance"}
 
 
@@ -157,7 +161,9 @@ def normalize_interrelations(proposal: Dict[str, Any]) -> Dict[str, Any]:
 
 def get_interrelations(proposal: Dict[str, Any]) -> Dict[str, Any]:
     interrelations = normalize_interrelations(proposal)
-    interrelations["body_extracted_llm"] = latest_llm_dependencies(interrelations["body_extracted_llm"])
+    interrelations["body_extracted_llm"] = latest_llm_dependencies(
+        interrelations["body_extracted_llm"]
+    )
     return interrelations
 
 
@@ -170,7 +176,9 @@ def normalize_proposal_document(
     insights = _as_dict(source.get("insights"))
 
     normalized_raw: Dict[str, Any] = {
-        "preamble": normalize_raw_preamble(raw.get("preamble"), source_context=source_context),
+        "preamble": normalize_raw_preamble(
+            raw.get("preamble"), source_context=source_context
+        ),
     }
     for key, value in raw.items():
         if key in {"preamble", "compliance"}:
@@ -186,7 +194,9 @@ def normalize_proposal_document(
         normalized_insights[key] = value
 
     word_list = insights.get("word_list")
-    normalized_insights["word_list"] = dict(word_list) if isinstance(word_list, dict) else {}
+    normalized_insights["word_list"] = (
+        dict(word_list) if isinstance(word_list, dict) else {}
+    )
     normalized_insights["formal_compliance"] = get_formal_compliance(source)
     normalized_insights["changes_in_status"] = get_changes_in_status(source)
     normalized_insights["interrelations"] = normalize_interrelations(source)

@@ -7,7 +7,11 @@ from itertools import combinations
 from pathlib import Path
 from typing import Any, Mapping
 
-from analysis.dependencies.constants import BODY_EXTRACTED_LLM, BODY_EXTRACTED_REGEX, PREAMBLE_EXTRACTED
+from analysis.dependencies.constants import (
+    BODY_EXTRACTED_LLM,
+    BODY_EXTRACTED_REGEX,
+    PREAMBLE_EXTRACTED,
+)
 from analysis.validation.ground_truth import (
     load_ground_truth_ips,
     load_ground_truth_curated_entries,
@@ -23,9 +27,22 @@ from pipeline.source_context import SourceContext
 ANALYSIS_REQUIRED_FILES: dict[str, list[str]] = {
     "dependencies/network_data.json": ["nodes", "dependency_edges"],
     "dependencies/dependency_metrics.json": ["by_approach", "pairwise_comparisons"],
-    "authorship/authorship_payload.json": ["meta", "top_authors", "bips_per_year", "top_10_share"],
-    "classification/classification_payload.json": ["meta", "sankey_grouped", "status_over_time"],
-    "evolution/evolution_payload.json": ["meta", "status_evolution", "proposal_timelines"],
+    "authorship/authorship_payload.json": [
+        "meta",
+        "top_authors",
+        "bips_per_year",
+        "top_10_share",
+    ],
+    "classification/classification_payload.json": [
+        "meta",
+        "sankey_grouped",
+        "status_over_time",
+    ],
+    "evolution/evolution_payload.json": [
+        "meta",
+        "status_evolution",
+        "proposal_timelines",
+    ],
     "conformity/conformity_metrics.json": ["per_proposal"],
 }
 
@@ -71,7 +88,9 @@ class SnapshotValidationResult:
         self.file_status.update(other.file_status)
 
 
-def _load_json_file(path: Path, result: SnapshotValidationResult, rel_path: str) -> Any | None:
+def _load_json_file(
+    path: Path, result: SnapshotValidationResult, rel_path: str
+) -> Any | None:
     if not path.exists():
         result.fail(f"`{rel_path}` is missing")
         return None
@@ -90,7 +109,11 @@ def _known_source_configs(
 ) -> dict[str, Mapping[str, Any]]:
     sources = (ecosystem_config or {}).get("sources", {})
     if isinstance(sources, Mapping) and sources:
-        return {str(slug): config for slug, config in sources.items() if isinstance(config, Mapping)}
+        return {
+            str(slug): config
+            for slug, config in sources.items()
+            if isinstance(config, Mapping)
+        }
     return {source_slug: source_config}
 
 
@@ -152,7 +175,9 @@ def expected_combined_snapshot_targets(
     targets: list[tuple[str, str]] = []
     for size in range(2, len(source_slugs) + 1):
         for combo in combinations(source_slugs, size):
-            common_snapshots = set.intersection(*(snapshot_sets[source_slug] for source_slug in combo))
+            common_snapshots = set.intersection(
+                *(snapshot_sets[source_slug] for source_slug in combo)
+            )
             for snapshot in sorted(common_snapshots, reverse=True):
                 targets.append((combined_source_key(combo), snapshot))
 
@@ -189,7 +214,9 @@ def _target_error(
         },
     )
     if normalized is None:
-        return f"target `{target}` has an invalid proposal id for source `{target_source}`"
+        return (
+            f"target `{target}` has an invalid proposal id for source `{target_source}`"
+        )
 
     return None
 
@@ -254,7 +281,9 @@ def _validate_preamble_interrelations(
             result.fail(f"{path} missing `type`")
         elif relation_type not in allowed_types:
             allowed = ", ".join(sorted(allowed_types)) or "none configured"
-            result.fail(f"{path} has unknown relation type `{relation_type}`; allowed: {allowed}")
+            result.fail(
+                f"{path} has unknown relation type `{relation_type}`; allowed: {allowed}"
+            )
 
 
 def _validate_regex_interrelations(
@@ -335,8 +364,12 @@ def validate_preprocess_snapshot(
         result.fail(f"`{preprocess_dir}` contains no proposal JSON files")
         return result
 
-    context = SourceContext.from_config(source_config, ecosystem_slug=ecosystem_slug, source_slug=source_slug)
-    source_configs = _known_source_configs(ecosystem_slug, source_slug, source_config, ecosystem_config)
+    context = SourceContext.from_config(
+        source_config, ecosystem_slug=ecosystem_slug, source_slug=source_slug
+    )
+    source_configs = _known_source_configs(
+        ecosystem_slug, source_slug, source_config, ecosystem_config
+    )
     result.stats["proposal_json"] = len(json_files)
 
     for file_path in json_files:
@@ -421,7 +454,8 @@ def validate_analysis_snapshot(snapshot_dir: Path) -> SnapshotValidationResult:
             result.stats["llm"] = sum(
                 1
                 for edge in data.get("dependency_edges", [])
-                if isinstance(edge, Mapping) and edge.get("extraction_method") == BODY_EXTRACTED_LLM
+                if isinstance(edge, Mapping)
+                and edge.get("extraction_method") == BODY_EXTRACTED_LLM
             )
 
     return result
@@ -446,7 +480,9 @@ def validate_ground_truth_curated_file(
 
     errors = validate_ground_truth_curated_entries(
         entries,
-        source_configs_by_slug=_ground_truth_source_configs(ecosystem_slug, ecosystem_config),
+        source_configs_by_slug=_ground_truth_source_configs(
+            ecosystem_slug, ecosystem_config
+        ),
     )
     if errors:
         result.file_status["ground_truth"] = "❌ schema"
@@ -478,7 +514,9 @@ def validate_ground_truth_ips_file(
 
     errors = validate_reviewed_ip_entries(
         entries,
-        source_configs_by_slug=_ground_truth_source_configs(ecosystem_slug, ecosystem_config),
+        source_configs_by_slug=_ground_truth_source_configs(
+            ecosystem_slug, ecosystem_config
+        ),
     )
     if errors:
         result.file_status["reviewed_ips"] = "❌ schema"
@@ -488,9 +526,13 @@ def validate_ground_truth_ips_file(
 
     result.stats["reviewed_ips"] = len(entries)
     result.stats["completed_reviewed_ips"] = sum(
-        1 for entry in entries if isinstance(entry, Mapping) and str(entry.get("reviewed_at") or "").strip()
+        1
+        for entry in entries
+        if isinstance(entry, Mapping) and str(entry.get("reviewed_at") or "").strip()
     )
-    policy_warnings = validate_reviewed_ip_policy(entries, ecosystem_slug=ecosystem_slug)
+    policy_warnings = validate_reviewed_ip_policy(
+        entries, ecosystem_slug=ecosystem_slug
+    )
     if policy_warnings:
         result.file_status["reviewed_ips"] = "⚠️ policy"
         for warning in policy_warnings:
@@ -553,22 +595,36 @@ def validate_source_snapshot(
             ecosystem_config=ecosystem_config,
         )
     )
-    result.merge(validate_analysis_snapshot(Path(str(source_config["analysis"])) / snapshot))
-    result.merge(validate_react_snapshot_exports(Path(str(source_config["postprocess"])) / snapshot / "react"))
+    result.merge(
+        validate_analysis_snapshot(Path(str(source_config["analysis"])) / snapshot)
+    )
+    result.merge(
+        validate_react_snapshot_exports(
+            Path(str(source_config["postprocess"])) / snapshot / "react"
+        )
+    )
     return result
 
 
-def validate_combined_snapshot(*, ecosystem_slug: str, combo_key: str, snapshot: str) -> SnapshotValidationResult:
+def validate_combined_snapshot(
+    *, ecosystem_slug: str, combo_key: str, snapshot: str
+) -> SnapshotValidationResult:
     combo_root = Path("ip_data") / ecosystem_slug / "_combined" / combo_key
     result = SnapshotValidationResult()
     result.merge(validate_ground_truth_curated_file(ecosystem_slug))
     result.merge(validate_ground_truth_ips_file(ecosystem_slug))
     result.merge(validate_analysis_snapshot(combo_root / "03_analysis" / snapshot))
-    result.merge(validate_react_snapshot_exports(combo_root / "04_postprocess" / snapshot / "react"))
+    result.merge(
+        validate_react_snapshot_exports(
+            combo_root / "04_postprocess" / snapshot / "react"
+        )
+    )
     return result
 
 
-def validate_react_generated_indexes(generated_dir: Path = Path("react/src/generated")) -> SnapshotValidationResult:
+def validate_react_generated_indexes(
+    generated_dir: Path = Path("react/src/generated"),
+) -> SnapshotValidationResult:
     result = SnapshotValidationResult()
     missing: list[str] = []
     invalid: list[str] = []

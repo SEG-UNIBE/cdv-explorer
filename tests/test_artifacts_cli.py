@@ -47,10 +47,15 @@ class ArtifactRebuildTests(unittest.TestCase):
             with (
                 patch(
                     "main._run_stage",
-                    side_effect=lambda _name, _total, _unit, runner: runner(lambda *_args, **_kwargs: None),
+                    side_effect=lambda _name, _total, _unit, runner: runner(
+                        lambda *_args, **_kwargs: None
+                    ),
                 ),
                 patch("analysis.pipeline.prepare_ecosystem_artifacts") as prepare,
-                patch("analysis.validation.validate_source_snapshot", return_value=SnapshotValidationResult()),
+                patch(
+                    "analysis.validation.validate_source_snapshot",
+                    return_value=SnapshotValidationResult(),
+                ),
             ):
                 _rebuild_source_artifacts("bitcoin", "bips", src, "2026-05-28")
 
@@ -87,7 +92,9 @@ class ArtifactRebuildTests(unittest.TestCase):
                 for snapshot in snapshots:
                     (Path(src["preprocess"]) / snapshot).mkdir(parents=True)
 
-            snapshots = _common_preprocess_snapshot_labels({"bips": bips, "slips": slips})
+            snapshots = _common_preprocess_snapshot_labels(
+                {"bips": bips, "slips": slips}
+            )
 
             self.assertEqual(snapshots, ["2026-03-16", "2026-05-28"])
 
@@ -96,22 +103,46 @@ class ArtifactRebuildTests(unittest.TestCase):
             preprocess_dir = Path(tmp_dir) / "02_preprocess" / "2026-05-28"
             preprocess_dir.mkdir(parents=True)
             (preprocess_dir / "bip-0001.json").write_text(
-                json.dumps({
-                    "raw": {"preamble": {"bip": "1"}},
-                    "insights": {"interrelations": {"body_extracted_llm": [
-                        {"model": "gpt-5.4-mini", "timestamp": "2026-06-01T00:00:00Z", "dependencies": []},
-                        {"model": "gpt-5.4", "timestamp": "2026-06-02T00:00:00Z", "dependencies": []},
-                    ]}},
-                }),
+                json.dumps(
+                    {
+                        "raw": {"preamble": {"bip": "1"}},
+                        "insights": {
+                            "interrelations": {
+                                "body_extracted_llm": [
+                                    {
+                                        "model": "gpt-5.4-mini",
+                                        "timestamp": "2026-06-01T00:00:00Z",
+                                        "dependencies": [],
+                                    },
+                                    {
+                                        "model": "gpt-5.4",
+                                        "timestamp": "2026-06-02T00:00:00Z",
+                                        "dependencies": [],
+                                    },
+                                ]
+                            }
+                        },
+                    }
+                ),
                 encoding="utf-8",
             )
             (preprocess_dir / "bip-0002.json").write_text(
-                json.dumps({
-                    "raw": {"preamble": {"bip": "2"}},
-                    "insights": {"interrelations": {"body_extracted_llm": [
-                        {"model": "gpt-5.4-mini", "timestamp": "2026-06-03T00:00:00Z", "dependencies": []},
-                    ]}},
-                }),
+                json.dumps(
+                    {
+                        "raw": {"preamble": {"bip": "2"}},
+                        "insights": {
+                            "interrelations": {
+                                "body_extracted_llm": [
+                                    {
+                                        "model": "gpt-5.4-mini",
+                                        "timestamp": "2026-06-03T00:00:00Z",
+                                        "dependencies": [],
+                                    },
+                                ]
+                            }
+                        },
+                    }
+                ),
                 encoding="utf-8",
             )
 
@@ -129,12 +160,22 @@ class ArtifactRebuildTests(unittest.TestCase):
             preprocess_dir.mkdir(parents=True)
             for bip_id in ("1", "2"):
                 (preprocess_dir / f"bip-{bip_id.zfill(4)}.json").write_text(
-                    json.dumps({
-                        "raw": {"preamble": {"bip": bip_id}},
-                        "insights": {"interrelations": {"body_extracted_llm": [
-                            {"model": "gpt-5.4-mini", "timestamp": "2026-06-01T00:00:00Z", "dependencies": []},
-                        ]}},
-                    }),
+                    json.dumps(
+                        {
+                            "raw": {"preamble": {"bip": bip_id}},
+                            "insights": {
+                                "interrelations": {
+                                    "body_extracted_llm": [
+                                        {
+                                            "model": "gpt-5.4-mini",
+                                            "timestamp": "2026-06-01T00:00:00Z",
+                                            "dependencies": [],
+                                        },
+                                    ]
+                                }
+                            },
+                        }
+                    ),
                     encoding="utf-8",
                 )
 
@@ -147,17 +188,33 @@ class ArtifactRebuildTests(unittest.TestCase):
 
         self.assertEqual((docs, runs), (1, 1))
 
-    def test_available_llm_models_in_preprocess_dir_discovers_distinct_models(self) -> None:
+    def test_available_llm_models_in_preprocess_dir_discovers_distinct_models(
+        self,
+    ) -> None:
         with tempfile.TemporaryDirectory() as tmp_dir:
             preprocess_dir = Path(tmp_dir) / "02_preprocess" / "2026-05-28"
             preprocess_dir.mkdir(parents=True)
             (preprocess_dir / "bip-0001.json").write_text(
-                json.dumps({
-                    "insights": {"interrelations": {"body_extracted_llm": [
-                        {"model": "gpt-5.4-mini", "timestamp": "2026-06-01T00:00:00Z", "dependencies": []},
-                        {"model": "gpt-5.4", "timestamp": "2026-06-02T00:00:00Z", "dependencies": []},
-                    ]}},
-                }),
+                json.dumps(
+                    {
+                        "insights": {
+                            "interrelations": {
+                                "body_extracted_llm": [
+                                    {
+                                        "model": "gpt-5.4-mini",
+                                        "timestamp": "2026-06-01T00:00:00Z",
+                                        "dependencies": [],
+                                    },
+                                    {
+                                        "model": "gpt-5.4",
+                                        "timestamp": "2026-06-02T00:00:00Z",
+                                        "dependencies": [],
+                                    },
+                                ]
+                            }
+                        },
+                    }
+                ),
                 encoding="utf-8",
             )
 
@@ -165,17 +222,33 @@ class ArtifactRebuildTests(unittest.TestCase):
 
         self.assertEqual(models, ["gpt-5.4", "gpt-5.4-mini"])
 
-    def test_resolve_artifact_llm_model_fails_without_explicit_choice_when_multiple_exist(self) -> None:
+    def test_resolve_artifact_llm_model_fails_without_explicit_choice_when_multiple_exist(
+        self,
+    ) -> None:
         with tempfile.TemporaryDirectory() as tmp_dir:
             preprocess_dir = Path(tmp_dir) / "02_preprocess" / "2026-05-28"
             preprocess_dir.mkdir(parents=True)
             (preprocess_dir / "bip-0001.json").write_text(
-                json.dumps({
-                    "insights": {"interrelations": {"body_extracted_llm": [
-                        {"model": "gpt-5.4-mini", "timestamp": "2026-06-01T00:00:00Z", "dependencies": []},
-                        {"model": "gpt-5.4", "timestamp": "2026-06-02T00:00:00Z", "dependencies": []},
-                    ]}},
-                }),
+                json.dumps(
+                    {
+                        "insights": {
+                            "interrelations": {
+                                "body_extracted_llm": [
+                                    {
+                                        "model": "gpt-5.4-mini",
+                                        "timestamp": "2026-06-01T00:00:00Z",
+                                        "dependencies": [],
+                                    },
+                                    {
+                                        "model": "gpt-5.4",
+                                        "timestamp": "2026-06-02T00:00:00Z",
+                                        "dependencies": [],
+                                    },
+                                ]
+                            }
+                        },
+                    }
+                ),
                 encoding="utf-8",
             )
 
@@ -193,12 +266,26 @@ class ArtifactRebuildTests(unittest.TestCase):
             preprocess_dir = Path(tmp_dir) / "02_preprocess" / "2026-05-28"
             preprocess_dir.mkdir(parents=True)
             (preprocess_dir / "bip-0001.json").write_text(
-                json.dumps({
-                    "insights": {"interrelations": {"body_extracted_llm": [
-                        {"model": "gpt-5.4-mini", "timestamp": "2026-06-01T00:00:00Z", "dependencies": []},
-                        {"model": "gpt-5.4", "timestamp": "2026-06-02T00:00:00Z", "dependencies": []},
-                    ]}},
-                }),
+                json.dumps(
+                    {
+                        "insights": {
+                            "interrelations": {
+                                "body_extracted_llm": [
+                                    {
+                                        "model": "gpt-5.4-mini",
+                                        "timestamp": "2026-06-01T00:00:00Z",
+                                        "dependencies": [],
+                                    },
+                                    {
+                                        "model": "gpt-5.4",
+                                        "timestamp": "2026-06-02T00:00:00Z",
+                                        "dependencies": [],
+                                    },
+                                ]
+                            }
+                        },
+                    }
+                ),
                 encoding="utf-8",
             )
 
@@ -214,17 +301,34 @@ class ArtifactRebuildTests(unittest.TestCase):
 
     def test_preserved_llm_runs_replaces_only_same_model(self) -> None:
         raw_llm = [
-            {"model": "gpt-5.4-mini", "timestamp": "2026-06-01T00:00:00Z", "dependencies": [{"target": "bips:1"}]},
-            {"model": "gpt-5.4", "timestamp": "2026-06-02T00:00:00Z", "dependencies": [{"target": "bips:2"}]},
+            {
+                "model": "gpt-5.4-mini",
+                "timestamp": "2026-06-01T00:00:00Z",
+                "dependencies": [{"target": "bips:1"}],
+            },
+            {
+                "model": "gpt-5.4",
+                "timestamp": "2026-06-02T00:00:00Z",
+                "dependencies": [{"target": "bips:2"}],
+            },
         ]
 
         preserved = _preserved_llm_runs(raw_llm, "gpt-5.4-mini", True)
 
-        self.assertEqual(preserved, [
-            {"model": "gpt-5.4", "timestamp": "2026-06-02T00:00:00Z", "dependencies": [{"target": "bips:2"}]},
-        ])
+        self.assertEqual(
+            preserved,
+            [
+                {
+                    "model": "gpt-5.4",
+                    "timestamp": "2026-06-02T00:00:00Z",
+                    "dependencies": [{"target": "bips:2"}],
+                },
+            ],
+        )
 
-    def test_rebuild_all_artifacts_rebuilds_every_common_preprocess_snapshot(self) -> None:
+    def test_rebuild_all_artifacts_rebuilds_every_common_preprocess_snapshot(
+        self,
+    ) -> None:
         with tempfile.TemporaryDirectory() as tmp_dir:
             root = Path(tmp_dir)
             bips = self._source_config(root / "bips")
@@ -233,22 +337,33 @@ class ArtifactRebuildTests(unittest.TestCase):
                 for snapshot in ("2026-03-16", "2026-05-28"):
                     preprocess_dir = Path(src["preprocess"]) / snapshot
                     preprocess_dir.mkdir(parents=True)
-                    (preprocess_dir / "proposal.json").write_text("{}", encoding="utf-8")
+                    (preprocess_dir / "proposal.json").write_text(
+                        "{}", encoding="utf-8"
+                    )
 
             ecosystem = {"slug": "bitcoin", "sources": {"bips": bips, "slips": slips}}
             with (
-                patch.dict("main.ECOSYSTEM_REGISTRY", {"bitcoin": ecosystem}, clear=True),
+                patch.dict(
+                    "main.ECOSYSTEM_REGISTRY", {"bitcoin": ecosystem}, clear=True
+                ),
                 patch("main._rebuild_artifacts_for_targets") as rebuild,
             ):
-                result = runner.invoke(app, ["artifacts", "rebuild", "-e", "bitcoin", "--all"])
+                result = runner.invoke(
+                    app, ["artifacts", "rebuild", "-e", "bitcoin", "--all"]
+                )
 
             self.assertEqual(result.exit_code, 0, result.output)
-            self.assertEqual([call.args[3] for call in rebuild.call_args_list], ["2026-03-16", "2026-05-28"])
+            self.assertEqual(
+                [call.args[3] for call in rebuild.call_args_list],
+                ["2026-03-16", "2026-05-28"],
+            )
 
     def test_ground_truth_sampling_prefills_ips_csv(self) -> None:
         with tempfile.TemporaryDirectory() as tmp_dir:
             root = Path(tmp_dir)
-            analysis_root = root / "bips" / "03_analysis" / "2026-05-28" / "dependencies"
+            analysis_root = (
+                root / "bips" / "03_analysis" / "2026-05-28" / "dependencies"
+            )
             analysis_root.mkdir(parents=True)
             (analysis_root / "network_data.json").write_text(
                 """
@@ -280,7 +395,9 @@ class ArtifactRebuildTests(unittest.TestCase):
             previous_cwd = Path.cwd()
             os.chdir(root)
             try:
-                with patch.dict("main.ECOSYSTEM_REGISTRY", {"bitcoin": ecosystem}, clear=True):
+                with patch.dict(
+                    "main.ECOSYSTEM_REGISTRY", {"bitcoin": ecosystem}, clear=True
+                ):
                     result = runner.invoke(
                         app,
                         [
@@ -311,7 +428,9 @@ class ArtifactRebuildTests(unittest.TestCase):
     def test_ground_truth_sampling_can_filter_to_specific_proposal_type(self) -> None:
         with tempfile.TemporaryDirectory() as tmp_dir:
             root = Path(tmp_dir)
-            analysis_root = root / "bips" / "03_analysis" / "2026-05-28" / "dependencies"
+            analysis_root = (
+                root / "bips" / "03_analysis" / "2026-05-28" / "dependencies"
+            )
             analysis_root.mkdir(parents=True)
             (analysis_root / "network_data.json").write_text(
                 """
@@ -342,7 +461,9 @@ class ArtifactRebuildTests(unittest.TestCase):
             previous_cwd = Path.cwd()
             os.chdir(root)
             try:
-                with patch.dict("main.ECOSYSTEM_REGISTRY", {"bitcoin": ecosystem}, clear=True):
+                with patch.dict(
+                    "main.ECOSYSTEM_REGISTRY", {"bitcoin": ecosystem}, clear=True
+                ):
                     result = runner.invoke(
                         app,
                         [

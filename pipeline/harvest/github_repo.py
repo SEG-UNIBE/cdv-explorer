@@ -10,7 +10,9 @@ def _clone_or_update(repo_url: str, local_dir: Path, progress_callback=None) -> 
         if not (local_dir / ".git").exists():
             raise ValueError(f"{local_dir} exists but is not a git repository.")
         try:
-            subprocess.run(["git", "-C", str(local_dir), "fetch", "--all", "--prune"], check=True)
+            subprocess.run(
+                ["git", "-C", str(local_dir), "fetch", "--all", "--prune"], check=True
+            )
         except subprocess.CalledProcessError:
             _emit(progress_callback, "Fetch failed; using existing local repository")
         return
@@ -22,7 +24,9 @@ def _default_branch_ref(local_dir: Path) -> str:
     try:
         result = subprocess.run(
             ["git", "-C", str(local_dir), "symbolic-ref", "refs/remotes/origin/HEAD"],
-            capture_output=True, text=True, check=True,
+            capture_output=True,
+            text=True,
+            check=True,
         )
         return result.stdout.strip()
     except subprocess.CalledProcessError:
@@ -32,7 +36,9 @@ def _default_branch_ref(local_dir: Path) -> str:
         try:
             subprocess.run(
                 ["git", "-C", str(local_dir), "rev-parse", "--verify", candidate],
-                capture_output=True, text=True, check=True,
+                capture_output=True,
+                text=True,
+                check=True,
             )
             return candidate
         except subprocess.CalledProcessError:
@@ -44,13 +50,26 @@ def _default_branch_ref(local_dir: Path) -> str:
 def _checkout_snapshot(local_dir: Path, snapshot: str) -> None:
     branch_ref = _default_branch_ref(local_dir)
     result = subprocess.run(
-        ["git", "-C", str(local_dir), "rev-list", "-1", f"--before={snapshot} 23:59:59", branch_ref],
-        capture_output=True, text=True, check=True,
+        [
+            "git",
+            "-C",
+            str(local_dir),
+            "rev-list",
+            "-1",
+            f"--before={snapshot} 23:59:59",
+            branch_ref,
+        ],
+        capture_output=True,
+        text=True,
+        check=True,
     )
     commit_hash = result.stdout.strip()
     if not commit_hash:
         raise ValueError(f"No commit found on or before {snapshot}.")
-    subprocess.run(["git", "-C", str(local_dir), "checkout", "--force", "--detach", commit_hash], check=True)
+    subprocess.run(
+        ["git", "-C", str(local_dir), "checkout", "--force", "--detach", commit_hash],
+        check=True,
+    )
 
 
 def _emit(progress_callback, message: str | None = None, advance: int = 0) -> None:
@@ -69,7 +88,9 @@ def harvest(
     repo = src_config["repository_name"]
     repo_url = f"https://github.com/{owner}/{repo}.git"
 
-    repo_state = "Fetching repository updates" if local_dir.exists() else "Cloning repository"
+    repo_state = (
+        "Fetching repository updates" if local_dir.exists() else "Cloning repository"
+    )
     _emit(progress_callback, repo_state)
     _clone_or_update(repo_url, local_dir, progress_callback=progress_callback)
 

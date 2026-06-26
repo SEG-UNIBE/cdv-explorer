@@ -18,7 +18,11 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from analysis.artifact_io import load_authorship_payload, load_network_data, resolve_latest_snapshot_label
+from analysis.artifact_io import (
+    load_authorship_payload,
+    load_network_data,
+    resolve_latest_snapshot_label,
+)
 from paper.RQ3._plotting import save_figure
 from paper.RQ3.collaboration_common import build_author_bip_map
 from paper._utils.io import resolve_output_dir, snapshot_prefix
@@ -29,7 +33,7 @@ from paper.plot_colors import ORDERED_PLOT_PALETTE, PLOT_COLOR_ALPHA
 LAYOUT_EXPORT_DIR = Path("paper") / "RQ3"
 LAYOUT_EXPORT_FILENAME = "authorship_layout_260316_balanced"
 DEFAULT_OUTPUT_DIR = Path("paper") / "RQ3" / "outputs"
-DEFAULT_FIGSIZE = (11,6)
+DEFAULT_FIGSIZE = (11, 6)
 DEFAULT_AXIS_MARGIN_SCALE = 0.08
 EDGE_WIDTH_RANGE = (1.2, 5.0)
 NODE_RADIUS_RANGE = (6.0, 18.0)
@@ -68,7 +72,9 @@ def _sanitize_file_part(value: Any, fallback: str = "unknown") -> str:
     return out or fallback
 
 
-def _normalize_imported_positions(payload: dict[str, Any]) -> dict[str, tuple[float, float]]:
+def _normalize_imported_positions(
+    payload: dict[str, Any],
+) -> dict[str, tuple[float, float]]:
     normalized_positions: dict[str, tuple[float, float]] = {}
     raw_positions = payload.get("positions")
 
@@ -101,7 +107,9 @@ def _build_canonical_edge_key(source_id: str, target_id: str) -> str:
     return f"{right}\0{left}"
 
 
-def _normalize_imported_edge_curves(payload: dict[str, Any]) -> dict[str, dict[str, Any]]:
+def _normalize_imported_edge_curves(
+    payload: dict[str, Any],
+) -> dict[str, dict[str, Any]]:
     normalized_curves: dict[str, dict[str, Any]] = {}
     raw_curves = payload.get("edge_curves")
     if not isinstance(raw_curves, list):
@@ -117,7 +125,11 @@ def _normalize_imported_edge_curves(payload: dict[str, Any]) -> dict[str, dict[s
             continue
 
         raw_direction = entry.get("direction")
-        direction = -1 if isinstance(raw_direction, (int, float)) and float(raw_direction) < 0 else DEFAULT_EDGE_CURVE_DIRECTION
+        direction = (
+            -1
+            if isinstance(raw_direction, (int, float)) and float(raw_direction) < 0
+            else DEFAULT_EDGE_CURVE_DIRECTION
+        )
 
         raw_strength = entry.get("strength")
         strength = (
@@ -149,7 +161,9 @@ def resolve_layout_export_path(layout_export_value: str | None) -> Path:
     return default_candidate.with_suffix(".json")
 
 
-def _build_display_collaboration_components(nodes: list[dict[str, Any]], adjacency: dict[str, set[str]]) -> list[list[str]]:
+def _build_display_collaboration_components(
+    nodes: list[dict[str, Any]], adjacency: dict[str, set[str]]
+) -> list[list[str]]:
     isolated_ids: list[str] = []
     visited: set[str] = set()
     components: list[list[str]] = []
@@ -252,7 +266,9 @@ def _should_draw_node_label(node_attrs: dict[str, Any]) -> bool:
     return bip_count >= NODE_LABEL_MIN_BIP_COUNT or degree >= NODE_LABEL_MIN_DEGREE
 
 
-def _resolve_edge_curve(source_id: str, target_id: str, edge_curve_overrides: dict[str, dict[str, Any]]) -> dict[str, Any]:
+def _resolve_edge_curve(
+    source_id: str, target_id: str, edge_curve_overrides: dict[str, dict[str, Any]]
+) -> dict[str, Any]:
     curve = edge_curve_overrides.get(_build_canonical_edge_key(source_id, target_id))
     if curve is not None:
         return curve
@@ -269,7 +285,12 @@ def _build_visible_graph(
     network_data: dict[str, Any],
     authorship_payload: dict[str, Any],
     layout_payload: dict[str, Any],
-) -> tuple[nx.Graph, dict[str, tuple[float, float]], list[dict[str, Any]], dict[str, dict[str, Any]]]:
+) -> tuple[
+    nx.Graph,
+    dict[str, tuple[float, float]],
+    list[dict[str, Any]],
+    dict[str, dict[str, Any]],
+]:
     collaboration_network = authorship_payload.get("collaboration_network", {}) or {}
     raw_nodes = collaboration_network.get("nodes", []) or []
     raw_edges = collaboration_network.get("edges", []) or []
@@ -280,22 +301,18 @@ def _build_visible_graph(
         raise ValueError("Layout export does not contain any node positions.")
 
     raw_node_ids = {
-        str(node.get("id"))
-        for node in raw_nodes
-        if node.get("id") is not None
+        str(node.get("id")) for node in raw_nodes if node.get("id") is not None
     }
     display_node_ids = {
-        node_id
-        for node_id in exported_positions
-        if node_id in raw_node_ids
+        node_id for node_id in exported_positions if node_id in raw_node_ids
     }
     if not display_node_ids:
-        raise ValueError("No exported layout nodes matched the authorship collaboration network.")
+        raise ValueError(
+            "No exported layout nodes matched the authorship collaboration network."
+        )
 
     adjacency: dict[str, set[str]] = {
-        str(node.get("id")): set()
-        for node in raw_nodes
-        if node.get("id") is not None
+        str(node.get("id")): set() for node in raw_nodes if node.get("id") is not None
     }
     for edge in raw_edges:
         source_id = str(edge.get("source"))
@@ -312,7 +329,8 @@ def _build_visible_graph(
         edge_count = sum(
             1
             for edge in raw_edges
-            if str(edge.get("source")) in member_ids and str(edge.get("target")) in member_ids
+            if str(edge.get("source")) in member_ids
+            and str(edge.get("target")) in member_ids
         )
         cluster_meta.append(
             {
@@ -343,7 +361,9 @@ def _build_visible_graph(
         if int(cluster["clusterId"]) in filtered_cluster_ids
     ]
     cluster_color_by_id = {
-        int(cluster["clusterId"]): COLLABORATION_CLUSTER_COLORS[index % len(COLLABORATION_CLUSTER_COLORS)]
+        int(cluster["clusterId"]): COLLABORATION_CLUSTER_COLORS[
+            index % len(COLLABORATION_CLUSTER_COLORS)
+        ]
         for index, cluster in enumerate(visible_clusters)
     }
 
@@ -353,7 +373,9 @@ def _build_visible_graph(
         if node_id not in display_node_ids:
             continue
 
-        cluster = cluster_by_node_id.get(node_id, {"clusterId": -1, "clusterSize": 1, "clusterCollaborations": 0})
+        cluster = cluster_by_node_id.get(
+            node_id, {"clusterId": -1, "clusterSize": 1, "clusterCollaborations": 0}
+        )
         graph.add_node(
             node_id,
             degree=int(node.get("degree", 0) or 0),
@@ -361,7 +383,9 @@ def _build_visible_graph(
             cluster_id=int(cluster["clusterId"]),
             cluster_size=int(cluster["clusterSize"]),
             cluster_collaborations=int(cluster["clusterCollaborations"]),
-            cluster_color=cluster_color_by_id.get(int(cluster["clusterId"]), COLLABORATION_CLUSTER_COLORS[0]),
+            cluster_color=cluster_color_by_id.get(
+                int(cluster["clusterId"]), COLLABORATION_CLUSTER_COLORS[0]
+            ),
         )
 
     for edge in raw_edges:
@@ -384,7 +408,9 @@ def _build_visible_graph(
         if node_id in exported_positions
     }
     if not visible_positions:
-        raise ValueError("No graph nodes remained after applying exported layout positions.")
+        raise ValueError(
+            "No graph nodes remained after applying exported layout positions."
+        )
 
     return graph, visible_positions, visible_clusters, edge_curve_overrides
 
@@ -415,14 +441,18 @@ def plot_collaboration_network_from_exported_layout(
             author.lower(),
         ),
     )
-    bip_count_values = [int(graph.nodes[node_id].get("bip_count", 0) or 0) for node_id in ordered_nodes]
+    bip_count_values = [
+        int(graph.nodes[node_id].get("bip_count", 0) or 0) for node_id in ordered_nodes
+    ]
     bip_count_min = min(bip_count_values) if bip_count_values else 0
     bip_count_max = max(bip_count_values) if bip_count_values else 1
     node_radii = {
         node_id: _sqrt_scaled_value(
             float(graph.nodes[node_id].get("bip_count", 0) or 0),
             domain_min=float(bip_count_min),
-            domain_max=float(bip_count_max if bip_count_max > bip_count_min else bip_count_min + 1),
+            domain_max=float(
+                bip_count_max if bip_count_max > bip_count_min else bip_count_min + 1
+            ),
             range_min=NODE_RADIUS_RANGE[0],
             range_max=NODE_RADIUS_RANGE[1],
         )
@@ -469,13 +499,16 @@ def plot_collaboration_network_from_exported_layout(
     axis.set_aspect("equal", adjustable="box")
 
     if edge_list:
-        for (source_id, target_id, data), edge_width, edge_color in zip(edge_list, edge_widths, edge_colors):
+        for (source_id, target_id, data), edge_width, edge_color in zip(
+            edge_list, edge_widths, edge_colors
+        ):
             edge_source = str(data.get("raw_source") or source_id)
             edge_target = str(data.get("raw_target") or target_id)
             curve = _resolve_edge_curve(edge_source, edge_target, edge_curve_overrides)
             orientation_matches = (
                 1
-                if curve.get("source") == edge_source and curve.get("target") == edge_target
+                if curve.get("source") == edge_source
+                and curve.get("target") == edge_target
                 else -1
             )
             signed_curvature = (
@@ -504,7 +537,12 @@ def plot_collaboration_network_from_exported_layout(
         nodelist=ordered_nodes,
         node_size=node_sizes,
         node_color=[
-            to_rgba(graph.nodes[node_id].get("cluster_color", COLLABORATION_CLUSTER_COLORS[0]), NODE_FILL_ALPHA)
+            to_rgba(
+                graph.nodes[node_id].get(
+                    "cluster_color", COLLABORATION_CLUSTER_COLORS[0]
+                ),
+                NODE_FILL_ALPHA,
+            )
             for node_id in ordered_nodes
         ],
         edgecolors=NODE_BORDER_COLOR,
@@ -552,7 +590,10 @@ def resolve_default_output_path(
 ) -> Path:
     layout_mode = _sanitize_file_part(layout_payload.get("layout_mode"), "layout")
     filename_prefix = snapshot_prefix(snapshot_label)
-    return output_dir / f"{filename_prefix}_collaboration_network_exported_{layout_mode}.pdf"
+    return (
+        output_dir
+        / f"{filename_prefix}_collaboration_network_exported_{layout_mode}.pdf"
+    )
 
 
 def main() -> None:
@@ -595,10 +636,14 @@ def main() -> None:
     network_data = load_network_data(snapshot=snapshot_label)
     authorship_payload = load_authorship_payload(snapshot=snapshot_label)
     output_dir = resolve_output_dir(args.output_dir, DEFAULT_OUTPUT_DIR)
-    output_path = Path(args.output) if args.output else resolve_default_output_path(
-        snapshot_label=snapshot_label,
-        layout_payload=layout_payload,
-        output_dir=output_dir,
+    output_path = (
+        Path(args.output)
+        if args.output
+        else resolve_default_output_path(
+            snapshot_label=snapshot_label,
+            layout_payload=layout_payload,
+            output_dir=output_dir,
+        )
     )
 
     plot_collaboration_network_from_exported_layout(

@@ -4,7 +4,10 @@ from pathlib import Path
 from xml.sax.saxutils import escape
 from zipfile import ZIP_DEFLATED, ZipFile
 
-from paper.RQ3.collaboration_common import build_author_bip_map, build_collaboration_metrics_rows
+from paper.RQ3.collaboration_common import (
+    build_author_bip_map,
+    build_collaboration_metrics_rows,
+)
 
 
 TABLE_COLUMNS = [
@@ -68,22 +71,24 @@ def _sheet_xml(headers: list[str], rows: list[list]) -> str:
         f'<dimension ref="{dimension}"/>'
         '<sheetViews><sheetView workbookViewId="0"/></sheetViews>'
         '<sheetFormatPr defaultRowHeight="15"/>'
-        f'<sheetData>{"".join(row_xml)}</sheetData>'
-        '</worksheet>'
+        f"<sheetData>{''.join(row_xml)}</sheetData>"
+        "</worksheet>"
     )
 
 
-def _write_xlsx(headers: list[str], rows: list[list], output_path: Path, sheet_name: str) -> None:
+def _write_xlsx(
+    headers: list[str], rows: list[list], output_path: Path, sheet_name: str
+) -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     workbook_xml = (
         '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
         '<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" '
         'xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">'
-        '<sheets>'
+        "<sheets>"
         f'<sheet name="{escape(sheet_name)}" sheetId="1" r:id="rId1"/>'
-        '</sheets>'
-        '</workbook>'
+        "</sheets>"
+        "</workbook>"
     )
     workbook_rels_xml = (
         '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
@@ -91,7 +96,7 @@ def _write_xlsx(headers: list[str], rows: list[list], output_path: Path, sheet_n
         '<Relationship Id="rId1" '
         'Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" '
         'Target="worksheets/sheet1.xml"/>'
-        '</Relationships>'
+        "</Relationships>"
     )
     root_rels_xml = (
         '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
@@ -99,7 +104,7 @@ def _write_xlsx(headers: list[str], rows: list[list], output_path: Path, sheet_n
         '<Relationship Id="rId1" '
         'Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" '
         'Target="xl/workbook.xml"/>'
-        '</Relationships>'
+        "</Relationships>"
     )
     content_types_xml = (
         '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
@@ -110,7 +115,7 @@ def _write_xlsx(headers: list[str], rows: list[list], output_path: Path, sheet_n
         'ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>'
         '<Override PartName="/xl/worksheets/sheet1.xml" '
         'ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>'
-        '</Types>'
+        "</Types>"
     )
 
     with ZipFile(output_path, "w", compression=ZIP_DEFLATED) as workbook_zip:
@@ -137,7 +142,9 @@ def _latex_escape(value: str) -> str:
     )
 
 
-def _latex_header_cell(title: str, max_line_length: int = LATEX_HEADER_WRAP_WIDTH, raw_suffix: str = "") -> str:
+def _latex_header_cell(
+    title: str, max_line_length: int = LATEX_HEADER_WRAP_WIDTH, raw_suffix: str = ""
+) -> str:
     wrapped_lines = []
     for line in str(title).splitlines() or [""]:
         wrapped_lines.extend(
@@ -199,18 +206,29 @@ def export_collaboration_metrics_latex_table(
     }
 
     n = len(metrics_rows)
-    bip_ranks = _rank_dict(metrics_rows, lambda r: len(author_bip_map.get(str(r.get("author", "")), [])))
+    bip_ranks = _rank_dict(
+        metrics_rows, lambda r: len(author_bip_map.get(str(r.get("author", "")), []))
+    )
     degree_ranks = _rank_dict(metrics_rows, lambda r: int(r.get("rawDegree", 0) or 0))
-    w_degree_ranks = _rank_dict(metrics_rows, lambda r: int(r.get("weightedDegree", 0) or 0))
-    w_eigen_ranks = _rank_dict(metrics_rows, lambda r: float(r.get("weightedEigenvector", 0) or 0))
-    between_ranks = _rank_dict(metrics_rows, lambda r: float(r.get("betweenness", 0) or 0))
+    w_degree_ranks = _rank_dict(
+        metrics_rows, lambda r: int(r.get("weightedDegree", 0) or 0)
+    )
+    w_eigen_ranks = _rank_dict(
+        metrics_rows, lambda r: float(r.get("weightedEigenvector", 0) or 0)
+    )
+    between_ranks = _rank_dict(
+        metrics_rows, lambda r: float(r.get("betweenness", 0) or 0)
+    )
 
     def _ranked(value_str: str, rank: int) -> str:
         return rf"{value_str} {{\textcolor{{gray}}{{\textit{{({rank})}}}}}}"
 
     top_rows = sorted(
         metrics_rows,
-        key=lambda row: (-int(row.get("weightedDegree", 0) or 0), str(row.get("author", ""))),
+        key=lambda row: (
+            -int(row.get("weightedDegree", 0) or 0),
+            str(row.get("author", "")),
+        ),
     )[:top_n]
 
     body_lines = []
@@ -237,14 +255,17 @@ def export_collaboration_metrics_latex_table(
             + r" \\"
         )
 
-    header_line = " & ".join(
-        _latex_header_cell(
-            title if isinstance(title, str) else title[0],
-            max_line_length=header_wrap_width,
-            raw_suffix="" if isinstance(title, str) else title[1],
+    header_line = (
+        " & ".join(
+            _latex_header_cell(
+                title if isinstance(title, str) else title[0],
+                max_line_length=header_wrap_width,
+                raw_suffix="" if isinstance(title, str) else title[1],
+            )
+            for title in LATEX_TABLE_HEADERS
         )
-        for title in LATEX_TABLE_HEADERS
-    ) + r" \\"
+        + r" \\"
+    )
 
     latex_table = "\n".join(
         [

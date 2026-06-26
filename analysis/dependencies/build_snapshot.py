@@ -10,7 +10,9 @@ from analysis.dependencies import (
 )
 
 
-def resolve_input_dir(repo_root: Path, snapshot: str | None, source_context: SourceContext) -> Path:
+def resolve_input_dir(
+    repo_root: Path, snapshot: str | None, source_context: SourceContext
+) -> Path:
     base_dir = repo_root / source_context.config["preprocess"]
     if snapshot:
         dated_dir = base_dir / snapshot
@@ -39,7 +41,9 @@ def main() -> None:
     repo_root = Path(__file__).resolve().parents[2]
 
     input_dir = resolve_input_dir(repo_root, args.snapshot, source_context)
-    proposal_data = load_proposal_json_documents(input_dir, source_context=source_context)
+    proposal_data = load_proposal_json_documents(
+        input_dir, source_context=source_context
+    )
     network_data = build_network_data(
         proposal_data,
         id_field=source_context.primary_id_field,
@@ -48,7 +52,9 @@ def main() -> None:
     )
 
     snapshot_label = args.snapshot or "latest"
-    output_stem = repo_root / args.output_dir / snapshot_label / "dependencies" / "network_data"
+    output_stem = (
+        repo_root / args.output_dir / snapshot_label / "dependencies" / "network_data"
+    )
     save_network_data_artifacts(network_data, output_stem)
 
 

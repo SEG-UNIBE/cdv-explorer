@@ -4,7 +4,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from paper.plot_colors import with_plot_alpha
-from paper.RQ3._plotting import bar_style, despine, match_axis_label_fontsize, save_figure
+from paper.RQ3._plotting import (
+    bar_style,
+    despine,
+    match_axis_label_fontsize,
+    save_figure,
+)
 
 
 TIMELINE_BAR_COLOR = "#4c78a8"
@@ -17,7 +22,9 @@ def plot_creation_over_time(
     snapshot_label: str,
 ) -> None:
     if not proposals_per_year:
-        raise ValueError("Creation-over-time plot requires non-empty proposals_per_year data.")
+        raise ValueError(
+            "Creation-over-time plot requires non-empty proposals_per_year data."
+        )
 
     years = [int(entry["year"]) for entry in proposals_per_year]
     yearly_counts = [int(entry["count"]) for entry in proposals_per_year]

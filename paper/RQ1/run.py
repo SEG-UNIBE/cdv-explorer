@@ -70,8 +70,12 @@ def main() -> None:
         evolution_payload = load_evolution_payload(snapshot=SNAPSHOT)
         plot_evolution_status(
             status_evolution=evolution_payload.get("status_evolution", {}),
-            status_evolution_segmented=evolution_payload.get("status_evolution_segmented", {}),
-            status_evolution_by_standard=evolution_payload.get("status_evolution_by_standard", {}),
+            status_evolution_segmented=evolution_payload.get(
+                "status_evolution_segmented", {}
+            ),
+            status_evolution_by_standard=evolution_payload.get(
+                "status_evolution_by_standard", {}
+            ),
             meta=evolution_payload.get("meta", {}),
             output_path=output_dir / f"{filename_prefix}_evolution_status.pdf",
             snapshot_label=snapshot_label,
@@ -90,7 +94,8 @@ def main() -> None:
     if GENERATE_CLASSIFICATION_TYPE_STACKED_PLOT:
         plot_classification_type_stacked(
             network_data=network_data,
-            output_path=output_dir / f"{filename_prefix}_classification_type_stacked.pdf",
+            output_path=output_dir
+            / f"{filename_prefix}_classification_type_stacked.pdf",
             snapshot_label=snapshot_label,
         )
 
@@ -108,7 +113,8 @@ def main() -> None:
             network_data = load_network_data(snapshot=SNAPSHOT)
         export_classification_status_type_latex_table(
             network_data=network_data,
-            output_path=output_dir / f"{filename_prefix}_classification_status_type.tex",
+            output_path=output_dir
+            / f"{filename_prefix}_classification_status_type.tex",
             snapshot_label=snapshot_label,
         )
 

@@ -27,7 +27,15 @@ BIP3_HEADER_ORDER = [
     "replaces",
     "proposed_replacement",
 ]
-BIP3_REQUIRED_HEADERS = ["bip", "title", "authors", "status", "type", "assigned", "license"]
+BIP3_REQUIRED_HEADERS = [
+    "bip",
+    "title",
+    "authors",
+    "status",
+    "type",
+    "assigned",
+    "license",
+]
 BIP3_REQUIRED_SECTIONS = ["abstract", "motivation", "copyright"]
 BIP3_ALLOWED_STATUSES = {"Draft", "Complete", "Deployed", "Closed"}
 BIP3_ALLOWED_TYPES = {"Specification", "Informational", "Process"}
@@ -92,7 +100,11 @@ def _extract_section_entries(file_content: str) -> List[Dict[str, Any]]:
 
     for index, match in enumerate(matches):
         body_start = match.end()
-        body_end = matches[index + 1].start() if index + 1 < len(matches) else len(file_content)
+        body_end = (
+            matches[index + 1].start()
+            if index + 1 < len(matches)
+            else len(file_content)
+        )
         entries.append(
             {
                 "name": match.group(2).strip(),
@@ -206,7 +218,9 @@ def _parse_top_rfc822_preamble(file_content: str) -> Dict[str, Any]:
     }
 
 
-def _get_first_header_value(headers_by_name: Dict[str, List[Dict[str, Any]]], name: str) -> str | None:
+def _get_first_header_value(
+    headers_by_name: Dict[str, List[Dict[str, Any]]], name: str
+) -> str | None:
     entries = headers_by_name.get(name) or []
     if not entries:
         return None
@@ -223,7 +237,10 @@ def _validate_bip_number_list(value: str) -> bool:
 
 
 def _extract_latest_semver(text: str) -> str | None:
-    versions = [tuple(int(part) for part in match.groups()) for match in SEMVER_PATTERN.finditer(text)]
+    versions = [
+        tuple(int(part) for part in match.groups())
+        for match in SEMVER_PATTERN.finditer(text)
+    ]
     if not versions:
         return None
     latest = max(versions)
@@ -234,13 +251,16 @@ def _has_value(value: Any) -> bool:
     return value not in (None, "", [])
 
 
-def check_required_fields(preamble: Dict[str, str], required_fields: List[str]) -> List[str]:
+def check_required_fields(
+    preamble: Dict[str, str], required_fields: List[str]
+) -> List[str]:
     return [field for field in required_fields if not _has_value(preamble.get(field))]
 
 
 def check_headlines(file_content: str, expected_headlines: Dict[str, int]) -> List[str]:
     found_headings = {
-        entry["normalized_name"]: entry["level"] for entry in _extract_section_entries(file_content)
+        entry["normalized_name"]: entry["level"]
+        for entry in _extract_section_entries(file_content)
     }
 
     issues = []
@@ -250,7 +270,9 @@ def check_headlines(file_content: str, expected_headlines: Dict[str, int]) -> Li
         if actual_level is None:
             issues.append(f"Missing: {expected_heading}")
         elif actual_level != expected_level:
-            issues.append(f"Wrong level for {expected_heading}: expected {expected_level}, found {actual_level}")
+            issues.append(
+                f"Wrong level for {expected_heading}: expected {expected_level}, found {actual_level}"
+            )
 
     return issues
 
@@ -271,7 +293,9 @@ def calculate_compliance_score(
     return score
 
 
-def add_missing_optional_fields(preamble: Dict[str, str], optional_fields: List[str]) -> None:
+def add_missing_optional_fields(
+    preamble: Dict[str, str], optional_fields: List[str]
+) -> None:
     for field in optional_fields:
         if field not in preamble:
             preamble[field] = None
@@ -295,12 +319,15 @@ def assess_bip2_compliance(
                 _has_value(value),
                 category="required_field",
                 standard="bip2",
-                details=None if _has_value(value) else f"Missing required field '{field}'",
+                details=None
+                if _has_value(value)
+                else f"Missing required field '{field}'",
             )
         )
 
     found_headings = {
-        entry["normalized_name"]: entry["level"] for entry in _extract_section_entries(file_content)
+        entry["normalized_name"]: entry["level"]
+        for entry in _extract_section_entries(file_content)
     }
     for heading, expected_level in expected_headlines.items():
         normalized_heading = _normalize_section_name(heading)
@@ -326,7 +353,9 @@ def assess_bip2_compliance(
     return _summarize_checks(checks)
 
 
-def assess_bip3_compliance(_preamble: Dict[str, Any], file_content: str) -> Dict[str, Any]:
+def assess_bip3_compliance(
+    _preamble: Dict[str, Any], file_content: str
+) -> Dict[str, Any]:
     checks: List[Dict[str, Any]] = []
     parsed_preamble = _parse_top_rfc822_preamble(file_content)
     headers = parsed_preamble["headers"]
@@ -340,7 +369,9 @@ def assess_bip3_compliance(_preamble: Dict[str, Any], file_content: str) -> Dict
             parsed_preamble["valid"],
             category="preamble",
             standard="bip3",
-            details=None if parsed_preamble["valid"] else "Missing or invalid top-of-file RFC-822-style preamble",
+            details=None
+            if parsed_preamble["valid"]
+            else "Missing or invalid top-of-file RFC-822-style preamble",
         )
     )
 
@@ -357,9 +388,19 @@ def assess_bip3_compliance(_preamble: Dict[str, Any], file_content: str) -> Dict
             )
         )
 
-    known_headers = [header["normalized_name"] for header in headers if header["normalized_name"] in BIP3_HEADER_ORDER]
-    order_indices = [BIP3_HEADER_ORDER.index(header_name) for header_name in known_headers]
-    order_passed = parsed_preamble["valid"] and order_indices == sorted(order_indices) and len(known_headers) == len(set(known_headers))
+    known_headers = [
+        header["normalized_name"]
+        for header in headers
+        if header["normalized_name"] in BIP3_HEADER_ORDER
+    ]
+    order_indices = [
+        BIP3_HEADER_ORDER.index(header_name) for header_name in known_headers
+    ]
+    order_passed = (
+        parsed_preamble["valid"]
+        and order_indices == sorted(order_indices)
+        and len(known_headers) == len(set(known_headers))
+    )
     checks.append(
         _make_check(
             "bip3.header_order",
@@ -367,7 +408,9 @@ def assess_bip3_compliance(_preamble: Dict[str, Any], file_content: str) -> Dict
             order_passed,
             category="header_order",
             standard="bip3",
-            details=None if order_passed else "Recognized BIP3 headers are out of order or duplicated",
+            details=None
+            if order_passed
+            else "Recognized BIP3 headers are out of order or duplicated",
         )
     )
 
@@ -376,10 +419,15 @@ def assess_bip3_compliance(_preamble: Dict[str, Any], file_content: str) -> Dict
         _make_check(
             "bip3.header_value.bip",
             "Header 'BIP' is an integer without leading zeros or '?'",
-            None if bip_value is None else bool(INTEGER_OR_QUESTION_PATTERN.fullmatch(bip_value.strip())),
+            None
+            if bip_value is None
+            else bool(INTEGER_OR_QUESTION_PATTERN.fullmatch(bip_value.strip())),
             category="header_value",
             standard="bip3",
-            details=None if bip_value is None or INTEGER_OR_QUESTION_PATTERN.fullmatch(bip_value.strip()) else f"Invalid BIP value '{bip_value}'",
+            details=None
+            if bip_value is None
+            or INTEGER_OR_QUESTION_PATTERN.fullmatch(bip_value.strip())
+            else f"Invalid BIP value '{bip_value}'",
         )
     )
 
@@ -391,7 +439,9 @@ def assess_bip3_compliance(_preamble: Dict[str, Any], file_content: str) -> Dict
             None if title_value is None else len(title_value.strip()) <= 50,
             category="header_value",
             standard="bip3",
-            details=None if title_value is None or len(title_value.strip()) <= 50 else f"Title length is {len(title_value.strip())}, expected <= 50",
+            details=None
+            if title_value is None or len(title_value.strip()) <= 50
+            else f"Title length is {len(title_value.strip())}, expected <= 50",
         )
     )
 
@@ -401,10 +451,14 @@ def assess_bip3_compliance(_preamble: Dict[str, Any], file_content: str) -> Dict
             _make_check(
                 f"bip3.header_value.{header_name}",
                 f"Header '{header_name}' uses 'Name <email>' entries",
-                None if header_value is None else _validate_email_entities(header_value),
+                None
+                if header_value is None
+                else _validate_email_entities(header_value),
                 category="header_value",
                 standard="bip3",
-                details=None if header_value is None or _validate_email_entities(header_value) else f"Invalid {header_name} value",
+                details=None
+                if header_value is None or _validate_email_entities(header_value)
+                else f"Invalid {header_name} value",
             )
         )
 
@@ -413,10 +467,14 @@ def assess_bip3_compliance(_preamble: Dict[str, Any], file_content: str) -> Dict
         _make_check(
             "bip3.header_value.status",
             "Header 'Status' is one of Draft, Complete, Deployed, Closed",
-            None if status_value is None else status_value.strip() in BIP3_ALLOWED_STATUSES,
+            None
+            if status_value is None
+            else status_value.strip() in BIP3_ALLOWED_STATUSES,
             category="header_value",
             standard="bip3",
-            details=None if status_value is None or status_value.strip() in BIP3_ALLOWED_STATUSES else f"Invalid Status '{status_value}'",
+            details=None
+            if status_value is None or status_value.strip() in BIP3_ALLOWED_STATUSES
+            else f"Invalid Status '{status_value}'",
         )
     )
 
@@ -428,7 +486,9 @@ def assess_bip3_compliance(_preamble: Dict[str, Any], file_content: str) -> Dict
             None if type_value is None else type_value.strip() in BIP3_ALLOWED_TYPES,
             category="header_value",
             standard="bip3",
-            details=None if type_value is None or type_value.strip() in BIP3_ALLOWED_TYPES else f"Invalid Type '{type_value}'",
+            details=None
+            if type_value is None or type_value.strip() in BIP3_ALLOWED_TYPES
+            else f"Invalid Type '{type_value}'",
         )
     )
 
@@ -444,7 +504,9 @@ def assess_bip3_compliance(_preamble: Dict[str, Any], file_content: str) -> Dict
             assigned_passed,
             category="header_value",
             standard="bip3",
-            details=None if assigned_passed is not False else f"Invalid Assigned value '{assigned_value}'",
+            details=None
+            if assigned_passed is not False
+            else f"Invalid Assigned value '{assigned_value}'",
         )
     )
 
@@ -456,7 +518,9 @@ def assess_bip3_compliance(_preamble: Dict[str, Any], file_content: str) -> Dict
             None if license_value is None else bool(license_value.strip()),
             category="header_value",
             standard="bip3",
-            details=None if license_value is None or license_value.strip() else "License is empty",
+            details=None
+            if license_value is None or license_value.strip()
+            else "License is empty",
         )
     )
 
@@ -464,12 +528,16 @@ def assess_bip3_compliance(_preamble: Dict[str, Any], file_content: str) -> Dict
     discussion_passed = None
     discussion_details = None
     if discussion_value is not None:
-        discussion_lines = [line.strip() for line in discussion_value.splitlines() if line.strip()]
+        discussion_lines = [
+            line.strip() for line in discussion_value.splitlines() if line.strip()
+        ]
         discussion_passed = bool(discussion_lines)
         if discussion_passed:
             for discussion_line in discussion_lines:
                 discussion_match = DISCUSSION_LINE_PATTERN.fullmatch(discussion_line)
-                if not discussion_match or not _is_valid_iso_date(discussion_match.group(1)):
+                if not discussion_match or not _is_valid_iso_date(
+                    discussion_match.group(1)
+                ):
                     discussion_passed = False
                     discussion_details = f"Invalid Discussion entry '{discussion_line}'"
                     break
@@ -491,10 +559,14 @@ def assess_bip3_compliance(_preamble: Dict[str, Any], file_content: str) -> Dict
         _make_check(
             "bip3.header_value.version",
             "Header 'Version' uses MAJOR.MINOR.PATCH",
-            None if version_value is None else bool(SEMVER_PATTERN.fullmatch(version_value.strip())),
+            None
+            if version_value is None
+            else bool(SEMVER_PATTERN.fullmatch(version_value.strip())),
             category="header_value",
             standard="bip3",
-            details=None if version_value is None or SEMVER_PATTERN.fullmatch(version_value.strip()) else f"Invalid Version '{version_value}'",
+            details=None
+            if version_value is None or SEMVER_PATTERN.fullmatch(version_value.strip())
+            else f"Invalid Version '{version_value}'",
         )
     )
 
@@ -504,10 +576,15 @@ def assess_bip3_compliance(_preamble: Dict[str, Any], file_content: str) -> Dict
             _make_check(
                 f"bip3.header_value.{header_name}",
                 f"Header '{header_name}' uses comma+space separated BIP numbers",
-                None if header_value is None else _validate_bip_number_list(header_value.strip()),
+                None
+                if header_value is None
+                else _validate_bip_number_list(header_value.strip()),
                 category="header_value",
                 standard="bip3",
-                details=None if header_value is None or _validate_bip_number_list(header_value.strip()) else f"Invalid {header_name} value '{header_value}'",
+                details=None
+                if header_value is None
+                or _validate_bip_number_list(header_value.strip())
+                else f"Invalid {header_name} value '{header_value}'",
             )
         )
 
@@ -519,7 +596,9 @@ def assess_bip3_compliance(_preamble: Dict[str, Any], file_content: str) -> Dict
                 section_name in section_map,
                 category="required_section",
                 standard="bip3",
-                details=None if section_name in section_map else f"Missing required section '{section_name}'",
+                details=None
+                if section_name in section_map
+                else f"Missing required section '{section_name}'",
             )
         )
 
@@ -532,14 +611,18 @@ def assess_bip3_compliance(_preamble: Dict[str, Any], file_content: str) -> Dict
             None if not specification_required else "specification" in section_map,
             category="type_specific",
             standard="bip3",
-            details=None if not specification_required or "specification" in section_map else "Missing required section 'specification' for Type=Specification",
+            details=None
+            if not specification_required or "specification" in section_map
+            else "Missing required section 'specification' for Type=Specification",
         )
     )
 
     status_text = status_value.strip() if status_value else None
     changelog_required = status_text in {"Complete", "Deployed"}
     changelog_section = section_map.get("changelog")
-    latest_changelog_version = _extract_latest_semver(changelog_section["body"]) if changelog_section else None
+    latest_changelog_version = (
+        _extract_latest_semver(changelog_section["body"]) if changelog_section else None
+    )
     normalized_version = version_value.strip() if version_value else None
 
     checks.append(
@@ -549,7 +632,9 @@ def assess_bip3_compliance(_preamble: Dict[str, Any], file_content: str) -> Dict
             None if not changelog_required else changelog_section is not None,
             category="changelog",
             standard="bip3",
-            details=None if not changelog_required or changelog_section is not None else "Missing required 'changelog' section",
+            details=None
+            if not changelog_required or changelog_section is not None
+            else "Missing required 'changelog' section",
         )
     )
     checks.append(
@@ -559,7 +644,9 @@ def assess_bip3_compliance(_preamble: Dict[str, Any], file_content: str) -> Dict
             None if not changelog_required else bool(normalized_version),
             category="changelog",
             standard="bip3",
-            details=None if not changelog_required or normalized_version else "Missing required 'version' header",
+            details=None
+            if not changelog_required or normalized_version
+            else "Missing required 'version' header",
         )
     )
     checks.append(
@@ -572,7 +659,9 @@ def assess_bip3_compliance(_preamble: Dict[str, Any], file_content: str) -> Dict
             category="changelog",
             standard="bip3",
             details=None
-            if not changelog_required or not normalized_version or latest_changelog_version == normalized_version
+            if not changelog_required
+            or not normalized_version
+            or latest_changelog_version == normalized_version
             else (
                 f"No semantic version found in changelog; expected '{normalized_version}'"
                 if latest_changelog_version is None

@@ -3,7 +3,9 @@ from functools import lru_cache
 from pathlib import Path
 
 
-EXTERNAL_LINKS_PATH = Path(__file__).resolve().parents[1] / "react" / "src" / "externalLinks.json"
+EXTERNAL_LINKS_PATH = (
+    Path(__file__).resolve().parents[1] / "react" / "src" / "externalLinks.json"
+)
 
 
 @lru_cache(maxsize=1)

@@ -46,7 +46,9 @@ def match_axis_label_fontsize(axis) -> None:
     axis.yaxis.label.set_size(tick_fontsize)
 
 
-def style_ellipsis_ticklabels(axis, tick_labels: list[str], *, ellipsis_label: str = "...") -> None:
+def style_ellipsis_ticklabels(
+    axis, tick_labels: list[str], *, ellipsis_label: str = "..."
+) -> None:
     xticklabels = axis.get_xticklabels()
     for tick_index, label in enumerate(tick_labels):
         if label != ellipsis_label:
@@ -57,7 +59,9 @@ def style_ellipsis_ticklabels(axis, tick_labels: list[str], *, ellipsis_label: s
         xticklabels[tick_index].set_fontweight(ELLIPSIS_TICK_WEIGHT)
 
 
-def add_bar_label_headroom(axis, *, ratio: float = 0.08, min_extra: float = 0.6) -> None:
+def add_bar_label_headroom(
+    axis, *, ratio: float = 0.08, min_extra: float = 0.6
+) -> None:
     bar_heights = [patch.get_height() for patch in axis.patches]
     if not bar_heights:
         return

@@ -1,4 +1,5 @@
 """Preamble extractor for RFC-822-style key:value headers (BIPs and similar)."""
+
 import re
 import json
 import sys
@@ -21,7 +22,9 @@ from pipeline.source_context import SourceContext
 
 def _extract_raw_preamble_block(file_content: str) -> str:
     pre_match = re.search(r"<pre>(.*?)</pre>", file_content, re.DOTALL | re.IGNORECASE)
-    fenced_match = re.search(r"^\s*```[^\n]*\n(.*?)\n```\s*(?:\n|$)", file_content, re.DOTALL)
+    fenced_match = re.search(
+        r"^\s*```[^\n]*\n(.*?)\n```\s*(?:\n|$)", file_content, re.DOTALL
+    )
     if not fenced_match:
         fenced_match = re.search(r"```[^\n]*\n(.*?)\n```", file_content, re.DOTALL)
     matches = [match for match in (pre_match, fenced_match) if match]
@@ -44,14 +47,18 @@ def _extract_preamble(file_content: str, list_valued_fields: set) -> Dict[str, A
         match = key_pattern.match(line)
         if match:
             if current_key:
-                preamble[current_key] = _format_value(current_key, current_value, list_valued_fields)
+                preamble[current_key] = _format_value(
+                    current_key, current_value, list_valued_fields
+                )
             current_key = match.group(1).strip().lower().replace("-", "_")
             current_value = match.group(2).strip()
         elif current_key and (line.startswith("    ") or line.startswith("\t")):
             current_value += "\n" + line.strip()
 
     if current_key:
-        preamble[current_key] = _format_value(current_key, current_value, list_valued_fields)
+        preamble[current_key] = _format_value(
+            current_key, current_value, list_valued_fields
+        )
 
     return preamble
 
@@ -73,12 +80,16 @@ def _normalize_preamble(
         if canonical_key in normalized or src_key not in normalized:
             continue
         normalized[canonical_key] = normalized[src_key]
-    normalized = normalize_classification_fields(normalized, source_context=source_context)
+    normalized = normalize_classification_fields(
+        normalized, source_context=source_context
+    )
     for list_field in list_valued_fields:
         value = normalized.get(list_field)
         if value is None or isinstance(value, list):
             continue
-        normalized[list_field] = [part.strip() for part in str(value).split("\n") if part.strip()]
+        normalized[list_field] = [
+            part.strip() for part in str(value).split("\n") if part.strip()
+        ]
     return normalized
 
 
@@ -130,7 +141,9 @@ def _save_json(
         if key not in json_data:
             json_data[key] = value
 
-    output_path.write_text(json.dumps(json_data, ensure_ascii=False, indent=2), encoding="utf-8")
+    output_path.write_text(
+        json.dumps(json_data, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
     return output_path
 
 
@@ -148,11 +161,14 @@ def extract(
     list_valued_fields: set = set(preamble_config.get("list_valued_fields", []))
     file_prefix: str = src_config["document_prefix"]
     id_field: str = src_config["primary_id_field"]
-    document_file_pattern = re.compile(src_config["document_file_pattern"], re.IGNORECASE)
+    document_file_pattern = re.compile(
+        src_config["document_file_pattern"], re.IGNORECASE
+    )
     source_context = SourceContext.from_config(src_config)
 
     proposal_files = sorted(
-        p for p in harvest_dir.iterdir()
+        p
+        for p in harvest_dir.iterdir()
         if p.is_file() and document_file_pattern.match(p.name)
     )
 
@@ -186,16 +202,28 @@ def extract(
             source_context,
         )
         if preamble.get(id_field) is not None:
-            preamble[id_field] = _normalize_prefixed_numeric_id(preamble.get(id_field), file_prefix)
+            preamble[id_field] = _normalize_prefixed_numeric_id(
+                preamble.get(id_field), file_prefix
+            )
         _check_required(preamble, required_fields)
         _add_missing_optional(preamble, optional_fields)
         checker = get_checker(src_config.get("compliance_checker", "bip"))
-        compliance_payload = build_compliance_payload(checker(preamble, content, src_config))
+        compliance_payload = build_compliance_payload(
+            checker(preamble, content, src_config)
+        )
         preamble["Compliance Score"] = compliance_payload["score"]
-        written_paths.add(_save_json(
-            preamble, output_dir, file_prefix, id_field,
-            required_fields, optional_fields, compliance_payload, source_context,
-        ))
+        written_paths.add(
+            _save_json(
+                preamble,
+                output_dir,
+                file_prefix,
+                id_field,
+                required_fields,
+                optional_fields,
+                compliance_payload,
+                source_context,
+            )
+        )
 
         if progress_callback is not None:
             progress_callback(proposal_file.name, 1)

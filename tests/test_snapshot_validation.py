@@ -114,17 +114,21 @@ class SnapshotValidationTests(unittest.TestCase):
     def test_ground_truth_validation_rejects_invalid_curated_rows(self) -> None:
         with tempfile.TemporaryDirectory() as tmp_dir:
             root = Path(tmp_dir)
-            csv_path = root / "ip_data" / "bitcoin" / "ground_truth" / "interrelations.csv"
+            csv_path = (
+                root / "ip_data" / "bitcoin" / "ground_truth" / "interrelations.csv"
+            )
             csv_path.parent.mkdir(parents=True)
             csv_path.write_text(
-                "\n".join([
-                    "source,target,relation_type,confidence,evidence,note,reviewer,reviewed_at",
-                    "bips:44,bips:32,depends_on,high,Requires: 32,,rbo,2026-06-22",
-                    "bips:44,bips:32,supersedes,medium,Duplicate pair conflict,,rbo,2026-06-22",
-                    "bips:79,bips:78,superseded_by,high,Proposed-Replacement: 78,,rbo,2026-06-22",
-                    "oops,bips:33,depends_on,maybe,Bad source format,,rbo,2026-99-99",
-                    "slips:39,bips:32,,high,Missing relation type,,rbo,2026-06-22",
-                ]),
+                "\n".join(
+                    [
+                        "source,target,relation_type,confidence,evidence,note,reviewer,reviewed_at",
+                        "bips:44,bips:32,depends_on,high,Requires: 32,,rbo,2026-06-22",
+                        "bips:44,bips:32,supersedes,medium,Duplicate pair conflict,,rbo,2026-06-22",
+                        "bips:79,bips:78,superseded_by,high,Proposed-Replacement: 78,,rbo,2026-06-22",
+                        "oops,bips:33,depends_on,maybe,Bad source format,,rbo,2026-99-99",
+                        "slips:39,bips:32,,high,Missing relation type,,rbo,2026-06-22",
+                    ]
+                ),
                 encoding="utf-8",
             )
 
@@ -146,7 +150,9 @@ class SnapshotValidationTests(unittest.TestCase):
             previous_cwd = Path.cwd()
             os.chdir(root)
             try:
-                result = validate_ground_truth_curated_file("bitcoin", ecosystem_config=ecosystem_config)
+                result = validate_ground_truth_curated_file(
+                    "bitcoin", ecosystem_config=ecosystem_config
+                )
             finally:
                 os.chdir(previous_cwd)
 
@@ -164,12 +170,14 @@ class SnapshotValidationTests(unittest.TestCase):
             csv_path = root / "ip_data" / "bitcoin" / "ground_truth" / "ips.csv"
             csv_path.parent.mkdir(parents=True)
             csv_path.write_text(
-                "\n".join([
-                    "ip,reviewer,reviewed_at,sampling_strategy,density_bucket,density_basis,created",
-                    "bips:44,rbo,2026-06-22,sampler,low,llm_only,2014-04-24",
-                    "bips:44,rbo,2026-06-23,manual,-,-,2014-04-24",
-                    "oops,rbo,2026-99-99,invalid_strategy,sideways,2012-04-11,not-a-date",
-                ]),
+                "\n".join(
+                    [
+                        "ip,reviewer,reviewed_at,sampling_strategy,density_bucket,density_basis,created",
+                        "bips:44,rbo,2026-06-22,sampler,low,llm_only,2014-04-24",
+                        "bips:44,rbo,2026-06-23,manual,-,-,2014-04-24",
+                        "oops,rbo,2026-99-99,invalid_strategy,sideways,2012-04-11,not-a-date",
+                    ]
+                ),
                 encoding="utf-8",
             )
 
@@ -186,7 +194,9 @@ class SnapshotValidationTests(unittest.TestCase):
             previous_cwd = Path.cwd()
             os.chdir(root)
             try:
-                result = validate_ground_truth_ips_file("bitcoin", ecosystem_config=ecosystem_config)
+                result = validate_ground_truth_ips_file(
+                    "bitcoin", ecosystem_config=ecosystem_config
+                )
             finally:
                 os.chdir(previous_cwd)
 
@@ -206,12 +216,14 @@ class SnapshotValidationTests(unittest.TestCase):
             csv_path = root / "ip_data" / "bitcoin" / "ground_truth" / "ips.csv"
             csv_path.parent.mkdir(parents=True)
             csv_path.write_text(
-                "\n".join([
-                    "ip\treviewer\treviewed_at\tsampling_strategy\tdensity_bucket\tdensity_basis\tcreated\ttype",
-                    "bips:44\trbo\t2026-06-22\tsampler\tlow\tall_methods\t2014-04-24\tSpecification",
-                    "slips:55\trbo\t2026-06-22\tmanual\t-\t-\t2015-01-01\tWallet",
-                    "bips:78\trbo\t2026-06-22\tmanual\t-\t-\t2018-12-01\tInformational",
-                ]),
+                "\n".join(
+                    [
+                        "ip\treviewer\treviewed_at\tsampling_strategy\tdensity_bucket\tdensity_basis\tcreated\ttype",
+                        "bips:44\trbo\t2026-06-22\tsampler\tlow\tall_methods\t2014-04-24\tSpecification",
+                        "slips:55\trbo\t2026-06-22\tmanual\t-\t-\t2015-01-01\tWallet",
+                        "bips:78\trbo\t2026-06-22\tmanual\t-\t-\t2018-12-01\tInformational",
+                    ]
+                ),
                 encoding="utf-8",
             )
 
@@ -233,7 +245,9 @@ class SnapshotValidationTests(unittest.TestCase):
             previous_cwd = Path.cwd()
             os.chdir(root)
             try:
-                result = validate_ground_truth_ips_file("bitcoin", ecosystem_config=ecosystem_config)
+                result = validate_ground_truth_ips_file(
+                    "bitcoin", ecosystem_config=ecosystem_config
+                )
             finally:
                 os.chdir(previous_cwd)
 
@@ -243,7 +257,9 @@ class SnapshotValidationTests(unittest.TestCase):
         self.assertIn("expects source `bips`", warning_text)
         self.assertIn("expects proposal type `Specification`", warning_text)
 
-    def test_expected_combined_snapshot_targets_uses_source_snapshot_intersection(self) -> None:
+    def test_expected_combined_snapshot_targets_uses_source_snapshot_intersection(
+        self,
+    ) -> None:
         with tempfile.TemporaryDirectory() as tmp_dir:
             root = Path(tmp_dir)
             bips = self._source_config(root, "bips")
@@ -259,7 +275,9 @@ class SnapshotValidationTests(unittest.TestCase):
 
             targets = expected_combined_snapshot_targets(
                 "bitcoin",
-                ecosystem_config={"sources": {"bips": bips, "slips": slips, "nips": nips}},
+                ecosystem_config={
+                    "sources": {"bips": bips, "slips": slips, "nips": nips}
+                },
             )
 
         self.assertEqual(

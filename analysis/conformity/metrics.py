@@ -35,10 +35,13 @@ def extract_conformity_metrics(
 
         # Discover which standard sub-assessments are present (e.g. bip2, bip3, nip).
         standard_keys = [
-            k for k, v in formal_compliance.items()
+            k
+            for k, v in formal_compliance.items()
             if isinstance(v, dict) and "checks" in v
         ]
-        standard_scores = {k: (formal_compliance[k] or {}).get("score") for k in standard_keys}
+        standard_scores = {
+            k: (formal_compliance[k] or {}).get("score") for k in standard_keys
+        }
 
         entry = {
             "id": str(proposal_id),
@@ -99,7 +102,9 @@ def extract_conformity_metrics(
             {
                 **summary,
                 "evaluated_count": evaluated_count,
-                "pass_rate": round((summary["pass_count"] / evaluated_count) * 100, 2) if evaluated_count else None,
+                "pass_rate": round((summary["pass_count"] / evaluated_count) * 100, 2)
+                if evaluated_count
+                else None,
             }
         )
 

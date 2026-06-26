@@ -38,7 +38,9 @@ def combined_source_key(source_slugs: Iterable[str]) -> str:
     return "+".join(sorted(str(source_slug) for source_slug in source_slugs))
 
 
-def _save_csv_rows(rows: List[Dict[str, Any]], output_path: Path, fieldnames: List[str] | None = None) -> None:
+def _save_csv_rows(
+    rows: List[Dict[str, Any]], output_path: Path, fieldnames: List[str] | None = None
+) -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     if not rows:
         fields = fieldnames or []
@@ -55,8 +57,12 @@ def _save_csv_rows(rows: List[Dict[str, Any]], output_path: Path, fieldnames: Li
         writer.writerows(rows)
 
 
-def _save_status_map_csv(status_map: Dict[str, Dict[str, int]], output_path: Path, index_name: str) -> None:
-    all_statuses = sorted({status for values in status_map.values() for status in values.keys()})
+def _save_status_map_csv(
+    status_map: Dict[str, Dict[str, int]], output_path: Path, index_name: str
+) -> None:
+    all_statuses = sorted(
+        {status for values in status_map.values() for status in values.keys()}
+    )
     rows: List[Dict[str, Any]] = []
     for index_value in sorted(status_map.keys()):
         row: Dict[str, Any] = {index_name: index_value}
@@ -66,7 +72,9 @@ def _save_status_map_csv(status_map: Dict[str, Dict[str, int]], output_path: Pat
     _save_csv_rows(rows, output_path, fieldnames=[index_name] + all_statuses)
 
 
-def _known_proposal_ids_by_source(context: SourceContext, snapshot: str) -> Dict[str, set[str]]:
+def _known_proposal_ids_by_source(
+    context: SourceContext, snapshot: str
+) -> Dict[str, set[str]]:
     ids_by_source: Dict[str, set[str]] = {}
 
     for source_slug, source_config in context.ecosystem_source_configs.items():
@@ -85,7 +93,9 @@ def _known_proposal_ids_by_source(context: SourceContext, snapshot: str) -> Dict
             continue
 
         ids: set[str] = set()
-        for document in load_proposal_json_documents(source_dir, source_context=source_context):
+        for document in load_proposal_json_documents(
+            source_dir, source_context=source_context
+        ):
             proposal_id = document.get("raw", {}).get("preamble", {}).get(id_field)
             if proposal_id is not None:
                 ids.add(str(proposal_id))
@@ -110,7 +120,11 @@ def _combined_placeholder_payload(
     if section == "classification":
         return {"meta": meta, "sankey_grouped": {"links": []}, "status_over_time": {}}
     if section == "evolution":
-        return {"meta": meta, "status_evolution": {"categories": [], "rows": []}, "proposal_timelines": []}
+        return {
+            "meta": meta,
+            "status_evolution": {"categories": [], "rows": []},
+            "proposal_timelines": [],
+        }
     if section == "conformity":
         return {"meta": meta, "per_proposal": []}
     return {"meta": meta}
@@ -123,11 +137,16 @@ def _node_graph_key(node: Mapping[str, Any], source_slug: str) -> str:
     return f"{source_slug}:{node.get('id')}"
 
 
-def _published_llm_model_from_network_data(network_data: Mapping[str, Any]) -> str | None:
+def _published_llm_model_from_network_data(
+    network_data: Mapping[str, Any],
+) -> str | None:
     model = str(network_data.get("llm_model") or "").strip()
     if model:
         return model
-    available = [str(entry.get("model") or "").strip() for entry in available_llm_model_entries(network_data)]
+    available = [
+        str(entry.get("model") or "").strip()
+        for entry in available_llm_model_entries(network_data)
+    ]
     available = [model_name for model_name in available if model_name]
     if len(available) == 1:
         return available[0]
@@ -139,7 +158,9 @@ def _published_llm_model_from_network_data(network_data: Mapping[str, Any]) -> s
     return None
 
 
-def merge_source_network_data(networks_by_source: Sequence[tuple[str, Dict[str, Any]]]) -> Dict[str, Any]:
+def merge_source_network_data(
+    networks_by_source: Sequence[tuple[str, Dict[str, Any]]],
+) -> Dict[str, Any]:
     nodes: List[Dict[str, Any]] = []
     edges: List[Dict[str, Any]] = []
     reviewed_ips: List[Dict[str, Any]] = []
@@ -156,11 +177,13 @@ def merge_source_network_data(networks_by_source: Sequence[tuple[str, Dict[str, 
             if graph_key in seen_nodes:
                 continue
             seen_nodes.add(graph_key)
-            nodes.append({
-                **node,
-                "graph_key": graph_key,
-                "source_slug": source_slug,
-            })
+            nodes.append(
+                {
+                    **node,
+                    "graph_key": graph_key,
+                    "source_slug": source_slug,
+                }
+            )
 
         edges.extend(normalize_dependency_edges(network_data))
         published_model = _published_llm_model_from_network_data(network_data)
@@ -185,7 +208,11 @@ def merge_source_network_data(networks_by_source: Sequence[tuple[str, Dict[str, 
     return {
         "nodes": nodes,
         "dependency_edges": edges,
-        **({"llm_model": next(iter(published_llm_models))} if published_llm_models else {}),
+        **(
+            {"llm_model": next(iter(published_llm_models))}
+            if published_llm_models
+            else {}
+        ),
         "ground_truth_reviewed_ips": reviewed_ips,
         "meta": {
             "node_count": len(nodes),
@@ -203,7 +230,12 @@ def _combined_artifact_roots(ecosystem_slug: str, combo_key: str) -> tuple[Path,
 
 
 def _source_network_path(source_config: Mapping[str, Any], snapshot: str) -> Path:
-    return Path(str(source_config["analysis"])) / snapshot / "dependencies" / "network_data.json"
+    return (
+        Path(str(source_config["analysis"]))
+        / snapshot
+        / "dependencies"
+        / "network_data.json"
+    )
 
 
 def prepare_combined_source_artifacts(
@@ -227,7 +259,9 @@ def prepare_combined_source_artifacts(
             networks_by_source: List[tuple[str, Dict[str, Any]]] = []
             missing_paths: List[Path] = []
             for source_slug in combo:
-                network_path = _source_network_path(source_configs[source_slug], snapshot)
+                network_path = _source_network_path(
+                    source_configs[source_slug], snapshot
+                )
                 if not network_path.exists():
                     missing_paths.append(network_path)
                     continue
@@ -239,7 +273,9 @@ def prepare_combined_source_artifacts(
                     f"missing: {', '.join(str(path) for path in missing_paths)}"
                 )
 
-            analysis_root, postprocess_root = _combined_artifact_roots(ecosystem_slug, combo_key)
+            analysis_root, postprocess_root = _combined_artifact_roots(
+                ecosystem_slug, combo_key
+            )
             snapshot_root = analysis_root / snapshot
 
             emit(f"{combo_key}: merging dependency network", advance=1)
@@ -249,23 +285,37 @@ def prepare_combined_source_artifacts(
 
             emit(f"{combo_key}: recomputing dependency metrics", advance=1)
             dependency_metrics = extract_dependency_metrics(network_data)
-            dependency_metrics_path = snapshot_root / "dependencies" / "dependency_metrics.json"
+            dependency_metrics_path = (
+                snapshot_root / "dependencies" / "dependency_metrics.json"
+            )
             _save_json(dependency_metrics, dependency_metrics_path)
 
             emit(f"{combo_key}: preparing authorship artifacts", advance=1)
-            authorship_metrics = extract_authorship_metrics(network_data.get("nodes", []))
+            authorship_metrics = extract_authorship_metrics(
+                network_data.get("nodes", [])
+            )
             authorship_path = snapshot_root / "authorship" / "authorship_metrics.json"
             _save_json(authorship_metrics, authorship_path)
             authorship_payload = prepare_authorship_payload(network_data)
-            authorship_payload_path = snapshot_root / "authorship" / "authorship_payload.json"
+            authorship_payload_path = (
+                snapshot_root / "authorship" / "authorship_payload.json"
+            )
             _save_json(authorship_payload, authorship_payload_path)
 
-            classification_payload = _combined_placeholder_payload(snapshot, combo_key, combo, "classification")
-            evolution_payload = _combined_placeholder_payload(snapshot, combo_key, combo, "evolution")
-            conformity_metrics = _combined_placeholder_payload(snapshot, combo_key, combo, "conformity")
+            classification_payload = _combined_placeholder_payload(
+                snapshot, combo_key, combo, "classification"
+            )
+            evolution_payload = _combined_placeholder_payload(
+                snapshot, combo_key, combo, "evolution"
+            )
+            conformity_metrics = _combined_placeholder_payload(
+                snapshot, combo_key, combo, "conformity"
+            )
 
             emit(f"{combo_key}: writing non-mergeable section placeholders", advance=1)
-            classification_path = snapshot_root / "classification" / "classification_payload.json"
+            classification_path = (
+                snapshot_root / "classification" / "classification_payload.json"
+            )
             evolution_path = snapshot_root / "evolution" / "evolution_payload.json"
             conformity_path = snapshot_root / "conformity" / "conformity_metrics.json"
             _save_json(classification_payload, classification_path)
@@ -375,7 +425,15 @@ def _save_react_ready_exports(
     _save_csv_rows(
         flat_nodes,
         nodes_csv,
-        fieldnames=["id", "layer", "status", "type", "created", "compliance_score", "author"],
+        fieldnames=[
+            "id",
+            "layer",
+            "status",
+            "type",
+            "created",
+            "compliance_score",
+            "author",
+        ],
     )
     _save_csv_rows(
         flat_edges,
@@ -476,9 +534,13 @@ def prepare_ecosystem_artifacts(
         if str(entry.get("model") or "").strip()
     ]
     if artifact_llm_model:
-        network_data = collapse_network_data_to_llm_model(network_data, artifact_llm_model)
+        network_data = collapse_network_data_to_llm_model(
+            network_data, artifact_llm_model
+        )
     elif len(available_llm_models) == 1:
-        network_data = collapse_network_data_to_llm_model(network_data, available_llm_models[0])
+        network_data = collapse_network_data_to_llm_model(
+            network_data, available_llm_models[0]
+        )
     elif len(available_llm_models) > 1:
         raise ValueError(
             "Multiple LLM models are present in the preprocessed data for "
@@ -528,8 +590,12 @@ def prepare_ecosystem_artifacts(
     _save_json(dependency_metrics, dependency_metrics_path)
 
     emit("Preparing classification artifacts", advance=1)
-    classification_payload = prepare_classification_payload(network_data, source_context=context)
-    classification_payload_path = snapshot_root / "classification" / "classification_payload.json"
+    classification_payload = prepare_classification_payload(
+        network_data, source_context=context
+    )
+    classification_payload_path = (
+        snapshot_root / "classification" / "classification_payload.json"
+    )
     _save_json(classification_payload, classification_payload_path)
     _save_csv_rows(
         classification_payload.get("sankey_grouped", {}).get("links", []),
@@ -555,7 +621,9 @@ def prepare_ecosystem_artifacts(
     _save_json(evolution_payload, evolution_payload_path)
 
     emit("Preparing conformity artifacts", advance=1)
-    conformity_metrics = extract_conformity_metrics(proposal_data, id_field=id_field, source_context=context)
+    conformity_metrics = extract_conformity_metrics(
+        proposal_data, id_field=id_field, source_context=context
+    )
     conformity_path = snapshot_root / "conformity" / "conformity_metrics.json"
     _save_json(conformity_metrics, conformity_path)
     _save_csv_rows(

@@ -1,7 +1,6 @@
-import json
 import os
 import re
-from json import JSONDecodeError
+from json import JSONDecodeError, loads
 from pathlib import Path
 from typing import Any, Dict, List, Mapping
 
@@ -664,7 +663,7 @@ def _dependencies_from_llm_response(
     content = _extract_response_content(response)
     if content is None:
         return []
-    payload = json.loads(content)
+    payload = loads(content)
     return normalize_llm_dependency_output(
         payload.get("dependencies"),
         proposal_label=proposal_label,
@@ -840,19 +839,18 @@ Now apply the same rules to the actual proposal text below.
     else:
         # Chat Completions API path
         try:
-            return _parse(client.chat.completions.create(
-                model=resolved_model,
-                messages=messages,
-                response_format=response_format,
-            ))
-        except TypeError:
             try:
-                return _parse(client.chat.completions.create(
+                response = client.chat.completions.create(
+                    model=resolved_model,
+                    messages=messages,
+                    response_format=response_format,
+                )
+            except TypeError:
+                response = client.chat.completions.create(
                     model=resolved_model,
                     messages=messages,
                     response_format={"type": "json_object"},
-                ))
-            except (JSONDecodeError, TypeError, ValueError, KeyError, OSError, TimeoutError, ConnectionError) as exc:
-                raise RuntimeError(f"LLM API call failed: {exc}") from exc
+                )
+            return _parse(response)
         except (JSONDecodeError, TypeError, ValueError, KeyError, OSError, TimeoutError, ConnectionError) as exc:
             raise RuntimeError(f"LLM API call failed: {exc}") from exc

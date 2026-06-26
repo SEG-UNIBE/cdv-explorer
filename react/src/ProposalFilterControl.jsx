@@ -45,7 +45,7 @@ function buildSourceToken(source, part) {
 
 function parseToken(token, sources) {
   let source = null;
-  let display = token;
+  let display;
   let match = token.match(/^([A-Za-z]+)\s*[- ]*0*([\w]+)\s*-\s*(?:\1\s*[- ]*)?0*([\w]+)$/i);
 
   if (match) {

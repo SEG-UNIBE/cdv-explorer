@@ -481,6 +481,7 @@ def _parse_focus(focus_str: str | None) -> set[str] | None:
                     ids.add(str(i))
                 continue
             except ValueError:
+                # Non-numeric ranges like "A0-A3" are treated as literal IDs below.
                 pass
         ids.add(part)
         ids.add(part.upper())

@@ -21,9 +21,9 @@ from paper.plot_colors import PLOT_COLOR_ALPHA, with_plot_alpha
 
 try:
     from networkx.drawing.nx_agraph import graphviz_layout
-    import pygraphviz  # noqa: F401
+    import pygraphviz
 
-    graphviz_available = True
+    graphviz_available = pygraphviz is not None
 except ImportError:
     graphviz_available = False
 

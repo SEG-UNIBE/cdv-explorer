@@ -1,11 +1,11 @@
-# **CDV-Explorer**
+# **CDV Explorer**
 
 _Modern decentralized software ecosystems evolve through crowdsourced improvement proposals (IPs) that are continuously shaped and autonomously implemented by independent actors. As a result, these ecosystems exhibit so-called **Community-Driven Variability (CDV)** [^1], a novel paradigm that extends beyond traditional variability-intensive systems. This tool allows to explore the proposal space of such ecosystems by providing interactive visualizations and insights about their evolution, authorship, classification, conformity, and inter-proposal relationships._
 
 
 <div align="center">
   <a href="https://seg-unibe.github.io/cdv-explorer/#/">
-    <img width="100%" src="./assets/thumb.png" alt="CDV-Explorer" />
+    <img width="100%" src="./assets/thumb.png" alt="CDV Explorer" />
   </a>
 </div>
 
@@ -59,7 +59,7 @@ _Modern decentralized software ecosystems evolve through crowdsourced improvemen
 
 ## Introduction
 
-CDV-Explorer is an ecosystem-agnostic pipeline for mining and analysing improvement proposals (IPs).
+CDV Explorer is an ecosystem-agnostic pipeline for mining and analysing improvement proposals (IPs).
 At the moment, the explorer ships with active source integrations for the following two CDV-exhibiting ecosystems:
 
 | Ecosystem | Proposals | Source repository |
@@ -149,7 +149,7 @@ npm test -- --run
 
 ## CLI Reference
 
-CDV-Explorer is driven by a [Typer](https://typer.tiangolo.com/) CLI.
+CDV Explorer is driven by a [Typer](https://typer.tiangolo.com/) CLI.
 Run `python main.py --help` for a full overview.
 
 ### `run` - execute the full pipeline
@@ -254,7 +254,7 @@ Build output is written to `react/build` to stay compatible with the existing Gi
 The pipeline transforms raw IP corpora into versioned, frontend-ready datasets in four stages: **Harvest** → **Preprocess** → **Analysis** → **Postprocess**.
 Ecosystem-specific logic is confined to the first two stages, keeping the analysis and frontend layers fully reusable across ecosystems.
 
-![CDV-Explorer pipeline](./assets/architecture_mining_pipeline_ext.png)
+![CDV Explorer pipeline](./assets/architecture_mining_pipeline_ext.png)
 
 ### Project structure
 

@@ -551,7 +551,7 @@ def doctor() -> None:
     """Check local tools, dependencies, configs, and snapshot artifacts without changing files."""
     from analysis.validation import reviewed_ip_policy_for_ecosystem, validate_ground_truth_ips_file
 
-    table = Table("Status", "Check", "Details", title="CDV-Explorer Doctor")
+    table = Table("Status", "Check", "Details", title="CDV Explorer Doctor")
     ok = True
 
     ok &= _doctor_row(

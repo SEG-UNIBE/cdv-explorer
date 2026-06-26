@@ -115,9 +115,9 @@ function AboutPage() {
   return (
     <section className="content about-page">
       <div className="about-page__intro">
-        <h1>About CDV-Explorer</h1>
+        <h1>About CDV Explorer</h1>
         <p>
-          CDV-Explorer is a research tool for analyzing improvement proposals (IPs) in decentralized open-source software ecosystems. It supports the study of Community-Driven Variability (CDV) by making proposal histories, authorship, classifications, status evolution, and inter-proposal relations explorable across IP sources and historic snapshots.
+          CDV Explorer is a research tool for analyzing improvement proposals (IPs) in decentralized open-source software ecosystems. It supports the study of Community-Driven Variability (CDV) by making proposal histories, authorship, classifications, status evolution, and inter-proposal relations explorable across IP sources and historic snapshots.
         </p>
       </div>
 
@@ -229,7 +229,7 @@ function AboutPage() {
         <div className="about-page__cards about-page__cards--two-column">
           <Card className="about-page__card about-page__card--organization">
             <p className="about-page__organization-copy">
-              CDV-Explorer is primarily maintained by{' '}
+              CDV Explorer is primarily maintained by{' '}
               <a href="https://romanboegli.ch" target="_blank" rel="noreferrer">Roman Bögli</a>.
               {' '}The project is part of his PhD work at the Software Engineering Group (SEG).
             </p>
@@ -244,8 +244,9 @@ function AboutPage() {
           <Card className="about-page__card about-page__card--organization">
             <div className="about-page__organization-split">
               <p className="about-page__organization-copy">
-                SEG is part of the Institute of Computer Science at the{' '}
-                <a href="https://www.unibe.ch/" target="_blank" rel="noreferrer">University of Bern</a> in Switzerland🇨🇭.
+                SEG is part of the{' '} 
+                <a href="https://www.inf.unibe.ch/index_eng.html" target="_blank" rel="noreferrer">Institute of Computer Science</a> at the{' '}
+                <a href="https://www.unibe.ch/index_eng.html" target="_blank" rel="noreferrer">University of Bern</a> in Switzerland🇨🇭.
               </p>
               <div className="about-page__logo-card about-page__logo-card--unibe">
                 <img

@@ -27,9 +27,10 @@ bips:18	bips:13	references	low	This BIP modifies the basic format of transaction
 bips:18	bips:16	supersedes	medium	It also replaces BIP 16, which is identical in terms of protocol, but suggests a specific implementation and does not deprecate scriptPubKey to maintain protocol consistency.	BIP16 defines the pay-to-script-hash transaction type, which BIP18 is modifying/extending.	rbo	2026-06-23
 bips:18	bips:12	supersedes	medium	This BIP replaces BIPs 12 and 17, which propose extensions to the Script system to allow scriptPubKey to outsource its verification.		rbo	2026-06-23
 bips:18	bips:17	supersedes	high	This BIP replaces BIPs 12 and 17, which propose extensions to the Script system to allow scriptPubKey to outsource its verification.	BIP17 defines opcode OP_CHECKHASHVERIFY and a new then-standard transaction type. BIP18 now upgrades the hashScriptCheck which uses the OP_CHECKHASHVERIFY (and makes it obsolete)	rbo	2026-06-23
-bips:20	bips:21	superseded_by	high	Proposed-Replacement: 21 [...] BIP 0020 is based off an earlier document by Nils Schneider. And has been replaced by BIP 0021
-
-
+bips:20	bips:21	superseded_by	high	Proposed-Replacement: 21 [...] BIP 0020 is based off an earlier document by Nils Schneider. And has been replaced by BIP 0021		rbo	2026-06-23
+bips:22	bips:16	references	high	"total number of SigOps, as counted for purposes of block limits; if key is not present, sigop count is unknown [...] Due to the BIP 0016 changes regarding rules on block sigops, it is impossible to count sigops from the transactions themselves (the sigops in the scriptCheck 
+must also be included in the count)."	References BIP16 simply to provide the motivation of why sigops-related fields are part of BIP22's speficiation.	rbo	2026-06-26
+bips:22	bips:23	reference	high	See Also BIP 23: getblocktemplate - Pooled Mining	"Reference since BIP23 ""describes extensions to the getblocktemplate JSON-RPC call to enhance pooled mining"" and is to be undertsood as ""extensions to the getblocktemplate JSON-RPC call to enhance pooled mining.""  "	rbo	2026-06-26
 
 
 

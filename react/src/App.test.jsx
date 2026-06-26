@@ -38,6 +38,7 @@ import { filterCrossSourceDependencyGraph } from './networkDiagram/networkDiagra
 import {
   getDefaultExperimentalFeaturesEnabled,
   getEnvironmentBadge,
+  getRepositoryUrl,
   getRuntimeEnvironment,
 } from './runtimeEnvironment';
 import { APP_BUILD_LABEL, APP_COMMIT_FULL_SHA, APP_COMMIT_SHA, APP_VERSION } from './buildInfo';
@@ -589,6 +590,12 @@ test('environment badge is shown for local, dev, and prod hosts', () => {
   expect(getEnvironmentBadge('localhost')).toBe('LOCAL');
   expect(getEnvironmentBadge('preview.pages.dev')).toBe('DEV');
   expect(getEnvironmentBadge('seg-unibe.github.io')).toBe('PROD');
+});
+
+test('repository URL points to the dev branch only for the dev deployment', () => {
+  expect(getRepositoryUrl('preview.pages.dev')).toBe('https://github.com/SEG-UNIBE/cdv-explorer/tree/dev');
+  expect(getRepositoryUrl('seg-unibe.github.io')).toBe('https://github.com/SEG-UNIBE/cdv-explorer');
+  expect(getRepositoryUrl('localhost')).toBe('https://github.com/SEG-UNIBE/cdv-explorer');
 });
 
 test('build metadata exposes version and short commit label', () => {

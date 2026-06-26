@@ -29710,7 +29710,7 @@
       "value": 1,
       "confidence": "high",
       "evidence": "Requires: 32 [...] This BIP defines a logical hierarchy for deterministic wallets based on an algorithm described in BIP-0032",
-      "note": "Dependency noted in BIP44 preamble.",
+      "note": "Dependency noted in BIP44 preamble. BIP44 defines a concrete BIP32 path.",
       "reviewer": "rbo",
       "reviewed_at": "2026-06-22"
     },
@@ -29819,8 +29819,56 @@
       "confidence": "high",
       "evidence": "Proposed-Replacement: 21 [...] BIP 0020 is based off an earlier document by Nils Schneider. And has been replaced by BIP 0021",
       "note": null,
-      "reviewer": null,
-      "reviewed_at": null
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-23"
+    },
+    {
+      "source": "bips:22",
+      "target": "bips:16",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "references",
+      "value": 1,
+      "confidence": "high",
+      "evidence": "total number of SigOps, as counted for purposes of block limits; if key is not present, sigop count is unknown [...] Due to the BIP 0016 changes regarding rules on block sigops, it is impossible to count sigops from the transactions themselves (the sigops in the scriptCheck \nmust also be included in the count).",
+      "note": "References BIP16 simply to provide the motivation of why sigops-related fields are part of BIP22's speficiation.",
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-26"
+    },
+    {
+      "source": "bips:22",
+      "target": "bips:23",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "references",
+      "value": 1,
+      "confidence": "high",
+      "evidence": "See Also BIP 23: getblocktemplate - Pooled Mining",
+      "note": "Reference since BIP23 \"describes extensions to the getblocktemplate JSON-RPC call to enhance pooled mining\" and is to be undertsood as \"extensions to the getblocktemplate JSON-RPC call to enhance pooled mining.\"",
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-26"
+    },
+    {
+      "source": "bips:49",
+      "target": "bips:141",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "depends_on",
+      "value": 1,
+      "confidence": "high",
+      "evidence": "This BIP defines the derivation scheme for HD wallets using the P2WPKH-nested-in-P2SH (BIP 141) serialization format.",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-26"
+    },
+    {
+      "source": "bips:49",
+      "target": "bips:32",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "depends_on",
+      "value": 1,
+      "confidence": "high",
+      "evidence": "This BIP defines the derivation scheme for HD wallets using the P2WPKH-nested-in-P2SH (BIP 141) serialization format.",
+      "note": "HD wallets are fundamentally specified in BIP32",
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-26"
     },
     {
       "source": "bips:1",
@@ -32903,7 +32951,7 @@
       "proposal_id": "22",
       "source_slug": "bips",
       "reviewer": "rbo",
-      "reviewed_at": null,
+      "reviewed_at": "2026-06-26",
       "sampling_strategy": "sampler",
       "sampling_snapshot": "2026-05-28",
       "sampling_seed": "42",
@@ -32923,7 +32971,7 @@
       "proposal_id": "30",
       "source_slug": "bips",
       "reviewer": "rbo",
-      "reviewed_at": null,
+      "reviewed_at": "2026-06-26",
       "sampling_strategy": "sampler",
       "sampling_snapshot": "2026-05-28",
       "sampling_seed": "42",
@@ -33003,7 +33051,7 @@
       "proposal_id": "44",
       "source_slug": "bips",
       "reviewer": "rbo",
-      "reviewed_at": null,
+      "reviewed_at": "2026-06-22",
       "sampling_strategy": "sampler",
       "sampling_snapshot": "2026-05-28",
       "sampling_seed": "42",
@@ -33023,7 +33071,7 @@
       "proposal_id": "49",
       "source_slug": "bips",
       "reviewer": "rbo",
-      "reviewed_at": null,
+      "reviewed_at": "2026-06-22",
       "sampling_strategy": "sampler",
       "sampling_snapshot": "2026-05-28",
       "sampling_seed": "42",
@@ -33341,7 +33389,7 @@
   ],
   "meta": {
     "node_count": 156,
-    "edge_count": 790,
+    "edge_count": 794,
     "source_slugs": [
       "bips",
       "slips"

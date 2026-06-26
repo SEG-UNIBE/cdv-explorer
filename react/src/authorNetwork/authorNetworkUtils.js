@@ -188,6 +188,98 @@ export function buildDisplayCollaborationComponents(nodes, adjacency) {
   return components;
 }
 
+export function prepareAuthorNetworkScene({
+  data,
+  importedLayout,
+  minClusterCollaborations,
+  physicsEnabled,
+}) {
+  const rawNodes = Array.isArray(data?.nodes) ? data.nodes : [];
+  const rawEdges = Array.isArray(data?.edges) ? data.edges : [];
+  const nodes = rawNodes.map((node) => ({ ...node }));
+  const links = rawEdges.map((edge) => ({ ...edge }));
+  const nodeIds = new Set(nodes.map((node) => node.id));
+  const adjacency = new Map(nodes.map((node) => [node.id, new Set()]));
+  const getEdgeSourceId = (edge) => (typeof edge.source === 'object' ? edge.source.id : edge.source);
+  const getEdgeTargetId = (edge) => (typeof edge.target === 'object' ? edge.target.id : edge.target);
+
+  links.forEach((edge) => {
+    if (!nodeIds.has(edge.source) || !nodeIds.has(edge.target)) {
+      return;
+    }
+    adjacency.get(edge.source).add(edge.target);
+    adjacency.get(edge.target).add(edge.source);
+  });
+
+  const components = buildDisplayCollaborationComponents(nodes, adjacency);
+  const clusterMeta = components.map((members, clusterIndex) => {
+    const memberIds = new Set(members);
+    const edgeCount = links.filter((edge) => (
+      memberIds.has(getEdgeSourceId(edge)) && memberIds.has(getEdgeTargetId(edge))
+    )).length;
+    return { clusterId: clusterIndex, members, clusterSize: members.length, edgeCount };
+  });
+
+  const clusterByNodeId = new Map();
+  clusterMeta.forEach((cluster) => {
+    cluster.members.forEach((member) => {
+      clusterByNodeId.set(member, {
+        clusterId: cluster.clusterId,
+        clusterSize: cluster.clusterSize,
+        clusterCollaborations: cluster.edgeCount,
+      });
+    });
+  });
+
+  nodes.forEach((node) => {
+    const cluster = clusterByNodeId.get(node.id) || { clusterId: -1, clusterSize: 1, clusterCollaborations: 0 };
+    node.clusterId = cluster.clusterId;
+    node.clusterSize = cluster.clusterSize;
+    node.clusterCollaborations = cluster.clusterCollaborations;
+  });
+
+  const collaborationThreshold = Math.max(0, Number(String(minClusterCollaborations).trim() || '0') || 0);
+  const visibleClusterIds = new Set(
+    clusterMeta
+      .filter((cluster) => cluster.edgeCount >= collaborationThreshold)
+      .map((cluster) => cluster.clusterId)
+  );
+  const visibleNodes = nodes.filter((node) => visibleClusterIds.has(node.clusterId));
+  const visibleNodeIds = new Set(visibleNodes.map((node) => node.id));
+  const visibleLinks = links.filter((edge) => (
+    visibleNodeIds.has(getEdgeSourceId(edge)) && visibleNodeIds.has(getEdgeTargetId(edge))
+  ));
+  const visibleClusters = clusterMeta.filter((cluster) => visibleClusterIds.has(cluster.clusterId));
+  const importedPositions = importedLayout?.positions || null;
+  const importedEdgeCurves = importedLayout?.edgeCurves || new Map();
+  const importedPositionedNodeCount = importedPositions
+    ? visibleNodes.filter((node) => importedPositions[String(node.id)]).length
+    : 0;
+
+  visibleNodes.forEach((node) => {
+    const coords = importedPositions?.[String(node.id)];
+    if (!coords) {
+      return;
+    }
+    node.x = coords[0];
+    node.y = coords[1];
+    if (!physicsEnabled) {
+      node.fx = coords[0];
+      node.fy = coords[1];
+    }
+  });
+
+  return {
+    visibleNodes,
+    visibleLinks,
+    visibleClusters,
+    clusterByNodeId,
+    collaborationThreshold,
+    importedEdgeCurves,
+    importedPositionedNodeCount,
+  };
+}
+
 export function createEdgeStrokeWidthScale(links) {
   const weights = links
     .map((link) => Number(link?.weight || 1))

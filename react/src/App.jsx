@@ -2,10 +2,10 @@ import { lazy, Suspense, useEffect } from 'react';
 import { Card } from 'primereact/card';
 import { Tag } from 'primereact/tag';
 import { HashRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
-import Navbar from './Navbar';
+import Navbar from './Navbar.jsx';
 import './App.scss';
 import { ecosystems } from './ecosystems';
-import { ThemeProvider, useTheme } from './theme';
+import { ThemeProvider, useTheme } from './theme.jsx';
 import { fetchDatasetForSelection, getAvailableSnapshots } from './data';
 
 const EcosystemDashboard = lazy(() =>
@@ -191,7 +191,7 @@ function AboutPage() {
         <div className="about-page__cards about-page__cards--two-column">
           <Card className="about-page__card about-page__card--organization">
             <p className="about-page__organization-copy">
-              CDV-Explorer is developed and maintained by{' '}
+              CDV-Explorer is primarily maintained by{' '}
               <a href="https://romanboegli.ch" target="_blank" rel="noreferrer">Roman Bögli</a>.
               {' '}The project is part of his PhD work at the Software Engineering Group (SEG).
             </p>

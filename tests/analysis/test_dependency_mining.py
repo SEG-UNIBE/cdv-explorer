@@ -17,7 +17,7 @@ from analysis.dependencies.mining import (
     normalize_llm_dependency_output,
     prepare_llm_dependency_text,
 )
-from analysis.dependencies.utils import uses_hex_proposal_ids
+from analysis.reference_ids import uses_hex_proposal_ids
 from ecosystems import ECOSYSTEM_REGISTRY
 from pipeline.source_context import SourceContext
 

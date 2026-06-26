@@ -5,7 +5,7 @@ import 'primereact/resources/primereact.css';
 import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';
 import './index.scss';
-import App from './App';
+import App from './App.jsx';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

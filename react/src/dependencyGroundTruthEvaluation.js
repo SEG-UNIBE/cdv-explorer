@@ -13,11 +13,6 @@ export const EVALUATED_DEPENDENCY_APPROACHES = [
   BODY_EXTRACTED_LLM,
 ];
 
-// Approaches that emit distinct relation subtypes and can therefore participate
-// in exact-type matching. This is a property of the extraction method itself:
-// Regex and LLM produce a single generic relation, so they are type-agnostic.
-export const TYPE_BEARING_DEPENDENCY_APPROACHES = new Set([PREAMBLE_EXTRACTED]);
-
 export const GROUND_TRUTH_MATCH_MODE_EDGE_ONLY = 'edge_only';
 export const GROUND_TRUTH_MATCH_MODE_EXACT_TYPE = 'exact_type';
 
@@ -202,15 +197,19 @@ export function buildDefaultTypeMapping(dataset, ontology = DEFAULT_RELATION_ONT
       rows.push({ approach, subtype: null, include: false, target: null, empty: true });
       return;
     }
-    const typeBearing = TYPE_BEARING_DEPENDENCY_APPROACHES.has(approach);
     subtypes.forEach((subtype) => {
       const canonical = canonicalMap[subtype] || subtype;
-      const target = canonicalToGtType[canonical] || null;
+      let target = canonicalToGtType[canonical] || null;
+      if (approach === BODY_EXTRACTED_REGEX) {
+        target = gtTypes.length ? GT_TYPE_ALL : null;
+      } else if (approach === BODY_EXTRACTED_LLM && subtype === 'implicit_dependency') {
+        target = gtTypes.includes('depends_on') ? 'depends_on' : null;
+      }
       const excluded = excludedTypes.has(subtype);
       rows.push({
         approach,
         subtype,
-        include: typeBearing && !excluded && Boolean(target),
+        include: !excluded && Boolean(target),
         target,
       });
     });

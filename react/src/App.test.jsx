@@ -485,18 +485,18 @@ test('ground-truth evaluation can require exact relation-type matches', () => {
       fp: 0,
       fn: 0,
     }),
-    // Regex and LLM have no included subtype by default: not scored in Exact Type.
+    // Regex defaults to "(all types)" and LLM defaults to "depends_on", so both are scored.
     expect.objectContaining({
       approach: BODY_EXTRACTED_REGEX,
-      evaluated: false,
-      tp: 0,
+      evaluated: true,
+      tp: 1,
       fp: 0,
       fn: 0,
     }),
     expect.objectContaining({
       approach: BODY_EXTRACTED_LLM,
-      evaluated: false,
-      tp: 0,
+      evaluated: true,
+      tp: 1,
       fp: 0,
       fn: 0,
     }),
@@ -535,8 +535,8 @@ test('default type mapping is discovered from data and prefilled from the ontolo
     { approach: PREAMBLE_EXTRACTED, subtype: 'requires', include: true, target: 'depends_on' },
     { approach: PREAMBLE_EXTRACTED, subtype: 'replaces', include: true, target: 'supersedes' },
     { approach: PREAMBLE_EXTRACTED, subtype: 'proposed_replacement', include: true, target: 'superseded_by' },
-    { approach: BODY_EXTRACTED_REGEX, subtype: 'reference', include: false, target: null },
-    { approach: BODY_EXTRACTED_LLM, subtype: 'implicit_dependency', include: false, target: null },
+    { approach: BODY_EXTRACTED_REGEX, subtype: 'reference', include: true, target: GT_TYPE_ALL },
+    { approach: BODY_EXTRACTED_LLM, subtype: 'implicit_dependency', include: true, target: 'depends_on' },
   ]);
 });
 
@@ -798,7 +798,7 @@ test('an approach is only scored against the gold types it is mapped to', () => 
   expect(regex.falseNegativeEdges).toEqual([]);
 });
 
-test('editing the type mapping changes which edges are scored', () => {
+test('editing the type mapping changes which GT type the LLM edges are scored against', () => {
   const dataset = {
     groundTruthReviewedIps: [
       { ip: 'bips:1', reviewed_at: '2026-06-22' },
@@ -813,16 +813,16 @@ test('editing the type mapping changes which edges are scored', () => {
     },
   };
 
-  // By default the LLM subtype is excluded -> LLM is not scored.
+  // By default the LLM subtype is mapped to depends_on, so it is scored.
   const baseline = buildGroundTruthEvaluation(dataset, { matchMode: GROUND_TRUTH_MATCH_MODE_EXACT_TYPE });
   const llmBaseline = baseline.approaches.find((approach) => approach.approach === BODY_EXTRACTED_LLM);
-  expect(llmBaseline.evaluated).toBe(false);
+  expect(llmBaseline).toEqual(expect.objectContaining({ evaluated: true, tp: 1, fp: 0, fn: 0 }));
 
-  // Opt the LLM subtype in and map it to depends_on -> it now matches the gold edge.
+  // Remap the LLM subtype to a different GT type -> the same edge no longer matches.
   const typeMapping = {
-    gtTypes: ['depends_on'],
+    gtTypes: ['depends_on', 'references'],
     rows: [
-      { approach: BODY_EXTRACTED_LLM, subtype: 'implicit_dependency', include: true, target: 'depends_on' },
+      { approach: BODY_EXTRACTED_LLM, subtype: 'implicit_dependency', include: true, target: 'references' },
     ],
   };
   const edited = buildGroundTruthEvaluation(dataset, {
@@ -830,7 +830,7 @@ test('editing the type mapping changes which edges are scored', () => {
     typeMapping,
   });
   const llmEdited = edited.approaches.find((approach) => approach.approach === BODY_EXTRACTED_LLM);
-  expect(llmEdited).toEqual(expect.objectContaining({ evaluated: true, tp: 1, fp: 0, fn: 0 }));
+  expect(llmEdited).toEqual(expect.objectContaining({ evaluated: true, tp: 0, fp: 1, fn: 0 }));
 });
 
 test('ground-truth evaluation can match proposed_replacement against superseded_by', () => {

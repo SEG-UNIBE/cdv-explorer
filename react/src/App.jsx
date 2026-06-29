@@ -231,14 +231,19 @@ function AboutPage() {
             <p className="about-page__organization-copy">
               CDV Explorer is primarily maintained by{' '}
               <a href="https://romanboegli.ch" target="_blank" rel="noreferrer">Roman Bögli</a>.
-              {' '}The project is part of his PhD work at the Software Engineering Group (SEG).
+              {' '}The project is part of his PhD work at the{' '}
+              <a href="https://seg.inf.unibe.ch/" target="_blank" rel="noreferrer">
+                Software Engineering Group (SEG)
+              </a>.
             </p>
             <div className="about-page__logo-card about-page__logo-card--seg">
-              <img
-                className="about-page__logo about-page__logo--seg"
-                src={`${publicBase}about/seg_logo.png`}
-                alt="Software Engineering Group logo"
-              />
+              <a href="https://seg.inf.unibe.ch/" target="_blank" rel="noreferrer">
+                <img
+                  className="about-page__logo about-page__logo--seg"
+                  src={`${publicBase}about/seg_logo.png`}
+                  alt="Software Engineering Group logo"
+                />
+              </a>
             </div>
           </Card>
           <Card className="about-page__card about-page__card--organization">
@@ -249,11 +254,13 @@ function AboutPage() {
                 <a href="https://www.unibe.ch/index_eng.html" target="_blank" rel="noreferrer">University of Bern</a> in Switzerland🇨🇭.
               </p>
               <div className="about-page__logo-card about-page__logo-card--unibe">
-                <img
-                  className="about-page__logo about-page__logo--unibe"
-                  src={unibeLogoSrc}
-                  alt="University of Bern logo"
-                />
+                <a href="https://www.unibe.ch/index_eng.html" target="_blank" rel="noreferrer">
+                  <img
+                    className="about-page__logo about-page__logo--unibe"
+                    src={unibeLogoSrc}
+                    alt="University of Bern logo"
+                  />
+                </a>
               </div>
             </div>
           </Card>

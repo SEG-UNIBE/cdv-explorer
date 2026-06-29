@@ -3,11 +3,16 @@ from __future__ import annotations
 import csv
 import io
 import re
+import zipfile
 from datetime import date
 from pathlib import Path
 from typing import Any, Dict, List, Mapping, Sequence
+from xml.etree import ElementTree as ET
 
 from analysis.reference_ids import normalize_reference_id_for_config
+
+
+GROUND_TRUTH_WORKBOOK_FILENAME = "ground_truth.xlsx"
 
 
 GROUND_TRUTH_CSV_COLUMNS = (
@@ -60,6 +65,258 @@ GROUND_TRUTH_REVIEW_POLICIES: dict[str, dict[str, Any]] = {
         "required_type": "Specification",
     },
 }
+GROUND_TRUTH_WORKBOOK_SHEETS = (
+    ("ips", REVIEWED_IPS_CSV_COLUMNS),
+    ("interrelations", GROUND_TRUTH_CSV_COLUMNS),
+)
+_XLSX_MAIN_NS = "http://schemas.openxmlformats.org/spreadsheetml/2006/main"
+_XLSX_REL_NS = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+_XLSX_PKG_REL_NS = "http://schemas.openxmlformats.org/package/2006/relationships"
+_XLSX_NAMESPACES = {"x": _XLSX_MAIN_NS, "r": _XLSX_REL_NS, "pr": _XLSX_PKG_REL_NS}
+
+
+def ground_truth_directory(ecosystem_slug: str | None) -> Path:
+    return Path("ip_data") / str(ecosystem_slug) / "ground_truth"
+
+
+def ground_truth_workbook_path(ecosystem_slug: str | None) -> Path:
+    return ground_truth_directory(ecosystem_slug) / GROUND_TRUTH_WORKBOOK_FILENAME
+
+
+def _ground_truth_csv_path(ecosystem_slug: str | None, sheet_name: str) -> Path:
+    if sheet_name == "ips":
+        filename = "ips.csv"
+    elif sheet_name == "interrelations":
+        filename = "interrelations.csv"
+    else:
+        raise ValueError(f"Unknown ground-truth sheet `{sheet_name}`")
+    return ground_truth_directory(ecosystem_slug) / filename
+
+
+def _excel_column_name(index: int) -> str:
+    value = index + 1
+    name = ""
+    while value > 0:
+        value, remainder = divmod(value - 1, 26)
+        name = chr(ord("A") + remainder) + name
+    return name
+
+
+def _excel_column_index(cell_ref: str) -> int:
+    letters = []
+    for char in str(cell_ref or ""):
+        if char.isalpha():
+            letters.append(char.upper())
+        else:
+            break
+    if not letters:
+        return 0
+    value = 0
+    for char in letters:
+        value = (value * 26) + (ord(char) - ord("A") + 1)
+    return max(value - 1, 0)
+
+
+def _append_inline_string_cell(
+    row_element: ET.Element,
+    *,
+    row_number: int,
+    column_index: int,
+    value: str,
+) -> None:
+    if value == "":
+        return
+    cell = ET.SubElement(
+        row_element,
+        f"{{{_XLSX_MAIN_NS}}}c",
+        {
+            "r": f"{_excel_column_name(column_index)}{row_number}",
+            "t": "inlineStr",
+        },
+    )
+    inline_string = ET.SubElement(cell, f"{{{_XLSX_MAIN_NS}}}is")
+    text = ET.SubElement(inline_string, f"{{{_XLSX_MAIN_NS}}}t")
+    if value[:1].isspace() or value[-1:].isspace():
+        text.set("{http://www.w3.org/XML/1998/namespace}space", "preserve")
+    text.text = value
+
+
+def _build_sheet_xml(columns: Sequence[str], rows: Sequence[Mapping[str, Any]]) -> bytes:
+    worksheet = ET.Element(
+        f"{{{_XLSX_MAIN_NS}}}worksheet",
+        {"xmlns": _XLSX_MAIN_NS},
+    )
+    sheet_data = ET.SubElement(worksheet, f"{{{_XLSX_MAIN_NS}}}sheetData")
+
+    header_row = ET.SubElement(
+        sheet_data,
+        f"{{{_XLSX_MAIN_NS}}}row",
+        {"r": "1"},
+    )
+    for index, column in enumerate(columns):
+        _append_inline_string_cell(
+            header_row,
+            row_number=1,
+            column_index=index,
+            value=str(column),
+        )
+
+    for row_number, row in enumerate(rows, start=2):
+        row_element = ET.SubElement(
+            sheet_data,
+            f"{{{_XLSX_MAIN_NS}}}row",
+            {"r": str(row_number)},
+        )
+        for index, column in enumerate(columns):
+            _append_inline_string_cell(
+                row_element,
+                row_number=row_number,
+                column_index=index,
+                value=str(row.get(column, "") or ""),
+            )
+
+    return ET.tostring(worksheet, encoding="utf-8", xml_declaration=True)
+
+
+def _sheet_value_from_cell(
+    cell: ET.Element,
+    *,
+    shared_strings: Sequence[str],
+    column_name: str | None = None,
+) -> str:
+    cell_type = cell.get("t")
+    if cell_type == "inlineStr":
+        return "".join(cell.itertext()).strip()
+    if cell_type == "s":
+        raw_index = cell.findtext("x:v", default="", namespaces=_XLSX_NAMESPACES).strip()
+        if raw_index.isdigit():
+            index = int(raw_index)
+            if 0 <= index < len(shared_strings):
+                return shared_strings[index].strip()
+        return ""
+
+    value = cell.findtext("x:v", default="", namespaces=_XLSX_NAMESPACES).strip()
+    if value and column_name in {"created", "reviewed_at"}:
+        try:
+            serial = float(value)
+        except ValueError:
+            return value
+        if serial >= 1 and serial.is_integer():
+            base = date(1899, 12, 30)
+            return base.fromordinal(base.toordinal() + int(serial)).isoformat()
+    return value
+
+
+def _load_shared_strings(workbook: zipfile.ZipFile) -> List[str]:
+    if "xl/sharedStrings.xml" not in workbook.namelist():
+        return []
+    root = ET.fromstring(workbook.read("xl/sharedStrings.xml"))
+    values: List[str] = []
+    for string_item in root.findall("x:si", _XLSX_NAMESPACES):
+        values.append("".join(string_item.itertext()))
+    return values
+
+
+def _sheet_path_by_name(workbook: zipfile.ZipFile, sheet_name: str) -> str:
+    workbook_root = ET.fromstring(workbook.read("xl/workbook.xml"))
+    rels_root = ET.fromstring(workbook.read("xl/_rels/workbook.xml.rels"))
+    targets_by_rel_id = {
+        rel.get("Id"): rel.get("Target")
+        for rel in rels_root.findall("pr:Relationship", _XLSX_NAMESPACES)
+    }
+    for sheet in workbook_root.findall("x:sheets/x:sheet", _XLSX_NAMESPACES):
+        if str(sheet.get("name") or "").strip() != sheet_name:
+            continue
+        rel_id = sheet.get(f"{{{_XLSX_REL_NS}}}id")
+        target = targets_by_rel_id.get(rel_id)
+        if target:
+            return f"xl/{target.lstrip('/')}"
+    raise ValueError(f"Ground-truth workbook is missing sheet `{sheet_name}`")
+
+
+def _load_xlsx_sheet_entries(
+    workbook_path: Path,
+    *,
+    sheet_name: str,
+    columns: Sequence[str],
+) -> List[Dict[str, str]]:
+    with zipfile.ZipFile(workbook_path) as workbook:
+        shared_strings = _load_shared_strings(workbook)
+        sheet_path = _sheet_path_by_name(workbook, sheet_name)
+        sheet_root = ET.fromstring(workbook.read(sheet_path))
+
+    rows: List[List[str]] = []
+    for row_element in sheet_root.findall("x:sheetData/x:row", _XLSX_NAMESPACES):
+        values_by_index: dict[int, str] = {}
+        for cell in row_element.findall("x:c", _XLSX_NAMESPACES):
+            cell_ref = str(cell.get("r") or "")
+            column_index = _excel_column_index(cell_ref)
+            values_by_index[column_index] = _sheet_value_from_cell(
+                cell,
+                shared_strings=shared_strings,
+            )
+        if not values_by_index:
+            continue
+        max_index = max(values_by_index)
+        rows.append([values_by_index.get(index, "") for index in range(max_index + 1)])
+
+    if not rows:
+        return []
+
+    header = [str(value or "").strip() for value in rows[0]]
+    header_index = {name: index for index, name in enumerate(header) if name}
+    missing = [column for column in columns if column not in header_index]
+    if missing:
+        raise ValueError(
+            f"Ground-truth workbook sheet `{sheet_name}` is missing columns: {', '.join(missing)}"
+        )
+
+    entries: List[Dict[str, str]] = []
+    for row_values in rows[1:]:
+        entry = {
+            column: str(row_values[header_index[column]]).strip()
+            if header_index[column] < len(row_values)
+            else ""
+            for column in columns
+        }
+        if any(entry.values()):
+            entries.append(entry)
+    return entries
+
+
+def _write_csv_rows(
+    csv_path: Path,
+    *,
+    columns: Sequence[str],
+    rows: Sequence[Mapping[str, Any]],
+) -> None:
+    csv_path.parent.mkdir(parents=True, exist_ok=True)
+    with csv_path.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=list(columns), delimiter="\t")
+        writer.writeheader()
+        for row in rows:
+            writer.writerow(
+                {column: str(row.get(column, "") or "") for column in columns}
+            )
+
+
+def sync_ground_truth_csvs_from_workbook(ecosystem_slug: str | None) -> bool:
+    workbook_path = ground_truth_workbook_path(ecosystem_slug)
+    if not workbook_path.exists():
+        return False
+
+    for sheet_name, columns in GROUND_TRUTH_WORKBOOK_SHEETS:
+        rows = _load_xlsx_sheet_entries(
+            workbook_path,
+            sheet_name=sheet_name,
+            columns=columns,
+        )
+        _write_csv_rows(
+            _ground_truth_csv_path(ecosystem_slug, sheet_name),
+            columns=columns,
+            rows=rows,
+        )
+    return True
 
 
 def ground_truth_source_configs_by_slug(
@@ -243,6 +500,87 @@ def _load_csv_rows(
         )
 
     return entries
+
+
+def export_ground_truth_workbook(ecosystem_slug: str | None) -> Path:
+    if not ecosystem_slug:
+        raise ValueError("Missing ecosystem slug")
+
+    workbook_path = ground_truth_workbook_path(ecosystem_slug)
+    workbook_path.parent.mkdir(parents=True, exist_ok=True)
+
+    workbook_xml = ET.Element(
+        f"{{{_XLSX_MAIN_NS}}}workbook",
+        {
+            "xmlns": _XLSX_MAIN_NS,
+            "xmlns:r": _XLSX_REL_NS,
+        },
+    )
+    sheets_element = ET.SubElement(workbook_xml, f"{{{_XLSX_MAIN_NS}}}sheets")
+    workbook_rels = ET.Element(
+        f"{{{_XLSX_PKG_REL_NS}}}Relationships",
+        {"xmlns": _XLSX_PKG_REL_NS},
+    )
+
+    sheet_xml_by_path: dict[str, bytes] = {}
+    for index, (sheet_name, columns) in enumerate(GROUND_TRUTH_WORKBOOK_SHEETS, start=1):
+        csv_path = _ground_truth_csv_path(ecosystem_slug, sheet_name)
+        rows = _load_csv_rows(csv_path, columns=columns)
+        ET.SubElement(
+            sheets_element,
+            f"{{{_XLSX_MAIN_NS}}}sheet",
+            {
+                "name": sheet_name,
+                "sheetId": str(index),
+                f"{{{_XLSX_REL_NS}}}id": f"rId{index}",
+            },
+        )
+        ET.SubElement(
+            workbook_rels,
+            f"{{{_XLSX_PKG_REL_NS}}}Relationship",
+            {
+                "Id": f"rId{index}",
+                "Type": f"{_XLSX_REL_NS}/worksheet",
+                "Target": f"worksheets/sheet{index}.xml",
+            },
+        )
+        sheet_xml_by_path[f"xl/worksheets/sheet{index}.xml"] = _build_sheet_xml(
+            columns,
+            rows,
+        )
+
+    content_types = f"""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+  <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
+  <Default Extension="xml" ContentType="application/xml"/>
+  <Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>
+  <Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>
+  <Override PartName="/xl/worksheets/sheet2.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>
+</Types>
+"""
+    package_rels = f"""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="{_XLSX_PKG_REL_NS}">
+  <Relationship Id="rId1" Type="{_XLSX_REL_NS}/officeDocument" Target="xl/workbook.xml"/>
+</Relationships>
+"""
+
+    with zipfile.ZipFile(
+        workbook_path, "w", compression=zipfile.ZIP_DEFLATED
+    ) as workbook:
+        workbook.writestr("[Content_Types].xml", content_types)
+        workbook.writestr("_rels/.rels", package_rels)
+        workbook.writestr(
+            "xl/workbook.xml",
+            ET.tostring(workbook_xml, encoding="utf-8", xml_declaration=True),
+        )
+        workbook.writestr(
+            "xl/_rels/workbook.xml.rels",
+            ET.tostring(workbook_rels, encoding="utf-8", xml_declaration=True),
+        )
+        for path, sheet_xml in sheet_xml_by_path.items():
+            workbook.writestr(path, sheet_xml)
+
+    return workbook_path
 
 
 def _normalize_iso_date(text: Any) -> str | None:
@@ -448,6 +786,7 @@ def load_ground_truth_curated_entries(
     if not ecosystem_slug:
         return []
 
+    sync_ground_truth_csvs_from_workbook(ecosystem_slug)
     csv_path = (
         Path("ip_data") / str(ecosystem_slug) / "ground_truth" / "interrelations.csv"
     )
@@ -477,6 +816,7 @@ def load_ground_truth_ips(
     if not ecosystem_slug:
         return []
 
+    sync_ground_truth_csvs_from_workbook(ecosystem_slug)
     csv_path = Path("ip_data") / str(ecosystem_slug) / "ground_truth" / "ips.csv"
     entries = [
         entry

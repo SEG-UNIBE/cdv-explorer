@@ -827,6 +827,7 @@ def _run_source_pipeline(
 def doctor() -> None:
     """Check local tools, dependencies, configs, and snapshot artifacts without changing files."""
     from analysis.validation import (
+        ground_truth_workbook_path,
         reviewed_ip_policy_for_ecosystem,
         validate_ground_truth_ips_file,
     )
@@ -972,7 +973,9 @@ def doctor() -> None:
         gt_dir = Path("ip_data") / eco_slug / "ground_truth"
         interrelations_csv = gt_dir / "interrelations.csv"
         reviewed_ips_csv = gt_dir / "ips.csv"
-        if interrelations_csv.exists() and not reviewed_ips_csv.exists():
+        workbook_path = ground_truth_workbook_path(eco_slug)
+        has_gt_source = interrelations_csv.exists() or workbook_path.exists()
+        if has_gt_source and not reviewed_ips_csv.exists():
             reviewed_ip_warnings.append(eco_slug)
     ok &= _doctor_row(
         table,

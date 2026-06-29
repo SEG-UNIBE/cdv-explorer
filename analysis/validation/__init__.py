@@ -1,8 +1,11 @@
 from .ground_truth import (
     completed_reviewed_ip_entries,
+    export_ground_truth_workbook,
+    ground_truth_workbook_path,
     load_ground_truth_curated_entries,
     load_ground_truth_ips,
     reviewed_ip_policy_for_ecosystem,
+    sync_ground_truth_csvs_from_workbook,
     validate_ground_truth_curated_entries,
     validate_reviewed_ip_policy,
     validate_reviewed_ip_entries,
@@ -30,6 +33,9 @@ __all__ = [
     "validate_reviewed_ip_entries",
     "validate_reviewed_ip_policy",
     "completed_reviewed_ip_entries",
+    "export_ground_truth_workbook",
+    "ground_truth_workbook_path",
     "validate_react_generated_indexes",
     "validate_source_snapshot",
+    "sync_ground_truth_csvs_from_workbook",
 ]

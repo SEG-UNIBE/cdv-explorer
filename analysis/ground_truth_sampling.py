@@ -10,6 +10,7 @@ from typing import Any, Dict, List, Mapping, Sequence
 from analysis.dependencies.constants import GROUND_TRUTH_CURATED
 from analysis.validation.ground_truth import (
     REVIEWED_IPS_CSV_COLUMNS,
+    export_ground_truth_workbook,
     load_ground_truth_ips,
 )
 
@@ -218,6 +219,8 @@ def write_ips_csv(rows: Sequence[Mapping[str, Any]], output_path: Path) -> None:
             writer.writerow(
                 {field: row.get(field, "") for field in REVIEWED_IPS_CSV_COLUMNS}
             )
+    ecosystem_slug = output_path.parent.parent.name
+    export_ground_truth_workbook(ecosystem_slug)
 
 
 def prefill_ips_csv(

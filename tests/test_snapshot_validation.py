@@ -4,6 +4,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from analysis.validation.ground_truth import export_ground_truth_workbook
 from analysis.validation.snapshots import (
     expected_combined_snapshot_targets,
     validate_ground_truth_curated_file,
@@ -256,6 +257,60 @@ class SnapshotValidationTests(unittest.TestCase):
         warning_text = "\n".join(result.warnings)
         self.assertIn("expects source `bips`", warning_text)
         self.assertIn("expects proposal type `Specification`", warning_text)
+
+    def test_ground_truth_workbook_recreates_csvs_for_validation(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            root = Path(tmp_dir)
+            gt_dir = root / "ip_data" / "bitcoin" / "ground_truth"
+            gt_dir.mkdir(parents=True)
+            (gt_dir / "interrelations.csv").write_text(
+                "\n".join(
+                    [
+                        "source\ttarget\trelation_type\tconfidence\tevidence\tnote\treviewer\treviewed_at",
+                        "bips:44\tbips:32\tdepends_on\thigh\tRequires: 32\t\trbo\t2026-06-22",
+                    ]
+                ),
+                encoding="utf-8",
+            )
+            (gt_dir / "ips.csv").write_text(
+                "\n".join(
+                    [
+                        "ip\treviewer\treviewed_at\tsampling_strategy\tsampling_snapshot\tsampling_seed\tera_bucket\tdensity_bucket\tdensity_basis\tcreated\tstatus\ttype\tlayer\ttitle\textracted_target_count\tnote",
+                        "bips:44\trbo\t2026-06-22\tmanual\t\t\tmiddle\tlow\tall_methods\t2014-04-24\tDraft\tSpecification\tApplications\tTest BIP\t1\t",
+                    ]
+                ),
+                encoding="utf-8",
+            )
+
+            previous_cwd = Path.cwd()
+            os.chdir(root)
+            try:
+                workbook_path = export_ground_truth_workbook("bitcoin")
+                (gt_dir / "interrelations.csv").unlink()
+                (gt_dir / "ips.csv").unlink()
+                ecosystem_config = {
+                    "sources": {
+                        "bips": {
+                            "proposal_acronym": "BIP",
+                            "reference_pattern": r"\bBIP[-#\s]?(\d+)\b",
+                            "max_proposal_id": 9999,
+                        },
+                    }
+                }
+                curated_result = validate_ground_truth_curated_file(
+                    "bitcoin", ecosystem_config=ecosystem_config
+                )
+                ips_result = validate_ground_truth_ips_file(
+                    "bitcoin", ecosystem_config=ecosystem_config
+                )
+            finally:
+                os.chdir(previous_cwd)
+
+            self.assertTrue(workbook_path.exists())
+            self.assertTrue(curated_result.ok)
+            self.assertTrue(ips_result.ok)
+            self.assertTrue((gt_dir / "interrelations.csv").exists())
+            self.assertTrue((gt_dir / "ips.csv").exists())
 
     def test_expected_combined_snapshot_targets_uses_source_snapshot_intersection(
         self,

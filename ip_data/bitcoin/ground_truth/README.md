@@ -5,10 +5,12 @@ Used as the canonical reference against which `llm`, `preamble`, and `regex` ext
 
 ## File layout
 
-- One CSV per ecosystem: [`interrelations.csv`](./interrelations.csv).
-- Reviewed source IP scope: [`ips.csv`](./ips.csv).
+- Editable workbook: [`ground_truth.xlsx`](./ground_truth.xlsx) with two sheets: `ips` and `interrelations`.
+- Generated reviewed source-IP scope: [`ips.csv`](./ips.csv).
+- Generated curated edges: [`interrelations.csv`](./interrelations.csv).
 - Inter-source edges (e.g. `bips:N → slips:M`) live in the same file.
-- Lines starting with `#` are treated as comments and skipped during import.
+- The CSV files remain pipeline inputs for validation and artifact generation, but they are regenerated from the workbook whenever ground-truth data is loaded.
+- Lines starting with `#` are treated as comments and skipped during import when editing the CSVs directly.
 
 ## Schema
 

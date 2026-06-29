@@ -13,6 +13,7 @@ from analysis.dependencies.constants import (
     PREAMBLE_EXTRACTED,
 )
 from analysis.validation.ground_truth import (
+    ground_truth_workbook_path,
     load_ground_truth_ips,
     load_ground_truth_curated_entries,
     validate_reviewed_ip_policy,
@@ -467,7 +468,7 @@ def validate_ground_truth_curated_file(
 ) -> SnapshotValidationResult:
     result = SnapshotValidationResult()
     csv_path = Path("ip_data") / ecosystem_slug / "ground_truth" / "interrelations.csv"
-    if not csv_path.exists():
+    if not csv_path.exists() and not ground_truth_workbook_path(ecosystem_slug).exists():
         result.file_status["ground_truth"] = "—"
         return result
 
@@ -501,7 +502,7 @@ def validate_ground_truth_ips_file(
 ) -> SnapshotValidationResult:
     result = SnapshotValidationResult()
     csv_path = Path("ip_data") / ecosystem_slug / "ground_truth" / "ips.csv"
-    if not csv_path.exists():
+    if not csv_path.exists() and not ground_truth_workbook_path(ecosystem_slug).exists():
         result.file_status["reviewed_ips"] = "⚠️ missing"
         return result
 

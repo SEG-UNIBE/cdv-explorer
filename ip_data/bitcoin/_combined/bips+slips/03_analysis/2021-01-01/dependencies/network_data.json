@@ -29716,6 +29716,18 @@
     },
     {
       "source": "bips:18",
+      "target": "bips:11",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "references",
+      "value": 1,
+      "confidence": "medium",
+      "evidence": "See Also [...] M-of-N Multisignature Transactions BIP 11",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-23"
+    },
+    {
+      "source": "bips:18",
       "target": "bips:12",
       "extraction_method": "ground_truth_curated",
       "relation_type": "supersedes",
@@ -29799,6 +29811,18 @@
       "reviewed_at": "2026-06-26"
     },
     {
+      "source": "bips:22",
+      "target": "bips:34",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "references",
+      "value": 1,
+      "confidence": "high",
+      "evidence": "clients MUST understand the implications of the version they use (eg, comply with BIP 0034 for version 2) [...] This does not include the block height, which is required to be included in the scriptSig by BIP 0034.",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-26"
+    },
+    {
       "source": "bips:31",
       "target": "bips:14",
       "extraction_method": "ground_truth_curated",
@@ -29831,6 +29855,18 @@
       "confidence": "high",
       "evidence": "This BIP introduces a 'Purpose Field' for use in deterministic wallets based on algorithm described in BIP-0032",
       "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-22"
+    },
+    {
+      "source": "bips:43",
+      "target": "bips:44",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "references",
+      "value": 1,
+      "confidence": "high",
+      "evidence": "Example: Scheme described in BIP44 should use 44' (or 0x8000002C) as purpose.",
+      "note": "Example made to demonstrate purpose of BIP43",
       "reviewer": "rbo",
       "reviewed_at": "2026-06-22"
     },
@@ -29872,13 +29908,61 @@
     },
     {
       "source": "bips:49",
+      "target": "bips:16",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "references",
+      "value": 1,
+      "confidence": "medium",
+      "evidence": "Reference BIP16 - Pay to Script Hash",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-26"
+    },
+    {
+      "source": "bips:49",
       "target": "bips:32",
       "extraction_method": "ground_truth_curated",
       "relation_type": "depends_on",
       "value": 1,
       "confidence": "high",
-      "evidence": "This BIP defines the derivation scheme for HD wallets using the P2WPKH-nested-in-P2SH (BIP 141) serialization format.",
+      "evidence": "This BIP defines the derivation scheme for HD wallets using the P2WPKH-nested-in-P2SH (BIP 141) serialization format. [...] References [...] BIP32 - Hierarchical Deterministic Wallets",
       "note": "HD wallets are fundamentally specified in BIP32",
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-26"
+    },
+    {
+      "source": "bips:49",
+      "target": "bips:43",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "references",
+      "value": 1,
+      "confidence": "medium",
+      "evidence": "References [....] BIP43 - Purpose Field for Deterministic Wallets",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-26"
+    },
+    {
+      "source": "bips:49",
+      "target": "bips:44",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "depends_on",
+      "value": 1,
+      "confidence": "low",
+      "evidence": "To derive a public key from the root account, this BIP uses the same account-structure as defined in BIP 44, but only uses a different purpose value to indicate the different transaction serialization method. [...] References [....] BIP44 - Multi-Account Hierarchy for Deterministic Wallets",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-26"
+    },
+    {
+      "source": "bips:49",
+      "target": "slips:132",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "references",
+      "value": 1,
+      "confidence": "medium",
+      "evidence": "Additional registered version bytes are listed in SLIP-0132.",
+      "note": null,
       "reviewer": "rbo",
       "reviewed_at": "2026-06-26"
     },
@@ -29920,12 +30004,24 @@
     },
     {
       "source": "bips:78",
+      "target": "bips:21",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "depends_on",
+      "value": 1,
+      "confidence": "high",
+      "evidence": "In a payjoin payment, the following steps happen: The receiver of the payment, presents a BIP 21 URI to the sender with a parameter [...] This proposal is defining the following new BIP 21 URI parameters",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-22"
+    },
+    {
+      "source": "bips:78",
       "target": "bips:79",
       "extraction_method": "ground_truth_curated",
       "relation_type": "supersedes",
       "value": 1,
       "confidence": "high",
-      "evidence": "Another implementation proposal has been written: BIP79 Bustapay.We decided to deviate from it for several reasons: [...] Other than that, our proposal is very similar.",
+      "evidence": "Replaces: 79 [...] Another implementation proposal has been written: BIP79 Bustapay. We decided to deviate from it for several reasons: [...] Other than that, our proposal is very similar.",
       "note": "BIP78 is the proposed replacement of the BIP79.",
       "reviewer": "rbo",
       "reviewed_at": "2026-06-22"
@@ -30238,6 +30334,18 @@
       "value": 1,
       "confidence": "high",
       "evidence": "The filter construction proposed is an alternative to Bloom filters, as used in BIP 37 [... ]Bloom Filters are perhaps the best known probabilistic data structure for testing set membership, and were introduced into the Bitcoin protocol with BIP 37.",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-29"
+    },
+    {
+      "source": "bips:158",
+      "target": "bips:141",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "references",
+      "value": 1,
+      "confidence": "low",
+      "evidence": "similar to the current witness commitment [6] [...] References [...] https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki",
       "note": null,
       "reviewer": "rbo",
       "reviewed_at": "2026-06-29"
@@ -32824,6 +32932,30 @@
       "reviewed_at": "2026-06-22"
     },
     {
+      "source": "slips:10",
+      "target": "slips:39",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "references",
+      "value": 1,
+      "confidence": "high",
+      "evidence": "Trezor generates all keys from a BIP-0039 mnemonic or from a set of SLIP-0039 mnemonic shares and optionally a passphrase.",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-22"
+    },
+    {
+      "source": "slips:10",
+      "target": "bips:39",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "references",
+      "value": 1,
+      "confidence": "high",
+      "evidence": "Trezor generates all keys from a BIP-0039 mnemonic or from a set of SLIP-0039 mnemonic shares and optionally a passphrase.",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-22"
+    },
+    {
       "source": "slips:21",
       "target": "slips:10",
       "extraction_method": "ground_truth_curated",
@@ -32831,6 +32963,18 @@
       "value": 1,
       "confidence": "medium",
       "evidence": "We adapt the master node generation from BIP-0032 and SLIP-0010.",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-22"
+    },
+    {
+      "source": "slips:21",
+      "target": "slips:11",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "references",
+      "value": 1,
+      "confidence": "low",
+      "evidence": "However, there does not exist any similar specification for the derivation of keys for symmetric-key algorithms, which are needed for example in password encryption or encryption of Bitcoin metadata. SLIP-0011 deals with this problem by first using BIP-0032 to derive a secp256k1 private key [...]",
       "note": null,
       "reviewer": "rbo",
       "reviewed_at": "2026-06-22"
@@ -32891,6 +33035,18 @@
       "value": 1,
       "confidence": "high",
       "evidence": "This SLIP is mainly intended as a replacement for BIP-0039 and for the most part, the two are not compatible.",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-22"
+    },
+    {
+      "source": "slips:39",
+      "target": "bips:173",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "references",
+      "value": 1,
+      "confidence": "high",
+      "evidence": "The checksum design is heavily inspired by Bech32 defined in BIP-0173.",
       "note": null,
       "reviewer": "rbo",
       "reviewed_at": "2026-06-22"
@@ -33807,7 +33963,7 @@
       "proposal_id": "10",
       "source_slug": "slips",
       "reviewer": "rbo",
-      "reviewed_at": null,
+      "reviewed_at": "2026-06-22",
       "sampling_strategy": "manual",
       "sampling_snapshot": "-",
       "sampling_seed": "-",
@@ -33827,7 +33983,7 @@
       "proposal_id": "21",
       "source_slug": "slips",
       "reviewer": "rbo",
-      "reviewed_at": null,
+      "reviewed_at": "2026-06-22",
       "sampling_strategy": "manual",
       "sampling_snapshot": "-",
       "sampling_seed": "-",
@@ -33847,7 +34003,7 @@
       "proposal_id": "39",
       "source_slug": "slips",
       "reviewer": "rbo",
-      "reviewed_at": null,
+      "reviewed_at": "2026-06-22",
       "sampling_strategy": "manual",
       "sampling_snapshot": "-",
       "sampling_seed": "-",
@@ -33867,7 +34023,7 @@
       "proposal_id": "44",
       "source_slug": "slips",
       "reviewer": "rbo",
-      "reviewed_at": null,
+      "reviewed_at": "2026-06-22",
       "sampling_strategy": "manual",
       "sampling_snapshot": "-",
       "sampling_seed": "-",
@@ -33885,7 +34041,7 @@
   ],
   "meta": {
     "node_count": 156,
-    "edge_count": 827,
+    "edge_count": 840,
     "source_slugs": [
       "bips",
       "slips"

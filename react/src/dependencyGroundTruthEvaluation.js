@@ -200,10 +200,8 @@ export function buildDefaultTypeMapping(dataset, ontology = DEFAULT_RELATION_ONT
     subtypes.forEach((subtype) => {
       const canonical = canonicalMap[subtype] || subtype;
       let target = canonicalToGtType[canonical] || null;
-      if (approach === BODY_EXTRACTED_REGEX) {
+      if (approach === BODY_EXTRACTED_REGEX || approach === BODY_EXTRACTED_LLM) {
         target = gtTypes.length ? GT_TYPE_ALL : null;
-      } else if (approach === BODY_EXTRACTED_LLM && subtype === 'implicit_dependency') {
-        target = gtTypes.includes('depends_on') ? 'depends_on' : null;
       }
       const excluded = excludedTypes.has(subtype);
       rows.push({

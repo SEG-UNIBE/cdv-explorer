@@ -713,6 +713,13 @@ test('runtime environment detection distinguishes local dev and prod hosts', () 
   expect(getRuntimeEnvironment('seg-unibe.github.io')).toBe('prod');
 });
 
+test('runtime environment helpers do not require a browser hostname argument', () => {
+  expect(() => getRuntimeEnvironment()).not.toThrow();
+  expect(() => getEnvironmentBadge()).not.toThrow();
+  expect(() => getRepositoryUrl()).not.toThrow();
+  expect(() => getDefaultExperimentalFeaturesEnabled()).not.toThrow();
+});
+
 test('environment badge is shown for local, dev, and prod hosts', () => {
   expect(getEnvironmentBadge('localhost')).toBe('LOCAL');
   expect(getEnvironmentBadge('preview.pages.dev')).toBe('DEV');

@@ -306,6 +306,7 @@ def _rebuild_source_artifacts(
     """Rebuild analysis/postprocess artifacts for one source from existing preprocess JSON."""
     from analysis.pipeline import prepare_ecosystem_artifacts
     from analysis.validation import (
+        sync_ground_truth_csvs_from_workbook,
         validate_ground_truth_curated_file,
         validate_ground_truth_ips_file,
         validate_source_snapshot,
@@ -332,6 +333,8 @@ def _rebuild_source_artifacts(
             f"{preprocess_dir}[/red]"
         )
         raise typer.Exit(1)
+
+    sync_ground_truth_csvs_from_workbook(eco_slug)
 
     resolved_artifact_llm_model = _resolve_artifact_llm_model(
         eco_slug=eco_slug,
@@ -975,17 +978,17 @@ def doctor() -> None:
         reviewed_ips_csv = gt_dir / "ips.csv"
         workbook_path = ground_truth_workbook_path(eco_slug)
         has_gt_source = interrelations_csv.exists() or workbook_path.exists()
-        if has_gt_source and not reviewed_ips_csv.exists():
+        if has_gt_source and not (reviewed_ips_csv.exists() or workbook_path.exists()):
             reviewed_ip_warnings.append(eco_slug)
     ok &= _doctor_row(
         table,
         "WARN" if reviewed_ip_warnings else "OK",
         "Ground-truth reviewed IP scope",
         (
-            f"Missing ground_truth/ips.csv for ecosystems: {', '.join(reviewed_ip_warnings)}"
+            f"Missing ground-truth reviewed-IP source for ecosystems: {', '.join(reviewed_ip_warnings)}"
         )
         if reviewed_ip_warnings
-        else "ips.csv present wherever ground-truth edges exist",
+        else "workbook or ips.csv present wherever ground-truth edges exist",
     )
 
     reviewed_ip_policy_warnings: list[str] = []
@@ -1453,9 +1456,10 @@ def ground_truth_sample_ips(
     if replace is None:
         if interactive:
             replace_choice = _prompt_choice(
-                "Write mode", ["append (recommended)", "replace"]
+                "Pending append workbook",
+                ["append to ips_append.xlsx", "replace ips_append.xlsx"],
             )
-            replace = replace_choice == "replace"
+            replace = replace_choice == "replace ips_append.xlsx"
         else:
             replace = False
 
@@ -1498,7 +1502,10 @@ def ground_truth_sample_ips(
         console.print(f"  Low-density max: {density_low_max}")
         console.print(f"  Proposal type filter: {proposal_type or '—'}")
         console.print(f"  Reviewer: {reviewer or '—'}")
-        console.print(f"  Mode: {'replace' if replace else 'append'}")
+        console.print(
+            "  Pending append workbook: "
+            + ("replace ips_append.xlsx" if replace else "append to ips_append.xlsx")
+        )
         if reviewed_ip_policy:
             policy_bits = []
             if reviewed_ip_policy.get("allowed_source_slugs"):
@@ -1552,12 +1559,18 @@ def ground_truth_sample_ips(
             console.print(f"  [red]-[/red] ... and {len(validation.errors) - 20} more")
         raise typer.Exit(1)
 
-    output_path = result["output_path"]
-    console.print(f"[green]Updated[/green] {output_path}")
+    workbook_path = result.get("workbook_path")
+    if workbook_path:
+        console.print(f"[green]Updated[/green] {workbook_path}")
+        console.print(
+            "[dim]This is a pending append workbook. "
+            "ground_truth.xlsx remains untouched. CSV sync is deferred to artifact rebuild.[/dim]"
+        )
     console.print(
-        f"Existing rows kept: {result['existing_count']} | "
+        f"Reviewed IPs in ground_truth.xlsx: {result.get('reviewed_count', 0)} | "
+        f"Existing pending rows kept: {result['existing_count']} | "
         f"New rows added: {result['added_count']} | "
-        f"Total rows: {result['total_count']}"
+        f"Total pending rows: {result['total_count']}"
     )
     if result.get("proposal_type"):
         console.print(f"Type filter: {result['proposal_type']}")

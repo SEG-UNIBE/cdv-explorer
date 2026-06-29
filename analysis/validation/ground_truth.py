@@ -13,6 +13,7 @@ from analysis.reference_ids import normalize_reference_id_for_config
 
 
 GROUND_TRUTH_WORKBOOK_FILENAME = "ground_truth.xlsx"
+REVIEWED_IP_APPEND_WORKBOOK_FILENAME = "ips_append.xlsx"
 
 
 GROUND_TRUTH_CSV_COLUMNS = (
@@ -116,6 +117,12 @@ def ground_truth_workbook_path(ecosystem_slug: str | None) -> Path:
     return ground_truth_directory(ecosystem_slug) / GROUND_TRUTH_WORKBOOK_FILENAME
 
 
+def reviewed_ip_append_workbook_path(ecosystem_slug: str | None) -> Path:
+    return (
+        ground_truth_directory(ecosystem_slug) / REVIEWED_IP_APPEND_WORKBOOK_FILENAME
+    )
+
+
 def _ground_truth_csv_path(ecosystem_slug: str | None, sheet_name: str) -> Path:
     if sheet_name == "ips":
         filename = "ips.csv"
@@ -146,6 +153,13 @@ def _compose_graph_key(source_slug: Any, proposal_id: Any) -> str:
 
 def _element_local_name(element: ET.Element) -> str:
     return str(element.tag).split("}", 1)[-1]
+
+
+def _element_namespace(element: ET.Element) -> str:
+    tag = str(element.tag)
+    if tag.startswith("{") and "}" in tag:
+        return tag[1:].split("}", 1)[0]
+    return _XLSX_MAIN_NS
 
 
 def _child_elements(parent: ET.Element, local_name: str) -> List[ET.Element]:
@@ -195,30 +209,33 @@ def _append_inline_string_cell(
     row_number: int,
     column_index: int,
     value: str,
+    style_index: str | None = None,
+    namespace: str | None = None,
 ) -> None:
     if value == "":
         return
-    cell = ET.SubElement(
-        row_element,
-        f"{{{_XLSX_MAIN_NS}}}c",
-        {
-            "r": f"{_excel_column_name(column_index)}{row_number}",
-            "t": "inlineStr",
-        },
-    )
-    inline_string = ET.SubElement(cell, f"{{{_XLSX_MAIN_NS}}}is")
-    text = ET.SubElement(inline_string, f"{{{_XLSX_MAIN_NS}}}t")
+    sheet_namespace = namespace or _element_namespace(row_element)
+    attributes = {
+        "r": f"{_excel_column_name(column_index)}{row_number}",
+        "t": "inlineStr",
+    }
+    if style_index:
+        attributes["s"] = style_index
+    cell = ET.SubElement(row_element, f"{{{sheet_namespace}}}c", attributes)
+    inline_string = ET.SubElement(cell, f"{{{sheet_namespace}}}is")
+    text = ET.SubElement(inline_string, f"{{{sheet_namespace}}}t")
     if value[:1].isspace() or value[-1:].isspace():
         text.set("{http://www.w3.org/XML/1998/namespace}space", "preserve")
     text.text = value
 
 
 def _build_sheet_xml(columns: Sequence[str], rows: Sequence[Mapping[str, Any]]) -> bytes:
+    worksheet_namespace = _XLSX_MAIN_NS
     worksheet = ET.Element(
-        f"{{{_XLSX_MAIN_NS}}}worksheet",
-        {"xmlns": _XLSX_MAIN_NS},
+        f"{{{worksheet_namespace}}}worksheet",
+        {"xmlns": worksheet_namespace},
     )
-    sheet_data = ET.SubElement(worksheet, f"{{{_XLSX_MAIN_NS}}}sheetData")
+    sheet_data = ET.SubElement(worksheet, f"{{{worksheet_namespace}}}sheetData")
 
     header_row = ET.SubElement(
         sheet_data,
@@ -231,12 +248,13 @@ def _build_sheet_xml(columns: Sequence[str], rows: Sequence[Mapping[str, Any]]) 
             row_number=1,
             column_index=index,
             value=str(column),
+            namespace=worksheet_namespace,
         )
 
     for row_number, row in enumerate(rows, start=2):
         row_element = ET.SubElement(
             sheet_data,
-            f"{{{_XLSX_MAIN_NS}}}row",
+            f"{{{worksheet_namespace}}}row",
             {"r": str(row_number)},
         )
         for index, column in enumerate(columns):
@@ -245,9 +263,93 @@ def _build_sheet_xml(columns: Sequence[str], rows: Sequence[Mapping[str, Any]]) 
                 row_number=row_number,
                 column_index=index,
                 value=str(row.get(column, "") or ""),
+                namespace=worksheet_namespace,
             )
 
     return ET.tostring(worksheet, encoding="utf-8", xml_declaration=True)
+
+
+def _write_xlsx_workbook(
+    workbook_path: Path,
+    *,
+    sheets: Sequence[tuple[str, Sequence[str], Sequence[Mapping[str, Any]]]],
+) -> Path:
+    workbook_path.parent.mkdir(parents=True, exist_ok=True)
+
+    workbook_xml = ET.Element(
+        f"{{{_XLSX_MAIN_NS}}}workbook",
+        {
+            "xmlns": _XLSX_MAIN_NS,
+            "xmlns:r": _XLSX_REL_NS,
+        },
+    )
+    sheets_element = ET.SubElement(workbook_xml, f"{{{_XLSX_MAIN_NS}}}sheets")
+    workbook_rels = ET.Element(
+        f"{{{_XLSX_PKG_REL_NS}}}Relationships",
+        {"xmlns": _XLSX_PKG_REL_NS},
+    )
+    sheet_xml_by_path: dict[str, bytes] = {}
+
+    content_type_lines = [
+        '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>',
+        '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">',
+        '  <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>',
+        '  <Default Extension="xml" ContentType="application/xml"/>',
+        '  <Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>',
+    ]
+
+    for index, (sheet_name, columns, rows) in enumerate(sheets, start=1):
+        ET.SubElement(
+            sheets_element,
+            f"{{{_XLSX_MAIN_NS}}}sheet",
+            {
+                "name": sheet_name,
+                "sheetId": str(index),
+                f"{{{_XLSX_REL_NS}}}id": f"rId{index}",
+            },
+        )
+        ET.SubElement(
+            workbook_rels,
+            f"{{{_XLSX_PKG_REL_NS}}}Relationship",
+            {
+                "Id": f"rId{index}",
+                "Type": f"{_XLSX_REL_NS}/worksheet",
+                "Target": f"worksheets/sheet{index}.xml",
+            },
+        )
+        sheet_xml_by_path[f"xl/worksheets/sheet{index}.xml"] = _build_sheet_xml(
+            columns, rows
+        )
+        content_type_lines.append(
+            f'  <Override PartName="/xl/worksheets/sheet{index}.xml" '
+            'ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>'
+        )
+
+    content_type_lines.append("</Types>")
+    content_types = "\n".join(content_type_lines) + "\n"
+    package_rels = f"""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="{_XLSX_PKG_REL_NS}">
+  <Relationship Id="rId1" Type="{_XLSX_REL_NS}/officeDocument" Target="xl/workbook.xml"/>
+</Relationships>
+"""
+
+    with zipfile.ZipFile(
+        workbook_path, "w", compression=zipfile.ZIP_DEFLATED
+    ) as workbook:
+        workbook.writestr("[Content_Types].xml", content_types)
+        workbook.writestr("_rels/.rels", package_rels)
+        workbook.writestr(
+            "xl/workbook.xml",
+            ET.tostring(workbook_xml, encoding="utf-8", xml_declaration=True),
+        )
+        workbook.writestr(
+            "xl/_rels/workbook.xml.rels",
+            ET.tostring(workbook_rels, encoding="utf-8", xml_declaration=True),
+        )
+        for path, sheet_xml in sheet_xml_by_path.items():
+            workbook.writestr(path, sheet_xml)
+
+    return workbook_path
 
 
 def _sheet_value_from_cell(
@@ -384,6 +486,23 @@ def _load_xlsx_sheet_entries(
     return entries
 
 
+def _load_ground_truth_rows_from_workbook(
+    ecosystem_slug: str | None,
+    *,
+    sheet_name: str,
+) -> List[Dict[str, str]]:
+    workbook_path = ground_truth_workbook_path(ecosystem_slug)
+    if not workbook_path.exists():
+        return []
+    workbook_columns_by_sheet = dict(GROUND_TRUTH_WORKBOOK_SHEETS)
+    rows = _load_xlsx_sheet_entries(
+        workbook_path,
+        sheet_name=sheet_name,
+        columns=workbook_columns_by_sheet[sheet_name],
+    )
+    return _workbook_rows_to_csv_rows(sheet_name, rows)
+
+
 def _workbook_rows_to_csv_rows(
     sheet_name: str,
     rows: Sequence[Mapping[str, Any]],
@@ -516,8 +635,6 @@ def _write_csv_rows(
             writer.writerow(
                 {column: str(row.get(column, "") or "") for column in columns}
             )
-
-
 def sync_ground_truth_csvs_from_workbook(ecosystem_slug: str | None) -> bool:
     workbook_path = ground_truth_workbook_path(ecosystem_slug)
     if not workbook_path.exists():
@@ -541,6 +658,38 @@ def sync_ground_truth_csvs_from_workbook(ecosystem_slug: str | None) -> bool:
             rows=csv_rows,
         )
     return True
+
+
+def load_reviewed_ip_append_rows(ecosystem_slug: str | None) -> List[Dict[str, str]]:
+    if not ecosystem_slug:
+        return []
+    workbook_path = reviewed_ip_append_workbook_path(ecosystem_slug)
+    if not workbook_path.exists():
+        return []
+    return [
+        entry
+        for entry in _load_xlsx_sheet_entries(
+            workbook_path,
+            sheet_name="ips",
+            columns=WORKBOOK_IPS_COLUMNS,
+        )
+        if any(str(value or "").strip() for value in entry.values())
+    ]
+
+
+def write_reviewed_ip_append_workbook(
+    ecosystem_slug: str | None,
+    rows: Sequence[Mapping[str, Any]],
+) -> Path:
+    if not ecosystem_slug:
+        raise ValueError("Missing ecosystem slug")
+
+    workbook_path = reviewed_ip_append_workbook_path(ecosystem_slug)
+    workbook_rows = _csv_rows_to_workbook_rows("ips", rows)
+    return _write_xlsx_workbook(
+        workbook_path,
+        sheets=(("ips", WORKBOOK_IPS_COLUMNS, workbook_rows),),
+    )
 
 
 def ground_truth_source_configs_by_slug(
@@ -1018,15 +1167,22 @@ def load_ground_truth_curated_entries(
     if not ecosystem_slug:
         return []
 
-    sync_ground_truth_csvs_from_workbook(ecosystem_slug)
-    csv_path = (
-        Path("ip_data") / str(ecosystem_slug) / "ground_truth" / "interrelations.csv"
-    )
-    entries = [
-        entry
-        for entry in _load_csv_rows(csv_path, columns=GROUND_TRUTH_CSV_COLUMNS)
-        if entry.get("source") and entry.get("target")
-    ]
+    workbook_path = ground_truth_workbook_path(ecosystem_slug)
+    csv_path = _ground_truth_csv_path(ecosystem_slug, "interrelations")
+    if workbook_path.exists():
+        entries = [
+            entry
+            for entry in _load_ground_truth_rows_from_workbook(
+                ecosystem_slug, sheet_name="interrelations"
+            )
+            if entry.get("source") and entry.get("target")
+        ]
+    else:
+        entries = [
+            entry
+            for entry in _load_csv_rows(csv_path, columns=GROUND_TRUTH_CSV_COLUMNS)
+            if entry.get("source") and entry.get("target")
+        ]
 
     if strict:
         errors = validate_ground_truth_curated_entries(
@@ -1034,8 +1190,9 @@ def load_ground_truth_curated_entries(
             source_configs_by_slug=ground_truth_source_configs_by_slug(ecosystem_slug),
         )
         if errors:
+            source_path = workbook_path if workbook_path.exists() else csv_path
             raise ValueError(
-                f"Ground-truth validation failed for `{csv_path}`:\n- "
+                f"Ground-truth validation failed for `{source_path}`:\n- "
                 + "\n- ".join(errors)
             )
 
@@ -1048,13 +1205,22 @@ def load_ground_truth_ips(
     if not ecosystem_slug:
         return []
 
-    sync_ground_truth_csvs_from_workbook(ecosystem_slug)
-    csv_path = Path("ip_data") / str(ecosystem_slug) / "ground_truth" / "ips.csv"
-    entries = [
-        entry
-        for entry in _load_csv_rows(csv_path, columns=REVIEWED_IPS_CSV_COLUMNS)
-        if entry.get("ip")
-    ]
+    workbook_path = ground_truth_workbook_path(ecosystem_slug)
+    csv_path = _ground_truth_csv_path(ecosystem_slug, "ips")
+    if workbook_path.exists():
+        entries = [
+            entry
+            for entry in _load_ground_truth_rows_from_workbook(
+                ecosystem_slug, sheet_name="ips"
+            )
+            if entry.get("ip")
+        ]
+    else:
+        entries = [
+            entry
+            for entry in _load_csv_rows(csv_path, columns=REVIEWED_IPS_CSV_COLUMNS)
+            if entry.get("ip")
+        ]
 
     if strict:
         errors = validate_reviewed_ip_entries(
@@ -1062,8 +1228,9 @@ def load_ground_truth_ips(
             source_configs_by_slug=ground_truth_source_configs_by_slug(ecosystem_slug),
         )
         if errors:
+            source_path = workbook_path if workbook_path.exists() else csv_path
             raise ValueError(
-                f"Reviewed-IP validation failed for `{csv_path}`:\n- "
+                f"Reviewed-IP validation failed for `{source_path}`:\n- "
                 + "\n- ".join(errors)
             )
 

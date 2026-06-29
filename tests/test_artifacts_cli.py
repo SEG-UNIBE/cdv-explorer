@@ -8,6 +8,13 @@ from unittest.mock import patch
 import typer
 from typer.testing import CliRunner
 
+from analysis.validation.ground_truth import (
+    export_ground_truth_workbook,
+    load_ground_truth_curated_entries,
+    load_ground_truth_ips,
+    load_reviewed_ip_append_rows,
+    reviewed_ip_append_workbook_path,
+)
 from analysis.validation import SnapshotValidationResult
 from main import (
     app,
@@ -358,7 +365,7 @@ class ArtifactRebuildTests(unittest.TestCase):
                 ["2026-03-16", "2026-05-28"],
             )
 
-    def test_ground_truth_sampling_prefills_ips_csv(self) -> None:
+    def test_ground_truth_sampling_prefills_workbook_scope(self) -> None:
         with tempfile.TemporaryDirectory() as tmp_dir:
             root = Path(tmp_dir)
             analysis_root = (
@@ -415,15 +422,17 @@ class ArtifactRebuildTests(unittest.TestCase):
                             "7",
                         ],
                     )
+                    append_rows = load_reviewed_ip_append_rows("bitcoin")
             finally:
                 os.chdir(previous_cwd)
 
             self.assertEqual(result.exit_code, 0, result.output)
-            reviewed_csv = root / "ip_data" / "bitcoin" / "ground_truth" / "ips.csv"
-            self.assertTrue(reviewed_csv.exists())
-            content = reviewed_csv.read_text(encoding="utf-8")
-            self.assertIn("ip\treviewer\treviewed_at\tsampling_strategy", content)
-            self.assertIn("bips:", content)
+            workbook_path = root / "ip_data" / "bitcoin" / "ground_truth" / "ips_append.xlsx"
+            self.assertTrue(workbook_path.exists())
+            self.assertEqual(len(append_rows), 2)
+            self.assertTrue(
+                all(row["ip_source"] == "bips" and row["ip_id"] for row in append_rows)
+            )
 
     def test_ground_truth_sampling_can_filter_to_specific_proposal_type(self) -> None:
         with tempfile.TemporaryDirectory() as tmp_dir:
@@ -483,14 +492,116 @@ class ArtifactRebuildTests(unittest.TestCase):
                             "Specification",
                         ],
                     )
+                    append_rows = load_reviewed_ip_append_rows("bitcoin")
             finally:
                 os.chdir(previous_cwd)
 
             self.assertEqual(result.exit_code, 0, result.output)
-            reviewed_csv = root / "ip_data" / "bitcoin" / "ground_truth" / "ips.csv"
-            rows = reviewed_csv.read_text(encoding="utf-8").splitlines()
-            self.assertEqual(len(rows), 3)
-            self.assertTrue(all("Specification" in row for row in rows[1:]))
+            self.assertEqual(len(append_rows), 2)
+            self.assertTrue(all(row["type"] == "Specification" for row in append_rows))
+
+    def test_ground_truth_sampling_updates_workbook_backed_scope(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            root = Path(tmp_dir)
+            analysis_root = (
+                root / "bips" / "03_analysis" / "2026-05-28" / "dependencies"
+            )
+            analysis_root.mkdir(parents=True)
+            (analysis_root / "network_data.json").write_text(
+                """
+                {
+                  "nodes": [
+                    {"id": "1", "created": "2012-01-01", "status": "Draft", "type": "Specification", "layer": "", "title": "One"},
+                    {"id": "2", "created": "2016-01-01", "status": "Final", "type": "Specification", "layer": "", "title": "Two"},
+                    {"id": "3", "created": "2024-01-01", "status": "Draft", "type": "Specification", "layer": "", "title": "Three"}
+                  ],
+                  "dependency_edges": [
+                    {"source": "bips:2", "target": "bips:1", "extraction_method": "body_extracted_regex", "relation_type": "reference", "value": 1},
+                    {"source": "bips:3", "target": "bips:1", "extraction_method": "body_extracted_llm", "relation_type": "implicit_dependency", "value": 1}
+                  ]
+                }
+                """,
+                encoding="utf-8",
+            )
+
+            gt_dir = root / "ip_data" / "bitcoin" / "ground_truth"
+            gt_dir.mkdir(parents=True)
+            (gt_dir / "ips.csv").write_text(
+                "ip\treviewer\treviewed_at\tsampling_strategy\tsampling_snapshot\tsampling_seed\tera_bucket\tdensity_bucket\tdensity_basis\tcreated\tstatus\ttype\tlayer\ttitle\textracted_target_count\tnote\n"
+                "bips:1\trbo\t2026-06-29\tmanual\t-\t-\t-\t-\t-\t2012-01-01\tDraft\tSpecification\t\tOne\t0\t\n",
+                encoding="utf-8",
+            )
+            (gt_dir / "interrelations.csv").write_text(
+                "source\ttarget\trelation_type\tconfidence\tevidence\tnote\treviewer\treviewed_at\n"
+                "bips:1\tbips:2\treferences\thigh\tSee BIP2\t\trbo\t2026-06-29\n",
+                encoding="utf-8",
+            )
+
+            ecosystem = {
+                "slug": "bitcoin",
+                "sources": {
+                    "bips": {
+                        **self._source_config(root / "bips"),
+                        "reference_pattern": r"\\bBIP[-#\\s]?(\\d+)\\b",
+                    }
+                },
+            }
+            previous_cwd = Path.cwd()
+            os.chdir(root)
+            try:
+                with patch.dict(
+                    "main.ECOSYSTEM_REGISTRY", {"bitcoin": ecosystem}, clear=True
+                ):
+                    workbook_path = export_ground_truth_workbook("bitcoin")
+                    (gt_dir / "ips.csv").unlink()
+                    (gt_dir / "interrelations.csv").unlink()
+
+                    result = runner.invoke(
+                        app,
+                        [
+                            "ground-truth",
+                            "sample-ips",
+                            "-e",
+                            "bitcoin",
+                            "--source",
+                            "bips",
+                            "-s",
+                            "2026-05-28",
+                            "--count",
+                            "1",
+                            "--seed",
+                            "7",
+                        ],
+                    )
+
+                    self.assertEqual(result.exit_code, 0, result.output)
+                    self.assertTrue(workbook_path.exists())
+                    append_path = reviewed_ip_append_workbook_path("bitcoin")
+                    self.assertTrue(append_path.exists())
+                    self.assertFalse((gt_dir / "ips.csv").exists())
+                    self.assertFalse((gt_dir / "interrelations.csv").exists())
+
+                    reviewed_rows = load_ground_truth_ips("bitcoin", strict=False)
+                    self.assertEqual(len(reviewed_rows), 1)
+                    self.assertEqual(
+                        sorted(row["ip"] for row in reviewed_rows),
+                        ["bips:1"],
+                    )
+                    append_rows = load_reviewed_ip_append_rows("bitcoin")
+                    self.assertEqual(len(append_rows), 1)
+                    self.assertNotEqual(
+                        f"{append_rows[0]['ip_source']}:{append_rows[0]['ip_id']}",
+                        "bips:1",
+                    )
+
+                    curated_rows = load_ground_truth_curated_entries(
+                        "bitcoin", strict=False
+                    )
+                    self.assertEqual(len(curated_rows), 1)
+                    self.assertEqual(curated_rows[0]["source"], "bips:1")
+                    self.assertEqual(curated_rows[0]["target"], "bips:2")
+            finally:
+                os.chdir(previous_cwd)
 
 
 if __name__ == "__main__":

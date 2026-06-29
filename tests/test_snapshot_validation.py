@@ -329,7 +329,7 @@ class SnapshotValidationTests(unittest.TestCase):
         self.assertIn("must be on or after the curated edge reviewed_at", error_text)
         self.assertIn("newer than the latest known commit date of source `bips:44`", error_text)
 
-    def test_ground_truth_workbook_recreates_csvs_for_validation(self) -> None:
+    def test_ground_truth_workbook_can_be_validated_without_recreating_csvs(self) -> None:
         with tempfile.TemporaryDirectory() as tmp_dir:
             root = Path(tmp_dir)
             gt_dir = root / "ip_data" / "bitcoin" / "ground_truth"
@@ -380,8 +380,8 @@ class SnapshotValidationTests(unittest.TestCase):
             self.assertTrue(workbook_path.exists())
             self.assertTrue(curated_result.ok)
             self.assertTrue(ips_result.ok)
-            self.assertTrue((gt_dir / "interrelations.csv").exists())
-            self.assertTrue((gt_dir / "ips.csv").exists())
+            self.assertFalse((gt_dir / "interrelations.csv").exists())
+            self.assertFalse((gt_dir / "ips.csv").exists())
 
     def test_expected_combined_snapshot_targets_uses_source_snapshot_intersection(
         self,

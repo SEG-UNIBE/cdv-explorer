@@ -118,9 +118,7 @@ def ground_truth_workbook_path(ecosystem_slug: str | None) -> Path:
 
 
 def reviewed_ip_append_workbook_path(ecosystem_slug: str | None) -> Path:
-    return (
-        ground_truth_directory(ecosystem_slug) / REVIEWED_IP_APPEND_WORKBOOK_FILENAME
-    )
+    return ground_truth_directory(ecosystem_slug) / REVIEWED_IP_APPEND_WORKBOOK_FILENAME
 
 
 def _ground_truth_csv_path(ecosystem_slug: str | None, sheet_name: str) -> Path:
@@ -163,9 +161,7 @@ def _element_namespace(element: ET.Element) -> str:
 
 
 def _child_elements(parent: ET.Element, local_name: str) -> List[ET.Element]:
-    return [
-        child for child in list(parent) if _element_local_name(child) == local_name
-    ]
+    return [child for child in list(parent) if _element_local_name(child) == local_name]
 
 
 def _first_child(parent: ET.Element, local_name: str) -> ET.Element | None:
@@ -176,7 +172,9 @@ def _first_child(parent: ET.Element, local_name: str) -> ET.Element | None:
 
 
 def _find_descendants(root: ET.Element, local_name: str) -> List[ET.Element]:
-    return [element for element in root.iter() if _element_local_name(element) == local_name]
+    return [
+        element for element in root.iter() if _element_local_name(element) == local_name
+    ]
 
 
 def _excel_column_name(index: int) -> str:
@@ -229,7 +227,9 @@ def _append_inline_string_cell(
     text.text = value
 
 
-def _build_sheet_xml(columns: Sequence[str], rows: Sequence[Mapping[str, Any]]) -> bytes:
+def _build_sheet_xml(
+    columns: Sequence[str], rows: Sequence[Mapping[str, Any]]
+) -> bytes:
     worksheet_namespace = _XLSX_MAIN_NS
     worksheet = ET.Element(
         f"{{{worksheet_namespace}}}worksheet",
@@ -364,9 +364,7 @@ def _sheet_value_from_cell(
     if cell_type == "s":
         value_element = _first_child(cell, "v")
         raw_index = (
-            str(value_element.text or "").strip()
-            if value_element is not None
-            else ""
+            str(value_element.text or "").strip() if value_element is not None else ""
         )
         if raw_index.isdigit():
             index = int(raw_index)
@@ -519,8 +517,12 @@ def _workbook_rows_to_csv_rows(
                     "ip": _compose_graph_key(source_slug, proposal_id),
                     "reviewer": str(row.get("reviewer") or "").strip(),
                     "reviewed_at": str(row.get("reviewed_at") or "").strip(),
-                    "sampling_strategy": str(row.get("sampling_strategy") or "").strip(),
-                    "sampling_snapshot": str(row.get("sampling_snapshot") or "").strip(),
+                    "sampling_strategy": str(
+                        row.get("sampling_strategy") or ""
+                    ).strip(),
+                    "sampling_snapshot": str(
+                        row.get("sampling_snapshot") or ""
+                    ).strip(),
                     "sampling_seed": str(row.get("sampling_seed") or "").strip(),
                     "era_bucket": str(row.get("era_bucket") or "").strip(),
                     "density_bucket": str(row.get("density_bucket") or "").strip(),
@@ -541,8 +543,12 @@ def _workbook_rows_to_csv_rows(
     if sheet_name == "interrelations":
         normalized_rows = []
         for row in rows:
-            source_key = str(row.get("source_graph_key") or row.get("source") or "").strip()
-            target_key = str(row.get("target_graph_key") or row.get("target") or "").strip()
+            source_key = str(
+                row.get("source_graph_key") or row.get("source") or ""
+            ).strip()
+            target_key = str(
+                row.get("target_graph_key") or row.get("target") or ""
+            ).strip()
             if ":" not in source_key:
                 source_key = _compose_graph_key(row.get("source"), row.get("source_id"))
             if ":" not in target_key:
@@ -578,8 +584,12 @@ def _csv_rows_to_workbook_rows(
                     "ip_id": proposal_id,
                     "reviewer": str(row.get("reviewer") or "").strip(),
                     "reviewed_at": str(row.get("reviewed_at") or "").strip(),
-                    "sampling_strategy": str(row.get("sampling_strategy") or "").strip(),
-                    "sampling_snapshot": str(row.get("sampling_snapshot") or "").strip(),
+                    "sampling_strategy": str(
+                        row.get("sampling_strategy") or ""
+                    ).strip(),
+                    "sampling_snapshot": str(
+                        row.get("sampling_snapshot") or ""
+                    ).strip(),
                     "sampling_seed": str(row.get("sampling_seed") or "").strip(),
                     "era_bucket": str(row.get("era_bucket") or "").strip(),
                     "density_bucket": str(row.get("density_bucket") or "").strip(),
@@ -635,6 +645,8 @@ def _write_csv_rows(
             writer.writerow(
                 {column: str(row.get(column, "") or "") for column in columns}
             )
+
+
 def sync_ground_truth_csvs_from_workbook(ecosystem_slug: str | None) -> bool:
     workbook_path = ground_truth_workbook_path(ecosystem_slug)
     if not workbook_path.exists():
@@ -930,7 +942,7 @@ def export_ground_truth_workbook(ecosystem_slug: str | None) -> Path:
             workbook_rows,
         )
 
-    content_types = f"""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+    content_types = """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
   <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
   <Default Extension="xml" ContentType="application/xml"/>

@@ -427,7 +427,9 @@ class ArtifactRebuildTests(unittest.TestCase):
                 os.chdir(previous_cwd)
 
             self.assertEqual(result.exit_code, 0, result.output)
-            workbook_path = root / "ip_data" / "bitcoin" / "ground_truth" / "ips_append.xlsx"
+            workbook_path = (
+                root / "ip_data" / "bitcoin" / "ground_truth" / "ips_append.xlsx"
+            )
             self.assertTrue(workbook_path.exists())
             self.assertEqual(len(append_rows), 2)
             self.assertTrue(

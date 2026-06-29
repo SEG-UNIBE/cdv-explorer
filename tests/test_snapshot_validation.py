@@ -258,7 +258,9 @@ class SnapshotValidationTests(unittest.TestCase):
         self.assertIn("expects source `bips`", warning_text)
         self.assertIn("expects proposal type `Specification`", warning_text)
 
-    def test_ground_truth_validation_rejects_inconsistent_review_scope_dates_and_timeline(self) -> None:
+    def test_ground_truth_validation_rejects_inconsistent_review_scope_dates_and_timeline(
+        self,
+    ) -> None:
         with tempfile.TemporaryDirectory() as tmp_dir:
             root = Path(tmp_dir)
             gt_dir = root / "ip_data" / "bitcoin" / "ground_truth"
@@ -289,7 +291,9 @@ class SnapshotValidationTests(unittest.TestCase):
                     "bips": self._source_config(root, "bips"),
                 }
             }
-            preprocess_dir = Path(ecosystem_config["sources"]["bips"]["preprocess"]) / "2026-06-29"
+            preprocess_dir = (
+                Path(ecosystem_config["sources"]["bips"]["preprocess"]) / "2026-06-29"
+            )
             preprocess_dir.mkdir(parents=True)
             for proposal_id, created, title, last_commit in [
                 ("32", "2012-02-11", "BIP 32", "Thu Jun 20 09:00:00 2026 +0000"),
@@ -327,9 +331,13 @@ class SnapshotValidationTests(unittest.TestCase):
         error_text = "\n".join(result.errors)
         self.assertIn("must also appear in `ips.csv`", error_text)
         self.assertIn("must be on or after the curated edge reviewed_at", error_text)
-        self.assertIn("newer than the latest known commit date of source `bips:44`", error_text)
+        self.assertIn(
+            "newer than the latest known commit date of source `bips:44`", error_text
+        )
 
-    def test_ground_truth_workbook_can_be_validated_without_recreating_csvs(self) -> None:
+    def test_ground_truth_workbook_can_be_validated_without_recreating_csvs(
+        self,
+    ) -> None:
         with tempfile.TemporaryDirectory() as tmp_dir:
             root = Path(tmp_dir)
             gt_dir = root / "ip_data" / "bitcoin" / "ground_truth"

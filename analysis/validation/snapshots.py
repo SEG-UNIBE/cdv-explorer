@@ -243,7 +243,11 @@ def _validate_ground_truth_dataset_consistency(
             reviewed_by_ip.get(target, {}).get("created")
             or proposal_metadata.get(target, {}).get("created")
         )
-        if source_last_commit and target_created and target_created > source_last_commit:
+        if (
+            source_last_commit
+            and target_created
+            and target_created > source_last_commit
+        ):
             errors.append(
                 f"{row_label}: target `{target}` was created on {target_created}, which is newer than "
                 f"the latest known commit date of source `{source}` ({source_last_commit})"
@@ -584,7 +588,10 @@ def validate_ground_truth_curated_file(
 ) -> SnapshotValidationResult:
     result = SnapshotValidationResult()
     csv_path = Path("ip_data") / ecosystem_slug / "ground_truth" / "interrelations.csv"
-    if not csv_path.exists() and not ground_truth_workbook_path(ecosystem_slug).exists():
+    if (
+        not csv_path.exists()
+        and not ground_truth_workbook_path(ecosystem_slug).exists()
+    ):
         result.file_status["ground_truth"] = "—"
         return result
 
@@ -632,7 +639,10 @@ def validate_ground_truth_ips_file(
 ) -> SnapshotValidationResult:
     result = SnapshotValidationResult()
     csv_path = Path("ip_data") / ecosystem_slug / "ground_truth" / "ips.csv"
-    if not csv_path.exists() and not ground_truth_workbook_path(ecosystem_slug).exists():
+    if (
+        not csv_path.exists()
+        and not ground_truth_workbook_path(ecosystem_slug).exists()
+    ):
         result.file_status["reviewed_ips"] = "⚠️ missing"
         return result
 

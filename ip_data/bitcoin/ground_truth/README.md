@@ -9,7 +9,7 @@ Used as the canonical reference against which `llm`, `preamble`, and `regex` ext
 - Generated reviewed source-IP scope: [`ips.csv`](./ips.csv).
 - Generated curated edges: [`interrelations.csv`](./interrelations.csv).
 - Inter-source edges (e.g. `bips:N → slips:M`) live in the same file.
-- The CSV files remain pipeline inputs for validation and artifact generation, but they are regenerated from the workbook whenever ground-truth data is loaded.
+- The CSV files remain pipeline inputs for validation and artifact generation, but they are regenerated from the workbook whenever ground-truth data is loaded. During that sync, split workbook columns are composed back into the CSV `source_slug:id` format.
 - Lines starting with `#` are treated as comments and skipped during import when editing the CSVs directly.
 
 ## Schema

@@ -65,14 +65,47 @@ GROUND_TRUTH_REVIEW_POLICIES: dict[str, dict[str, Any]] = {
         "required_type": "Specification",
     },
 }
+WORKBOOK_IPS_COLUMNS = (
+    "ip_source",
+    "ip_id",
+    "reviewer",
+    "reviewed_at",
+    "sampling_strategy",
+    "sampling_snapshot",
+    "sampling_seed",
+    "era_bucket",
+    "density_bucket",
+    "density_basis",
+    "created",
+    "status",
+    "type",
+    "layer",
+    "title",
+    "extracted_target_count",
+    "note",
+)
+WORKBOOK_INTERRELATIONS_COLUMNS = (
+    "source",
+    "source_id",
+    "target",
+    "target_id",
+    "relation_type",
+    "confidence",
+    "evidence",
+    "note",
+    "reviewer",
+    "reviewed_at",
+)
 GROUND_TRUTH_WORKBOOK_SHEETS = (
-    ("ips", REVIEWED_IPS_CSV_COLUMNS),
-    ("interrelations", GROUND_TRUTH_CSV_COLUMNS),
+    ("ips", WORKBOOK_IPS_COLUMNS),
+    ("interrelations", WORKBOOK_INTERRELATIONS_COLUMNS),
 )
 _XLSX_MAIN_NS = "http://schemas.openxmlformats.org/spreadsheetml/2006/main"
 _XLSX_REL_NS = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
 _XLSX_PKG_REL_NS = "http://schemas.openxmlformats.org/package/2006/relationships"
 _XLSX_NAMESPACES = {"x": _XLSX_MAIN_NS, "r": _XLSX_REL_NS, "pr": _XLSX_PKG_REL_NS}
+_XLSX_MAIN_NS_STRICT = "http://purl.oclc.org/ooxml/spreadsheetml/main"
+_XLSX_REL_NS_STRICT = "http://purl.oclc.org/ooxml/officeDocument/relationships"
 
 
 def ground_truth_directory(ecosystem_slug: str | None) -> Path:
@@ -91,6 +124,45 @@ def _ground_truth_csv_path(ecosystem_slug: str | None, sheet_name: str) -> Path:
     else:
         raise ValueError(f"Unknown ground-truth sheet `{sheet_name}`")
     return ground_truth_directory(ecosystem_slug) / filename
+
+
+def _split_graph_key(value: Any) -> tuple[str, str]:
+    text = str(value or "").strip()
+    if ":" not in text:
+        return "", text
+    source_slug, proposal_id = text.split(":", 1)
+    return source_slug.strip(), proposal_id.strip()
+
+
+def _compose_graph_key(source_slug: Any, proposal_id: Any) -> str:
+    source_text = str(source_slug or "").strip()
+    proposal_text = str(proposal_id or "").strip()
+    if not source_text and not proposal_text:
+        return ""
+    if not source_text or not proposal_text:
+        return ""
+    return f"{source_text}:{proposal_text}"
+
+
+def _element_local_name(element: ET.Element) -> str:
+    return str(element.tag).split("}", 1)[-1]
+
+
+def _child_elements(parent: ET.Element, local_name: str) -> List[ET.Element]:
+    return [
+        child for child in list(parent) if _element_local_name(child) == local_name
+    ]
+
+
+def _first_child(parent: ET.Element, local_name: str) -> ET.Element | None:
+    for child in list(parent):
+        if _element_local_name(child) == local_name:
+            return child
+    return None
+
+
+def _find_descendants(root: ET.Element, local_name: str) -> List[ET.Element]:
+    return [element for element in root.iter() if _element_local_name(element) == local_name]
 
 
 def _excel_column_name(index: int) -> str:
@@ -188,14 +260,20 @@ def _sheet_value_from_cell(
     if cell_type == "inlineStr":
         return "".join(cell.itertext()).strip()
     if cell_type == "s":
-        raw_index = cell.findtext("x:v", default="", namespaces=_XLSX_NAMESPACES).strip()
+        value_element = _first_child(cell, "v")
+        raw_index = (
+            str(value_element.text or "").strip()
+            if value_element is not None
+            else ""
+        )
         if raw_index.isdigit():
             index = int(raw_index)
             if 0 <= index < len(shared_strings):
                 return shared_strings[index].strip()
         return ""
 
-    value = cell.findtext("x:v", default="", namespaces=_XLSX_NAMESPACES).strip()
+    value_element = _first_child(cell, "v")
+    value = str(value_element.text or "").strip() if value_element is not None else ""
     if value and column_name in {"created", "reviewed_at"}:
         try:
             serial = float(value)
@@ -212,7 +290,7 @@ def _load_shared_strings(workbook: zipfile.ZipFile) -> List[str]:
         return []
     root = ET.fromstring(workbook.read("xl/sharedStrings.xml"))
     values: List[str] = []
-    for string_item in root.findall("x:si", _XLSX_NAMESPACES):
+    for string_item in _find_descendants(root, "si"):
         values.append("".join(string_item.itertext()))
     return values
 
@@ -222,12 +300,16 @@ def _sheet_path_by_name(workbook: zipfile.ZipFile, sheet_name: str) -> str:
     rels_root = ET.fromstring(workbook.read("xl/_rels/workbook.xml.rels"))
     targets_by_rel_id = {
         rel.get("Id"): rel.get("Target")
-        for rel in rels_root.findall("pr:Relationship", _XLSX_NAMESPACES)
+        for rel in _find_descendants(rels_root, "Relationship")
     }
-    for sheet in workbook_root.findall("x:sheets/x:sheet", _XLSX_NAMESPACES):
+    for sheet in _find_descendants(workbook_root, "sheet"):
         if str(sheet.get("name") or "").strip() != sheet_name:
             continue
-        rel_id = sheet.get(f"{{{_XLSX_REL_NS}}}id")
+        rel_id = (
+            sheet.get(f"{{{_XLSX_REL_NS}}}id")
+            or sheet.get(f"{{{_XLSX_REL_NS_STRICT}}}id")
+            or sheet.get("id")
+        )
         target = targets_by_rel_id.get(rel_id)
         if target:
             return f"xl/{target.lstrip('/')}"
@@ -246,9 +328,9 @@ def _load_xlsx_sheet_entries(
         sheet_root = ET.fromstring(workbook.read(sheet_path))
 
     rows: List[List[str]] = []
-    for row_element in sheet_root.findall("x:sheetData/x:row", _XLSX_NAMESPACES):
+    for row_element in _find_descendants(sheet_root, "row"):
         values_by_index: dict[int, str] = {}
-        for cell in row_element.findall("x:c", _XLSX_NAMESPACES):
+        for cell in _child_elements(row_element, "c"):
             cell_ref = str(cell.get("r") or "")
             column_index = _excel_column_index(cell_ref)
             values_by_index[column_index] = _sheet_value_from_cell(
@@ -265,23 +347,159 @@ def _load_xlsx_sheet_entries(
 
     header = [str(value or "").strip() for value in rows[0]]
     header_index = {name: index for index, name in enumerate(header) if name}
-    missing = [column for column in columns if column not in header_index]
-    if missing:
-        raise ValueError(
-            f"Ground-truth workbook sheet `{sheet_name}` is missing columns: {', '.join(missing)}"
+    if sheet_name == "ips":
+        has_split = "ip_source" in header_index and "ip_id" in header_index
+        has_legacy = "ip" in header_index
+        if not has_split and not has_legacy:
+            raise ValueError(
+                "Ground-truth workbook sheet `ips` must provide either `ip` "
+                "or both `ip_source` and `ip_id`"
+            )
+    elif sheet_name == "interrelations":
+        has_split = all(
+            key in header_index
+            for key in ("source", "source_id", "target", "target_id")
         )
+        has_legacy = "source" in header_index and "target" in header_index
+        if not has_split and not has_legacy:
+            raise ValueError(
+                "Ground-truth workbook sheet `interrelations` must provide either "
+                "legacy `source`/`target` graph-key columns or split source/id columns"
+            )
+    else:
+        missing = [column for column in columns if column not in header_index]
+        if missing:
+            raise ValueError(
+                f"Ground-truth workbook sheet `{sheet_name}` is missing columns: {', '.join(missing)}"
+            )
 
     entries: List[Dict[str, str]] = []
     for row_values in rows[1:]:
         entry = {
-            column: str(row_values[header_index[column]]).strip()
-            if header_index[column] < len(row_values)
-            else ""
-            for column in columns
+            column: str(row_values[index]).strip() if index < len(row_values) else ""
+            for column, index in header_index.items()
         }
         if any(entry.values()):
             entries.append(entry)
     return entries
+
+
+def _workbook_rows_to_csv_rows(
+    sheet_name: str,
+    rows: Sequence[Mapping[str, Any]],
+) -> List[Dict[str, str]]:
+    if sheet_name == "ips":
+        normalized_rows: List[Dict[str, str]] = []
+        for row in rows:
+            graph_key = str(row.get("ip") or "").strip()
+            if not graph_key:
+                graph_key = _compose_graph_key(row.get("ip_source"), row.get("ip_id"))
+            source_slug, proposal_id = _split_graph_key(graph_key)
+            normalized_rows.append(
+                {
+                    "ip": _compose_graph_key(source_slug, proposal_id),
+                    "reviewer": str(row.get("reviewer") or "").strip(),
+                    "reviewed_at": str(row.get("reviewed_at") or "").strip(),
+                    "sampling_strategy": str(row.get("sampling_strategy") or "").strip(),
+                    "sampling_snapshot": str(row.get("sampling_snapshot") or "").strip(),
+                    "sampling_seed": str(row.get("sampling_seed") or "").strip(),
+                    "era_bucket": str(row.get("era_bucket") or "").strip(),
+                    "density_bucket": str(row.get("density_bucket") or "").strip(),
+                    "density_basis": str(row.get("density_basis") or "").strip(),
+                    "created": str(row.get("created") or "").strip(),
+                    "status": str(row.get("status") or "").strip(),
+                    "type": str(row.get("type") or "").strip(),
+                    "layer": str(row.get("layer") or "").strip(),
+                    "title": str(row.get("title") or "").strip(),
+                    "extracted_target_count": str(
+                        row.get("extracted_target_count") or ""
+                    ).strip(),
+                    "note": str(row.get("note") or "").strip(),
+                }
+            )
+        return normalized_rows
+
+    if sheet_name == "interrelations":
+        normalized_rows = []
+        for row in rows:
+            source_key = str(row.get("source_graph_key") or row.get("source") or "").strip()
+            target_key = str(row.get("target_graph_key") or row.get("target") or "").strip()
+            if ":" not in source_key:
+                source_key = _compose_graph_key(row.get("source"), row.get("source_id"))
+            if ":" not in target_key:
+                target_key = _compose_graph_key(row.get("target"), row.get("target_id"))
+            normalized_rows.append(
+                {
+                    "source": source_key,
+                    "target": target_key,
+                    "relation_type": str(row.get("relation_type") or "").strip(),
+                    "confidence": str(row.get("confidence") or "").strip(),
+                    "evidence": str(row.get("evidence") or "").strip(),
+                    "note": str(row.get("note") or "").strip(),
+                    "reviewer": str(row.get("reviewer") or "").strip(),
+                    "reviewed_at": str(row.get("reviewed_at") or "").strip(),
+                }
+            )
+        return normalized_rows
+
+    raise ValueError(f"Unknown ground-truth sheet `{sheet_name}`")
+
+
+def _csv_rows_to_workbook_rows(
+    sheet_name: str,
+    rows: Sequence[Mapping[str, Any]],
+) -> List[Dict[str, str]]:
+    if sheet_name == "ips":
+        workbook_rows: List[Dict[str, str]] = []
+        for row in rows:
+            source_slug, proposal_id = _split_graph_key(row.get("ip"))
+            workbook_rows.append(
+                {
+                    "ip_source": source_slug,
+                    "ip_id": proposal_id,
+                    "reviewer": str(row.get("reviewer") or "").strip(),
+                    "reviewed_at": str(row.get("reviewed_at") or "").strip(),
+                    "sampling_strategy": str(row.get("sampling_strategy") or "").strip(),
+                    "sampling_snapshot": str(row.get("sampling_snapshot") or "").strip(),
+                    "sampling_seed": str(row.get("sampling_seed") or "").strip(),
+                    "era_bucket": str(row.get("era_bucket") or "").strip(),
+                    "density_bucket": str(row.get("density_bucket") or "").strip(),
+                    "density_basis": str(row.get("density_basis") or "").strip(),
+                    "created": str(row.get("created") or "").strip(),
+                    "status": str(row.get("status") or "").strip(),
+                    "type": str(row.get("type") or "").strip(),
+                    "layer": str(row.get("layer") or "").strip(),
+                    "title": str(row.get("title") or "").strip(),
+                    "extracted_target_count": str(
+                        row.get("extracted_target_count") or ""
+                    ).strip(),
+                    "note": str(row.get("note") or "").strip(),
+                }
+            )
+        return workbook_rows
+
+    if sheet_name == "interrelations":
+        workbook_rows = []
+        for row in rows:
+            source_slug, source_id = _split_graph_key(row.get("source"))
+            target_slug, target_id = _split_graph_key(row.get("target"))
+            workbook_rows.append(
+                {
+                    "source": source_slug,
+                    "source_id": source_id,
+                    "target": target_slug,
+                    "target_id": target_id,
+                    "relation_type": str(row.get("relation_type") or "").strip(),
+                    "confidence": str(row.get("confidence") or "").strip(),
+                    "evidence": str(row.get("evidence") or "").strip(),
+                    "note": str(row.get("note") or "").strip(),
+                    "reviewer": str(row.get("reviewer") or "").strip(),
+                    "reviewed_at": str(row.get("reviewed_at") or "").strip(),
+                }
+            )
+        return workbook_rows
+
+    raise ValueError(f"Unknown ground-truth sheet `{sheet_name}`")
 
 
 def _write_csv_rows(
@@ -305,16 +523,22 @@ def sync_ground_truth_csvs_from_workbook(ecosystem_slug: str | None) -> bool:
     if not workbook_path.exists():
         return False
 
-    for sheet_name, columns in GROUND_TRUTH_WORKBOOK_SHEETS:
+    csv_columns_by_sheet = {
+        "ips": REVIEWED_IPS_CSV_COLUMNS,
+        "interrelations": GROUND_TRUTH_CSV_COLUMNS,
+    }
+
+    for sheet_name, workbook_columns in GROUND_TRUTH_WORKBOOK_SHEETS:
         rows = _load_xlsx_sheet_entries(
             workbook_path,
             sheet_name=sheet_name,
-            columns=columns,
+            columns=workbook_columns,
         )
+        csv_rows = _workbook_rows_to_csv_rows(sheet_name, rows)
         _write_csv_rows(
             _ground_truth_csv_path(ecosystem_slug, sheet_name),
-            columns=columns,
-            rows=rows,
+            columns=csv_columns_by_sheet[sheet_name],
+            rows=csv_rows,
         )
     return True
 
@@ -523,9 +747,17 @@ def export_ground_truth_workbook(ecosystem_slug: str | None) -> Path:
     )
 
     sheet_xml_by_path: dict[str, bytes] = {}
-    for index, (sheet_name, columns) in enumerate(GROUND_TRUTH_WORKBOOK_SHEETS, start=1):
+    csv_columns_by_sheet = {
+        "ips": REVIEWED_IPS_CSV_COLUMNS,
+        "interrelations": GROUND_TRUTH_CSV_COLUMNS,
+    }
+
+    for index, (sheet_name, workbook_columns) in enumerate(
+        GROUND_TRUTH_WORKBOOK_SHEETS, start=1
+    ):
         csv_path = _ground_truth_csv_path(ecosystem_slug, sheet_name)
-        rows = _load_csv_rows(csv_path, columns=columns)
+        rows = _load_csv_rows(csv_path, columns=csv_columns_by_sheet[sheet_name])
+        workbook_rows = _csv_rows_to_workbook_rows(sheet_name, rows)
         ET.SubElement(
             sheets_element,
             f"{{{_XLSX_MAIN_NS}}}sheet",
@@ -545,8 +777,8 @@ def export_ground_truth_workbook(ecosystem_slug: str | None) -> Path:
             },
         )
         sheet_xml_by_path[f"xl/worksheets/sheet{index}.xml"] = _build_sheet_xml(
-            columns,
-            rows,
+            workbook_columns,
+            workbook_rows,
         )
 
     content_types = f"""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>

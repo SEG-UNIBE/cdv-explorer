@@ -258,6 +258,77 @@ class SnapshotValidationTests(unittest.TestCase):
         self.assertIn("expects source `bips`", warning_text)
         self.assertIn("expects proposal type `Specification`", warning_text)
 
+    def test_ground_truth_validation_rejects_inconsistent_review_scope_dates_and_timeline(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            root = Path(tmp_dir)
+            gt_dir = root / "ip_data" / "bitcoin" / "ground_truth"
+            gt_dir.mkdir(parents=True)
+            (gt_dir / "interrelations.csv").write_text(
+                "\n".join(
+                    [
+                        "source\ttarget\trelation_type\tconfidence\tevidence\tnote\treviewer\treviewed_at",
+                        "bips:44\tbips:32\tdepends_on\thigh\tRequires: 32\t\trbo\t2026-06-23",
+                        "bips:55\tbips:32\treferences\tmedium\tMentioned in rationale\t\trbo\t2026-06-22",
+                        "bips:44\tbips:77\treferences\tmedium\tMentioned in rationale\t\trbo\t2026-06-22",
+                    ]
+                ),
+                encoding="utf-8",
+            )
+            (gt_dir / "ips.csv").write_text(
+                "\n".join(
+                    [
+                        "ip\treviewer\treviewed_at\tsampling_strategy\tsampling_snapshot\tsampling_seed\tera_bucket\tdensity_bucket\tdensity_basis\tcreated\tstatus\ttype\tlayer\ttitle\textracted_target_count\tnote",
+                        "bips:44\trbo\t2026-06-22\tmanual\t\t\tmiddle\tlow\tall_methods\t2014-04-24\tDraft\tSpecification\tApplications\tTest BIP 44\t1\t",
+                    ]
+                ),
+                encoding="utf-8",
+            )
+
+            ecosystem_config = {
+                "sources": {
+                    "bips": self._source_config(root, "bips"),
+                }
+            }
+            preprocess_dir = Path(ecosystem_config["sources"]["bips"]["preprocess"]) / "2026-06-29"
+            preprocess_dir.mkdir(parents=True)
+            for proposal_id, created, title, last_commit in [
+                ("32", "2012-02-11", "BIP 32", "Thu Jun 20 09:00:00 2026 +0000"),
+                ("44", "2014-04-24", "BIP 44", "Thu Jun 20 09:00:00 2026 +0000"),
+                ("55", "2017-01-01", "BIP 55", "Thu Jun 20 09:00:00 2026 +0000"),
+                ("77", "2026-06-25", "BIP 77", "Thu Jun 25 09:00:00 2026 +0000"),
+            ]:
+                (preprocess_dir / f"bip-{int(proposal_id):04d}.json").write_text(
+                    json.dumps(
+                        {
+                            "raw": {
+                                "preamble": {
+                                    "bip": proposal_id,
+                                    "created": created,
+                                    "title": title,
+                                }
+                            },
+                            "meta": {"last_commit": last_commit},
+                        }
+                    ),
+                    encoding="utf-8",
+                )
+
+            previous_cwd = Path.cwd()
+            os.chdir(root)
+            try:
+                result = validate_ground_truth_curated_file(
+                    "bitcoin", ecosystem_config=ecosystem_config
+                )
+            finally:
+                os.chdir(previous_cwd)
+
+        self.assertFalse(result.ok)
+        self.assertEqual("❌ consistency", result.file_status["ground_truth"])
+        error_text = "\n".join(result.errors)
+        self.assertIn("must also appear in `ips.csv`", error_text)
+        self.assertIn("must be on or after the curated edge reviewed_at", error_text)
+        self.assertIn("newer than the latest known commit date of source `bips:44`", error_text)
+
     def test_ground_truth_workbook_recreates_csvs_for_validation(self) -> None:
         with tempfile.TemporaryDirectory() as tmp_dir:
             root = Path(tmp_dir)

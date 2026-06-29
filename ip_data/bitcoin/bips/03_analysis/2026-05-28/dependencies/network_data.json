@@ -48782,6 +48782,42 @@
       "reviewed_at": "2026-06-29"
     },
     {
+      "source": "bips:320",
+      "target": "bips:8",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "references",
+      "value": 1,
+      "confidence": "low",
+      "evidence": "Sixteen bits from the block header nVersion field [...] are reserved for general use and removed from BIP8 and BIP9 specifications. [...] References BIP8",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-29"
+    },
+    {
+      "source": "bips:320",
+      "target": "bips:9",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "references",
+      "value": 1,
+      "confidence": "low",
+      "evidence": "Sixteen bits from the block header nVersion field [...] are reserved for general use and removed from BIP8 and BIP9 specifications. [...] References [...] BIP9",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-29"
+    },
+    {
+      "source": "bips:320",
+      "target": "bips:323",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "superseded_by",
+      "value": 1,
+      "confidence": "high",
+      "evidence": "Proposed-Replacement: 323",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-29"
+    },
+    {
       "source": "bips:321",
       "target": "bips:20",
       "extraction_method": "ground_truth_curated",
@@ -48791,7 +48827,7 @@
       "evidence": "BIP 21 was based on BIP 20, which was, in turn based on an earlier document by Nils Schneider.",
       "note": null,
       "reviewer": "rbo",
-      "reviewed_at": "2026-06-29"
+      "reviewed_at": "2026-06-22"
     },
     {
       "source": "bips:321",
@@ -48831,6 +48867,18 @@
     },
     {
       "source": "bips:324",
+      "target": "bips:31",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "references",
+      "value": 1,
+      "confidence": "low",
+      "evidence": "Assuming a node sends only ping messages every 20 minutes (the timeout interval for post-BIP31 connections) on a connection",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-29"
+    },
+    {
+      "source": "bips:324",
       "target": "bips:151",
       "extraction_method": "ground_truth_curated",
       "relation_type": "supersedes",
@@ -48839,7 +48887,7 @@
       "evidence": "Replaces: 151",
       "note": "Replacement noted in BIP324 preamble.",
       "reviewer": "rbo",
-      "reviewed_at": "2026-06-22"
+      "reviewed_at": "2026-06-29"
     },
     {
       "source": "bips:324",
@@ -48851,19 +48899,79 @@
       "evidence": "Here, sha256_tagged(tag, x) returns a tagged hash value SHA256(SHA256(tag) || SHA256(tag) || x) as in BIP340. [...] In what follows, we use the notation from BIP340.",
       "note": "Probably not a technically required dependency but BIP340 contributes to the understanding of BIP324",
       "reviewer": "rbo",
-      "reviewed_at": "2026-06-22"
+      "reviewed_at": "2026-06-29"
     },
     {
-      "source": "bips:324",
-      "target": "bips:31",
+      "source": "bips:330",
+      "target": "bips:340",
       "extraction_method": "ground_truth_curated",
       "relation_type": "references",
       "value": 1,
-      "confidence": "low",
-      "evidence": "Assuming a node sends only ping messages every 20 minutes (the timeout interval for post-BIP31 connections) on a connection",
+      "confidence": "medium",
+      "evidence": "Compute h = TaggedHash(\"Tx Relay Salting\", salt1, salt2), where the two salts are encoded in 64-bit little-endian byte order, and TaggedHash is specified by BIP-340.",
       "note": null,
       "reviewer": "rbo",
-      "reviewed_at": "2026-06-22"
+      "reviewed_at": "2026-06-29"
+    },
+    {
+      "source": "bips:330",
+      "target": "bips:141",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "references",
+      "value": 1,
+      "confidence": "medium",
+      "evidence": "Let s = SipHash-2-4((k0,k1),wtxid), where wtxid is the transaction hash including witness data as defined by BIP141.",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-29"
+    },
+    {
+      "source": "bips:330",
+      "target": "bips:339",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "depends_on",
+      "value": 1,
+      "confidence": "medium",
+      "evidence": "Since sketches are based on the WTXIDs, the negotiation and support of Erlay should be enabled only if both peers signal BIP-339 support.",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-29"
+    },
+    {
+      "source": "bips:331",
+      "target": "bips:339",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "references",
+      "value": 1,
+      "confidence": "high",
+      "evidence": "a node cannot use txid to deduplicate transactions it has already downloaded or validated. Ideally, two nodes that both support BIP339 wtxid-based transaction relay shouldn't ever need to use txid-based transaction relay.",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-29"
+    },
+    {
+      "source": "bips:331",
+      "target": "bips:133",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "references",
+      "value": 1,
+      "confidence": "high",
+      "evidence": "If the peers are using BIP133 fee filters [...] This does not mean BIP133 is required for package relay to work, [...]",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-29"
+    },
+    {
+      "source": "bips:331",
+      "target": "bips:330",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "references",
+      "value": 1,
+      "confidence": "medium",
+      "evidence": "Clients implementing this protocol will only attempt to send and request packages if agreed upon during the version handshake. [13] [14] [...] [14] Is Package Erlay possible? A client using BIP330 reconciliation-based transaction relay (Erlay) is able to use package relay [...]",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-29"
     },
     {
       "source": "bips:1",
@@ -52572,7 +52680,7 @@
       "proposal_id": "320",
       "source_slug": "bips",
       "reviewer": "rbo",
-      "reviewed_at": null,
+      "reviewed_at": "2026-06-29",
       "sampling_strategy": "sampler",
       "sampling_snapshot": "2026-05-28",
       "sampling_seed": "42",
@@ -52612,7 +52720,7 @@
       "proposal_id": "324",
       "source_slug": "bips",
       "reviewer": "rbo",
-      "reviewed_at": "2026-06-22",
+      "reviewed_at": "2026-06-29",
       "sampling_strategy": "manual",
       "sampling_snapshot": "-",
       "sampling_seed": "-",
@@ -52632,7 +52740,7 @@
       "proposal_id": "330",
       "source_slug": "bips",
       "reviewer": "rbo",
-      "reviewed_at": null,
+      "reviewed_at": "2026-06-29",
       "sampling_strategy": "sampler",
       "sampling_snapshot": "2026-05-28",
       "sampling_seed": "42",
@@ -52652,7 +52760,7 @@
       "proposal_id": "331",
       "source_slug": "bips",
       "reviewer": "rbo",
-      "reviewed_at": null,
+      "reviewed_at": "2026-06-29",
       "sampling_strategy": "sampler",
       "sampling_snapshot": "2026-05-28",
       "sampling_seed": "42",

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import re
+from datetime import date
 from dataclasses import dataclass, field
 from itertools import combinations
 from pathlib import Path
@@ -21,6 +22,7 @@ from analysis.validation.ground_truth import (
     validate_reviewed_ip_entries,
 )
 from analysis.reference_ids import normalize_reference_id_for_config
+from analysis.utils import parse_date_ymd
 from ecosystems import ECOSYSTEM_REGISTRY
 from pipeline.source_context import SourceContext
 
@@ -134,6 +136,120 @@ def _ground_truth_source_configs(
         for source_slug, source_config in sources.items()
         if isinstance(source_config, Mapping)
     }
+
+
+def _normalize_iso_date(text: Any) -> str | None:
+    value = str(text or "").strip()
+    if not value:
+        return None
+    try:
+        date.fromisoformat(value)
+    except ValueError:
+        return None
+    return value
+
+
+def _latest_source_proposal_metadata(
+    ecosystem_slug: str,
+    ecosystem_config: Mapping[str, Any] | None,
+) -> dict[str, dict[str, str]]:
+    config = ecosystem_config or ECOSYSTEM_REGISTRY.get(ecosystem_slug) or {}
+    sources = config.get("sources", {}) if isinstance(config, Mapping) else {}
+    proposal_metadata: dict[str, dict[str, str]] = {}
+
+    for source_slug, source_config in sources.items():
+        if not isinstance(source_config, Mapping):
+            continue
+        preprocess_root = Path(str(source_config.get("preprocess", "")))
+        id_field = str(source_config.get("primary_id_field") or "").strip()
+        snapshots = _snapshot_labels(preprocess_root)
+        if not snapshots:
+            continue
+        preprocess_dir = preprocess_root / snapshots[0]
+        if not preprocess_dir.is_dir() or not id_field:
+            continue
+        for json_path in sorted(preprocess_dir.glob("*.json")):
+            try:
+                payload = json.loads(json_path.read_text(encoding="utf-8"))
+            except json.JSONDecodeError:
+                continue
+            if not isinstance(payload, Mapping):
+                continue
+            preamble = payload.get("raw", {}).get("preamble", {})
+            if not isinstance(preamble, Mapping):
+                continue
+            proposal_id = str(preamble.get(id_field) or "").strip()
+            if not proposal_id:
+                continue
+            graph_key = f"{source_slug}:{proposal_id}"
+            last_commit = parse_date_ymd(
+                str(payload.get("meta", {}).get("last_commit") or "").strip()
+            )
+            proposal_metadata[graph_key] = {
+                "created": str(preamble.get("created") or "").strip(),
+                "title": str(preamble.get("title") or "").strip(),
+                "last_commit": last_commit or "",
+            }
+    return proposal_metadata
+
+
+def _validate_ground_truth_dataset_consistency(
+    curated_entries: list[Mapping[str, Any]],
+    reviewed_entries: list[Mapping[str, Any]],
+    *,
+    proposal_metadata: Mapping[str, Mapping[str, str]],
+) -> list[str]:
+    errors: list[str] = []
+    reviewed_by_ip = {
+        str(entry.get("ip") or "").strip(): entry
+        for entry in reviewed_entries
+        if isinstance(entry, Mapping) and str(entry.get("ip") or "").strip()
+    }
+
+    for index, entry in enumerate(curated_entries):
+        row_label = (
+            f"row {entry.get('__line__')}"
+            if isinstance(entry, Mapping) and entry.get("__line__")
+            else f"row {index + 2}"
+        )
+        source = str(entry.get("source") or "").strip()
+        target = str(entry.get("target") or "").strip()
+        if not source or not target:
+            continue
+
+        reviewed_source = reviewed_by_ip.get(source)
+        if reviewed_source is None:
+            errors.append(
+                f"{row_label}: curated source `{source}` must also appear in `ips.csv`"
+            )
+            continue
+
+        source_reviewed_at = _normalize_iso_date(reviewed_source.get("reviewed_at"))
+        edge_reviewed_at = _normalize_iso_date(entry.get("reviewed_at"))
+        if (
+            source_reviewed_at
+            and edge_reviewed_at
+            and source_reviewed_at < edge_reviewed_at
+        ):
+            errors.append(
+                f"{row_label}: `ips.csv` reviewed_at for `{source}` ({source_reviewed_at}) "
+                f"must be on or after the curated edge reviewed_at ({edge_reviewed_at})"
+            )
+
+        source_last_commit = _normalize_iso_date(
+            proposal_metadata.get(source, {}).get("last_commit")
+        )
+        target_created = _normalize_iso_date(
+            reviewed_by_ip.get(target, {}).get("created")
+            or proposal_metadata.get(target, {}).get("created")
+        )
+        if source_last_commit and target_created and target_created > source_last_commit:
+            errors.append(
+                f"{row_label}: target `{target}` was created on {target_created}, which is newer than "
+                f"the latest known commit date of source `{source}` ({source_last_commit})"
+            )
+
+    return errors
 
 
 def _snapshot_labels(root: Path) -> list[str]:
@@ -488,6 +604,20 @@ def validate_ground_truth_curated_file(
     if errors:
         result.file_status["ground_truth"] = "❌ schema"
         for error in errors:
+            result.fail(f"`{csv_path}` {error}")
+        return result
+
+    reviewed_entries = load_ground_truth_ips(ecosystem_slug, strict=False)
+    consistency_errors = _validate_ground_truth_dataset_consistency(
+        entries,
+        reviewed_entries,
+        proposal_metadata=_latest_source_proposal_metadata(
+            ecosystem_slug, ecosystem_config
+        ),
+    )
+    if consistency_errors:
+        result.file_status["ground_truth"] = "❌ consistency"
+        for error in consistency_errors:
             result.fail(f"`{csv_path}` {error}")
         return result
 

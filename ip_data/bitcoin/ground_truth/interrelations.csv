@@ -1,7 +1,7 @@
 source	target	relation_type	confidence	evidence	note	reviewer	reviewed_at
 slips:10	bips:32	depends_on	medium	SLIP-0010 describes a generalized derivation scheme for private and public key pairs in hierarchical deterministic wallets. [...] This SLIP describes how to derive a master private/public key for these curves by generalizing the derivation scheme used in BIP-0032.	SLIP10 extends BIP32 to additional curves.	rbo	2026-06-22
-slips:10	slips:39	references	high	Trezor generates all keys from a BIP-0039 mnemonic or from a set of SLIP-0039 mnemonic shares and optionally a passphrase.		rbo	2026-06-22
 slips:10	bips:39	references	high	Trezor generates all keys from a BIP-0039 mnemonic or from a set of SLIP-0039 mnemonic shares and optionally a passphrase.		rbo	2026-06-22
+slips:10	slips:39	references	high	Trezor generates all keys from a BIP-0039 mnemonic or from a set of SLIP-0039 mnemonic shares and optionally a passphrase.		rbo	2026-06-22
 bips:12	bips:11	references	low	See Also [...] M-of-N Multisignature Transactions BIP 11		rbo	2026-06-23
 bips:16	bips:11	references	high	See Also [...] M-of-N Multisignature Transactions BIP 11		rbo	2026-06-29
 bips:16	bips:12	supersedes	high	"This BIP replaces BIP 12, which proposed a new Script opcode (""OP_EVAL"") to accomplish everything in this BIP and more."		rbo	2026-06-29
@@ -88,10 +88,19 @@ bips:158	bips:37	references	high	The filter construction proposed is an alternat
 bips:158	bips:141	references	low	similar to the current witness commitment [6] [...] References [...] https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki		rbo	2026-06-29
 bips:158	bips:157	depends_on	high	Requires: 157 [...] This BIP describes a structure for compact filters on block data, for use in the BIP 157 light client protocol		rbo	2026-06-29
 bips:197	bips:199	depends_on	high	This BIP describes a script for generalized debt agreement contract based on Hashed Time-Lock Contract (BIP 199) transactions		rbo	2026-06-29
-bips:321	bips:20	references	low	BIP 21 was based on BIP 20, which was, in turn based on an earlier document by Nils Schneider.		rbo	2026-06-29
+bips:320	bips:8	references	low	Sixteen bits from the block header nVersion field [...] are reserved for general use and removed from BIP8 and BIP9 specifications. [...] References BIP8		rbo	2026-06-29
+bips:320	bips:9	references	low	Sixteen bits from the block header nVersion field [...] are reserved for general use and removed from BIP8 and BIP9 specifications. [...] References [...] BIP9		rbo	2026-06-29
+bips:320	bips:323	superseded_by	high	Proposed-Replacement: 323		rbo	2026-06-29
+bips:321	bips:20	references	low	BIP 21 was based on BIP 20, which was, in turn based on an earlier document by Nils Schneider.		rbo	2026-06-22
 bips:321	bips:21	supersedes	high	Replaces: 21 [...] This BIP is a modification and intended replacement of BIP 0021 to add information about the modern usage of bitcoin.		rbo	2026-06-22
 bips:321	bips:351	references	high	The following keys are currently defined for payment instructions of various forms: [...] pay: BIP 351 Private Payment addresses		rbo	2026-06-22
 bips:321	bips:352	references	high	The following keys are currently defined for payment instructions of various forms: [...] sp: BIP 352 Silent Payment addresses		rbo	2026-06-22
-bips:324	bips:151	supersedes	high	Replaces: 151	Replacement noted in BIP324 preamble.	rbo	2026-06-22
-bips:324	bips:340	references	high	Here, sha256_tagged(tag, x) returns a tagged hash value SHA256(SHA256(tag) || SHA256(tag) || x) as in BIP340. [...] In what follows, we use the notation from BIP340.	Probably not a technically required dependency but BIP340 contributes to the understanding of BIP324	rbo	2026-06-22
-bips:324	bips:31	references	low	Assuming a node sends only ping messages every 20 minutes (the timeout interval for post-BIP31 connections) on a connection		rbo	2026-06-22
+bips:324	bips:31	references	low	Assuming a node sends only ping messages every 20 minutes (the timeout interval for post-BIP31 connections) on a connection		rbo	2026-06-29
+bips:324	bips:151	supersedes	high	Replaces: 151	Replacement noted in BIP324 preamble.	rbo	2026-06-29
+bips:324	bips:340	references	high	Here, sha256_tagged(tag, x) returns a tagged hash value SHA256(SHA256(tag) || SHA256(tag) || x) as in BIP340. [...] In what follows, we use the notation from BIP340.	Probably not a technically required dependency but BIP340 contributes to the understanding of BIP324	rbo	2026-06-29
+bips:330	bips:340	references	medium	"Compute h = TaggedHash(""Tx Relay Salting"", salt1, salt2), where the two salts are encoded in 64-bit little-endian byte order, and TaggedHash is specified by BIP-340."		rbo	2026-06-29
+bips:330	bips:141	references	medium	Let s = SipHash-2-4((k0,k1),wtxid), where wtxid is the transaction hash including witness data as defined by BIP141.		rbo	2026-06-29
+bips:330	bips:339	depends_on	medium	Since sketches are based on the WTXIDs, the negotiation and support of Erlay should be enabled only if both peers signal BIP-339 support.		rbo	2026-06-29
+bips:331	bips:339	references	high	a node cannot use txid to deduplicate transactions it has already downloaded or validated. Ideally, two nodes that both support BIP339 wtxid-based transaction relay shouldn't ever need to use txid-based transaction relay.		rbo	2026-06-29
+bips:331	bips:133	references	high	If the peers are using BIP133 fee filters [...] This does not mean BIP133 is required for package relay to work, [...]		rbo	2026-06-29
+bips:331	bips:330	references	medium	Clients implementing this protocol will only attempt to send and request packages if agreed upon during the version handshake. [13] [14] [...] [14] Is Package Erlay possible? A client using BIP330 reconciliation-based transaction relay (Erlay) is able to use package relay [...]		rbo	2026-06-29

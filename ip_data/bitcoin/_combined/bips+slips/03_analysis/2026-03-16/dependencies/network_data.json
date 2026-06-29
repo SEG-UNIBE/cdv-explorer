@@ -49751,6 +49751,42 @@
     },
     {
       "source": "bips:347",
+      "target": "bips:340",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "depends_on",
+      "value": 1,
+      "confidence": "high",
+      "evidence": "Requires: 340, 341, 342",
+      "note": "BIP347 defines Tapscript, and Tapscript/Taproot validation uses Schnorr signatures, which are defined by BIP340",
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-29"
+    },
+    {
+      "source": "bips:347",
+      "target": "bips:341",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "depends_on",
+      "value": 1,
+      "confidence": "high",
+      "evidence": "Requires: 340, 341, 342 [...] The use of \"Nothing Up My Sleeve\" (NUMS) points as described in BIP341 to disable the key spend-path",
+      "note": "Requires Taproot, as OP_CAT applies only to Taproot (tapscript) outputs",
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-29"
+    },
+    {
+      "source": "bips:347",
+      "target": "bips:342",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "depends_on",
+      "value": 1,
+      "confidence": "high",
+      "evidence": "Requires: 340, 341, 342 [...] Our decision to reenable OP_CAT by redefining a tapscript OP_SUCCESSx opcode to OP_CAT was motivated to leverage the tapscript softfork opcode upgrade path introduced in BIP342",
+      "note": "BIP347 uses the tapscript OP_SUCCESSx soft fork upgrade mechanism introduced by BIP342 to redefine OP_SUCCESS126 as OP_CAT",
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-29"
+    },
+    {
+      "source": "bips:347",
       "target": "bips:3",
       "extraction_method": "ground_truth_curated",
       "relation_type": "references",
@@ -49782,6 +49818,18 @@
       "confidence": "medium",
       "evidence": "Reference implementations for parsing the URI contents can be found in BIP 321.",
       "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-29"
+    },
+    {
+      "source": "bips:353",
+      "target": "bips:352",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "references",
+      "value": 1,
+      "confidence": "high",
+      "evidence": "On-chain addresses which are re-used (i.e. not including schemes like Silent Payments) need to be rotated to avoid contributing substantially to address reuse.",
+      "note": "Silent payments are defined in BIP352",
       "reviewer": "rbo",
       "reviewed_at": "2026-06-29"
     },
@@ -49818,6 +49866,18 @@
       "confidence": "high",
       "evidence": "Compute the DLEQ proof for C using BIP374 GenerateProof and passing an as a and Bscan as B. [...] Using BIP374 VerifyProof and passing A as An, B as Bscan, [...]",
       "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-29"
+    },
+    {
+      "source": "bips:375",
+      "target": "bips:32",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "references",
+      "value": 1,
+      "confidence": "high",
+      "evidence": "The updater should add a PSBT_IN_BIP32_DERIVATION for any p2wpkh, p2sh-p2wpkh, or p2pkh input [...] Updaters may add two PSBT_OUT_BIP32_DERIVATION key-value-pairs with the corresponding derivation path [...]",
+      "note": "BIP375 references BIP32 derivation metadata (PSBT_IN_BIP32_DERIVATION and PSBT_OUT_BIP32_DERIVATION) to identify keys and verify silent payment change outputs (metadata named after BIP32)",
       "reviewer": "rbo",
       "reviewed_at": "2026-06-29"
     },
@@ -49878,6 +49938,66 @@
       "confidence": "medium",
       "evidence": "The second key expression represents the spend key and may be any key expression as defined in BIP380 or other key expression BIPs (e.g. musig() as defined in BIP390) that represents a single key, public or private.",
       "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-29"
+    },
+    {
+      "source": "bips:443",
+      "target": "bips:342",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "depends_on",
+      "value": 1,
+      "confidence": "high",
+      "evidence": "This BIP proposes to add consensus support for a new tapscript opcode that enables a new type of output restrictions: OP_CHECKCONTRACTVERIFY (OP_CCV).",
+      "note": "BIP443 introduces OP_CHECKCONTRACTVERIFY by redefining the tapscript opcode OP_SUCCESS187, using the tapscript opcode upgrade mechanism defined in BIP342",
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-29"
+    },
+    {
+      "source": "bips:443",
+      "target": "bips:341",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "depends_on",
+      "value": 1,
+      "confidence": "high",
+      "evidence": "If the <pk> is 0, it is replaced with the NUMS x-only pubkey [...] defined in BIP-341. [...] BIP341_NUMS_KEY is the x-only provably unspendable key [...] defined in BIP-341.",
+      "note": "BIP443 extends Taproot by constraining P2TR outputs and reuses Taproot key tweaking and internal-key semantics defined in BIP341",
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-29"
+    },
+    {
+      "source": "bips:443",
+      "target": "bips:345",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "references",
+      "value": 1,
+      "confidence": "medium",
+      "evidence": "OP_VAULT[2] is a proposed opcode to implement a 2-step withdrawal process, enabling on-chain reactive security. [...] [2] BIP-345",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-29"
+    },
+    {
+      "source": "bips:443",
+      "target": "bips:119",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "references",
+      "value": 1,
+      "confidence": "medium",
+      "evidence": "OP_CHECKTEMPLATEVERIFY[3] is a long-proposed opcode to constrain a transaction to a template with a fixed set of outputs.  [...] [3] BIP-119",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-29"
+    },
+    {
+      "source": "bips:443",
+      "target": "bips:327",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "references",
+      "value": 1,
+      "confidence": "low",
+      "evidence": "For example, in a multi-party contract, the naked key could be an aggregate key using MuSig2",
+      "note": "MuSig2 is definied in BIP327",
       "reviewer": "rbo",
       "reviewed_at": "2026-06-29"
     },
@@ -54743,7 +54863,7 @@
   ],
   "meta": {
     "node_count": 220,
-    "edge_count": 1372,
+    "edge_count": 1382,
     "source_slugs": [
       "bips",
       "slips"

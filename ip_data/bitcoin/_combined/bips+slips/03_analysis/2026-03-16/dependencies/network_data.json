@@ -48694,6 +48694,18 @@
       "value": 1
     },
     {
+      "source": "bips:11",
+      "target": "bips:12",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "depends_on",
+      "value": 1,
+      "confidence": "low",
+      "evidence": "The counter-argument is that these new multi-signature transactions will be used in combination with OP_EVAL (see the OP_EVAL BIP),",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-30"
+    },
+    {
       "source": "bips:12",
       "target": "bips:11",
       "extraction_method": "ground_truth_curated",
@@ -48786,8 +48798,8 @@
       "confidence": "high",
       "evidence": "See Also [...] M-of-N Multisignature Transactions (BIP 11)",
       "note": null,
-      "reviewer": null,
-      "reviewed_at": null
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-30"
     },
     {
       "source": "bips:17",
@@ -48798,8 +48810,8 @@
       "confidence": "high",
       "evidence": "This BIP replaces BIP 12 and BIP 16, which propose evaluating a Script from the stack after verifying its hash.  [...] OP_NOP2 is used, so existing OP_EVAL (BIP 12) transactions in the block chain can still be redeemed.",
       "note": null,
-      "reviewer": null,
-      "reviewed_at": null
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-30"
     },
     {
       "source": "bips:17",
@@ -48810,8 +48822,8 @@
       "confidence": "high",
       "evidence": "See Also The Address format for Pay to Script Hash BIP",
       "note": "Address format for P2SH is defined in BIP13",
-      "reviewer": null,
-      "reviewed_at": null
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-30"
     },
     {
       "source": "bips:17",
@@ -48822,8 +48834,8 @@
       "confidence": "high",
       "evidence": "This BIP replaces BIP 12 and BIP 16, which propose evaluating a Script from the stack after verifying its hash.",
       "note": null,
-      "reviewer": null,
-      "reviewed_at": null
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-30"
     },
     {
       "source": "bips:18",
@@ -48894,8 +48906,8 @@
       "confidence": "high",
       "evidence": "OP_CHECKMULTISIG is already an enabled opcode, and is the most straightforward way to support several important use cases. This is already specified in BIP 0011.",
       "note": "BIP 19 explicitly proposes an alternative implementation to BIP 11.",
-      "reviewer": null,
-      "reviewed_at": null
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-30"
     },
     {
       "source": "bips:20",
@@ -48918,8 +48930,8 @@
       "confidence": "high",
       "evidence": "Replaces: 20 [...] This BIP is a modification of an earlier BIP 0020 by Luke Dashjr. BIP 0020 was based off an earlier document by Nils Schneider. The alternative payment amounts in BIP 0020 have been removed.",
       "note": null,
-      "reviewer": null,
-      "reviewed_at": null
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-30"
     },
     {
       "source": "bips:21",
@@ -48930,8 +48942,8 @@
       "confidence": "high",
       "evidence": "Proposed-Replacement: 321 [...] This BIP has been superseded and replaced with BIP 321. Please see BIP 321 instead.",
       "note": null,
-      "reviewer": null,
-      "reviewed_at": null
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-30"
     },
     {
       "source": "bips:22",
@@ -48970,6 +48982,18 @@
       "reviewed_at": "2026-06-26"
     },
     {
+      "source": "bips:23",
+      "target": "bips:22",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "depends_on",
+      "value": 1,
+      "confidence": "high",
+      "evidence": "This BIP describes extensions to the getblocktemplate JSON-RPC call to enhance pooled mining. [...] Note that all sections of this specification are optional extensions on top of BIP 22.",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-30"
+    },
+    {
       "source": "bips:31",
       "target": "bips:14",
       "extraction_method": "ground_truth_curated",
@@ -48992,6 +49016,42 @@
       "note": "Declared as depends_on relation here as the sole purpose of mnemonic seeds is their subsequent conversion to BIP32 master keys.",
       "reviewer": "rbo",
       "reviewed_at": "2026-06-22"
+    },
+    {
+      "source": "bips:42",
+      "target": "bips:16",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "references",
+      "value": 1,
+      "confidence": "low",
+      "evidence": "A softfork (see BIP16, BIP34, BIP62) will take place on april 1st 2214, permanently setting the subsidy to zero.",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-30"
+    },
+    {
+      "source": "bips:42",
+      "target": "bips:34",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "references",
+      "value": 1,
+      "confidence": "low",
+      "evidence": "A softfork (see BIP16, BIP34, BIP62) will take place on april 1st 2214, permanently setting the subsidy to zero.",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-30"
+    },
+    {
+      "source": "bips:42",
+      "target": "bips:62",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "references",
+      "value": 1,
+      "confidence": "low",
+      "evidence": "A softfork (see BIP16, BIP34, BIP62) will take place on april 1st 2214, permanently setting the subsidy to zero.",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-30"
     },
     {
       "source": "bips:43",
@@ -49052,6 +49112,78 @@
       "note": "SLIP44 enumerates coin_type values used by BIP-44.",
       "reviewer": "rbo",
       "reviewed_at": "2026-06-22"
+    },
+    {
+      "source": "bips:46",
+      "target": "bips:32",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "depends_on",
+      "value": 1,
+      "confidence": "high",
+      "evidence": "Specifications This BIP defines the two needed steps to derive multiple deterministic addresses based on a BIP 32 master private key. [...] Reference [...] BIP32 - Hierarchical Deterministic Wallets",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-30"
+    },
+    {
+      "source": "bips:46",
+      "target": "bips:44",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "depends_on",
+      "value": 1,
+      "confidence": "high",
+      "evidence": "To derive a public key from the root account, this BIP uses a similar account-structure as defined in BIP 44 but with change set to 2 [...] Reference [...] BIP44 - Multi-Account Hierarchy for Deterministic Wallets",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-30"
+    },
+    {
+      "source": "bips:46",
+      "target": "bips:49",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "references",
+      "value": 1,
+      "confidence": "high",
+      "evidence": "We largely use the same approach used in BIPs 49, 84 and 86 for ease of implementation. [...] This BIP is not backwards compatible by design as described in the Considerations section of BIP 49. [...] Reference [...] BIP49 - Derivation scheme for P2WPKH-nested-in-P2SH based accounts",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-30"
+    },
+    {
+      "source": "bips:46",
+      "target": "bips:65",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "depends_on",
+      "value": 1,
+      "confidence": "high",
+      "evidence": "Fidelity bonds are used to resist sybil attacks in certain decentralized anonymous protocols. They are created by locking up bitcoins using the `OP_CHECKLOCKTIMEVERIFY` opcode. [...] References [...] BIP65 - OP_CHECKLOCKTIMEVERIFY",
+      "note": "OP_CHECKLOCKTIMEVERIFY is defined in BIP65",
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-30"
+    },
+    {
+      "source": "bips:46",
+      "target": "bips:84",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "references",
+      "value": 1,
+      "confidence": "high",
+      "evidence": "We largely use the same approach used in BIPs 49, 84 and 86 for ease of implementation. [...] Reference [...] BIP84 - Derivation scheme for P2WPKH based accounts",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-30"
+    },
+    {
+      "source": "bips:46",
+      "target": "bips:86",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "references",
+      "value": 1,
+      "confidence": "high",
+      "evidence": "We largely use the same approach used in BIPs 49, 84 and 86 for ease of implementation. [...] Reference [...] BIP86 - Key Derivation for Single Key P2TR Outputs",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-30"
     },
     {
       "source": "bips:49",
@@ -50120,126 +50252,6 @@
       "note": null,
       "reviewer": "rbo",
       "reviewed_at": "2026-06-29"
-    },
-    {
-      "source": "bips:23",
-      "target": "bips:22",
-      "extraction_method": "ground_truth_curated",
-      "relation_type": "depends_on",
-      "value": 1,
-      "confidence": "high",
-      "evidence": "This BIP describes extensions to the getblocktemplate JSON-RPC call to enhance pooled mining. [...] Note that all sections of this specification are optional extensions on top of BIP 22.",
-      "note": null,
-      "reviewer": "rbo",
-      "reviewed_at": "2026-06-30"
-    },
-    {
-      "source": "bips:42",
-      "target": "bips:16",
-      "extraction_method": "ground_truth_curated",
-      "relation_type": "references",
-      "value": 1,
-      "confidence": "low",
-      "evidence": "A softfork (see BIP16, BIP34, BIP62) will take place on april 1st 2214, permanently setting the subsidy to zero.",
-      "note": null,
-      "reviewer": "rbo",
-      "reviewed_at": "2026-06-30"
-    },
-    {
-      "source": "bips:42",
-      "target": "bips:34",
-      "extraction_method": "ground_truth_curated",
-      "relation_type": "references",
-      "value": 1,
-      "confidence": "low",
-      "evidence": "A softfork (see BIP16, BIP34, BIP62) will take place on april 1st 2214, permanently setting the subsidy to zero.",
-      "note": null,
-      "reviewer": "rbo",
-      "reviewed_at": "2026-06-30"
-    },
-    {
-      "source": "bips:42",
-      "target": "bips:62",
-      "extraction_method": "ground_truth_curated",
-      "relation_type": "references",
-      "value": 1,
-      "confidence": "low",
-      "evidence": "A softfork (see BIP16, BIP34, BIP62) will take place on april 1st 2214, permanently setting the subsidy to zero.",
-      "note": null,
-      "reviewer": "rbo",
-      "reviewed_at": "2026-06-30"
-    },
-    {
-      "source": "bips:46",
-      "target": "bips:65",
-      "extraction_method": "ground_truth_curated",
-      "relation_type": "depends_on",
-      "value": 1,
-      "confidence": "high",
-      "evidence": "Fidelity bonds are used to resist sybil attacks in certain decentralized anonymous protocols. They are created by locking up bitcoins using the `OP_CHECKLOCKTIMEVERIFY` opcode. [...] References [...] BIP65 - OP_CHECKLOCKTIMEVERIFY",
-      "note": "OP_CHECKLOCKTIMEVERIFY is defined in BIP65",
-      "reviewer": "rbo",
-      "reviewed_at": "2026-06-30"
-    },
-    {
-      "source": "bips:46",
-      "target": "bips:32",
-      "extraction_method": "ground_truth_curated",
-      "relation_type": "depends_on",
-      "value": 1,
-      "confidence": "high",
-      "evidence": "Specifications This BIP defines the two needed steps to derive multiple deterministic addresses based on a BIP 32 master private key. [...] Reference [...] BIP32 - Hierarchical Deterministic Wallets",
-      "note": null,
-      "reviewer": "rbo",
-      "reviewed_at": "2026-06-30"
-    },
-    {
-      "source": "bips:46",
-      "target": "bips:44",
-      "extraction_method": "ground_truth_curated",
-      "relation_type": "depends_on",
-      "value": 1,
-      "confidence": "high",
-      "evidence": "To derive a public key from the root account, this BIP uses a similar account-structure as defined in BIP 44 but with change set to 2 [...] Reference [...] BIP44 - Multi-Account Hierarchy for Deterministic Wallets",
-      "note": null,
-      "reviewer": "rbo",
-      "reviewed_at": "2026-06-30"
-    },
-    {
-      "source": "bips:46",
-      "target": "bips:49",
-      "extraction_method": "ground_truth_curated",
-      "relation_type": "references",
-      "value": 1,
-      "confidence": "high",
-      "evidence": "We largely use the same approach used in BIPs 49, 84 and 86 for ease of implementation. [...] This BIP is not backwards compatible by design as described in the Considerations section of BIP 49. [...] Reference [...] BIP49 - Derivation scheme for P2WPKH-nested-in-P2SH based accounts",
-      "note": null,
-      "reviewer": "rbo",
-      "reviewed_at": "2026-06-30"
-    },
-    {
-      "source": "bips:46",
-      "target": "bips:84",
-      "extraction_method": "ground_truth_curated",
-      "relation_type": "references",
-      "value": 1,
-      "confidence": "high",
-      "evidence": "We largely use the same approach used in BIPs 49, 84 and 86 for ease of implementation. [...] Reference [...] BIP84 - Derivation scheme for P2WPKH based accounts",
-      "note": null,
-      "reviewer": "rbo",
-      "reviewed_at": "2026-06-30"
-    },
-    {
-      "source": "bips:46",
-      "target": "bips:86",
-      "extraction_method": "ground_truth_curated",
-      "relation_type": "references",
-      "value": 1,
-      "confidence": "high",
-      "evidence": "We largely use the same approach used in BIPs 49, 84 and 86 for ease of implementation. [...] Reference [...] BIP86 - Key Derivation for Single Key P2TR Outputs",
-      "note": null,
-      "reviewer": "rbo",
-      "reviewed_at": "2026-06-30"
     },
     {
       "source": "bips:1",
@@ -57383,7 +57395,7 @@
   ],
   "meta": {
     "node_count": 220,
-    "edge_count": 1547,
+    "edge_count": 1548,
     "source_slugs": [
       "bips",
       "slips"

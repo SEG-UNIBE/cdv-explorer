@@ -38,6 +38,15 @@ export const GROUND_TRUTH_CUTOFF_MODE_OPTIONS = [
 // in the ground truth, regardless of the curated relation type.
 export const GT_TYPE_ALL = '*';
 
+const DEFAULT_GT_TARGET_BY_APPROACH_SUBTYPE = {
+  [BODY_EXTRACTED_REGEX]: {
+    reference: 'depends_on',
+  },
+  [BODY_EXTRACTED_LLM]: {
+    implicit_dependency: 'depends_on',
+  },
+};
+
 function normalizeRelationType(relationType) {
   return String(relationType || '').trim().toLowerCase();
 }
@@ -203,10 +212,10 @@ export function buildDefaultTypeMapping(dataset, ontology = DEFAULT_RELATION_ONT
     }
     subtypes.forEach((subtype) => {
       const canonical = canonicalMap[subtype] || subtype;
-      let target = canonicalToGtType[canonical] || null;
-      if (approach === BODY_EXTRACTED_REGEX || approach === BODY_EXTRACTED_LLM) {
-        target = gtTypes.length ? GT_TYPE_ALL : null;
-      }
+      const preferredTarget = DEFAULT_GT_TARGET_BY_APPROACH_SUBTYPE[approach]?.[subtype] || null;
+      let target = preferredTarget && gtTypes.includes(preferredTarget)
+        ? preferredTarget
+        : (canonicalToGtType[canonical] || null);
       const excluded = excludedTypes.has(subtype);
       rows.push({
         approach,

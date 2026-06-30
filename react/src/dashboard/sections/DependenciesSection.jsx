@@ -507,6 +507,10 @@ export function DependenciesSection({
               </div>
             ))}
           </div>
+          <DependencyGroundTruthEvaluationCharts
+            evaluation={groundTruthEvaluation}
+            activeLlmModel={activeDependencyLlmModel}
+          />
           <CollapsibleControls>
             <div className="ground-truth-evaluation-controls">
               <div className="ground-truth-evaluation-controls__column">
@@ -680,10 +684,6 @@ export function DependenciesSection({
               </div>
             </div>
           </CollapsibleControls>
-          <DependencyGroundTruthEvaluationCharts
-            evaluation={groundTruthEvaluation}
-            activeLlmModel={activeDependencyLlmModel}
-          />
         </ExportableCard>
       ) : null}
     </section>

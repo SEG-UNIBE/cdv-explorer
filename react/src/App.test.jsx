@@ -537,8 +537,8 @@ test('default type mapping is discovered from data and prefilled from the ontolo
     { approach: PREAMBLE_EXTRACTED, subtype: 'requires', include: true, target: 'depends_on' },
     { approach: PREAMBLE_EXTRACTED, subtype: 'replaces', include: true, target: 'supersedes' },
     { approach: PREAMBLE_EXTRACTED, subtype: 'proposed_replacement', include: true, target: 'superseded_by' },
-    { approach: BODY_EXTRACTED_REGEX, subtype: 'reference', include: true, target: GT_TYPE_ALL },
-    { approach: BODY_EXTRACTED_LLM, subtype: 'implicit_dependency', include: true, target: GT_TYPE_ALL },
+    { approach: BODY_EXTRACTED_REGEX, subtype: 'reference', include: true, target: 'depends_on' },
+    { approach: BODY_EXTRACTED_LLM, subtype: 'implicit_dependency', include: true, target: 'depends_on' },
   ]);
 });
 
@@ -886,7 +886,7 @@ test('editing the type mapping changes which GT type the LLM edges are scored ag
     },
   };
 
-  // By default the LLM subtype is mapped to "(all types)", so it is scored.
+  // By default the LLM subtype is mapped to depends_on, so it is scored.
   const baseline = buildGroundTruthEvaluation(dataset, { matchMode: GROUND_TRUTH_MATCH_MODE_EXACT_TYPE });
   const llmBaseline = baseline.approaches.find((approach) => approach.approach === BODY_EXTRACTED_LLM);
   expect(llmBaseline).toEqual(expect.objectContaining({ evaluated: true, tp: 1, fp: 0, fn: 0 }));

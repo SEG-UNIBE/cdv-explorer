@@ -253,13 +253,15 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:58:25Z_gpt-5.4-mini_0bc643e4",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:08:14Z",
+          "timestamp": "2026-06-30T11:58:42Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:30",
-              "evidence": "The `content` MAY be an emoji, or [NIP-30](30.md) custom emoji",
-              "reason": "This proposal allows reaction content to use custom emoji semantics defined by NIP-30, so its encoding and interpretation depend on that emoji format.",
+              "evidence": "[NIP-30](30.md) custom emoji",
+              "reason": "The proposal explicitly reuses the custom emoji mechanism and its shortcode interpretation for reaction content.",
               "confidence": "high"
             }
           ]

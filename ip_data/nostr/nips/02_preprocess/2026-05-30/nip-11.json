@@ -467,26 +467,28 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:59:52Z_gpt-5.4-mini_b29b8ccc",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:07:25Z",
+          "timestamp": "2026-06-30T11:59:58Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:13",
-              "evidence": "based on [NIP-13](13.md), or they will be rejected by this server",
-              "reason": "The relay limitation field defines behavior in terms of NIP-13 proof-of-work difficulty, so this proposal relies on that NIP’s mechanism and semantics.",
+              "evidence": "based on [NIP-13](13.md)",
+              "reason": "The `min_pow_difficulty` limitation is defined in terms of NIP-13 proof-of-work difficulty.",
               "confidence": "high"
             },
             {
               "target": "nips:17",
-              "evidence": "(See [NIP-17](17.md)) to a system administrator",
-              "reason": "The pubkey contact field assumes encrypted direct messaging behavior defined by NIP-17 for contacting relay administrators.",
+              "evidence": "See [NIP-17](17.md)",
+              "reason": "The relay metadata field for administrative contact explicitly relies on NIP-17 direct-message semantics for contacting the administrator.",
               "confidence": "high"
             },
             {
               "target": "nips:42",
-              "evidence": "this relay requires [NIP-42] authentication",
-              "reason": "The auth_required limitation uses NIP-42 authentication as the activation requirement for relay access.",
-              "confidence": "low"
+              "evidence": "requires [NIP-42](42.md) authentication",
+              "reason": "The `auth_required` limitation uses NIP-42 authentication as the mechanism required before other actions.",
+              "confidence": "high"
             }
           ]
         }

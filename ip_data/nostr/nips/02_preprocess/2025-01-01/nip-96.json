@@ -363,20 +363,22 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:58:25Z_gpt-5.4-mini_0bc643e4",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:08:35Z",
+          "timestamp": "2026-06-30T11:59:15Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:94",
-              "evidence": "\"This uses the NIP-94 event format\"",
-              "reason": "The upload response and listed files are structured as NIP-94 events, so this proposal relies on that event format and its tags.",
-              "confidence": "low"
+              "evidence": "This uses the NIP-94 event format",
+              "reason": "Upload responses, file listings, and client-side sharing reuse NIP-94 event structure and tags for file metadata.",
+              "confidence": "high"
             },
             {
               "target": "nips:98",
-              "evidence": "\"clients must add an [NIP-98](98.md) `Authorization` header\"",
-              "reason": "Authentication for uploads and deletions is defined in terms of NIP-98 headers, making it a direct protocol dependency.",
-              "confidence": "low"
+              "evidence": "must add an [NIP-98](98.md) `Authorization` header",
+              "reason": "The upload and delete authentication flow is explicitly based on NIP-98 authorization headers.",
+              "confidence": "high"
             }
           ]
         }

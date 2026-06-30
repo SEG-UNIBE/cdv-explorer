@@ -225,26 +225,34 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:58:25Z_gpt-5.4-mini_0bc643e4",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:08:17Z",
+          "timestamp": "2026-06-30T11:58:44Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:10",
-              "evidence": "Including NIP-10-style tags (`[\"e\", <hex-id>, <relay-url>, <marker>]`) for each reference is optional",
-              "reason": "The proposal relies on the existing reply/reference tag format and its marker semantics when deciding whether mentions notify authors or count as replies.",
-              "confidence": "low"
+              "evidence": "Including [NIP-10](10.md)-style tags",
+              "reason": "The optional notification/reply semantics for mentions rely on the event tag format and marker convention defined by NIP-10.",
+              "confidence": "high"
             },
             {
               "target": "nips:19",
-              "evidence": "the client will turn that into a `nostr:note1...` or `nostr:nevent1...` URL",
-              "reason": "The proposal depends on the bech32 encoded note/event/profile identifiers introduced by NIP-19 to represent inline references.",
+              "evidence": "raw [NIP-19](19.md) codes into the body of text, then prefix these with `nostr:`",
+              "reason": "The proposal explicitly reuses NIP-19 identifier encodings as the payload of inline references.",
               "confidence": "high"
             },
             {
               "target": "nips:21",
-              "evidence": "mentions to other profiles and to other events in the middle of the `.content` using [NIP-21](21.md) codes",
-              "reason": "The proposal uses the `nostr:` URI scheme and its link-handling semantics as the inline reference mechanism it standardizes.",
+              "evidence": "using [NIP-21](21.md) codes",
+              "reason": "The proposal standardizes inline references by requiring NIP-21 URL-style codes inside event content.",
               "confidence": "high"
+            },
+            {
+              "target": "nips:23",
+              "evidence": "for example, sees, for example, a [`kind:30023`](23.md) `nostr:naddr1...` URL reference",
+              "reason": "The proposal includes and interprets references to kind 30023 events using NIP-23's event type context.",
+              "confidence": "low"
             }
           ]
         }

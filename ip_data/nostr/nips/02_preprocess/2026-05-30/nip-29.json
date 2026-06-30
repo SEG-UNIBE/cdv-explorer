@@ -484,25 +484,27 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:59:52Z_gpt-5.4-mini_b29b8ccc",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:07:32Z",
+          "timestamp": "2026-06-30T12:00:09Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:11",
-              "evidence": "as stated by the [NIP-11](11.md) \"self\" pubkey",
-              "reason": "The proposal relies on NIP-11’s relay self public key concept to identify the signing key for relay-generated group metadata and admin events.",
-              "confidence": "low"
+              "evidence": "as stated by the [NIP-11](11.md) `\"self\"` pubkey",
+              "reason": "Relay-authored group metadata events rely on the NIP-11 notion of the relay's self public key.",
+              "confidence": "high"
             },
             {
               "target": "nips:51",
-              "evidence": "A definition for `kind:10009` was included in [NIP-51](51.md) that allows clients to store the list of groups",
-              "reason": "The proposal uses the NIP-51 list/metadata event definition as the mechanism for storing remembered groups.",
+              "evidence": "A definition for `kind:10009` was included in [NIP-51](51.md)",
+              "reason": "The proposal reuses the preexisting kind:10009 group-list storage event from NIP-51.",
               "confidence": "high"
             },
             {
               "target": "nips:98",
-              "evidence": "with a [NIP-98](98.md)-style `Authorization` header to get back the LiveKit JWT",
-              "reason": "The LiveKit token endpoint requires NIP-98-style authenticated requests for issuing access tokens.",
+              "evidence": "with a [NIP-98](98.md)-style `Authorization` header",
+              "reason": "The LiveKit token endpoint authentication flow is explicitly based on NIP-98-style authorization.",
               "confidence": "high"
             }
           ]

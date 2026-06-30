@@ -215,25 +215,27 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:58:25Z_gpt-5.4-mini_0bc643e4",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:08:37Z",
+          "timestamp": "2026-06-30T11:59:16Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:15",
               "evidence": "distinct from the more strictly structured marketplaces defined in [NIP-15](15.md)",
-              "reason": "The proposal explicitly contrasts itself with and defines classifieds in relation to the marketplace model from NIP-15, indicating it relies on that existing market/event concept as a distinct category.",
-              "confidence": "medium"
+              "reason": "The proposal explicitly contrasts its classifieds model with NIP-15 marketplaces, indicating a related but non-dependent distinction rather than reuse. This is not a substantive dependency.",
+              "confidence": "low"
             },
             {
               "target": "nips:23",
-              "evidence": "The structure of these events is very similar to [NIP-23](23.md) long-form content events.",
-              "reason": "The listing event structure is modeled on the long-form content event structure, so the proposal substantively reuses that event formatting and metadata pattern.",
-              "confidence": "high"
+              "evidence": "very similar to [NIP-23](23.md) long-form content events",
+              "reason": "The event structure is described as closely matching NIP-23, so understanding the format likely depends on the long-form content event structure it references.",
+              "confidence": "medium"
             },
             {
               "target": "nips:58",
-              "evidence": "clients SHOULD use `image` tags as described in [NIP-58](58.md).",
-              "reason": "The proposal directly adopts the image tag semantics from NIP-58 for listing media handling.",
+              "evidence": "clients SHOULD use `image` tags as described in [NIP-58](58.md)",
+              "reason": "The listing metadata reuses the image tag semantics defined by NIP-58 for displaying images in a standardized way.",
               "confidence": "high"
             }
           ]

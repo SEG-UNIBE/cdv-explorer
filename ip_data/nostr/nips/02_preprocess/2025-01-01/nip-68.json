@@ -221,20 +221,22 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:58:25Z_gpt-5.4-mini_0bc643e4",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:08:29Z",
+          "timestamp": "2026-06-30T11:59:04Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:71",
-              "evidence": "Picture events might be used with [NIP-71](71.md)'s kind `34236`",
-              "reason": "The proposal explicitly extends the picture-first feed concept to work with NIP-71's video event kind, making it a technical companion format for the same feed experience.",
-              "confidence": "high"
+              "evidence": "\"might be used with [NIP-71](71.md)'s kind `34236`\"",
+              "reason": "The proposal explicitly contemplates combining picture events with the other NIP's video event kind in the same feed.",
+              "confidence": "low"
             },
             {
               "target": "nips:94",
-              "evidence": "`x <sha256 hash as specified in NIP 94>`",
-              "reason": "The imeta tag format references the hash specification from NIP 94 for image integrity metadata, so the event syntax depends on that hashing definition.",
-              "confidence": "low"
+              "evidence": "\"x <sha256 hash as specified in NIP 94>\"",
+              "reason": "The imeta tag reuses the hash definition from the target for image identification.",
+              "confidence": "high"
             }
           ]
         }

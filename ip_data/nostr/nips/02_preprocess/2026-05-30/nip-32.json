@@ -377,9 +377,18 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:59:52Z_gpt-5.4-mini_b29b8ccc",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:07:32Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T12:00:11Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "nips:09",
+              "evidence": "events may be requested for deletion using [NIP-09](09.md) and a replacement may be published",
+              "reason": "The proposal’s bulk-labeling workflow explicitly relies on NIP-09 deletion and replacement semantics.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

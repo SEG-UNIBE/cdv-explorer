@@ -178,25 +178,15 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:59:52Z_gpt-5.4-mini_b29b8ccc",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:07:55Z",
+          "timestamp": "2026-06-30T12:00:44Z",
+          "status": "success",
           "dependencies": [
             {
-              "target": "nips:27",
-              "evidence": "p-tag mentions MUST have a `mention` attribute",
-              "reason": "This proposal relies on the tag attribute semantics introduced by NIP-27 to distinguish mentions from other uses of the same tag.",
-              "confidence": "high"
-            },
-            {
-              "target": "nips:31",
-              "evidence": "A `comment` tag may be added to create a quote highlight. This MUST be rendered like a quote repost",
-              "reason": "Quote highlights depend on the quote-repost/reply semantics defined by NIP-31 to specify how the event should be rendered and interpreted.",
-              "confidence": "high"
-            },
-            {
-              "target": "nips:72",
-              "evidence": "p-tag mentions MUST have a `mention` attribute to distinguish it from authors and editors",
-              "reason": "The proposal extends the meaning of `p` tags with role-based attribution, which depends on the participant/tag semantics introduced by NIP-72.",
+              "target": "nips:94",
+              "evidence": "e.g. NIP-94 audio/video",
+              "reason": "The proposal explicitly reuses NIP-94 as the example for non-text media whose highlighted content may have empty content.",
               "confidence": "medium"
             }
           ]

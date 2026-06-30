@@ -197,14 +197,16 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:58:25Z_gpt-5.4-mini_0bc643e4",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:08:26Z",
+          "timestamp": "2026-06-30T11:58:59Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:32",
-              "evidence": "“`l` and `L` tags MAY be also be used as defined in [NIP-32](32.md) to support further qualification and querying.”",
-              "reason": "The proposal explicitly reuses NIP-32 tag semantics for additional labeling and query support in report events.",
-              "confidence": "low"
+              "evidence": "`l` and `L` tags MAY be also be used as defined in [NIP-32](32.md)",
+              "reason": "The report event optionally reuses the label/tag qualification and querying mechanism defined by NIP-32.",
+              "confidence": "high"
             }
           ]
         }

@@ -277,20 +277,22 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:59:52Z_gpt-5.4-mini_b29b8ccc",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:07:23Z",
+          "timestamp": "2026-06-30T11:59:56Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:04",
-              "evidence": "window.nostr.nip04.encrypt(pubkey, plaintext):string // returns ciphertext and iv as specified in nip-04",
-              "reason": "The optional encryption/decryption methods are defined to follow NIP-04's ciphertext/IV format, so this proposal extends that specification.",
-              "confidence": "low"
+              "evidence": "window.nostr.nip04.encrypt(pubkey, plaintext): string // returns ciphertext and iv as specified in nip-04 (deprecated)",
+              "reason": "The optional encryption/decryption methods are defined by and rely on the NIP-04 ciphertext/IV format.",
+              "confidence": "high"
             },
             {
               "target": "nips:44",
-              "evidence": "window.nostr.nip44.encrypt(pubkey, plaintext):string // returns ciphertext as specified in nip-44",
-              "reason": "The optional encryption/decryption methods are defined to use NIP-44's ciphertext format, so this proposal depends on that message format and semantics.",
-              "confidence": "low"
+              "evidence": "window.nostr.nip44.encrypt(pubkey, plaintext): string // returns ciphertext as specified in nip-44",
+              "reason": "The optional encryption/decryption methods are explicitly specified to use the NIP-44 ciphertext format and semantics.",
+              "confidence": "high"
             }
           ]
         }

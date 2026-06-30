@@ -135,14 +135,22 @@
       "body_extracted_regex": [],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:58:25Z_gpt-5.4-mini_0bc643e4",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:08:08Z",
+          "timestamp": "2026-06-30T11:58:29Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:32",
-              "evidence": "“BIP32 is used to derive the path `m/44'/1237'/<account>'/0/0`”",
-              "reason": "The proposal’s key derivation scheme relies on BIP32 hardened hierarchical derivation to generate nostr keys.",
-              "confidence": "low"
+              "evidence": "[BIP32](https://bips.xyz/32) is used to derive the path `m/44'/1237'/<account>'/0/0`",
+              "reason": "The proposal depends on BIP32 hierarchical key derivation to generate keys from the seed.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:39",
+              "evidence": "[BIP39](https://bips.xyz/39) is used to generate mnemonic seed words and derive a binary seed from them.",
+              "reason": "The proposal relies on the mnemonic generation and seed derivation scheme defined by BIP39.",
+              "confidence": "high"
             }
           ]
         }

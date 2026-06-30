@@ -171,61 +171,63 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:59:52Z_gpt-5.4-mini_b29b8ccc",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:08:01Z",
+          "timestamp": "2026-06-30T12:00:55Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:17",
               "evidence": "Avoid confusing this kind with Kind `14` rumors in [NIP-17](17.md) DMs.",
-              "reason": "The proposal constrains its semantics by distinguishing itself from the DM model defined in this NIP.",
+              "reason": "The proposal distinguishes its message kind from NIP-17 DM rumors, indicating the reader must understand that existing kind to avoid overlap.",
               "confidence": "medium"
             },
             {
               "target": "nips:18",
-              "evidence": "[NIP-18](18.md) quote repost `q` tags MAY be used when citing events in the `.content`",
-              "reason": "It permits use of the quote-repost tag format from this NIP when citing events in message content.",
+              "evidence": "[NIP-18](18.md) quote repost `q` tags MAY be used when citing events in the `.content` with [NIP-21](21.md).",
+              "reason": "The proposal allows using NIP-18 quote repost tags for cited content.",
               "confidence": "high"
             },
             {
               "target": "nips:19",
-              "evidence": "[NIP-21](21.md) links that use [NIP-19](19.md)'s `nevent1` MUST include a `kind` of `24`",
-              "reason": "The proposal defines how NIP-19 `nevent1` links are interpreted and rendered for this kind.",
+              "evidence": "links that use [NIP-19](19.md)'s `nevent1` MUST include a `kind` of `24`.",
+              "reason": "The proposal defines rendering and link semantics for NIP-19 nevent identifiers specifically when they reference kind 24.",
               "confidence": "high"
             },
             {
               "target": "nips:21",
-              "evidence": "[NIP-21](21.md) links that use [NIP-19](19.md)'s `nevent1` MUST include a `kind` of `24`",
-              "reason": "It relies on the link syntax and rendering semantics defined by this NIP for event references in content.",
+              "evidence": "with [NIP-21](21.md).",
+              "reason": "The proposal uses NIP-21 links as the mechanism for citing events and for nevent-based links.",
               "confidence": "high"
             },
             {
               "target": "nips:25",
               "evidence": "[NIP-25](25.md) reactions MUST add a `k` tag to `24`.",
-              "reason": "This kind requires reactions to use the reaction tagging rules introduced by this NIP.",
+              "reason": "Reaction events are constrained to include a kind tag pointing at this message kind.",
               "confidence": "high"
             },
             {
               "target": "nips:40",
               "evidence": "[NIP-40](40.md) `expiration` tags are recommended.",
-              "reason": "The proposal adopts the expiration tag mechanism from this NIP as an optional support feature for these messages.",
+              "reason": "The proposal reuses NIP-40 expiration tags as an optional advanced-support feature.",
               "confidence": "high"
             },
             {
               "target": "nips:57",
               "evidence": "[NIP-57](57.md) zaps MUST include the `k` tag to `24`",
-              "reason": "Zaps to this kind must use the zap tagging semantics defined by this NIP.",
+              "reason": "Zap events are constrained to include a kind tag pointing at this message kind.",
               "confidence": "high"
             },
             {
               "target": "nips:65",
-              "evidence": "Messages MUST be sent to the [NIP-65](65.md) inbox relays of each receiver and the outbox relay of the sender.",
-              "reason": "The delivery requirement depends on the inbox/outbox relay model defined by this NIP.",
+              "evidence": "MUST be sent to the [NIP-65](65.md) inbox relays of each receiver and the outbox relay of the sender.",
+              "reason": "Message delivery is defined in terms of NIP-65 inbox and outbox relay routing.",
               "confidence": "high"
             },
             {
               "target": "nips:92",
               "evidence": "[NIP-92](92.md) `imeta` tags SHOULD be added for image and video links.",
-              "reason": "The proposal recommends the media metadata tag format introduced by this NIP for links in message content.",
+              "reason": "The proposal extends media-link handling by recommending NIP-92 imeta tags.",
               "confidence": "high"
             }
           ]

@@ -253,13 +253,15 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:59:52Z_gpt-5.4-mini_b29b8ccc",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:07:53Z",
+          "timestamp": "2026-06-30T12:00:43Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:01",
               "evidence": "The filter is as described in [NIP-01](01.md).",
-              "reason": "The proposal relies on NIP-01 filter semantics and NIP-01 error reason formatting for its NEG-OPEN and NEG-ERR messages.",
+              "reason": "The proposal uses NIP-01 filter semantics for NEG-OPEN queries and NIP-01-style error reason formatting.",
               "confidence": "high"
             }
           ]

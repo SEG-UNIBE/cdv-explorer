@@ -201,19 +201,21 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:59:52Z_gpt-5.4-mini_b29b8ccc",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:07:51Z",
+          "timestamp": "2026-06-30T12:00:39Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:01",
-              "evidence": "Events are [addressable events] (01.md#kinds)",
-              "reason": "The proposal relies on NIP-01 event kind/addressable event semantics to define this event type.",
-              "confidence": "low"
+              "evidence": "Events are [addressable events](01.md#kinds)",
+              "reason": "The proposal relies on the addressable event concept and kind semantics defined in NIP-01 to classify these order events.",
+              "confidence": "high"
             },
             {
               "target": "nips:40",
-              "evidence": "after this time the relay SHOULD delete it ([NIP-40](40.md))",
-              "reason": "The expiration handling for these order events depends on NIP-40's deletion/expiration semantics.",
+              "evidence": "the relay SHOULD delete it ([NIP-40](40.md))",
+              "reason": "The expiration tag's deletion behavior is defined by NIP-40, which this proposal explicitly adopts.",
               "confidence": "high"
             }
           ]

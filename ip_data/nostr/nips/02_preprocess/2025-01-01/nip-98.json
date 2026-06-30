@@ -169,13 +169,15 @@
       "body_extracted_regex": [],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:58:25Z_gpt-5.4-mini_0bc643e4",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:08:38Z",
+          "timestamp": "2026-06-30T11:59:15Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:01",
-              "evidence": "using nostr events",
-              "reason": "This NIP relies on the core Nostr event structure, signing, and validation rules defined by the base event specification.",
+              "evidence": "A `kind 27235`",
+              "reason": "This proposal relies on the Nostr event kind and signature/event structure defined by the core event specification.",
               "confidence": "high"
             }
           ]

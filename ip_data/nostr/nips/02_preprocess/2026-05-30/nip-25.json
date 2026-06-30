@@ -288,19 +288,21 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:59:52Z_gpt-5.4-mini_b29b8ccc",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:07:29Z",
+          "timestamp": "2026-06-30T12:00:07Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:30",
-              "evidence": "A reaction with `content` set to an emoji or [NIP-30](30.md) custom emoji",
-              "reason": "The proposal relies on NIP-30's custom emoji format to define how emoji reactions are represented and interpreted.",
+              "evidence": "or [NIP-30](30.md) custom emoji",
+              "reason": "The proposal reuses NIP-30 custom emoji semantics to interpret reaction content and render shortcode-based reactions.",
               "confidence": "high"
             },
             {
               "target": "nips:73",
               "evidence": "MUST include [NIP-73](73.md) external content `k` + `i` tags",
-              "reason": "External content reactions are defined in terms of NIP-73 tag conventions, which the proposal requires for referencing non-native targets.",
+              "reason": "External content reactions are defined around NIP-73's `k` and `i` tag structure for referencing non-native targets.",
               "confidence": "high"
             }
           ]

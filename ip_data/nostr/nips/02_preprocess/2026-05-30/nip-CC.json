@@ -250,13 +250,15 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:59:52Z_gpt-5.4-mini_b29b8ccc",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:08:02Z",
+          "timestamp": "2026-06-30T12:00:58Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:01",
-              "evidence": "Reference to the geocache being logged using NIP-01 `a` tag format",
-              "reason": "The log event’s core reference syntax is defined by NIP-01’s addressable event tag format.",
+              "evidence": "using NIP-01 `a` tag format",
+              "reason": "The log event's required reference tag explicitly depends on NIP-01's addressable-event tag format.",
               "confidence": "high"
             }
           ]

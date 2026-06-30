@@ -130,14 +130,16 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:58:25Z_gpt-5.4-mini_0bc643e4",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:08:17Z",
+          "timestamp": "2026-06-30T11:58:45Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:89",
-              "evidence": "clients can make interacting with these event kinds more functional by supporting NIP-89",
-              "reason": "The proposal relies on NIP-89 as an optional mechanism that improves how clients handle unknown custom event kinds; it is the only named technical extension it builds on.",
-              "confidence": "low"
+              "evidence": "by supporting [NIP-89](https://github.com/nostr-protocol/nips/blob/master/89.md)",
+              "reason": "The proposal explicitly recommends using NIP-89 to improve interactions with custom event kinds in kind:1-centric clients.",
+              "confidence": "high"
             }
           ]
         }

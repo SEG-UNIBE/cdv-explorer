@@ -265,26 +265,28 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:58:25Z_gpt-5.4-mini_0bc643e4",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:08:14Z",
+          "timestamp": "2026-06-30T11:58:40Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:21",
-              "evidence": "\"q\" tags MAY be used when citing events in the `.content` with [NIP-21](21.md).",
-              "reason": "The proposal defines optional tag usage specifically for quoting or mentioning content under NIP-21’s content conventions.",
-              "confidence": "low"
+              "evidence": "with [NIP-21](21.md)",
+              "reason": "The proposal relies on NIP-21 for citing events in content and mentioning pubkeys, which affects how comments reference related entities.",
+              "confidence": "high"
             },
             {
               "target": "nips:73",
               "evidence": "The possible values for `i` tags – and `k` tags, when related to an extenal identity – are listed on [NIP-73](73.md).",
-              "reason": "It relies on NIP-73 to define the permissible `i`/`k` tag values for external identifiers and scopes.",
+              "reason": "The proposal explicitly depends on NIP-73 for the value set and semantics of `i`/`k` tags when scoped to external identifiers.",
               "confidence": "high"
             },
             {
               "target": "nips:94",
               "evidence": "A comment on a [NIP-94](94.md) file looks like this:",
-              "reason": "The proposal gives a concrete comment format for NIP-94 file events, extending that event type with this comment schema.",
-              "confidence": "high"
+              "reason": "The proposal defines comment threading behavior that specifically reuses NIP-94 file events as a supported root/parent scope example and format.",
+              "confidence": "medium"
             }
           ]
         }

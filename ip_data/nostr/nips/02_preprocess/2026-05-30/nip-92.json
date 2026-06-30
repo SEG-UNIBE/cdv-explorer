@@ -142,14 +142,16 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:59:52Z_gpt-5.4-mini_b29b8ccc",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:07:56Z",
+          "timestamp": "2026-06-30T12:00:49Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:94",
-              "evidence": "MAY include any field specified by [NIP 94]",
-              "reason": "The proposal directly reuses and extends the media metadata fields defined by NIP 94, making it a technical dependency for tag contents and semantics.",
-              "confidence": "high"
+              "evidence": "imeta MAY include any field specified by [NIP 94](./94.md)",
+              "reason": "The proposal explicitly reuses the field set defined by NIP 94 for media metadata, so implementing imeta tags depends on NIP 94's tag semantics.",
+              "confidence": "low"
             }
           ]
         }

@@ -263,9 +263,24 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:59:52Z_gpt-5.4-mini_b29b8ccc",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:07:26Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T12:00:02Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "nips:01",
+              "evidence": "MUST NOT be used in NIP-01 events",
+              "reason": "The proposal explicitly constrains use of its bech32 encodings relative to the core event format defined by NIP-01.",
+              "confidence": "high"
+            },
+            {
+              "target": "nips:05",
+              "evidence": "or in NIP-05 JSON responses",
+              "reason": "The proposal explicitly constrains use of its encodings in NIP-05 name-resolution JSON responses, so adopting it depends on that response format boundary.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

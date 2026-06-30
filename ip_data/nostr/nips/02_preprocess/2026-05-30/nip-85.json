@@ -243,19 +243,21 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:59:52Z_gpt-5.4-mini_b29b8ccc",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:07:54Z",
+          "timestamp": "2026-06-30T12:00:45Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:44",
-              "evidence": "encrypting the tag list within the `.content` field using NIP-44",
-              "reason": "The proposal relies on NIP-44 to private-store the 10040 provider mappings inside event content.",
+              "evidence": "using NIP-44",
+              "reason": "The proposal relies on NIP-44 for encrypting the preferred service-provider tag list stored in the content field.",
               "confidence": "high"
             },
             {
               "target": "nips:73",
-              "evidence": "using [NIP-73](73.md) identifiers",
-              "reason": "The proposal introduces a subject type and tag usage built directly on NIP-73 identifiers and requires NIP-73 k tags.",
+              "evidence": "Providers can rate books, locations, movies, websites, and hashtags using [NIP-73](73.md) identifiers.",
+              "reason": "The external-identifier subject type is defined around NIP-73 identifier semantics and tag usage.",
               "confidence": "high"
             }
           ]

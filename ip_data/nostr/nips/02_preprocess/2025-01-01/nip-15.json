@@ -440,19 +440,21 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:58:25Z_gpt-5.4-mini_0bc643e4",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:08:12Z",
+          "timestamp": "2026-06-30T11:58:35Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:04",
               "evidence": "All checkout events are sent as JSON strings using [NIP-04](04.md).",
-              "reason": "The checkout message exchange is defined to use NIP-04 encrypted direct messages, so the marketplace workflow depends on its transport and content handling.",
+              "reason": "The checkout workflow is encoded and transported via NIP-04 encrypted direct messages, so implementing order, payment, and status exchanges depends on that message format.",
               "confidence": "high"
             },
             {
               "target": "nips:19",
               "evidence": "Create a customized user experience using the `naddr` from [NIP-19](19.md#shareable-identifiers-with-extra-metadata).",
-              "reason": "Marketplace UI/UX customization is built around naddr shareable identifiers and their metadata format from NIP-19.",
+              "reason": "Marketplace UI/UX customization is explicitly designed around NIP-19 naddr identifiers and their embedded metadata.",
               "confidence": "high"
             }
           ]

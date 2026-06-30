@@ -240,14 +240,16 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:58:25Z_gpt-5.4-mini_0bc643e4",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:08:10Z",
+          "timestamp": "2026-06-30T11:58:32Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:01",
-              "evidence": "\"[",
-              "reason": "The proposal defines the older positional \"e\" tag scheme as \"as per NIP-01\", so its tag format and event metadata semantics rely on NIP-01.",
-              "confidence": "low"
+              "evidence": "`[\"e\", <event-id>, <relay-url>]` as per NIP-01.",
+              "reason": "The proposal’s deprecated positional e-tag format explicitly reuses the event-tag syntax defined by NIP-01.",
+              "confidence": "high"
             }
           ]
         }

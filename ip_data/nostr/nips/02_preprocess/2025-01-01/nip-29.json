@@ -408,19 +408,21 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:58:25Z_gpt-5.4-mini_0bc643e4",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:08:17Z",
+          "timestamp": "2026-06-30T11:58:44Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:51",
-              "evidence": "A definition for `kind:10009` was included in [NIP-51](51.md) that allows clients to store the list of groups a user wants to remember being in.",
-              "reason": "The proposal relies on NIP-51’s kind:10009 group-list record for storing remembered groups.",
+              "evidence": "A definition for `kind:10009` was included in [NIP-51](51.md)",
+              "reason": "The proposal relies on NIP-51's stored group-list event kind for remembering group memberships.",
               "confidence": "high"
             },
             {
               "target": "nips:70",
               "evidence": "clients should include the [NIP-70](70.md) `-` tag",
-              "reason": "The proposal explicitly depends on NIP-70’s `-` tag behavior for unmanaged relays.",
+              "reason": "The proposal explicitly reuses NIP-70's `-` tag for unmanaged-relay leakage prevention.",
               "confidence": "high"
             }
           ]

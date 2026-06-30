@@ -345,13 +345,15 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:58:25Z_gpt-5.4-mini_0bc643e4",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:08:24Z",
+          "timestamp": "2026-06-30T11:58:56Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:09",
-              "evidence": "These calendar events are addressable and deletable per [NIP-09](09.md).",
-              "reason": "The proposal relies on NIP-09 for deletion semantics of calendar event kinds.",
+              "evidence": "addressable and deletable per [NIP-09](09.md)",
+              "reason": "The calendar event proposal relies on the deletion semantics defined by NIP-09 for addressable events.",
               "confidence": "low"
             }
           ]

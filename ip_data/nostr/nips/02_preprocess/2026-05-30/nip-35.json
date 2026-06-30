@@ -213,13 +213,15 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:59:52Z_gpt-5.4-mini_b29b8ccc",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:07:33Z",
+          "timestamp": "2026-06-30T12:00:16Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:10",
               "evidence": "should follow `NIP-10` for tagging",
-              "reason": "Torrent comments inherit and require the event tagging/reply semantics defined by NIP-10.",
+              "reason": "Torrent comment events reuse the reply/tagging semantics defined by NIP-10.",
               "confidence": "high"
             }
           ]

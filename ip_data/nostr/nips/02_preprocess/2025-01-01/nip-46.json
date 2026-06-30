@@ -429,26 +429,28 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:58:25Z_gpt-5.4-mini_0bc643e4",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:08:23Z",
+          "timestamp": "2026-06-30T11:58:53Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:05",
-              "evidence": "\"Announcing _remote-signer_ metadata\" ... \"With NIP-05, a request to `<remote-signer>/.well-known/nostr.json?name=_` MAY return this\"",
-              "reason": "The proposal uses NIP-05 discovery to publish and validate remote-signer metadata and connection information.",
-              "confidence": "low"
+              "evidence": "MAY publish it's metadata by using [NIP-05](05.md)",
+              "reason": "The proposal defines remote-signer metadata publication and discovery through NIP-05 records, relying on its naming/JSON file mechanism.",
+              "confidence": "high"
             },
             {
               "target": "nips:44",
-              "evidence": "\"The `content` field is a JSON-RPC-like message that is [NIP-44] encrypted\"",
-              "reason": "NIP-44 defines the encryption format used for request and response event payloads, so this protocol depends on it for confidentiality.",
-              "confidence": "low"
+              "evidence": "is [NIP-44](44.md) encrypted",
+              "reason": "The proposal uses NIP-44 encryption for request and response contents, so its messaging format depends on that encryption standard.",
+              "confidence": "high"
             },
             {
               "target": "nips:89",
-              "evidence": "\"Remote signer discovery via NIP-89\" ... \"_remote-signer_ MAY publish a NIP-89 `kind: 31990` event\"",
-              "reason": "The proposal relies on NIP-89 metadata events to advertise and discover remote signers and associated connection details.",
-              "confidence": "low"
+              "evidence": "and [NIP-89](89.md).",
+              "reason": "The proposal extends discovery by publishing and consuming NIP-89 events for remote-signer metadata.",
+              "confidence": "high"
             }
           ]
         }

@@ -48701,7 +48701,7 @@
       "value": 1,
       "confidence": "low",
       "evidence": "The counter-argument is that these new multi-signature transactions will be used in combination with OP_EVAL (see the OP_EVAL BIP),",
-      "note": null,
+      "note": "OP_EVAL is defined in BIP12",
       "reviewer": "rbo",
       "reviewed_at": "2026-06-30"
     },
@@ -49470,6 +49470,18 @@
       "confidence": "high",
       "evidence": "This BIP defines a sane hierarchy for deterministic multisig wallets based on an algorithm described in BIP-0032 (BIP32 from now on), [...] Specification [...] We define the following 5 levels in the BIP32 path: [...] Accounts are numbered from index 0 in sequentially increasing manner. This number is used as child index in BIP32 derivation.",
       "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-30"
+    },
+    {
+      "source": "bips:87",
+      "target": "bips:39",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "references",
+      "value": 1,
+      "confidence": "high",
+      "evidence": "Why propose this structure only for multisignature wallets? Currently, single-sig wallets are able to restore funds using just the master private key data (in the format of BIP39 usually).",
+      "note": "Just a footnote",
       "reviewer": "rbo",
       "reviewed_at": "2026-06-30"
     },
@@ -57587,7 +57599,7 @@
   ],
   "meta": {
     "node_count": 220,
-    "edge_count": 1564,
+    "edge_count": 1565,
     "source_slugs": [
       "bips",
       "slips"

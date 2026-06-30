@@ -978,19 +978,21 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:53:15Z",
+          "timestamp": "2026-06-30T11:17:36Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
               "evidence": "This specification relies on BIP32",
-              "reason": "The proposal’s core derivation scheme uses a BIP32 master root key and hardened child paths to generate application-specific entropy.",
+              "reason": "The proposal derives all application entropy from a BIP32 master root key and uses hardened BIP32 paths throughout.",
               "confidence": "high"
             },
             {
               "target": "bips:39",
               "evidence": "BIP39 was designed to solve this problem",
-              "reason": "The BIP39 application defines how derived entropy is turned into a mnemonic, so the proposal extends BIP39 seed generation.",
+              "reason": "The proposal defines a BIP39 application that truncates derived entropy to BIP39 word-length entropy and converts it into a mnemonic.",
               "confidence": "high"
             }
           ]

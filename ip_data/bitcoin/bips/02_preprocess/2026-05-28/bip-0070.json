@@ -864,13 +864,22 @@
         "author": "Peter Todd",
         "path": "bip-0070.mediawiki",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "8571f42a6c0cdf9ba25817a2ea60b1b5ba988181",
         "timestamp": "2014-06-12T10:46:59-04:00",
         "date": "2014-06-12",
         "author": "Gavin Andresen",
+        "path": "bip-0070.mediawiki",
+        "status": "Final",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
         "path": "bip-0070.mediawiki",
         "status": "Final",
         "standard": "bip2"
@@ -899,20 +908,22 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:53:07Z",
+          "timestamp": "2026-06-30T11:17:31Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:71",
-              "evidence": "Wallet software sending Payment messages via HTTP must set appropriate Content-Type and Accept headers, as specified in BIP 71",
-              "reason": "The payment protocol explicitly relies on BIP 71 for the required MIME types and HTTP headers used to exchange Payment and PaymentACK messages.",
+              "evidence": "Wallet software sending Payment messages via HTTP must set appropriate\nContent-Type and Accept headers, as specified in BIP 71",
+              "reason": "The proposal explicitly relies on BIP 71 for the HTTP content-type and accept-header conventions used when posting Payment messages.",
               "confidence": "high"
             },
             {
               "target": "bips:72",
               "evidence": "[[bip-0072.mediawiki|BIP 0072]] : Payment Protocol bitcoin: URI extensions",
-              "reason": "The protocol depends on URI extensions defined by BIP 72 to initiate payment requests through bitcoin: links.",
-              "confidence": "high"
+              "reason": "The proposal’s payment protocol is presented together with and extended by the bitcoin: URI extensions defined in the referenced BIP.",
+              "confidence": "medium"
             }
           ]
         }

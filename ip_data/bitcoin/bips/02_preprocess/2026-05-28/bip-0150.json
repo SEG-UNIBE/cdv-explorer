@@ -570,6 +570,15 @@
         "author": "Jonas Schnelli",
         "path": "bip-0150.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0150.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -601,14 +610,16 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:53:51Z",
+          "timestamp": "2026-06-30T11:18:15Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:151",
-              "evidence": "\"Authentication initialization must only happen if encrypted channels have been established (according to BIP-151 [1]).\"",
-              "reason": "The authentication protocol is explicitly gated on BIP 151 encrypted channels and uses its encryption-session-ID, so it depends on that transport encryption scheme.",
-              "confidence": "low"
+              "evidence": "Authentication initialization must only happen if encrypted channels have been established (according to BIP-151 [1]).",
+              "reason": "The authentication protocol is explicitly gated on BIP 151-encrypted channels and uses the encryption-session-ID defined by that scheme.",
+              "confidence": "high"
             }
           ]
         }

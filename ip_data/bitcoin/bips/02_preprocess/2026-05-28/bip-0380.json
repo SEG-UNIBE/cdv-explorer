@@ -844,19 +844,45 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:54:55Z",
+          "timestamp": "2026-06-30T11:19:03Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
-              "evidence": "key origin information, consisting of: ... Exactly 8 hex characters for the fingerprint ... /NUM or /NUMh path elements",
-              "reason": "The descriptor key syntax depends on BIP 32 fingerprints and derivation path notation for identifying and deriving keys.",
-              "confidence": "low"
+              "evidence": "(see BIP 32 for details)",
+              "reason": "Descriptor key origin and extended-key syntax depend on BIP 32 derivation and serialization conventions.",
+              "confidence": "high"
             },
             {
               "target": "bips:39",
-              "evidence": "backups have consisted of solely the private keys, nowadays primarily in the form of BIP 39 mnemonics",
-              "reason": "The motivation and backup/export model assume mnemonic-based wallet backups as the baseline key material being described.",
+              "evidence": "nowadays primarily in the form of BIP 39 mnemonics",
+              "reason": "The motivation for descriptors explicitly treats BIP 39 mnemonics as the backup format being complemented by descriptor-based metadata.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:44",
+              "evidence": "Although BIPs 44, 49, and 84 have specified standard BIP 32 derivation paths",
+              "reason": "The proposal relies on BIP 44's standard derivation-path conventions as prior art for wallet path metadata.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:49",
+              "evidence": "Although BIPs 44, 49, and 84 have specified standard BIP 32 derivation paths",
+              "reason": "The proposal relies on BIP 49's standard derivation-path conventions as prior art for wallet path metadata.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:84",
+              "evidence": "Although BIPs 44, 49, and 84 have specified standard BIP 32 derivation paths",
+              "reason": "The proposal relies on BIP 84's standard derivation-path conventions as prior art for wallet path metadata.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:173",
+              "evidence": "especially since the introduction of Segregated Witness which added new output types",
+              "reason": "Descriptors are motivated by the need to represent SegWit output types introduced by the referenced proposal.",
               "confidence": "medium"
             }
           ]

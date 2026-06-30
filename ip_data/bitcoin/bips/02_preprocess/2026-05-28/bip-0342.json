@@ -855,38 +855,40 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:54:30Z",
+          "timestamp": "2026-06-30T11:18:44Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:65",
-              "evidence": "including the OP_CHECKLOCKTIMEVERIFY and OP_CHECKSEQUENCEVERIFY opcodes defined in BIP65 and BIP112",
-              "reason": "Tapscript inherits CLTV semantics from this proposal, so its script execution rules depend on the opcode behavior defined here.",
-              "confidence": "low"
+              "evidence": "including the <code>OP_CHECKLOCKTIMEVERIFY</code> and <code>OP_CHECKSEQUENCEVERIFY</code> opcodes defined in [[bip-0065.mediawiki|BIP65]] and [[bip-0112.mediawiki|BIP112]]",
+              "reason": "Tapscript execution inherits the semantics of OP_CHECKLOCKTIMEVERIFY from BIP65 as part of the execution rules.",
+              "confidence": "high"
             },
             {
               "target": "bips:112",
-              "evidence": "including the OP_CHECKLOCKTIMEVERIFY and OP_CHECKSEQUENCEVERIFY opcodes defined in BIP65 and BIP112",
-              "reason": "Tapscript inherits CSV semantics from this proposal, so its script execution rules depend on the opcode behavior defined here.",
-              "confidence": "low"
+              "evidence": "including the <code>OP_CHECKLOCKTIMEVERIFY</code> and <code>OP_CHECKSEQUENCEVERIFY</code> opcodes defined in [[bip-0065.mediawiki|BIP65]] and [[bip-0112.mediawiki|BIP112]]",
+              "reason": "Tapscript execution inherits the semantics of OP_CHECKSEQUENCEVERIFY from BIP112 as part of the execution rules.",
+              "confidence": "high"
             },
             {
               "target": "bips:141",
-              "evidence": "The rules below only apply when validating a transaction input for which all of the conditions below are true: * The transaction input is a segregated witness spend (i.e., the scriptPubKey contains a witness program as defined in BIP141).",
-              "reason": "The proposal is only applicable to segregated witness spends as defined by this proposal, making BIP141 part of its validation preconditions.",
-              "confidence": "low"
+              "evidence": "The transaction input is a '''segregated witness spend''' (i.e., the scriptPubKey contains a witness program as defined in [[bip-0141.mediawiki|BIP141]])",
+              "reason": "Applicability and validation conditions are defined in terms of BIP141 witness programs and its P2WSH-style execution basis.",
+              "confidence": "high"
             },
             {
               "target": "bips:340",
-              "evidence": "Schnorr signatures as specified in BIP340",
-              "reason": "Tapscript modifies signature opcodes to verify Schnorr signatures and reuses the BIP340 verification/signature semantics.",
-              "confidence": "low"
+              "evidence": "signature opcodes <code>OP_CHECKSIG</code> and <code>OP_CHECKSIGVERIFY</code> are modified to verify Schnorr signatures as specified in [[bip-0340.mediawiki|BIP340]]",
+              "reason": "The proposal changes script signature verification to use the Schnorr signature algorithm and verification rules from BIP340.",
+              "confidence": "high"
             },
             {
               "target": "bips:341",
-              "evidence": "This document specifies the semantics of the initial scripting system under BIP341.",
-              "reason": "The tapscript rules are defined as part of Taproot script-path spending and use BIP341's witness, tapleaf, and common signature message structures.",
-              "confidence": "low"
+              "evidence": "This document specifies the semantics of the initial scripting system under [[bip-0341.mediawiki|BIP341]].",
+              "reason": "The proposal defines tapscript as the scripting system introduced by BIP341 and relies on BIP341's transaction, witness, taproot spend, and script-path definitions.",
+              "confidence": "high"
             }
           ]
         }

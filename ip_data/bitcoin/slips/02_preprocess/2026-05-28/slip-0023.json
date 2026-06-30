@@ -294,9 +294,36 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:19:48Z_gpt-5.4-mini_d16626f8",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:55:33Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:19:54Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "This scheme adapts the master node derivation used in BIP-0032 and SLIP-0010",
+              "reason": "The proposal directly reuses and modifies the BIP-0032 master-node derivation framework for Cardano.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:39",
+              "evidence": "commonly used with BIP-0039 in Cardano wallets",
+              "reason": "The Icarus derivation branch takes a BIP-0039 mnemonic and passphrase as its input source material.",
+              "confidence": "high"
+            },
+            {
+              "target": "slips:10",
+              "evidence": "This scheme adapts the master node derivation used in BIP-0032 and SLIP-0010",
+              "reason": "The proposal explicitly builds on SLIP-0010's master-node derivation mechanism, changing only the curve name and Cardano-specific compatibility bits.",
+              "confidence": "high"
+            },
+            {
+              "target": "slips:39",
+              "evidence": "The new scheme is primarily intended for use with SLIP-0039 Shamir's Secret-Sharing for Mnemonic Codes.",
+              "reason": "The universal derivation scheme is designed around SLIP-0039 as the seed source and specifies compliance for SLIP-0039-derived secrets.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

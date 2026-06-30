@@ -637,31 +637,33 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:53:21Z",
+          "timestamp": "2026-06-30T11:17:40Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
-              "evidence": "activated the existing BIP9 segwit deployment",
-              "reason": "The proposal explicitly relies on BIP9 version-bits deployment and state transition rules to define signaling and activation.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:141",
-              "evidence": "activate BIP141, BIP143 and BIP147",
-              "reason": "The proposal’s signaling and orphaning rules are specifically meant to force activation of SegWit as defined by this BIP.",
+              "evidence": "This BIP will be deployed by a \"version bits\"",
+              "reason": "The proposal's activation mechanism is explicitly based on BIP9 version-bits deployment and its state/threshold logic.",
               "confidence": "high"
             },
             {
+              "target": "bips:141",
+              "evidence": "the existing BIP9 \"segwit\" deployment using bit 1",
+              "reason": "The proposal is designed to force activation of the existing segwit deployment and ceases when BIP141 is locked-in, active, or failed.",
+              "confidence": "low"
+            },
+            {
               "target": "bips:143",
-              "evidence": "activate BIP141, BIP143 and BIP147",
-              "reason": "The proposal depends on the witness-signature verification rules that are part of the SegWit deployment it is trying to activate.",
+              "evidence": "to activate BIP141, BIP143 and BIP147.",
+              "reason": "The proposal's target deployment includes BIP143 as part of the segwit package it is trying to activate.",
               "confidence": "high"
             },
             {
               "target": "bips:147",
-              "evidence": "activate BIP141, BIP143 and BIP147",
-              "reason": "The proposal relies on the SegWit deployment that includes the dummy-stack malleability fix defined by this BIP.",
+              "evidence": "to activate BIP141, BIP143 and BIP147.",
+              "reason": "The proposal's target deployment includes BIP147 as part of the segwit package it is trying to activate.",
               "confidence": "high"
             }
           ]

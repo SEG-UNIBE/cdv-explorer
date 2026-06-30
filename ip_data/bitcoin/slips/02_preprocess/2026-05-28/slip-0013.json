@@ -227,19 +227,21 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:19:48Z_gpt-5.4-mini_d16626f8",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:55:15Z",
+          "timestamp": "2026-06-30T11:19:50Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:43",
-              "evidence": "Derive the HD node `m/13'/A'/B'/C'/D'` according to SLIP-0010.",
-              "reason": "The proposal uses the BIP 43 purpose field convention in its hierarchical deterministic path structure, with `13'` as the purpose component.",
+              "evidence": "m/13'/A'/B'/C'/D'",
+              "reason": "The proposed derivation path uses a hardened purpose field in the BIP-0043 style, so the proposal is designed around that hierarchy convention.",
               "confidence": "medium"
             },
             {
               "target": "slips:10",
-              "evidence": "Derive the HD node `m/13'/A'/B'/C'/D'` according to SLIP-0010.",
-              "reason": "The key derivation procedure explicitly relies on SLIP-0010 for deriving the authentication node from the hierarchical path.",
+              "evidence": "derive the HD node `m/13'/A'/B'/C'/D'` according to SLIP-0010",
+              "reason": "The key derivation procedure explicitly depends on SLIP-0010 for deriving the hierarchical deterministic node.",
               "confidence": "high"
             }
           ]

@@ -554,6 +554,15 @@
         "author": "Gavin Andresen",
         "path": "bip-0109.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0109.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -585,13 +594,15 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:53:25Z",
+          "timestamp": "2026-06-30T11:17:50Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
-              "evidence": "0x10000000 was chosen to be compatible with the BIP 9 proposal for parallel deployment of soft forks",
-              "reason": "The activation bit and deployment mechanics are selected to align with BIP 9-style soft fork signaling and activation.",
+              "evidence": "0x10000000 was chosen to be compatible with the BIP 9 proposal",
+              "reason": "The activation signaling bit and deployment choice are designed around BIP 9's parallel soft-fork deployment mechanism.",
               "confidence": "high"
             }
           ]

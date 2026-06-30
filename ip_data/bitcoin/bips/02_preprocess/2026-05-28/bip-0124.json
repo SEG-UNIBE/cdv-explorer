@@ -533,6 +533,15 @@
         "author": "Eric Lombrozo",
         "path": "bip-0124.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0124.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -576,31 +585,33 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:53:34Z",
+          "timestamp": "2026-06-30T11:17:59Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:16",
-              "evidence": "The most popular formats are pay-to-pubkey-hash and m-of-n pay-to-script-hash (BIP16).",
-              "reason": "The proposal explicitly includes P2SH as a supported script format context for the template system, relying on that script output type.",
+              "evidence": "m-of-n pay-to-script-hash (BIP16)",
+              "reason": "The motivation explicitly builds on P2SH as one of the script formats this template system is meant to generalize.",
               "confidence": "medium"
             },
             {
               "target": "bips:32",
               "evidence": "using the key derivation mechanism defined in BIP32",
-              "reason": "The proposal’s script templates are built from BIP32 derivation paths and indexes, so its key generation depends on BIP32 HD derivation.",
+              "reason": "The proposal's script templates are parameterized by BIP32 derivation paths and deterministic wallet key derivation.",
               "confidence": "high"
             },
             {
               "target": "bips:65",
-              "evidence": "the advent of hashlocked and timelocked contracts (BIP65, BIP112)",
-              "reason": "The timelocked contract template uses OP_CHECKLOCKTIMEVERIFY, which is defined by BIP65.",
+              "evidence": "hashlocked and timelocked contracts (BIP65, BIP112)",
+              "reason": "The timelocked contract example directly uses OP_CHECKLOCKTIMEVERIFY, so the proposal relies on the BIP65 semantics.",
               "confidence": "high"
             },
             {
               "target": "bips:112",
-              "evidence": "the advent of hashlocked and timelocked contracts (BIP65, BIP112)",
-              "reason": "The proposal’s generalized script templates are motivated by and intended to support timelocked contract semantics introduced by BIP112.",
+              "evidence": "hashlocked and timelocked contracts (BIP65, BIP112)",
+              "reason": "The proposal is motivated by and designed to support timelocked contract workflows associated with BIP112.",
               "confidence": "medium"
             }
           ]

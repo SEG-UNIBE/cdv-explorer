@@ -677,9 +677,18 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:55:12Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:19:22Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:125",
+              "evidence": "BIP 125 RBF rules",
+              "reason": "The batching workflow explicitly relies on the replace-by-fee rule set to create and validate replacement transactions.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

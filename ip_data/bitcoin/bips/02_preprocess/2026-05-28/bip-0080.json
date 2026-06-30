@@ -510,12 +510,21 @@
         "author": "Justus Ranvier",
         "path": "bip-0080.mediawiki",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "387fc6011bd804609fd751786e50439d5c11a097",
         "timestamp": "2016-08-23T19:47:29Z",
         "date": "2016-08-23",
+        "author": "Luke Dashjr",
+        "path": "bip-0080.mediawiki",
+        "status": "Deferred",
+        "standard": "bip1"
+      },
+      {
+        "commit": "959fecc15bdad070afa63455468b1dba54655fa6",
+        "timestamp": "2016-11-30T09:51:01Z",
+        "date": "2016-11-30",
         "author": "Luke Dashjr",
         "path": "bip-0080.mediawiki",
         "status": "Deferred",
@@ -549,25 +558,27 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:53:12Z",
+          "timestamp": "2026-06-30T11:17:34Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
               "evidence": "based on an algorithm described in BIP-0032",
-              "reason": "The wallet hierarchy and child key derivation are built on BIP32 derivation semantics.",
+              "reason": "The proposed hierarchy and path derivation are built on BIP32's derivation algorithm and hardened/public child-index rules.",
               "confidence": "high"
             },
             {
               "target": "bips:43",
-              "evidence": "purpose scheme described in BIP-0043",
-              "reason": "The proposal uses the BIP43 purpose field convention to define the hardened purpose level.",
-              "confidence": "high"
+              "evidence": "based on BIP-0043",
+              "reason": "The proposal adopts BIP43's purpose-field convention and states that the purpose is set following BIP43.",
+              "confidence": "low"
             },
             {
               "target": "bips:44",
               "evidence": "This BIP is a particular application of BIP43 and is based on BIP44.",
-              "reason": "The coin type constants are taken from BIP44 and the hierarchy follows its multi-account-style structure.",
+              "reason": "The proposal explicitly says it is based on BIP44 and reuses BIP44's coin_type registry and multi-coin hierarchical structure.",
               "confidence": "high"
             }
           ]

@@ -653,25 +653,27 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:53:03Z",
+          "timestamp": "2026-06-30T11:17:26Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:37",
-              "evidence": "BIP37 provides a partial Merkle tree format that allows you to verify that your Bitcoin transaction is included in a Merkle root",
-              "reason": "The attack and mitigation discussion relies on the partial Merkle proof format defined by this proposal.",
+              "evidence": "BIP37 provides a partial Merkle tree format",
+              "reason": "The SPV-attack motivation explicitly relies on the partial Merkle tree proof format introduced by BIP37.",
               "confidence": "low"
             },
             {
               "target": "bips:66",
-              "evidence": "After BIP66 was activated on the Bitcoin network, Bitcoin transactions cannot have a digital signature smaller than 9 bytes.",
-              "reason": "The backward-compatibility analysis depends on the signature-size constraint established by this proposal when reasoning about pre-segwit transaction sizes.",
+              "evidence": "After BIP66 was activated on the Bitcoin network",
+              "reason": "The backward-compatibility discussion about pre-segwit 64-byte transactions depends on the signature-size constraints that follow from BIP66 activation.",
               "confidence": "medium"
             },
             {
               "target": "bips:141",
-              "evidence": "This BIP disallows single-input single-output segwit transactions that pay to a 2-byte witness program.",
-              "reason": "The proposal’s segwit-specific restriction depends on the witness program structure and length rules introduced by the Segwit proposal.",
+              "evidence": "segwit transactions that pay to a 2-byte witness program.",
+              "reason": "The proposal’s segwit-related scope is defined in terms of witness programs permitted by BIP141, so implementing the restriction depends on BIP141 witness program semantics.",
               "confidence": "high"
             }
           ]

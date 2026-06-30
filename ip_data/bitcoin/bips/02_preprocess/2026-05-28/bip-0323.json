@@ -471,9 +471,30 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:54:17Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:18:33Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:8",
+              "evidence": "removed from BIP8 and BIP9 specifications",
+              "reason": "The proposal changes how nVersion bits are treated in the BIP 8 activation/signaling context by excluding these bits from signaling.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:9",
+              "evidence": "removed from BIP8 and BIP9 specifications",
+              "reason": "The proposal changes how nVersion bits are treated in the BIP 9 activation/signaling context by excluding these bits from signaling.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:320",
+              "evidence": "BIP 320 defined 16 bits of nVersion as nonce space",
+              "reason": "This proposal directly extends and replaces BIP 320’s reserved nVersion nonce-space scheme by reallocating a larger set of bits.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

@@ -1094,26 +1094,28 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:19:48Z_gpt-5.4-mini_d16626f8",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:55:33Z",
+          "timestamp": "2026-06-30T11:20:06Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
-              "evidence": "backing up Hierarchical Deterministic Wallets described in BIP-0032",
-              "reason": "The proposal defines how its shares are used to back up BIP-32 master seeds and derives the wallet seed from them.",
-              "confidence": "low"
+              "evidence": "a specification for its use in backing up Hierarchical Deterministic Wallets described in [BIP-0032]",
+              "reason": "The proposal is designed around backing up BIP-32 wallet master seeds and defines recovery/restore semantics for them.",
+              "confidence": "high"
             },
             {
               "target": "bips:39",
-              "evidence": "This SLIP is mainly intended as a replacement for BIP-0039",
-              "reason": "The proposal explicitly defines compatibility and migration semantics relative to BIP-39 mnemonics and passphrases.",
-              "confidence": "low"
+              "evidence": "This SLIP is mainly intended as a replacement for [BIP-0039]",
+              "reason": "The proposal explicitly positions itself as a replacement for BIP-39 and discusses compatibility constraints with it.",
+              "confidence": "high"
             },
             {
               "target": "bips:173",
-              "evidence": "The checksum design is heavily inspired by Bech32 defined in BIP-0173",
-              "reason": "The checksum mechanism is substantively based on the checksum scheme introduced by BIP-173.",
-              "confidence": "low"
+              "evidence": "The checksum design is heavily inspired by Bech32 defined in [BIP-0173]",
+              "reason": "The proposal reuses the Bech32-style checksum design and its error-detection approach.",
+              "confidence": "medium"
             }
           ]
         }

@@ -554,12 +554,21 @@
         "author": "Luke Dashjr",
         "path": "bip-0132.mediawiki",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "387fc6011bd804609fd751786e50439d5c11a097",
         "timestamp": "2016-08-23T19:47:29Z",
         "date": "2016-08-23",
+        "author": "Luke Dashjr",
+        "path": "bip-0132.mediawiki",
+        "status": "Withdrawn",
+        "standard": "bip1"
+      },
+      {
+        "commit": "959fecc15bdad070afa63455468b1dba54655fa6",
+        "timestamp": "2016-11-30T09:51:01Z",
+        "date": "2016-11-30",
         "author": "Luke Dashjr",
         "path": "bip-0132.mediawiki",
         "status": "Withdrawn",
@@ -585,13 +594,15 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:54:51Z",
+          "timestamp": "2026-06-30T11:18:04Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:1",
-              "evidence": "“the BIP editor (BIP-001)”",
-              "reason": "The proposal relies on BIP 1’s editor and process framework to assign BIP numbers and manage submission roles.",
+              "evidence": "BIP-0001 defines the process for writing and submitting a Bitcoin Improvement Proposal",
+              "reason": "The proposal relies on BIP 0001 for the BIP submission/writing workflow and adds acceptance rules on top of that process.",
               "confidence": "low"
             }
           ]

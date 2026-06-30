@@ -576,50 +576,52 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:53:15Z",
+          "timestamp": "2026-06-30T11:17:38Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
-              "evidence": "derive multiple deterministic addresses based on a BIP 32 root account",
-              "reason": "The derivation scheme depends on BIP 32 hierarchical deterministic key derivation as its base account structure.",
-              "confidence": "low"
+              "evidence": "based on a [[bip-0032.mediawiki|BIP 32]] root account",
+              "reason": "The proposal’s derivation scheme is built on BIP32 hierarchical deterministic wallet roots.",
+              "confidence": "high"
             },
             {
               "target": "bips:43",
-              "evidence": "Reference * BIP43 - Purpose Field for Deterministic Wallets",
-              "reason": "The proposal uses a purpose field value ('84') in the derivation path, which is the mechanism defined by BIP 43.",
-              "confidence": "low"
+              "evidence": "The rest of the levels are used as defined in BIP44 or BIP49.",
+              "reason": "The proposal uses the purpose-field hierarchy established by BIP43-compatible wallet structures.",
+              "confidence": "medium"
             },
             {
               "target": "bips:44",
-              "evidence": "uses the same account-structure as defined in BIP 44",
-              "reason": "The proposal adopts the BIP 44 account path structure and account/change/address-index levels for its derivation path.",
-              "confidence": "low"
+              "evidence": "uses the same account-structure as defined in [[bip-0044.mediawiki|BIP 44]] and [[bip-0049.mediawiki|BIP 49]]",
+              "reason": "The path structure for accounts, change, and address indices reuses the BIP44 account hierarchy.",
+              "confidence": "high"
             },
             {
               "target": "bips:49",
-              "evidence": "uses the same account-structure as defined in BIP 44 and BIP 49",
-              "reason": "The proposal explicitly reuses BIP 49’s account-structure rationale and follows its derivation-scheme conventions for wallet compatibility.",
-              "confidence": "low"
+              "evidence": "We use the same rationale as described in Considerations section of [[bip-0049.mediawiki|BIP 49]].",
+              "reason": "The proposal explicitly reuses BIP49’s rationale for segregating wallet types and account discovery.",
+              "confidence": "medium"
             },
             {
               "target": "bips:141",
-              "evidence": "we use the encapsulation defined in BIP 141",
-              "reason": "The proposal relies on BIP 141’s P2WPKH witness/scriptPubKey serialization to define address construction.",
-              "confidence": "low"
+              "evidence": "we use the encapsulation defined in [[bip-0141.mediawiki#p2wpkh|BIP 141]]",
+              "reason": "The address and script serialization for P2WPKH is defined using BIP141 witness output rules.",
+              "confidence": "high"
             },
             {
               "target": "bips:173",
-              "evidence": "uses the P2WPKH (BIP 173) serialization format",
-              "reason": "The proposal’s motivation and abstract tie the wallet derivation scheme to the native segwit address serialization defined by this BIP.",
-              "confidence": "low"
+              "evidence": "using the P2WPKH ([[bip-0173.mediawiki|BIP 173]]) serialization format",
+              "reason": "The proposal’s address format is specified as P2WPKH using the native segwit base32 address format from BIP173.",
+              "confidence": "high"
             },
             {
               "target": "slips:132",
-              "evidence": "Additional registered version bytes are listed in SLIP-0132",
-              "reason": "The proposal depends on the extended key version-byte registry to define zpub/zprv and testnet vpub/vprv serialization prefixes.",
-              "confidence": "low"
+              "evidence": "Additional registered version bytes are listed in [[https://github.com/satoshilabs/slips/blob/master/slip-0132.md|SLIP-0132]].",
+              "reason": "The proposal relies on SLIP-0132 for registering and using alternate extended key version bytes.",
+              "confidence": "high"
             }
           ]
         }

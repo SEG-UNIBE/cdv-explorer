@@ -556,6 +556,15 @@
         "author": "Justus Ranvier",
         "path": "bip-0126.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "959fecc15bdad070afa63455468b1dba54655fa6",
+        "timestamp": "2016-11-30T09:51:01Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0126.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -578,13 +587,15 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:53:35Z",
+          "timestamp": "2026-06-30T11:18:06Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:69",
               "evidence": "Applications which wish to comply both with this procedure and BIP69 should apply this procedure prior to applying BIP69.",
-              "reason": "The proposal specifies ordering interaction with BIP69, so compliance depends on BIP69's input/output sorting rules.",
+              "reason": "The proposal specifies an ordering interaction and presumes use of BIP69's lexicographical input/output ordering after applying its own transaction-form rules.",
               "confidence": "high"
             }
           ]

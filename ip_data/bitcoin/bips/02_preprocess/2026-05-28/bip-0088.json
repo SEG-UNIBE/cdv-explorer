@@ -718,44 +718,16 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:53:19Z",
+          "timestamp": "2026-06-30T11:17:37Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
               "evidence": "constraints that can be imposed on BIP32 derivation paths",
-              "reason": "The proposal defines templates specifically for BIP32 path syntax and matching semantics, so it depends on BIP32 path structure and derivation conventions.",
+              "reason": "The proposal defines templates and matching rules specifically for BIP32 derivation paths, so its semantics depend on BIP32 path structure.",
               "confidence": "high"
-            },
-            {
-              "target": "bips:43",
-              "evidence": "a number of schemes for derivation were proposed in BIP43",
-              "reason": "The proposal’s scope is path templates for derivation schemes built on BIP43-style purpose-based derivation structures.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:44",
-              "evidence": "schemes for derivation were proposed in BIP43 and other documents, such as BIPs 44,45,49,84",
-              "reason": "The template format is used to describe constraints on derivation paths used by BIP44-style schemes, making it a direct specialization target.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:45",
-              "evidence": "schemes for derivation were proposed in BIP43 and other documents, such as BIPs 44,45,49,84",
-              "reason": "The proposal’s path templates are meant to represent and constrain derivation paths used in BIP45-style schemes.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:49",
-              "evidence": "schemes for derivation were proposed in BIP43 and other documents, such as BIPs 44,45,49,84",
-              "reason": "The proposal explicitly uses BIP49 derivation paths as a supported case for the template constraints and examples.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:84",
-              "evidence": "schemes for derivation were proposed in BIP43 and other documents, such as BIPs 44,45,49,84",
-              "reason": "The template format is intended to describe constraints over BIP84 derivation paths as one of the standard schemes it targets.",
-              "confidence": "medium"
             }
           ]
         }

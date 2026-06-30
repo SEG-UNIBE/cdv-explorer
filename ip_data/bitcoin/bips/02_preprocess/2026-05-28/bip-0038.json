@@ -962,6 +962,15 @@
         "author": "Wladimir J. van der Laan",
         "path": "bip-0038.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0038.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -988,20 +997,16 @@
       "body_extracted_regex": [],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:52:57Z",
+          "timestamp": "2026-06-30T11:17:20Z",
+          "status": "success",
           "dependencies": [
             {
-              "target": "bips:16",
-              "evidence": "could be understood in the future to include keys participating in multisig transactions",
-              "reason": "The proposal’s prefix and reserved flag bits are designed around future multisig key use, which depends on multisig transaction semantics introduced by this proposal.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:32",
-              "evidence": "the person generating the final key string and its associated Bitcoin address",
-              "reason": "The EC-multiplied mode derives Bitcoin addresses from generated key material and is the same mechanism later reused by BIP 32 style hierarchical key derivation assumptions; however this is only weakly implied in the text.",
-              "confidence": "low"
+              "target": "bips:17",
+              "evidence": "This proposal is hereby placed in the public domain.",
+              "reason": "No substantive technical dependency on another BIP is stated in the proposal text; the mention of Wallet Import Format is only backward-compatibility context, not a normative reuse of another proposal.",
+              "confidence": "high"
             }
           ]
         }

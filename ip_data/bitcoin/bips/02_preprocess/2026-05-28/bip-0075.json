@@ -1025,6 +1025,15 @@
         "author": "Matt David",
         "path": "bip-invoicerequest-extension.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0075.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -1060,19 +1069,15 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:53:10Z",
+          "timestamp": "2026-06-30T11:17:32Z",
+          "status": "success",
           "dependencies": [
-            {
-              "target": "bips:32",
-              "evidence": "Automate the active exchange of payment addresses, so static addresses and BIP32 X-Pubs can be avoided",
-              "reason": "The proposal’s address-exchange motivation and workflow explicitly rely on BIP32 extended public keys as an alternative it aims to replace.",
-              "confidence": "high"
-            },
             {
               "target": "bips:70",
               "evidence": "This BIP is an extension to BIP 70",
-              "reason": "The proposal extends the Payment Protocol defined by BIP70 and reuses its message flow, message types, and processing semantics.",
+              "reason": "The proposal explicitly extends BIP70's Payment Protocol and reuses its messages, workflow, and semantics.",
               "confidence": "high"
             }
           ]

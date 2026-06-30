@@ -19,6 +19,7 @@ from analysis.validation import SnapshotValidationResult
 from main import (
     app,
     _available_llm_models_in_preprocess_dir,
+    _failed_llm_model_focus,
     _common_preprocess_snapshot_labels,
     _existing_llm_model_run_counts,
     _rebuild_source_artifacts,
@@ -202,6 +203,130 @@ class ArtifactRebuildTests(unittest.TestCase):
             )
 
         self.assertEqual((docs, runs), (1, 1))
+
+    def test_failed_llm_model_focus_returns_only_latest_failed_runs(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            preprocess_dir = Path(tmp_dir) / "02_preprocess" / "2026-05-28"
+            preprocess_dir.mkdir(parents=True)
+            (preprocess_dir / "bip-0001.json").write_text(
+                json.dumps(
+                    {
+                        "raw": {"preamble": {"bip": "1"}},
+                        "insights": {
+                            "interrelations": {
+                                "body_extracted_llm": [
+                                    {
+                                        "model": "gpt-5.4-mini",
+                                        "timestamp": "2026-06-01T00:00:00Z",
+                                        "status": "failed",
+                                        "dependencies": [],
+                                    },
+                                    {
+                                        "model": "gpt-5.4-mini",
+                                        "timestamp": "2026-06-02T00:00:00Z",
+                                        "status": "success",
+                                        "dependencies": [],
+                                    },
+                                ]
+                            }
+                        },
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (preprocess_dir / "bip-0002.json").write_text(
+                json.dumps(
+                    {
+                        "raw": {"preamble": {"bip": "2"}},
+                        "insights": {
+                            "interrelations": {
+                                "body_extracted_llm": [
+                                    {
+                                        "model": "gpt-5.4-mini",
+                                        "timestamp": "2026-06-01T00:00:00Z",
+                                        "status": "error",
+                                        "dependencies": [],
+                                    }
+                                ]
+                            }
+                        },
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (preprocess_dir / "bip-0003.json").write_text(
+                json.dumps(
+                    {
+                        "raw": {"preamble": {"bip": "3"}},
+                        "insights": {
+                            "interrelations": {
+                                "body_extracted_llm": [
+                                    {
+                                        "model": "gpt-5.4-mini",
+                                        "timestamp": "2026-06-01T00:00:00Z",
+                                        "status": "success",
+                                        "dependencies": [],
+                                    }
+                                ]
+                            }
+                        },
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            failed_ids = _failed_llm_model_focus(
+                preprocess_dir,
+                id_field="bip",
+                llm_model="gpt-5.4-mini",
+            )
+
+        self.assertEqual(failed_ids, {"2"})
+
+    def test_run_cli_forwards_rerun_failed_only_flag(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            root = Path(tmp_dir)
+            src_root = root / "bips"
+            preprocess_dir = src_root / "02_preprocess" / "2026-05-28"
+            analysis_dir = src_root / "03_analysis"
+            harvest_dir = src_root / "01_harvest"
+            preprocess_dir.mkdir(parents=True)
+            analysis_dir.mkdir(parents=True)
+            harvest_dir.mkdir(parents=True)
+            (preprocess_dir / "bip-0001.json").write_text("{}", encoding="utf-8")
+            eco = {
+                "slug": "bitcoin",
+                "sources": {
+                    "bips": {
+                        **self._source_config(src_root),
+                        "harvest": str(harvest_dir),
+                        "preprocess": str(src_root / "02_preprocess"),
+                        "analysis": str(src_root / "03_analysis"),
+                        "postprocess": str(src_root / "04_postprocess"),
+                    }
+                },
+            }
+
+            with patch.dict(
+                "main.ECOSYSTEM_REGISTRY", {"bitcoin": eco}, clear=True
+            ), patch("main._run_source_pipeline") as run_source_pipeline:
+                result = runner.invoke(
+                    app,
+                    [
+                        "run",
+                        "-e",
+                        "bitcoin",
+                        "--source",
+                        "bips",
+                        "-s",
+                        "2026-05-28",
+                        "--rerun-failed-only",
+                    ],
+                )
+
+        self.assertEqual(result.exit_code, 0, result.output)
+        self.assertTrue(run_source_pipeline.called)
+        self.assertTrue(run_source_pipeline.call_args.args[6])
 
     def test_available_llm_models_in_preprocess_dir_discovers_distinct_models(
         self,

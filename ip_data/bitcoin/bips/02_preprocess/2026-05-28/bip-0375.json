@@ -729,31 +729,27 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:54:51Z",
+          "timestamp": "2026-06-30T11:19:00Z",
+          "status": "success",
           "dependencies": [
             {
-              "target": "bips:32",
-              "evidence": "The updater should add a PSBT_IN_BIP32_DERIVATION for any p2wpkh, p2sh-p2wpkh, or p2pkh input",
-              "reason": "The proposal relies on BIP32 derivation data to expose public keys for silent payment ECDH computation and change detection.",
-              "confidence": "high"
-            },
-            {
               "target": "bips:352",
-              "evidence": "support for sending to silent payments as described in BIP352",
-              "reason": "The proposal extends silent payment transaction handling and output-script derivation defined by BIP352.",
+              "evidence": "as described in BIP352",
+              "reason": "Silent payment output handling, address data, output script derivation, and ECDH computations are defined around BIP352 silent payment semantics.",
               "confidence": "high"
             },
             {
               "target": "bips:370",
-              "evidence": "additional fields and updated role responsibilities for BIP370 PSBTv2",
-              "reason": "The proposal is an amendment to PSBTv2 and depends on its field model, roles, and transaction modifiability rules.",
+              "evidence": "This document proposes additional fields and updated role responsibilities for BIP370 PSBTv2",
+              "reason": "The proposal extends PSBTv2 and preserves its role rules and transaction structure, adding silent-payment-specific fields and constraints on top of BIP370.",
               "confidence": "high"
             },
             {
               "target": "bips:374",
-              "evidence": "A BIP374 DLEQ proof computed for the matching ECDH share",
-              "reason": "The new PSBT fields carry DLEQ proofs and the signer/validator procedures require BIP374 proof generation and verification.",
+              "evidence": "A BIP374 DLEQ proof computed for the matching ECDH share.",
+              "reason": "The proposal requires DLEQ proof generation and verification using BIP374 algorithms for the added ECDH shares.",
               "confidence": "high"
             }
           ]

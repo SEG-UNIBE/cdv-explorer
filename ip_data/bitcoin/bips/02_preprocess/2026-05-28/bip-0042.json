@@ -527,6 +527,15 @@
         "author": "Pieter Wuille",
         "path": "bip-0042.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0042.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -566,25 +575,27 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:52:57Z",
+          "timestamp": "2026-06-30T11:17:21Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:16",
               "evidence": "A softfork (see BIP16, BIP34, BIP62)",
-              "reason": "The proposal frames its subsidy change as a softfork, relying on the softfork deployment/validation context introduced by BIP16.",
+              "reason": "The proposal explicitly frames its activation as a softfork and cites BIP16 as part of the softfork mechanism it relies on.",
               "confidence": "high"
             },
             {
               "target": "bips:34",
               "evidence": "A softfork (see BIP16, BIP34, BIP62)",
-              "reason": "The proposal explicitly groups this as a softfork dependency, using the same consensus-changing activation context established by BIP34.",
+              "reason": "The proposal explicitly ties its deployment model to the softfork framework referenced by BIP34.",
               "confidence": "high"
             },
             {
               "target": "bips:62",
               "evidence": "A softfork (see BIP16, BIP34, BIP62)",
-              "reason": "The proposal explicitly cites this as part of the softfork framework it relies on for the consensus change.",
+              "reason": "The proposal explicitly ties its deployment model to the softfork framework referenced by BIP62.",
               "confidence": "high"
             }
           ]

@@ -599,9 +599,18 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:54:11Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:18:31Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:42",
+              "evidence": "a coinbase output in L1, which contains h*. Mary can only choose one h* to endorse.",
+              "reason": "The proposal relies on coinbase output encoding as the carrier for the BMM Accept message in the mainchain coinbase transaction.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

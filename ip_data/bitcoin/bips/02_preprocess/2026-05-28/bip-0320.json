@@ -518,9 +518,24 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:54:13Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:18:30Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:8",
+              "evidence": "removed from BIP8 and BIP9 specifications",
+              "reason": "The proposal directly alters the BIP8 signaling rules by excluding reserved bits from its activation/signaling semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:9",
+              "evidence": "removed from BIP8 and BIP9 specifications",
+              "reason": "The proposal directly alters the BIP9 signaling rules by excluding reserved bits from its activation/signaling semantics.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

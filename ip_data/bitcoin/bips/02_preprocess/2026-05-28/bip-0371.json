@@ -757,9 +757,50 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:54:47Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:18:57Z",
+          "status": "api_error",
+          "dependencies": [],
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 184346, Requested 17213. Please try again in 467ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+        },
+        {
+          "run_id": "2026-06-30T11:33:45Z_gpt-5.4-mini_fbc31d5d",
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-30T11:34:12Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:174",
+              "evidence": "BIP 174 PSBTv0",
+              "reason": "The proposal extends the PSBTv0 format defined by BIP 174 with new fields and relies on its serialization/extensibility model.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:340",
+              "evidence": "BIP 340/341/342 Taproot data",
+              "reason": "The new PSBT fields carry signatures and data for Taproot key spends, which depend on the Schnorr signature semantics introduced by BIP 340.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "BIP 340/341/342 Taproot data",
+              "reason": "The proposal uses BIP 341 Taproot output/script concepts, including internal keys, control blocks, leaf hashes, and merkle roots.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:342",
+              "evidence": "BIP 340/341/342 Taproot data",
+              "reason": "The proposal is designed to carry data for Taproot script-path signing and scripts, which depends on the Taproot extension specified by BIP 342.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:370",
+              "evidence": "BIP 174 PSBTv0 and BIP 370 PSBTv2",
+              "reason": "The proposal adds Taproot-related fields to PSBTv2 as defined by BIP 370, so its applicability depends on that versioned PSBT specification.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

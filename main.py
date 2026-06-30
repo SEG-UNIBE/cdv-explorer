@@ -640,6 +640,58 @@ def _existing_llm_model_run_counts(
     return matching_documents, matching_runs
 
 
+def _failed_llm_model_focus(
+    preprocess_dir: Path,
+    *,
+    id_field: str,
+    llm_model: str,
+    focus: set[str] | None = None,
+) -> set[str]:
+    failed_ids: set[str] = set()
+
+    for json_file in sorted(preprocess_dir.glob("*.json")):
+        raw_json = json.loads(json_file.read_text(encoding="utf-8"))
+        preamble = raw_json.get("raw", {}).get("preamble", {})
+        raw_id = str(preamble.get(id_field, ""))
+        try:
+            proposal_number = str(int(raw_id))
+        except ValueError:
+            proposal_number = raw_id
+        if focus is not None:
+            in_focus = (
+                proposal_number in focus
+                or raw_id in focus
+                or proposal_number.upper() in focus
+                or raw_id.upper() in focus
+            )
+            if not in_focus:
+                continue
+
+        raw_llm = (
+            raw_json.get("insights", {})
+            .get("interrelations", {})
+            .get("body_extracted_llm", [])
+        )
+        if not is_llm_runs_format(raw_llm):
+            continue
+
+        model_runs = [
+            run
+            for run in raw_llm
+            if str(run.get("model") or "").strip() == llm_model
+        ]
+        if not model_runs:
+            continue
+
+        latest_run = max(model_runs, key=lambda run: str(run.get("timestamp") or ""))
+        if is_successful_llm_run(latest_run):
+            continue
+
+        failed_ids.add(proposal_number)
+
+    return failed_ids
+
+
 def _available_llm_models_in_preprocess_dir(preprocess_dir: Path) -> list[str]:
     models: set[str] = set()
     for json_file in sorted(preprocess_dir.glob("*.json")):
@@ -700,6 +752,7 @@ def _run_source_pipeline(
     snapshot: str,
     skipllm: bool,
     focus: set[str] | None = None,
+    rerun_failed_only: bool = False,
     artifact_llm_model: str | None = None,
 ) -> None:
     """Run the full pipeline for one source."""
@@ -747,8 +800,37 @@ def _run_source_pipeline(
         json.dumps(manifest, indent=2, sort_keys=True), encoding="utf-8"
     )
 
+    effective_focus = focus
+    if rerun_failed_only:
+        if skipllm or not source_context.llm_model:
+            console.print(
+                f"[yellow]Skipping failed-only rerun for {eco_slug}/{src_slug}/{snapshot} because LLM extraction is not enabled.[/yellow]"
+            )
+            return
+        if not output_dir.exists():
+            console.print(
+                f"[yellow]Skipping failed-only rerun for {eco_slug}/{src_slug}/{snapshot} because no preprocess snapshot exists yet.[/yellow]"
+            )
+            return
+        failed_focus = _failed_llm_model_focus(
+            output_dir,
+            id_field=src["primary_id_field"],
+            llm_model=str(source_context.llm_model or "").strip(),
+            focus=focus,
+        )
+        if not failed_focus:
+            console.print(
+                f"[yellow]No failed LLM runs found for {eco_slug}/{src_slug}/{snapshot}.[/yellow]"
+            )
+            return
+        effective_focus = failed_focus
+        console.print(
+            f"[yellow]Re-running failed LLM rows only for {eco_slug}/{src_slug}/{snapshot}: "
+            f"{len(failed_focus)} IP(s) matched.[/yellow]"
+        )
+
     preprocess_exists = output_dir.exists() and any(output_dir.glob("*.json"))
-    if focus is not None and preprocess_exists:
+    if effective_focus is not None and preprocess_exists:
         console.print(
             f"  [green]✓[/green]  {'Step 2/4 · II. Preprocess'.ljust(28)}  [dim]skipped — focus run, existing preambles preserved[/dim]"
         )
@@ -771,17 +853,17 @@ def _run_source_pipeline(
 
     json_files = list(output_dir.glob("*.json")) if output_dir.exists() else []
     replace_llm_model_runs = False
-    if not skipllm and source_context.llm_model and output_dir.exists():
+    if not skipllm and source_context.llm_model and output_dir.exists() and not rerun_failed_only:
         matching_docs, matching_runs = _existing_llm_model_run_counts(
             output_dir,
             id_field=src["primary_id_field"],
             llm_model=source_context.llm_model,
-            focus=focus,
+            focus=effective_focus,
         )
         if matching_runs:
             focus_scope = (
                 f" among {matching_docs} focused IPs"
-                if focus is not None
+                if effective_focus is not None
                 else f" in {matching_docs} IPs"
             )
             console.print(
@@ -794,7 +876,11 @@ def _run_source_pipeline(
                 raise typer.Exit(1)
             replace_llm_model_runs = True
 
-    focus_note = f"  (focus: {len(focus)}/{len(json_files)} ip)" if focus else ""
+    focus_note = (
+        f"  (focus: {len(effective_focus)}/{len(json_files)} ip)"
+        if effective_focus
+        else ""
+    )
     _run_stage(
         f"{'Step 3/4 · III. Analysis'.ljust(28)}{focus_note}",
         len(json_files),
@@ -805,7 +891,7 @@ def _run_source_pipeline(
             harvest_dir=harvest_root,
             analysis_snapshot_dir=analysis_root / snapshot,
             skip_llm=skipllm,
-            focus=focus,
+            focus=effective_focus,
             replace_llm_model_runs=replace_llm_model_runs,
             source_context=source_context,
             progress_callback=u,
@@ -1100,6 +1186,13 @@ def run(
             help="Comma-separated list of proposal IDs to process (e.g. '1-9,30-44,85,A0'). All others are skipped.",
         ),
     ] = None,
+    rerun_failed_only: Annotated[
+        bool,
+        typer.Option(
+            "--rerun-failed-only",
+            help="Only re-run LLM extraction for rows whose latest stored LLM run failed.",
+        ),
+    ] = False,
     artifact_llm_model: Annotated[
         Optional[str],
         typer.Option(
@@ -1138,6 +1231,7 @@ def run(
             snapshot,
             skipllm,
             focus_ids,
+            rerun_failed_only,
             artifact_llm_model,
         )
         elapsed = time.monotonic() - run_started
@@ -1153,6 +1247,7 @@ def run(
                 snapshot,
                 skipllm,
                 focus_ids,
+                rerun_failed_only,
                 artifact_llm_model,
             )
         _rebuild_combined_source_artifacts(eco_slug, eco, snapshot)

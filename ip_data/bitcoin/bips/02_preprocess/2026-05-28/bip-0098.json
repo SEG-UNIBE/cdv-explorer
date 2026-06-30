@@ -767,14 +767,24 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:53:20Z",
+          "timestamp": "2026-06-30T11:17:42Z",
+          "status": "api_error",
+          "dependencies": [],
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 196972, Requested 5841. Please try again in 843ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+        },
+        {
+          "run_id": "2026-06-30T11:33:45Z_gpt-5.4-mini_fbc31d5d",
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-30T11:33:47Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:116",
-              "evidence": "This BIP is used by BIP116 (MERKLEBRANCHVERIFY) to add Merkle inclusion proof verification to script",
-              "reason": "The proposal’s deployment and intended script verification opcode rely on BIP 116’s soft-fork mechanism and opcode semantics.",
-              "confidence": "low"
+              "evidence": "This BIP is used by BIP116 (MERKLEBRANCHVERIFY)[4] to add Merkle inclusion proof verification to script",
+              "reason": "The proposal is explicitly designed to be consumed by BIP116, which relies on this proof and tree format for script verification.",
+              "confidence": "high"
             }
           ]
         }

@@ -548,37 +548,39 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:55:02Z",
+          "timestamp": "2026-06-30T11:19:13Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:341",
               "evidence": "The output scripts produced are BIP341 taproot outputs",
-              "reason": "The descriptor’s generated script type is Taproot, so it relies on the output script semantics defined by BIP341.",
+              "reason": "The resulting scripts are defined as Taproot outputs, so the proposal relies on BIP341 script/output semantics.",
               "confidence": "high"
             },
             {
               "target": "bips:350",
-              "evidence": "It is a Bech32m encoding of",
-              "reason": "The spscan and spspend key encodings use the Bech32m encoding format specified by this proposal.",
-              "confidence": "low"
+              "evidence": "It is a [https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki Bech32m] encoding",
+              "reason": "The spscan and spspend key expressions reuse Bech32m encoding rules from BIP350.",
+              "confidence": "high"
             },
             {
               "target": "bips:352",
-              "evidence": "silent payment key material and describe P2TR outputs when combined with sender input public keys as defined in BIP352",
-              "reason": "The descriptor depends on silent payment key material, serialization, derivation paths, and output construction rules introduced by the silent payments proposal.",
+              "evidence": "combined with sender input public keys as defined in BIP352",
+              "reason": "The descriptor’s silent-payment output behavior and key serialization are defined around the silent payments protocol in BIP352.",
               "confidence": "high"
             },
             {
               "target": "bips:380",
-              "evidence": "sp() descriptors use the format and general operation specified in BIP380",
-              "reason": "The proposal is defined within the output descriptor framework and relies on the descriptor syntax and semantics established by BIP380.",
+              "evidence": "sp() descriptors use the format and general operation specified in BIP380.",
+              "reason": "The proposal explicitly builds its descriptor syntax and operation on the general output descriptor framework defined by BIP380.",
               "confidence": "low"
             },
             {
               "target": "bips:390",
-              "evidence": "other key expression BIPs (e.g. musig() as defined in BIP390)",
-              "reason": "The sp() two-argument form explicitly accepts key expressions defined by BIP390, so it extends that key-expression framework.",
+              "evidence": "e.g. musig() as defined in BIP390",
+              "reason": "The two-argument sp() form permits key expressions such as musig() from BIP390 as valid spend keys.",
               "confidence": "low"
             }
           ]

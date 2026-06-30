@@ -201,13 +201,15 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:19:48Z_gpt-5.4-mini_d16626f8",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:55:19Z",
+          "timestamp": "2026-06-30T11:19:51Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "slips:10",
-              "evidence": "Derive the HD node `m/17'/A'/B'/C'/D'` according to SLIP-0010",
-              "reason": "The derivation path and hardened child key generation explicitly rely on SLIP-0010's hierarchical deterministic key derivation scheme.",
+              "evidence": "Derive the HD node `m/17'/A'/B'/C'/D'` according to SLIP-0010.",
+              "reason": "The hierarchical deterministic node derivation explicitly depends on SLIP-0010 for deriving the path from the hardened components.",
               "confidence": "high"
             }
           ]

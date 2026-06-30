@@ -630,7 +630,7 @@
         "author": "genjix",
         "path": "bip-0016.md",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "da31790ef6fbc04d4b2a56121f3252956dafd08e",
@@ -639,13 +639,22 @@
         "author": "Luke Dashjr",
         "path": "bip-0016.md",
         "status": "Accepted",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "57488fbd8b6d2d581b12864ce7a07149e19a177d",
         "timestamp": "2013-10-21T00:43:57-04:00",
         "date": "2013-10-21",
         "author": "Peter Todd",
+        "path": "bip-0016.mediawiki",
+        "status": "Final",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
         "path": "bip-0016.mediawiki",
         "status": "Final",
         "standard": "bip2"
@@ -678,19 +687,15 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:52:49Z",
+          "timestamp": "2026-06-30T11:17:14Z",
+          "status": "success",
           "dependencies": [
-            {
-              "target": "bips:11",
-              "evidence": "M-of-N Multisignature Transactions [[bip-0011.mediawiki|BIP 11]]",
-              "reason": "The proposal relies on multisignature script forms that BIP 11 defines and counts for P2SH redeem scripts.",
-              "confidence": "high"
-            },
             {
               "target": "bips:13",
               "evidence": "The Motivation for this BIP (and BIP 13, the pay-to-script-hash address type)",
-              "reason": "The proposal explicitly says it is paired with and relies on the pay-to-script-hash address type for its deployment and usage context.",
+              "reason": "The proposal explicitly pairs itself with BIP 13 as the address-format counterpart for pay-to-script-hash, so adopting this proposal depends on that address type convention.",
               "confidence": "high"
             }
           ]

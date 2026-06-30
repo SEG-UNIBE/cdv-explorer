@@ -713,26 +713,58 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:53:29Z",
+          "timestamp": "2026-06-30T11:17:54Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:8",
-              "evidence": "This BIP will be deployed by BIP8 (Version bits with lock-in by height)",
-              "reason": "The proposal’s activation mechanism is explicitly defined using BIP8 deployment rules.",
+              "evidence": "This BIP will be deployed by BIP8 (Version bits with lock-in by height)[10]",
+              "reason": "Activation is specified using BIP8 version bits lock-in-by-height rules.",
               "confidence": "high"
+            },
+            {
+              "target": "bips:16",
+              "evidence": "Although BIP16 (Pay to Script Hash)[2]",
+              "reason": "The motivation and standard script construction assume P2SH-style hiding of redeem scripts, which the proposal extends with Merkle-committed policy.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:65",
+              "evidence": "the NOP-expansion soft-fork mechanism used by BIP65 (CHECKLOCKTIMEVERIFY)[5]",
+              "reason": "The proposal adopts the same soft-fork NOP-expansion deployment mechanism as BIP65.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:68",
+              "evidence": "with, for example, with BIP68 (Relative lock-time using consensus-enforced sequence numbers)[9]",
+              "reason": "The deployment section uses BIP68 as a comparison for network standardness under the same discouraged-upgradable-nops environment, indicating operational context but not a direct mechanism dependency.",
+              "confidence": "low"
             },
             {
               "target": "bips:98",
-              "evidence": "serialized Merkle tree inclusion proof as specified by BIP98",
-              "reason": "The opcode validation and proof format require the fast Merkle tree/proof semantics defined by BIP98.",
+              "evidence": "serialized Merkle tree inclusion proof as specified by BIP98[1]",
+              "reason": "The opcode's proof format and verification logic are defined around BIP98 fast Merkle tree inclusion proofs.",
               "confidence": "high"
             },
             {
-              "target": "bips:141",
-              "evidence": "BIP141 (Segregated Witness) both allow the redeem script to be kept out of the scriptPubKey",
-              "reason": "The proposal’s deployment and spending model rely on SegWit script versions and witness-based script handling introduced by BIP141.",
+              "target": "bips:112",
+              "evidence": "the NOP-expansion soft-fork mechanism used by BIP65 (CHECKLOCKTIMEVERIFY)[5] and BIP112 (CHECKSEQUENCEVERIFY)[6]",
+              "reason": "The proposal is designed around the NOP-expansion soft-fork pattern exemplified by BIP112.",
               "confidence": "low"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "BIP141 (Segregated Witness)[3] both allow the redeem script to be kept out of the scriptPubKey",
+              "reason": "The proposal relies on SegWit witness behavior and script-versioning concepts from BIP141 for deployment and spending structure.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:143",
+              "evidence": "without the need for BIP143[7] signing code",
+              "reason": "The deployment discussion depends on existing signing code assumptions from BIP143 and explicitly contrasts compatibility with it.",
+              "confidence": "medium"
             }
           ]
         }

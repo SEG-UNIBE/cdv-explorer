@@ -570,9 +570,24 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:54:57Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:19:20Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:341",
+              "evidence": "as specified by [[bip-0341.mediawiki#cite_ref-22-0|BIP 341]]",
+              "reason": "The proposal relies on BIP 341’s Taproot output-key construction when computing tr() outputs.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:380",
+              "evidence": "use the format and general operation specified in [[bip-0380.mediawiki|380]]",
+              "reason": "The proposal’s descriptor syntax and parsing/operation are explicitly based on BIP 380.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

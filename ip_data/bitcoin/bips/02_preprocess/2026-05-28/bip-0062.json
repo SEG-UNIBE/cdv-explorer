@@ -688,13 +688,22 @@
         "author": "Pieter Wuille",
         "path": "bip-0062.mediawiki",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "916142e742b4256686c26b15a0bf943aea3f5ef9",
         "timestamp": "2015-11-17T21:46:14+01:00",
         "date": "2015-11-17",
         "author": "Pieter Wuille",
+        "path": "bip-0062.mediawiki",
+        "status": "Withdrawn",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
         "path": "bip-0062.mediawiki",
         "status": "Withdrawn",
         "standard": "bip2"
@@ -719,13 +728,15 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:53:03Z",
+          "timestamp": "2026-06-30T11:17:26Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:34",
               "evidence": "The same mechanism as in BIP 0034 is used to introduce v3 blocks.",
-              "reason": "BIP 62 relies on BIP 34’s block-version activation mechanism to deploy the new consensus rules.",
+              "reason": "BIP 62 explicitly reuses BIP 34's block-version activation mechanism for deploying its new consensus rules.",
               "confidence": "high"
             }
           ]

@@ -688,44 +688,46 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:53:16Z",
+          "timestamp": "2026-06-30T11:17:38Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
-              "evidence": "defined in the BIP32 path",
-              "reason": "The proposal’s derivation hierarchy and hardened/public child derivation are built on BIP32 key derivation semantics.",
-              "confidence": "low"
+              "evidence": "based on an algorithm described in BIP-0032",
+              "reason": "The proposal’s derivation path and hardened/public child-key semantics are built on BIP32 hierarchical deterministic wallet derivation.",
+              "confidence": "high"
             },
             {
               "target": "bips:43",
-              "evidence": "This BIP is a particular application of BIP43.",
-              "reason": "The proposal uses BIP43’s purpose-field hierarchy and assigns a fixed purpose number within that framework.",
+              "evidence": "purpose scheme described in BIP-0043",
+              "reason": "The proposal uses the BIP43 purpose-field convention and explicitly defines itself as a BIP43 application.",
               "confidence": "high"
             },
             {
               "target": "bips:44",
               "evidence": "multi-account hierarchy described in BIP-0044",
-              "reason": "The account-level structure and wallet organization explicitly follow the BIP44 multi-account pattern.",
+              "reason": "The account-level structure is adopted from BIP44 and the proposal says it follows the BIP44 pattern for independent identities.",
               "confidence": "high"
             },
             {
               "target": "bips:67",
-              "evidence": "deterministic key sorting as per BIP67",
-              "reason": "The proposal relies on BIP67 key sorting to define deterministic multisig address/script generation.",
-              "confidence": "high"
+              "evidence": "as described in [https://github.com/bitcoin/bips/blob/master/bip-0067.mediawiki BIP67]",
+              "reason": "Deterministic key ordering for multisig scripts is treated as part of the wallet behavior through sortedmulti and lexicographic key sorting.",
+              "confidence": "medium"
             },
             {
               "target": "bips:129",
-              "evidence": "descriptor templates. Please see ... BIP-0129",
-              "reason": "The proposal’s address discovery and descriptor-template workflow depends on the BIP129 setup model for multisig descriptors.",
-              "confidence": "low"
+              "evidence": "Please see [https://github.com/bitcoin/bips/blob/master/bip-0129.mediawiki BIP-0129 (Bitcoin Secure Multisig Setup)]",
+              "reason": "Descriptor templates from BIP129 are used as the mechanism for generating and discovering the multisig addresses described by this BIP.",
+              "confidence": "medium"
             },
             {
               "target": "bips:174",
-              "evidence": "maximum compatibility with BIP-0174",
-              "reason": "The proposal requires descriptor key origin information and backup/restore behavior compatible with PSBTs defined by BIP174.",
-              "confidence": "high"
+              "evidence": "with key origin information for maximum compatibility with BIP-0174",
+              "reason": "The proposal requires descriptors or templates to carry key origin information in a form compatible with BIP174 workflows.",
+              "confidence": "low"
             }
           ]
         }

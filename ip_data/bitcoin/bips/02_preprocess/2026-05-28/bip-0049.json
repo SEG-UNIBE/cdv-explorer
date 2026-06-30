@@ -572,6 +572,15 @@
         "author": "Daniel Weigl",
         "path": "bip-p2sh-accounts.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0049.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -623,44 +632,46 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:53:01Z",
+          "timestamp": "2026-06-30T11:17:24Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:16",
-              "evidence": "P2WPKH-nested-in-P2SH",
-              "reason": "The address/script construction depends on the P2SH encapsulation defined by this BIP.",
+              "evidence": "scriptPubKey: HASH160 <20-byte-script-hash> EQUAL",
+              "reason": "The nested witness address is wrapped in a P2SH scriptPubKey, relying on the P2SH mechanism from BIP16.",
               "confidence": "high"
             },
             {
               "target": "bips:32",
-              "evidence": "deterministic addresses based on a BIP 32 root account",
-              "reason": "The derivation path and hierarchical key generation build on BIP32 HD wallet semantics.",
-              "confidence": "low"
+              "evidence": "based on a [[bip-0032.mediawiki|BIP 32]] root account",
+              "reason": "The proposal’s derivation scheme is built on BIP32 hierarchical deterministic root-account derivation.",
+              "confidence": "high"
             },
             {
               "target": "bips:43",
-              "evidence": "For the `purpose`-path level it uses `49'`",
-              "reason": "BIP43 defines the purpose field structure that this proposal specializes by assigning a purpose value.",
+              "evidence": "For the `purpose`-path level it uses `49'`.",
+              "reason": "The proposal uses the BIP43 purpose-field path level to encode the wallet type.",
               "confidence": "high"
             },
             {
               "target": "bips:44",
-              "evidence": "uses the same account-structure as defined in BIP 44",
-              "reason": "The proposal adopts and constrains the BIP44 account hierarchy and path layout.",
-              "confidence": "low"
+              "evidence": "uses the same account-structure as defined in [[bip-0044.mediawiki|BIP 44]]",
+              "reason": "The proposal reuses the BIP44 account/path structure, changing only the purpose value and keeping the remaining path semantics.",
+              "confidence": "high"
             },
             {
               "target": "bips:141",
-              "evidence": "P2WPKH-nested-in-P2SH ... BIP 141",
-              "reason": "The proposal relies on SegWit nested-in-P2SH witness and script serialization rules from this BIP.",
+              "evidence": "uses the encapsulation defined in [[bip-0141.mediawiki#p2wpkh-nested-in-bip16-p2sh|BIP 141]]",
+              "reason": "The address construction and transaction serialization depend on the nested P2WPKH-in-P2SH encapsulation defined by BIP141.",
               "confidence": "low"
             },
             {
               "target": "slips:132",
-              "evidence": "Additional registered version bytes are listed in SLIP-0132",
-              "reason": "The extended key serialization uses version byte assignments defined by this registry.",
-              "confidence": "low"
+              "evidence": "Additional registered version bytes are listed in [[https://github.com/satoshilabs/slips/blob/master/slip-0132.md|SLIP-0132]].",
+              "reason": "The proposal’s extended-key serialization uses alternate version bytes, and it explicitly points to SLIP-0132 for the registered prefix values.",
+              "confidence": "high"
             }
           ]
         }

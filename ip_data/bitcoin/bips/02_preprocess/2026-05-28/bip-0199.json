@@ -542,9 +542,18 @@
       "body_extracted_regex": [],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:54:10Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:18:27Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:11",
+              "evidence": "Both parties can now construct the script and P2SH address for the HTLC.",
+              "reason": "The proposal relies on P2SH address construction for deploying the HTLC script as stated in the workflow.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

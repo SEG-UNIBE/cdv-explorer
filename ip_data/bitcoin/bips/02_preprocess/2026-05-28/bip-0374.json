@@ -640,9 +640,30 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:54:52Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:18:59Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:327",
+              "evidence": "All conventions and notations are used as defined in [https://github.com/bitcoin/bips/blob/master/bip-0327.mediawiki#notation BIP327].",
+              "reason": "The proposal explicitly adopts BIP327's notation and conventions for its proof specification and algorithms.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:340",
+              "evidence": "The same rationale and recommendations from [https://github.com/bitcoin/bips/blob/master/bip-0340.mediawiki#default-signing BIP340] should be applied.",
+              "reason": "The auxiliary randomness handling in proof generation reuses BIP340's freshness guidance for nonce-related random data.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:352",
+              "evidence": "[https://github.com/bitcoin/bips/blob/master/bip-0352.mediawiki#specification BIP352] requires senders to compute output scripts using ECDH shared secrets from the same secret keys used to sign the inputs.",
+              "reason": "The proposal is designed around BIP352's ECDH-based output-script construction and aims to prove correct generation of those shared secrets.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

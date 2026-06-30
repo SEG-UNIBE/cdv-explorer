@@ -701,12 +701,21 @@
         "author": "Kristov Atlas",
         "path": "bip-0079.mediawiki",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "1501dd99bd12f9e6835f5169d21fd29fb41071db",
         "timestamp": "2016-08-27T20:21:26Z",
         "date": "2016-08-27",
+        "author": "Luke Dashjr",
+        "path": "bip-0069.mediawiki",
+        "status": "Accepted",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
         "author": "Luke Dashjr",
         "path": "bip-0069.mediawiki",
         "status": "Accepted",
@@ -741,13 +750,15 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:53:06Z",
+          "timestamp": "2026-06-30T11:17:30Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:30",
               "evidence": "this is enforced for coinbase transactions by BIP30",
-              "reason": "The input-sorting rule assumes BIP30’s coinbase transaction uniqueness guarantee when comparing previous transaction hashes.",
+              "reason": "The input-sorting rule relies on BIP30’s uniqueness enforcement for coinbase transaction hashes when treating previous transaction hashes as unique identifiers.",
               "confidence": "high"
             }
           ]

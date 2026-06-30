@@ -383,31 +383,27 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:19:48Z_gpt-5.4-mini_d16626f8",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:55:20Z",
+          "timestamp": "2026-06-30T11:19:55Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:39",
-              "evidence": "such as that defined in SLIP-0039 or the binary seed defined in BIP-0039",
-              "reason": "The proposal’s HD wallet master secret can come from the BIP-39 seed, so its key derivation and examples rely on that seed format.",
+              "evidence": "such as that defined in [SLIP-0039] or the binary seed defined in [BIP-0039]",
+              "reason": "The proposal explicitly treats the BIP-0039 seed as an acceptable master secret source for hierarchical deterministic wallets.",
               "confidence": "low"
             },
             {
               "target": "slips:10",
-              "evidence": "derived from a master secret and from the version and authentication tag of the credential ID using the SLIP-0010 key derivation scheme",
-              "reason": "The credential key pair derivation directly uses SLIP-0010 as the derivation mechanism for the signing keys.",
+              "evidence": "derived from a master secret and from the version and authentication tag of the credential ID using the [SLIP-0010] key derivation scheme",
+              "reason": "The proposal defines the credential key pair derivation path using SLIP-0010-based key derivation.",
               "confidence": "low"
             },
             {
               "target": "slips:21",
-              "evidence": "derived from the master secret using the SLIP-0021 method for hierarchical derivation of symmetric keys",
-              "reason": "The encryption key and CredRandom are defined using SLIP-0021 key derivation, so the proposal depends on its hierarchical symmetric-key derivation scheme.",
-              "confidence": "low"
-            },
-            {
-              "target": "slips:39",
-              "evidence": "such as that defined in SLIP-0039",
-              "reason": "The proposal treats SLIP-0039 as one of the supported master-secret sources for hierarchical deterministic wallets, which is part of the assumptions for key derivation.",
+              "evidence": "The key is derived from the master secret using the [SLIP-0021] method for hierarchical derivation of symmetric keys",
+              "reason": "The proposal uses SLIP-0021 as the derivation mechanism for the encryption key and CredRandom values.",
               "confidence": "low"
             }
           ]

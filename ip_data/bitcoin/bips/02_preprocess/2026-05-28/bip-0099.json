@@ -770,6 +770,15 @@
         "author": "Jorge Timón",
         "path": "bip-0099.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "959fecc15bdad070afa63455468b1dba54655fa6",
+        "timestamp": "2016-11-30T09:51:01Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0099.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -829,38 +838,24 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:53:22Z",
+          "timestamp": "2026-06-30T11:17:43Z",
+          "status": "api_error",
+          "dependencies": [],
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 196258, Requested 5226. Please try again in 445ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+        },
+        {
+          "run_id": "2026-06-30T11:33:45Z_gpt-5.4-mini_fbc31d5d",
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-30T11:33:47Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
-              "evidence": "a more efficient use of the version field in block headers",
-              "reason": "The proposal's improved deployment mechanism is an extension of the version-field-based signaling defined by BIP9.",
+              "evidence": "the version field in block headers<ref name=\"versionbits\">https://github.com/bitcoin/bips/blob/master/bip-0009.mediawiki</ref>",
+              "reason": "The proposal relies on the versionbits mechanism for improved softfork deployment and parallel activation handling.",
               "confidence": "high"
-            },
-            {
-              "target": "bips:16",
-              "evidence": "The first precedent of a softfork was the introduction of P2SH documented in BIP16.",
-              "reason": "BIP16 introduced the P2SH softfork mechanism that this proposal uses as the precedent for uncontroversial softfork deployment.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:30",
-              "evidence": "the voting mechanism and first used for BIP30 and BIP66.",
-              "reason": "This proposal relies on the miner voting deployment mechanism first used in BIP30 as part of its softfork activation model.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:65",
-              "evidence": "BIP65 is expected to be deployed with the improved mechanism.",
-              "reason": "BIP65 is identified as a deployment target for the improved version-bits mechanism described here, making it a direct consumer of that mechanism.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:66",
-              "evidence": "the voting mechanism and first used for BIP30 and BIP66.",
-              "reason": "This proposal relies on the miner voting deployment mechanism first used in BIP66 as part of its softfork activation model.",
-              "confidence": "medium"
             }
           ]
         }

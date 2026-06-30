@@ -850,38 +850,42 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:53:27Z",
+          "timestamp": "2026-06-30T11:17:50Z",
+          "status": "api_error",
+          "dependencies": [],
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 196013, Requested 7070. Please try again in 924ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+        },
+        {
+          "run_id": "2026-06-30T11:33:45Z_gpt-5.4-mini_fbc31d5d",
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-30T11:33:48Z",
+          "status": "success",
           "dependencies": [
             {
-              "target": "bips:8",
-              "evidence": "\"deviates from standard BIP9 in five ways\" ... \"a BIP8-like, height-based max_activation_height\" ... \"mandatory signaling during the retarget period immediately before mandatory lock-in\"",
-              "reason": "The deployment’s activation semantics are explicitly based on BIP 8-style lock-in behavior and mandatory signaling.",
-              "confidence": "low"
-            },
-            {
               "target": "bips:9",
-              "evidence": "\"This deployment uses the GBT deployment name \\\"reduced_data\\\" as defined in BIP 9.\"",
-              "reason": "The proposal uses BIP 9’s deployment and signaling framework as the basis for its versionbits activation mechanism.",
-              "confidence": "low"
+              "evidence": "This deployment uses the GBT deployment name \"reduced_data\" as defined in [[bip-0009.mediawiki#getblocktemplate_changes|BIP 9]].",
+              "reason": "The proposal uses BIP 9 deployment naming and signaling mechanics for activation and GetBlockTemplate behavior.",
+              "confidence": "high"
             },
             {
               "target": "bips:16",
-              "evidence": "\"except for the redeemScript push in BIP16 scriptSigs\"",
-              "reason": "The rule’s script size exemption depends on BIP 16’s redeemScript/scriptSig spend structure.",
-              "confidence": "low"
+              "evidence": "except for the redeemScript push in BIP16 scriptSigs.",
+              "reason": "The rule explicitly exempts BIP16 redeemScript pushes from the new size limit, so implementing the proposal requires knowing that BIP16 scriptSig structure.",
+              "confidence": "high"
             },
             {
               "target": "bips:141",
-              "evidence": "\"not Witness v0/BIP 141, or Taproot/BIP 341, or P2A\"",
-              "reason": "The undefined-witness-version rule is defined relative to SegWit witness version 0 as introduced by BIP 141.",
-              "confidence": "low"
+              "evidence": "not Witness v0/BIP 141, Taproot/BIP 341, or P2A",
+              "reason": "The proposal’s validity rule distinguishes Witness v0 as a supported witness version and uses its semantics as part of the exclusion set.",
+              "confidence": "high"
             },
             {
               "target": "bips:341",
-              "evidence": "\"not Witness v0/BIP 141, or Taproot/BIP 341, or P2A\"",
-              "reason": "The proposal’s witness-version, annex, control block, and Tapscript restrictions rely on Taproot’s consensus rules from BIP 341.",
-              "confidence": "low"
+              "evidence": "not Witness v0/BIP 141, Taproot/BIP 341, or P2A",
+              "reason": "The proposal directly relies on Taproot-defined concepts such as annexes, control blocks, Tapscript, and witness version treatment.",
+              "confidence": "high"
             }
           ]
         }

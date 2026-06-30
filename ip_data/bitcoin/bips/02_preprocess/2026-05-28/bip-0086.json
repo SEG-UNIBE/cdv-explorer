@@ -553,44 +553,46 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:53:16Z",
+          "timestamp": "2026-06-30T11:17:38Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
-              "evidence": "This BIP defines the two needed steps to derive multiple deterministic addresses based on a BIP 32 master private key.",
-              "reason": "The derivation scheme relies on BIP 32 hierarchical key derivation as its base wallet structure.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:43",
-              "evidence": "m / purpose' / coin_type' / account' / change / address_index",
-              "reason": "The use of a purpose' level in the derivation path follows the BIP 43 purpose-field structure.",
+              "evidence": "This BIP defines the two needed steps to derive multiple deterministic addresses based on a [[bip-0032.mediawiki|BIP 32]] master private key.",
+              "reason": "The proposal’s wallet derivation scheme is built on BIP32 master key hierarchy and derivation semantics.",
               "confidence": "high"
             },
             {
+              "target": "bips:43",
+              "evidence": "using the same account-structure as defined in BIPs [[bip-0044.mediawiki|44]], [[bip-0049.mediawiki|49]], and [[bip-0084.mediawiki|84]], but with a different purpose value for the script type.",
+              "reason": "The derivation path uses a purpose field in the BIP43-style hierarchy.",
+              "confidence": "low"
+            },
+            {
               "target": "bips:44",
-              "evidence": "uses the same account-structure as defined in BIPs 44, 49, and 84",
-              "reason": "The proposal adopts the account hierarchy and path structure established by BIP 44.",
+              "evidence": "using the same account-structure as defined in BIPs [[bip-0044.mediawiki|44]], [[bip-0049.mediawiki|49]], and [[bip-0084.mediawiki|84]], but with a different purpose value for the script type.",
+              "reason": "The proposal reuses the BIP44 account/change/address path structure for deriving keys.",
               "confidence": "low"
             },
             {
               "target": "bips:49",
-              "evidence": "we largely use the same approach used in BIPs 49 and 84 for ease of implementation",
-              "reason": "The proposal explicitly reuses the derivation approach and path conventions from BIP 49.",
-              "confidence": "low"
+              "evidence": "Thus we largely use the same approach used in BIPs [[bip-0049.mediawiki|49]] and [[bip-0084.mediawiki|84]] for ease of implementation.",
+              "reason": "The proposal explicitly states it largely follows BIP49’s derivation approach.",
+              "confidence": "high"
             },
             {
               "target": "bips:84",
-              "evidence": "we largely use the same approach used in BIPs 49 and 84 for ease of implementation",
-              "reason": "The proposal explicitly reuses the derivation approach and path conventions from BIP 84.",
-              "confidence": "low"
+              "evidence": "Thus we largely use the same approach used in BIPs [[bip-0049.mediawiki|49]] and [[bip-0084.mediawiki|84]] for ease of implementation.",
+              "reason": "The proposal explicitly states it largely follows BIP84’s derivation approach.",
+              "confidence": "high"
             },
             {
               "target": "bips:341",
-              "evidence": "This document suggests a derivation scheme for HD wallets whose keys are involved in single key P2TR (BIP 341) outputs as the Taproot internal key.",
-              "reason": "The proposal defines how to form Taproot internal keys and output keys, which depends on the key and output semantics introduced by BIP 341.",
-              "confidence": "low"
+              "evidence": "This document suggests a derivation scheme for HD wallets whose keys are involved in single key P2TR ([[bip-0341.mediawiki|BIP 341]]) outputs as the Taproot internal key.",
+              "reason": "The proposal is designed specifically for BIP341 single-key P2TR outputs and uses its internal-key/tweak/output-key construction and scriptPubKey form.",
+              "confidence": "high"
             }
           ]
         }

@@ -593,38 +593,40 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:53:50Z",
+          "timestamp": "2026-06-30T11:18:15Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
-              "evidence": "the existing \"segwit\" deployment",
-              "reason": "The proposal’s activation logic is explicitly built around BIP9 versionbits deployment state, lock-in, and signaling bits.",
-              "confidence": "high"
+              "evidence": "the existing segwit deployment using bit 1",
+              "reason": "The proposal's activation logic is built around a BIP9 versionbits deployment, reusing its bit-based signaling and lock-in/active state transitions.",
+              "confidence": "low"
             },
             {
               "target": "bips:16",
-              "evidence": "a BIP16 like soft fork flag day activation",
-              "reason": "The proposal adopts BIP16-style flag-day enforcement as its activation mechanism.",
+              "evidence": "This document specifies a BIP16 like soft fork flag day activation",
+              "reason": "The proposal explicitly models its activation approach on BIP16-style flag-day soft fork enforcement.",
               "confidence": "high"
             },
             {
               "target": "bips:141",
-              "evidence": "existing segwit deployment ... to activate BIP141",
-              "reason": "The signaling and enforcement rules are intended to activate the Segregated Witness rules defined by this proposal.",
-              "confidence": "low"
+              "evidence": "to activate BIP141",
+              "reason": "The proposal's purpose is to force activation of Segregated Witness, of which BIP141 defines the consensus-layer rules being activated.",
+              "confidence": "high"
             },
             {
               "target": "bips:143",
-              "evidence": "existing segwit deployment ... to activate BIP141, BIP143 and BIP147",
-              "reason": "The proposal’s segwit activation is meant to bring into force the transaction verification rules defined by BIP143.",
-              "confidence": "low"
+              "evidence": "to activate BIP141, BIP143 and BIP147",
+              "reason": "The proposal is designed to trigger the existing segwit deployment that includes BIP143, so its enforcement depends on that deployment's activation targets.",
+              "confidence": "medium"
             },
             {
               "target": "bips:147",
-              "evidence": "existing segwit deployment ... to activate BIP141, BIP143 and BIP147",
-              "reason": "The proposal’s segwit activation is meant to bring into force the malleability fix rules defined by BIP147.",
-              "confidence": "low"
+              "evidence": "to activate BIP141, BIP143 and BIP147",
+              "reason": "The proposal is designed to trigger the existing segwit deployment that includes BIP147, so its enforcement depends on that deployment's activation targets.",
+              "confidence": "medium"
             }
           ]
         }

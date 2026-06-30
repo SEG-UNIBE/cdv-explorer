@@ -922,56 +922,52 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:54:46Z",
+          "timestamp": "2026-06-30T11:18:57Z",
+          "status": "success",
           "dependencies": [
             {
-              "target": "bips:16",
-              "evidence": "P2MR and P2TR both provide greater script privacy than P2SH BIP 16",
-              "reason": "The proposal constrains its privacy comparison and design motivation against the script-reveal semantics of P2SH defined by BIP 16.",
-              "confidence": "low"
-            },
-            {
               "target": "bips:141",
-              "evidence": "A P2MR output is a native SegWit output (see BIP 141)",
-              "reason": "P2MR uses SegWit versioning, witness program structure, and native SegWit validation rules from BIP 141.",
-              "confidence": "low"
+              "evidence": "A P2MR output is a native SegWit output (see [[bip-0141.mediawiki|BIP 141]]) with version 2 and a 32-byte witness program",
+              "reason": "P2MR is specified as a native SegWit witness-program output, relying on the SegWit output structure defined by BIP 141.",
+              "confidence": "high"
             },
             {
               "target": "bips:173",
-              "evidence": "following BIP 173. Bech32m encoding maps version 2 to the prefix z",
-              "reason": "P2MR address encoding and version-to-prefix behavior depend on the SegWit address format defined by BIP 173.",
-              "confidence": "low"
+              "evidence": "P2MR outputs use SegWit version 2, resulting in mainnet addresses that start with <code>bc1z</code>, following [[bip-0173.mediawiki|BIP 173]]",
+              "reason": "P2MR address encoding depends on BIP 173 Bech32 address formatting conventions.",
+              "confidence": "high"
             },
             {
               "target": "bips:340",
-              "evidence": "Similar to BIP 341 test vectors, all signatures are created with an all-zero (0x0000...0000) BIP 340 auxiliary randomness array",
-              "reason": "P2MR test vectors and signature generation rely on the Schnorr signature scheme and auxiliary randomness conventions defined by BIP 340.",
-              "confidence": "low"
+              "evidence": "Similar to BIP 341 test vectors, all signatures are created with an all-zero (0x0000...0000) [[bip-0340.mediawiki|BIP 340]] auxiliary randomness array",
+              "reason": "The test vectors depend on BIP 340's signature auxiliary-randomness convention.",
+              "confidence": "medium"
             },
             {
               "target": "bips:341",
-              "evidence": "Nearly the same functionality as P2TR (Pay-to-Taproot) outputs",
-              "reason": "P2MR is built by modifying Taproot output and validation semantics, including Merkle-root commitments, control blocks, and script-path logic from BIP 341.",
+              "evidence": "operate with nearly the same functionality as P2TR (Pay-to-Taproot) outputs",
+              "reason": "The proposal is designed as a Taproot-like output type and reuses Taproot's script-tree spend model while removing only the key path spend.",
               "confidence": "high"
             },
             {
               "target": "bips:342",
-              "evidence": "Execute the script, according to the script rules specified in BIP 342",
-              "reason": "P2MR script execution uses tapscript rules and common signature message construction from BIP 342.",
-              "confidence": "high"
+              "evidence": "using the witness stack elements excluding the script 's', the control block 'c', and the annex 'a' if present, as initial stack",
+              "reason": "P2MR executes leaf scripts according to the Taproot script execution rules defined by BIP 342.",
+              "confidence": "low"
             },
             {
               "target": "bips:347",
-              "evidence": "OP_SUCCESSx is a mechanism to upgrade tapscript",
-              "reason": "The proposal’s future post-quantum opcode path assumes the tapscript upgrade mechanism introduced by BIP 347.",
+              "evidence": "activate OP_CAT [[bip-0347.mediawiki|BIP 347]]",
+              "reason": "The proposal discusses an alternative quantum-resistant design path that depends on the OP_CAT upgrade mechanism from BIP 347.",
               "confidence": "low"
             },
             {
               "target": "bips:350",
-              "evidence": "Per BIP 350 older wallets should be able to spend funds to SegWit version 2 outputs",
-              "reason": "Backward-compatibility behavior for version-2 witness programs is defined in relation to BIP 350.",
-              "confidence": "low"
+              "evidence": "Per [[bip-0350.mediawiki|BIP 350]] older wallets should be able to spend funds to SegWit version 2 outputs",
+              "reason": "Backward-compatibility behavior for version-2 witness outputs is defined with reference to BIP 350.",
+              "confidence": "medium"
             }
           ]
         }

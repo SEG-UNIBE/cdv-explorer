@@ -1336,19 +1336,29 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:54:16Z",
+          "timestamp": "2026-06-30T11:18:34Z",
+          "status": "api_error",
+          "dependencies": [],
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 195289, Requested 16661. Please try again in 3.585s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+        },
+        {
+          "run_id": "2026-06-30T11:33:45Z_gpt-5.4-mini_fbc31d5d",
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-30T11:34:00Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:31",
-              "evidence": "the timeout interval for post-BIP31 connections",
-              "reason": "The rekeying interval rationale depends on BIP31's ping timeout behavior to estimate packet cadence.",
+              "evidence": "post-BIP31 connections",
+              "reason": "The rekeying interval rationale explicitly references BIP31's ping timeout behavior to justify the packet-count-based rekey schedule.",
               "confidence": "low"
             },
             {
               "target": "bips:340",
-              "evidence": "sha256_tagged(tag, x) returns a tagged hash value ... as in BIP340",
-              "reason": "The proposal defines its shared-secret hash using the tagged-hash construction introduced by BIP340.",
+              "evidence": "as in BIP340",
+              "reason": "The proposal uses BIP340-tagged hashing for deriving the ECDH secret, so its key agreement output depends on that hash construction convention.",
               "confidence": "low"
             }
           ]

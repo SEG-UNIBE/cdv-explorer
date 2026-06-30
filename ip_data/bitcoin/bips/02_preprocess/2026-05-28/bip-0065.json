@@ -795,7 +795,7 @@
         "author": "Peter Todd",
         "path": "bip-0065.mediawiki",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "694a073e15577b45fdbd679e43ff8ae76f46b7ba",
@@ -804,7 +804,7 @@
         "author": "Daniel Cousens",
         "path": "bip-0065.mediawiki",
         "status": "Accepted",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "f3d94433e252ad9bc56edd4485c3da7d5e0d3d52",
@@ -813,12 +813,21 @@
         "author": "Peter Todd",
         "path": "bip-0065.mediawiki",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "f31f7d43473fadcfafbc886b15e8c488654839c2",
         "timestamp": "2016-02-01T20:14:22Z",
         "date": "2016-02-01",
+        "author": "Luke Dashjr",
+        "path": "bip-0065.mediawiki",
+        "status": "Final",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
         "author": "Luke Dashjr",
         "path": "bip-0065.mediawiki",
         "status": "Final",
@@ -848,19 +857,15 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:53:05Z",
+          "timestamp": "2026-06-30T11:17:29Z",
+          "status": "success",
           "dependencies": [
-            {
-              "target": "bips:9",
-              "evidence": "BIP9 involves permanently setting a high-order bit to 1",
-              "reason": "The proposal’s deployment section relies on BIP9 as an alternative soft-fork signaling/activation mechanism and contrasts version-bit constraints against it.",
-              "confidence": "medium"
-            },
             {
               "target": "bips:66",
               "evidence": "We reuse the double-threshold IsSuperMajority() switchover mechanism used in BIP66",
-              "reason": "The deployment mechanism directly reuses the activation logic defined by the referenced proposal.",
+              "reason": "The deployment section explicitly adopts BIP66's activation mechanism and thresholds for this proposal's soft-fork rollout.",
               "confidence": "high"
             }
           ]

@@ -692,19 +692,15 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:22:47Z",
+          "timestamp": "2026-06-30T11:35:24Z",
+          "status": "success",
           "dependencies": [
-            {
-              "target": "bips:16",
-              "evidence": "The same mechanism as in BIP 0034 is used to introduce v3 blocks.",
-              "reason": "The proposal reuses BIP 16’s block-version activation mechanism to enforce its new consensus rules.",
-              "confidence": "high"
-            },
             {
               "target": "bips:34",
               "evidence": "The same mechanism as in BIP 0034 is used to introduce v3 blocks.",
-              "reason": "The proposal directly relies on BIP 34’s version-based soft-fork activation scheme for deployment.",
+              "reason": "The proposal explicitly reuses BIP 0034’s block-version activation mechanism for deploying v3 blocks.",
               "confidence": "high"
             }
           ]

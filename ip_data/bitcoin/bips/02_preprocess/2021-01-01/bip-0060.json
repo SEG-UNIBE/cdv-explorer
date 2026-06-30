@@ -527,19 +527,15 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:22:46Z",
+          "timestamp": "2026-06-30T11:35:23Z",
+          "status": "success",
           "dependencies": [
             {
-              "target": "bips:14",
-              "evidence": "[[bip-0014.mediawiki|User Agent]]",
-              "reason": "The version message format includes the user agent field defined by BIP 14, so this proposal relies on that field's semantics and encoding.",
-              "confidence": "high"
-            },
-            {
               "target": "bips:37",
-              "evidence": "see [[bip-0037.mediawiki|BIP 0037]], since version >= 70001",
-              "reason": "The relay flag in the version message is the mechanism introduced by BIP 37 and this proposal amends that mechanism's behavior and encoding.",
+              "evidence": "[[BIP 0037]] introduced a new flag to version messages",
+              "reason": "This proposal directly extends the version-message relay flag introduced by BIP 0037 and changes its handling in the protocol specification and implementation.",
               "confidence": "high"
             }
           ]

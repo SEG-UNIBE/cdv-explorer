@@ -630,20 +630,22 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:22:45Z",
+          "timestamp": "2026-06-30T11:35:21Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
               "evidence": "based on the algorithm described in BIP-0032",
-              "reason": "The proposal’s derivation path structure, hardened/non-hardened child derivation, and key generation all rely on BIP32 semantics.",
+              "reason": "The proposal’s key derivation path, hardened/non-hardened derivation, and child public/private key generation are built on BIP32.",
               "confidence": "high"
             },
             {
               "target": "bips:43",
-              "evidence": "based on the algorithm described in BIP-0043",
-              "reason": "The proposal uses BIP43’s purpose field scheme and explicitly sets purpose 45 as the top-level path component.",
-              "confidence": "low"
+              "evidence": "purpose scheme described in BIP-0043",
+              "reason": "The proposal adopts BIP43’s purpose-field scheme and explicitly sets purpose to 45' as a BIP43 application.",
+              "confidence": "high"
             }
           ]
         }

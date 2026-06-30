@@ -620,32 +620,34 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:23:14Z",
+          "timestamp": "2026-06-30T11:36:02Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
-              "evidence": "see BIP 9",
-              "reason": "The proposal uses BIP 9's 'rules' list and activation semantics, including the 'segwit' rule prefix, to gate witness transaction inclusion.",
-              "confidence": "low"
+              "evidence": "the template's \"rules\" list (see [[bip-0009.mediawiki#getblocktemplate_changes|BIP 9]]) includes \"segwit\"",
+              "reason": "Activation and template validity depend on the BIP 9 rules list and its segwit rule signaling.",
+              "confidence": "high"
             },
             {
               "target": "bips:22",
-              "evidence": "modifications to the getblocktemplate JSON-RPC call (BIP 22)",
-              "reason": "This proposal directly amends the getblocktemplate protocol defined by BIP 22.",
-              "confidence": "low"
+              "evidence": "This BIP describes modifications to the getblocktemplate JSON-RPC call ([[bip-0022.mediawiki|BIP 22]])",
+              "reason": "The proposal directly amends the BIP 22 getblocktemplate protocol and its response format.",
+              "confidence": "high"
             },
             {
               "target": "bips:23",
-              "evidence": "see BIP 23 Mutations",
-              "reason": "The proposal relies on BIP 23's mutation mechanism to allow clients to place the witness commitment in a mutable coinbase transaction.",
-              "confidence": "low"
+              "evidence": "see [[bip-0023.mediawiki#Mutations|BIP 23 Mutations]]",
+              "reason": "Coinbase commitment placement is conditional on BIP 23 mutation support, and the proposal relies on BIP 23's transaction mutation workflow.",
+              "confidence": "high"
             },
             {
               "target": "bips:141",
-              "evidence": "support segregated witness as defined by BIP 141",
-              "reason": "The proposal's template fields, transaction data, sigop accounting, and witness commitment rules are based on Segregated Witness defined by BIP 141.",
-              "confidence": "low"
+              "evidence": "to support segregated witness as defined by [[bip-0141.mediawiki|BIP 141]]",
+              "reason": "The proposal is designed around SegWit as specified by BIP 141, including witness transactions, weight, sigops, and commitment structure.",
+              "confidence": "high"
             }
           ]
         }

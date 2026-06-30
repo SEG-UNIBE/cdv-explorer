@@ -628,26 +628,28 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:22:54Z",
+          "timestamp": "2026-06-30T11:35:30Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:21",
-              "evidence": "done via a bip21 encoded address",
-              "reason": "The protocol uses BIP21 as the payment URI/address encoding for advertising the BustaPay URL.",
+              "evidence": "The standard way of letting a sender know where to send a bustapay transaction is done via a bip21 encoded address.",
+              "reason": "The protocol uses BIP21 URI encoding to convey the bustapay URL parameter.",
               "confidence": "high"
             },
             {
               "target": "bips:69",
-              "evidence": "Check if the transaction was already sorted according to BIP69",
-              "reason": "The specification constrains input/output ordering to preserve BIP69-sorted transactions when applicable.",
-              "confidence": "high"
+              "evidence": "if so ensure the result stays that way.",
+              "reason": "The receiver must preserve BIP69 ordering when the template transaction is already sorted, so transaction construction is constrained by that sorting convention.",
+              "confidence": "medium"
             },
             {
               "target": "bips:125",
-              "evidence": "encouraged to use ... BIP125 (Opt-in Full Replace-by-Fee Signaling)",
-              "reason": "The payment flow relies on RBF signaling as a recommended transaction property for replace-by-fee behavior.",
-              "confidence": "low"
+              "evidence": "but neither is strictly required.",
+              "reason": "The proposal explicitly encourages BIP125 signaling and its publishing fallback relies on replace-by-fee behavior.",
+              "confidence": "medium"
             }
           ]
         }

@@ -485,19 +485,15 @@
       "body_extracted_regex": [],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:23:09Z",
+          "timestamp": "2026-06-30T11:35:54Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:37",
               "evidence": "The fee filter is additive with a bloom filter for transactions",
-              "reason": "The proposal explicitly composes its transaction relay behavior with the bloom-filter-based filtering defined by BIP 37.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:111",
-              "evidence": "Feature discovery is enabled by checking protocol version >= 70013",
-              "reason": "The proposal relies on the protocol version signaling mechanism introduced by BIP 111 to detect support for the new message.",
+              "reason": "The proposal’s relay behavior explicitly composes feefilter with the transaction bloom filter mechanism introduced by BIP 37.",
               "confidence": "high"
             }
           ]

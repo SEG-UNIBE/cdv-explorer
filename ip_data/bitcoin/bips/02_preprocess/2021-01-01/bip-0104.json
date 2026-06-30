@@ -497,13 +497,15 @@
       "body_extracted_regex": [],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:22:59Z",
+          "timestamp": "2026-06-30T11:35:38Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
-              "evidence": "activation would occur at the next difficulty adjustment",
-              "reason": "The proposal uses Bitcoin's difficulty-adjustment schedule as the timing mechanism for recalculating and activating the block size rule.",
+              "evidence": "activation would occur at the next difficulty adjustment once 900 of the last 1,000 blocks mined signal support",
+              "reason": "The proposal uses a versionbits-style miner signaling threshold and delay-based activation workflow, which is a substantive reliance on the activation mechanism introduced by BIP9.",
               "confidence": "medium"
             }
           ]

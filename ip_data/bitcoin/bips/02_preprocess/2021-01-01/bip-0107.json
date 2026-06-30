@@ -553,13 +553,15 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:23:00Z",
+          "timestamp": "2026-06-30T11:35:40Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:101",
               "evidence": "Similar deployment model to BIP101",
-              "reason": "The proposal explicitly adopts the activation/deployment model defined by BIP 101, making it a technical dependency for rollout semantics.",
+              "reason": "The proposal adopts BIP101's activation mechanism and grace-period deployment workflow for rollout.",
               "confidence": "high"
             }
           ]

@@ -839,20 +839,36 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:23:04Z",
+          "timestamp": "2026-06-30T11:35:46Z",
+          "status": "api_error",
+          "dependencies": [],
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 200000, Requested 7361. Please try again in 2.208s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+        },
+        {
+          "run_id": "2026-06-30T11:38:11Z_gpt-5.4-mini_422651ce",
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-30T11:38:15Z",
+          "status": "success",
           "dependencies": [
             {
-              "target": "bips:112",
-              "evidence": "Similar soft forks for OP_CHECKSEQUENCEVERIFY and OP_CHECKLOCKTIMEVERIFY (see BIP-0065 and BIP-0112)",
-              "reason": "The proposal relies on OP_CHECKLOCKTIMEVERIFY as a precedent for changing NOP semantics via soft fork activation.",
+              "target": "bips:9",
+              "evidence": "Deployment should be done via BIP 9 VersionBits.",
+              "reason": "The proposal’s activation mechanism is explicitly defined using BIP 9 VersionBits deployment rules.",
               "confidence": "high"
             },
             {
-              "target": "bips:125",
-              "evidence": "deployed via BIP 9 VersionBits",
-              "reason": "The proposal’s activation mechanism depends on VersionBits deployment rules defined by this BIP.",
-              "confidence": "low"
+              "target": "bips:65",
+              "evidence": "Similar soft forks for OP_CHECKSEQUENCEVERIFY and OP_CHECKLOCKTIMEVERIFY (see BIP-0065 and BIP-0112)",
+              "reason": "The proposal relies on the OP_NOP soft-fork upgrade pattern already used by BIP 65.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:112",
+              "evidence": "Similar soft forks for OP_CHECKSEQUENCEVERIFY and OP_CHECKLOCKTIMEVERIFY (see BIP-0065 and BIP-0112)",
+              "reason": "The proposal relies on the OP_NOP soft-fork upgrade pattern already used by BIP 112.",
+              "confidence": "medium"
             }
           ]
         }

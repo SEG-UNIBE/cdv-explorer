@@ -705,14 +705,16 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:22:38Z",
+          "timestamp": "2026-06-30T11:35:14Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:22",
-              "evidence": "all sections of this specification are optional extensions on top of BIP 22",
-              "reason": "BIP 23 is defined as an extension layer over BIP 22 and depends on its base getblocktemplate semantics and optional long polling behavior.",
-              "confidence": "low"
+              "evidence": "all sections of this specification are optional extensions on top of [[bip-0022.mediawiki|BIP 22]]",
+              "reason": "This proposal is explicitly an extension of BIP 22 and depends on its getblocktemplate fundamentals and optional long-polling behavior.",
+              "confidence": "high"
             }
           ]
         }

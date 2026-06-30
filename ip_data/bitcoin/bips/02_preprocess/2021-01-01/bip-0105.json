@@ -527,14 +527,24 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:22:59Z",
+          "timestamp": "2026-06-30T11:35:38Z",
+          "status": "api_error",
+          "dependencies": [],
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 200000, Requested 2174. Please try again in 652ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+        },
+        {
+          "run_id": "2026-06-30T11:38:11Z_gpt-5.4-mini_422651ce",
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-30T11:38:13Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:34",
-              "evidence": "“As per BIP34, the coinbase transaction scriptSig starts with a push of the block height.”",
-              "reason": "The proposal relies on BIP34’s coinbase height commitment and specifically uses the post-BIP34 scriptSig structure to encode voting data.",
-              "confidence": "low"
+              "evidence": "As per BIP34, the coinbase transaction scriptSig starts with a push of the block height.",
+              "reason": "The proposal relies on BIP34 coinbase scriptSig encoding to place its block-size vote after the height push.",
+              "confidence": "high"
             }
           ]
         }

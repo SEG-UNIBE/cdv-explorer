@@ -179,19 +179,21 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:37:15Z_gpt-5.4-mini_3159fb60",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:24:48Z",
+          "timestamp": "2026-06-30T11:37:27Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
-              "evidence": "Extended serialization format for BIP-32 wallets",
-              "reason": "The extended format is explicitly built around BIP-32 hierarchical deterministic keys and path structure.",
+              "evidence": "BIP-0032 already defines a serialization format for hierarchical deterministic keys.",
+              "reason": "The proposal extends and replaces the BIP-32 extended key serialization format, reusing its key hierarchy and exported-node semantics.",
               "confidence": "high"
             },
             {
               "target": "bips:173",
-              "evidence": "encoded using Bech32 format described in BIP-0173",
-              "reason": "The proposal defines its serialization encoding using Bech32 from the target BIP.",
+              "evidence": "This structure is encoded using Bech32 format described in BIP-0173.",
+              "reason": "The proposed serialization is explicitly encoded with the Bech32 format defined by BIP-173.",
               "confidence": "high"
             }
           ]

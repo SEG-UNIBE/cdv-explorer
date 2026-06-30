@@ -237,14 +237,22 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:37:15Z_gpt-5.4-mini_3159fb60",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:24:38Z",
+          "timestamp": "2026-06-30T11:37:17Z",
+          "status": "success",
           "dependencies": [
             {
-              "target": "slips:32",
-              "evidence": "BIP 32 path",
-              "reason": "The proposal derives the encryption key from a BIP32 node private key, so the hierarchical derivation structure is required.",
+              "target": "slips:15",
+              "evidence": "It is used in algorithms described in [SLIP-0015](slip-0015.md)",
+              "reason": "The proposal states that its encryption primitive is incorporated into SLIP-0015, so understanding or implementing that proposal depends on this scheme.",
               "confidence": "high"
+            },
+            {
+              "target": "slips:16",
+              "evidence": "It is used in algorithms described in [SLIP-0016](slip-0016.md)",
+              "reason": "The proposal states that its encryption primitive is incorporated into SLIP-0016, so understanding or implementing that proposal depends on this scheme.",
+              "confidence": "low"
             }
           ]
         }

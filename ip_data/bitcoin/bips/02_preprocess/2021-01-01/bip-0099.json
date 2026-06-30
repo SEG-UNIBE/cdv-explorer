@@ -776,38 +776,16 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:22:59Z",
+          "timestamp": "2026-06-30T11:35:34Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
               "evidence": "the version bits proposal[3] to be implemented",
-              "reason": "The proposed hardfork deployment explicitly relies on BIP 9's version bits activation mechanism.",
+              "reason": "The proposed hardfork deployment explicitly relies on BIP 9's version-bits mechanism for activation and coordination.",
               "confidence": "high"
-            },
-            {
-              "target": "bips:16",
-              "evidence": "The first precedent of a softfork was the introduction of P2SH documented in BIP16.",
-              "reason": "BIP 99 uses BIP 16 as the concrete precedent for softfork deployment and the taxonomy of uncontroversial softforks.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:30",
-              "evidence": "This can't guarantee the assumption that most miners have upgraded before enforcing the new rules and that's why the voting mechanism and first used for BIP30 and BIP66.",
-              "reason": "BIP 99 treats BIP 30 as one of the first uses of the miner voting deployment mechanism it describes.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:65",
-              "evidence": "BIP65 is expected to be deployed with the improved mechanism.",
-              "reason": "BIP 99 explicitly ties BIP 65's deployment to the improved version-bits-based softfork mechanism.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:66",
-              "evidence": "the voting mechanism and first used for BIP30 and BIP66.",
-              "reason": "BIP 99 identifies BIP 66 as an example of the miner voting deployment mechanism it is describing.",
-              "confidence": "medium"
             }
           ]
         }

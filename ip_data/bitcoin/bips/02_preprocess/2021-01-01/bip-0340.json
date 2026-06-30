@@ -1050,9 +1050,50 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:23:34Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:36:22Z",
+          "status": "api_error",
+          "dependencies": [],
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 200000, Requested 9722. Please try again in 2.916s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+        },
+        {
+          "run_id": "2026-06-30T11:38:11Z_gpt-5.4-mini_422651ce",
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-30T11:38:39Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "BIP32 and schemes built on top of it remain usable.",
+              "reason": "The proposal explicitly preserves compatibility with BIP32-derived keys by allowing direct reuse and conversion of compressed public keys.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:62",
+              "evidence": "This issue is discussed in [[bip-0062.mediawiki|BIP62]] and [[bip-0146.mediawiki|BIP146]].",
+              "reason": "BIP 340 addresses signature malleability concerns that are part of the problem space defined by BIP62.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:66",
+              "evidence": "needing [[bip-0066.mediawiki|BIP66]] to address it.",
+              "reason": "The proposal’s completely specified signature encoding is motivated by and designed to avoid the DER-parsing issues that BIP66 addressed, indicating reliance on that prior serialization constraint.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:118",
+              "evidence": "it may change with proposals such as SIGHASH_NOINPUT ([[bip-0118.mediawiki|BIP118]])",
+              "reason": "The key-prefixing design is chosen to remain safe even if transaction digest semantics change under BIP118.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:146",
+              "evidence": "This issue is discussed in [[bip-0062.mediawiki|BIP62]] and [[bip-0146.mediawiki|BIP146]].",
+              "reason": "BIP 340 explicitly situates its non-malleability goals relative to BIP146’s malleability fixes, making it a relevant prior proposal in the same technical area.",
+              "confidence": "low"
+            }
+          ]
         }
       ]
     }

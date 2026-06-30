@@ -558,20 +558,16 @@
       "body_extracted_regex": [],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:22:31Z",
+          "timestamp": "2026-06-30T11:35:11Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:11",
-              "evidence": "“multi-signature transaction”",
-              "reason": "This proposal’s transaction distribution format is specifically for multisignature spending, which relies on the multisig script construction and semantics introduced by the target.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:16",
-              "evidence": "“the subsequent transaction that spends these coins will require each party involved ... to see the proposed transaction and sign it”",
-              "reason": "The proposal depends on standard transaction signing and script evaluation behavior for spending encumbered outputs, which is the core mechanism established by the target.",
-              "confidence": "low"
+              "evidence": "The following is an example TxDP from Armory, produced while running on the test network.",
+              "reason": "The proposal’s multi-signature transaction format and workflow are materially tied to the earlier multisignature transaction feature that enables such transactions in the first place.",
+              "confidence": "medium"
             }
           ]
         }

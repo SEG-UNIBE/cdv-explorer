@@ -760,13 +760,15 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:22:35Z",
+          "timestamp": "2026-06-30T11:35:09Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:70",
               "evidence": "\"[[bip-0070.mediawiki|BIP 0070]] (payment protocol) may be seen as the alternative to Aliases.\"",
-              "reason": "The proposal is explicitly framed as an alternative to BIP 70 payment protocol, indicating it is addressing the same payment-identity use case and contrasting with that existing protocol.",
+              "reason": "The proposal frames aliases as an alternative to the payment protocol, indicating direct technical comparison and context for how alias resolution relates to payment handling.",
               "confidence": "low"
             }
           ]

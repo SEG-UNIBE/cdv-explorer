@@ -442,26 +442,28 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:37:15Z_gpt-5.4-mini_3159fb60",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:24:40Z",
+          "timestamp": "2026-06-30T11:37:20Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:174",
-              "evidence": "The following new global field type is added to the BIP-0174 specification",
-              "reason": "The proposal extends PSBT by defining new global and input field types, so it depends on the PSBT format and semantics from BIP 174.",
+              "evidence": "PSBT (BIP 174) extension",
+              "reason": "The proposal adds new global and per-input fields to the PSBT format and defines their encoding and meaning as extensions to BIP 174.",
               "confidence": "high"
             },
             {
               "target": "bips:322",
               "evidence": "signed using the Generic Signed Message Format as defined in the original BIP-0322",
-              "reason": "The proof signature format and verification rely on BIP 322 signing and sighash rules.",
+              "reason": "The proof signature format and verification rules are explicitly based on BIP 322's message-signing semantics.",
               "confidence": "low"
             },
             {
               "target": "slips:21",
-              "evidence": "derived from the wallet's master secret using the SLIP-0021 method for hierarchical derivation of symmetric keys",
-              "reason": "The ownership identification key derivation is built directly on SLIP 21 key derivation.",
-              "confidence": "low"
+              "evidence": "derived from the wallet's master secret using the [SLIP-0021](https://github.com/satoshilabs/slips/blob/master/slip-0021.md) method",
+              "reason": "The ownership identification key is derived using SLIP-21 hierarchical symmetric key derivation, so implementing the proof requires that derivation method.",
+              "confidence": "high"
             }
           ]
         }

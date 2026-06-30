@@ -815,13 +815,15 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:22:48Z",
+          "timestamp": "2026-06-30T11:35:24Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:66",
               "evidence": "We reuse the double-threshold IsSuperMajority() switchover mechanism used in BIP66",
-              "reason": "The deployment method explicitly reuses the soft-fork activation mechanism defined by BIP66.",
+              "reason": "The deployment method is explicitly based on BIP66's threshold-based activation and reuses its switchover logic.",
               "confidence": "high"
             }
           ]

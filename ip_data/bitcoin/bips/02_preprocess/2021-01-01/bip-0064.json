@@ -512,13 +512,27 @@
       "body_extracted_regex": [],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:22:47Z",
+          "timestamp": "2026-06-30T11:35:25Z",
+          "status": "success",
           "dependencies": [
+            {
+              "target": "bips:10",
+              "evidence": "the client can partly verify the returned output by running the input scripts with it.",
+              "reason": "The proposal's partial verification relies on Bitcoin script execution semantics to validate returned outputs.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:35",
+              "evidence": "Nodes indicate support by advertising a protocol version above 70003",
+              "reason": "The proposal uses Bitcoin P2P version advertisement to signal support, depending on the established version-handshake mechanism.",
+              "confidence": "high"
+            },
             {
               "target": "bips:37",
               "evidence": "When combined with Bloom filtering this can be reasonably efficient.",
-              "reason": "The proposal’s SPV lookup workflow explicitly relies on Bloom filtering as a complementary mechanism for efficiency and partial verification.",
+              "reason": "The proposal explicitly combines the UTXO lookup workflow with Bloom filtering for efficiency, relying on that mechanism as a companion protocol.",
               "confidence": "medium"
             }
           ]

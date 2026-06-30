@@ -487,13 +487,23 @@
       "body_extracted_regex": [],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:23:21Z",
+          "timestamp": "2026-06-30T11:36:11Z",
+          "status": "api_error",
+          "dependencies": [],
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 200000, Requested 1900. Please try again in 570ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+        },
+        {
+          "run_id": "2026-06-30T11:38:11Z_gpt-5.4-mini_422651ce",
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-30T11:38:23Z",
+          "status": "success",
           "dependencies": [
             {
-              "target": "bips:31",
-              "evidence": "the <code>addr</code> message",
-              "reason": "The proposal changes how peers relay and interpret address/service information in the existing addr message and service bits defined by this protocol.",
+              "target": "bips:2",
+              "evidence": "nServiceFlags (service bits) from a relayed <code>addr</code>-message",
+              "reason": "The proposal adds a new service bit and relies on the existing service-bit signaling mechanism and addr-message semantics.",
               "confidence": "low"
             }
           ]

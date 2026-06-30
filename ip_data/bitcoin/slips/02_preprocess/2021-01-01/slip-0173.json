@@ -413,13 +413,15 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:37:15Z_gpt-5.4-mini_3159fb60",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:24:49Z",
+          "timestamp": "2026-06-30T11:37:32Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:173",
-              "evidence": "Bech32 encoding of witness programs",
-              "reason": "The proposal allocates registered human-readable parts specifically for the address format defined by BIP-0173 and relies on its Bech32 HRP semantics.",
+              "evidence": "BIP-0173 defines a new format for segregated witness output addresses",
+              "reason": "The proposal assigns registered human-readable parts specifically for Bech32 addresses defined by BIP-0173, so its registry depends on that address format and HRP semantics.",
               "confidence": "high"
             }
           ]

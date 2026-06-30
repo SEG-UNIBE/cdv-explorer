@@ -528,31 +528,33 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:22:54Z",
+          "timestamp": "2026-06-30T11:35:31Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
-              "evidence": "based on an algorithm described in BIP-0032",
-              "reason": "The proposal relies on BIP32 hierarchical deterministic derivation and path semantics throughout its wallet hierarchy.",
+              "evidence": "based on an algorithm described in BIP-0032 (BIP32 from now on)",
+              "reason": "The proposal defines its key hierarchy and derivation paths using BIP32 hardened and public derivation semantics.",
               "confidence": "high"
             },
             {
               "target": "bips:43",
-              "evidence": "purpose scheme described in BIP-0043",
-              "reason": "The proposal uses the BIP43 purpose field convention to assign the top-level hardened purpose in its path.",
+              "evidence": "purpose scheme described in BIP-0043 (BIP43 from now on)",
+              "reason": "The proposal adopts the BIP43 purpose-field convention and explicitly says it is a particular application of BIP43.",
               "confidence": "high"
             },
             {
               "target": "bips:44",
-              "evidence": "is based on BIP44",
-              "reason": "The proposal adopts and specializes the hierarchical wallet structure introduced by BIP44.",
+              "evidence": "This BIP is a particular application of BIP43 and is based on BIP44.",
+              "reason": "The proposal states it is based on BIP44, indicating its hierarchy is derived from and constrained by the BIP44 account/path structure.",
               "confidence": "high"
             },
             {
               "target": "bips:80",
-              "evidence": "[[bip-0080.mediawiki|BIP80 - Hierarchy for Non-Colored Voting Pool Deterministic Multisig Wallets]]",
-              "reason": "This proposal appears as the colored-coin counterpart in the same voting pool hierarchy family and depends on the non-colored voting pool wallet hierarchy defined there.",
+              "evidence": "bip-0080.mediawiki|BIP80 - Hierarchy for Non-Colored Voting Pool Deterministic Multisig Wallets",
+              "reason": "The proposal references BIP80 as the related hierarchy for the non-colored voting pool version, implying this BIP specializes that wallet hierarchy for colored coins.",
               "confidence": "medium"
             }
           ]

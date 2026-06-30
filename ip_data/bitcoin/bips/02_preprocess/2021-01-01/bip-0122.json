@@ -516,13 +516,23 @@
       "body_extracted_regex": [],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:23:06Z",
+          "timestamp": "2026-06-30T11:35:48Z",
+          "status": "api_error",
+          "dependencies": [],
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 200000, Requested 2505. Please try again in 751ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+        },
+        {
+          "run_id": "2026-06-30T11:38:11Z_gpt-5.4-mini_422651ce",
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-30T11:38:16Z",
+          "status": "success",
           "dependencies": [
             {
-              "target": "bips:21",
-              "evidence": "The URI follow this form: `blockchain:[//<chain>]/<tx|block|address>/<hash>`",
-              "reason": "This proposal defines a custom URI scheme and follows the generic Bitcoin URI pattern introduced by the URI scheme BIP, so it depends on that URI-handling framework.",
+              "target": "bips:398",
+              "evidence": "Thanks to Richard Moore, Matt Whitlock, Andreas Schildbach for help with the structure and hierarchy of the URI scheme.",
+              "reason": "The proposal’s URI structure and hierarchy indicate reliance on an existing Bitcoin URI scheme design, which BIP 398 provides context for.",
               "confidence": "low"
             }
           ]

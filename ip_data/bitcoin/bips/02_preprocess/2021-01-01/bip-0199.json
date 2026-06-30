@@ -490,25 +490,29 @@
       "body_extracted_regex": [],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:23:26Z",
+          "timestamp": "2026-06-30T11:36:15Z",
+          "status": "api_error",
+          "dependencies": [],
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 200000, Requested 2073. Please try again in 621ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+        },
+        {
+          "run_id": "2026-06-30T11:38:11Z_gpt-5.4-mini_422651ce",
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-30T11:38:34Z",
+          "status": "success",
           "dependencies": [
             {
-              "target": "bips:11",
+              "target": "bips:13",
               "evidence": "Both parties can now construct the script and P2SH address for the HTLC.",
-              "reason": "The proposal relies on pay-to-script-hash addresses as the funding mechanism for HTLC outputs.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:65",
-              "evidence": "[TIMEOUTOP] is either OP_CHECKSEQUENCEVERIFY or OP_CHECKLOCKTIMEVERIFY.",
-              "reason": "The timeout branch is explicitly parameterized by CHECKLOCKTIMEVERIFY, which constrains the spending conditions used by the HTLC script.",
-              "confidence": "high"
+              "reason": "The proposal relies on P2SH address construction to wrap the HTLC script for funding and spending.",
+              "confidence": "medium"
             },
             {
               "target": "bips:112",
               "evidence": "[TIMEOUTOP] is either OP_CHECKSEQUENCEVERIFY or OP_CHECKLOCKTIMEVERIFY.",
-              "reason": "The timeout branch is explicitly parameterized by CHECKSEQUENCEVERIFY, which constrains the spending conditions used by the HTLC script.",
+              "reason": "The script explicitly depends on the semantics of the timeout opcodes introduced by the referenced proposal for enforcing the refund path after a delay.",
               "confidence": "high"
             }
           ]

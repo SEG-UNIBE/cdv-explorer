@@ -643,25 +643,21 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:22:36Z",
+          "timestamp": "2026-06-30T11:35:19Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:11",
               "evidence": "M-of-N Multisignature Transactions [[bip-0011.mediawiki|BIP 11]]",
-              "reason": "BIP 16 relies on multisignature script forms as redeem scripts and the sigop counting rules for those scripts.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:12",
-              "evidence": "This BIP replaces BIP 12, which proposed a new Script opcode (\"OP_EVAL\")",
-              "reason": "BIP 16 is a replacement for the earlier script-evaluation mechanism proposed in BIP 12 and is defined in contrast to that design.",
-              "confidence": "medium"
+              "reason": "The proposal explicitly references multisignature transactions as a supported redeemScript form and relies on that earlier multisig transaction format as a concrete use case.",
+              "confidence": "low"
             },
             {
               "target": "bips:13",
               "evidence": "The Motivation for this BIP (and BIP 13, the pay-to-script-hash address type)",
-              "reason": "BIP 16 is paired with the P2SH address format defined by BIP 13, which is part of the deployment and use of this transaction type.",
+              "reason": "This proposal is designed to work with the P2SH address type introduced by BIP 13, which is part of the deployment and user-facing format for the transaction type.",
               "confidence": "medium"
             }
           ]

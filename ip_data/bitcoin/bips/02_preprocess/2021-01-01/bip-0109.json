@@ -551,13 +551,15 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:23:00Z",
+          "timestamp": "2026-06-30T11:35:41Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
               "evidence": "0x10000000 was chosen to be compatible with the BIP 9 proposal for parallel deployment of soft forks",
-              "reason": "The activation bit and deployment mechanism are selected to align with BIP 9’s version-bit signaling and soft-fork deployment rules.",
+              "reason": "The activation signaling bit is selected specifically to be compatible with BIP 9’s deployment mechanism, so the proposal’s activation scheme is designed around that prior proposal.",
               "confidence": "high"
             }
           ]

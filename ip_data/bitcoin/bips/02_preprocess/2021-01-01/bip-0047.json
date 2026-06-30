@@ -859,25 +859,27 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:22:46Z",
+          "timestamp": "2026-06-30T11:35:22Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
-              "evidence": "This BIP is a particular application of BIP43 and is intended to supplement HD wallets which implement BIP44.",
-              "reason": "It relies on hierarchical deterministic wallet structure and BIP32 path derivation throughout the protocol.",
+              "evidence": "The child keys derived from an identity are used in different ways",
+              "reason": "The proposal is built on BIP32 hierarchical key derivation and extended keys for its payment code and notification/address generation paths.",
               "confidence": "high"
             },
             {
               "target": "bips:43",
               "evidence": "This BIP is a particular application of BIP43",
-              "reason": "It explicitly uses the BIP43 purpose field recommendation and assigns purpose 47' for this specification.",
+              "reason": "It explicitly uses the BIP43 purpose-field scheme to define the BIP32 subtree for payment codes.",
               "confidence": "high"
             },
             {
               "target": "bips:44",
               "evidence": "intended to supplement HD wallets which implement BIP44",
-              "reason": "It aligns payment codes with BIP44 accounts and uses the BIP44 account/coin type hierarchy as part of the wallet model.",
+              "reason": "The proposal aligns payment-code identities with BIP44 account structure and states the coin type field is identical to BIP44.",
               "confidence": "high"
             }
           ]

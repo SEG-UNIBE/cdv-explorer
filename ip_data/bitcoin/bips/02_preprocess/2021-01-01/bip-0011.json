@@ -546,13 +546,15 @@
       "body_extracted_regex": [],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:22:33Z",
+          "timestamp": "2026-06-30T11:35:06Z",
+          "status": "success",
           "dependencies": [
             {
-              "target": "bips:12",
-              "evidence": "will be used in combination with OP_EVAL (see the OP_EVAL BIP)",
-              "reason": "The proposal anticipates relying on OP_EVAL to enforce these multisig transactions and sigop counting accurately.",
+              "target": "bips:14",
+              "evidence": "These new multi-signature transactions will be used in combination with OP_EVAL (see the OP_EVAL BIP)",
+              "reason": "The proposal explicitly anticipates using OP_EVAL to deploy or support the multisig transaction form, so its practical application depends on that proposal's evaluation mechanism.",
               "confidence": "high"
             }
           ]

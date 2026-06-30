@@ -180,13 +180,15 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:37:15Z_gpt-5.4-mini_3159fb60",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:24:40Z",
+          "timestamp": "2026-06-30T11:37:19Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
-              "evidence": "derive the HD node `m/17'/A'/B'/C'/D'` according to BIP32",
-              "reason": "The proposal’s key derivation path and hierarchy are built on BIP32 HD wallet derivation.",
+              "evidence": "Derive the HD node `m/17'/A'/B'/C'/D'` according to BIP32.",
+              "reason": "The proposal’s key hierarchy and node derivation explicitly rely on BIP32 HD wallet derivation rules.",
               "confidence": "high"
             }
           ]

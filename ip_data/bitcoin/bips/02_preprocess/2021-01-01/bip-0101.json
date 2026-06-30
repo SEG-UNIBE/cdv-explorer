@@ -617,26 +617,16 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:22:59Z",
+          "timestamp": "2026-06-30T11:35:34Z",
+          "status": "success",
           "dependencies": [
             {
-              "target": "bips:9",
-              "evidence": "the version number scheme is designed to be compatible with Pieter's Wuille's proposed \"Version bits\" BIP",
-              "reason": "The block version signaling used for activation is intended to work with the version-bits deployment mechanism introduced by this proposal.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:34",
-              "evidence": "Deployment shall be controlled by hash-power supermajority vote (similar to the technique used in BIP34)",
-              "reason": "The activation mechanism relies on the BIP34-style supermajority version-bit deployment pattern.",
-              "confidence": "high"
-            },
-            {
               "target": "bips:100",
-              "evidence": "The deployment plan is taken from Jeff Garzik's proposed BIP100 block size increase",
-              "reason": "The proposal explicitly borrows its deployment plan from BIP100, making it a technical basis for activation timing and rollout.",
-              "confidence": "high"
+              "evidence": "BIP 100 proposes a dynamic limit determined by miner preferences",
+              "reason": "The proposal explicitly contrasts and discusses BIP 100 as an alternative block-size limit mechanism, but it does not reuse BIP 100's miner-preference rule or depend on it for implementation.",
+              "confidence": "low"
             }
           ]
         }

@@ -609,20 +609,22 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:22:48Z",
+          "timestamp": "2026-06-30T11:35:25Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:34",
               "evidence": "We reuse the double-threshold switchover mechanism from BIP 34",
-              "reason": "The deployment mechanism directly reuses BIP 34’s activation threshold and version-based switchover rules.",
+              "reason": "The deployment logic explicitly adopts BIP 34's activation mechanism and thresholds for enforcing the new rules.",
               "confidence": "high"
             },
             {
               "target": "bips:62",
-              "evidence": "reducing transaction malleability (see BIP 62)",
-              "reason": "The proposal explicitly relies on BIP 62 as the source of the malleability context and relationship to strict DER enforcement.",
-              "confidence": "medium"
+              "evidence": "This proposal has the added benefit of reducing transaction malleability (see BIP 62).",
+              "reason": "The proposal is designed in part around the malleability-reduction goals discussed in BIP 62, but this is a secondary compatibility/motivation reference rather than a required mechanism.",
+              "confidence": "low"
             }
           ]
         }

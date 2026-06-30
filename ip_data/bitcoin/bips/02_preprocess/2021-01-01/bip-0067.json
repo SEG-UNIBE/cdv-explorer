@@ -645,26 +645,28 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:22:51Z",
+          "timestamp": "2026-06-30T11:35:27Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:11",
-              "evidence": "Pay-to-script-hash (BIP-0011)",
-              "reason": "The proposal’s multisig addresses are specifically P2SH-based and rely on the P2SH output type introduced by BIP 11.",
-              "confidence": "low"
+              "evidence": "Pay-to-script-hash (BIP-0011",
+              "reason": "The proposal is built around P2SH as the output type for the deterministic multisig scripts.",
+              "confidence": "high"
             },
             {
               "target": "bips:16",
-              "evidence": "Hash the redeem script according to BIP-0016 to get the P2SH address.",
-              "reason": "The proposal depends on BIP 16’s P2SH hashing/address construction to derive the final multisig address from the redeem script.",
+              "evidence": "Multi-signature pay-to-script-hash transactions are defined in BIP-0016",
+              "reason": "The proposal relies on the multisignature P2SH transaction structure defined by the target and says to hash the redeem script according to it.",
               "confidence": "high"
             },
             {
               "target": "bips:45",
-              "evidence": "BIP-0045 - Structure for Deterministic P2SH Multisignature Wallets",
-              "reason": "The proposal is a lower-level rule set for deterministic multisig P2SH address generation and is directly used as the address-generation procedure referenced by BIP 45.",
-              "confidence": "low"
+              "evidence": "BIP-0045]] - Structure for Deterministic P2SH Multisignature Wallets",
+              "reason": "The proposal is used as the address-generation procedure for deterministic P2SH multisignature wallets, indicating direct workflow/format dependence.",
+              "confidence": "medium"
             }
           ]
         }

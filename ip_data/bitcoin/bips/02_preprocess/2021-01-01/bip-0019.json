@@ -543,13 +543,15 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:22:36Z",
+          "timestamp": "2026-06-30T11:35:11Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:11",
               "evidence": "This is already specified in [[bip-0011.mediawiki|BIP 0011]].",
-              "reason": "The proposal references and contrasts its multisignature transaction semantics against BIP 11’s existing multisig standard, which is the established mechanism it is extending/replacing.",
+              "reason": "The proposal explicitly relies on BIP 11 for the OP_CHECKMULTISIG-based multisignature transaction format and contrasts its own design against that mechanism.",
               "confidence": "high"
             }
           ]

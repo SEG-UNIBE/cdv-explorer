@@ -560,13 +560,15 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:22:56Z",
+          "timestamp": "2026-06-30T11:35:30Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
-              "evidence": "This BIP defines a scheme for key derivation that allows for dynamic creation of key hierarchies based on the algorithm described in BIP32.",
-              "reason": "The proposal directly relies on BIP32 hierarchical key derivation as the base algorithm it extends.",
+              "evidence": "based on the algorithm described in BIP32",
+              "reason": "The proposal explicitly builds its key-derivation scheme on BIP32's hierarchical derivation algorithm and node semantics.",
               "confidence": "high"
             }
           ]

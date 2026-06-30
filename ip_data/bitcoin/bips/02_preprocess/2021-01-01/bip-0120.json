@@ -593,25 +593,27 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:23:05Z",
+          "timestamp": "2026-06-30T11:36:01Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:21",
               "evidence": "amount, label, message or other information from a BIP0021 URI",
-              "reason": "The request/transaction identification process relies on the BIP 21 URI fields as hints for selecting the payment to prove.",
-              "confidence": "high"
+              "reason": "The PoP request uses BIP0021 URI fields as hints for identifying the transaction to prove.",
+              "confidence": "medium"
             },
             {
               "target": "bips:70",
-              "evidence": "In BIP0070, the PaymentRequest together with the transactions fulfilling the request",
-              "reason": "The proposal uses BIP 70 payment request data as a source of hints and as an existing payment context for proof construction.",
-              "confidence": "high"
+              "evidence": "PaymentRequest.PaymentDetails.merchant_data (in case of a BIP0070 payment)",
+              "reason": "The proposal explicitly reuses BIP0070 payment-request merchant data as transaction-identification input.",
+              "confidence": "medium"
             },
             {
               "target": "bips:121",
-              "evidence": "that is specified in separate specifications, see BIP0121",
-              "reason": "The proposal delegates PoP request transport to the URI scheme defined by BIP 121, so implementation depends on that transport format.",
+              "evidence": "see BIP0121",
+              "reason": "The transfer method for the PoP request is delegated to BIP0121, so implementing the process depends on that URI scheme specification.",
               "confidence": "high"
             }
           ]

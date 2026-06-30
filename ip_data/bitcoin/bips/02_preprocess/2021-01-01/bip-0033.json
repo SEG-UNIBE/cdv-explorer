@@ -544,14 +544,16 @@
       "body_extracted_regex": [],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:22:40Z",
+          "timestamp": "2026-06-30T11:35:16Z",
+          "status": "success",
           "dependencies": [
             {
-              "target": "bips:31",
-              "evidence": "The other strategy for thin clients termed ''headers-only'' or ''Simplified. Payment. Verification.''",
-              "reason": "The proposal relies on SPV as an existing thin-client strategy and compares its privacy model against it.",
-              "confidence": "medium"
+              "target": "bips:7",
+              "evidence": "This document will examine a proposal which will be termed ''stratized nodes'', a modification of an earlier concept termed ''blockchain service''.",
+              "reason": "The proposal is explicitly described as a modification of the earlier blockchain service concept, so its node roles and message behavior are built around that prior proposal.",
+              "confidence": "high"
             }
           ]
         }

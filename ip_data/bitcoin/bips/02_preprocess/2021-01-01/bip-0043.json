@@ -499,14 +499,22 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:22:42Z",
+          "timestamp": "2026-06-30T11:35:20Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
               "evidence": "based on algorithm described in BIP-0032",
-              "reason": "The proposal defines a purpose field within BIP32 hierarchical deterministic wallet trees and relies on BIP32 hardened derivation and serialization concepts.",
+              "reason": "The proposal's purpose-field scheme is defined for deterministic wallets built on BIP32 derivation.",
               "confidence": "high"
+            },
+            {
+              "target": "bips:44",
+              "evidence": "Example: Scheme described in BIP44 should use 44' (or 0x8000002C) as purpose field.",
+              "reason": "The proposal explicitly assigns BIP44 a purpose value, making its scheme a concrete specialization of the new purpose-field convention.",
+              "confidence": "low"
             }
           ]
         }

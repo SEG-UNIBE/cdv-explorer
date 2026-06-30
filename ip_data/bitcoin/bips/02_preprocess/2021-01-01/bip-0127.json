@@ -569,13 +569,15 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:23:07Z",
+          "timestamp": "2026-06-30T11:35:51Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:174",
               "evidence": "The proposal also includes the description of a PSBT extension",
-              "reason": "The PSBT commitment-input extension is defined as an amendment to PSBT, so it depends on PSBT input-map structure and signing semantics from BIP 174.",
+              "reason": "The proposal extends the PSBT format defined by BIP 174 and specifies new PSBT input-map semantics for proof-of-reserves signing.",
               "confidence": "high"
             }
           ]

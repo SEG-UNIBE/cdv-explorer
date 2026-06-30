@@ -539,13 +539,15 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:22:51Z",
+          "timestamp": "2026-06-30T11:35:28Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:70",
-              "evidence": "This BIP alters the Payment Protocol",
-              "reason": "The proposal directly modifies the Payment Protocol defined by BIP 70 and depends on its PaymentRequest and output-handling semantics.",
+              "evidence": "The Payment Protocol (defined in BIP70)",
+              "reason": "The proposal is an amendment to BIP70’s Payment Protocol and reuses its PaymentRequest/output handling semantics.",
               "confidence": "high"
             }
           ]

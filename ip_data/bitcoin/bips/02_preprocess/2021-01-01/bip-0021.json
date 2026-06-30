@@ -645,14 +645,16 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:22:37Z",
+          "timestamp": "2026-06-30T11:35:18Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:20",
-              "evidence": "This BIP is a modification of an earlier BIP 0020",
-              "reason": "The proposal directly amends and replaces parts of BIP 20’s payment URI design, making it a substantive dependency.",
-              "confidence": "low"
+              "evidence": "This BIP is a modification of an earlier [[bip-0020.mediawiki|BIP 0020]]",
+              "reason": "The proposal explicitly modifies BIP 20, so its URI scheme semantics are based on and constrained by that earlier specification.",
+              "confidence": "high"
             }
           ]
         }

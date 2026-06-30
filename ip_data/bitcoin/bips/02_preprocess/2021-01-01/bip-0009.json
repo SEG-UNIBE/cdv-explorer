@@ -846,32 +846,28 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:22:35Z",
+          "timestamp": "2026-06-30T11:35:06Z",
+          "status": "success",
           "dependencies": [
-            {
-              "target": "bips:16",
-              "evidence": "This approach was later reused in BIP 66 and BIP 65",
-              "reason": "The proposal depends on BIP 16 as part of the sequence of prior soft-fork version-number usage it generalizes from, but only as historical motivation, so it is a weak dependency and omitted under the rules.",
-              "confidence": "low"
-            },
             {
               "target": "bips:34",
               "evidence": "BIP 34 introduced a mechanism for doing soft-forking changes",
-              "reason": "The versionbits mechanism is explicitly designed as a new deployment scheme in response to BIP 34's soft-fork signaling model, making BIP 34 the immediate technical antecedent.",
+              "reason": "The proposal builds on the soft-fork deployment mechanism introduced by BIP 34 and contrasts its version-number signaling model against it.",
               "confidence": "high"
             },
             {
               "target": "bips:65",
               "evidence": "This approach was later reused in BIP 66 and BIP 65",
-              "reason": "Referenced as prior usage of the integer version-number approach that versionbits replaces; it does not define a required mechanism for this proposal.",
-              "confidence": "low"
+              "reason": "The proposal explicitly references BIP 65 as a prior soft-fork deployment that reused the version-number restriction pattern being generalized here.",
+              "confidence": "high"
             },
             {
               "target": "bips:66",
-              "evidence": "This approach was later reused in BIP 66 and BIP 65",
-              "reason": "Referenced as prior usage of the integer version-number approach that versionbits replaces; it does not define a required mechanism for this proposal.",
-              "confidence": "low"
+              "evidence": "This approach was later reused in BIP 66",
+              "reason": "The proposal explicitly relies on BIP 66 as another prior use of the integer version-number restriction it discusses and replaces.",
+              "confidence": "high"
             }
           ]
         }

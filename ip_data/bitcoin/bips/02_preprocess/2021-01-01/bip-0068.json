@@ -782,25 +782,27 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:22:50Z",
+          "timestamp": "2026-06-30T11:35:26Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
-              "evidence": "deployed by \"versionbits\" BIP9 using bit 0",
-              "reason": "The activation mechanism for this proposal depends on BIP 9 versionbits signaling and deployment parameters.",
+              "evidence": "This BIP is to be deployed by \"versionbits\" BIP9 using bit 0.",
+              "reason": "The activation mechanism and deployment parameters rely on BIP9 versionbits signaling.",
               "confidence": "high"
             },
             {
               "target": "bips:112",
-              "evidence": "This BIP must be deployed simultaneously with BIP112",
-              "reason": "The proposal is designed to activate together with BIP 112 and relies on its script semantics for sequence-based lock enforcement.",
+              "evidence": "The flag (1<<22) is the highest order bit in a 3-byte signed integer for use in bitcoin scripts as a 3-byte PUSHDATA with OP_CHECKSEQUENCEVERIFY (BIP 112).",
+              "reason": "This proposal's time-based sequence encoding is explicitly designed to work with OP_CHECKSEQUENCEVERIFY semantics defined by BIP112.",
               "confidence": "high"
             },
             {
               "target": "bips:113",
               "evidence": "All references to median-time-past (MTP) are as defined by BIP113.",
-              "reason": "The time-based relative lock calculation uses BIP 113's median-time-past definition as part of its consensus rules.",
+              "reason": "The relative time-lock calculation depends on BIP113's definition of median-time-past.",
               "confidence": "high"
             }
           ]

@@ -713,13 +713,15 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:22:50Z",
+          "timestamp": "2026-06-30T11:35:26Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:30",
               "evidence": "this is enforced for coinbase transactions by BIP30",
-              "reason": "The proposal relies on BIP30’s coinbase uniqueness rule to justify sorting by previous transaction hash.",
+              "reason": "The input-sorting rule relies on BIP30's coinbase uniqueness guarantee to justify treating transaction hashes as effectively unique.",
               "confidence": "high"
             }
           ]

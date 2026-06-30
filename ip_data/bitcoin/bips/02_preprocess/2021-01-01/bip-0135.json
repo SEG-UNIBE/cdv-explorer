@@ -671,32 +671,34 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:23:10Z",
+          "timestamp": "2026-06-30T11:35:57Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
-              "evidence": "This document describes a generalized signaling scheme",
-              "reason": "The proposal extends and generalizes the BIP9 versionbits signaling and state machine semantics.",
+              "evidence": "BIP9 introduced a mechanism for using the version bits",
+              "reason": "The proposal generalizes and extends the BIP9 version-bits deployment and state-machine mechanism, retaining its states and compatibility behavior.",
               "confidence": "high"
             },
             {
               "target": "bips:34",
-              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
-              "reason": "The proposal’s available nVersion bit range is constrained by the activation rules introduced by this target.",
-              "confidence": "high"
+              "evidence": "Due to the constraints set by BIP 34",
+              "reason": "The proposal's available nVersion space and bit allocation rationale depend on BIP 34's version-field constraints.",
+              "confidence": "medium"
             },
             {
               "target": "bips:65",
               "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
-              "reason": "The proposal’s available nVersion bit range is constrained by the activation rules introduced by this target.",
-              "confidence": "high"
+              "reason": "The proposal's allowed nVersion values are constrained by BIP 65, affecting the signaling-bit space it can use.",
+              "confidence": "medium"
             },
             {
               "target": "bips:66",
               "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
-              "reason": "The proposal’s available nVersion bit range is constrained by the activation rules introduced by this target.",
-              "confidence": "high"
+              "reason": "The proposal's allowed nVersion values are constrained by BIP 66, affecting the signaling-bit space it can use.",
+              "confidence": "medium"
             }
           ]
         }

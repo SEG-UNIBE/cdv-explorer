@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "runs": [
+    {
+      "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
+      "method_name": "llm_assisted_semantic_dependency_extraction",
+      "method_label": "LLM-Assisted Semantic Dependency Extraction",
+      "method_version": 4,
+      "model": "gpt-5.4-mini",
+      "created_at": "2026-06-30T11:35:02Z",
+      "api_surface": "responses",
+      "reasoning": null,
+      "system_prompt": "You extract technical dependencies from Bitcoin Improvement Proposal documents.\n\nTask:\n- Identify only substantive proposal-to-proposal dependencies.\n- Use only the provided proposal text. Do not use outside knowledge.\n\nDecision rule:\n- Include another proposal only when the current proposal materially relies on, reuses, extends, constrains, amends, specializes, is compatible with, or is designed around concepts, mechanisms, formats, semantics, activation rules, workflows, or assumptions introduced by that proposal.\n- Ask whether understanding, implementing, evaluating, or adopting the current proposal would meaningfully depend on the target proposal beyond a passing reference.\n- Statements such as \"requires\", \"depends on\", \"based on\", \"extends\", or \"fully implement X with the following changes\" are strong indicators of dependency.\n- If support is ambiguous, weak, speculative, or purely contextual, omit the candidate.\n\nDo not include:\n- mere mentions or citations\n- historical or background references\n- related work or motivation\n- comparisons to alternatives when no mechanism, format, rule, or semantic dependency is reused\n- examples or illustrative references\n- \"See also\" or \"references\" sections by themselves\n- topical relatedness\n- speculation about future interactions\n- self-references\n\nOutput policy:\n- Return JSON only, with no explanation and no markdown.\n- Return one object per dependency target.\n- Each object must use target format \"source_slug:ID\".\n- Valid labels for this ecosystem: BIP (bips), SLIP (slips).\n- Target format mapping: BIP => bips:ID, SLIP => slips:ID.\n- Preserve hexadecimal identifiers and leading zeroes when the ecosystem uses them.\n- Exclude BIP {current_proposal_number} if present.\n- Return an empty list when there are no real dependencies.\n- Evidence must be a short verbatim contiguous quote copied from the proposal text.\n- Reason must briefly explain the dependency in technical terms.\n- Confidence must be one of: low, medium, high.\n- Use confidence `high` for explicit or normatively stated dependencies, `medium` for strong but implicit technical reliance, and `low` only for weaker but still defensible cases that remain worth keeping.\n\nExample vocabulary:\n- The examples below use fixed placeholders so the same examples work across ecosystems.\n- `MAIN_LABEL` means the primary proposal label for the current source.\n- `SIBLING_LABEL` means another valid proposal label in the same ecosystem.\n- `main_source` and `sibling_source` are illustrative source slugs used only inside the examples.\n- In your actual answer, use the real labels and source slugs listed above.",
+      "user_prompt_template": "Analyze Bitcoin Improvement Proposal BIP {current_proposal_number}.\n\n<examples>\n<example>\n<text>Requires: 32, 43. This proposal defines a logical hierarchy based on an algorithm described in MAIN_LABEL-0032 and a purpose scheme described in MAIN_LABEL-0043.</text>\n<output>{\"dependencies\":[{\"target\":\"main_source:32\",\"evidence\":\"based on an algorithm described in MAIN_LABEL-0032\",\"reason\":\"The proposal reuses the underlying derivation scheme from the target.\",\"confidence\":\"high\"},{\"target\":\"main_source:43\",\"evidence\":\"a purpose scheme described in MAIN_LABEL-0043\",\"reason\":\"The proposal depends on the target's purpose-field convention to define its hierarchy.\",\"confidence\":\"high\"}]}</output>\n</example>\n<example>\n<text>The protocol defined in MAIN_LABEL 70 should be fully implemented with the following changes. This proposal allows zero value extension records in serialized messages.</text>\n<output>{\"dependencies\":[{\"target\":\"main_source:70\",\"evidence\":\"MAIN_LABEL 70 should be fully implemented with the following changes\",\"reason\":\"The proposal modifies and builds directly on the earlier protocol rather than merely mentioning it.\",\"confidence\":\"high\"}]}</output>\n</example>\n<example>\n<text>This proposal describes an enhancement to the protocol (MAIN_LABEL 70). Implementation of this proposal does not require full MAIN_LABEL 70 support.</text>\n<output>{\"dependencies\":[]}</output>\n</example>\n<example>\n<text>Unlike MAIN_LABEL 44, which defines a symmetric encryption scheme, this proposal introduces a standalone asymmetric key agreement protocol. No primitives or formats from MAIN_LABEL 44 are reused.</text>\n<output>{\"dependencies\":[]}</output>\n</example>\n<example>\n<text>Example: schemes following MAIN_LABEL 44 should use purpose value 44'. This example illustrates how purpose values are assigned.</text>\n<output>{\"dependencies\":[]}</output>\n</example>\n<example>\n<text>We adapt the master node generation from MAIN_LABEL-0032 and SIBLING_LABEL-0010.</text>\n<output>{\"dependencies\":[{\"target\":\"main_source:32\",\"evidence\":\"adapt the master node generation from MAIN_LABEL-0032\",\"reason\":\"The proposal reuses the main-source master-node derivation procedure.\",\"confidence\":\"high\"},{\"target\":\"sibling_source:10\",\"evidence\":\"and SIBLING_LABEL-0010\",\"reason\":\"The proposal also builds on a sibling-source derivation standard named in the same sentence.\",\"confidence\":\"medium\"}]}</output>\n</example>\n</examples>\n\nNow apply the same rules to the actual proposal text below.\n\n<proposal_text>\n\"\"\"{proposal_text}\"\"\"\n</proposal_text>",
+      "response_format": {
+        "type": "json_schema",
+        "json_schema": {
+          "name": "semantic_dependency_list",
+          "strict": true,
+          "schema": {
+            "type": "object",
+            "properties": {
+              "dependencies": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "target": {
+                      "type": "string"
+                    },
+                    "evidence": {
+                      "type": "string"
+                    },
+                    "reason": {
+                      "type": "string"
+                    },
+                    "confidence": {
+                      "type": "string",
+                      "enum": [
+                        "low",
+                        "medium",
+                        "high"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "target",
+                    "evidence",
+                    "reason",
+                    "confidence"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "dependencies"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "source_context": {
+        "ecosystem_slug": "bitcoin",
+        "source_slug": "bips",
+        "proposal_label": "BIP",
+        "proposal_singular": "Bitcoin Improvement Proposal"
+      },
+      "focus": []
+    },
+    {
+      "run_id": "2026-06-30T11:38:11Z_gpt-5.4-mini_422651ce",
+      "method_name": "llm_assisted_semantic_dependency_extraction",
+      "method_label": "LLM-Assisted Semantic Dependency Extraction",
+      "method_version": 4,
+      "model": "gpt-5.4-mini",
+      "created_at": "2026-06-30T11:38:11Z",
+      "api_surface": "responses",
+      "reasoning": null,
+      "system_prompt": "You extract technical dependencies from Bitcoin Improvement Proposal documents.\n\nTask:\n- Identify only substantive proposal-to-proposal dependencies.\n- Use only the provided proposal text. Do not use outside knowledge.\n\nDecision rule:\n- Include another proposal only when the current proposal materially relies on, reuses, extends, constrains, amends, specializes, is compatible with, or is designed around concepts, mechanisms, formats, semantics, activation rules, workflows, or assumptions introduced by that proposal.\n- Ask whether understanding, implementing, evaluating, or adopting the current proposal would meaningfully depend on the target proposal beyond a passing reference.\n- Statements such as \"requires\", \"depends on\", \"based on\", \"extends\", or \"fully implement X with the following changes\" are strong indicators of dependency.\n- If support is ambiguous, weak, speculative, or purely contextual, omit the candidate.\n\nDo not include:\n- mere mentions or citations\n- historical or background references\n- related work or motivation\n- comparisons to alternatives when no mechanism, format, rule, or semantic dependency is reused\n- examples or illustrative references\n- \"See also\" or \"references\" sections by themselves\n- topical relatedness\n- speculation about future interactions\n- self-references\n\nOutput policy:\n- Return JSON only, with no explanation and no markdown.\n- Return one object per dependency target.\n- Each object must use target format \"source_slug:ID\".\n- Valid labels for this ecosystem: BIP (bips), SLIP (slips).\n- Target format mapping: BIP => bips:ID, SLIP => slips:ID.\n- Preserve hexadecimal identifiers and leading zeroes when the ecosystem uses them.\n- Exclude BIP {current_proposal_number} if present.\n- Return an empty list when there are no real dependencies.\n- Evidence must be a short verbatim contiguous quote copied from the proposal text.\n- Reason must briefly explain the dependency in technical terms.\n- Confidence must be one of: low, medium, high.\n- Use confidence `high` for explicit or normatively stated dependencies, `medium` for strong but implicit technical reliance, and `low` only for weaker but still defensible cases that remain worth keeping.\n\nExample vocabulary:\n- The examples below use fixed placeholders so the same examples work across ecosystems.\n- `MAIN_LABEL` means the primary proposal label for the current source.\n- `SIBLING_LABEL` means another valid proposal label in the same ecosystem.\n- `main_source` and `sibling_source` are illustrative source slugs used only inside the examples.\n- In your actual answer, use the real labels and source slugs listed above.",
+      "user_prompt_template": "Analyze Bitcoin Improvement Proposal BIP {current_proposal_number}.\n\n<examples>\n<example>\n<text>Requires: 32, 43. This proposal defines a logical hierarchy based on an algorithm described in MAIN_LABEL-0032 and a purpose scheme described in MAIN_LABEL-0043.</text>\n<output>{\"dependencies\":[{\"target\":\"main_source:32\",\"evidence\":\"based on an algorithm described in MAIN_LABEL-0032\",\"reason\":\"The proposal reuses the underlying derivation scheme from the target.\",\"confidence\":\"high\"},{\"target\":\"main_source:43\",\"evidence\":\"a purpose scheme described in MAIN_LABEL-0043\",\"reason\":\"The proposal depends on the target's purpose-field convention to define its hierarchy.\",\"confidence\":\"high\"}]}</output>\n</example>\n<example>\n<text>The protocol defined in MAIN_LABEL 70 should be fully implemented with the following changes. This proposal allows zero value extension records in serialized messages.</text>\n<output>{\"dependencies\":[{\"target\":\"main_source:70\",\"evidence\":\"MAIN_LABEL 70 should be fully implemented with the following changes\",\"reason\":\"The proposal modifies and builds directly on the earlier protocol rather than merely mentioning it.\",\"confidence\":\"high\"}]}</output>\n</example>\n<example>\n<text>This proposal describes an enhancement to the protocol (MAIN_LABEL 70). Implementation of this proposal does not require full MAIN_LABEL 70 support.</text>\n<output>{\"dependencies\":[]}</output>\n</example>\n<example>\n<text>Unlike MAIN_LABEL 44, which defines a symmetric encryption scheme, this proposal introduces a standalone asymmetric key agreement protocol. No primitives or formats from MAIN_LABEL 44 are reused.</text>\n<output>{\"dependencies\":[]}</output>\n</example>\n<example>\n<text>Example: schemes following MAIN_LABEL 44 should use purpose value 44'. This example illustrates how purpose values are assigned.</text>\n<output>{\"dependencies\":[]}</output>\n</example>\n<example>\n<text>We adapt the master node generation from MAIN_LABEL-0032 and SIBLING_LABEL-0010.</text>\n<output>{\"dependencies\":[{\"target\":\"main_source:32\",\"evidence\":\"adapt the master node generation from MAIN_LABEL-0032\",\"reason\":\"The proposal reuses the main-source master-node derivation procedure.\",\"confidence\":\"high\"},{\"target\":\"sibling_source:10\",\"evidence\":\"and SIBLING_LABEL-0010\",\"reason\":\"The proposal also builds on a sibling-source derivation standard named in the same sentence.\",\"confidence\":\"medium\"}]}</output>\n</example>\n</examples>\n\nNow apply the same rules to the actual proposal text below.\n\n<proposal_text>\n\"\"\"{proposal_text}\"\"\"\n</proposal_text>",
+      "response_format": {
+        "type": "json_schema",
+        "json_schema": {
+          "name": "semantic_dependency_list",
+          "strict": true,
+          "schema": {
+            "type": "object",
+            "properties": {
+              "dependencies": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "target": {
+                      "type": "string"
+                    },
+                    "evidence": {
+                      "type": "string"
+                    },
+                    "reason": {
+                      "type": "string"
+                    },
+                    "confidence": {
+                      "type": "string",
+                      "enum": [
+                        "low",
+                        "medium",
+                        "high"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "target",
+                    "evidence",
+                    "reason",
+                    "confidence"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "dependencies"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "source_context": {
+        "ecosystem_slug": "bitcoin",
+        "source_slug": "bips",
+        "proposal_label": "BIP",
+        "proposal_singular": "Bitcoin Improvement Proposal"
+      },
+      "focus": [
+        "102",
+        "103",
+        "105",
+        "112",
+        "113",
+        "117",
+        "119",
+        "121",
+        "122",
+        "132",
+        "134",
+        "137",
+        "140",
+        "141",
+        "142",
+        "146",
+        "147",
+        "148",
+        "149",
+        "150",
+        "154",
+        "157",
+        "158",
+        "159",
+        "173",
+        "174",
+        "175",
+        "176",
+        "179",
+        "180",
+        "199",
+        "300",
+        "301",
+        "339",
+        "340",
+        "342"
+      ]
+    }
+  ]
+}

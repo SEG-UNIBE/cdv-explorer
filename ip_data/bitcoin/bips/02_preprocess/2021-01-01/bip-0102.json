@@ -488,9 +488,26 @@
       "body_extracted_regex": [],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:22:58Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:35:37Z",
+          "status": "api_error",
+          "dependencies": [],
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 199746, Requested 1543. Please try again in 386ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+        },
+        {
+          "run_id": "2026-06-30T11:38:11Z_gpt-5.4-mini_422651ce",
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-30T11:38:13Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:34",
+              "evidence": "Trigger:  (1) Block time 00:00:00 on flag day, AND (2) 95% of the last 1,000 blocks have signaled support.",
+              "reason": "The proposal’s activation rule uses miner signaling over a rolling block window, which is a hard-fork deployment mechanism introduced by BIP 34.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

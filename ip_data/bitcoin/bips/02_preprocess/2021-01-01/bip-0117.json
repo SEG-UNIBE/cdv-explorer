@@ -678,32 +678,48 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:23:05Z",
+          "timestamp": "2026-06-30T11:35:45Z",
+          "status": "api_error",
+          "dependencies": [],
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 200000, Requested 4591. Please try again in 1.377s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+        },
+        {
+          "run_id": "2026-06-30T11:38:11Z_gpt-5.4-mini_422651ce",
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-30T11:38:15Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:8",
-              "evidence": "\"This BIP will be deployed by BIP8 (Version bits with lock-in by height)\"",
-              "reason": "The deployment and activation rules are defined using BIP8 version-bits lock-in-by-height, making it the activation mechanism for this proposal.",
-              "confidence": "low"
+              "evidence": "This BIP will be deployed by BIP8 (Version bits with lock-in by height)[9]",
+              "reason": "The activation and deployment mechanism is explicitly specified using BIP8 version-bits lock-in by height.",
+              "confidence": "high"
             },
             {
               "target": "bips:16",
-              "evidence": "\"BIP16 (Pay to Script Hash) and BIP141 ... provide mechanisms by which script policy can be revealed at spend time\"",
-              "reason": "The proposal explicitly generalizes the pay-to-script-hash style deferred revelation model and compares its script execution semantics to P2SH.",
-              "confidence": "low"
+              "evidence": "BIP16 (Pay to Script Hash)[1] and BIP141 (Segregated Witness)[2] provide mechanisms",
+              "reason": "The proposal builds on BIP16's script-hash spend model as one of the mechanisms it generalizes and compares against.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:114",
+              "evidence": "BIP114 (Merkelized Abstract Syntax Tree)[5] specifies an explicit MAST scheme activated by BIP141 script versioning[2].",
+              "reason": "The proposal frames its generalized MAST design as an alternative to BIP114's explicit MAST scheme and uses BIP114's MAST concept as the baseline it replaces.",
+              "confidence": "medium"
             },
             {
               "target": "bips:116",
-              "evidence": "\"This BIP, in conjunction with BIP116 (MERKLEBRANCHVERIFY)\"",
-              "reason": "The proposal’s generalized MAST and policy-script selection mechanism relies on MERKLEBRANCHVERIFY to commit to and prove the chosen script.",
-              "confidence": "low"
+              "evidence": "This BIP, in conjunction with BIP116 (MERKLEBRANCHVERIFY)[3] allows for a script to commit",
+              "reason": "The proposal explicitly relies on MERKLEBRANCHVERIFY as the companion mechanism for committing to and proving the selected policy script.",
+              "confidence": "high"
             },
             {
               "target": "bips:141",
-              "evidence": "\"BIP141 (Segregated Witness) provide mechanisms by which script policy can be revealed at spend time\"",
-              "reason": "The tail-call execution is restricted to segwit redeem scripts and the proposal’s spend-time script revelation semantics build on SegWit witness execution.",
-              "confidence": "low"
+              "evidence": "BIP16 (Pay to Script Hash)[1] and BIP141 (Segregated Witness)[2] provide mechanisms",
+              "reason": "The proposal depends on SegWit's witness execution context and v0 rules, including the restriction that tail-call semantics apply only in segwit redeem scripts.",
+              "confidence": "high"
             }
           ]
         }

@@ -554,32 +554,34 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:23:07Z",
+          "timestamp": "2026-06-30T11:35:50Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:16",
-              "evidence": "The most popular formats are pay-to-pubkey-hash and m-of-n pay-to-script-hash (BIP16).",
-              "reason": "The proposal’s template system is motivated partly by and interoperates with pay-to-script-hash multisig scripts defined by BIP16.",
-              "confidence": "high"
+              "evidence": "pay-to-script-hash (BIP16)",
+              "reason": "BIP16 is cited as an existing script format motivating the template approach and the proposal targets script construction compatible with standard P2SH usage.",
+              "confidence": "low"
             },
             {
               "target": "bips:32",
               "evidence": "using the key derivation mechanism defined in BIP32",
-              "reason": "The script template format depends on BIP32 derivation paths and indexes to deterministically generate keys and scripts.",
+              "reason": "The proposal’s script templates are built around BIP32 derivation paths and deterministic key generation.",
               "confidence": "high"
             },
             {
               "target": "bips:65",
               "evidence": "with the advent of hashlocked and timelocked contracts (BIP65, BIP112)",
-              "reason": "The proposal includes timelocked contract templates that rely on OP_CHECKLOCKTIMEVERIFY from BIP65.",
+              "reason": "The timelocked contract example explicitly uses OP_CHECKLOCKTIMEVERIFY, so the proposal relies on BIP65 semantics for timeout-based spending.",
               "confidence": "high"
             },
             {
               "target": "bips:112",
               "evidence": "with the advent of hashlocked and timelocked contracts (BIP65, BIP112)",
-              "reason": "The proposal depends on the CHECKSEQUENCEVERIFY semantics introduced by BIP112 for advanced contract scripts.",
-              "confidence": "high"
+              "reason": "The proposal treats CHECKSEQUENCEVERIFY as part of the timelocked contract mechanism motivating generalized templates.",
+              "confidence": "medium"
             }
           ]
         }

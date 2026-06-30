@@ -550,13 +550,15 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:22:33Z",
+          "timestamp": "2026-06-30T11:35:07Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:11",
               "evidence": "\"M-of-N Multisignature Transactions BIP 11\"",
-              "reason": "The proposal’s standard OP_EVAL use case and standardization discussion rely on multisignature transaction structure introduced by BIP 11.",
+              "reason": "The proposal references BIP 11 as the multisignature transaction format whose scripts can be serialized and used as the OP_EVAL payload and as a standard transaction type.",
               "confidence": "low"
             }
           ]

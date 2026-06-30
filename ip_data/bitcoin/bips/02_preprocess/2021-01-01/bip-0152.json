@@ -935,25 +935,27 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:23:19Z",
+          "timestamp": "2026-06-30T11:36:09Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:130",
-              "evidence": "invs or headers, as defined by BIP130",
-              "reason": "Compact blocks in low-bandwidth mode rely on the existing inv/headers announcement behavior defined by this proposal.",
+              "evidence": "inv/headers announcements (as per BIP130",
+              "reason": "The low-bandwidth announcement mode reuses the BIP130 inv/headers block announcement workflow.",
               "confidence": "high"
             },
             {
               "target": "bips:141",
-              "evidence": "supports segregated witness transactions (BIP 141 and BIP 144)",
-              "reason": "Version 2 compact blocks require wtxid-based short IDs and witness-inclusive transaction encoding introduced by this proposal.",
+              "evidence": "supports segregated witness transactions (BIP 141",
+              "reason": "Version 2 compact blocks depend on BIP 141's witness transaction semantics and wtxid definition for short IDs and block encoding.",
               "confidence": "high"
             },
             {
               "target": "bips:144",
-              "evidence": "responses to getdata MSG_WITNESS_TX, specified in BIP144",
-              "reason": "Version 2 compact blocks reuse the witness transaction/block message encodings and witness-aware relay semantics defined here.",
+              "evidence": "supports segregated witness transactions (BIP 141 and BIP 144)",
+              "reason": "Version 2 explicitly reuses BIP 144 witness-inclusive transaction encoding for cmpctblock, blocktxn, and fallback block responses.",
               "confidence": "high"
             }
           ]

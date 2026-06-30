@@ -643,20 +643,22 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:23:11Z",
+          "timestamp": "2026-06-30T11:35:56Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:173",
-              "evidence": "TxRef uses standard Bech32 ... as defined in ... BIP-173",
-              "reason": "The proposal directly relies on BIP 173's Bech32 encoding and checksum rules for the TxRef format.",
+              "evidence": "TxRef uses standard Bech32 as defined in [https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki BIP-173]",
+              "reason": "The proposal directly reuses Bech32 encoding and checksum rules from BIP 173 for its wire format.",
               "confidence": "low"
             },
             {
               "target": "slips:173",
-              "evidence": "Please see ... SLIP-0173 : Registered human-readable parts for BIP-0173",
-              "reason": "The proposal relies on the registered HRP namespace from SLIP 173 to define network-specific prefixes.",
-              "confidence": "low"
+              "evidence": "Please see [https://github.com/satoshilabs/slips/blob/master/slip-0173.md SLIP-0173 : Registered human-readable parts for BIP-0173]",
+              "reason": "The proposal relies on the HRP registration scheme from SLIP-173 to allocate namespace prefixes like tx and txtest.",
+              "confidence": "medium"
             }
           ]
         }

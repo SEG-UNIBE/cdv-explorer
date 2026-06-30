@@ -29679,6 +29679,42 @@
       "reviewed_at": "2026-06-23"
     },
     {
+      "source": "bips:13",
+      "target": "bips:12",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "references",
+      "value": 1,
+      "confidence": "low",
+      "evidence": "See Also BIP 12: OP_EVAL, the original P2SH design",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-30"
+    },
+    {
+      "source": "bips:13",
+      "target": "bips:16",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "depends_on",
+      "value": 1,
+      "confidence": "high",
+      "evidence": "See Also [...] BIP 16: Pay to Script Hash (aka \"/P2SH/\")",
+      "note": "BIP 13 defines only the address encoding for P2SH. The actual semantics of spending those outputs are defined by BIP 16.",
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-30"
+    },
+    {
+      "source": "bips:13",
+      "target": "bips:17",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "references",
+      "value": 1,
+      "confidence": "low",
+      "evidence": "See Also [...] BIP 17: OP_CHECKHASHVERIFY, another P2SH design",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-30"
+    },
+    {
       "source": "bips:16",
       "target": "bips:11",
       "extraction_method": "ground_truth_curated",
@@ -29713,6 +29749,54 @@
       "note": null,
       "reviewer": "rbo",
       "reviewed_at": "2026-06-29"
+    },
+    {
+      "source": "bips:17",
+      "target": "bips:11",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "references",
+      "value": 1,
+      "confidence": "high",
+      "evidence": "See Also [...] M-of-N Multisignature Transactions (BIP 11)",
+      "note": null,
+      "reviewer": null,
+      "reviewed_at": null
+    },
+    {
+      "source": "bips:17",
+      "target": "bips:12",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "supersedes",
+      "value": 1,
+      "confidence": "high",
+      "evidence": "This BIP replaces BIP 12 and BIP 16, which propose evaluating a Script from the stack after verifying its hash.  [...] OP_NOP2 is used, so existing OP_EVAL (BIP 12) transactions in the block chain can still be redeemed.",
+      "note": null,
+      "reviewer": null,
+      "reviewed_at": null
+    },
+    {
+      "source": "bips:17",
+      "target": "bips:13",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "references",
+      "value": 1,
+      "confidence": "high",
+      "evidence": "See Also The Address format for Pay to Script Hash BIP",
+      "note": "Address format for P2SH is defined in BIP13",
+      "reviewer": null,
+      "reviewed_at": null
+    },
+    {
+      "source": "bips:17",
+      "target": "bips:16",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "supersedes",
+      "value": 1,
+      "confidence": "high",
+      "evidence": "This BIP replaces BIP 12 and BIP 16, which propose evaluating a Script from the stack after verifying its hash.",
+      "note": null,
+      "reviewer": null,
+      "reviewed_at": null
     },
     {
       "source": "bips:18",
@@ -29775,6 +29859,18 @@
       "reviewed_at": "2026-06-23"
     },
     {
+      "source": "bips:19",
+      "target": "bips:11",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "references",
+      "value": 1,
+      "confidence": "high",
+      "evidence": "OP_CHECKMULTISIG is already an enabled opcode, and is the most straightforward way to support several important use cases. This is already specified in BIP 0011.",
+      "note": "BIP 19 explicitly proposes an alternative implementation to BIP 11.",
+      "reviewer": null,
+      "reviewed_at": null
+    },
+    {
       "source": "bips:20",
       "target": "bips:21",
       "extraction_method": "ground_truth_curated",
@@ -29785,6 +29881,18 @@
       "note": null,
       "reviewer": "rbo",
       "reviewed_at": "2026-06-23"
+    },
+    {
+      "source": "bips:21",
+      "target": "bips:20",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "supersedes",
+      "value": 1,
+      "confidence": "high",
+      "evidence": "Replaces: 20 [...] This BIP is a modification of an earlier BIP 0020 by Luke Dashjr. BIP 0020 was based off an earlier document by Nils Schneider. The alternative payment amounts in BIP 0020 have been removed.",
+      "note": null,
+      "reviewer": null,
+      "reviewed_at": null
     },
     {
       "source": "bips:22",
@@ -30400,18 +30508,6 @@
     },
     {
       "source": "bips:330",
-      "target": "bips:340",
-      "extraction_method": "ground_truth_curated",
-      "relation_type": "references",
-      "value": 1,
-      "confidence": "medium",
-      "evidence": "Compute h = TaggedHash(\"Tx Relay Salting\", salt1, salt2), where the two salts are encoded in 64-bit little-endian byte order, and TaggedHash is specified by BIP-340.",
-      "note": null,
-      "reviewer": "rbo",
-      "reviewed_at": "2026-06-29"
-    },
-    {
-      "source": "bips:330",
       "target": "bips:141",
       "extraction_method": "ground_truth_curated",
       "relation_type": "references",
@@ -30435,12 +30531,16 @@
       "reviewed_at": "2026-06-29"
     },
     {
-      "source": "bips:1",
-      "target": "bips:8",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "source": "bips:330",
+      "target": "bips:340",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "references",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "confidence": "medium",
+      "evidence": "Compute h = TaggedHash(\"Tx Relay Salting\", salt1, salt2), where the two salts are encoded in 64-bit little-endian byte order, and TaggedHash is specified by BIP-340.",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-29"
     },
     {
       "source": "bips:2",
@@ -30491,46 +30591,6 @@
       "llm_model": "gpt-5.4-mini"
     },
     {
-      "source": "bips:8",
-      "target": "bips:68",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1,
-      "llm_model": "gpt-5.4-mini"
-    },
-    {
-      "source": "bips:8",
-      "target": "bips:112",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1,
-      "llm_model": "gpt-5.4-mini"
-    },
-    {
-      "source": "bips:8",
-      "target": "bips:113",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1,
-      "llm_model": "gpt-5.4-mini"
-    },
-    {
-      "source": "bips:8",
-      "target": "bips:141",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1,
-      "llm_model": "gpt-5.4-mini"
-    },
-    {
-      "source": "bips:9",
-      "target": "bips:16",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1,
-      "llm_model": "gpt-5.4-mini"
-    },
-    {
       "source": "bips:9",
       "target": "bips:34",
       "extraction_method": "body_extracted_llm",
@@ -30563,16 +30623,8 @@
       "llm_model": "gpt-5.4-mini"
     },
     {
-      "source": "bips:10",
-      "target": "bips:16",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1,
-      "llm_model": "gpt-5.4-mini"
-    },
-    {
       "source": "bips:11",
-      "target": "bips:12",
+      "target": "bips:14",
       "extraction_method": "body_extracted_llm",
       "relation_type": "implicit_dependency",
       "value": 1,
@@ -30588,23 +30640,7 @@
     },
     {
       "source": "bips:13",
-      "target": "bips:12",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1,
-      "llm_model": "gpt-5.4-mini"
-    },
-    {
-      "source": "bips:13",
       "target": "bips:16",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1,
-      "llm_model": "gpt-5.4-mini"
-    },
-    {
-      "source": "bips:13",
-      "target": "bips:17",
       "extraction_method": "body_extracted_llm",
       "relation_type": "implicit_dependency",
       "value": 1,
@@ -30621,14 +30657,6 @@
     {
       "source": "bips:16",
       "target": "bips:11",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1,
-      "llm_model": "gpt-5.4-mini"
-    },
-    {
-      "source": "bips:16",
-      "target": "bips:12",
       "extraction_method": "body_extracted_llm",
       "relation_type": "implicit_dependency",
       "value": 1,
@@ -30723,6 +30751,14 @@
       "llm_model": "gpt-5.4-mini"
     },
     {
+      "source": "bips:20",
+      "target": "bips:21",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
       "source": "bips:21",
       "target": "bips:20",
       "extraction_method": "body_extracted_llm",
@@ -30763,56 +30799,16 @@
       "llm_model": "gpt-5.4-mini"
     },
     {
-      "source": "bips:33",
-      "target": "bips:31",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1,
-      "llm_model": "gpt-5.4-mini"
-    },
-    {
-      "source": "bips:34",
-      "target": "bips:9",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1,
-      "llm_model": "gpt-5.4-mini"
-    },
-    {
-      "source": "bips:35",
-      "target": "bips:9",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1,
-      "llm_model": "gpt-5.4-mini"
-    },
-    {
-      "source": "bips:36",
-      "target": "bips:31",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1,
-      "llm_model": "gpt-5.4-mini"
-    },
-    {
-      "source": "bips:37",
-      "target": "bips:16",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1,
-      "llm_model": "gpt-5.4-mini"
-    },
-    {
-      "source": "bips:38",
-      "target": "bips:13",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1,
-      "llm_model": "gpt-5.4-mini"
-    },
-    {
       "source": "bips:38",
       "target": "bips:32",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "bips:38",
+      "target": "bips:43",
       "extraction_method": "body_extracted_llm",
       "relation_type": "implicit_dependency",
       "value": 1,
@@ -30859,6 +30855,14 @@
       "llm_model": "gpt-5.4-mini"
     },
     {
+      "source": "bips:43",
+      "target": "bips:44",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
       "source": "bips:44",
       "target": "bips:32",
       "extraction_method": "body_extracted_llm",
@@ -30869,6 +30873,14 @@
     {
       "source": "bips:44",
       "target": "bips:43",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "bips:44",
+      "target": "slips:44",
       "extraction_method": "body_extracted_llm",
       "relation_type": "implicit_dependency",
       "value": 1,
@@ -30964,15 +30976,7 @@
     },
     {
       "source": "bips:50",
-      "target": "bips:31",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1,
-      "llm_model": "gpt-5.4-mini"
-    },
-    {
-      "source": "bips:60",
-      "target": "bips:14",
+      "target": "bips:8",
       "extraction_method": "body_extracted_llm",
       "relation_type": "implicit_dependency",
       "value": 1,
@@ -30987,24 +30991,24 @@
       "llm_model": "gpt-5.4-mini"
     },
     {
-      "source": "bips:61",
-      "target": "bips:31",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1,
-      "llm_model": "gpt-5.4-mini"
-    },
-    {
-      "source": "bips:62",
-      "target": "bips:16",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1,
-      "llm_model": "gpt-5.4-mini"
-    },
-    {
       "source": "bips:62",
       "target": "bips:34",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "bips:64",
+      "target": "bips:10",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "bips:64",
+      "target": "bips:35",
       "extraction_method": "body_extracted_llm",
       "relation_type": "implicit_dependency",
       "value": 1,
@@ -31157,6 +31161,14 @@
     {
       "source": "bips:78",
       "target": "bips:21",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "bips:78",
+      "target": "bips:79",
       "extraction_method": "body_extracted_llm",
       "relation_type": "implicit_dependency",
       "value": 1,
@@ -31324,6 +31336,14 @@
     },
     {
       "source": "bips:90",
+      "target": "bips:9",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "bips:90",
       "target": "bips:34",
       "extraction_method": "body_extracted_llm",
       "relation_type": "implicit_dependency",
@@ -31379,6 +31399,14 @@
       "llm_model": "gpt-5.4-mini"
     },
     {
+      "source": "bips:91",
+      "target": "bips:148",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
       "source": "bips:98",
       "target": "bips:116",
       "extraction_method": "body_extracted_llm",
@@ -31395,38 +31423,6 @@
       "llm_model": "gpt-5.4-mini"
     },
     {
-      "source": "bips:99",
-      "target": "bips:16",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1,
-      "llm_model": "gpt-5.4-mini"
-    },
-    {
-      "source": "bips:99",
-      "target": "bips:30",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1,
-      "llm_model": "gpt-5.4-mini"
-    },
-    {
-      "source": "bips:99",
-      "target": "bips:65",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1,
-      "llm_model": "gpt-5.4-mini"
-    },
-    {
-      "source": "bips:99",
-      "target": "bips:66",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1,
-      "llm_model": "gpt-5.4-mini"
-    },
-    {
       "source": "bips:100",
       "target": "bips:34",
       "extraction_method": "body_extracted_llm",
@@ -31436,23 +31432,15 @@
     },
     {
       "source": "bips:101",
-      "target": "bips:9",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1,
-      "llm_model": "gpt-5.4-mini"
-    },
-    {
-      "source": "bips:101",
-      "target": "bips:34",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1,
-      "llm_model": "gpt-5.4-mini"
-    },
-    {
-      "source": "bips:101",
       "target": "bips:100",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "bips:102",
+      "target": "bips:34",
       "extraction_method": "body_extracted_llm",
       "relation_type": "implicit_dependency",
       "value": 1,
@@ -31469,14 +31457,6 @@
     {
       "source": "bips:105",
       "target": "bips:34",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1,
-      "llm_model": "gpt-5.4-mini"
-    },
-    {
-      "source": "bips:106",
-      "target": "bips:100",
       "extraction_method": "body_extracted_llm",
       "relation_type": "implicit_dependency",
       "value": 1,
@@ -31588,6 +31568,14 @@
     },
     {
       "source": "bips:114",
+      "target": "bips:16",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "bips:114",
       "target": "bips:112",
       "extraction_method": "body_extracted_llm",
       "relation_type": "implicit_dependency",
@@ -31613,14 +31601,6 @@
     {
       "source": "bips:116",
       "target": "bips:8",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1,
-      "llm_model": "gpt-5.4-mini"
-    },
-    {
-      "source": "bips:116",
-      "target": "bips:16",
       "extraction_method": "body_extracted_llm",
       "relation_type": "implicit_dependency",
       "value": 1,
@@ -31692,6 +31672,14 @@
     },
     {
       "source": "bips:117",
+      "target": "bips:114",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "bips:117",
       "target": "bips:116",
       "extraction_method": "body_extracted_llm",
       "relation_type": "implicit_dependency",
@@ -31708,6 +31696,14 @@
     },
     {
       "source": "bips:118",
+      "target": "bips:141",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "bips:118",
       "target": "bips:143",
       "extraction_method": "body_extracted_llm",
       "relation_type": "implicit_dependency",
@@ -31716,7 +31712,7 @@
     },
     {
       "source": "bips:119",
-      "target": "bips:112",
+      "target": "bips:9",
       "extraction_method": "body_extracted_llm",
       "relation_type": "implicit_dependency",
       "value": 1,
@@ -31724,7 +31720,15 @@
     },
     {
       "source": "bips:119",
-      "target": "bips:125",
+      "target": "bips:65",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "bips:119",
+      "target": "bips:112",
       "extraction_method": "body_extracted_llm",
       "relation_type": "implicit_dependency",
       "value": 1,
@@ -31771,8 +31775,16 @@
       "llm_model": "gpt-5.4-mini"
     },
     {
-      "source": "bips:122",
-      "target": "bips:21",
+      "source": "bips:123",
+      "target": "bips:32",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "bips:123",
+      "target": "bips:43",
       "extraction_method": "body_extracted_llm",
       "relation_type": "implicit_dependency",
       "value": 1,
@@ -31812,14 +31824,6 @@
     },
     {
       "source": "bips:125",
-      "target": "bips:16",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1,
-      "llm_model": "gpt-5.4-mini"
-    },
-    {
-      "source": "bips:125",
       "target": "bips:68",
       "extraction_method": "body_extracted_llm",
       "relation_type": "implicit_dependency",
@@ -31851,22 +31855,6 @@
       "llm_model": "gpt-5.4-mini"
     },
     {
-      "source": "bips:130",
-      "target": "bips:10",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1,
-      "llm_model": "gpt-5.4-mini"
-    },
-    {
-      "source": "bips:131",
-      "target": "bips:11",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1,
-      "llm_model": "gpt-5.4-mini"
-    },
-    {
       "source": "bips:132",
       "target": "bips:1",
       "extraction_method": "body_extracted_llm",
@@ -31877,14 +31865,6 @@
     {
       "source": "bips:133",
       "target": "bips:37",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1,
-      "llm_model": "gpt-5.4-mini"
-    },
-    {
-      "source": "bips:133",
-      "target": "bips:111",
       "extraction_method": "body_extracted_llm",
       "relation_type": "implicit_dependency",
       "value": 1,
@@ -31996,7 +31976,7 @@
     },
     {
       "source": "bips:141",
-      "target": "bips:9",
+      "target": "bips:16",
       "extraction_method": "body_extracted_llm",
       "relation_type": "implicit_dependency",
       "value": 1,
@@ -32004,7 +31984,7 @@
     },
     {
       "source": "bips:141",
-      "target": "bips:16",
+      "target": "bips:65",
       "extraction_method": "body_extracted_llm",
       "relation_type": "implicit_dependency",
       "value": 1,
@@ -32059,14 +32039,6 @@
       "llm_model": "gpt-5.4-mini"
     },
     {
-      "source": "bips:141",
-      "target": "bips:173",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1,
-      "llm_model": "gpt-5.4-mini"
-    },
-    {
       "source": "bips:142",
       "target": "bips:13",
       "extraction_method": "body_extracted_llm",
@@ -32085,6 +32057,22 @@
     {
       "source": "bips:142",
       "target": "bips:141",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "bips:143",
+      "target": "bips:141",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "bips:143",
+      "target": "bips:144",
       "extraction_method": "body_extracted_llm",
       "relation_type": "implicit_dependency",
       "value": 1,
@@ -32324,7 +32312,7 @@
     },
     {
       "source": "bips:154",
-      "target": "bips:141",
+      "target": "bips:42",
       "extraction_method": "body_extracted_llm",
       "relation_type": "implicit_dependency",
       "value": 1,
@@ -32332,15 +32320,47 @@
     },
     {
       "source": "bips:155",
-      "target": "bips:32",
+      "target": "bips:34",
       "extraction_method": "body_extracted_llm",
       "relation_type": "implicit_dependency",
       "value": 1,
       "llm_model": "gpt-5.4-mini"
     },
     {
-      "source": "bips:156",
-      "target": "bips:155",
+      "source": "bips:157",
+      "target": "bips:37",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "bips:157",
+      "target": "bips:111",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "bips:158",
+      "target": "bips:37",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "bips:158",
+      "target": "bips:141",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "bips:158",
+      "target": "bips:157",
       "extraction_method": "body_extracted_llm",
       "relation_type": "implicit_dependency",
       "value": 1,
@@ -32348,15 +32368,63 @@
     },
     {
       "source": "bips:159",
-      "target": "bips:31",
+      "target": "bips:2",
       "extraction_method": "body_extracted_llm",
       "relation_type": "implicit_dependency",
       "value": 1,
       "llm_model": "gpt-5.4-mini"
     },
     {
-      "source": "bips:171",
-      "target": "slips:132",
+      "source": "bips:173",
+      "target": "bips:141",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "bips:173",
+      "target": "bips:142",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "bips:173",
+      "target": "bips:143",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "bips:173",
+      "target": "slips:173",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "bips:174",
+      "target": "bips:32",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "bips:174",
+      "target": "bips:43",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "bips:174",
+      "target": "bips:127",
       "extraction_method": "body_extracted_llm",
       "relation_type": "implicit_dependency",
       "value": 1,
@@ -32404,38 +32472,6 @@
     },
     {
       "source": "bips:197",
-      "target": "bips:16",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1,
-      "llm_model": "gpt-5.4-mini"
-    },
-    {
-      "source": "bips:197",
-      "target": "bips:65",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1,
-      "llm_model": "gpt-5.4-mini"
-    },
-    {
-      "source": "bips:197",
-      "target": "bips:112",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1,
-      "llm_model": "gpt-5.4-mini"
-    },
-    {
-      "source": "bips:197",
-      "target": "bips:174",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1,
-      "llm_model": "gpt-5.4-mini"
-    },
-    {
-      "source": "bips:197",
       "target": "bips:199",
       "extraction_method": "body_extracted_llm",
       "relation_type": "implicit_dependency",
@@ -32444,15 +32480,7 @@
     },
     {
       "source": "bips:199",
-      "target": "bips:11",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1,
-      "llm_model": "gpt-5.4-mini"
-    },
-    {
-      "source": "bips:199",
-      "target": "bips:65",
+      "target": "bips:13",
       "extraction_method": "body_extracted_llm",
       "relation_type": "implicit_dependency",
       "value": 1,
@@ -32461,6 +32489,22 @@
     {
       "source": "bips:199",
       "target": "bips:112",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "bips:300",
+      "target": "bips:9",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "bips:300",
+      "target": "bips:141",
       "extraction_method": "body_extracted_llm",
       "relation_type": "implicit_dependency",
       "value": 1,
@@ -32475,16 +32519,8 @@
       "llm_model": "gpt-5.4-mini"
     },
     {
-      "source": "bips:301",
-      "target": "bips:68",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1,
-      "llm_model": "gpt-5.4-mini"
-    },
-    {
-      "source": "bips:301",
-      "target": "bips:141",
+      "source": "bips:310",
+      "target": "bips:30",
       "extraction_method": "body_extracted_llm",
       "relation_type": "implicit_dependency",
       "value": 1,
@@ -32531,6 +32567,14 @@
       "llm_model": "gpt-5.4-mini"
     },
     {
+      "source": "bips:330",
+      "target": "bips:141",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
       "source": "bips:339",
       "target": "bips:141",
       "extraction_method": "body_extracted_llm",
@@ -32540,6 +32584,86 @@
     },
     {
       "source": "bips:339",
+      "target": "bips:144",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "bips:340",
+      "target": "bips:32",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "bips:340",
+      "target": "bips:62",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "bips:340",
+      "target": "bips:66",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "bips:340",
+      "target": "bips:118",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "bips:340",
+      "target": "bips:146",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "bips:341",
+      "target": "bips:114",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "bips:341",
+      "target": "bips:117",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "bips:341",
+      "target": "bips:118",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "bips:341",
+      "target": "bips:141",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "bips:341",
       "target": "bips:143",
       "extraction_method": "body_extracted_llm",
       "relation_type": "implicit_dependency",
@@ -32547,8 +32671,16 @@
       "llm_model": "gpt-5.4-mini"
     },
     {
-      "source": "bips:339",
-      "target": "bips:144",
+      "source": "bips:341",
+      "target": "bips:340",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "bips:341",
+      "target": "bips:342",
       "extraction_method": "body_extracted_llm",
       "relation_type": "implicit_dependency",
       "value": 1,
@@ -33141,7 +33273,15 @@
     },
     {
       "source": "slips:11",
-      "target": "slips:32",
+      "target": "slips:15",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "slips:11",
+      "target": "slips:16",
       "extraction_method": "body_extracted_llm",
       "relation_type": "implicit_dependency",
       "value": 1,
@@ -33150,30 +33290,6 @@
     {
       "source": "slips:13",
       "target": "bips:32",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1,
-      "llm_model": "gpt-5.4-mini"
-    },
-    {
-      "source": "slips:13",
-      "target": "bips:43",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1,
-      "llm_model": "gpt-5.4-mini"
-    },
-    {
-      "source": "slips:14",
-      "target": "bips:32",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1,
-      "llm_model": "gpt-5.4-mini"
-    },
-    {
-      "source": "slips:14",
-      "target": "bips:39",
       "extraction_method": "body_extracted_llm",
       "relation_type": "implicit_dependency",
       "value": 1,
@@ -33285,14 +33401,6 @@
     },
     {
       "source": "slips:21",
-      "target": "bips:39",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1,
-      "llm_model": "gpt-5.4-mini"
-    },
-    {
-      "source": "slips:21",
       "target": "slips:10",
       "extraction_method": "body_extracted_llm",
       "relation_type": "implicit_dependency",
@@ -33326,6 +33434,14 @@
     {
       "source": "slips:22",
       "target": "slips:21",
+      "extraction_method": "body_extracted_llm",
+      "relation_type": "implicit_dependency",
+      "value": 1,
+      "llm_model": "gpt-5.4-mini"
+    },
+    {
+      "source": "slips:22",
+      "target": "slips:39",
       "extraction_method": "body_extracted_llm",
       "relation_type": "implicit_dependency",
       "value": 1,
@@ -33413,14 +33529,6 @@
     },
     {
       "source": "slips:48",
-      "target": "bips:32",
-      "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
-      "value": 1,
-      "llm_model": "gpt-5.4-mini"
-    },
-    {
-      "source": "slips:48",
       "target": "bips:43",
       "extraction_method": "body_extracted_llm",
       "relation_type": "implicit_dependency",
@@ -33482,8 +33590,8 @@
       "ip": "bips:11",
       "proposal_id": "11",
       "source_slug": "bips",
-      "reviewer": null,
-      "reviewed_at": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-30",
       "sampling_strategy": "sampler",
       "sampling_snapshot": "2026-05-28",
       "sampling_seed": "42",
@@ -33522,8 +33630,8 @@
       "ip": "bips:13",
       "proposal_id": "13",
       "source_slug": "bips",
-      "reviewer": null,
-      "reviewed_at": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-30",
       "sampling_strategy": "sampler",
       "sampling_snapshot": "2026-05-28",
       "sampling_seed": "42",
@@ -33582,8 +33690,8 @@
       "ip": "bips:17",
       "proposal_id": "17",
       "source_slug": "bips",
-      "reviewer": null,
-      "reviewed_at": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-30",
       "sampling_strategy": "sampler",
       "sampling_snapshot": "2026-05-28",
       "sampling_seed": "42",
@@ -33622,8 +33730,8 @@
       "ip": "bips:19",
       "proposal_id": "19",
       "source_slug": "bips",
-      "reviewer": null,
-      "reviewed_at": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-30",
       "sampling_strategy": "sampler",
       "sampling_snapshot": "2026-05-28",
       "sampling_seed": "42",
@@ -33662,8 +33770,8 @@
       "ip": "bips:21",
       "proposal_id": "21",
       "source_slug": "bips",
-      "reviewer": null,
-      "reviewed_at": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-30",
       "sampling_strategy": "sampler",
       "sampling_snapshot": "2026-05-28",
       "sampling_seed": "42",
@@ -35021,7 +35129,7 @@
   ],
   "meta": {
     "node_count": 156,
-    "edge_count": 845,
+    "edge_count": 854,
     "source_slugs": [
       "bips",
       "slips"

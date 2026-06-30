@@ -608,25 +608,21 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:23:07Z",
+          "timestamp": "2026-06-30T11:35:52Z",
+          "status": "success",
           "dependencies": [
-            {
-              "target": "bips:16",
-              "evidence": "consensus-enforced locktime as provided in the Bitcoin 0.1 implementation",
-              "reason": "The proposal’s interpretation of nSequence and locktime behavior depends on the locktime semantics established by this earlier consensus mechanism.",
-              "confidence": "medium"
-            },
             {
               "target": "bips:68",
               "evidence": "compatible with consensus-enforced locktime as provided in the Bitcoin 0.1 implementation, draft BIP68",
-              "reason": "The proposal explicitly relies on relative lock-time semantics using nSequence, which constrains how replaceability signaling interacts with sequence numbers.",
+              "reason": "The proposal explicitly states compatibility with BIP68’s sequence-number-based relative locktime semantics, which constrain how nSequence can be used alongside opt-in replacement signaling.",
               "confidence": "high"
             },
             {
               "target": "bips:112",
               "evidence": "draft BIP112 (CHECKSEQUENCEVERIFY)",
-              "reason": "The proposal’s nSequence-based replaceability signaling must coexist with CHECKSEQUENCEVERIFY behavior, so it depends on that sequence-number semantics.",
+              "reason": "The proposal explicitly states compatibility with BIP112, which uses sequence numbers and therefore shares the transaction input semantics the proposal relies on.",
               "confidence": "high"
             }
           ]

@@ -726,9 +726,18 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:23:33Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:36:19Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:141",
+              "evidence": "wtxid as defined by BIP141",
+              "reason": "The proposal defines short transaction IDs by hashing the wtxid, so it depends on the witness transaction ID definition from the target proposal.",
+              "confidence": "low"
+            }
+          ]
         }
       ]
     }

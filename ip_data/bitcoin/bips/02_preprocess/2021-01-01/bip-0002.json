@@ -1175,19 +1175,21 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:22:32Z",
+          "timestamp": "2026-06-30T11:35:05Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:1",
               "evidence": "This particular BIP replaces BIP 1 with a more well-defined and clear process.",
-              "reason": "The document explicitly amends and supersedes the BIP 1 process and status rules, so BIP 1 is a direct technical basis being revised.",
+              "reason": "The document is explicitly a replacement and revision of the earlier BIP process specification.",
               "confidence": "high"
             },
             {
               "target": "bips:123",
-              "evidence": "See [[bip-0123.mediawiki|BIP 123]] for definitions of the various BIP layers. Activation of this BIP implies activation of BIP 123.",
-              "reason": "This proposal adopts the Layer header and its definitions from BIP 123, making that classification scheme part of its specification.",
+              "evidence": "See [[bip-0123.mediawiki|BIP 123]] for definitions of the various BIP layers.",
+              "reason": "The Layer header definitions and the statement that activation implies BIP 123 make this proposal depend on BIP 123’s layer taxonomy.",
               "confidence": "high"
             }
           ]

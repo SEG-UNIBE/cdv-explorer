@@ -530,25 +530,27 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:22:42Z",
+          "timestamp": "2026-06-30T11:35:20Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:16",
               "evidence": "A softfork (see BIP16, BIP34, BIP62)",
-              "reason": "The proposal relies on the softfork mechanism introduced by BIP 16 to activate the subsidy change.",
+              "reason": "The proposal explicitly frames its activation as a soft fork and cites BIP16 as part of the softfork mechanism reference.",
               "confidence": "high"
             },
             {
               "target": "bips:34",
               "evidence": "A softfork (see BIP16, BIP34, BIP62)",
-              "reason": "The proposal references BIP 34 as part of the softfork framework it proposes to use for the consensus change.",
+              "reason": "The proposal explicitly ties its deployment approach to the softfork context referenced by BIP34.",
               "confidence": "high"
             },
             {
               "target": "bips:62",
               "evidence": "A softfork (see BIP16, BIP34, BIP62)",
-              "reason": "The proposal references BIP 62 as part of the softfork framework it proposes to use for the consensus change.",
+              "reason": "The proposal explicitly ties its deployment approach to the softfork context referenced by BIP62.",
               "confidence": "high"
             }
           ]

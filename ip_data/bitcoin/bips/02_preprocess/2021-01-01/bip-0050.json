@@ -589,13 +589,15 @@
       "body_extracted_regex": [],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:22:45Z",
+          "timestamp": "2026-06-30T11:35:23Z",
+          "status": "success",
           "dependencies": [
             {
-              "target": "bips:31",
-              "evidence": "implement a new bitcoind feature so services can get timely notification of alerts",
-              "reason": "This relies on the existing alert mechanism and extends it with a notification hook for alert reception.",
+              "target": "bips:8",
+              "evidence": "Release a version 0.8.1, forked directly from 0.8.0",
+              "reason": "The proposal is explicitly a fork and modification of the 0.8.0 protocol/software lineage, so understanding or implementing it depends on BIP 8's 0.8.0 context.",
               "confidence": "high"
             }
           ]

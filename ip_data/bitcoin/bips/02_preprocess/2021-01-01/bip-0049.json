@@ -593,43 +593,45 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:22:47Z",
+          "timestamp": "2026-06-30T11:35:24Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:16",
-              "evidence": "P2WPKH-nested-in-P2SH",
-              "reason": "The proposal uses the P2SH wrapping and script/address construction defined by BIP16 for nested witness outputs.",
-              "confidence": "high"
+              "evidence": "the encapsulation defined in [[bip-0141.mediawiki#p2wpkh-nested-in-bip16-p2sh|BIP 141]]",
+              "reason": "The address serialization nests a witness program inside a BIP16 P2SH envelope, so the proposal relies on the P2SH script form from BIP16.",
+              "confidence": "medium"
             },
             {
               "target": "bips:32",
               "evidence": "based on a [[bip-0032.mediawiki|BIP 32]] root account",
-              "reason": "The derivation scheme is built on BIP32 hierarchical key derivation from a root account.",
+              "reason": "The derivation scheme is built on BIP32 hierarchical deterministic root/account derivation.",
               "confidence": "high"
             },
             {
               "target": "bips:43",
-              "evidence": "The rest of the levels are used as defined in BIP44.",
-              "reason": "BIP44's purpose-field account structure is itself defined by BIP43, which this proposal relies on for the derivation path semantics.",
+              "evidence": "[[bip-0043.mediawiki|BIP43 - Purpose Field for Deterministic Wallets]]",
+              "reason": "The proposal uses the purpose field in the derivation path, which is the mechanism defined by BIP43.",
               "confidence": "medium"
             },
             {
               "target": "bips:44",
-              "evidence": "uses the same account-structure as defined in [[bip-0044.mediawiki|BIP 44]]",
-              "reason": "The proposal directly reuses BIP44's account hierarchy and path layout, changing only the purpose value.",
+              "evidence": "uses the same account-structure as defined in",
+              "reason": "The path structure and account hierarchy are reused from BIP44, with only the purpose value changed.",
               "confidence": "high"
             },
             {
               "target": "bips:141",
-              "evidence": "uses the encapsulation defined in [[bip-0141.mediawiki#p2wpkh-nested-in-bip16-p2sh|BIP 141]]",
-              "reason": "The address and script derivation for nested P2WPKH-in-P2SH outputs depends on BIP141's witness and script encoding.",
-              "confidence": "low"
+              "evidence": "This BIP defines the derivation scheme for HD wallets using the P2WPKH-nested-in-P2SH",
+              "reason": "The proposal’s key/address derivation and witness-in-P2SH encapsulation are designed around the nested P2WPKH format introduced by BIP141.",
+              "confidence": "high"
             },
             {
               "target": "slips:132",
               "evidence": "Additional registered version bytes are listed in [[https://github.com/satoshilabs/slips/blob/master/slip-0132.md|SLIP-0132]].",
-              "reason": "The proposal relies on SLIP132's alternate extended key version-byte registry for ypub/yprv and testnet prefixes.",
+              "reason": "The proposal uses alternate extended-key version bytes and explicitly relies on the registered version-byte scheme defined in SLIP-0132.",
               "confidence": "high"
             }
           ]

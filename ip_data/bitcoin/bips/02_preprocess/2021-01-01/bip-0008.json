@@ -785,56 +785,34 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:22:33Z",
+          "timestamp": "2026-06-30T11:35:12Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
-              "evidence": "This document specifies an alternative to BIP9",
-              "reason": "The proposal directly replaces and modifies the BIP9 activation mechanism, making it a substantive dependency.",
-              "confidence": "low"
+              "evidence": "This document specifies an alternative to [[bip-0009.mediawiki|BIP9]]",
+              "reason": "The proposal is explicitly designed as a replacement/variant of BIP9 and reuses its soft-fork deployment context while changing activation mechanics.",
+              "confidence": "high"
             },
             {
               "target": "bips:34",
-              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
-              "reason": "The allowed nVersion bits and deployment capacity are constrained by this prior version-signaling rule.",
+              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65, we only have 0x7FFFFFFB possible nVersion values available.",
+              "reason": "The deployment-bit encoding and available version-space constraints are derived from the version bits already constrained by BIP34.",
               "confidence": "high"
             },
             {
               "target": "bips:65",
-              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
-              "reason": "The proposal's version-bit availability depends on the header version constraints introduced by this soft fork.",
+              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65, we only have 0x7FFFFFFB possible nVersion values available.",
+              "reason": "The proposal's allowable nVersion range and bit allocation depend on constraints introduced by BIP65.",
               "confidence": "high"
             },
             {
               "target": "bips:66",
-              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
-              "reason": "The proposal's version-bit signaling space is limited by this consensus rule's version requirements.",
+              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65, we only have 0x7FFFFFFB possible nVersion values available.",
+              "reason": "The proposal's allowable nVersion range and bit allocation depend on constraints introduced by BIP66.",
               "confidence": "high"
-            },
-            {
-              "target": "bips:68",
-              "evidence": "typical examples of this would be when previously valid transactions cease to be valid, such as BIPs 16, 65, 66, 68, 112, and 113",
-              "reason": "The getblocktemplate rule prefix semantics are defined by how soft forks like this one change transaction validity, which this proposal leverages for mining template behavior.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:112",
-              "evidence": "typical examples of this would be when previously valid transactions cease to be valid, such as BIPs 16, 65, 66, 68, 112, and 113",
-              "reason": "The proposal uses this soft fork as an example of a rule that affects template handling for pending deployments.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:113",
-              "evidence": "typical examples of this would be when previously valid transactions cease to be valid, such as BIPs 16, 65, 66, 68, 112, and 113",
-              "reason": "The proposal uses this soft fork as an example of a rule that affects template handling for pending deployments.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:141",
-              "evidence": "examples of this would be BIP 34 ... and 141 (since it modifies the txid hashing and adds a commitment to the generation transaction)",
-              "reason": "The getblocktemplate extension relies on the distinction between soft forks that alter block structure versus ordinary validation, exemplified by this proposal.",
-              "confidence": "low"
             }
           ]
         }

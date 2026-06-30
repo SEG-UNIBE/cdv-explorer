@@ -1005,26 +1005,28 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:37:15Z_gpt-5.4-mini_3159fb60",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:24:47Z",
+          "timestamp": "2026-06-30T11:37:27Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
               "evidence": "a specification for its use in backing up Hierarchical Deterministic Wallets described in [BIP-0032]",
-              "reason": "The proposal defines how to back up BIP-32 wallet master seeds and requires BIP-32 seed semantics in its wallet backup specification.",
+              "reason": "The proposal explicitly defines its wallet-backup use case in terms of BIP-0032 hierarchical deterministic wallets and later requires using the BIP-0032 master seed as input.",
               "confidence": "high"
             },
             {
               "target": "bips:39",
               "evidence": "This SLIP is mainly intended as a replacement for [BIP-0039]",
-              "reason": "The proposal is positioned as a replacement for BIP-39 and discusses interoperability and conversion constraints relative to BIP-39 mnemonics.",
-              "confidence": "medium"
+              "reason": "The proposal is positioned as a replacement for BIP-0039 and discusses conversion and incompatibility constraints relative to BIP-0039 mnemonics.",
+              "confidence": "high"
             },
             {
               "target": "bips:173",
               "evidence": "The checksum design is heavily inspired by Bech32 defined in [BIP-0173]",
-              "reason": "SLIP-39's RS1024 checksum design relies on the checksum model introduced by BIP-173.",
-              "confidence": "high"
+              "reason": "SLIP-0039’s checksum mechanism and error-detection policy are designed around Bech32-style checksum principles from the target proposal.",
+              "confidence": "medium"
             }
           ]
         }

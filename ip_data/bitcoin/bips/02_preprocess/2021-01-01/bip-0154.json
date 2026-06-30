@@ -847,14 +847,24 @@
       "body_extracted_regex": [],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:23:19Z",
+          "timestamp": "2026-06-30T11:36:08Z",
+          "status": "api_error",
+          "dependencies": [],
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 200000, Requested 11177. Please try again in 3.353s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+        },
+        {
+          "run_id": "2026-06-30T11:38:11Z_gpt-5.4-mini_422651ce",
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-30T11:38:22Z",
+          "status": "success",
           "dependencies": [
             {
-              "target": "bips:141",
-              "evidence": "The challenge must match the given challenge up to and including the signature bytes",
-              "reason": "The proposal’s challenge/solution serialization and message handling are built around SegWit-style witness-like serialization constraints, but this is not a substantive reliance on BIP 141; no technical dependence is established.",
-              "confidence": "low"
+              "target": "bips:42",
+              "evidence": "The Bitcoin network has a maximum number of inbound and outbound connections (125).",
+              "reason": "The proposal uses the existing peer-connection limit and defines POW slots as a subdivision of inbound connections, so its behavior depends on the connection-limit model introduced by the referenced proposal.",
+              "confidence": "medium"
             }
           ]
         }

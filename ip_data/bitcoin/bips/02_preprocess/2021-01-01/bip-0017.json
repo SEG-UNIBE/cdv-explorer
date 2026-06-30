@@ -627,31 +627,33 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-26T11:22:37Z",
+          "timestamp": "2026-06-30T11:35:10Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:11",
-              "evidence": "The [[bip-0011.mediawiki|M-of-N Multisignature Transactions (BIP 11)]]",
-              "reason": "The proposal's standard transaction examples and supported redeem scripts rely on the multisignature script type defined by BIP 11.",
-              "confidence": "low"
+              "evidence": "one of the other standard transaction types",
+              "reason": "The new transaction type is defined to contain an appended script that must itself be a standard transaction type, and the examples specifically use multisignature scripts from BIP 11.",
+              "confidence": "medium"
             },
             {
               "target": "bips:12",
-              "evidence": "This BIP replaces BIP 12 and BIP 16, which propose evaluating a Script from the stack after verifying its hash.",
-              "reason": "The proposal directly supersedes BIP 12's hash-then-execute mechanism and uses its conceptual model for pay-to-script-hash behavior.",
+              "evidence": "This BIP replaces BIP 12 and BIP 16",
+              "reason": "The proposal explicitly supersedes BIP 12 and its OP_EVAL-based script evaluation model while preserving compatibility with it.",
               "confidence": "high"
             },
             {
               "target": "bips:13",
               "evidence": "The Motivation for this BIP (and BIP 13, the pay-to-script-hash address type)",
-              "reason": "The proposal depends on the pay-to-script-hash address format for the fixed 20-byte hash transaction type it defines.",
+              "reason": "The proposal is designed around the pay-to-script-hash address format and operational model introduced by BIP 13.",
               "confidence": "medium"
             },
             {
               "target": "bips:16",
-              "evidence": "This BIP replaces BIP 12 and BIP 16, which propose evaluating a Script from the stack after verifying its hash.",
-              "reason": "The proposed script and transaction type are a replacement for BIP 16-style pay-to-script-hash semantics, so it substantively relies on and amends that mechanism.",
+              "evidence": "This BIP replaces BIP 12 and BIP 16",
+              "reason": "The proposal is framed as a replacement for BIP 16’s pay-to-script-hash semantics and validation approach.",
               "confidence": "high"
             }
           ]

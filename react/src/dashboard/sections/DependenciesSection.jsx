@@ -14,6 +14,7 @@ import {
   buildDefaultTypeMapping,
   buildGroundTruthEvaluation,
   GROUND_TRUTH_CUTOFF_MODE_ALL,
+  GROUND_TRUTH_CUTOFF_MODE_BETWEEN,
   GROUND_TRUTH_CUTOFF_MODE_ON_OR_BEFORE,
   GROUND_TRUTH_CUTOFF_MODE_OPTIONS,
   GROUND_TRUTH_MATCH_MODE_EDGE_ONLY,
@@ -42,7 +43,11 @@ const SCOPE_TOOLTIP = 'Reviewed scores only completed benchmark reviews from ips
 const GT_CUTOFF_TOOLTIP = '<strong>All completed reviews</strong>: use the full reviewed benchmark scope and all curated GT edges.'
   + '<br /><br /><strong>Reviewed on or before</strong>: include only reviewed IPs and curated GT edges whose '
   + '<code>reviewed_at</code> date is on or before the selected cutoff. Review dates refer to the latest available proposal '
-  + 'version at review time.';
+  + 'version at review time.'
+  + '<br /><br /><strong>Reviewed on or later</strong>: include only reviewed IPs and curated GT edges whose '
+  + '<code>reviewed_at</code> date is on or after the selected cutoff.'
+  + '<br /><br /><strong>Reviewed between</strong>: include only reviewed IPs and curated GT edges whose '
+  + '<code>reviewed_at</code> date falls within the selected date range.';
 
 function DependencyMetricsCard({
   ecosystem,
@@ -208,7 +213,8 @@ export function DependenciesSection({
   const [groundTruthMatchMode, setGroundTruthMatchMode] = useState(GROUND_TRUTH_MATCH_MODE_EDGE_ONLY);
   const [restrictToReviewedSources, setRestrictToReviewedSources] = useState(true);
   const [groundTruthCutoffMode, setGroundTruthCutoffMode] = useState(GROUND_TRUTH_CUTOFF_MODE_ALL);
-  const [groundTruthCutoffDate, setGroundTruthCutoffDate] = useState('');
+  const [groundTruthCutoffStartDate, setGroundTruthCutoffStartDate] = useState('');
+  const [groundTruthCutoffEndDate, setGroundTruthCutoffEndDate] = useState('');
   const {
     showTooltip: showMetricTooltip,
     showHtmlTooltip: showHtmlMetricTooltip,
@@ -259,15 +265,21 @@ export function DependenciesSection({
   const latestGroundTruthReviewDate = availableGroundTruthReviewDates[availableGroundTruthReviewDates.length - 1] || '';
   useEffect(() => {
     if (!availableGroundTruthReviewDates.length) {
-      if (groundTruthCutoffDate) {
-        setGroundTruthCutoffDate('');
+      if (groundTruthCutoffStartDate) {
+        setGroundTruthCutoffStartDate('');
+      }
+      if (groundTruthCutoffEndDate) {
+        setGroundTruthCutoffEndDate('');
       }
       return;
     }
-    if (!groundTruthCutoffDate || !availableGroundTruthReviewDates.includes(groundTruthCutoffDate)) {
-      setGroundTruthCutoffDate(latestGroundTruthReviewDate);
+    if (!groundTruthCutoffStartDate) {
+      setGroundTruthCutoffStartDate(latestGroundTruthReviewDate);
     }
-  }, [availableGroundTruthReviewDates, groundTruthCutoffDate, latestGroundTruthReviewDate]);
+    if (!groundTruthCutoffEndDate) {
+      setGroundTruthCutoffEndDate(latestGroundTruthReviewDate);
+    }
+  }, [availableGroundTruthReviewDates, groundTruthCutoffStartDate, groundTruthCutoffEndDate, latestGroundTruthReviewDate]);
   const groundTruthEvaluation = useMemo(
     () => buildGroundTruthEvaluation(selectedDataset, {
       matchMode: groundTruthMatchMode,
@@ -275,9 +287,20 @@ export function DependenciesSection({
       typeMapping,
       restrictToReviewedSources,
       gtCutoffMode: groundTruthCutoffMode,
-      gtCutoffDate: groundTruthCutoffDate,
+      gtCutoffDate: groundTruthCutoffStartDate,
+      gtCutoffStartDate: groundTruthCutoffStartDate,
+      gtCutoffEndDate: groundTruthCutoffEndDate,
     }),
-    [groundTruthMatchMode, selectedDataset, relationOntology, typeMapping, restrictToReviewedSources, groundTruthCutoffMode, groundTruthCutoffDate],
+    [
+      groundTruthMatchMode,
+      selectedDataset,
+      relationOntology,
+      typeMapping,
+      restrictToReviewedSources,
+      groundTruthCutoffMode,
+      groundTruthCutoffStartDate,
+      groundTruthCutoffEndDate,
+    ],
   );
   const groundTruthSummaryCards = useMemo(() => (
     groundTruthEvaluation
@@ -628,15 +651,30 @@ export function DependenciesSection({
                       aria-label="Ground-truth cutoff mode"
                       className="ground-truth-cutoff__mode"
                     />
-                    <input
-                      type="date"
-                      className="p-inputtext ground-truth-cutoff__date"
-                      value={groundTruthCutoffDate}
-                      onChange={(event) => setGroundTruthCutoffDate(event.target.value)}
-                      disabled={groundTruthCutoffMode !== GROUND_TRUTH_CUTOFF_MODE_ON_OR_BEFORE || !availableGroundTruthReviewDates.length}
-                      max={latestGroundTruthReviewDate || undefined}
-                      aria-label="Ground-truth cutoff date"
-                    />
+                    <div className="ground-truth-cutoff__dates">
+                      <input
+                        type="date"
+                        className="p-inputtext ground-truth-cutoff__date"
+                        value={groundTruthCutoffStartDate}
+                        onChange={(event) => setGroundTruthCutoffStartDate(event.target.value)}
+                        disabled={groundTruthCutoffMode === GROUND_TRUTH_CUTOFF_MODE_ALL || !availableGroundTruthReviewDates.length}
+                        aria-label={
+                          groundTruthCutoffMode === GROUND_TRUTH_CUTOFF_MODE_BETWEEN
+                            ? 'Ground-truth cutoff start date'
+                            : 'Ground-truth cutoff date'
+                        }
+                      />
+                      {groundTruthCutoffMode === GROUND_TRUTH_CUTOFF_MODE_BETWEEN ? (
+                        <input
+                          type="date"
+                          className="p-inputtext ground-truth-cutoff__date"
+                          value={groundTruthCutoffEndDate}
+                          onChange={(event) => setGroundTruthCutoffEndDate(event.target.value)}
+                          disabled={!availableGroundTruthReviewDates.length}
+                          aria-label="Ground-truth cutoff end date"
+                        />
+                      ) : null}
+                    </div>
                   </div>
                 </div>
               </div>

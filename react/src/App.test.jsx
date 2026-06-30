@@ -20,6 +20,8 @@ import { getSlipCommitUrl, getSlipUrl, normalizeSlipId } from './slipLinks';
 import { getRepositoryCommitUrl, getRepositoryProposalUrl } from './proposalLinkResolver';
 import { renderProposalListHtml } from './bipTooltipContent';
 import {
+  GROUND_TRUTH_CUTOFF_MODE_BETWEEN,
+  GROUND_TRUTH_CUTOFF_MODE_ON_OR_AFTER,
   buildDefaultTypeMapping,
   buildGroundTruthEvaluation,
   GROUND_TRUTH_CUTOFF_MODE_ON_OR_BEFORE,
@@ -704,6 +706,70 @@ test('ground-truth evaluation can filter curated edges by review-date cutoff', (
   expect(evaluation.goldEdgeCount).toBe(1);
   expect(evaluation.reviewedProposalCount).toBe(1);
   expect(regex).toEqual(expect.objectContaining({ tp: 1, fp: 1, fn: 0 }));
+});
+
+test('ground-truth evaluation can filter curated edges reviewed on or later than a cutoff', () => {
+  const dataset = {
+    nodes: [{ id: '1' }, { id: '2' }, { id: '3' }],
+    groundTruthReviewedIps: [
+      { ip: 'bips:1', reviewed_at: '2026-06-20' },
+      { ip: 'bips:2', reviewed_at: '2026-06-22' },
+    ],
+    links: {
+      [GROUND_TRUTH_CURATED]: [
+        { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'depends_on', reviewed_at: '2026-06-20' },
+        { sourceKey: 'bips:2', targetKey: 'bips:3', relation_type: 'depends_on', reviewed_at: '2026-06-22' },
+      ],
+      [BODY_EXTRACTED_REGEX]: [
+        { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'reference' },
+        { sourceKey: 'bips:2', targetKey: 'bips:3', relation_type: 'reference' },
+      ],
+    },
+  };
+
+  const evaluation = buildGroundTruthEvaluation(dataset, {
+    gtCutoffMode: GROUND_TRUTH_CUTOFF_MODE_ON_OR_AFTER,
+    gtCutoffDate: '2026-06-21',
+  });
+  const regex = evaluation.approaches.find((approach) => approach.approach === BODY_EXTRACTED_REGEX);
+
+  expect(evaluation.goldEdgeCount).toBe(1);
+  expect(evaluation.reviewedProposalCount).toBe(1);
+  expect(regex).toEqual(expect.objectContaining({ tp: 1, fp: 0, fn: 0 }));
+});
+
+test('ground-truth evaluation can filter curated edges reviewed between two dates', () => {
+  const dataset = {
+    nodes: [{ id: '1' }, { id: '2' }, { id: '3' }, { id: '4' }],
+    groundTruthReviewedIps: [
+      { ip: 'bips:1', reviewed_at: '2026-06-20' },
+      { ip: 'bips:2', reviewed_at: '2026-06-22' },
+      { ip: 'bips:3', reviewed_at: '2026-06-24' },
+    ],
+    links: {
+      [GROUND_TRUTH_CURATED]: [
+        { sourceKey: 'bips:1', targetKey: 'bips:4', relation_type: 'depends_on', reviewed_at: '2026-06-20' },
+        { sourceKey: 'bips:2', targetKey: 'bips:4', relation_type: 'depends_on', reviewed_at: '2026-06-22' },
+        { sourceKey: 'bips:3', targetKey: 'bips:4', relation_type: 'depends_on', reviewed_at: '2026-06-24' },
+      ],
+      [BODY_EXTRACTED_REGEX]: [
+        { sourceKey: 'bips:1', targetKey: 'bips:4', relation_type: 'reference' },
+        { sourceKey: 'bips:2', targetKey: 'bips:4', relation_type: 'reference' },
+        { sourceKey: 'bips:3', targetKey: 'bips:4', relation_type: 'reference' },
+      ],
+    },
+  };
+
+  const evaluation = buildGroundTruthEvaluation(dataset, {
+    gtCutoffMode: GROUND_TRUTH_CUTOFF_MODE_BETWEEN,
+    gtCutoffStartDate: '2026-06-21',
+    gtCutoffEndDate: '2026-06-23',
+  });
+  const regex = evaluation.approaches.find((approach) => approach.approach === BODY_EXTRACTED_REGEX);
+
+  expect(evaluation.goldEdgeCount).toBe(1);
+  expect(evaluation.reviewedProposalCount).toBe(1);
+  expect(regex).toEqual(expect.objectContaining({ tp: 1, fp: 0, fn: 0 }));
 });
 
 test('runtime environment detection distinguishes local dev and prod hosts', () => {

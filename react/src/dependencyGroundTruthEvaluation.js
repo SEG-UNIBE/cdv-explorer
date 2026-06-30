@@ -23,10 +23,14 @@ export const GROUND_TRUTH_MATCH_MODE_OPTIONS = [
 
 export const GROUND_TRUTH_CUTOFF_MODE_ALL = 'all';
 export const GROUND_TRUTH_CUTOFF_MODE_ON_OR_BEFORE = 'on_or_before';
+export const GROUND_TRUTH_CUTOFF_MODE_ON_OR_AFTER = 'on_or_after';
+export const GROUND_TRUTH_CUTOFF_MODE_BETWEEN = 'between';
 
 export const GROUND_TRUTH_CUTOFF_MODE_OPTIONS = [
   { label: 'All completed reviews', value: GROUND_TRUTH_CUTOFF_MODE_ALL },
   { label: 'Reviewed on or before', value: GROUND_TRUTH_CUTOFF_MODE_ON_OR_BEFORE },
+  { label: 'Reviewed on or later', value: GROUND_TRUTH_CUTOFF_MODE_ON_OR_AFTER },
+  { label: 'Reviewed between', value: GROUND_TRUTH_CUTOFF_MODE_BETWEEN },
 ];
 
 // Sentinel target meaning "match any ground-truth type for this directed pair".
@@ -252,6 +256,8 @@ export function buildGroundTruthEvaluation(dataset, options = {}) {
     restrictToReviewedSources = true,
     gtCutoffMode = GROUND_TRUTH_CUTOFF_MODE_ALL,
     gtCutoffDate = '',
+    gtCutoffStartDate = '',
+    gtCutoffEndDate = '',
   } = options;
   const isExactType = matchMode === GROUND_TRUTH_MATCH_MODE_EXACT_TYPE;
   const linksByType = dataset?.links || {};
@@ -261,22 +267,40 @@ export function buildGroundTruthEvaluation(dataset, options = {}) {
     : [];
 
   const normalizedCutoffDate = normalizeReviewDate(gtCutoffDate);
-  const reviewedIps = allReviewedIps.filter((entry) => {
-    const reviewedAt = normalizeReviewDate(entry?.reviewed_at);
+  const normalizedCutoffStartDate = normalizeReviewDate(gtCutoffStartDate || gtCutoffDate);
+  const normalizedCutoffEndDate = normalizeReviewDate(gtCutoffEndDate || gtCutoffDate);
+  const matchesCutoff = (reviewedAt) => {
     if (!reviewedAt) {
       return false;
     }
     if (gtCutoffMode === GROUND_TRUTH_CUTOFF_MODE_ON_OR_BEFORE && normalizedCutoffDate) {
       return reviewedAt <= normalizedCutoffDate;
     }
+    if (gtCutoffMode === GROUND_TRUTH_CUTOFF_MODE_ON_OR_AFTER && normalizedCutoffDate) {
+      return reviewedAt >= normalizedCutoffDate;
+    }
+    if (
+      gtCutoffMode === GROUND_TRUTH_CUTOFF_MODE_BETWEEN
+      && normalizedCutoffStartDate
+      && normalizedCutoffEndDate
+    ) {
+      const rangeStart = normalizedCutoffStartDate <= normalizedCutoffEndDate
+        ? normalizedCutoffStartDate
+        : normalizedCutoffEndDate;
+      const rangeEnd = normalizedCutoffStartDate <= normalizedCutoffEndDate
+        ? normalizedCutoffEndDate
+        : normalizedCutoffStartDate;
+      return reviewedAt >= rangeStart && reviewedAt <= rangeEnd;
+    }
     return true;
+  };
+  const reviewedIps = allReviewedIps.filter((entry) => {
+    const reviewedAt = normalizeReviewDate(entry?.reviewed_at);
+    return matchesCutoff(reviewedAt);
   });
-  const groundTruthEdges = gtCutoffMode === GROUND_TRUTH_CUTOFF_MODE_ON_OR_BEFORE && normalizedCutoffDate
-    ? allGroundTruthEdges.filter((edge) => {
-      const reviewedAt = normalizeReviewDate(edge?.reviewed_at);
-      return reviewedAt && reviewedAt <= normalizedCutoffDate;
-    })
-    : allGroundTruthEdges;
+  const groundTruthEdges = gtCutoffMode === GROUND_TRUTH_CUTOFF_MODE_ALL
+    ? allGroundTruthEdges
+    : allGroundTruthEdges.filter((edge) => matchesCutoff(normalizeReviewDate(edge?.reviewed_at)));
 
   const reviewedSourceKeys = new Set(reviewedIps.map(reviewedIpKey).filter(Boolean));
   const curatedTargetKeys = new Set(groundTruthEdges.map(edgeTargetKey).filter(Boolean));
@@ -340,6 +364,8 @@ export function buildGroundTruthEvaluation(dataset, options = {}) {
     restrictToReviewedSources,
     gtCutoffMode,
     gtCutoffDate: normalizedCutoffDate,
+    gtCutoffStartDate: normalizedCutoffStartDate,
+    gtCutoffEndDate: normalizedCutoffEndDate,
     reviewedProposalCount: reviewedSourceKeys.size,
     curatedTargetCount: curatedTargetKeys.size,
     totalProposalCount,

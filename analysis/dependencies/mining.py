@@ -5,7 +5,15 @@ from json import JSONDecodeError, loads
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Mapping
 
-from openai import OpenAI, RateLimitError
+try:
+    from openai import OpenAI, RateLimitError
+except ImportError:
+    from openai import OpenAI
+
+    class RateLimitError(Exception):
+        def __init__(self, *args, response=None, **kwargs):
+            super().__init__(*args)
+            self.response = response
 
 LLM_RATE_LIMIT_MAX_ATTEMPTS = 4
 LLM_RATE_LIMIT_WAIT_SECONDS = 1.5

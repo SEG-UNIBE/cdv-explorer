@@ -9,6 +9,7 @@ if "openai" not in sys.modules:
     sys.modules["openai"] = fake_openai
 
 from analysis.dependencies.mining import (
+    _call_with_rate_limit_retry,
     build_llm_semantic_dependency_manifest_record,
     create_explicit_dependency_targets,
     create_reference_list,
@@ -276,6 +277,32 @@ class PrepareLlmDependencyTextTests(unittest.TestCase):
 
 
 class LlmModelConfigTests(unittest.TestCase):
+    def test_rate_limit_retry_retries_and_uses_retry_after(self):
+        attempts = {"count": 0}
+
+        class FakeRateLimitError(Exception):
+            def __init__(self, retry_after=None):
+                headers = {}
+                if retry_after is not None:
+                    headers["retry-after"] = str(retry_after)
+                self.response = types.SimpleNamespace(headers=headers)
+
+        def flaky_call():
+            attempts["count"] += 1
+            if attempts["count"] < 3:
+                raise FakeRateLimitError(retry_after=2.0)
+            return "ok"
+
+        with (
+            patch("analysis.dependencies.mining.RateLimitError", FakeRateLimitError),
+            patch("analysis.dependencies.mining.time.sleep") as sleep,
+        ):
+            result = _call_with_rate_limit_retry(flaky_call)
+
+        self.assertEqual(result, "ok")
+        self.assertEqual(attempts["count"], 3)
+        self.assertEqual([call.args[0] for call in sleep.call_args_list], [2.0, 2.0])
+
     def test_manifest_record_preserves_shared_prompt_provenance(self):
         context = SourceContext.from_config(
             ECOSYSTEM_REGISTRY["bitcoin"]["sources"]["bips"],

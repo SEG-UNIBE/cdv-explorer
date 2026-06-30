@@ -6,11 +6,14 @@ import {
   COLOR_BY_OPTION_VALUES,
   LAYOUT_OPTION_VALUES,
   LINK_TYPE_OPTION_VALUES,
+  GROUND_TRUTH_CURATED,
+  RELATION_SUBTYPE_ALL_VALUE,
   buildComparisonLinks,
   buildDisplayedLinks,
   filterCrossSourceDependencyGraph,
   formatProposalFilterValue,
   formatSnapshotFilePart,
+  getGroundTruthRelationSubtypeOptions,
   getDependencyNodeAttributeFallbackLabel,
   isCrossSourceDependencyEdge,
   normalizeImportedPositions,
@@ -38,6 +41,8 @@ export function useNetworkDiagramState({
   const [colorBy, setColorBy] = useState('layer');
   const [linkType, setLinkType] = useState(DEFAULT_DEPENDENCY_APPROACH);
   const [baselineType, setBaselineType] = useState(BASELINE_NONE_VALUE);
+  const [linkSubtype, setLinkSubtype] = useState(RELATION_SUBTYPE_ALL_VALUE);
+  const [baselineSubtype, setBaselineSubtype] = useState(RELATION_SUBTYPE_ALL_VALUE);
   const [layoutMode, setLayoutMode] = useState('balanced');
   const [physicsEnabled, setPhysicsEnabled] = useState(true);
   const [importedLayout, setImportedLayout] = useState(null);
@@ -45,8 +50,28 @@ export function useNetworkDiagramState({
   const [attributeFilterDimension, setAttributeFilterDimension] = useState('');
   const [attributeFilterValues, setAttributeFilterValues] = useState([]);
   const linksByType = data?.links || {};
+  const groundTruthRelationSubtypeOptions = useMemo(
+    () => getGroundTruthRelationSubtypeOptions(linksByType),
+    [linksByType]
+  );
+  const validGroundTruthRelationSubtypeValues = useMemo(
+    () => new Set(groundTruthRelationSubtypeOptions.map((option) => option.value)),
+    [groundTruthRelationSubtypeOptions]
+  );
 
   const isDifferentialMode = baselineType !== BASELINE_NONE_VALUE;
+
+  useEffect(() => {
+    if (!validGroundTruthRelationSubtypeValues.has(linkSubtype)) {
+      setLinkSubtype(RELATION_SUBTYPE_ALL_VALUE);
+    }
+  }, [linkSubtype, validGroundTruthRelationSubtypeValues]);
+
+  useEffect(() => {
+    if (!validGroundTruthRelationSubtypeValues.has(baselineSubtype)) {
+      setBaselineSubtype(RELATION_SUBTYPE_ALL_VALUE);
+    }
+  }, [baselineSubtype, validGroundTruthRelationSubtypeValues]);
 
   const baseNodes = useMemo(
     () => (Array.isArray(data?.nodes) ? data.nodes.map((node) => ({ ...node })) : []),
@@ -55,13 +80,18 @@ export function useNetworkDiagramState({
 
   const baseLinks = useMemo(() => {
     if (isDifferentialMode) {
-      return buildComparisonLinks(data?.links || {}, linkType, baselineType);
+      return buildComparisonLinks(data?.links || {}, linkType, baselineType, {
+        approachRelationSubtype: linkType === GROUND_TRUTH_CURATED ? linkSubtype : RELATION_SUBTYPE_ALL_VALUE,
+        baselineRelationSubtype: baselineType === GROUND_TRUTH_CURATED ? baselineSubtype : RELATION_SUBTYPE_ALL_VALUE,
+      });
     }
-    return buildDisplayedLinks(data?.links || {}, linkType).map((edge) => ({
+    return buildDisplayedLinks(data?.links || {}, linkType, {
+      relationSubtype: linkType === GROUND_TRUTH_CURATED ? linkSubtype : RELATION_SUBTYPE_ALL_VALUE,
+    }).map((edge) => ({
       ...edge,
       comparisonStatus: 'approach_only',
     }));
-  }, [baselineType, data, isDifferentialMode, linkType]);
+  }, [baselineSubtype, baselineType, data, isDifferentialMode, linkSubtype, linkType]);
 
   const canFilterCrossSource = useMemo(
     () => baseLinks.some(isCrossSourceDependencyEdge),
@@ -195,6 +225,19 @@ export function useNetworkDiagramState({
         setBaselineType(importedBaselineType);
       }
 
+      const importedLinkSubtype = String(payload?.link_subtype || '').trim();
+      setLinkSubtype(
+        validGroundTruthRelationSubtypeValues.has(importedLinkSubtype)
+          ? importedLinkSubtype
+          : RELATION_SUBTYPE_ALL_VALUE
+      );
+      const importedBaselineSubtype = String(payload?.baseline_subtype || '').trim();
+      setBaselineSubtype(
+        validGroundTruthRelationSubtypeValues.has(importedBaselineSubtype)
+          ? importedBaselineSubtype
+          : RELATION_SUBTYPE_ALL_VALUE
+      );
+
       if (LAYOUT_OPTION_VALUES.has(payload?.layout_mode)) {
         setLayoutMode(payload.layout_mode);
       }
@@ -264,6 +307,11 @@ export function useNetworkDiagramState({
     setLinkType,
     baselineType,
     setBaselineType,
+    linkSubtype,
+    setLinkSubtype,
+    baselineSubtype,
+    setBaselineSubtype,
+    groundTruthRelationSubtypeOptions,
     layoutMode,
     setLayoutMode,
     physicsEnabled,

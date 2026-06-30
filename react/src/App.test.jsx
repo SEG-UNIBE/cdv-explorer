@@ -38,7 +38,12 @@ import {
   scopeDependencyLinksForSource,
 } from './data';
 import { filterCrossSourceAuthorNetwork } from './authorNetwork/authorNetworkUtils';
-import { filterCrossSourceDependencyGraph } from './networkDiagram/networkDiagramUtils';
+import {
+  buildComparisonLinks,
+  buildDisplayedLinks,
+  filterCrossSourceDependencyGraph,
+  RELATION_SUBTYPE_ALL_VALUE,
+} from './networkDiagram/networkDiagramUtils';
 import {
   getDefaultExperimentalFeaturesEnabled,
   getEnvironmentBadge,
@@ -977,6 +982,51 @@ test('source-scopes canonical dependency edge graph keys for display', () => {
     sourceKey: 'bips:32',
     targetKey: 'slips:44',
   });
+});
+
+test('ground-truth graph links can be filtered to a selected relation subtype', () => {
+  const linksByType = {
+    [GROUND_TRUTH_CURATED]: [
+      { source: 'bips:1', target: 'bips:2', relation_type: 'depends_on' },
+      { source: 'bips:3', target: 'bips:4', relation_type: 'supersedes' },
+    ],
+  };
+
+  expect(buildDisplayedLinks(linksByType, GROUND_TRUTH_CURATED, {
+    relationSubtype: RELATION_SUBTYPE_ALL_VALUE,
+  })).toHaveLength(2);
+
+  const filtered = buildDisplayedLinks(linksByType, GROUND_TRUTH_CURATED, {
+    relationSubtype: 'supersedes',
+  });
+  expect(filtered).toHaveLength(1);
+  expect(filtered[0]).toMatchObject({
+    source: 'bips:3',
+    target: 'bips:4',
+    relationType: 'supersedes',
+    semanticRelationType: 'supersedes',
+  });
+});
+
+test('comparison links preserve approach and baseline relation subtypes', () => {
+  const linksByType = {
+    [PREAMBLE_EXTRACTED]: {
+      requires: [
+        { source: 'bips:1', target: 'bips:2', relation_type: 'requires' },
+      ],
+    },
+    [GROUND_TRUTH_CURATED]: [
+      { source: 'bips:1', target: 'bips:2', relation_type: 'depends_on' },
+    ],
+  };
+
+  const [edge] = buildComparisonLinks(linksByType, PREAMBLE_EXTRACTED, GROUND_TRUTH_CURATED, {
+    baselineRelationSubtype: 'depends_on',
+  });
+
+  expect(edge.comparisonStatus).toBe('overlap');
+  expect(edge.approachRelationType).toBe('requires');
+  expect(edge.baselineRelationType).toBe('depends_on');
 });
 
 test('filters dependency graph to cross-source edges and their endpoint nodes', () => {

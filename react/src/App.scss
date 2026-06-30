@@ -2190,6 +2190,19 @@
     min-width: 0;
   }
 
+  .dependency-graph-type-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(210px, 0.72fr);
+    gap: 0.55rem;
+    align-items: center;
+    min-width: 0;
+  }
+
+  .dependency-graph-type-row > .p-dropdown,
+  .dependency-graph-type-row__subtype {
+    min-width: 0;
+  }
+
   .network-layout-picker {
     grid-template-columns: var(--dependency-control-label-width) minmax(0, 1fr);
   }
@@ -3267,6 +3280,10 @@
     .network-layout-picker {
       grid-template-columns: 1fr;
       gap: 0.35rem;
+    }
+
+    .dependency-graph-type-row {
+      grid-template-columns: 1fr;
     }
 
     .dependency-graph-search-control .proposal-filter-control__chips {

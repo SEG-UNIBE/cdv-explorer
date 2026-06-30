@@ -43,6 +43,7 @@ export const LINK_TYPE_OPTION_VALUES = new Set(LINK_TYPE_OPTIONS.map((option) =>
 export const ATTRIBUTE_FILTER_DIMENSION_VALUES = new Set(
   ATTRIBUTE_FILTER_DIMENSION_OPTIONS.map((option) => option.value)
 );
+export const RELATION_SUBTYPE_ALL_VALUE = '__all__';
 
 const PREAMBLE_RELATION_STROKE = '#667085';
 const PREAMBLE_RELATION_DASH_PATTERNS = [null, '8 5', '2.5 4', '10 4 2 4', '4 4'];
@@ -89,6 +90,24 @@ export function formatRelationTypeLabel(relationType) {
     .filter(Boolean)
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(' ');
+}
+
+export function getGroundTruthRelationSubtypeOptions(linksByType) {
+  const relationTypes = Array.from(
+    new Set(
+      (linksByType?.[GROUND_TRUTH_CURATED] || [])
+        .map((edge) => String(edge?.relation_type || edge?.relationType || '').trim())
+        .filter(Boolean)
+    )
+  ).sort((left, right) => formatRelationTypeLabel(left).localeCompare(formatRelationTypeLabel(right)));
+
+  return [
+    { label: 'All relation types', value: RELATION_SUBTYPE_ALL_VALUE },
+    ...relationTypes.map((relationType) => ({
+      label: formatRelationTypeLabel(relationType),
+      value: relationType,
+    })),
+  ];
 }
 
 export function getPreambleRelationTypes(linksByType) {
@@ -290,7 +309,21 @@ export function normalizeImportedPositions(payload) {
   return normalizedPositions;
 }
 
-export function buildDisplayedLinks(linksByType, linkType) {
+function filterEdgesByRelationSubtype(edges, relationSubtype) {
+  if (!Array.isArray(edges)) {
+    return [];
+  }
+  if (!relationSubtype || relationSubtype === RELATION_SUBTYPE_ALL_VALUE) {
+    return edges;
+  }
+  return edges.filter((edge) => {
+    const edgeRelationType = String(edge?.relation_type || edge?.relationType || edge?.semanticRelationType || '').trim();
+    return edgeRelationType === relationSubtype;
+  });
+}
+
+export function buildDisplayedLinks(linksByType, linkType, options = {}) {
+  const relationSubtype = options?.relationSubtype || RELATION_SUBTYPE_ALL_VALUE;
   if (linkType === PREAMBLE_EXTRACTED) {
     const explicit = linksByType?.[PREAMBLE_EXTRACTED] || {};
     return Object.entries(explicit)
@@ -302,7 +335,7 @@ export function buildDisplayedLinks(linksByType, linkType) {
         key: `${relationType}-${edgeGraphSourceId(edge)}-${edgeGraphTargetId(edge)}-${index}`,
       })));
   }
-  return (linksByType?.[linkType] || []).map((edge, index) => ({
+  return filterEdgesByRelationSubtype(linksByType?.[linkType] || [], linkType === GROUND_TRUTH_CURATED ? relationSubtype : RELATION_SUBTYPE_ALL_VALUE).map((edge, index) => ({
     ...edge,
     approachType: linkType,
     relationType: edge.relation_type || linkType,
@@ -311,7 +344,8 @@ export function buildDisplayedLinks(linksByType, linkType) {
   }));
 }
 
-export function getLinkSetForType(linksByType, linkType) {
+export function getLinkSetForType(linksByType, linkType, options = {}) {
+  const relationSubtype = options?.relationSubtype || RELATION_SUBTYPE_ALL_VALUE;
   if (linkType === PREAMBLE_EXTRACTED) {
     const explicit = linksByType?.[PREAMBLE_EXTRACTED] || {};
     return Object.values(explicit)
@@ -321,16 +355,20 @@ export function getLinkSetForType(linksByType, linkType) {
         target: edgeGraphTargetId(edge),
       })));
   }
-  return (linksByType?.[linkType] || []).map((edge) => ({
+  return filterEdgesByRelationSubtype(linksByType?.[linkType] || [], linkType === GROUND_TRUTH_CURATED ? relationSubtype : RELATION_SUBTYPE_ALL_VALUE).map((edge) => ({
     ...edge,
     source: edgeGraphSourceId(edge),
     target: edgeGraphTargetId(edge),
   }));
 }
 
-export function buildComparisonLinks(linksByType, approachType, baselineType) {
-  const approachEdges = getLinkSetForType(linksByType, approachType);
-  const baselineEdges = getLinkSetForType(linksByType, baselineType);
+export function buildComparisonLinks(linksByType, approachType, baselineType, options = {}) {
+  const approachEdges = getLinkSetForType(linksByType, approachType, {
+    relationSubtype: options?.approachRelationSubtype,
+  });
+  const baselineEdges = getLinkSetForType(linksByType, baselineType, {
+    relationSubtype: options?.baselineRelationSubtype,
+  });
   const approachByKey = new Map(approachEdges.map((edge) => [buildEdgeKey(edge.source, edge.target), edge]));
   const baselineByKey = new Map(baselineEdges.map((edge) => [buildEdgeKey(edge.source, edge.target), edge]));
   const approachKeys = new Set(approachByKey.keys());
@@ -339,7 +377,9 @@ export function buildComparisonLinks(linksByType, approachType, baselineType) {
 
   return Array.from(combinedKeys).map((edgeKey, index) => {
     const [source, target] = edgeKey.split('->');
-    const sourceEdge = approachByKey.get(edgeKey) || baselineByKey.get(edgeKey) || {};
+    const approachEdge = approachByKey.get(edgeKey) || null;
+    const baselineEdge = baselineByKey.get(edgeKey) || null;
+    const sourceEdge = approachEdge || baselineEdge || {};
     let comparisonStatus = 'approach_only';
     if (approachKeys.has(edgeKey) && baselineKeys.has(edgeKey)) {
       comparisonStatus = 'overlap';
@@ -353,6 +393,10 @@ export function buildComparisonLinks(linksByType, approachType, baselineType) {
       approachType,
       relationType: sourceEdge.relationType || sourceEdge.relation_type || approachType,
       semanticRelationType: sourceEdge.semanticRelationType || sourceEdge.relation_type || null,
+      approachRelationType: approachEdge?.relationType || approachEdge?.relation_type || null,
+      approachSemanticRelationType: approachEdge?.semanticRelationType || approachEdge?.relation_type || null,
+      baselineRelationType: baselineEdge?.relationType || baselineEdge?.relation_type || null,
+      baselineSemanticRelationType: baselineEdge?.semanticRelationType || baselineEdge?.relation_type || null,
       comparisonStatus,
       key: `${approachType}-${baselineType}-${comparisonStatus}-${source}-${target}-${index}`,
     };

@@ -47,6 +47,8 @@ export function NetworkDiagramCanvas({
   colorBy,
   linkType,
   baselineType,
+  linkSubtype,
+  baselineSubtype,
   activeLlmModel,
   layoutMode,
   isDifferentialMode,
@@ -376,6 +378,8 @@ export function NetworkDiagramCanvas({
         color_by: colorBy,
         link_type: linkType,
         baseline_type: isDifferentialMode ? baselineType : null,
+        link_subtype: linkType === GROUND_TRUTH_CURATED ? linkSubtype || null : null,
+        baseline_subtype: isDifferentialMode && baselineType === GROUND_TRUTH_CURATED ? baselineSubtype || null : null,
         layout_mode: layoutMode,
         is_differential_mode: isDifferentialMode,
         filter: {
@@ -519,6 +523,8 @@ export function NetworkDiagramCanvas({
       const approachType = edge.approachType || linkType;
       const approachLabel = getLinkTypeLabelForModel(approachType, activeLlmModel);
       const relationLabel = formatRelationTypeLabel(edge.semanticRelationType || edge.relationType);
+      const approachSubtype = edge.approachSemanticRelationType || edge.approachRelationType || null;
+      const baselineSubtypeLabel = edge.baselineSemanticRelationType || edge.baselineRelationType || null;
       const metadataRows = !isDifferentialMode
         ? [
           ['Approach', approachLabel],
@@ -547,8 +553,14 @@ export function NetworkDiagramCanvas({
               ? `Exists in baseline (${getLinkTypeLabelForModel(baselineType, activeLlmModel)})`
               : edge.comparisonStatus === 'baseline_only'
                 ? `Missing from ${getLinkTypeLabelForModel(linkType, activeLlmModel)}`
-                : `Only in ${getLinkTypeLabelForModel(linkType, activeLlmModel)}`
+              : `Only in ${getLinkTypeLabelForModel(linkType, activeLlmModel)}`
           )],
+          ...((linkType === PREAMBLE_EXTRACTED || linkType === GROUND_TRUTH_CURATED) && approachSubtype
+            ? [['Approach subtype', formatRelationTypeLabel(approachSubtype)]]
+            : []),
+          ...((baselineType === PREAMBLE_EXTRACTED || baselineType === GROUND_TRUTH_CURATED) && baselineSubtypeLabel
+            ? [['Baseline subtype', formatRelationTypeLabel(baselineSubtypeLabel)]]
+            : []),
         ];
 
       return renderTooltipCardHtml({
@@ -1028,7 +1040,7 @@ export function NetworkDiagramCanvas({
       svg.selectAll('*').remove();
       d3.select('body').selectAll('.dependency-network-tooltip').remove();
     };
-  }, [attributeFilterDimension, attributeFilterValues, baselineType, colorBy, ecosystem, height, highlightProposal, importedLayout, includeConnections, includeThresholdConnections, isDifferentialMode, layoutMode, linkMode, linkType, links, minRelations, nodes, onlyCrossSource, proposalFilterIds, snapshotLabel, width, exportPayloadRef, legendRef, physicsEnabledRef, redrawGraphRef, simulationRef, updateExportPayloadRef]);
+  }, [attributeFilterDimension, attributeFilterValues, baselineSubtype, baselineType, colorBy, ecosystem, height, highlightProposal, importedLayout, includeConnections, includeThresholdConnections, isDifferentialMode, layoutMode, linkMode, linkSubtype, linkType, links, minRelations, nodes, onlyCrossSource, proposalFilterIds, snapshotLabel, width, exportPayloadRef, legendRef, physicsEnabledRef, redrawGraphRef, simulationRef, updateExportPayloadRef]);
 
   return <svg ref={svgRef} role="img" />;
 }

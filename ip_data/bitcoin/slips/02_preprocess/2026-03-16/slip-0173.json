@@ -1770,25 +1770,27 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:46:34Z_gpt-5.4-mini_dd2b314a",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:00:14Z",
+          "timestamp": "2026-06-30T11:47:17Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:93",
-              "evidence": "The codex32 format is used to store master secret data",
-              "reason": "The codex32 registrations depend on the codex32 format introduced by BIP 93, including its HRP-based encoding and checksum rules.",
-              "confidence": "high"
+              "evidence": "The codex32 format is used to store master secret data.",
+              "reason": "The proposal includes codex32 as one of the registered Bech32-related formats and explicitly identifies it as the codex32 format defined by BIP-0093.",
+              "confidence": "medium"
             },
             {
               "target": "bips:173",
               "evidence": "BIP-0173 defines a new format for segregated witness output addresses",
-              "reason": "This proposal registers human-readable parts specifically for the address format defined by BIP 173, so it relies on that format's semantics.",
+              "reason": "The SLIP registers human-readable parts specifically for use with the Bech32 witness-address format introduced by BIP-0173.",
               "confidence": "high"
             },
             {
               "target": "bips:350",
-              "evidence": "Entries annotated with \"(m)\" use Bech32m [BIP-0350]",
-              "reason": "The non-segwit-compatible registrations use Bech32m behavior defined by BIP 350, making it a technical prerequisite for those entries.",
+              "evidence": "Entries annotated with \"(m)\" use Bech32m [BIP-0350];",
+              "reason": "The proposal assigns some registered human-readable parts to Bech32m-based encodings, so its registry depends on the BIP-0350 variant semantics.",
               "confidence": "high"
             }
           ]

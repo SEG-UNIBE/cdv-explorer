@@ -607,12 +607,21 @@
         "author": "David A. Harding",
         "path": "bip-opt-in-rbf.mediawiki",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "387fc6011bd804609fd751786e50439d5c11a097",
         "timestamp": "2016-08-23T19:47:29Z",
         "date": "2016-08-23",
+        "author": "Luke Dashjr",
+        "path": "bip-0125.mediawiki",
+        "status": "Accepted",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
         "author": "Luke Dashjr",
         "path": "bip-0125.mediawiki",
         "status": "Accepted",
@@ -669,20 +678,22 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:58:24Z",
+          "timestamp": "2026-06-30T11:43:23Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:68",
-              "evidence": "compatible with consensus-enforced locktime as provided in ... BIP68",
-              "reason": "The proposal explicitly relies on BIP68’s sequence-number semantics for compatibility with opt-in signaling and locktime behavior.",
-              "confidence": "low"
+              "evidence": "opt-in full-RBF is compatible with consensus-enforced locktime as provided in the Bitcoin 0.1 implementation, BIP68",
+              "reason": "The proposal explicitly states compatibility with BIP68, which defines consensus-enforced relative lock-time using sequence numbers that the proposal reuses and constrains.",
+              "confidence": "high"
             },
             {
               "target": "bips:112",
-              "evidence": "compatible with ... BIP112 (CHECKSEQUENCEVERIFY)",
-              "reason": "The proposal depends on CHECKSEQUENCEVERIFY’s use of sequence numbers and constrains its signaling rules accordingly.",
-              "confidence": "low"
+              "evidence": "and BIP112 (CHECKSEQUENCEVERIFY).",
+              "reason": "The proposal explicitly states compatibility with BIP112, indicating it is designed to work with the CHECKSEQUENCEVERIFY semantics that also use nSequence.",
+              "confidence": "high"
             }
           ]
         }

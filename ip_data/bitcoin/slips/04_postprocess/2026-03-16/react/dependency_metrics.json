@@ -923,26 +923,40 @@
     "body_extracted_llm": {
       "label": "Body-Extracted Dependencies (LLM)",
       "summary": {
-        "node_count": 31,
-        "edge_count": 19,
-        "isolated_node_count": 13,
+        "node_count": 38,
+        "edge_count": 53,
+        "isolated_node_count": 3,
         "circular_dependency_count": 0,
-        "density": 0.02043010752688172
+        "density": 0.03769559032716927
       },
       "per_bip": [
         {
           "id": "bips:173",
           "title": null,
-          "in_degree": 2,
+          "in_degree": 3,
           "out_degree": 0,
           "betweenness": 0.0,
-          "pagerank": 0.05014118416540467,
+          "pagerank": 0.041562626872780686,
           "weighted_eigenvector": 0.0,
-          "in_degree_rank": 2,
-          "out_degree_rank": 8,
+          "in_degree_rank": 6,
+          "out_degree_rank": 21,
           "weighted_eigenvector_rank": 1,
-          "pagerank_rank": 2,
-          "betweenness_rank": 3
+          "pagerank_rank": 6,
+          "betweenness_rank": 6
+        },
+        {
+          "id": "bips:174",
+          "title": null,
+          "in_degree": 1,
+          "out_degree": 0,
+          "betweenness": 0.0,
+          "pagerank": 0.020255539441133466,
+          "weighted_eigenvector": 0.0,
+          "in_degree_rank": 11,
+          "out_degree_rank": 21,
+          "weighted_eigenvector_rank": 1,
+          "pagerank_rank": 15,
+          "betweenness_rank": 6
         },
         {
           "id": "bips:21",
@@ -950,27 +964,41 @@
           "in_degree": 1,
           "out_degree": 0,
           "betweenness": 0.0,
-          "pagerank": 0.031057198463072824,
+          "pagerank": 0.019545538680602433,
           "weighted_eigenvector": 0.0,
-          "in_degree_rank": 5,
-          "out_degree_rank": 8,
+          "in_degree_rank": 11,
+          "out_degree_rank": 21,
           "weighted_eigenvector_rank": 1,
-          "pagerank_rank": 11,
-          "betweenness_rank": 3
+          "pagerank_rank": 18,
+          "betweenness_rank": 6
         },
         {
           "id": "bips:32",
           "title": null,
-          "in_degree": 4,
+          "in_degree": 12,
           "out_degree": 0,
           "betweenness": 0.0,
-          "pagerank": 0.06913132449974528,
+          "pagerank": 0.12796849832376142,
           "weighted_eigenvector": 0.0,
           "in_degree_rank": 1,
-          "out_degree_rank": 8,
+          "out_degree_rank": 21,
           "weighted_eigenvector_rank": 1,
           "pagerank_rank": 1,
-          "betweenness_rank": 3
+          "betweenness_rank": 6
+        },
+        {
+          "id": "bips:322",
+          "title": null,
+          "in_degree": 1,
+          "out_degree": 0,
+          "betweenness": 0.0,
+          "pagerank": 0.020255539441133466,
+          "weighted_eigenvector": 0.0,
+          "in_degree_rank": 11,
+          "out_degree_rank": 21,
+          "weighted_eigenvector_rank": 1,
+          "pagerank_rank": 15,
+          "betweenness_rank": 6
         },
         {
           "id": "bips:350",
@@ -978,41 +1006,83 @@
           "in_degree": 1,
           "out_degree": 0,
           "betweenness": 0.0,
-          "pagerank": 0.03406559039881014,
+          "pagerank": 0.021438874042018517,
           "weighted_eigenvector": 0.0,
-          "in_degree_rank": 5,
-          "out_degree_rank": 8,
+          "in_degree_rank": 11,
+          "out_degree_rank": 21,
           "weighted_eigenvector_rank": 1,
-          "pagerank_rank": 9,
-          "betweenness_rank": 3
+          "pagerank_rank": 13,
+          "betweenness_rank": 6
         },
         {
-          "id": "bips:39",
-          "title": null,
-          "in_degree": 2,
-          "out_degree": 0,
-          "betweenness": 0.0,
-          "pagerank": 0.04854314282954479,
-          "weighted_eigenvector": 0.0,
-          "in_degree_rank": 2,
-          "out_degree_rank": 8,
-          "weighted_eigenvector_rank": 1,
-          "pagerank_rank": 3,
-          "betweenness_rank": 3
-        },
-        {
-          "id": "bips:43",
+          "id": "bips:370",
           "title": null,
           "in_degree": 1,
           "out_degree": 0,
           "betweenness": 0.0,
-          "pagerank": 0.03782608031848177,
+          "pagerank": 0.020255539441133466,
           "weighted_eigenvector": 0.0,
-          "in_degree_rank": 5,
-          "out_degree_rank": 8,
+          "in_degree_rank": 11,
+          "out_degree_rank": 21,
+          "weighted_eigenvector_rank": 1,
+          "pagerank_rank": 15,
+          "betweenness_rank": 6
+        },
+        {
+          "id": "bips:39",
+          "title": null,
+          "in_degree": 5,
+          "out_degree": 0,
+          "betweenness": 0.0,
+          "pagerank": 0.054786082135229994,
+          "weighted_eigenvector": 0.0,
+          "in_degree_rank": 2,
+          "out_degree_rank": 21,
+          "weighted_eigenvector_rank": 1,
+          "pagerank_rank": 2,
+          "betweenness_rank": 6
+        },
+        {
+          "id": "bips:43",
+          "title": null,
+          "in_degree": 4,
+          "out_degree": 0,
+          "betweenness": 0.0,
+          "pagerank": 0.047945569101843714,
+          "weighted_eigenvector": 0.0,
+          "in_degree_rank": 4,
+          "out_degree_rank": 21,
+          "weighted_eigenvector_rank": 1,
+          "pagerank_rank": 4,
+          "betweenness_rank": 6
+        },
+        {
+          "id": "bips:44",
+          "title": null,
+          "in_degree": 3,
+          "out_degree": 0,
+          "betweenness": 0.0,
+          "pagerank": 0.04519998545065012,
+          "weighted_eigenvector": 0.0,
+          "in_degree_rank": 6,
+          "out_degree_rank": 21,
           "weighted_eigenvector_rank": 1,
           "pagerank_rank": 5,
-          "betweenness_rank": 3
+          "betweenness_rank": 6
+        },
+        {
+          "id": "bips:49",
+          "title": null,
+          "in_degree": 1,
+          "out_degree": 0,
+          "betweenness": 0.0,
+          "pagerank": 0.01907220484024841,
+          "weighted_eigenvector": 0.0,
+          "in_degree_rank": 11,
+          "out_degree_rank": 21,
+          "weighted_eigenvector_rank": 1,
+          "pagerank_rank": 20,
+          "betweenness_rank": 6
         },
         {
           "id": "bips:70",
@@ -1020,13 +1090,41 @@
           "in_degree": 1,
           "out_degree": 0,
           "betweenness": 0.0,
-          "pagerank": 0.031057198463072824,
+          "pagerank": 0.019545538680602433,
           "weighted_eigenvector": 0.0,
-          "in_degree_rank": 5,
-          "out_degree_rank": 8,
+          "in_degree_rank": 11,
+          "out_degree_rank": 21,
           "weighted_eigenvector_rank": 1,
-          "pagerank_rank": 11,
-          "betweenness_rank": 3
+          "pagerank_rank": 18,
+          "betweenness_rank": 6
+        },
+        {
+          "id": "bips:84",
+          "title": null,
+          "in_degree": 1,
+          "out_degree": 0,
+          "betweenness": 0.0,
+          "pagerank": 0.01907220484024841,
+          "weighted_eigenvector": 0.0,
+          "in_degree_rank": 11,
+          "out_degree_rank": 21,
+          "weighted_eigenvector_rank": 1,
+          "pagerank_rank": 20,
+          "betweenness_rank": 6
+        },
+        {
+          "id": "bips:86",
+          "title": null,
+          "in_degree": 2,
+          "out_degree": 0,
+          "betweenness": 0.0,
+          "pagerank": 0.02191220788237254,
+          "weighted_eigenvector": 0.0,
+          "in_degree_rank": 8,
+          "out_degree_rank": 21,
+          "weighted_eigenvector_rank": 1,
+          "pagerank_rank": 12,
+          "betweenness_rank": 6
         },
         {
           "id": "bips:93",
@@ -1034,13 +1132,13 @@
           "in_degree": 1,
           "out_degree": 0,
           "betweenness": 0.0,
-          "pagerank": 0.03406559039881014,
+          "pagerank": 0.021438874042018517,
           "weighted_eigenvector": 0.0,
-          "in_degree_rank": 5,
-          "out_degree_rank": 8,
+          "in_degree_rank": 11,
+          "out_degree_rank": 21,
           "weighted_eigenvector_rank": 1,
-          "pagerank_rank": 9,
-          "betweenness_rank": 3
+          "pagerank_rank": 13,
+          "betweenness_rank": 6
         },
         {
           "id": "slips:0",
@@ -1048,41 +1146,41 @@
           "in_degree": 0,
           "out_degree": 0,
           "betweenness": 0.0,
-          "pagerank": 0.026544610559466865,
+          "pagerank": 0.016705535638478305,
           "weighted_eigenvector": 0.0,
-          "in_degree_rank": 14,
-          "out_degree_rank": 8,
+          "in_degree_rank": 22,
+          "out_degree_rank": 21,
           "weighted_eigenvector_rank": 1,
-          "pagerank_rank": 14,
-          "betweenness_rank": 3
+          "pagerank_rank": 22,
+          "betweenness_rank": 6
         },
         {
           "id": "slips:10",
           "title": "Universal private key derivation from master private key",
-          "in_degree": 1,
+          "in_degree": 5,
           "out_degree": 3,
-          "betweenness": 0.0034482758620689655,
-          "pagerank": 0.03782608031848177,
+          "betweenness": 0.01614114114114114,
+          "pagerank": 0.053145876301666777,
           "weighted_eigenvector": 0.0,
-          "in_degree_rank": 5,
-          "out_degree_rank": 2,
+          "in_degree_rank": 2,
+          "out_degree_rank": 6,
           "weighted_eigenvector_rank": 1,
-          "pagerank_rank": 5,
+          "pagerank_rank": 3,
           "betweenness_rank": 1
         },
         {
           "id": "slips:11",
           "title": "Symmetric encryption of key-value pairs using deterministic hierarchy",
-          "in_degree": 0,
-          "out_degree": 0,
+          "in_degree": 1,
+          "out_degree": 1,
           "betweenness": 0.0,
-          "pagerank": 0.026544610559466865,
+          "pagerank": 0.023805543243788627,
           "weighted_eigenvector": 0.0,
-          "in_degree_rank": 14,
-          "out_degree_rank": 8,
+          "in_degree_rank": 11,
+          "out_degree_rank": 17,
           "weighted_eigenvector_rank": 1,
-          "pagerank_rank": 14,
-          "betweenness_rank": 3
+          "pagerank_rank": 9,
+          "betweenness_rank": 6
         },
         {
           "id": "slips:12",
@@ -1090,27 +1188,27 @@
           "in_degree": 0,
           "out_degree": 0,
           "betweenness": 0.0,
-          "pagerank": 0.026544610559466865,
+          "pagerank": 0.016705535638478305,
           "weighted_eigenvector": 0.0,
-          "in_degree_rank": 14,
-          "out_degree_rank": 8,
+          "in_degree_rank": 22,
+          "out_degree_rank": 21,
           "weighted_eigenvector_rank": 1,
-          "pagerank_rank": 14,
-          "betweenness_rank": 3
+          "pagerank_rank": 22,
+          "betweenness_rank": 6
         },
         {
           "id": "slips:13",
           "title": "Authentication using deterministic hierarchy",
           "in_degree": 0,
-          "out_degree": 2,
+          "out_degree": 1,
           "betweenness": 0.0,
-          "pagerank": 0.026544610559466865,
+          "pagerank": 0.016705535638478305,
           "weighted_eigenvector": 0.0,
-          "in_degree_rank": 14,
-          "out_degree_rank": 4,
+          "in_degree_rank": 22,
+          "out_degree_rank": 17,
           "weighted_eigenvector_rank": 1,
-          "pagerank_rank": 14,
-          "betweenness_rank": 3
+          "pagerank_rank": 22,
+          "betweenness_rank": 6
         },
         {
           "id": "slips:132",
@@ -1118,69 +1216,69 @@
           "in_degree": 0,
           "out_degree": 2,
           "betweenness": 0.0,
-          "pagerank": 0.026544610559466865,
+          "pagerank": 0.016705535638478305,
           "weighted_eigenvector": 0.0,
-          "in_degree_rank": 14,
-          "out_degree_rank": 4,
+          "in_degree_rank": 22,
+          "out_degree_rank": 9,
           "weighted_eigenvector_rank": 1,
-          "pagerank_rank": 14,
-          "betweenness_rank": 3
+          "pagerank_rank": 22,
+          "betweenness_rank": 6
         },
         {
           "id": "slips:14",
           "title": "Stress Test Deterministic Wallet",
           "in_degree": 0,
-          "out_degree": 0,
+          "out_degree": 6,
           "betweenness": 0.0,
-          "pagerank": 0.026544610559466865,
+          "pagerank": 0.016705535638478305,
           "weighted_eigenvector": 0.0,
-          "in_degree_rank": 14,
-          "out_degree_rank": 8,
+          "in_degree_rank": 22,
+          "out_degree_rank": 1,
           "weighted_eigenvector_rank": 1,
-          "pagerank_rank": 14,
-          "betweenness_rank": 3
+          "pagerank_rank": 22,
+          "betweenness_rank": 6
         },
         {
           "id": "slips:15",
           "title": "Format for Bitcoin metadata and its encryption in HD wallets",
           "in_degree": 0,
-          "out_degree": 0,
+          "out_degree": 1,
           "betweenness": 0.0,
-          "pagerank": 0.026544610559466865,
+          "pagerank": 0.016705535638478305,
           "weighted_eigenvector": 0.0,
-          "in_degree_rank": 14,
-          "out_degree_rank": 8,
+          "in_degree_rank": 22,
+          "out_degree_rank": 17,
           "weighted_eigenvector_rank": 1,
-          "pagerank_rank": 14,
-          "betweenness_rank": 3
+          "pagerank_rank": 22,
+          "betweenness_rank": 6
         },
         {
           "id": "slips:16",
           "title": "Format for password storage and its encryption",
           "in_degree": 0,
-          "out_degree": 0,
+          "out_degree": 2,
           "betweenness": 0.0,
-          "pagerank": 0.026544610559466865,
+          "pagerank": 0.016705535638478305,
           "weighted_eigenvector": 0.0,
-          "in_degree_rank": 14,
-          "out_degree_rank": 8,
+          "in_degree_rank": 22,
+          "out_degree_rank": 9,
           "weighted_eigenvector_rank": 1,
-          "pagerank_rank": 14,
-          "betweenness_rank": 3
+          "pagerank_rank": 22,
+          "betweenness_rank": 6
         },
         {
           "id": "slips:17",
           "title": "ECDH using deterministic hierarchy",
           "in_degree": 0,
-          "out_degree": 0,
+          "out_degree": 2,
           "betweenness": 0.0,
-          "pagerank": 0.026544610559466865,
+          "pagerank": 0.016705535638478305,
           "weighted_eigenvector": 0.0,
-          "in_degree_rank": 14,
-          "out_degree_rank": 8,
+          "in_degree_rank": 22,
+          "out_degree_rank": 9,
           "weighted_eigenvector_rank": 1,
-          "pagerank_rank": 14,
-          "betweenness_rank": 3
+          "pagerank_rank": 22,
+          "betweenness_rank": 6
         },
         {
           "id": "slips:173",
@@ -1188,27 +1286,27 @@
           "in_degree": 0,
           "out_degree": 3,
           "betweenness": 0.0,
-          "pagerank": 0.026544610559466865,
+          "pagerank": 0.016705535638478305,
           "weighted_eigenvector": 0.0,
-          "in_degree_rank": 14,
-          "out_degree_rank": 2,
+          "in_degree_rank": 22,
+          "out_degree_rank": 6,
           "weighted_eigenvector_rank": 1,
-          "pagerank_rank": 14,
-          "betweenness_rank": 3
+          "pagerank_rank": 22,
+          "betweenness_rank": 6
         },
         {
           "id": "slips:19",
           "title": "Proof of Ownership",
           "in_degree": 0,
-          "out_degree": 0,
+          "out_degree": 4,
           "betweenness": 0.0,
-          "pagerank": 0.026544610559466865,
+          "pagerank": 0.016705535638478305,
           "weighted_eigenvector": 0.0,
-          "in_degree_rank": 14,
-          "out_degree_rank": 8,
+          "in_degree_rank": 22,
+          "out_degree_rank": 4,
           "weighted_eigenvector_rank": 1,
-          "pagerank_rank": 14,
-          "betweenness_rank": 3
+          "pagerank_rank": 22,
+          "betweenness_rank": 6
         },
         {
           "id": "slips:20",
@@ -1216,55 +1314,55 @@
           "in_degree": 0,
           "out_degree": 0,
           "betweenness": 0.0,
-          "pagerank": 0.026544610559466865,
+          "pagerank": 0.016705535638478305,
           "weighted_eigenvector": 0.0,
-          "in_degree_rank": 14,
-          "out_degree_rank": 8,
+          "in_degree_rank": 22,
+          "out_degree_rank": 21,
           "weighted_eigenvector_rank": 1,
-          "pagerank_rank": 14,
-          "betweenness_rank": 3
+          "pagerank_rank": 22,
+          "betweenness_rank": 6
         },
         {
           "id": "slips:21",
           "title": "Hierarchical derivation of symmetric keys",
-          "in_degree": 2,
-          "out_degree": 0,
-          "betweenness": 0.0,
-          "pagerank": 0.042338668222087726,
+          "in_degree": 4,
+          "out_degree": 2,
+          "betweenness": 0.010135135135135136,
+          "pagerank": 0.037295557693878226,
           "weighted_eigenvector": 0.0,
-          "in_degree_rank": 2,
-          "out_degree_rank": 8,
+          "in_degree_rank": 4,
+          "out_degree_rank": 9,
           "weighted_eigenvector_rank": 1,
-          "pagerank_rank": 4,
-          "betweenness_rank": 3
+          "pagerank_rank": 7,
+          "betweenness_rank": 2
         },
         {
           "id": "slips:22",
           "title": "FIDO2 credential ID format for HD wallets",
           "in_degree": 0,
-          "out_degree": 0,
+          "out_degree": 2,
           "betweenness": 0.0,
-          "pagerank": 0.026544610559466865,
+          "pagerank": 0.016705535638478305,
           "weighted_eigenvector": 0.0,
-          "in_degree_rank": 14,
-          "out_degree_rank": 8,
+          "in_degree_rank": 22,
+          "out_degree_rank": 9,
           "weighted_eigenvector_rank": 1,
-          "pagerank_rank": 14,
-          "betweenness_rank": 3
+          "pagerank_rank": 22,
+          "betweenness_rank": 6
         },
         {
           "id": "slips:23",
           "title": "Cardano HD master node derivation from a master seed",
           "in_degree": 0,
-          "out_degree": 0,
+          "out_degree": 4,
           "betweenness": 0.0,
-          "pagerank": 0.026544610559466865,
+          "pagerank": 0.016705535638478305,
           "weighted_eigenvector": 0.0,
-          "in_degree_rank": 14,
-          "out_degree_rank": 8,
+          "in_degree_rank": 22,
+          "out_degree_rank": 4,
           "weighted_eigenvector_rank": 1,
-          "pagerank_rank": 14,
-          "betweenness_rank": 3
+          "pagerank_rank": 22,
+          "betweenness_rank": 6
         },
         {
           "id": "slips:24",
@@ -1272,52 +1370,52 @@
           "in_degree": 0,
           "out_degree": 5,
           "betweenness": 0.0,
-          "pagerank": 0.026544610559466865,
+          "pagerank": 0.016705535638478305,
           "weighted_eigenvector": 0.0,
-          "in_degree_rank": 14,
-          "out_degree_rank": 1,
+          "in_degree_rank": 22,
+          "out_degree_rank": 2,
           "weighted_eigenvector_rank": 1,
-          "pagerank_rank": 14,
-          "betweenness_rank": 3
+          "pagerank_rank": 22,
+          "betweenness_rank": 6
         },
         {
           "id": "slips:25",
           "title": "Key derivation for CoinJoin accounts",
           "in_degree": 0,
-          "out_degree": 0,
+          "out_degree": 5,
           "betweenness": 0.0,
-          "pagerank": 0.026544610559466865,
+          "pagerank": 0.016705535638478305,
           "weighted_eigenvector": 0.0,
-          "in_degree_rank": 14,
-          "out_degree_rank": 8,
+          "in_degree_rank": 22,
+          "out_degree_rank": 2,
           "weighted_eigenvector_rank": 1,
-          "pagerank_rank": 14,
-          "betweenness_rank": 3
+          "pagerank_rank": 22,
+          "betweenness_rank": 6
         },
         {
           "id": "slips:32",
           "title": "Extended serialization format for BIP-32 wallets",
           "in_degree": 1,
           "out_degree": 2,
-          "betweenness": 0.0011494252873563218,
-          "pagerank": 0.03782608031848177,
+          "betweenness": 0.0007507507507507507,
+          "pagerank": 0.023805543243788627,
           "weighted_eigenvector": 0.0,
-          "in_degree_rank": 5,
-          "out_degree_rank": 4,
+          "in_degree_rank": 11,
+          "out_degree_rank": 9,
           "weighted_eigenvector_rank": 1,
-          "pagerank_rank": 5,
-          "betweenness_rank": 2
+          "pagerank_rank": 9,
+          "betweenness_rank": 5
         },
         {
           "id": "slips:39",
           "title": "Shamir's Secret-Sharing for Mnemonic Codes",
-          "in_degree": 1,
-          "out_degree": 0,
-          "betweenness": 0.0,
-          "pagerank": 0.03726167307052989,
+          "in_degree": 2,
+          "out_degree": 3,
+          "betweenness": 0.006756756756756757,
+          "pagerank": 0.035313008724241944,
           "weighted_eigenvector": 0.0,
-          "in_degree_rank": 5,
-          "out_degree_rank": 8,
+          "in_degree_rank": 8,
+          "out_degree_rank": 6,
           "weighted_eigenvector_rank": 1,
           "pagerank_rank": 8,
           "betweenness_rank": 3
@@ -1325,30 +1423,30 @@
         {
           "id": "slips:44",
           "title": "Registered coin types for BIP-0044",
-          "in_degree": 1,
-          "out_degree": 0,
-          "betweenness": 0.0,
-          "pagerank": 0.031057198463072824,
+          "in_degree": 2,
+          "out_degree": 1,
+          "betweenness": 0.0015015015015015015,
+          "pagerank": 0.02238554172272656,
           "weighted_eigenvector": 0.0,
-          "in_degree_rank": 5,
-          "out_degree_rank": 8,
+          "in_degree_rank": 8,
+          "out_degree_rank": 17,
           "weighted_eigenvector_rank": 1,
           "pagerank_rank": 11,
-          "betweenness_rank": 3
+          "betweenness_rank": 4
         },
         {
           "id": "slips:48",
           "title": "Deterministic key hierarchy for Graphene-based networks",
           "in_degree": 0,
-          "out_degree": 0,
+          "out_degree": 2,
           "betweenness": 0.0,
-          "pagerank": 0.026544610559466865,
+          "pagerank": 0.016705535638478305,
           "weighted_eigenvector": 0.0,
-          "in_degree_rank": 14,
-          "out_degree_rank": 8,
+          "in_degree_rank": 22,
+          "out_degree_rank": 9,
           "weighted_eigenvector_rank": 1,
-          "pagerank_rank": 14,
-          "betweenness_rank": 3
+          "pagerank_rank": 22,
+          "betweenness_rank": 6
         },
         {
           "id": "slips:77",
@@ -1356,13 +1454,13 @@
           "in_degree": 0,
           "out_degree": 2,
           "betweenness": 0.0,
-          "pagerank": 0.026544610559466865,
+          "pagerank": 0.016705535638478305,
           "weighted_eigenvector": 0.0,
-          "in_degree_rank": 14,
-          "out_degree_rank": 4,
+          "in_degree_rank": 22,
+          "out_degree_rank": 9,
           "weighted_eigenvector_rank": 1,
-          "pagerank_rank": 14,
-          "betweenness_rank": 3
+          "pagerank_rank": 22,
+          "betweenness_rank": 6
         }
       ]
     },
@@ -2333,10 +2431,10 @@
       "summary": {
         "approach_only": 0,
         "overlap": 0,
-        "baseline_only": 19,
+        "baseline_only": 53,
         "approach_total": 0,
-        "baseline_total": 19,
-        "union_total": 19,
+        "baseline_total": 53,
+        "union_total": 53,
         "hit_rate": 0.0,
         "missed_rate": 1.0
       },
@@ -2363,17 +2461,17 @@
           "status": "baseline_only"
         },
         {
-          "source": "slips:13",
-          "target": "bips:43",
-          "source_title": "Authentication using deterministic hierarchy",
+          "source": "slips:11",
+          "target": "bips:32",
+          "source_title": "Symmetric encryption of key-value pairs using deterministic hierarchy",
           "target_title": null,
           "status": "baseline_only"
         },
         {
           "source": "slips:13",
-          "target": "slips:10",
+          "target": "bips:43",
           "source_title": "Authentication using deterministic hierarchy",
-          "target_title": "Universal private key derivation from master private key",
+          "target_title": null,
           "status": "baseline_only"
         },
         {
@@ -2388,6 +2486,83 @@
           "target": "slips:32",
           "source_title": "Registered HD version bytes for BIP-0032",
           "target_title": "Extended serialization format for BIP-32 wallets",
+          "status": "baseline_only"
+        },
+        {
+          "source": "slips:14",
+          "target": "bips:32",
+          "source_title": "Stress Test Deterministic Wallet",
+          "target_title": null,
+          "status": "baseline_only"
+        },
+        {
+          "source": "slips:14",
+          "target": "bips:39",
+          "source_title": "Stress Test Deterministic Wallet",
+          "target_title": null,
+          "status": "baseline_only"
+        },
+        {
+          "source": "slips:14",
+          "target": "bips:44",
+          "source_title": "Stress Test Deterministic Wallet",
+          "target_title": null,
+          "status": "baseline_only"
+        },
+        {
+          "source": "slips:14",
+          "target": "bips:49",
+          "source_title": "Stress Test Deterministic Wallet",
+          "target_title": null,
+          "status": "baseline_only"
+        },
+        {
+          "source": "slips:14",
+          "target": "bips:84",
+          "source_title": "Stress Test Deterministic Wallet",
+          "target_title": null,
+          "status": "baseline_only"
+        },
+        {
+          "source": "slips:14",
+          "target": "bips:86",
+          "source_title": "Stress Test Deterministic Wallet",
+          "target_title": null,
+          "status": "baseline_only"
+        },
+        {
+          "source": "slips:15",
+          "target": "bips:32",
+          "source_title": "Format for Bitcoin metadata and its encryption in HD wallets",
+          "target_title": null,
+          "status": "baseline_only"
+        },
+        {
+          "source": "slips:16",
+          "target": "bips:32",
+          "source_title": "Format for password storage and its encryption",
+          "target_title": null,
+          "status": "baseline_only"
+        },
+        {
+          "source": "slips:16",
+          "target": "slips:11",
+          "source_title": "Format for password storage and its encryption",
+          "target_title": "Symmetric encryption of key-value pairs using deterministic hierarchy",
+          "status": "baseline_only"
+        },
+        {
+          "source": "slips:17",
+          "target": "bips:43",
+          "source_title": "ECDH using deterministic hierarchy",
+          "target_title": null,
+          "status": "baseline_only"
+        },
+        {
+          "source": "slips:17",
+          "target": "slips:10",
+          "source_title": "ECDH using deterministic hierarchy",
+          "target_title": "Universal private key derivation from master private key",
           "status": "baseline_only"
         },
         {
@@ -2409,6 +2584,90 @@
           "target": "bips:93",
           "source_title": "Registered human-readable parts for BIP-0173",
           "target_title": null,
+          "status": "baseline_only"
+        },
+        {
+          "source": "slips:19",
+          "target": "bips:174",
+          "source_title": "Proof of Ownership",
+          "target_title": null,
+          "status": "baseline_only"
+        },
+        {
+          "source": "slips:19",
+          "target": "bips:322",
+          "source_title": "Proof of Ownership",
+          "target_title": null,
+          "status": "baseline_only"
+        },
+        {
+          "source": "slips:19",
+          "target": "bips:370",
+          "source_title": "Proof of Ownership",
+          "target_title": null,
+          "status": "baseline_only"
+        },
+        {
+          "source": "slips:19",
+          "target": "slips:21",
+          "source_title": "Proof of Ownership",
+          "target_title": "Hierarchical derivation of symmetric keys",
+          "status": "baseline_only"
+        },
+        {
+          "source": "slips:21",
+          "target": "bips:32",
+          "source_title": "Hierarchical derivation of symmetric keys",
+          "target_title": null,
+          "status": "baseline_only"
+        },
+        {
+          "source": "slips:21",
+          "target": "slips:10",
+          "source_title": "Hierarchical derivation of symmetric keys",
+          "target_title": "Universal private key derivation from master private key",
+          "status": "baseline_only"
+        },
+        {
+          "source": "slips:22",
+          "target": "slips:10",
+          "source_title": "FIDO2 credential ID format for HD wallets",
+          "target_title": "Universal private key derivation from master private key",
+          "status": "baseline_only"
+        },
+        {
+          "source": "slips:22",
+          "target": "slips:21",
+          "source_title": "FIDO2 credential ID format for HD wallets",
+          "target_title": "Hierarchical derivation of symmetric keys",
+          "status": "baseline_only"
+        },
+        {
+          "source": "slips:23",
+          "target": "bips:32",
+          "source_title": "Cardano HD master node derivation from a master seed",
+          "target_title": null,
+          "status": "baseline_only"
+        },
+        {
+          "source": "slips:23",
+          "target": "bips:39",
+          "source_title": "Cardano HD master node derivation from a master seed",
+          "target_title": null,
+          "status": "baseline_only"
+        },
+        {
+          "source": "slips:23",
+          "target": "slips:10",
+          "source_title": "Cardano HD master node derivation from a master seed",
+          "target_title": "Universal private key derivation from master private key",
+          "status": "baseline_only"
+        },
+        {
+          "source": "slips:23",
+          "target": "slips:39",
+          "source_title": "Cardano HD master node derivation from a master seed",
+          "target_title": "Shamir's Secret-Sharing for Mnemonic Codes",
           "status": "baseline_only"
         },
         {
@@ -2447,6 +2706,41 @@
           "status": "baseline_only"
         },
         {
+          "source": "slips:25",
+          "target": "bips:32",
+          "source_title": "Key derivation for CoinJoin accounts",
+          "target_title": null,
+          "status": "baseline_only"
+        },
+        {
+          "source": "slips:25",
+          "target": "bips:43",
+          "source_title": "Key derivation for CoinJoin accounts",
+          "target_title": null,
+          "status": "baseline_only"
+        },
+        {
+          "source": "slips:25",
+          "target": "bips:86",
+          "source_title": "Key derivation for CoinJoin accounts",
+          "target_title": null,
+          "status": "baseline_only"
+        },
+        {
+          "source": "slips:25",
+          "target": "slips:10",
+          "source_title": "Key derivation for CoinJoin accounts",
+          "target_title": "Universal private key derivation from master private key",
+          "status": "baseline_only"
+        },
+        {
+          "source": "slips:25",
+          "target": "slips:44",
+          "source_title": "Key derivation for CoinJoin accounts",
+          "target_title": "Registered coin types for BIP-0044",
+          "status": "baseline_only"
+        },
+        {
           "source": "slips:32",
           "target": "bips:173",
           "source_title": "Extended serialization format for BIP-32 wallets",
@@ -2457,6 +2751,48 @@
           "source": "slips:32",
           "target": "bips:32",
           "source_title": "Extended serialization format for BIP-32 wallets",
+          "target_title": null,
+          "status": "baseline_only"
+        },
+        {
+          "source": "slips:39",
+          "target": "bips:173",
+          "source_title": "Shamir's Secret-Sharing for Mnemonic Codes",
+          "target_title": null,
+          "status": "baseline_only"
+        },
+        {
+          "source": "slips:39",
+          "target": "bips:32",
+          "source_title": "Shamir's Secret-Sharing for Mnemonic Codes",
+          "target_title": null,
+          "status": "baseline_only"
+        },
+        {
+          "source": "slips:39",
+          "target": "bips:39",
+          "source_title": "Shamir's Secret-Sharing for Mnemonic Codes",
+          "target_title": null,
+          "status": "baseline_only"
+        },
+        {
+          "source": "slips:44",
+          "target": "bips:44",
+          "source_title": "Registered coin types for BIP-0044",
+          "target_title": null,
+          "status": "baseline_only"
+        },
+        {
+          "source": "slips:48",
+          "target": "bips:43",
+          "source_title": "Deterministic key hierarchy for Graphene-based networks",
+          "target_title": null,
+          "status": "baseline_only"
+        },
+        {
+          "source": "slips:48",
+          "target": "bips:44",
+          "source_title": "Deterministic key hierarchy for Graphene-based networks",
           "target_title": null,
           "status": "baseline_only"
         },
@@ -3582,11 +3918,11 @@
       "baseline": "body_extracted_llm",
       "baseline_label": "Body-Extracted Dependencies (LLM)",
       "summary": {
-        "approach_only": 57,
-        "overlap": 19,
+        "approach_only": 23,
+        "overlap": 53,
         "baseline_only": 0,
         "approach_total": 76,
-        "baseline_total": 19,
+        "baseline_total": 53,
         "union_total": 76,
         "hit_rate": 1.0,
         "missed_rate": 0.0
@@ -3614,17 +3950,17 @@
           "status": "overlap"
         },
         {
-          "source": "slips:13",
-          "target": "bips:43",
-          "source_title": "Authentication using deterministic hierarchy",
+          "source": "slips:11",
+          "target": "bips:32",
+          "source_title": "Symmetric encryption of key-value pairs using deterministic hierarchy",
           "target_title": null,
           "status": "overlap"
         },
         {
           "source": "slips:13",
-          "target": "slips:10",
+          "target": "bips:43",
           "source_title": "Authentication using deterministic hierarchy",
-          "target_title": "Universal private key derivation from master private key",
+          "target_title": null,
           "status": "overlap"
         },
         {
@@ -3639,6 +3975,83 @@
           "target": "slips:32",
           "source_title": "Registered HD version bytes for BIP-0032",
           "target_title": "Extended serialization format for BIP-32 wallets",
+          "status": "overlap"
+        },
+        {
+          "source": "slips:14",
+          "target": "bips:32",
+          "source_title": "Stress Test Deterministic Wallet",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:14",
+          "target": "bips:39",
+          "source_title": "Stress Test Deterministic Wallet",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:14",
+          "target": "bips:44",
+          "source_title": "Stress Test Deterministic Wallet",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:14",
+          "target": "bips:49",
+          "source_title": "Stress Test Deterministic Wallet",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:14",
+          "target": "bips:84",
+          "source_title": "Stress Test Deterministic Wallet",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:14",
+          "target": "bips:86",
+          "source_title": "Stress Test Deterministic Wallet",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:15",
+          "target": "bips:32",
+          "source_title": "Format for Bitcoin metadata and its encryption in HD wallets",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:16",
+          "target": "bips:32",
+          "source_title": "Format for password storage and its encryption",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:16",
+          "target": "slips:11",
+          "source_title": "Format for password storage and its encryption",
+          "target_title": "Symmetric encryption of key-value pairs using deterministic hierarchy",
+          "status": "overlap"
+        },
+        {
+          "source": "slips:17",
+          "target": "bips:43",
+          "source_title": "ECDH using deterministic hierarchy",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:17",
+          "target": "slips:10",
+          "source_title": "ECDH using deterministic hierarchy",
+          "target_title": "Universal private key derivation from master private key",
           "status": "overlap"
         },
         {
@@ -3660,6 +4073,90 @@
           "target": "bips:93",
           "source_title": "Registered human-readable parts for BIP-0173",
           "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:19",
+          "target": "bips:174",
+          "source_title": "Proof of Ownership",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:19",
+          "target": "bips:322",
+          "source_title": "Proof of Ownership",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:19",
+          "target": "bips:370",
+          "source_title": "Proof of Ownership",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:19",
+          "target": "slips:21",
+          "source_title": "Proof of Ownership",
+          "target_title": "Hierarchical derivation of symmetric keys",
+          "status": "overlap"
+        },
+        {
+          "source": "slips:21",
+          "target": "bips:32",
+          "source_title": "Hierarchical derivation of symmetric keys",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:21",
+          "target": "slips:10",
+          "source_title": "Hierarchical derivation of symmetric keys",
+          "target_title": "Universal private key derivation from master private key",
+          "status": "overlap"
+        },
+        {
+          "source": "slips:22",
+          "target": "slips:10",
+          "source_title": "FIDO2 credential ID format for HD wallets",
+          "target_title": "Universal private key derivation from master private key",
+          "status": "overlap"
+        },
+        {
+          "source": "slips:22",
+          "target": "slips:21",
+          "source_title": "FIDO2 credential ID format for HD wallets",
+          "target_title": "Hierarchical derivation of symmetric keys",
+          "status": "overlap"
+        },
+        {
+          "source": "slips:23",
+          "target": "bips:32",
+          "source_title": "Cardano HD master node derivation from a master seed",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:23",
+          "target": "bips:39",
+          "source_title": "Cardano HD master node derivation from a master seed",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:23",
+          "target": "slips:10",
+          "source_title": "Cardano HD master node derivation from a master seed",
+          "target_title": "Universal private key derivation from master private key",
+          "status": "overlap"
+        },
+        {
+          "source": "slips:23",
+          "target": "slips:39",
+          "source_title": "Cardano HD master node derivation from a master seed",
+          "target_title": "Shamir's Secret-Sharing for Mnemonic Codes",
           "status": "overlap"
         },
         {
@@ -3698,6 +4195,41 @@
           "status": "overlap"
         },
         {
+          "source": "slips:25",
+          "target": "bips:32",
+          "source_title": "Key derivation for CoinJoin accounts",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:25",
+          "target": "bips:43",
+          "source_title": "Key derivation for CoinJoin accounts",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:25",
+          "target": "bips:86",
+          "source_title": "Key derivation for CoinJoin accounts",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:25",
+          "target": "slips:10",
+          "source_title": "Key derivation for CoinJoin accounts",
+          "target_title": "Universal private key derivation from master private key",
+          "status": "overlap"
+        },
+        {
+          "source": "slips:25",
+          "target": "slips:44",
+          "source_title": "Key derivation for CoinJoin accounts",
+          "target_title": "Registered coin types for BIP-0044",
+          "status": "overlap"
+        },
+        {
           "source": "slips:32",
           "target": "bips:173",
           "source_title": "Extended serialization format for BIP-32 wallets",
@@ -3708,6 +4240,48 @@
           "source": "slips:32",
           "target": "bips:32",
           "source_title": "Extended serialization format for BIP-32 wallets",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:39",
+          "target": "bips:173",
+          "source_title": "Shamir's Secret-Sharing for Mnemonic Codes",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:39",
+          "target": "bips:32",
+          "source_title": "Shamir's Secret-Sharing for Mnemonic Codes",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:39",
+          "target": "bips:39",
+          "source_title": "Shamir's Secret-Sharing for Mnemonic Codes",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:44",
+          "target": "bips:44",
+          "source_title": "Registered coin types for BIP-0044",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:48",
+          "target": "bips:43",
+          "source_title": "Deterministic key hierarchy for Graphene-based networks",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:48",
+          "target": "bips:44",
+          "source_title": "Deterministic key hierarchy for Graphene-based networks",
           "target_title": null,
           "status": "overlap"
         },
@@ -3727,13 +4301,6 @@
         },
         {
           "source": "slips:11",
-          "target": "bips:32",
-          "source_title": "Symmetric encryption of key-value pairs using deterministic hierarchy",
-          "target_title": null,
-          "status": "approach_only"
-        },
-        {
-          "source": "slips:11",
           "target": "slips:15",
           "source_title": "Symmetric encryption of key-value pairs using deterministic hierarchy",
           "target_title": "Format for Bitcoin metadata and its encryption in HD wallets",
@@ -3747,6 +4314,13 @@
           "status": "approach_only"
         },
         {
+          "source": "slips:13",
+          "target": "slips:10",
+          "source_title": "Authentication using deterministic hierarchy",
+          "target_title": "Universal private key derivation from master private key",
+          "status": "approach_only"
+        },
+        {
           "source": "slips:132",
           "target": "bips:49",
           "source_title": "Registered HD version bytes for BIP-0032",
@@ -3757,55 +4331,6 @@
           "source": "slips:132",
           "target": "bips:84",
           "source_title": "Registered HD version bytes for BIP-0032",
-          "target_title": null,
-          "status": "approach_only"
-        },
-        {
-          "source": "slips:14",
-          "target": "bips:32",
-          "source_title": "Stress Test Deterministic Wallet",
-          "target_title": null,
-          "status": "approach_only"
-        },
-        {
-          "source": "slips:14",
-          "target": "bips:39",
-          "source_title": "Stress Test Deterministic Wallet",
-          "target_title": null,
-          "status": "approach_only"
-        },
-        {
-          "source": "slips:14",
-          "target": "bips:44",
-          "source_title": "Stress Test Deterministic Wallet",
-          "target_title": null,
-          "status": "approach_only"
-        },
-        {
-          "source": "slips:14",
-          "target": "bips:49",
-          "source_title": "Stress Test Deterministic Wallet",
-          "target_title": null,
-          "status": "approach_only"
-        },
-        {
-          "source": "slips:14",
-          "target": "bips:84",
-          "source_title": "Stress Test Deterministic Wallet",
-          "target_title": null,
-          "status": "approach_only"
-        },
-        {
-          "source": "slips:14",
-          "target": "bips:86",
-          "source_title": "Stress Test Deterministic Wallet",
-          "target_title": null,
-          "status": "approach_only"
-        },
-        {
-          "source": "slips:15",
-          "target": "bips:32",
-          "source_title": "Format for Bitcoin metadata and its encryption in HD wallets",
           "target_title": null,
           "status": "approach_only"
         },
@@ -3824,34 +4349,6 @@
           "status": "approach_only"
         },
         {
-          "source": "slips:16",
-          "target": "bips:32",
-          "source_title": "Format for password storage and its encryption",
-          "target_title": null,
-          "status": "approach_only"
-        },
-        {
-          "source": "slips:16",
-          "target": "slips:11",
-          "source_title": "Format for password storage and its encryption",
-          "target_title": "Symmetric encryption of key-value pairs using deterministic hierarchy",
-          "status": "approach_only"
-        },
-        {
-          "source": "slips:17",
-          "target": "bips:43",
-          "source_title": "ECDH using deterministic hierarchy",
-          "target_title": null,
-          "status": "approach_only"
-        },
-        {
-          "source": "slips:17",
-          "target": "slips:10",
-          "source_title": "ECDH using deterministic hierarchy",
-          "target_title": "Universal private key derivation from master private key",
-          "status": "approach_only"
-        },
-        {
           "source": "slips:173",
           "target": "bips:32",
           "source_title": "Registered human-readable parts for BIP-0173",
@@ -3867,28 +4364,7 @@
         },
         {
           "source": "slips:19",
-          "target": "bips:174",
-          "source_title": "Proof of Ownership",
-          "target_title": null,
-          "status": "approach_only"
-        },
-        {
-          "source": "slips:19",
           "target": "bips:32",
-          "source_title": "Proof of Ownership",
-          "target_title": null,
-          "status": "approach_only"
-        },
-        {
-          "source": "slips:19",
-          "target": "bips:322",
-          "source_title": "Proof of Ownership",
-          "target_title": null,
-          "status": "approach_only"
-        },
-        {
-          "source": "slips:19",
-          "target": "bips:370",
           "source_title": "Proof of Ownership",
           "target_title": null,
           "status": "approach_only"
@@ -3901,31 +4377,10 @@
           "status": "approach_only"
         },
         {
-          "source": "slips:19",
-          "target": "slips:21",
-          "source_title": "Proof of Ownership",
-          "target_title": "Hierarchical derivation of symmetric keys",
-          "status": "approach_only"
-        },
-        {
-          "source": "slips:21",
-          "target": "bips:32",
-          "source_title": "Hierarchical derivation of symmetric keys",
-          "target_title": null,
-          "status": "approach_only"
-        },
-        {
           "source": "slips:21",
           "target": "bips:39",
           "source_title": "Hierarchical derivation of symmetric keys",
           "target_title": null,
-          "status": "approach_only"
-        },
-        {
-          "source": "slips:21",
-          "target": "slips:10",
-          "source_title": "Hierarchical derivation of symmetric keys",
-          "target_title": "Universal private key derivation from master private key",
           "status": "approach_only"
         },
         {
@@ -3951,65 +4406,9 @@
         },
         {
           "source": "slips:22",
-          "target": "slips:10",
-          "source_title": "FIDO2 credential ID format for HD wallets",
-          "target_title": "Universal private key derivation from master private key",
-          "status": "approach_only"
-        },
-        {
-          "source": "slips:22",
-          "target": "slips:21",
-          "source_title": "FIDO2 credential ID format for HD wallets",
-          "target_title": "Hierarchical derivation of symmetric keys",
-          "status": "approach_only"
-        },
-        {
-          "source": "slips:22",
           "target": "slips:39",
           "source_title": "FIDO2 credential ID format for HD wallets",
           "target_title": "Shamir's Secret-Sharing for Mnemonic Codes",
-          "status": "approach_only"
-        },
-        {
-          "source": "slips:23",
-          "target": "bips:32",
-          "source_title": "Cardano HD master node derivation from a master seed",
-          "target_title": null,
-          "status": "approach_only"
-        },
-        {
-          "source": "slips:23",
-          "target": "bips:39",
-          "source_title": "Cardano HD master node derivation from a master seed",
-          "target_title": null,
-          "status": "approach_only"
-        },
-        {
-          "source": "slips:23",
-          "target": "slips:10",
-          "source_title": "Cardano HD master node derivation from a master seed",
-          "target_title": "Universal private key derivation from master private key",
-          "status": "approach_only"
-        },
-        {
-          "source": "slips:23",
-          "target": "slips:39",
-          "source_title": "Cardano HD master node derivation from a master seed",
-          "target_title": "Shamir's Secret-Sharing for Mnemonic Codes",
-          "status": "approach_only"
-        },
-        {
-          "source": "slips:25",
-          "target": "bips:32",
-          "source_title": "Key derivation for CoinJoin accounts",
-          "target_title": null,
-          "status": "approach_only"
-        },
-        {
-          "source": "slips:25",
-          "target": "bips:43",
-          "source_title": "Key derivation for CoinJoin accounts",
-          "target_title": null,
           "status": "approach_only"
         },
         {
@@ -4048,71 +4447,8 @@
           "status": "approach_only"
         },
         {
-          "source": "slips:25",
-          "target": "bips:86",
-          "source_title": "Key derivation for CoinJoin accounts",
-          "target_title": null,
-          "status": "approach_only"
-        },
-        {
-          "source": "slips:25",
-          "target": "slips:10",
-          "source_title": "Key derivation for CoinJoin accounts",
-          "target_title": "Universal private key derivation from master private key",
-          "status": "approach_only"
-        },
-        {
-          "source": "slips:25",
-          "target": "slips:44",
-          "source_title": "Key derivation for CoinJoin accounts",
-          "target_title": "Registered coin types for BIP-0044",
-          "status": "approach_only"
-        },
-        {
-          "source": "slips:39",
-          "target": "bips:173",
-          "source_title": "Shamir's Secret-Sharing for Mnemonic Codes",
-          "target_title": null,
-          "status": "approach_only"
-        },
-        {
-          "source": "slips:39",
-          "target": "bips:32",
-          "source_title": "Shamir's Secret-Sharing for Mnemonic Codes",
-          "target_title": null,
-          "status": "approach_only"
-        },
-        {
-          "source": "slips:39",
-          "target": "bips:39",
-          "source_title": "Shamir's Secret-Sharing for Mnemonic Codes",
-          "target_title": null,
-          "status": "approach_only"
-        },
-        {
-          "source": "slips:44",
-          "target": "bips:44",
-          "source_title": "Registered coin types for BIP-0044",
-          "target_title": null,
-          "status": "approach_only"
-        },
-        {
           "source": "slips:48",
           "target": "bips:32",
-          "source_title": "Deterministic key hierarchy for Graphene-based networks",
-          "target_title": null,
-          "status": "approach_only"
-        },
-        {
-          "source": "slips:48",
-          "target": "bips:43",
-          "source_title": "Deterministic key hierarchy for Graphene-based networks",
-          "target_title": null,
-          "status": "approach_only"
-        },
-        {
-          "source": "slips:48",
-          "target": "bips:44",
           "source_title": "Deterministic key hierarchy for Graphene-based networks",
           "target_title": null,
           "status": "approach_only"
@@ -4132,12 +4468,12 @@
       "baseline": "preamble_extracted",
       "baseline_label": "Preamble-Extracted Dependencies",
       "summary": {
-        "approach_only": 19,
+        "approach_only": 53,
         "overlap": 0,
         "baseline_only": 0,
-        "approach_total": 19,
+        "approach_total": 53,
         "baseline_total": 0,
-        "union_total": 19,
+        "union_total": 53,
         "hit_rate": 0.0,
         "missed_rate": 0.0
       },
@@ -4164,17 +4500,17 @@
           "status": "approach_only"
         },
         {
-          "source": "slips:13",
-          "target": "bips:43",
-          "source_title": "Authentication using deterministic hierarchy",
+          "source": "slips:11",
+          "target": "bips:32",
+          "source_title": "Symmetric encryption of key-value pairs using deterministic hierarchy",
           "target_title": null,
           "status": "approach_only"
         },
         {
           "source": "slips:13",
-          "target": "slips:10",
+          "target": "bips:43",
           "source_title": "Authentication using deterministic hierarchy",
-          "target_title": "Universal private key derivation from master private key",
+          "target_title": null,
           "status": "approach_only"
         },
         {
@@ -4189,6 +4525,83 @@
           "target": "slips:32",
           "source_title": "Registered HD version bytes for BIP-0032",
           "target_title": "Extended serialization format for BIP-32 wallets",
+          "status": "approach_only"
+        },
+        {
+          "source": "slips:14",
+          "target": "bips:32",
+          "source_title": "Stress Test Deterministic Wallet",
+          "target_title": null,
+          "status": "approach_only"
+        },
+        {
+          "source": "slips:14",
+          "target": "bips:39",
+          "source_title": "Stress Test Deterministic Wallet",
+          "target_title": null,
+          "status": "approach_only"
+        },
+        {
+          "source": "slips:14",
+          "target": "bips:44",
+          "source_title": "Stress Test Deterministic Wallet",
+          "target_title": null,
+          "status": "approach_only"
+        },
+        {
+          "source": "slips:14",
+          "target": "bips:49",
+          "source_title": "Stress Test Deterministic Wallet",
+          "target_title": null,
+          "status": "approach_only"
+        },
+        {
+          "source": "slips:14",
+          "target": "bips:84",
+          "source_title": "Stress Test Deterministic Wallet",
+          "target_title": null,
+          "status": "approach_only"
+        },
+        {
+          "source": "slips:14",
+          "target": "bips:86",
+          "source_title": "Stress Test Deterministic Wallet",
+          "target_title": null,
+          "status": "approach_only"
+        },
+        {
+          "source": "slips:15",
+          "target": "bips:32",
+          "source_title": "Format for Bitcoin metadata and its encryption in HD wallets",
+          "target_title": null,
+          "status": "approach_only"
+        },
+        {
+          "source": "slips:16",
+          "target": "bips:32",
+          "source_title": "Format for password storage and its encryption",
+          "target_title": null,
+          "status": "approach_only"
+        },
+        {
+          "source": "slips:16",
+          "target": "slips:11",
+          "source_title": "Format for password storage and its encryption",
+          "target_title": "Symmetric encryption of key-value pairs using deterministic hierarchy",
+          "status": "approach_only"
+        },
+        {
+          "source": "slips:17",
+          "target": "bips:43",
+          "source_title": "ECDH using deterministic hierarchy",
+          "target_title": null,
+          "status": "approach_only"
+        },
+        {
+          "source": "slips:17",
+          "target": "slips:10",
+          "source_title": "ECDH using deterministic hierarchy",
+          "target_title": "Universal private key derivation from master private key",
           "status": "approach_only"
         },
         {
@@ -4210,6 +4623,90 @@
           "target": "bips:93",
           "source_title": "Registered human-readable parts for BIP-0173",
           "target_title": null,
+          "status": "approach_only"
+        },
+        {
+          "source": "slips:19",
+          "target": "bips:174",
+          "source_title": "Proof of Ownership",
+          "target_title": null,
+          "status": "approach_only"
+        },
+        {
+          "source": "slips:19",
+          "target": "bips:322",
+          "source_title": "Proof of Ownership",
+          "target_title": null,
+          "status": "approach_only"
+        },
+        {
+          "source": "slips:19",
+          "target": "bips:370",
+          "source_title": "Proof of Ownership",
+          "target_title": null,
+          "status": "approach_only"
+        },
+        {
+          "source": "slips:19",
+          "target": "slips:21",
+          "source_title": "Proof of Ownership",
+          "target_title": "Hierarchical derivation of symmetric keys",
+          "status": "approach_only"
+        },
+        {
+          "source": "slips:21",
+          "target": "bips:32",
+          "source_title": "Hierarchical derivation of symmetric keys",
+          "target_title": null,
+          "status": "approach_only"
+        },
+        {
+          "source": "slips:21",
+          "target": "slips:10",
+          "source_title": "Hierarchical derivation of symmetric keys",
+          "target_title": "Universal private key derivation from master private key",
+          "status": "approach_only"
+        },
+        {
+          "source": "slips:22",
+          "target": "slips:10",
+          "source_title": "FIDO2 credential ID format for HD wallets",
+          "target_title": "Universal private key derivation from master private key",
+          "status": "approach_only"
+        },
+        {
+          "source": "slips:22",
+          "target": "slips:21",
+          "source_title": "FIDO2 credential ID format for HD wallets",
+          "target_title": "Hierarchical derivation of symmetric keys",
+          "status": "approach_only"
+        },
+        {
+          "source": "slips:23",
+          "target": "bips:32",
+          "source_title": "Cardano HD master node derivation from a master seed",
+          "target_title": null,
+          "status": "approach_only"
+        },
+        {
+          "source": "slips:23",
+          "target": "bips:39",
+          "source_title": "Cardano HD master node derivation from a master seed",
+          "target_title": null,
+          "status": "approach_only"
+        },
+        {
+          "source": "slips:23",
+          "target": "slips:10",
+          "source_title": "Cardano HD master node derivation from a master seed",
+          "target_title": "Universal private key derivation from master private key",
+          "status": "approach_only"
+        },
+        {
+          "source": "slips:23",
+          "target": "slips:39",
+          "source_title": "Cardano HD master node derivation from a master seed",
+          "target_title": "Shamir's Secret-Sharing for Mnemonic Codes",
           "status": "approach_only"
         },
         {
@@ -4248,6 +4745,41 @@
           "status": "approach_only"
         },
         {
+          "source": "slips:25",
+          "target": "bips:32",
+          "source_title": "Key derivation for CoinJoin accounts",
+          "target_title": null,
+          "status": "approach_only"
+        },
+        {
+          "source": "slips:25",
+          "target": "bips:43",
+          "source_title": "Key derivation for CoinJoin accounts",
+          "target_title": null,
+          "status": "approach_only"
+        },
+        {
+          "source": "slips:25",
+          "target": "bips:86",
+          "source_title": "Key derivation for CoinJoin accounts",
+          "target_title": null,
+          "status": "approach_only"
+        },
+        {
+          "source": "slips:25",
+          "target": "slips:10",
+          "source_title": "Key derivation for CoinJoin accounts",
+          "target_title": "Universal private key derivation from master private key",
+          "status": "approach_only"
+        },
+        {
+          "source": "slips:25",
+          "target": "slips:44",
+          "source_title": "Key derivation for CoinJoin accounts",
+          "target_title": "Registered coin types for BIP-0044",
+          "status": "approach_only"
+        },
+        {
           "source": "slips:32",
           "target": "bips:173",
           "source_title": "Extended serialization format for BIP-32 wallets",
@@ -4258,6 +4790,48 @@
           "source": "slips:32",
           "target": "bips:32",
           "source_title": "Extended serialization format for BIP-32 wallets",
+          "target_title": null,
+          "status": "approach_only"
+        },
+        {
+          "source": "slips:39",
+          "target": "bips:173",
+          "source_title": "Shamir's Secret-Sharing for Mnemonic Codes",
+          "target_title": null,
+          "status": "approach_only"
+        },
+        {
+          "source": "slips:39",
+          "target": "bips:32",
+          "source_title": "Shamir's Secret-Sharing for Mnemonic Codes",
+          "target_title": null,
+          "status": "approach_only"
+        },
+        {
+          "source": "slips:39",
+          "target": "bips:39",
+          "source_title": "Shamir's Secret-Sharing for Mnemonic Codes",
+          "target_title": null,
+          "status": "approach_only"
+        },
+        {
+          "source": "slips:44",
+          "target": "bips:44",
+          "source_title": "Registered coin types for BIP-0044",
+          "target_title": null,
+          "status": "approach_only"
+        },
+        {
+          "source": "slips:48",
+          "target": "bips:43",
+          "source_title": "Deterministic key hierarchy for Graphene-based networks",
+          "target_title": null,
+          "status": "approach_only"
+        },
+        {
+          "source": "slips:48",
+          "target": "bips:44",
+          "source_title": "Deterministic key hierarchy for Graphene-based networks",
           "target_title": null,
           "status": "approach_only"
         },
@@ -4284,13 +4858,13 @@
       "baseline_label": "Body-Extracted Dependencies (Regex)",
       "summary": {
         "approach_only": 0,
-        "overlap": 19,
-        "baseline_only": 57,
-        "approach_total": 19,
+        "overlap": 53,
+        "baseline_only": 23,
+        "approach_total": 53,
         "baseline_total": 76,
         "union_total": 76,
-        "hit_rate": 0.25,
-        "missed_rate": 0.75
+        "hit_rate": 0.6973684210526315,
+        "missed_rate": 0.3026315789473684
       },
       "edges": [
         {
@@ -4315,17 +4889,17 @@
           "status": "overlap"
         },
         {
-          "source": "slips:13",
-          "target": "bips:43",
-          "source_title": "Authentication using deterministic hierarchy",
+          "source": "slips:11",
+          "target": "bips:32",
+          "source_title": "Symmetric encryption of key-value pairs using deterministic hierarchy",
           "target_title": null,
           "status": "overlap"
         },
         {
           "source": "slips:13",
-          "target": "slips:10",
+          "target": "bips:43",
           "source_title": "Authentication using deterministic hierarchy",
-          "target_title": "Universal private key derivation from master private key",
+          "target_title": null,
           "status": "overlap"
         },
         {
@@ -4340,6 +4914,83 @@
           "target": "slips:32",
           "source_title": "Registered HD version bytes for BIP-0032",
           "target_title": "Extended serialization format for BIP-32 wallets",
+          "status": "overlap"
+        },
+        {
+          "source": "slips:14",
+          "target": "bips:32",
+          "source_title": "Stress Test Deterministic Wallet",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:14",
+          "target": "bips:39",
+          "source_title": "Stress Test Deterministic Wallet",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:14",
+          "target": "bips:44",
+          "source_title": "Stress Test Deterministic Wallet",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:14",
+          "target": "bips:49",
+          "source_title": "Stress Test Deterministic Wallet",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:14",
+          "target": "bips:84",
+          "source_title": "Stress Test Deterministic Wallet",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:14",
+          "target": "bips:86",
+          "source_title": "Stress Test Deterministic Wallet",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:15",
+          "target": "bips:32",
+          "source_title": "Format for Bitcoin metadata and its encryption in HD wallets",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:16",
+          "target": "bips:32",
+          "source_title": "Format for password storage and its encryption",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:16",
+          "target": "slips:11",
+          "source_title": "Format for password storage and its encryption",
+          "target_title": "Symmetric encryption of key-value pairs using deterministic hierarchy",
+          "status": "overlap"
+        },
+        {
+          "source": "slips:17",
+          "target": "bips:43",
+          "source_title": "ECDH using deterministic hierarchy",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:17",
+          "target": "slips:10",
+          "source_title": "ECDH using deterministic hierarchy",
+          "target_title": "Universal private key derivation from master private key",
           "status": "overlap"
         },
         {
@@ -4361,6 +5012,90 @@
           "target": "bips:93",
           "source_title": "Registered human-readable parts for BIP-0173",
           "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:19",
+          "target": "bips:174",
+          "source_title": "Proof of Ownership",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:19",
+          "target": "bips:322",
+          "source_title": "Proof of Ownership",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:19",
+          "target": "bips:370",
+          "source_title": "Proof of Ownership",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:19",
+          "target": "slips:21",
+          "source_title": "Proof of Ownership",
+          "target_title": "Hierarchical derivation of symmetric keys",
+          "status": "overlap"
+        },
+        {
+          "source": "slips:21",
+          "target": "bips:32",
+          "source_title": "Hierarchical derivation of symmetric keys",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:21",
+          "target": "slips:10",
+          "source_title": "Hierarchical derivation of symmetric keys",
+          "target_title": "Universal private key derivation from master private key",
+          "status": "overlap"
+        },
+        {
+          "source": "slips:22",
+          "target": "slips:10",
+          "source_title": "FIDO2 credential ID format for HD wallets",
+          "target_title": "Universal private key derivation from master private key",
+          "status": "overlap"
+        },
+        {
+          "source": "slips:22",
+          "target": "slips:21",
+          "source_title": "FIDO2 credential ID format for HD wallets",
+          "target_title": "Hierarchical derivation of symmetric keys",
+          "status": "overlap"
+        },
+        {
+          "source": "slips:23",
+          "target": "bips:32",
+          "source_title": "Cardano HD master node derivation from a master seed",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:23",
+          "target": "bips:39",
+          "source_title": "Cardano HD master node derivation from a master seed",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:23",
+          "target": "slips:10",
+          "source_title": "Cardano HD master node derivation from a master seed",
+          "target_title": "Universal private key derivation from master private key",
+          "status": "overlap"
+        },
+        {
+          "source": "slips:23",
+          "target": "slips:39",
+          "source_title": "Cardano HD master node derivation from a master seed",
+          "target_title": "Shamir's Secret-Sharing for Mnemonic Codes",
           "status": "overlap"
         },
         {
@@ -4399,6 +5134,41 @@
           "status": "overlap"
         },
         {
+          "source": "slips:25",
+          "target": "bips:32",
+          "source_title": "Key derivation for CoinJoin accounts",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:25",
+          "target": "bips:43",
+          "source_title": "Key derivation for CoinJoin accounts",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:25",
+          "target": "bips:86",
+          "source_title": "Key derivation for CoinJoin accounts",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:25",
+          "target": "slips:10",
+          "source_title": "Key derivation for CoinJoin accounts",
+          "target_title": "Universal private key derivation from master private key",
+          "status": "overlap"
+        },
+        {
+          "source": "slips:25",
+          "target": "slips:44",
+          "source_title": "Key derivation for CoinJoin accounts",
+          "target_title": "Registered coin types for BIP-0044",
+          "status": "overlap"
+        },
+        {
           "source": "slips:32",
           "target": "bips:173",
           "source_title": "Extended serialization format for BIP-32 wallets",
@@ -4409,6 +5179,48 @@
           "source": "slips:32",
           "target": "bips:32",
           "source_title": "Extended serialization format for BIP-32 wallets",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:39",
+          "target": "bips:173",
+          "source_title": "Shamir's Secret-Sharing for Mnemonic Codes",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:39",
+          "target": "bips:32",
+          "source_title": "Shamir's Secret-Sharing for Mnemonic Codes",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:39",
+          "target": "bips:39",
+          "source_title": "Shamir's Secret-Sharing for Mnemonic Codes",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:44",
+          "target": "bips:44",
+          "source_title": "Registered coin types for BIP-0044",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:48",
+          "target": "bips:43",
+          "source_title": "Deterministic key hierarchy for Graphene-based networks",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:48",
+          "target": "bips:44",
+          "source_title": "Deterministic key hierarchy for Graphene-based networks",
           "target_title": null,
           "status": "overlap"
         },
@@ -4428,13 +5240,6 @@
         },
         {
           "source": "slips:11",
-          "target": "bips:32",
-          "source_title": "Symmetric encryption of key-value pairs using deterministic hierarchy",
-          "target_title": null,
-          "status": "baseline_only"
-        },
-        {
-          "source": "slips:11",
           "target": "slips:15",
           "source_title": "Symmetric encryption of key-value pairs using deterministic hierarchy",
           "target_title": "Format for Bitcoin metadata and its encryption in HD wallets",
@@ -4448,6 +5253,13 @@
           "status": "baseline_only"
         },
         {
+          "source": "slips:13",
+          "target": "slips:10",
+          "source_title": "Authentication using deterministic hierarchy",
+          "target_title": "Universal private key derivation from master private key",
+          "status": "baseline_only"
+        },
+        {
           "source": "slips:132",
           "target": "bips:49",
           "source_title": "Registered HD version bytes for BIP-0032",
@@ -4458,55 +5270,6 @@
           "source": "slips:132",
           "target": "bips:84",
           "source_title": "Registered HD version bytes for BIP-0032",
-          "target_title": null,
-          "status": "baseline_only"
-        },
-        {
-          "source": "slips:14",
-          "target": "bips:32",
-          "source_title": "Stress Test Deterministic Wallet",
-          "target_title": null,
-          "status": "baseline_only"
-        },
-        {
-          "source": "slips:14",
-          "target": "bips:39",
-          "source_title": "Stress Test Deterministic Wallet",
-          "target_title": null,
-          "status": "baseline_only"
-        },
-        {
-          "source": "slips:14",
-          "target": "bips:44",
-          "source_title": "Stress Test Deterministic Wallet",
-          "target_title": null,
-          "status": "baseline_only"
-        },
-        {
-          "source": "slips:14",
-          "target": "bips:49",
-          "source_title": "Stress Test Deterministic Wallet",
-          "target_title": null,
-          "status": "baseline_only"
-        },
-        {
-          "source": "slips:14",
-          "target": "bips:84",
-          "source_title": "Stress Test Deterministic Wallet",
-          "target_title": null,
-          "status": "baseline_only"
-        },
-        {
-          "source": "slips:14",
-          "target": "bips:86",
-          "source_title": "Stress Test Deterministic Wallet",
-          "target_title": null,
-          "status": "baseline_only"
-        },
-        {
-          "source": "slips:15",
-          "target": "bips:32",
-          "source_title": "Format for Bitcoin metadata and its encryption in HD wallets",
           "target_title": null,
           "status": "baseline_only"
         },
@@ -4525,34 +5288,6 @@
           "status": "baseline_only"
         },
         {
-          "source": "slips:16",
-          "target": "bips:32",
-          "source_title": "Format for password storage and its encryption",
-          "target_title": null,
-          "status": "baseline_only"
-        },
-        {
-          "source": "slips:16",
-          "target": "slips:11",
-          "source_title": "Format for password storage and its encryption",
-          "target_title": "Symmetric encryption of key-value pairs using deterministic hierarchy",
-          "status": "baseline_only"
-        },
-        {
-          "source": "slips:17",
-          "target": "bips:43",
-          "source_title": "ECDH using deterministic hierarchy",
-          "target_title": null,
-          "status": "baseline_only"
-        },
-        {
-          "source": "slips:17",
-          "target": "slips:10",
-          "source_title": "ECDH using deterministic hierarchy",
-          "target_title": "Universal private key derivation from master private key",
-          "status": "baseline_only"
-        },
-        {
           "source": "slips:173",
           "target": "bips:32",
           "source_title": "Registered human-readable parts for BIP-0173",
@@ -4568,28 +5303,7 @@
         },
         {
           "source": "slips:19",
-          "target": "bips:174",
-          "source_title": "Proof of Ownership",
-          "target_title": null,
-          "status": "baseline_only"
-        },
-        {
-          "source": "slips:19",
           "target": "bips:32",
-          "source_title": "Proof of Ownership",
-          "target_title": null,
-          "status": "baseline_only"
-        },
-        {
-          "source": "slips:19",
-          "target": "bips:322",
-          "source_title": "Proof of Ownership",
-          "target_title": null,
-          "status": "baseline_only"
-        },
-        {
-          "source": "slips:19",
-          "target": "bips:370",
           "source_title": "Proof of Ownership",
           "target_title": null,
           "status": "baseline_only"
@@ -4602,31 +5316,10 @@
           "status": "baseline_only"
         },
         {
-          "source": "slips:19",
-          "target": "slips:21",
-          "source_title": "Proof of Ownership",
-          "target_title": "Hierarchical derivation of symmetric keys",
-          "status": "baseline_only"
-        },
-        {
-          "source": "slips:21",
-          "target": "bips:32",
-          "source_title": "Hierarchical derivation of symmetric keys",
-          "target_title": null,
-          "status": "baseline_only"
-        },
-        {
           "source": "slips:21",
           "target": "bips:39",
           "source_title": "Hierarchical derivation of symmetric keys",
           "target_title": null,
-          "status": "baseline_only"
-        },
-        {
-          "source": "slips:21",
-          "target": "slips:10",
-          "source_title": "Hierarchical derivation of symmetric keys",
-          "target_title": "Universal private key derivation from master private key",
           "status": "baseline_only"
         },
         {
@@ -4652,65 +5345,9 @@
         },
         {
           "source": "slips:22",
-          "target": "slips:10",
-          "source_title": "FIDO2 credential ID format for HD wallets",
-          "target_title": "Universal private key derivation from master private key",
-          "status": "baseline_only"
-        },
-        {
-          "source": "slips:22",
-          "target": "slips:21",
-          "source_title": "FIDO2 credential ID format for HD wallets",
-          "target_title": "Hierarchical derivation of symmetric keys",
-          "status": "baseline_only"
-        },
-        {
-          "source": "slips:22",
           "target": "slips:39",
           "source_title": "FIDO2 credential ID format for HD wallets",
           "target_title": "Shamir's Secret-Sharing for Mnemonic Codes",
-          "status": "baseline_only"
-        },
-        {
-          "source": "slips:23",
-          "target": "bips:32",
-          "source_title": "Cardano HD master node derivation from a master seed",
-          "target_title": null,
-          "status": "baseline_only"
-        },
-        {
-          "source": "slips:23",
-          "target": "bips:39",
-          "source_title": "Cardano HD master node derivation from a master seed",
-          "target_title": null,
-          "status": "baseline_only"
-        },
-        {
-          "source": "slips:23",
-          "target": "slips:10",
-          "source_title": "Cardano HD master node derivation from a master seed",
-          "target_title": "Universal private key derivation from master private key",
-          "status": "baseline_only"
-        },
-        {
-          "source": "slips:23",
-          "target": "slips:39",
-          "source_title": "Cardano HD master node derivation from a master seed",
-          "target_title": "Shamir's Secret-Sharing for Mnemonic Codes",
-          "status": "baseline_only"
-        },
-        {
-          "source": "slips:25",
-          "target": "bips:32",
-          "source_title": "Key derivation for CoinJoin accounts",
-          "target_title": null,
-          "status": "baseline_only"
-        },
-        {
-          "source": "slips:25",
-          "target": "bips:43",
-          "source_title": "Key derivation for CoinJoin accounts",
-          "target_title": null,
           "status": "baseline_only"
         },
         {
@@ -4749,71 +5386,8 @@
           "status": "baseline_only"
         },
         {
-          "source": "slips:25",
-          "target": "bips:86",
-          "source_title": "Key derivation for CoinJoin accounts",
-          "target_title": null,
-          "status": "baseline_only"
-        },
-        {
-          "source": "slips:25",
-          "target": "slips:10",
-          "source_title": "Key derivation for CoinJoin accounts",
-          "target_title": "Universal private key derivation from master private key",
-          "status": "baseline_only"
-        },
-        {
-          "source": "slips:25",
-          "target": "slips:44",
-          "source_title": "Key derivation for CoinJoin accounts",
-          "target_title": "Registered coin types for BIP-0044",
-          "status": "baseline_only"
-        },
-        {
-          "source": "slips:39",
-          "target": "bips:173",
-          "source_title": "Shamir's Secret-Sharing for Mnemonic Codes",
-          "target_title": null,
-          "status": "baseline_only"
-        },
-        {
-          "source": "slips:39",
-          "target": "bips:32",
-          "source_title": "Shamir's Secret-Sharing for Mnemonic Codes",
-          "target_title": null,
-          "status": "baseline_only"
-        },
-        {
-          "source": "slips:39",
-          "target": "bips:39",
-          "source_title": "Shamir's Secret-Sharing for Mnemonic Codes",
-          "target_title": null,
-          "status": "baseline_only"
-        },
-        {
-          "source": "slips:44",
-          "target": "bips:44",
-          "source_title": "Registered coin types for BIP-0044",
-          "target_title": null,
-          "status": "baseline_only"
-        },
-        {
           "source": "slips:48",
           "target": "bips:32",
-          "source_title": "Deterministic key hierarchy for Graphene-based networks",
-          "target_title": null,
-          "status": "baseline_only"
-        },
-        {
-          "source": "slips:48",
-          "target": "bips:43",
-          "source_title": "Deterministic key hierarchy for Graphene-based networks",
-          "target_title": null,
-          "status": "baseline_only"
-        },
-        {
-          "source": "slips:48",
-          "target": "bips:44",
           "source_title": "Deterministic key hierarchy for Graphene-based networks",
           "target_title": null,
           "status": "baseline_only"
@@ -4834,11 +5408,11 @@
       "baseline_label": "Body-Extracted Dependencies (LLM)",
       "summary": {
         "approach_only": 0,
-        "overlap": 19,
+        "overlap": 53,
         "baseline_only": 0,
-        "approach_total": 19,
-        "baseline_total": 19,
-        "union_total": 19,
+        "approach_total": 53,
+        "baseline_total": 53,
+        "union_total": 53,
         "hit_rate": 1.0,
         "missed_rate": 0.0
       },
@@ -4865,17 +5439,17 @@
           "status": "overlap"
         },
         {
-          "source": "slips:13",
-          "target": "bips:43",
-          "source_title": "Authentication using deterministic hierarchy",
+          "source": "slips:11",
+          "target": "bips:32",
+          "source_title": "Symmetric encryption of key-value pairs using deterministic hierarchy",
           "target_title": null,
           "status": "overlap"
         },
         {
           "source": "slips:13",
-          "target": "slips:10",
+          "target": "bips:43",
           "source_title": "Authentication using deterministic hierarchy",
-          "target_title": "Universal private key derivation from master private key",
+          "target_title": null,
           "status": "overlap"
         },
         {
@@ -4890,6 +5464,83 @@
           "target": "slips:32",
           "source_title": "Registered HD version bytes for BIP-0032",
           "target_title": "Extended serialization format for BIP-32 wallets",
+          "status": "overlap"
+        },
+        {
+          "source": "slips:14",
+          "target": "bips:32",
+          "source_title": "Stress Test Deterministic Wallet",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:14",
+          "target": "bips:39",
+          "source_title": "Stress Test Deterministic Wallet",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:14",
+          "target": "bips:44",
+          "source_title": "Stress Test Deterministic Wallet",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:14",
+          "target": "bips:49",
+          "source_title": "Stress Test Deterministic Wallet",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:14",
+          "target": "bips:84",
+          "source_title": "Stress Test Deterministic Wallet",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:14",
+          "target": "bips:86",
+          "source_title": "Stress Test Deterministic Wallet",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:15",
+          "target": "bips:32",
+          "source_title": "Format for Bitcoin metadata and its encryption in HD wallets",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:16",
+          "target": "bips:32",
+          "source_title": "Format for password storage and its encryption",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:16",
+          "target": "slips:11",
+          "source_title": "Format for password storage and its encryption",
+          "target_title": "Symmetric encryption of key-value pairs using deterministic hierarchy",
+          "status": "overlap"
+        },
+        {
+          "source": "slips:17",
+          "target": "bips:43",
+          "source_title": "ECDH using deterministic hierarchy",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:17",
+          "target": "slips:10",
+          "source_title": "ECDH using deterministic hierarchy",
+          "target_title": "Universal private key derivation from master private key",
           "status": "overlap"
         },
         {
@@ -4911,6 +5562,90 @@
           "target": "bips:93",
           "source_title": "Registered human-readable parts for BIP-0173",
           "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:19",
+          "target": "bips:174",
+          "source_title": "Proof of Ownership",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:19",
+          "target": "bips:322",
+          "source_title": "Proof of Ownership",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:19",
+          "target": "bips:370",
+          "source_title": "Proof of Ownership",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:19",
+          "target": "slips:21",
+          "source_title": "Proof of Ownership",
+          "target_title": "Hierarchical derivation of symmetric keys",
+          "status": "overlap"
+        },
+        {
+          "source": "slips:21",
+          "target": "bips:32",
+          "source_title": "Hierarchical derivation of symmetric keys",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:21",
+          "target": "slips:10",
+          "source_title": "Hierarchical derivation of symmetric keys",
+          "target_title": "Universal private key derivation from master private key",
+          "status": "overlap"
+        },
+        {
+          "source": "slips:22",
+          "target": "slips:10",
+          "source_title": "FIDO2 credential ID format for HD wallets",
+          "target_title": "Universal private key derivation from master private key",
+          "status": "overlap"
+        },
+        {
+          "source": "slips:22",
+          "target": "slips:21",
+          "source_title": "FIDO2 credential ID format for HD wallets",
+          "target_title": "Hierarchical derivation of symmetric keys",
+          "status": "overlap"
+        },
+        {
+          "source": "slips:23",
+          "target": "bips:32",
+          "source_title": "Cardano HD master node derivation from a master seed",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:23",
+          "target": "bips:39",
+          "source_title": "Cardano HD master node derivation from a master seed",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:23",
+          "target": "slips:10",
+          "source_title": "Cardano HD master node derivation from a master seed",
+          "target_title": "Universal private key derivation from master private key",
+          "status": "overlap"
+        },
+        {
+          "source": "slips:23",
+          "target": "slips:39",
+          "source_title": "Cardano HD master node derivation from a master seed",
+          "target_title": "Shamir's Secret-Sharing for Mnemonic Codes",
           "status": "overlap"
         },
         {
@@ -4949,6 +5684,41 @@
           "status": "overlap"
         },
         {
+          "source": "slips:25",
+          "target": "bips:32",
+          "source_title": "Key derivation for CoinJoin accounts",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:25",
+          "target": "bips:43",
+          "source_title": "Key derivation for CoinJoin accounts",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:25",
+          "target": "bips:86",
+          "source_title": "Key derivation for CoinJoin accounts",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:25",
+          "target": "slips:10",
+          "source_title": "Key derivation for CoinJoin accounts",
+          "target_title": "Universal private key derivation from master private key",
+          "status": "overlap"
+        },
+        {
+          "source": "slips:25",
+          "target": "slips:44",
+          "source_title": "Key derivation for CoinJoin accounts",
+          "target_title": "Registered coin types for BIP-0044",
+          "status": "overlap"
+        },
+        {
           "source": "slips:32",
           "target": "bips:173",
           "source_title": "Extended serialization format for BIP-32 wallets",
@@ -4959,6 +5729,48 @@
           "source": "slips:32",
           "target": "bips:32",
           "source_title": "Extended serialization format for BIP-32 wallets",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:39",
+          "target": "bips:173",
+          "source_title": "Shamir's Secret-Sharing for Mnemonic Codes",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:39",
+          "target": "bips:32",
+          "source_title": "Shamir's Secret-Sharing for Mnemonic Codes",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:39",
+          "target": "bips:39",
+          "source_title": "Shamir's Secret-Sharing for Mnemonic Codes",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:44",
+          "target": "bips:44",
+          "source_title": "Registered coin types for BIP-0044",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:48",
+          "target": "bips:43",
+          "source_title": "Deterministic key hierarchy for Graphene-based networks",
+          "target_title": null,
+          "status": "overlap"
+        },
+        {
+          "source": "slips:48",
+          "target": "bips:44",
+          "source_title": "Deterministic key hierarchy for Graphene-based networks",
           "target_title": null,
           "status": "overlap"
         },

@@ -599,14 +599,16 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:58:59Z",
+          "timestamp": "2026-06-30T11:44:25Z",
+          "status": "success",
           "dependencies": [
             {
-              "target": "bips:34",
-              "evidence": "main:coinbase",
-              "reason": "The proposal's BMM Accept is encoded in the coinbase transaction, so it relies on the coinbase transaction structure defined by BIP 34/coinbase handling.",
-              "confidence": "medium"
+              "target": "bips:9",
+              "evidence": "This soft fork can be deployed without modifying Bitcoin Core at all",
+              "reason": "The proposal is explicitly a soft-fork deployment, so its activation and enforceability depend on soft-fork behavior rather than a new consensus mechanism defined here.",
+              "confidence": "low"
             }
           ]
         }

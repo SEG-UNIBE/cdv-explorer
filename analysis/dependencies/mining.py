@@ -1,10 +1,32 @@
 import os
 import re
+import time
 from json import JSONDecodeError, loads
 from pathlib import Path
-from typing import Any, Dict, List, Mapping
+from typing import Any, Callable, Dict, List, Mapping
 
-from openai import OpenAI
+from openai import OpenAI, RateLimitError
+
+LLM_RATE_LIMIT_MAX_ATTEMPTS = 4
+LLM_RATE_LIMIT_WAIT_SECONDS = 1.5
+
+
+def _call_with_rate_limit_retry(fn: Callable[[], Any]) -> Any:
+    """Call fn(); on HTTP 429, sleep ~1.5s (or Retry-After if larger) and retry."""
+    for attempt in range(1, LLM_RATE_LIMIT_MAX_ATTEMPTS + 1):
+        try:
+            return fn()
+        except RateLimitError as exc:
+            if attempt >= LLM_RATE_LIMIT_MAX_ATTEMPTS:
+                raise
+            wait = LLM_RATE_LIMIT_WAIT_SECONDS
+            try:
+                retry_after = exc.response.headers.get("retry-after")
+                if retry_after:
+                    wait = max(wait, float(retry_after))
+            except (AttributeError, TypeError, ValueError):
+                pass
+            time.sleep(wait)
 
 from analysis.reference_ids import (
     normalize_reference_id,
@@ -1055,7 +1077,9 @@ def llm_extract_semantic_dependencies(
             }
             if llm_reasoning:
                 kwargs["reasoning"] = llm_reasoning
-            response = client.responses.create(**kwargs)
+            response = _call_with_rate_limit_retry(
+                lambda: client.responses.create(**kwargs)
+            )
             if getattr(response, "status", None) == "failed":
                 return _result(
                     LLM_RUN_STATUS_API_ERROR,
@@ -1064,21 +1088,27 @@ def llm_extract_semantic_dependencies(
             return _parse(response)
         except TimeoutError as exc:
             return _result(LLM_RUN_STATUS_TIMEOUT, error_message=str(exc))
+        except RateLimitError as exc:
+            return _result(LLM_RUN_STATUS_API_ERROR, error_message=f"Rate limit: {exc}")
         except (TypeError, ValueError, KeyError, OSError, ConnectionError) as exc:
             return _result(LLM_RUN_STATUS_API_ERROR, error_message=str(exc))
 
     try:
         try:
-            response = client.chat.completions.create(
-                model=resolved_model,
-                messages=messages,
-                response_format=response_format,
+            response = _call_with_rate_limit_retry(
+                lambda: client.chat.completions.create(
+                    model=resolved_model,
+                    messages=messages,
+                    response_format=response_format,
+                )
             )
         except TypeError:
-            response = client.chat.completions.create(
-                model=resolved_model,
-                messages=messages,
-                response_format={"type": "json_object"},
+            response = _call_with_rate_limit_retry(
+                lambda: client.chat.completions.create(
+                    model=resolved_model,
+                    messages=messages,
+                    response_format={"type": "json_object"},
+                )
             )
 
         choices = getattr(response, "choices", None)
@@ -1093,6 +1123,8 @@ def llm_extract_semantic_dependencies(
         return _parse(response)
     except TimeoutError as exc:
         return _result(LLM_RUN_STATUS_TIMEOUT, error_message=str(exc))
+    except RateLimitError as exc:
+        return _result(LLM_RUN_STATUS_API_ERROR, error_message=f"Rate limit: {exc}")
     except (TypeError, ValueError, KeyError, OSError, ConnectionError) as exc:
         return _result(LLM_RUN_STATUS_API_ERROR, error_message=str(exc))
 

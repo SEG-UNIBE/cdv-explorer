@@ -561,12 +561,21 @@
         "author": "Thomas Kerin",
         "path": "bip-median-past-timelock.mediawiki",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "c98859fe20617df141da0dd08d399921c7097be9",
         "timestamp": "2016-07-18T23:37:42Z",
         "date": "2016-07-18",
+        "author": "Luke Dashjr",
+        "path": "bip-0113.mediawiki",
+        "status": "Final",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
         "author": "Luke Dashjr",
         "path": "bip-0113.mediawiki",
         "status": "Final",
@@ -604,31 +613,33 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:58:19Z",
+          "timestamp": "2026-06-30T11:43:13Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
               "evidence": "deployed by \"versionbits\" BIP9 using bit 0",
-              "reason": "The deployment mechanism is versionbits as defined by BIP9, so activation depends on that proposal's signaling rules.",
+              "reason": "Activation and deployment are defined using BIP9 versionbits signaling.",
               "confidence": "high"
             },
             {
               "target": "bips:65",
-              "evidence": "required by BIP65 (CHECKLOCKTIMEVERIFY)",
-              "reason": "The proposal explicitly states its locktime semantics are needed for CHECKLOCKTIMEVERIFY behavior.",
+              "evidence": "as required by BIP65 (CHECKLOCKTIMEVERIFY)",
+              "reason": "The proposal explicitly frames its locktime semantics as needed to support CHECKLOCKTIMEVERIFY behavior.",
               "confidence": "high"
             },
             {
               "target": "bips:68",
               "evidence": "matching the behavior of BIP68 (sequence numbers)",
-              "reason": "The proposal aligns locktime evaluation semantics with BIP68’s sequence-lock behavior, so its consensus meaning depends on that framework.",
+              "reason": "The proposal is designed to align its time-lock semantics with BIP68's sequence-number-based locktime behavior.",
               "confidence": "high"
             },
             {
               "target": "bips:112",
-              "evidence": "matching the behavior of BIP68 (sequence numbers) and BIP112 (CHECKSEQUENCEVERIFY)",
-              "reason": "The proposal is meant to match CHECKSEQUENCEVERIFY semantics, making it a technical dependency for consistent sequence-lock behavior.",
+              "evidence": "and BIP112 (CHECKSEQUENCEVERIFY)",
+              "reason": "The proposal explicitly states it matches CHECKSEQUENCEVERIFY behavior, indicating semantic reliance.",
               "confidence": "high"
             }
           ]

@@ -564,26 +564,22 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:59:40Z",
+          "timestamp": "2026-06-30T11:46:00Z",
+          "status": "success",
           "dependencies": [
             {
-              "target": "bips:32",
-              "evidence": "The keys derived from extended keys must be serialized as x-only public keys.",
-              "reason": "This depends on BIP 32 extended key derivation and serialization behavior for key expressions used inside tr().",
-              "confidence": "high"
-            },
-            {
               "target": "bips:341",
-              "evidence": "The Tree expression becomes the Taproot script tree as described in BIP 341.",
-              "reason": "The descriptor’s semantics for internal keys, script trees, merkle roots, and output key construction rely on Taproot rules defined by BIP 341.",
+              "evidence": "as specified by [[bip-0341.mediawiki#cite_ref-22-0|BIP 341]]",
+              "reason": "The proposal defines tr() output scripts by directly using Taproot internal-key tweaking and script-path construction from BIP 341.",
               "confidence": "high"
             },
             {
               "target": "bips:380",
-              "evidence": "tr() descriptors use the format and general operation specified in 380.",
-              "reason": "This proposal relies on the descriptor format and parsing/operation framework established by BIP 380.",
-              "confidence": "low"
+              "evidence": "use the format and general operation specified in [[bip-0380.mediawiki|380]]",
+              "reason": "The descriptor syntax and overall descriptor handling are explicitly based on BIP 380.",
+              "confidence": "high"
             }
           ]
         }

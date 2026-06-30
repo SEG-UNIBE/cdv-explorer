@@ -768,20 +768,34 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:59:45Z",
+          "timestamp": "2026-06-30T11:46:27Z",
+          "status": "success",
           "dependencies": [
+            {
+              "target": "bips:119",
+              "evidence": "<code>OP_CHECKTEMPLATEVERIFY</code><ref>[[bip-0119.mediawiki|BIP-119]]</ref>",
+              "reason": "BIP-119 is a cited prior covenant opcode that the proposal discusses as a related mechanism for constraining transaction outputs, though not as a direct implementation dependency.",
+              "confidence": "low"
+            },
             {
               "target": "bips:327",
               "evidence": "the naked key could be an aggregate key using [[bip-0327.mediawiki|MuSig2]]",
-              "reason": "The proposal explicitly relies on MuSig2 for aggregate key construction used as the naked key.",
-              "confidence": "medium"
+              "reason": "MuSig2 is mentioned as a possible way to form the naked key in an example, but the proposal does not depend on MuSig2 for its semantics.",
+              "confidence": "low"
             },
             {
               "target": "bips:341",
-              "evidence": "If there is no data committed in the UTXO, then the naked key is the internal key as defined in BIP-341.",
-              "reason": "The proposal defines key and taptree semantics using Taproot internal key and Merkle tree rules from this BIP.",
+              "evidence": "the internal key as defined in BIP-341",
+              "reason": "The proposal’s taproot key construction, internal-key semantics, NUMS key, and tweak logic are explicitly built around BIP-341 taproot rules.",
               "confidence": "high"
+            },
+            {
+              "target": "bips:345",
+              "evidence": "<code>OP_VAULT</code><ref>[[bip-0345.mediawiki|BIP-345]]</ref>",
+              "reason": "BIP-345 is referenced as an example of a proposed opcode for output restriction, but the current proposal does not rely on its mechanism.",
+              "confidence": "low"
             }
           ]
         }

@@ -7206,9 +7206,18 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:46:34Z_gpt-5.4-mini_dd2b314a",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:00:11Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:47:08Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:44",
+              "evidence": "BIP-0044 defines a logical hierarchy for deterministic wallets.",
+              "reason": "This proposal assigns coin-type values specifically for level 2 of BIP44 and therefore depends on its hierarchy and coin_type path semantics.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

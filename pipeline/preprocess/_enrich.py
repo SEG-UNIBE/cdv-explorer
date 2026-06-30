@@ -37,7 +37,7 @@ from analysis.evolution import extract_status_timeline
 from pipeline.source_context import SourceContext
 
 MIN_WORD_OCCURRENCE = 2
-LLM_MAX_CONCURRENCY = 5
+LLM_MAX_CONCURRENCY = 3
 
 
 def _preserved_llm_runs(

@@ -897,19 +897,27 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:58:48Z",
+          "timestamp": "2026-06-30T11:43:50Z",
+          "status": "success",
           "dependencies": [
             {
+              "target": "bips:37",
+              "evidence": "an alternative to Bloom filters, as used in BIP 37",
+              "reason": "The proposal defines its filter construction in contrast to and as a replacement for the Bloom-filter mechanism introduced by BIP 37.",
+              "confidence": "medium"
+            },
+            {
               "target": "bips:141",
-              "evidence": "an additional OP_RETURN output in the coinbase transaction similar to the current witness commitment",
-              "reason": "The filter design explicitly avoids OP_RETURN outputs to preserve compatibility with the witness commitment mechanism introduced by this proposal.",
+              "evidence": "similar to the current witness commitment",
+              "reason": "The OP_RETURN exclusion rule is justified by anticipated future commitment construction analogous to the witness commitment pattern from BIP 141.",
               "confidence": "low"
             },
             {
               "target": "bips:157",
               "evidence": "for use in the BIP 157 light client protocol",
-              "reason": "This proposal defines the compact filter structure consumed by the BIP 157 light client protocol and its signaling/serialization assumptions.",
+              "reason": "The proposal is explicitly designed as the compact filter structure used by the BIP 157 protocol, so understanding its deployment depends on BIP 157's protocol context and message flow.",
               "confidence": "high"
             }
           ]

@@ -533,6 +533,15 @@
         "author": "Eric Lombrozo",
         "path": "bip-0124.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0124.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -576,32 +585,34 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:58:26Z",
+          "timestamp": "2026-06-30T11:43:19Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:16",
-              "evidence": "The most popular formats are pay-to-pubkey-hash and m-of-n pay-to-script-hash (BIP16).",
-              "reason": "The proposal’s script-template motivation explicitly relies on the P2SH script format as an existing output type to generalize.",
-              "confidence": "medium"
+              "evidence": "pay-to-script-hash (BIP16)",
+              "reason": "BIP16 is cited as an existing script format motivating and contextualizing the proposed template format, but the proposal does not materially reuse its mechanism beyond that reference.",
+              "confidence": "low"
             },
             {
               "target": "bips:32",
               "evidence": "using the key derivation mechanism defined in BIP32",
-              "reason": "The core template format and all key/group notation are built on BIP32 derivation paths and deterministic child keys.",
+              "reason": "The proposal's script templates are parameterized by BIP32 derivation paths and require that mechanism to generate deterministic keys and scripts.",
               "confidence": "high"
             },
             {
               "target": "bips:65",
               "evidence": "with the advent of hashlocked and timelocked contracts (BIP65, BIP112)",
-              "reason": "The timelocked contract example uses OP_CHECKLOCKTIMEVERIFY, a semantic introduced by BIP65.",
-              "confidence": "high"
+              "reason": "The timelocked contract example uses OP_CHECKLOCKTIMEVERIFY, which is the semantic mechanism introduced by BIP65.",
+              "confidence": "medium"
             },
             {
               "target": "bips:112",
               "evidence": "with the advent of hashlocked and timelocked contracts (BIP65, BIP112)",
-              "reason": "The proposal’s contract design depends on the CHECKSEQUENCEVERIFY functionality introduced by BIP112.",
-              "confidence": "high"
+              "reason": "The proposal explicitly relies on the timelock-related script mechanism associated with BIP112 in its contract example and motivation.",
+              "confidence": "medium"
             }
           ]
         }

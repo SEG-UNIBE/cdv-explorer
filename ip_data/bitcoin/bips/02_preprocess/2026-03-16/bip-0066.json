@@ -601,13 +601,22 @@
         "author": "Pieter Wuille",
         "path": "bip-0066.mediawiki",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "8e5fe7a23d0620eda32b8f185b5ef631e88fb179",
         "timestamp": "2015-08-14T09:52:24+10:00",
         "date": "2015-08-14",
         "author": "Daniel Cousens",
+        "path": "bip-0066.mediawiki",
+        "status": "Final",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
         "path": "bip-0066.mediawiki",
         "status": "Final",
         "standard": "bip2"
@@ -636,19 +645,21 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:57:56Z",
+          "timestamp": "2026-06-30T11:42:34Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:34",
               "evidence": "We reuse the double-threshold switchover mechanism from BIP 34",
-              "reason": "The deployment mechanism directly reuses the activation logic defined by the target proposal.",
+              "reason": "The deployment logic explicitly reuses BIP 34's version-bits threshold activation mechanism and thresholds.",
               "confidence": "high"
             },
             {
               "target": "bips:62",
               "evidence": "This proposal has the added benefit of reducing transaction malleability (see BIP 62).",
-              "reason": "The text indicates this proposal is related to and relies on the malleability reductions defined in the target as a substantive compatibility context, though not as a direct mechanism dependency.",
+              "reason": "The proposal is technically related to and framed as contributing to the transaction malleability constraints discussed in BIP 62, though it does not depend on BIP 62 for its core rules.",
               "confidence": "low"
             }
           ]

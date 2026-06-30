@@ -858,9 +858,24 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:59:19Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:45:15Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:141",
+              "evidence": "P2WPKH and P2WSH, see [[bip-0141.mediawiki|BIP141]]",
+              "reason": "The proposal’s segwit address handling depends on BIP141’s witness output types and versioned segwit program semantics.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:173",
+              "evidence": "amends BIP173 to use Bech32m",
+              "reason": "The proposal directly changes the checksum/encoding rules defined by BIP173 and reuses its Bech32 format and segwit address structure.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

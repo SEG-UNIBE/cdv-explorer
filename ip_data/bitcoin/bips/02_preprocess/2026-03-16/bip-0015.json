@@ -751,7 +751,7 @@
         "author": "genjix",
         "path": "bip-0015.md",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "0a1fef7e8fc7f963a527a8751409ad0024772fd7",
@@ -760,7 +760,7 @@
         "author": "genjix",
         "path": "bip-0015.md",
         "status": "Deferred",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "98dba5b73f970ee94a3918d829c6f11fb5e4d73b",
@@ -769,13 +769,22 @@
         "author": "genjix",
         "path": "bip-0015.md",
         "status": "Withdrawn",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "37a05d4acf3e7a356aa1f705d0e2d34738f17d74",
         "timestamp": "2013-10-21T00:42:26-04:00",
         "date": "2013-10-21",
         "author": "Peter Todd",
+        "path": "bip-0015.mediawiki",
+        "status": "Deferred",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
         "path": "bip-0015.mediawiki",
         "status": "Deferred",
         "standard": "bip2"
@@ -800,13 +809,15 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:57:39Z",
+          "timestamp": "2026-06-30T11:42:05Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:70",
-              "evidence": "\"[[bip-0070.mediawiki|BIP 0070]] (payment protocol) may be seen as the alternative to Aliases.\"",
-              "reason": "The proposal positions itself as an alternative to BIP 70's payment protocol context, but does not build on its mechanics; this is only a topical reference and not a dependency.",
+              "evidence": "[[bip-0070.mediawiki|BIP 0070]] (payment protocol) may be seen as the alternative to Aliases.",
+              "reason": "The proposal frames BIP 70 as the alternative payment-protocol mechanism against which alias schemes are evaluated, but it does not reuse BIP 70 semantics or formats.",
               "confidence": "low"
             }
           ]

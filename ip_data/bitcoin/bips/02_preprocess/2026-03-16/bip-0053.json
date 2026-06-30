@@ -653,25 +653,27 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:57:54Z",
+          "timestamp": "2026-06-30T11:42:27Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:37",
               "evidence": "BIP37 provides a partial Merkle tree format",
-              "reason": "The proposal’s SPV attack analysis and mitigation rely on the partial Merkle proof format introduced by this BIP.",
+              "reason": "The SPV attack analysis depends on BIP37's partial Merkle tree proof format and its lack of Merkle-tree-height commitment.",
               "confidence": "low"
             },
             {
               "target": "bips:66",
               "evidence": "After BIP66 was activated on the Bitcoin network",
-              "reason": "The pre-segwit transaction-size analysis depends on the signature size constraints enforced by this consensus change.",
+              "reason": "The proposal's backward-compatibility analysis relies on BIP66's signature-size constraint when discussing whether pre-segwit 64-byte transactions can spend signed UTXOs.",
               "confidence": "medium"
             },
             {
               "target": "bips:141",
-              "evidence": "This BIP disallows single-input single-output segwit transactions that pay to a 2-byte witness program.",
-              "reason": "The segwit-specific restriction depends on witness program semantics and valid length rules defined by this BIP.",
+              "evidence": "BIP141 says witness programs can be 2 bytes in size",
+              "reason": "The proposal explicitly depends on SegWit witness-program length rules to identify the class of 64-byte segwit transactions it disallows.",
               "confidence": "high"
             }
           ]

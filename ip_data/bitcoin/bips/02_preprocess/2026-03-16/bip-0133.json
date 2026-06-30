@@ -496,6 +496,15 @@
         "author": "Alex Morcos",
         "path": "bip-0133.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0133.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -522,20 +531,16 @@
       "body_extracted_regex": [],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:58:30Z",
+          "timestamp": "2026-06-30T11:43:25Z",
+          "status": "success",
           "dependencies": [
             {
-              "target": "bips:37",
-              "evidence": "\"The fee filter is additive with a bloom filter for transactions\"",
-              "reason": "The fee filter is defined to combine with transaction bloom filtering, so it depends on the transaction relay/filtering semantics introduced by BIP 37.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:111",
-              "evidence": "\"Feature discovery is enabled by checking protocol version >= 70013\"",
-              "reason": "The proposal relies on the network protocol version introduced by BIP 111 to detect peer feature support.",
-              "confidence": "low"
+              "target": "bips:9",
+              "evidence": "The fee filter is additive with a bloom filter for transactions",
+              "reason": "The proposal explicitly combines its relay-filtering behavior with transaction bloom filters, so understanding implementation semantics depends on the bloom-filter mechanism defined in the referenced proposal.",
+              "confidence": "high"
             }
           ]
         }

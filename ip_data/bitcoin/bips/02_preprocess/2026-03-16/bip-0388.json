@@ -1008,38 +1008,82 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:59:40Z",
+          "timestamp": "2026-06-30T11:46:13Z",
+          "status": "success",
           "dependencies": [
             {
-              "target": "bips:32",
-              "evidence": "can only sign with keys derived from a single seed via BIP-32",
-              "reason": "Wallet policies encode extended public keys and derivation paths, relying on BIP-32 key derivation and xpub serialization.",
+              "target": "bips:44",
+              "evidence": "[[bip-0044.mediawiki|BIP-44]], first account",
+              "reason": "BIP-44 is used as a canonical wallet-policy pattern and as one of the allowed standard account specifications in the implementation guidelines.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:48",
+              "evidence": "[[bip-0048.mediawiki|BIP-48]] P2WSH multisig",
+              "reason": "BIP-48 is used as a canonical multisig account pattern in the specification’s valid-policy examples.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:49",
+              "evidence": "[[bip-0049.mediawiki|BIP-49]], second account",
+              "reason": "BIP-49 is used as a canonical wallet-policy pattern and as one of the allowed standard account specifications in the implementation guidelines.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:84",
+              "evidence": "[[bip-0084.mediawiki|BIP-84]], third account",
+              "reason": "BIP-84 is used as a canonical wallet-policy pattern and as one of the allowed standard account specifications in the implementation guidelines.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:86",
+              "evidence": "[[bip-0086.mediawiki|BIP-86]], first account",
+              "reason": "BIP-86 is used as a canonical wallet-policy pattern and as one of the allowed standard account specifications in the implementation guidelines.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:129",
+              "evidence": "See [[bip-0129.mediawiki|BIP-129 (Bitcoin Secure Multisig Setup)]] for an approach designed for multisig wallets.",
+              "reason": "The document points to BIP-129 as the approach for coordinating multisig wallet setup across distant parties, which is part of the wallet-policy operational model.",
               "confidence": "low"
+            },
+            {
+              "target": "bips:322",
+              "evidence": "the hardware signing device can perform the typical operations securely",
+              "reason": "The proposal’s wallet-policy registration and secure-signing workflow is designed around the account and descriptor policy model introduced by the earlier proposal family for these workflows.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:327",
+              "evidence": "a key path with a 5-of-5 [[bip-0327.mediawiki|MuSig2]] aggregated key",
+              "reason": "The taproot wallet-policy examples and supported template forms use MuSig2 aggregated keys as part of the policy language.",
+              "confidence": "medium"
             },
             {
               "target": "bips:379",
-              "evidence": "See BIP-379 for a precise specification of all the valid miniscript SCRIPT expressions",
-              "reason": "The wallet policy language includes miniscript templates and depends on BIP-379 for the valid miniscript expression semantics.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:380",
-              "evidence": "Wallet policies build on top of output script descriptors",
-              "reason": "The proposal defines wallet policies as a constrained representation derived from descriptor concepts and maps template elements directly to descriptor concepts.",
+              "evidence": "We remark that wallet policies are not related to the ''policy'' language, a higher level language that can be compiled to [[bip-0379.md|miniscript]].",
+              "reason": "The proposal incorporates miniscript templates as valid SCRIPT expressions and thus depends on miniscript syntax/semantics standardized by BIP-379.",
               "confidence": "high"
             },
             {
-              "target": "bips:389",
-              "evidence": "BIP-389 allows multipath /<NUM;NUM;...;NUM> expressions with an arbitrary number of options",
-              "reason": "The policy format specializes descriptor multipath derivation by restricting and reusing the multipath path syntax defined by BIP-389.",
+              "target": "bips:380",
+              "evidence": "Output Script Descriptors'' were introduced in Bitcoin Core",
+              "reason": "The proposal is explicitly built on output script descriptors and states its expressions map directly to descriptor concepts.",
               "confidence": "low"
             },
             {
+              "target": "bips:389",
+              "evidence": "while [[bip-0389.mediawiki|BIP-389]] allows multipath <tt>/<NUM;NUM;...;NUM></tt> expressions with an arbitrary number of options",
+              "reason": "Wallet policies define and constrain multipath derivation expressions, reusing the descriptor multipath mechanism but narrowing its allowed cardinality.",
+              "confidence": "high"
+            },
+            {
               "target": "bips:390",
-              "evidence": "despite being allowed in BIP-390",
-              "reason": "The invalid-policy rule explicitly constrains derivation-before-aggregation in wallet policies relative to BIP-390's allowed behavior, so the policy semantics depend on that prior mechanism.",
-              "confidence": "low"
+              "evidence": "despite being allowed in [[bip-0390.mediawiki|BIP-390]]",
+              "reason": "The proposal explicitly constrains the ordering of derivation relative to aggregation in a way that overrides the earlier MuSig2 placeholder rules.",
+              "confidence": "high"
             }
           ]
         }

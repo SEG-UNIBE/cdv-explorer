@@ -1078,14 +1078,16 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:58:01Z",
+          "timestamp": "2026-06-30T11:42:41Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:21",
-              "evidence": "The receiver of the payment, presents a BIP 21 URI",
-              "reason": "The protocol relies on BIP21 URI parameters to advertise the payjoin endpoint and control behavior such as output substitution.",
-              "confidence": "low"
+              "evidence": "The receiver of the payment, presents a [[bip-0021.mediawiki|BIP 21 URI]] to the sender",
+              "reason": "The proposal’s discovery and negotiation flow is carried over BIP 21 payment URIs and new URI parameters.",
+              "confidence": "high"
             }
           ]
         }

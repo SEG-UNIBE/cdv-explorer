@@ -515,9 +515,18 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:58:55Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:44:05Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:16",
+              "evidence": "Segwit nested in BIP16 P2SH",
+              "reason": "The proposal’s new WIF suffix value for nested SegWit keys is defined in terms of BIP16 P2SH address semantics.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

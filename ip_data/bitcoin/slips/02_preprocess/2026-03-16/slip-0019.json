@@ -494,9 +494,36 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:46:34Z_gpt-5.4-mini_dd2b314a",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:59:55Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:46:47Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:174",
+              "evidence": "This section proposes additional fields for [BIP-0174] PSBTv0 and [BIP-0370] PSBTv2",
+              "reason": "The proposal extends the PSBT format by defining new global and input fields that are carried inside PSBTv0/v2 containers.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:322",
+              "evidence": "signed using the Generic Signed Message Format as defined in the [original BIP-0322]",
+              "reason": "The proof signature format and verification are explicitly based on BIP-0322 signing and sighash computation.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:370",
+              "evidence": "This section proposes additional fields for [BIP-0174] PSBTv0 and [BIP-0370] PSBTv2",
+              "reason": "The proposal extends PSBTv2 with new fields, so implementing the extension depends on PSBTv2 semantics and encoding rules.",
+              "confidence": "low"
+            },
+            {
+              "target": "slips:21",
+              "evidence": "derived from the wallet's master secret using the [SLIP-0021] method for hierarchical derivation of symmetric keys",
+              "reason": "The ownership identification key is defined using SLIP-0021 key derivation, which is necessary to compute the proof identifier.",
+              "confidence": "low"
+            }
+          ]
         }
       ]
     }

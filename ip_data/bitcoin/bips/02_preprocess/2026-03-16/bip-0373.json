@@ -871,43 +871,51 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:59:32Z",
+          "timestamp": "2026-06-30T11:45:37Z",
+          "status": "success",
           "dependencies": [
             {
+              "target": "bips:32",
+              "evidence": "BIP 32 requires public keys to include their evenness byte",
+              "reason": "The proposal’s aggregate-key serialization and derivation handling rely on BIP 32 public-key encoding and unhardened derivation conventions.",
+              "confidence": "medium"
+            },
+            {
               "target": "bips:174",
-              "evidence": "additional fields for BIP 174 PSBTv0",
-              "reason": "The proposal adds new fields to the PSBTv0 format defined by this target, so it depends on PSBT field structure and extensibility rules from it.",
-              "confidence": "low"
+              "evidence": "additional fields for [[bip-0174.mediawiki|BIP 174]] PSBTv0",
+              "reason": "The proposal extends the PSBTv0 field set defined by BIP 174.",
+              "confidence": "high"
             },
             {
               "target": "bips:327",
-              "evidence": "MuSig2 Multi-Signature data to be included in a PSBT",
-              "reason": "The new PSBT fields are specifically for carrying MuSig2 data and rely on the MuSig2 signing roles and algorithms defined by this target.",
+              "evidence": "allow for [[bip-0327.mediawiki|BIP 327]] MuSig2 Multi-Signature data",
+              "reason": "The new PSBT fields are specifically designed to carry MuSig2 data and workflows from BIP 327.",
               "confidence": "high"
             },
             {
               "target": "bips:328",
-              "evidence": "Derivation from the aggregate pubkey can be assumed to follow BIP 328",
-              "reason": "The proposal uses BIP 328 as the basis for deriving pubkeys from the aggregate pubkey and for synthetic xpub handling, which constrains the derivation semantics.",
-              "confidence": "low"
+              "evidence": "Derivation from the aggregate pubkey can be assumed to follow [[bip-0328.mediawiki|BIP 328]]",
+              "reason": "The updater and derivation-path assumptions explicitly reuse BIP 328 for aggregate-pubkey derivation.",
+              "confidence": "high"
             },
             {
               "target": "bips:340",
-              "evidence": "BIP 340 compatible public keys and signatures",
-              "reason": "The specified MuSig2 outputs and final signatures are required to be compatible with BIP 340 signature/public-key rules.",
-              "confidence": "low"
+              "evidence": "[[bip-0327.mediawiki|BIP 327]] specifies a way to create [[bip-0340.mediawiki|BIP 340]] compatible public keys and signatures",
+              "reason": "The proposal’s signatures and final outputs are intended to be BIP 340 compatible, so evaluation and use depend on BIP 340 semantics.",
+              "confidence": "high"
             },
             {
               "target": "bips:341",
-              "evidence": "followed by the BIP 341 tapleaf hash of the Taproot leaf script",
-              "reason": "The new nonce and partial-sig keydata include the Taproot tapleaf hash semantics defined by this target to identify the signed script path.",
-              "confidence": "low"
+              "evidence": "followed by the [[bip-0341.mediawiki|BIP 341]] tapleaf hash",
+              "reason": "The nonce and partial-signature keydata incorporate the tapleaf hash defined by BIP 341 for Taproot leaf scripts.",
+              "confidence": "high"
             },
             {
               "target": "bips:370",
-              "evidence": "additional fields for BIP 174 PSBTv0 and BIP 370 PSBTv2",
-              "reason": "The proposal extends PSBTv2 as defined by this target with new allowed fields and version-specific inclusion/exclusion rules.",
+              "evidence": "additional fields for [[bip-0370.mediawiki|BIP 370]] PSBTv2",
+              "reason": "The proposal extends the PSBTv2 field set defined by BIP 370.",
               "confidence": "low"
             }
           ]

@@ -1336,20 +1336,16 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:59:03Z",
+          "timestamp": "2026-06-30T11:44:23Z",
+          "status": "success",
           "dependencies": [
             {
-              "target": "bips:31",
-              "evidence": "ping messages every 20 minutes (the timeout interval for post-BIP31 connections)",
-              "reason": "The rekeying interval rationale relies on the existing BIP31 ping/pong timeout behavior to estimate packet frequency.",
-              "confidence": "low"
-            },
-            {
               "target": "bips:340",
-              "evidence": "as in BIP340",
-              "reason": "The shared-secret hashing explicitly uses the BIP340 tagged-hash construction, so the proposal depends on that hash format.",
-              "confidence": "low"
+              "evidence": "as in [https://github.com/bitcoin/bips/blob/master/bip-0340.mediawiki#specification BIP340]",
+              "reason": "The proposal explicitly uses BIP340's tagged-hash construction in shared-secret derivation.",
+              "confidence": "high"
             }
           ]
         }

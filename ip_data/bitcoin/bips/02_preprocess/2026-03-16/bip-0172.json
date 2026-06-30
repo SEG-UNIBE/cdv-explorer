@@ -560,9 +560,24 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:58:50Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:43:52Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:176",
+              "evidence": "our approach differs in that it:",
+              "reason": "The proposal explicitly contrasts itself with BIP-176 as an alternative denomination proposal, but does not technically rely on its mechanism or format.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:177",
+              "evidence": "our approach differs in that it:",
+              "reason": "The proposal explicitly contrasts itself with BIP-177 as an alternative base-unit redefinition, but it does not adopt or depend on that proposal's semantics.",
+              "confidence": "low"
+            }
+          ]
         }
       ]
     }

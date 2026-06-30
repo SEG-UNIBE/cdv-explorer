@@ -543,6 +543,15 @@
         "author": "Jonathan Wilkins",
         "path": "bip-0103.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0103.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -569,14 +578,16 @@
       "body_extracted_regex": [],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:58:13Z",
+          "timestamp": "2026-06-30T11:42:59Z",
+          "status": "success",
           "dependencies": [
             {
-              "target": "bips:113",
-              "evidence": "“Using the \"median time past\" guarantees monotonic behaviour, as this median is required to be increasing, according to Bitcoin's existing consensus rules.”",
-              "reason": "The block-size schedule relies on median-time-past monotonicity, which is defined by the referenced consensus rule.",
-              "confidence": "low"
+              "target": "bips:9",
+              "evidence": "Using the \"median time past\" guarantees monotonic behaviour, as this median is required to be increasing, according to Bitcoin's existing consensus rules.",
+              "reason": "The proposal's activation schedule and block-size function rely on median-time-past monotonicity introduced by the consensus rule described in the target.",
+              "confidence": "high"
             }
           ]
         }

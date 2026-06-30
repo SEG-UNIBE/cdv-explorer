@@ -731,32 +731,34 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:58:36Z",
+          "timestamp": "2026-06-30T11:43:30Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
               "evidence": "BIP9 introduced a mechanism for using the version bits",
-              "reason": "The proposal generalizes and retains the BIP9 version-bits state machine and deployment semantics, making BIP9 the direct technical base.",
+              "reason": "The proposal directly generalizes BIP9’s version-bits signaling mechanism and retains its state machine and parameters as the base framework.",
               "confidence": "high"
             },
             {
               "target": "bips:34",
               "evidence": "Due to the constraints set by BIP 34",
-              "reason": "The proposal's available nVersion space and bit allocation rely on the header/version constraints introduced by BIP 34.",
-              "confidence": "high"
+              "reason": "The proposal’s available nVersion space and bit-assignment limits are derived from the constraints introduced by BIP34.",
+              "confidence": "medium"
             },
             {
               "target": "bips:65",
               "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
-              "reason": "The proposal depends on the version-field constraints established by BIP 65 as part of the available nVersion range analysis.",
-              "confidence": "high"
+              "reason": "The proposal depends on BIP65 as one of the constraints limiting available nVersion values, which affects the signaling-bit design.",
+              "confidence": "medium"
             },
             {
               "target": "bips:66",
               "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
-              "reason": "The proposal depends on the version-field constraints established by BIP 66 as part of the available nVersion range analysis.",
-              "confidence": "high"
+              "reason": "The proposal depends on BIP66 as one of the constraints limiting available nVersion values, which affects the signaling-bit design.",
+              "confidence": "medium"
             }
           ]
         }

@@ -578,6 +578,15 @@
         "author": "Johnson Lau",
         "path": "bip-lows.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0146.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -625,38 +634,40 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:58:44Z",
+          "timestamp": "2026-06-30T11:43:37Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
-              "evidence": "This BIP will be deployed by \"version bits\" BIP9.",
-              "reason": "The proposal’s activation mechanism depends on BIP9 version-bits deployment rules.",
-              "confidence": "low"
+              "evidence": "This BIP will be deployed by \"version bits\" [https://github.com/bitcoin/bips/blob/master/bip-0009.mediawiki BIP9].",
+              "reason": "The proposal’s activation mechanism is defined in terms of BIP9 version-bits deployment.",
+              "confidence": "high"
             },
             {
               "target": "bips:62",
-              "evidence": "This document is extracted from the previous BIP62 proposal",
-              "reason": "The proposal is derived from BIP62’s malleability rules and inherits its substantive script-validity constraints.",
-              "confidence": "low"
+              "evidence": "This document is extracted from the previous [https://github.com/bitcoin/bips/blob/master/bip-0062.mediawiki BIP62] proposal",
+              "reason": "The proposal is derived from BIP62 and inherits its signature malleability-related ruleset as the source document.",
+              "confidence": "high"
             },
             {
               "target": "bips:66",
-              "evidence": "with strict DER encoding (see BIP66)",
-              "reason": "The Low-S and NULLFAIL rules apply to signatures already subject to BIP66 strict DER encoding, so the validity conditions rely on that encoding rule.",
+              "evidence": "Since the enforcement of Strict DER signatures (BIP66)",
+              "reason": "The proposal’s LOW_S and NULLFAIL rules assume BIP66-compliant signature encoding and explicitly rely on its strict DER validity rules.",
               "confidence": "low"
             },
             {
               "target": "bips:141",
-              "evidence": "segregated witness ([... ] BIP141) transactions",
-              "reason": "The proposal explicitly extends its new signature rules to segregated witness scripts introduced by BIP141.",
-              "confidence": "low"
+              "evidence": "segregated witness ([https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki BIP141]) transactions",
+              "reason": "The proposal explicitly extends its malleability rules to segregated witness scripts and names P2WPKH as included under BIP141.",
+              "confidence": "high"
             },
             {
               "target": "bips:152",
-              "evidence": "may reduce the efficiency of compact block relay ([... ] BIP152)",
-              "reason": "The motivation depends on BIP152 compact block relay semantics, since the malleability issue is defined in terms of its effect on wtxid relay efficiency.",
-              "confidence": "low"
+              "evidence": "may reduce the efficiency of compact block relay ([https://github.com/bitcoin/bips/blob/master/bip-0152.mediawiki BIP152])",
+              "reason": "The motivation and evaluation of the proposal depend on the compact block relay behavior introduced by BIP152, since the malleability fix is partly justified by its impact on wtxid relay efficiency.",
+              "confidence": "medium"
             }
           ]
         }

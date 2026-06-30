@@ -577,6 +577,15 @@
         "author": "Kalle Rosenbaum",
         "path": "bip-0121.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0121.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -616,19 +625,21 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:58:21Z",
+          "timestamp": "2026-06-30T11:43:17Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:21",
-              "evidence": "The specification is the same as BIP0021, with the following differences",
-              "reason": "This proposal directly inherits BIP 21 URI parsing and extensibility rules, modifying them for the new scheme.",
+              "evidence": "The specification is the same as BIP0021, with the following differences:",
+              "reason": "The proposal is defined as a variant of the BIP0021 URI scheme and reuses its query-component rules, extensibility, and req-* semantics.",
               "confidence": "high"
             },
             {
               "target": "bips:120",
-              "evidence": "[BIP0120]: Proof of Payment",
-              "reason": "The URI scheme is specifically for the Proof of Payment process defined by BIP 120, so the proposal relies on that payment-proving workflow.",
+              "evidence": "for the Proof of Payment process.",
+              "reason": "The URI scheme is explicitly designed for the Proof of Payment workflow introduced by BIP0120, so adopting this scheme depends on that PoP process and terminology.",
               "confidence": "low"
             }
           ]

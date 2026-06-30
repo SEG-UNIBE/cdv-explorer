@@ -978,19 +978,21 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:58:04Z",
+          "timestamp": "2026-06-30T11:42:47Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
               "evidence": "This specification relies on BIP32",
-              "reason": "The proposal derives all application keys and entropy from a BIP32 master root key and uses BIP32 hardened paths and XPRV structure as core mechanisms.",
+              "reason": "The proposal derives a master root key and child keys via BIP32 hardened paths, and its entropy extraction is based on those derived keys.",
               "confidence": "high"
             },
             {
               "target": "bips:39",
               "evidence": "BIP39 was designed to solve this problem",
-              "reason": "The proposal defines a BIP39 application that truncates derived entropy to the entropy sizes required by BIP39 mnemonics, so it extends BIP39 mnemonic generation.",
+              "reason": "The BIP39 application explicitly derives entropy for BIP39 mnemonics and defines BIP39-specific path formats, word counts, and entropy truncation.",
               "confidence": "high"
             }
           ]

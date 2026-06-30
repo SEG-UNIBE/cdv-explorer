@@ -1156,38 +1156,46 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:59:15Z",
+          "timestamp": "2026-06-30T11:45:10Z",
+          "status": "success",
           "dependencies": [
             {
-              "target": "bips:119",
-              "evidence": "allow users to enforce a delay period ... with the exception of a prespecified \"recovery\" path",
-              "reason": "The proposal’s vault construction explicitly relies on CTV to commit withdrawal transactions to a fixed set of outputs and make the trigger/update semantics work.",
+              "target": "bips:118",
+              "evidence": "or [https://github.com/bitcoin/bips/blob/master/bip-0118.mediawiki SIGHASH_ANYPREVOUT]",
+              "reason": "The proposal discusses precomputed covenant mechanisms and specifically includes SIGHASH_ANYPREVOUT as a relevant dependency for that design path, though not for the final opcode rules.",
               "confidence": "low"
+            },
+            {
+              "target": "bips:119",
+              "evidence": "These opcodes, in conjunction with <code>OP_CHECKTEMPLATEVERIFY</code> ([https://github.com/bitcoin/bips/blob/master/bip-0119.mediawiki BIP-0119]), allow users",
+              "reason": "The proposal is explicitly designed around OP_CHECKTEMPLATEVERIFY for binding withdrawals to a fixed set of outputs.",
+              "confidence": "high"
             },
             {
               "target": "bips:125",
-              "evidence": "the input is not marked as opt-in replaceable ... per BIP-0125",
-              "reason": "Recovery transactions are required to follow opt-in RBF replacement rules, so the policy behavior is part of the design’s fee and anti-pinning model.",
-              "confidence": "low"
+              "evidence": "per [https://github.com/bitcoin/bips/blob/master/bip-0125.mediawiki BIP-0125], and",
+              "reason": "Recovery transactions are required to be opt-in replaceable under the BIP-125 replacement policy.",
+              "confidence": "high"
             },
             {
               "target": "bips:340",
-              "evidence": "tagged hash for 'recoveryOut' as ... tagged_hash(\"VaultRecoverySPK\", ... )",
-              "reason": "The recovery authorization check depends on BIP 340’s tagged hash function reference code to compute the required scriptPubKey commitment.",
-              "confidence": "low"
+              "evidence": "where <code>tagged_hash()</code> is from the [https://github.com/bitcoin/bips/blob/master/bip-0340/reference.py BIP-0340 reference code]",
+              "reason": "OP_VAULT_RECOVER specifies its output-script commitment hash using the BIP-0340 tagged_hash construction.",
+              "confidence": "medium"
             },
             {
               "target": "bips:341",
-              "evidence": "encumbering coins under a taptree (BIP-341) containing at least two leaves",
-              "reason": "Vault outputs are defined as Taproot taptrees with leaf replacement semantics, so the proposal builds directly on the BIP 341 output structure.",
-              "confidence": "low"
+              "evidence": "encumbering coins under a taptree [https://github.com/bitcoin/bips/blob/master/bip-0341.mediawiki (BIP-341)]",
+              "reason": "Vaults are defined as Taproot taptrees containing OP_VAULT and OP_VAULT_RECOVER leaves, so the proposal relies on BIP-341 output structure and script-tree semantics.",
+              "confidence": "high"
             },
             {
               "target": "bips:342",
-              "evidence": "Decrement the per-script sigops budget (see ... BIP-0342) by 60",
-              "reason": "The opcode rules are tapscript semantics and explicitly use the BIP 342 sigops budget and script execution model.",
-              "confidence": "low"
+              "evidence": "Decrement the per-script sigops budget (see [https://github.com/bitcoin/bips/blob/master/bip-0342.mediawiki#user-content-Resource_limits BIP-0342]) by 60",
+              "reason": "OP_VAULT evaluation depends on the BIP-342 sigops budgeting rules for consensus validation.",
+              "confidence": "high"
             }
           ]
         }

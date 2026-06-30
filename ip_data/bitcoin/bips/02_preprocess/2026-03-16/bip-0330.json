@@ -778,26 +778,28 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:59:06Z",
+          "timestamp": "2026-06-30T11:44:38Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:141",
-              "evidence": "the transaction hash including witness data as defined by BIP141",
-              "reason": "Short transaction IDs are computed from wtxids, which are defined by this proposal's transaction witness format.",
+              "evidence": "where ''wtxid'' is the transaction hash including witness data as defined by BIP141.",
+              "reason": "The short ID algorithm is keyed over the witness transaction identifier defined in BIP-141.",
               "confidence": "high"
             },
             {
               "target": "bips:339",
-              "evidence": "should be enabled only if both peers signal BIP-339 support",
-              "reason": "Negotiation and use of the protocol are gated on support signaled by the target proposal.",
-              "confidence": "low"
+              "evidence": "support of Erlay should be enabled only if both peers signal [https://github.com/bitcoin/bips/blob/master/bip-0339.mediawiki BIP-339] support",
+              "reason": "The protocol’s negotiation and activation are conditioned on BIP-339 signaling, so implementing this proposal depends on that support-signaling mechanism.",
+              "confidence": "high"
             },
             {
               "target": "bips:340",
-              "evidence": "TaggedHash is specified by BIP-340",
-              "reason": "The short-ID salting hash uses the TaggedHash construction defined by the target.",
-              "confidence": "low"
+              "evidence": "TaggedHash is specified by [https://github.com/bitcoin/bips/blob/master/bip-0340.mediawiki BIP-340]",
+              "reason": "Short transaction ID derivation directly reuses the TaggedHash construction defined by BIP-340.",
+              "confidence": "high"
             }
           ]
         }

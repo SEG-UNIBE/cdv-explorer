@@ -635,9 +635,30 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:59:29Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:45:36Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:327",
+              "evidence": "All conventions and notations are used as defined in BIP327.",
+              "reason": "The specification directly adopts the notation and conventions from BIP327 for the proof algorithm, making that proposal a technical dependency.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:340",
+              "evidence": "The same rationale and recommendations from BIP340 should be applied.",
+              "reason": "The auxiliary randomness handling explicitly reuses BIP340’s rationale and recommendations for fresh randomness in proof generation.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:352",
+              "evidence": "BIP352 requires senders to compute output scripts using ECDH shared secrets from the same secret keys used to sign the inputs.",
+              "reason": "The proposal is explicitly designed to prove correctness of the ECDH shared secrets used by BIP352 output scripts, so understanding the use case depends on BIP352’s script-generation requirement.",
+              "confidence": "low"
+            }
+          ]
         }
       ]
     }

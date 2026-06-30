@@ -583,6 +583,15 @@
         "author": "Kalle Rosenbaum",
         "path": "bip-0120.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0120.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -622,25 +631,27 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:58:22Z",
+          "timestamp": "2026-06-30T11:43:15Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:21",
               "evidence": "amount, label, message or other information from a BIP0021 URI",
-              "reason": "The proposal uses BIP 21 URI fields as transaction-identifying hints in the PoP request flow.",
+              "reason": "The proposal uses BIP21 URI fields as transaction-selection hints in the PoP request workflow.",
               "confidence": "high"
             },
             {
               "target": "bips:70",
-              "evidence": "PaymentRequest.PaymentDetails.merchant_data (in case of a BIP0070 payment)",
-              "reason": "The proposal relies on BIP 70 payment-request metadata to help identify the transaction to prove.",
-              "confidence": "high"
+              "evidence": "In BIP0070, the PaymentRequest together with the transactions fulfilling the request makes some sort of proof.",
+              "reason": "The proposal explicitly incorporates BIP70 payment-request metadata as a source of hints and compares PoP against the BIP70 payment flow.",
+              "confidence": "medium"
             },
             {
               "target": "bips:121",
-              "evidence": "that is specified in separate specifications, see BIP0121",
-              "reason": "The proposal delegates PoP request transfer to BIP 121, making it part of the PoP process.",
+              "evidence": "that is specified in separate specifications, see BIP0121.",
+              "reason": "The PoP request transfer method is delegated to BIP121, so implementing the full workflow depends on that URI/request transport specification.",
               "confidence": "high"
             }
           ]

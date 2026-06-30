@@ -542,9 +542,30 @@
       "body_extracted_regex": [],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:58:57Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:44:09Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:16",
+              "evidence": "Both parties can now construct the script and P2SH address for the HTLC.",
+              "reason": "The proposal relies on pay-to-script-hash addresses for deploying the HTLC script and funding it.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:65",
+              "evidence": "[TIMEOUTOP] is either OP_CHECKSEQUENCEVERIFY or OP_CHECKLOCKTIMEVERIFY.",
+              "reason": "The script explicitly depends on the timeout semantics introduced by BIP 65 when using OP_CHECKLOCKTIMEVERIFY.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:112",
+              "evidence": "[TIMEOUTOP] is either OP_CHECKSEQUENCEVERIFY or OP_CHECKLOCKTIMEVERIFY.",
+              "reason": "The script explicitly depends on the timeout semantics introduced by BIP 112 when using OP_CHECKSEQUENCEVERIFY.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

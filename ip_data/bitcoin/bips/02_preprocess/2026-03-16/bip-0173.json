@@ -855,37 +855,39 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:58:52Z",
+          "timestamp": "2026-06-30T11:43:58Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:141",
-              "evidence": "witness programs, see BIP141",
-              "reason": "The address format encodes and decodes witness program data defined by this proposal.",
-              "confidence": "low"
+              "evidence": "Included in the Segregated Witness proposal are a new class of outputs (witness programs, see",
+              "reason": "The proposal defines segwit addresses by encoding witness programs and witness versions introduced by BIP141.",
+              "confidence": "high"
             },
             {
               "target": "bips:142",
-              "evidence": "This replaces BIP142",
-              "reason": "The proposal explicitly supersedes and amends the earlier segwit address specification.",
-              "confidence": "low"
+              "evidence": "This replaces",
+              "reason": "The proposal states it supersedes BIP142, indicating direct replacement of that earlier address format specification.",
+              "confidence": "high"
             },
             {
               "target": "bips:143",
-              "evidence": "two instances of it (\"P2WPKH\" and \"P2WSH\", see BIP143)",
-              "reason": "The proposal’s segwit address support is built around the P2WPKH and P2WSH output types introduced here.",
-              "confidence": "low"
+              "evidence": "and two instances of it (\"P2WPKH\" and \"P2WSH\", see",
+              "reason": "The proposal explicitly uses the P2WPKH and P2WSH output forms as examples of the segwit outputs it addresses.",
+              "confidence": "medium"
             },
             {
               "target": "bips:350",
-              "evidence": "BIP-350 proposes using the scheme described in this BIP only for Native Segwit v0 outputs",
-              "reason": "The proposal relies on this later proposal to constrain the use of Bech32 due to checksum weakness.",
+              "evidence": "BIP-350 proposes using the scheme described in this BIP only for Native Segwit v0 outputs.",
+              "reason": "The proposal is explicitly constrained by BIP350's later adjustment of Bech32 usage to native segwit v0 outputs.",
               "confidence": "low"
             },
             {
               "target": "slips:173",
-              "evidence": "SLIP-0173 : Registered human-readable parts for BIP-0173",
-              "reason": "The document references the registered HRP list as the canonical registry for human-readable prefixes used with Bech32 addresses.",
+              "evidence": "SatoshiLabs maintains a full list of registered human-readable parts for other cryptocurrencies:",
+              "reason": "The proposal relies on the registry of human-readable parts defined in SLIP-0173 for non-Bitcoin uses of the Bech32 format.",
               "confidence": "medium"
             }
           ]

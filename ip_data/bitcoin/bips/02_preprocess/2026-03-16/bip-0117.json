@@ -712,25 +712,45 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:58:19Z",
+          "timestamp": "2026-06-30T11:43:10Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:8",
-              "evidence": "This BIP will be deployed by BIP8 (Version bits with lock-in by height)",
-              "reason": "The proposal specifies BIP8 as its activation mechanism and depends on its version-bits deployment semantics.",
+              "evidence": "This BIP will be deployed by BIP8 (Version bits with lock-in by height)[9]",
+              "reason": "Deployment is explicitly defined in terms of BIP8’s activation mechanism.",
               "confidence": "high"
             },
             {
+              "target": "bips:16",
+              "evidence": "BIP16 (Pay to Script Hash)[1]",
+              "reason": "The proposal’s motivation and interpretation of delayed script revelation rely on P2SH as an earlier mechanism it extends beyond.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:68",
+              "evidence": "with, for example, with BIP68 (Relative lock-time using consensus-enforced sequence numbers)[6].",
+              "reason": "BIP68 is used as a deployment comparison and not as a mechanism in the proposal, so this is a weak contextual dependency only.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:114",
+              "evidence": "BIP114 (Merkelized Abstract Syntax Tree)[5] specifies an explicit MAST scheme activated by BIP141 script versioning[2].",
+              "reason": "The proposal directly compares and positions itself as an alternative MAST construction, reusing the same abstract MAST concept and activation context.",
+              "confidence": "medium"
+            },
+            {
               "target": "bips:116",
-              "evidence": "This BIP, in conjunction with BIP116 (MERKLEBRANCHVERIFY)",
-              "reason": "The proposal’s core mechanism requires MERKLEBRANCHVERIFY to commit to and validate the selected policy script before execution.",
+              "evidence": "This BIP, in conjunction with BIP116 (MERKLEBRANCHVERIFY)[3]",
+              "reason": "Generalized MAST and policy-script selection explicitly depend on MERKLEBRANCHVERIFY being available.",
               "confidence": "high"
             },
             {
               "target": "bips:141",
-              "evidence": "only from within a segwit redeem script",
-              "reason": "Tail-call semantics are restricted to segwit v0-style witness/script execution, so the proposal depends on Segregated Witness context and rules.",
+              "evidence": "BIP141 (Segregated Witness)[2]",
+              "reason": "Tail-call semantics are restricted to segwit redeem scripts and the proposal builds on segwit witness/script execution behavior.",
               "confidence": "high"
             }
           ]

@@ -713,50 +713,58 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:58:21Z",
+          "timestamp": "2026-06-30T11:43:10Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:8",
-              "evidence": "This BIP will be deployed by BIP8 (Version bits with lock-in by height)",
-              "reason": "The proposal’s activation mechanism is defined in BIP8 and relies on its version-bits deployment rules.",
+              "evidence": "This BIP will be deployed by BIP8 (Version bits with lock-in by height)[10]",
+              "reason": "Activation is specified using BIP8 version-bits lock-in rules.",
               "confidence": "high"
             },
             {
               "target": "bips:16",
-              "evidence": "Although BIP16 (Pay to Script Hash) ... allow the redeem script to be kept out of the scriptPubKey",
-              "reason": "The proposal explicitly builds on P2SH’s script commitment model as part of the deployment and usage context for the new opcode.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:65",
-              "evidence": "the more familiar NOP-expansion soft-fork mechanism used by BIP65 (CHECKLOCKTIMEVERIFY)",
-              "reason": "BIP65 is cited as the established NOP-expansion soft-fork pattern that this proposal follows for consensus deployment.",
+              "evidence": "Although BIP16 (Pay to Script Hash)[2]",
+              "reason": "The deployment rationale relies on P2SH as an existing script-committing mechanism and addresses compatibility with it.",
               "confidence": "medium"
             },
             {
+              "target": "bips:65",
+              "evidence": "used by BIP65 (CHECKLOCKTIMEVERIFY)[5]",
+              "reason": "The soft-fork NOP-expansion deployment approach is justified by analogy to BIP65’s mechanism.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:68",
+              "evidence": "we note that DISCOURAGE_UPGRADABLE_NOPS means",
+              "reason": "The deployment section relies on the existing non-standardness rule discussed in relation to BIP68 to ease rollout.",
+              "confidence": "low"
+            },
+            {
               "target": "bips:98",
-              "evidence": "the third item on the stack is not a serialized Merkle tree inclusion proof as specified by BIP98",
-              "reason": "The opcode’s proof format and fast Merkle tree semantics are directly defined by BIP98 and are required for validation.",
+              "evidence": "serialized Merkle tree inclusion proof as specified by BIP98[1]",
+              "reason": "The opcode’s proof format and fast Merkle root computation are explicitly defined in terms of BIP98.",
               "confidence": "high"
             },
             {
               "target": "bips:112",
-              "evidence": "the more familiar NOP-expansion soft-fork mechanism used by BIP65 ... and BIP112 (CHECKSEQUENCEVERIFY) was chosen",
-              "reason": "BIP112 is cited as the precedent for the NOP-expansion soft-fork mechanism adopted by this proposal.",
+              "evidence": "used by BIP112 (CHECKSEQUENCEVERIFY)[6]",
+              "reason": "The deployment mechanism is likewise based on the NOP-expansion soft-fork pattern used by BIP112.",
               "confidence": "low"
             },
             {
               "target": "bips:141",
-              "evidence": "Although BIP16 ... and BIP141 (Segregated Witness) both allow the redeem script to be kept out of the scriptPubKey",
-              "reason": "The proposal depends on SegWit’s witness/script structure and script versioning context to explain how the opcode fits into spending and deployment.",
-              "confidence": "low"
+              "evidence": "Although BIP16 (Pay to Script Hash)[2] and BIP141 (Segregated Witness)[3]",
+              "reason": "The proposal depends on SegWit witness behavior and discusses script versioning within BIP141’s framework.",
+              "confidence": "high"
             },
             {
               "target": "bips:143",
-              "evidence": "without the need for BIP143 (signing code)",
-              "reason": "The deployment rationale depends on BIP143 because avoiding its signing rules is part of the compatibility claim for standard P2SH/P2WSH usage.",
-              "confidence": "low"
+              "evidence": "without the need for BIP143[7] signing code",
+              "reason": "The proposal explicitly aims for compatibility that avoids requiring BIP143-style witness signature code in many use cases.",
+              "confidence": "medium"
             }
           ]
         }

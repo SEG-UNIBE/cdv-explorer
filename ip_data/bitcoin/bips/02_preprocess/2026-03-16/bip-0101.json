@@ -605,13 +605,22 @@
         "author": "Gavin Andresen",
         "path": "bip-0101.mediawiki",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "0c956f8f64288b5a1a7c4c7c7d9f2beac74bb7cc",
         "timestamp": "2016-02-11T15:25:06-05:00",
         "date": "2016-02-11",
         "author": "Gavin Andresen",
+        "path": "bip-0101.mediawiki",
+        "status": "Withdrawn",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
         "path": "bip-0101.mediawiki",
         "status": "Withdrawn",
         "standard": "bip2"
@@ -640,19 +649,21 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:58:12Z",
+          "timestamp": "2026-06-30T11:42:57Z",
+          "status": "success",
           "dependencies": [
             {
-              "target": "bips:9",
-              "evidence": "The version number scheme is designed to be compatible with Pieter's Wuille's proposed \"Version bits\" BIP",
-              "reason": "The deployment signaling scheme is explicitly designed around the version-bits activation mechanism defined by this proposal.",
+              "target": "bips:34",
+              "evidence": "similar to the technique used in BIP34",
+              "reason": "The activation mechanism is explicitly modeled on the hash-power supermajority deployment technique from BIP34.",
               "confidence": "high"
             },
             {
-              "target": "bips:34",
-              "evidence": "Deployment shall be controlled by hash-power supermajority vote (similar to the technique used in BIP34)",
-              "reason": "The activation mechanism relies on the supermajority version-signaling deployment technique introduced by BIP34.",
+              "target": "bips:100",
+              "evidence": "The deployment plan is taken from Jeff Garzik's proposed BIP100 block size increase",
+              "reason": "The proposal reuses the deployment plan from BIP100 as the basis for its own activation rollout.",
               "confidence": "high"
             }
           ]

@@ -668,9 +668,18 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:59:02Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:44:36Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:141",
+              "evidence": "Signet requires all blocks to have a BIP 141 commitment in the coinbase transaction.",
+              "reason": "The proposal reuses the BIP 141 coinbase witness commitment mechanism and defines signet validation around it.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

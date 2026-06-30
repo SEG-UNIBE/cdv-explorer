@@ -551,6 +551,15 @@
         "author": "Dr Washington Sanchez",
         "path": "dynamicblocksize.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0107.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -582,13 +591,15 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:58:15Z",
+          "timestamp": "2026-06-30T11:43:01Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:101",
               "evidence": "Similar deployment model to BIP101",
-              "reason": "The proposal explicitly adopts BIP101’s activation model, so its deployment semantics depend on that proposal.",
+              "reason": "The proposal explicitly adopts the activation/deployment model from BIP101, so implementing deployment depends on that consensus activation scheme.",
               "confidence": "high"
             }
           ]

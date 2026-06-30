@@ -850,6 +850,15 @@
         "author": "Johnson Lau",
         "path": "bip-segwit-checksig.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0143.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -903,9 +912,24 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:58:39Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:43:33Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:141",
+              "evidence": "Deploying the aforementioned fixes in the original script system is not a simple task. ... However, the introduction of segregated witness softfork offers an opportunity",
+              "reason": "The new digest algorithm is explicitly designed for and deployed via Segregated Witness, relying on its witness-program semantics as the scope for the change.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:144",
+              "evidence": "The new serialization format is described in BIP144",
+              "reason": "The proposal depends on BIP144 for the witness transaction serialization format used in the new signing workflow.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

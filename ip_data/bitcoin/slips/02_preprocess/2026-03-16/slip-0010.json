@@ -381,25 +381,27 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:46:34Z_gpt-5.4-mini_dd2b314a",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:59:51Z",
+          "timestamp": "2026-06-30T11:46:36Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
               "evidence": "generalizing the derivation scheme used in [BIP-0032]",
-              "reason": "The proposal explicitly generalizes BIP-0032's hierarchical derivation scheme and reuses its seed, master key, and child key concepts.",
+              "reason": "The proposal explicitly reuses and generalizes BIP-0032 master and child key derivation logic.",
               "confidence": "high"
             },
             {
               "target": "bips:39",
               "evidence": "Trezor generates all keys from a [BIP-0039] mnemonic",
-              "reason": "The proposal relies on BIP-0039 to define how the mnemonic is converted into the seed used for key derivation.",
+              "reason": "The proposal depends on BIP-0039 as one allowed source of the seed used for derivation.",
               "confidence": "low"
             },
             {
               "target": "slips:39",
               "evidence": "or from a set of [SLIP-0039] mnemonic shares",
-              "reason": "The proposal depends on SLIP-0039 as an alternate input standard whose master secret is fed into the derivation algorithm.",
+              "reason": "The proposal depends on SLIP-0039 as an alternate mnemonic-shares source for the seed/master secret.",
               "confidence": "low"
             }
           ]

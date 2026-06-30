@@ -715,9 +715,18 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:59:04Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:44:27Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:21",
+              "evidence": "This BIP is a modification and intended replacement of [[bip-0021.mediawiki|BIP 0021]]",
+              "reason": "The proposal is explicitly designed as a modification and replacement of BIP 21, so its URI syntax and semantics depend on that prior scheme.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

@@ -589,13 +589,15 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:58:17Z",
+          "timestamp": "2026-06-30T11:43:07Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
-              "evidence": "deployed by \"version bits\" [[bip-0009.mediawiki|BIP9]]",
-              "reason": "The proposal’s activation and deployment depend on BIP9 version-bits signaling and timeout mechanics.",
+              "evidence": "This BIP will be deployed by \"version bits\" [[bip-0009.mediawiki|BIP9]]",
+              "reason": "The proposal’s activation mechanism is explicitly defined in terms of BIP9 version-bits deployment.",
               "confidence": "high"
             }
           ]

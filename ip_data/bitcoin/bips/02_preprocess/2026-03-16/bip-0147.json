@@ -506,6 +506,15 @@
         "author": "Johnson Lau",
         "path": "bip-nulldummy.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0147.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -562,31 +571,27 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:58:41Z",
+          "timestamp": "2026-06-30T11:43:38Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
-              "evidence": "deployed by \"version bits\" BIP9",
-              "reason": "The proposal's activation mechanism is version-bits deployment defined by this BIP.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:62",
-              "evidence": "extracted from the previous BIP62 proposal",
-              "reason": "The proposal is derived from and reuses material from this earlier malleability proposal, which provides the relevant script-rule context.",
-              "confidence": "low"
+              "evidence": "This BIP will be deployed by \"version bits\"",
+              "reason": "The proposal depends on the version-bits activation mechanism specified by the target proposal for deployment.",
+              "confidence": "high"
             },
             {
               "target": "bips:141",
               "evidence": "also pay-to-witness-script-hash scripts described in BIP141",
-              "reason": "The proposal extends the new NULLDUMMY consensus rule to SegWit P2WSH scripts defined by this BIP.",
+              "reason": "The rule is extended to apply within the witness script-hash execution context defined by the target proposal.",
               "confidence": "high"
             },
             {
               "target": "bips:143",
               "evidence": "using the same parameters for BIP141 and BIP143",
-              "reason": "The deployment explicitly reuses the same versionbits activation parameters as this proposal, so its activation context depends on it.",
+              "reason": "Deployment is explicitly coordinated with the target proposal's activation parameters, so implementation follows the same activation schedule as the target.",
               "confidence": "medium"
             }
           ]

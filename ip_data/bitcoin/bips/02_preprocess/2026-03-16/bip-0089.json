@@ -830,32 +830,34 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:58:09Z",
+          "timestamp": "2026-06-30T11:42:51Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
-              "evidence": "withholds BIP32 chain codes",
-              "reason": "CCD relies on BIP32 extended key and chain code structure to delegate derivation while withholding the chain code from some participants.",
-              "confidence": "high"
+              "evidence": "Run the BIP32 non-hardened derivation ``CKDpub``",
+              "reason": "The proposal’s delegated tweak computation explicitly reuses BIP32 public-child derivation and its scalar tweak term.",
+              "confidence": "low"
             },
             {
               "target": "bips:327",
-              "evidence": "The notation, algorithmic patterns, and test-vector style are adapted from BIP-327 (MuSig2)",
-              "reason": "The blind-signing section reuses algorithmic structure and notation from MuSig2, indicating substantive reliance on its signing/tweak context conventions.",
+              "evidence": "The notation, algorithmic patterns, and test-vector style are adapted from [BIP-327 (MuSig2)]",
+              "reason": "The blind-signing section explicitly adapts its protocol structure and test-vector style from BIP327.",
               "confidence": "low"
             },
             {
               "target": "bips:340",
               "evidence": "Both modes produce valid BIP340 signatures.",
-              "reason": "The proposal’s signing flow is designed to generate and verify BIP340 Schnorr signatures, so that signature format and verification rule are required.",
+              "reason": "The signing flow is designed to generate and verify Schnorr signatures under the BIP340 signature scheme.",
               "confidence": "high"
             },
             {
               "target": "bips:341",
-              "evidence": "Consequently the protocol is compatible with BIP341.",
-              "reason": "The protocol’s key-tweaking and X-only signing semantics are intended to fit Taproot-style BIP341 outputs and script paths.",
-              "confidence": "low"
+              "evidence": "Consequently the protocol is compatible with [https://github.com/bitcoin/bips/blob/master/bip-0341.mediawiki BIP341].",
+              "reason": "The blinded signing variant is built around X-only keys and tweaks intended for Taproot-compatible BIP341 usage.",
+              "confidence": "high"
             }
           ]
         }

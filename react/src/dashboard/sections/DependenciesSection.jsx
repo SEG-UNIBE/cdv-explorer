@@ -370,7 +370,7 @@ export function DependenciesSection({
       <ExportableCard className="mb-4" exportTitle="Proposal Interrelation Graph">
         <h3>Proposal Interrelation Graph</h3>
         <p>
-          Three relationship-extraction approaches visualized as a directed graph. Node size reflects document length (word count) and edges represent relationships between proposals. <strong>Preamble</strong> extracts explicitly stated dependencies from the preamble. <strong>Regex</strong> captures explicit proposal references via pattern matching. <strong>LLM</strong> infers implicit dependencies using a language model.
+          Three relationship-extraction approaches visualized as a directed graph. Node size reflects document length (word count) and edges represent relationships between proposals. <strong>Preamble</strong> extracts explicitly stated dependencies from the preamble. <strong>Regex</strong> captures explicit proposal references via pattern matching. <strong>LLM</strong> applies LLM-assisted semantic dependency extraction to proposal body text.
         </p>
         <NetworkDiagram
           data={selectedDataset}

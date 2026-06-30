@@ -345,9 +345,19 @@ class SchemaRefactorTests(unittest.TestCase):
         ]
 
         self.assertEqual(
-            build_network_data(documents, id_field="bip", proposal_label="BIP"),
             build_network_data(
-                normalized_documents, id_field="bip", proposal_label="BIP"
+                documents,
+                id_field="bip",
+                proposal_label="BIP",
+                ground_truth_entries=[],
+                reviewed_ips_entries=[],
+            ),
+            build_network_data(
+                normalized_documents,
+                id_field="bip",
+                proposal_label="BIP",
+                ground_truth_entries=[],
+                reviewed_ips_entries=[],
             ),
         )
         self.assertEqual(

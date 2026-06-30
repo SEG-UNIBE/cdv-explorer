@@ -18,8 +18,13 @@ from tests.helpers import proposal as _proposal
 
 
 class BuildNetworkDataTests(unittest.TestCase):
+    def _build(self, proposals, **kwargs):
+        kwargs.setdefault("ground_truth_entries", [])
+        kwargs.setdefault("reviewed_ips_entries", [])
+        return build_network_data(proposals, **kwargs)
+
     def test_link_created_when_both_nodes_exist(self):
-        result = build_network_data(
+        result = self._build(
             [_proposal("1", regex_refs=["BIP 2"]), _proposal("2")],
             id_field="bip",
             proposal_label="BIP",
@@ -37,7 +42,7 @@ class BuildNetworkDataTests(unittest.TestCase):
             for value in ["1", "2"]
         )
 
-        result = build_network_data(proposals, id_field="bip", proposal_label="BIP")
+        result = self._build(proposals, id_field="bip", proposal_label="BIP")
 
         self.assertEqual(
             result["dependency_edges"],
@@ -57,7 +62,7 @@ class BuildNetworkDataTests(unittest.TestCase):
             {"classification": {"dimensions": {}}},
             source_slug="bips",
         )
-        result = build_network_data(
+        result = self._build(
             [_proposal("1", regex_refs=["BIP 2"], requires=["BIP 2"]), _proposal("2")],
             id_field="bip",
             proposal_label="BIP",
@@ -93,7 +98,7 @@ class BuildNetworkDataTests(unittest.TestCase):
             source_slug="bips",
         )
 
-        result = build_network_data(
+        result = self._build(
             [
                 _proposal(
                     "1",
@@ -151,7 +156,7 @@ class BuildNetworkDataTests(unittest.TestCase):
             },
         }
 
-        result = build_network_data(
+        result = self._build(
             [proposal, _proposal("2")],
             id_field="bip",
             proposal_label="BIP",
@@ -220,7 +225,7 @@ class BuildNetworkDataTests(unittest.TestCase):
             },
         }
 
-        result = build_network_data(
+        result = self._build(
             [slip_132, slip_32],
             id_field="slip",
             proposal_label="SLIP",
@@ -255,7 +260,7 @@ class BuildNetworkDataTests(unittest.TestCase):
             ecosystem_slug="bitcoin",
             source_slug="bips",
         )
-        result = build_network_data(
+        result = self._build(
             [_proposal("44"), _proposal("32")],
             id_field="bip",
             proposal_label="BIP",
@@ -318,7 +323,7 @@ class BuildNetworkDataTests(unittest.TestCase):
         )
 
     def test_ground_truth_csv_loader_trims_headers_and_skips_comments(self):
-        rows = load_ground_truth_curated_entries("bitcoin")
+        rows = load_ground_truth_curated_entries("bitcoin", strict=False)
 
         self.assertTrue(rows)
         self.assertEqual(rows[0]["reviewed_at"], "2026-06-22")
@@ -401,7 +406,7 @@ class BuildNetworkDataTests(unittest.TestCase):
             ecosystem_slug="bitcoin",
             source_slug="bips",
         )
-        result = build_network_data(
+        result = self._build(
             [_proposal("44"), _proposal("32")],
             id_field="bip",
             proposal_label="BIP",
@@ -454,7 +459,7 @@ class BuildNetworkDataTests(unittest.TestCase):
             ecosystem_slug="bitcoin",
             source_slug="slips",
         )
-        result = build_network_data(
+        result = self._build(
             [
                 {
                     "raw": {
@@ -801,7 +806,7 @@ class BuildNetworkDataTests(unittest.TestCase):
         self.assertEqual(list(graph.edges()), [("xips:1", "xips:2")])
 
     def test_link_to_unknown_node_excluded(self):
-        result = build_network_data(
+        result = self._build(
             [_proposal("1", regex_refs=["BIP 99"])],
             id_field="bip",
             proposal_label="BIP",
@@ -809,13 +814,13 @@ class BuildNetworkDataTests(unittest.TestCase):
         self.assertEqual(result["dependency_edges"], [])
 
     def test_llm_link_to_unknown_node_excluded(self):
-        result = build_network_data(
+        result = self._build(
             [_proposal("1", llm_deps=["BIP 99"])], id_field="bip", proposal_label="BIP"
         )
         self.assertEqual(result["dependency_edges"], [])
 
     def test_duplicate_proposal_ids_deduplicated(self):
-        result = build_network_data(
+        result = self._build(
             [_proposal("1"), _proposal("1")], id_field="bip", proposal_label="BIP"
         )
         self.assertEqual(len(result["nodes"]), 1)
@@ -842,7 +847,7 @@ class BuildNetworkDataTests(unittest.TestCase):
             },
         }
 
-        result = build_network_data([proposal], id_field="nip", proposal_label="NIP")
+        result = self._build([proposal], id_field="nip", proposal_label="NIP")
 
         self.assertEqual(result["nodes"][0]["author"], ["First Day B", "First Day A"])
 

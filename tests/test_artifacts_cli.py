@@ -63,6 +63,14 @@ class ArtifactRebuildTests(unittest.TestCase):
                     "analysis.validation.validate_source_snapshot",
                     return_value=SnapshotValidationResult(),
                 ),
+                patch(
+                    "analysis.validation.validate_ground_truth_curated_file",
+                    return_value=SnapshotValidationResult(),
+                ),
+                patch(
+                    "analysis.validation.validate_ground_truth_ips_file",
+                    return_value=SnapshotValidationResult(),
+                ),
             ):
                 _rebuild_source_artifacts("bitcoin", "bips", src, "2026-05-28")
 

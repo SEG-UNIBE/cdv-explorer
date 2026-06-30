@@ -18,6 +18,7 @@ from analysis.authorship.mining import get_git_authors_on_first_day
 from analysis.proposal_schema import (
     get_formal_compliance,
     get_interrelations,
+    is_successful_llm_run,
     is_llm_runs_format,
     normalize_proposal_document,
 )
@@ -209,11 +210,16 @@ def _llm_runs_by_model(interrelations: Mapping[str, Any]) -> Dict[str, Dict[str,
     raw_llm = interrelations.get(BODY_EXTRACTED_LLM)
     if not is_llm_runs_format(raw_llm):
         return {}
-    return {
-        str(run.get("model") or "").strip(): dict(run)
-        for run in raw_llm
-        if isinstance(run, Mapping) and str(run.get("model") or "").strip()
-    }
+    runs_by_model: Dict[str, Dict[str, Any]] = {}
+    for run in sorted(raw_llm, key=lambda item: str(item.get("timestamp") or "")):
+        if not (
+            isinstance(run, Mapping)
+            and str(run.get("model") or "").strip()
+            and is_successful_llm_run(run)
+        ):
+            continue
+        runs_by_model[str(run.get("model") or "").strip()] = dict(run)
+    return runs_by_model
 
 
 def _default_llm_run(

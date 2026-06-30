@@ -13,6 +13,7 @@ from analysis.dependencies.constants import (
     BODY_EXTRACTED_REGEX,
     PREAMBLE_EXTRACTED,
 )
+from analysis.proposal_schema import LLM_RUN_STATUSES, LLM_RUN_STATUS_SUCCESS
 from analysis.validation.ground_truth import (
     ground_truth_workbook_path,
     load_ground_truth_ips,
@@ -447,14 +448,33 @@ def _validate_llm_interrelations(
         if not isinstance(run, Mapping):
             result.fail(f"{run_path} must be an LLM run object")
             continue
+        if not str(run.get("run_id") or "").strip():
+            result.fail(f"{run_path} missing non-empty `run_id`")
         if not str(run.get("model") or "").strip():
             result.fail(f"{run_path} missing non-empty `model`")
         if not str(run.get("timestamp") or "").strip():
             result.fail(f"{run_path} missing non-empty `timestamp`")
+        status = str(run.get("status") or "").strip().lower()
+        if not status:
+            result.fail(f"{run_path} missing non-empty `status`")
+        elif status not in LLM_RUN_STATUSES:
+            allowed = ", ".join(sorted(LLM_RUN_STATUSES))
+            result.fail(
+                f"{run_path} has invalid `status` `{status}`; allowed: {allowed}"
+            )
         dependencies = run.get("dependencies")
         if not isinstance(dependencies, list):
             result.fail(f"{run_path}.dependencies must be a list")
             continue
+        if status and status != LLM_RUN_STATUS_SUCCESS and dependencies:
+            result.fail(
+                f"{run_path}.dependencies must be empty when status is `{status}`"
+            )
+        if status and status != LLM_RUN_STATUS_SUCCESS:
+            if not str(run.get("error_message") or "").strip():
+                result.fail(
+                    f"{run_path} missing non-empty `error_message` for failed run"
+                )
         for dep_index, dependency in enumerate(dependencies):
             _validate_target_entry(
                 dependency,

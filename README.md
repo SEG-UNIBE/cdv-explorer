@@ -312,7 +312,7 @@ The schema has three top-level blocks: **`raw`** (verbatim preamble), **`meta`**
 ```
 
 The exact object shapes inside `interrelations` are source-aware and method-specific. 
-In particular, targets use `source_slug:id` keys, regex-derived entries carry occurrence counts, and LLM-derived entries are stored as timestamped runs with per-dependency metadata.
+In particular, targets use `source_slug:id` keys, regex-derived entries carry occurrence counts, and LLM-assisted semantic dependency extraction runs are stored as timestamped run objects with status codes, `run_id` links, and per-dependency metadata. Prompt provenance is stored once per source/snapshot in the shared LLM run manifest.
 
 Concrete examples: [`bip-0340.json`](ip_data/bitcoin/bips/02_preprocess/2026-03-16/bip-0340.json) (Schnorr Signatures) · [`nip-10.json`](ip_data/nostr/nips/02_preprocess/2026-05-30/nip-10.json) (Text Notes and Threads)
 

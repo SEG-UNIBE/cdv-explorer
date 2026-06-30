@@ -56,7 +56,9 @@ class SnapshotValidationTests(unittest.TestCase):
                                 ],
                                 "body_extracted_llm": [
                                     {
+                                        "run_id": "run-1",
                                         "model": "gpt-test",
+                                        "status": "success",
                                         "dependencies": [
                                             {"target": "slips:39"},
                                             {"target": "BIP 32"},

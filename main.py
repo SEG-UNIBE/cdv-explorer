@@ -21,7 +21,7 @@ from rich.console import Console
 from rich.table import Table
 from tqdm import tqdm
 
-from analysis.proposal_schema import is_llm_runs_format
+from analysis.proposal_schema import is_llm_runs_format, is_successful_llm_run
 from ecosystems import ECOSYSTEM_REGISTRY
 from pipeline.source_context import SourceContext
 
@@ -653,7 +653,7 @@ def _available_llm_models_in_preprocess_dir(preprocess_dir: Path) -> list[str]:
             continue
         for run in raw_llm:
             model = str(run.get("model") or "").strip()
-            if model:
+            if model and is_successful_llm_run(run):
                 models.add(model)
     return sorted(models)
 
@@ -803,6 +803,7 @@ def _run_source_pipeline(
             src_config=src,
             preprocess_dir=output_dir,
             harvest_dir=harvest_root,
+            analysis_snapshot_dir=analysis_root / snapshot,
             skip_llm=skipllm,
             focus=focus,
             replace_llm_model_runs=replace_llm_model_runs,

@@ -181,7 +181,13 @@ class LlmRunsFormatTests(unittest.TestCase):
             },
         ]
 
-        result = build_network_data(proposals, id_field="bip", proposal_label="BIP")
+        result = build_network_data(
+            proposals,
+            id_field="bip",
+            proposal_label="BIP",
+            ground_truth_entries=[],
+            reviewed_ips_entries=[],
+        )
 
         self.assertEqual(
             result["dependency_edges"],

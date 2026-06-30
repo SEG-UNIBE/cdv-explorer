@@ -11,14 +11,24 @@ from analysis.reference_ids import (
     normalize_reference_id_for_config,
     uses_hex_proposal_ids,
 )
-from analysis.proposal_schema import get_preamble_interrelations
+from analysis.proposal_schema import (
+    LLM_RUN_STATUS_API_ERROR,
+    LLM_RUN_STATUS_PARSE_ERROR,
+    LLM_RUN_STATUS_REFUSAL,
+    LLM_RUN_STATUS_SUCCESS,
+    LLM_RUN_STATUS_TIMEOUT,
+    get_preamble_interrelations,
+)
 from pipeline.source_context import SourceContext
 
 
 TOP_PRE_BLOCK_PATTERN = re.compile(r"^\s*<pre>.*?</pre>\s*", re.DOTALL | re.IGNORECASE)
 TOP_FENCED_BLOCK_PATTERN = re.compile(r"^\s*```[^\n]*\n.*?\n```\s*(?:\n|$)", re.DOTALL)
-STRUCTURED_OUTPUT_NAME = "implicit_dependency_list"
+STRUCTURED_OUTPUT_NAME = "semantic_dependency_list"
 MAX_REFERENCE_DIGITS = 6
+LLM_SEMANTIC_METHOD_NAME = "llm_assisted_semantic_dependency_extraction"
+LLM_SEMANTIC_METHOD_LABEL = "LLM-Assisted Semantic Dependency Extraction"
+LLM_SEMANTIC_METHOD_VERSION = 4
 
 
 def _strip_top_preamble_block(text: str) -> str:
@@ -773,33 +783,19 @@ def _dependencies_from_llm_response(
     )
 
 
-def llm_extract_implicit_dependencies(
+def _build_llm_semantic_dependency_prompt_bundle(
+    *,
     text: str,
     current_proposal_number: str | None = None,
     proposal_label: str | None = None,
     proposal_singular: str | None = None,
-    api_key: str | None = None,
-    model: str | None = None,
     source_context: SourceContext | None = None,
-) -> List[str]:
+) -> Dict[str, Any]:
     context = source_context or SourceContext.default()
-    resolved_model = model or context.llm_model
-    if not resolved_model:
-        raise RuntimeError(
-            "No LLM model configured. Set `llm.model` in the ecosystem YAML."
-        )
     active_proposal_label = proposal_label or context.proposal_label
     active_proposal_singular = proposal_singular or context.proposal_singular
     reference_configs = _reference_configs_for_context(
         context, active_proposal_label, context.reference_pattern
-    )
-    active_config = next(
-        (
-            config
-            for config in reference_configs
-            if str(config["proposal_label"]).upper() == active_proposal_label.upper()
-        ),
-        reference_configs[0],
     )
     source_labels = ", ".join(
         f"{config['proposal_label']} ({config['source_slug']})"
@@ -809,71 +805,89 @@ def llm_extract_implicit_dependencies(
         f"{config['proposal_label']} => {config['source_slug']}:ID"
         for config in reference_configs
     )
-    sibling_config = next(
-        (
-            c
-            for c in reference_configs
-            if c["source_slug"] != active_config["source_slug"]
-        ),
-        None,
+    exclusion_rule = (
+        f"Exclude {active_proposal_label} {current_proposal_number} if present."
+        if current_proposal_number
+        else "Exclude the current proposal if it appears in the result."
     )
-    if sibling_config:
-        cross_source_example = f"""
-<example>
-<text>This proposal uses the version byte registry from {sibling_config["proposal_label"]} 132 and builds on {active_proposal_label} 32 for key derivation.</text>
-<output>{{"dependencies":[{{"target":"{active_config["source_slug"]}:32","evidence":"builds on {active_proposal_label} 32 for key derivation","reason":"The proposal extends key derivation mechanisms from the target.","confidence":"high"}},{{"target":"{sibling_config["source_slug"]}:132","evidence":"uses the version byte registry from {sibling_config["proposal_label"]} 132","reason":"The proposal relies on version byte definitions established by the target.","confidence":"high"}}]}}</output>
-</example>
-"""
-    else:
-        cross_source_example = ""
+    current_identifier = (
+        f" {current_proposal_number}" if current_proposal_number else ""
+    )
+
     system_prompt = f"""
-You extract implicit technical dependencies from {active_proposal_singular} documents.
+You extract technical dependencies from {active_proposal_singular} documents.
+
+Task:
+- Identify only substantive proposal-to-proposal dependencies.
+- Use only the provided proposal text. Do not use outside knowledge.
 
 Decision rule:
-- Include another proposal only when the proposal materially builds on, requires, extends, constrains, amends, specializes, or otherwise substantively relies on concepts, mechanisms, formats, semantics, activation rules, or assumptions introduced by that proposal.
-- Judge the technical context, not just surface mentions.
-- If a candidate is ambiguous or weakly supported, omit it.
+- Include another proposal only when the current proposal materially relies on, reuses, extends, constrains, amends, specializes, is compatible with, or is designed around concepts, mechanisms, formats, semantics, activation rules, workflows, or assumptions introduced by that proposal.
+- Ask whether understanding, implementing, evaluating, or adopting the current proposal would meaningfully depend on the target proposal beyond a passing reference.
+- Statements such as "requires", "depends on", "based on", "extends", or "fully implement X with the following changes" are strong indicators of dependency.
+- If support is ambiguous, weak, speculative, or purely contextual, omit the candidate.
 
 Do not include:
 - mere mentions or citations
-- history or background
-- comparisons to alternative approaches
-- examples
+- historical or background references
+- related work or motivation
+- comparisons to alternatives when no mechanism, format, rule, or semantic dependency is reused
+- examples or illustrative references
+- "See also" or "references" sections by themselves
 - topical relatedness
-- speculation
+- speculation about future interactions
 - self-references
 
 Output policy:
 - Return JSON only, with no explanation and no markdown.
-- Return a normalized, sorted, distinct list of dependency objects.
+- Return one object per dependency target.
 - Each object must use target format "source_slug:ID".
 - Valid labels for this ecosystem: {source_labels}.
 - Target format mapping: {target_formats}.
 - Preserve hexadecimal identifiers and leading zeroes when the ecosystem uses them.
-- Sort by source label, then ascending proposal identifier.
-- Exclude {active_proposal_label} {current_proposal_number} if present.
+- {exclusion_rule}
 - Return an empty list when there are no real dependencies.
-- Evidence must be a short exact quote or close excerpt from the proposal text.
-- Reason must briefly explain why the target is a technical dependency, not just a citation.
+- Evidence must be a short verbatim contiguous quote copied from the proposal text.
+- Reason must briefly explain the dependency in technical terms.
 - Confidence must be one of: low, medium, high.
+- Use confidence `high` for explicit or normatively stated dependencies, `medium` for strong but implicit technical reliance, and `low` only for weaker but still defensible cases that remain worth keeping.
+
+Example vocabulary:
+- The examples below use fixed placeholders so the same examples work across ecosystems.
+- `MAIN_LABEL` means the primary proposal label for the current source.
+- `SIBLING_LABEL` means another valid proposal label in the same ecosystem.
+- `main_source` and `sibling_source` are illustrative source slugs used only inside the examples.
+- In your actual answer, use the real labels and source slugs listed above.
 """.strip()
     user_prompt = f"""
-Analyze {active_proposal_singular} {active_proposal_label}{f" {current_proposal_number}" if current_proposal_number else ""}.
+Analyze {active_proposal_singular} {active_proposal_label}{current_identifier}.
 
 <examples>
 <example>
-<text>This proposal depends on {active_proposal_label} 39 and 32.</text>
-<output>{{"dependencies":[{{"target":"{active_config["source_slug"]}:32","evidence":"depends on {active_proposal_label} 39 and 32","reason":"The proposal explicitly says it depends on this target.","confidence":"high"}},{{"target":"{active_config["source_slug"]}:39","evidence":"depends on {active_proposal_label} 39 and 32","reason":"The proposal explicitly says it depends on this target.","confidence":"high"}}]}}</output>
+<text>Requires: 32, 43. This proposal defines a logical hierarchy based on an algorithm described in MAIN_LABEL-0032 and a purpose scheme described in MAIN_LABEL-0043.</text>
+<output>{{"dependencies":[{{"target":"main_source:32","evidence":"based on an algorithm described in MAIN_LABEL-0032","reason":"The proposal reuses the underlying derivation scheme from the target.","confidence":"high"}},{{"target":"main_source:43","evidence":"a purpose scheme described in MAIN_LABEL-0043","reason":"The proposal depends on the target's purpose-field convention to define its hierarchy.","confidence":"high"}}]}}</output>
 </example>
 <example>
-<text>This proposal builds upon {active_proposal_label}-0016 for partially signed transactions.</text>
-<output>{{"dependencies":[{{"target":"{active_config["source_slug"]}:16","evidence":"builds upon {active_proposal_label}-0016 for partially signed transactions","reason":"The proposal builds on mechanisms introduced by the target.","confidence":"high"}}]}}</output>
+<text>The protocol defined in MAIN_LABEL 70 should be fully implemented with the following changes. This proposal allows zero value extension records in serialized messages.</text>
+<output>{{"dependencies":[{{"target":"main_source:70","evidence":"MAIN_LABEL 70 should be fully implemented with the following changes","reason":"The proposal modifies and builds directly on the earlier protocol rather than merely mentioning it.","confidence":"high"}}]}}</output>
 </example>
 <example>
-<text>Unlike {active_proposal_label} 44, which defines a symmetric encryption scheme, this proposal introduces a standalone asymmetric key agreement protocol. No primitives or formats from {active_proposal_label} 44 are reused.</text>
+<text>This proposal describes an enhancement to the protocol (MAIN_LABEL 70). Implementation of this proposal does not require full MAIN_LABEL 70 support.</text>
 <output>{{"dependencies":[]}}</output>
 </example>
-{cross_source_example}</examples>
+<example>
+<text>Unlike MAIN_LABEL 44, which defines a symmetric encryption scheme, this proposal introduces a standalone asymmetric key agreement protocol. No primitives or formats from MAIN_LABEL 44 are reused.</text>
+<output>{{"dependencies":[]}}</output>
+</example>
+<example>
+<text>Example: schemes following MAIN_LABEL 44 should use purpose value 44'. This example illustrates how purpose values are assigned.</text>
+<output>{{"dependencies":[]}}</output>
+</example>
+<example>
+<text>We adapt the master node generation from MAIN_LABEL-0032 and SIBLING_LABEL-0010.</text>
+<output>{{"dependencies":[{{"target":"main_source:32","evidence":"adapt the master node generation from MAIN_LABEL-0032","reason":"The proposal reuses the main-source master-node derivation procedure.","confidence":"high"}},{{"target":"sibling_source:10","evidence":"and SIBLING_LABEL-0010","reason":"The proposal also builds on a sibling-source derivation standard named in the same sentence.","confidence":"medium"}}]}}</output>
+</example>
+</examples>
 
 Now apply the same rules to the actual proposal text below.
 
@@ -912,6 +926,81 @@ Now apply the same rules to the actual proposal text below.
             },
         },
     }
+    return {
+        "system_prompt": system_prompt,
+        "user_prompt": user_prompt,
+        "response_format": response_format,
+    }
+
+
+def build_llm_semantic_dependency_manifest_record(
+    *,
+    run_id: str,
+    model: str,
+    source_context: SourceContext | None = None,
+    proposal_label: str | None = None,
+    proposal_singular: str | None = None,
+    created_at: str,
+    focus: List[str] | None = None,
+) -> Dict[str, Any]:
+    context = source_context or SourceContext.default()
+    bundle = _build_llm_semantic_dependency_prompt_bundle(
+        text="{proposal_text}",
+        current_proposal_number="{current_proposal_number}",
+        proposal_label=proposal_label,
+        proposal_singular=proposal_singular,
+        source_context=context,
+    )
+    return {
+        "run_id": run_id,
+        "method_name": LLM_SEMANTIC_METHOD_NAME,
+        "method_label": LLM_SEMANTIC_METHOD_LABEL,
+        "method_version": LLM_SEMANTIC_METHOD_VERSION,
+        "model": model,
+        "created_at": created_at,
+        "api_surface": (
+            "responses" if context.llm_reasoning is not None else "chat_completions"
+        ),
+        "reasoning": dict(context.llm_reasoning) if context.llm_reasoning else None,
+        "system_prompt": bundle["system_prompt"],
+        "user_prompt_template": bundle["user_prompt"],
+        "response_format": bundle["response_format"],
+        "source_context": {
+            "ecosystem_slug": context.ecosystem_slug,
+            "source_slug": context.source_slug,
+            "proposal_label": proposal_label or context.proposal_label,
+            "proposal_singular": proposal_singular or context.proposal_singular,
+        },
+        "focus": list(focus or []),
+    }
+
+
+def llm_extract_semantic_dependencies(
+    text: str,
+    current_proposal_number: str | None = None,
+    proposal_label: str | None = None,
+    proposal_singular: str | None = None,
+    api_key: str | None = None,
+    model: str | None = None,
+    source_context: SourceContext | None = None,
+) -> Dict[str, Any]:
+    context = source_context or SourceContext.default()
+    resolved_model = model or context.llm_model
+    if not resolved_model:
+        raise RuntimeError(
+            "No LLM model configured. Set `llm.model` in the ecosystem YAML."
+        )
+    active_proposal_label = proposal_label or context.proposal_label
+    bundle = _build_llm_semantic_dependency_prompt_bundle(
+        text=text,
+        current_proposal_number=current_proposal_number,
+        proposal_label=proposal_label,
+        proposal_singular=proposal_singular,
+        source_context=context,
+    )
+    system_prompt = bundle["system_prompt"]
+    user_prompt = bundle["user_prompt"]
+    response_format = bundle["response_format"]
 
     resolved_api_key = api_key or load_api_key()
     if not resolved_api_key:
@@ -925,17 +1014,39 @@ Now apply the same rules to the actual proposal text below.
         {"role": "user", "content": user_prompt},
     ]
 
-    def _parse(response: Any) -> List[Dict[str, str]]:
-        results = _dependencies_from_llm_response(
-            response,
-            proposal_label=active_proposal_label,
-            current_proposal_number=current_proposal_number,
-            source_context=context,
-        )
-        return _ground_evidence(results, text)
+    def _result(
+        status: str,
+        dependencies: List[Dict[str, str]] | None = None,
+        error_message: str | None = None,
+    ) -> Dict[str, Any]:
+        payload: Dict[str, Any] = {
+            "status": status,
+            "dependencies": dependencies or [],
+        }
+        if error_message:
+            payload["error_message"] = error_message
+        return payload
+
+    def _parse(response: Any) -> Dict[str, Any]:
+        content = _extract_response_content(response)
+        if content is None:
+            return _result(
+                LLM_RUN_STATUS_PARSE_ERROR,
+                error_message="LLM returned no JSON content.",
+            )
+        try:
+            payload = loads(content)
+            results = normalize_llm_dependency_output(
+                payload.get("dependencies"),
+                proposal_label=active_proposal_label,
+                current_proposal_number=current_proposal_number,
+                source_context=context,
+            )
+        except (JSONDecodeError, TypeError, ValueError, KeyError) as exc:
+            return _result(LLM_RUN_STATUS_PARSE_ERROR, error_message=str(exc))
+        return _result(LLM_RUN_STATUS_SUCCESS, _ground_evidence(results, text))
 
     if llm_reasoning is not None:
-        # Responses API path (reasoning models)
         try:
             kwargs: Dict[str, Any] = {
                 "model": resolved_model,
@@ -945,40 +1056,70 @@ Now apply the same rules to the actual proposal text below.
             if llm_reasoning:
                 kwargs["reasoning"] = llm_reasoning
             response = client.responses.create(**kwargs)
+            if getattr(response, "status", None) == "failed":
+                return _result(
+                    LLM_RUN_STATUS_API_ERROR,
+                    error_message="Responses API returned failed status.",
+                )
             return _parse(response)
-        except (
-            JSONDecodeError,
-            TypeError,
-            ValueError,
-            KeyError,
-            OSError,
-            TimeoutError,
-            ConnectionError,
-        ) as exc:
-            raise RuntimeError(f"LLM API call failed: {exc}") from exc
-    else:
-        # Chat Completions API path
+        except TimeoutError as exc:
+            return _result(LLM_RUN_STATUS_TIMEOUT, error_message=str(exc))
+        except (TypeError, ValueError, KeyError, OSError, ConnectionError) as exc:
+            return _result(LLM_RUN_STATUS_API_ERROR, error_message=str(exc))
+
+    try:
         try:
-            try:
-                response = client.chat.completions.create(
-                    model=resolved_model,
-                    messages=messages,
-                    response_format=response_format,
+            response = client.chat.completions.create(
+                model=resolved_model,
+                messages=messages,
+                response_format=response_format,
+            )
+        except TypeError:
+            response = client.chat.completions.create(
+                model=resolved_model,
+                messages=messages,
+                response_format={"type": "json_object"},
+            )
+
+        choices = getattr(response, "choices", None)
+        if choices:
+            message = choices[0].message
+            if getattr(message, "refusal", None):
+                refusal_message = str(message.refusal).strip()
+                return _result(
+                    LLM_RUN_STATUS_REFUSAL,
+                    error_message=refusal_message or "Model refused the request.",
                 )
-            except TypeError:
-                response = client.chat.completions.create(
-                    model=resolved_model,
-                    messages=messages,
-                    response_format={"type": "json_object"},
-                )
-            return _parse(response)
-        except (
-            JSONDecodeError,
-            TypeError,
-            ValueError,
-            KeyError,
-            OSError,
-            TimeoutError,
-            ConnectionError,
-        ) as exc:
-            raise RuntimeError(f"LLM API call failed: {exc}") from exc
+        return _parse(response)
+    except TimeoutError as exc:
+        return _result(LLM_RUN_STATUS_TIMEOUT, error_message=str(exc))
+    except (TypeError, ValueError, KeyError, OSError, ConnectionError) as exc:
+        return _result(LLM_RUN_STATUS_API_ERROR, error_message=str(exc))
+
+
+def llm_extract_implicit_dependencies(
+    text: str,
+    current_proposal_number: str | None = None,
+    proposal_label: str | None = None,
+    proposal_singular: str | None = None,
+    api_key: str | None = None,
+    model: str | None = None,
+    source_context: SourceContext | None = None,
+) -> List[Dict[str, str]]:
+    result = llm_extract_semantic_dependencies(
+        text=text,
+        current_proposal_number=current_proposal_number,
+        proposal_label=proposal_label,
+        proposal_singular=proposal_singular,
+        api_key=api_key,
+        model=model,
+        source_context=source_context,
+    )
+    if result.get("status") != LLM_RUN_STATUS_SUCCESS:
+        error_message = str(result.get("error_message") or "").strip()
+        detail = f": {error_message}" if error_message else ""
+        raise RuntimeError(
+            f"LLM semantic dependency extraction failed with status "
+            f"`{result.get('status')}`{detail}"
+        )
+    return list(result.get("dependencies") or [])

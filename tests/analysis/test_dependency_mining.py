@@ -9,10 +9,12 @@ if "openai" not in sys.modules:
     sys.modules["openai"] = fake_openai
 
 from analysis.dependencies.mining import (
+    build_llm_semantic_dependency_manifest_record,
     create_explicit_dependency_targets,
     create_reference_list,
     create_reference_targets,
     llm_extract_implicit_dependencies,
+    llm_extract_semantic_dependencies,
     normalize_dependency_output,
     normalize_llm_dependency_output,
     prepare_llm_dependency_text,
@@ -274,6 +276,56 @@ class PrepareLlmDependencyTextTests(unittest.TestCase):
 
 
 class LlmModelConfigTests(unittest.TestCase):
+    def test_manifest_record_preserves_shared_prompt_provenance(self):
+        context = SourceContext.from_config(
+            ECOSYSTEM_REGISTRY["bitcoin"]["sources"]["bips"],
+            ecosystem_slug="bitcoin",
+            source_slug="bips",
+        )
+
+        record = build_llm_semantic_dependency_manifest_record(
+            run_id="run-123",
+            model="gpt-5.4-mini",
+            source_context=context,
+            created_at="2026-06-30T12:00:00Z",
+            focus=["32", "39"],
+        )
+
+        self.assertEqual(record["run_id"], "run-123")
+        self.assertEqual(
+            record["method_name"], "llm_assisted_semantic_dependency_extraction"
+        )
+        self.assertEqual(
+            record["method_label"], "LLM-Assisted Semantic Dependency Extraction"
+        )
+        self.assertEqual(record["method_version"], 4)
+        self.assertEqual(record["source_context"]["source_slug"], "bips")
+        self.assertIn("{proposal_text}", record["user_prompt_template"])
+        self.assertIn("{current_proposal_number}", record["user_prompt_template"])
+        self.assertIn("Do not use outside knowledge", record["system_prompt"])
+        self.assertIn(
+            "verbatim contiguous quote copied from the proposal text",
+            record["system_prompt"],
+        )
+        self.assertIn("MAIN_LABEL", record["system_prompt"])
+        self.assertIn("main_source", record["system_prompt"])
+        self.assertIn(
+            "fully implemented with the following changes",
+            record["user_prompt_template"],
+        )
+        self.assertIn(
+            "does not require full MAIN_LABEL 70 support",
+            record["user_prompt_template"],
+        )
+        self.assertIn(
+            "schemes following MAIN_LABEL 44 should use purpose value 44'",
+            record["user_prompt_template"],
+        )
+        self.assertIn(
+            "master node generation from MAIN_LABEL-0032 and SIBLING_LABEL-0010",
+            record["user_prompt_template"],
+        )
+
     def test_llm_extraction_requires_configured_model(self):
         context = SourceContext.from_config(
             {
@@ -315,13 +367,51 @@ class LlmModelConfigTests(unittest.TestCase):
         )
 
         with patch("analysis.dependencies.mining.OpenAI", return_value=client):
-            with self.assertRaisesRegex(RuntimeError, "LLM API call failed"):
+            with self.assertRaisesRegex(
+                RuntimeError, "failed with status `parse_error`"
+            ):
                 llm_extract_implicit_dependencies(
                     "This proposal depends on BIP 32.",
                     api_key="test-key",
                     model="test-model",
                     source_context=context,
                 )
+
+    def test_semantic_extraction_returns_parse_error_status(self):
+        context = SourceContext.from_config(
+            {
+                "proposal_acronym": "BIP",
+                "proposal_term_singular": "Bitcoin Improvement Proposal",
+                "reference_pattern": r"\bBIP[-#\s]?(\d+)\b",
+            },
+            source_slug="bips",
+        )
+
+        def create_completion(**kwargs):
+            if kwargs["response_format"]["type"] == "json_schema":
+                raise TypeError("structured outputs unsupported")
+            message = types.SimpleNamespace(content="{not json", refusal=None)
+            return types.SimpleNamespace(
+                choices=[types.SimpleNamespace(message=message)]
+            )
+
+        client = types.SimpleNamespace(
+            chat=types.SimpleNamespace(
+                completions=types.SimpleNamespace(create=create_completion)
+            )
+        )
+
+        with patch("analysis.dependencies.mining.OpenAI", return_value=client):
+            result = llm_extract_semantic_dependencies(
+                "This proposal depends on BIP 32.",
+                api_key="test-key",
+                model="test-model",
+                source_context=context,
+            )
+
+        self.assertEqual(result["status"], "parse_error")
+        self.assertEqual(result["dependencies"], [])
+        self.assertIn("Expecting property name", result["error_message"])
 
     def test_responses_api_reasoning_path_uses_responses_client_with_default_reasoning(
         self,

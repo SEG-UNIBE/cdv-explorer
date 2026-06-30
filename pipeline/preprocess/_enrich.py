@@ -8,26 +8,32 @@ from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, Tuple
+from uuid import uuid4
 
 from tqdm import tqdm
 
 from analysis.authorship.mining import update_metadata_from_git
-from analysis.proposal_schema import is_llm_runs_format
 from analysis.dependencies.constants import (
     BODY_EXTRACTED_LLM,
     BODY_EXTRACTED_REGEX,
     PREAMBLE_EXTRACTED,
 )
 from analysis.dependencies.mining import (
+    build_llm_semantic_dependency_manifest_record,
     create_explicit_dependency_targets,
     create_reference_targets,
-    llm_extract_implicit_dependencies,
+    llm_extract_semantic_dependencies,
     load_api_key,
     prepare_llm_dependency_text,
 )
+from analysis.proposal_schema import (
+    LLM_RUN_STATUS_API_ERROR,
+    LLM_RUN_STATUS_SUCCESS,
+    is_llm_runs_format,
+    normalize_proposal_document,
+)
 from analysis.dependencies.utils import normalize_reference_id_for_config
 from analysis.evolution import extract_status_timeline
-from analysis.proposal_schema import normalize_proposal_document
 from pipeline.source_context import SourceContext
 
 MIN_WORD_OCCURRENCE = 2
@@ -185,10 +191,42 @@ def _in_focus(proposal_number: str, raw_id: str, focus: set[str]) -> bool:
     )
 
 
+def _append_llm_manifest_run(manifest_path: Path, entry: Dict[str, Any]) -> None:
+    if manifest_path.exists():
+        try:
+            payload = json.loads(manifest_path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            payload = {}
+    else:
+        payload = {}
+
+    runs = payload.get("runs")
+    if not isinstance(runs, list):
+        runs = []
+
+    run_id = str(entry.get("run_id") or "").strip()
+    runs = [
+        run
+        for run in runs
+        if not (
+            isinstance(run, dict)
+            and str(run.get("run_id") or "").strip()
+            and str(run.get("run_id") or "").strip() == run_id
+        )
+    ]
+    runs.append(entry)
+    manifest_path.parent.mkdir(parents=True, exist_ok=True)
+    manifest_path.write_text(
+        json.dumps({"schema_version": 1, "runs": runs}, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+
+
 def enrich(
     src_config: dict,
     preprocess_dir: Path,
     harvest_dir: Path,
+    analysis_snapshot_dir: Path | None = None,
     skip_llm: bool = False,
     focus: set[str] | None = None,
     replace_llm_model_runs: bool = False,
@@ -240,6 +278,25 @@ def enrich(
     completed_llm = 0
 
     executor = ThreadPoolExecutor(max_workers=max_workers) if llm_enabled else None
+    llm_run_id = ""
+    llm_run_created_at = ""
+    if llm_enabled:
+        llm_run_created_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        llm_run_id = (
+            f"{llm_run_created_at}_{str(llm_model or '').strip()}_{uuid4().hex[:8]}"
+        )
+        if analysis_snapshot_dir is not None:
+            manifest_path = analysis_snapshot_dir / f"{src_config['document_prefix']}_llm_runs.json"
+            _append_llm_manifest_run(
+                manifest_path,
+                build_llm_semantic_dependency_manifest_record(
+                    run_id=llm_run_id,
+                    model=str(llm_model or "").strip(),
+                    source_context=source_context,
+                    created_at=llm_run_created_at,
+                    focus=sorted(focus) if focus else [],
+                ),
+            )
     llm_bar = (
         tqdm(
             total=0,
@@ -275,16 +332,36 @@ def enrich(
                 f"WARNING: LLM extraction failed for {record['job_id']}: {exc}",
                 file=sys.stderr,
             )
-            result = []
+            result = {
+                "status": LLM_RUN_STATUS_API_ERROR,
+                "dependencies": [],
+                "error_message": str(exc),
+            }
+        if result.get("status") != LLM_RUN_STATUS_SUCCESS:
+            message = str(result.get("error_message") or "").strip()
+            suffix = f": {message}" if message else ""
+            print(
+                f"WARNING: LLM semantic extraction for {record['job_id']} finished with "
+                f"status `{result.get('status')}`{suffix}",
+                file=sys.stderr,
+            )
         data = record["json_data"]
         prior_runs = record.get("preserved_runs") or []
-        data["insights"]["interrelations"][BODY_EXTRACTED_LLM] = prior_runs + [
-            {
-                "model": llm_model,
-                "timestamp": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-                "dependencies": result if isinstance(result, list) else [],
-            }
-        ]
+        run_entry = {
+            "run_id": llm_run_id,
+            "model": llm_model,
+            "timestamp": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "status": str(result.get("status") or ""),
+            "dependencies": (
+                list(result.get("dependencies") or [])
+                if isinstance(result.get("dependencies"), list)
+                else []
+            ),
+        }
+        error_message = str(result.get("error_message") or "").strip()
+        if error_message:
+            run_entry["error_message"] = error_message
+        data["insights"]["interrelations"][BODY_EXTRACTED_LLM] = prior_runs + [run_entry]
         completed_llm += 1
         if llm_bar is not None:
             llm_bar.update(1)
@@ -364,7 +441,7 @@ def enrich(
                 continue
 
             future = executor.submit(
-                llm_extract_implicit_dependencies,
+                llm_extract_semantic_dependencies,
                 text=llm_content,
                 current_proposal_number=proposal_number,
                 api_key=api_key,

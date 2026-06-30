@@ -10,6 +10,18 @@ OBSOLETE_INTERRELATION_KEYS = {
     "implicit_dependencies",
 }
 LEGACY_TOP_LEVEL_KEYS = {"metadata", "history", "compliance"}
+LLM_RUN_STATUS_SUCCESS = "success"
+LLM_RUN_STATUS_REFUSAL = "refusal"
+LLM_RUN_STATUS_PARSE_ERROR = "parse_error"
+LLM_RUN_STATUS_API_ERROR = "api_error"
+LLM_RUN_STATUS_TIMEOUT = "timeout"
+LLM_RUN_STATUSES = {
+    LLM_RUN_STATUS_SUCCESS,
+    LLM_RUN_STATUS_REFUSAL,
+    LLM_RUN_STATUS_PARSE_ERROR,
+    LLM_RUN_STATUS_API_ERROR,
+    LLM_RUN_STATUS_TIMEOUT,
+}
 
 
 def empty_meta() -> Dict[str, Any]:
@@ -129,12 +141,34 @@ def is_llm_runs_format(value: Any) -> bool:
     )
 
 
+def llm_run_status(run: Dict[str, Any] | Any) -> str:
+    if not isinstance(run, dict):
+        return ""
+    status = str(run.get("status") or "").strip().lower()
+    if status:
+        return status
+    # Legacy runs without an explicit status are treated as successful.
+    if "timestamp" in run and "dependencies" in run:
+        return LLM_RUN_STATUS_SUCCESS
+    return ""
+
+
+def is_successful_llm_run(run: Dict[str, Any] | Any) -> bool:
+    return llm_run_status(run) == LLM_RUN_STATUS_SUCCESS
+
+
+def latest_llm_run(value: Any) -> Dict[str, Any] | None:
+    if not isinstance(value, list) or not value or not is_llm_runs_format(value):
+        return None
+    return max(value, key=lambda r: str(r.get("timestamp", "")))
+
+
 def latest_llm_dependencies(value: Any) -> List[Any]:
     """Resolve body_extracted_llm to the latest run's dependency list."""
-    if not isinstance(value, list) or not value:
-        return []
-    if is_llm_runs_format(value):
-        latest = max(value, key=lambda r: str(r.get("timestamp", "")))
+    latest = latest_llm_run(value)
+    if latest is not None:
+        if not is_successful_llm_run(latest):
+            return []
         return list(latest.get("dependencies") or [])
     return []
 

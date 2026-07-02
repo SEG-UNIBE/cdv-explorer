@@ -24,7 +24,7 @@ _Modern decentralized software ecosystems evolve through crowdsourced improvemen
 
 <div align="center">
   <a href="https://github.com/SEG-UNIBE/cdv-explorer/releases">
-    <img src="https://img.shields.io/github/v/release/SEG-UNIBE/cdv-explorer?display_name=tag&style=flat" alt="Release" />
+    <img src="https://img.shields.io/github/v/release/SEG-UNIBE/cdv-explorer?style=flat&label=release&cacheSeconds=300" alt="Release" />
   </a>
   <a href="https://seg-unibe.github.io/cdv-explorer/#/">
     <img src="https://img.shields.io/badge/PROD-live-brightgreen?style=flat&logo=githubpages&logoColor=white" alt="PROD Live" />

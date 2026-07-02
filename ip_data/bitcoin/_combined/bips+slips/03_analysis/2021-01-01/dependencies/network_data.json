@@ -29670,11 +29670,11 @@
       "source": "bips:11",
       "target": "bips:12",
       "extraction_method": "ground_truth_curated",
-      "relation_type": "depends_on",
+      "relation_type": "references",
       "value": 1,
       "confidence": "low",
       "evidence": "The counter-argument is that these new multi-signature transactions will be used in combination with OP_EVAL (see the OP_EVAL BIP),",
-      "note": "OP_EVAL is defined in BIP12",
+      "note": "OP_EVAL, defined in BIP12, is only described as a possible future combination, BIP 11 works without it.",
       "reviewer": "rbo",
       "reviewed_at": "2026-06-30"
     },
@@ -29914,7 +29914,7 @@
       "value": 1,
       "confidence": "high",
       "evidence": "total number of SigOps, as counted for purposes of block limits; if key is not present, sigop count is unknown [...] Due to the BIP 0016 changes regarding rules on block sigops, it is impossible to count sigops from the transactions themselves (the sigops in the scriptCheck \nmust also be included in the count).",
-      "note": "References BIP16 simply to provide the motivation of why sigops-related fields are part of BIP22's speficiation.",
+      "note": "References BIP16 simply to provide the motivation of why sigops-related fields are part of BIP22's specification.",
       "reviewer": "rbo",
       "reviewed_at": "2026-06-26"
     },
@@ -29926,7 +29926,7 @@
       "value": 1,
       "confidence": "high",
       "evidence": "See Also BIP 23: getblocktemplate - Pooled Mining",
-      "note": "Reference since BIP23 \"describes extensions to the getblocktemplate JSON-RPC call to enhance pooled mining\" and is to be undertsood as \"extensions to the getblocktemplate JSON-RPC call to enhance pooled mining.\"",
+      "note": "Reference since BIP23 \"describes extensions to the getblocktemplate JSON-RPC call to enhance pooled mining\" and is to be understood as \"extensions to the getblocktemplate JSON-RPC call to enhance pooled mining.\"",
       "reviewer": "rbo",
       "reviewed_at": "2026-06-26"
     },
@@ -29962,7 +29962,7 @@
       "value": 1,
       "confidence": "high",
       "evidence": "When the protocol version as negotiated in the 'ver' message is greater than 60000, the 'ping' message must contain a uint64 field called 'nonce'.",
-      "note": "BIP14 defines the protocol-version negotiation that gates this   behaviour.",
+      "note": "BIP14 defines the protocol-version negotiation that gates this behaviour.",
       "reviewer": "rbo",
       "reviewed_at": "2026-06-22"
     },
@@ -29973,8 +29973,8 @@
       "relation_type": "depends_on",
       "value": 1,
       "confidence": "high",
-      "evidence": "This seed can be later used to generate deterministic wallets using BIP-0032 or similar methods.",
-      "note": "Declared as depends_on relation here as the sole purpose of mnemonic seeds is their subsequent conversion to BIP32 master keys.",
+      "evidence": "It consists of two parts: generating the mnemonic and converting it into a binary seed. This seed can be later used to generate deterministic wallets using BIP-0032 or similar methods.  [...] This seed can be later used to generate deterministic wallets using BIP-0032 or similar methods.",
+      "note": "Declared as depends_on relation here as the sole purpose of mnemonic seeds is their subsequent conversion to BIP32 master keys (despite 'similar methods' may be applied).",
       "reviewer": "rbo",
       "reviewed_at": "2026-06-22"
     },
@@ -30304,13 +30304,25 @@
     },
     {
       "source": "bips:91",
+      "target": "bips:66",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "references",
+      "value": 1,
+      "confidence": "high",
+      "evidence": "Rationale Historically we have used IsSuperMajority() to activate soft forks such as BIP66 which has a mandatory signalling requirement for miners once activated, this ensures that miners are aware of new rules being enforced.",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-06-30"
+    },
+    {
+      "source": "bips:91",
       "target": "bips:141",
       "extraction_method": "ground_truth_curated",
       "relation_type": "depends_on",
       "value": 1,
       "confidence": "high",
       "evidence": "\"existing segwit deployment\" refer to the BIP9 \"segwit\" deployment using bit 1, between November 15th 2016 and November 15th 2017 to activate BIP141, BIP143 and BIP147.  [...] timeout on midnight November 15th 2017 (epoch time 1510704000). This BIP will cease to be active when segwit (BIP141) is locked-in, active, or failed  [...] References [...] BIP141 Segregated Witness (Consensus Layer)",
-      "note": "BIP91's only purpose is to trigger activation of BIP141’s deployment.",
+      "note": "BIP91's only purpose is to trigger activation of BIP141's deployment. BIP91’s activation mechanism is defined around BIP141’s SegWit deployment state and terminates when that deployment locks in, activates, or fails.",
       "reviewer": "rbo",
       "reviewed_at": "2026-06-30"
     },
@@ -30322,7 +30334,7 @@
       "value": 1,
       "confidence": "high",
       "evidence": "\"existing segwit deployment\" refer to the BIP9 \"segwit\" deployment using bit 1, between November 15th 2016 and November 15th 2017 to activate BIP141, BIP143 and BIP147.",
-      "note": "Mentioned because it is bundled into the SegWit deployment.",
+      "note": "Mentioned because it is bundled into the SegWit deployment. BIP143 is co-activated by the SegWit deployment, but BIP 91 does not rely on its signature-digest semantics.",
       "reviewer": "rbo",
       "reviewed_at": "2026-06-30"
     },
@@ -30334,7 +30346,7 @@
       "value": 1,
       "confidence": "high",
       "evidence": "\"existing segwit deployment\" refer to the BIP9 \"segwit\" deployment using bit 1, between November 15th 2016 and November 15th 2017 to activate BIP141, BIP143 and BIP147.",
-      "note": "Mentioned because it is bundled into the SegWit deployment.",
+      "note": "Mentioned because it is bundled into the SegWit deployment. BIP147 is co-activated by the SegWit deployment, but BIP91 does not rely on its NULLDUMMY semantics.",
       "reviewer": "rbo",
       "reviewed_at": "2026-06-30"
     },
@@ -30393,7 +30405,7 @@
       "relation_type": "references",
       "value": 1,
       "confidence": "medium",
-      "evidence": "A hardcoded increase to max block size (2MB, 8MB, etc.), rejected because: [...]",
+      "evidence": "Allow miners to vote for max block size, rejected because: [...]",
       "note": "Miner vote approach defined in BIP100",
       "reviewer": "rbo",
       "reviewed_at": "2026-07-02"
@@ -30405,7 +30417,7 @@
       "relation_type": "references",
       "value": 1,
       "confidence": "medium",
-      "evidence": "Allow miners to vote for max block size, rejected because: [...]",
+      "evidence": "A hardcoded increase to max block size (2MB, 8MB, etc.), rejected because: [...]",
       "note": "Hard-coded increase defined in BIP102",
       "reviewer": "rbo",
       "reviewed_at": "2026-07-02"
@@ -30538,7 +30550,7 @@
       "value": 1,
       "confidence": "medium",
       "evidence": "This proposal seeks to ensure reliable behaviour in locktime calculations as required by BIP65 (CHECKLOCKTIMEVERIFY) and matching the behavior of BIP68 (sequence numbers) and BIP112 (CHECKSEQUENCEVERIFY).",
-      "note": "Foundamental BIP that is relied on by BIP65, BIP68, and BIP112",
+      "note": "Fundamental BIP that is relied on by BIP65, BIP68, and BIP112",
       "reviewer": "rbo",
       "reviewed_at": "2026-06-29"
     },
@@ -30550,7 +30562,7 @@
       "value": 1,
       "confidence": "medium",
       "evidence": "This proposal seeks to ensure reliable behaviour in locktime calculations as required by BIP65 (CHECKLOCKTIMEVERIFY) and matching the behavior of BIP68 (sequence numbers) and BIP112 (CHECKSEQUENCEVERIFY).",
-      "note": "Foundamental BIP that is relied on by BIP65, BIP68, and BIP112",
+      "note": "Fundamental BIP that is relied on by BIP65, BIP68, and BIP112",
       "reviewer": "rbo",
       "reviewed_at": "2026-06-29"
     },
@@ -30562,7 +30574,7 @@
       "value": 1,
       "confidence": "medium",
       "evidence": "This proposal seeks to ensure reliable behaviour in locktime calculations as required by BIP65 (CHECKLOCKTIMEVERIFY) and matching the behavior of BIP68 (sequence numbers) and BIP112 (CHECKSEQUENCEVERIFY).",
-      "note": "Foundamental BIP that is relied on by BIP65, BIP68, and BIP112",
+      "note": "Fundamental BIP that is relied on by BIP65, BIP68, and BIP112",
       "reviewer": "rbo",
       "reviewed_at": "2026-06-29"
     },
@@ -30693,7 +30705,7 @@
       "relation_type": "references",
       "value": 1,
       "confidence": "medium",
-      "evidence": null,
+      "evidence": "However the more familiar NOP-expansion soft-fork mechanism used by BIP65 (CHECKLOCKTIMEVERIFY)[5] and BIP112 (CHECKSEQUENCEVERIFY)[6] was chosen over script versioning for the following two reasons: Infrastructure compatibility. [...] Delayed decision on script upgrade protocol.[...]",
       "note": "BIP112 is cited only as precedent for the NOP-expansion soft-fork pattern. BIP116 does not rely on CHECKSEQUENCEVERIFY behavior.",
       "reviewer": "rbo",
       "reviewed_at": "2026-07-01"
@@ -30766,7 +30778,7 @@
       "value": 1,
       "confidence": "high",
       "evidence": "Comparison with BIP114 BIP114 (Merkelized Abstract Syntax Tree)[5] specifies an explicit MAST scheme activated by BIP141 script versioning[2]. Unlike BIP114, the scheme proposed by this BIP in conjunction with BIP116 (MERKLEBRANCHVERIFY)[3] implicitly enables MAST constructs using script itself to validate membership of the policy script in the MAST. [...] References [... ] [5] BIP114: Merkelized Abstract Syntax Tree [...]",
-      "note": "BIP117 solely compares its BIP116-based programmable MAST construction against BIP114’s explicit MAST scheme, but it does not implement or require BIP114.",
+      "note": "BIP117 solely compares its BIP116-based programmable MAST construction against BIP114's explicit MAST scheme, but it does not implement or require BIP114.",
       "reviewer": "rbo",
       "reviewed_at": "2026-07-02"
     },
@@ -30786,11 +30798,11 @@
       "source": "bips:117",
       "target": "bips:141",
       "extraction_method": "ground_truth_curated",
-      "relation_type": "references",
+      "relation_type": "depends_on",
       "value": 1,
       "confidence": "high",
       "evidence": "BIP16 (Pay to Script Hash)[1] and BIP141 (Segregated Witness)[2] provide mechanisms by which script policy can be revealed at spend time as part of the execution witness. In both cases only a single script can be committed to by the construct. [...] References [... ] [2] BIP141: Segregated Witness (Consensus Layer) [...]",
-      "note": "BIP117's usable consensus semantics depend on SegWit script execution context.",
+      "note": "BIP117’s tail-call execution semantics are explicitly scoped to use from within a SegWit redeem script, so BIP141 provides the required witness/script execution context rather than merely serving as background prior art.",
       "reviewer": "rbo",
       "reviewed_at": "2026-07-02"
     },
@@ -30958,7 +30970,7 @@
       "value": 1,
       "confidence": "high",
       "evidence": "As a solution of transaction malleability, this is superior to the canonical signature approach (BIP62): [...] In the case of an m-of-n CHECKMULTISIG script, a transaction is malleable only with agreement of m private key holders (as opposed to only 1 private key holder with BIP62) [...] Such setups are not possible with BIP62 as the malleability fix",
-      "note": "BIP141 compares SegWit’s malleability fix against BIP62 and argues it is more complete, but it does not use or require BIP62.",
+      "note": "BIP141 compares SegWit's malleability fix against BIP62 and argues it is more complete, but it does not use or require BIP62.",
       "reviewer": "rbo",
       "reviewed_at": "2026-07-02"
     },
@@ -31042,7 +31054,7 @@
       "value": 1,
       "confidence": "medium",
       "evidence": "Signature(s) must be null vector(s) if an OP_CHECKSIG or OP_CHECKMULTISIG is failed (for both pre-segregated witness script and P2WSH. See BIP146)",
-      "note": "Mentions BIP146 as a likely future soft-fork policy around NULLFAIL signatures, but BIP146 is not required for SegWit’s witness structure or v0 validation.",
+      "note": "Mentions BIP146 as a likely future soft-fork policy around NULLFAIL signatures, but BIP146 is not required for SegWit's witness structure or v0 validation.",
       "reviewer": "rbo",
       "reviewed_at": "2026-07-02"
     },
@@ -31138,7 +31150,7 @@
       "value": 1,
       "confidence": "high",
       "evidence": "In addition to defining witness structures and requiring commitments in future blocks (BIP141 - Consensus segwit BIP), new mechanisms must be defined to allow peers to advertise support for segregated witness and to relay the witness structures and request them from other peers without breaking compatibility with older nodes.",
-      "note": "BIP144 defines the peer-services serialization, service-bit signaling, and relay mechanisms for SegWit witness data, which depends on BIP141’s consensus definition of witness structures and witness commitments.",
+      "note": "BIP144 defines the peer-services serialization, service-bit signaling, and relay mechanisms for SegWit witness data, which depends on BIP141's consensus definition of witness structures and witness commitments.",
       "reviewer": "rbo",
       "reviewed_at": "2026-06-30"
     },
@@ -31148,7 +31160,7 @@
       "extraction_method": "ground_truth_curated",
       "relation_type": "depends_on",
       "value": 1,
-      "confidence": "low",
+      "confidence": "high",
       "evidence": "The Objects listed in the response's \"transactions\" key is revised to include these keys [...] Transactions with witness data may only be included if the template's \"rules\" list (see BIP 9) includes \"segwit\". [...] See Also BIP 9: Version bits with timeout and delay",
       "note": "Technical dependency to BIP9, although not core feature of BIP145 as only concerns witness data",
       "reviewer": "rbo",
@@ -31170,11 +31182,11 @@
       "source": "bips:145",
       "target": "bips:23",
       "extraction_method": "ground_truth_curated",
-      "relation_type": "depends_on",
+      "relation_type": "references",
       "value": 1,
       "confidence": "medium",
-      "evidence": "Clients MUST insert the commitment as an additional output at the end of\n the final generation (coinbase) transaction. Only if the template \nincludes a \"mutable\" key (see BIP 23 Mutations) including \"generation\", the client MAY in that case place the commitment output in any position it chooses [...] See Also [...] BIP 23: getblocktemplate - Pooled Mining",
-      "note": "BIP23 describes extensions to the getblocktemplate JSON-RPC",
+      "evidence": "Clients MUST insert the commitment as an additional output at the end of  the final generation (coinbase) transaction. Only if the template \nincludes a \"mutable\" key (see BIP 23 Mutations) including \"generation\", the client MAY in that case place the commitment output in any position it chooses [...] See Also [...] BIP 23: getblocktemplate - Pooled Mining",
+      "note": "BIP23 is referenced only for the optional 'mutable:generation' behavior in getblocktemplate. BIP145’s core coinbase commitment rule can be implemented without BIP23 unless that optional template mutation feature is used.",
       "reviewer": "rbo",
       "reviewed_at": "2026-06-29"
     },
@@ -31222,7 +31234,7 @@
       "value": 1,
       "confidence": "high",
       "evidence": "Motivation [...] Although the txid of segregated witness (BIP141) transactions is not third party malleable, this malleability vector will change the wtxid and may reduce the efficiency of compact block relay (BIP152). [...] Specification To fix the dummy element malleability, a new consensus rule (\"NULLDUMMY\") is deployed to require that the dummy element MUST be the empty byte array. Anything else makes the script evaluate to false immediately. The NULLDUMMY rule applies to OP_CHECKMULTISIG and OP_CHECKMULTISIGVERIFY in pre-segregated scripts, and also pay-to-witness-script-hash scripts described in BIP141.",
-      "note": "BIP147 extends its consensus rule to BIP141 witness script contexts, so BIP141 is part of the rule’s applicability.",
+      "note": "BIP147 extends its consensus rule to BIP141 witness script contexts, so BIP141 is part of the rule's applicability.",
       "reviewer": "rbo",
       "reviewed_at": "2026-06-30"
     },
@@ -31282,7 +31294,7 @@
       "value": 1,
       "confidence": "high",
       "evidence": "\"existing segwit deployment\" refer to the BIP9 \"segwit\" deployment using bit 1, between November 15th 2016 and November 15th 2017 to activate BIP141, BIP143 and BIP147. [...] References [... ] BIP141 Segregated Witness (Consensus layer) [...]",
-      "note": "BIP148’s purpose is mandatory activation of segwit, whose consensus rules are defined in BIP141.",
+      "note": "BIP148's purpose is mandatory activation of segwit, whose consensus rules are defined in BIP141.",
       "reviewer": "rbo",
       "reviewed_at": "2026-07-02"
     },
@@ -31365,7 +31377,7 @@
       "relation_type": "references",
       "value": 1,
       "confidence": "medium",
-      "evidence": "Risks [...] Light clients (and such) who are not checking the nServiceFlags (service bits) from a relayed addr-message may unwittingly connect to a pruned peer and ask for (filtered) blocks at a depth below the peer’s pruned depth. Light clients should therefore check the service bits and either (1) connect to peers signaling NODE_NETWORK_LIMITED that preferably do not also signal serving the full block chain, [...]",
+      "evidence": "Risks [...] Light clients (and such) who are not checking the nServiceFlags (service bits) from a relayed addr-message may unwittingly connect to a pruned peer and ask for (filtered) blocks at a depth below the peer's pruned depth. Light clients should therefore check the service bits and either (1) connect to peers signaling NODE_NETWORK_LIMITED that preferably do not also signal serving the full block chain, [...]",
       "note": "“Filtered blocks” points to BIP37 bloom-filter light-client behavior, but BIP159 only warns such clients to check service bits.",
       "reviewer": "rbo",
       "reviewed_at": "2026-07-02"
@@ -31498,7 +31510,7 @@
       "value": 1,
       "confidence": "low",
       "evidence": "BMM Accept To \"Accept\" a BMM proposal (endorsing Simon's side:block, and allowing Mary to accept Simon's money later in the block), Mary places an OP_RETURN output into the main:coinbase as follows:\n    1-byte - OP_RETURN (0x6a)\n    4-bytes - Message header (0xD1617368)\n    1-byte - Sidechain number (0-255)\n    32-bytes - h* (obtained from Simon) [...]\nReference Implementation \nThe enforcer is [https://github.com/LayerTwo-Labs/bip300301_enforcer/ here].",
-      "note": "BIP301 assumes numbered sidechains compatible with BIP300’s sidechain-slot model, but does not explicitly require BIP300.",
+      "note": "BIP301 assumes numbered sidechains compatible with BIP300's sidechain-slot model, but does not explicitly require BIP300.",
       "reviewer": "rbo",
       "reviewed_at": "2026-07-02"
     },
@@ -31568,7 +31580,7 @@
       "extraction_method": "ground_truth_curated",
       "relation_type": "depends_on",
       "value": 1,
-      "confidence": "medium",
+      "confidence": "high",
       "evidence": "For Bitcoin mainnet and testnet3, these BIPs are deployed by \"version bits\" with the name \"taproot\" and bit 2, using BIP9 modified to use a lower threshold, with an additional min_activation_height parameter and replacing the state transition logic for the DEFINED, STARTED and LOCKED_IN states as follows:",
       "note": null,
       "reviewer": "rbo",
@@ -31630,7 +31642,7 @@
       "value": 1,
       "confidence": "high",
       "evidence": "A Taproot output is a native SegWit output (see BIP141) with version number 1, and a 32-byte witness program. [...] The following function, taproot_output_script, returns a byte array with the scriptPubKey (see BIP141). ser_script refers to a function that prefixes its input with a CompactSize-encoded length.",
-      "note": "BIP341 depends on BIP141 because Taproot is defined as a new native SegWit witness version. Without the SegWit witness-program framework, BIP341’s output type is meaningless.",
+      "note": "BIP341 depends on BIP141 because Taproot is defined as a new native SegWit witness version. Without the SegWit witness-program framework, BIP341's output type is meaningless.",
       "reviewer": "rbo",
       "reviewed_at": "2026-07-02"
     },
@@ -31662,11 +31674,11 @@
       "source": "bips:341",
       "target": "bips:342",
       "extraction_method": "ground_truth_curated",
-      "relation_type": "depends_on",
+      "relation_type": "references",
       "value": 1,
       "confidence": "high",
       "evidence": "What are the applicable script rules in script path spends? BIP342 specifies validity rules that apply for leaf version 0xc0, but future proposals can introduce rules for other leaf versions. [...] What extensions use the ext_flag mechanism? BIP342 reuses the same common signature message algorithm, but adds BIP342-specific data at the end, which is indicated using ext_flag = 1. [...] This BIP is deployed concurrently with BIP342.",
-      "note": "BIP341 provides the Taproot structure, while BIP342 defines the main script language used inside it.",
+      "note": "BIP342 defines the initial Tapscript validation rules for Taproot script-path spends with leaf version 0xc0, but BIP341 defines the Taproot structure and can conceptually support other leaf versions with different rules. Therefore, BIP342 is a concurrently deployed script-rule extension rather than a prerequisite for BIP341.",
       "reviewer": "rbo",
       "reviewed_at": "2026-07-02"
     },
@@ -36277,7 +36289,7 @@
   ],
   "meta": {
     "node_count": 156,
-    "edge_count": 948,
+    "edge_count": 949,
     "source_slugs": [
       "bips",
       "slips"

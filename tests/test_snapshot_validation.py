@@ -129,7 +129,7 @@ class SnapshotValidationTests(unittest.TestCase):
                         "bips:44,bips:32,supersedes,medium,Duplicate pair conflict,,rbo,2026-06-22",
                         "bips:79,bips:78,superseded_by,high,Proposed-Replacement: 78,,rbo,2026-06-22",
                         "oops,bips:33,depends_on,maybe,Bad source format,,rbo,2026-99-99",
-                        "slips:39,bips:32,,high,Missing relation type,,rbo,2026-06-22",
+                        "slips:39,bips:32,,high,Missing relation type,,,,2026-06-22",
                     ]
                 ),
                 encoding="utf-8",
@@ -166,6 +166,7 @@ class SnapshotValidationTests(unittest.TestCase):
         self.assertIn("invalid confidence `maybe`", error_text)
         self.assertIn("invalid `reviewed_at` date `2026-99-99`", error_text)
         self.assertIn("missing `relation_type`", error_text)
+        self.assertIn("missing `reviewer`", error_text)
 
     def test_ips_validation_rejects_invalid_rows(self) -> None:
         with tempfile.TemporaryDirectory() as tmp_dir:
@@ -178,6 +179,7 @@ class SnapshotValidationTests(unittest.TestCase):
                         "ip,reviewer,reviewed_at,sampling_strategy,density_bucket,density_basis,created",
                         "bips:44,rbo,2026-06-22,sampler,low,llm_only,2014-04-24",
                         "bips:44,rbo,2026-06-23,manual,-,-,2014-04-24",
+                        "bips:45,,2026-06-23,manual,-,-,2014-04-24",
                         "oops,rbo,2026-99-99,invalid_strategy,sideways,2012-04-11,not-a-date",
                     ]
                 ),
@@ -212,6 +214,7 @@ class SnapshotValidationTests(unittest.TestCase):
         self.assertIn("invalid `density_bucket` `sideways`", error_text)
         self.assertIn("invalid `density_basis` `2012-04-11`", error_text)
         self.assertIn("invalid `created` date `not-a-date`", error_text)
+        self.assertIn("missing `reviewer`", error_text)
 
     def test_ips_validation_warns_when_rows_fall_outside_declared_policy(self) -> None:
         with tempfile.TemporaryDirectory() as tmp_dir:

@@ -798,6 +798,7 @@ def validate_ground_truth_curated_entries(
 
         source = str(entry.get("source") or "").strip()
         target = str(entry.get("target") or "").strip()
+        reviewer = str(entry.get("reviewer") or "").strip()
         relation_type = str(entry.get("relation_type") or "").strip().lower()
         if not relation_type:
             row_errors.append("missing `relation_type`")
@@ -806,6 +807,9 @@ def validate_ground_truth_curated_entries(
             row_errors.append(
                 f"unknown relation type `{relation_type}`; allowed: {allowed}"
             )
+
+        if not reviewer:
+            row_errors.append("missing `reviewer`")
 
         confidence = str(entry.get("confidence") or "").strip().lower()
         if confidence and confidence not in GROUND_TRUTH_ALLOWED_CONFIDENCE:
@@ -1092,6 +1096,7 @@ def validate_reviewed_ip_entries(
 
         row_errors: List[str] = []
         raw_ip = str(entry.get("ip") or "").strip()
+        reviewer = str(entry.get("reviewer") or "").strip()
         normalized_ip = None
         try:
             source_slug, proposal_id = _validate_ground_truth_graph_key(
@@ -1102,6 +1107,9 @@ def validate_reviewed_ip_entries(
             normalized_ip = f"{source_slug}:{proposal_id}"
         except ValueError as exc:
             row_errors.append(str(exc))
+
+        if not reviewer:
+            row_errors.append("missing `reviewer`")
 
         reviewed_at = str(entry.get("reviewed_at") or "").strip()
         if reviewed_at:

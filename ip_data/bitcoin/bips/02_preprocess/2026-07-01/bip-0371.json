@@ -1,0 +1,800 @@
+{
+  "raw": {
+    "preamble": {
+      "bip": "371",
+      "title": "Taproot Fields for PSBT",
+      "author": [
+        "Ava Chow <me@achow101.com>"
+      ],
+      "comments_uri": null,
+      "status": "Deployed",
+      "type": "Specification",
+      "created": "2021-06-21",
+      "license": [
+        "BSD-2-Clause"
+      ],
+      "layer": "Applications",
+      "discussions_to": null,
+      "comments_summary": null,
+      "license_code": null,
+      "post_history": null,
+      "requires": null,
+      "replaces": null,
+      "proposed_replacement": null
+    }
+  },
+  "meta": {
+    "last_commit": "Wed Oct 8 14:59:36 2025 -0700",
+    "total_commits": 22,
+    "git_history": [
+      [
+        "24e96e870fffaa257b465ce1f0370c14aac588e8",
+        "Wed Oct 8 14:59:36 2025 -0700",
+        "Murch"
+      ],
+      [
+        "5207ef92a52d0b8902895b0dbb40823a4d698ec9",
+        "Fri Apr 11 20:08:17 2025 -0700",
+        "Murch"
+      ],
+      [
+        "59730dec4fb641a41589aa1b91d3c452f13e0e36",
+        "Fri Apr 11 20:05:13 2025 -0700",
+        "Murch"
+      ],
+      [
+        "a233bde4af52c6a11269e2e6dd9707abce441ffe",
+        "Fri Apr 11 18:19:21 2025 -0700",
+        "Murch"
+      ],
+      [
+        "5d3ceb37734f80b2ec206fc94245e3bfd6d5b0f0",
+        "Fri Apr 11 18:08:44 2025 -0700",
+        "Murch"
+      ],
+      [
+        "2bdb5ec72f567ae5d0f6f66767f28d8edf7d5c6e",
+        "Sat Oct 18 22:28:16 2025 +0300",
+        "radik878"
+      ],
+      [
+        "6b4a03bb5deb624a1bb3d0c2fa0b69434df65f34",
+        "Wed Jul 10 18:59:57 2024 -0400",
+        "Ava Chow"
+      ],
+      [
+        "a28b021b9933cb6b035cbb94fc1a15c30da3f6fd",
+        "Wed Dec 13 11:12:08 2023 -0500",
+        "Ava Chow"
+      ],
+      [
+        "4ab7faad749856bfc8178f9a12f4c1a8d40f632f",
+        "Wed Feb 15 13:11:38 2023 -0500",
+        "Gregory Sanders"
+      ],
+      [
+        "bf657ddcac8cd02c6f4b04e800c44d9b5fc7e36e",
+        "Mon Jul 25 21:24:26 2022 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "7cd8ecd111ff89d03729011feb8265a6ff25c59d",
+        "Wed Jul 13 15:02:21 2022 -0400",
+        "Andrew Chow"
+      ],
+      [
+        "424498ae2bbbae9017ee12d699d0fa46225bd1e3",
+        "Fri May 20 17:19:06 2022 -0700",
+        "Alex Bosworth"
+      ],
+      [
+        "1b67c8835f74e7d66372389c04e736636a430bbf",
+        "Mon Apr 4 07:44:44 2022 -0700",
+        "Brandon Black"
+      ],
+      [
+        "ad6e587232a29f4a86483e3b83ebdfcd7b46f77d",
+        "Mon Apr 4 07:37:41 2022 -0700",
+        "Brandon Black"
+      ],
+      [
+        "c876d7e20e8384ccf5148cf4dd6933da4c1f3b5b",
+        "Mon Apr 4 07:37:28 2022 -0700",
+        "Brandon Black"
+      ],
+      [
+        "b05fc882d8df4b2c357a936d442bf44a8cc60002",
+        "Fri Apr 1 15:25:05 2022 -0700",
+        "Brandon Black"
+      ],
+      [
+        "b83419102bbb757a2b05bad52304fd00e25c5f43",
+        "Fri Apr 1 15:24:25 2022 -0700",
+        "Brandon Black"
+      ],
+      [
+        "2efad74b02d65f4e6e1c2d3199a7c451bf481991",
+        "Tue Nov 16 18:19:51 2021 -0500",
+        "Andrew Chow"
+      ],
+      [
+        "61c6a91af84fd01bb12ed1292932fc430e95cc96",
+        "Tue Nov 16 18:09:09 2021 -0500",
+        "Andrew Chow"
+      ],
+      [
+        "deb1c06e5c603e6b958422dcd74e73c15213ed08",
+        "Fri Jul 23 18:44:01 2021 -0400",
+        "Andrew Chow"
+      ],
+      [
+        "6327923e7119fddefd19a906028fc9d384cdbdb4",
+        "Fri Jul 23 18:43:46 2021 -0400",
+        "Andrew Chow"
+      ],
+      [
+        "c583f4dcbe78c2520be20067203ae2737bbca369",
+        "Mon Jun 21 16:58:45 2021 -0400",
+        "Andrew Chow"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 82.35,
+      "passed_checks": 28,
+      "failed_checks": 6,
+      "skipped_checks": 7,
+      "total_checks": 34,
+      "bip2": {
+        "score": 66.67,
+        "passed_checks": 8,
+        "failed_checks": 4,
+        "skipped_checks": 0,
+        "total_checks": 12,
+        "checks": [
+          {
+            "id": "bip2.required_field.bip",
+            "label": "Required field 'bip' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.author",
+            "label": "Required field 'author' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.comments_uri",
+            "label": "Required field 'comments_uri' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": false,
+            "details": "Missing required field 'comments_uri'"
+          },
+          {
+            "id": "bip2.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.type",
+            "label": "Required field 'type' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.created",
+            "label": "Required field 'created' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.license",
+            "label": "Required field 'license' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "bip2",
+            "passed": false,
+            "details": "Expected level 2, found level 3"
+          },
+          {
+            "id": "bip2.heading.motivation",
+            "label": "Heading 'motivation' exists at level 2",
+            "category": "heading",
+            "standard": "bip2",
+            "passed": false,
+            "details": "Expected level 2, found level 3"
+          },
+          {
+            "id": "bip2.heading.specification",
+            "label": "Heading 'specification' exists at level 2",
+            "category": "heading",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.heading.copyright",
+            "label": "Heading 'copyright' exists at level 2",
+            "category": "heading",
+            "standard": "bip2",
+            "passed": false,
+            "details": "Expected level 2, found level 3"
+          }
+        ]
+      },
+      "bip3": {
+        "score": 90.91,
+        "passed_checks": 20,
+        "failed_checks": 2,
+        "skipped_checks": 7,
+        "total_checks": 22,
+        "checks": [
+          {
+            "id": "bip3.preamble.top_rfc822",
+            "label": "Preamble exists as RFC-822-style metadata at the top",
+            "category": "preamble",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.bip",
+            "label": "Required header 'bip' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.title",
+            "label": "Required header 'title' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.authors",
+            "label": "Required header 'authors' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.status",
+            "label": "Required header 'status' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.type",
+            "label": "Required header 'type' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.assigned",
+            "label": "Required header 'assigned' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.license",
+            "label": "Required header 'license' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_order",
+            "label": "Headers appear in the expected BIP3 order",
+            "category": "header_order",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.bip",
+            "label": "Header 'BIP' is an integer without leading zeros or '?'",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.title",
+            "label": "Header 'Title' is 50 characters or fewer",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.authors",
+            "label": "Header 'authors' uses 'Name <email>' entries",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.deputies",
+            "label": "Header 'deputies' uses 'Name <email>' entries",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.status",
+            "label": "Header 'Status' is one of Draft, Complete, Deployed, Closed",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.type",
+            "label": "Header 'Type' is one of Specification, Informational, Process",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.assigned",
+            "label": "Header 'Assigned' is yyyy-mm-dd or '?'",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.license",
+            "label": "Header 'License' is non-empty",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.discussion",
+            "label": "Header 'Discussion' uses 'yyyy-mm-dd: URL' lines",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.version",
+            "label": "Header 'Version' uses MAJOR.MINOR.PATCH",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.requires",
+            "label": "Header 'requires' uses comma+space separated BIP numbers",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.replaces",
+            "label": "Header 'replaces' uses comma+space separated BIP numbers",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.proposed_replacement",
+            "label": "Header 'proposed_replacement' uses comma+space separated BIP numbers",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.required_section.abstract",
+            "label": "Required section 'abstract' is present",
+            "category": "required_section",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_section.motivation",
+            "label": "Required section 'motivation' is present",
+            "category": "required_section",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_section.copyright",
+            "label": "Required section 'copyright' is present",
+            "category": "required_section",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.type_specific.specification_section",
+            "label": "Type 'Specification' includes a 'Specification' section",
+            "category": "type_specific",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.changelog.changelog_section",
+            "label": "Complete/Deployed proposals include a 'Changelog' section",
+            "category": "changelog",
+            "standard": "bip3",
+            "passed": false,
+            "details": "Missing required 'changelog' section"
+          },
+          {
+            "id": "bip3.changelog.version_header",
+            "label": "Complete/Deployed proposals include a 'Version' header",
+            "category": "changelog",
+            "standard": "bip3",
+            "passed": false,
+            "details": "Missing required 'version' header"
+          },
+          {
+            "id": "bip3.changelog.version_matches",
+            "label": "Latest changelog version matches the 'Version' header",
+            "category": "changelog",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "tt": 110,
+      "pre": 70,
+      "key": 54,
+      "leaf": 25,
+      "taproot": 24,
+      "psbt": 24,
+      "byte": 21,
+      "script": 20,
+      "bytes": 20,
+      "path": 19,
+      "32": 18,
+      "internal": 17,
+      "case": 17,
+      "hex": 17,
+      "base64": 17,
+      "string": 17,
+      "signature": 16,
+      "output": 16,
+      "derivation": 12,
+      "hashes": 12,
+      "2": 11,
+      "0": 11,
+      "bip": 10,
+      "mcf": 10,
+      "dwzyopbu4u": 10,
+      "xio9smbluwfid5ptmjljcaaaaaad": 10,
+      "public": 9,
+      "bit": 9,
+      "input": 8,
+      "field": 8,
+      "tree": 8,
+      "uint": 8,
+      "long": 8,
+      "fields": 7,
+      "data": 7,
+      "new": 7,
+      "spend": 7,
+      "finalizers": 7,
+      "remove": 7,
+      "psbt_in_final_scriptwitness": 7,
+      "constructed": 7,
+      "unsigned": 7,
+      "integer": 7,
+      "chnidp8baf4caaaaazvuh2ujc": 7,
+      "mnlmygaflyvw5u8mb5f": 7,
+      "twvlvgdyf": 7,
+      "azumaqaaaad": 7,
+      "2sref29aunqtfpf1oz": 7,
+      "p": 7,
+      "hdkol1": 7,
+      "version": 6,
+      "scripts": 6,
+      "versions": 6,
+      "hash": 6,
+      "compact": 6,
+      "size": 6,
+      "p2tr": 6,
+      "inputs": 5,
+      "pubkey": 5,
+      "xonlypubkey": 5,
+      "x": 5,
+      "concatenated": 5,
+      "control": 5,
+      "block": 5,
+      "merkle": 5,
+      "8": 5,
+      "followed": 5,
+      "representing": 5,
+      "incorrectly": 5,
+      "serialized": 5,
+      "compressed": 5,
+      "der": 5,
+      "njbkyy1ukou": 5,
+      "o8mxk9izbkgcgvxg76fui5mebt": 5,
+      "aujmbsobaaaailegaw2k": 5,
+      "ot32yjcyylryx4anxofzzf": 5,
+      "ljicy1aoabesymmaaaaaaaebkwdybsobaaaailegwir": 5,
+      "wmgvlq": 5,
+      "vyp": 5,
+      "341": 4,
+      "keydata": 4,
+      "description": 4,
+      "valuedata": 4,
+      "requiring": 4,
+      "inclusion": 4,
+      "psbt_in_tap_key_sig": 4,
+      "ref": 4,
+      "64": 4,
+      "65": 4,
+      "psbt_in_tap_script_sig": 4,
+      "number": 4,
+      "4": 4,
+      "fingerprint": 4,
+      "little": 4,
+      "endian": 4,
+      "root": 4,
+      "depth": 4,
+      "chnidp8bahecaaaaasd0srq": 4,
+      "anh8aqaaaaaafgaug6fjs9mf8dpjyu": 4,
+      "kghabspvghs5gawqqaqaaabyafhrdad8bioaz1hfmi5v7cssfpfloaaaaaaabassa8guqaqaaacjrifoslpw1lpmfg60ujay": 4,
+      "jyber2lmeozwzxgdvp": 4,
+      "toidccgrsk6gj": 4,
+      "6azoa6wg99ygweljehpkjnvp2ydtpgebr": 4,
+      "oonsm5utnof5gulwev8usqr3zexe94ur82bxzlxaxfyywin7rn": 4,
+      "drs6npj": 4,
+      "defined": 3,
+      "psbts": 3,
+      "necessary": 3,
+      "types": 3,
+      "allowing": 3,
+      "provided": 3,
+      "involved": 3,
+      "psbt_in_tap_leaf_script": 3,
+      "leaves": 3,
+      "keys": 3,
+      "short": 3,
+      "jsqzmmnbiqfp6pjssvyswshnblcyo": 3,
+      "n7iotbg0": 3,
+      "netn2ftpjbfcyxosacsn6aaqajzzzzwd62gh0jybfktoap696gw7bszzcoffu": 3,
+      "wmyps2pyjx1ek6ksoa5ekb1chfv40kgtjjw4qht": 3,
+      "4jkwrtp6iygqb3ky2nvgaagaeaaiaaaacaaqaaaaaaaaabfyd": 3,
+      "dummy": 3,
+      "paths": 3,
+      "achow101": 2,
+      "com": 2,
+      "specification": 2,
+      "license": 2,
+      "bsd": 2,
+      "clause": 2,
+      "174": 2,
+      "allow": 2,
+      "340": 2,
+      "342": 2,
+      "included": 2,
+      "signatures": 2,
+      "bitcoin": 2,
+      "existing": 2,
+      "follows": 2,
+      "keytype": 2,
+      "exclusion": 2,
+      "schnorr": 2,
+      "signers": 2,
+      "able": 2,
+      "psbt_in_tap_bip32_derivation": 2,
+      "present": 2,
+      "element": 2,
+      "list": 2,
+      "master": 2,
+      "represented": 2,
+      "indexes": 2,
+      "needed": 2,
+      "involve": 2,
+      "indicated": 2,
+      "len": 2,
+      "psbt_in_tap_internal_key": 2,
+      "recommends": 2,
+      "psbt_out_tap_internal_key": 2,
+      "tuples": 2,
+      "reconstructed": 2,
+      "psbt_out_tap_bip32_derivation": 2,
+      "attacks": 2,
+      "lying": 2,
+      "amounts": 2,
+      "invalid": 2,
+      "format": 2,
+      "following": 2,
+      "xjb6bpourquzxzyceflfq43w4kjg3ncdsmvzteozgequgawrnybbzghwjqd": 2,
+      "chnidp8bah0caaaaasd0srq": 2,
+      "aoh7aqaaaaaafgaui4khhh6eiaaak": 2,
+      "du2rkb5nwhs59gawqqaqaaacjrifoslpw1lpmfg60ujay": 2,
+      "8dgd7nj2ccdrcuikjgorcgdxaaaaaaabassa8guqaqaaacjrifoslpw1lpmfg60ujay": 2,
+      "mswlwbfuk6hou0yfcmssp6p": 2,
+      "chnidp8baficaaaaasd0srq": 2,
+      "aujmbsobaaaafgaudo4e60z0iizgm": 2,
+      "gkzv8plyb0swkaaaaaaaebkwdybsobaaaailegwiws9bus8x": 2,
+      "chnidp8baf4caaaaasd0srq": 2,
+      "aujmbsobaaaailegg2moryxmzofzxxxajzfehilul9ey5wbewks1qyi810maaaaaaaebkwdybsobaaaailegwir": 2,
+      "nw4fgjicyxosacsn6aaqajzzzzwd62gh0jybfktoap696gw7bsrmbcfcfqkpt0wabjvlels2a16xpeb4padyjsltvhv": 2,
+      "6azoa6wjfg5v6l": 2,
+      "3fp9xjemzkieoqg6yqhd1v35fz4s8hqqaboiybdilc": 2,
+      "fvartt6nvmfzjkp": 2,
+      "j": 2,
+      "xsmtioorvdhiz2w7rrsqzayhxbujkbdmggsvs3i0tgnel6xgekwg8o7jbvr7": 2,
+      "ums6aosdnlw4v9t": 2,
+      "ayc": 2,
+      "vd9vg": 2,
+      "6kzt2fyvgfzakize68ht0alcrfflkkk98xfxpefefngv85cwlxwmlop": 2,
+      "0tfwgpzvuh4iyd6d3o87zsddaps59juf62gsuxjlrnvrui0gfnlikucqazairysstrggkjeggqmo2wc88a": 2,
+      "vehlu20jkbzzcoffu": 2,
+      "pgbdhcr4bc2iomrovb09acwl3ky2nvgaagaeaaiacaacaaaaaaaaaaaahfkmgsl8w8bg1pqe": 2,
+      "yvkkqn8n5dka0g6hfv2ehnbdutgyoqerxy5jcvfmrct3hrhzyffoxfpcvjjakfte38id81bh": 2,
+      "hcrladwaacaaqaagaeaaiaaaaaaaaaaacewujkbdmggsvs3i0tgnel6xgekwg8o7jbvr7": 2,
+      "ums6aosafahxghl0hfvopejzvox0mcmzn0m4xracy5cktge": 2,
+      "tslqywcukrrypoqfvfwifnpsxoasiz1admhbaybaa": 2,
+      "zjjupubk5zn": 2,
+      "rrpchcrladwaacaaqaagamaaiaaaaaaaaaaaaexifcsm3tboelut4tlydxpel4hilopkoyw1ue": 2,
+      "7progdraargg8dyul3wm9cclveprih2wrmcgzyx4gjdjwx13wstrxmuaaqugestaeuysznbsluvizh9dexollxiahl4r8idrvdqz5nehbxek2nrskszqbjvfymr": 2,
+      "q3sti5vygos": 2,
+      "k": 2,
+      "ina73as": 2,
+      "zxgqb3ky2nvgaagaeaaiaaaacaaaaaaauaaaaa": 2,
+      "reference": 2,
+      "implementation": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "c583f4dcbe78c2520be20067203ae2737bbca369",
+        "timestamp": "2021-07-20T15:03:38-04:00",
+        "date": "2021-07-20",
+        "author": "Andrew Chow",
+        "path": "bip-0371.mediawiki",
+        "status": "Draft",
+        "standard": "bip2"
+      },
+      {
+        "commit": "6b4a03bb5deb624a1bb3d0c2fa0b69434df65f34",
+        "timestamp": "2024-07-10T19:04:46-04:00",
+        "date": "2024-07-10",
+        "author": "Ava Chow",
+        "path": "bip-0371.mediawiki",
+        "status": "Final",
+        "standard": "bip2"
+      },
+      {
+        "commit": "5d3ceb37734f80b2ec206fc94245e3bfd6d5b0f0",
+        "timestamp": "2026-01-12T14:22:33-08:00",
+        "date": "2026-01-12",
+        "author": "Murch",
+        "path": "bip-0371.mediawiki",
+        "status": "Deployed",
+        "standard": "bip3"
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        {
+          "target": "bips:32",
+          "count": 2
+        },
+        {
+          "target": "bips:174",
+          "count": 2
+        },
+        {
+          "target": "bips:340",
+          "count": 2
+        },
+        {
+          "target": "bips:341",
+          "count": 4
+        },
+        {
+          "target": "bips:342",
+          "count": 1
+        },
+        {
+          "target": "bips:370",
+          "count": 1
+        }
+      ],
+      "body_extracted_llm": [
+        {
+          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "model": "gpt-5.4-2026-03-05",
+          "timestamp": "2026-07-02T21:12:21Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:174",
+              "evidence": "This document proposes additional fields for BIP 174 PSBTv0",
+              "reason": "The proposal extends the PSBTv0 format defined by BIP 174 with new Taproot-related fields and semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:340",
+              "evidence": "allow for\nBIP 340/341/342 Taproot data",
+              "reason": "The new PSBT fields carry Schnorr signatures and related data specifically defined around BIP 340 signatures.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "The control block for this leaf as specified in BIP 341.",
+              "reason": "The proposal depends on Taproot structures from BIP 341 such as control blocks, internal keys, Merkle roots, and key/script path spending semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:342",
+              "evidence": "allow for\nBIP 340/341/342 Taproot data",
+              "reason": "The proposal includes fields for Taproot script-spend information and scripts relevant to Taproot inputs, which are part of the BIP 342 script path semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:370",
+              "evidence": "and BIP 370 PSBTv2",
+              "reason": "The proposal adds corresponding fields for PSBTv2, reusing and extending the PSBT versioning and structure from BIP 370.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,204 @@
+{
+  "raw": {
+    "preamble": {
+      "slip": "32",
+      "title": "Extended serialization format for BIP-32 wallets",
+      "author": [
+        "Pavol Rusnak <stick@satoshilabs.com>"
+      ],
+      "status": "Draft",
+      "type": "Standard",
+      "created": "2017-09-06"
+    }
+  },
+  "meta": {
+    "last_commit": "Tue Jan 2 23:12:02 2018 +0100",
+    "total_commits": 4,
+    "git_history": [
+      [
+        "71a3549388022820e77aa1f44c80d0f412e5529f",
+        "Tue Jan 2 23:12:02 2018 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "3d886908fbbbf1fad0e3ddee6c1daaed8f686062",
+        "Mon Jan 1 23:04:54 2018 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "9a5cc31c5770e485a3750efa6f670ca23a515587",
+        "Wed Oct 11 17:15:37 2017 +0200",
+        "Tomas Susanka"
+      ],
+      [
+        "d1cbecd2b18ce205e521871a0a82866ddc9fb47e",
+        "Thu Sep 7 00:13:35 2017 +0200",
+        "Pavol Rusnak"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 85.71,
+      "passed_checks": 6,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 7,
+      "slip": {
+        "score": 85.71,
+        "passed_checks": 6,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 7,
+        "checks": [
+          {
+            "id": "slip.required_field.slip",
+            "label": "Required field 'slip' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.author",
+            "label": "Required field 'author' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.type",
+            "label": "Required field 'type' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.created",
+            "label": "Required field 'created' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "slip",
+            "passed": false,
+            "details": "Missing: abstract"
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "abandon": 11,
+      "m": 11,
+      "legacy_bip32_xprv": 11,
+      "legacy_bip32_xpub": 11,
+      "slip32_prv_hex": 11,
+      "slip32_pub_hex": 11,
+      "slip32_prv_bech32": 11,
+      "slip32_pub_bech32": 11,
+      "0": 11,
+      "bip": 10,
+      "format": 7,
+      "keys": 7,
+      "extended": 6,
+      "serialization": 6,
+      "32": 6,
+      "0032": 5,
+      "key": 5,
+      "1": 5,
+      "wallets": 4,
+      "public": 4,
+      "private": 4,
+      "sub": 4,
+      "com": 3,
+      "deterministic": 3,
+      "modification": 3,
+      "master": 3,
+      "bytes": 3,
+      "0173": 3,
+      "44": 3,
+      "slip": 2,
+      "hierarchical": 2,
+      "path": 2,
+      "exported": 2,
+      "fingerprint": 2,
+      "encoding": 2,
+      "bech32": 2,
+      "serialized": 2,
+      "byte": 2,
+      "depth": 2,
+      "0x00": 2,
+      "encoded": 2,
+      "ser": 2,
+      "k": 2,
+      "pre": 2,
+      "2": 2,
+      "49": 2,
+      "https": 2,
+      "github": 2,
+      "bitcoin": 2,
+      "bips": 2,
+      "blob": 2,
+      "mediawiki": 2
+    },
+    "changes_in_status": [],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        {
+          "target": "bips:32",
+          "count": 7
+        },
+        {
+          "target": "bips:173",
+          "count": 3
+        }
+      ],
+      "body_extracted_llm": [
+        {
+          "run_id": "2026-07-02T21:12:45Z_gpt-5.4-2026-03-05_b188040c",
+          "model": "gpt-5.4-2026-03-05",
+          "timestamp": "2026-07-02T21:13:04Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "BIP-0032 already defines a serialization format for hierarchical deterministic keys.",
+              "reason": "The proposal is an extended serialization format for BIP-32 wallets and directly reuses BIP-32 key/path semantics and serialized key components.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:173",
+              "evidence": "This structure is encoded using Bech32 format described in BIP-0173.",
+              "reason": "The proposal normatively adopts the Bech32 encoding format from the target for serializing extended keys.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

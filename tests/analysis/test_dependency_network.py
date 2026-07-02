@@ -134,6 +134,8 @@ class BuildNetworkDataTests(unittest.TestCase):
             ecosystem_slug="bitcoin",
             source_slug="bips",
         )
+        configured_model = source_context.llm_model
+        self.assertIsNotNone(configured_model)
         proposal = {
             "raw": {"preamble": {"bip": "1", "title": "Proposal 1", "status": "Draft"}},
             "insights": {
@@ -146,7 +148,7 @@ class BuildNetworkDataTests(unittest.TestCase):
                             "dependencies": [{"target": "bips:2"}],
                         },
                         {
-                            "model": "gpt-5.4",
+                            "model": configured_model,
                             "timestamp": "2026-06-02T00:00:00Z",
                             "dependencies": [],
                         },
@@ -163,13 +165,13 @@ class BuildNetworkDataTests(unittest.TestCase):
             source_context=source_context,
         )
 
-        self.assertEqual(result["llm_models"]["default_model"], "gpt-5.4-mini")
+        self.assertEqual(result["llm_models"]["default_model"], configured_model)
         self.assertEqual(
             [entry["model"] for entry in result["llm_models"]["available_models"]],
-            ["gpt-5.4", "gpt-5.4-mini"],
+            sorted([configured_model, "gpt-5.4-mini"]),
         )
         self.assertEqual(
-            result["llm_models"]["dependency_edges_by_model"]["gpt-5.4"], []
+            result["llm_models"]["dependency_edges_by_model"][configured_model], []
         )
         self.assertEqual(
             result["llm_models"]["dependency_edges_by_model"]["gpt-5.4-mini"],
@@ -337,24 +339,28 @@ class BuildNetworkDataTests(unittest.TestCase):
                     "source": "bips:44",
                     "target": "bips:32",
                     "relation_type": "depends_on",
+                    "reviewer": "test-reviewer",
                     "__line__": 2,
                 },
                 {
                     "source": "bips:44",
                     "target": "bips:32",
                     "relation_type": "depends_on",
+                    "reviewer": "test-reviewer",
                     "__line__": 3,
                 },
                 {
                     "source": "bips:44",
                     "target": "bips:32",
                     "relation_type": "supersedes",
+                    "reviewer": "test-reviewer",
                     "__line__": 4,
                 },
                 {
                     "source": "bogus:1",
                     "target": "bips:32",
                     "relation_type": "depends_on",
+                    "reviewer": "test-reviewer",
                     "__line__": 5,
                 },
             ],
@@ -381,9 +387,24 @@ class BuildNetworkDataTests(unittest.TestCase):
     def test_reviewed_ips_validation_rejects_duplicates_and_bad_dates(self):
         errors = validate_reviewed_ip_entries(
             [
-                {"ip": "bips:44", "reviewed_at": "2026-06-22", "__line__": 2},
-                {"ip": "bips:44", "reviewed_at": "2026-06-23", "__line__": 3},
-                {"ip": "oops", "reviewed_at": "2026-99-99", "__line__": 4},
+                {
+                    "ip": "bips:44",
+                    "reviewer": "test-reviewer",
+                    "reviewed_at": "2026-06-22",
+                    "__line__": 2,
+                },
+                {
+                    "ip": "bips:44",
+                    "reviewer": "test-reviewer",
+                    "reviewed_at": "2026-06-23",
+                    "__line__": 3,
+                },
+                {
+                    "ip": "oops",
+                    "reviewer": "test-reviewer",
+                    "reviewed_at": "2026-99-99",
+                    "__line__": 4,
+                },
             ],
             source_configs_by_slug={
                 "bips": {

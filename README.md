@@ -41,7 +41,7 @@ _Modern decentralized software ecosystems evolve through crowdsourced improvemen
 </div>
 
 <div align="center">
-  <img src="https://img.shields.io/badge/Python-3.12%2B-3776AB?style=flat&logo=python&logoColor=white" alt="Python 3.12+" />
+  <img src="https://img.shields.io/badge/Python-3.12-3776AB?style=flat&logo=python&logoColor=white" alt="Python 3.12" />
   <img src="https://img.shields.io/badge/React-18-3776AB?style=flat&logo=react&logoColor=white" alt="React 18" />
   <img src="https://img.shields.io/badge/Node.js-22%2B-3776AB?style=flat&logo=nodedotjs&logoColor=white" alt="Node.js 22+" />
   <img src="https://img.shields.io/badge/D3.js-v7-3776AB?style=flat&logo=d3dotjs&logoColor=white" alt="D3.js" />
@@ -77,7 +77,7 @@ The live site is available at [seg-unibe.github.io/cdv-explorer](https://seg-uni
 
 | Tool | Version | macOS using [`brew`](https://brew.sh) | Linux | Windows using [`winget`](https://learn.microsoft.com/windows/package-manager/winget/) |
 |------|---------|-------|-------|---------|
-| **Python** | 3.12+ | `brew install python` | `sudo apt install python3` | `winget install Python.Python.3` |
+| **Python** | 3.12 | `brew install python@3.12` | `sudo apt install python3.12` | `winget install Python.Python.3.12` |
 | **Node.js** | 22+ (npm bundled) | `brew install node` | `sudo apt install nodejs npm` | `winget install OpenJS.NodeJS` |
 | **Git** | any | `brew install git` | `sudo apt install git` | `winget install Git.Git` |
 

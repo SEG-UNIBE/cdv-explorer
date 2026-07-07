@@ -1,11 +1,11 @@
 .content {
   --dashboard-control-height: 2.15rem;
 
-  margin-top: 64px; /* 52px navbar + small breathing room */
+  margin-top: calc(var(--nav-height) + 12px);
   margin-left: 20px;
   margin-right: 20px;
   max-width: 1400px;
-  min-height: calc(100vh - 114px); /* 64px top + 50px footer */
+  min-height: calc(100vh - var(--nav-height) - 62px);
   
   @media screen and (min-width: 1400px) {
     margin-left: auto;
@@ -18,13 +18,13 @@
   border: 1px solid var(--app-border);
   box-shadow: var(--app-shadow);
   color: var(--app-text);
-  transition: transform 200ms ease, box-shadow 200ms ease;
+  transition: transform 180ms ease, box-shadow 180ms ease;
 
   &:hover {
-    transform: translateY(-3px);
+    transform: translateY(-2px);
     box-shadow:
       calc(var(--mx, 0) * 1px)
-      calc(var(--my, 0) * 1px + 6px)
+      calc(var(--my, 0) * 1px + 8px)
       40px
       var(--app-shadow-spread)
       var(--app-shadow-color);
@@ -89,12 +89,6 @@
 
 .ecosystem-card--available {
   cursor: pointer;
-
-  &:hover {
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
-    transform: translateY(-2px);
-    transition: box-shadow 0.15s ease, transform 0.15s ease;
-  }
 }
 
 .ecosystem-card-header {
@@ -502,7 +496,7 @@
 
 .dashboard-loading-bar {
   position: fixed;
-  top: 60px; // matches navbar height
+  top: var(--nav-height);
   left: 0;
   width: 100%;
   height: 2px;
@@ -586,7 +580,7 @@
 
 .content.content--dashboard {
   position: fixed;
-  top: 60px;
+  top: calc(var(--nav-height) + 8px);
   right: 12px;
   bottom: 16px;
   left: 12px;
@@ -971,7 +965,7 @@
   .content.content--dashboard {
     position: static;
     height: auto;
-    margin: 64px 12px 24px;
+    margin: calc(var(--nav-height) + 12px) 12px 24px;
     overflow: visible;
   }
 

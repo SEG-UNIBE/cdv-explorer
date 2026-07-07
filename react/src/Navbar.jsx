@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { FaGithub } from 'react-icons/fa';
 import { useTheme } from './theme.jsx';
 import { getEnvironmentBadge, getRepositoryUrl } from './runtimeEnvironment';
@@ -61,9 +61,14 @@ const Navbar = () => {
 
       <div className="nav-items">
         {items.map((item) => (
-          <Link to={item.url} key={item.url} className="nav-item">
+          <NavLink
+            to={item.url}
+            key={item.url}
+            className={({ isActive }) => `nav-item${isActive ? ' is-active' : ''}`}
+            end={item.url === '/'}
+          >
             {item.label}
-          </Link>
+          </NavLink>
         ))}
       </div>
 
@@ -113,14 +118,15 @@ const Navbar = () => {
           dismissableMask
         >
           {items.map((item) => (
-            <Link
+            <NavLink
               to={item.url}
               key={item.url}
-              className="mobile-nav-item"
+              className={({ isActive }) => `mobile-nav-item${isActive ? ' is-active' : ''}`}
+              end={item.url === '/'}
               onClick={toggleMobileMenu}
             >
               {item.label}
-            </Link>
+            </NavLink>
           ))}
 
           <button

@@ -2,7 +2,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from main import _collect_snapshot_removal_targets, _remove_snapshot_targets
+from cli.snapshots import _collect_snapshot_removal_targets, _remove_snapshot_targets
 
 
 class SnapshotRemovalTests(unittest.TestCase):

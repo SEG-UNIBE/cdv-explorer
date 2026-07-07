@@ -16,15 +16,17 @@ from analysis.validation.ground_truth import (
     reviewed_ip_append_workbook_path,
 )
 from analysis.validation import SnapshotValidationResult
-from main import (
-    app,
-    _available_llm_models_in_preprocess_dir,
-    _failed_llm_model_focus,
+from cli.artifacts import (
     _common_preprocess_snapshot_labels,
-    _existing_llm_model_run_counts,
     _rebuild_source_artifacts,
     _resolve_artifact_llm_model,
 )
+from cli.llm_runs import (
+    _available_llm_models_in_preprocess_dir,
+    _existing_llm_model_run_counts,
+    _failed_llm_model_focus,
+)
+from main import app
 from pipeline.preprocess._enrich import _preserved_llm_runs
 
 
@@ -54,7 +56,7 @@ class ArtifactRebuildTests(unittest.TestCase):
 
             with (
                 patch(
-                    "main._run_stage",
+                    "cli.artifacts._run_stage",
                     side_effect=lambda _name, _total, _unit, runner: runner(
                         lambda *_args, **_kwargs: None
                     ),
@@ -308,8 +310,8 @@ class ArtifactRebuildTests(unittest.TestCase):
             }
 
             with patch.dict(
-                "main.ECOSYSTEM_REGISTRY", {"bitcoin": eco}, clear=True
-            ), patch("main._run_source_pipeline") as run_source_pipeline:
+                "ecosystems.ECOSYSTEM_REGISTRY", {"bitcoin": eco}, clear=True
+            ), patch("cli.pipeline._run_source_pipeline") as run_source_pipeline:
                 result = runner.invoke(
                     app,
                     [
@@ -484,9 +486,9 @@ class ArtifactRebuildTests(unittest.TestCase):
             ecosystem = {"slug": "bitcoin", "sources": {"bips": bips, "slips": slips}}
             with (
                 patch.dict(
-                    "main.ECOSYSTEM_REGISTRY", {"bitcoin": ecosystem}, clear=True
+                    "ecosystems.ECOSYSTEM_REGISTRY", {"bitcoin": ecosystem}, clear=True
                 ),
-                patch("main._rebuild_artifacts_for_targets") as rebuild,
+                patch("cli.artifacts._rebuild_artifacts_for_targets") as rebuild,
             ):
                 result = runner.invoke(
                     app, ["artifacts", "rebuild", "-e", "bitcoin", "--all"]
@@ -536,7 +538,7 @@ class ArtifactRebuildTests(unittest.TestCase):
             os.chdir(root)
             try:
                 with patch.dict(
-                    "main.ECOSYSTEM_REGISTRY", {"bitcoin": ecosystem}, clear=True
+                    "ecosystems.ECOSYSTEM_REGISTRY", {"bitcoin": ecosystem}, clear=True
                 ):
                     result = runner.invoke(
                         app,
@@ -606,7 +608,7 @@ class ArtifactRebuildTests(unittest.TestCase):
             os.chdir(root)
             try:
                 with patch.dict(
-                    "main.ECOSYSTEM_REGISTRY", {"bitcoin": ecosystem}, clear=True
+                    "ecosystems.ECOSYSTEM_REGISTRY", {"bitcoin": ecosystem}, clear=True
                 ):
                     result = runner.invoke(
                         app,
@@ -685,7 +687,7 @@ class ArtifactRebuildTests(unittest.TestCase):
             os.chdir(root)
             try:
                 with patch.dict(
-                    "main.ECOSYSTEM_REGISTRY", {"bitcoin": ecosystem}, clear=True
+                    "ecosystems.ECOSYSTEM_REGISTRY", {"bitcoin": ecosystem}, clear=True
                 ):
                     workbook_path = export_ground_truth_workbook("bitcoin")
                     (gt_dir / "ips.csv").unlink()

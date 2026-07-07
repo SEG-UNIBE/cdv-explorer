@@ -570,6 +570,11 @@ function makeCombinedCacheKey(ecosystemId, combinationKey, snapshot) {
   return `${ecosystemId}/_combined/${combinationKey}/${snapshot}`;
 }
 
+// Payloads fetched up-front: nodes from network_data feed every dashboard
+// section (classification facets, word cloud, proposal filters), and the
+// authorship/classification payloads are small. The heavyweight
+// section-specific payloads below are deferred until their section scrolls
+// into view (fetchSectionDataForSelection).
 function fetchSingleSourceDataset(ecosystemId, source, sourceId, snapshot) {
   const key = makeCacheKey(ecosystemId, source.sourceSlug, snapshot);
   if (fetchCache.has(key)) return fetchCache.get(key);
@@ -577,14 +582,11 @@ function fetchSingleSourceDataset(ecosystemId, source, sourceId, snapshot) {
   const base = `./${source.dataPath}/${snapshot}`;
   const promise = Promise.all([
     fetchJson(`${base}/dependencies/network_data.json`),
-    fetchJson(`${base}/dependencies/dependency_metrics.json`),
     fetchJson(`${base}/authorship/authorship_payload.json`),
     fetchJson(`${base}/classification/classification_payload.json`),
-    fetchJson(`${base}/evolution/evolution_payload.json`),
-    fetchJson(`${base}/conformity/conformity_metrics.json`),
-  ]).then(([network, dependencyMetrics, authorship, classification, evolution, conformity]) =>
+  ]).then(([network, authorship, classification]) =>
     ensureSingleSourceShape(snapshot, sourceId, source.sourceSlug || sourceId, {
-      network, dependencyMetrics, authorship, classification, evolution, conformity,
+      network, authorship, classification,
     }, ecosystemsById[ecosystemId])
   ).catch((err) => {
     fetchCache.delete(key);
@@ -604,14 +606,11 @@ function fetchCombinedSourceDataset(ecosystemId, sourceEntries, snapshot) {
   const base = `./${getCombinedDataPath(ecosystemId, combinationKey)}/${snapshot}`;
   const promise = Promise.all([
     fetchJson(`${base}/dependencies/network_data.json`),
-    fetchJson(`${base}/dependencies/dependency_metrics.json`),
     fetchJson(`${base}/authorship/authorship_payload.json`),
     fetchJson(`${base}/classification/classification_payload.json`),
-    fetchJson(`${base}/evolution/evolution_payload.json`),
-    fetchJson(`${base}/conformity/conformity_metrics.json`),
-  ]).then(([network, dependencyMetrics, authorship, classification, evolution, conformity]) =>
+  ]).then(([network, authorship, classification]) =>
     ensureCombinedSourceShape(snapshot, sourceEntries, combinationKey, {
-      network, dependencyMetrics, authorship, classification, evolution, conformity,
+      network, authorship, classification,
     }, ecosystemsById[ecosystemId])
   ).catch((err) => {
     fetchCache.delete(key);
@@ -620,6 +619,74 @@ function fetchCombinedSourceDataset(ecosystemId, sourceEntries, snapshot) {
 
   fetchCache.set(key, promise);
   return promise;
+}
+
+// Deferred payloads, keyed by the dataset field they populate.
+export const SECTION_PAYLOAD_FILES = {
+  dependencyMetrics: 'dependencies/dependency_metrics.json',
+  evolution: 'evolution/evolution_payload.json',
+  conformity: 'conformity/conformity_metrics.json',
+};
+
+function fetchCachedJson(cacheKey, url) {
+  if (fetchCache.has(cacheKey)) return fetchCache.get(cacheKey);
+  const promise = fetchJson(url).catch((err) => {
+    fetchCache.delete(cacheKey);
+    throw err;
+  });
+  fetchCache.set(cacheKey, promise);
+  return promise;
+}
+
+// Fetches one deferred section payload for the current selection. Resolves to
+// { merged, bySource } where `merged` is the combined-artifact payload (or the
+// single source's payload), and null for multi-source selections without a
+// combined artifact — there the merged dataset keeps its placeholder.
+export function fetchSectionDataForSelection(ecosystemId, snapshot, sourceIds, sectionField) {
+  const relativeFile = SECTION_PAYLOAD_FILES[sectionField];
+  const { ecosystem, sources } = resolveSourcesForIds(ecosystemId, sourceIds);
+  if (!ecosystem || ecosystem.status !== 'available' || sources.length === 0 || !snapshot || !relativeFile) {
+    return Promise.resolve(null);
+  }
+
+  const perSourcePromise = Promise.all(
+    sources.map(([id, source]) => fetchCachedJson(
+      `${makeCacheKey(ecosystemId, source.sourceSlug, snapshot)}::${sectionField}`,
+      `./${source.dataPath}/${snapshot}/${relativeFile}`,
+    ).then((payload) => [id, payload])),
+  );
+
+  const combinedPromise = sources.length > 1 && hasCombinedSnapshot(ecosystemId, sources, snapshot)
+    ? fetchCachedJson(
+      `${makeCombinedCacheKey(ecosystemId, getSourceCombinationKey(sources), snapshot)}::${sectionField}`,
+      `./${getCombinedDataPath(ecosystemId, getSourceCombinationKey(sources))}/${snapshot}/${relativeFile}`,
+    )
+    : Promise.resolve(null);
+
+  return Promise.all([perSourcePromise, combinedPromise]).then(([entries, combined]) => ({
+    bySource: Object.fromEntries(entries),
+    merged: combined ?? (entries.length === 1 ? entries[0][1] : null),
+  }));
+}
+
+// Injects a deferred section payload into a dataset returned by
+// fetchDatasetForSelection, both at the top level (merged view) and into each
+// per-source dataset.
+export function applySectionData(dataset, sectionField, sectionData) {
+  if (!dataset || !sectionData) return dataset;
+  const bySource = Object.fromEntries(
+    Object.entries(dataset.bySource || {}).map(([sourceId, sourceDataset]) => [
+      sourceId,
+      sectionData.bySource?.[sourceId] != null
+        ? { ...sourceDataset, [sectionField]: sectionData.bySource[sourceId] }
+        : sourceDataset,
+    ]),
+  );
+  return {
+    ...dataset,
+    bySource,
+    ...(sectionData.merged != null ? { [sectionField]: sectionData.merged } : {}),
+  };
 }
 
 function hasCombinedSnapshot(ecosystemId, sourceEntries, snapshot) {

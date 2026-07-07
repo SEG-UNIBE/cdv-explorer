@@ -31,8 +31,10 @@ import {
 import { resolveRelationOntology } from './dependencyRelationOntology';
 import { buildDashboardData, buildWordCloudData, parseProposalFilterExpression } from './dashboard/dashboardData';
 import {
+  applySectionData,
   buildProposalGraphId,
   fetchDatasetForSelection,
+  fetchSectionDataForSelection,
   getPublishedDependencyLlmModel,
   getSourceCombinationKey,
   scopeDependencyLinksForSource,
@@ -324,15 +326,24 @@ test('multi-source fetch uses combined dependency metrics when combined artifact
 
     expect(dataset.isMergedSelection).toBe(true);
     expect(dataset.combinationKey).toBe('bips+slips');
-    expect(dataset.dependencyMetrics.by_approach[BODY_EXTRACTED_REGEX].summary.edge_count).toBe(99);
-    expect(dataset.bySource.bip.dependencyMetrics.by_approach[BODY_EXTRACTED_REGEX].summary.edge_count).toBe(1);
-    expect(dataset.bySource.slip.dependencyMetrics.by_approach[BODY_EXTRACTED_REGEX].summary.edge_count).toBe(2);
     expect(dataset.links[BODY_EXTRACTED_REGEX][0]).toMatchObject({
       sourceKey: 'bips:1',
       targetKey: 'slips:32',
       sourceSourceId: 'bip',
       targetSourceId: 'slip',
     });
+
+    // Section payloads are deferred: the core fetch must not touch them.
+    expect(global.fetch).not.toHaveBeenCalledWith(expect.stringContaining('dependency_metrics.json'));
+    expect(global.fetch).not.toHaveBeenCalledWith(expect.stringContaining('evolution_payload.json'));
+    expect(global.fetch).not.toHaveBeenCalledWith(expect.stringContaining('conformity_metrics.json'));
+
+    const sectionData = await fetchSectionDataForSelection('bitcoin', '2026-03-16', ['bip', 'slip'], 'dependencyMetrics');
+    const withMetrics = applySectionData(dataset, 'dependencyMetrics', sectionData);
+
+    expect(withMetrics.dependencyMetrics.by_approach[BODY_EXTRACTED_REGEX].summary.edge_count).toBe(99);
+    expect(withMetrics.bySource.bip.dependencyMetrics.by_approach[BODY_EXTRACTED_REGEX].summary.edge_count).toBe(1);
+    expect(withMetrics.bySource.slip.dependencyMetrics.by_approach[BODY_EXTRACTED_REGEX].summary.edge_count).toBe(2);
     expect(global.fetch).toHaveBeenCalledWith(expect.stringContaining('/_combined/bips+slips/04_postprocess/2026-03-16/dependencies/dependency_metrics.json'));
   } finally {
     global.fetch = previousFetch;
@@ -395,7 +406,10 @@ test('single-source fetch exposes the published LLM model without extra selectio
 
     expect(getPublishedDependencyLlmModel(dataset)).toBe('gpt-5.4-mini');
     expect(dataset.links[BODY_EXTRACTED_LLM]).toHaveLength(1);
-    expect(dataset.dependencyMetrics.llm_model).toBe('gpt-5.4-mini');
+
+    const sectionData = await fetchSectionDataForSelection('bitcoin', '2099-01-01', ['bip'], 'dependencyMetrics');
+    const withMetrics = applySectionData(dataset, 'dependencyMetrics', sectionData);
+    expect(withMetrics.dependencyMetrics.llm_model).toBe('gpt-5.4-mini');
   } finally {
     global.fetch = previousFetch;
   }

@@ -351,6 +351,43 @@ def _flatten_conformity_rows(rows: List[Dict[str, Any]]) -> List[Dict[str, Any]]
     ]
 
 
+def _trim_conformity_checks(conformity_metrics: Dict[str, Any]) -> Dict[str, Any]:
+    """Drop per-check data the dashboard never renders from the payload.
+
+    The conformity views only list *failed* checks (failed-checks histogram and
+    swarm-plot tooltips) and read id/label/passed/details per check, so passed
+    and skipped check entries are omitted entirely. The per-standard counters
+    (passed_checks/failed_checks/skipped_checks) keep the aggregate view intact.
+    Full check results are reproducible via the pipeline from Stage II data.
+    """
+    trimmed = dict(conformity_metrics)
+    per_proposal: List[Dict[str, Any]] = []
+    for row in conformity_metrics.get("per_proposal") or []:
+        row = dict(row)
+        compliance = row.get("formal_compliance")
+        if isinstance(compliance, dict):
+            compliance = dict(compliance)
+            for standard_key, standard in compliance.items():
+                if not isinstance(standard, dict) or "checks" not in standard:
+                    continue
+                standard = dict(standard)
+                standard["checks"] = [
+                    {
+                        "id": check.get("id"),
+                        "label": check.get("label"),
+                        "passed": False,
+                        "details": check.get("details"),
+                    }
+                    for check in standard.get("checks") or []
+                    if check.get("passed") is False
+                ]
+                compliance[standard_key] = standard
+            row["formal_compliance"] = compliance
+        per_proposal.append(row)
+    trimmed["per_proposal"] = per_proposal
+    return trimmed
+
+
 # Relative payload locations inside 04_postprocess/<snapshot>/ — the frontend
 # fetch contract (mirrored by react/src/data.js and react/scripts/syncPublicData.js).
 FRONTEND_PAYLOAD_FILES: Dict[str, str] = {
@@ -380,7 +417,7 @@ def _save_frontend_payloads(
         "authorship_payload": authorship_payload,
         "classification_payload": classification_payload,
         "evolution_payload": evolution_payload,
-        "conformity_metrics": conformity_metrics,
+        "conformity_metrics": _trim_conformity_checks(conformity_metrics),
     }
 
     saved: Dict[str, Path] = {}

@@ -19,6 +19,7 @@ import { DashboardSkeleton } from './DashboardSkeleton';
 import { SECTION_VIEW_MERGED } from './sections/SectionSourceToggle';
 import { getDefaultExperimentalFeaturesEnabled, getRuntimeEnvironment } from '../runtimeEnvironment';
 import { useDashboardDatasetLoader } from './useDashboardDatasetLoader';
+import { useSectionDataLoader } from './useSectionDataLoader';
 import { getSectionDataset, getSectionEcosystem, normalizeSectionSourceView } from './sectionViews';
 import { DashboardSections } from './DashboardSections';
 
@@ -137,7 +138,23 @@ export function EcosystemDashboard() {
     orderedSelectedSourceIds,
     emptyDataset,
   });
-  const dashboardData = useMemo(() => buildDashboardData(selectedDataset, activeEcosystem), [selectedDataset, activeEcosystem]);
+  const { activateSection, sectionReady, applySectionDataTo } = useSectionDataLoader({
+    ecosystemId,
+    selectedSnapshot,
+    orderedSelectedSourceIds,
+    canLoad: Boolean(
+      ecosystem
+      && ecosystem.status === 'available'
+      && selectedSnapshot
+      && orderedSelectedSourceIds.length > 0,
+    ),
+  });
+  // Core dataset plus any deferred section payloads that have arrived.
+  const sectionDataset = useMemo(
+    () => applySectionDataTo(selectedDataset),
+    [applySectionDataTo, selectedDataset],
+  );
+  const dashboardData = useMemo(() => buildDashboardData(sectionDataset, activeEcosystem), [sectionDataset, activeEcosystem]);
   const {
     classificationDistributions,
     classificationTimeline,
@@ -147,7 +164,7 @@ export function EcosystemDashboard() {
     evolutionPayload,
   } = dashboardData;
   const perSourceDashboardData = useMemo(() => {
-    const bySource = selectedDataset?.bySource || {};
+    const bySource = sectionDataset?.bySource || {};
     return orderedSelectedSourceIds.reduce((acc, sourceId) => {
       const sourceDataset = bySource[sourceId];
       const source = ecosystem?.sources?.[sourceId];
@@ -156,7 +173,7 @@ export function EcosystemDashboard() {
       }
       return acc;
     }, {});
-  }, [selectedDataset, ecosystem, orderedSelectedSourceIds]);
+  }, [sectionDataset, ecosystem, orderedSelectedSourceIds]);
 
   const activeAuthorshipSourceView = normalizeSectionSourceView(authorshipSourceView, orderedSelectedSourceIds, true);
   const activeClassificationSourceView = normalizeSectionSourceView(classificationSourceView, orderedSelectedSourceIds, false);
@@ -164,9 +181,9 @@ export function EcosystemDashboard() {
   const activeDependenciesSourceView = normalizeSectionSourceView(dependenciesSourceView, orderedSelectedSourceIds, true);
   const activeConformitySourceView = normalizeSectionSourceView(conformitySourceView, orderedSelectedSourceIds, false);
 
-  const authorshipViewDataset = getSectionDataset(selectedDataset, activeAuthorshipSourceView);
-  const rawDependencyViewDataset = getSectionDataset(selectedDataset, activeDependenciesSourceView);
-  const conformityViewDataset = getSectionDataset(selectedDataset, activeConformitySourceView);
+  const authorshipViewDataset = getSectionDataset(sectionDataset, activeAuthorshipSourceView);
+  const rawDependencyViewDataset = getSectionDataset(sectionDataset, activeDependenciesSourceView);
+  const conformityViewDataset = getSectionDataset(sectionDataset, activeConformitySourceView);
   const activeDependencyLlmModel = useMemo(() => {
     return getPublishedDependencyLlmModel(rawDependencyViewDataset) || '';
   }, [rawDependencyViewDataset]);
@@ -579,6 +596,8 @@ export function EcosystemDashboard() {
               hasWordCloudFilter={hasWordCloudFilter}
               hasDependencyFilter={hasDependencyFilter}
               selectedDependencyProposalIds={selectedDependencyProposalIds}
+              onSectionActivate={activateSection}
+              sectionReady={sectionReady}
             />
           </div>
         )}

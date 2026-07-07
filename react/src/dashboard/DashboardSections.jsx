@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect, useRef, useState } from 'react';
+import { Suspense, lazy, useCallback, useEffect, useRef, useState } from 'react';
 
 const AuthorshipSection = lazy(() => import('./sections/AuthorshipSection').then((module) => ({
   default: module.AuthorshipSection,
@@ -31,6 +31,8 @@ function LazyDashboardSection({
   componentProps,
   eager = false,
   minHeight = 220,
+  onActivate = null,
+  ready = true,
 }) {
   const containerRef = useRef(null);
   const [isActive, setIsActive] = useState(eager);
@@ -57,9 +59,15 @@ function LazyDashboardSection({
     return () => observer.disconnect();
   }, [eager, isActive]);
 
+  useEffect(() => {
+    if (isActive && onActivate) {
+      onActivate();
+    }
+  }, [isActive, onActivate]);
+
   return (
     <div id={id} className="dashboard-anchor" ref={containerRef}>
-      {isActive ? (
+      {isActive && ready ? (
         <Suspense fallback={<DashboardSectionFallback label={label} />}>
           <Component {...componentProps} />
         </Suspense>
@@ -91,7 +99,12 @@ export function DashboardSections({
   hasWordCloudFilter,
   hasDependencyFilter,
   selectedDependencyProposalIds,
+  onSectionActivate = null,
+  sectionReady = {},
 }) {
+  const activateEvolution = useCallback(() => onSectionActivate?.('evolution'), [onSectionActivate]);
+  const activateDependencies = useCallback(() => onSectionActivate?.('dependencyMetrics'), [onSectionActivate]);
+  const activateConformity = useCallback(() => onSectionActivate?.('conformity'), [onSectionActivate]);
   const collaborationAuthorOptions = (dashboardData.authorship.collaborationNetwork?.nodes || [])
     .map((node) => String(node.id || ''))
     .filter(Boolean)
@@ -159,6 +172,8 @@ export function DashboardSections({
         label="evolution"
         Component={EvolutionSection}
         minHeight={240}
+        onActivate={activateEvolution}
+        ready={sectionReady.evolution !== false}
         componentProps={{
           ecosystem: activeEcosystem,
           ecosystemBase: ecosystem,
@@ -174,6 +189,8 @@ export function DashboardSections({
         label="dependencies"
         Component={DependenciesSection}
         minHeight={320}
+        onActivate={activateDependencies}
+        ready={sectionReady.dependencyMetrics !== false}
         componentProps={{
           ecosystem: datasets.dependencyViewEcosystem,
           ecosystemBase: ecosystem,
@@ -204,6 +221,8 @@ export function DashboardSections({
           label="conformity"
           Component={ConformitySection}
           minHeight={240}
+          onActivate={activateConformity}
+          ready={sectionReady.conformity !== false}
           componentProps={{
             ecosystem: activeEcosystem,
             ecosystemBase: ecosystem,

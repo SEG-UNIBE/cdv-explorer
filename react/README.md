@@ -34,3 +34,8 @@ npm run build
   `03_analysis`) are never published. After regenerating pipeline artifacts,
   rerun `npm run generate:indexes` (or simply `npm run dev`) to refresh the
   synced copy — `public/ip_data` is gitignored.
+- The dashboard fetches payloads in two phases: `network_data.json`,
+  `authorship_payload.json`, and `classification_payload.json` load up front
+  (proposal nodes feed every section), while `dependency_metrics.json`,
+  `evolution_payload.json`, and `conformity_metrics.json` are fetched only when
+  their dashboard section scrolls into view (`src/dashboard/useSectionDataLoader.js`).

@@ -576,6 +576,64 @@ class BuildNetworkDataTests(unittest.TestCase):
         self.assertIn("betweenness_rank", rows["bips:1"])
         self.assertIn("weighted_eigenvector_rank", rows["bips:1"])
 
+    def test_dependency_metrics_pairwise_agreement_scores(self):
+        network_data = {
+            "nodes": [
+                {"id": str(i), "graph_key": f"bips:{i}", "title": f"BIP {i}"}
+                for i in range(1, 5)
+            ],
+            "dependency_edges": [
+                {
+                    "source": "bips:1",
+                    "target": "bips:2",
+                    "extraction_method": "preamble_extracted",
+                    "relation_type": "requires",
+                    "value": 1,
+                },
+                {
+                    "source": "bips:1",
+                    "target": "bips:3",
+                    "extraction_method": "preamble_extracted",
+                    "relation_type": "requires",
+                    "value": 1,
+                },
+                {
+                    "source": "bips:1",
+                    "target": "bips:2",
+                    "extraction_method": "body_extracted_regex",
+                    "relation_type": "reference",
+                    "value": 1,
+                },
+                {
+                    "source": "bips:2",
+                    "target": "bips:3",
+                    "extraction_method": "body_extracted_regex",
+                    "relation_type": "reference",
+                    "value": 1,
+                },
+            ],
+        }
+
+        metrics = extract_dependency_metrics(network_data)
+        summary = metrics["pairwise_comparisons"][
+            "body_extracted_regex__vs__preamble_extracted"
+        ]["summary"]
+
+        # 4 nodes -> 12 candidate ordered pairs; a=1 shared, b=1, c=1, d=9.
+        # p_o = 10/12, p_e = (2*2 + 10*10)/144 -> kappa = 0.4 exactly.
+        self.assertEqual(summary["candidate_pairs"], 12)
+        self.assertAlmostEqual(summary["kappa"], 0.4)
+
+        diagonal = metrics["pairwise_comparisons"][
+            "preamble_extracted__vs__preamble_extracted"
+        ]["summary"]
+        self.assertAlmostEqual(diagonal["kappa"], 1.0)
+
+        empty = metrics["pairwise_comparisons"][
+            "body_extracted_llm__vs__body_extracted_llm"
+        ]["summary"]
+        self.assertIsNone(empty["kappa"])
+
     def test_dependency_metrics_preserve_duplicate_ids_across_sources(self):
         network_data = {
             "nodes": [

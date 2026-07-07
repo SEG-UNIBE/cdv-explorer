@@ -258,6 +258,35 @@ def _rank_rows(rows: list[dict[str, Any]], field: str) -> dict[str, int]:
     return ranks
 
 
+def _pairwise_cohens_kappa(
+    overlap: int,
+    approach_only: int,
+    baseline_only: int,
+    candidate_pairs: int,
+) -> float | None:
+    """Cohen's kappa treating two approaches as raters over all candidate pairs.
+
+    Each approach gives a yes/no judgment on every directed candidate pair:
+    ``overlap`` pairs get yes from both, ``approach_only``/``baseline_only``
+    from one side, and the remainder no from both. Kappa corrects the
+    resulting raw agreement for chance and is ``None`` when undefined
+    (no candidate pairs, or no variation between the raters at all).
+    """
+    union = overlap + approach_only + baseline_only
+    if candidate_pairs <= 0 or union > candidate_pairs:
+        return None
+
+    both_no = candidate_pairs - union
+    observed = (overlap + both_no) / candidate_pairs
+    expected = (
+        (overlap + approach_only) * (overlap + baseline_only)
+        + (baseline_only + both_no) * (approach_only + both_no)
+    ) / (candidate_pairs**2)
+    if expected >= 1:
+        return None
+    return float((observed - expected) / (1 - expected))
+
+
 def _build_pairwise_comparisons(network_data: dict[str, Any]) -> dict[str, Any]:
     use_canonical_edges = bool(_canonical_dependency_edges(network_data))
     edge_keys = _network_edge_keys(network_data) if use_canonical_edges else set()
@@ -272,6 +301,10 @@ def _build_pairwise_comparisons(network_data: dict[str, Any]) -> dict[str, Any]:
     }
     approach_labels = _approach_labels()
     pairwise: dict[str, Any] = {}
+    # Universe for the rater-agreement scores: every ordered pair of distinct
+    # network nodes is a candidate edge each approach implicitly judged.
+    node_count = len(nodes_by_id)
+    candidate_pairs = node_count * (node_count - 1)
 
     for approach_key in DEPENDENCY_PAIRWISE_COMPARISON_ORDER:
         approach_label = approach_labels[approach_key]
@@ -334,6 +367,13 @@ def _build_pairwise_comparisons(network_data: dict[str, Any]) -> dict[str, Any]:
                     "missed_rate": float(len(baseline_only_keys) / baseline_total)
                     if baseline_total
                     else 0.0,
+                    "candidate_pairs": candidate_pairs,
+                    "kappa": _pairwise_cohens_kappa(
+                        len(overlap_keys),
+                        len(approach_only_keys),
+                        len(baseline_only_keys),
+                        candidate_pairs,
+                    ),
                 },
                 "edges": (
                     _edge_rows(overlap_keys, "overlap")

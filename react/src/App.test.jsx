@@ -92,6 +92,8 @@ test('renders the selected llm model label in dependency comparison and ground-t
         missed_rate: 0,
         approach_only: 0,
         approach_total: 1,
+        candidate_pairs: 12,
+        kappa: 0.4,
       },
       edges: [],
     },
@@ -133,6 +135,9 @@ test('renders the selected llm model label in dependency comparison and ground-t
   );
 
   expect(screen.getAllByText('LLM (gpt-5.4-mini)').length).toBeGreaterThan(0);
+  // Kappa footer in the matrix cell plus the metric badge for the selection.
+  expect(screen.getAllByText('0.40').length).toBeGreaterThan(1);
+  expect(screen.getByText('Cohen’s κ')).toBeInTheDocument();
 });
 
 test('normalizes canonical dependency edges into grouped dependency links', () => {

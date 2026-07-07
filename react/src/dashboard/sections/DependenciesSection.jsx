@@ -473,6 +473,10 @@ export function DependenciesSection({
         <p>
           This matrix compares Preamble, Regex, and LLM pairwise. Each cell splits into
           three clickable shares: same, missing from the selected approach, and only in the selected approach.
+          The κ value below each cell is Cohen&apos;s kappa, a measure of inter-rater reliability:
+          both approaches are treated as raters giving a yes/no verdict on every possible directed
+          proposal pair, and their raw agreement is corrected for the agreement expected by chance.
+          κ&nbsp;=&nbsp;1 means perfect agreement, 0 no better than chance, and below 0 worse than chance.
         </p>
         <DependencyComparisonHeatmaps
           pairwiseComparisons={dependencyMetrics?.pairwise_comparisons || {}}

@@ -3026,6 +3026,23 @@
   white-space: nowrap;
 }
 
+.dependency-heatmap-cell__agreement {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.35rem;
+  font-size: 0.78rem;
+  background: color-mix(in srgb, var(--chart-focus) 5%, var(--app-surface));
+  color: var(--app-text-muted);
+}
+
+.dependency-heatmap-cell__agreement-value {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
 .dependency-heatmap-cell__metric:hover {
   transform: translateY(-1px);
   box-shadow: var(--app-shadow);

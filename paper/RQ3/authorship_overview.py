@@ -3,6 +3,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 
+from paper.plot_colors import AUTHORS_PER_BIP_COLOR, AUTHORSHIP_DISTRIBUTION_COLOR
 from paper.RQ3._plotting import (
     bar_style,
     despine,
@@ -10,8 +11,6 @@ from paper.RQ3._plotting import (
     save_figure,
     style_ellipsis_ticklabels,
 )
-from paper.plot_colors import AUTHORSHIP_DISTRIBUTION_COLOR, AUTHORS_PER_BIP_COLOR
-
 
 TOP_AUTHORS_COLOR = "#d94841"
 HISTOGRAM_COLOR = AUTHORSHIP_DISTRIBUTION_COLOR
@@ -194,13 +193,13 @@ def _draw_authorship_distribution_axis(
     labeled_histogram_positions = [
         position
         for position, authors, label in zip(
-            histogram_positions, histogram_y, histogram_labels
+            histogram_positions, histogram_y, histogram_labels, strict=True
         )
         if authors > 0 or label == HISTOGRAM_GAP_LABEL
     ]
     labeled_histogram_values = [
         label
-        for label, authors in zip(histogram_labels, histogram_y)
+        for label, authors in zip(histogram_labels, histogram_y, strict=True)
         if authors > 0 or label == HISTOGRAM_GAP_LABEL
     ]
 
@@ -220,7 +219,9 @@ def _draw_authorship_distribution_axis(
     axis.grid(axis="y", alpha=0.35)
     axis.grid(axis="x", visible=False)
     match_axis_label_fontsize(axis)
-    for index, authors, entry in zip(histogram_positions, histogram_y, display_series):
+    for index, authors, entry in zip(
+        histogram_positions, histogram_y, display_series, strict=True
+    ):
         if bool(entry.get("is_gap")):
             continue
         if authors <= 0:
@@ -301,7 +302,9 @@ def _draw_authors_per_bip_axis(
     bip_counts = [int(entry["bip_count"]) for entry in display_series]
     axis_labels = [str(entry["axis_label"]) for entry in display_series]
 
-    data_positions = [p for p, e in zip(positions, display_series) if not e["is_gap"]]
+    data_positions = [
+        p for p, e in zip(positions, display_series, strict=True) if not e["is_gap"]
+    ]
     data_counts = [int(e["bip_count"]) for e in display_series if not e["is_gap"]]
 
     axis.bar(
@@ -321,7 +324,7 @@ def _draw_authors_per_bip_axis(
     axis.grid(axis="x", visible=False)
     match_axis_label_fontsize(axis)
     max_count = max(bip_counts) if bip_counts else 1
-    for pos, entry in zip(positions, display_series):
+    for pos, entry in zip(positions, display_series, strict=True):
         if entry["is_gap"] or int(entry["bip_count"]) <= 0:
             continue
         axis.text(

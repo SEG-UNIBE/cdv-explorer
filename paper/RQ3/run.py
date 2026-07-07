@@ -10,8 +10,8 @@ if str(REPO_ROOT) not in sys.path:
 
 matplotlib.use("Agg")
 
-from paper.config import SNAPSHOT
 from paper._utils.io import resolve_output_dir, snapshot_prefix
+from paper.config import SNAPSHOT
 
 # Set this directly only when RQ3 needs a custom output location.
 OUTPUT_DIR = None
@@ -24,24 +24,19 @@ COLLABORATION_NETWORK_EXPORTED_LAYOUT = None
 
 def main() -> None:
     from analysis.artifact_io import (
-        load_authorship_payload,
         load_authorship_metrics,
+        load_authorship_payload,
         load_network_data,
         resolve_latest_snapshot_label,
     )
     from paper.RQ3.authorship_collaboration_triptych import (
         plot_authorship_collaboration_triptych,
     )
-    from paper.RQ3.authorship_overview import plot_authorship_overview
     from paper.RQ3.authorship_overview import (
-        plot_authorship_distribution,
         plot_authors_per_bip,
+        plot_authorship_distribution,
+        plot_authorship_overview,
         plot_top_authors,
-    )
-    from paper.RQ3.collaboration_structure_overview import (
-        plot_coauthor_degree_distribution,
-        plot_collaboration_structure_overview,
-        plot_connected_component_size_distribution,
     )
     from paper.RQ3.collaboration_metrics_table import (
         export_collaboration_metrics_latex_table,
@@ -52,8 +47,15 @@ def main() -> None:
     )
     from paper.RQ3.collaboration_network_exported_layout import (
         plot_collaboration_network_from_exported_layout,
-        resolve_default_output_path as resolve_exported_network_output_path,
         resolve_layout_export_path,
+    )
+    from paper.RQ3.collaboration_network_exported_layout import (
+        resolve_default_output_path as resolve_exported_network_output_path,
+    )
+    from paper.RQ3.collaboration_structure_overview import (
+        plot_coauthor_degree_distribution,
+        plot_collaboration_structure_overview,
+        plot_connected_component_size_distribution,
     )
     from paper.RQ3.creation_over_time import plot_creation_over_time
 

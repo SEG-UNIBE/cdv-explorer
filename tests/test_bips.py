@@ -5,7 +5,6 @@ from tempfile import TemporaryDirectory
 
 from pipeline.preprocess.rfc_preamble import extract
 
-
 _BIP_CONFIG = {
     "document_prefix": "bip",
     "primary_id_field": "bip",

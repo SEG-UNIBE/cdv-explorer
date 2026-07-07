@@ -5,18 +5,22 @@ import re
 import sys
 from collections import OrderedDict
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from tqdm import tqdm
 
+from analysis.classification.preprocess import normalize_classification_fields
 from analysis.conformity.compliance import (
     add_missing_optional_fields as _add_missing_optional,
+)
+from analysis.conformity.compliance import (
     build_compliance_payload,
+)
+from analysis.conformity.compliance import (
     check_required_fields as _check_required,
 )
-from pipeline.preprocess.checkers import get_checker
-from analysis.classification.preprocess import normalize_classification_fields
 from analysis.proposal_schema import normalize_proposal_document
+from pipeline.preprocess.checkers import get_checker
 from pipeline.source_context import SourceContext
 
 # Matches a line that consists entirely of backtick-wrapped tokens: `draft` `mandatory` `relay`
@@ -25,7 +29,7 @@ _BACKTICK_TOKENS = re.compile(r"`([^`]+)`")
 _STATUS_LINE_PATTERN = re.compile(r"^\s*\*\*Status:\*\*\s*(.+?)\s*$", re.IGNORECASE)
 
 
-def _parse_nip_file(content: str, filename: str, src_config: dict) -> Dict[str, Any]:
+def _parse_nip_file(content: str, filename: str, src_config: dict) -> dict[str, Any]:
     """
     Parse NIP setext-heading format:
 
@@ -39,7 +43,7 @@ def _parse_nip_file(content: str, filename: str, src_config: dict) -> Dict[str, 
     """
     lines = content.splitlines()
     title: str | None = None
-    tag_tokens: List[str] = []
+    tag_tokens: list[str] = []
 
     h1_found = False
     i = 0
@@ -112,7 +116,7 @@ def _parse_nip_file(content: str, filename: str, src_config: dict) -> Dict[str, 
     status: str | None = None
     proposal_type: str | None = None
     layer: str | None = None
-    kind_parts: List[str] = []
+    kind_parts: list[str] = []
 
     for token in tag_tokens:
         lower = token.lower()
@@ -125,7 +129,7 @@ def _parse_nip_file(content: str, filename: str, src_config: dict) -> Dict[str, 
         else:
             kind_parts.append(token)
 
-    preamble: Dict[str, Any] = {
+    preamble: dict[str, Any] = {
         "nip": nip_id,
         "title": title or "",
         "status": status or "Unknown",
@@ -141,13 +145,13 @@ def _parse_nip_file(content: str, filename: str, src_config: dict) -> Dict[str, 
 
 
 def _save_json(
-    preamble: Dict[str, Any],
+    preamble: dict[str, Any],
     output_dir: Path,
     file_prefix: str,
     id_field: str,
-    required_fields: List[str],
-    optional_fields: List[str],
-    compliance_payload: Optional[Dict[str, Any]],
+    required_fields: list[str],
+    optional_fields: list[str],
+    compliance_payload: dict[str, Any] | None,
     source_context: SourceContext | None = None,
 ) -> Path:
     context = source_context or SourceContext.default()
@@ -156,7 +160,7 @@ def _save_json(
     json_filename = f"{file_prefix}-{nip_id}.json"
     output_path = output_dir / json_filename
 
-    existing: Dict[str, Any] = {}
+    existing: dict[str, Any] = {}
     if output_path.exists():
         try:
             existing = normalize_proposal_document(
@@ -192,8 +196,8 @@ def extract(
 ) -> None:
     """Extract NIP metadata from backtick-tag lines and write per-NIP JSON."""
     preamble_config = src_config["preamble"]
-    required_fields: List[str] = preamble_config["required_fields"]
-    optional_fields: List[str] = preamble_config["optional_fields"]
+    required_fields: list[str] = preamble_config["required_fields"]
+    optional_fields: list[str] = preamble_config["optional_fields"]
     file_prefix: str = src_config["document_prefix"]
     id_field: str = src_config["primary_id_field"]
     source_context = SourceContext.from_config(src_config)

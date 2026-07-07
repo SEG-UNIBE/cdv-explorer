@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import shutil
 from pathlib import Path
-from typing import Annotated, Optional
+from typing import Annotated
 
 import typer
 from rich.table import Table
@@ -98,7 +98,7 @@ def _analysis_dirs_for_ecosystem(
 
 def _print_snapshots(
     ecosystem: Annotated[
-        Optional[str], typer.Option("--ecosystem", "-e", help="Filter by ecosystem.")
+        str | None, typer.Option("--ecosystem", "-e", help="Filter by ecosystem.")
     ] = None,
 ) -> None:
     ip_root = Path("ip_data")
@@ -138,7 +138,7 @@ def _print_snapshots(
 def snapshots(
     ctx: typer.Context,
     ecosystem: Annotated[
-        Optional[str], typer.Option("--ecosystem", "-e", help="Filter by ecosystem.")
+        str | None, typer.Option("--ecosystem", "-e", help="Filter by ecosystem.")
     ] = None,
 ) -> None:
     """List available snapshots found under ip_data/."""
@@ -150,7 +150,7 @@ def snapshots(
 @snapshots_app.command("list", rich_help_panel="Inspect")
 def snapshots_list(
     ecosystem: Annotated[
-        Optional[str], typer.Option("--ecosystem", "-e", help="Filter by ecosystem.")
+        str | None, typer.Option("--ecosystem", "-e", help="Filter by ecosystem.")
     ] = None,
 ) -> None:
     """List available snapshots found under ip_data/."""
@@ -166,7 +166,7 @@ def snapshots_remove(
         str, typer.Option("--ecosystem", "-e", help="Ecosystem slug.")
     ],
     source: Annotated[
-        Optional[str],
+        str | None,
         typer.Option(
             "--source", help="Source slug. Omit to remove all sources in the ecosystem."
         ),

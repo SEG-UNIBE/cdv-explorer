@@ -1,9 +1,10 @@
 import os
 import re
 import time
+from collections.abc import Callable, Mapping
 from json import JSONDecodeError, loads
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Mapping
+from typing import Any
 
 try:
     from openai import OpenAI, RateLimitError
@@ -36,11 +37,6 @@ def _call_with_rate_limit_retry(fn: Callable[[], Any]) -> Any:
                 pass
             time.sleep(wait)
 
-from analysis.reference_ids import (
-    normalize_reference_id,
-    normalize_reference_id_for_config,
-    uses_hex_proposal_ids,
-)
 from analysis.proposal_schema import (
     LLM_RUN_STATUS_API_ERROR,
     LLM_RUN_STATUS_PARSE_ERROR,
@@ -49,8 +45,12 @@ from analysis.proposal_schema import (
     LLM_RUN_STATUS_TIMEOUT,
     get_preamble_interrelations,
 )
+from analysis.reference_ids import (
+    normalize_reference_id,
+    normalize_reference_id_for_config,
+    uses_hex_proposal_ids,
+)
 from pipeline.source_context import SourceContext
-
 
 TOP_PRE_BLOCK_PATTERN = re.compile(r"^\s*<pre>.*?</pre>\s*", re.DOTALL | re.IGNORECASE)
 TOP_FENCED_BLOCK_PATTERN = re.compile(r"^\s*```[^\n]*\n.*?\n```\s*(?:\n|$)", re.DOTALL)
@@ -84,8 +84,8 @@ def _reference_configs_for_context(
     context: SourceContext,
     proposal_label: str | None = None,
     reference_pattern: str | None = None,
-) -> List[Dict[str, Any]]:
-    configs: List[Dict[str, Any]] = []
+) -> list[dict[str, Any]]:
+    configs: list[dict[str, Any]] = []
     sources = context.ecosystem_source_configs
 
     for source_slug, source_config in sources.items():
@@ -131,14 +131,14 @@ def _reference_configs_for_context(
     return configs
 
 
-def _reference_label_order(configs: List[Dict[str, Any]]) -> Mapping[str, int]:
+def _reference_label_order(configs: list[dict[str, Any]]) -> Mapping[str, int]:
     return {
         str(config["proposal_label"]).upper(): index
         for index, config in enumerate(configs)
     }
 
 
-def _reference_patterns_by_label(configs: List[Dict[str, Any]]) -> Mapping[str, str]:
+def _reference_patterns_by_label(configs: list[dict[str, Any]]) -> Mapping[str, str]:
     return {
         str(config["proposal_label"]).upper(): str(config["reference_pattern"])
         for config in configs
@@ -183,7 +183,7 @@ def _format_reference(label: str, normalized_id: str) -> str:
     return f"{label} {normalized_id}"
 
 
-def _id_chars_for_reference_config(config: Dict[str, Any]) -> str:
+def _id_chars_for_reference_config(config: dict[str, Any]) -> str:
     return (
         r"[0-9A-Fa-f]"
         if uses_hex_proposal_ids(
@@ -194,7 +194,7 @@ def _id_chars_for_reference_config(config: Dict[str, Any]) -> str:
     )
 
 
-def _normalize_with_reference_config(value: Any, config: Dict[str, Any]) -> str | None:
+def _normalize_with_reference_config(value: Any, config: dict[str, Any]) -> str | None:
     return normalize_reference_id_for_config(
         value,
         config,
@@ -204,7 +204,7 @@ def _normalize_with_reference_config(value: Any, config: Dict[str, Any]) -> str 
 
 def _match_reference_item(
     item: Any,
-    config: Dict[str, Any],
+    config: dict[str, Any],
     *,
     allow_bare: bool,
 ) -> str | None:
@@ -234,7 +234,7 @@ def create_reference_list(
     proposal_label: str | None = None,
     reference_pattern: str | None = None,
     source_context: SourceContext | None = None,
-) -> List[str]:
+) -> list[str]:
     context = source_context or SourceContext.default()
     reference_configs = _reference_configs_for_context(
         context, proposal_label, reference_pattern
@@ -294,9 +294,9 @@ def _format_target_key(source_slug: Any, proposal_id: Any) -> str:
 
 def _resolve_target_reference(
     item: Any,
-    reference_configs: List[Dict[str, Any]],
-    active_config: Dict[str, Any],
-) -> Dict[str, str] | None:
+    reference_configs: list[dict[str, Any]],
+    active_config: dict[str, Any],
+) -> dict[str, str] | None:
     if isinstance(item, dict):
         target = item.get("target")
         if isinstance(target, str) and ":" in target:
@@ -347,7 +347,7 @@ def create_reference_targets(
     proposal_label: str | None = None,
     reference_pattern: str | None = None,
     source_context: SourceContext | None = None,
-) -> List[Dict[str, Any]]:
+) -> list[dict[str, Any]]:
     context = source_context or SourceContext.default()
     reference_configs = _reference_configs_for_context(
         context, proposal_label, reference_pattern
@@ -355,7 +355,7 @@ def create_reference_targets(
     active_label = proposal_label or context.proposal_label
     label_order = _reference_label_order(reference_configs)
     reference_patterns_by_label = _reference_patterns_by_label(reference_configs)
-    counts: Dict[str, Dict[str, Any]] = {}
+    counts: dict[str, dict[str, Any]] = {}
 
     for config in reference_configs:
         active_proposal_label = str(config["proposal_label"])
@@ -399,10 +399,10 @@ def create_reference_targets(
 
 
 def create_explicit_dependency_list(
-    preamble: Dict[str, Any],
+    preamble: dict[str, Any],
     proposal_label: str | None = None,
     source_context: SourceContext | None = None,
-) -> List[str]:
+) -> list[str]:
     context = source_context or SourceContext.default()
     reference_configs = _reference_configs_for_context(
         context, proposal_label, context.reference_pattern
@@ -450,10 +450,10 @@ def create_explicit_dependency_list(
 
 
 def create_explicit_dependency_targets(
-    preamble: Dict[str, Any],
+    preamble: dict[str, Any],
     proposal_label: str | None = None,
     source_context: SourceContext | None = None,
-) -> List[Dict[str, str]]:
+) -> list[dict[str, str]]:
     context = source_context or SourceContext.default()
     reference_configs = _reference_configs_for_context(
         context, proposal_label, context.reference_pattern
@@ -472,14 +472,14 @@ def create_explicit_dependency_targets(
     preamble_interrelations = get_preamble_interrelations(
         preamble, source_context=context
     )
-    result: List[Dict[str, str]] = []
+    result: list[dict[str, str]] = []
 
     for subtype in context.preamble_interrelation_types:
         value = preamble_interrelations.get(subtype)
         if not value:
             continue
         raw_items = value if isinstance(value, list) else str(value).split(",")
-        targets: Dict[str, Dict[str, str]] = {}
+        targets: dict[str, dict[str, str]] = {}
         for item in raw_items:
             reference = _resolve_target_reference(
                 item, reference_configs, active_config
@@ -519,7 +519,7 @@ def normalize_dependency_output(
     proposal_label: str | None = None,
     current_proposal_number: str | None = None,
     source_context: SourceContext | None = None,
-) -> List[str]:
+) -> list[str]:
     if not isinstance(payload, list):
         return []
 
@@ -577,9 +577,9 @@ def normalize_dependency_output(
 
 def _resolve_llm_target(
     item: Any,
-    reference_configs: List[Dict[str, Any]],
-    active_config: Dict[str, Any],
-) -> Dict[str, str] | None:
+    reference_configs: list[dict[str, Any]],
+    active_config: dict[str, Any],
+) -> dict[str, str] | None:
     raw_target = item
     raw_source = None
     raw_id = None
@@ -662,7 +662,7 @@ def normalize_llm_dependency_output(
     proposal_label: str | None = None,
     current_proposal_number: str | None = None,
     source_context: SourceContext | None = None,
-) -> List[Dict[str, str]]:
+) -> list[dict[str, str]]:
     if not isinstance(payload, list):
         return []
 
@@ -692,7 +692,7 @@ def normalize_llm_dependency_output(
     current_target = (
         None if current_id is None else f"{active_config['source_slug']}:{current_id}"
     )
-    normalized_entries: List[Dict[str, str]] = []
+    normalized_entries: list[dict[str, str]] = []
     seen_targets = set()
 
     for item in payload:
@@ -742,8 +742,8 @@ def normalize_llm_dependency_output(
 
 
 def _ground_evidence(
-    entries: List[Dict[str, str]], source_text: str
-) -> List[Dict[str, str]]:
+    entries: list[dict[str, str]], source_text: str
+) -> list[dict[str, str]]:
     """Lower confidence to 'low' when the LLM's evidence quote cannot be found verbatim in the source."""
     if not source_text:
         return entries
@@ -784,7 +784,7 @@ def _extract_response_content(response: Any) -> str | None:
     return None
 
 
-def _to_responses_text_format(response_format: Dict[str, Any]) -> Dict[str, Any]:
+def _to_responses_text_format(response_format: dict[str, Any]) -> dict[str, Any]:
     """Convert a Chat Completions response_format dict to Responses API text.format shape."""
     if (
         response_format.get("type") == "json_schema"
@@ -800,7 +800,7 @@ def _dependencies_from_llm_response(
     proposal_label: str,
     current_proposal_number: str | None,
     source_context: SourceContext,
-) -> List[Dict[str, str]]:
+) -> list[dict[str, str]]:
     content = _extract_response_content(response)
     if content is None:
         return []
@@ -820,7 +820,7 @@ def _build_llm_semantic_dependency_prompt_bundle(
     proposal_label: str | None = None,
     proposal_singular: str | None = None,
     source_context: SourceContext | None = None,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     context = source_context or SourceContext.default()
     active_proposal_label = proposal_label or context.proposal_label
     active_proposal_singular = proposal_singular or context.proposal_singular
@@ -971,8 +971,8 @@ def build_llm_semantic_dependency_manifest_record(
     proposal_label: str | None = None,
     proposal_singular: str | None = None,
     created_at: str,
-    focus: List[str] | None = None,
-) -> Dict[str, Any]:
+    focus: list[str] | None = None,
+) -> dict[str, Any]:
     context = source_context or SourceContext.default()
     bundle = _build_llm_semantic_dependency_prompt_bundle(
         text="{proposal_text}",
@@ -1013,7 +1013,7 @@ def llm_extract_semantic_dependencies(
     api_key: str | None = None,
     model: str | None = None,
     source_context: SourceContext | None = None,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     context = source_context or SourceContext.default()
     resolved_model = model or context.llm_model
     if not resolved_model:
@@ -1046,10 +1046,10 @@ def llm_extract_semantic_dependencies(
 
     def _result(
         status: str,
-        dependencies: List[Dict[str, str]] | None = None,
+        dependencies: list[dict[str, str]] | None = None,
         error_message: str | None = None,
-    ) -> Dict[str, Any]:
-        payload: Dict[str, Any] = {
+    ) -> dict[str, Any]:
+        payload: dict[str, Any] = {
             "status": status,
             "dependencies": dependencies or [],
         }
@@ -1057,7 +1057,7 @@ def llm_extract_semantic_dependencies(
             payload["error_message"] = error_message
         return payload
 
-    def _parse(response: Any) -> Dict[str, Any]:
+    def _parse(response: Any) -> dict[str, Any]:
         content = _extract_response_content(response)
         if content is None:
             return _result(
@@ -1078,7 +1078,7 @@ def llm_extract_semantic_dependencies(
 
     if llm_reasoning is not None:
         try:
-            kwargs: Dict[str, Any] = {
+            kwargs: dict[str, Any] = {
                 "model": resolved_model,
                 "input": messages,
                 "text": {"format": _to_responses_text_format(response_format)},
@@ -1145,7 +1145,7 @@ def llm_extract_implicit_dependencies(
     api_key: str | None = None,
     model: str | None = None,
     source_context: SourceContext | None = None,
-) -> List[Dict[str, str]]:
+) -> list[dict[str, str]]:
     result = llm_extract_semantic_dependencies(
         text=text,
         current_proposal_number=current_proposal_number,

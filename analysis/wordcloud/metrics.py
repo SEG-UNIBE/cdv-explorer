@@ -1,14 +1,14 @@
 from collections import Counter
-from typing import Any, Dict, List
+from typing import Any
 
 
 def extract_wordcloud_metrics(
-    proposal_data: List[Dict[str, Any]],
+    proposal_data: list[dict[str, Any]],
     id_field: str,
     top_n: int = 200,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     aggregate_counter: Counter[str] = Counter()
-    per_proposal: List[Dict[str, Any]] = []
+    per_proposal: list[dict[str, Any]] = []
     included = 0
 
     for proposal in proposal_data:

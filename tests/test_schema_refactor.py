@@ -48,8 +48,8 @@ from analysis.dependencies.network import build_network_data
 from analysis.evolution.metrics import prepare_evolution_payload
 from analysis.proposal_schema import normalize_proposal_document
 from pipeline.preprocess._enrich import enrich as enrich_ip_files
-from pipeline.preprocess.nip_tags import _parse_nip_file
 from pipeline.preprocess.checkers.nip import check as check_nip_compliance
+from pipeline.preprocess.nip_tags import _parse_nip_file
 from pipeline.preprocess.rfc_preamble import _save_json as save_preamble_to_json_new
 
 

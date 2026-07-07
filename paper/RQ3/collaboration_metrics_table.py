@@ -9,7 +9,6 @@ from paper.RQ3.collaboration_common import (
     build_collaboration_metrics_rows,
 )
 
-
 TABLE_COLUMNS = [
     ("author", "Author"),
     ("bips", "BIPs"),

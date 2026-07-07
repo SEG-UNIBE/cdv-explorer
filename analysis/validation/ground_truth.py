@@ -4,13 +4,13 @@ import csv
 import io
 import re
 import zipfile
+from collections.abc import Mapping, Sequence
 from datetime import date
 from pathlib import Path
-from typing import Any, Dict, List, Mapping, Sequence
+from typing import Any
 from xml.etree import ElementTree as ET
 
 from analysis.reference_ids import normalize_reference_id_for_config
-
 
 GROUND_TRUTH_WORKBOOK_FILENAME = "ground_truth.xlsx"
 REVIEWED_IP_APPEND_WORKBOOK_FILENAME = "ips_append.xlsx"
@@ -160,7 +160,7 @@ def _element_namespace(element: ET.Element) -> str:
     return _XLSX_MAIN_NS
 
 
-def _child_elements(parent: ET.Element, local_name: str) -> List[ET.Element]:
+def _child_elements(parent: ET.Element, local_name: str) -> list[ET.Element]:
     return [child for child in list(parent) if _element_local_name(child) == local_name]
 
 
@@ -171,7 +171,7 @@ def _first_child(parent: ET.Element, local_name: str) -> ET.Element | None:
     return None
 
 
-def _find_descendants(root: ET.Element, local_name: str) -> List[ET.Element]:
+def _find_descendants(root: ET.Element, local_name: str) -> list[ET.Element]:
     return [
         element for element in root.iter() if _element_local_name(element) == local_name
     ]
@@ -385,11 +385,11 @@ def _sheet_value_from_cell(
     return value
 
 
-def _load_shared_strings(workbook: zipfile.ZipFile) -> List[str]:
+def _load_shared_strings(workbook: zipfile.ZipFile) -> list[str]:
     if "xl/sharedStrings.xml" not in workbook.namelist():
         return []
     root = ET.fromstring(workbook.read("xl/sharedStrings.xml"))
-    values: List[str] = []
+    values: list[str] = []
     for string_item in _find_descendants(root, "si"):
         values.append("".join(string_item.itertext()))
     return values
@@ -421,13 +421,13 @@ def _load_xlsx_sheet_entries(
     *,
     sheet_name: str,
     columns: Sequence[str],
-) -> List[Dict[str, str]]:
+) -> list[dict[str, str]]:
     with zipfile.ZipFile(workbook_path) as workbook:
         shared_strings = _load_shared_strings(workbook)
         sheet_path = _sheet_path_by_name(workbook, sheet_name)
         sheet_root = ET.fromstring(workbook.read(sheet_path))
 
-    rows: List[List[str]] = []
+    rows: list[list[str]] = []
     for row_element in _find_descendants(sheet_root, "row"):
         values_by_index: dict[int, str] = {}
         for cell in _child_elements(row_element, "c"):
@@ -473,7 +473,7 @@ def _load_xlsx_sheet_entries(
                 f"Ground-truth workbook sheet `{sheet_name}` is missing columns: {', '.join(missing)}"
             )
 
-    entries: List[Dict[str, str]] = []
+    entries: list[dict[str, str]] = []
     for row_values in rows[1:]:
         entry = {
             column: str(row_values[index]).strip() if index < len(row_values) else ""
@@ -488,7 +488,7 @@ def _load_ground_truth_rows_from_workbook(
     ecosystem_slug: str | None,
     *,
     sheet_name: str,
-) -> List[Dict[str, str]]:
+) -> list[dict[str, str]]:
     workbook_path = ground_truth_workbook_path(ecosystem_slug)
     if not workbook_path.exists():
         return []
@@ -504,9 +504,9 @@ def _load_ground_truth_rows_from_workbook(
 def _workbook_rows_to_csv_rows(
     sheet_name: str,
     rows: Sequence[Mapping[str, Any]],
-) -> List[Dict[str, str]]:
+) -> list[dict[str, str]]:
     if sheet_name == "ips":
-        normalized_rows: List[Dict[str, str]] = []
+        normalized_rows: list[dict[str, str]] = []
         for row in rows:
             graph_key = str(row.get("ip") or "").strip()
             if not graph_key:
@@ -573,9 +573,9 @@ def _workbook_rows_to_csv_rows(
 def _csv_rows_to_workbook_rows(
     sheet_name: str,
     rows: Sequence[Mapping[str, Any]],
-) -> List[Dict[str, str]]:
+) -> list[dict[str, str]]:
     if sheet_name == "ips":
-        workbook_rows: List[Dict[str, str]] = []
+        workbook_rows: list[dict[str, str]] = []
         for row in rows:
             source_slug, proposal_id = _split_graph_key(row.get("ip"))
             workbook_rows.append(
@@ -672,7 +672,7 @@ def sync_ground_truth_csvs_from_workbook(ecosystem_slug: str | None) -> bool:
     return True
 
 
-def load_reviewed_ip_append_rows(ecosystem_slug: str | None) -> List[Dict[str, str]]:
+def load_reviewed_ip_append_rows(ecosystem_slug: str | None) -> list[dict[str, str]]:
     if not ecosystem_slug:
         return []
     workbook_path = reviewed_ip_append_workbook_path(ecosystem_slug)
@@ -706,7 +706,7 @@ def write_reviewed_ip_append_workbook(
 
 def ground_truth_source_configs_by_slug(
     ecosystem_slug: str | None,
-) -> Dict[str, Dict[str, Any]]:
+) -> dict[str, dict[str, Any]]:
     if not ecosystem_slug:
         return {}
 
@@ -714,7 +714,7 @@ def ground_truth_source_configs_by_slug(
 
     ecosystem = ECOSYSTEM_REGISTRY.get(str(ecosystem_slug), {})
     sources = ecosystem.get("sources", {}) if isinstance(ecosystem, Mapping) else {}
-    configs: Dict[str, Dict[str, Any]] = {}
+    configs: dict[str, dict[str, Any]] = {}
     for source_slug, source_config in sources.items():
         if not isinstance(source_config, Mapping):
             continue
@@ -763,8 +763,8 @@ def validate_ground_truth_curated_entries(
     entries: Sequence[Mapping[str, Any]],
     *,
     source_configs_by_slug: Mapping[str, Mapping[str, Any]],
-) -> List[str]:
-    errors: List[str] = []
+) -> list[str]:
+    errors: list[str] = []
     seen_typed_edges: set[tuple[str, str, str]] = set()
     relation_types_by_pair: dict[tuple[str, str], str] = {}
 
@@ -778,7 +778,7 @@ def validate_ground_truth_curated_entries(
             errors.append(f"{row_label}: entry must be an object")
             continue
 
-        row_errors: List[str] = []
+        row_errors: list[str] = []
         try:
             _validate_ground_truth_graph_key(
                 entry.get("source"),
@@ -854,7 +854,7 @@ def _load_csv_rows(
     csv_path: Path,
     *,
     columns: Sequence[str],
-) -> List[Dict[str, str]]:
+) -> list[dict[str, str]]:
     if not csv_path.exists():
         return []
 
@@ -874,7 +874,7 @@ def _load_csv_rows(
         return []
     reader.fieldnames = [str(field or "").strip() for field in reader.fieldnames]
 
-    entries: List[Dict[str, str]] = []
+    entries: list[dict[str, str]] = []
     for row in reader:
         normalized = {
             str(key).strip(): str(value).strip()
@@ -993,7 +993,7 @@ def _normalize_iso_date(text: Any) -> str | None:
 
 def reviewed_ip_policy_for_ecosystem(
     ecosystem_slug: str | None,
-) -> Dict[str, Any] | None:
+) -> dict[str, Any] | None:
     if not ecosystem_slug:
         return None
     policy = GROUND_TRUTH_REVIEW_POLICIES.get(str(ecosystem_slug))
@@ -1004,12 +1004,12 @@ def validate_reviewed_ip_policy(
     entries: Sequence[Mapping[str, Any]],
     *,
     ecosystem_slug: str | None,
-) -> List[str]:
+) -> list[str]:
     policy = reviewed_ip_policy_for_ecosystem(ecosystem_slug)
     if not policy:
         return []
 
-    warnings: List[str] = []
+    warnings: list[str] = []
     allowed_source_slugs = {
         str(value).strip()
         for value in policy.get("allowed_source_slugs", ())
@@ -1017,9 +1017,9 @@ def validate_reviewed_ip_policy(
     }
     required_type = str(policy.get("required_type") or "").strip()
 
-    source_scope_violations: List[str] = []
-    type_scope_violations: List[str] = []
-    type_unknown: List[str] = []
+    source_scope_violations: list[str] = []
+    type_scope_violations: list[str] = []
+    type_unknown: list[str] = []
 
     for entry in entries:
         if not isinstance(entry, Mapping):
@@ -1080,8 +1080,8 @@ def validate_reviewed_ip_entries(
     entries: Sequence[Mapping[str, Any]],
     *,
     source_configs_by_slug: Mapping[str, Mapping[str, Any]],
-) -> List[str]:
-    errors: List[str] = []
+) -> list[str]:
+    errors: list[str] = []
     seen_ips: set[str] = set()
 
     for index, entry in enumerate(entries):
@@ -1094,7 +1094,7 @@ def validate_reviewed_ip_entries(
             errors.append(f"{row_label}: entry must be an object")
             continue
 
-        row_errors: List[str] = []
+        row_errors: list[str] = []
         raw_ip = str(entry.get("ip") or "").strip()
         reviewer = str(entry.get("reviewer") or "").strip()
         normalized_ip = None
@@ -1183,7 +1183,7 @@ def validate_reviewed_ip_entries(
 
 def load_ground_truth_curated_entries(
     ecosystem_slug: str | None, *, strict: bool = True
-) -> List[Dict[str, str]]:
+) -> list[dict[str, str]]:
     if not ecosystem_slug:
         return []
 
@@ -1221,7 +1221,7 @@ def load_ground_truth_curated_entries(
 
 def load_ground_truth_ips(
     ecosystem_slug: str | None, *, strict: bool = True
-) -> List[Dict[str, str]]:
+) -> list[dict[str, str]]:
     if not ecosystem_slug:
         return []
 
@@ -1259,8 +1259,8 @@ def load_ground_truth_ips(
 
 def completed_reviewed_ip_entries(
     entries: Sequence[Mapping[str, Any]],
-) -> List[Dict[str, str]]:
-    completed: List[Dict[str, str]] = []
+) -> list[dict[str, str]]:
+    completed: list[dict[str, str]] = []
     for entry in entries:
         if not isinstance(entry, Mapping):
             continue

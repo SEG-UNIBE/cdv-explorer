@@ -17,7 +17,6 @@ from paper.RQ3._plotting import (
     match_axis_label_fontsize,
 )
 
-
 REACT_CLASSIFICATION_PALETTE = [
     "#4e79a7",
     "#f28e2c",

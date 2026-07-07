@@ -1,6 +1,6 @@
 """Compliance checker for SatoshiLabs Improvement Proposals (SLIPs)."""
 
-from typing import Any, Dict, List
+from typing import Any
 
 from analysis.conformity.compliance import check_headlines, check_required_fields
 
@@ -12,7 +12,7 @@ def _make_check(
     *,
     category: str,
     details: str | None = None,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     return {
         "id": check_id,
         "label": label,
@@ -23,13 +23,13 @@ def _make_check(
     }
 
 
-def check(preamble: Dict[str, Any], content: str, src_config: dict) -> List[dict]:
+def check(preamble: dict[str, Any], content: str, src_config: dict) -> list[dict]:
     preamble_config = src_config["preamble"]
     required_fields: list = preamble_config["required_fields"]
     expected_headlines: dict = preamble_config.get("expected_headlines", {})
 
     missing_fields = set(check_required_fields(preamble, required_fields))
-    checks: List[dict] = [
+    checks: list[dict] = [
         _make_check(
             f"slip.required_field.{field}",
             f"Required field '{field}' is present",

@@ -7,7 +7,7 @@ import re
 import subprocess
 import time
 from pathlib import Path
-from typing import Annotated, Optional
+from typing import Annotated
 
 import typer
 
@@ -238,13 +238,13 @@ def _run_source_pipeline(
 
 def run(
     ecosystem: Annotated[
-        Optional[str],
+        str | None,
         typer.Option(
             "--ecosystem", "-e", help="Ecosystem slug (default: first registered)."
         ),
     ] = None,
     source: Annotated[
-        Optional[str],
+        str | None,
         typer.Option("--source", help="Source slug (default: all sources)."),
     ] = None,
     snapshot: Annotated[
@@ -255,7 +255,7 @@ def run(
         bool, typer.Option("--skipllm", help="Skip LLM-based extraction.")
     ] = False,
     focus: Annotated[
-        Optional[str],
+        str | None,
         typer.Option(
             "--focus",
             help="Comma-separated list of proposal IDs to process (e.g. '1-9,30-44,85,A0'). All others are skipped.",
@@ -269,7 +269,7 @@ def run(
         ),
     ] = False,
     artifact_llm_model: Annotated[
-        Optional[str],
+        str | None,
         typer.Option(
             "--artifact-llm-model",
             help="LLM model to publish into web artifacts when multiple stored LLM runs exist.",

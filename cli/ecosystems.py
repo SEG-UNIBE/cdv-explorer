@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import json
-from typing import Annotated, Optional
+from typing import Annotated
 
 import typer
 import yaml
@@ -46,7 +46,7 @@ def ecosystems_show(
 @eco_app.command("add", rich_help_panel="Register")
 def ecosystems_add(
     slug: Annotated[
-        Optional[str], typer.Option(help="Ecosystem slug (e.g. ethereum).")
+        str | None, typer.Option(help="Ecosystem slug (e.g. ethereum).")
     ] = None,
 ) -> None:
     """Scaffold a new [cyan]ecosystems/<slug>.yml[/cyan] with an initial IP source."""

@@ -3,8 +3,9 @@ from __future__ import annotations
 import json
 import random
 from collections import Counter, defaultdict
+from collections.abc import Mapping, Sequence
 from pathlib import Path
-from typing import Any, Dict, List, Mapping, Sequence
+from typing import Any
 
 from analysis.dependencies.constants import GROUND_TRUTH_CURATED
 from analysis.validation.ground_truth import (
@@ -38,7 +39,7 @@ def _graph_key_sort_parts(value: Any) -> tuple[str, int, str]:
         return (source_slug, 1_000_000_000, proposal_id)
 
 
-def _load_network_data(network_path: Path) -> Dict[str, Any]:
+def _load_network_data(network_path: Path) -> dict[str, Any]:
     with network_path.open(encoding="utf-8") as handle:
         payload = json.load(handle)
     if not isinstance(payload, dict):
@@ -46,7 +47,7 @@ def _load_network_data(network_path: Path) -> Dict[str, Any]:
     return payload
 
 
-def _era_labels(count: int) -> List[str]:
+def _era_labels(count: int) -> list[str]:
     if count <= 1:
         return ["all"]
     if count == 2:
@@ -57,7 +58,7 @@ def _era_labels(count: int) -> List[str]:
 
 
 def _assign_era_buckets(
-    candidates: List[Dict[str, Any]], era_bucket_count: int
+    candidates: list[dict[str, Any]], era_bucket_count: int
 ) -> None:
     labels = _era_labels(era_bucket_count)
     dated = [
@@ -90,16 +91,16 @@ def _density_bucket(count: int, low_max: int) -> str:
 
 
 def _sample_candidates(
-    candidates: Sequence[Dict[str, Any]],
+    candidates: Sequence[dict[str, Any]],
     *,
     count: int,
     seed: int,
-) -> List[Dict[str, Any]]:
+) -> list[dict[str, Any]]:
     if count <= 0:
         return []
 
     rng = random.Random(seed)
-    strata: dict[tuple[str, str], list[Dict[str, Any]]] = defaultdict(list)
+    strata: dict[tuple[str, str], list[dict[str, Any]]] = defaultdict(list)
     for candidate in candidates:
         strata[
             (
@@ -112,7 +113,7 @@ def _sample_candidates(
     for rows in strata.values():
         rng.shuffle(rows)
 
-    sample: List[Dict[str, Any]] = []
+    sample: list[dict[str, Any]] = []
     while len(sample) < count:
         progressed = False
         for key in ordered_strata:
@@ -140,7 +141,7 @@ def build_reviewed_ip_sample(
     density_basis: str = ALL_METHODS,
     proposal_type: str | None = None,
     exclude_ips: Sequence[str] | None = None,
-) -> List[Dict[str, Any]]:
+) -> list[dict[str, Any]]:
     nodes = network_data.get("nodes", [])
     edges = network_data.get("dependency_edges", [])
     if not isinstance(nodes, list) or not isinstance(edges, list):
@@ -170,7 +171,7 @@ def build_reviewed_ip_sample(
             continue
         outgoing_targets[source].add(target)
 
-    candidates: List[Dict[str, Any]] = []
+    candidates: list[dict[str, Any]] = []
     for node in nodes:
         if not isinstance(node, Mapping):
             continue
@@ -217,7 +218,7 @@ def prefill_ips_csv(
     proposal_type: str | None = None,
     reviewer: str = "",
     replace: bool = False,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     network_data = _load_network_data(network_path)
     reviewed_rows = load_ground_truth_ips(ecosystem_slug, strict=False)
     pending_rows = [] if replace else load_reviewed_ip_append_rows(ecosystem_slug)

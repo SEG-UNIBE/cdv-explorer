@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 import os
+from collections.abc import Mapping
 from dataclasses import dataclass
-from typing import Any, Mapping
+from typing import Any
 
 from ecosystems import ECOSYSTEM_REGISTRY
 
@@ -22,13 +23,13 @@ class SourceContext:
         *,
         ecosystem_slug: str | None = None,
         source_slug: str | None = None,
-    ) -> "SourceContext":
+    ) -> SourceContext:
         return cls(
             config=config, ecosystem_slug=ecosystem_slug, source_slug=source_slug
         )
 
     @classmethod
-    def default(cls) -> "SourceContext":
+    def default(cls) -> SourceContext:
         eco_slug = os.environ.get("CDV_ECOSYSTEM") or next(
             iter(ECOSYSTEM_REGISTRY), None
         )

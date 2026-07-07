@@ -1,6 +1,7 @@
 from collections import Counter, defaultdict
 from datetime import datetime
-from typing import Any, Dict, List, Tuple
+from typing import Any
+
 from pipeline.source_context import SourceContext
 
 
@@ -9,7 +10,7 @@ def _clean_base(value: Any, fallback: str) -> str:
     return text or fallback
 
 
-def _apply_alias(value: str, aliases: Dict[str, str]) -> str:
+def _apply_alias(value: str, aliases: dict[str, str]) -> str:
     return aliases.get(value, value)
 
 
@@ -27,8 +28,8 @@ def _extract_year(date_text: Any) -> int | None:
 
 
 def _node_triplet(
-    node: Dict[str, Any], source_context: SourceContext
-) -> Tuple[str, str, str]:
+    node: dict[str, Any], source_context: SourceContext
+) -> tuple[str, str, str]:
     layer = _apply_alias(
         _clean_base(node.get("layer"), "Unknown Layer"),
         source_context.classification_aliases("layer"),
@@ -45,10 +46,10 @@ def _node_triplet(
 
 
 def build_sankey_links(
-    nodes: List[Dict[str, Any]],
+    nodes: list[dict[str, Any]],
     grouped_status: bool,
     source_context: SourceContext | None = None,
-) -> List[Dict[str, Any]]:
+) -> list[dict[str, Any]]:
     context = source_context or SourceContext.default()
     links = Counter()
 
@@ -79,9 +80,9 @@ def build_sankey_links(
 
 
 def build_status_over_time(
-    nodes: List[Dict[str, Any]],
+    nodes: list[dict[str, Any]],
     source_context: SourceContext | None = None,
-) -> Dict[str, Dict[str, int]]:
+) -> dict[str, dict[str, int]]:
     context = source_context or SourceContext.default()
     yearly = defaultdict(Counter)
 
@@ -95,16 +96,16 @@ def build_status_over_time(
         )
         yearly[year][status] += 1
 
-    out: Dict[str, Dict[str, int]] = {}
+    out: dict[str, dict[str, int]] = {}
     for year in sorted(yearly.keys()):
         out[str(year)] = dict(sorted(yearly[year].items(), key=lambda x: x[0]))
     return out
 
 
 def build_type_over_time(
-    nodes: List[Dict[str, Any]],
+    nodes: list[dict[str, Any]],
     source_context: SourceContext | None = None,
-) -> Dict[str, Dict[str, int]]:
+) -> dict[str, dict[str, int]]:
     context = source_context or SourceContext.default()
     yearly = defaultdict(Counter)
 
@@ -118,16 +119,16 @@ def build_type_over_time(
         )
         yearly[year][kind] += 1
 
-    out: Dict[str, Dict[str, int]] = {}
+    out: dict[str, dict[str, int]] = {}
     for year in sorted(yearly.keys()):
         out[str(year)] = dict(sorted(yearly[year].items(), key=lambda x: x[0]))
     return out
 
 
 def prepare_classification_payload(
-    network_data: Dict[str, Any],
+    network_data: dict[str, Any],
     source_context: SourceContext | None = None,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     context = source_context or SourceContext.default()
     nodes = network_data.get("nodes", [])
 

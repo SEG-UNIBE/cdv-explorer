@@ -1,15 +1,14 @@
 import argparse
 import json
 from pathlib import Path
-from typing import Any, Dict
-
-from pipeline.source_context import SourceContext
+from typing import Any
 
 from analysis.artifact_io import load_network_data
 from analysis.authorship import prepare_authorship_payload
+from pipeline.source_context import SourceContext
 
 
-def save_payload(payload: Dict[str, Any], output_path: Path) -> None:
+def save_payload(payload: dict[str, Any], output_path: Path) -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     with output_path.open("w", encoding="utf-8") as handle:
         json.dump(payload, handle, ensure_ascii=False, indent=2)

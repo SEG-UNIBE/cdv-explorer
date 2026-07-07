@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any
 
 from analysis.dependencies.constants import (
     BODY_EXTRACTED_LLM,
@@ -8,7 +8,6 @@ from analysis.dependencies.constants import (
     PREAMBLE_EXTRACTED,
 )
 from analysis.dependencies.metrics import _build_pairwise_comparisons
-
 
 LATEX_TABCOLSEP_PT = 4
 APPROACH_ORDER = [
@@ -47,14 +46,14 @@ def _format_count_share(count: int, share: float) -> str:
     return f"{count} ({share * 100:.1f}\\%)"
 
 
-def _get_approach_only_rate(summary: Dict[str, Any]) -> float:
+def _get_approach_only_rate(summary: dict[str, Any]) -> float:
     approach_total = int(summary.get("approach_total", 0) or 0)
     if approach_total <= 0:
         return 0.0
     return float(summary.get("approach_only", 0) or 0) / approach_total
 
 
-def _build_cell(comparison: Dict[str, Any]) -> Dict[str, str]:
+def _build_cell(comparison: dict[str, Any]) -> dict[str, str]:
     summary = comparison.get("summary", {})
     return {
         r"$A \cap B$": _format_count_share(
@@ -73,11 +72,11 @@ def _build_cell(comparison: Dict[str, Any]) -> Dict[str, str]:
 
 
 def _get_pairwise_summary(
-    pairwise_comparisons: Dict[str, Any],
+    pairwise_comparisons: dict[str, Any],
     *,
     approach: str,
     baseline: str,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     return (pairwise_comparisons.get(f"{approach}__vs__{baseline}") or {}).get(
         "summary", {}
     )
@@ -105,7 +104,7 @@ def _indent_block(block: str, prefix: str = "    ") -> list[str]:
 
 
 def _build_partial_dependency_comparison_tabular(
-    pairwise_comparisons: Dict[str, Any],
+    pairwise_comparisons: dict[str, Any],
     *,
     row_approach: str,
     column_approaches: list[str],
@@ -182,7 +181,7 @@ def _build_partial_dependency_comparison_tabular(
 
 
 def export_dependency_comparison_latex_table(
-    network_data: Dict[str, Any],
+    network_data: dict[str, Any],
     output_path: Path,
     *,
     tabcolsep_pt: int = LATEX_TABCOLSEP_PT,
@@ -250,7 +249,7 @@ def export_dependency_comparison_latex_table(
 
 
 def export_preamble_dependency_comparison_latex_table(
-    network_data: Dict[str, Any],
+    network_data: dict[str, Any],
     output_path: Path,
     *,
     tabcolsep_pt: int = LATEX_TABCOLSEP_PT,
@@ -282,7 +281,7 @@ def export_preamble_dependency_comparison_latex_table(
 
 
 def export_preamble_plus_regex_llm_dependency_comparison_latex_table(
-    network_data: Dict[str, Any],
+    network_data: dict[str, Any],
     output_path: Path,
     *,
     tabcolsep_pt: int = LATEX_TABCOLSEP_PT,

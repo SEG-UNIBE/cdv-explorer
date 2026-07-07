@@ -1,11 +1,11 @@
+import math
 import re
 from collections import Counter, defaultdict
+from collections.abc import Iterable
 from datetime import datetime
-import math
-from typing import Any, Dict, Iterable, List, Tuple
+from typing import Any
 
 import networkx as nx
-
 
 AUTHOR_RANK_FIELDS = (
     "rawDegree",
@@ -19,7 +19,7 @@ def _clean_author_name(author: str) -> str:
     return re.split(r"<", author)[0].strip()
 
 
-def _iter_authors(nodes: Iterable[Dict[str, Any]]) -> Iterable[str]:
+def _iter_authors(nodes: Iterable[dict[str, Any]]) -> Iterable[str]:
     for node in nodes:
         authors = node.get("author")
         if isinstance(authors, list):
@@ -38,9 +38,9 @@ def _extract_year(date_text: str | None) -> int | None:
         return None
 
 
-def build_collaboration_network(nodes: List[Dict[str, Any]]) -> nx.Graph:
+def build_collaboration_network(nodes: list[dict[str, Any]]) -> nx.Graph:
     graph = nx.Graph()
-    edge_weights: Dict[Tuple[str, str], int] = defaultdict(int)
+    edge_weights: dict[tuple[str, str], int] = defaultdict(int)
 
     for author in _iter_authors(nodes):
         graph.add_node(author)
@@ -67,7 +67,7 @@ def build_collaboration_network(nodes: List[Dict[str, Any]]) -> nx.Graph:
     return graph
 
 
-def extract_authorship_metrics(nodes: List[Dict[str, Any]]) -> Dict[str, Any]:
+def extract_authorship_metrics(nodes: list[dict[str, Any]]) -> dict[str, Any]:
     author_counts = Counter(_iter_authors(nodes))
     top_authors = [
         {"author": name, "count": count}
@@ -145,7 +145,7 @@ def extract_authorship_metrics(nodes: List[Dict[str, Any]]) -> Dict[str, Any]:
     }
 
 
-def compute_centrality_scores(graph: nx.Graph) -> List[Dict[str, Any]]:
+def compute_centrality_scores(graph: nx.Graph) -> list[dict[str, Any]]:
     degree = nx.degree_centrality(graph)
     betweenness = nx.betweenness_centrality(graph)
     closeness = nx.closeness_centrality(graph)
@@ -155,7 +155,7 @@ def compute_centrality_scores(graph: nx.Graph) -> List[Dict[str, Any]]:
     except nx.NetworkXException:
         eigenvector = {node: 0.0 for node in graph.nodes()}
 
-    centrality_data: List[Dict[str, Any]] = []
+    centrality_data: list[dict[str, Any]] = []
     for node in graph.nodes():
         centrality_data.append(
             {
@@ -171,11 +171,11 @@ def compute_centrality_scores(graph: nx.Graph) -> List[Dict[str, Any]]:
 
 
 def _compute_weighted_eigenvector(
-    node_ids: List[str],
-    adjacency: Dict[str, List[Dict[str, Any]]],
+    node_ids: list[str],
+    adjacency: dict[str, list[dict[str, Any]]],
     max_iterations: int = 1000,
     tolerance: float = 1e-6,
-) -> Dict[str, float]:
+) -> dict[str, float]:
     author_ids = list(
         dict.fromkeys(str(node_id) for node_id in node_ids if str(node_id))
     )
@@ -211,12 +211,12 @@ def _compute_weighted_eigenvector(
 
 
 def _compute_weighted_pagerank(
-    node_ids: List[str],
-    adjacency: Dict[str, List[Dict[str, Any]]],
+    node_ids: list[str],
+    adjacency: dict[str, list[dict[str, Any]]],
     damping: float = 0.85,
     max_iterations: int = 1000,
     tolerance: float = 1e-6,
-) -> Dict[str, float]:
+) -> dict[str, float]:
     author_ids = list(
         dict.fromkeys(str(node_id) for node_id in node_ids if str(node_id))
     )
@@ -270,17 +270,17 @@ def _compute_weighted_pagerank(
 
 
 def _build_true_components(
-    node_ids: List[str], adjacency: Dict[str, List[Dict[str, Any]]]
-) -> List[List[str]]:
+    node_ids: list[str], adjacency: dict[str, list[dict[str, Any]]]
+) -> list[list[str]]:
     visited = set()
-    components: List[List[str]] = []
+    components: list[list[str]] = []
 
     for node_id in node_ids:
         if node_id in visited:
             continue
 
         queue = [node_id]
-        members: List[str] = []
+        members: list[str] = []
         visited.add(node_id)
         head = 0
 
@@ -302,10 +302,10 @@ def _build_true_components(
 
 
 def _build_display_components(
-    node_ids: List[str], adjacency: Dict[str, List[Dict[str, Any]]]
-) -> List[List[str]]:
-    isolated_ids: List[str] = []
-    components: List[List[str]] = []
+    node_ids: list[str], adjacency: dict[str, list[dict[str, Any]]]
+) -> list[list[str]]:
+    isolated_ids: list[str] = []
+    components: list[list[str]] = []
 
     for members in _build_true_components(node_ids, adjacency):
         if len(members) == 1:
@@ -319,9 +319,9 @@ def _build_display_components(
     return components
 
 
-def _rank_author_rows(rows: List[Dict[str, Any]], field: str) -> Dict[str, int]:
+def _rank_author_rows(rows: list[dict[str, Any]], field: str) -> dict[str, int]:
     sorted_rows = sorted(rows, key=lambda row: float(row.get(field, 0.0)), reverse=True)
-    ranks: Dict[str, int] = {}
+    ranks: dict[str, int] = {}
     current_rank = 0
     previous_value = None
 
@@ -336,9 +336,9 @@ def _rank_author_rows(rows: List[Dict[str, Any]], field: str) -> Dict[str, int]:
 
 
 def build_collaboration_metrics_payload(
-    collaboration_network: Dict[str, Any],
-    collaboration_centrality: List[Dict[str, Any]],
-) -> Dict[str, Any]:
+    collaboration_network: dict[str, Any],
+    collaboration_centrality: list[dict[str, Any]],
+) -> dict[str, Any]:
     raw_nodes = (
         collaboration_network.get("nodes", [])
         if isinstance(collaboration_network, dict)
@@ -350,8 +350,8 @@ def build_collaboration_metrics_payload(
         else []
     )
     node_ids = [str(node.get("id")) for node in raw_nodes if node.get("id") is not None]
-    adjacency: Dict[str, List[Dict[str, Any]]] = {node_id: [] for node_id in node_ids}
-    weighted_degree_by_author: Dict[str, float] = {node_id: 0.0 for node_id in node_ids}
+    adjacency: dict[str, list[dict[str, Any]]] = {node_id: [] for node_id in node_ids}
+    weighted_degree_by_author: dict[str, float] = {node_id: 0.0 for node_id in node_ids}
 
     for edge in raw_edges:
         source = str(edge.get("source") or "")
@@ -370,7 +370,7 @@ def build_collaboration_metrics_payload(
 
     true_components = _build_true_components(node_ids, adjacency)
     display_components = _build_display_components(node_ids, adjacency)
-    cluster_meta_by_author: Dict[str, Dict[str, int | None]] = {}
+    cluster_meta_by_author: dict[str, dict[str, int | None]] = {}
     for index, members in enumerate(display_components, start=1):
         for author in members:
             cluster_meta_by_author[author] = {
@@ -530,7 +530,7 @@ def build_collaboration_metrics_payload(
     }
 
 
-def prepare_authorship_payload(network_data: Dict[str, Any]) -> Dict[str, Any]:
+def prepare_authorship_payload(network_data: dict[str, Any]) -> dict[str, Any]:
     nodes = network_data.get("nodes", [])
     authorship = extract_authorship_metrics(nodes)
     collaboration_network = authorship["collaboration_network"]

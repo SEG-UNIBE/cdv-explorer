@@ -1,7 +1,6 @@
-from typing import Any, Dict, List
+from typing import Any
 
 from pipeline.source_context import SourceContext
-
 
 META_KEYS = ("last_commit", "total_commits", "git_history")
 OBSOLETE_INTERRELATION_KEYS = {
@@ -24,7 +23,7 @@ LLM_RUN_STATUSES = {
 }
 
 
-def empty_meta() -> Dict[str, Any]:
+def empty_meta() -> dict[str, Any]:
     return {
         "last_commit": None,
         "total_commits": None,
@@ -32,7 +31,7 @@ def empty_meta() -> Dict[str, Any]:
     }
 
 
-def empty_interrelations() -> Dict[str, List[Any]]:
+def empty_interrelations() -> dict[str, list[Any]]:
     return {
         "preamble_extracted": [],
         "body_extracted_regex": [],
@@ -40,7 +39,7 @@ def empty_interrelations() -> Dict[str, List[Any]]:
     }
 
 
-def empty_insights() -> Dict[str, Any]:
+def empty_insights() -> dict[str, Any]:
     return {
         "formal_compliance": {},
         "word_list": {},
@@ -49,7 +48,7 @@ def empty_insights() -> Dict[str, Any]:
     }
 
 
-def _as_dict(value: Any) -> Dict[str, Any]:
+def _as_dict(value: Any) -> dict[str, Any]:
     return dict(value) if isinstance(value, dict) else {}
 
 
@@ -58,14 +57,14 @@ def _has_value(value: Any) -> bool:
 
 
 def get_preamble_interrelations(
-    preamble: Dict[str, Any] | None,
+    preamble: dict[str, Any] | None,
     source_context: SourceContext | None = None,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     source = _as_dict(preamble)
     context = source_context or SourceContext.default()
     field_aliases = context.field_aliases
     interrelation_types = context.preamble_interrelation_types
-    interrelations: Dict[str, Any] = {}
+    interrelations: dict[str, Any] = {}
 
     for subtype in interrelation_types:
         value = source.get(subtype)
@@ -84,9 +83,9 @@ def get_preamble_interrelations(
 
 
 def normalize_raw_preamble(
-    preamble: Dict[str, Any] | None,
+    preamble: dict[str, Any] | None,
     source_context: SourceContext | None = None,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     normalized = _as_dict(preamble)
     field_aliases = (source_context or SourceContext.default()).field_aliases
 
@@ -104,7 +103,7 @@ def normalize_raw_preamble(
     return normalized
 
 
-def get_meta(proposal: Dict[str, Any]) -> Dict[str, Any]:
+def get_meta(proposal: dict[str, Any]) -> dict[str, Any]:
     meta = empty_meta()
     canonical_meta = _as_dict(proposal.get("meta"))
 
@@ -118,13 +117,13 @@ def get_meta(proposal: Dict[str, Any]) -> Dict[str, Any]:
     return meta
 
 
-def get_formal_compliance(proposal: Dict[str, Any]) -> Dict[str, Any]:
+def get_formal_compliance(proposal: dict[str, Any]) -> dict[str, Any]:
     insights = _as_dict(proposal.get("insights"))
     candidate = insights.get("formal_compliance")
     return dict(candidate) if isinstance(candidate, dict) else {}
 
 
-def get_changes_in_status(proposal: Dict[str, Any]) -> List[Any]:
+def get_changes_in_status(proposal: dict[str, Any]) -> list[Any]:
     insights = _as_dict(proposal.get("insights"))
     candidate = insights.get("changes_in_status")
     return list(candidate) if isinstance(candidate, list) else []
@@ -141,7 +140,7 @@ def is_llm_runs_format(value: Any) -> bool:
     )
 
 
-def llm_run_status(run: Dict[str, Any] | Any) -> str:
+def llm_run_status(run: dict[str, Any] | Any) -> str:
     if not isinstance(run, dict):
         return ""
     status = str(run.get("status") or "").strip().lower()
@@ -153,17 +152,17 @@ def llm_run_status(run: Dict[str, Any] | Any) -> str:
     return ""
 
 
-def is_successful_llm_run(run: Dict[str, Any] | Any) -> bool:
+def is_successful_llm_run(run: dict[str, Any] | Any) -> bool:
     return llm_run_status(run) == LLM_RUN_STATUS_SUCCESS
 
 
-def latest_llm_run(value: Any) -> Dict[str, Any] | None:
+def latest_llm_run(value: Any) -> dict[str, Any] | None:
     if not isinstance(value, list) or not value or not is_llm_runs_format(value):
         return None
     return max(value, key=lambda r: str(r.get("timestamp", "")))
 
 
-def latest_llm_dependencies(value: Any) -> List[Any]:
+def latest_llm_dependencies(value: Any) -> list[Any]:
     """Resolve body_extracted_llm to the latest run's dependency list."""
     latest = latest_llm_run(value)
     if latest is not None:
@@ -173,7 +172,7 @@ def latest_llm_dependencies(value: Any) -> List[Any]:
     return []
 
 
-def normalize_interrelations(proposal: Dict[str, Any]) -> Dict[str, Any]:
+def normalize_interrelations(proposal: dict[str, Any]) -> dict[str, Any]:
     interrelations = empty_interrelations()
     insights = _as_dict(proposal.get("insights"))
     canonical = _as_dict(insights.get("interrelations"))
@@ -193,7 +192,7 @@ def normalize_interrelations(proposal: Dict[str, Any]) -> Dict[str, Any]:
     return interrelations
 
 
-def get_interrelations(proposal: Dict[str, Any]) -> Dict[str, Any]:
+def get_interrelations(proposal: dict[str, Any]) -> dict[str, Any]:
     interrelations = normalize_interrelations(proposal)
     interrelations["body_extracted_llm"] = latest_llm_dependencies(
         interrelations["body_extracted_llm"]
@@ -202,14 +201,14 @@ def get_interrelations(proposal: Dict[str, Any]) -> Dict[str, Any]:
 
 
 def normalize_proposal_document(
-    proposal: Dict[str, Any] | None,
+    proposal: dict[str, Any] | None,
     source_context: SourceContext | None = None,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     source = proposal if isinstance(proposal, dict) else {}
     raw = _as_dict(source.get("raw"))
     insights = _as_dict(source.get("insights"))
 
-    normalized_raw: Dict[str, Any] = {
+    normalized_raw: dict[str, Any] = {
         "preamble": normalize_raw_preamble(
             raw.get("preamble"), source_context=source_context
         ),

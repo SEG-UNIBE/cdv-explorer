@@ -1,6 +1,6 @@
 import re
-from typing import Any, Mapping
-
+from collections.abc import Mapping
+from typing import Any
 
 HEX_REFERENCE_CLASS_PATTERN = re.compile(r"\[[^\]]*0-9[^\]]*A-F[^\]]*a-f[^\]]*\]")
 

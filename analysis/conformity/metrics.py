@@ -1,5 +1,5 @@
 from collections import defaultdict
-from typing import Any, Dict, List
+from typing import Any
 
 from analysis.proposal_schema import get_formal_compliance
 from pipeline.source_context import SourceContext
@@ -11,15 +11,15 @@ def _apply_status_alias(status: Any, source_context: SourceContext) -> str:
 
 
 def extract_conformity_metrics(
-    proposal_data: List[Dict[str, Any]],
+    proposal_data: list[dict[str, Any]],
     id_field: str = "id",
     source_context: SourceContext | None = None,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     context = source_context or SourceContext.default()
     per_proposal = []
     score_values = []
     by_standard = defaultdict(list)
-    check_summary: Dict[str, Dict[str, Any]] = {}
+    check_summary: dict[str, dict[str, Any]] = {}
 
     for proposal in proposal_data:
         preamble = proposal.get("raw", {}).get("preamble", {})

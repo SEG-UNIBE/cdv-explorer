@@ -17,10 +17,13 @@ on:
       - 'ip_data/**/03_analysis/**'
       - 'ip_data/**/04_postprocess/**'
       - 'analysis/**'
+      - 'cli/**'
       - 'pipeline/**'
       - 'ecosystems/**'
       - 'tests/**'
       - 'requirements*.txt'
+      - 'ruff.toml'
+      - 'mypy.ini'
       - 'main.py'
   pull_request:
     branches:
@@ -38,10 +41,13 @@ on:
       - 'ip_data/**/03_analysis/**'
       - 'ip_data/**/04_postprocess/**'
       - 'analysis/**'
+      - 'cli/**'
       - 'pipeline/**'
       - 'ecosystems/**'
       - 'tests/**'
       - 'requirements*.txt'
+      - 'ruff.toml'
+      - 'mypy.ini'
       - 'main.py'
   workflow_dispatch:
 
@@ -67,6 +73,9 @@ jobs:
 
       - name: Run ruff check
         run: ruff check .
+
+      - name: Run mypy
+        run: mypy
 
   test-unit:
     needs: lint

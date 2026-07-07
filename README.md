@@ -242,10 +242,12 @@ For local test/development work, install the dev requirements instead of the run
 
 ```bash
 pip install -r requirements-dev.lock.txt
+ruff check .
+mypy
 python -m pytest
 ```
 
-CI installs from the same lock file, so local and CI environments stay identical.
+CI installs from the same lock file, so local and CI environments stay identical. `mypy` currently runs in strict mode on a small typed slice of `analysis/`. Extend `mypy.ini` as more modules are made type-clean.
 
 For the React frontend:
 

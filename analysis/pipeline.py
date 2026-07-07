@@ -1,17 +1,17 @@
-import json
 import csv
+import json
+from collections.abc import Iterable, Mapping, Sequence
 from itertools import combinations
 from pathlib import Path
-from typing import Any, Dict, Iterable, List, Mapping, Sequence
+from typing import Any
 
-from analysis.authorship import extract_authorship_metrics
-from analysis.authorship import prepare_authorship_payload
+from analysis.authorship import extract_authorship_metrics, prepare_authorship_payload
 from analysis.classification import prepare_classification_payload
 from analysis.conformity import extract_conformity_metrics
 from analysis.dependencies import (
+    available_llm_model_entries,
     build_network_data,
     collapse_network_data_to_llm_model,
-    available_llm_model_entries,
     extract_dependency_metrics,
     load_proposal_json_documents,
     save_network_data_artifacts,
@@ -22,13 +22,13 @@ from analysis.wordcloud import extract_wordcloud_metrics
 from pipeline.source_context import SourceContext
 
 
-def _save_json(payload: Dict[str, Any], output_path: Path) -> None:
+def _save_json(payload: dict[str, Any], output_path: Path) -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     with output_path.open("w", encoding="utf-8") as handle:
         json.dump(payload, handle, ensure_ascii=False, indent=2)
 
 
-def _load_json(input_path: Path) -> Dict[str, Any]:
+def _load_json(input_path: Path) -> dict[str, Any]:
     with input_path.open(encoding="utf-8") as handle:
         payload = json.load(handle)
     return payload if isinstance(payload, dict) else {}
@@ -39,7 +39,7 @@ def combined_source_key(source_slugs: Iterable[str]) -> str:
 
 
 def _save_csv_rows(
-    rows: List[Dict[str, Any]], output_path: Path, fieldnames: List[str] | None = None
+    rows: list[dict[str, Any]], output_path: Path, fieldnames: list[str] | None = None
 ) -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     if not rows:
@@ -58,14 +58,14 @@ def _save_csv_rows(
 
 
 def _save_status_map_csv(
-    status_map: Dict[str, Dict[str, int]], output_path: Path, index_name: str
+    status_map: dict[str, dict[str, int]], output_path: Path, index_name: str
 ) -> None:
     all_statuses = sorted(
         {status for values in status_map.values() for status in values.keys()}
     )
-    rows: List[Dict[str, Any]] = []
+    rows: list[dict[str, Any]] = []
     for index_value in sorted(status_map.keys()):
-        row: Dict[str, Any] = {index_name: index_value}
+        row: dict[str, Any] = {index_name: index_value}
         for status in all_statuses:
             row[status] = status_map[index_value].get(status, 0)
         rows.append(row)
@@ -74,8 +74,8 @@ def _save_status_map_csv(
 
 def _known_proposal_ids_by_source(
     context: SourceContext, snapshot: str
-) -> Dict[str, set[str]]:
-    ids_by_source: Dict[str, set[str]] = {}
+) -> dict[str, set[str]]:
+    ids_by_source: dict[str, set[str]] = {}
 
     for source_slug, source_config in context.ecosystem_source_configs.items():
         preprocess_root = source_config.get("preprocess")
@@ -109,7 +109,7 @@ def _combined_placeholder_payload(
     combo_key: str,
     source_slugs: Sequence[str],
     section: str,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     meta = {
         "snapshot": snapshot,
         "source_slugs": list(source_slugs),
@@ -159,11 +159,11 @@ def _published_llm_model_from_network_data(
 
 
 def merge_source_network_data(
-    networks_by_source: Sequence[tuple[str, Dict[str, Any]]],
-) -> Dict[str, Any]:
-    nodes: List[Dict[str, Any]] = []
-    edges: List[Dict[str, Any]] = []
-    reviewed_ips: List[Dict[str, Any]] = []
+    networks_by_source: Sequence[tuple[str, dict[str, Any]]],
+) -> dict[str, Any]:
+    nodes: list[dict[str, Any]] = []
+    edges: list[dict[str, Any]] = []
+    reviewed_ips: list[dict[str, Any]] = []
     published_llm_models: set[str] = set()
     seen_nodes: set[str] = set()
     seen_reviewed_ips: set[str] = set()
@@ -244,9 +244,9 @@ def prepare_combined_source_artifacts(
     snapshot: str,
     source_slugs: Sequence[str] | None = None,
     progress_callback=None,
-) -> Dict[str, Dict[str, Path]]:
+) -> dict[str, dict[str, Path]]:
     selected_source_slugs = sorted(source_slugs or source_configs.keys())
-    saved: Dict[str, Dict[str, Path]] = {}
+    saved: dict[str, dict[str, Path]] = {}
 
     def emit(message: str, advance: int = 0) -> None:
         if progress_callback is not None:
@@ -256,8 +256,8 @@ def prepare_combined_source_artifacts(
         for combo in combinations(selected_source_slugs, size):
             combo_key = combined_source_key(combo)
             emit(f"{combo_key}: loading source network artifacts")
-            networks_by_source: List[tuple[str, Dict[str, Any]]] = []
-            missing_paths: List[Path] = []
+            networks_by_source: list[tuple[str, dict[str, Any]]] = []
+            missing_paths: list[Path] = []
             for source_slug in combo:
                 network_path = _source_network_path(
                     source_configs[source_slug], snapshot
@@ -338,7 +338,7 @@ def prepare_combined_source_artifacts(
     return saved
 
 
-def _flatten_conformity_rows(rows: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+def _flatten_conformity_rows(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return [
         {
             "id": row.get("id"),
@@ -351,7 +351,7 @@ def _flatten_conformity_rows(rows: List[Dict[str, Any]]) -> List[Dict[str, Any]]
     ]
 
 
-def _trim_conformity_checks(conformity_metrics: Dict[str, Any]) -> Dict[str, Any]:
+def _trim_conformity_checks(conformity_metrics: dict[str, Any]) -> dict[str, Any]:
     """Drop per-check data the dashboard never renders from the payload.
 
     The conformity views only list *failed* checks (failed-checks histogram and
@@ -361,7 +361,7 @@ def _trim_conformity_checks(conformity_metrics: Dict[str, Any]) -> Dict[str, Any
     Full check results are reproducible via the pipeline from Stage II data.
     """
     trimmed = dict(conformity_metrics)
-    per_proposal: List[Dict[str, Any]] = []
+    per_proposal: list[dict[str, Any]] = []
     for row in conformity_metrics.get("per_proposal") or []:
         row = dict(row)
         compliance = row.get("formal_compliance")
@@ -390,7 +390,7 @@ def _trim_conformity_checks(conformity_metrics: Dict[str, Any]) -> Dict[str, Any
 
 # Relative payload locations inside 04_postprocess/<snapshot>/ — the frontend
 # fetch contract (mirrored by react/src/data.js and react/scripts/syncPublicData.js).
-FRONTEND_PAYLOAD_FILES: Dict[str, str] = {
+FRONTEND_PAYLOAD_FILES: dict[str, str] = {
     "network_data": "dependencies/network_data.json",
     "dependency_metrics": "dependencies/dependency_metrics.json",
     "authorship_payload": "authorship/authorship_payload.json",
@@ -403,15 +403,15 @@ FRONTEND_PAYLOAD_FILES: Dict[str, str] = {
 def _save_frontend_payloads(
     postprocess_root: Path,
     snapshot: str,
-    network_data: Dict[str, Any],
-    dependency_metrics: Dict[str, Any],
-    authorship_payload: Dict[str, Any],
-    classification_payload: Dict[str, Any],
-    evolution_payload: Dict[str, Any],
-    conformity_metrics: Dict[str, Any],
-) -> Dict[str, Path]:
+    network_data: dict[str, Any],
+    dependency_metrics: dict[str, Any],
+    authorship_payload: dict[str, Any],
+    classification_payload: dict[str, Any],
+    evolution_payload: dict[str, Any],
+    conformity_metrics: dict[str, Any],
+) -> dict[str, Path]:
     payload_root = postprocess_root / snapshot
-    payloads: Dict[str, Dict[str, Any]] = {
+    payloads: dict[str, dict[str, Any]] = {
         "network_data": network_data,
         "dependency_metrics": dependency_metrics,
         "authorship_payload": authorship_payload,
@@ -420,7 +420,7 @@ def _save_frontend_payloads(
         "conformity_metrics": _trim_conformity_checks(conformity_metrics),
     }
 
-    saved: Dict[str, Path] = {}
+    saved: dict[str, Path] = {}
     for name, rel_path in FRONTEND_PAYLOAD_FILES.items():
         payload_path = payload_root / rel_path
         _save_json(payloads[name], payload_path)
@@ -448,7 +448,7 @@ def prepare_ecosystem_artifacts(
     artifact_llm_model: str | None = None,
     status_callback=None,
     progress_callback=None,
-) -> Dict[str, Path]:
+) -> dict[str, Path]:
     context = source_context or SourceContext.default()
 
     def emit(message: str, advance: int = 0) -> None:
@@ -459,7 +459,7 @@ def prepare_ecosystem_artifacts(
             status_callback(message)
 
     emit("Loading proposal JSON")
-    proposal_data: List[Dict[str, Any]] = load_proposal_json_documents(
+    proposal_data: list[dict[str, Any]] = load_proposal_json_documents(
         proposal_json_dir,
         source_context=context,
     )
@@ -584,7 +584,7 @@ def prepare_ecosystem_artifacts(
         fieldnames=["id", "unique_terms", "total_terms"],
     )
 
-    saved_paths: Dict[str, Path] = {
+    saved_paths: dict[str, Path] = {
         "authorship_json": authorship_path,
         "wordcloud_json": wordcloud_path,
     }

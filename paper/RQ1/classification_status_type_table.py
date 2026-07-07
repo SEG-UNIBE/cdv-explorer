@@ -3,7 +3,6 @@ from pathlib import Path
 
 from paper.RQ1.classification_type import TYPE_ORDER
 
-
 LATEX_TABCOLSEP_PT = 5
 DIAGBOX_INNERWIDTH_CM = 2.8
 TABLE_STATUS_ORDER = [

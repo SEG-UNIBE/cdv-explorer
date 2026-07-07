@@ -2,31 +2,31 @@ from __future__ import annotations
 
 import json
 import re
-from datetime import date
+from collections.abc import Mapping
 from dataclasses import dataclass, field
+from datetime import date
 from itertools import combinations
 from pathlib import Path
-from typing import Any, Mapping
+from typing import Any
 
 from analysis.dependencies.constants import (
     BODY_EXTRACTED_LLM,
     BODY_EXTRACTED_REGEX,
     PREAMBLE_EXTRACTED,
 )
-from analysis.proposal_schema import LLM_RUN_STATUSES, LLM_RUN_STATUS_SUCCESS
-from analysis.validation.ground_truth import (
-    ground_truth_workbook_path,
-    load_ground_truth_ips,
-    load_ground_truth_curated_entries,
-    validate_reviewed_ip_policy,
-    validate_ground_truth_curated_entries,
-    validate_reviewed_ip_entries,
-)
+from analysis.proposal_schema import LLM_RUN_STATUS_SUCCESS, LLM_RUN_STATUSES
 from analysis.reference_ids import normalize_reference_id_for_config
 from analysis.utils import parse_date_ymd
+from analysis.validation.ground_truth import (
+    ground_truth_workbook_path,
+    load_ground_truth_curated_entries,
+    load_ground_truth_ips,
+    validate_ground_truth_curated_entries,
+    validate_reviewed_ip_entries,
+    validate_reviewed_ip_policy,
+)
 from ecosystems import ECOSYSTEM_REGISTRY
 from pipeline.source_context import SourceContext
-
 
 PAYLOAD_REQUIRED_FILES: dict[str, list[str]] = {
     "dependencies/network_data.json": ["nodes", "dependency_edges"],
@@ -84,7 +84,7 @@ class SnapshotValidationResult:
     def warn(self, message: str) -> None:
         self.warnings.append(message)
 
-    def merge(self, other: "SnapshotValidationResult") -> None:
+    def merge(self, other: SnapshotValidationResult) -> None:
         self.ok = self.ok and other.ok
         self.errors.extend(other.errors)
         self.warnings.extend(other.warnings)

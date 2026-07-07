@@ -5,8 +5,8 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from paper.config import SNAPSHOT
 from paper._utils.io import resolve_output_dir, snapshot_prefix
+from paper.config import SNAPSHOT
 
 OUTPUT_DIR = None
 GENERATE_CLASSIFICATION_STATUS_PLOT = True

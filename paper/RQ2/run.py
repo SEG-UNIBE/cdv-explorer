@@ -5,8 +5,8 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from paper.config import SNAPSHOT
 from paper._utils.io import resolve_output_dir, snapshot_prefix
+from paper.config import SNAPSHOT
 
 # Set this directly only when RQ2 needs a custom output location.
 OUTPUT_DIR = None
@@ -35,20 +35,20 @@ DIFFERENTIAL_ALTERNATIVE_LAYOUTS = [
 
 def main() -> None:
     from analysis.artifact_io import (
-        load_network_data,
         load_dependency_metrics,
+        load_network_data,
         resolve_latest_snapshot_label,
     )
-    from paper.RQ2.dependency_differential_plots import (
-        render_differential_dependency_plots,
-    )
-    from paper.RQ2.dependency_plots import render_default_dependency_plot_suite
+    from paper.RQ2.dependency_centrality_table import export_centrality_top5_latex_table
     from paper.RQ2.dependency_comparison_table import (
         export_dependency_comparison_latex_table,
         export_preamble_dependency_comparison_latex_table,
         export_preamble_plus_regex_llm_dependency_comparison_latex_table,
     )
-    from paper.RQ2.dependency_centrality_table import export_centrality_top5_latex_table
+    from paper.RQ2.dependency_differential_plots import (
+        render_differential_dependency_plots,
+    )
+    from paper.RQ2.dependency_plots import render_default_dependency_plot_suite
 
     snapshot_label = SNAPSHOT or resolve_latest_snapshot_label() or "latest"
     default_relative_path = Path("paper") / "RQ2" / "outputs"

@@ -1,6 +1,5 @@
 from matplotlib.colors import to_rgba
 
-
 PLOT_COLOR_ALPHA = 1.0
 
 

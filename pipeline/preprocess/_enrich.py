@@ -3,11 +3,11 @@
 import json
 import re
 import sys
-from concurrent.futures import ThreadPoolExecutor, as_completed
 from collections import Counter
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict, Tuple
+from typing import Any
 from uuid import uuid4
 
 from tqdm import tqdm
@@ -26,14 +26,14 @@ from analysis.dependencies.mining import (
     load_api_key,
     prepare_llm_dependency_text,
 )
+from analysis.dependencies.utils import normalize_reference_id_for_config
+from analysis.evolution import extract_status_timeline
 from analysis.proposal_schema import (
     LLM_RUN_STATUS_API_ERROR,
     LLM_RUN_STATUS_SUCCESS,
     is_llm_runs_format,
     normalize_proposal_document,
 )
-from analysis.dependencies.utils import normalize_reference_id_for_config
-from analysis.evolution import extract_status_timeline
 from pipeline.source_context import SourceContext
 
 MIN_WORD_OCCURRENCE = 2
@@ -65,7 +65,7 @@ def _load_stop_words(path_value: str | None) -> set[str]:
         }
 
 
-def _build_word_list(raw_content: str, stop_words: set[str]) -> Dict[str, int]:
+def _build_word_list(raw_content: str, stop_words: set[str]) -> dict[str, int]:
     if not raw_content:
         return {}
     words = re.findall(r"\b\w+\b", raw_content.lower())
@@ -132,14 +132,14 @@ def _self_targets(
 
 
 def _build_base_insights(
-    json_data: Dict[str, Any],
+    json_data: dict[str, Any],
     source_file: Path,
     stop_words: set[str],
     proposal_label: str,
     id_field: str,
     reference_pattern: str,
     source_context: SourceContext,
-) -> Tuple[Dict[str, Any], str, str]:
+) -> tuple[dict[str, Any], str, str]:
     raw_content = (
         source_file.read_text(encoding="utf-8") if source_file.exists() else ""
     )
@@ -191,7 +191,7 @@ def _in_focus(proposal_number: str, raw_id: str, focus: set[str]) -> bool:
     )
 
 
-def _append_llm_manifest_run(manifest_path: Path, entry: Dict[str, Any]) -> None:
+def _append_llm_manifest_run(manifest_path: Path, entry: dict[str, Any]) -> None:
     if manifest_path.exists():
         try:
             payload = json.loads(manifest_path.read_text(encoding="utf-8"))
@@ -273,7 +273,7 @@ def enrich(
         )
 
     max_workers = max(1, LLM_MAX_CONCURRENCY)
-    pending: Dict[object, Dict[str, Any]] = {}
+    pending: dict[object, dict[str, Any]] = {}
     submitted_llm = 0
     completed_llm = 0
 
@@ -312,7 +312,7 @@ def enrich(
         else None
     )
 
-    def _write(output_path: Path, data: Dict[str, Any], msg: str) -> None:
+    def _write(output_path: Path, data: dict[str, Any], msg: str) -> None:
         output_path.write_text(
             json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8"
         )

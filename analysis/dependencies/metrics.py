@@ -1,4 +1,5 @@
-from typing import Any, Dict, Iterable, List
+from collections.abc import Iterable
+from typing import Any
 
 import networkx as nx
 
@@ -12,7 +13,6 @@ from analysis.dependencies.constants import (
     PREAMBLE_EXTRACTED,
 )
 
-
 RANK_FIELDS = (
     "in_degree",
     "out_degree",
@@ -22,7 +22,7 @@ RANK_FIELDS = (
 )
 
 
-def _canonical_dependency_edges(network_data: Dict[str, Any]) -> List[Dict[str, Any]]:
+def _canonical_dependency_edges(network_data: dict[str, Any]) -> list[dict[str, Any]]:
     edges = network_data.get("dependency_edges")
     if not isinstance(edges, list):
         return []
@@ -36,8 +36,8 @@ def _canonical_dependency_edges(network_data: Dict[str, Any]) -> List[Dict[str, 
 
 
 def _links_for_type(
-    network_data: Dict[str, Any], link_type: str
-) -> List[Dict[str, Any]]:
+    network_data: dict[str, Any], link_type: str
+) -> list[dict[str, Any]]:
     dependency_edges = _canonical_dependency_edges(network_data)
     if link_type == PREAMBLE_EXTRACTED:
         return [
@@ -69,7 +69,7 @@ def _split_graph_key(value: Any) -> tuple[str | None, str]:
     return source_slug or None, proposal_id
 
 
-def _network_edge_keys(network_data: Dict[str, Any]) -> set[str]:
+def _network_edge_keys(network_data: dict[str, Any]) -> set[str]:
     return {
         str(value)
         for edge in _canonical_dependency_edges(network_data)
@@ -78,7 +78,7 @@ def _network_edge_keys(network_data: Dict[str, Any]) -> set[str]:
     }
 
 
-def _node_graph_id(node: Dict[str, Any], edge_keys: set[str]) -> str:
+def _node_graph_id(node: dict[str, Any], edge_keys: set[str]) -> str:
     raw_id = str(node.get("id"))
     graph_key = node.get("graph_key") or node.get("graphId") or node.get("graph_id")
     if graph_key is not None:
@@ -112,7 +112,7 @@ def _node_graph_id(node: Dict[str, Any], edge_keys: set[str]) -> str:
 
 
 def build_graph(
-    network_data: Dict[str, Any], link_type: str = BODY_EXTRACTED_REGEX
+    network_data: dict[str, Any], link_type: str = BODY_EXTRACTED_REGEX
 ) -> nx.DiGraph:
     graph = nx.DiGraph()
     use_canonical_edges = bool(_canonical_dependency_edges(network_data))
@@ -137,7 +137,7 @@ def build_graph(
 
 def compute_top_central_nodes(
     graph: nx.DiGraph, top_n: int = 5
-) -> Dict[str, List[Dict[str, float | str]]]:
+) -> dict[str, list[dict[str, float | str]]]:
     in_deg = sorted(
         nx.in_degree_centrality(graph).items(), key=lambda x: x[1], reverse=True
     )
@@ -149,7 +149,7 @@ def compute_top_central_nodes(
     )
     pr = sorted(nx.pagerank(graph).items(), key=lambda x: x[1], reverse=True)
 
-    def _rows(items: Iterable[tuple[str, float]]) -> List[Dict[str, float | str]]:
+    def _rows(items: Iterable[tuple[str, float]]) -> list[dict[str, float | str]]:
         return [{"node": n, "score": float(c)} for n, c in list(items)[:top_n]]
 
     return {
@@ -171,19 +171,19 @@ def compute_graph_depth(graph: nx.DiGraph) -> int:
 
 
 def find_circular_dependencies(
-    network_data: Dict[str, Any], link_type: str = BODY_EXTRACTED_REGEX
-) -> List[List[str]]:
+    network_data: dict[str, Any], link_type: str = BODY_EXTRACTED_REGEX
+) -> list[list[str]]:
     graph = build_graph(network_data, link_type=link_type)
     return [list(cycle) for cycle in nx.simple_cycles(graph)]
 
 
-def _safe_pagerank(graph: nx.DiGraph) -> Dict[str, float]:
+def _safe_pagerank(graph: nx.DiGraph) -> dict[str, float]:
     if graph.number_of_nodes() == 0:
         return {}
     return {str(node): float(score) for node, score in nx.pagerank(graph).items()}
 
 
-def _safe_betweenness(graph: nx.DiGraph) -> Dict[str, float]:
+def _safe_betweenness(graph: nx.DiGraph) -> dict[str, float]:
     if graph.number_of_nodes() == 0:
         return {}
     return {
@@ -194,7 +194,7 @@ def _safe_betweenness(graph: nx.DiGraph) -> Dict[str, float]:
 
 def _safe_weighted_eigenvector(
     graph: nx.DiGraph, max_iter: int = 1000, tol: float = 1e-6
-) -> Dict[str, float]:
+) -> dict[str, float]:
     """Directed weighted eigenvector centrality via power iteration on incoming adjacency.
 
     Each node's score is the normalised weighted sum of its predecessors' scores -
@@ -213,7 +213,7 @@ def _safe_weighted_eigenvector(
 
     # Build incoming adjacency with weights (count of parallel edges).
     # DiGraph.in_edges returns unique edges; weight defaults to 1 when absent.
-    incoming: Dict[str, List[tuple]] = {nid: [] for nid in node_ids}
+    incoming: dict[str, list[tuple]] = {nid: [] for nid in node_ids}
     for src, tgt, data in graph.edges(data=True):
         w = float(data.get("weight", 1))
         incoming[str(tgt)].append((str(src), w))
@@ -238,13 +238,13 @@ def _safe_weighted_eigenvector(
     return values
 
 
-def _approach_labels() -> Dict[str, str]:
+def _approach_labels() -> dict[str, str]:
     return dict(DEPENDENCY_APPROACH_LABELS)
 
 
-def _rank_rows(rows: List[Dict[str, Any]], field: str) -> Dict[str, int]:
+def _rank_rows(rows: list[dict[str, Any]], field: str) -> dict[str, int]:
     sorted_rows = sorted(rows, key=lambda row: float(row.get(field, 0.0)), reverse=True)
-    ranks: Dict[str, int] = {}
+    ranks: dict[str, int] = {}
     current_rank = 0
     previous_value = None
 
@@ -258,7 +258,7 @@ def _rank_rows(rows: List[Dict[str, Any]], field: str) -> Dict[str, int]:
     return ranks
 
 
-def _build_pairwise_comparisons(network_data: Dict[str, Any]) -> Dict[str, Any]:
+def _build_pairwise_comparisons(network_data: dict[str, Any]) -> dict[str, Any]:
     use_canonical_edges = bool(_canonical_dependency_edges(network_data))
     edge_keys = _network_edge_keys(network_data) if use_canonical_edges else set()
     nodes_by_id = {
@@ -271,7 +271,7 @@ def _build_pairwise_comparisons(network_data: Dict[str, Any]) -> Dict[str, Any]:
         if node.get("id") is not None
     }
     approach_labels = _approach_labels()
-    pairwise: Dict[str, Any] = {}
+    pairwise: dict[str, Any] = {}
 
     for approach_key in DEPENDENCY_PAIRWISE_COMPARISON_ORDER:
         approach_label = approach_labels[approach_key]
@@ -295,7 +295,7 @@ def _build_pairwise_comparisons(network_data: Dict[str, Any]) -> Dict[str, Any]:
 
             def _edge_rows(
                 keys: set[tuple[str, str]], status: str
-            ) -> List[Dict[str, Any]]:
+            ) -> list[dict[str, Any]]:
                 return [
                     {
                         "source": source,
@@ -345,9 +345,9 @@ def _build_pairwise_comparisons(network_data: Dict[str, Any]) -> Dict[str, Any]:
     return pairwise
 
 
-def _extract_dependency_metrics_payload(network_data: Dict[str, Any]) -> Dict[str, Any]:
+def _extract_dependency_metrics_payload(network_data: dict[str, Any]) -> dict[str, Any]:
     approaches = _approach_labels()
-    by_approach: Dict[str, Dict[str, Any]] = {}
+    by_approach: dict[str, dict[str, Any]] = {}
 
     for approach_key in DEPENDENCY_APPROACH_ORDER:
         approach_label = approaches[approach_key]
@@ -404,8 +404,8 @@ def _extract_dependency_metrics_payload(network_data: Dict[str, Any]) -> Dict[st
 
 
 def _network_data_with_llm_model(
-    network_data: Dict[str, Any], llm_model: str
-) -> Dict[str, Any]:
+    network_data: dict[str, Any], llm_model: str
+) -> dict[str, Any]:
     llm_models = (
         network_data.get("llm_models", {}) if isinstance(network_data, dict) else {}
     )
@@ -423,7 +423,7 @@ def _network_data_with_llm_model(
     }
 
 
-def extract_dependency_metrics(network_data: Dict[str, Any]) -> Dict[str, Any]:
+def extract_dependency_metrics(network_data: dict[str, Any]) -> dict[str, Any]:
     payload = _extract_dependency_metrics_payload(network_data)
     published_llm_model = str(network_data.get("llm_model") or "").strip()
     if published_llm_model:

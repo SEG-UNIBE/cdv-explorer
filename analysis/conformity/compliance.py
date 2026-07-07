@@ -1,7 +1,6 @@
 import re
 from datetime import date
-from typing import Any, Dict, List
-
+from typing import Any
 
 SECTION_PATTERN = re.compile(r"^(={2,6})\s*(.+?)\s*\1\s*$", re.MULTILINE)
 PREAMBLE_LINE_PATTERN = re.compile(r"^\s*([A-Za-z][A-Za-z0-9-]*):\s*(.*)$")
@@ -50,7 +49,7 @@ def _make_check(
     category: str,
     standard: str,
     details: str | None = None,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     return {
         "id": check_id,
         "label": label,
@@ -61,7 +60,7 @@ def _make_check(
     }
 
 
-def _summarize_checks(checks: List[Dict[str, Any]]) -> Dict[str, Any]:
+def _summarize_checks(checks: list[dict[str, Any]]) -> dict[str, Any]:
     passed_checks = sum(1 for check in checks if check.get("passed") is True)
     failed_checks = sum(1 for check in checks if check.get("passed") is False)
     skipped_checks = sum(1 for check in checks if check.get("passed") is None)
@@ -94,9 +93,9 @@ def _is_valid_iso_date(value: str) -> bool:
     return True
 
 
-def _extract_section_entries(file_content: str) -> List[Dict[str, Any]]:
+def _extract_section_entries(file_content: str) -> list[dict[str, Any]]:
     matches = list(SECTION_PATTERN.finditer(file_content))
-    entries: List[Dict[str, Any]] = []
+    entries: list[dict[str, Any]] = []
 
     for index, match in enumerate(matches):
         body_start = match.end()
@@ -117,8 +116,8 @@ def _extract_section_entries(file_content: str) -> List[Dict[str, Any]]:
     return entries
 
 
-def _extract_section_map(file_content: str) -> Dict[str, Dict[str, Any]]:
-    section_map: Dict[str, Dict[str, Any]] = {}
+def _extract_section_map(file_content: str) -> dict[str, dict[str, Any]]:
+    section_map: dict[str, dict[str, Any]] = {}
     for entry in _extract_section_entries(file_content):
         section_map.setdefault(entry["normalized_name"], entry)
     return section_map
@@ -131,7 +130,7 @@ def _extract_top_preamble_block(file_content: str) -> str | None:
         return pre_match.group(1)
 
     lines = content.splitlines()
-    block_lines: List[str] = []
+    block_lines: list[str] = []
     started = False
 
     for line in lines:
@@ -158,14 +157,14 @@ def _extract_top_preamble_block(file_content: str) -> str | None:
     return "\n".join(block_lines) if block_lines else None
 
 
-def _parse_top_rfc822_preamble(file_content: str) -> Dict[str, Any]:
+def _parse_top_rfc822_preamble(file_content: str) -> dict[str, Any]:
     block = _extract_top_preamble_block(file_content)
     if not block:
         return {"exists": False, "valid": False, "headers": [], "headers_by_name": {}}
 
-    headers: List[Dict[str, Any]] = []
+    headers: list[dict[str, Any]] = []
     current_name: str | None = None
-    current_value_lines: List[str] = []
+    current_value_lines: list[str] = []
     valid = True
 
     for raw_line in block.splitlines():
@@ -206,7 +205,7 @@ def _parse_top_rfc822_preamble(file_content: str) -> Dict[str, Any]:
             }
         )
 
-    headers_by_name: Dict[str, List[Dict[str, Any]]] = {}
+    headers_by_name: dict[str, list[dict[str, Any]]] = {}
     for header in headers:
         headers_by_name.setdefault(header["normalized_name"], []).append(header)
 
@@ -219,7 +218,7 @@ def _parse_top_rfc822_preamble(file_content: str) -> Dict[str, Any]:
 
 
 def _get_first_header_value(
-    headers_by_name: Dict[str, List[Dict[str, Any]]], name: str
+    headers_by_name: dict[str, list[dict[str, Any]]], name: str
 ) -> str | None:
     entries = headers_by_name.get(name) or []
     if not entries:
@@ -252,12 +251,12 @@ def _has_value(value: Any) -> bool:
 
 
 def check_required_fields(
-    preamble: Dict[str, str], required_fields: List[str]
-) -> List[str]:
+    preamble: dict[str, str], required_fields: list[str]
+) -> list[str]:
     return [field for field in required_fields if not _has_value(preamble.get(field))]
 
 
-def check_headlines(file_content: str, expected_headlines: Dict[str, int]) -> List[str]:
+def check_headlines(file_content: str, expected_headlines: dict[str, int]) -> list[str]:
     found_headings = {
         entry["normalized_name"]: entry["level"]
         for entry in _extract_section_entries(file_content)
@@ -278,10 +277,10 @@ def check_headlines(file_content: str, expected_headlines: Dict[str, int]) -> Li
 
 
 def calculate_compliance_score(
-    preamble: Dict[str, str],
+    preamble: dict[str, str],
     file_content: str,
-    required_fields: List[str],
-    expected_headlines: Dict[str, int],
+    required_fields: list[str],
+    expected_headlines: dict[str, int],
 ) -> float:
     score = assess_bip2_compliance(
         preamble,
@@ -294,7 +293,7 @@ def calculate_compliance_score(
 
 
 def add_missing_optional_fields(
-    preamble: Dict[str, str], optional_fields: List[str]
+    preamble: dict[str, str], optional_fields: list[str]
 ) -> None:
     for field in optional_fields:
         if field not in preamble:
@@ -302,13 +301,13 @@ def add_missing_optional_fields(
 
 
 def assess_bip2_compliance(
-    preamble: Dict[str, Any],
+    preamble: dict[str, Any],
     file_content: str,
     *,
-    required_fields: List[str],
-    expected_headlines: Dict[str, int],
-) -> Dict[str, Any]:
-    checks: List[Dict[str, Any]] = []
+    required_fields: list[str],
+    expected_headlines: dict[str, int],
+) -> dict[str, Any]:
+    checks: list[dict[str, Any]] = []
 
     for field in required_fields:
         value = preamble.get(field)
@@ -354,9 +353,9 @@ def assess_bip2_compliance(
 
 
 def assess_bip3_compliance(
-    _preamble: Dict[str, Any], file_content: str
-) -> Dict[str, Any]:
-    checks: List[Dict[str, Any]] = []
+    _preamble: dict[str, Any], file_content: str
+) -> dict[str, Any]:
+    checks: list[dict[str, Any]] = []
     parsed_preamble = _parse_top_rfc822_preamble(file_content)
     headers = parsed_preamble["headers"]
     headers_by_name = parsed_preamble["headers_by_name"]
@@ -673,19 +672,19 @@ def assess_bip3_compliance(
     return _summarize_checks(checks)
 
 
-def build_compliance_payload(checks: List[Dict[str, Any]]) -> Dict[str, Any]:
+def build_compliance_payload(checks: list[dict[str, Any]]) -> dict[str, Any]:
     """Turn a flat list of check dicts into a scored compliance payload.
 
     Groups checks by their 'standard' field, summarizes each group, and
     computes an overall score across all checks.  The result is stored in
     insights.formal_compliance in each proposal JSON.
     """
-    by_standard: Dict[str, List[Dict[str, Any]]] = {}
+    by_standard: dict[str, list[dict[str, Any]]] = {}
     for check in checks:
         by_standard.setdefault(check.get("standard", ""), []).append(check)
 
     overall = _summarize_checks(checks)
-    payload: Dict[str, Any] = {
+    payload: dict[str, Any] = {
         "score": overall["score"],
         "passed_checks": overall["passed_checks"],
         "failed_checks": overall["failed_checks"],

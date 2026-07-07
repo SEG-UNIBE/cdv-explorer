@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import time
 from pathlib import Path
-from typing import Annotated, Optional
+from typing import Annotated
 
 import typer
 
@@ -283,17 +283,17 @@ def _rebuild_artifacts_for_targets(
 @artifacts_app.command("rebuild", rich_help_panel="Manage")
 def artifacts_rebuild(
     ecosystem: Annotated[
-        Optional[str],
+        str | None,
         typer.Option(
             "--ecosystem", "-e", help="Ecosystem slug (default: first registered)."
         ),
     ] = None,
     source: Annotated[
-        Optional[str],
+        str | None,
         typer.Option("--source", help="Source slug (default: all sources)."),
     ] = None,
     snapshot: Annotated[
-        Optional[str],
+        str | None,
         typer.Option(
             "--snapshot",
             "-s",
@@ -308,7 +308,7 @@ def artifacts_rebuild(
         ),
     ] = False,
     artifact_llm_model: Annotated[
-        Optional[str],
+        str | None,
         typer.Option(
             "--artifact-llm-model",
             help="LLM model to publish into web artifacts when multiple stored LLM runs exist.",

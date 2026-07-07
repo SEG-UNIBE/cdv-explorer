@@ -11,7 +11,6 @@ from matplotlib.patches import Patch
 from matplotlib.ticker import MaxNLocator
 
 from analysis.artifact_io import resolve_latest_snapshot_label
-from pipeline.source_context import SourceContext
 from paper.plot_colors import with_plot_alpha
 from paper.RQ3._plotting import (
     BAR_EDGE_COLOR,
@@ -21,7 +20,7 @@ from paper.RQ3._plotting import (
     match_axis_label_fontsize,
     save_figure,
 )
-
+from pipeline.source_context import SourceContext
 
 STATUS_ORDER = [
     "Draft",
@@ -230,7 +229,7 @@ def plot_classification_status(
     colors = [palette.get(status, "#868e96") for status in ordered_statuses]
     legend_handles = [
         Patch(facecolor=with_plot_alpha(color), edgecolor="none", label=status)
-        for status, color in zip(ordered_statuses, colors)
+        for status, color in zip(ordered_statuses, colors, strict=True)
     ]
     donut_colors = [bar_style(color)["color"] for color in colors]
     x_positions = np.arange(len(years))
@@ -283,7 +282,7 @@ def plot_classification_status(
     axis_left.set_ylim(-1.28, 1.28)
 
     bar_bottom = np.zeros(len(years), dtype=int)
-    for status, color in zip(ordered_statuses, colors):
+    for status, color in zip(ordered_statuses, colors, strict=True):
         counts = series[status]
         axis_right.bar(
             x_positions,
@@ -307,7 +306,7 @@ def plot_classification_status(
     despine(axis_right)
 
     cumulative_max = 0
-    for status, color in zip(ordered_statuses, colors):
+    for status, color in zip(ordered_statuses, colors, strict=True):
         cumulative_counts = np.cumsum(series[status]).astype(float)
         cumulative_max = max(
             cumulative_max, int(cumulative_counts[-1]) if len(cumulative_counts) else 0

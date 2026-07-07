@@ -1,15 +1,15 @@
-from typing import Any, Dict
+from typing import Any
 
 from pipeline.source_context import SourceContext
 
 
 def normalize_classification_fields(
-    preamble: Dict[str, Any],
-    layer_aliases: Dict[str, str] | None = None,
-    status_aliases: Dict[str, str] | None = None,
-    type_aliases: Dict[str, str] | None = None,
+    preamble: dict[str, Any],
+    layer_aliases: dict[str, str] | None = None,
+    status_aliases: dict[str, str] | None = None,
+    type_aliases: dict[str, str] | None = None,
     source_context: SourceContext | None = None,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     normalized = dict(preamble)
     context = source_context or SourceContext.default()
     active_layer_aliases = (

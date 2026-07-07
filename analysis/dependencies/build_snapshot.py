@@ -1,13 +1,12 @@
 import argparse
 from pathlib import Path
 
-from pipeline.source_context import SourceContext
-
 from analysis.dependencies import (
     build_network_data,
     load_proposal_json_documents,
     save_network_data_artifacts,
 )
+from pipeline.source_context import SourceContext
 
 
 def resolve_input_dir(

@@ -1,6 +1,6 @@
 import json
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any
 
 from pipeline.source_context import SourceContext
 
@@ -92,7 +92,7 @@ def resolve_evolution_payload_artifact(snapshot: str | None = None) -> Path:
     return _resolve_payload_artifact(snapshot, "evolution", "evolution_payload.json")
 
 
-def _load_json_artifact(artifact_path: Path) -> Dict[str, Any]:
+def _load_json_artifact(artifact_path: Path) -> dict[str, Any]:
     if artifact_path.suffix != ".json":
         raise ValueError(f"Unsupported artifact extension: {artifact_path.suffix}")
 
@@ -102,31 +102,31 @@ def _load_json_artifact(artifact_path: Path) -> Dict[str, Any]:
     return data
 
 
-def load_network_data(snapshot: str | None = None) -> Dict[str, Any]:
+def load_network_data(snapshot: str | None = None) -> dict[str, Any]:
     artifact_path = resolve_network_data_artifact(snapshot=snapshot)
     return _load_json_artifact(artifact_path)
 
 
-def load_dependency_metrics(snapshot: str | None = None) -> Dict[str, Any]:
+def load_dependency_metrics(snapshot: str | None = None) -> dict[str, Any]:
     artifact_path = resolve_dependency_metrics_artifact(snapshot=snapshot)
     return _load_json_artifact(artifact_path)
 
 
-def load_authorship_metrics(snapshot: str | None = None) -> Dict[str, Any]:
+def load_authorship_metrics(snapshot: str | None = None) -> dict[str, Any]:
     artifact_path = resolve_authorship_metrics_artifact(snapshot=snapshot)
     return _load_json_artifact(artifact_path)
 
 
-def load_authorship_payload(snapshot: str | None = None) -> Dict[str, Any]:
+def load_authorship_payload(snapshot: str | None = None) -> dict[str, Any]:
     artifact_path = resolve_authorship_payload_artifact(snapshot=snapshot)
     return _load_json_artifact(artifact_path)
 
 
-def load_classification_payload(snapshot: str | None = None) -> Dict[str, Any]:
+def load_classification_payload(snapshot: str | None = None) -> dict[str, Any]:
     artifact_path = resolve_classification_payload_artifact(snapshot=snapshot)
     return _load_json_artifact(artifact_path)
 
 
-def load_evolution_payload(snapshot: str | None = None) -> Dict[str, Any]:
+def load_evolution_payload(snapshot: str | None = None) -> dict[str, Any]:
     artifact_path = resolve_evolution_payload_artifact(snapshot=snapshot)
     return _load_json_artifact(artifact_path)

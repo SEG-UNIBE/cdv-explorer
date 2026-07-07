@@ -7,8 +7,8 @@ from .ground_truth import (
     reviewed_ip_policy_for_ecosystem,
     sync_ground_truth_csvs_from_workbook,
     validate_ground_truth_curated_entries,
-    validate_reviewed_ip_policy,
     validate_reviewed_ip_entries,
+    validate_reviewed_ip_policy,
 )
 from .snapshots import (
     SnapshotValidationResult,

@@ -24,7 +24,6 @@ from analysis.validation.snapshots import (
 )
 from ecosystems import ECOSYSTEM_REGISTRY
 
-
 ANALYSIS_ROOT = Path("ip_data")
 OK = "✅"
 FAIL = "❌"

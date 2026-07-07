@@ -1,10 +1,9 @@
-import unittest
 import json
+import unittest
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
 from pipeline.preprocess.rfc_preamble import extract
-
 
 _SLIP_CONFIG = {
     "document_prefix": "slip",

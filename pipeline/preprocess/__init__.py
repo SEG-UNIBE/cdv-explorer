@@ -1,6 +1,6 @@
-from .rfc_preamble import extract as _rfc_preamble_extract
-from .nip_tags import extract as _nip_tags_extract
 from ._enrich import enrich as _enrich_fn
+from .nip_tags import extract as _nip_tags_extract
+from .rfc_preamble import extract as _rfc_preamble_extract
 
 _EXTRACTORS: dict[str, callable] = {
     "rfc_preamble": _rfc_preamble_extract,

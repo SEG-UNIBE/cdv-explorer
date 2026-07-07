@@ -6,10 +6,9 @@ extraction, preamble backfill, and NIP file tag parsing.
 
 import unittest
 
-from analysis.utils import parse_date_ymd
 from analysis.authorship.mining import get_git_authors_on_first_day
 from analysis.dependencies.network import normalize_proposal_ids
-
+from analysis.utils import parse_date_ymd
 
 _NIP_SRC_CONFIG = {
     "classification": {

@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Annotated, Optional
+from typing import Annotated
 
 import typer
 from rich.table import Table
@@ -65,40 +65,40 @@ def _payload_snapshot_labels_with_networks(postprocess_root: Path) -> list[str]:
 @ground_truth_app.command("sample-ips", rich_help_panel="Manage")
 def ground_truth_sample_ips(
     ecosystem: Annotated[
-        Optional[str], typer.Option("--ecosystem", "-e", help="Ecosystem slug.")
+        str | None, typer.Option("--ecosystem", "-e", help="Ecosystem slug.")
     ] = None,
     source: Annotated[
-        Optional[str], typer.Option("--source", help="Source slug to sample from.")
+        str | None, typer.Option("--source", help="Source slug to sample from.")
     ] = None,
     snapshot: Annotated[
-        Optional[str],
+        str | None,
         typer.Option("--snapshot", "-s", help="Snapshot date (YYYY-MM-DD)."),
     ] = None,
     count: Annotated[
-        Optional[int],
+        int | None,
         typer.Option("--count", help="Number of new reviewed IP rows to prefill."),
     ] = None,
     seed: Annotated[
-        Optional[int],
+        int | None,
         typer.Option(
             "--seed", help="Random seed for reproducible stratified sampling."
         ),
     ] = None,
     era_buckets: Annotated[
-        Optional[int],
+        int | None,
         typer.Option(
             "--era-buckets", min=1, help="Number of time-based strata to use."
         ),
     ] = None,
     density_basis: Annotated[
-        Optional[str],
+        str | None,
         typer.Option(
             "--density-basis",
             help="Density basis: all_methods, regex_only, llm_only, or preamble_only.",
         ),
     ] = None,
     density_low_max: Annotated[
-        Optional[int],
+        int | None,
         typer.Option(
             "--density-low-max",
             min=0,
@@ -106,20 +106,20 @@ def ground_truth_sample_ips(
         ),
     ] = None,
     proposal_type: Annotated[
-        Optional[str],
+        str | None,
         typer.Option(
             "--proposal-type",
             help="Optional exact proposal type filter (e.g. Specification).",
         ),
     ] = None,
     reviewer: Annotated[
-        Optional[str],
+        str | None,
         typer.Option(
             "--reviewer", help="Optional reviewer name to prefill in new rows."
         ),
     ] = None,
     replace: Annotated[
-        Optional[bool],
+        bool | None,
         typer.Option(
             "--replace/--append", help="Overwrite ips_append.xlsx or append new rows."
         ),

@@ -8,7 +8,6 @@ from paper.plot_colors import PLOT_COLOR_ALPHA, with_plot_alpha
 from paper.RQ3._plotting import save_figure
 from paper.RQ3.collaboration_common import build_author_bip_map
 
-
 CLUSTER_COLORS = [
     "#2a6f97",
     "#bc4749",
@@ -199,7 +198,7 @@ def plot_collaboration_network(
     ]
     node_sizes = [90 + (count**0.95) * 58 for count in authored_counts]
     node_radius_by_author = {}
-    for author, node_size in zip(graph.nodes(), node_sizes):
+    for author, node_size in zip(graph.nodes(), node_sizes, strict=True):
         radius = 0.2 + math.sqrt(node_size) / 18
         if author in top_author_set:
             radius += min(2.0, 0.018 * len(author) + 0.35)

@@ -80,4 +80,4 @@ def _validate_snapshot_date(snapshot: str) -> None:
         date.fromisoformat(snapshot)
     except ValueError:
         console.print(f"[red]Invalid snapshot date '{snapshot}'. Use YYYY-MM-DD.[/red]")
-        raise typer.Exit(1)
+        raise typer.Exit(1) from None

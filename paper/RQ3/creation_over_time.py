@@ -11,7 +11,6 @@ from paper.RQ3._plotting import (
     save_figure,
 )
 
-
 TIMELINE_BAR_COLOR = "#4c78a8"
 TIMELINE_LINE_COLOR = "#e45756"
 
@@ -67,7 +66,7 @@ def plot_creation_over_time(
     axis_right.spines["left"].set_visible(False)
 
     label_offset = max(yearly_counts) * 0.025
-    for x_position, count in zip(x_positions, yearly_counts):
+    for x_position, count in zip(x_positions, yearly_counts, strict=True):
         axis_left.text(
             x_position,
             count + label_offset,

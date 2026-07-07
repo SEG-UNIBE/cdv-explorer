@@ -23,12 +23,11 @@ from analysis.artifact_io import (
     load_network_data,
     resolve_latest_snapshot_label,
 )
-from paper.RQ3._plotting import save_figure
-from paper.RQ3.collaboration_common import build_author_bip_map
 from paper._utils.io import resolve_output_dir, snapshot_prefix
 from paper.config import SNAPSHOT
 from paper.plot_colors import ORDERED_PLOT_PALETTE, PLOT_COLOR_ALPHA
-
+from paper.RQ3._plotting import save_figure
+from paper.RQ3.collaboration_common import build_author_bip_map
 
 LAYOUT_EXPORT_DIR = Path("paper") / "RQ3"
 LAYOUT_EXPORT_FILENAME = "authorship_layout_260316_balanced"
@@ -500,7 +499,7 @@ def plot_collaboration_network_from_exported_layout(
 
     if edge_list:
         for (source_id, target_id, data), edge_width, edge_color in zip(
-            edge_list, edge_widths, edge_colors
+            edge_list, edge_widths, edge_colors, strict=True
         ):
             edge_source = str(data.get("raw_source") or source_id)
             edge_target = str(data.get("raw_target") or target_id)

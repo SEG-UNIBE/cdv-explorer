@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 
 from paper.plot_colors import PLOT_COLOR_ALPHA, with_plot_alpha
 
-
 BAR_FILL_ALPHA = PLOT_COLOR_ALPHA
 BAR_EDGE_WIDTH = 1.0
 BAR_EDGE_COLOR = "#000000"

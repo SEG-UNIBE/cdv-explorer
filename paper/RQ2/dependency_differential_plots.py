@@ -3,10 +3,11 @@ import json
 import math
 import re
 import sys
-from collections.abc import Sequence as SequenceABC
 from collections import Counter
+from collections.abc import Iterable, Sequence
+from collections.abc import Sequence as SequenceABC
 from pathlib import Path
-from typing import Any, Dict, Iterable, Sequence
+from typing import Any
 
 import matplotlib
 
@@ -27,13 +28,6 @@ from analysis.dependencies.constants import (
     DEPENDENCY_APPROACH_SHORT_LABELS,
     PREAMBLE_EXTRACTED,
 )
-from paper.RQ2.dependency_plots import (
-    ARROW_LEGEND_HANDLER_MAP,
-    build_arrow_legend_handle,
-    compute_layout_positions,
-    get_links_by_type,
-    resolve_near_overlaps,
-)
 from paper._utils.io import resolve_output_dir, snapshot_prefix
 from paper.config import SNAPSHOT
 from paper.plot_colors import (
@@ -42,6 +36,13 @@ from paper.plot_colors import (
     NEUTRAL_PLOT_COLOR,
     PLOT_COLOR_ALPHA,
     with_plot_alpha,
+)
+from paper.RQ2.dependency_plots import (
+    ARROW_LEGEND_HANDLER_MAP,
+    build_arrow_legend_handle,
+    compute_layout_positions,
+    get_links_by_type,
+    resolve_near_overlaps,
 )
 
 DEFAULT_FOCUS_BIPS = [1, 2, 3]
@@ -162,7 +163,7 @@ def _edge_in_focus_neighborhood(
 
 
 def _collect_display_node_ids(
-    network_data: Dict[str, Any],
+    network_data: dict[str, Any],
     focus_bips: Sequence[int | str] | None,
     exclude_bips: Sequence[int | str] | None = None,
 ) -> tuple[set[str], set[str]]:
@@ -231,7 +232,7 @@ def _assign_multipartite_subsets(graph: nx.DiGraph, focus_ids: set[str]) -> None
 
 
 def _build_layout_graph(
-    network_data: Dict[str, Any], display_ids: set[str], focus_ids: set[str]
+    network_data: dict[str, Any], display_ids: set[str], focus_ids: set[str]
 ) -> nx.DiGraph:
     graph = nx.DiGraph()
 
@@ -397,7 +398,7 @@ def _compute_axis_limits(
 
 
 def _build_comparison_edges(
-    dependency_edges: list[Dict[str, Any]],
+    dependency_edges: list[dict[str, Any]],
     *,
     approach_type: str,
     baseline_type: str,
@@ -562,7 +563,7 @@ def _compute_label_positions(
     diag = math.hypot(x_span, y_span) or 1.0
 
     label_positions: dict[str, tuple[float, float, str, str]] = {}
-    for node_id, node_size in zip(ordered_nodes, node_sizes):
+    for node_id, node_size in zip(ordered_nodes, node_sizes, strict=True):
         x_coord, y_coord = pos[node_id]
         dx = x_coord - x_center
         dy = y_coord - y_center
@@ -794,7 +795,9 @@ def _save_combined_comparison_plot(
         axes = [axes]
 
     combined_edge_styles = _build_edge_styles(comparison_ordered=True)
-    for index, (ax, payload) in enumerate(zip(axes, plot_payloads), start=1):
+    for index, (ax, payload) in enumerate(
+        zip(axes, plot_payloads, strict=True), start=1
+    ):
         _draw_comparison_plot(
             ax,
             graph,
@@ -858,7 +861,7 @@ def _save_combined_comparison_plot(
 
 
 def render_differential_dependency_plots(
-    network_data: Dict[str, Any],
+    network_data: dict[str, Any],
     output_dir: Path,
     *,
     filename_prefix: str | None = None,

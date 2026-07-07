@@ -1,9 +1,8 @@
 import re
 from datetime import datetime
-from typing import Optional
 
 
-def parse_date_ymd(date_str: str) -> Optional[str]:
+def parse_date_ymd(date_str: str) -> str | None:
     """Return YYYY-MM-DD from either an ISO-short or verbose git date string."""
     if not date_str:
         return None

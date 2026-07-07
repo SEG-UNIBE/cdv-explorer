@@ -1,14 +1,14 @@
 """Compliance checker for Nostr Implementation Possibilities (NIPs)."""
 
-from typing import Any, Dict, List
+from typing import Any
 
 
-def check(preamble: Dict[str, Any], content: str, src_config: dict) -> List[dict]:
+def check(preamble: dict[str, Any], content: str, src_config: dict) -> list[dict]:
     """Return a flat list of compliance checks for a single NIP document."""
     from analysis.conformity.compliance import (
-        _make_check,
-        _has_value,
         _extract_section_entries,
+        _has_value,
+        _make_check,
         _normalize_section_name,
     )
 
@@ -17,7 +17,7 @@ def check(preamble: Dict[str, Any], content: str, src_config: dict) -> List[dict
     required_fields: list = preamble_config["required_fields"]
     expected_headlines: dict = preamble_config["expected_headlines"]
 
-    checks: List[dict] = []
+    checks: list[dict] = []
 
     # Required field presence
     for field in required_fields:

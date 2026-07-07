@@ -20,7 +20,6 @@ from paper.RQ3._plotting import (
     save_figure,
 )
 
-
 TYPE_ORDER = BIP_TYPE_ORDER
 TYPE_COLORS = BIP_TYPE_COLORS
 
@@ -78,7 +77,7 @@ def plot_classification_type_stacked(
             linewidth=0.7,
             label=f"{kind} ({totals[kind]})",
         )
-        for kind, color in zip(ordered_types, colors)
+        for kind, color in zip(ordered_types, colors, strict=True)
     ]
     x_positions = np.arange(len(years), dtype=float)
 
@@ -108,7 +107,7 @@ def plot_classification_type_stacked(
     legend._legend_box.align = "left"
 
     bar_bottom = np.zeros(len(years), dtype=int)
-    for kind, color in zip(ordered_types, colors):
+    for kind, color in zip(ordered_types, colors, strict=True):
         counts = series[kind]
         axis_right.bar(
             x_positions,
@@ -141,7 +140,7 @@ def plot_classification_type_stacked(
 
     cumulative_max = 0.0
     final_points = []
-    for kind, color in zip(ordered_types, colors):
+    for kind, color in zip(ordered_types, colors, strict=True):
         cumulative_counts = np.cumsum(series[kind]).astype(float)
         cumulative_max = max(
             cumulative_max,

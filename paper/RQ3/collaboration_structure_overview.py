@@ -3,6 +3,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 
+from paper.plot_colors import COLLABORATION_COMPONENT_COLOR
 from paper.RQ3._plotting import (
     bar_style,
     despine,
@@ -14,8 +15,6 @@ from paper.RQ3.collaboration_common import (
     build_collaboration_component_size_distribution,
     build_collaboration_degree_distribution,
 )
-from paper.plot_colors import COLLABORATION_COMPONENT_COLOR
-
 
 COMPONENT_BAR_COLOR = COLLABORATION_COMPONENT_COLOR
 DEGREE_BAR_COLOR = "#4c78a8"
@@ -208,7 +207,7 @@ def _draw_component_distribution_axis(
     axis.grid(axis="x", visible=False)
     match_axis_label_fontsize(axis)
     for x_position, count, entry in zip(
-        component_positions, component_counts, displayed_component_series
+        component_positions, component_counts, displayed_component_series, strict=True
     ):
         if count <= 0 or bool(entry.get("is_gap")):
             continue
@@ -257,7 +256,7 @@ def _draw_degree_distribution_axis(
     axis.grid(axis="y", alpha=0.35)
     axis.grid(axis="x", visible=False)
     match_axis_label_fontsize(axis)
-    for x_position, count in zip(degree_positions, degree_counts):
+    for x_position, count in zip(degree_positions, degree_counts, strict=True):
         if count <= 0:
             continue
         axis.text(

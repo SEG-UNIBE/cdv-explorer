@@ -5,7 +5,6 @@ from tempfile import TemporaryDirectory
 
 from pipeline.preprocess.nip_tags import extract
 
-
 _NIP_CONFIG = {
     "document_prefix": "nip",
     "primary_id_field": "nip",

@@ -8,6 +8,7 @@ from unittest.mock import patch
 import typer
 from typer.testing import CliRunner
 
+from analysis.validation import SnapshotValidationResult
 from analysis.validation.ground_truth import (
     export_ground_truth_workbook,
     load_ground_truth_curated_entries,
@@ -15,7 +16,6 @@ from analysis.validation.ground_truth import (
     load_reviewed_ip_append_rows,
     reviewed_ip_append_workbook_path,
 )
-from analysis.validation import SnapshotValidationResult
 from cli.artifacts import (
     _common_preprocess_snapshot_labels,
     _rebuild_source_artifacts,
@@ -28,7 +28,6 @@ from cli.llm_runs import (
 )
 from main import app
 from pipeline.preprocess._enrich import _preserved_llm_runs
-
 
 runner = CliRunner()
 

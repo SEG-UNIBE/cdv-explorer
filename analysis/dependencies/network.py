@@ -1,33 +1,34 @@
-import json
 import csv
+import json
 import re
+from collections.abc import Iterable, Mapping, Sequence
 from pathlib import Path
-from typing import Any, Dict, Iterable, List, Mapping, Sequence
+from typing import Any
 
-from analysis.reference_ids import (
-    normalize_reference_id_for_config,
-    uses_hex_proposal_ids,
-)
+from analysis.authorship.mining import get_git_authors_on_first_day
 from analysis.dependencies.constants import (
     BODY_EXTRACTED_LLM,
     BODY_EXTRACTED_REGEX,
     GROUND_TRUTH_CURATED,
     PREAMBLE_EXTRACTED,
 )
-from analysis.authorship.mining import get_git_authors_on_first_day
 from analysis.proposal_schema import (
     get_formal_compliance,
     get_interrelations,
-    is_successful_llm_run,
     is_llm_runs_format,
+    is_successful_llm_run,
     normalize_proposal_document,
 )
+from analysis.reference_ids import (
+    normalize_reference_id_for_config,
+    uses_hex_proposal_ids,
+)
+from analysis.utils import parse_date_ymd as _parse_date_ymd
 from analysis.validation.ground_truth import (
     load_ground_truth_curated_entries,
     load_ground_truth_ips,
 )
 from pipeline.source_context import SourceContext
-from analysis.utils import parse_date_ymd as _parse_date_ymd
 
 RELATION_REFERENCE = "reference"
 RELATION_IMPLICIT_DEPENDENCY = "implicit_dependency"
@@ -45,7 +46,7 @@ def make_dependency_edge(
     relation_type: str,
     value: Any = 1,
     **extra: Any,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     return {
         "source": str(source),
         "target": str(target),
@@ -64,9 +65,9 @@ def _link_endpoint_to_graph_key(value: Any, source_slug: str | None = None) -> s
 
 
 def dependency_edges_from_links(
-    links_by_type: Dict[str, Any], source_slug: str | None = None
-) -> List[Dict[str, Any]]:
-    edges: List[Dict[str, Any]] = []
+    links_by_type: dict[str, Any], source_slug: str | None = None
+) -> list[dict[str, Any]]:
+    edges: list[dict[str, Any]] = []
     if not isinstance(links_by_type, dict):
         return edges
 
@@ -113,7 +114,7 @@ def dependency_edges_from_links(
     return edges
 
 
-def normalize_dependency_edges(network_data: Dict[str, Any]) -> List[Dict[str, Any]]:
+def normalize_dependency_edges(network_data: dict[str, Any]) -> list[dict[str, Any]]:
     edges = network_data.get("dependency_edges")
     if isinstance(edges, list):
         return [
@@ -137,7 +138,7 @@ def normalize_dependency_edges(network_data: Dict[str, Any]) -> List[Dict[str, A
 
 def available_llm_model_entries(
     network_data: Mapping[str, Any],
-) -> List[Dict[str, Any]]:
+) -> list[dict[str, Any]]:
     llm_models = network_data.get("llm_models")
     if not isinstance(llm_models, Mapping):
         return []
@@ -152,9 +153,9 @@ def available_llm_model_entries(
 
 
 def collapse_network_data_to_llm_model(
-    network_data: Dict[str, Any],
+    network_data: dict[str, Any],
     llm_model: str | None,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     model = str(llm_model or "").strip()
     if not model:
         collapsed = dict(network_data)
@@ -206,11 +207,11 @@ def collapse_network_data_to_llm_model(
     return collapsed
 
 
-def _llm_runs_by_model(interrelations: Mapping[str, Any]) -> Dict[str, Dict[str, Any]]:
+def _llm_runs_by_model(interrelations: Mapping[str, Any]) -> dict[str, dict[str, Any]]:
     raw_llm = interrelations.get(BODY_EXTRACTED_LLM)
     if not is_llm_runs_format(raw_llm):
         return {}
-    runs_by_model: Dict[str, Dict[str, Any]] = {}
+    runs_by_model: dict[str, dict[str, Any]] = {}
     for run in sorted(raw_llm, key=lambda item: str(item.get("timestamp") or "")):
         if not (
             isinstance(run, Mapping)
@@ -223,9 +224,9 @@ def _llm_runs_by_model(interrelations: Mapping[str, Any]) -> Dict[str, Dict[str,
 
 
 def _default_llm_run(
-    llm_runs_by_model: Mapping[str, Dict[str, Any]],
+    llm_runs_by_model: Mapping[str, dict[str, Any]],
     configured_model: str | None,
-) -> Dict[str, Any] | None:
+) -> dict[str, Any] | None:
     configured = str(configured_model or "").strip()
     if configured and configured in llm_runs_by_model:
         return llm_runs_by_model[configured]
@@ -237,7 +238,7 @@ def _default_llm_run(
     )
 
 
-def normalize_proposal_ids(field: Any, proposal_label: str = "IP") -> List[str]:
+def normalize_proposal_ids(field: Any, proposal_label: str = "IP") -> list[str]:
     if not field:
         return []
 
@@ -271,8 +272,8 @@ def normalize_proposal_ids(field: Any, proposal_label: str = "IP") -> List[str]:
 def _source_reference_configs(
     context: SourceContext,
     proposal_label: str = "IP",
-) -> List[Dict[str, Any]]:
-    configs: List[Dict[str, Any]] = []
+) -> list[dict[str, Any]]:
+    configs: list[dict[str, Any]] = []
     for source_slug, source_config in context.ecosystem_source_configs.items():
         label = str(source_config.get("proposal_acronym") or "").strip()
         pattern = str(source_config.get("reference_pattern") or "").strip()
@@ -317,9 +318,9 @@ def _reference_id_chars(config: Mapping[str, Any]) -> str:
 
 def _resolve_reference_item(
     item: Any,
-    reference_configs: List[Dict[str, Any]],
-    active_config: Dict[str, Any],
-) -> Dict[str, str] | None:
+    reference_configs: list[dict[str, Any]],
+    active_config: dict[str, Any],
+) -> dict[str, str] | None:
     if isinstance(item, dict):
         raw_source = (
             item.get("target_source")
@@ -397,7 +398,7 @@ def normalize_proposal_references(
     field: Any,
     proposal_label: str = "IP",
     source_context: SourceContext | None = None,
-) -> List[Dict[str, str]]:
+) -> list[dict[str, str]]:
     if not field:
         return []
 
@@ -414,7 +415,7 @@ def normalize_proposal_references(
         reference_configs[0],
     )
     raw_items = field if isinstance(field, list) else str(field).split(",")
-    references: List[Dict[str, str]] = []
+    references: list[dict[str, str]] = []
     seen = set()
 
     for item in raw_items:
@@ -430,7 +431,7 @@ def normalize_proposal_references(
     return references
 
 
-def _apply_alias(value: Any, aliases: Dict[str, str]) -> Any:
+def _apply_alias(value: Any, aliases: dict[str, str]) -> Any:
     if value is None:
         return None
     return aliases.get(value, value)
@@ -439,8 +440,8 @@ def _apply_alias(value: Any, aliases: Dict[str, str]) -> Any:
 def load_proposal_json_documents(
     source_dir: Path,
     source_context: SourceContext | None = None,
-) -> List[Dict[str, Any]]:
-    documents: List[Dict[str, Any]] = []
+) -> list[dict[str, Any]]:
+    documents: list[dict[str, Any]] = []
     for file_path in sorted(source_dir.glob("*.json")):
         try:
             with file_path.open("r", encoding="utf-8") as handle:
@@ -455,18 +456,18 @@ def load_proposal_json_documents(
 
 
 def build_network_data(
-    proposal_data: Iterable[Dict[str, Any]],
+    proposal_data: Iterable[dict[str, Any]],
     id_field: str = "id",
     proposal_label: str = "IP",
     source_context: SourceContext | None = None,
     known_proposal_ids_by_source: Mapping[str, set[str]] | None = None,
     ground_truth_entries: Sequence[Mapping[str, Any]] | None = None,
     reviewed_ips_entries: Sequence[Mapping[str, Any]] | None = None,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     context = source_context or SourceContext.default()
     proposals = list(proposal_data)
-    classification_fields: List[str] = context.classification_fields
-    classification_aliases: Dict[str, Dict[str, str]] = {
+    classification_fields: list[str] = context.classification_fields
+    classification_aliases: dict[str, dict[str, str]] = {
         field: dict(context.classification_aliases(field))
         for field in classification_fields
     }
@@ -476,10 +477,10 @@ def build_network_data(
     nodes = []
     explicit_reference_links = []
     implicit_dependency_links = []
-    implicit_dependency_links_by_model: Dict[str, List[Dict[str, Any]]] = {}
-    llm_model_stats: Dict[str, Dict[str, Any]] = {}
+    implicit_dependency_links_by_model: dict[str, list[dict[str, Any]]] = {}
+    llm_model_stats: dict[str, dict[str, Any]] = {}
     ground_truth_links = []
-    explicit_dependency_links: Dict[str, List[Dict[str, Any]]] = {
+    explicit_dependency_links: dict[str, list[dict[str, Any]]] = {
         relation_type: [] for relation_type in context.preamble_interrelation_types
     }
     node_ids = set()
@@ -506,7 +507,7 @@ def build_network_data(
         target_id: str,
         value: Any = 1,
         **extra: Any,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         return {
             "source": build_graph_key(context.source_slug, source_id),
             "target": build_graph_key(
@@ -532,7 +533,7 @@ def build_network_data(
         graph_key = build_graph_key(context.source_slug, proposal_id)
         if proposal_id not in node_ids:
             git_history = proposal.get("meta", {}).get("git_history", [])
-            node: Dict[str, Any] = {
+            node: dict[str, Any] = {
                 "id": proposal_id,
                 "graph_key": graph_key,
                 "title": preamble.get("title"),
@@ -635,7 +636,7 @@ def build_network_data(
                     implicit_dependency_links.append(edge)
 
         preamble_interrelations = interrelations.get(PREAMBLE_EXTRACTED, [])
-        relation_entries_by_type: Dict[str, List[Any]] = {}
+        relation_entries_by_type: dict[str, list[Any]] = {}
         if isinstance(preamble_interrelations, list):
             for entry in preamble_interrelations:
                 if not isinstance(entry, dict):
@@ -805,7 +806,7 @@ def build_network_data(
 
 
 def save_network_data_artifacts(
-    network_data: Dict[str, Any], output_stem: Path, include_json: bool = True
+    network_data: dict[str, Any], output_stem: Path, include_json: bool = True
 ) -> None:
     output_stem.parent.mkdir(parents=True, exist_ok=True)
 

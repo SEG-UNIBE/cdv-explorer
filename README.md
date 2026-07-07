@@ -98,8 +98,16 @@ source .venv/bin/activate        # Windows: .venv\Scripts\activate
 ### 3 - Install dependencies
 
 ```bash
-pip install -r requirements.txt
+pip install -r requirements.lock.txt
 ```
+
+> [!NOTE]
+> `requirements.lock.txt` pins the exact, tested versions of all transitive dependencies for reproducible pipeline runs. The direct dependencies are declared in `requirements.txt`; after changing them, regenerate the lock files with [uv](https://docs.astral.sh/uv/):
+>
+> ```bash
+> uv pip compile requirements.txt -o requirements.lock.txt --universal --python-version 3.12
+> uv pip compile requirements-dev.txt -o requirements-dev.lock.txt --universal --python-version 3.12
+> ```
 
 ### 4 - Run the pipeline
 
@@ -131,7 +139,7 @@ npm start        # Vite dev server, typically at http://localhost:5173
 ```
 
 The frontend now uses **[Vite](https://vite.dev/)** for local development and production builds.
-`npm start` and `npm run dev` both regenerate the snapshot index, proposal link index, and ecosystem metadata before launching the dev server.
+`npm start` and `npm run dev` both regenerate the snapshot index, proposal link index, and ecosystem metadata, and sync the Stage IV frontend payloads from `ip_data/**/04_postprocess/` into `react/public/ip_data/` before launching the dev server. Only these postprocess payloads are published — harvest, preprocess, and analysis artifacts stay local.
 
 For a production build:
 
@@ -233,9 +241,11 @@ python main.py ecosystems add-source bitcoin  # add a second IP catalog to an ec
 For local test/development work, install the dev requirements instead of the runtime-only set:
 
 ```bash
-pip install -r requirements-dev.txt
+pip install -r requirements-dev.lock.txt
 python -m pytest
 ```
+
+CI installs from the same lock file, so local and CI environments stay identical.
 
 For the React frontend:
 
@@ -277,8 +287,8 @@ Ecosystem-specific logic is confined to the first two stages, keeping the analys
         ├── <source>/        # e.g. bips, slips, ...
         │   ├── 01_harvest/      # raw IP documents             [gitignored]
         │   ├── 02_preprocess/   # IP object model (JSON)       ← Stage II output
-        │   ├── 03_analysis/     # analysis artifacts           ← Stage III output
-        │   └── 04_postprocess/  # frontend payloads            ← Stage IV output
+        │   ├── 03_analysis/     # analysis results (CSV/JSON)  ← Stage III output
+        │   └── 04_postprocess/  # frontend payloads (fetched by the web app) ← Stage IV output
         ├── _combined/           # precomputed multi-source artifacts
         └── ground_truth/        # curated benchmark CSVs
 ```

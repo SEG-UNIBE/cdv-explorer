@@ -27,3 +27,10 @@ npm run build
 - `npm test -- --run` executes the Vitest suite once.
 - `npm run build` writes the production bundle to `react/build/`.
 - Build-time indexes are generated automatically by the npm lifecycle scripts.
+- The lifecycle scripts also run `scripts/syncPublicData.js`, which copies only the
+  Stage IV frontend payloads (the six per-snapshot JSON files under
+  `04_postprocess/`, loaded by `src/data.js`) from `../ip_data` into
+  `public/ip_data`. The other pipeline stages (`01_harvest`, `02_preprocess`,
+  `03_analysis`) are never published. After regenerating pipeline artifacts,
+  rerun `npm run generate:indexes` (or simply `npm run dev`) to refresh the
+  synced copy — `public/ip_data` is gitignored.

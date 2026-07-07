@@ -69,7 +69,7 @@ export function getSourceCombinationKey(sourceEntries) {
 }
 
 function getCombinedDataPath(ecosystemId, combinationKey) {
-  return `ip_data/${ecosystemId}/_combined/${combinationKey}/03_analysis`;
+  return `ip_data/${ecosystemId}/_combined/${combinationKey}/04_postprocess`;
 }
 
 function scopeDependencyEdge(edge, sourceId, sourceSlug = sourceId, sourceIdBySlug = {}) {

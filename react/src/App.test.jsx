@@ -333,7 +333,7 @@ test('multi-source fetch uses combined dependency metrics when combined artifact
       sourceSourceId: 'bip',
       targetSourceId: 'slip',
     });
-    expect(global.fetch).toHaveBeenCalledWith(expect.stringContaining('/_combined/bips+slips/03_analysis/2026-03-16/dependencies/dependency_metrics.json'));
+    expect(global.fetch).toHaveBeenCalledWith(expect.stringContaining('/_combined/bips+slips/04_postprocess/2026-03-16/dependencies/dependency_metrics.json'));
   } finally {
     global.fetch = previousFetch;
   }

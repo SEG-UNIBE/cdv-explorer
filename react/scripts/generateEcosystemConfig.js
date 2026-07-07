@@ -53,7 +53,7 @@ function buildSourceConfig(ecosystemSlug, sourceSlug, source) {
     proposalTermSingular: source.proposal_term_singular,
     proposalTermPlural: source.proposal_term_plural,
     sourceRepositories: [`github/${source.repository_owner}/${source.repository_name}`],
-    dataPath: source.analysis,
+    dataPath: source.postprocess,
     classificationDimensions: buildClassificationDimensions(source),
     classificationChordBadgeOffsets: frontend.classification_chord_badge_offsets || {},
     complianceStandards: frontend.compliance_standards || [],

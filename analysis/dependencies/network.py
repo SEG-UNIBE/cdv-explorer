@@ -805,14 +805,15 @@ def build_network_data(
 
 
 def save_network_data_artifacts(
-    network_data: Dict[str, Any], output_stem: Path
+    network_data: Dict[str, Any], output_stem: Path, include_json: bool = True
 ) -> None:
     output_stem.parent.mkdir(parents=True, exist_ok=True)
 
-    json_path = output_stem.with_suffix(".json")
+    if include_json:
+        json_path = output_stem.with_suffix(".json")
 
-    with json_path.open("w", encoding="utf-8") as handle:
-        json.dump(network_data, handle, ensure_ascii=False, indent=2)
+        with json_path.open("w", encoding="utf-8") as handle:
+            json.dump(network_data, handle, ensure_ascii=False, indent=2)
 
     nodes_csv_path = output_stem.parent / f"{output_stem.name}_nodes.csv"
     with nodes_csv_path.open("w", encoding="utf-8", newline="") as handle:

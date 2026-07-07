@@ -231,7 +231,7 @@ def _combined_artifact_roots(ecosystem_slug: str, combo_key: str) -> tuple[Path,
 
 def _source_network_path(source_config: Mapping[str, Any], snapshot: str) -> Path:
     return (
-        Path(str(source_config["analysis"]))
+        Path(str(source_config["postprocess"]))
         / snapshot
         / "dependencies"
         / "network_data.json"
@@ -281,14 +281,10 @@ def prepare_combined_source_artifacts(
             emit(f"{combo_key}: merging dependency network", advance=1)
             network_data = merge_source_network_data(networks_by_source)
             network_stem = snapshot_root / "dependencies" / "network_data"
-            save_network_data_artifacts(network_data, network_stem)
+            save_network_data_artifacts(network_data, network_stem, include_json=False)
 
             emit(f"{combo_key}: recomputing dependency metrics", advance=1)
             dependency_metrics = extract_dependency_metrics(network_data)
-            dependency_metrics_path = (
-                snapshot_root / "dependencies" / "dependency_metrics.json"
-            )
-            _save_json(dependency_metrics, dependency_metrics_path)
 
             emit(f"{combo_key}: preparing authorship artifacts", advance=1)
             authorship_metrics = extract_authorship_metrics(
@@ -297,11 +293,8 @@ def prepare_combined_source_artifacts(
             authorship_path = snapshot_root / "authorship" / "authorship_metrics.json"
             _save_json(authorship_metrics, authorship_path)
             authorship_payload = prepare_authorship_payload(network_data)
-            authorship_payload_path = (
-                snapshot_root / "authorship" / "authorship_payload.json"
-            )
-            _save_json(authorship_payload, authorship_payload_path)
 
+            emit(f"{combo_key}: preparing non-mergeable section placeholders", advance=1)
             classification_payload = _combined_placeholder_payload(
                 snapshot, combo_key, combo, "classification"
             )
@@ -312,18 +305,8 @@ def prepare_combined_source_artifacts(
                 snapshot, combo_key, combo, "conformity"
             )
 
-            emit(f"{combo_key}: writing non-mergeable section placeholders", advance=1)
-            classification_path = (
-                snapshot_root / "classification" / "classification_payload.json"
-            )
-            evolution_path = snapshot_root / "evolution" / "evolution_payload.json"
-            conformity_path = snapshot_root / "conformity" / "conformity_metrics.json"
-            _save_json(classification_payload, classification_path)
-            _save_json(evolution_payload, evolution_path)
-            _save_json(conformity_metrics, conformity_path)
-
-            emit(f"{combo_key}: writing react exports", advance=1)
-            react_paths = _save_react_ready_exports(
+            emit(f"{combo_key}: writing frontend payloads", advance=1)
+            payload_paths = _save_frontend_payloads(
                 postprocess_root=postprocess_root,
                 snapshot=snapshot,
                 network_data=network_data,
@@ -335,14 +318,20 @@ def prepare_combined_source_artifacts(
             )
 
             saved[combo_key] = {
-                "network_json": network_stem.with_suffix(".json"),
-                "dependency_metrics_json": dependency_metrics_path,
+                "network_json": payload_paths["payload_network_data_json"],
+                "dependency_metrics_json": payload_paths[
+                    "payload_dependency_metrics_json"
+                ],
                 "authorship_json": authorship_path,
-                "authorship_payload_json": authorship_payload_path,
-                "classification_json": classification_path,
-                "evolution_json": evolution_path,
-                "conformity_json": conformity_path,
-                **react_paths,
+                "authorship_payload_json": payload_paths[
+                    "payload_authorship_payload_json"
+                ],
+                "classification_json": payload_paths[
+                    "payload_classification_payload_json"
+                ],
+                "evolution_json": payload_paths["payload_evolution_payload_json"],
+                "conformity_json": payload_paths["payload_conformity_metrics_json"],
+                **payload_paths,
             }
             emit(f"{combo_key}: completed", advance=1)
 
@@ -362,7 +351,19 @@ def _flatten_conformity_rows(rows: List[Dict[str, Any]]) -> List[Dict[str, Any]]
     ]
 
 
-def _save_react_ready_exports(
+# Relative payload locations inside 04_postprocess/<snapshot>/ — the frontend
+# fetch contract (mirrored by react/src/data.js and react/scripts/syncPublicData.js).
+FRONTEND_PAYLOAD_FILES: Dict[str, str] = {
+    "network_data": "dependencies/network_data.json",
+    "dependency_metrics": "dependencies/dependency_metrics.json",
+    "authorship_payload": "authorship/authorship_payload.json",
+    "classification_payload": "classification/classification_payload.json",
+    "evolution_payload": "evolution/evolution_payload.json",
+    "conformity_metrics": "conformity/conformity_metrics.json",
+}
+
+
+def _save_frontend_payloads(
     postprocess_root: Path,
     snapshot: str,
     network_data: Dict[str, Any],
@@ -372,123 +373,29 @@ def _save_react_ready_exports(
     evolution_payload: Dict[str, Any],
     conformity_metrics: Dict[str, Any],
 ) -> Dict[str, Path]:
-    react_root = postprocess_root / snapshot / "react"
+    payload_root = postprocess_root / snapshot
+    payloads: Dict[str, Dict[str, Any]] = {
+        "network_data": network_data,
+        "dependency_metrics": dependency_metrics,
+        "authorship_payload": authorship_payload,
+        "classification_payload": classification_payload,
+        "evolution_payload": evolution_payload,
+        "conformity_metrics": conformity_metrics,
+    }
 
-    flat_nodes: List[Dict[str, Any]] = []
-    for node in network_data.get("nodes", []):
-        author_value = node.get("author")
-        if isinstance(author_value, list):
-            author_value = " | ".join(str(a) for a in author_value)
-        flat_nodes.append(
-            {
-                "id": node.get("id"),
-                "layer": node.get("layer"),
-                "status": node.get("status"),
-                "type": node.get("type"),
-                "created": node.get("created"),
-                "compliance_score": node.get("compliance_score"),
-                "author": author_value,
-            }
-        )
+    saved: Dict[str, Path] = {}
+    for name, rel_path in FRONTEND_PAYLOAD_FILES.items():
+        payload_path = payload_root / rel_path
+        _save_json(payloads[name], payload_path)
+        saved[f"payload_{name}_json"] = payload_path
 
-    flat_edges: List[Dict[str, Any]] = []
-    for edge in network_data.get("dependency_edges", []):
-        flat_edges.append(
-            {
-                "source": edge.get("source"),
-                "target": edge.get("target"),
-                "extraction_method": edge.get("extraction_method"),
-                "relation_type": edge.get("relation_type"),
-                "value": edge.get("value", 1),
-            }
-        )
-
-    status_over_time_long: List[Dict[str, Any]] = []
-    for year, statuses in classification_payload.get("status_over_time", {}).items():
-        for status, count in statuses.items():
-            status_over_time_long.append(
-                {
-                    "year": year,
-                    "status": status,
-                    "count": count,
-                }
-            )
-
-    nodes_csv = react_root / "network_nodes.csv"
-    edges_csv = react_root / "network_edges.csv"
-    top_authors_csv = react_root / "top_authors.csv"
-    sankey_grouped_csv = react_root / "sankey_grouped_links.csv"
-    status_over_time_csv = react_root / "status_over_time_long.csv"
-    conformity_csv = react_root / "conformity_per_proposal.csv"
-    dependency_metrics_json = react_root / "dependency_metrics.json"
-
-    _save_csv_rows(
-        flat_nodes,
-        nodes_csv,
-        fieldnames=[
-            "id",
-            "layer",
-            "status",
-            "type",
-            "created",
-            "compliance_score",
-            "author",
-        ],
-    )
-    _save_csv_rows(
-        flat_edges,
-        edges_csv,
-        fieldnames=["source", "target", "extraction_method", "relation_type", "value"],
-    )
-    _save_csv_rows(
-        authorship_payload.get("top_authors", []),
-        top_authors_csv,
-        fieldnames=["author", "count"],
-    )
-    _save_csv_rows(
-        classification_payload.get("sankey_grouped", {}).get("links", []),
-        sankey_grouped_csv,
-        fieldnames=["source", "target", "count"],
-    )
-    _save_csv_rows(
-        status_over_time_long,
-        status_over_time_csv,
-        fieldnames=["year", "status", "count"],
-    )
-    _save_csv_rows(
-        _flatten_conformity_rows(conformity_metrics.get("per_proposal", [])),
-        conformity_csv,
-        fieldnames=["id", "status", "compliance_score", "bip2_score", "bip3_score"],
-    )
-    _save_json(dependency_metrics, dependency_metrics_json)
-
-    index_json = react_root / "dataset_index.json"
+    index_json = payload_root / "dataset_index.json"
     _save_json(
-        {
-            "snapshot": snapshot,
-            "files": {
-                "network_nodes": nodes_csv.name,
-                "network_edges": edges_csv.name,
-                "top_authors": top_authors_csv.name,
-                "sankey_grouped_links": sankey_grouped_csv.name,
-                "status_over_time_long": status_over_time_csv.name,
-                "conformity_per_proposal": conformity_csv.name,
-                "dependency_metrics": dependency_metrics_json.name,
-            },
-        },
+        {"snapshot": snapshot, "files": dict(FRONTEND_PAYLOAD_FILES)},
         index_json,
     )
-
-    return {
-        "react_nodes_csv": nodes_csv,
-        "react_edges_csv": edges_csv,
-        "react_top_authors_csv": top_authors_csv,
-        "react_sankey_grouped_csv": sankey_grouped_csv,
-        "react_status_over_time_csv": status_over_time_csv,
-        "react_conformity_csv": conformity_csv,
-        "react_dependency_metrics_json": dependency_metrics_json,
-        "react_index_json": index_json,
-    }
+    saved["payload_index_json"] = index_json
+    return saved
 
 
 def prepare_ecosystem_artifacts(
@@ -550,10 +457,16 @@ def prepare_ecosystem_artifacts(
     else:
         network_data = collapse_network_data_to_llm_model(network_data, None)
 
+    if postprocess_root is None:
+        raise ValueError(
+            "postprocess_root is required: frontend payloads are written to "
+            "04_postprocess as the canonical Stage IV output."
+        )
+
     snapshot_root = artifact_root / snapshot
 
     network_stem = snapshot_root / "dependencies" / "network_data"
-    save_network_data_artifacts(network_data, network_stem)
+    save_network_data_artifacts(network_data, network_stem, include_json=False)
 
     emit("Preparing authorship artifacts", advance=1)
     authorship_metrics = extract_authorship_metrics(network_data.get("nodes", []))
@@ -576,8 +489,6 @@ def prepare_ecosystem_artifacts(
     )
 
     authorship_payload = prepare_authorship_payload(network_data)
-    authorship_payload_path = snapshot_root / "authorship" / "authorship_payload.json"
-    _save_json(authorship_payload, authorship_payload_path)
     _save_csv_rows(
         authorship_payload.get("collaboration_centrality", []),
         snapshot_root / "authorship" / "collaboration_centrality.csv",
@@ -586,17 +497,11 @@ def prepare_ecosystem_artifacts(
 
     emit("Preparing dependency metrics artifacts", advance=1)
     dependency_metrics = extract_dependency_metrics(network_data)
-    dependency_metrics_path = snapshot_root / "dependencies" / "dependency_metrics.json"
-    _save_json(dependency_metrics, dependency_metrics_path)
 
     emit("Preparing classification artifacts", advance=1)
     classification_payload = prepare_classification_payload(
         network_data, source_context=context
     )
-    classification_payload_path = (
-        snapshot_root / "classification" / "classification_payload.json"
-    )
-    _save_json(classification_payload, classification_payload_path)
     _save_csv_rows(
         classification_payload.get("sankey_grouped", {}).get("links", []),
         snapshot_root / "classification" / "sankey_grouped_links.csv",
@@ -617,15 +522,11 @@ def prepare_ecosystem_artifacts(
         file_prefix=file_prefix,
         source_context=context,
     )
-    evolution_payload_path = snapshot_root / "evolution" / "evolution_payload.json"
-    _save_json(evolution_payload, evolution_payload_path)
 
     emit("Preparing conformity artifacts", advance=1)
     conformity_metrics = extract_conformity_metrics(
         proposal_data, id_field=id_field, source_context=context
     )
-    conformity_path = snapshot_root / "conformity" / "conformity_metrics.json"
-    _save_json(conformity_metrics, conformity_path)
     _save_csv_rows(
         _flatten_conformity_rows(conformity_metrics.get("per_proposal", [])),
         snapshot_root / "conformity" / "per_proposal.csv",
@@ -647,32 +548,34 @@ def prepare_ecosystem_artifacts(
     )
 
     saved_paths: Dict[str, Path] = {
-        "network_json": network_stem.with_suffix(".json"),
-        "dependency_metrics_json": dependency_metrics_path,
         "authorship_json": authorship_path,
-        "authorship_payload_json": authorship_payload_path,
-        "classification_json": classification_payload_path,
-        "evolution_json": evolution_payload_path,
-        "conformity_json": conformity_path,
         "wordcloud_json": wordcloud_path,
     }
 
-    if postprocess_root is not None:
-        emit("Writing react exports", advance=1)
-        saved_paths.update(
-            _save_react_ready_exports(
-                postprocess_root=postprocess_root,
-                snapshot=snapshot,
-                network_data=network_data,
-                dependency_metrics=dependency_metrics,
-                authorship_payload=authorship_payload,
-                classification_payload=classification_payload,
-                evolution_payload=evolution_payload,
-                conformity_metrics=conformity_metrics,
-            )
-        )
-        emit("Completed", advance=1)
-    else:
-        emit("Completed", advance=2)
+    emit("Writing frontend payloads", advance=1)
+    payload_paths = _save_frontend_payloads(
+        postprocess_root=postprocess_root,
+        snapshot=snapshot,
+        network_data=network_data,
+        dependency_metrics=dependency_metrics,
+        authorship_payload=authorship_payload,
+        classification_payload=classification_payload,
+        evolution_payload=evolution_payload,
+        conformity_metrics=conformity_metrics,
+    )
+    saved_paths.update(payload_paths)
+    saved_paths.update(
+        {
+            "network_json": payload_paths["payload_network_data_json"],
+            "dependency_metrics_json": payload_paths[
+                "payload_dependency_metrics_json"
+            ],
+            "authorship_payload_json": payload_paths["payload_authorship_payload_json"],
+            "classification_json": payload_paths["payload_classification_payload_json"],
+            "evolution_json": payload_paths["payload_evolution_payload_json"],
+            "conformity_json": payload_paths["payload_conformity_metrics_json"],
+        }
+    )
+    emit("Completed", advance=1)
 
     return saved_paths

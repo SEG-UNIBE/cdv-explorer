@@ -12,21 +12,21 @@ function isSnapshotDirectoryName(name) {
   return /^\d{4}-\d{2}-\d{2}$/.test(name);
 }
 
-function listSnapshots(analysisRoot) {
-  if (!fs.existsSync(analysisRoot)) {
+function listSnapshots(payloadRoot) {
+  if (!fs.existsSync(payloadRoot)) {
     return [];
   }
 
-  return fs.readdirSync(analysisRoot, { withFileTypes: true })
+  return fs.readdirSync(payloadRoot, { withFileTypes: true })
     .filter((entry) => entry.isDirectory() && isSnapshotDirectoryName(entry.name))
     .map((entry) => entry.name)
     .sort((left, right) => right.localeCompare(left));
 }
 
-function findSourceAnalysisRoots(ecosystemDir, ecosystemId) {
-  const directRoot = path.join(ecosystemDir, '03_analysis');
+function findSourcePayloadRoots(ecosystemDir, ecosystemId) {
+  const directRoot = path.join(ecosystemDir, '04_postprocess');
   if (fs.existsSync(directRoot)) {
-    return [{ sourceSlug: ecosystemId, analysisRoot: directRoot }];
+    return [{ sourceSlug: ecosystemId, payloadRoot: directRoot }];
   }
 
   const sourceRoots = fs.readdirSync(ecosystemDir, { withFileTypes: true })
@@ -34,9 +34,9 @@ function findSourceAnalysisRoots(ecosystemDir, ecosystemId) {
     .filter((entry) => entry.name !== '_combined')
     .map((entry) => ({
       sourceSlug: entry.name,
-      analysisRoot: path.join(ecosystemDir, entry.name, '03_analysis'),
+      payloadRoot: path.join(ecosystemDir, entry.name, '04_postprocess'),
     }))
-    .filter(({ analysisRoot }) => fs.existsSync(analysisRoot));
+    .filter(({ payloadRoot }) => fs.existsSync(payloadRoot));
 
   const combinedRoot = path.join(ecosystemDir, '_combined');
   const combinedRoots = fs.existsSync(combinedRoot)
@@ -44,9 +44,9 @@ function findSourceAnalysisRoots(ecosystemDir, ecosystemId) {
       .filter((entry) => entry.isDirectory())
       .map((entry) => ({
         sourceSlug: entry.name,
-        analysisRoot: path.join(combinedRoot, entry.name, '03_analysis'),
+        payloadRoot: path.join(combinedRoot, entry.name, '04_postprocess'),
       }))
-      .filter(({ analysisRoot }) => fs.existsSync(analysisRoot))
+      .filter(({ payloadRoot }) => fs.existsSync(payloadRoot))
     : [];
 
   return sourceRoots.concat(combinedRoots);
@@ -65,8 +65,8 @@ function buildSnapshotIndex() {
       const ecosystemDir = path.join(ipDataRoot, ecosystemId);
       const bySource = {};
 
-      findSourceAnalysisRoots(ecosystemDir, ecosystemId).forEach(({ sourceSlug, analysisRoot }) => {
-        const snapshots = listSnapshots(analysisRoot);
+      findSourcePayloadRoots(ecosystemDir, ecosystemId).forEach(({ sourceSlug, payloadRoot }) => {
+        const snapshots = listSnapshots(payloadRoot);
         if (snapshots.length > 0) {
           bySource[sourceSlug] = snapshots;
         }

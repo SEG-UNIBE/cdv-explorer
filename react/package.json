@@ -25,7 +25,7 @@
   },
   "scripts": {
     "postinstall": "patch-package",
-    "generate:indexes": "node scripts/generateEcosystemConfig.js && node scripts/generateSnapshotIndex.js && node scripts/generateProposalLinkIndex.js",
+    "generate:indexes": "node scripts/generateEcosystemConfig.js && node scripts/generateSnapshotIndex.js && node scripts/generateProposalLinkIndex.js && node scripts/syncPublicData.js",
     "prestart": "npm run generate:indexes",
     "start": "vite",
     "predev": "npm run generate:indexes",

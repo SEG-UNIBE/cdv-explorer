@@ -9,9 +9,9 @@ from analysis.validation.snapshots import (
     expected_combined_snapshot_targets,
     validate_ground_truth_curated_file,
     validate_ground_truth_ips_file,
+    validate_payload_index,
     validate_preprocess_snapshot,
     validate_react_generated_indexes,
-    validate_react_snapshot_exports,
 )
 
 
@@ -89,16 +89,18 @@ class SnapshotValidationTests(unittest.TestCase):
         self.assertIn("missing non-empty `timestamp`", error_text)
         self.assertIn("must use source_slug:id format", error_text)
 
-    def test_react_snapshot_validation_rejects_missing_index_files(self) -> None:
+    def test_payload_index_validation_rejects_missing_index_files(self) -> None:
         with tempfile.TemporaryDirectory() as tmp_dir:
-            react_dir = Path(tmp_dir) / "react"
-            react_dir.mkdir()
-            (react_dir / "dataset_index.json").write_text(
-                json.dumps({"files": {"network_nodes": "network_nodes.csv"}}),
+            payload_dir = Path(tmp_dir) / "2026-05-28"
+            payload_dir.mkdir()
+            (payload_dir / "dataset_index.json").write_text(
+                json.dumps(
+                    {"files": {"network_data": "dependencies/network_data.json"}}
+                ),
                 encoding="utf-8",
             )
 
-            result = validate_react_snapshot_exports(react_dir)
+            result = validate_payload_index(payload_dir)
 
         self.assertFalse(result.ok)
         self.assertIn("references missing files", "\n".join(result.errors))
@@ -406,11 +408,11 @@ class SnapshotValidationTests(unittest.TestCase):
             nips = self._source_config(root, "nips")
 
             for snapshot in ("2026-05-28", "2026-03-16", "2021-01-01"):
-                (Path(bips["analysis"]) / snapshot).mkdir(parents=True)
+                (Path(bips["postprocess"]) / snapshot).mkdir(parents=True)
             for snapshot in ("2026-05-28", "2026-03-16"):
-                (Path(slips["analysis"]) / snapshot).mkdir(parents=True)
+                (Path(slips["postprocess"]) / snapshot).mkdir(parents=True)
             for snapshot in ("2026-05-28",):
-                (Path(nips["analysis"]) / snapshot).mkdir(parents=True)
+                (Path(nips["postprocess"]) / snapshot).mkdir(parents=True)
 
             targets = expected_combined_snapshot_targets(
                 "bitcoin",

@@ -11,16 +11,16 @@ from typing import Any
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from analysis.validation.snapshots import (
-    ANALYSIS_COLUMN_LABELS,
+    PAYLOAD_COLUMN_LABELS,
     SnapshotValidationResult,
     expected_combined_snapshot_targets,
-    validate_analysis_snapshot,
     validate_combined_snapshot,
     validate_ground_truth_curated_file,
     validate_ground_truth_ips_file,
+    validate_payload_index,
+    validate_payload_snapshot,
     validate_preprocess_snapshot,
     validate_react_generated_indexes,
-    validate_react_snapshot_exports,
 )
 from ecosystems import ECOSYSTEM_REGISTRY
 
@@ -50,10 +50,10 @@ def _source_rows() -> list[dict[str, Any]]:
         for source, source_config in sorted(
             (ecosystem_config.get("sources") or {}).items()
         ):
-            analysis_root = Path(str(source_config.get("analysis", "")))
-            if not analysis_root.is_dir():
+            postprocess_root = Path(str(source_config.get("postprocess", "")))
+            if not postprocess_root.is_dir():
                 continue
-            for snapshot_dir in sorted(analysis_root.iterdir(), reverse=True):
+            for snapshot_dir in sorted(postprocess_root.iterdir(), reverse=True):
                 if not snapshot_dir.is_dir():
                     continue
                 snapshot = snapshot_dir.name
@@ -65,12 +65,8 @@ def _source_rows() -> list[dict[str, Any]]:
                         source_config=source_config,
                         ecosystem_config=ecosystem_config,
                     ),
-                    validate_analysis_snapshot(snapshot_dir),
-                    validate_react_snapshot_exports(
-                        Path(str(source_config.get("postprocess", "")))
-                        / snapshot
-                        / "react"
-                    ),
+                    validate_payload_snapshot(snapshot_dir),
+                    validate_payload_index(snapshot_dir),
                 )
                 rows.append(
                     {
@@ -146,12 +142,16 @@ def build_summary(
     lines: list[str] = []
 
     if not rows:
-        lines.append("⚠️ No snapshots found under configured `03_analysis` directories.")
+        lines.append(
+            "⚠️ No snapshots found under configured `04_postprocess` directories."
+        )
     else:
         lines.append("### Artifact Validation")
         lines.append("")
 
-        file_cols = ["preprocess"] + list(ANALYSIS_COLUMN_LABELS.values()) + ["react"]
+        file_cols = (
+            ["preprocess"] + list(PAYLOAD_COLUMN_LABELS.values()) + ["payload_index"]
+        )
         header = [
             "Ecosystem",
             "Source",

@@ -28,7 +28,7 @@ from ecosystems import ECOSYSTEM_REGISTRY
 from pipeline.source_context import SourceContext
 
 
-ANALYSIS_REQUIRED_FILES: dict[str, list[str]] = {
+PAYLOAD_REQUIRED_FILES: dict[str, list[str]] = {
     "dependencies/network_data.json": ["nodes", "dependency_edges"],
     "dependencies/dependency_metrics.json": ["by_approach", "pairwise_comparisons"],
     "authorship/authorship_payload.json": [
@@ -50,7 +50,7 @@ ANALYSIS_REQUIRED_FILES: dict[str, list[str]] = {
     "conformity/conformity_metrics.json": ["per_proposal"],
 }
 
-ANALYSIS_COLUMN_LABELS: dict[str, str] = {
+PAYLOAD_COLUMN_LABELS: dict[str, str] = {
     "dependencies/network_data.json": "network",
     "dependencies/dependency_metrics.json": "dep_metrics",
     "authorship/authorship_payload.json": "authorship",
@@ -290,7 +290,9 @@ def expected_combined_snapshot_targets(
         return []
 
     snapshot_sets = {
-        source_slug: set(_snapshot_labels(Path(str(source_config.get("analysis", "")))))
+        source_slug: set(
+            _snapshot_labels(Path(str(source_config.get("postprocess", ""))))
+        )
         for source_slug, source_config in source_configs.items()
     }
 
@@ -561,11 +563,12 @@ def validate_preprocess_snapshot(
     return result
 
 
-def validate_analysis_snapshot(snapshot_dir: Path) -> SnapshotValidationResult:
+def validate_payload_snapshot(snapshot_dir: Path) -> SnapshotValidationResult:
+    """Validate the frontend payloads under a 04_postprocess/<snapshot> directory."""
     result = SnapshotValidationResult()
 
-    for rel_path, required_keys in ANALYSIS_REQUIRED_FILES.items():
-        label = ANALYSIS_COLUMN_LABELS[rel_path]
+    for rel_path, required_keys in PAYLOAD_REQUIRED_FILES.items():
+        label = PAYLOAD_COLUMN_LABELS[rel_path]
         file_path = snapshot_dir / rel_path
 
         if not file_path.exists():
@@ -704,35 +707,36 @@ def validate_ground_truth_ips_file(
     return result
 
 
-def validate_react_snapshot_exports(react_dir: Path) -> SnapshotValidationResult:
+def validate_payload_index(payload_dir: Path) -> SnapshotValidationResult:
+    """Validate the dataset_index.json manifest inside a 04_postprocess/<snapshot> directory."""
     result = SnapshotValidationResult()
-    index_path = react_dir / "dataset_index.json"
+    index_path = payload_dir / "dataset_index.json"
     index = _load_json_file(index_path, result, str(index_path))
     if index is None:
-        result.file_status["react"] = "❌ missing"
+        result.file_status["payload_index"] = "❌ missing"
         return result
     if not isinstance(index, Mapping):
-        result.file_status["react"] = "❌ shape"
+        result.file_status["payload_index"] = "❌ shape"
         result.fail(f"`{index_path}` must contain a JSON object")
         return result
 
     files = index.get("files")
     if not isinstance(files, Mapping) or not files:
-        result.file_status["react"] = "❌ index"
+        result.file_status["payload_index"] = "❌ index"
         result.fail(f"`{index_path}` missing non-empty `files` object")
         return result
 
     missing = [
-        str(react_dir / str(filename))
+        str(payload_dir / str(filename))
         for filename in files.values()
-        if not (react_dir / str(filename)).exists()
+        if not (payload_dir / str(filename)).exists()
     ]
     if missing:
-        result.file_status["react"] = "❌ files"
+        result.file_status["payload_index"] = "❌ files"
         result.fail(f"`{index_path}` references missing files: {', '.join(missing)}")
         return result
 
-    result.file_status["react"] = "✅"
+    result.file_status["payload_index"] = "✅"
     return result
 
 
@@ -756,14 +760,9 @@ def validate_source_snapshot(
             ecosystem_config=ecosystem_config,
         )
     )
-    result.merge(
-        validate_analysis_snapshot(Path(str(source_config["analysis"])) / snapshot)
-    )
-    result.merge(
-        validate_react_snapshot_exports(
-            Path(str(source_config["postprocess"])) / snapshot / "react"
-        )
-    )
+    payload_dir = Path(str(source_config["postprocess"])) / snapshot
+    result.merge(validate_payload_snapshot(payload_dir))
+    result.merge(validate_payload_index(payload_dir))
     return result
 
 
@@ -774,12 +773,9 @@ def validate_combined_snapshot(
     result = SnapshotValidationResult()
     result.merge(validate_ground_truth_curated_file(ecosystem_slug))
     result.merge(validate_ground_truth_ips_file(ecosystem_slug))
-    result.merge(validate_analysis_snapshot(combo_root / "03_analysis" / snapshot))
-    result.merge(
-        validate_react_snapshot_exports(
-            combo_root / "04_postprocess" / snapshot / "react"
-        )
-    )
+    payload_dir = combo_root / "04_postprocess" / snapshot
+    result.merge(validate_payload_snapshot(payload_dir))
+    result.merge(validate_payload_index(payload_dir))
     return result
 
 

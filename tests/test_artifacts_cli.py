@@ -501,11 +501,11 @@ class ArtifactRebuildTests(unittest.TestCase):
     def test_ground_truth_sampling_prefills_workbook_scope(self) -> None:
         with tempfile.TemporaryDirectory() as tmp_dir:
             root = Path(tmp_dir)
-            analysis_root = (
-                root / "bips" / "03_analysis" / "2026-05-28" / "dependencies"
+            payload_root = (
+                root / "bips" / "04_postprocess" / "2026-05-28" / "dependencies"
             )
-            analysis_root.mkdir(parents=True)
-            (analysis_root / "network_data.json").write_text(
+            payload_root.mkdir(parents=True)
+            (payload_root / "network_data.json").write_text(
                 """
                 {
                   "nodes": [
@@ -572,11 +572,11 @@ class ArtifactRebuildTests(unittest.TestCase):
     def test_ground_truth_sampling_can_filter_to_specific_proposal_type(self) -> None:
         with tempfile.TemporaryDirectory() as tmp_dir:
             root = Path(tmp_dir)
-            analysis_root = (
-                root / "bips" / "03_analysis" / "2026-05-28" / "dependencies"
+            payload_root = (
+                root / "bips" / "04_postprocess" / "2026-05-28" / "dependencies"
             )
-            analysis_root.mkdir(parents=True)
-            (analysis_root / "network_data.json").write_text(
+            payload_root.mkdir(parents=True)
+            (payload_root / "network_data.json").write_text(
                 """
                 {
                   "nodes": [
@@ -638,11 +638,11 @@ class ArtifactRebuildTests(unittest.TestCase):
     def test_ground_truth_sampling_updates_workbook_backed_scope(self) -> None:
         with tempfile.TemporaryDirectory() as tmp_dir:
             root = Path(tmp_dir)
-            analysis_root = (
-                root / "bips" / "03_analysis" / "2026-05-28" / "dependencies"
+            payload_root = (
+                root / "bips" / "04_postprocess" / "2026-05-28" / "dependencies"
             )
-            analysis_root.mkdir(parents=True)
-            (analysis_root / "network_data.json").write_text(
+            payload_root.mkdir(parents=True)
+            (payload_root / "network_data.json").write_text(
                 """
                 {
                   "nodes": [

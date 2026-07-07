@@ -63,7 +63,7 @@ jobs:
           python-version: '3.12'
 
       - name: Install dev dependencies
-        run: pip install -r requirements-dev.txt
+        run: pip install -r requirements-dev.lock.txt
 
       - name: Run ruff check
         run: ruff check .
@@ -79,7 +79,7 @@ jobs:
           python-version: '3.12'
 
       - name: Install dev dependencies
-        run: pip install -r requirements-dev.txt
+        run: pip install -r requirements-dev.lock.txt
 
       - name: Run pytest
         run: pytest
@@ -95,7 +95,7 @@ jobs:
           python-version: '3.12'
 
       - name: Install dev dependencies
-        run: pip install -r requirements-dev.txt
+        run: pip install -r requirements-dev.lock.txt
 
       - name: Validate snapshot artifacts
         run: python scripts/validate_artifacts.py

@@ -231,10 +231,12 @@ def _snapshot_labels(root: Path) -> list[str]:
     )
 
 
-def _analysis_snapshot_labels_with_networks(analysis_root: Path) -> list[str]:
+def _payload_snapshot_labels_with_networks(postprocess_root: Path) -> list[str]:
     labels: list[str] = []
-    for snapshot in _snapshot_labels(analysis_root):
-        network_path = analysis_root / snapshot / "dependencies" / "network_data.json"
+    for snapshot in _snapshot_labels(postprocess_root):
+        network_path = (
+            postprocess_root / snapshot / "dependencies" / "network_data.json"
+        )
         if network_path.exists():
             labels.append(snapshot)
     return labels
@@ -1466,12 +1468,12 @@ def ground_truth_sample_ips(
     src = _get_source(eco, source)
     reviewed_ip_policy = reviewed_ip_policy_for_ecosystem(ecosystem)
 
-    available_snapshots = _analysis_snapshot_labels_with_networks(
-        Path(str(src["analysis"]))
+    available_snapshots = _payload_snapshot_labels_with_networks(
+        Path(str(src["postprocess"]))
     )
     if not available_snapshots:
         console.print(
-            f"[red]No analysis snapshots with dependency network artifacts found for {ecosystem}/{source}.[/red]"
+            f"[red]No postprocess snapshots with dependency network payloads found for {ecosystem}/{source}.[/red]"
         )
         raise typer.Exit(1)
     if snapshot is None:
@@ -1620,7 +1622,7 @@ def ground_truth_sample_ips(
             console.print(f"[yellow]Warning:[/yellow] {warning}")
 
     network_path = (
-        Path(str(src["analysis"])) / snapshot / "dependencies" / "network_data.json"
+        Path(str(src["postprocess"])) / snapshot / "dependencies" / "network_data.json"
     )
     if not network_path.exists():
         console.print(

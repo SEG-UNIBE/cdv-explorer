@@ -270,7 +270,13 @@ export function buildGroundTruthEvaluation(dataset, options = {}) {
   } = options;
   const isExactType = matchMode === GROUND_TRUTH_MATCH_MODE_EXACT_TYPE;
   const linksByType = dataset?.links || {};
-  const allGroundTruthEdges = flattenApproachLinks(linksByType, GROUND_TRUTH_CURATED);
+  const networkNodeKeys = new Set(
+    (Array.isArray(dataset?.nodes) ? dataset.nodes : [])
+      .map((n) => String(n?.graph_key || n?.graphKey || n?.id || '').trim())
+      .filter(Boolean)
+  );
+  const allGroundTruthEdges = flattenApproachLinks(linksByType, GROUND_TRUTH_CURATED)
+    .filter((edge) => !networkNodeKeys.size || networkNodeKeys.has(edgeTargetKey(edge)));
   const allReviewedIps = Array.isArray(dataset?.groundTruthReviewedIps)
     ? dataset.groundTruthReviewedIps.filter(Boolean)
     : [];
@@ -368,6 +374,27 @@ export function buildGroundTruthEvaluation(dataset, options = {}) {
     return [{ key: pair, edge }];
   };
 
+  const reviewedBySource = {};
+  reviewedIps.forEach((entry) => {
+    const slug = String(entry?.ip || '').split(':', 1)[0] || 'unknown';
+    reviewedBySource[slug] = (reviewedBySource[slug] || 0) + 1;
+  });
+
+  const totalBySource = {};
+  (Array.isArray(dataset?.nodes) ? dataset.nodes : []).forEach((node) => {
+    const key = String(node?.graph_key || node?.graphKey || node?.id || '').trim();
+    const slug = key.includes(':') ? key.split(':', 1)[0] : 'unknown';
+    totalBySource[slug] = (totalBySource[slug] || 0) + 1;
+  });
+
+  const goldEdgesBySourcePair = {};
+  groundTruthEdges.forEach((edge) => {
+    const src = String(edgeSourceKey(edge)).split(':', 1)[0] || 'unknown';
+    const tgt = String(edgeTargetKey(edge)).split(':', 1)[0] || 'unknown';
+    const pair = `${src}->${tgt}`;
+    goldEdgesBySourcePair[pair] = (goldEdgesBySourcePair[pair] || 0) + 1;
+  });
+
   return {
     matchMode,
     restrictToReviewedSources,
@@ -376,9 +403,12 @@ export function buildGroundTruthEvaluation(dataset, options = {}) {
     gtCutoffStartDate: normalizedCutoffStartDate,
     gtCutoffEndDate: normalizedCutoffEndDate,
     reviewedProposalCount: reviewedSourceKeys.size,
+    reviewedBySource,
     curatedTargetCount: curatedTargetKeys.size,
     totalProposalCount,
+    totalBySource,
     goldEdgeCount: goldEdgeKeys.size,
+    goldEdgesBySourcePair,
     approaches: EVALUATED_DEPENDENCY_APPROACHES.map((approach) => {
       // Restricted mode scores only proposals that were explicitly reviewed in
       // the benchmark scope; non-restricted mode scores every extracted edge.

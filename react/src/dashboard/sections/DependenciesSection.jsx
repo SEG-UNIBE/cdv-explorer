@@ -29,6 +29,7 @@ import {
   GROUND_TRUTH_CURATED,
 } from '../../dependencyApproaches';
 import { resolveRelationOntology } from '../../dependencyRelationOntology';
+import { renderTooltipCardHtml } from '../../tooltipHtml';
 import { useAnalysisMetricTooltip } from '../../useAnalysisMetricTooltip';
 import { ExportableCard } from '../ExportableCard';
 import { CollapsibleControls } from '../CollapsibleControls';
@@ -302,29 +303,76 @@ export function DependenciesSection({
       groundTruthCutoffEndDate,
     ],
   );
-  const groundTruthSummaryCards = useMemo(() => (
-    groundTruthEvaluation
-      ? [
-        {
-          label: 'GT Nodes',
-          value: groundTruthEvaluation.reviewedProposalCount,
-          description: 'Number of distinct reviewed IPs included in the curated benchmark scope. This comes from completed reviewed entries, including IPs with no documented GT edge.',
-        },
-        {
-          label: 'GT Edges',
-          value: groundTruthEvaluation.goldEdgeCount,
-          description: 'Number of unique documented ground-truth interrelations used as the reference edge set.',
-        },
-        {
-          label: 'Coverage',
-          value: groundTruthEvaluation.totalProposalCount
-            ? `${((groundTruthEvaluation.reviewedProposalCount / groundTruthEvaluation.totalProposalCount) * 100).toFixed(1)}%`
-            : '—',
-          description: 'Share of all IPs in the dataset that are explicitly covered by the reviewed benchmark scope. Lower coverage means the evaluation reflects only a small curated slice of the ecosystem.',
-        },
-      ]
-      : []
-  ), [groundTruthEvaluation]);
+  const groundTruthSummaryCards = useMemo(() => {
+    if (!groundTruthEvaluation) {
+      return [];
+    }
+
+    const sourceLabel = (slug) => {
+      const src = Object.values(ecosystemBase?.sources || {}).find(
+        (s) => String(s?.sourceSlug || '').trim() === slug,
+      );
+      return String(src?.acronym || src?.shortLabel || src?.label || slug || '').trim().toUpperCase() || slug;
+    };
+
+    const nodeRows = Object.entries(groundTruthEvaluation.reviewedBySource || {})
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([slug, count]) => [sourceLabel(slug), String(count)]);
+
+    const edgeRows = Object.entries(groundTruthEvaluation.goldEdgesBySourcePair || {})
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([pair, count]) => {
+        const [src, tgt] = pair.split('->');
+        return [`${sourceLabel(src)} → ${sourceLabel(tgt)}`, String(count)];
+      });
+
+    return [
+      {
+        label: 'GT Nodes',
+        value: groundTruthEvaluation.reviewedProposalCount,
+        tooltipHtml: renderTooltipCardHtml({
+          titleHtml: '<strong>GT Nodes by source</strong>',
+          rows: [
+            ['Info', 'Distinct reviewed IPs in the curated benchmark scope, including IPs with no documented GT edge.'],
+            ...nodeRows,
+          ],
+        }),
+      },
+      {
+        label: 'GT Edges',
+        value: groundTruthEvaluation.goldEdgeCount,
+        tooltipHtml: renderTooltipCardHtml({
+          titleHtml: '<strong>GT Edges by source pair</strong>',
+          rows: [
+            ['Info', 'Unique documented ground-truth interrelations used as the reference edge set.'],
+            ...edgeRows,
+          ],
+        }),
+      },
+      {
+        label: 'Coverage',
+        value: groundTruthEvaluation.totalProposalCount
+          ? `${((groundTruthEvaluation.reviewedProposalCount / groundTruthEvaluation.totalProposalCount) * 100).toFixed(1)}%`
+          : '—',
+        tooltipHtml: renderTooltipCardHtml({
+          titleHtml: '<strong>Coverage by source</strong>',
+          rows: [
+            ['Info', 'Per-source coverage; the overall badge value is the size-weighted average across sources.'],
+            ...Object.entries(groundTruthEvaluation.totalBySource || {})
+              .sort(([a], [b]) => a.localeCompare(b))
+              .map(([slug, total]) => {
+                const reviewed = (groundTruthEvaluation.reviewedBySource || {})[slug] || 0;
+                const pct = total ? ((reviewed / total) * 100).toFixed(1) : '0.0';
+                return [sourceLabel(slug), `${reviewed} / ${total} (${pct}%)`];
+              }),
+            groundTruthEvaluation.totalProposalCount > 0
+              ? ['Total', `${groundTruthEvaluation.reviewedProposalCount} / ${groundTruthEvaluation.totalProposalCount} (${((groundTruthEvaluation.reviewedProposalCount / groundTruthEvaluation.totalProposalCount) * 100).toFixed(1)}%)`]
+              : null,
+          ],
+        }),
+      },
+    ];
+  }, [ecosystemBase?.sources, groundTruthEvaluation]);
   const groundTruthMethodologyText = useMemo(() => {
     const reviewedIps = Array.isArray(selectedDataset?.groundTruthReviewedIps)
       ? selectedDataset.groundTruthReviewedIps.filter(Boolean)
@@ -502,7 +550,7 @@ export function DependenciesSection({
               <div
                 key={metric.label}
                 className="metric-badge"
-                onMouseEnter={(event) => showMetricTooltip(event, metric.description)}
+                onMouseEnter={(event) => showHtmlMetricTooltip(event, metric.tooltipHtml)}
                 onMouseMove={moveMetricTooltip}
                 onMouseLeave={hideMetricTooltip}
               >

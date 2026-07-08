@@ -703,7 +703,7 @@ test('reviewed IP scope includes reviewed proposals with zero curated edges', ()
 
 test('ground-truth evaluation can filter curated edges by review-date cutoff', () => {
   const dataset = {
-    nodes: [{ id: '1' }, { id: '2' }, { id: '3' }],
+    nodes: [{ id: '1', graph_key: 'bips:1' }, { id: '2', graph_key: 'bips:2' }, { id: '3', graph_key: 'bips:3' }],
     groundTruthReviewedIps: [
       { ip: 'bips:1', reviewed_at: '2026-06-20' },
       { ip: 'bips:2', reviewed_at: '2026-06-22' },
@@ -734,7 +734,7 @@ test('ground-truth evaluation can filter curated edges by review-date cutoff', (
 
 test('ground-truth evaluation can filter curated edges reviewed on or later than a cutoff', () => {
   const dataset = {
-    nodes: [{ id: '1' }, { id: '2' }, { id: '3' }],
+    nodes: [{ id: '1', graph_key: 'bips:1' }, { id: '2', graph_key: 'bips:2' }, { id: '3', graph_key: 'bips:3' }],
     groundTruthReviewedIps: [
       { ip: 'bips:1', reviewed_at: '2026-06-20' },
       { ip: 'bips:2', reviewed_at: '2026-06-22' },
@@ -764,7 +764,7 @@ test('ground-truth evaluation can filter curated edges reviewed on or later than
 
 test('ground-truth evaluation can filter curated edges reviewed between two dates', () => {
   const dataset = {
-    nodes: [{ id: '1' }, { id: '2' }, { id: '3' }, { id: '4' }],
+    nodes: [{ id: '1', graph_key: 'bips:1' }, { id: '2', graph_key: 'bips:2' }, { id: '3', graph_key: 'bips:3' }, { id: '4', graph_key: 'bips:4' }],
     groundTruthReviewedIps: [
       { ip: 'bips:1', reviewed_at: '2026-06-20' },
       { ip: 'bips:2', reviewed_at: '2026-06-22' },

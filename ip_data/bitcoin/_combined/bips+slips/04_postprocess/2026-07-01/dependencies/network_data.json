@@ -52240,6 +52240,18 @@
       "reviewed_at": "2026-06-30"
     },
     {
+      "source": "bips:15",
+      "target": "bips:70",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "references",
+      "value": 1,
+      "confidence": "high",
+      "evidence": "BIP 0070 (payment protocol) may be seen as the alternative to Aliases.",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-07-08"
+    },
+    {
       "source": "bips:16",
       "target": "bips:11",
       "extraction_method": "ground_truth_curated",
@@ -54158,6 +54170,66 @@
       "note": "BIP145 depends on BIP141 because it modifies getblocktemplate specifically to support SegWit block construction, using BIP141-defined witness data, sigop/weight accounting, and commitment requirements.",
       "reviewer": "rbo",
       "reviewed_at": "2026-06-29"
+    },
+    {
+      "source": "bips:146",
+      "target": "bips:9",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "depends_on",
+      "value": 1,
+      "confidence": "high",
+      "evidence": "This BIP will be deployed by \"version bits\" BIP9. Details TBD.",
+      "note": null,
+      "reviewer": "rbo",
+      "reviewed_at": "2026-07-08"
+    },
+    {
+      "source": "bips:146",
+      "target": "bips:62",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "references",
+      "value": 1,
+      "confidence": "high",
+      "evidence": "This document is extracted from the previous BIP62 proposal which had input from various people.",
+      "note": "BIP62 is just historical source material",
+      "reviewer": "rbo",
+      "reviewed_at": "2026-07-08"
+    },
+    {
+      "source": "bips:146",
+      "target": "bips:66",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "depends_on",
+      "value": 1,
+      "confidence": "high",
+      "evidence": "Since the enforcement of Strict DER signatures (BIP66), there are 2 remaining known sources of malleability in ECDSA signatures: Inherent ECDSA signature malleability:  [...] Malleability of failing signature: [...] The failing signature may take any value, as long as it follows all the rules described in BIP66. [...] Specification [...] Every signature passed to OP_CHECKSIG[1], OP_CHECKSIGVERIFY, OP_CHECKMULTISIG, or OP_CHECKMULTISIGVERIFY, to which ECDSA verification is applied, MUST use a S value between 0x1 and 0x7FFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF 5D576E73 57A4501D DFE92F46 681B20A0 (inclusive) with strict DER encoding (see BIP66).",
+      "note": "BIP146 depends on BIP66 because its rules apply to signatures that must still satisfy BIP66 strict DER encoding, and its NULLFAIL examples explicitly use BIP66-compliant failing signatures.",
+      "reviewer": "rbo",
+      "reviewed_at": "2026-07-08"
+    },
+    {
+      "source": "bips:146",
+      "target": "bips:141",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "references",
+      "value": 1,
+      "confidence": "high",
+      "evidence": "For non-segregated witness transactions, signature malleability will change the txid and invalidate any unconfirmed child transactions. Although the txid of segregated witness (BIP141) transactions is not third party malleable, this malleability vector will change the wtxid and may reduce the efficiency of compact block relay (BIP152). [...] Footnotes 1^Including pay-to-witness-public-key-hash (P2WPKH) described in BIP141",
+      "note": "BIP141 is cited to explain SegWit txid/wtxid malleability behavior and to note that P2WPKH is included in the affected CHECKSIG cases, but BIP146's LOW_S and NULLFAIL rules are not defined by SegWit.",
+      "reviewer": "rbo",
+      "reviewed_at": "2026-07-08"
+    },
+    {
+      "source": "bips:146",
+      "target": "bips:152",
+      "extraction_method": "ground_truth_curated",
+      "relation_type": "references",
+      "value": 1,
+      "confidence": "high",
+      "evidence": "For non-segregated witness transactions, signature malleability will change the txid and invalidate any unconfirmed child transactions. Although the txid of segregated witness (BIP141) transactions is not third party malleable, this malleability vector will change the wtxid and may reduce the efficiency of compact block relay (BIP152).",
+      "note": "BIP152 is cited only as an impacted relay-efficiency context, since wtxid malleability may reduce compact block relay efficiency. BIP146 does not require compact block relay.",
+      "reviewer": "rbo",
+      "reviewed_at": "2026-07-08"
     },
     {
       "source": "bips:147",
@@ -59299,6 +59371,26 @@
       "note": null
     },
     {
+      "ip": "bips:15",
+      "proposal_id": "15",
+      "source_slug": "bips",
+      "reviewer": "rbo",
+      "reviewed_at": "2026-07-08",
+      "sampling_strategy": "sampler",
+      "sampling_snapshot": "2026-07-01",
+      "sampling_seed": "43",
+      "era_bucket": "early",
+      "density_bucket": "low",
+      "density_basis": "all_methods",
+      "created": "2011-12-10",
+      "status": "Closed",
+      "type": "Specification",
+      "layer": "Applications",
+      "title": "Aliases",
+      "extracted_target_count": "1",
+      "note": null
+    },
+    {
       "ip": "bips:16",
       "proposal_id": "16",
       "source_slug": "bips",
@@ -59555,6 +59647,26 @@
       "type": "Specification",
       "layer": "Peer Services",
       "title": "mempool message",
+      "extracted_target_count": "0",
+      "note": null
+    },
+    {
+      "ip": "bips:36",
+      "proposal_id": "36",
+      "source_slug": "bips",
+      "reviewer": "rbo",
+      "reviewed_at": "2026-07-08",
+      "sampling_strategy": "sampler",
+      "sampling_snapshot": "2026-07-01",
+      "sampling_seed": "43",
+      "era_bucket": "early",
+      "density_bucket": "none",
+      "density_basis": "all_methods",
+      "created": "2012-08-03",
+      "status": "Closed",
+      "type": "Specification",
+      "layer": "Peer Services",
+      "title": "Custom Services",
       "extracted_target_count": "0",
       "note": null
     },
@@ -60539,6 +60651,26 @@
       "note": null
     },
     {
+      "ip": "bips:146",
+      "proposal_id": "146",
+      "source_slug": "bips",
+      "reviewer": "rbo",
+      "reviewed_at": "2026-07-08",
+      "sampling_strategy": "sampler",
+      "sampling_snapshot": "2026-07-01",
+      "sampling_seed": "43",
+      "era_bucket": "early",
+      "density_bucket": "high",
+      "density_basis": "all_methods",
+      "created": "2016-08-16",
+      "status": "Closed",
+      "type": "Specification",
+      "layer": "Consensus (soft fork)",
+      "title": "Dealing with signature encoding malleability",
+      "extracted_target_count": "5",
+      "note": null
+    },
+    {
       "ip": "bips:147",
       "proposal_id": "147",
       "source_slug": "bips",
@@ -61241,7 +61373,7 @@
   ],
   "meta": {
     "node_count": 233,
-    "edge_count": 1576,
+    "edge_count": 1582,
     "source_slugs": [
       "bips",
       "slips"

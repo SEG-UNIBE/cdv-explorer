@@ -41,6 +41,9 @@ const MATCH_MODE_TOOLTIP = '<strong>Edge Only</strong> matches directed source-t
 
 const SCOPE_TOOLTIP = 'Reviewed scores only completed benchmark reviews from ips.csv, while All scores every extracted source IP in the dataset.';
 
+const CROSS_SOURCE_TARGETS_TOOLTIP = 'When enabled (default), GT edges and extracted edges whose <em>target</em> belongs to a different IP source (e.g. a BIP referencing a SLIP) are included in the evaluation. '
+  + 'Disable this to restrict scoring to same-source edges only.';
+
 const GT_CUTOFF_TOOLTIP = '<strong>All completed reviews</strong>: use the full reviewed benchmark scope and all curated GT edges.'
   + '<br /><br /><strong>Reviewed on or before</strong>: include only reviewed IPs and curated GT edges whose '
   + '<code>reviewed_at</code> date is on or before the selected cutoff. Review dates refer to the latest available proposal '
@@ -213,6 +216,7 @@ export function DependenciesSection({
 }) {
   const [groundTruthMatchMode, setGroundTruthMatchMode] = useState(GROUND_TRUTH_MATCH_MODE_EDGE_ONLY);
   const [restrictToReviewedSources, setRestrictToReviewedSources] = useState(true);
+  const [allowCrossSourceTargets, setAllowCrossSourceTargets] = useState(true);
   const [groundTruthCutoffMode, setGroundTruthCutoffMode] = useState(GROUND_TRUTH_CUTOFF_MODE_ALL);
   const [groundTruthCutoffStartDate, setGroundTruthCutoffStartDate] = useState('');
   const [groundTruthCutoffEndDate, setGroundTruthCutoffEndDate] = useState('');
@@ -287,6 +291,7 @@ export function DependenciesSection({
       ontology: relationOntology,
       typeMapping,
       restrictToReviewedSources,
+      allowCrossSourceTargets,
       gtCutoffMode: groundTruthCutoffMode,
       gtCutoffDate: groundTruthCutoffStartDate,
       gtCutoffStartDate: groundTruthCutoffStartDate,
@@ -298,6 +303,7 @@ export function DependenciesSection({
       relationOntology,
       typeMapping,
       restrictToReviewedSources,
+      allowCrossSourceTargets,
       groundTruthCutoffMode,
       groundTruthCutoffStartDate,
       groundTruthCutoffEndDate,
@@ -425,6 +431,20 @@ export function DependenciesSection({
       : groundTruthEvaluation.totalProposalCount;
     return `Nodes=${nodeCount}`;
   }, [groundTruthEvaluation, restrictToReviewedSources]);
+
+  const crossSourceTargetsStats = useMemo(() => {
+    if (!groundTruthEvaluation) {
+      return '';
+    }
+    const pairs = groundTruthEvaluation.goldEdgesBySourcePair || {};
+    const crossCount = Object.entries(pairs)
+      .filter(([pair]) => {
+        const [src, tgt] = pair.split('->');
+        return src !== tgt;
+      })
+      .reduce((sum, [, count]) => sum + count, 0);
+    return `Edges=${allowCrossSourceTargets ? groundTruthEvaluation.goldEdgeCount : groundTruthEvaluation.goldEdgeCount - crossCount}`;
+  }, [allowCrossSourceTargets, groundTruthEvaluation]);
 
   return (
     <section className="dashboard-section">
@@ -686,6 +706,27 @@ export function DependenciesSection({
                       All
                     </span>
                     <span className="ground-truth-scope__stats">{groundTruthScopeStats}</span>
+                  </div>
+                </div>
+                <div className="network-layout-picker">
+                  <div
+                    className="network-layout-picker__label gt-help-label"
+                    onMouseEnter={(event) => showHtmlMetricTooltip(event, CROSS_SOURCE_TARGETS_TOOLTIP)}
+                    onMouseMove={moveMetricTooltip}
+                    onMouseLeave={hideMetricTooltip}
+                  >
+                    Cross-source Targets
+                  </div>
+                  <div className="ground-truth-scope">
+                    <InputSwitch
+                      inputId="ground-truth-cross-source-toggle"
+                      checked={allowCrossSourceTargets}
+                      onChange={(event) => setAllowCrossSourceTargets(event.value)}
+                    />
+                    <span className={`ground-truth-scope__label${allowCrossSourceTargets ? '' : ' is-muted'}`}>
+                      {allowCrossSourceTargets ? 'Allowed' : 'Same source only'}
+                    </span>
+                    {crossSourceTargetsStats ? <span className="ground-truth-scope__stats">{crossSourceTargetsStats}</span> : null}
                   </div>
                 </div>
                 <div className="network-layout-picker">

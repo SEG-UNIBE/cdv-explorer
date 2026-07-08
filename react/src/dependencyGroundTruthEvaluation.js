@@ -263,6 +263,7 @@ export function buildGroundTruthEvaluation(dataset, options = {}) {
     ontology = DEFAULT_RELATION_ONTOLOGY,
     typeMapping = null,
     restrictToReviewedSources = true,
+    allowCrossSourceTargets = true,
     gtCutoffMode = GROUND_TRUTH_CUTOFF_MODE_ALL,
     gtCutoffDate = '',
     gtCutoffStartDate = '',
@@ -276,7 +277,7 @@ export function buildGroundTruthEvaluation(dataset, options = {}) {
       .filter(Boolean)
   );
   const allGroundTruthEdges = flattenApproachLinks(linksByType, GROUND_TRUTH_CURATED)
-    .filter((edge) => !networkNodeKeys.size || networkNodeKeys.has(edgeTargetKey(edge)));
+    .filter((edge) => allowCrossSourceTargets || !networkNodeKeys.size || networkNodeKeys.has(edgeTargetKey(edge)));
   const allReviewedIps = Array.isArray(dataset?.groundTruthReviewedIps)
     ? dataset.groundTruthReviewedIps.filter(Boolean)
     : [];
@@ -413,7 +414,8 @@ export function buildGroundTruthEvaluation(dataset, options = {}) {
       // Restricted mode scores only proposals that were explicitly reviewed in
       // the benchmark scope; non-restricted mode scores every extracted edge.
       const approachEdges = flattenApproachLinks(linksByType, approach)
-        .filter((edge) => !restrictToReviewedSources || reviewedSourceKeys.has(edgeSourceKey(edge)));
+        .filter((edge) => !restrictToReviewedSources || reviewedSourceKeys.has(edgeSourceKey(edge)))
+        .filter((edge) => allowCrossSourceTargets || !networkNodeKeys.size || networkNodeKeys.has(edgeTargetKey(edge)));
 
       let predictedEntries;
       let evaluated;

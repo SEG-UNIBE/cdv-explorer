@@ -351,6 +351,7 @@ Both workflows build the Vite app and publish the generated `react/build` direct
 
 Releases are drafted automatically by [`.github/workflows/draft-release.yml`](.github/workflows/draft-release.yml) whenever a `v*` tag is pushed:
 
+0. Switch to `main` branch using e.g. `git switch main`.
 1. Bump the version in `react/package.json` (and `package-lock.json`), e.g. `cd react && npm version 4.1.0 --no-git-tag-version`, then commit.
 2. Merge into `main` and push a matching tag: `git tag v4.1.0 && git push origin v4.1.0`.
 3. The workflow validates that the tag matches the `react/package.json` version (mismatch fails the run), then creates a **draft** GitHub release with auto-generated notes.

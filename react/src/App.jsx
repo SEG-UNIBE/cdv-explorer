@@ -30,6 +30,8 @@ const aboutPublications = [
     citation: 'Roman Bögli, in Companion Proc. Int’l Conf. on Software Engineering (ICSE): Doctoral Symposium, Rio de Janeiro, Brazil, Apr. 2026.',
     href: 'https://doi.org/10.1145/3774748.3787644',
     doi: '10.1145/3774748.3787644',
+    preprint: 'https://romanboegli.ch/assets/pdf/Boegli_2026_CDV_ICSEDS.pdf',
+
   },
   {
     title: 'CDV-Explorer: Navigating Improvement Proposal Spectra in Decentralized OSS Ecosystem',

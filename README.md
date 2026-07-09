@@ -15,6 +15,7 @@ _Modern decentralized software ecosystems evolve through crowdsourced improvemen
   <strong>
     👋 <a href="#introduction">Introduction</a> &nbsp;|&nbsp;
     🚀 <a href="#setup">Setup</a> &nbsp;|&nbsp;
+    ⚙️ <a href="#cli-reference">CLI Reference</a> &nbsp;|&nbsp;
     🛠️ <a href="#developer-notes">Developer Notes</a> &nbsp;|&nbsp;
     🧹 <a href="#cleanup">Cleanup</a>
   </strong>
@@ -42,14 +43,14 @@ _Modern decentralized software ecosystems evolve through crowdsourced improvemen
 
 <div align="center">
   <img src="https://img.shields.io/badge/Python-3.12-3776AB?style=flat&logo=python&logoColor=white" alt="Python 3.12" />
-  <img src="https://img.shields.io/badge/React-18-3776AB?style=flat&logo=react&logoColor=white" alt="React 18" />
+  <img src="https://img.shields.io/badge/React-19-3776AB?style=flat&logo=react&logoColor=white" alt="React 19" />
   <img src="https://img.shields.io/badge/Node.js-22%2B-3776AB?style=flat&logo=nodedotjs&logoColor=white" alt="Node.js 22+" />
   <img src="https://img.shields.io/badge/D3.js-v7-3776AB?style=flat&logo=d3dotjs&logoColor=white" alt="D3.js" />
 </div>
 
 <div align="center">
   <a href="./LICENSE">
-    <img src="https://img.shields.io/badge/License-GPL--3.0-red?style=flat" alt="GPL-3.0" />
+    <img src="https://img.shields.io/badge/License-MIT-red?style=flat" alt="MIT" />
   </a>
   <a href="https://youtu.be/56GKRexRuoI"><img src="https://img.shields.io/badge/Demo-Video-red.svg?logo=youtube&logoColor=white" alt="Demo Video" /></a>
 </div>
@@ -57,21 +58,22 @@ _Modern decentralized software ecosystems evolve through crowdsourced improvemen
 </br>
 </br>
 
-## Introduction
+## 👋 Introduction
 
 CDV Explorer is an ecosystem-agnostic pipeline for mining and analysing improvement proposals (IPs).
 At the moment, the explorer ships with active source integrations for the following two CDV-exhibiting ecosystems:
 
-| Ecosystem | Proposals | Source repository |
+| Ecosystem | IP Catalog | Source repository |
 |-----------|-----------|-------------------|
 | **Bitcoin** | Bitcoin Improvement Proposals (BIPs) | [bitcoin/bips](https://github.com/bitcoin/bips) |
+| **Bitcoin** | SatoshiLabs Improvement Proposals (SLIPs) | [satoshilabs/slips](https://github.com/satoshilabs/slips) |
 | **Nostr** | Nostr Implementation Possibilities (NIPs) | [nostr-protocol/nips](https://github.com/nostr-protocol/nips) |
 
 The live site is available at [seg-unibe.github.io/cdv-explorer](https://seg-unibe.github.io/cdv-explorer/#/), with a demo video on [YouTube](https://youtu.be/56GKRexRuoI).
 
 </br>
 
-## Setup
+## 🚀 Setup
 
 ### Requirements
 
@@ -155,7 +157,7 @@ npm test -- --run
 
 </br>
 
-## CLI Reference
+## ⚙️ CLI Reference
 
 CDV Explorer is driven by a [Typer](https://typer.tiangolo.com/) CLI.
 Run `python main.py --help` for a full overview.
@@ -221,7 +223,7 @@ Use this when the raw/preprocessed proposal JSON is already available and you on
 python main.py ground-truth sample-ips --wizard
 ```
 
-This interactive helper pre-fills `ground_truth/ips.csv` from a stratified sample of IPs, thereby enlarging the ground truth data set of manually reviewed IPs and their interrelations (maintained in `ground_truth/interrelations.csv`).
+This interactive helper draws a stratified sample of not-yet-reviewed IPs and writes them to `ground_truth/ips_append.xlsx`, from where they can be copied into the editable `ground_truth/ground_truth.xlsx` workbook for review. The reviewed IPs and their curated interrelations are exported to `ips.csv` and `interrelations.csv` as pipeline-friendly artifacts.
 
 ### `ecosystems` - manage ecosystem configs
 
@@ -234,7 +236,7 @@ python main.py ecosystems add-source bitcoin  # add a second IP catalog to an ec
 
 </br>
 
-## Developer Notes
+## 🛠️ Developer Notes
 
 ### Development dependencies
 
@@ -292,7 +294,7 @@ Ecosystem-specific logic is confined to the first two stages, keeping the analys
         │   ├── 03_analysis/     # analysis results (CSV/JSON)  ← Stage III output
         │   └── 04_postprocess/  # frontend payloads (fetched by the web app) ← Stage IV output
         ├── _combined/           # precomputed multi-source artifacts
-        └── ground_truth/        # curated benchmark CSVs
+        └── ground_truth/        # curated benchmark (editable workbook + CSV exports)
 ```
 
 ### Preprocess schema
@@ -347,7 +349,7 @@ Both workflows build the Vite app and publish the generated `react/build` direct
 
 </br>
 
-## Cleanup
+## 🧹 Cleanup
 
 Deactivate the virtual environment:
 

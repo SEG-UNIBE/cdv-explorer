@@ -6,7 +6,7 @@ Used as the canonical reference against which `llm`, `preamble`, and `regex` ext
 ## File layout
 
 - Editable workbook: [`ground_truth.xlsx`](./ground_truth.xlsx) with two sheets: `ips` and `interrelations`.
-- Generated pending sampled IP rows: [`ips_append.xlsx`](./ips_append.xlsx).
+- Pending sampled IP rows: `ips_append.xlsx` (generated on demand by `ground-truth sample-ips`; not committed).
 - Generated reviewed source-IP scope: [`ips.csv`](./ips.csv).
 - Generated curated edges: [`interrelations.csv`](./interrelations.csv).
 - Inter-source edges (e.g. `bips:N → slips:M`) live in the same file.
@@ -14,6 +14,7 @@ Used as the canonical reference against which `llm`, `preamble`, and `regex` ext
 - The CSV files remain pipeline-friendly exports. They should be treated as derived artifacts and are synced from the workbook during explicit rebuild/sync steps rather than on every read.
 - The `ground-truth sample-ips` CLI command never edits `ground_truth.xlsx`. It writes new candidate rows to `ips_append.xlsx`, which can then be copied into the `ips` sheet manually.
 - Lines starting with `#` are treated as comments and skipped during import when editing the CSVs directly.
+- The generated CSV exports are tab-separated; comma-separated files are also accepted on import (the delimiter is auto-detected from the header line).
 
 ## Schema
 

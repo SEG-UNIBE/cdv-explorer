@@ -385,4 +385,4 @@ cd .. && rm -rf cdv-explorer
 
 [^1]: Bögli, R. et al. _Community-driven variability: characterizing a new software variability paradigm._ Autom Softw Eng **33**, 67 (2026). [10.1007/s10515-026-00594-0](https://doi.org/10.1007/s10515-026-00594-0)
 
-[^2]: Bögli, R. and Kehrer, T. _CDV-Explorer: Navigating Improvement Proposal Spectra in Decentralized OSS Ecosystem._ In Companion Proc. Int'l Conf. on Software and Systems Reuse, Product Lines, and Configuration (VARIABILITY), Limassol, Cyprus, Sep. 2026. DOI: forthcoming.
+[^2]: Bögli, R. and Kehrer, T. _CDV-Explorer: Navigating Improvement Proposal Spectra in Decentralized OSS Ecosystems._ In Companion Proc. Int'l Conf. on Software and Systems Reuse, Product Lines, and Configuration (VARIABILITY), Limassol, Cyprus, Sep. 2026. DOI: forthcoming.

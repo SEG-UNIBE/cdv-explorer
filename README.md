@@ -349,12 +349,21 @@ Both workflows build the Vite app and publish the generated `react/build` direct
 
 ### Releases
 
-Releases are drafted automatically by [`.github/workflows/draft-release.yml`](.github/workflows/draft-release.yml) whenever a `v*` tag is pushed on `main`:
+Releases are drafted automatically by [`.github/workflows/draft-release.yml`](.github/workflows/draft-release.yml) whenever a `v*` tag is pushed:
 
-1. On `main`, bump the version in `react/package.json` and `package-lock.json`, e.g. `cd react && npm version 4.1.0 --no-git-tag-version`, then commit and push.
-2. Tag that commit and push the tag: `git tag v4.1.0 && git push origin v4.1.0`.
-3. The workflow validates that the tag matches the `react/package.json` version (mismatch fails the run), then creates a **draft** GitHub release with auto-generated notes.
+1. On `dev`, bump the version in `react/package.json` and `package-lock.json`: `cd react && npm version x.x.x --no-git-tag-version`. Commit and push.
+2. Merge `dev` into `main` (e.g. via pull request) — the CI run on `main` triggers the production deploy.
+3. Tag the resulting merge commit on `main` and push the tag:
+
+   ```bash
+   git switch main && git pull
+   git tag vx.x.x && git push origin vx.x.x
+   ```
+
+   The workflow validates that the tag matches the `react/package.json` version (mismatch fails the run), then creates a **draft** GitHub release with auto-generated notes.
 4. Review the draft under *Releases* on GitHub, polish the notes, and publish.
+
+Tagging the merge commit ensures the release, the deployed site, and the commit hash shown in the app header all refer to the same state.
 
 </br>
 

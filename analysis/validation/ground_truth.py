@@ -62,8 +62,12 @@ REVIEWED_IP_ALLOWED_DENSITY_BASIS = {
 GROUND_TRUTH_GRAPH_KEY_RE = re.compile(r"^(?P<source>[A-Za-z0-9_-]+):(?P<id>[^:\s]+)$")
 GROUND_TRUTH_REVIEW_POLICIES: dict[str, dict[str, Any]] = {
     "bitcoin": {
-        "allowed_source_slugs": ("bips",),
-        "required_type": "Specification",
+        # Reviewed IPs may come from any source listed here; `required_type`
+        # is enforced per source (SLIPs use `Standard`, so no restriction).
+        "source_policies": {
+            "bips": {"required_type": "Specification"},
+            "slips": {},
+        },
     },
 }
 WORKBOOK_IPS_COLUMNS = (
@@ -998,6 +1002,23 @@ def reviewed_ip_policy_for_ecosystem(
     return dict(policy) if isinstance(policy, Mapping) else None
 
 
+def reviewed_ip_source_policies(
+    policy: Mapping[str, Any] | None,
+) -> dict[str, dict[str, Any]]:
+    if not isinstance(policy, Mapping):
+        return {}
+    raw = policy.get("source_policies")
+    if not isinstance(raw, Mapping):
+        return {}
+    return {
+        str(slug).strip(): (
+            dict(source_policy) if isinstance(source_policy, Mapping) else {}
+        )
+        for slug, source_policy in raw.items()
+        if str(slug).strip()
+    }
+
+
 def validate_reviewed_ip_policy(
     entries: Sequence[Mapping[str, Any]],
     *,
@@ -1008,16 +1029,11 @@ def validate_reviewed_ip_policy(
         return []
 
     warnings: list[str] = []
-    allowed_source_slugs = {
-        str(value).strip()
-        for value in policy.get("allowed_source_slugs", ())
-        if str(value).strip()
-    }
-    required_type = str(policy.get("required_type") or "").strip()
+    source_policies = reviewed_ip_source_policies(policy)
 
     source_scope_violations: list[str] = []
-    type_scope_violations: list[str] = []
-    type_unknown: list[str] = []
+    type_scope_violations: dict[str, list[str]] = {}
+    type_unknown: dict[str, list[str]] = {}
 
     for entry in entries:
         if not isinstance(entry, Mapping):
@@ -1028,18 +1044,23 @@ def validate_reviewed_ip_policy(
         source_slug, _proposal_id = ip.split(":", 1)
         proposal_type = str(entry.get("type") or "").strip()
 
-        if allowed_source_slugs and source_slug not in allowed_source_slugs:
+        if source_policies and source_slug not in source_policies:
             source_scope_violations.append(ip)
             continue
 
+        required_type = str(
+            source_policies.get(source_slug, {}).get("required_type") or ""
+        ).strip()
         if required_type:
             if not proposal_type:
-                type_unknown.append(ip)
+                type_unknown.setdefault(source_slug, []).append(ip)
             elif proposal_type != required_type:
-                type_scope_violations.append(f"{ip} ({proposal_type})")
+                type_scope_violations.setdefault(source_slug, []).append(
+                    f"{ip} ({proposal_type})"
+                )
 
     if source_scope_violations:
-        expected = ", ".join(sorted(allowed_source_slugs))
+        expected = ", ".join(sorted(source_policies))
         examples = ", ".join(source_scope_violations[:5])
         more = (
             ""
@@ -1051,24 +1072,23 @@ def validate_reviewed_ip_policy(
             f"but {len(source_scope_violations)} row(s) use other source slugs: {examples}{more}"
         )
 
-    if type_scope_violations:
-        examples = ", ".join(type_scope_violations[:5])
-        more = (
-            ""
-            if len(type_scope_violations) <= 5
-            else f", +{len(type_scope_violations) - 5} more"
-        )
+    for source_slug, violations in sorted(type_scope_violations.items()):
+        required_type = str(
+            source_policies.get(source_slug, {}).get("required_type") or ""
+        ).strip()
+        examples = ", ".join(violations[:5])
+        more = "" if len(violations) <= 5 else f", +{len(violations) - 5} more"
         warnings.append(
-            f"reviewed IP scope for `{ecosystem_slug}` currently expects proposal type `{required_type}`, "
-            f"but {len(type_scope_violations)} row(s) use another type: {examples}{more}"
+            f"reviewed IP scope for `{ecosystem_slug}` currently expects proposal type `{required_type}` "
+            f"for source `{source_slug}`, but {len(violations)} row(s) use another type: {examples}{more}"
         )
 
-    if type_unknown:
-        examples = ", ".join(type_unknown[:5])
-        more = "" if len(type_unknown) <= 5 else f", +{len(type_unknown) - 5} more"
+    for source_slug, unknown in sorted(type_unknown.items()):
+        examples = ", ".join(unknown[:5])
+        more = "" if len(unknown) <= 5 else f", +{len(unknown) - 5} more"
         warnings.append(
-            f"reviewed IP scope for `{ecosystem_slug}` expects proposal type metadata, "
-            f"but {len(type_unknown)} row(s) have an empty `type`: {examples}{more}"
+            f"reviewed IP scope for `{ecosystem_slug}` expects proposal type metadata "
+            f"for source `{source_slug}`, but {len(unknown)} row(s) have an empty `type`: {examples}{more}"
         )
 
     return warnings

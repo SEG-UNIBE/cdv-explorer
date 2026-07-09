@@ -757,28 +757,34 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:10:19Z",
+          "timestamp": "2026-07-09T07:56:56Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
               "evidence": "based on a [[bip-0032.mediawiki|BIP 32]] master private key",
-              "reason": "The proposal explicitly defines its derivation procedure from a BIP 32 master key, so implementation relies on BIP 32 HD wallet semantics.",
+              "reason": "The proposal explicitly defines its derivation scheme from a BIP32 master key, so implementing the wallet path derivation relies on BIP32 semantics.",
               "confidence": "high"
+            },
+            {
+              "target": "bips:49",
+              "evidence": "not backwards compatible by design as described in the Considerations section of [[bip-0049.mediawiki|BIP 49]]",
+              "reason": "The proposal explicitly adopts BIP49's incompatibility design rationale for wallet discovery behavior.",
+              "confidence": "medium"
             },
             {
               "target": "bips:65",
               "evidence": "They are created by locking up bitcoins using the `OP_CHECKLOCKTIMEVERIFY` opcode.",
-              "reason": "The address construction and witness script semantics depend on OP_CHECKLOCKTIMEVERIFY, the mechanism standardized by BIP 65.",
+              "reason": "The proposal's address construction fundamentally relies on CLTV-based timelocking semantics for the witness script.",
               "confidence": "high"
             },
             {
               "target": "bips:84",
-              "evidence": "use the same approach used in BIPs 49, 84 and 86",
-              "reason": "The proposal is designed around the derivation approach of BIP 84 and explicitly uses the path prefix m / 84' / 0' / 0' / 2 / index, reusing its account structure with a modified change branch.",
-              "confidence": "high"
+              "evidence": "uses a similar account-structure as defined in BIP [[bip-0084.mediawiki|44]] but with change set to 2",
+              "reason": "The proposal reuses the account/path structure introduced by BIP84 and modifies the change branch for its own derivation layout.",
+              "confidence": "low"
             }
           ]
         }

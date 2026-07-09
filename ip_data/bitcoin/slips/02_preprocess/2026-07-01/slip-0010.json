@@ -381,27 +381,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:12:45Z_gpt-5.4-2026-03-05_b188040c",
+          "run_id": "2026-07-09T08:00:45Z_gpt-5.4-2026-03-05_5eb3d557",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:12:50Z",
+          "timestamp": "2026-07-09T08:00:54Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
               "evidence": "We adapt the master key generation from BIP-0032.",
-              "reason": "The proposal directly generalizes and extends BIP-0032's master and child key derivation scheme, keeping compatibility for secp256k1 and modifying invalid-key handling.",
+              "reason": "The proposal generalizes and modifies BIP-0032's HD derivation algorithms, reusing its seed, master key, and child key derivation structure.",
               "confidence": "high"
             },
             {
               "target": "bips:39",
-              "evidence": "Each of these standards specifies how to compute a seed from the mnemonic(s) and passphrase.",
-              "reason": "The proposal relies on BIP-0039 as one normative source of the seed input used for master key generation.",
+              "evidence": "The value of S should be the binary seed obtained from a BIP-0039 mnemonic",
+              "reason": "The proposal is designed to derive master keys from the seed format defined by BIP-0039.",
               "confidence": "high"
             },
             {
               "target": "slips:39",
-              "evidence": "Each of these standards specifies how to compute a seed from the mnemonic(s) and passphrase.",
-              "reason": "The proposal relies on SLIP-0039 as an alternative normative source of the seed or master secret used for master key generation.",
+              "evidence": "it should be the master secret obtained from a set of SLIP-0039 mnemonics",
+              "reason": "The proposal also supports and relies on the master secret generation defined by SLIP-0039 as an input seed source.",
               "confidence": "high"
             }
           ]

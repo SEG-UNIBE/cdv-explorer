@@ -684,22 +684,22 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:12:39Z",
+          "timestamp": "2026-07-09T08:00:34Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:324",
-              "evidence": "Nodes implementing both this BIP and BIP 324 (v2 P2P encrypted transport) MUST treat a message with a 1-byte `message_type` equal to `37`",
-              "reason": "The proposal defines specific message handling semantics when used with the target's transport format and 1-byte message type mechanism.",
-              "confidence": "low"
+              "evidence": "Nodes implementing both this BIP and [BIP 324 (v2 P2P encrypted transport)][BIP324] MUST treat a message with a 1-byte `message_type` equal to `37`",
+              "reason": "This proposal defines specific message-type handling when used with the target's transport format, so interoperable implementation depends on BIP 324 semantics in that context.",
+              "confidence": "high"
             },
             {
               "target": "bips:339",
-              "evidence": "we propose codifying and generalising the mechanism used by BIP 339",
-              "reason": "The proposal explicitly builds on and generalizes the feature-negotiation mechanism introduced by the target.",
-              "confidence": "low"
+              "evidence": "we propose codifying and generalising the mechanism used by [BIP 339][BIP339] for future P2P upgrades",
+              "reason": "The proposal explicitly generalizes and reuses the pre-verack feature negotiation mechanism introduced by the target.",
+              "confidence": "high"
             }
           ]
         }

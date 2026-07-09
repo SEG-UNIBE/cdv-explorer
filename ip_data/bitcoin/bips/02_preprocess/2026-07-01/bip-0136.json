@@ -792,22 +792,22 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:11:25Z",
+          "timestamp": "2026-07-09T07:58:23Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:173",
-              "evidence": "TxRef MUST use the Bech32m encoding as defined in BIP-0173",
-              "reason": "The proposal's encoding, alphabet, separator handling, and checksum workflow are built on the Bech32 format defined there.",
+              "evidence": "Bech32m encoding as defined in [https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki BIP-0173]",
+              "reason": "The proposal normatively bases TxRef encoding and decoding on the Bech32 format defined by BIP-173.",
               "confidence": "low"
             },
             {
               "target": "bips:350",
-              "evidence": "and later refined in BIP-0350",
-              "reason": "The proposal normatively requires the Bech32m refinement and is designed around its updated checksum semantics, while also discussing compatibility with earlier Bech32 encodings.",
-              "confidence": "low"
+              "evidence": "and later refined in [https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki BIP-0350]",
+              "reason": "The proposal requires Bech32m and specifies compatibility behavior around the refinement introduced by BIP-350.",
+              "confidence": "high"
             }
           ]
         }

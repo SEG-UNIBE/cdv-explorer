@@ -553,39 +553,39 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:10:46Z",
+          "timestamp": "2026-07-09T07:57:38Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
               "evidence": "derive multiple deterministic addresses based on a BIP 32 master private key",
-              "reason": "The proposal's key derivation starts from and relies on the BIP 32 HD wallet master key and derivation model.",
+              "reason": "The proposal explicitly derives its keys and addresses from the target's HD wallet master key scheme.",
               "confidence": "low"
             },
             {
               "target": "bips:44",
               "evidence": "uses the same account-structure as defined in BIPs 44, 49, and 84",
-              "reason": "The proposal reuses the BIP 44 account-path structure and says the remaining path levels are used as defined there.",
+              "reason": "The proposal reuses the target's account path structure and level semantics for its derivation hierarchy.",
               "confidence": "low"
             },
             {
               "target": "bips:49",
               "evidence": "uses the same account-structure as defined in BIPs 44, 49, and 84",
-              "reason": "The proposal explicitly adopts the same derivation-path account structure and level semantics as this prior derivation scheme.",
+              "reason": "The proposal explicitly follows the same derivation-path method and structure used by the target.",
               "confidence": "low"
             },
             {
               "target": "bips:84",
               "evidence": "uses the same account-structure as defined in BIPs 44, 49, and 84",
-              "reason": "The proposal directly reuses the account structure and path-level semantics from this derivation scheme.",
+              "reason": "The proposal directly reuses the target's derivation-path structure for wallet accounts.",
               "confidence": "low"
             },
             {
               "target": "bips:341",
-              "evidence": "In a transaction, the scripts and witnesses are as defined in BIP 341",
-              "reason": "The proposal is designed for single key P2TR outputs and directly uses BIP 341's Taproot output-key construction and transaction semantics.",
+              "evidence": "BIP 341 states: \"If the spending conditions do not require a script path",
+              "reason": "The proposal's Taproot output-key computation and resulting scriptPubKey and witness semantics are defined by the target.",
               "confidence": "low"
             }
           ]

@@ -712,27 +712,33 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:11:08Z",
+          "timestamp": "2026-07-09T07:58:02Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:8",
               "evidence": "This BIP will be deployed by BIP8 (Version bits with lock-in by height)[9]",
-              "reason": "The proposal explicitly relies on BIP8's activation mechanism for deployment.",
+              "reason": "The proposal explicitly adopts BIP8's activation mechanism for deployment.",
               "confidence": "high"
             },
             {
+              "target": "bips:16",
+              "evidence": "BIP16 and BIP141 enable redeem scripts to be executed from the top of the witness stack",
+              "reason": "The proposal is designed around existing redeem-script execution semantics and explicitly compares its policy-script execution model to BIP16 behavior.",
+              "confidence": "medium"
+            },
+            {
               "target": "bips:116",
-              "evidence": "This BIP, in conjunction with BIP116 (MERKLEBRANCHVERIFY)[3] allows for a script to commit to a practically unbounded number of code pathways",
-              "reason": "The proposal's generalized MAST construction is explicitly designed to work together with MERKLEBRANCHVERIFY to commit to and select policy scripts.",
-              "confidence": "high"
+              "evidence": "This BIP, in conjunction with BIP116 (MERKLEBRANCHVERIFY) allows for a script to commit to a practically unbounded number of code pathways",
+              "reason": "The proposal's generalized MAST construction explicitly relies on MERKLEBRANCHVERIFY to commit to and prove membership of policy scripts before tail-call execution.",
+              "confidence": "low"
             },
             {
               "target": "bips:141",
               "evidence": "Only one such tail-call of a subscript is allowed per script execution context, and only from within a segwit redeem script.",
-              "reason": "The proposal normatively constrains its operation to segwit redeem scripts and is designed around segwit execution rules such as CLEANSTACK compatibility.",
+              "reason": "The proposal normatively restricts tail-call execution to segwit redeem scripts and repeatedly relies on segwit rules such as CLEANSTACK and witness execution context.",
               "confidence": "high"
             }
           ]

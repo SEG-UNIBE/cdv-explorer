@@ -906,34 +906,16 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:10:00Z",
+          "timestamp": "2026-07-09T07:56:30Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
               "evidence": "This document specifies an alternative to [[bip-0009.mediawiki|BIP9]]",
-              "reason": "The proposal is explicitly designed as an alternative to and modification of BIP9's versionbits soft fork deployment mechanism, reusing its concepts, signaling field, states, and compatibility assumptions with specified changes.",
+              "reason": "The proposal is explicitly designed as an alternative to and modification of BIP9's versionbits soft-fork deployment mechanism, reusing its signaling framework and compatibility assumptions while changing activation semantics.",
               "confidence": "high"
-            },
-            {
-              "target": "bips:34",
-              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
-              "reason": "The proposal's available nVersion space and bit-assignment rules are constrained by semantics introduced by BIP34, which materially affects deployment encoding.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:65",
-              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
-              "reason": "The proposal's available nVersion space and bit-assignment rules are constrained by semantics introduced by BIP65, which materially affects deployment encoding.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:66",
-              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
-              "reason": "The proposal's available nVersion space and bit-assignment rules are constrained by semantics introduced by BIP66, which materially affects deployment encoding.",
-              "confidence": "medium"
             }
           ]
         }

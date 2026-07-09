@@ -1219,27 +1219,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:11:57Z",
+          "timestamp": "2026-07-09T07:59:05Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
-              "evidence": "Plain tweaking can be used to derive child aggregate public keys per BIP32.",
-              "reason": "The proposal's plain tweaking mode is intended to support BIP32-style child derivation from aggregate public keys.",
+              "evidence": "Plain tweaking can be used to derive child public keys from an aggregate public key using BIP32.",
+              "reason": "The proposal's plain tweaking mode is specified to support BIP32-style child derivation from aggregate keys.",
               "confidence": "low"
             },
             {
               "target": "bips:340",
-              "evidence": "the signature output at the end of the signing protocol is a BIP340 signature that passes BIP340 verification",
-              "reason": "The proposal is explicitly designed around BIP340 key and signature formats and reuses its verification semantics and challenge hash.",
+              "evidence": "the aggregate public key is a BIP340 X-only public key, and the signature output at the end of the signing protocol is a BIP340 signature",
+              "reason": "The proposal is explicitly designed around BIP340 key and signature formats and verification semantics.",
               "confidence": "high"
             },
             {
               "target": "bips:341",
               "evidence": "X-only tweaking is required for Taproot tweaking per BIP341.",
-              "reason": "The proposal supports and defines x-only tweaking specifically to create and sign for BIP341 Taproot outputs and tweaks.",
+              "reason": "The proposal's x-only tweaking mode is defined to produce Taproot-compatible tweaked keys and outputs per BIP341.",
               "confidence": "low"
             }
           ]

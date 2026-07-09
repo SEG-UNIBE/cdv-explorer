@@ -665,27 +665,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:10:07Z",
+          "timestamp": "2026-07-09T07:56:38Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:12",
               "evidence": "This BIP replaces BIP 12",
-              "reason": "The proposal is explicitly defined as a replacement for the earlier proposal's mechanism, and its backward-compatibility section is designed around preserving redemption of that proposal's transactions.",
+              "reason": "The proposal is explicitly defined as a replacement for the earlier pay-to-script-hash mechanism, preserving compatibility considerations around its transaction type and opcode usage.",
               "confidence": "high"
             },
             {
               "target": "bips:13",
               "evidence": "The Motivation for this BIP (and BIP 13, the pay-to-script-hash address type)",
-              "reason": "The proposal is designed to work with the target's pay-to-script-hash address type as part of the same mechanism and deployment model.",
+              "reason": "The proposal is designed together with the pay-to-script-hash address type introduced by BIP 13, tying its deployment and infrastructure assumptions to that address format.",
               "confidence": "medium"
             },
             {
               "target": "bips:16",
               "evidence": "This BIP replaces BIP 12 and BIP 16",
-              "reason": "The proposal is explicitly positioned as a replacement for the target proposal's approach to pay-to-script-hash evaluation, making the technical relationship substantive.",
+              "reason": "The proposal is explicitly positioned as a replacement for BIP 16's approach to hashed-script spending, making that prior design central to understanding the changes.",
               "confidence": "high"
             }
           ]

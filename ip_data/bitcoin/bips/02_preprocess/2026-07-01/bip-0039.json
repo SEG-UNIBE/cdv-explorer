@@ -1075,15 +1075,15 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:10:16Z",
+          "timestamp": "2026-07-09T07:56:51Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
               "evidence": "This seed can be later used to generate deterministic wallets using BIP-0032 or similar methods.",
-              "reason": "The proposal's output seed is intended for deterministic wallet generation using the target proposal's derivation scheme.",
+              "reason": "The proposal's output seed is explicitly intended for use with the deterministic wallet scheme defined in the target proposal.",
               "confidence": "medium"
             }
           ]

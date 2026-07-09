@@ -978,33 +978,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:11:52Z",
+          "timestamp": "2026-07-09T07:58:57Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:174",
-              "evidence": "The to_spend transaction is represented as a finalized PSBT instead of a raw transaction (see BIP174 for details on the finalization process).",
-              "reason": "The proof-of-funds and PSBT-based signing workflows directly reuse PSBT format, fields, decoding, and finalization defined by the target.",
+              "evidence": "The to_spend transaction is represented as a finalized PSBT instead of a raw transaction",
+              "reason": "The Proof of Funds and PSBT-based signing workflows directly reuse PSBT format, fields, decoding, and finalization procedures from BIP174.",
               "confidence": "low"
-            },
-            {
-              "target": "bips:325",
-              "evidence": "Full signatures follow an analogous specification to the BIP325 challenges and solutions used by Signet.",
-              "reason": "The full-signature construction is explicitly designed around the challenge/solution transaction scheme introduced by the target.",
-              "confidence": "medium"
             },
             {
               "target": "bips:340",
               "evidence": "message_hash is a BIP340-tagged hash of the message",
-              "reason": "The proposal normatively uses the tagged-hash construction defined by the target for message hashing.",
+              "reason": "The proposal normatively defines its message hashing using the tagged-hash construction from BIP340.",
               "confidence": "low"
             },
             {
               "target": "bips:341",
               "evidence": "unless the output type supports SIGHASH_DEFAULT, which then MAY be used alternatively (e.g., BIP341 P2TR)",
-              "reason": "Validation semantics explicitly accommodate and are partially specialized for the target's P2TR sighash behavior.",
+              "reason": "Support for P2TR signatures in this proposal relies on BIP341 sighash semantics and script type behavior.",
               "confidence": "low"
             }
           ]

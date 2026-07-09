@@ -855,39 +855,39 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:12:08Z",
+          "timestamp": "2026-07-09T07:59:25Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:65",
               "evidence": "including the OP_CHECKLOCKTIMEVERIFY and OP_CHECKSEQUENCEVERIFY opcodes defined in BIP65 and BIP112",
-              "reason": "Tapscript execution explicitly includes the opcode semantics introduced by BIP65 as part of its inherited script rules.",
+              "reason": "Tapscript execution explicitly includes the opcode semantics defined by BIP65.",
               "confidence": "low"
             },
             {
               "target": "bips:112",
               "evidence": "including the OP_CHECKLOCKTIMEVERIFY and OP_CHECKSEQUENCEVERIFY opcodes defined in BIP65 and BIP112",
-              "reason": "Tapscript execution explicitly includes the opcode semantics introduced by BIP112 as part of its inherited script rules.",
+              "reason": "Tapscript execution explicitly includes the opcode semantics defined by BIP112.",
               "confidence": "low"
             },
             {
               "target": "bips:141",
               "evidence": "The execution rules for tapscript are based on those for P2WSH according to BIP141",
-              "reason": "The proposal builds its validation context and execution rules on SegWit/P2WSH rules and witness-program definitions from BIP141.",
+              "reason": "The proposal inherits witness-program applicability, validation prerequisites, and baseline script execution semantics from BIP141.",
               "confidence": "high"
             },
             {
               "target": "bips:340",
               "evidence": "verify Schnorr signatures as specified in BIP340",
-              "reason": "The proposal changes signature opcodes to use Schnorr signatures and explicitly reuses BIP340's public key and signature verification semantics.",
+              "reason": "The proposal directly adopts BIP340 Schnorr public key and signature verification semantics for modified signature opcodes.",
               "confidence": "low"
             },
             {
               "target": "bips:341",
-              "evidence": "specifies the semantics of the initial scripting system under BIP341",
-              "reason": "The proposal defines tapscript specifically for Taproot spends, reuses BIP341's spend types, script path rules, common signature message, tapleaf hash, and deployment.",
+              "evidence": "This document specifies the semantics of the initial scripting system under BIP341.",
+              "reason": "The proposal defines tapscript specifically within the Taproot framework introduced by BIP341, reusing its spend types, script-path structure, annex handling, common signature message, and deployment.",
               "confidence": "low"
             }
           ]

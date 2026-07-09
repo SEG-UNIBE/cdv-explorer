@@ -295,28 +295,28 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:12:45Z_gpt-5.4-2026-03-05_b188040c",
+          "run_id": "2026-07-09T08:00:45Z_gpt-5.4-2026-03-05_5eb3d557",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:12:53Z",
+          "timestamp": "2026-07-09T08:00:58Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
-              "evidence": "path: `m/10015'/0'` (hardened path, see BIP32)",
-              "reason": "The proposal uses BIP32 HD wallet path semantics and xpub string format to derive its master and account keys.",
+              "evidence": "xpub is a string, as defined in BIP32",
+              "reason": "The proposal derives keys from and identifies accounts by BIP32 xpubs, and explicitly uses a BIP32 hardened path notation for master-key derivation.",
               "confidence": "high"
             },
             {
               "target": "slips:11",
-              "evidence": "CipherKeyValue is defined in [SLIP-0011](slip-0011.md).",
-              "reason": "The proposal normatively relies on the CipherKeyValue mechanism from SLIP-0011 to derive the master key from the hardware device.",
+              "evidence": "CipherKeyValue is defined in [SLIP-0011]",
+              "reason": "The proposal's master-key derivation procedure directly uses the CipherKeyValue mechanism defined by the target.",
               "confidence": "high"
             },
             {
               "target": "slips:14",
               "evidence": "For the \"stress test\" wallet, defined in SLIP-0014",
-              "reason": "The proposal's worked examples and test vectors are defined against the SLIP-0014 stress test wallet, making implementation verification depend on that specification.",
-              "confidence": "medium"
+              "reason": "The proposal reuses SLIP-0014 test vectors for normative examples and interoperability checks, but the core format and mechanism do not rely on it.",
+              "confidence": "low"
             }
           ]
         }

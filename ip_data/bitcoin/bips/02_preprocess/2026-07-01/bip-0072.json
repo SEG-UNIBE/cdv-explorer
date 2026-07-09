@@ -557,21 +557,21 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:10:36Z",
+          "timestamp": "2026-07-09T07:57:22Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:21",
               "evidence": "This BIP describes an extension to the bitcoin: URI scheme (BIP 21)",
-              "reason": "The proposal directly extends the URI scheme defined by BIP 21 by adding a new parameter and modifying allowed URI forms.",
+              "reason": "The proposal directly extends the URI scheme defined by BIP 21 by adding a new optional parameter and associated handling.",
               "confidence": "high"
             },
             {
               "target": "bips:70",
               "evidence": "support the payment protocol (BIP 70)",
-              "reason": "The proposal is designed to fetch a PaymentRequest message and then follow the payment protocol semantics defined in BIP 70.",
+              "reason": "The proposal is designed around fetching a PaymentRequest and following the payment protocol defined in BIP 70.",
               "confidence": "high"
             }
           ]

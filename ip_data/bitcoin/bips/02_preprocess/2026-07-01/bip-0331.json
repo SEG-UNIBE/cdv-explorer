@@ -813,27 +813,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:12:00Z",
+          "timestamp": "2026-07-09T07:59:13Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:133",
-              "evidence": "If the peers are using BIP133 fee filters",
-              "reason": "The fee-bumped transaction propagation workflow is explicitly described as operating with the target's fee filter mechanism, affecting announcement behavior for low-fee ancestors.",
+              "evidence": "If the peers are using BIP133 fee filters and a low-feerate transaction is below the node's fee filter, the sender will not announce it.",
+              "reason": "The proposal's fee-bumped transaction flow is explicitly described to operate with the fee filter behavior defined by the target, making compatibility with that mechanism a substantive consideration.",
               "confidence": "medium"
             },
             {
               "target": "bips:330",
               "evidence": "A client using BIP330 reconciliation-based transaction relay (Erlay) is able to use package relay without interference.",
-              "reason": "The proposal explicitly specifies compatibility with the target's reconciliation-based transaction relay workflow for resolving ancestors after reconciliation.",
+              "reason": "The proposal explicitly specifies interoperability with reconciliation-based transaction relay, indicating package relay is intended to work within that relay workflow.",
               "confidence": "medium"
             },
             {
               "target": "bips:339",
               "evidence": "Package relay requires both peers to support wtxid-based relay because package transactions are referenced by their wtxids.",
-              "reason": "The proposal is designed around wtxid-based relay semantics and requires that capability for negotiation and operation.",
+              "reason": "The proposal is designed around wtxid-based relay semantics and explicitly requires support for that protocol to negotiate and use package relay.",
               "confidence": "high"
             }
           ]

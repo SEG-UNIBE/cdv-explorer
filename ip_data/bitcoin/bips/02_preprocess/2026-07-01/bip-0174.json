@@ -1619,21 +1619,21 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:11:45Z",
+          "timestamp": "2026-07-09T07:58:45Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
               "evidence": "The 78 byte serialized extended public key as defined by BIP 32.",
-              "reason": "The proposal directly reuses BIP 32 extended public key serialization, master key fingerprints, and derivation path semantics for global, input, output, and change-detection fields.",
+              "reason": "The proposal directly reuses BIP 32 extended public keys, master fingerprints, and derivation path semantics for global, input, and output fields and for change detection.",
               "confidence": "high"
             },
             {
               "target": "bips:143",
               "evidence": "The sighash algorithm for Segwit specified in BIP 143",
-              "reason": "The proposal's signer behavior and security considerations for witness inputs are explicitly designed around the Segwit sighash algorithm defined by BIP 143.",
+              "reason": "The proposal's signer behavior and security considerations for segwit inputs are explicitly designed around the BIP 143 sighash algorithm and its properties.",
               "confidence": "high"
             }
           ]

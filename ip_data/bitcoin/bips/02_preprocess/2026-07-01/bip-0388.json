@@ -1025,42 +1025,11 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:12:35Z",
+          "timestamp": "2026-07-09T08:00:22Z",
           "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:32",
-              "evidence": "see [[bip-0032.mediawiki|BIP-32]] for details",
-              "reason": "The proposal's key information format normatively embeds BIP-32 fingerprints, derivation paths, and serialized extended public keys, so implementing wallet policies depends on BIP-32 key semantics and serialization.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:379",
-              "evidence": "See [[bip-0379.md|BIP-379]] for a precise specification of all the valid miniscript SCRIPT expressions.",
-              "reason": "Wallet policies allow miniscript templates and defer their valid SCRIPT expression definitions to BIP-379, making miniscript support depend on that specification.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:380",
-              "evidence": "map directly to the corresponding concepts defined in [[bip-0380.mediawiki|BIP-380]] for output script descriptors",
-              "reason": "The proposal is explicitly designed as a constrained representation of output script descriptors and relies on BIP-380 descriptor concepts and mapping semantics.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:389",
-              "evidence": "while [[bip-0389.mediawiki|BIP-389]] allows multipath",
-              "reason": "The proposal constrains and reuses BIP-389 multipath descriptor expressions by restricting them to exactly two choices for receive/change derivations.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:390",
-              "evidence": "despite being allowed in [[bip-0390.mediawiki|BIP-390]]",
-              "reason": "The proposal defines wallet-policy validity partly by forbidding a derivation pattern that BIP-390 otherwise permits, so its taproot key-expression rules are specified relative to BIP-390 semantics.",
-              "confidence": "medium"
-            }
-          ]
+          "dependencies": []
         }
       ]
     }

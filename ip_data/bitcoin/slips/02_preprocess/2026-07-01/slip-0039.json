@@ -1104,28 +1104,28 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:12:45Z_gpt-5.4-2026-03-05_b188040c",
+          "run_id": "2026-07-09T08:00:45Z_gpt-5.4-2026-03-05_5eb3d557",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:13:16Z",
+          "timestamp": "2026-07-09T08:01:26Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
-              "evidence": "for its use in backing up Hierarchical Deterministic Wallets described in [BIP-0032]",
-              "reason": "The proposal explicitly specifies how to use SLIP-0039 to back up BIP-0032 wallets and normatively requires using the BIP-0032 master seed as the secret for that application.",
-              "confidence": "high"
+              "evidence": "a specification for its use in backing up Hierarchical Deterministic Wallets described in BIP-0032",
+              "reason": "The proposal explicitly defines how SLIP-0039 is used to back up BIP-0032 wallets and normatively specifies that BIP-0032 master seeds are the master secret for that application.",
+              "confidence": "low"
             },
             {
               "target": "bips:39",
-              "evidence": "This SLIP is mainly intended as a replacement for [BIP-0039]",
-              "reason": "SLIP-0039 is designed around replacing BIP-0039 for mnemonic wallet backups, with detailed compatibility and migration constraints tied to BIP-0039's seed derivation design.",
-              "confidence": "medium"
+              "evidence": "This SLIP is mainly intended as a replacement for BIP-0039",
+              "reason": "The proposal is designed around replacing BIP-0039 mnemonics and contains substantive compatibility and conversion constraints tied to BIP-0039's seed derivation design.",
+              "confidence": "low"
             },
             {
               "target": "bips:173",
-              "evidence": "The checksum design is heavily inspired by Bech32 defined in [BIP-0173]",
-              "reason": "The RS1024 checksum mechanism is directly modeled on Bech32's checksum design and reuses its error-handling recommendation, making BIP-0173 a substantive checksum-design dependency.",
-              "confidence": "medium"
+              "evidence": "The checksum design is heavily inspired by Bech32 defined in BIP-0173",
+              "reason": "The proposal's RS1024 checksum is directly based on the checksum design approach from BIP-0173, including matching implementation guidance on error correction.",
+              "confidence": "low"
             }
           ]
         }

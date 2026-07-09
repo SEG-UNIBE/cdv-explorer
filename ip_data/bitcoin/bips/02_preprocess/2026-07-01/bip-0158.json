@@ -897,15 +897,15 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:11:39Z",
+          "timestamp": "2026-07-09T07:58:39Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:157",
               "evidence": "for use in the BIP 157 light client protocol",
-              "reason": "The proposal defines compact filters specifically for the BIP 157 protocol and allocates behavior in terms of responding to BIP 157 messages, so implementing and using this filter format materially depends on that protocol context.",
+              "reason": "The proposal defines compact filter structure specifically for the BIP 157 protocol, and signaling semantics explicitly require responding to BIP 157 messages for this filter type.",
               "confidence": "high"
             }
           ]

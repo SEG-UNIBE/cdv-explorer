@@ -571,28 +571,34 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:11:32Z",
+          "timestamp": "2026-07-09T07:58:32Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
-              "evidence": "This BIP will be deployed by \"version bits\" BIP9",
-              "reason": "The proposal normatively relies on the BIP9 version-bits activation mechanism for deployment.",
+              "evidence": "deployed by \"version bits\" BIP9",
+              "reason": "The proposal directly uses the BIP9 version-bits activation mechanism for deployment.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:62",
+              "evidence": "This document is extracted from the previous BIP62 proposal",
+              "reason": "The proposal is derived from and reuses the earlier NULLDUMMY rule work specified in BIP62.",
               "confidence": "low"
             },
             {
               "target": "bips:141",
-              "evidence": "pay-to-witness-script-hash scripts described in BIP141",
-              "reason": "The proposal explicitly applies its new consensus rule to the witness script type defined by BIP141 and is deployed using the same segwit parameters.",
+              "evidence": "using the same parameters for BIP141 and BIP143",
+              "reason": "The proposal is deployed together with SegWit parameters and explicitly applies its rule to pay-to-witness-script-hash scripts defined by BIP141, so implementation and scope rely on BIP141 semantics and activation context.",
               "confidence": "high"
             },
             {
               "target": "bips:143",
               "evidence": "using the same parameters for BIP141 and BIP143",
-              "reason": "The deployment is explicitly designed around the same activation parameters shared with BIP143, tying its rollout to that proposal's deployment configuration.",
-              "confidence": "medium"
+              "reason": "The proposal normatively specifies deployment using the same activation parameters as BIP143, making its rollout technically tied to that proposal's deployment setup.",
+              "confidence": "high"
             }
           ]
         }

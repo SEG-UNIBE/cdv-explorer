@@ -720,27 +720,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:11:51Z",
+          "timestamp": "2026-07-09T07:58:56Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:21",
               "evidence": "This BIP is a modification and intended replacement of [[bip-0021.mediawiki|BIP 0021]]",
-              "reason": "The proposal directly amends and replaces the earlier Bitcoin URI scheme, defining changes relative to its format and behavior.",
+              "reason": "The proposal explicitly modifies and replaces BIP 21, reusing and updating its Bitcoin URI scheme semantics and compatibility model.",
               "confidence": "high"
             },
             {
               "target": "bips:351",
               "evidence": "*pay: [[bip-0351.mediawiki|BIP 351 Private Payment addresses]]",
-              "reason": "The proposal standardizes a query key whose payment instruction semantics are defined by the target proposal.",
+              "reason": "The proposal defines the `pay` query key to carry BIP 351 payment instructions, making that payment-instruction format a standardized URI payload under this scheme.",
               "confidence": "medium"
             },
             {
               "target": "bips:352",
               "evidence": "*sp: [[bip-0352.mediawiki|BIP 352 Silent Payment addresses]]",
-              "reason": "The proposal standardizes a query key whose payment instruction semantics are defined by the target proposal.",
+              "reason": "The proposal defines the `sp` query key to carry BIP 352 Silent Payment addresses, integrating that address format as a payment instruction within the URI scheme.",
               "confidence": "medium"
             }
           ]

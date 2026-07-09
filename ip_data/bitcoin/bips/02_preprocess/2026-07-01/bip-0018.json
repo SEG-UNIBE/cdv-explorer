@@ -673,15 +673,33 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:10:07Z",
+          "timestamp": "2026-07-09T07:56:40Z",
           "status": "success",
           "dependencies": [
             {
+              "target": "bips:12",
+              "evidence": "This BIP replaces BIPs 12 and 17",
+              "reason": "The proposal is presented as a direct replacement for the earlier proposal, indicating it supersedes and redesigns the same technical mechanism.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:13",
+              "evidence": "The Motivation for this BIP (and BIP 13, the pay-to-script-hash address type)",
+              "reason": "The proposal is designed alongside the pay-to-script-hash address type, relying on that address mechanism for the intended infrastructure and usage model.",
+              "confidence": "medium"
+            },
+            {
               "target": "bips:16",
               "evidence": "it also replaces BIP 16, which is identical in terms of protocol",
-              "reason": "The proposal explicitly states it is identical in protocol to BIP 16, meaning understanding and implementing this BIP materially relies on the same core mechanism and rules defined there.",
+              "reason": "The text states the protocol is identical to BIP 16, so understanding and implementing this proposal materially depends on the same protocol defined there.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:17",
+              "evidence": "This BIP replaces BIPs 12 and 17",
+              "reason": "The proposal is presented as a direct replacement for the earlier proposal, indicating it supersedes and redesigns the same technical mechanism.",
               "confidence": "high"
             }
           ]

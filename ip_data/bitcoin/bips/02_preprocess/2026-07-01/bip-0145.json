@@ -666,11 +666,36 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:11:29Z",
+          "timestamp": "2026-07-09T07:58:30Z",
           "status": "success",
-          "dependencies": []
+          "dependencies": [
+            {
+              "target": "bips:9",
+              "evidence": "see BIP 9",
+              "reason": "The proposal relies on BIP 9's getblocktemplate rule signaling mechanism for the \"segwit\" rule and related template behavior.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:22",
+              "evidence": "modifications to the getblocktemplate JSON-RPC call (BIP 22)",
+              "reason": "The proposal explicitly revises and extends the getblocktemplate protocol defined by the target.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:23",
+              "evidence": "see BIP 23 Mutations",
+              "reason": "The proposal constrains coinbase commitment placement based on the mutable-generation behavior defined by the target.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "to support segregated witness as defined by BIP 141",
+              "reason": "The proposal is designed around SegWit block structure, witness commitment rules, and sigops semantics introduced by the target.",
+              "confidence": "low"
+            }
+          ]
         }
       ]
     }

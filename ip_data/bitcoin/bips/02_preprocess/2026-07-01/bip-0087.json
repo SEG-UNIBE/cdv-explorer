@@ -688,11 +688,48 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:10:46Z",
+          "timestamp": "2026-07-09T07:57:40Z",
           "status": "success",
-          "dependencies": []
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "based on an algorithm described in BIP-0032",
+              "reason": "The proposal defines its derivation hierarchy and hardened/public child derivation semantics using BIP32.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:43",
+              "evidence": "purpose scheme described in BIP-0043",
+              "reason": "The proposal uses BIP43's purpose-field convention and explicitly sets purpose to 87' following that recommendation.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:44",
+              "evidence": "multi-account hierarchy described in BIP-0044",
+              "reason": "The proposal reuses BIP44's multi-account path structure and account pattern as the basis for its hierarchy.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:67",
+              "evidence": "supports deterministic key sorting as per BIP67",
+              "reason": "The proposal's multisig descriptor construction relies on BIP67-style deterministic public-key sorting.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:129",
+              "evidence": "Please see BIP-0129 (Bitcoin Secure Multisig Setup) for an introduction on descriptor templates.",
+              "reason": "The address discovery procedure is defined around multisig descriptors or descriptor templates, with BIP129 providing the template concept it uses.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:174",
+              "evidence": "should contain the key origin information for maximum compatibility with BIP-0174",
+              "reason": "The descriptor guidance is designed to include key origin information to interoperate with BIP174 workflows.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

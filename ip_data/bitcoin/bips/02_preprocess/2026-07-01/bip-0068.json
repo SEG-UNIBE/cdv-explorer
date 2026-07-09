@@ -834,21 +834,21 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:10:32Z",
+          "timestamp": "2026-07-09T07:57:11Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
               "evidence": "This BIP is to be deployed by \"versionbits\" BIP9 using bit 0.",
-              "reason": "The proposal relies on BIP9's versionbits activation mechanism and parameters for deployment.",
+              "reason": "The proposal's activation mechanism is explicitly defined in terms of BIP9 versionbits deployment rules.",
               "confidence": "high"
             },
             {
               "target": "bips:112",
-              "evidence": "for use in bitcoin scripts as a 3-byte PUSHDATA with OP_CHECKSEQUENCEVERIFY (BIP 112).",
-              "reason": "The proposal is designed to align its sequence-number encoding with OP_CHECKSEQUENCEVERIFY semantics introduced in BIP112, and deployment is required simultaneously.",
+              "evidence": "The flag (1<<22) is the highest order bit in a 3-byte signed integer for use in bitcoin scripts as a 3-byte PUSHDATA with OP_CHECKSEQUENCEVERIFY (BIP 112).",
+              "reason": "The sequence-number encoding is designed to interoperate with OP_CHECKSEQUENCEVERIFY semantics from BIP112, and deployment is required simultaneously.",
               "confidence": "high"
             },
             {

@@ -649,22 +649,16 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:10:55Z",
+          "timestamp": "2026-07-09T07:57:49Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:34",
               "evidence": "similar to the technique used in BIP34",
-              "reason": "The deployment mechanism explicitly reuses the hash-power supermajority activation technique from the target proposal.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:100",
-              "evidence": "The deployment plan is taken from Jeff Garzik's proposed BIP100 block size increase",
-              "reason": "The proposal adopts its deployment plan from the target, making the activation workflow technically based on it.",
-              "confidence": "high"
+              "reason": "The deployment mechanism explicitly reuses BIP34-style hash-power supermajority activation for consensus changes.",
+              "confidence": "medium"
             }
           ]
         }

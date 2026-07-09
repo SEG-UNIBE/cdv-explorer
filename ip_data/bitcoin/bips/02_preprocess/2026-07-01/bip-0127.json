@@ -584,15 +584,15 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:11:17Z",
+          "timestamp": "2026-07-09T07:58:11Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:174",
               "evidence": "An addition to the BIP 174 PSBT format could help signing devices to recognize proof-of-reserve transactions.",
-              "reason": "The proposal defines a new PSBT input field by extending the PSBT format and specifies wallet behavior for that field.",
+              "reason": "The proposal defines a concrete extension to the PSBT format by adding a new INPUT field and associated processing rules, so implementing the extension depends on BIP 174 semantics and structure.",
               "confidence": "high"
             }
           ]

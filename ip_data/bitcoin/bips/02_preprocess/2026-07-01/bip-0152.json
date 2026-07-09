@@ -984,27 +984,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:11:37Z",
+          "timestamp": "2026-07-09T07:58:37Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:130",
               "evidence": "as defined by BIP130",
-              "reason": "The low-bandwidth announcement mode and fallback announcement behavior are explicitly defined around the inv/headers announcement mechanism from the target.",
+              "reason": "The low-bandwidth announcement mode explicitly reuses BIP130's headers/inv announcement behavior as the normative fallback announcement mechanism.",
               "confidence": "high"
             },
             {
               "target": "bips:141",
-              "evidence": "using the wtxid as defined in BIP 141 instead of the txid",
-              "reason": "Version 2 compact blocks relies on segregated witness semantics and the wtxid definition from the target for short-ID computation and witness-aware transaction handling.",
+              "evidence": "supports segregated witness transactions (BIP 141 and BIP 144)",
+              "reason": "Version 2 is defined around segregated witness semantics from BIP 141, including use of wtxid and witness-format transaction encoding assumptions.",
               "confidence": "high"
             },
             {
               "target": "bips:144",
               "evidence": "using the same format as responses to getdata MSG_WITNESS_TX, specified in BIP144",
-              "reason": "Version 2 reuses the target's witness-serialization formats and message semantics for compact block transactions and fallback block encoding.",
+              "reason": "Version 2 directly depends on BIP144's witness message formats and response semantics for compact block transaction encoding.",
               "confidence": "high"
             }
           ]

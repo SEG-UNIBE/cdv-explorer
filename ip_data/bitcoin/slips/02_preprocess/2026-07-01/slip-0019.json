@@ -494,33 +494,33 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:12:45Z_gpt-5.4-2026-03-05_b188040c",
+          "run_id": "2026-07-09T08:00:45Z_gpt-5.4-2026-03-05_5eb3d557",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:12:56Z",
+          "timestamp": "2026-07-09T08:00:58Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:174",
-              "evidence": "additional fields for [BIP-0174] PSBTv0",
-              "reason": "The PSBT extension section defines new fields within the BIP-0174 PSBTv0 format, so implementation relies on that container structure.",
+              "evidence": "This section proposes additional fields for [BIP-0174] PSBTv0",
+              "reason": "The proposal extends BIP-0174 by defining new PSBT global and input fields for carrying proofs of ownership.",
               "confidence": "low"
             },
             {
               "target": "bips:322",
-              "evidence": "signed using the Generic Signed Message Format as defined in the [original BIP-0322]",
-              "reason": "The proof signature format and verification rules are explicitly based on the original BIP-0322 SignatureProof mechanism.",
-              "confidence": "high"
+              "evidence": "signed using the Generic Signed Message Format as defined in the original BIP-0322",
+              "reason": "The proof signature format and verification rules are defined by the original BIP-0322 message-signing format.",
+              "confidence": "low"
             },
             {
               "target": "bips:370",
-              "evidence": "and [BIP-0370] PSBTv2",
-              "reason": "The PSBT extension section also defines inclusion rules for PSBTv2 as specified by BIP-0370.",
+              "evidence": "and [BIP-0370] PSBTv2 that allow for SLIP-0019 proofs of ownership",
+              "reason": "The proposal extends BIP-0370 by defining compatible PSBTv2 fields for proof-of-ownership data.",
               "confidence": "low"
             },
             {
               "target": "slips:21",
               "evidence": "derived from the wallet's master secret using the [SLIP-0021] method",
-              "reason": "The proposal defines ownership identifier derivation directly in terms of the target's hierarchical symmetric key derivation method.",
+              "reason": "The proposal normatively uses SLIP-0021 key derivation to derive the ownership identification key.",
               "confidence": "low"
             }
           ]

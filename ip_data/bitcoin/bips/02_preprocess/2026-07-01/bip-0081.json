@@ -558,27 +558,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:10:43Z",
+          "timestamp": "2026-07-09T07:57:33Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
               "evidence": "based on an algorithm described in BIP-0032",
-              "reason": "The proposal defines its hierarchy and derivation path semantics using the BIP32 algorithm and hardened/public derivation rules.",
+              "reason": "The proposal defines its path hierarchy and derivation behavior using the BIP32 derivation algorithm and semantics.",
               "confidence": "high"
             },
             {
               "target": "bips:43",
-              "evidence": "based on an algorithm described in BIP-0032 (BIP32 from now on) and purpose scheme described in BIP-0043",
-              "reason": "The proposal depends on BIP43's purpose-field scheme and explicitly sets its purpose level following that recommendation.",
+              "evidence": "purpose scheme described in BIP-0043",
+              "reason": "The proposal relies on BIP43's purpose-field convention to assign and interpret the hardened purpose level.",
               "confidence": "high"
             },
             {
               "target": "bips:44",
               "evidence": "This BIP is a particular application of BIP43 and is based on BIP44.",
-              "reason": "The proposal is explicitly designed as a BIP44-based hierarchy specialization.",
+              "reason": "The proposal explicitly states it is based on BIP44, indicating its hierarchy design specializes that earlier wallet structure.",
               "confidence": "high"
             }
           ]

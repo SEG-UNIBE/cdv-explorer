@@ -910,27 +910,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:10:01Z",
+          "timestamp": "2026-07-09T07:56:33Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:34",
               "evidence": "BIP 34 introduced a mechanism for doing soft-forking changes without a predefined flag timestamp",
-              "reason": "The proposal is designed as a replacement/generalization of BIP 34's version-based soft-fork activation mechanism and explicitly carries forward its threshold basis.",
+              "reason": "The proposal is explicitly designed as a change to and generalization of the version-based soft-fork deployment mechanism introduced by BIP 34, reusing its threshold-based miner signaling concept.",
               "confidence": "low"
             },
             {
               "target": "bips:65",
               "evidence": "This approach was later reused in BIP 66 and BIP 65",
-              "reason": "The proposal constrains and reinterprets nVersion semantics around prior version-based deployments, explicitly accounting for BIP 65's use of version numbers and resulting constraints.",
+              "reason": "The proposal constrains its versionbit design around existing nVersion semantics and restrictions created by BIP 65, which materially affects available version values and compatibility.",
               "confidence": "low"
             },
             {
               "target": "bips:66",
               "evidence": "This approach was later reused in BIP 66 and BIP 65",
-              "reason": "The proposal constrains and reinterprets nVersion semantics around prior version-based deployments, explicitly accounting for BIP 66's use of version numbers and resulting constraints.",
+              "reason": "The proposal constrains its versionbit design around existing nVersion semantics and restrictions created by BIP 66, which materially affects available version values and compatibility.",
               "confidence": "low"
             }
           ]

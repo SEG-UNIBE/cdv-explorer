@@ -383,21 +383,21 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:12:45Z_gpt-5.4-2026-03-05_b188040c",
+          "run_id": "2026-07-09T08:00:45Z_gpt-5.4-2026-03-05_5eb3d557",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:12:59Z",
+          "timestamp": "2026-07-09T08:01:03Z",
           "status": "success",
           "dependencies": [
             {
               "target": "slips:10",
-              "evidence": "using the [SLIP-0010] key derivation scheme",
-              "reason": "The proposal normatively derives the credential key pair with the SLIP-0010 derivation scheme and path structure.",
-              "confidence": "low"
+              "evidence": "using the [SLIP-0010](https://github.com/satoshilabs/slips/blob/master/slip-0010.md) key derivation scheme",
+              "reason": "The proposal normatively derives credential key pairs with the target's key derivation scheme.",
+              "confidence": "high"
             },
             {
               "target": "slips:21",
-              "evidence": "The key is derived from the master secret using the [SLIP-0021]",
-              "reason": "The proposal normatively uses SLIP-0021 to derive the credential ID encryption key and CredRandom from the master secret.",
+              "evidence": "using the [SLIP-0021](https://github.com/satoshilabs/slips/blob/master/slip-0021.md) method for hierarchical derivation of symmetric keys",
+              "reason": "The proposal normatively derives encryption keys and CredRandom values with the target's symmetric key derivation method.",
               "confidence": "high"
             }
           ]

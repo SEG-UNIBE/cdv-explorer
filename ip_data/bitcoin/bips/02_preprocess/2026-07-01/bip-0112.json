@@ -917,33 +917,33 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:11:05Z",
+          "timestamp": "2026-07-09T07:57:58Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
               "evidence": "This BIP is to be deployed by \"versionbits\" BIP9 using bit 0.",
-              "reason": "The proposal specifies activation through the deployment mechanism introduced by BIP 9.",
+              "reason": "The proposal normatively specifies activation using the deployment mechanism defined by BIP 9.",
               "confidence": "high"
             },
             {
               "target": "bips:65",
-              "evidence": "The reference implementation and this BIP was based heavily on work done by Peter Todd for the closely related BIP 65.",
-              "reason": "The proposal is explicitly based heavily on the prior CHECKLOCKTIMEVERIFY work, reusing closely related script-checking design and semantics.",
+              "evidence": "this BIP was based heavily on work done by Peter Todd for the closely related BIP 65",
+              "reason": "The proposal reuses and closely follows the earlier opcode-based locktime scripting approach from BIP 65.",
               "confidence": "medium"
             },
             {
               "target": "bips:68",
-              "evidence": "This BIP describes a new opcode (CHECKSEQUENCEVERIFY) for the Bitcoin scripting system that in combination with BIP 68",
-              "reason": "The proposal's opcode semantics and checks are explicitly defined around BIP 68 relative lock-time semantics for nSequence.",
+              "evidence": "in combination with BIP 68",
+              "reason": "The proposal's opcode semantics and validation rules are explicitly defined around the relative lock-time meaning and masking rules introduced by BIP 68.",
               "confidence": "high"
             },
             {
               "target": "bips:113",
               "evidence": "This BIP must be deployed simultaneously with BIP68 and BIP113 using the same deployment mechanism.",
-              "reason": "The proposal normatively requires coordinated deployment with BIP 113 as part of its activation assumptions.",
+              "reason": "The proposal explicitly requires coordinated deployment with BIP 113, indicating adoption depends on the paired activation assumptions.",
               "confidence": "high"
             }
           ]

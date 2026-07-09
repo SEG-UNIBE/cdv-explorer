@@ -640,27 +640,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:12:24Z",
+          "timestamp": "2026-07-09T08:00:08Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:327",
               "evidence": "All conventions and notations are used as defined in BIP327.",
-              "reason": "The specification adopts notation and conventions from the target, making correct interpretation of the algorithms depend on it.",
+              "reason": "The proposal explicitly adopts the target's conventions and notation as the basis for its specification.",
               "confidence": "low"
             },
             {
               "target": "bips:340",
               "evidence": "The same rationale and recommendations from BIP340 should be applied.",
-              "reason": "The nonce-generation auxiliary randomness guidance is explicitly reused from the target for proof generation.",
+              "reason": "The proposal reuses BIP340's nonce-related auxiliary randomness guidance for proof generation.",
               "confidence": "low"
             },
             {
               "target": "bips:352",
-              "evidence": "BIP352 requires senders to compute output scripts using ECDH shared secrets from the same secret keys used to sign the inputs.",
-              "reason": "The motivation and intended use of the DLEQ proofs are explicitly designed around the output-script correctness mechanism required by BIP352.",
+              "evidence": "BIP352 requires senders to compute output scripts using ECDH shared secrets",
+              "reason": "The proposal is designed to support BIP352's output-script construction by proving correct use of the same secret key in ECDH-derived outputs.",
               "confidence": "low"
             }
           ]

@@ -855,27 +855,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:11:42Z",
+          "timestamp": "2026-07-09T07:58:45Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:141",
               "evidence": "the 2-to-40-byte witness program (as defined by BIP141)",
-              "reason": "The segwit address format directly encodes witness programs and applies validation rules based on witness version and program semantics defined in BIP141.",
+              "reason": "The segwit address format encodes witness programs whose definition and validity rules come from BIP141, so implementing native segwit addresses depends on that proposal's semantics.",
               "confidence": "low"
             },
             {
               "target": "bips:143",
               "evidence": "two instances of it (\"P2WPKH\" and \"P2WSH\", see BIP143)",
-              "reason": "The proposal’s examples and intended native address use include the P2WPKH and P2WSH witness output types introduced there, making the address format designed around those script forms.",
+              "reason": "The proposal's examples and intended native address use cover P2WPKH and P2WSH witness outputs identified via BIP143, making it a meaningful technical dependency for those address types.",
               "confidence": "low"
             },
             {
               "target": "bips:350",
               "evidence": "BIP-350 proposes using the scheme described in this BIP only for Native Segwit v0 outputs",
-              "reason": "The disclosure states BIP-350 reuses and constrains this proposal’s checksum scheme for a subset of outputs, indicating a substantive technical relationship.",
+              "reason": "The disclosure states BIP350 constrains the applicability of this proposal's checksum scheme for later segwit versions, creating a substantive compatibility/constraint relationship.",
               "confidence": "low"
             }
           ]

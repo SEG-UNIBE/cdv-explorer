@@ -270,39 +270,39 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:12:45Z_gpt-5.4-2026-03-05_b188040c",
+          "run_id": "2026-07-09T08:00:45Z_gpt-5.4-2026-03-05_5eb3d557",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:13:05Z",
+          "timestamp": "2026-07-09T08:01:06Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
               "evidence": "based on the algorithm defined in BIP 32",
-              "reason": "The proposal explicitly defines its deterministic wallet hierarchy using the BIP 32 derivation algorithm and path semantics.",
+              "reason": "The proposal defines its derivation hierarchy using the BIP 32 algorithm and subtree semantics.",
               "confidence": "low"
             },
             {
               "target": "bips:43",
               "evidence": "and the scheme described in BIP 43",
-              "reason": "The proposal adopts the BIP 43 purpose-based hierarchy scheme to structure its derivation path.",
+              "reason": "The proposal relies on BIP 43's purpose-based hierarchy scheme for its path structure.",
               "confidence": "low"
             },
             {
               "target": "bips:86",
               "evidence": "The scriptPubKey is defined exactly as specified in the Address derivation section of BIP 86",
-              "reason": "The proposal directly reuses BIP 86 address-derivation rules for its P2TR script type.",
+              "reason": "For script_type 1, address derivation directly reuses BIP 86's P2TR output-key and scriptPubKey construction.",
               "confidence": "low"
             },
             {
               "target": "slips:10",
               "evidence": "based on the algorithm defined in BIP 32 and SLIP 10",
-              "reason": "The proposal explicitly relies on SLIP 10 as one of the underlying key-derivation algorithms for the hierarchy.",
+              "reason": "The proposal explicitly bases its deterministic wallet hierarchy on the derivation algorithm from SLIP 10 as well.",
               "confidence": "low"
             },
             {
               "target": "slips:44",
               "evidence": "The value of `coin_type` MUST be one of the coin types defined in SLIP 44",
-              "reason": "The proposal normatively constrains its coin_type field to the registry defined by SLIP 44.",
+              "reason": "The coin_type field is normatively constrained to the registry defined by SLIP 44.",
               "confidence": "low"
             }
           ]

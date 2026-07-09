@@ -880,11 +880,18 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:09:57Z",
+          "timestamp": "2026-07-09T07:56:27Z",
           "status": "success",
-          "dependencies": []
+          "dependencies": [
+            {
+              "target": "bips:2",
+              "evidence": "Superseded by BIP2",
+              "reason": "The document explicitly states it has been superseded by BIP 2, making BIP 2 the replacement process specification for this proposal.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

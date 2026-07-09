@@ -294,33 +294,33 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:12:45Z_gpt-5.4-2026-03-05_b188040c",
+          "run_id": "2026-07-09T08:00:45Z_gpt-5.4-2026-03-05_5eb3d557",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:13:02Z",
+          "timestamp": "2026-07-09T08:01:03Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
               "evidence": "This scheme adapts the master node derivation used in BIP-0032",
-              "reason": "The universal Cardano master node derivation is explicitly defined as an adaptation of the target's master node derivation procedure and salt usage.",
+              "reason": "The proposal's universal master node derivation is explicitly built by adapting BIP-0032's master node derivation procedure and salt usage.",
               "confidence": "high"
             },
             {
               "target": "bips:39",
-              "evidence": "When BIP-0039 is used as the source of the master secret",
-              "reason": "The Icarus derivation scheme takes a BIP-0039 mnemonic as input and requires recovering its initial entropy, making implementation depend on BIP-0039 semantics.",
+              "evidence": "When BIP-0039 is used as the source of the master secret the master node for the Cardano deterministic key hierarchy SHOULD be derived using the Cardano Icarus master node derivation scheme",
+              "reason": "The proposal defines a specific derivation workflow for BIP-0039-derived master secrets, including extracting mnemonic entropy and compatibility behavior.",
               "confidence": "high"
             },
             {
               "target": "slips:10",
               "evidence": "This scheme adapts the master node derivation used in BIP-0032 and SLIP-0010",
-              "reason": "The proposal directly reuses and adapts the target's master node derivation approach for defining the Cardano-specific scheme.",
+              "reason": "The proposal explicitly reuses and adapts the master node derivation approach from SLIP-0010 for its Cardano universal scheme.",
               "confidence": "high"
             },
             {
               "target": "slips:39",
-              "evidence": "The new scheme is primarily intended for use with SLIP-0039 Shamir's Secret-Sharing for Mnemonic Codes.",
-              "reason": "The proposal is designed to derive Cardano master nodes from seeds produced by the target and normatively requires this scheme when SLIP-0039 is the master-secret source.",
+              "evidence": "When SLIP-0039 is used as the source of the master secret the master node for the Cardano deterministic key hierarchy MUST be derived using the Cardano universal master node derivation scheme",
+              "reason": "The proposal normatively specifies how SLIP-0039 master secrets must be converted into Cardano master nodes, making SLIP-0039 a direct input assumption for the standard.",
               "confidence": "high"
             }
           ]

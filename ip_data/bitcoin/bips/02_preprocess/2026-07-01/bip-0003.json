@@ -1328,21 +1328,21 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:09:58Z",
+          "timestamp": "2026-07-09T07:56:29Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:2",
-              "evidence": "It replaces [BIP 2](bip-0002.mediawiki) with a streamlined process",
-              "reason": "The proposal directly supersedes and amends the prior BIP process definition, with many rules specified as changes from that process.",
+              "evidence": "This BIP replaces BIP 2 as the guideline for the BIP process.",
+              "reason": "The proposal is an explicit replacement and revision of the earlier BIP process specification, redefining its workflow, headers, statuses, and licensing rules around BIP 2.",
               "confidence": "high"
             },
             {
               "target": "bips:123",
-              "evidence": "The layer of Bitcoin the BIP applies to using the BIP classification defined in [BIP 123](bip-0123.mediawiki).",
-              "reason": "The proposal's Layer header semantics and classification rules are explicitly defined by and reuse the target's classification scheme.",
+              "evidence": "Specification BIPs use the Layer header rules specified in [BIP 123]",
+              "reason": "The proposal adopts BIP 123's layer-classification rules for Specification BIPs, making its header semantics depend on that classification scheme.",
               "confidence": "high"
             }
           ]

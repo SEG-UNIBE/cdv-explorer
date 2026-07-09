@@ -525,21 +525,21 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:11:56Z",
+          "timestamp": "2026-07-09T07:59:07Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
-              "evidence": "BIP 32 extended public keys can be constructed",
-              "reason": "The proposal defines synthetic xpubs and child derivation by directly reusing BIP 32 extended public key structure and CKDpub derivation semantics.",
+              "evidence": "This document specifies how BIP 32 extended public keys can be constructed",
+              "reason": "The proposal directly reuses BIP 32 extended public keys and child public key derivation semantics, including CKDpub and unhardened derivation rules.",
               "confidence": "high"
             },
             {
               "target": "bips:327",
               "evidence": "constructed from a BIP 327 MuSig2 aggregate public key",
-              "reason": "The proposal is specifically built around MuSig2 aggregate public keys and signing tweaks from BIP 327 session context and Sign algorithm.",
+              "reason": "The proposal is designed around BIP 327 MuSig2 aggregate public keys and signing workflow, including applying derivation tweaks in the signing session context.",
               "confidence": "high"
             }
           ]

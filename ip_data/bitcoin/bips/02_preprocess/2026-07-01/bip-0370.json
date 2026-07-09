@@ -849,15 +849,15 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:12:18Z",
+          "timestamp": "2026-07-09T07:59:51Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:174",
-              "evidence": "PSBT Version 2 (PSBTv2) only specifies new fields and field inclusion/exclusion requirements.",
-              "reason": "The proposal directly extends the PSBT format defined in BIP 174 and reuses its generic format, roles, and base semantics while changing fields and compatibility rules.",
+              "evidence": "Partially Signed Bitcoin Transaction format described in BIP 174",
+              "reason": "The proposal defines PSBTv2 as a second version of the PSBT format and explicitly reuses the PSBTv0 generic format, fields, roles, and compatibility model from BIP 174 while changing inclusion/exclusion rules and adding new fields.",
               "confidence": "high"
             }
           ]

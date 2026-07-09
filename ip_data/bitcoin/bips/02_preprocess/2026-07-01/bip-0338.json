@@ -568,33 +568,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:12:03Z",
+          "timestamp": "2026-07-09T07:59:14Z",
           "status": "success",
           "dependencies": [
             {
-              "target": "bips:60",
-              "evidence": "transactions would not be relayed to peers sending the disabletx message (provided that BIP 37 or BIP 60 has been implemented)",
-              "reason": "The proposal's compatibility and practical effect rely on existing transaction-relay negotiation behavior defined by the target when BIP 37 is not used.",
-              "confidence": "medium"
+              "target": "bips:37",
+              "evidence": "provided that BIP 37 or BIP 60 has been implemented",
+              "reason": "The proposal's compatibility behavior for suppressing transaction relay relies on the existing transaction relay field semantics defined there, and it also constrains BIP 37-specific messages on disabletx connections.",
+              "confidence": "high"
             },
             {
-              "target": "bips:133",
-              "evidence": "feefilter (BIP 133)",
-              "reason": "The proposal explicitly constrains use of the target's message by forbidding it once disabletx has been sent or received.",
-              "confidence": "medium"
+              "target": "bips:60",
+              "evidence": "provided that BIP 37 or BIP 60 has been implemented",
+              "reason": "The proposal's compatibility behavior depends on the transaction relay field definition referenced as defined in this BIP.",
+              "confidence": "high"
             },
             {
               "target": "bips:152",
               "evidence": "subject to the feature negotiation of BIP 152",
-              "reason": "The proposal is designed to preserve and defer to the target's compact-block feature negotiation semantics on disabletx connections.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:155",
-              "evidence": "addrv2 (BIP 155)",
-              "reason": "The proposal explicitly constrains use of the target's address-relay message by recommending it not be sent on disabletx connections.",
+              "reason": "Use of BIP 152 messages on disabletx connections remains governed by that proposal's negotiation rules, so implementing this interaction depends on BIP 152 semantics.",
               "confidence": "medium"
             }
           ]

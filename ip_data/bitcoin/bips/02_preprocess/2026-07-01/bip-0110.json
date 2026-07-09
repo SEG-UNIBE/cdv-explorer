@@ -916,33 +916,33 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:11:03Z",
+          "timestamp": "2026-07-09T07:57:55Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
-              "evidence": "This deployment uses a modified version of BIP9",
-              "reason": "The proposal’s activation mechanism is explicitly defined as a modification of BIP9, reusing and altering its deployment state machine, signaling, and GBT semantics.",
+              "evidence": "This deployment uses a modified version of BIP9 with the following parameters:",
+              "reason": "The proposal defines its activation mechanism as a modified form of BIP9, reusing and altering BIP9's deployment state machine, signaling, and GBT semantics.",
               "confidence": "high"
             },
             {
               "target": "bips:16",
               "evidence": "except for the redeemScript push in BIP16 scriptSigs",
-              "reason": "Rule 2 explicitly exempts BIP16 redeemScript pushes, so implementing the validation rules depends on BIP16 scriptSig/redeemScript semantics.",
+              "reason": "The proposal explicitly exempts the BIP16 redeemScript push from one consensus rule, so implementation depends on BIP16's redeemScript/scriptSig semantics.",
               "confidence": "high"
             },
             {
               "target": "bips:141",
               "evidence": "not Witness v0/BIP 141, Taproot/BIP 341, or P2A",
-              "reason": "The proposal distinguishes valid versus undefined witness versions using Witness v0 as defined by BIP141, affecting consensus validity under rule 3.",
+              "reason": "The proposal distinguishes valid and invalid witness-version spends by explicitly preserving Witness v0 semantics from BIP141 and excluding undefined versions.",
               "confidence": "high"
             },
             {
               "target": "bips:341",
               "evidence": "not Witness v0/BIP 141, Taproot/BIP 341, or P2A",
-              "reason": "Several rules are built around Taproot concepts from BIP341, including witness versions, Tapleaf versions, annexes, control blocks, Taptrees, and signature validation constraints.",
+              "reason": "Several rules are designed around Taproot constructs from BIP341, including undefined Tapleaf versions, annexes, control blocks, and keypath signature behavior.",
               "confidence": "high"
             }
           ]

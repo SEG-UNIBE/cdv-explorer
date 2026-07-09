@@ -912,21 +912,21 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:11:34Z",
+          "timestamp": "2026-07-09T07:58:27Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:141",
               "evidence": "only applicable to sigops in version 0 witness program",
-              "reason": "The proposal is defined specifically around version 0 witness programs and is deployed with Segregated Witness, so its scope and activation rely on BIP141 semantics.",
+              "reason": "The proposal's digest algorithm is defined specifically for version 0 witness programs and is deployed with Segregated Witness, so its scope and operation rely on BIP141 witness semantics.",
               "confidence": "high"
             },
             {
               "target": "bips:144",
               "evidence": "The new serialization format is described in BIP144",
-              "reason": "The proposal's examples and transaction format usage rely on the segregated witness serialization format defined by BIP144.",
+              "reason": "The proposal's examples and signed transaction format use the new witness transaction serialization format defined by BIP144.",
               "confidence": "medium"
             }
           ]

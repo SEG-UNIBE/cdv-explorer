@@ -585,15 +585,15 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:11:14Z",
+          "timestamp": "2026-07-09T07:58:09Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
               "evidence": "using the key derivation mechanism defined in BIP32",
-              "reason": "The proposal's script template format is defined around BIP32 derivation paths and deterministic key generation semantics.",
+              "reason": "The proposal's script template format deterministically generates scripts from BIP32 derivation paths and indexes, so its core mechanism relies on BIP32 key derivation semantics.",
               "confidence": "high"
             }
           ]

@@ -672,27 +672,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:10:41Z",
+          "timestamp": "2026-07-09T07:57:31Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:21",
               "evidence": "The standard way of letting a sender know where to send a bustapay transaction is done via a bip21 encoded address.",
-              "reason": "The proposal uses the BIP21 URI/address format as the standard mechanism for advertising the Bustapay endpoint via the new bpu parameter.",
+              "reason": "The proposal uses BIP21 URI encoding as the standard mechanism to convey the Bustapay URL parameter.",
               "confidence": "high"
             },
             {
               "target": "bips:69",
               "evidence": "Check if the transaction was already sorted according to BIP69, if so ensure the result stays that way.",
-              "reason": "Implementations are instructed to preserve BIP69 ordering when present, making compatibility with that transaction ordering convention part of receiver behavior.",
+              "reason": "The proposal preserves BIP69 ordering when present, making compatibility with that sorting convention part of implementation behavior.",
               "confidence": "medium"
             },
             {
               "target": "bips:125",
               "evidence": "The sender is also encouraged to use a slightly more aggressive feerate than usual as well as BIP125 (Opt-in Full Replace-by-Fee Signaling)",
-              "reason": "The protocol's transaction publishing and fallback behavior is designed to take advantage of replace-by-fee semantics introduced by BIP125, though it is not strictly required.",
+              "reason": "The proposal is designed to optionally leverage BIP125's replace-by-fee signaling for publishing the template transaction when fee conditions warrant it.",
               "confidence": "medium"
             }
           ]

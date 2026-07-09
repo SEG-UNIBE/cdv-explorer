@@ -548,21 +548,21 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:12:13Z",
+          "timestamp": "2026-07-09T07:59:38Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:341",
               "evidence": "the _taproot internal key_ (referred to as _p_), as defined in [BIP 341]",
-              "reason": "The proposal's opcode semantics directly rely on the taproot internal key definition introduced by BIP 341.",
+              "reason": "The proposal's opcode semantics directly rely on the taproot internal key concept and representation defined by the target.",
               "confidence": "high"
             },
             {
               "target": "bips:342",
               "evidence": "When verifying taproot script path spends having leaf version `0xc0` (as defined in [BIP 342]), `OP_INTERNALKEY` replaces `OP_SUCCESS203`",
-              "reason": "The proposal modifies tapscript validation behavior for the leaf version defined by BIP 342, so implementation depends on that script-path context and opcode handling.",
+              "reason": "The proposal applies specifically within tapscript verification and leaf-version semantics defined by the target.",
               "confidence": "high"
             }
           ]

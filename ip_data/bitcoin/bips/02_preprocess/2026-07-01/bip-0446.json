@@ -627,11 +627,42 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:12:41Z",
+          "timestamp": "2026-07-09T08:00:41Z",
           "status": "success",
-          "dependencies": []
+          "dependencies": [
+            {
+              "target": "bips:118",
+              "evidence": "See [BIP118's rationale][apo-bip-spent-amounts] for more about this.",
+              "reason": "The rationale for whether to commit to spent amounts references BIP118's rebindable-signature rationale as a technical basis for this design choice.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:119",
+              "evidence": "This BIP draws on the design of BIP119",
+              "reason": "The proposal is explicitly designed around and inspired by BIP119's transaction-template commitment mechanism, adapting that design with specified semantic differences.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:340",
+              "evidence": "The template hash uses a tagged hash as introduced by [BIP340][schnorr-bip] and [BIP341][taproot-bip].",
+              "reason": "The proposal directly reuses the tagged-hash construction introduced by BIP340 as part of its transaction hash definition.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "The template hash re-uses the *sha_sequences*, *sha_outputs* and *sha_annex* pre-computed transaction data introduced in BIP341.",
+              "reason": "The proposal is built around BIP341 transaction hashing fields and signature-message semantics, reusing its precomputed subhashes and definitions such as annex handling.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:342",
+              "evidence": "`OP_TEMPLATEHASH` redefines `OP_SUCCESS206` (0xce) in the Tapscript execution context",
+              "reason": "The opcode is defined specifically within the Tapscript execution context, so its semantics and deployment depend on the Tapscript environment introduced by BIP342.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

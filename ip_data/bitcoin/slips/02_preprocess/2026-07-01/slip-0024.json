@@ -402,33 +402,33 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:12:45Z_gpt-5.4-2026-03-05_b188040c",
+          "run_id": "2026-07-09T08:00:45Z_gpt-5.4-2026-03-05_5eb3d557",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:13:02Z",
+          "timestamp": "2026-07-09T08:01:04Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:21",
               "evidence": "The present specification defines a new query key `slip24sig` for BIP-0021 URIs",
-              "reason": "The proposal explicitly extends the BIP-0021 URI scheme with new required fields and processing rules for encoding basic payment requests.",
+              "reason": "The proposal explicitly extends the target URI scheme with a new field and defines how SLIP-0024 data maps onto its address, amount, label, and message fields.",
               "confidence": "high"
             },
             {
               "target": "bips:32",
               "evidence": "The BIP-0032 path to derive the address from the master node",
-              "reason": "The address authentication code format includes the BIP-0032 derivation path as authenticated data, relying on that path structure for verifying wallet-controlled addresses.",
+              "reason": "The address authentication code format includes and relies on BIP-0032 derivation paths to identify wallet-controlled addresses.",
               "confidence": "high"
             },
             {
               "target": "slips:21",
               "evidence": "derived from the wallet's master secret using the [SLIP-0021](https://github.com/satoshilabs/slips/blob/master/slip-0021.md) method for hierarchical derivation of symmetric keys",
-              "reason": "The address authentication code mechanism normatively derives its secret key using the hierarchical symmetric key derivation defined by SLIP-0021.",
+              "reason": "The address authentication code normatively derives its secret key using the target proposal's hierarchical symmetric key derivation method.",
               "confidence": "high"
             },
             {
               "target": "slips:44",
               "evidence": "32-bit encoding of the SLIP-0044 coin type",
-              "reason": "The proposal's signature digest, memo encodings, and address authentication code all use SLIP-0044 coin type identifiers as part of their binary format and semantics.",
+              "reason": "The payment request digest, memo encoding, outputs, and address authentication code all use coin type identifiers defined by the target proposal.",
               "confidence": "high"
             }
           ]

@@ -779,15 +779,21 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:11:39Z",
+          "timestamp": "2026-07-09T07:58:40Z",
           "status": "success",
           "dependencies": [
             {
+              "target": "bips:37",
+              "evidence": "The standard light client protocol in use today, defined in BIP 37",
+              "reason": "The proposal is designed as an alternative light client protocol around the workflow and shortcomings of BIP 37, reusing its light-client problem domain and compatibility framing.",
+              "confidence": "medium"
+            },
+            {
               "target": "bips:158",
               "evidence": "The initial filter types are defined separately in [[bip-0158.mediawiki|BIP 158]]",
-              "reason": "BIP 157's protocol requests and serves filter types whose contents and serialization are defined by BIP 158, so implementing the initial filter type support depends on BIP 158.",
+              "reason": "This proposal's filter-type mechanism relies on filter contents and serialization formats defined in BIP 158 for the initial supported filters.",
               "confidence": "high"
             }
           ]

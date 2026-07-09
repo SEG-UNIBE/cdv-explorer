@@ -579,21 +579,21 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:12:08Z",
+          "timestamp": "2026-07-09T07:59:24Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:8",
-              "evidence": "This document specifies a BIP8 (LOT=true) deployment to activate taproot.",
-              "reason": "The proposal is explicitly defined as a BIP8 deployment and relies on BIP8's activation mechanism, including LOT=true semantics and signaling workflow.",
+              "evidence": "This document specifies a BIP8 (LOT=true) deployment",
+              "reason": "The proposal directly defines its activation mechanism as a BIP8 deployment and relies on BIP8's versionbits lock-in-by-height framework and LOT semantics.",
               "confidence": "high"
             },
             {
               "target": "bips:341",
               "evidence": "to activate taproot",
-              "reason": "The proposal's purpose is to activate Taproot, so its deployment parameters and validation implications are designed around the target proposal's feature being activated.",
+              "reason": "The proposal is specifically an activation deployment for Taproot, so its purpose and effect materially depend on the Taproot rules being activated.",
               "confidence": "high"
             }
           ]

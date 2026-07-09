@@ -653,27 +653,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:10:25Z",
+          "timestamp": "2026-07-09T07:57:00Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:37",
-              "evidence": "BIP37 provides a partial Merkle tree format",
+              "evidence": "BIP37provides a partial Merkle tree format",
               "reason": "The proposal's SPV-client attack analysis and mitigation discussion directly rely on the partial Merkle tree format defined by BIP37.",
               "confidence": "low"
             },
             {
               "target": "bips:66",
               "evidence": "After BIP66 was activated on the Bitcoin network, Bitcoin transactions cannot have a digital signature smaller than 9 bytes.",
-              "reason": "Backward-compatibility analysis depends on BIP66's signature-size consensus rule to argue which 64-byte pre-segwit transactions are possible.",
+              "reason": "The backward-compatibility analysis depends on BIP66's signature-size consensus rule to argue which pre-segwit 64-byte transactions are possible.",
               "confidence": "medium"
             },
             {
               "target": "bips:141",
               "evidence": "BIP141 says witness programs can be 2 bytes in size",
-              "reason": "The proposal's segwit impact is defined around witness-program semantics introduced by BIP141, specifically identifying 64-byte segwit transactions using 2-byte witness programs.",
+              "reason": "The proposal's segwit impact is defined around witness-program sizes allowed by BIP141, specifically disallowing certain segwit transactions enabled by that format.",
               "confidence": "high"
             }
           ]

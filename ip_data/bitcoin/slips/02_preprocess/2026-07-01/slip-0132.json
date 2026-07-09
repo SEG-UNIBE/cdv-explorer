@@ -361,27 +361,33 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:12:45Z_gpt-5.4-2026-03-05_b188040c",
+          "run_id": "2026-07-09T08:00:45Z_gpt-5.4-2026-03-05_5eb3d557",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:13:21Z",
+          "timestamp": "2026-07-09T08:01:33Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
               "evidence": "BIP-0032 defines the derivation scheme for hierarchical deterministic wallets, which encode their public and private keys in an extended serialization format",
-              "reason": "The proposal is explicitly a registry of HD version bytes for the BIP-0032 extended key serialization format and relies on that format's semantics.",
+              "reason": "The proposal registers version bytes specifically for the extended serialization format and derivation scheme defined by BIP-0032, so its format and semantics directly rely on that specification.",
               "confidence": "high"
             },
             {
               "target": "bips:49",
               "evidence": "BIP-0049 proposes a method for encoding P2WPKH-nested-in-P2SH addresses",
-              "reason": "The registry assigns dedicated version bytes for the BIP-0049 derivation/address scheme, making its entries and test vectors partly designed around that proposal's semantics.",
+              "reason": "The registry assigns dedicated HD version bytes for the BIP-0049 derivation/address scheme, reusing that proposal's path and address semantics.",
               "confidence": "low"
             },
             {
               "target": "bips:84",
               "evidence": "BIP-0084 proposes a native-SegWit derivation scheme, encoding P2WPKH addresses in Bech32",
-              "reason": "The registry assigns dedicated version bytes for the BIP-0084 native-SegWit derivation/address scheme, so part of the proposal specializes support for that proposal's semantics.",
+              "reason": "The registry assigns dedicated HD version bytes for the BIP-0084 native-SegWit derivation/address scheme, depending on its derivation and address semantics.",
+              "confidence": "low"
+            },
+            {
+              "target": "slips:32",
+              "evidence": "The SLIP-0032 proposal attempts a remedy by including the full BIP-0032 derivation path within the serialized key.",
+              "reason": "The proposal is designed in contrast to and as an interim alternative before SLIP-0032 adoption, relying on SLIP-0032's serialized-key remedy as the technical solution it defers.",
               "confidence": "low"
             }
           ]

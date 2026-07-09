@@ -823,11 +823,24 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:12:16Z",
+          "timestamp": "2026-07-09T07:59:45Z",
           "status": "success",
-          "dependencies": []
+          "dependencies": [
+            {
+              "target": "bips:21",
+              "evidence": "a standard format for encoding BIP 21 URI schemes in DNS TXT records",
+              "reason": "The proposal directly encodes and resolves BIP 21 URIs, so its record contents and parsing semantics depend on BIP 21.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:321",
+              "evidence": "Reference implementations for parsing the URI contents can be found in BIP 321.",
+              "reason": "The proposal relies on URI parsing semantics for the encoded payment instructions, and explicitly points to BIP 321 reference implementations for that parsing.",
+              "confidence": "low"
+            }
+          ]
         }
       ]
     }

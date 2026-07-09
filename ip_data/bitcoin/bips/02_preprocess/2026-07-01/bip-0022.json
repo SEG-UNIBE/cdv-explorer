@@ -730,21 +730,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:10:10Z",
+          "timestamp": "2026-07-09T07:56:45Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:16",
               "evidence": "Due to the [[bip-0016.mediawiki|BIP 0016]] changes regarding rules on block sigops",
-              "reason": "The proposal's transaction metadata includes sigop counts specifically because BIP 16 changed how block sigops must be counted, so implementing/evaluating this field depends on that rule change.",
+              "reason": "The proposal's transaction sigops field is justified and defined around BIP 16's altered sigop counting semantics.",
               "confidence": "medium"
             },
             {
+              "target": "bips:23",
+              "evidence": "used to explicitly select between the default \"template\" request or a [[bip-0023.mediawiki#block-proposal|\"proposal\"]]",
+              "reason": "The proposal is designed to interoperate with and expose request capabilities defined by BIP 23, including proposal mode and related extensions.",
+              "confidence": "high"
+            },
+            {
               "target": "bips:34",
-              "evidence": "comply with [[bip-0034.mediawiki|BIP 0034]] for version 2",
-              "reason": "The template's version and coinbase/scriptSig requirements are explicitly constrained by BIP 34 when using version 2 blocks.",
+              "evidence": "clients MUST understand the implications of the version they use (eg, comply with [[bip-0034.mediawiki|BIP 0034]] for version 2)",
+              "reason": "Implementing version 2 block templates under this proposal requires complying with BIP 34's block version and coinbase height rules.",
               "confidence": "high"
             }
           ]

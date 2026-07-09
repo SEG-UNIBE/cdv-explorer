@@ -593,11 +593,36 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:11:33Z",
+          "timestamp": "2026-07-09T07:58:33Z",
           "status": "success",
-          "dependencies": []
+          "dependencies": [
+            {
+              "target": "bips:9",
+              "evidence": "the BIP9 \"segwit\" deployment using bit 1",
+              "reason": "The proposal is explicitly designed around the existing BIP9 versionbits deployment mechanics, state transitions, and signaling for segwit.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "to activate BIP141, BIP143 and BIP147",
+              "reason": "The proposal's purpose is to force activation of the segwit deployment, which materially includes activation of BIP141 consensus rules.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:143",
+              "evidence": "to activate BIP141, BIP143 and BIP147",
+              "reason": "The proposal materially relies on the segwit deployment activating BIP143 as part of the targeted rule set.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:147",
+              "evidence": "to activate BIP141, BIP143 and BIP147",
+              "reason": "The proposal materially relies on the segwit deployment activating BIP147 as part of the targeted rule set.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

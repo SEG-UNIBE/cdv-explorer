@@ -1196,39 +1196,39 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:11:28Z",
+          "timestamp": "2026-07-09T07:58:27Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
-              "evidence": "This BIP will be deployed by \"version bits\" BIP9",
-              "reason": "The proposal explicitly specifies activation using the version-bits deployment mechanism from the target proposal.",
+              "evidence": "deployed by \"version bits\" BIP9",
+              "reason": "The activation mechanism for this proposal explicitly uses BIP9 version-bits deployment rules.",
               "confidence": "high"
             },
             {
               "target": "bips:16",
               "evidence": "redeemScript as defined in BIP16/P2SH",
-              "reason": "The proposal explicitly defines one witness-program trigger mode and related validation rules around BIP16 P2SH redeemScript semantics.",
+              "reason": "The proposal explicitly defines and validates one trigger path for witness programs inside BIP16 P2SH redeemScripts, reusing BIP16 semantics for nested witness programs and sigop counting.",
               "confidence": "low"
             },
             {
               "target": "bips:70",
-              "evidence": "using a native witness program through [https://github.com/bitcoin/bips/blob/master/bip-0070.mediawiki BIP70] payment protocol",
-              "reason": "Non-upgraded wallet support for sending to native witness programs is designed around the payment workflow provided by the target proposal.",
-              "confidence": "medium"
+              "evidence": "using a native witness program through BIP70 payment protocol",
+              "reason": "Non-upgraded wallet support for sending to native witness programs is explicitly designed around BIP70 payment protocol workflows.",
+              "confidence": "low"
             },
             {
               "target": "bips:143",
               "evidence": "a new transaction digest algorithm for signature verification in version 0 witness program",
-              "reason": "Version 0 witness-program signature verification uses the transaction digest algorithm defined in the target proposal.",
+              "reason": "Version 0 witness program signature verification is defined around the new digest algorithm described in BIP143, making it a technical dependency for consensus semantics.",
               "confidence": "high"
             },
             {
               "target": "bips:144",
               "evidence": "serialized as described in [[bip-0144.mediawiki|BIP144]]",
-              "reason": "The proposal's total size and weight calculations rely on the witness-inclusive transaction serialization format defined by the target proposal.",
+              "reason": "The proposal's definitions of total block and transaction size rely on the witness-inclusive serialization format specified by BIP144.",
               "confidence": "high"
             }
           ]

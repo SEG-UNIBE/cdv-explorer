@@ -1,5 +1,6 @@
-import yaml
 from pathlib import Path
+
+import yaml
 
 _DIR = Path(__file__).parent
 

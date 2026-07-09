@@ -512,14 +512,16 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:55:05Z",
+          "timestamp": "2026-06-30T11:19:13Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:431",
-              "evidence": "If unsure, use in conjunction with TRUC transactions.",
-              "reason": "TRUC transactions are presented as the anti-pinning constraint recommended for safe use of P2A, so P2A’s deployment guidance relies on TRUC’s topology limits.",
-              "confidence": "low"
+              "evidence": "If unsure, use in conjunction with [https://github.com/bitcoin/bips/blob/master/bip-0431.mediawiki TRUC transactions].",
+              "reason": "The proposal recommends TRUC transactions as the anti-pinning mechanism to pair with P2A when fee-bumping anchor outputs.",
+              "confidence": "medium"
             }
           ]
         }

@@ -13,11 +13,6 @@ export const EVALUATED_DEPENDENCY_APPROACHES = [
   BODY_EXTRACTED_LLM,
 ];
 
-// Approaches that emit distinct relation subtypes and can therefore participate
-// in exact-type matching. This is a property of the extraction method itself:
-// Regex and LLM produce a single generic relation, so they are type-agnostic.
-export const TYPE_BEARING_DEPENDENCY_APPROACHES = new Set([PREAMBLE_EXTRACTED]);
-
 export const GROUND_TRUTH_MATCH_MODE_EDGE_ONLY = 'edge_only';
 export const GROUND_TRUTH_MATCH_MODE_EXACT_TYPE = 'exact_type';
 
@@ -28,16 +23,29 @@ export const GROUND_TRUTH_MATCH_MODE_OPTIONS = [
 
 export const GROUND_TRUTH_CUTOFF_MODE_ALL = 'all';
 export const GROUND_TRUTH_CUTOFF_MODE_ON_OR_BEFORE = 'on_or_before';
+export const GROUND_TRUTH_CUTOFF_MODE_ON_OR_AFTER = 'on_or_after';
+export const GROUND_TRUTH_CUTOFF_MODE_BETWEEN = 'between';
 
 export const GROUND_TRUTH_CUTOFF_MODE_OPTIONS = [
   { label: 'All completed reviews', value: GROUND_TRUTH_CUTOFF_MODE_ALL },
   { label: 'Reviewed on or before', value: GROUND_TRUTH_CUTOFF_MODE_ON_OR_BEFORE },
+  { label: 'Reviewed on or later', value: GROUND_TRUTH_CUTOFF_MODE_ON_OR_AFTER },
+  { label: 'Reviewed between', value: GROUND_TRUTH_CUTOFF_MODE_BETWEEN },
 ];
 
 // Sentinel target meaning "match any ground-truth type for this directed pair".
 // Lets a generic subtype (e.g. Regex `reference`) count whenever the edge exists
 // in the ground truth, regardless of the curated relation type.
 export const GT_TYPE_ALL = '*';
+
+const DEFAULT_GT_TARGET_BY_APPROACH_SUBTYPE = {
+  [BODY_EXTRACTED_REGEX]: {
+    reference: 'depends_on',
+  },
+  [BODY_EXTRACTED_LLM]: {
+    implicit_dependency: 'depends_on',
+  },
+};
 
 function normalizeRelationType(relationType) {
   return String(relationType || '').trim().toLowerCase();
@@ -202,15 +210,17 @@ export function buildDefaultTypeMapping(dataset, ontology = DEFAULT_RELATION_ONT
       rows.push({ approach, subtype: null, include: false, target: null, empty: true });
       return;
     }
-    const typeBearing = TYPE_BEARING_DEPENDENCY_APPROACHES.has(approach);
     subtypes.forEach((subtype) => {
       const canonical = canonicalMap[subtype] || subtype;
-      const target = canonicalToGtType[canonical] || null;
+      const preferredTarget = DEFAULT_GT_TARGET_BY_APPROACH_SUBTYPE[approach]?.[subtype] || null;
+      let target = preferredTarget && gtTypes.includes(preferredTarget)
+        ? preferredTarget
+        : (canonicalToGtType[canonical] || null);
       const excluded = excludedTypes.has(subtype);
       rows.push({
         approach,
         subtype,
-        include: typeBearing && !excluded && Boolean(target),
+        include: !excluded && Boolean(target),
         target,
       });
     });
@@ -253,33 +263,60 @@ export function buildGroundTruthEvaluation(dataset, options = {}) {
     ontology = DEFAULT_RELATION_ONTOLOGY,
     typeMapping = null,
     restrictToReviewedSources = true,
+    allowCrossSourceTargets = true,
     gtCutoffMode = GROUND_TRUTH_CUTOFF_MODE_ALL,
     gtCutoffDate = '',
+    gtCutoffStartDate = '',
+    gtCutoffEndDate = '',
   } = options;
   const isExactType = matchMode === GROUND_TRUTH_MATCH_MODE_EXACT_TYPE;
   const linksByType = dataset?.links || {};
-  const allGroundTruthEdges = flattenApproachLinks(linksByType, GROUND_TRUTH_CURATED);
+  const networkNodeKeys = new Set(
+    (Array.isArray(dataset?.nodes) ? dataset.nodes : [])
+      .map((n) => String(n?.graph_key || n?.graphKey || n?.id || '').trim())
+      .filter(Boolean)
+  );
+  const allGroundTruthEdges = flattenApproachLinks(linksByType, GROUND_TRUTH_CURATED)
+    .filter((edge) => allowCrossSourceTargets || !networkNodeKeys.size || networkNodeKeys.has(edgeTargetKey(edge)));
   const allReviewedIps = Array.isArray(dataset?.groundTruthReviewedIps)
     ? dataset.groundTruthReviewedIps.filter(Boolean)
     : [];
 
   const normalizedCutoffDate = normalizeReviewDate(gtCutoffDate);
-  const reviewedIps = allReviewedIps.filter((entry) => {
-    const reviewedAt = normalizeReviewDate(entry?.reviewed_at);
+  const normalizedCutoffStartDate = normalizeReviewDate(gtCutoffStartDate || gtCutoffDate);
+  const normalizedCutoffEndDate = normalizeReviewDate(gtCutoffEndDate || gtCutoffDate);
+  const matchesCutoff = (reviewedAt) => {
     if (!reviewedAt) {
       return false;
     }
     if (gtCutoffMode === GROUND_TRUTH_CUTOFF_MODE_ON_OR_BEFORE && normalizedCutoffDate) {
       return reviewedAt <= normalizedCutoffDate;
     }
+    if (gtCutoffMode === GROUND_TRUTH_CUTOFF_MODE_ON_OR_AFTER && normalizedCutoffDate) {
+      return reviewedAt >= normalizedCutoffDate;
+    }
+    if (
+      gtCutoffMode === GROUND_TRUTH_CUTOFF_MODE_BETWEEN
+      && normalizedCutoffStartDate
+      && normalizedCutoffEndDate
+    ) {
+      const rangeStart = normalizedCutoffStartDate <= normalizedCutoffEndDate
+        ? normalizedCutoffStartDate
+        : normalizedCutoffEndDate;
+      const rangeEnd = normalizedCutoffStartDate <= normalizedCutoffEndDate
+        ? normalizedCutoffEndDate
+        : normalizedCutoffStartDate;
+      return reviewedAt >= rangeStart && reviewedAt <= rangeEnd;
+    }
     return true;
+  };
+  const reviewedIps = allReviewedIps.filter((entry) => {
+    const reviewedAt = normalizeReviewDate(entry?.reviewed_at);
+    return matchesCutoff(reviewedAt);
   });
-  const groundTruthEdges = gtCutoffMode === GROUND_TRUTH_CUTOFF_MODE_ON_OR_BEFORE && normalizedCutoffDate
-    ? allGroundTruthEdges.filter((edge) => {
-      const reviewedAt = normalizeReviewDate(edge?.reviewed_at);
-      return reviewedAt && reviewedAt <= normalizedCutoffDate;
-    })
-    : allGroundTruthEdges;
+  const groundTruthEdges = gtCutoffMode === GROUND_TRUTH_CUTOFF_MODE_ALL
+    ? allGroundTruthEdges
+    : allGroundTruthEdges.filter((edge) => matchesCutoff(normalizeReviewDate(edge?.reviewed_at)));
 
   const reviewedSourceKeys = new Set(reviewedIps.map(reviewedIpKey).filter(Boolean));
   const curatedTargetKeys = new Set(groundTruthEdges.map(edgeTargetKey).filter(Boolean));
@@ -338,20 +375,47 @@ export function buildGroundTruthEvaluation(dataset, options = {}) {
     return [{ key: pair, edge }];
   };
 
+  const reviewedBySource = {};
+  reviewedIps.forEach((entry) => {
+    const slug = String(entry?.ip || '').split(':', 1)[0] || 'unknown';
+    reviewedBySource[slug] = (reviewedBySource[slug] || 0) + 1;
+  });
+
+  const totalBySource = {};
+  (Array.isArray(dataset?.nodes) ? dataset.nodes : []).forEach((node) => {
+    const key = String(node?.graph_key || node?.graphKey || node?.id || '').trim();
+    const slug = key.includes(':') ? key.split(':', 1)[0] : 'unknown';
+    totalBySource[slug] = (totalBySource[slug] || 0) + 1;
+  });
+
+  const goldEdgesBySourcePair = {};
+  groundTruthEdges.forEach((edge) => {
+    const src = String(edgeSourceKey(edge)).split(':', 1)[0] || 'unknown';
+    const tgt = String(edgeTargetKey(edge)).split(':', 1)[0] || 'unknown';
+    const pair = `${src}->${tgt}`;
+    goldEdgesBySourcePair[pair] = (goldEdgesBySourcePair[pair] || 0) + 1;
+  });
+
   return {
     matchMode,
     restrictToReviewedSources,
     gtCutoffMode,
     gtCutoffDate: normalizedCutoffDate,
+    gtCutoffStartDate: normalizedCutoffStartDate,
+    gtCutoffEndDate: normalizedCutoffEndDate,
     reviewedProposalCount: reviewedSourceKeys.size,
+    reviewedBySource,
     curatedTargetCount: curatedTargetKeys.size,
     totalProposalCount,
+    totalBySource,
     goldEdgeCount: goldEdgeKeys.size,
+    goldEdgesBySourcePair,
     approaches: EVALUATED_DEPENDENCY_APPROACHES.map((approach) => {
       // Restricted mode scores only proposals that were explicitly reviewed in
       // the benchmark scope; non-restricted mode scores every extracted edge.
       const approachEdges = flattenApproachLinks(linksByType, approach)
-        .filter((edge) => !restrictToReviewedSources || reviewedSourceKeys.has(edgeSourceKey(edge)));
+        .filter((edge) => !restrictToReviewedSources || reviewedSourceKeys.has(edgeSourceKey(edge)))
+        .filter((edge) => allowCrossSourceTargets || !networkNodeKeys.size || networkNodeKeys.has(edgeTargetKey(edge)));
 
       let predictedEntries;
       let evaluated;

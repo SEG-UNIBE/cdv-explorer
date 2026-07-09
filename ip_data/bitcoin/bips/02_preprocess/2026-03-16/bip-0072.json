@@ -513,13 +513,22 @@
         "author": "Peter Todd",
         "path": "bip-0072.mediawiki",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "83ade87ba339b1895a70ea172e2369810bdc3708",
         "timestamp": "2014-06-12T10:47:49-04:00",
         "date": "2014-06-12",
         "author": "Gavin Andresen",
+        "path": "bip-0072.mediawiki",
+        "status": "Final",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
         "path": "bip-0072.mediawiki",
         "status": "Final",
         "standard": "bip2"
@@ -548,19 +557,21 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:57:58Z",
+          "timestamp": "2026-06-30T11:42:39Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:21",
               "evidence": "This BIP describes an extension to the bitcoin: URI scheme (BIP 21)",
-              "reason": "The proposal directly extends the bitcoin: URI format defined by BIP 21.",
+              "reason": "The proposal directly extends the bitcoin URI format defined by BIP 21, so implementation depends on BIP 21 semantics and encoding rules.",
               "confidence": "high"
             },
             {
               "target": "bips:70",
-              "evidence": "support the payment protocol (BIP 70)",
-              "reason": "The new URI parameter is specifically for initiating and following the payment protocol defined by BIP 70.",
+              "evidence": "support the payment protocol (BIP 70).",
+              "reason": "The added URI parameter points to a PaymentRequest and the wallet is instructed to follow the payment protocol defined in BIP 70.",
               "confidence": "high"
             }
           ]

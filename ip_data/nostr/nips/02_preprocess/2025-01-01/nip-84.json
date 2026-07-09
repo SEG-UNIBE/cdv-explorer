@@ -157,9 +157,18 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:58:25Z_gpt-5.4-mini_0bc643e4",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:08:32Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:59:11Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "nips:94",
+              "evidence": "e.g. NIP-94 audio/video",
+              "reason": "The proposal explicitly relies on NIP-94 as the event type for non-text media whose highlights may have empty content.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

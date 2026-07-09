@@ -772,38 +772,48 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:56Z",
+          "timestamp": "2026-06-30T11:36:24Z",
+          "status": "api_error",
+          "dependencies": [],
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 200000, Requested 6841. Please try again in 2.052s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+        },
+        {
+          "run_id": "2026-06-30T11:38:11Z_gpt-5.4-mini_422651ce",
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-30T11:38:32Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:65",
-              "evidence": "including the OP_CHECKLOCKTIMEVERIFY and OP_CHECKSEQUENCEVERIFY opcodes defined in BIP65",
-              "reason": "Tapscript inherits the CLTV opcode semantics from this proposal.",
-              "confidence": "low"
+              "evidence": "including the <code>OP_CHECKLOCKTIMEVERIFY</code> and <code>OP_CHECKSEQUENCEVERIFY</code> opcodes defined in [[bip-0065.mediawiki|BIP65]]",
+              "reason": "The execution rules inherit CLTV semantics from BIP65 as part of the underlying script behavior.",
+              "confidence": "high"
             },
             {
               "target": "bips:112",
-              "evidence": "including the OP_CHECKLOCKTIMEVERIFY and OP_CHECKSEQUENCEVERIFY opcodes defined in BIP65 and BIP112",
-              "reason": "Tapscript inherits the CSV opcode semantics from this proposal.",
-              "confidence": "low"
+              "evidence": "including the <code>OP_CHECKLOCKTIMEVERIFY</code> and <code>OP_CHECKSEQUENCEVERIFY</code> opcodes defined in [[bip-0065.mediawiki|BIP65]] and [[bip-0112.mediawiki|BIP112]]",
+              "reason": "The execution rules inherit CSV semantics from BIP112 as part of the underlying script behavior.",
+              "confidence": "high"
             },
             {
               "target": "bips:141",
-              "evidence": "The execution rules for tapscript are based on those for P2WSH according to BIP141",
-              "reason": "The proposal defines tapscript validation and witness/script handling as an extension of BIP141 P2WSH semantics.",
+              "evidence": "a witness program as defined in [[bip-0141.mediawiki|BIP141]]",
+              "reason": "Tapscript validation applies only to segregated witness spends under BIP141, so its scope and input classification depend on BIP141.",
               "confidence": "high"
             },
             {
               "target": "bips:340",
-              "evidence": "modified to verify Schnorr signatures as specified in BIP340",
-              "reason": "Tapscript signature opcodes use the Schnorr signature format and verification algorithm defined by this proposal.",
-              "confidence": "low"
+              "evidence": "modified to verify Schnorr signatures as specified in [[bip-0340.mediawiki|BIP340]]",
+              "reason": "Signature opcodes in tapscript are redefined to use BIP340 Schnorr signature verification and its verification algorithm.",
+              "confidence": "high"
             },
             {
               "target": "bips:341",
-              "evidence": "This document specifies the semantics of the initial scripting system under BIP341",
-              "reason": "The proposal is explicitly the tapscript semantics layered on top of BIP341 taproot/script-path rules and tapleaf hashing.",
-              "confidence": "low"
+              "evidence": "This document specifies the semantics of the initial scripting system under [[bip-0341.mediawiki|BIP341]].",
+              "reason": "The proposal is explicitly defined as the tapscript semantics layered on top of BIP341 Taproot script-path validation and message construction.",
+              "confidence": "high"
             }
           ]
         }

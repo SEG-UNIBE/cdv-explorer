@@ -272,25 +272,27 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:59:52Z_gpt-5.4-mini_b29b8ccc",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:07:53Z",
+          "timestamp": "2026-06-30T12:00:42Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:09",
-              "evidence": "Moderators MAY request deletion of their approval of a post at any time using [NIP-09 event deletion requests](09.md).",
-              "reason": "The moderation model relies on event deletion requests to withdraw approvals, which affects how approval events are managed.",
+              "evidence": "using [NIP-09 event deletion requests](09.md)",
+              "reason": "Moderator revocation of approvals is explicitly built on the event deletion mechanism from NIP-09.",
               "confidence": "high"
             },
             {
               "target": "nips:18",
-              "evidence": "Clients MAY support cross-posting between communities by posting a NIP 18 `kind 6` or `kind 16` repost",
-              "reason": "Cross-posting is defined in terms of NIP 18 repost events and reuses that event type as the mechanism.",
-              "confidence": "high"
+              "evidence": "post a NIP 18 `kind 6` or `kind 16` repost",
+              "reason": "Cross-posting is defined in terms of NIP-18 repost event kinds and their payload handling.",
+              "confidence": "low"
             },
             {
               "target": "nips:22",
               "evidence": "[NIP-22](22.md) kind 1111 events SHOULD be used for text notes posted to a community",
-              "reason": "Community posting is explicitly built on NIP-22 note semantics and its tag structure for community-scoped posts and replies.",
+              "reason": "The proposal defines community posting semantics by reusing NIP-22 text note events and their tag conventions.",
               "confidence": "high"
             }
           ]

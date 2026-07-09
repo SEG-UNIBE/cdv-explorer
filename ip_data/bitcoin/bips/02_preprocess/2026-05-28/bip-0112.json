@@ -865,12 +865,21 @@
         "author": "BtcDrak",
         "path": "bip-csv.mediawiki",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "c98859fe20617df141da0dd08d399921c7097be9",
         "timestamp": "2016-07-18T23:37:42Z",
         "date": "2016-07-18",
+        "author": "Luke Dashjr",
+        "path": "bip-0112.mediawiki",
+        "status": "Final",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
         "author": "Luke Dashjr",
         "path": "bip-0112.mediawiki",
         "status": "Final",
@@ -908,31 +917,41 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:53:27Z",
+          "timestamp": "2026-06-30T11:17:58Z",
+          "status": "api_error",
+          "dependencies": [],
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 196987, Requested 5175. Please try again in 648ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+        },
+        {
+          "run_id": "2026-06-30T11:33:45Z_gpt-5.4-mini_fbc31d5d",
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-30T11:33:49Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
-              "evidence": "This BIP is to be deployed by \"versionbits\" BIP9 using bit 0.",
-              "reason": "The activation method depends on the versionbits deployment mechanism defined by BIP 9.",
+              "evidence": "This BIP is to be deployed by \"versionbits\" BIP9",
+              "reason": "The proposal's activation mechanism is versionbits via BIP9, so its deployment depends on BIP9's signaling and activation framework.",
               "confidence": "high"
             },
             {
               "target": "bips:65",
-              "evidence": "This BIP was based heavily on work done by Peter Todd for the closely related BIP 65.",
-              "reason": "The proposal reuses the same general script-enforced locktime design pattern and is explicitly based on that prior mechanism.",
-              "confidence": "high"
+              "evidence": "The reference implementation and this BIP was based heavily on work done by Peter Todd for the closely related BIP 65.",
+              "reason": "The proposal is technically patterned on BIP65's prior check-style locktime opcode design and reuses that soft-fork approach.",
+              "confidence": "medium"
             },
             {
               "target": "bips:68",
-              "evidence": "in combination with BIP 68 allows execution pathways of a script to be restricted based on the age of the output being spent",
-              "reason": "CHECKSEQUENCEVERIFY compares against the nSequence semantics introduced by BIP 68, so its validation rules rely on that consensus relative-locktime behavior.",
+              "evidence": "that in combination with BIP 68 allows",
+              "reason": "CHECKSEQUENCEVERIFY is explicitly designed to work with BIP 68's relative lock-time semantics and sequence-number interpretation.",
               "confidence": "high"
             },
             {
               "target": "bips:113",
-              "evidence": "This BIP must be deployed simultaneously with BIP68 and BIP113 using the same deployment mechanism.",
-              "reason": "The proposal's deployment timing is coordinated with BIP 113, making its activation plan dependent on that proposal's soft-fork deployment.",
+              "evidence": "This BIP must be deployed simultaneously with BIP68 and BIP113",
+              "reason": "The deployment plan requires simultaneous activation with BIP113, so adopting this proposal depends on that coordinated soft-fork schedule.",
               "confidence": "high"
             }
           ]

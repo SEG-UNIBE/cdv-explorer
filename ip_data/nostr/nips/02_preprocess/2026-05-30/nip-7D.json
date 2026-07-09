@@ -124,13 +124,15 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:59:52Z_gpt-5.4-mini_b29b8ccc",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:07:54Z",
+          "timestamp": "2026-06-30T12:00:45Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:22",
               "evidence": "Replies to `kind 11` MUST use [NIP-22](./22.md) `kind 1111` comments.",
-              "reason": "The proposal makes NIP-22 the required mechanism for replies to thread events, so its comment semantics are a technical dependency.",
+              "reason": "The proposal explicitly requires using NIP-22 comment events for thread replies, so its reply mechanism depends on NIP-22 semantics and format.",
               "confidence": "high"
             }
           ]

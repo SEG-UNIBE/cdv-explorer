@@ -767,14 +767,16 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:58:11Z",
+          "timestamp": "2026-06-30T11:42:55Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:116",
-              "evidence": "This BIP is used by BIP116 (MERKLEBRANCHVERIFY) to add Merkle inclusion proof verification to script",
-              "reason": "The proposal is specifically designed to be consumed by BIP 116’s opcode and deployment mechanism, so BIP 116 depends on these proof and tree formats.",
-              "confidence": "low"
+              "evidence": "This BIP is used by BIP116 (MERKLEBRANCHVERIFY)[4]",
+              "reason": "The proposal is explicitly designed to be consumed by BIP116 for script-level Merkle proof verification, so adopting BIP98 depends on BIP116 as the deployment mechanism.",
+              "confidence": "high"
             }
           ]
         }

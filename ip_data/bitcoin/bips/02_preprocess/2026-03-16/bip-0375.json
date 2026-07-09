@@ -650,25 +650,27 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:59:30Z",
+          "timestamp": "2026-06-30T11:45:45Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:352",
-              "evidence": "adds support for sending to silent payments as described in BIP352",
-              "reason": "The proposal extends PSBT semantics specifically to carry and compute silent payment data defined by the target.",
-              "confidence": "high"
+              "evidence": "adding support for sending to silent payments as described in BIP352",
+              "reason": "The proposal is designed around silent payment addresses and reuses BIP352's output-script creation and notation.",
+              "confidence": "low"
             },
             {
               "target": "bips:370",
-              "evidence": "additional fields and updated role responsibilities for BIP370 PSBTv2",
-              "reason": "The proposal directly modifies PSBTv2 fields and role behavior introduced by the target.",
+              "evidence": "for BIP370 PSBTv2",
+              "reason": "The proposal extends and modifies PSBTv2 fields and role rules, so implementing it depends on BIP370's PSBTv2 structure and semantics.",
               "confidence": "high"
             },
             {
               "target": "bips:374",
-              "evidence": "A BIP374 DLEQ proof computed for the matching ECDH share",
-              "reason": "The proposal relies on the DLEQ proof format, generation, and verification procedures from the target for silent payment validation.",
+              "evidence": "A BIP374 DLEQ proof computed for the matching ECDH share.",
+              "reason": "The proposal defines new PSBT fields for DLEQ proofs and explicitly uses BIP374 proof generation and verification procedures.",
               "confidence": "high"
             }
           ]

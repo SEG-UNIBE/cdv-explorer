@@ -593,37 +593,39 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:58:42Z",
+          "timestamp": "2026-06-30T11:43:39Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
-              "evidence": "the existing segwit deployment is a BIP9 \"segwit\" deployment using bit 1",
-              "reason": "The proposal directly depends on BIP9 version-bits deployment semantics and state transitions to determine lock-in and activation.",
-              "confidence": "low"
+              "evidence": "the BIP9 \"segwit\" deployment",
+              "reason": "The proposal’s activation logic is built around an existing BIP9 version-bits deployment state machine and its lock-in/active status.",
+              "confidence": "high"
             },
             {
               "target": "bips:16",
               "evidence": "Historically, the P2SH soft fork (BIP16) was activated using a predetermined flag day",
-              "reason": "The proposal models its activation mechanism on the BIP16 flag-day soft-fork enforcement approach.",
+              "reason": "The proposal explicitly models its soft-fork activation mechanism on BIP16’s flag-day enforcement approach.",
               "confidence": "medium"
             },
             {
               "target": "bips:141",
-              "evidence": "to activate BIP141, BIP143 and BIP147",
-              "reason": "The proposal’s mandatory signaling is specifically meant to trigger activation of SegWit consensus rules defined by BIP141.",
-              "confidence": "high"
+              "evidence": "existing segwit deployment ... to activate BIP141",
+              "reason": "The proposal is intended to force activation of SegWit as defined by BIP141, so its behavior depends on that deployment’s semantics.",
+              "confidence": "low"
             },
             {
               "target": "bips:143",
               "evidence": "to activate BIP141, BIP143 and BIP147",
-              "reason": "The proposal’s activation condition is tied to the SegWit deployment that includes BIP143’s witness signature rules.",
+              "reason": "The proposal’s defined 'existing segwit deployment' includes BIP143 as one of the activated components, making the flag-day logic contingent on that SegWit sub-proposal.",
               "confidence": "high"
             },
             {
               "target": "bips:147",
               "evidence": "to activate BIP141, BIP143 and BIP147",
-              "reason": "The proposal relies on the SegWit deployment package that includes BIP147’s consensus changes.",
+              "reason": "The proposal’s defined 'existing segwit deployment' includes BIP147 as one of the activated components, so the enforced signaling is tied to that proposal too.",
               "confidence": "high"
             }
           ]

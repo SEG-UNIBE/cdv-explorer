@@ -1605,26 +1605,30 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:54:04Z",
+          "timestamp": "2026-06-30T11:18:25Z",
+          "status": "api_error",
+          "dependencies": [],
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 200000, Requested 59710. Please try again in 17.913s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+        },
+        {
+          "run_id": "2026-06-30T11:33:45Z_gpt-5.4-mini_fbc31d5d",
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-30T11:33:57Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
-              "evidence": "The 78 byte serialized extended public key as defined by BIP 32",
-              "reason": "PSBT encodes xpubs and derivation paths using BIP 32 key serialization and fingerprint/path semantics.",
+              "evidence": "The 78 byte serialized extended public key as defined by BIP 32.",
+              "reason": "The proposal uses BIP 32 extended public keys and derivation paths as mandatory fields for change detection and key provenance.",
               "confidence": "high"
             },
             {
               "target": "bips:143",
               "evidence": "The sighash algorithm for Segwit specified in BIP 143",
-              "reason": "PSBT signing rules for segwit inputs rely on the segwit sighash algorithm defined by this proposal.",
+              "reason": "The signer workflow explicitly relies on the Segwit sighash algorithm defined by the target to validate and produce signatures for segwit inputs.",
               "confidence": "high"
-            },
-            {
-              "target": "bips:173",
-              "evidence": "including P2SH embedded ones",
-              "reason": "PSBT distinguishes witness UTXOs and segwit-related script validation based on the P2SH-P2WPKH/P2WSH address and script conventions introduced by this proposal.",
-              "confidence": "medium"
             }
           ]
         }

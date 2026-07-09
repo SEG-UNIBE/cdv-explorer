@@ -140,19 +140,21 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:58:25Z_gpt-5.4-mini_0bc643e4",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:08:19Z",
+          "timestamp": "2026-06-30T11:58:49Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:44",
-              "evidence": "The draft event is JSON-stringified, [NIP44-encrypted](44.md)",
-              "reason": "This proposal relies on NIP-44 for encrypting draft and private relay-list payloads.",
+              "evidence": "NIP44-encrypted",
+              "reason": "The draft and private relay-list payloads are encrypted using NIP-44, so the proposal depends on that encryption format and its handling.",
               "confidence": "high"
             },
             {
               "target": "nips:65",
-              "evidence": "Clients SHOULD publish kind `10013` events to the author's [NIP-65](65.md) `write` relays",
-              "reason": "The relay-list publication rule depends on the write-relay concept defined by NIP-65.",
+              "evidence": "author's [NIP-65](65.md) `write` relays",
+              "reason": "The publication rule for kind 10013 is explicitly based on the write-relay concept defined by NIP-65.",
               "confidence": "high"
             }
           ]

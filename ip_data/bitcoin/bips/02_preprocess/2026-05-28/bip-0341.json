@@ -1341,9 +1341,62 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:54:30Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:18:43Z",
+          "status": "api_error",
+          "dependencies": [],
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 193391, Requested 11732. Please try again in 1.536s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+        },
+        {
+          "run_id": "2026-06-30T11:33:45Z_gpt-5.4-mini_fbc31d5d",
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-30T11:34:08Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:9",
+              "evidence": "For Bitcoin mainnet and testnet3, these BIPs are deployed by \"version bits\" with the name \"taproot\" and bit 2, using [[bip-0009.mediawiki|BIP9]] modified to use a lower threshold",
+              "reason": "Taproot activation is specified using a modified BIP9 version-bits deployment mechanism and state machine.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:98",
+              "evidence": "The chosen construction does require two invocations of the SHA256 compression functions, one of which can be avoided in theory (see [[bip-0098.mediawiki|BIP98]])",
+              "reason": "The Merkle branch hashing design is chosen in relation to BIP98's more efficient inner-node construction, indicating a technical alternative the proposal consciously does not adopt.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "A Taproot output is a native SegWit output (see [[bip-0141.mediawiki|BIP141]])",
+              "reason": "Taproot is defined as a new SegWit witness version and depends on SegWit output structure and witness program rules from BIP141.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:143",
+              "evidence": "In summary, the semantics of the [[bip-0143.mediawiki|BIP143]] sighash types remain unchanged, except the following:",
+              "reason": "The Taproot signature message is a redesign of the BIP143 sighash framework, preserving its type semantics while changing serialization and committed data.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:340",
+              "evidence": "The notation below follows that of [[bip-0340.mediawiki#design|BIP340]].",
+              "reason": "BIP 341 reuses BIP340's Schnorr public-key format, x-only point lifting, hash notation, and signature verification semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:342",
+              "evidence": "This BIP is deployed concurrently with [[bip-0342.mediawiki|BIP342]].",
+              "reason": "BIP 341's Taproot consensus rules are explicitly deployed together with BIP342 and its script-path leaf-version rules are referenced in validation and message extension handling.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:350",
+              "evidence": "Depending on the implementation non-upgraded wallets may be able to send to Segwit version 1 programs if they support sending to [[bip-0350.mediawiki|BIP350]] Bech32m addresses.",
+              "reason": "Receiving and sending to Taproot outputs uses Bech32m address encoding as specified by BIP350.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

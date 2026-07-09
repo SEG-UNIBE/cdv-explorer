@@ -498,38 +498,48 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:30Z",
+          "timestamp": "2026-06-30T11:36:05Z",
+          "status": "api_error",
+          "dependencies": [],
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 200000, Requested 1905. Please try again in 571ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+        },
+        {
+          "run_id": "2026-06-30T11:38:11Z_gpt-5.4-mini_422651ce",
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-30T11:38:22Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:8",
-              "evidence": "This BIP will be deployed by BIP8",
-              "reason": "The deployment mechanism and activation parameters are explicitly defined through BIP8.",
+              "evidence": "This BIP will be deployed by BIP8 with the name \"segwit\" and using bit 1.",
+              "reason": "The proposal’s activation mechanism is explicitly defined in terms of BIP8 deployment parameters and semantics.",
               "confidence": "high"
             },
             {
               "target": "bips:9",
-              "evidence": "This BIP should only be deployed if BIP9-segwit fails to lock-in or activate",
-              "reason": "The proposal’s activation conditions and incompatibility are defined relative to the BIP9 versionbits deployment.",
+              "evidence": "This document specifies a user activated soft fork for [[bip-0141.mediawiki|BIP141]], [[bip-0143.mediawiki|BIP143]] and [[bip-0147.mediawiki|BIP147]] using versionbits with guaranteed lock-in.",
+              "reason": "The proposal is a UASF variant of the segwit versionbits deployment and depends on BIP9-segwit as the prior deployment being replaced or timing out.",
               "confidence": "high"
             },
             {
               "target": "bips:141",
-              "evidence": "a user activated soft fork for BIP141",
-              "reason": "The proposal activates the segwit rules introduced by BIP141.",
-              "confidence": "low"
+              "evidence": "This document specifies a user activated soft fork for [[bip-0141.mediawiki|BIP141]], [[bip-0143.mediawiki|BIP143]] and [[bip-0147.mediawiki|BIP147]] using versionbits with guaranteed lock-in.",
+              "reason": "The proposal is designed to activate segwit, which includes the semantics introduced by BIP141.",
+              "confidence": "high"
             },
             {
               "target": "bips:143",
-              "evidence": "a user activated soft fork for BIP143",
-              "reason": "The proposal activates the segregated witness signature hashing rules introduced by BIP143.",
-              "confidence": "low"
+              "evidence": "This document specifies a user activated soft fork for [[bip-0141.mediawiki|BIP141]], [[bip-0143.mediawiki|BIP143]] and [[bip-0147.mediawiki|BIP147]] using versionbits with guaranteed lock-in.",
+              "reason": "The proposal is designed to activate segwit, including the transaction signature hashing changes defined by BIP143.",
+              "confidence": "high"
             },
             {
               "target": "bips:147",
-              "evidence": "a user activated soft fork for BIP147",
-              "reason": "The proposal activates the null dummy/scriptSig rules introduced by BIP147.",
-              "confidence": "low"
+              "evidence": "This document specifies a user activated soft fork for [[bip-0141.mediawiki|BIP141]], [[bip-0143.mediawiki|BIP143]] and [[bip-0147.mediawiki|BIP147]] using versionbits with guaranteed lock-in.",
+              "reason": "The proposal is designed to activate segwit, including the script and witness-related changes defined by BIP147.",
+              "confidence": "high"
             }
           ]
         }

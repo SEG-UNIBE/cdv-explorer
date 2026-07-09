@@ -296,9 +296,48 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:46:34Z_gpt-5.4-mini_dd2b314a",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:59:54Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:47:04Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "References\n\n- [BIP-0032: Hierarchical Deterministic Wallets]",
+              "reason": "The proposal uses BIP32 hierarchical deterministic wallet derivation as the basis for all xpub/xprv paths and derived addresses.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:39",
+              "evidence": "- [BIP-0039: Mnemonic code for generating deterministic keys]",
+              "reason": "The root node is defined by a mnemonic phrase, so the wallet generation relies on BIP39 mnemonic-to-seed semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:44",
+              "evidence": "### Bitcoin: Legacy / P2PKH / BIP44",
+              "reason": "The legacy account and derivation path are explicitly organized around the BIP44 account hierarchy.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:49",
+              "evidence": "### Bitcoin: Legacy SegWit / P2SH-P2WPKH / BIP49",
+              "reason": "The SegWit-nested-in-P2SH wallet section uses the BIP49 derivation scheme and address format.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:84",
+              "evidence": "### Bitcoin: SegWit / P2WPKH / BIP84",
+              "reason": "The native SegWit wallet section uses the BIP84 derivation scheme and corresponding bech32 address generation.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:86",
+              "evidence": "### Bitcoin: Taproot / P2TR / BIP86",
+              "reason": "The Taproot wallet section is built around the BIP86 key derivation scheme for single-key P2TR outputs.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

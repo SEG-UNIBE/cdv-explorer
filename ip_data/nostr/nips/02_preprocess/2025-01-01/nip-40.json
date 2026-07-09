@@ -213,13 +213,15 @@
       "body_extracted_regex": [],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:58:25Z_gpt-5.4-mini_0bc643e4",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:08:21Z",
+          "timestamp": "2026-06-30T11:58:51Z",
+          "status": "success",
           "dependencies": [
             {
-              "target": "nips:11",
+              "target": "nips:89",
               "evidence": "Clients SHOULD use the `supported_nips` field to learn if a relay supports this NIP.",
-              "reason": "The proposal relies on relay capability advertisement via supported NIPs to determine whether clients may send expiration-tagged events.",
+              "reason": "The proposal relies on the relay capability advertisement field to determine support before sending or processing expiration-tagged events.",
               "confidence": "high"
             }
           ]

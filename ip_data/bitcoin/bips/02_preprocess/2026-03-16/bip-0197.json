@@ -632,9 +632,18 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:58:57Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:44:10Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:199",
+              "evidence": "based on Hashed Time-Lock Contract (BIP 199) transactions",
+              "reason": "The proposal explicitly builds its collateral contract script on BIP 199 HTLC transactions.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

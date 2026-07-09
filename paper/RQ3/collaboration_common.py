@@ -27,13 +27,12 @@ def build_author_bip_map(network_data: dict) -> dict[str, list[str]]:
             if cleaned:
                 author_bips[cleaned].add(str(bip_id))
 
-    return {
-        author: sorted(bips, key=int)
-        for author, bips in author_bips.items()
-    }
+    return {author: sorted(bips, key=int) for author, bips in author_bips.items()}
 
 
-def _compute_weighted_eigenvector(node_ids, adjacency, max_iterations=1000, tolerance=1e-6):
+def _compute_weighted_eigenvector(
+    node_ids, adjacency, max_iterations=1000, tolerance=1e-6
+):
     author_ids = [str(node_id) for node_id in node_ids]
     node_count = len(author_ids)
 
@@ -48,7 +47,9 @@ def _compute_weighted_eigenvector(node_ids, adjacency, max_iterations=1000, tole
 
         for author_id in author_ids:
             for neighbor in adjacency.get(author_id, []):
-                next_values[author_id] += float(neighbor["weight"]) * values.get(neighbor["id"], 0.0)
+                next_values[author_id] += float(neighbor["weight"]) * values.get(
+                    neighbor["id"], 0.0
+                )
 
         norm = math.sqrt(sum(value**2 for value in next_values.values()))
         if norm == 0:
@@ -66,7 +67,9 @@ def _compute_weighted_eigenvector(node_ids, adjacency, max_iterations=1000, tole
     return values
 
 
-def build_collaboration_adjacency(collaboration_network: dict) -> tuple[list[str], dict[str, list[dict[str, int | str]]], dict[str, int]]:
+def build_collaboration_adjacency(
+    collaboration_network: dict,
+) -> tuple[list[str], dict[str, list[dict[str, int | str]]], dict[str, int]]:
     raw_nodes = collaboration_network.get("nodes", []) or []
     raw_edges = collaboration_network.get("edges", []) or []
     node_ids = [str(node.get("id")) for node in raw_nodes if node.get("id")]
@@ -122,7 +125,9 @@ def build_true_collaboration_components(collaboration_network: dict) -> list[lis
     return components
 
 
-def build_collaboration_component_size_distribution(collaboration_network: dict) -> list[dict[str, int]]:
+def build_collaboration_component_size_distribution(
+    collaboration_network: dict,
+) -> list[dict[str, int]]:
     component_size_counts = defaultdict(int)
 
     for members in build_true_collaboration_components(collaboration_network):
@@ -138,7 +143,9 @@ def build_collaboration_component_size_distribution(collaboration_network: dict)
     ]
 
 
-def build_collaboration_degree_distribution(collaboration_network: dict) -> list[dict[str, int]]:
+def build_collaboration_degree_distribution(
+    collaboration_network: dict,
+) -> list[dict[str, int]]:
     raw_nodes = collaboration_network.get("nodes", []) or []
     node_ids, adjacency, _ = build_collaboration_adjacency(collaboration_network)
     known_node_ids = set(node_ids)
@@ -161,9 +168,13 @@ def build_collaboration_degree_distribution(collaboration_network: dict) -> list
     ]
 
 
-def build_collaboration_metrics_rows(collaboration_network: dict, collaboration_centrality: list[dict]) -> list[dict]:
+def build_collaboration_metrics_rows(
+    collaboration_network: dict, collaboration_centrality: list[dict]
+) -> list[dict]:
     raw_nodes = collaboration_network.get("nodes", []) or []
-    node_ids, adjacency, weighted_degree_by_author = build_collaboration_adjacency(collaboration_network)
+    node_ids, adjacency, weighted_degree_by_author = build_collaboration_adjacency(
+        collaboration_network
+    )
     components = build_true_collaboration_components(collaboration_network)
 
     cluster_meta_by_author = {}
@@ -175,19 +186,26 @@ def build_collaboration_metrics_rows(collaboration_network: dict, collaboration_
             }
 
     centrality_by_author = {
-        str(entry.get("author")): entry
-        for entry in (collaboration_centrality or [])
+        str(entry.get("author")): entry for entry in (collaboration_centrality or [])
     }
     weighted_eigenvector_by_author = _compute_weighted_eigenvector(node_ids, adjacency)
 
     degree_rows = [
         {
             "author": str(node.get("id")),
-            "clusterId": cluster_meta_by_author.get(str(node.get("id")), {}).get("clusterId"),
-            "clusterSize": cluster_meta_by_author.get(str(node.get("id")), {}).get("clusterSize", 1),
+            "clusterId": cluster_meta_by_author.get(str(node.get("id")), {}).get(
+                "clusterId"
+            ),
+            "clusterSize": cluster_meta_by_author.get(str(node.get("id")), {}).get(
+                "clusterSize", 1
+            ),
             "rawDegree": int(len(adjacency.get(str(node.get("id")), []))),
-            "weightedDegree": int(weighted_degree_by_author.get(str(node.get("id")), 0)),
-            "normalizedDegree": float(centrality_by_author.get(str(node.get("id")), {}).get("degree", 0) or 0),
+            "weightedDegree": int(
+                weighted_degree_by_author.get(str(node.get("id")), 0)
+            ),
+            "normalizedDegree": float(
+                centrality_by_author.get(str(node.get("id")), {}).get("degree", 0) or 0
+            ),
         }
         for node in raw_nodes
     ]
@@ -195,8 +213,12 @@ def build_collaboration_metrics_rows(collaboration_network: dict, collaboration_
 
     eigenvector_by_author = {
         str(author): {
-            "eigenvector": float(centrality_by_author.get(str(author), {}).get("eigenvector", 0) or 0),
-            "weightedEigenvector": float(weighted_eigenvector_by_author.get(str(author), 0) or 0),
+            "eigenvector": float(
+                centrality_by_author.get(str(author), {}).get("eigenvector", 0) or 0
+            ),
+            "weightedEigenvector": float(
+                weighted_eigenvector_by_author.get(str(author), 0) or 0
+            ),
         }
         for author in node_ids
     }
@@ -209,7 +231,9 @@ def build_collaboration_metrics_rows(collaboration_network: dict, collaboration_
             {
                 **row,
                 "eigenvector": float(eigenvector_row.get("eigenvector", 0) or 0),
-                "weightedEigenvector": float(eigenvector_row.get("weightedEigenvector", 0) or 0),
+                "weightedEigenvector": float(
+                    eigenvector_row.get("weightedEigenvector", 0) or 0
+                ),
                 "betweenness": float(centrality.get("betweenness", 0) or 0),
             }
         )

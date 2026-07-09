@@ -532,13 +532,22 @@
         "author": "genjix",
         "path": "bip-0010.md",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "770a061e60a83bda4c6c5a8cba2540050ca2e1e0",
         "timestamp": "2014-11-26T11:51:15-06:00",
         "date": "2014-11-26",
         "author": "Umpei Kay Kurokawa",
+        "path": "bip-0010.mediawiki",
+        "status": "Withdrawn",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
         "path": "bip-0010.mediawiki",
         "status": "Withdrawn",
         "standard": "bip2"
@@ -549,9 +558,18 @@
       "body_extracted_regex": [],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:00:20Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:35:11Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:11",
+              "evidence": "The following is an example TxDP from Armory, produced while running on the test network.",
+              "reason": "The proposal’s multi-signature transaction format and workflow are materially tied to the earlier multisignature transaction feature that enables such transactions in the first place.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

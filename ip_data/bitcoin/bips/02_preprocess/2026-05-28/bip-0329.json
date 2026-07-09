@@ -680,9 +680,36 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:54:23Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:18:37Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "Extended public key as defined by BIP32",
+              "reason": "The xpub reference field is defined in terms of BIP32 extended public keys, so correct interpretation of xpub records depends on BIP32.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:380",
+              "evidence": "an abbreviated output descriptor (as defined by BIP380)",
+              "reason": "The optional origin field is specified using BIP380 abbreviated output descriptors, making that descriptor syntax part of this format.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:392",
+              "evidence": "as defined by BIP392",
+              "reason": "The spscan record type is defined as a key expression for a silent payments output descriptor from BIP392.",
+              "confidence": "high"
+            },
+            {
+              "target": "slips:15",
+              "evidence": "SLIP-0015 defines a format for exporting address and output labels",
+              "reason": "The proposal explicitly discusses SLIP-0015 as an existing label export format and contrasts its scope and encryption model with this proposal’s format.",
+              "confidence": "low"
+            }
+          ]
         }
       ]
     }

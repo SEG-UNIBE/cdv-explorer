@@ -565,38 +565,40 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:59:27Z",
+          "timestamp": "2026-06-30T11:45:01Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:8",
-              "evidence": "This document specifies a BIP8 (LOT=true) deployment to activate taproot.",
-              "reason": "The proposal’s activation mechanism is defined by BIP8 and directly relies on its lock-in-by-height signaling semantics.",
+              "evidence": "This document specifies a BIP8 (LOT=true) deployment",
+              "reason": "The proposal is explicitly defined as an instance of BIP8 and relies on its version-bits activation mechanism and LOT semantics.",
               "confidence": "high"
             },
             {
               "target": "bips:148",
-              "evidence": "Lessons have been learned from the BIP148 and BIP91 deployments in 2017",
-              "reason": "The proposal’s rationale and design of mandatory signaling are informed by BIP148’s activation mechanism, which it explicitly uses as a prerequisite lesson for this deployment.",
-              "confidence": "high"
+              "evidence": "Lessons have been learned from the BIP148 and BIP91 deployments",
+              "reason": "The activation rationale and compatibility discussion depend on the prior mandatory-signaling deployment model introduced by BIP148.",
+              "confidence": "medium"
             },
             {
               "target": "bips:340",
-              "evidence": "intends to activate BIPs 340, 341, and 342",
-              "reason": "This deployment is a soft-fork activation mechanism for Taproot-related rules; BIP340 is one of the features being activated.",
-              "confidence": "high"
+              "evidence": "It intends to activate BIPs 340, 341, and 342.",
+              "reason": "The deployment is designed around activating the Taproot-related proposals, including BIP340 as one of the intended activated changes.",
+              "confidence": "low"
             },
             {
               "target": "bips:341",
-              "evidence": "intends to activate BIPs 340, 341, and 342",
-              "reason": "This deployment is a soft-fork activation mechanism for Taproot-related rules; BIP341 is one of the features being activated.",
-              "confidence": "high"
+              "evidence": "It intends to activate BIPs 340, 341, and 342.",
+              "reason": "The deployment is designed around activating the Taproot-related proposals, including BIP341 as one of the intended activated changes.",
+              "confidence": "low"
             },
             {
               "target": "bips:342",
-              "evidence": "intends to activate BIPs 340, 341, and 342",
-              "reason": "This deployment is a soft-fork activation mechanism for Taproot-related rules; BIP342 is one of the features being activated.",
-              "confidence": "high"
+              "evidence": "It intends to activate BIPs 340, 341, and 342.",
+              "reason": "The deployment is designed around activating the Taproot-related proposals, including BIP342 as one of the intended activated changes.",
+              "confidence": "low"
             }
           ]
         }

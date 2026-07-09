@@ -813,28 +813,20 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:54:23Z",
-          "dependencies": [
-            {
-              "target": "bips:130",
-              "evidence": "A client using BIP330 reconciliation-based transaction relay (Erlay) is able to use package relay without interference.",
-              "reason": "The proposal explicitly builds on transaction reconciliation relay when describing compatibility and interaction with package relay.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:133",
-              "evidence": "If the peers are using BIP133 fee filters and a low-feerate transaction is below the node's fee filter, the sender will not announce it.",
-              "reason": "The package relay flow depends on fee-filter-based announcement behavior to explain how low-fee parents can still propagate via orphan handling.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:339",
-              "evidence": "two nodes that both support BIP339 wtxid-based transaction relay shouldn't ever need to use txid-based transaction relay.",
-              "reason": "The proposal relies on wtxid-based relay as the base transport/identification mechanism for package and orphan relay.",
-              "confidence": "high"
-            }
-          ]
+          "timestamp": "2026-06-30T11:18:41Z",
+          "status": "api_error",
+          "dependencies": [],
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 200000, Requested 7644. Please try again in 2.293s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+        },
+        {
+          "run_id": "2026-06-30T11:33:45Z_gpt-5.4-mini_fbc31d5d",
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-30T11:34:02Z",
+          "status": "api_error",
+          "dependencies": [],
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 200000, Requested 7644. Please try again in 2.293s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
         }
       ]
     }

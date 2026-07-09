@@ -179,13 +179,15 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:59:52Z_gpt-5.4-mini_b29b8ccc",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:08:02Z",
+          "timestamp": "2026-06-30T12:01:01Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:51",
               "evidence": "See [NIP-51](51.md) for the description of a `kind:10054` event",
-              "reason": "The proposal directly relies on NIP-51's list event semantics for podcast recommendations.",
+              "reason": "The proposal explicitly relies on NIP-51 to define the favorite-podcasts event kind and its semantics.",
               "confidence": "high"
             }
           ]

@@ -249,26 +249,28 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:58:25Z_gpt-5.4-mini_0bc643e4",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:08:13Z",
+          "timestamp": "2026-06-30T11:58:36Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:10",
               "evidence": "Tags that mention, quote and assemble threading structures MUST follow [NIP-10](10.md).",
-              "reason": "The proposal requires NIP-10 threading tag rules for reply and conversation structure handling.",
+              "reason": "Threading and reply-tag structure in kind-14 messages is constrained by NIP-10 semantics.",
               "confidence": "high"
             },
             {
               "target": "nips:44",
-              "evidence": "This NIP defines an encrypted direct messaging scheme using [NIP-44](44.md) encryption",
-              "reason": "The proposal’s message encryption explicitly relies on NIP-44 and requires its latest version.",
+              "evidence": "using [NIP-44](44.md) encryption",
+              "reason": "The proposal directly relies on NIP-44 for encrypting the sealed and wrapped DM payloads.",
               "confidence": "high"
             },
             {
               "target": "nips:59",
-              "evidence": "using [NIP-59](59.md) seals and gift wraps",
-              "reason": "The proposal’s encrypted DM format is built around NIP-59 sealing and gift-wrapping mechanics.",
-              "confidence": "low"
+              "evidence": "[NIP-59](59.md) seals and gift wraps",
+              "reason": "The proposal is designed around NIP-59's seal and gift-wrap event flow for private messaging.",
+              "confidence": "high"
             }
           ]
         }

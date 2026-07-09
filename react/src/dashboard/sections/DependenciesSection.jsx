@@ -14,6 +14,7 @@ import {
   buildDefaultTypeMapping,
   buildGroundTruthEvaluation,
   GROUND_TRUTH_CUTOFF_MODE_ALL,
+  GROUND_TRUTH_CUTOFF_MODE_BETWEEN,
   GROUND_TRUTH_CUTOFF_MODE_ON_OR_BEFORE,
   GROUND_TRUTH_CUTOFF_MODE_OPTIONS,
   GROUND_TRUTH_MATCH_MODE_EDGE_ONLY,
@@ -28,6 +29,7 @@ import {
   GROUND_TRUTH_CURATED,
 } from '../../dependencyApproaches';
 import { resolveRelationOntology } from '../../dependencyRelationOntology';
+import { renderTooltipCardHtml } from '../../tooltipHtml';
 import { useAnalysisMetricTooltip } from '../../useAnalysisMetricTooltip';
 import { ExportableCard } from '../ExportableCard';
 import { CollapsibleControls } from '../CollapsibleControls';
@@ -39,10 +41,17 @@ const MATCH_MODE_TOOLTIP = '<strong>Edge Only</strong> matches directed source-t
 
 const SCOPE_TOOLTIP = 'Reviewed scores only completed benchmark reviews from ips.csv, while All scores every extracted source IP in the dataset.';
 
+const CROSS_SOURCE_TARGETS_TOOLTIP = 'When enabled (default), GT edges and extracted edges whose <em>target</em> belongs to a different IP source (e.g. a BIP referencing a SLIP) are included in the evaluation. '
+  + 'Disable this to restrict scoring to same-source edges only.';
+
 const GT_CUTOFF_TOOLTIP = '<strong>All completed reviews</strong>: use the full reviewed benchmark scope and all curated GT edges.'
   + '<br /><br /><strong>Reviewed on or before</strong>: include only reviewed IPs and curated GT edges whose '
   + '<code>reviewed_at</code> date is on or before the selected cutoff. Review dates refer to the latest available proposal '
-  + 'version at review time.';
+  + 'version at review time.'
+  + '<br /><br /><strong>Reviewed on or later</strong>: include only reviewed IPs and curated GT edges whose '
+  + '<code>reviewed_at</code> date is on or after the selected cutoff.'
+  + '<br /><br /><strong>Reviewed between</strong>: include only reviewed IPs and curated GT edges whose '
+  + '<code>reviewed_at</code> date falls within the selected date range.';
 
 function DependencyMetricsCard({
   ecosystem,
@@ -207,8 +216,10 @@ export function DependenciesSection({
 }) {
   const [groundTruthMatchMode, setGroundTruthMatchMode] = useState(GROUND_TRUTH_MATCH_MODE_EDGE_ONLY);
   const [restrictToReviewedSources, setRestrictToReviewedSources] = useState(true);
+  const [allowCrossSourceTargets, setAllowCrossSourceTargets] = useState(true);
   const [groundTruthCutoffMode, setGroundTruthCutoffMode] = useState(GROUND_TRUTH_CUTOFF_MODE_ALL);
-  const [groundTruthCutoffDate, setGroundTruthCutoffDate] = useState('');
+  const [groundTruthCutoffStartDate, setGroundTruthCutoffStartDate] = useState('');
+  const [groundTruthCutoffEndDate, setGroundTruthCutoffEndDate] = useState('');
   const {
     showTooltip: showMetricTooltip,
     showHtmlTooltip: showHtmlMetricTooltip,
@@ -259,49 +270,115 @@ export function DependenciesSection({
   const latestGroundTruthReviewDate = availableGroundTruthReviewDates[availableGroundTruthReviewDates.length - 1] || '';
   useEffect(() => {
     if (!availableGroundTruthReviewDates.length) {
-      if (groundTruthCutoffDate) {
-        setGroundTruthCutoffDate('');
+      if (groundTruthCutoffStartDate) {
+        setGroundTruthCutoffStartDate('');
+      }
+      if (groundTruthCutoffEndDate) {
+        setGroundTruthCutoffEndDate('');
       }
       return;
     }
-    if (!groundTruthCutoffDate || !availableGroundTruthReviewDates.includes(groundTruthCutoffDate)) {
-      setGroundTruthCutoffDate(latestGroundTruthReviewDate);
+    if (!groundTruthCutoffStartDate) {
+      setGroundTruthCutoffStartDate(latestGroundTruthReviewDate);
     }
-  }, [availableGroundTruthReviewDates, groundTruthCutoffDate, latestGroundTruthReviewDate]);
+    if (!groundTruthCutoffEndDate) {
+      setGroundTruthCutoffEndDate(latestGroundTruthReviewDate);
+    }
+  }, [availableGroundTruthReviewDates, groundTruthCutoffStartDate, groundTruthCutoffEndDate, latestGroundTruthReviewDate]);
   const groundTruthEvaluation = useMemo(
     () => buildGroundTruthEvaluation(selectedDataset, {
       matchMode: groundTruthMatchMode,
       ontology: relationOntology,
       typeMapping,
       restrictToReviewedSources,
+      allowCrossSourceTargets,
       gtCutoffMode: groundTruthCutoffMode,
-      gtCutoffDate: groundTruthCutoffDate,
+      gtCutoffDate: groundTruthCutoffStartDate,
+      gtCutoffStartDate: groundTruthCutoffStartDate,
+      gtCutoffEndDate: groundTruthCutoffEndDate,
     }),
-    [groundTruthMatchMode, selectedDataset, relationOntology, typeMapping, restrictToReviewedSources, groundTruthCutoffMode, groundTruthCutoffDate],
+    [
+      groundTruthMatchMode,
+      selectedDataset,
+      relationOntology,
+      typeMapping,
+      restrictToReviewedSources,
+      allowCrossSourceTargets,
+      groundTruthCutoffMode,
+      groundTruthCutoffStartDate,
+      groundTruthCutoffEndDate,
+    ],
   );
-  const groundTruthSummaryCards = useMemo(() => (
-    groundTruthEvaluation
-      ? [
-        {
-          label: 'GT Nodes',
-          value: groundTruthEvaluation.reviewedProposalCount,
-          description: 'Number of distinct reviewed IPs included in the curated benchmark scope. This comes from completed reviewed entries, including IPs with no documented GT edge.',
-        },
-        {
-          label: 'GT Edges',
-          value: groundTruthEvaluation.goldEdgeCount,
-          description: 'Number of unique documented ground-truth interrelations used as the reference edge set.',
-        },
-        {
-          label: 'Coverage',
-          value: groundTruthEvaluation.totalProposalCount
-            ? `${((groundTruthEvaluation.reviewedProposalCount / groundTruthEvaluation.totalProposalCount) * 100).toFixed(1)}%`
-            : '—',
-          description: 'Share of all IPs in the dataset that are explicitly covered by the reviewed benchmark scope. Lower coverage means the evaluation reflects only a small curated slice of the ecosystem.',
-        },
-      ]
-      : []
-  ), [groundTruthEvaluation]);
+  const groundTruthSummaryCards = useMemo(() => {
+    if (!groundTruthEvaluation) {
+      return [];
+    }
+
+    const sourceLabel = (slug) => {
+      const src = Object.values(ecosystemBase?.sources || {}).find(
+        (s) => String(s?.sourceSlug || '').trim() === slug,
+      );
+      return String(src?.acronym || src?.shortLabel || src?.label || slug || '').trim().toUpperCase() || slug;
+    };
+
+    const nodeRows = Object.entries(groundTruthEvaluation.reviewedBySource || {})
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([slug, count]) => [sourceLabel(slug), String(count)]);
+
+    const edgeRows = Object.entries(groundTruthEvaluation.goldEdgesBySourcePair || {})
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([pair, count]) => {
+        const [src, tgt] = pair.split('->');
+        return [`${sourceLabel(src)} → ${sourceLabel(tgt)}`, String(count)];
+      });
+
+    return [
+      {
+        label: 'GT Nodes',
+        value: groundTruthEvaluation.reviewedProposalCount,
+        tooltipHtml: renderTooltipCardHtml({
+          titleHtml: '<strong>GT Nodes by source</strong>',
+          rows: [
+            ['Info', 'Distinct reviewed IPs in the curated benchmark scope, including IPs with no documented GT edge.'],
+            ...nodeRows,
+          ],
+        }),
+      },
+      {
+        label: 'GT Edges',
+        value: groundTruthEvaluation.goldEdgeCount,
+        tooltipHtml: renderTooltipCardHtml({
+          titleHtml: '<strong>GT Edges by source pair</strong>',
+          rows: [
+            ['Info', 'Unique documented ground-truth interrelations used as the reference edge set.'],
+            ...edgeRows,
+          ],
+        }),
+      },
+      {
+        label: 'Coverage',
+        value: groundTruthEvaluation.totalProposalCount
+          ? `${((groundTruthEvaluation.reviewedProposalCount / groundTruthEvaluation.totalProposalCount) * 100).toFixed(1)}%`
+          : '—',
+        tooltipHtml: renderTooltipCardHtml({
+          titleHtml: '<strong>Coverage by source</strong>',
+          rows: [
+            ['Info', 'Per-source coverage; the overall badge value is the size-weighted average across sources.'],
+            ...Object.entries(groundTruthEvaluation.totalBySource || {})
+              .sort(([a], [b]) => a.localeCompare(b))
+              .map(([slug, total]) => {
+                const reviewed = (groundTruthEvaluation.reviewedBySource || {})[slug] || 0;
+                const pct = total ? ((reviewed / total) * 100).toFixed(1) : '0.0';
+                return [sourceLabel(slug), `${reviewed} / ${total} (${pct}%)`];
+              }),
+            groundTruthEvaluation.totalProposalCount > 0
+              ? ['Total', `${groundTruthEvaluation.reviewedProposalCount} / ${groundTruthEvaluation.totalProposalCount} (${((groundTruthEvaluation.reviewedProposalCount / groundTruthEvaluation.totalProposalCount) * 100).toFixed(1)}%)`]
+              : null,
+          ],
+        }),
+      },
+    ];
+  }, [ecosystemBase?.sources, groundTruthEvaluation]);
   const groundTruthMethodologyText = useMemo(() => {
     const reviewedIps = Array.isArray(selectedDataset?.groundTruthReviewedIps)
       ? selectedDataset.groundTruthReviewedIps.filter(Boolean)
@@ -355,6 +432,20 @@ export function DependenciesSection({
     return `Nodes=${nodeCount}`;
   }, [groundTruthEvaluation, restrictToReviewedSources]);
 
+  const crossSourceTargetsStats = useMemo(() => {
+    if (!groundTruthEvaluation) {
+      return '';
+    }
+    const pairs = groundTruthEvaluation.goldEdgesBySourcePair || {};
+    const crossCount = Object.entries(pairs)
+      .filter(([pair]) => {
+        const [src, tgt] = pair.split('->');
+        return src !== tgt;
+      })
+      .reduce((sum, [, count]) => sum + count, 0);
+    return `Edges=${allowCrossSourceTargets ? groundTruthEvaluation.goldEdgeCount : groundTruthEvaluation.goldEdgeCount - crossCount}`;
+  }, [allowCrossSourceTargets, groundTruthEvaluation]);
+
   return (
     <section className="dashboard-section">
       <div className="dashboard-section__header">
@@ -370,7 +461,7 @@ export function DependenciesSection({
       <ExportableCard className="mb-4" exportTitle="Proposal Interrelation Graph">
         <h3>Proposal Interrelation Graph</h3>
         <p>
-          Three relationship-extraction approaches visualized as a directed graph. Node size reflects document length (word count) and edges represent relationships between proposals. <strong>Preamble</strong> extracts explicitly stated dependencies from the preamble. <strong>Regex</strong> captures explicit proposal references via pattern matching. <strong>LLM</strong> infers implicit dependencies using a language model.
+          Three relationship-extraction approaches visualized as a directed graph. Node size reflects document length (word count) and edges represent relationships between proposals. <strong>Preamble</strong> extracts explicitly stated dependencies from the preamble. <strong>Regex</strong> captures explicit proposal references via pattern matching. <strong>LLM</strong> applies LLM-assisted semantic dependency extraction to proposal body text.
         </p>
         <NetworkDiagram
           data={selectedDataset}
@@ -450,6 +541,10 @@ export function DependenciesSection({
         <p>
           This matrix compares Preamble, Regex, and LLM pairwise. Each cell splits into
           three clickable shares: same, missing from the selected approach, and only in the selected approach.
+          The κ value below each cell is Cohen&apos;s kappa, a measure of inter-rater reliability:
+          both approaches are treated as raters giving a yes/no verdict on every possible directed
+          proposal pair, and their raw agreement is corrected for the agreement expected by chance.
+          κ&nbsp;=&nbsp;1 means perfect agreement, 0 no better than chance, and below 0 worse than chance.
         </p>
         <DependencyComparisonHeatmaps
           pairwiseComparisons={dependencyMetrics?.pairwise_comparisons || {}}
@@ -475,7 +570,7 @@ export function DependenciesSection({
               <div
                 key={metric.label}
                 className="metric-badge"
-                onMouseEnter={(event) => showMetricTooltip(event, metric.description)}
+                onMouseEnter={(event) => showHtmlMetricTooltip(event, metric.tooltipHtml)}
                 onMouseMove={moveMetricTooltip}
                 onMouseLeave={hideMetricTooltip}
               >
@@ -484,6 +579,10 @@ export function DependenciesSection({
               </div>
             ))}
           </div>
+          <DependencyGroundTruthEvaluationCharts
+            evaluation={groundTruthEvaluation}
+            activeLlmModel={activeDependencyLlmModel}
+          />
           <CollapsibleControls>
             <div className="ground-truth-evaluation-controls">
               <div className="ground-truth-evaluation-controls__column">
@@ -612,6 +711,27 @@ export function DependenciesSection({
                 <div className="network-layout-picker">
                   <div
                     className="network-layout-picker__label gt-help-label"
+                    onMouseEnter={(event) => showHtmlMetricTooltip(event, CROSS_SOURCE_TARGETS_TOOLTIP)}
+                    onMouseMove={moveMetricTooltip}
+                    onMouseLeave={hideMetricTooltip}
+                  >
+                    Cross-source Targets
+                  </div>
+                  <div className="ground-truth-scope">
+                    <InputSwitch
+                      inputId="ground-truth-cross-source-toggle"
+                      checked={allowCrossSourceTargets}
+                      onChange={(event) => setAllowCrossSourceTargets(event.value)}
+                    />
+                    <span className={`ground-truth-scope__label${allowCrossSourceTargets ? '' : ' is-muted'}`}>
+                      {allowCrossSourceTargets ? 'Allowed' : 'Same source only'}
+                    </span>
+                    {crossSourceTargetsStats ? <span className="ground-truth-scope__stats">{crossSourceTargetsStats}</span> : null}
+                  </div>
+                </div>
+                <div className="network-layout-picker">
+                  <div
+                    className="network-layout-picker__label gt-help-label"
                     onMouseEnter={(event) => showHtmlMetricTooltip(event, GT_CUTOFF_TOOLTIP)}
                     onMouseMove={moveMetricTooltip}
                     onMouseLeave={hideMetricTooltip}
@@ -628,24 +748,35 @@ export function DependenciesSection({
                       aria-label="Ground-truth cutoff mode"
                       className="ground-truth-cutoff__mode"
                     />
-                    <input
-                      type="date"
-                      className="p-inputtext ground-truth-cutoff__date"
-                      value={groundTruthCutoffDate}
-                      onChange={(event) => setGroundTruthCutoffDate(event.target.value)}
-                      disabled={groundTruthCutoffMode !== GROUND_TRUTH_CUTOFF_MODE_ON_OR_BEFORE || !availableGroundTruthReviewDates.length}
-                      max={latestGroundTruthReviewDate || undefined}
-                      aria-label="Ground-truth cutoff date"
-                    />
+                    <div className="ground-truth-cutoff__dates">
+                      <input
+                        type="date"
+                        className="p-inputtext ground-truth-cutoff__date"
+                        value={groundTruthCutoffStartDate}
+                        onChange={(event) => setGroundTruthCutoffStartDate(event.target.value)}
+                        disabled={groundTruthCutoffMode === GROUND_TRUTH_CUTOFF_MODE_ALL || !availableGroundTruthReviewDates.length}
+                        aria-label={
+                          groundTruthCutoffMode === GROUND_TRUTH_CUTOFF_MODE_BETWEEN
+                            ? 'Ground-truth cutoff start date'
+                            : 'Ground-truth cutoff date'
+                        }
+                      />
+                      {groundTruthCutoffMode === GROUND_TRUTH_CUTOFF_MODE_BETWEEN ? (
+                        <input
+                          type="date"
+                          className="p-inputtext ground-truth-cutoff__date"
+                          value={groundTruthCutoffEndDate}
+                          onChange={(event) => setGroundTruthCutoffEndDate(event.target.value)}
+                          disabled={!availableGroundTruthReviewDates.length}
+                          aria-label="Ground-truth cutoff end date"
+                        />
+                      ) : null}
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </CollapsibleControls>
-          <DependencyGroundTruthEvaluationCharts
-            evaluation={groundTruthEvaluation}
-            activeLlmModel={activeDependencyLlmModel}
-          />
         </ExportableCard>
       ) : null}
     </section>

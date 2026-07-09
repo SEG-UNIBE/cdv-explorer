@@ -506,12 +506,21 @@
         "author": "Justus Ranvier",
         "path": "bip-0081.mediawiki",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "387fc6011bd804609fd751786e50439d5c11a097",
         "timestamp": "2016-08-23T19:47:29Z",
         "date": "2016-08-23",
+        "author": "Luke Dashjr",
+        "path": "bip-0081.mediawiki",
+        "status": "Deferred",
+        "standard": "bip1"
+      },
+      {
+        "commit": "959fecc15bdad070afa63455468b1dba54655fa6",
+        "timestamp": "2016-11-30T09:51:01Z",
+        "date": "2016-11-30",
         "author": "Luke Dashjr",
         "path": "bip-0081.mediawiki",
         "status": "Deferred",
@@ -549,32 +558,34 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:53:13Z",
+          "timestamp": "2026-06-30T11:17:35Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
               "evidence": "based on an algorithm described in BIP-0032",
-              "reason": "The proposal’s wallet hierarchy and derivation path are built on BIP32 key derivation.",
+              "reason": "The proposal’s wallet hierarchy and child-key derivation are built on BIP32 derivation semantics.",
               "confidence": "high"
             },
             {
               "target": "bips:43",
-              "evidence": "This BIP is a particular application of BIP43",
-              "reason": "The proposal uses the BIP43 purpose-field hierarchy as the framework for its path structure.",
+              "evidence": "purpose scheme described in BIP-0043",
+              "reason": "The proposal uses the BIP43 purpose-field convention to identify the subtree for this specification.",
               "confidence": "high"
             },
             {
               "target": "bips:44",
-              "evidence": "and is based on BIP44",
-              "reason": "The proposal explicitly adopts the multi-account hierarchical pattern from BIP44 for its own derivation scheme.",
+              "evidence": "This BIP is a particular application of BIP43 and is based on BIP44.",
+              "reason": "The proposal explicitly states that its hierarchy is based on BIP44, implying reuse of that deterministic wallet structure.",
               "confidence": "high"
             },
             {
               "target": "bips:80",
               "evidence": "* [[bip-0080.mediawiki|BIP80 - Hierarchy for Non-Colored Voting Pool Deterministic Multisig Wallets]]",
-              "reason": "The proposal’s voting-pool deterministic multisig hierarchy is a colored-coin specialization that builds on the non-colored voting pool hierarchy.",
-              "confidence": "medium"
+              "reason": "The proposal appears to be designed as a colored-coin specialization of the non-colored voting pool hierarchy described by BIP80, which is listed as a reference alongside the same wallet domain.",
+              "confidence": "low"
             }
           ]
         }

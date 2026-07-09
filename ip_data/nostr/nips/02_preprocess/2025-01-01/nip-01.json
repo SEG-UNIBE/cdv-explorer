@@ -704,13 +704,15 @@
       "body_extracted_regex": [],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:58:25Z_gpt-5.4-mini_0bc643e4",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:08:07Z",
+          "timestamp": "2026-06-30T11:58:27Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:24",
-              "evidence": "\"Extra metadata fields\" may be set.",
-              "reason": "The user metadata kind 0 explicitly relies on the additional metadata field definitions from this proposal.",
+              "evidence": "[Extra metadata fields] may be set.",
+              "reason": "The kind-0 metadata format explicitly extends the extra fields defined by the target proposal.",
               "confidence": "low"
             }
           ]

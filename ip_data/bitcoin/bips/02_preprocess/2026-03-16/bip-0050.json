@@ -578,12 +578,21 @@
         "author": "Peter Todd",
         "path": "bip-0050.mediawiki",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "a74ea14bc66d6be699f3e3d5aae2fa308ad7adad",
         "timestamp": "2016-02-24T05:27:08Z",
         "date": "2016-02-24",
+        "author": "Luke Dashjr",
+        "path": "bip-0050.mediawiki",
+        "status": "Final",
+        "standard": "bip1"
+      },
+      {
+        "commit": "959fecc15bdad070afa63455468b1dba54655fa6",
+        "timestamp": "2016-11-30T09:51:01Z",
+        "date": "2016-11-30",
         "author": "Luke Dashjr",
         "path": "bip-0050.mediawiki",
         "status": "Final",
@@ -604,16 +613,11 @@
       "body_extracted_regex": [],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:57:52Z",
-          "dependencies": [
-            {
-              "target": "bips:16",
-              "evidence": "Bitcoin 0.8 did not use Berkeley DB. It switched to LevelDB instead",
-              "reason": "The proposal’s consensus-failure analysis depends on BIP 16-era block validation behavior only insofar as it discusses block validity rules, but it does not actually build on BIP 16 mechanisms. Omitted.",
-              "confidence": "low"
-            }
-          ]
+          "timestamp": "2026-06-30T11:42:25Z",
+          "status": "success",
+          "dependencies": []
         }
       ]
     }

@@ -595,7 +595,7 @@
         "author": "genjix",
         "path": "bip-0017.md",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "d0c10bae34af073b8a0e06aa496b5afc5e84b24d",
@@ -604,7 +604,7 @@
         "author": "Luke Dashjr",
         "path": "bip-0017.md",
         "status": "Withdrawn",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "16fe80c1c61b0d78581af78854e419f7ab544c69",
@@ -613,12 +613,21 @@
         "author": "Peter Todd",
         "path": "bip-0017.mediawiki",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "5866744d0ebe8fe40bf7d0ea79eb7fa67d562794",
         "timestamp": "2015-09-04T02:13:37Z",
         "date": "2015-09-04",
+        "author": "Luke Dashjr",
+        "path": "bip-0017.mediawiki",
+        "status": "Withdrawn",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
         "author": "Luke Dashjr",
         "path": "bip-0017.mediawiki",
         "status": "Withdrawn",
@@ -656,31 +665,33 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:57:40Z",
+          "timestamp": "2026-06-30T11:42:08Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:11",
-              "evidence": "The [[bip-0011.mediawiki|M-of-N Multisignature Transactions (BIP 11)]]",
-              "reason": "The proposal’s standard transaction example and supported spending scripts rely on multisignature script forms defined by BIP 11.",
-              "confidence": "low"
+              "evidence": "[[bip-0011.mediawiki|M-of-N Multisignature Transactions (BIP 11)]]",
+              "reason": "The proposal’s examples and standard transaction type explicitly use the multisignature script form defined by BIP 11.",
+              "confidence": "medium"
             },
             {
               "target": "bips:12",
-              "evidence": "This BIP replaces BIP 12 and BIP 16, which propose evaluating a Script from the stack after verifying its hash.",
-              "reason": "The proposal explicitly reuses and replaces the OP_EVAL-style hash-then-execute mechanism introduced by BIP 12.",
+              "evidence": "This BIP replaces BIP 12",
+              "reason": "The proposal is described as replacing BIP 12, indicating direct reliance on and amendment of that earlier script-evaluation proposal.",
               "confidence": "high"
             },
             {
               "target": "bips:13",
               "evidence": "The Motivation for this BIP (and BIP 13, the pay-to-script-hash address type)",
-              "reason": "The proposal depends on the pay-to-script-hash address format and 20-byte hash-address semantics established by BIP 13.",
-              "confidence": "high"
+              "reason": "The proposal is designed around the pay-to-script-hash address type and its supporting infrastructure introduced by BIP 13.",
+              "confidence": "medium"
             },
             {
               "target": "bips:16",
-              "evidence": "This BIP replaces BIP 12 and BIP 16, which propose evaluating a Script from the stack after verifying its hash.",
-              "reason": "The proposal directly supersedes and amends the P2SH validation and spending model introduced by BIP 16.",
+              "evidence": "This BIP replaces BIP 12 and BIP 16",
+              "reason": "The proposal explicitly supersedes BIP 16’s pay-to-script-hash mechanism and is technically shaped as an alternative to it.",
               "confidence": "high"
             }
           ]

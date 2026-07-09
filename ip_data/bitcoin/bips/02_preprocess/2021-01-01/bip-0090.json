@@ -533,6 +533,15 @@
         "author": "Suhas Daftuar",
         "path": "bip-buried-deployments.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "0fc3fe20ca138821f81cf454c0f0ed50e7c94229",
+        "timestamp": "2016-11-30T12:25:52-05:00",
+        "date": "2016-11-30",
+        "author": "Suhas Daftuar",
+        "path": "bip-buried-deployments.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -567,25 +576,33 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:00:56Z",
+          "timestamp": "2026-06-30T11:35:32Z",
+          "status": "success",
           "dependencies": [
             {
+              "target": "bips:9",
+              "evidence": "this mechanism for code deployments have been deprecated in favor of BIP 9 deployments",
+              "reason": "The proposal is framed around replacing the deprecated miner-signaling deployment mechanism with the newer BIP 9 deployment model as the background assumption for the change.",
+              "confidence": "medium"
+            },
+            {
               "target": "bips:34",
-              "evidence": "replace the trigger mechanism by caching the block heights at which those consensus rules became enforced",
-              "reason": "The proposal changes how BIP 34’s activation and enforcement are determined, relying on its activation height and coinbase-height rule.",
+              "evidence": "the test which governs enforcement of BIP 34",
+              "reason": "The proposal changes how BIP 34 activation and enforcement are determined, replacing the original deployment trigger with cached height checks.",
               "confidence": "high"
             },
             {
               "target": "bips:65",
-              "evidence": "replace the trigger mechanism by caching the block heights at which those consensus rules became enforced",
-              "reason": "The proposal changes how BIP 65’s activation and enforcement are determined, relying on its activation height and CHECKLOCKTIMEVERIFY rule.",
+              "evidence": "the test which governs enforcement of BIP 34, BIP 65, and BIP 66",
+              "reason": "The proposal alters the activation/enforcement mechanism for BIP 65 by converting its deployment logic into a fixed height-based check.",
               "confidence": "high"
             },
             {
               "target": "bips:66",
-              "evidence": "replace the trigger mechanism by caching the block heights at which those consensus rules became enforced",
-              "reason": "The proposal changes how BIP 66’s activation and enforcement are determined, relying on its activation height and DER signature rule.",
+              "evidence": "the test which governs enforcement of BIP 34, BIP 65, and BIP 66",
+              "reason": "The proposal alters the activation/enforcement mechanism for BIP 66 by converting its deployment logic into a fixed height-based check.",
               "confidence": "high"
             }
           ]

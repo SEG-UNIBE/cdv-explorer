@@ -402,38 +402,40 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:46:34Z_gpt-5.4-mini_dd2b314a",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:00:08Z",
+          "timestamp": "2026-06-30T11:46:51Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:21",
-              "evidence": "new query key `slip24sig` for BIP-0021 URIs",
-              "reason": "The URI integration extends the BIP-21 payment request format and its query parameters.",
+              "evidence": "The present specification defines a new query key `slip24sig` for BIP-0021 URIs",
+              "reason": "The proposal extends the BIP-0021 URI scheme by adding a new query parameter and associated parsing/encoding rules.",
               "confidence": "high"
             },
             {
               "target": "bips:32",
-              "evidence": "The BIP-0032 path to derive the address from the master node",
-              "reason": "Address ownership verification relies on BIP-32 derivation paths to identify the controlled address.",
+              "evidence": "The most common way of verifying address ownership by a wallet is to provide the BIP-0032 derivation path leading from the wallet's seed to the address.",
+              "reason": "The address-ownership verification logic explicitly relies on BIP-0032 derivation paths as the standard way to describe address provenance.",
               "confidence": "high"
             },
             {
               "target": "bips:70",
-              "evidence": "similar in principle to BIP-0070",
-              "reason": "The payment request format adopts and adapts the BIP-70 payment protocol model for signed payment requests.",
-              "confidence": "low"
+              "evidence": "This message can be processed by a payer's wallet in such a way that the payer does not have to inspect the destination address",
+              "reason": "The proposal is heavily inspired by and structurally derived from BIP-0070's payment-request concept, using similar signed payment request semantics.",
+              "confidence": "medium"
             },
             {
               "target": "slips:21",
-              "evidence": "derived from the wallet's master secret using the SLIP-0021 method for hierarchical derivation of symmetric keys",
-              "reason": "The address authentication key derivation explicitly depends on SLIP-21's symmetric key derivation method.",
-              "confidence": "low"
+              "evidence": "Let *k* be a secret *address authentication key* derived from the wallet's master secret using the [SLIP-0021]",
+              "reason": "The address authentication code construction depends on SLIP-0021 hierarchical derivation to derive the HMAC key.",
+              "confidence": "high"
             },
             {
               "target": "slips:44",
-              "evidence": "coinType (4 bytes): 32-bit encoding of the SLIP-0044 coin type",
-              "reason": "The payment request digest and memo/output encodings use SLIP-44 coin type identifiers as a core field.",
-              "confidence": "low"
+              "evidence": "*coinType* (4 bytes): 32-bit encoding of the SLIP-0044 coin type",
+              "reason": "The payment-request digest and output encoding use SLIP-0044 coin types as a required field for identifying the cryptocurrency.",
+              "confidence": "high"
             }
           ]
         }

@@ -218,9 +218,18 @@
       "body_extracted_regex": [],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:59:52Z_gpt-5.4-mini_b29b8ccc",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:07:36Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T12:00:17Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "nips:09",
+              "evidence": "Clients SHOULD use the `supported_nips` field",
+              "reason": "The proposal’s client-side support detection and relay-compatibility guidance depends on the supported_nips mechanism defined elsewhere.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

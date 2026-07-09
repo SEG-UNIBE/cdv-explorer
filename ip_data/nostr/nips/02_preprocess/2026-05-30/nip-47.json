@@ -558,25 +558,27 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:59:52Z_gpt-5.4-mini_b29b8ccc",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:07:41Z",
+          "timestamp": "2026-06-30T12:00:21Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:04",
-              "evidence": "The content of requests and responses is encrypted with [NIP44](44.md)... initial version... used [NIP04](04.md)",
-              "reason": "Defines fallback encryption semantics and legacy compatibility used by request, response, and notification payloads.",
-              "confidence": "low"
+              "evidence": "The initial version of the protocol used [NIP04](04.md).",
+              "reason": "The proposal preserves NIP-04 as the legacy fallback encryption mode and defines compatibility behavior around it.",
+              "confidence": "high"
             },
             {
               "target": "nips:44",
-              "evidence": "The content of requests and responses is encrypted with [NIP44](44.md)...",
-              "reason": "The protocol relies on NIP-44 for encrypting direct-message payloads and negotiation of supported encryption schemes.",
-              "confidence": "low"
+              "evidence": "The content of requests and responses is encrypted with [NIP44](44.md)",
+              "reason": "The proposal uses NIP-44 as the primary encryption scheme for request, response, and notification payloads.",
+              "confidence": "high"
             },
             {
               "target": "nips:57",
-              "evidence": "similar to LUD-18 payer data, but to record recipient data e.g. the lightning address of the recipient),  // NIP-57 Zap Request event (kind 9734)",
-              "reason": "The metadata section explicitly reuses Zap Request event structure inside NWC transaction metadata.",
+              "evidence": "a NIP-57 Zap Request event (kind 9734)",
+              "reason": "The proposal's metadata format explicitly recognizes and stores NIP-57 zap request events as structured metadata.",
               "confidence": "low"
             }
           ]

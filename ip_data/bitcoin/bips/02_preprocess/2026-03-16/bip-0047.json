@@ -888,6 +888,15 @@
         "author": "Justus Ranvier",
         "path": "bip-0047.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0047.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -927,25 +936,27 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:57:50Z",
+          "timestamp": "2026-06-30T11:42:23Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
-              "evidence": "This BIP is a particular application of BIP43",
-              "reason": "The proposal’s derivation paths, hardened/non-hardened child keys, and payment code structure rely on BIP32 hierarchical deterministic key derivation.",
+              "evidence": "Apostrophe in the path indicates that BIP32 hardened derivation is used.",
+              "reason": "The proposal's key hierarchy and hardened/public derivation semantics are built on BIP32 derivation rules.",
               "confidence": "high"
             },
             {
               "target": "bips:43",
               "evidence": "This BIP is a particular application of BIP43",
-              "reason": "The proposal explicitly adopts BIP43’s purpose-field scheme and sets purpose to 47' following that recommendation.",
+              "reason": "The proposal explicitly bases its purpose-field scheme on BIP43.",
               "confidence": "high"
             },
             {
               "target": "bips:44",
               "evidence": "intended to supplement HD wallets which implement BIP44",
-              "reason": "The proposal maps payment codes to BIP44 accounts, reuses the coin type field, and defines interoperability with BIP44 address/account handling.",
+              "reason": "The proposal aligns payment codes with BIP44 account structure and coin type, making BIP44 account handling part of its wallet model.",
               "confidence": "high"
             }
           ]

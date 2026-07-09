@@ -209,14 +209,16 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:58:25Z_gpt-5.4-mini_0bc643e4",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:08:11Z",
+          "timestamp": "2026-06-30T11:58:34Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:01",
-              "evidence": "difficulty is defined to be the number of leading zero bits in the `NIP-01` id",
-              "reason": "The proposal defines PoW difficulty from the NIP-01 event id and requires recomputing that id during mining and validation.",
-              "confidence": "low"
+              "evidence": "the `NIP-01` id",
+              "reason": "The proposal defines PoW difficulty in terms of NIP-01 event ids and instructs miners to recalculate the id under NIP-01.",
+              "confidence": "high"
             }
           ]
         }

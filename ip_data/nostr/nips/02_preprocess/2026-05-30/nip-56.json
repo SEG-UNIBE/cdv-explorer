@@ -215,13 +215,15 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:59:52Z_gpt-5.4-mini_b29b8ccc",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:07:42Z",
+          "timestamp": "2026-06-30T12:00:34Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:32",
               "evidence": "`l` and `L` tags MAY be also be used as defined in [NIP-32](32.md)",
-              "reason": "This proposal extends report events with the NIP-32 label and label namespace tags for qualification and querying.",
+              "reason": "The proposal explicitly reuses NIP-32 tag semantics for qualification and querying of reports.",
               "confidence": "high"
             }
           ]

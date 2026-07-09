@@ -15,6 +15,7 @@ _Modern decentralized software ecosystems evolve through crowdsourced improvemen
   <strong>
     👋 <a href="#introduction">Introduction</a> &nbsp;|&nbsp;
     🚀 <a href="#setup">Setup</a> &nbsp;|&nbsp;
+    ⚙️ <a href="#cli-reference">CLI Reference</a> &nbsp;|&nbsp;
     🛠️ <a href="#developer-notes">Developer Notes</a> &nbsp;|&nbsp;
     🧹 <a href="#cleanup">Cleanup</a>
   </strong>
@@ -24,7 +25,7 @@ _Modern decentralized software ecosystems evolve through crowdsourced improvemen
 
 <div align="center">
   <a href="https://github.com/SEG-UNIBE/cdv-explorer/releases">
-    <img src="https://img.shields.io/github/v/release/SEG-UNIBE/cdv-explorer?display_name=tag&style=flat" alt="Release" />
+    <img src="https://img.shields.io/github/v/release/SEG-UNIBE/cdv-explorer?style=flat&label=release&cacheSeconds=300" alt="Release" />
   </a>
   <a href="https://seg-unibe.github.io/cdv-explorer/#/">
     <img src="https://img.shields.io/badge/PROD-live-brightgreen?style=flat&logo=githubpages&logoColor=white" alt="PROD Live" />
@@ -41,15 +42,15 @@ _Modern decentralized software ecosystems evolve through crowdsourced improvemen
 </div>
 
 <div align="center">
-  <img src="https://img.shields.io/badge/Python-3.12%2B-3776AB?style=flat&logo=python&logoColor=white" alt="Python 3.12+" />
-  <img src="https://img.shields.io/badge/React-18-3776AB?style=flat&logo=react&logoColor=white" alt="React 18" />
+  <img src="https://img.shields.io/badge/Python-3.12-3776AB?style=flat&logo=python&logoColor=white" alt="Python 3.12" />
+  <img src="https://img.shields.io/badge/React-19-3776AB?style=flat&logo=react&logoColor=white" alt="React 19" />
   <img src="https://img.shields.io/badge/Node.js-22%2B-3776AB?style=flat&logo=nodedotjs&logoColor=white" alt="Node.js 22+" />
   <img src="https://img.shields.io/badge/D3.js-v7-3776AB?style=flat&logo=d3dotjs&logoColor=white" alt="D3.js" />
 </div>
 
 <div align="center">
   <a href="./LICENSE">
-    <img src="https://img.shields.io/badge/License-GPL--3.0-red?style=flat" alt="GPL-3.0" />
+    <img src="https://img.shields.io/badge/License-MIT-red?style=flat" alt="MIT" />
   </a>
   <a href="https://youtu.be/56GKRexRuoI"><img src="https://img.shields.io/badge/Demo-Video-red.svg?logo=youtube&logoColor=white" alt="Demo Video" /></a>
 </div>
@@ -57,27 +58,28 @@ _Modern decentralized software ecosystems evolve through crowdsourced improvemen
 </br>
 </br>
 
-## Introduction
+## 👋 Introduction
 
 CDV Explorer is an ecosystem-agnostic pipeline for mining and analysing improvement proposals (IPs).
 At the moment, the explorer ships with active source integrations for the following two CDV-exhibiting ecosystems:
 
-| Ecosystem | Proposals | Source repository |
+| Ecosystem | IP Catalog | Source repository |
 |-----------|-----------|-------------------|
 | **Bitcoin** | Bitcoin Improvement Proposals (BIPs) | [bitcoin/bips](https://github.com/bitcoin/bips) |
+| **Bitcoin** | SatoshiLabs Improvement Proposals (SLIPs) | [satoshilabs/slips](https://github.com/satoshilabs/slips) |
 | **Nostr** | Nostr Implementation Possibilities (NIPs) | [nostr-protocol/nips](https://github.com/nostr-protocol/nips) |
 
 The live site is available at [seg-unibe.github.io/cdv-explorer](https://seg-unibe.github.io/cdv-explorer/#/), with a demo video on [YouTube](https://youtu.be/56GKRexRuoI).
 
 </br>
 
-## Setup
+## 🚀 Setup
 
 ### Requirements
 
 | Tool | Version | macOS using [`brew`](https://brew.sh) | Linux | Windows using [`winget`](https://learn.microsoft.com/windows/package-manager/winget/) |
 |------|---------|-------|-------|---------|
-| **Python** | 3.12+ | `brew install python` | `sudo apt install python3` | `winget install Python.Python.3` |
+| **Python** | 3.12 | `brew install python@3.12` | `sudo apt install python3.12` | `winget install Python.Python.3.12` |
 | **Node.js** | 22+ (npm bundled) | `brew install node` | `sudo apt install nodejs npm` | `winget install OpenJS.NodeJS` |
 | **Git** | any | `brew install git` | `sudo apt install git` | `winget install Git.Git` |
 
@@ -98,8 +100,16 @@ source .venv/bin/activate        # Windows: .venv\Scripts\activate
 ### 3 - Install dependencies
 
 ```bash
-pip install -r requirements.txt
+pip install -r requirements.lock.txt
 ```
+
+> [!NOTE]
+> `requirements.lock.txt` pins the exact, tested versions of all transitive dependencies for reproducible pipeline runs. The direct dependencies are declared in `requirements.txt`; after changing them, regenerate the lock files with [uv](https://docs.astral.sh/uv/):
+>
+> ```bash
+> uv pip compile requirements.txt -o requirements.lock.txt --universal --python-version 3.12
+> uv pip compile requirements-dev.txt -o requirements-dev.lock.txt --universal --python-version 3.12
+> ```
 
 ### 4 - Run the pipeline
 
@@ -131,7 +141,7 @@ npm start        # Vite dev server, typically at http://localhost:5173
 ```
 
 The frontend now uses **[Vite](https://vite.dev/)** for local development and production builds.
-`npm start` and `npm run dev` both regenerate the snapshot index, proposal link index, and ecosystem metadata before launching the dev server.
+`npm start` and `npm run dev` both regenerate the snapshot index, proposal link index, and ecosystem metadata, and sync the Stage IV frontend payloads from `ip_data/**/04_postprocess/` into `react/public/ip_data/` before launching the dev server. Only these postprocess payloads are published — harvest, preprocess, and analysis artifacts stay local.
 
 For a production build:
 
@@ -147,7 +157,7 @@ npm test -- --run
 
 </br>
 
-## CLI Reference
+## ⚙️ CLI Reference
 
 CDV Explorer is driven by a [Typer](https://typer.tiangolo.com/) CLI.
 Run `python main.py --help` for a full overview.
@@ -213,7 +223,7 @@ Use this when the raw/preprocessed proposal JSON is already available and you on
 python main.py ground-truth sample-ips --wizard
 ```
 
-This interactive helper pre-fills `ground_truth/ips.csv` from a stratified sample of IPs, thereby enlarging the ground truth data set of manually reviewed IPs and their interrelations (maintained in `ground_truth/interrelations.csv`).
+This interactive helper draws a stratified sample of not-yet-reviewed IPs and writes them to `ground_truth/ips_append.xlsx`, from where they can be copied into the editable `ground_truth/ground_truth.xlsx` workbook for review. The reviewed IPs and their curated interrelations are exported to `ips.csv` and `interrelations.csv` as pipeline-friendly artifacts.
 
 ### `ecosystems` - manage ecosystem configs
 
@@ -226,16 +236,20 @@ python main.py ecosystems add-source bitcoin  # add a second IP catalog to an ec
 
 </br>
 
-## Developer Notes
+## 🛠️ Developer Notes
 
 ### Development dependencies
 
 For local test/development work, install the dev requirements instead of the runtime-only set:
 
 ```bash
-pip install -r requirements-dev.txt
+pip install -r requirements-dev.lock.txt
+ruff check .
+mypy
 python -m pytest
 ```
+
+CI installs from the same lock file, so local and CI environments stay identical. `mypy` currently runs in strict mode on a small typed slice of `analysis/`. Extend `mypy.ini` as more modules are made type-clean.
 
 For the React frontend:
 
@@ -277,10 +291,10 @@ Ecosystem-specific logic is confined to the first two stages, keeping the analys
         ├── <source>/        # e.g. bips, slips, ...
         │   ├── 01_harvest/      # raw IP documents             [gitignored]
         │   ├── 02_preprocess/   # IP object model (JSON)       ← Stage II output
-        │   ├── 03_analysis/     # analysis artifacts           ← Stage III output
-        │   └── 04_postprocess/  # frontend payloads            ← Stage IV output
+        │   ├── 03_analysis/     # analysis results (CSV/JSON)  ← Stage III output
+        │   └── 04_postprocess/  # frontend payloads (fetched by the web app) ← Stage IV output
         ├── _combined/           # precomputed multi-source artifacts
-        └── ground_truth/        # curated benchmark CSVs
+        └── ground_truth/        # curated benchmark (editable workbook + CSV exports)
 ```
 
 ### Preprocess schema
@@ -312,7 +326,7 @@ The schema has three top-level blocks: **`raw`** (verbatim preamble), **`meta`**
 ```
 
 The exact object shapes inside `interrelations` are source-aware and method-specific. 
-In particular, targets use `source_slug:id` keys, regex-derived entries carry occurrence counts, and LLM-derived entries are stored as timestamped runs with per-dependency metadata.
+In particular, targets use `source_slug:id` keys, regex-derived entries carry occurrence counts, and LLM-assisted semantic dependency extraction runs are stored as timestamped run objects with status codes, `run_id` links, and per-dependency metadata. Prompt provenance is stored once per source/snapshot in the shared LLM run manifest.
 
 Concrete examples: [`bip-0340.json`](ip_data/bitcoin/bips/02_preprocess/2026-03-16/bip-0340.json) (Schnorr Signatures) · [`nip-10.json`](ip_data/nostr/nips/02_preprocess/2026-05-30/nip-10.json) (Text Notes and Threads)
 
@@ -335,7 +349,7 @@ Both workflows build the Vite app and publish the generated `react/build` direct
 
 </br>
 
-## Cleanup
+## 🧹 Cleanup
 
 Deactivate the virtual environment:
 

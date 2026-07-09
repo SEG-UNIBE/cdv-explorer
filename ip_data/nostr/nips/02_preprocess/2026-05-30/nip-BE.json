@@ -212,19 +212,21 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:59:52Z_gpt-5.4-mini_b29b8ccc",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:08:00Z",
+          "timestamp": "2026-06-30T12:00:57Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:01",
-              "evidence": "All messages will follow [NIP-01](/01.md) message structure",
-              "reason": "The BLE protocol relies on NIP-01 event/message structure for its message encoding and synchronization exchange.",
+              "evidence": "All messages will follow [NIP-01](/01.md) message structure.",
+              "reason": "The BLE transport serializes and exchanges messages using the NIP-01 event/message structure, so understanding the proposal depends on that format and semantics.",
               "confidence": "high"
             },
             {
               "target": "nips:77",
-              "evidence": "define a synchronization process by following [NIP-77](./77.md) but with an adaptation to the limitations of the technology",
-              "reason": "The proposal directly adapts NIP-77's synchronization workflow and message semantics for BLE half-duplex sync.",
+              "evidence": "it's crucial to define a synchronization process by following [NIP-77](./77.md) but with an adaptation to the limitations of the technology.",
+              "reason": "The synchronization workflow is explicitly based on NIP-77 negotiation/message flow, with BLE-specific adaptations, so implementation depends on that protocol's sync semantics.",
               "confidence": "high"
             }
           ]

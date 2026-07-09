@@ -906,32 +906,34 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:57:37Z",
+          "timestamp": "2026-06-30T11:42:03Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
-              "evidence": "This document specifies an alternative to BIP9",
-              "reason": "The proposal directly replaces and modifies BIP9’s soft-fork activation mechanism, including its state machine and deployment parameters.",
-              "confidence": "low"
+              "evidence": "This document specifies an alternative to [[bip-0009.mediawiki|BIP9]]",
+              "reason": "The proposal is defined as an alternative to BIP9 and reuses its deployment framework concepts while changing activation timing and adding lock-in behavior.",
+              "confidence": "high"
             },
             {
               "target": "bips:34",
-              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
-              "reason": "The versionbits range and available signaling bits are constrained by the block version semantics introduced by this proposal.",
-              "confidence": "high"
+              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65, we only have 0x7FFFFFFB possible nVersion values available.",
+              "reason": "The version-bits signaling space and available nVersion values are constrained by BIP34, so the proposal's bit allocation assumptions depend on it.",
+              "confidence": "medium"
             },
             {
               "target": "bips:65",
-              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
-              "reason": "The deployment bit selection and version field constraints rely on the prior version signaling rules from this BIP.",
-              "confidence": "high"
+              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65, we only have 0x7FFFFFFB possible nVersion values available.",
+              "reason": "The proposal's usable version field range is constrained by BIP65's prior version-signaling rules.",
+              "confidence": "medium"
             },
             {
               "target": "bips:66",
-              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
-              "reason": "The proposal’s allowed nVersion bits and signaling interpretation depend on this earlier block-version soft fork rule.",
-              "confidence": "high"
+              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65, we only have 0x7FFFFFFB possible nVersion values available.",
+              "reason": "The proposal's version-bit signaling capacity depends on BIP66's legacy version restrictions.",
+              "confidence": "medium"
             }
           ]
         }

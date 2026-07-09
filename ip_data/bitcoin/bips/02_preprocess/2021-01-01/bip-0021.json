@@ -587,7 +587,7 @@
         "author": "genjix",
         "path": "bip-0021.md",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "6e2d2667f3a3248577b92578168de82c917ca8a2",
@@ -596,7 +596,7 @@
         "author": "genjix",
         "path": "bip-0021.md",
         "status": "Accepted",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "f31f7d43473fadcfafbc886b15e8c488654839c2",
@@ -605,7 +605,7 @@
         "author": "Luke Dashjr",
         "path": "bip-0021.mediawiki",
         "status": "Final",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "e22ad0cd715af88cabecffe1afcc4258740dc85f",
@@ -614,13 +614,22 @@
         "author": "Luke Dashjr",
         "path": "bip-0021.mediawiki",
         "status": "Accepted",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "7509fae0be1f0f0effa1d6a1109a4a03afed8850",
         "timestamp": "2016-02-16T22:18:45Z",
         "date": "2016-02-16",
         "author": "Sandro Machado",
+        "path": "bip-0021.mediawiki",
+        "status": "Final",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
         "path": "bip-0021.mediawiki",
         "status": "Final",
         "standard": "bip2"
@@ -636,9 +645,18 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:00:28Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:35:18Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:20",
+              "evidence": "This BIP is a modification of an earlier [[bip-0020.mediawiki|BIP 0020]]",
+              "reason": "The proposal explicitly modifies BIP 20, so its URI scheme semantics are based on and constrained by that earlier specification.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

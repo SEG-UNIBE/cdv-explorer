@@ -4,15 +4,15 @@ from pathlib import Path
 
 import matplotlib
 import matplotlib.patheffects as pe
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib.patches import PathPatch, Rectangle
 from matplotlib.path import Path as MplPath
 
-from paper.RQ3._plotting import BAR_EDGE_COLOR, bar_style, save_figure
 from paper.RQ1.classification_status import STATUS_COLORS, resolve_rq1_status_order
 from paper.RQ1.classification_type import TYPE_COLORS, TYPE_ORDER
-
+from paper.RQ3._plotting import BAR_EDGE_COLOR, bar_style, save_figure
 
 LAYER_ORDER = [
     "Applications",
@@ -61,7 +61,9 @@ def _ordered_categories(observed: set[str], preferred_order: list[str]) -> list[
     return ordered
 
 
-def _stack_blocks(counts: dict[str, int], order: list[str], gap: float) -> dict[str, Block]:
+def _stack_blocks(
+    counts: dict[str, int], order: list[str], gap: float
+) -> dict[str, Block]:
     total = sum(counts.values())
     if total <= 0:
         return {}
@@ -192,8 +194,7 @@ def _draw_outer_block_name(
         ha = "left"
 
     display_name = (
-        block.name
-        .replace("Specification", "Spec-\nification")
+        block.name.replace("Specification", "Spec-\nification")
         .replace("Informational", "Inform-\national")
         .replace("Consensus (soft fork)", "Consensus\n(soft fork)")
         .replace("Consensus (hard fork)", "Consensus\n(hard fork)")
@@ -314,9 +315,19 @@ def plot_classification_sankey(
             if count <= 0:
                 continue
             left_y0 = type_outgoing[proposal_type]
-            left_y1 = left_y0 + (type_blocks[proposal_type].y1 - type_blocks[proposal_type].y0) * count / type_blocks[proposal_type].count
+            left_y1 = (
+                left_y0
+                + (type_blocks[proposal_type].y1 - type_blocks[proposal_type].y0)
+                * count
+                / type_blocks[proposal_type].count
+            )
             right_y0 = status_incoming[status]
-            right_y1 = right_y0 + (status_blocks[status].y1 - status_blocks[status].y0) * count / status_blocks[status].count
+            right_y1 = (
+                right_y0
+                + (status_blocks[status].y1 - status_blocks[status].y0)
+                * count
+                / status_blocks[status].count
+            )
             patch = _ribbon_patch(
                 x_type + block_width,
                 x_status,
@@ -333,7 +344,9 @@ def plot_classification_sankey(
             if count < thin_flow_threshold:
                 total_thin = left_thin_counts[proposal_type]
                 thin_index = left_thin_indices[proposal_type]
-                x_shift, y_shift = _thin_label_adjustment(total_thin, thin_index, side="left")
+                x_shift, y_shift = _thin_label_adjustment(
+                    total_thin, thin_index, side="left"
+                )
                 label_x += x_shift
                 label_y += y_shift
                 left_thin_indices[proposal_type] += 1
@@ -346,7 +359,9 @@ def plot_classification_sankey(
                 fontsize=6.8,
                 color="#111111",
                 zorder=6,
-                path_effects=[pe.withStroke(linewidth=2.2, foreground="white", alpha=0.95)],
+                path_effects=[
+                    pe.withStroke(linewidth=2.2, foreground="white", alpha=0.95)
+                ],
             )
             type_outgoing[proposal_type] = left_y1
             status_incoming[status] = right_y1
@@ -359,9 +374,19 @@ def plot_classification_sankey(
             if count <= 0:
                 continue
             left_y0 = status_outgoing[status]
-            left_y1 = left_y0 + (status_blocks[status].y1 - status_blocks[status].y0) * count / status_blocks[status].count
+            left_y1 = (
+                left_y0
+                + (status_blocks[status].y1 - status_blocks[status].y0)
+                * count
+                / status_blocks[status].count
+            )
             right_y0 = layer_incoming[layer]
-            right_y1 = right_y0 + (layer_blocks[layer].y1 - layer_blocks[layer].y0) * count / layer_blocks[layer].count
+            right_y1 = (
+                right_y0
+                + (layer_blocks[layer].y1 - layer_blocks[layer].y0)
+                * count
+                / layer_blocks[layer].count
+            )
             patch = _ribbon_patch(
                 x_status + block_width,
                 x_layer,
@@ -378,7 +403,9 @@ def plot_classification_sankey(
             if count < thin_flow_threshold:
                 total_thin = right_thin_counts[layer]
                 thin_index = right_thin_indices[layer]
-                x_shift, y_shift = _thin_label_adjustment(total_thin, thin_index, side="right")
+                x_shift, y_shift = _thin_label_adjustment(
+                    total_thin, thin_index, side="right"
+                )
                 label_x += x_shift
                 label_y += y_shift
                 right_thin_indices[layer] += 1
@@ -391,35 +418,85 @@ def plot_classification_sankey(
                 fontsize=6.8,
                 color="#111111",
                 zorder=6,
-                path_effects=[pe.withStroke(linewidth=2.2, foreground="white", alpha=0.95)],
+                path_effects=[
+                    pe.withStroke(linewidth=2.2, foreground="white", alpha=0.95)
+                ],
             )
             status_outgoing[status] = left_y1
             layer_incoming[layer] = right_y1
 
     for name in type_order:
-        _draw_block(axis, x_type, block_width, type_blocks[name], TYPE_COLORS.get(name, "#777777"))
+        _draw_block(
+            axis,
+            x_type,
+            block_width,
+            type_blocks[name],
+            TYPE_COLORS.get(name, "#777777"),
+        )
     for name in status_order:
-        _draw_block(axis, x_status, block_width, status_blocks[name], STATUS_COLORS.get(name, "#777777"))
+        _draw_block(
+            axis,
+            x_status,
+            block_width,
+            status_blocks[name],
+            STATUS_COLORS.get(name, "#777777"),
+        )
     for name in layer_order:
-        _draw_block(axis, x_layer, block_width, layer_blocks[name], LAYER_COLORS.get(name, "#777777"))
+        _draw_block(
+            axis,
+            x_layer,
+            block_width,
+            layer_blocks[name],
+            LAYER_COLORS.get(name, "#777777"),
+        )
 
     for name in type_order:
         block = type_blocks[name]
-        _draw_block_label(axis, x_type, block_width, block, rotation=0, full_label=False)
+        _draw_block_label(
+            axis, x_type, block_width, block, rotation=0, full_label=False
+        )
         _draw_outer_block_name(axis, x_type, block, side="left")
 
     for name in status_order:
         block = status_blocks[name]
-        _draw_block_label(axis, x_status, block_width, block, rotation=0, full_label=True)
+        _draw_block_label(
+            axis, x_status, block_width, block, rotation=0, full_label=True
+        )
 
     for name in layer_order:
         block = layer_blocks[name]
-        _draw_block_label(axis, x_layer, block_width, block, rotation=0, full_label=False)
+        _draw_block_label(
+            axis, x_layer, block_width, block, rotation=0, full_label=False
+        )
         _draw_outer_block_name(axis, x_layer, block, side="right")
 
-    axis.text(x_type + block_width / 2, 1.015, "Type", ha="center", va="bottom", fontsize=11, fontweight="bold")
-    axis.text(x_status + block_width / 2, 1.015, "Status", ha="center", va="bottom", fontsize=11, fontweight="bold")
-    axis.text(x_layer + block_width / 2, 1.015, "Layer", ha="center", va="bottom", fontsize=11, fontweight="bold")
+    axis.text(
+        x_type + block_width / 2,
+        1.015,
+        "Type",
+        ha="center",
+        va="bottom",
+        fontsize=11,
+        fontweight="bold",
+    )
+    axis.text(
+        x_status + block_width / 2,
+        1.015,
+        "Status",
+        ha="center",
+        va="bottom",
+        fontsize=11,
+        fontweight="bold",
+    )
+    axis.text(
+        x_layer + block_width / 2,
+        1.015,
+        "Layer",
+        ha="center",
+        va="bottom",
+        fontsize=11,
+        fontweight="bold",
+    )
     figure.suptitle(f"Classification Sankey ({snapshot_label})", y=0.955)
     figure.tight_layout(rect=(0.01, 0.01, 0.99, 0.965))
     save_figure(figure, output_path)

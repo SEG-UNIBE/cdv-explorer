@@ -48,8 +48,8 @@ from analysis.dependencies.network import build_network_data
 from analysis.evolution.metrics import prepare_evolution_payload
 from analysis.proposal_schema import normalize_proposal_document
 from pipeline.preprocess._enrich import enrich as enrich_ip_files
-from pipeline.preprocess.nip_tags import _parse_nip_file
 from pipeline.preprocess.checkers.nip import check as check_nip_compliance
+from pipeline.preprocess.nip_tags import _parse_nip_file
 from pipeline.preprocess.rfc_preamble import _save_json as save_preamble_to_json_new
 
 
@@ -109,7 +109,8 @@ def proposal_document(
                 }
             ],
             "word_list": {"bitcoin": 3, "proposal": 2},
-            "interrelations": interrelations or {
+            "interrelations": interrelations
+            or {
                 "preamble_extracted": [],
                 "body_extracted_regex": [],
                 "body_extracted_llm": [],
@@ -154,7 +155,9 @@ class SchemaRefactorTests(unittest.TestCase):
         self.assertNotIn("compliance", normalized)
         self.assertEqual(normalized["meta"]["last_commit"], "2020-01-02")
         self.assertEqual(normalized["insights"]["formal_compliance"]["score"], 75.0)
-        self.assertEqual(normalized["insights"]["changes_in_status"][0]["status"], "Draft")
+        self.assertEqual(
+            normalized["insights"]["changes_in_status"][0]["status"], "Draft"
+        )
         self.assertNotIn("interrelations", normalized["raw"]["preamble"])
         self.assertEqual(
             normalized["insights"]["interrelations"]["preamble_extracted"],
@@ -229,22 +232,26 @@ class SchemaRefactorTests(unittest.TestCase):
             "classification": {
                 "dimensions": {
                     "status": {"aliases": {"draft": "Draft", "final": "Final"}},
-                    "type": {"aliases": {"mandatory": "Mandatory", "optional": "Optional"}},
+                    "type": {
+                        "aliases": {"mandatory": "Mandatory", "optional": "Optional"}
+                    },
                     "layer": {"aliases": {"relay": "Relay", "client": "Client"}},
                 }
             }
         }
-        content = "\n".join([
-            "NIP-04",
-            "======",
-            "",
-            "Encrypted Direct Message",
-            "------------------------",
-            "",
-            "`final` `unrecommended` `optional` `relay`",
-            "",
-            "Body.",
-        ])
+        content = "\n".join(
+            [
+                "NIP-04",
+                "======",
+                "",
+                "Encrypted Direct Message",
+                "------------------------",
+                "",
+                "`final` `unrecommended` `optional` `relay`",
+                "",
+                "Body.",
+            ]
+        )
 
         preamble = _parse_nip_file(content, "04.md", src_config)
 
@@ -269,7 +276,9 @@ class SchemaRefactorTests(unittest.TestCase):
             src_config,
         )
 
-        type_check = next(check for check in checks if check["id"] == "nip.field_present.type")
+        type_check = next(
+            check for check in checks if check["id"] == "nip.field_present.type"
+        )
         self.assertTrue(type_check["passed"])
 
     def test_nip_tag_parser_accepts_bold_status_fallback(self) -> None:
@@ -277,22 +286,26 @@ class SchemaRefactorTests(unittest.TestCase):
             "classification": {
                 "dimensions": {
                     "status": {"aliases": {"draft": "Draft", "final": "Final"}},
-                    "type": {"aliases": {"mandatory": "Mandatory", "optional": "Optional"}},
+                    "type": {
+                        "aliases": {"mandatory": "Mandatory", "optional": "Optional"}
+                    },
                     "layer": {"aliases": {"relay": "Relay", "client": "Client"}},
                 }
             }
         }
-        content = "\n".join([
-            "NIP-A0",
-            "======",
-            "",
-            "Voice Messages",
-            "--------------",
-            "",
-            "**Status:** Draft",
-            "",
-            "Body.",
-        ])
+        content = "\n".join(
+            [
+                "NIP-A0",
+                "======",
+                "",
+                "Voice Messages",
+                "--------------",
+                "",
+                "**Status:** Draft",
+                "",
+                "Body.",
+            ]
+        )
 
         preamble = _parse_nip_file(content, "A0.md", src_config)
 
@@ -327,19 +340,37 @@ class SchemaRefactorTests(unittest.TestCase):
             ),
             proposal_document("2"),
         ]
-        normalized_documents = [normalize_proposal_document(document) for document in documents]
+        normalized_documents = [
+            normalize_proposal_document(document) for document in documents
+        ]
 
         self.assertEqual(
-            build_network_data(documents, id_field="bip", proposal_label="BIP"),
-            build_network_data(normalized_documents, id_field="bip", proposal_label="BIP"),
+            build_network_data(
+                documents,
+                id_field="bip",
+                proposal_label="BIP",
+                ground_truth_entries=[],
+                reviewed_ips_entries=[],
+            ),
+            build_network_data(
+                normalized_documents,
+                id_field="bip",
+                proposal_label="BIP",
+                ground_truth_entries=[],
+                reviewed_ips_entries=[],
+            ),
         )
         self.assertEqual(
             extract_conformity_metrics(documents, id_field="bip"),
             extract_conformity_metrics(normalized_documents, id_field="bip"),
         )
         self.assertEqual(
-            prepare_evolution_payload(documents, snapshot_label="2020-12-31", id_field="bip"),
-            prepare_evolution_payload(normalized_documents, snapshot_label="2020-12-31", id_field="bip"),
+            prepare_evolution_payload(
+                documents, snapshot_label="2020-12-31", id_field="bip"
+            ),
+            prepare_evolution_payload(
+                normalized_documents, snapshot_label="2020-12-31", id_field="bip"
+            ),
         )
 
     def test_process_ip_files_writes_canonical_meta_and_insights(self) -> None:
@@ -367,7 +398,9 @@ class SchemaRefactorTests(unittest.TestCase):
                     }
                 }
             )
-            with (preprocess_dir / "bip-0001.json").open("w", encoding="utf-8") as handle:
+            with (preprocess_dir / "bip-0001.json").open(
+                "w", encoding="utf-8"
+            ) as handle:
                 json.dump(source_json, handle, ensure_ascii=False, indent=2)
 
             (repo_dir / "bip-0001.md").write_text(
@@ -375,7 +408,9 @@ class SchemaRefactorTests(unittest.TestCase):
                 encoding="utf-8",
             )
 
-            def fake_update_metadata(document: dict, _proposal_file_path: Path, _repo_dir: Path) -> dict:
+            def fake_update_metadata(
+                document: dict, _proposal_file_path: Path, _repo_dir: Path
+            ) -> dict:
                 document = normalize_proposal_document(document)
                 document["meta"].update(
                     {
@@ -394,15 +429,25 @@ class SchemaRefactorTests(unittest.TestCase):
                 "stop_words_file": None,
             }
 
-            with patch("pipeline.preprocess._enrich.update_metadata_from_git", side_effect=fake_update_metadata), patch(
-                "pipeline.preprocess._enrich.extract_status_timeline",
-                return_value=[{"date": "2020-01-01", "status": "Draft", "standard": "bip2"}],
-            ), patch(
-                "pipeline.preprocess._enrich.create_reference_targets",
-                return_value=[{"target": "bips:2", "count": 1}],
-            ), patch(
-                "pipeline.preprocess._enrich.create_explicit_dependency_targets",
-                return_value=[{"target": "bips:2", "type": "requires"}],
+            with (
+                patch(
+                    "pipeline.preprocess._enrich.update_metadata_from_git",
+                    side_effect=fake_update_metadata,
+                ),
+                patch(
+                    "pipeline.preprocess._enrich.extract_status_timeline",
+                    return_value=[
+                        {"date": "2020-01-01", "status": "Draft", "standard": "bip2"}
+                    ],
+                ),
+                patch(
+                    "pipeline.preprocess._enrich.create_reference_targets",
+                    return_value=[{"target": "bips:2", "count": 1}],
+                ),
+                patch(
+                    "pipeline.preprocess._enrich.create_explicit_dependency_targets",
+                    return_value=[{"target": "bips:2", "type": "requires"}],
+                ),
             ):
                 enrich_ip_files(
                     src_config=src_config,
@@ -420,7 +465,9 @@ class SchemaRefactorTests(unittest.TestCase):
             self.assertNotIn("compliance", payload)
             self.assertEqual(payload["meta"]["total_commits"], 3)
             self.assertIsInstance(payload["insights"]["word_list"], dict)
-            self.assertEqual(payload["insights"]["changes_in_status"][0]["status"], "Draft")
+            self.assertEqual(
+                payload["insights"]["changes_in_status"][0]["status"], "Draft"
+            )
             self.assertNotIn("interrelations", payload["raw"]["preamble"])
             self.assertEqual(
                 payload["insights"]["interrelations"]["preamble_extracted"],
@@ -430,7 +477,9 @@ class SchemaRefactorTests(unittest.TestCase):
                 payload["insights"]["interrelations"]["body_extracted_regex"],
                 [{"target": "bips:2", "count": 1}],
             )
-            self.assertEqual(payload["insights"]["interrelations"]["body_extracted_llm"], [])
+            self.assertEqual(
+                payload["insights"]["interrelations"]["body_extracted_llm"], []
+            )
 
 
 if __name__ == "__main__":

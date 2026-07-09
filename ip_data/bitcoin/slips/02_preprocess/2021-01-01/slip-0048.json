@@ -340,25 +340,21 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:37:15Z_gpt-5.4-mini_3159fb60",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:02:10Z",
+          "timestamp": "2026-06-30T11:37:29Z",
+          "status": "success",
           "dependencies": [
-            {
-              "target": "bips:32",
-              "evidence": "Apostrophe in the path indicates that BIP32 hardened derivation is used.",
-              "reason": "The path notation and hardened child derivation semantics are based on BIP32.",
-              "confidence": "high"
-            },
             {
               "target": "bips:43",
               "evidence": "following the BIP43 recommendation",
-              "reason": "The proposal adopts BIP43's purpose-field convention to define the top-level derivation path semantics.",
+              "reason": "The purpose field semantics and hardened purpose level are defined in direct reliance on BIP43's recommendation.",
               "confidence": "high"
             },
             {
               "target": "bips:44",
-              "evidence": "It extends [BIP-0044]",
-              "reason": "The proposal explicitly extends BIP44's deterministic wallet hierarchy and relies on its account-style derivation model.",
+              "evidence": "It extends [BIP-0044](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki)",
+              "reason": "The proposal explicitly builds its deterministic wallet hierarchy on BIP44 and also cites BIP44/SLIP44 as the prior key-derivation structure it replaces or adapts.",
               "confidence": "high"
             }
           ]

@@ -537,6 +537,15 @@
         "author": "genjix",
         "path": "bip-0019.md",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0019.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -568,13 +577,15 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:52:51Z",
+          "timestamp": "2026-06-30T11:17:15Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:11",
               "evidence": "This is already specified in [[bip-0011.mediawiki|BIP 0011]].",
-              "reason": "The proposal’s multisignature transaction design relies on the existing CHECKMULTISIG-based standardness and sigop accounting defined by BIP 11, which it explicitly references in its rationale.",
+              "reason": "The proposal explicitly relies on BIP 11 for the CHECKMULTISIG-based multisignature transaction form it discusses and contrasts with its own CHECKSIG-only templates.",
               "confidence": "high"
             }
           ]

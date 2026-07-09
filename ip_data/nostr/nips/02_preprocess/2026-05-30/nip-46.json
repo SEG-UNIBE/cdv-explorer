@@ -463,26 +463,28 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:59:52Z_gpt-5.4-mini_b29b8ccc",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:07:39Z",
+          "timestamp": "2026-06-30T12:00:23Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:05",
-              "evidence": "\"remote-signer\" MAY publish its metadata by using [NIP-05]",
-              "reason": "This proposal defines optional discovery and metadata publication via NIP-05 records, relying on its naming/lookup mechanism.",
+              "evidence": "The remote-signer MAY publish its metadata by using [NIP-05](05.md)",
+              "reason": "The discovery and metadata publication flow reuses the NIP-05 well-known file format and name lookup mechanism.",
               "confidence": "low"
             },
             {
               "target": "nips:44",
-              "evidence": "The content field is a JSON-RPC-like message that is [NIP-44] encrypted",
-              "reason": "The proposal’s request/response transport uses NIP-44 encryption for all message contents and defines methods around that encrypted channel.",
+              "evidence": "This proposal describes a method for 2-way communication",
+              "reason": "The request and response payloads are explicitly NIP-44 encrypted, so the proposal depends on that message encryption format and semantics.",
               "confidence": "low"
             },
             {
               "target": "nips:89",
-              "evidence": "\"remote-signer\" MAY publish its metadata by using [NIP-05] and [NIP-89]",
-              "reason": "Remote-signer discovery is extended through NIP-89 events and tag semantics to advertise relays and connection URLs.",
-              "confidence": "low"
+              "evidence": "and [NIP-89](89.md).",
+              "reason": "Remote-signer discovery and metadata announcements are designed around NIP-89 events and tags.",
+              "confidence": "high"
             }
           ]
         }

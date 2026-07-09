@@ -565,6 +565,15 @@
         "author": "Eric Lombrozo",
         "path": "bip-codeshark-segwit-peer-services.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0144.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -609,20 +618,22 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:25Z",
+          "timestamp": "2026-06-30T11:36:01Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:130",
-              "evidence": "with 'sendheaders' BIP 130",
-              "reason": "The relay design assumes header announcements instead of inventory advertisement, which affects how witness data is requested and propagated.",
-              "confidence": "high"
+              "evidence": "similar to MSG_FILTERED_BLOCK, plus with 'sendheaders' BIP 130",
+              "reason": "The rationale for relay inventory design explicitly relies on BIP130's sendheaders mechanism to explain why witness support is not advertised via invs.",
+              "confidence": "low"
             },
             {
               "target": "bips:141",
-              "evidence": "defining witness structures and requiring commitments in future blocks (BIP141",
-              "reason": "This proposal’s new witness serialization, hashes, and relay rules are introduced to carry the witness structures defined by the referenced consensus proposal.",
-              "confidence": "low"
+              "evidence": "In addition to defining witness structures and requiring commitments in future blocks ([https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki BIP141] - Consensus segwit BIP)",
+              "reason": "This proposal's witness serialization, commitment behavior, and relay rules are designed around the witness structures and commitments introduced by BIP141.",
+              "confidence": "high"
             }
           ]
         }

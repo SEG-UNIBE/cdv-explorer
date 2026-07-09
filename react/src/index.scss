@@ -26,6 +26,7 @@
   --app-shadow-color: rgba(15, 23, 42, 0.14);
   --app-shadow-spread: 12px;
   --link-color: #2563eb;
+  --nav-height: 52px;
   --nav-bg: rgba(251, 251, 251, 0.92);
   --nav-border: #e1e1e1;
   --nav-brand: #1b2838;
@@ -112,6 +113,10 @@ html,
 body,
 #root {
   min-height: 100%;
+}
+
+html {
+  scrollbar-gutter: stable;
 }
 
 body {

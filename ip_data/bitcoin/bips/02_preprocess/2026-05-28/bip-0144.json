@@ -593,6 +593,15 @@
         "author": "Eric Lombrozo",
         "path": "bip-codeshark-segwit-peer-services.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0144.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -646,20 +655,22 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:53:47Z",
+          "timestamp": "2026-06-30T11:18:11Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:130",
-              "evidence": "we don't always use invs anymore (with 'sendheaders' BIP 130)",
-              "reason": "The relay rationale depends on the sendheaders mechanism introduced by BIP 130, which changes how inventory announcements are used.",
-              "confidence": "high"
+              "evidence": "plus it's not useful: implicitly, every transaction and block have a witness, old ones just have empty ones.','\n\nMSG_WITNESS_TX getdata requests should use the non-witness serialized hash. The peer shall respond with a tx message",
+              "reason": "The relay behavior explicitly references the filtered/header relay workflow associated with sendheaders, using the same inventory/getdata pattern context to justify not advertising witness data in invs.",
+              "confidence": "low"
             },
             {
               "target": "bips:141",
-              "evidence": "In addition to defining witness structures and requiring commitments in future blocks ([... ] BIP141 - Consensus segwit BIP)",
-              "reason": "This proposal’s witness serialization, hashing, and relay rules are built to propagate the segregated witness structures defined by BIP 141.",
-              "confidence": "low"
+              "evidence": "In addition to defining witness structures and requiring commitments in future blocks ([https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki BIP141] - Consensus segwit BIP)",
+              "reason": "This proposal's witness transport and serialization are designed around the witness structures and block commitments introduced by BIP 141.",
+              "confidence": "high"
             }
           ]
         }

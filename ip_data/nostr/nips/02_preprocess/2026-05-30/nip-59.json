@@ -334,44 +334,46 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:59:52Z_gpt-5.4-mini_b29b8ccc",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:07:49Z",
+          "timestamp": "2026-06-30T12:00:33Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:09",
-              "evidence": "relays SHOULD delete `kind:1059` events whose p-tag matches the signer of [NIP-09] deletions",
-              "reason": "Relay deletion behavior for wrapped events explicitly depends on NIP-09 deletion requests for matching p-tags.",
-              "confidence": "low"
+              "evidence": "relays SHOULD delete `kind:1059` events whose p-tag matches the signer of [NIP-09](09.md) deletions",
+              "reason": "Relay cleanup behavior is tied to NIP-09 deletion semantics for identifying events to remove.",
+              "confidence": "medium"
             },
             {
               "target": "nips:13",
-              "evidence": "including the recipient's `p` tag or [NIP-13] proof of work",
-              "reason": "The proposal uses proof-of-work as an optional routing/spam-control mechanism for gift wraps, relying on NIP-13's POW semantics.",
-              "confidence": "low"
+              "evidence": "`tags` SHOULD include any information needed to route the event to its intended recipient, including the recipient's `p` tag or [NIP-13](13.md) proof of work.",
+              "reason": "Gift wrap events may incorporate NIP-13 proof-of-work as a routing/spam-mitigation tag, so adopting the proposal can depend on that tag convention.",
+              "confidence": "medium"
             },
             {
               "target": "nips:17",
-              "evidence": "kind:1059 is intended for regular direct messages and asynchronous communication where message persistence and offline delivery are expected, such as in NIP-17",
-              "reason": "The proposal positions kind:1059 as the transport for direct-message style asynchronous communication, which is a concrete messaging application built on this wrapping format.",
-              "confidence": "low"
+              "evidence": "`kind:1059` is intended for regular direct messages and asynchronous communication where message persistence and offline delivery are expected, such as in NIP-17.",
+              "reason": "The proposal explicitly positions the 1059 gift-wrap workflow as the transport/container mechanism for NIP-17-style direct-message usage.",
+              "confidence": "medium"
             },
             {
               "target": "nips:42",
-              "evidence": "a relay may enforce a [NIP-42] `auth-required` policy and authenticate clients before accepting gift wraps",
-              "reason": "Relay acceptance and metadata protection for gift wraps depends on NIP-42 authentication and its auth-required policy.",
-              "confidence": "low"
+              "evidence": "a relay may enforce a [NIP-42](42.md) `auth-required` policy and authenticate clients before accepting gift wraps.",
+              "reason": "The proposal’s relay-side privacy mitigation assumes NIP-42 authentication as an access-control mechanism for accepting or serving wrapped events.",
+              "confidence": "high"
             },
             {
               "target": "nips:44",
-              "evidence": "This NIP relies on [NIP-44]'s versioned encryption algorithms",
-              "reason": "Gift wrap, seal, and rumor payload protection is defined via NIP-44 encryption and decryption primitives and conversation-key derivation.",
-              "confidence": "low"
+              "evidence": "This NIP relies on [NIP-44](./44.md)'s versioned encryption algorithms.",
+              "reason": "The proposal’s sealing and wrapping formats are built around NIP-44 encryption and decryption of the inner JSON-encoded events.",
+              "confidence": "high"
             },
             {
               "target": "nips:62",
-              "evidence": "relays SHOULD delete `kind:1059` events whose p-tag matches the signer of [NIP-09] deletions or [NIP-62] vanish requests",
-              "reason": "Relay deletion behavior for wrapped events explicitly extends NIP-62 vanish request semantics to these event kinds.",
-              "confidence": "low"
+              "evidence": "relays SHOULD delete `kind:1059` events whose p-tag matches the signer of [NIP-09](09.md) deletions or [NIP-62](62.md) vanish requests.",
+              "reason": "Relay cleanup behavior is also tied to NIP-62 vanish-request semantics for identifying events to remove.",
+              "confidence": "medium"
             }
           ]
         }

@@ -839,9 +839,96 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:59:36Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:45:53Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "see BIP 32 for details",
+              "reason": "Key origin fingerprints and derivation path semantics rely on BIP 32 extended-key and derivation concepts.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:39",
+              "evidence": "nowadays primarily in the form of BIP 39 mnemonics",
+              "reason": "The motivation explicitly frames wallet backups in terms of BIP 39 mnemonic backups, which the proposal is meant to improve on and remain compatible with conceptually.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:44",
+              "evidence": "Although BIPs 44, 49, and 84 have specified standard BIP 32 derivation paths",
+              "reason": "The descriptor format is designed to encode wallet paths that include the standard derivation path schemes introduced by these BIPs.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:49",
+              "evidence": "Although BIPs 44, 49, and 84 have specified standard BIP 32 derivation paths",
+              "reason": "The proposal's key-expression/path model is meant to represent and preserve these standard derivation-path conventions.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:84",
+              "evidence": "Although BIPs 44, 49, and 84 have specified standard BIP 32 derivation paths",
+              "reason": "The descriptor language is intended to describe wallets using the derivation-path conventions defined here as well.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:173",
+              "evidence": "since the introduction of Segregated Witness which added new output types",
+              "reason": "Descriptors encode output-script types and subscript forms that were expanded by Segregated Witness output types.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:381",
+              "evidence": "| [[bip-0381.mediawiki|381]]",
+              "reason": "BIP 380 defines the descriptor framework and delegates specific script expressions such as pk/pkh/sh to this proposal.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:382",
+              "evidence": "| [[bip-0382.mediawiki|382]]",
+              "reason": "BIP 380's descriptor language is extended by the wpkh/wsh script expressions defined in this proposal.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:383",
+              "evidence": "| [[bip-0383.mediawiki|383]]",
+              "reason": "BIP 380 includes multi and sortedmulti as descriptor script expressions specified by this proposal.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:384",
+              "evidence": "| [[bip-0384.mediawiki|384]]",
+              "reason": "BIP 380 depends on this proposal for the combo descriptor expression.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:385",
+              "evidence": "| [[bip-0385.mediawiki|385]]",
+              "reason": "BIP 380 depends on this proposal for the raw and addr descriptor expressions.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:386",
+              "evidence": "| [[bip-0386.mediawiki|386]]",
+              "reason": "BIP 380's descriptor system includes tr and TREE expressions defined by this proposal.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:390",
+              "evidence": "| [[bip-0390.mediawiki|390]]",
+              "reason": "BIP 380 includes musig as an available script expression specified by this proposal.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:392",
+              "evidence": "| [[bip-0392.mediawiki|392]]",
+              "reason": "BIP 380 includes sp as available script expressions specified by this proposal.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

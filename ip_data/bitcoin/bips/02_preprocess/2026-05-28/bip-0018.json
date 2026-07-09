@@ -599,12 +599,21 @@
         "author": "Peter Todd",
         "path": "bip-0018.mediawiki",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "387fc6011bd804609fd751786e50439d5c11a097",
         "timestamp": "2016-08-23T19:47:29Z",
         "date": "2016-08-23",
+        "author": "Luke Dashjr",
+        "path": "bip-0018.mediawiki",
+        "status": "Accepted",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
         "author": "Luke Dashjr",
         "path": "bip-0018.mediawiki",
         "status": "Accepted",
@@ -664,37 +673,39 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:52:50Z",
+          "timestamp": "2026-06-30T11:17:16Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:11",
-              "evidence": "This BIP replaces BIPs 12 and 17",
-              "reason": "The proposal says it replaces the script extensions from this BIP family, making it a substantive predecessor it supersedes.",
+              "evidence": "M-of-N Multisignature Transactions [[bip-0011.mediawiki|BIP 11]]",
+              "reason": "The proposal is designed to support multisignature transactions and uses M-of-N multisig examples and signature counting rules, so it depends on the multisig transaction format/concept introduced by BIP 11.",
               "confidence": "medium"
             },
             {
               "target": "bips:12",
               "evidence": "This BIP replaces BIPs 12 and 17",
-              "reason": "The proposal explicitly states it replaces the script-system extension defined by this BIP.",
+              "reason": "The proposal explicitly replaces BIP 12's script-system extension approach, indicating a direct protocol-level dependency and supersession.",
               "confidence": "high"
             },
             {
               "target": "bips:13",
               "evidence": "The Motivation for this BIP (and BIP 13, the pay-to-script-hash address type)",
-              "reason": "This proposal relies on the pay-to-script-hash address format introduced by BIP 13 as part of the same mechanism.",
-              "confidence": "high"
+              "reason": "This proposal is explicitly paired with the pay-to-script-hash address type and relies on that address format as part of the deployment and usage model.",
+              "confidence": "medium"
             },
             {
               "target": "bips:16",
-              "evidence": "It also replaces BIP 16, which is identical in terms of protocol",
-              "reason": "The proposal adopts the same pay-to-script-hash protocol semantics while changing compatibility and rollout behavior, so it directly builds on and amends BIP 16.",
+              "evidence": "This BIP replaces BIPs 12 and 17",
+              "reason": "The proposal explicitly supersedes BIP 16's pay-to-script-hash protocol and discusses compatibility with its validation behavior and deployment assumptions.",
               "confidence": "high"
             },
             {
               "target": "bips:17",
               "evidence": "This BIP replaces BIPs 12 and 17",
-              "reason": "The proposal explicitly states it replaces the script-system extension defined by this BIP.",
+              "reason": "The proposal explicitly replaces BIP 17's script-system extension approach, indicating a direct protocol-level dependency and supersession.",
               "confidence": "high"
             }
           ]

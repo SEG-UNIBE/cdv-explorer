@@ -247,32 +247,28 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:37:15Z_gpt-5.4-mini_3159fb60",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:02:03Z",
+          "timestamp": "2026-06-30T11:37:21Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
-              "evidence": "We adapt the master node generation from BIP-0032",
-              "reason": "The proposal explicitly reuses BIP-0032 master node generation as the basis for its own derivation scheme.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:39",
-              "evidence": "the binary seed defined in [BIP-0039]",
-              "reason": "The master secret can be the BIP-0039 seed, which is a direct input to the derivation process.",
+              "evidence": "We adapt the master node generation from BIP-0032 and SLIP-0010.",
+              "reason": "The proposal explicitly reuses the master node generation approach from BIP-0032 as part of its own key hierarchy construction.",
               "confidence": "high"
             },
             {
               "target": "slips:10",
-              "evidence": "We adapt the master node generation from BIP-0032 and SLIP-0010",
-              "reason": "The proposal states it adapts SLIP-0010's master node generation, relying on that derivation framework as a template.",
+              "evidence": "We adapt the master node generation from BIP-0032 and SLIP-0010.",
+              "reason": "The proposal explicitly reuses the master node generation approach from SLIP-0010 for deriving its master node.",
               "confidence": "high"
             },
             {
               "target": "slips:39",
-              "evidence": "such as that defined in SLIP-0039",
-              "reason": "The master secret may be the SLIP-0039 output, so the scheme depends on that seed format as an allowed input.",
-              "confidence": "low"
+              "evidence": "such as that defined in [SLIP-0039]",
+              "reason": "The proposal treats the SLIP-0039-defined master secret as a supported input source for its derivation process.",
+              "confidence": "medium"
             }
           ]
         }

@@ -176,14 +176,22 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:58:25Z_gpt-5.4-mini_0bc643e4",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:08:29Z",
+          "timestamp": "2026-06-30T11:59:07Z",
+          "status": "success",
           "dependencies": [
             {
+              "target": "nips:01",
+              "evidence": "Events are [addressable events]",
+              "reason": "The proposal depends on the addressable-event model and its kind/tag structure defined by NIP-01.",
+              "confidence": "high"
+            },
+            {
               "target": "nips:40",
-              "evidence": "The expiration date of the order ([NIP-40])",
-              "reason": "The order event semantics explicitly rely on NIP-40 for the expiration tag meaning and format.",
-              "confidence": "low"
+              "evidence": "The expiration date of the order ([NIP-40]",
+              "reason": "The proposal explicitly relies on NIP-40 for the meaning and handling of the expiration tag.",
+              "confidence": "high"
             }
           ]
         }

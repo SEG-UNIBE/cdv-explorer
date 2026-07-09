@@ -531,9 +531,24 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:54:26Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:18:40Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:141",
+              "evidence": "based on the BIP 141 wtxid of a transaction",
+              "reason": "The proposal changes transaction relay to key announcements and requests by wtxid, which is introduced by the referenced BIP.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:144",
+              "evidence": "as described in BIP 144",
+              "reason": "The new MSG_WTX getdata behavior relies on the witness-serialized transaction format defined by the referenced BIP.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

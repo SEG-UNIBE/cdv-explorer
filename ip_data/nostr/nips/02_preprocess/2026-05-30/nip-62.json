@@ -147,19 +147,21 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:59:52Z_gpt-5.4-mini_b29b8ccc",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:07:47Z",
+          "timestamp": "2026-06-30T12:00:36Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:09",
               "evidence": "including [NIP-09](09.md) Deletion Events",
-              "reason": "The proposal's deletion scope explicitly relies on NIP-09 delete event semantics.",
+              "reason": "The proposal’s deletion scope explicitly includes and builds on NIP-09 deletion events as part of the data to remove.",
               "confidence": "high"
             },
             {
               "target": "nips:59",
               "evidence": "SHOULD delete all [NIP-59](59.md) Gift Wraps",
-              "reason": "The proposal extends its deletion requirements to gift wraps defined by NIP-59.",
+              "reason": "The relay behavior for vanish requests extends to NIP-59 gift wraps, so implementation depends on that event type and its semantics.",
               "confidence": "high"
             }
           ]

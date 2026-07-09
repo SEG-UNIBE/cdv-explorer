@@ -506,6 +506,15 @@
         "author": "Johnson Lau",
         "path": "bip-nulldummy.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0147.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -562,25 +571,33 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:53:49Z",
+          "timestamp": "2026-06-30T11:18:14Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
-              "evidence": "deployed by \"version bits\" ... BIP9 using the same parameters",
-              "reason": "The proposal’s activation mechanism is explicitly version-bits deployment defined by BIP 9.",
-              "confidence": "low"
+              "evidence": "This BIP will be deployed by \"version bits\" [https://github.com/bitcoin/bips/blob/master/bip-0009.mediawiki BIP9]",
+              "reason": "The proposal’s activation mechanism is specifically based on BIP9 version-bits deployment.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:62",
+              "evidence": "This document is extracted from the previous [https://github.com/bitcoin/bips/blob/master/bip-0062.mediawiki BIP62] proposal",
+              "reason": "The proposal is explicitly extracted from BIP62, indicating it reuses and narrows BIP62's malleability-related rules.",
+              "confidence": "high"
             },
             {
               "target": "bips:141",
               "evidence": "also pay-to-witness-script-hash scripts described in BIP141",
-              "reason": "The rule is extended to P2WSH scripts introduced by BIP 141, so it relies on that script type and its semantics.",
+              "reason": "The NULLDUMMY rule is extended to P2WSH scripts and is discussed in relation to segregated witness transaction semantics defined by BIP141.",
               "confidence": "high"
             },
             {
               "target": "bips:143",
               "evidence": "using the same parameters for BIP141 and BIP143",
-              "reason": "The deployment section ties activation parameters to BIP 143, making its deployment assumptions dependent on that proposal’s segwit-signature context.",
+              "reason": "The deployment section explicitly ties this proposal’s activation parameters to BIP143, so adoption depends on that deployment configuration.",
               "confidence": "medium"
             }
           ]

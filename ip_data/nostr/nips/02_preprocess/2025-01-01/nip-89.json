@@ -244,26 +244,28 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:58:25Z_gpt-5.4-mini_0bc643e4",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:08:34Z",
+          "timestamp": "2026-06-30T11:59:12Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:01",
               "evidence": "\"content\" is an optional `metadata`-like stringified JSON object, as described in NIP-01.",
-              "reason": "The handler event’s metadata field is defined by and relies on the metadata/content conventions from NIP-01.",
+              "reason": "The handler event format explicitly reuses NIP-01 metadata/content semantics for application information.",
               "confidence": "low"
             },
             {
               "target": "nips:19",
-              "evidence": "\"bech32\" in a URL MUST be replaced by clients with the NIP-19-encoded entity",
-              "reason": "The handler URL substitution and entity-loading behavior depends on NIP-19 encodings and their semantics.",
-              "confidence": "low"
+              "evidence": "`bech32` in a URL MUST be replaced by clients with the NIP-19-encoded entity that should be loaded by the application.",
+              "reason": "The proposal depends on NIP-19 encoding rules to populate handler redirect URLs with the correct entity identifiers.",
+              "confidence": "high"
             },
             {
               "target": "nips:31",
-              "evidence": "the client would allow user B to interact with the unknown-kind event (e.g. tapping on it). User B's client might display the event using its `alt` tag (as described in NIP-31).",
-              "reason": "The proposal’s unknown-kind display flow relies on the alt-tag presentation behavior defined by NIP-31.",
-              "confidence": "low"
+              "evidence": "using its `alt` tag (as described in NIP-31).",
+              "reason": "The user-flow relies on NIP-31's alt-tag semantics for fallback display of unknown event kinds.",
+              "confidence": "medium"
             }
           ]
         }

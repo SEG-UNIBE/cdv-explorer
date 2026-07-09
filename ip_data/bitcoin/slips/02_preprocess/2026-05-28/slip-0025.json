@@ -270,38 +270,52 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:19:48Z_gpt-5.4-mini_d16626f8",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:55:33Z",
+          "timestamp": "2026-06-30T11:20:06Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
-              "evidence": "based on the algorithm defined in BIP 32",
-              "reason": "The proposal’s hierarchy and derivation path are built on BIP 32 key derivation.",
-              "confidence": "low"
+              "evidence": "based on the algorithm defined in [BIP 32]",
+              "reason": "The proposal’s derivation hierarchy and path are built on BIP 32 key derivation.",
+              "confidence": "high"
             },
             {
               "target": "bips:43",
-              "evidence": "and the scheme described in BIP 43",
-              "reason": "The proposal adopts BIP 43’s purpose-based derivation structure to define its hierarchy.",
+              "evidence": "and the scheme described in [BIP 43]",
+              "reason": "The proposal uses the BIP 43 purpose-based hierarchical scheme to structure its derivation path.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:48",
+              "evidence": "The inclusion of this field is inspired by [BIP 48]",
+              "reason": "The script-type level follows the multi-script account structure introduced by BIP 48.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:78",
+              "evidence": "such as [BIP 78] PayJoin",
+              "reason": "The script-type/accounting discussion explicitly uses BIP 78 as an example of the same multi-script matching requirement.",
               "confidence": "low"
             },
             {
               "target": "bips:86",
-              "evidence": "The scriptPubKey is defined exactly as specified in the [Address derivation] section of BIP 86",
-              "reason": "The address construction reuses BIP 86’s Taproot output key and scriptPubKey derivation.",
-              "confidence": "low"
+              "evidence": "the purpose of this document is largely the same as [BIP 86]",
+              "reason": "The proposal is designed around the same purpose as BIP 86 and reuses its Taproot address-derivation logic in one script type.",
+              "confidence": "medium"
             },
             {
               "target": "slips:10",
-              "evidence": "based on the algorithm defined in [BIP 32] and [SLIP 10]",
-              "reason": "The proposal explicitly relies on SLIP 10 as part of the key derivation foundation.",
-              "confidence": "low"
+              "evidence": "and [SLIP 10]",
+              "reason": "The proposal explicitly includes SLIP 10 as part of the algorithm basis for deriving keys.",
+              "confidence": "high"
             },
             {
               "target": "slips:44",
-              "evidence": "The value of coin_type MUST be one of the coin types defined in SLIP 44",
-              "reason": "Coin type selection and network separation depend on SLIP 44’s registered coin type registry.",
-              "confidence": "low"
+              "evidence": "The value of `coin_type` MUST be one of the coin types defined in [SLIP 44]",
+              "reason": "The coin-type level is constrained by SLIP 44’s registered coin types, making the hierarchy depend on that registry.",
+              "confidence": "high"
             }
           ]
         }

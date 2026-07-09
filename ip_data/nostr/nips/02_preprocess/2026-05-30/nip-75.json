@@ -169,13 +169,15 @@
       "body_extracted_regex": [],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:59:52Z_gpt-5.4-mini_b29b8ccc",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:07:52Z",
+          "timestamp": "2026-06-30T12:00:43Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:57",
-              "evidence": "The goal MAY include multiple beneficiary pubkeys by specifying [`zap` tags](57.md#appendix-g-zap-tag-on-other-events).",
-              "reason": "This proposal relies on the zap tag mechanism defined by NIP 57 to support multiple beneficiaries on goal events.",
+              "evidence": "specifying [`zap` tags](57.md#appendix-g-zap-tag-on-other-events)",
+              "reason": "The proposal reuses the zap-tag mechanism from NIP 57 to support multiple beneficiaries on a goal event.",
               "confidence": "high"
             }
           ]

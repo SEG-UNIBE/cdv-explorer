@@ -555,38 +555,48 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:32Z",
+          "timestamp": "2026-06-30T11:36:06Z",
+          "status": "api_error",
+          "dependencies": [],
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 200000, Requested 2357. Please try again in 707ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+        },
+        {
+          "run_id": "2026-06-30T11:38:11Z_gpt-5.4-mini_422651ce",
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-30T11:38:21Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
-              "evidence": "the existing \"segwit\" deployment",
-              "reason": "The proposal’s activation logic explicitly depends on the BIP9 version-bits deployment state and lock-in/activation semantics.",
-              "confidence": "high"
+              "evidence": "the existing \"segwit\" deployment using bit 1",
+              "reason": "The proposal enforces signaling and lock-in behavior based on the BIP9 version-bits deployment mechanism for segwit.",
+              "confidence": "low"
             },
             {
               "target": "bips:16",
-              "evidence": "A BIP16 like soft fork flag day activation",
-              "reason": "The proposal directly models its enforcement and activation approach on BIP16-style flag-day soft fork activation.",
-              "confidence": "high"
+              "evidence": "This BIP specifies a BIP16 like soft fork flag day activation",
+              "reason": "The proposal adopts the BIP16-style flag-day activation model as its enforcement approach.",
+              "confidence": "low"
             },
             {
               "target": "bips:141",
-              "evidence": "existing segwit deployment ... to activate BIP141",
-              "reason": "The proposal’s enforced signaling is specifically intended to activate the segwit rules introduced by BIP141.",
-              "confidence": "low"
+              "evidence": "activate BIP141, BIP143 and BIP147",
+              "reason": "The proposal is explicitly designed to force activation of segwit, which here includes BIP141 as part of the deployment being activated.",
+              "confidence": "high"
             },
             {
               "target": "bips:143",
-              "evidence": "existing segwit deployment ... to activate BIP143",
-              "reason": "The proposal relies on the segwit deployment that activates BIP143’s witness signature verification rules.",
-              "confidence": "low"
+              "evidence": "activate BIP141, BIP143 and BIP147",
+              "reason": "The proposal's target deployment includes BIP143 and depends on that deployment's activation state.",
+              "confidence": "high"
             },
             {
               "target": "bips:147",
-              "evidence": "existing segwit deployment ... to activate BIP147",
-              "reason": "The proposal relies on the segwit deployment that activates BIP147’s malleability-related consensus rules.",
-              "confidence": "low"
+              "evidence": "activate BIP141, BIP143 and BIP147",
+              "reason": "The proposal's target deployment includes BIP147 and depends on that deployment's activation state.",
+              "confidence": "high"
             }
           ]
         }

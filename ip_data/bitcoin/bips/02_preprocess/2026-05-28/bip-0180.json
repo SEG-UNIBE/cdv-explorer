@@ -594,14 +594,24 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:54:08Z",
+          "timestamp": "2026-06-30T11:18:27Z",
+          "status": "api_error",
+          "dependencies": [],
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 200000, Requested 3255. Please try again in 976ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+        },
+        {
+          "run_id": "2026-06-30T11:33:45Z_gpt-5.4-mini_fbc31d5d",
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-30T11:33:58Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:141",
-              "evidence": "The block weight defined by BIP 141 is the size of the block stripped of its segwit signatures times 3, plus the full size of the block.",
-              "reason": "This proposal’s weight-proof calculation directly uses the block weight definition introduced by BIP 141.",
-              "confidence": "low"
+              "evidence": "The block weight defined by [[bip-0141.mediawiki|BIP 141]] is the size of the block stripped of its segwit signatures times 3, plus the full size of the block.",
+              "reason": "The proposal’s weight-proof verification relies on BIP 141’s block-weight definition to compute and compare the lower-bound block weight.",
+              "confidence": "high"
             }
           ]
         }

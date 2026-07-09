@@ -442,38 +442,22 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:59:52Z_gpt-5.4-mini_b29b8ccc",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:07:45Z",
+          "timestamp": "2026-06-30T12:00:30Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:01",
-              "evidence": "Clients can retrieve `zap receipt`s on events and pubkeys using a NIP-01 filter",
-              "reason": "The proposal relies on NIP-01 event retrieval/filtering to locate zap receipts.",
-              "confidence": "low"
-            },
-            {
-              "target": "nips:19",
-              "evidence": "Calculate a recipient's lnurl pay request url from the `zap` tag ... or by decoding their lud16 field on their profile according to the lnurl specifications",
-              "reason": "The protocol depends on the LNURL/LUD-16 lightning address scheme to derive the recipient callback URL.",
-              "confidence": "low"
-            },
-            {
-              "target": "nips:23",
-              "evidence": "`a` is an optional event coordinate that allows tipping addressable events such as NIP-23 long-form notes",
-              "reason": "The `a` tag meaning and zap targeting of addressable events depend on the event-coordinate semantics introduced by NIP-23.",
-              "confidence": "high"
-            },
-            {
-              "target": "nips:30",
-              "evidence": "If `allowsNostr` exists and it is `true`, and if `nostrPubkey` exists and is a valid BIP 340 public key in hex",
-              "reason": "The proposal depends on profile metadata fields from NIP-05/Internet Identifiers to discover the recipient's LNURL pay endpoint and pubkey.",
+              "evidence": "retrieved in step 1 of the protocol flow",
+              "reason": "The zap receipt validation flow relies on NIP-01-style filters to retrieve zap receipts by event or pubkey.",
               "confidence": "medium"
             },
             {
-              "target": "nips:65",
-              "evidence": "the client should create a `zap request` event as described in Appendix A of this NIP and sign it",
-              "reason": "Zap requests are structured as signed events with standard Nostr event fields and tags, relying on the event model and signing semantics.",
-              "confidence": "high"
+              "target": "nips:23",
+              "evidence": "such as NIP-23 long-form notes",
+              "reason": "The zap request format includes an optional coordinate tag specifically for tipping addressable events defined by that proposal.",
+              "confidence": "medium"
             }
           ]
         }

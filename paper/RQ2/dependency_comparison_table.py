@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any
 
 from analysis.dependencies.constants import (
     BODY_EXTRACTED_LLM,
@@ -8,7 +8,6 @@ from analysis.dependencies.constants import (
     PREAMBLE_EXTRACTED,
 )
 from analysis.dependencies.metrics import _build_pairwise_comparisons
-
 
 LATEX_TABCOLSEP_PT = 4
 APPROACH_ORDER = [
@@ -47,14 +46,14 @@ def _format_count_share(count: int, share: float) -> str:
     return f"{count} ({share * 100:.1f}\\%)"
 
 
-def _get_approach_only_rate(summary: Dict[str, Any]) -> float:
+def _get_approach_only_rate(summary: dict[str, Any]) -> float:
     approach_total = int(summary.get("approach_total", 0) or 0)
     if approach_total <= 0:
         return 0.0
     return float(summary.get("approach_only", 0) or 0) / approach_total
 
 
-def _build_cell(comparison: Dict[str, Any]) -> Dict[str, str]:
+def _build_cell(comparison: dict[str, Any]) -> dict[str, str]:
     summary = comparison.get("summary", {})
     return {
         r"$A \cap B$": _format_count_share(
@@ -73,12 +72,14 @@ def _build_cell(comparison: Dict[str, Any]) -> Dict[str, str]:
 
 
 def _get_pairwise_summary(
-    pairwise_comparisons: Dict[str, Any],
+    pairwise_comparisons: dict[str, Any],
     *,
     approach: str,
     baseline: str,
-) -> Dict[str, Any]:
-    return (pairwise_comparisons.get(f"{approach}__vs__{baseline}") or {}).get("summary", {})
+) -> dict[str, Any]:
+    return (pairwise_comparisons.get(f"{approach}__vs__{baseline}") or {}).get(
+        "summary", {}
+    )
 
 
 def _format_approach_label_with_total(label: str, total: int) -> str:
@@ -103,7 +104,7 @@ def _indent_block(block: str, prefix: str = "    ") -> list[str]:
 
 
 def _build_partial_dependency_comparison_tabular(
-    pairwise_comparisons: Dict[str, Any],
+    pairwise_comparisons: dict[str, Any],
     *,
     row_approach: str,
     column_approaches: list[str],
@@ -122,26 +123,29 @@ def _build_partial_dependency_comparison_tabular(
         else _format_bold_label_with_plain_total
     )
 
-    header_line = " & ".join(
-        [
-            r"\diagbox{\textbf{$A$}}{\textbf{$B$}}",
-            r"\textbf{Metric}",
-            *[
-                label_formatter(
-                    SHORT_LABELS[key],
-                    int(
-                        _get_pairwise_summary(
-                            pairwise_comparisons,
-                            approach=row_approach,
-                            baseline=key,
-                        ).get("baseline_total", 0)
-                        or 0
-                    ),
-                )
-                for key in column_approaches
-            ],
-        ]
-    ) + r" \\"
+    header_line = (
+        " & ".join(
+            [
+                r"\diagbox{\textbf{$A$}}{\textbf{$B$}}",
+                r"\textbf{Metric}",
+                *[
+                    label_formatter(
+                        SHORT_LABELS[key],
+                        int(
+                            _get_pairwise_summary(
+                                pairwise_comparisons,
+                                approach=row_approach,
+                                baseline=key,
+                            ).get("baseline_total", 0)
+                            or 0
+                        ),
+                    )
+                    for key in column_approaches
+                ],
+            ]
+        )
+        + r" \\"
+    )
 
     metric_values_by_baseline = [
         _build_cell(pairwise_comparisons.get(f"{row_approach}__vs__{baseline}", {}))
@@ -177,17 +181,23 @@ def _build_partial_dependency_comparison_tabular(
 
 
 def export_dependency_comparison_latex_table(
-    network_data: Dict[str, Any],
+    network_data: dict[str, Any],
     output_path: Path,
     *,
     tabcolsep_pt: int = LATEX_TABCOLSEP_PT,
 ) -> None:
     pairwise_comparisons = _build_pairwise_comparisons(network_data)
 
-    header_line = " & ".join(
-        [r"\diagbox{\textbf{$A$}}{\textbf{$B$}}", r"\textbf{Metric}"]
-        + [rf"\textbf{{{_latex_escape(SHORT_LABELS[key])}}}" for key in APPROACH_ORDER]
-    ) + r" \\"
+    header_line = (
+        " & ".join(
+            [r"\diagbox{\textbf{$A$}}{\textbf{$B$}}", r"\textbf{Metric}"]
+            + [
+                rf"\textbf{{{_latex_escape(SHORT_LABELS[key])}}}"
+                for key in APPROACH_ORDER
+            ]
+        )
+        + r" \\"
+    )
 
     body_lines = []
     metric_order = [r"$A \cap B$", r"$A' \cap B$", r"$A \cap B'$"]
@@ -201,7 +211,9 @@ def export_dependency_comparison_latex_table(
         for metric_index, metric_label in enumerate(metric_order):
             row_cells = []
             if metric_index == 0:
-                row_cells.append(rf"\multirow{{3}}{{*}}{{\textbf{{{_latex_escape(SHORT_LABELS[approach])}}}}}")
+                row_cells.append(
+                    rf"\multirow{{3}}{{*}}{{\textbf{{{_latex_escape(SHORT_LABELS[approach])}}}}}"
+                )
             else:
                 row_cells.append("")
             row_cells.append(metric_label)
@@ -237,7 +249,7 @@ def export_dependency_comparison_latex_table(
 
 
 def export_preamble_dependency_comparison_latex_table(
-    network_data: Dict[str, Any],
+    network_data: dict[str, Any],
     output_path: Path,
     *,
     tabcolsep_pt: int = LATEX_TABCOLSEP_PT,
@@ -269,7 +281,7 @@ def export_preamble_dependency_comparison_latex_table(
 
 
 def export_preamble_plus_regex_llm_dependency_comparison_latex_table(
-    network_data: Dict[str, Any],
+    network_data: dict[str, Any],
     output_path: Path,
     *,
     tabcolsep_pt: int = LATEX_TABCOLSEP_PT,

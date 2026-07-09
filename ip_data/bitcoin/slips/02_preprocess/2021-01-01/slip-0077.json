@@ -188,20 +188,22 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:37:15Z_gpt-5.4-mini_3159fb60",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:02:11Z",
+          "timestamp": "2026-06-30T11:37:30Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:39",
-              "evidence": "The above seed should be derived using [BIP-0039] mnemonic and passphrase",
-              "reason": "The proposal relies on BIP 39 seed generation as the input to its master blinding key derivation.",
-              "confidence": "low"
+              "evidence": "The above seed should be derived using [BIP-0039](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki#from-mnemonic-to-seed) mnemonic and passphrase",
+              "reason": "The proposal requires the BIP-0039 mnemonic-to-seed process as the input seed source for the blinding-key derivation.",
+              "confidence": "high"
             },
             {
               "target": "slips:21",
-              "evidence": "we suggest using [SLIP-0021] derivation scheme for `master_blinding_key`",
-              "reason": "The proposal builds its master blinding key derivation directly on the SLIP 21 hierarchical HMAC-based derivation scheme.",
-              "confidence": "low"
+              "evidence": "we suggest using [SLIP-0021](https://github.com/satoshilabs/slips/blob/master/slip-0021.md) derivation scheme for `master_blinding_key`",
+              "reason": "The proposal explicitly bases master blinding key derivation on the SLIP-0021 hierarchical key derivation scheme.",
+              "confidence": "high"
             }
           ]
         }

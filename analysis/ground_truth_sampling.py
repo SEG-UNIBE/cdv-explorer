@@ -1,16 +1,18 @@
 from __future__ import annotations
 
-import csv
 import json
 import random
 from collections import Counter, defaultdict
+from collections.abc import Mapping, Sequence
 from pathlib import Path
-from typing import Any, Dict, List, Mapping, Sequence
+from typing import Any
 
 from analysis.dependencies.constants import GROUND_TRUTH_CURATED
 from analysis.validation.ground_truth import (
-    REVIEWED_IPS_CSV_COLUMNS,
+    _compose_graph_key,
     load_ground_truth_ips,
+    load_reviewed_ip_append_rows,
+    write_reviewed_ip_append_workbook,
 )
 
 ALL_METHODS = "all_methods"
@@ -37,7 +39,7 @@ def _graph_key_sort_parts(value: Any) -> tuple[str, int, str]:
         return (source_slug, 1_000_000_000, proposal_id)
 
 
-def _load_network_data(network_path: Path) -> Dict[str, Any]:
+def _load_network_data(network_path: Path) -> dict[str, Any]:
     with network_path.open(encoding="utf-8") as handle:
         payload = json.load(handle)
     if not isinstance(payload, dict):
@@ -45,7 +47,7 @@ def _load_network_data(network_path: Path) -> Dict[str, Any]:
     return payload
 
 
-def _era_labels(count: int) -> List[str]:
+def _era_labels(count: int) -> list[str]:
     if count <= 1:
         return ["all"]
     if count == 2:
@@ -55,7 +57,9 @@ def _era_labels(count: int) -> List[str]:
     return [f"era_{index + 1}" for index in range(count)]
 
 
-def _assign_era_buckets(candidates: List[Dict[str, Any]], era_bucket_count: int) -> None:
+def _assign_era_buckets(
+    candidates: list[dict[str, Any]], era_bucket_count: int
+) -> None:
     labels = _era_labels(era_bucket_count)
     dated = [
         (index, str(candidate.get("created") or ""))
@@ -87,24 +91,29 @@ def _density_bucket(count: int, low_max: int) -> str:
 
 
 def _sample_candidates(
-    candidates: Sequence[Dict[str, Any]],
+    candidates: Sequence[dict[str, Any]],
     *,
     count: int,
     seed: int,
-) -> List[Dict[str, Any]]:
+) -> list[dict[str, Any]]:
     if count <= 0:
         return []
 
     rng = random.Random(seed)
-    strata: dict[tuple[str, str], list[Dict[str, Any]]] = defaultdict(list)
+    strata: dict[tuple[str, str], list[dict[str, Any]]] = defaultdict(list)
     for candidate in candidates:
-        strata[(str(candidate.get("era_bucket") or "unknown"), str(candidate.get("density_bucket") or "unknown"))].append(dict(candidate))
+        strata[
+            (
+                str(candidate.get("era_bucket") or "unknown"),
+                str(candidate.get("density_bucket") or "unknown"),
+            )
+        ].append(dict(candidate))
 
     ordered_strata = sorted(strata)
     for rows in strata.values():
         rng.shuffle(rows)
 
-    sample: List[Dict[str, Any]] = []
+    sample: list[dict[str, Any]] = []
     while len(sample) < count:
         progressed = False
         for key in ordered_strata:
@@ -132,13 +141,17 @@ def build_reviewed_ip_sample(
     density_basis: str = ALL_METHODS,
     proposal_type: str | None = None,
     exclude_ips: Sequence[str] | None = None,
-) -> List[Dict[str, Any]]:
+) -> list[dict[str, Any]]:
     nodes = network_data.get("nodes", [])
     edges = network_data.get("dependency_edges", [])
     if not isinstance(nodes, list) or not isinstance(edges, list):
-        raise ValueError("network_data must contain `nodes` and `dependency_edges` arrays")
+        raise ValueError(
+            "network_data must contain `nodes` and `dependency_edges` arrays"
+        )
 
-    exclude = {str(value).strip() for value in (exclude_ips or []) if str(value).strip()}
+    exclude = {
+        str(value).strip() for value in (exclude_ips or []) if str(value).strip()
+    }
     allowed_methods = DENSITY_BASIS_OPTIONS.get(density_basis)
     if not allowed_methods:
         raise ValueError(f"Unknown density basis `{density_basis}`")
@@ -147,7 +160,10 @@ def build_reviewed_ip_sample(
         if not isinstance(edge, Mapping):
             continue
         extraction_method = str(edge.get("extraction_method") or "")
-        if extraction_method == GROUND_TRUTH_CURATED or extraction_method not in allowed_methods:
+        if (
+            extraction_method == GROUND_TRUTH_CURATED
+            or extraction_method not in allowed_methods
+        ):
             continue
         source = str(edge.get("source") or "").strip()
         target = str(edge.get("target") or "").strip()
@@ -155,7 +171,7 @@ def build_reviewed_ip_sample(
             continue
         outgoing_targets[source].add(target)
 
-    candidates: List[Dict[str, Any]] = []
+    candidates: list[dict[str, Any]] = []
     for node in nodes:
         if not isinstance(node, Mapping):
             continue
@@ -169,33 +185,24 @@ def build_reviewed_ip_sample(
         if proposal_type and node_type != proposal_type:
             continue
         extracted_target_count = len(outgoing_targets.get(ip, set()))
-        candidates.append({
-            "ip": ip,
-            "created": str(node.get("created") or "").strip(),
-            "status": str(node.get("status") or "").strip(),
-            "type": node_type,
-            "layer": str(node.get("layer") or "").strip(),
-            "title": str(node.get("title") or "").strip(),
-            "extracted_target_count": extracted_target_count,
-            "density_bucket": _density_bucket(extracted_target_count, density_low_max),
-            "density_basis": density_basis,
-        })
+        candidates.append(
+            {
+                "ip": ip,
+                "created": str(node.get("created") or "").strip(),
+                "status": str(node.get("status") or "").strip(),
+                "type": node_type,
+                "layer": str(node.get("layer") or "").strip(),
+                "title": str(node.get("title") or "").strip(),
+                "extracted_target_count": extracted_target_count,
+                "density_bucket": _density_bucket(
+                    extracted_target_count, density_low_max
+                ),
+                "density_basis": density_basis,
+            }
+        )
 
     _assign_era_buckets(candidates, era_bucket_count)
     return _sample_candidates(candidates, count=count, seed=seed)
-
-
-def write_ips_csv(rows: Sequence[Mapping[str, Any]], output_path: Path) -> None:
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    sorted_rows = sorted(
-        rows,
-        key=lambda row: _graph_key_sort_parts(row.get("ip")),
-    )
-    with output_path.open("w", encoding="utf-8", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=list(REVIEWED_IPS_CSV_COLUMNS), delimiter="\t")
-        writer.writeheader()
-        for row in sorted_rows:
-            writer.writerow({field: row.get(field, "") for field in REVIEWED_IPS_CSV_COLUMNS})
 
 
 def prefill_ips_csv(
@@ -211,11 +218,23 @@ def prefill_ips_csv(
     proposal_type: str | None = None,
     reviewer: str = "",
     replace: bool = False,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     network_data = _load_network_data(network_path)
-    output_path = Path("ip_data") / ecosystem_slug / "ground_truth" / "ips.csv"
-    existing_rows = [] if replace else load_ground_truth_ips(ecosystem_slug, strict=False)
-    existing_ips = [str(row.get("ip") or "").strip() for row in existing_rows]
+    reviewed_rows = load_ground_truth_ips(ecosystem_slug, strict=False)
+    pending_rows = [] if replace else load_reviewed_ip_append_rows(ecosystem_slug)
+    existing_ips = {
+        str(row.get("ip") or "").strip()
+        for row in reviewed_rows
+        if str(row.get("ip") or "").strip()
+    }
+    existing_ips.update(
+        {
+            _compose_graph_key(row.get("ip_source"), row.get("ip_id"))
+            for row in pending_rows
+            if str(row.get("ip_source") or "").strip()
+            and str(row.get("ip_id") or "").strip()
+        }
+    )
 
     sampled = build_reviewed_ip_sample(
         network_data,
@@ -226,7 +245,7 @@ def prefill_ips_csv(
         density_low_max=density_low_max,
         density_basis=density_basis,
         proposal_type=proposal_type,
-        exclude_ips=existing_ips,
+        exclude_ips=sorted(existing_ips),
     )
 
     new_rows = [
@@ -251,19 +270,43 @@ def prefill_ips_csv(
         for entry in sampled
     ]
 
-    rows_to_write = existing_rows + new_rows
-    write_ips_csv(rows_to_write, output_path)
+    rows_to_write = [
+        {
+            "ip": _compose_graph_key(row.get("ip_source"), row.get("ip_id")),
+            "reviewer": str(row.get("reviewer") or ""),
+            "reviewed_at": str(row.get("reviewed_at") or ""),
+            "sampling_strategy": str(row.get("sampling_strategy") or ""),
+            "sampling_snapshot": str(row.get("sampling_snapshot") or ""),
+            "sampling_seed": str(row.get("sampling_seed") or ""),
+            "era_bucket": str(row.get("era_bucket") or ""),
+            "density_bucket": str(row.get("density_bucket") or ""),
+            "density_basis": str(row.get("density_basis") or ""),
+            "created": str(row.get("created") or ""),
+            "status": str(row.get("status") or ""),
+            "type": str(row.get("type") or ""),
+            "layer": str(row.get("layer") or ""),
+            "title": str(row.get("title") or ""),
+            "extracted_target_count": str(row.get("extracted_target_count") or ""),
+            "note": str(row.get("note") or ""),
+        }
+        for row in pending_rows
+    ] + new_rows
+    rows_to_write = sorted(
+        rows_to_write,
+        key=lambda row: _graph_key_sort_parts(row.get("ip")),
+    )
+    workbook_path = write_reviewed_ip_append_workbook(ecosystem_slug, rows_to_write)
 
     return {
-        "output_path": output_path,
-        "existing_count": len(existing_rows),
+        "workbook_path": workbook_path,
+        "existing_count": len(pending_rows),
+        "reviewed_count": len(reviewed_rows),
         "added_count": len(new_rows),
         "requested_count": count,
         "total_count": len(rows_to_write),
         "proposal_type": proposal_type,
         "sampled_rows": new_rows,
         "strata_counts": Counter(
-            f"{row['era_bucket']} / {row['density_bucket']}"
-            for row in new_rows
+            f"{row['era_bucket']} / {row['density_bucket']}" for row in new_rows
         ),
     }

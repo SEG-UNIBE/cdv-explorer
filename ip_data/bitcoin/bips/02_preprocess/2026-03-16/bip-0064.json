@@ -513,6 +513,15 @@
         "author": "Mike Hearn",
         "path": "bip-0064.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0064.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -539,16 +548,11 @@
       "body_extracted_regex": [],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:57:55Z",
-          "dependencies": [
-            {
-              "target": "bips:37",
-              "evidence": "When combined with Bloom filtering this can be reasonably efficient.",
-              "reason": "The proposal explicitly relies on Bloom filtering as the complementary mechanism for efficient block searching and SPV-style querying.",
-              "confidence": "high"
-            }
-          ]
+          "timestamp": "2026-06-30T11:42:32Z",
+          "status": "success",
+          "dependencies": []
         }
       ]
     }

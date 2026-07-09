@@ -548,9 +548,50 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:59:40Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:46:22Z",
+          "status": "api_error",
+          "dependencies": [],
+          "error_message": "Rate limit: Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 200000, Requested 2998. Please try again in 899ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+        },
+        {
+          "run_id": "2026-06-30T11:47:34Z_gpt-5.4-mini_179c9ca7",
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-30T11:47:38Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:341",
+              "evidence": "The output scripts produced are BIP341 taproot outputs as specified in BIP352.",
+              "reason": "The descriptor's resulting scripts are Taproot outputs, so its output format depends on BIP341 script semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:350",
+              "evidence": "It is a [https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki Bech32m] encoding",
+              "reason": "The new spscan and spspend key expressions reuse Bech32m encoding for their serialization format.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:352",
+              "evidence": "combined with sender input public keys as defined in BIP352",
+              "reason": "The descriptor's output script semantics depend on the silent payments protocol defined by BIP352, including how sender inputs are used to derive outputs.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:380",
+              "evidence": "sp() descriptors use the format and general operation specified in BIP380",
+              "reason": "The proposal is built as a new descriptor type within the descriptor framework defined by BIP380.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:390",
+              "evidence": "other key expression BIPs (e.g. musig() as defined in BIP390)",
+              "reason": "The two-argument sp() form allows spend keys expressed via key-expression mechanisms from BIP390, so support for those expressions is part of the proposal's key handling.",
+              "confidence": "low"
+            }
+          ]
         }
       ]
     }

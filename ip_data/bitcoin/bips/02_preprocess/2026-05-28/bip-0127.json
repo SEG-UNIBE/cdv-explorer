@@ -610,13 +610,15 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:53:35Z",
+          "timestamp": "2026-06-30T11:18:01Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:174",
-              "evidence": "The proposal also includes the description of a PSBT extension",
-              "reason": "The PSBT extension adds a new input field and wallet-processing rules within the BIP 174 PSBT format, so it substantively depends on PSBT semantics.",
+              "evidence": "The \"commitment input\" detailed in the proof format section does not spend an existing UTXO",
+              "reason": "The proposal adds a PSBT extension and relies on the PSBT input map semantics defined by BIP 174 for wallet signing workflows.",
               "confidence": "high"
             }
           ]

@@ -578,12 +578,21 @@
         "author": "Peter Todd",
         "path": "bip-0018.mediawiki",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "387fc6011bd804609fd751786e50439d5c11a097",
         "timestamp": "2016-08-23T19:47:29Z",
         "date": "2016-08-23",
+        "author": "Luke Dashjr",
+        "path": "bip-0018.mediawiki",
+        "status": "Accepted",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
         "author": "Luke Dashjr",
         "path": "bip-0018.mediawiki",
         "status": "Accepted",
@@ -634,37 +643,39 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:00:28Z",
+          "timestamp": "2026-06-30T11:35:12Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:11",
-              "evidence": "This BIP replaces BIPs 12 and 17",
-              "reason": "The proposal explicitly supersedes prior script-system extensions, indicating it builds on and constrains those earlier mechanisms.",
-              "confidence": "high"
+              "evidence": "The signature operation counting rules are intended to be easy and quick to implement by statically scanning scriptCheck.",
+              "reason": "The proposal's scriptCheck execution model and multisignature example rely on the same M-of-N multisignature transaction semantics introduced by BIP 11.",
+              "confidence": "medium"
             },
             {
               "target": "bips:12",
-              "evidence": "This BIP replaces BIPs 12 and 17",
-              "reason": "The proposal explicitly supersedes prior script-system extensions, indicating it builds on and constrains those earlier mechanisms.",
+              "evidence": "This BIP replaces BIPs 12 and 17, which propose extensions to the Script system to allow scriptPubKey to outsource its verification.",
+              "reason": "The proposal explicitly states it replaces BIP 12, indicating direct functional overlap and supersession of that script extension mechanism.",
               "confidence": "high"
             },
             {
               "target": "bips:13",
-              "evidence": "The Motivation for this BIP (and BIP 13, the pay-to-script-hash address type)",
-              "reason": "The proposal relies on the pay-to-script-hash address type as part of the same deployment and infrastructure change.",
-              "confidence": "high"
+              "evidence": "The motivation for this BIP (and BIP 13, the pay-to-script-hash address type)",
+              "reason": "The proposal is designed around the pay-to-script-hash address type and its 20-byte hash representation, making BIP 13's address format part of the deployment model.",
+              "confidence": "medium"
             },
             {
               "target": "bips:16",
               "evidence": "It also replaces BIP 16, which is identical in terms of protocol",
-              "reason": "The proposal adopts the same pay-to-script-hash protocol semantics and changes the behavior from the target.",
+              "reason": "The proposal reuses the same pay-to-script-hash protocol behavior while changing implementation and deprecation details, so understanding the transaction format and validation rules depends on BIP 16.",
               "confidence": "high"
             },
             {
               "target": "bips:17",
-              "evidence": "This BIP replaces BIPs 12 and 17",
-              "reason": "The proposal explicitly supersedes prior script-system extensions, indicating it builds on and constrains those earlier mechanisms.",
+              "evidence": "This BIP replaces BIPs 12 and 17, which propose extensions to the Script system to allow scriptPubKey to outsource its verification.",
+              "reason": "The proposal explicitly states it replaces BIP 17, indicating direct reliance on and replacement of that earlier script extension design.",
               "confidence": "high"
             }
           ]

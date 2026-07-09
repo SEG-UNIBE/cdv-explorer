@@ -377,19 +377,21 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:58:25Z_gpt-5.4-mini_0bc643e4",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:08:19Z",
+          "timestamp": "2026-06-30T11:58:46Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:01",
               "evidence": "As with NIP-01, a relay hint SHOULD be included when using `e` and `p` tags.",
-              "reason": "This proposal relies on the event and tag semantics defined by NIP-01 for relays hints and tagged event structure.",
+              "reason": "The labeling event format reuses the relay-hint convention for `e` and `p` tags from NIP-01.",
               "confidence": "high"
             },
             {
               "target": "nips:09",
-              "evidence": "events may be requested for deletion using [NIP-09](09.md) and a replacement may be published",
-              "reason": "Bulk-labeling events can be deleted and replaced using NIP-09, so its deletion/replacement mechanics are part of the proposal's operation.",
+              "evidence": "events may be requested for deletion using [NIP-09](09.md) and a replacement may be published.",
+              "reason": "Bulk-labeling workflows rely on NIP-09 deletion and replacement mechanics for updating label sets.",
               "confidence": "high"
             }
           ]

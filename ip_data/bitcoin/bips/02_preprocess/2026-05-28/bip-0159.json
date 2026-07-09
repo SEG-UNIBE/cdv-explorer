@@ -571,9 +571,18 @@
       "body_extracted_regex": [],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:53:57Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:18:20Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:31",
+              "evidence": "Bitcoin right now only offers the <code>NODE_NETWORK</code> service bit",
+              "reason": "The proposal defines a new service bit in addition to the existing NODE_NETWORK flag, so it depends on that earlier service-bit convention.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

@@ -595,7 +595,7 @@
         "author": "genjix",
         "path": "bip-0016.md",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "da31790ef6fbc04d4b2a56121f3252956dafd08e",
@@ -604,13 +604,22 @@
         "author": "Luke Dashjr",
         "path": "bip-0016.md",
         "status": "Accepted",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "57488fbd8b6d2d581b12864ce7a07149e19a177d",
         "timestamp": "2013-10-21T00:43:57-04:00",
         "date": "2013-10-21",
         "author": "Peter Todd",
+        "path": "bip-0016.mediawiki",
+        "status": "Final",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
         "path": "bip-0016.mediawiki",
         "status": "Final",
         "standard": "bip2"
@@ -634,9 +643,24 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:00:24Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:35:19Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:11",
+              "evidence": "M-of-N Multisignature Transactions [[bip-0011.mediawiki|BIP 11]]",
+              "reason": "The proposal explicitly references multisignature transactions as a supported redeemScript form and relies on that earlier multisig transaction format as a concrete use case.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:13",
+              "evidence": "The Motivation for this BIP (and BIP 13, the pay-to-script-hash address type)",
+              "reason": "This proposal is designed to work with the P2SH address type introduced by BIP 13, which is part of the deployment and user-facing format for the transaction type.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

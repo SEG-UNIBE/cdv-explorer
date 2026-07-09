@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 import os
+from collections.abc import Mapping
 from dataclasses import dataclass
-from typing import Any, Mapping
+from typing import Any
 
 from ecosystems import ECOSYSTEM_REGISTRY
 
@@ -22,14 +23,20 @@ class SourceContext:
         *,
         ecosystem_slug: str | None = None,
         source_slug: str | None = None,
-    ) -> "SourceContext":
-        return cls(config=config, ecosystem_slug=ecosystem_slug, source_slug=source_slug)
+    ) -> SourceContext:
+        return cls(
+            config=config, ecosystem_slug=ecosystem_slug, source_slug=source_slug
+        )
 
     @classmethod
-    def default(cls) -> "SourceContext":
-        eco_slug = os.environ.get("CDV_ECOSYSTEM") or next(iter(ECOSYSTEM_REGISTRY), None)
+    def default(cls) -> SourceContext:
+        eco_slug = os.environ.get("CDV_ECOSYSTEM") or next(
+            iter(ECOSYSTEM_REGISTRY), None
+        )
         if not eco_slug:
-            raise ValueError("No ecosystems registered. Add a .yml file to the ecosystems/ directory.")
+            raise ValueError(
+                "No ecosystems registered. Add a .yml file to the ecosystems/ directory."
+            )
         eco = ECOSYSTEM_REGISTRY.get(eco_slug)
         if eco is None:
             available = ", ".join(sorted(ECOSYSTEM_REGISTRY.keys()))
@@ -43,7 +50,9 @@ class SourceContext:
         source = sources.get(src_slug)
         if source is None:
             available = ", ".join(sorted(sources.keys()))
-            raise ValueError(f"Unknown source '{src_slug}' in ecosystem '{eco_slug}'. Available: {available}")
+            raise ValueError(
+                f"Unknown source '{src_slug}' in ecosystem '{eco_slug}'. Available: {available}"
+            )
 
         return cls.from_config(source, ecosystem_slug=eco_slug, source_slug=src_slug)
 
@@ -92,7 +101,9 @@ class SourceContext:
     def ecosystem_source_configs(self) -> Mapping[str, Mapping[str, Any]]:
         if self.ecosystem_slug:
             ecosystem = ECOSYSTEM_REGISTRY.get(self.ecosystem_slug)
-            sources = ecosystem.get("sources", {}) if isinstance(ecosystem, Mapping) else {}
+            sources = (
+                ecosystem.get("sources", {}) if isinstance(ecosystem, Mapping) else {}
+            )
             if sources:
                 return sources
         if self.source_slug:
@@ -144,7 +155,10 @@ class SourceContext:
 
     @property
     def proposal_singular(self) -> str:
-        return str(self.config.get("proposal_term_singular") or "proposal").strip() or "proposal"
+        return (
+            str(self.config.get("proposal_term_singular") or "proposal").strip()
+            or "proposal"
+        )
 
     @property
     def reference_pattern(self) -> str:
@@ -154,7 +168,9 @@ class SourceContext:
     def max_proposal_id(self) -> Any:
         return self.config.get("max_proposal_id")
 
-    def normalize_classification_fields(self, preamble: Mapping[str, Any]) -> dict[str, Any]:
+    def normalize_classification_fields(
+        self, preamble: Mapping[str, Any]
+    ) -> dict[str, Any]:
         normalized = dict(preamble)
         for field in ("layer", "status", "type"):
             if normalized.get(field) is not None:

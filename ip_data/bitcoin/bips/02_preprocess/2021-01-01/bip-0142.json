@@ -546,13 +546,22 @@
         "author": "Johnson Lau",
         "path": "bip-segwitaddress.mediawiki",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "159cc9bd0eb1bdf97facac7f839069c81a4cc301",
         "timestamp": "2016-03-16T23:20:58+08:00",
         "date": "2016-03-16",
         "author": "Johnson Lau",
+        "path": "bip-0142.mediawiki",
+        "status": "Deferred",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
         "path": "bip-0142.mediawiki",
         "status": "Deferred",
         "standard": "bip2"
@@ -597,31 +606,35 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:23Z",
+          "timestamp": "2026-06-30T11:36:02Z",
+          "status": "api_error",
+          "dependencies": [],
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 200000, Requested 3028. Please try again in 908ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+        },
+        {
+          "run_id": "2026-06-30T11:38:11Z_gpt-5.4-mini_422651ce",
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-30T11:38:18Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:13",
-              "evidence": "Considering the BIP13 P2SH address has been defined in 2012",
-              "reason": "The proposal uses BIP13 as the existing address-format model that this new witness address format extends and parallels.",
-              "confidence": "high"
+              "evidence": "similar to existing address formats",
+              "reason": "The proposal reuses the existing address-format pattern and explicitly relies on BIP13 P2SH address conventions in its rationale.",
+              "confidence": "medium"
             },
             {
               "target": "bips:16",
-              "evidence": "Segwit-in-P2SH is a BIP16 P2SH redeemScript",
-              "reason": "The proposal relies on BIP16’s P2SH redeemScript structure for the wrapped segwit variant described in the rationale.",
+              "evidence": "segwit-in-P2SH is a BIP16 P2SH redeemScript",
+              "reason": "The proposal’s compatibility discussion includes segwit-in-P2SH, which is built on the P2SH redeemScript mechanism defined by BIP16.",
               "confidence": "high"
             },
             {
-              "target": "bips:70",
-              "evidence": "BIP70 Payment protocol",
-              "reason": "The proposal discusses BIP70 as a payment method in the address-format rationale, but does not depend on it technically, so this is not included.",
-              "confidence": "low"
-            },
-            {
               "target": "bips:141",
-              "evidence": "The new Bitcoin address format defined is for the Pay-to-Witness-Public-Key-Hash (P2WPKH) and Pay-to-Witness-Script-Hash (P2WSH) transaction described in segregated witness soft fork (BIP141).",
-              "reason": "The address format is defined specifically for witness programs introduced by BIP141, including versioning and scriptPubKey semantics.",
+              "evidence": "described in segregated witness soft fork (BIP141)",
+              "reason": "The proposal defines address encoding specifically for witness programs introduced by BIP141 and relies on its witness program/version semantics.",
               "confidence": "high"
             }
           ]

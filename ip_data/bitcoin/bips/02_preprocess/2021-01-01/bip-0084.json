@@ -523,9 +523,48 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:00:54Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:35:33Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "based on a [[bip-0032.mediawiki|BIP 32]] root account",
+              "reason": "The proposal's derivation scheme is built on BIP 32 hierarchical deterministic root accounts.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:43",
+              "evidence": "[[bip-0043.mediawiki|BIP43 - Purpose Field for Deterministic Wallets]]",
+              "reason": "The proposal uses a dedicated purpose field value in the BIP 43-style derivation path.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:44",
+              "evidence": "the same account-structure as defined in [[bip-0044.mediawiki|BIP 44]] and [[bip-0049.mediawiki|BIP 49]]",
+              "reason": "The proposal reuses the account/path structure from BIP 44 for its derivation path.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:49",
+              "evidence": "the same account-structure as defined in [[bip-0044.mediawiki|BIP 44]] and [[bip-0049.mediawiki|BIP 49]]",
+              "reason": "The proposal explicitly reuses the BIP 49 account-structure and rationale for its wallet derivation scheme.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "we use the encapsulation defined in [[bip-0141.mediawiki#p2wpkh|BIP 141]]",
+              "reason": "The address format is derived using the P2WPKH witness-script encapsulation defined by BIP 141.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:173",
+              "evidence": "using the P2WPKH ([[bip-0173.mediawiki|BIP 173]]) serialization format",
+              "reason": "The proposal is designed around the native SegWit address serialization format specified by BIP 173.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

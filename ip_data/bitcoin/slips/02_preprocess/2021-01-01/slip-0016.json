@@ -270,19 +270,21 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:37:15Z_gpt-5.4-mini_3159fb60",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:02:00Z",
+          "timestamp": "2026-06-30T11:37:19Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
-              "evidence": "hardened path, see BIP32",
-              "reason": "The proposal’s key derivation path explicitly relies on BIP32 hardened derivation semantics.",
+              "evidence": "path: `m/10016'/0` (hardened path, see BIP32)",
+              "reason": "The master-key derivation path explicitly relies on BIP32 hardened-path semantics.",
               "confidence": "high"
             },
             {
               "target": "slips:11",
               "evidence": "CipherKeyValue is defined in [SLIP-0011]",
-              "reason": "The proposal uses the CipherKeyValue operation defined by SLIP-0011 as the core hardware-device key derivation/encryption primitive.",
+              "reason": "The proposal's master-key and entry-key workflows depend on the CipherKeyValue operation defined by SLIP-0011.",
               "confidence": "high"
             }
           ]

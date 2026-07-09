@@ -1,15 +1,14 @@
 import argparse
 import json
 from pathlib import Path
-from typing import Any, Dict
-
-from pipeline.source_context import SourceContext
+from typing import Any
 
 from analysis.artifact_io import load_network_data
 from analysis.classification import prepare_classification_payload
+from pipeline.source_context import SourceContext
 
 
-def save_payload(payload: Dict[str, Any], output_path: Path) -> None:
+def save_payload(payload: dict[str, Any], output_path: Path) -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     with output_path.open("w", encoding="utf-8") as handle:
         json.dump(payload, handle, ensure_ascii=False, indent=2)
@@ -17,7 +16,9 @@ def save_payload(payload: Dict[str, Any], output_path: Path) -> None:
 
 def main() -> None:
     source_context = SourceContext.default()
-    parser = argparse.ArgumentParser(description="Prepare classification artifact from network_data.")
+    parser = argparse.ArgumentParser(
+        description="Prepare classification artifact from network_data."
+    )
     parser.add_argument("--snapshot", help="Snapshot label YYYY-MM-DD.")
     parser.add_argument(
         "--output-dir",
@@ -31,7 +32,13 @@ def main() -> None:
 
     snapshot_label = args.snapshot or "latest"
     repo_root = Path(__file__).resolve().parents[2]
-    out_path = repo_root / args.output_dir / snapshot_label / "classification" / "classification_payload.json"
+    out_path = (
+        repo_root
+        / args.output_dir
+        / snapshot_label
+        / "classification"
+        / "classification_payload.json"
+    )
     save_payload(payload, out_path)
 
 

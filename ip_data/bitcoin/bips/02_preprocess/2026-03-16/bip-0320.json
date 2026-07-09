@@ -508,19 +508,21 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:59:04Z",
+          "timestamp": "2026-06-30T11:44:15Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:8",
               "evidence": "removed from BIP8 and BIP9 specifications",
-              "reason": "The proposal changes the signaling bits assumed by BIP 8, so its activation semantics are directly constrained by this target.",
+              "reason": "The proposal explicitly changes the BIP8 signaling semantics by excluding reserved nVersion bits from soft-fork version-bits interpretation.",
               "confidence": "high"
             },
             {
               "target": "bips:9",
               "evidence": "removed from BIP8 and BIP9 specifications",
-              "reason": "The proposal alters the version-bits soft-fork signaling mechanism defined by BIP 9, making that specification a direct dependency.",
+              "reason": "The proposal explicitly changes the BIP9 signaling semantics by excluding reserved nVersion bits from soft-fork version-bits interpretation.",
               "confidence": "high"
             }
           ]

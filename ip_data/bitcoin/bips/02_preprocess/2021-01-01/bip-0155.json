@@ -604,13 +604,15 @@
       "body_extracted_regex": [],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:36Z",
+          "timestamp": "2026-06-30T11:36:09Z",
+          "status": "success",
           "dependencies": [
             {
-              "target": "bips:31",
-              "evidence": "Introduce a new message type sendaddrv2",
-              "reason": "The proposal adds a new P2P message and signaling flow that extends the existing Bitcoin network messaging protocol defined by the target.",
+              "target": "bips:34",
+              "evidence": "The <code>addrv2</code> message is defined as a message where <code>pchCommand == \"addrv2\"</code>.",
+              "reason": "The proposal introduces a new P2P message type into the Bitcoin message command namespace, which is the same kind of mechanism governed by earlier BIP-defined P2P message specifications.",
               "confidence": "low"
             }
           ]

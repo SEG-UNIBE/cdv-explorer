@@ -296,9 +296,48 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:19:48Z_gpt-5.4-mini_d16626f8",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:55:18Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:19:51Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "Hierarchical Deterministic Wallets",
+              "reason": "The proposal’s root nodes and derivation paths are built on hierarchical deterministic wallet derivation.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:39",
+              "evidence": "Mnemonic code for generating deterministic keys",
+              "reason": "The wallet seed is defined by a BIP39 mnemonic phrase, so the test vectors depend on that mnemonic format and seed generation.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:44",
+              "evidence": "BIP44",
+              "reason": "The legacy wallet section uses the BIP44 account path structure and purpose field.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:49",
+              "evidence": "BIP49",
+              "reason": "The nested SegWit account section uses the BIP49 derivation scheme and corresponding address type.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:84",
+              "evidence": "BIP84",
+              "reason": "The native SegWit account section uses the BIP84 derivation scheme and address format.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:86",
+              "evidence": "BIP86",
+              "reason": "The Taproot account section uses the BIP86 derivation scheme for single-key P2TR outputs.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

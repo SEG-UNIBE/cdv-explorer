@@ -240,13 +240,15 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:59:52Z_gpt-5.4-mini_b29b8ccc",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:07:45Z",
+          "timestamp": "2026-06-30T12:00:32Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:01",
-              "evidence": "must be a replaceable or an addressable event as defined in [NIP-01](01.md)",
-              "reason": "The proposal relies on NIP-01's event types to define valid manifest events.",
+              "evidence": "defined in [NIP-01](01.md)",
+              "reason": "The site manifest event type is explicitly constrained to be a replaceable or addressable event per the referenced event model.",
               "confidence": "high"
             }
           ]

@@ -515,9 +515,18 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:54:05Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:18:25Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:16",
+              "evidence": "Segwit nested in BIP16 P2SH",
+              "reason": "The proposal defines one of its WIF suffix meanings in terms of P2SH nested SegWit, so understanding that address type depends on the P2SH scheme introduced by BIP 16.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

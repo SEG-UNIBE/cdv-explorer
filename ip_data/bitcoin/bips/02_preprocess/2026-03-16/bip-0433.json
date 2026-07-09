@@ -512,14 +512,16 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:59:42Z",
+          "timestamp": "2026-06-30T11:46:16Z",
+          "status": "success",
           "dependencies": [
             {
-              "target": "bips:350",
-              "evidence": "Native segwit outputs are composed of a witness version and a witness program.",
-              "reason": "P2A is specified as a native segwit output script, so it relies on SegWit witness version/program semantics.",
-              "confidence": "high"
+              "target": "bips:431",
+              "evidence": "If unsure, use in conjunction with [https://github.com/bitcoin/bips/blob/master/bip-0431.mediawiki TRUC transactions].",
+              "reason": "The proposal recommends TRUC transactions as the anti-pinning mechanism to use alongside P2A, so adoption of P2A may depend on TRUC for safe fee-bumping behavior.",
+              "confidence": "medium"
             }
           ]
         }

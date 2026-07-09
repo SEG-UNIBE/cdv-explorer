@@ -556,6 +556,15 @@
         "author": "Justus Ranvier",
         "path": "bip-0126.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "959fecc15bdad070afa63455468b1dba54655fa6",
+        "timestamp": "2016-11-30T09:51:01Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0126.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -578,14 +587,16 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:58:27Z",
+          "timestamp": "2026-06-30T11:43:19Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:69",
-              "evidence": "\"Applications which wish to comply both with this procedure and BIP69 should apply this procedure prior to applying BIP69.\"",
-              "reason": "The proposal specifies an ordering constraint when combined with BIP69, so its transaction construction procedure is designed to work with and constrain BIP69 behavior.",
-              "confidence": "low"
+              "evidence": "Applications which wish to comply both with this procedure and BIP69 should apply this procedure prior to applying BIP69.",
+              "reason": "The proposal explicitly constrains how its transaction-forming rules interact with BIP69’s input/output ordering procedure.",
+              "confidence": "high"
             }
           ]
         }

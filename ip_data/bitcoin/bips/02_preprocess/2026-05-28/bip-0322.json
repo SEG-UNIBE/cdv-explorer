@@ -960,32 +960,42 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:54:16Z",
+          "timestamp": "2026-06-30T11:18:33Z",
+          "status": "api_error",
+          "dependencies": [],
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 197377, Requested 6630. Please try again in 1.202s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+        },
+        {
+          "run_id": "2026-06-30T11:33:45Z_gpt-5.4-mini_fbc31d5d",
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-30T11:34:01Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:174",
               "evidence": "see [[bip-0174.mediawiki#input-finalizer|BIP174]] for details on the finalization process",
-              "reason": "The proposal uses PSBT structures, fields, and finalization rules defined by this BIP for proof-of-funds and PSBT-based signing.",
+              "reason": "The Proof of Funds variant uses PSBT finalization and requires BIP174’s PSBT structure and finalization rules.",
               "confidence": "high"
             },
             {
               "target": "bips:325",
               "evidence": "Full signatures follow an analogous specification to the BIP325 challenges and solutions used by Signet.",
-              "reason": "The full signature format is modeled on BIP325's challenge/solution transaction construction.",
+              "reason": "The full-signature workflow is designed around BIP325-like challenge/solution transaction construction.",
               "confidence": "medium"
             },
             {
               "target": "bips:340",
-              "evidence": "message_hash is a BIP340-tagged hash of the message",
-              "reason": "The message hashing and signature handling rely on BIP340 tagged hashing semantics.",
-              "confidence": "low"
+              "evidence": "<code>message_hash</code> is a BIP340-tagged hash of the message",
+              "reason": "The message hashing construction is specified as a BIP340 tagged hash and is central to all signature formats.",
+              "confidence": "high"
             },
             {
               "target": "bips:341",
-              "evidence": "The use of SIGHASH_DEFAULT may be used alternatively (e.g., BIP341 P2TR)",
-              "reason": "The allowed sighash behavior and P2TR support depend on BIP341's Taproot transaction/signature rules.",
-              "confidence": "low"
+              "evidence": "unless the output type supports <code>SIGHASH_DEFAULT</code>, which then MAY be used alternatively (e.g., [[bip-0341.mediawiki|BIP341 P2TR]])",
+              "reason": "Verification semantics explicitly allow BIP341’s SIGHASH_DEFAULT behavior for P2TR outputs.",
+              "confidence": "high"
             }
           ]
         }

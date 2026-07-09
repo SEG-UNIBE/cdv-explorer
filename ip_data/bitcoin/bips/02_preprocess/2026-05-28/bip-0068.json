@@ -781,12 +781,21 @@
         "author": "Mark Friedenbach",
         "path": "bip-0068.mediawiki",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "c98859fe20617df141da0dd08d399921c7097be9",
         "timestamp": "2016-07-18T23:37:42Z",
         "date": "2016-07-18",
+        "author": "Luke Dashjr",
+        "path": "bip-0068.mediawiki",
+        "status": "Final",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
         "author": "Luke Dashjr",
         "path": "bip-0068.mediawiki",
         "status": "Final",
@@ -820,25 +829,27 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:53:08Z",
+          "timestamp": "2026-06-30T11:17:29Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
               "evidence": "This BIP is to be deployed by \"versionbits\" BIP9 using bit 0.",
-              "reason": "The activation mechanism and deployment parameters are defined using BIP 9 versionbits, which BIP 68 depends on for consensus rollout.",
+              "reason": "The activation mechanism and deployment parameters are specified in terms of BIP9 versionbits signaling.",
               "confidence": "high"
             },
             {
               "target": "bips:112",
-              "evidence": "This BIP must be deployed simultaneously with BIP112 and BIP113",
-              "reason": "BIP 68 relies on the script-level sequence-lock semantics introduced by BIP 112 and is designed to work with it as part of the same soft fork package.",
+              "evidence": "The flag (1<<22) is the highest order bit in a 3-byte signed integer for use in bitcoin scripts as a 3-byte PUSHDATA with OP_CHECKSEQUENCEVERIFY (BIP 112).",
+              "reason": "This proposal’s sequence-lock semantics are explicitly designed to be used with OP_CHECKSEQUENCEVERIFY and its script encoding conventions from BIP112.",
               "confidence": "high"
             },
             {
               "target": "bips:113",
               "evidence": "All references to median-time-past (MTP) are as defined by BIP113.",
-              "reason": "BIP 68’s time-based relative lock-time uses median-time-past as its timing reference, so its semantics depend on BIP 113’s MTP rule.",
+              "reason": "The time-based relative lock-time rules depend on the MTP definition from BIP113 for both lock calculation and evaluation.",
               "confidence": "high"
             }
           ]

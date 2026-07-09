@@ -781,6 +781,15 @@
         "author": "jl2012",
         "path": "bip-mast.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0114.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -824,31 +833,29 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:53:28Z",
+          "timestamp": "2026-06-30T11:17:52Z",
+          "status": "api_error",
+          "dependencies": [],
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 197056, Requested 7857. Please try again in 1.473s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+        },
+        {
+          "run_id": "2026-06-30T11:33:45Z_gpt-5.4-mini_fbc31d5d",
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-30T11:33:48Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
-              "evidence": "will be deployed by version-bits BIP9 after BIP141 is enforced",
-              "reason": "The activation mechanism relies on version-bits deployment defined by this proposal.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:16",
-              "evidence": "The [[bip-0016.mediawiki|BIP16]] (Pay-to-script-hash, \"P2SH\") fixes the first 3 problems",
-              "reason": "The proposal’s witness-script design and motivation build on P2SH as the earlier script-hashing model it extends.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:112",
-              "evidence": "The following is the \"Escrow with Timeout\" example in [[bip-0112.mediawiki|BIP112]]",
-              "reason": "The proposal uses CHECKSEQUENCEVERIFY/locktime semantics from this BIP in its script examples and branch structure.",
+              "evidence": "will be deployed by version-bits [[bip-0009.mediawiki|BIP9]] after BIP141 is enforced.",
+              "reason": "Deployment is specified to use BIP9 version-bits activation, so adopting the proposal depends on that activation mechanism.",
               "confidence": "high"
             },
             {
               "target": "bips:141",
-              "evidence": "In [[bip-0141.mediawiki|BIP141]], witness programs with a version byte of 1 or larger are considered to be anyone-can-spend scripts",
-              "reason": "The new witness program type and version-1 interpretation are defined relative to Segregated Witness.",
+              "evidence": "In [[bip-0141.mediawiki|BIP141]], witness programs with a version byte of 1 or larger are considered to be anyone-can-spend scripts.",
+              "reason": "The proposal’s new witness program type is defined as a special case of BIP141 witness programs and relies on its versioned witness-program interpretation.",
               "confidence": "high"
             }
           ]

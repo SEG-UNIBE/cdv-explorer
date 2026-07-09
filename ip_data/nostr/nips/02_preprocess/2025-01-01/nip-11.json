@@ -461,26 +461,28 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:58:25Z_gpt-5.4-mini_0bc643e4",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:08:11Z",
+          "timestamp": "2026-06-30T11:58:33Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:13",
-              "evidence": "`min_pow_difficulty`: new events will require at least this difficulty of PoW, based on [NIP-13](13.md), or they will be rejected by this server.",
-              "reason": "The relay limitation definition directly relies on the PoW difficulty semantics introduced by NIP-13.",
+              "evidence": "based on [NIP-13](13.md)",
+              "reason": "The `min_pow_difficulty` limitation explicitly derives its proof-of-work requirement from NIP-13.",
               "confidence": "high"
             },
             {
               "target": "nips:17",
-              "evidence": "this provides clients with a recommended address to send encrypted direct messages (See [NIP-17](17.md))",
-              "reason": "The relay metadata uses NIP-17 direct message behavior as the purpose of the advertised administrative pubkey contact.",
+              "evidence": "See [NIP-17](17.md)",
+              "reason": "The relay metadata uses NIP-17 direct-message semantics for the administrative pubkey contact field.",
               "confidence": "high"
             },
             {
               "target": "nips:42",
-              "evidence": "`auth_required`: this relay requires [NIP-42] authentication to happen before a new connection may perform any other action.",
-              "reason": "The auth_required capability flag depends on NIP-42 for the authentication mechanism it advertises.",
-              "confidence": "low"
+              "evidence": "this relay requires [NIP-42]",
+              "reason": "The `auth_required` limitation depends on NIP-42 authentication before other actions.",
+              "confidence": "high"
             }
           ]
         }

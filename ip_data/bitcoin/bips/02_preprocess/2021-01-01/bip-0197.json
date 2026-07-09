@@ -590,25 +590,15 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:47Z",
+          "timestamp": "2026-06-30T11:36:14Z",
+          "status": "success",
           "dependencies": [
-            {
-              "target": "bips:65",
-              "evidence": "[TIMEOUTOP] is either OP_CHECKSEQUENCEVERIFY or OP_CHECKLOCKTIMEVERIFY.",
-              "reason": "The script explicitly relies on the time-lock opcodes introduced by the target to enforce repayment, bidding, and seizure deadlines.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:68",
-              "evidence": "This BIP describes a script ... based on Hashed Time-Lock Contract (BIP 199) transactions",
-              "reason": "The proposal builds its collateral contract script on HTLC transaction mechanics introduced by the target.",
-              "confidence": "low"
-            },
             {
               "target": "bips:199",
               "evidence": "based on Hashed Time-Lock Contract (BIP 199) transactions",
-              "reason": "The proposal directly depends on the HTLC construction defined by the target as the basis for its contract design.",
+              "reason": "The proposal explicitly builds its collateral scripts on HTLC transaction mechanics defined by BIP 199.",
               "confidence": "high"
             }
           ]

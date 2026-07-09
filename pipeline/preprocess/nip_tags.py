@@ -1,21 +1,26 @@
 """Preamble extractor for Nostr NIPs using backtick-tagged metadata lines."""
+
 import json
 import re
 import sys
 from collections import OrderedDict
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from tqdm import tqdm
 
+from analysis.classification.preprocess import normalize_classification_fields
 from analysis.conformity.compliance import (
     add_missing_optional_fields as _add_missing_optional,
+)
+from analysis.conformity.compliance import (
     build_compliance_payload,
+)
+from analysis.conformity.compliance import (
     check_required_fields as _check_required,
 )
-from pipeline.preprocess.checkers import get_checker
-from analysis.classification.preprocess import normalize_classification_fields
 from analysis.proposal_schema import normalize_proposal_document
+from pipeline.preprocess.checkers import get_checker
 from pipeline.source_context import SourceContext
 
 # Matches a line that consists entirely of backtick-wrapped tokens: `draft` `mandatory` `relay`
@@ -24,7 +29,7 @@ _BACKTICK_TOKENS = re.compile(r"`([^`]+)`")
 _STATUS_LINE_PATTERN = re.compile(r"^\s*\*\*Status:\*\*\s*(.+?)\s*$", re.IGNORECASE)
 
 
-def _parse_nip_file(content: str, filename: str, src_config: dict) -> Dict[str, Any]:
+def _parse_nip_file(content: str, filename: str, src_config: dict) -> dict[str, Any]:
     """
     Parse NIP setext-heading format:
 
@@ -38,7 +43,7 @@ def _parse_nip_file(content: str, filename: str, src_config: dict) -> Dict[str, 
     """
     lines = content.splitlines()
     title: str | None = None
-    tag_tokens: List[str] = []
+    tag_tokens: list[str] = []
 
     h1_found = False
     i = 0
@@ -98,14 +103,20 @@ def _parse_nip_file(content: str, filename: str, src_config: dict) -> Dict[str, 
 
     # Map tags to classification dimensions using aliases from config
     dims = src_config.get("classification", {}).get("dimensions", {})
-    status_aliases: dict = {k.lower(): v for k, v in dims.get("status", {}).get("aliases", {}).items()}
-    type_aliases: dict = {k.lower(): v for k, v in dims.get("type", {}).get("aliases", {}).items()}
-    layer_aliases: dict = {k.lower(): v for k, v in dims.get("layer", {}).get("aliases", {}).items()}
+    status_aliases: dict = {
+        k.lower(): v for k, v in dims.get("status", {}).get("aliases", {}).items()
+    }
+    type_aliases: dict = {
+        k.lower(): v for k, v in dims.get("type", {}).get("aliases", {}).items()
+    }
+    layer_aliases: dict = {
+        k.lower(): v for k, v in dims.get("layer", {}).get("aliases", {}).items()
+    }
 
     status: str | None = None
     proposal_type: str | None = None
     layer: str | None = None
-    kind_parts: List[str] = []
+    kind_parts: list[str] = []
 
     for token in tag_tokens:
         lower = token.lower()
@@ -118,7 +129,7 @@ def _parse_nip_file(content: str, filename: str, src_config: dict) -> Dict[str, 
         else:
             kind_parts.append(token)
 
-    preamble: Dict[str, Any] = {
+    preamble: dict[str, Any] = {
         "nip": nip_id,
         "title": title or "",
         "status": status or "Unknown",
@@ -134,13 +145,13 @@ def _parse_nip_file(content: str, filename: str, src_config: dict) -> Dict[str, 
 
 
 def _save_json(
-    preamble: Dict[str, Any],
+    preamble: dict[str, Any],
     output_dir: Path,
     file_prefix: str,
     id_field: str,
-    required_fields: List[str],
-    optional_fields: List[str],
-    compliance_payload: Optional[Dict[str, Any]],
+    required_fields: list[str],
+    optional_fields: list[str],
+    compliance_payload: dict[str, Any] | None,
     source_context: SourceContext | None = None,
 ) -> Path:
     context = source_context or SourceContext.default()
@@ -149,7 +160,7 @@ def _save_json(
     json_filename = f"{file_prefix}-{nip_id}.json"
     output_path = output_dir / json_filename
 
-    existing: Dict[str, Any] = {}
+    existing: dict[str, Any] = {}
     if output_path.exists():
         try:
             existing = normalize_proposal_document(
@@ -171,7 +182,9 @@ def _save_json(
         if key not in json_data:
             json_data[key] = value
 
-    output_path.write_text(json.dumps(json_data, ensure_ascii=False, indent=2), encoding="utf-8")
+    output_path.write_text(
+        json.dumps(json_data, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
     return output_path
 
 
@@ -183,16 +196,15 @@ def extract(
 ) -> None:
     """Extract NIP metadata from backtick-tag lines and write per-NIP JSON."""
     preamble_config = src_config["preamble"]
-    required_fields: List[str] = preamble_config["required_fields"]
-    optional_fields: List[str] = preamble_config["optional_fields"]
+    required_fields: list[str] = preamble_config["required_fields"]
+    optional_fields: list[str] = preamble_config["optional_fields"]
     file_prefix: str = src_config["document_prefix"]
     id_field: str = src_config["primary_id_field"]
     source_context = SourceContext.from_config(src_config)
 
     file_pattern = re.compile(src_config["document_file_pattern"], re.IGNORECASE)
     proposal_files = sorted(
-        p for p in harvest_dir.iterdir()
-        if file_pattern.match(p.name)
+        p for p in harvest_dir.iterdir() if file_pattern.match(p.name)
     )
 
     live = sys.stdout.isatty()
@@ -219,16 +231,28 @@ def extract(
 
         content = proposal_file.read_text(encoding="utf-8")
         preamble = _parse_nip_file(content, proposal_file.name, src_config)
-        preamble = normalize_classification_fields(preamble, source_context=source_context)
+        preamble = normalize_classification_fields(
+            preamble, source_context=source_context
+        )
         _check_required(preamble, required_fields)
         _add_missing_optional(preamble, optional_fields)
         checker = get_checker(src_config.get("compliance_checker", "nip"))
-        compliance_payload = build_compliance_payload(checker(preamble, content, src_config))
+        compliance_payload = build_compliance_payload(
+            checker(preamble, content, src_config)
+        )
         preamble["Compliance Score"] = compliance_payload["score"]
-        written_paths.add(_save_json(
-            preamble, output_dir, file_prefix, id_field,
-            required_fields, optional_fields, compliance_payload, source_context,
-        ))
+        written_paths.add(
+            _save_json(
+                preamble,
+                output_dir,
+                file_prefix,
+                id_field,
+                required_fields,
+                optional_fields,
+                compliance_payload,
+                source_context,
+            )
+        )
 
         if progress_callback is not None:
             progress_callback(proposal_file.name, 1)

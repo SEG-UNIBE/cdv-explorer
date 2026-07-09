@@ -13,8 +13,12 @@ from paper.RQ1.classification_status import (
     _normalize_status_series,
     plot_classification_status,
 )
-from paper.RQ3._plotting import bar_style, despine, match_axis_label_fontsize, save_figure
-
+from paper.RQ3._plotting import (
+    bar_style,
+    despine,
+    match_axis_label_fontsize,
+    save_figure,
+)
 
 TYPE_ORDER = BIP_TYPE_ORDER
 TYPE_COLORS = BIP_TYPE_COLORS
@@ -58,13 +62,12 @@ def plot_classification_type_stacked(
     type_over_time = build_type_over_time(nodes)
     years, ordered_types, series = _normalize_status_series(type_over_time, TYPE_ORDER)
 
-    totals = {
-        kind: sum(counts)
-        for kind, counts in series.items()
-    }
+    totals = {kind: sum(counts) for kind, counts in series.items()}
     total_bips = sum(totals.values())
     if total_bips <= 0:
-        raise ValueError("Classification type stacked plot requires positive type counts.")
+        raise ValueError(
+            "Classification type stacked plot requires positive type counts."
+        )
 
     colors = [TYPE_COLORS.get(kind, "#868e96") for kind in ordered_types]
     legend_handles = [
@@ -74,7 +77,7 @@ def plot_classification_type_stacked(
             linewidth=0.7,
             label=f"{kind} ({totals[kind]})",
         )
-        for kind, color in zip(ordered_types, colors)
+        for kind, color in zip(ordered_types, colors, strict=True)
     ]
     x_positions = np.arange(len(years), dtype=float)
 
@@ -104,7 +107,7 @@ def plot_classification_type_stacked(
     legend._legend_box.align = "left"
 
     bar_bottom = np.zeros(len(years), dtype=int)
-    for kind, color in zip(ordered_types, colors):
+    for kind, color in zip(ordered_types, colors, strict=True):
         counts = series[kind]
         axis_right.bar(
             x_positions,
@@ -137,24 +140,29 @@ def plot_classification_type_stacked(
 
     cumulative_max = 0.0
     final_points = []
-    for kind, color in zip(ordered_types, colors):
+    for kind, color in zip(ordered_types, colors, strict=True):
         cumulative_counts = np.cumsum(series[kind]).astype(float)
-        cumulative_max = max(cumulative_max, float(cumulative_counts[-1]) if len(cumulative_counts) else 0.0)
+        cumulative_max = max(
+            cumulative_max,
+            float(cumulative_counts[-1]) if len(cumulative_counts) else 0.0,
+        )
         smooth_x, smooth_y = _monotone_cubic_curve(
             x_positions,
             cumulative_counts,
         )
-        line, = axis_right_secondary.plot(
+        (line,) = axis_right_secondary.plot(
             smooth_x,
             smooth_y,
             color=with_plot_alpha(color),
             linewidth=1.2,
             zorder=4,
         )
-        line.set_path_effects([
-            pe.Stroke(linewidth=2.2, foreground="white", alpha=0.9),
-            pe.Normal(),
-        ])
+        line.set_path_effects(
+            [
+                pe.Stroke(linewidth=2.2, foreground="white", alpha=0.9),
+                pe.Normal(),
+            ]
+        )
         axis_right_secondary.scatter(
             x_positions,
             cumulative_counts,
@@ -189,7 +197,9 @@ def plot_classification_type_stacked(
         -0.6,
         float(x_positions[-1]) + STACKED_TYPE_RIGHT_MARGIN,
     )
-    axis_right_secondary.set_ylim(0, max(1.0, cumulative_max * 1.05, label_top + label_gap * 0.6))
+    axis_right_secondary.set_ylim(
+        0, max(1.0, cumulative_max * 1.05, label_top + label_gap * 0.6)
+    )
     axis_right_secondary.yaxis.set_major_locator(MaxNLocator(integer=True))
     axis_right_secondary.grid(False)
     match_axis_label_fontsize(axis_right_secondary)
@@ -220,11 +230,15 @@ def plot_classification_type_stacked(
             zorder=6,
             clip_on=False,
         )
-        text.set_path_effects([
-            pe.Stroke(linewidth=3.0, foreground="white", alpha=0.95),
-            pe.Normal(),
-        ])
+        text.set_path_effects(
+            [
+                pe.Stroke(linewidth=3.0, foreground="white", alpha=0.95),
+                pe.Normal(),
+            ]
+        )
 
     figure.suptitle(f"Classification Type ({snapshot_label})", y=0.98)
-    figure.subplots_adjust(left=0.07, right=0.98, bottom=0.14, top=0.88, wspace=STACKED_TYPE_WSPACE)
+    figure.subplots_adjust(
+        left=0.07, right=0.98, bottom=0.14, top=0.88, wspace=STACKED_TYPE_WSPACE
+    )
     save_figure(figure, output_path)

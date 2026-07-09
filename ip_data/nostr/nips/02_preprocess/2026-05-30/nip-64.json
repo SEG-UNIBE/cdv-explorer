@@ -354,13 +354,15 @@
       "body_extracted_regex": [],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:59:52Z_gpt-5.4-mini_b29b8ccc",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:07:47Z",
+          "timestamp": "2026-06-30T12:00:37Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:31",
-              "evidence": "Clients MAY include additional tags (e.g. like [`\"alt\"`](31.md))",
-              "reason": "The proposal relies on the alt tag mechanism from this NIP to provide fallback metadata for non-supporting clients.",
+              "evidence": "like [`\"alt\"`](31.md)",
+              "reason": "The proposal explicitly relies on the alt tag convention for representing notes to non-supporting clients.",
               "confidence": "high"
             }
           ]

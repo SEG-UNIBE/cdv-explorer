@@ -672,26 +672,28 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:53:11Z",
+          "timestamp": "2026-06-30T11:17:34Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:21",
               "evidence": "The standard way of letting a sender know where to send a bustapay transaction is done via a bip21 encoded address.",
-              "reason": "The proposal uses BIP21 address encoding to carry the bustapay URL parameter.",
+              "reason": "The proposal reuses BIP21 URI/address encoding to carry the bustapay URL parameter.",
               "confidence": "high"
             },
             {
               "target": "bips:69",
               "evidence": "Check if the transaction was already sorted according to BIP69",
-              "reason": "The receiver is instructed to preserve or apply BIP69 ordering when modifying the transaction structure.",
-              "confidence": "high"
+              "reason": "The proposal conditionally preserves or uses BIP69 ordering for transaction inputs/outputs, so implementation must account for that transaction-sorting convention.",
+              "confidence": "medium"
             },
             {
               "target": "bips:125",
-              "evidence": "The sender is also encouraged to use ... BIP125 (Opt-in Full Replace-by-Fee Signaling)",
-              "reason": "The protocol relies on opt-in RBF signaling as part of its transaction replacement and publication behavior.",
-              "confidence": "low"
+              "evidence": "encouraged to use a slightly more aggressive feerate than usual as well as BIP125 (Opt-in Full Replace-by-Fee Signaling)",
+              "reason": "The protocol explicitly encourages opt-in RBF signaling for template/final transaction handling and fee-bumping behavior.",
+              "confidence": "high"
             }
           ]
         }

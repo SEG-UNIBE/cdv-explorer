@@ -2,34 +2,55 @@ from __future__ import annotations
 
 import json
 import re
+from collections.abc import Mapping
 from dataclasses import dataclass, field
+from datetime import date
 from itertools import combinations
 from pathlib import Path
-from typing import Any, Mapping
+from typing import Any
 
-from analysis.dependencies.constants import BODY_EXTRACTED_LLM, BODY_EXTRACTED_REGEX, PREAMBLE_EXTRACTED
+from analysis.dependencies.constants import (
+    BODY_EXTRACTED_LLM,
+    BODY_EXTRACTED_REGEX,
+    PREAMBLE_EXTRACTED,
+)
+from analysis.proposal_schema import LLM_RUN_STATUS_SUCCESS, LLM_RUN_STATUSES
+from analysis.reference_ids import normalize_reference_id_for_config
+from analysis.utils import parse_date_ymd
 from analysis.validation.ground_truth import (
-    load_ground_truth_ips,
+    ground_truth_workbook_path,
     load_ground_truth_curated_entries,
-    validate_reviewed_ip_policy,
+    load_ground_truth_ips,
     validate_ground_truth_curated_entries,
     validate_reviewed_ip_entries,
+    validate_reviewed_ip_policy,
 )
-from analysis.reference_ids import normalize_reference_id_for_config
 from ecosystems import ECOSYSTEM_REGISTRY
 from pipeline.source_context import SourceContext
 
-
-ANALYSIS_REQUIRED_FILES: dict[str, list[str]] = {
+PAYLOAD_REQUIRED_FILES: dict[str, list[str]] = {
     "dependencies/network_data.json": ["nodes", "dependency_edges"],
     "dependencies/dependency_metrics.json": ["by_approach", "pairwise_comparisons"],
-    "authorship/authorship_payload.json": ["meta", "top_authors", "bips_per_year", "top_10_share"],
-    "classification/classification_payload.json": ["meta", "sankey_grouped", "status_over_time"],
-    "evolution/evolution_payload.json": ["meta", "status_evolution", "proposal_timelines"],
+    "authorship/authorship_payload.json": [
+        "meta",
+        "top_authors",
+        "bips_per_year",
+        "top_10_share",
+    ],
+    "classification/classification_payload.json": [
+        "meta",
+        "sankey_grouped",
+        "status_over_time",
+    ],
+    "evolution/evolution_payload.json": [
+        "meta",
+        "status_evolution",
+        "proposal_timelines",
+    ],
     "conformity/conformity_metrics.json": ["per_proposal"],
 }
 
-ANALYSIS_COLUMN_LABELS: dict[str, str] = {
+PAYLOAD_COLUMN_LABELS: dict[str, str] = {
     "dependencies/network_data.json": "network",
     "dependencies/dependency_metrics.json": "dep_metrics",
     "authorship/authorship_payload.json": "authorship",
@@ -63,7 +84,7 @@ class SnapshotValidationResult:
     def warn(self, message: str) -> None:
         self.warnings.append(message)
 
-    def merge(self, other: "SnapshotValidationResult") -> None:
+    def merge(self, other: SnapshotValidationResult) -> None:
         self.ok = self.ok and other.ok
         self.errors.extend(other.errors)
         self.warnings.extend(other.warnings)
@@ -71,7 +92,9 @@ class SnapshotValidationResult:
         self.file_status.update(other.file_status)
 
 
-def _load_json_file(path: Path, result: SnapshotValidationResult, rel_path: str) -> Any | None:
+def _load_json_file(
+    path: Path, result: SnapshotValidationResult, rel_path: str
+) -> Any | None:
     if not path.exists():
         result.fail(f"`{rel_path}` is missing")
         return None
@@ -90,7 +113,11 @@ def _known_source_configs(
 ) -> dict[str, Mapping[str, Any]]:
     sources = (ecosystem_config or {}).get("sources", {})
     if isinstance(sources, Mapping) and sources:
-        return {str(slug): config for slug, config in sources.items() if isinstance(config, Mapping)}
+        return {
+            str(slug): config
+            for slug, config in sources.items()
+            if isinstance(config, Mapping)
+        }
     return {source_slug: source_config}
 
 
@@ -110,6 +137,124 @@ def _ground_truth_source_configs(
         for source_slug, source_config in sources.items()
         if isinstance(source_config, Mapping)
     }
+
+
+def _normalize_iso_date(text: Any) -> str | None:
+    value = str(text or "").strip()
+    if not value:
+        return None
+    try:
+        date.fromisoformat(value)
+    except ValueError:
+        return None
+    return value
+
+
+def _latest_source_proposal_metadata(
+    ecosystem_slug: str,
+    ecosystem_config: Mapping[str, Any] | None,
+) -> dict[str, dict[str, str]]:
+    config = ecosystem_config or ECOSYSTEM_REGISTRY.get(ecosystem_slug) or {}
+    sources = config.get("sources", {}) if isinstance(config, Mapping) else {}
+    proposal_metadata: dict[str, dict[str, str]] = {}
+
+    for source_slug, source_config in sources.items():
+        if not isinstance(source_config, Mapping):
+            continue
+        preprocess_root = Path(str(source_config.get("preprocess", "")))
+        id_field = str(source_config.get("primary_id_field") or "").strip()
+        snapshots = _snapshot_labels(preprocess_root)
+        if not snapshots:
+            continue
+        preprocess_dir = preprocess_root / snapshots[0]
+        if not preprocess_dir.is_dir() or not id_field:
+            continue
+        for json_path in sorted(preprocess_dir.glob("*.json")):
+            try:
+                payload = json.loads(json_path.read_text(encoding="utf-8"))
+            except json.JSONDecodeError:
+                continue
+            if not isinstance(payload, Mapping):
+                continue
+            preamble = payload.get("raw", {}).get("preamble", {})
+            if not isinstance(preamble, Mapping):
+                continue
+            proposal_id = str(preamble.get(id_field) or "").strip()
+            if not proposal_id:
+                continue
+            graph_key = f"{source_slug}:{proposal_id}"
+            last_commit = parse_date_ymd(
+                str(payload.get("meta", {}).get("last_commit") or "").strip()
+            )
+            proposal_metadata[graph_key] = {
+                "created": str(preamble.get("created") or "").strip(),
+                "title": str(preamble.get("title") or "").strip(),
+                "last_commit": last_commit or "",
+            }
+    return proposal_metadata
+
+
+def _validate_ground_truth_dataset_consistency(
+    curated_entries: list[Mapping[str, Any]],
+    reviewed_entries: list[Mapping[str, Any]],
+    *,
+    proposal_metadata: Mapping[str, Mapping[str, str]],
+) -> list[str]:
+    errors: list[str] = []
+    reviewed_by_ip = {
+        str(entry.get("ip") or "").strip(): entry
+        for entry in reviewed_entries
+        if isinstance(entry, Mapping) and str(entry.get("ip") or "").strip()
+    }
+
+    for index, entry in enumerate(curated_entries):
+        row_label = (
+            f"row {entry.get('__line__')}"
+            if isinstance(entry, Mapping) and entry.get("__line__")
+            else f"row {index + 2}"
+        )
+        source = str(entry.get("source") or "").strip()
+        target = str(entry.get("target") or "").strip()
+        if not source or not target:
+            continue
+
+        reviewed_source = reviewed_by_ip.get(source)
+        if reviewed_source is None:
+            errors.append(
+                f"{row_label}: curated source `{source}` must also appear in `ips.csv`"
+            )
+            continue
+
+        source_reviewed_at = _normalize_iso_date(reviewed_source.get("reviewed_at"))
+        edge_reviewed_at = _normalize_iso_date(entry.get("reviewed_at"))
+        if (
+            source_reviewed_at
+            and edge_reviewed_at
+            and source_reviewed_at < edge_reviewed_at
+        ):
+            errors.append(
+                f"{row_label}: `ips.csv` reviewed_at for `{source}` ({source_reviewed_at}) "
+                f"must be on or after the curated edge reviewed_at ({edge_reviewed_at})"
+            )
+
+        source_last_commit = _normalize_iso_date(
+            proposal_metadata.get(source, {}).get("last_commit")
+        )
+        target_created = _normalize_iso_date(
+            reviewed_by_ip.get(target, {}).get("created")
+            or proposal_metadata.get(target, {}).get("created")
+        )
+        if (
+            source_last_commit
+            and target_created
+            and target_created > source_last_commit
+        ):
+            errors.append(
+                f"{row_label}: target `{target}` was created on {target_created}, which is newer than "
+                f"the latest known commit date of source `{source}` ({source_last_commit})"
+            )
+
+    return errors
 
 
 def _snapshot_labels(root: Path) -> list[str]:
@@ -145,14 +290,18 @@ def expected_combined_snapshot_targets(
         return []
 
     snapshot_sets = {
-        source_slug: set(_snapshot_labels(Path(str(source_config.get("analysis", "")))))
+        source_slug: set(
+            _snapshot_labels(Path(str(source_config.get("postprocess", ""))))
+        )
         for source_slug, source_config in source_configs.items()
     }
 
     targets: list[tuple[str, str]] = []
     for size in range(2, len(source_slugs) + 1):
         for combo in combinations(source_slugs, size):
-            common_snapshots = set.intersection(*(snapshot_sets[source_slug] for source_slug in combo))
+            common_snapshots = set.intersection(
+                *(snapshot_sets[source_slug] for source_slug in combo)
+            )
             for snapshot in sorted(common_snapshots, reverse=True):
                 targets.append((combined_source_key(combo), snapshot))
 
@@ -189,7 +338,9 @@ def _target_error(
         },
     )
     if normalized is None:
-        return f"target `{target}` has an invalid proposal id for source `{target_source}`"
+        return (
+            f"target `{target}` has an invalid proposal id for source `{target_source}`"
+        )
 
     return None
 
@@ -254,7 +405,9 @@ def _validate_preamble_interrelations(
             result.fail(f"{path} missing `type`")
         elif relation_type not in allowed_types:
             allowed = ", ".join(sorted(allowed_types)) or "none configured"
-            result.fail(f"{path} has unknown relation type `{relation_type}`; allowed: {allowed}")
+            result.fail(
+                f"{path} has unknown relation type `{relation_type}`; allowed: {allowed}"
+            )
 
 
 def _validate_regex_interrelations(
@@ -297,14 +450,33 @@ def _validate_llm_interrelations(
         if not isinstance(run, Mapping):
             result.fail(f"{run_path} must be an LLM run object")
             continue
+        if not str(run.get("run_id") or "").strip():
+            result.fail(f"{run_path} missing non-empty `run_id`")
         if not str(run.get("model") or "").strip():
             result.fail(f"{run_path} missing non-empty `model`")
         if not str(run.get("timestamp") or "").strip():
             result.fail(f"{run_path} missing non-empty `timestamp`")
+        status = str(run.get("status") or "").strip().lower()
+        if not status:
+            result.fail(f"{run_path} missing non-empty `status`")
+        elif status not in LLM_RUN_STATUSES:
+            allowed = ", ".join(sorted(LLM_RUN_STATUSES))
+            result.fail(
+                f"{run_path} has invalid `status` `{status}`; allowed: {allowed}"
+            )
         dependencies = run.get("dependencies")
         if not isinstance(dependencies, list):
             result.fail(f"{run_path}.dependencies must be a list")
             continue
+        if status and status != LLM_RUN_STATUS_SUCCESS and dependencies:
+            result.fail(
+                f"{run_path}.dependencies must be empty when status is `{status}`"
+            )
+        if status and status != LLM_RUN_STATUS_SUCCESS:
+            if not str(run.get("error_message") or "").strip():
+                result.fail(
+                    f"{run_path} missing non-empty `error_message` for failed run"
+                )
         for dep_index, dependency in enumerate(dependencies):
             _validate_target_entry(
                 dependency,
@@ -335,8 +507,12 @@ def validate_preprocess_snapshot(
         result.fail(f"`{preprocess_dir}` contains no proposal JSON files")
         return result
 
-    context = SourceContext.from_config(source_config, ecosystem_slug=ecosystem_slug, source_slug=source_slug)
-    source_configs = _known_source_configs(ecosystem_slug, source_slug, source_config, ecosystem_config)
+    context = SourceContext.from_config(
+        source_config, ecosystem_slug=ecosystem_slug, source_slug=source_slug
+    )
+    source_configs = _known_source_configs(
+        ecosystem_slug, source_slug, source_config, ecosystem_config
+    )
     result.stats["proposal_json"] = len(json_files)
 
     for file_path in json_files:
@@ -387,11 +563,12 @@ def validate_preprocess_snapshot(
     return result
 
 
-def validate_analysis_snapshot(snapshot_dir: Path) -> SnapshotValidationResult:
+def validate_payload_snapshot(snapshot_dir: Path) -> SnapshotValidationResult:
+    """Validate the frontend payloads under a 04_postprocess/<snapshot> directory."""
     result = SnapshotValidationResult()
 
-    for rel_path, required_keys in ANALYSIS_REQUIRED_FILES.items():
-        label = ANALYSIS_COLUMN_LABELS[rel_path]
+    for rel_path, required_keys in PAYLOAD_REQUIRED_FILES.items():
+        label = PAYLOAD_COLUMN_LABELS[rel_path]
         file_path = snapshot_dir / rel_path
 
         if not file_path.exists():
@@ -421,7 +598,8 @@ def validate_analysis_snapshot(snapshot_dir: Path) -> SnapshotValidationResult:
             result.stats["llm"] = sum(
                 1
                 for edge in data.get("dependency_edges", [])
-                if isinstance(edge, Mapping) and edge.get("extraction_method") == BODY_EXTRACTED_LLM
+                if isinstance(edge, Mapping)
+                and edge.get("extraction_method") == BODY_EXTRACTED_LLM
             )
 
     return result
@@ -433,7 +611,10 @@ def validate_ground_truth_curated_file(
 ) -> SnapshotValidationResult:
     result = SnapshotValidationResult()
     csv_path = Path("ip_data") / ecosystem_slug / "ground_truth" / "interrelations.csv"
-    if not csv_path.exists():
+    if (
+        not csv_path.exists()
+        and not ground_truth_workbook_path(ecosystem_slug).exists()
+    ):
         result.file_status["ground_truth"] = "—"
         return result
 
@@ -446,11 +627,27 @@ def validate_ground_truth_curated_file(
 
     errors = validate_ground_truth_curated_entries(
         entries,
-        source_configs_by_slug=_ground_truth_source_configs(ecosystem_slug, ecosystem_config),
+        source_configs_by_slug=_ground_truth_source_configs(
+            ecosystem_slug, ecosystem_config
+        ),
     )
     if errors:
         result.file_status["ground_truth"] = "❌ schema"
         for error in errors:
+            result.fail(f"`{csv_path}` {error}")
+        return result
+
+    reviewed_entries = load_ground_truth_ips(ecosystem_slug, strict=False)
+    consistency_errors = _validate_ground_truth_dataset_consistency(
+        entries,
+        reviewed_entries,
+        proposal_metadata=_latest_source_proposal_metadata(
+            ecosystem_slug, ecosystem_config
+        ),
+    )
+    if consistency_errors:
+        result.file_status["ground_truth"] = "❌ consistency"
+        for error in consistency_errors:
             result.fail(f"`{csv_path}` {error}")
         return result
 
@@ -465,7 +662,10 @@ def validate_ground_truth_ips_file(
 ) -> SnapshotValidationResult:
     result = SnapshotValidationResult()
     csv_path = Path("ip_data") / ecosystem_slug / "ground_truth" / "ips.csv"
-    if not csv_path.exists():
+    if (
+        not csv_path.exists()
+        and not ground_truth_workbook_path(ecosystem_slug).exists()
+    ):
         result.file_status["reviewed_ips"] = "⚠️ missing"
         return result
 
@@ -478,7 +678,9 @@ def validate_ground_truth_ips_file(
 
     errors = validate_reviewed_ip_entries(
         entries,
-        source_configs_by_slug=_ground_truth_source_configs(ecosystem_slug, ecosystem_config),
+        source_configs_by_slug=_ground_truth_source_configs(
+            ecosystem_slug, ecosystem_config
+        ),
     )
     if errors:
         result.file_status["reviewed_ips"] = "❌ schema"
@@ -488,9 +690,13 @@ def validate_ground_truth_ips_file(
 
     result.stats["reviewed_ips"] = len(entries)
     result.stats["completed_reviewed_ips"] = sum(
-        1 for entry in entries if isinstance(entry, Mapping) and str(entry.get("reviewed_at") or "").strip()
+        1
+        for entry in entries
+        if isinstance(entry, Mapping) and str(entry.get("reviewed_at") or "").strip()
     )
-    policy_warnings = validate_reviewed_ip_policy(entries, ecosystem_slug=ecosystem_slug)
+    policy_warnings = validate_reviewed_ip_policy(
+        entries, ecosystem_slug=ecosystem_slug
+    )
     if policy_warnings:
         result.file_status["reviewed_ips"] = "⚠️ policy"
         for warning in policy_warnings:
@@ -501,35 +707,36 @@ def validate_ground_truth_ips_file(
     return result
 
 
-def validate_react_snapshot_exports(react_dir: Path) -> SnapshotValidationResult:
+def validate_payload_index(payload_dir: Path) -> SnapshotValidationResult:
+    """Validate the dataset_index.json manifest inside a 04_postprocess/<snapshot> directory."""
     result = SnapshotValidationResult()
-    index_path = react_dir / "dataset_index.json"
+    index_path = payload_dir / "dataset_index.json"
     index = _load_json_file(index_path, result, str(index_path))
     if index is None:
-        result.file_status["react"] = "❌ missing"
+        result.file_status["payload_index"] = "❌ missing"
         return result
     if not isinstance(index, Mapping):
-        result.file_status["react"] = "❌ shape"
+        result.file_status["payload_index"] = "❌ shape"
         result.fail(f"`{index_path}` must contain a JSON object")
         return result
 
     files = index.get("files")
     if not isinstance(files, Mapping) or not files:
-        result.file_status["react"] = "❌ index"
+        result.file_status["payload_index"] = "❌ index"
         result.fail(f"`{index_path}` missing non-empty `files` object")
         return result
 
     missing = [
-        str(react_dir / str(filename))
+        str(payload_dir / str(filename))
         for filename in files.values()
-        if not (react_dir / str(filename)).exists()
+        if not (payload_dir / str(filename)).exists()
     ]
     if missing:
-        result.file_status["react"] = "❌ files"
+        result.file_status["payload_index"] = "❌ files"
         result.fail(f"`{index_path}` references missing files: {', '.join(missing)}")
         return result
 
-    result.file_status["react"] = "✅"
+    result.file_status["payload_index"] = "✅"
     return result
 
 
@@ -553,22 +760,28 @@ def validate_source_snapshot(
             ecosystem_config=ecosystem_config,
         )
     )
-    result.merge(validate_analysis_snapshot(Path(str(source_config["analysis"])) / snapshot))
-    result.merge(validate_react_snapshot_exports(Path(str(source_config["postprocess"])) / snapshot / "react"))
+    payload_dir = Path(str(source_config["postprocess"])) / snapshot
+    result.merge(validate_payload_snapshot(payload_dir))
+    result.merge(validate_payload_index(payload_dir))
     return result
 
 
-def validate_combined_snapshot(*, ecosystem_slug: str, combo_key: str, snapshot: str) -> SnapshotValidationResult:
+def validate_combined_snapshot(
+    *, ecosystem_slug: str, combo_key: str, snapshot: str
+) -> SnapshotValidationResult:
     combo_root = Path("ip_data") / ecosystem_slug / "_combined" / combo_key
     result = SnapshotValidationResult()
     result.merge(validate_ground_truth_curated_file(ecosystem_slug))
     result.merge(validate_ground_truth_ips_file(ecosystem_slug))
-    result.merge(validate_analysis_snapshot(combo_root / "03_analysis" / snapshot))
-    result.merge(validate_react_snapshot_exports(combo_root / "04_postprocess" / snapshot / "react"))
+    payload_dir = combo_root / "04_postprocess" / snapshot
+    result.merge(validate_payload_snapshot(payload_dir))
+    result.merge(validate_payload_index(payload_dir))
     return result
 
 
-def validate_react_generated_indexes(generated_dir: Path = Path("react/src/generated")) -> SnapshotValidationResult:
+def validate_react_generated_indexes(
+    generated_dir: Path = Path("react/src/generated"),
+) -> SnapshotValidationResult:
     result = SnapshotValidationResult()
     missing: list[str] = []
     invalid: list[str] = []

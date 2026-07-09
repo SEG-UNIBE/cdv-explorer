@@ -890,26 +890,40 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:53:04Z",
+          "timestamp": "2026-06-30T11:17:28Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:16",
               "evidence": "The accounting is the same as for [bip-0016][BIP16 specs]",
-              "reason": "The signature-op counting rule explicitly reuses BIP16 script evaluation accounting semantics.",
+              "reason": "The proposal explicitly reuses BIP16's signature-operation counting rules for evaluating scripts.",
               "confidence": "high"
             },
             {
               "target": "bips:30",
-              "evidence": "without [bip-0030][BIP30] validation",
-              "reason": "The proposal changes coinbase rules specifically to eliminate the need for BIP30 duplicate-transaction validation.",
+              "evidence": "without [bip-0030][BIP30] validation.",
+              "reason": "The coinbase-differentiation rule is designed to eliminate the need for BIP30 validation and is framed against BIP30's duplicate-transaction check.",
               "confidence": "high"
             },
             {
               "target": "bips:34",
-              "evidence": "Since [bip-0034][BIP34] activation",
-              "reason": "The new coinbase uniqueness rule is defined relative to BIP34 violation history and replaces reliance on BIP30 after BIP34 activation.",
+              "evidence": "Since [bip-0034][BIP34] activation, explicit [bip-0030][BIP30] validation is not necessary",
+              "reason": "The proposal's coinbase uniqueness logic relies on the earlier BIP34 coinbase-height convention and its violations as the basis for replacing BIP30 checks.",
               "confidence": "high"
+            },
+            {
+              "target": "bips:94",
+              "evidence": "this approach has been adopted for [testnet4][BIP94 timewarp].",
+              "reason": "The proposal references BIP94's timewarp-fix activation behavior as an adopted variant of the same timestamp rule family, informing the chosen consensus constraint.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:182",
+              "evidence": "preclude alternative full node designs (such as [bip-0182][BIP182] Utreexo).",
+              "reason": "The motivation uses BIP182 as an example of a full-node design that would be affected by resuming BIP30 validation, so the BIP54 coinbase rule is crafted to avoid that dependency.",
+              "confidence": "medium"
             }
           ]
         }

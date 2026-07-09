@@ -132,14 +132,16 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:58:25Z_gpt-5.4-mini_0bc643e4",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:08:34Z",
+          "timestamp": "2026-06-30T11:59:13Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:94",
-              "evidence": "\"imeta may include any field specified by [NIP 94]\"",
-              "reason": "The proposal explicitly reuses the field set and hash semantics defined by NIP 94 for media metadata.",
-              "confidence": "low"
+              "evidence": "Each `imeta` tag MUST have a `url`, and at least one other field. `imeta` may include any field specified by [NIP 94](./94.md).",
+              "reason": "The proposal explicitly reuses the field set defined by NIP 94 for the imeta tag payload, making NIP 94 part of the tag format.",
+              "confidence": "high"
             }
           ]
         }

@@ -496,7 +496,7 @@
         "author": "Amir Taaki",
         "path": "bip-0034.md",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "e81db32a42e95de3abe33a055c61548f2d59a536",
@@ -505,7 +505,7 @@
         "author": "Amir Taaki",
         "path": "bip-0034.md",
         "status": "Accepted",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "f31f7d43473fadcfafbc886b15e8c488654839c2",
@@ -514,7 +514,7 @@
         "author": "Luke Dashjr",
         "path": "bip-0034.mediawiki",
         "status": "Final",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "2d909ad98a999a77bfcf8393a60166f1eabd22a4",
@@ -523,7 +523,7 @@
         "author": "Johnson Lau",
         "path": "bip-0034.mediawiki",
         "status": "Accepted",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
@@ -549,9 +549,18 @@
       "body_extracted_regex": [],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:57:44Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:42:15Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:31",
+              "evidence": "clarify and exercise the mechanism whereby the bitcoin network collectively consents to upgrade transaction or block binary structures",
+              "reason": "This proposal relies on the block/version upgrade signaling and activation mechanism for versioned structures introduced by the referenced BIP.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

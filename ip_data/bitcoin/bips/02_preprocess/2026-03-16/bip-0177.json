@@ -575,9 +575,18 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:58:53Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:44:00Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:176",
+              "evidence": "An alternative suggestion (BIP 176) proposes using \"bits\" to represent one-millionth of a bitcoin",
+              "reason": "The proposal explicitly analyzes and rejects BIP 176 as an alternative denomination/display scheme, so understanding the design tradeoff depends on that prior proposal.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

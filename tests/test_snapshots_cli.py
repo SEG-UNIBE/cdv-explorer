@@ -2,7 +2,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from main import _collect_snapshot_removal_targets, _remove_snapshot_targets
+from cli.snapshots import _collect_snapshot_removal_targets, _remove_snapshot_targets
 
 
 class SnapshotRemovalTests(unittest.TestCase):
@@ -18,9 +18,16 @@ class SnapshotRemovalTests(unittest.TestCase):
                 (root / base / "2026-05-28").mkdir(parents=True)
                 (root / base / "2026-03-16").mkdir(parents=True)
 
-            eco = {"sources": {"nips": src, "other": {**src, "analysis": str(root / "missing")}}}
+            eco = {
+                "sources": {
+                    "nips": src,
+                    "other": {**src, "analysis": str(root / "missing")},
+                }
+            }
 
-            targets = _collect_snapshot_removal_targets("nostr", eco, "nips", "2026-05-28")
+            targets = _collect_snapshot_removal_targets(
+                "nostr", eco, "nips", "2026-05-28"
+            )
 
         self.assertEqual(
             [path.name for _source, path in targets],
@@ -46,4 +53,3 @@ class SnapshotRemovalTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

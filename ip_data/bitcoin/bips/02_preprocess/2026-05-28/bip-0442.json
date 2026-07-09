@@ -656,56 +656,58 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:55:08Z",
+          "timestamp": "2026-06-30T11:19:18Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:119",
-              "evidence": "OP_CHECKTEMPLATEVERIFY",
-              "reason": "The proposal uses CTV in the example scripts to commit to transaction templates and state hashes.",
-              "confidence": "high"
+              "evidence": "`OP_CHECKTEMPLATEVERIFY` commits to a specific `nLockTime` value for the transaction through `OP_CHECKTEMPLATEVERIFY`",
+              "reason": "The Lightning Symmetry example and related constructions rely on CTV commitments to transaction fields as part of the witness/data availability design.",
+              "confidence": "low"
             },
             {
               "target": "bips:327",
               "evidence": "BIP-327 aggregate key of channel participants",
-              "reason": "The example channel script relies on MuSig2 aggregate key semantics for the internal key.",
-              "confidence": "high"
+              "reason": "The Lightning Symmetry example uses an aggregate key as the internal key, so the proposed constructions assume that key aggregation mechanism.",
+              "confidence": "medium"
             },
             {
               "target": "bips:340",
               "evidence": "Notation follows [BIP-340], including the tagged hash notation",
-              "reason": "The new opcode’s hash construction is defined using BIP-340 tagged hash notation.",
+              "reason": "The opcode’s commitment hash construction is defined using BIP-340 tagged-hash notation.",
               "confidence": "high"
             },
             {
-              "target": "bips:341",
-              "evidence": "For taproot script spends with leaf version *0xc0* (see [BIP-342])",
-              "reason": "The opcode is scoped to Taproot script spends, relying on the Taproot script environment defined by the surrounding Taproot BIP set.",
-              "confidence": "medium"
-            },
-            {
               "target": "bips:342",
-              "evidence": "For taproot script spends with leaf version *0xc0* (see [BIP-342])",
-              "reason": "The opcode is specifically introduced as a Tapscript opcode for leaf version 0xc0 spends.",
+              "evidence": "For taproot script spends with leaf version *0xc0* (see [BIP-342]), `OP_PAIRCOMMIT` replaces `OP_SUCCESS205` (*0xcd*).",
+              "reason": "The opcode is only defined for Tapscript leaf version 0xc0 under the BIP-342 script semantics.",
               "confidence": "high"
             },
             {
               "target": "bips:348",
-              "evidence": "Combined with `OP_CHECKSIGFROMSTACK`",
-              "reason": "The proposal’s motivating constructions and example scripts depend on CSFS to verify signatures over paired commitments.",
+              "evidence": "Combined with `OP_CHECKSIGFROMSTACK`, signing commitments to multiple items enables complex delegation",
+              "reason": "The proposal’s motivating and example scripts rely on CSFS to verify signatures over committed data.",
               "confidence": "high"
             },
             {
               "target": "bips:349",
-              "evidence": "OP_INTERNALKEY",
-              "reason": "The example scripts use INTERNALKEY to combine the pair commitment with the taproot internal key in script logic.",
-              "confidence": "high"
+              "evidence": "`OP_INTERNALKEY`                     # <sig>, PC(state-n-recovery-data, state-n-hash), <internal-key>",
+              "reason": "The example scripts depend on the internal-key opcode to supply the taproot internal key for signature verification.",
+              "confidence": "low"
             },
             {
               "target": "bips:443",
-              "evidence": "OP_CHECKCONTRACTVERIFY",
-              "reason": "The proposal discusses CTV-related contract constructions and explicitly references CHECKCONTRACTVERIFY as a related opcode in the technical context of template commitments.",
-              "confidence": "medium"
+              "evidence": "`OP_CHECKCONTRACTVERIFY` committing to the taproot annex",
+              "reason": "The proposal explicitly evaluates this opcode as an alternative commitment mechanism and contrasts its capability with OP_PAIRCOMMIT.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:446",
+              "evidence": "SHA256 streaming opcodes[^9]",
+              "reason": "The alternative-approaches section treats streaming hash opcodes as a competing mechanism relevant to evaluating this proposal’s hash-based commitment design.",
+              "confidence": "low"
             }
           ]
         }

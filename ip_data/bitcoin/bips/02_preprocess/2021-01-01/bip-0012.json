@@ -510,7 +510,7 @@
         "author": "genjix",
         "path": "bip-0012.txt",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "12627baeea94a377bb94612beeec9b9cc4bd978e",
@@ -519,7 +519,7 @@
         "author": "genjix",
         "path": "bip-0012.md",
         "status": "Accepted",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "7c1296b7b62b5a9c09668e1fd66817596d91e6d3",
@@ -527,6 +527,15 @@
         "date": "2012-01-03",
         "author": "genjix",
         "path": "bip-0012.md",
+        "status": "Withdrawn",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0012.mediawiki",
         "status": "Withdrawn",
         "standard": "bip2"
       }
@@ -541,9 +550,18 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:00:24Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:35:07Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:11",
+              "evidence": "\"M-of-N Multisignature Transactions BIP 11\"",
+              "reason": "The proposal references BIP 11 as the multisignature transaction format whose scripts can be serialized and used as the OP_EVAL payload and as a standard transaction type.",
+              "confidence": "low"
+            }
+          ]
         }
       ]
     }

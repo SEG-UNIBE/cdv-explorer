@@ -252,9 +252,24 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:58:25Z_gpt-5.4-mini_0bc643e4",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:08:12Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:58:38Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "nips:01",
+              "evidence": "They are not meant to be used anywhere in the core protocol",
+              "reason": "The proposal explicitly constrains these bech32 encodings to stay out of the core NIP-01 event and filter formats, so understanding their scope depends on NIP-01.",
+              "confidence": "low"
+            },
+            {
+              "target": "nips:05",
+              "evidence": "or in NIP-05 JSON responses, only the hex format is supported there.",
+              "reason": "The proposal directly specifies compatibility constraints for NIP-05 JSON responses, so adopting it depends on NIP-05's response format.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

@@ -785,9 +785,36 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:00:21Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:35:12Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:9",
+              "evidence": "This document specifies an alternative to [[bip-0009.mediawiki|BIP9]]",
+              "reason": "The proposal is explicitly designed as a replacement/variant of BIP9 and reuses its soft-fork deployment context while changing activation mechanics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:34",
+              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65, we only have 0x7FFFFFFB possible nVersion values available.",
+              "reason": "The deployment-bit encoding and available version-space constraints are derived from the version bits already constrained by BIP34.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:65",
+              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65, we only have 0x7FFFFFFB possible nVersion values available.",
+              "reason": "The proposal's allowable nVersion range and bit allocation depend on constraints introduced by BIP65.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:66",
+              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65, we only have 0x7FFFFFFB possible nVersion values available.",
+              "reason": "The proposal's allowable nVersion range and bit allocation depend on constraints introduced by BIP66.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

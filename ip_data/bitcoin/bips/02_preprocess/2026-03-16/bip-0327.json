@@ -1214,9 +1214,30 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:59:06Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:44:30Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:340",
+              "evidence": "compatible with [https://github.com/bitcoin/bips/blob/master/bip-0340.mediawiki BIP340] public keys and signatures",
+              "reason": "The proposal’s aggregate key, signature format, and verification are defined to interoperate with BIP340 Schnorr keys and signatures.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "creating [https://github.com/bitcoin/bips/blob/master/bip-0341.mediawiki BIP341] Taproot outputs with key and script paths",
+              "reason": "The proposal explicitly supports Taproot key-path and script-path outputs via X-only tweaking and Taproot-specific semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:342",
+              "evidence": "as would be required by an ''n-of-n'' policy implemented using <code>OP_CHECKSIGADD</code> as introduced in ([https://github.com/bitcoin/bips/blob/master/bip-0342.mediawiki BIP342])",
+              "reason": "This is a comparison-only reference to an alternative multisig construction; the proposal does not depend on BIP342 mechanisms.",
+              "confidence": "low"
+            }
+          ]
         }
       ]
     }

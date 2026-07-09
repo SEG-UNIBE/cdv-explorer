@@ -653,6 +653,15 @@
         "author": "Luke Dashjr",
         "path": "bip-0140.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0140.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -700,38 +709,16 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:58:38Z",
+          "timestamp": "2026-06-30T11:43:31Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:11",
-              "evidence": "This is the standard ''m-of-n'' script defined in BIP 11",
-              "reason": "The proposal adopts the multisig script structure and encoding defined by BIP 11 for its new signature-checking opcode.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:30",
-              "evidence": "coinbase transactions in blocks at heights 91842 and 91880 ... and motivated the introduction of BIP 34",
-              "reason": "The proposal relies on BIP 30’s duplicate-coinbase collision context when discussing safe handling of coinbase normalized IDs.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:34",
-              "evidence": "motivated the introduction of BIP 34",
-              "reason": "The proposal uses BIP 34 as the resolution to coinbase duplicate-hash issues that affect normalized transaction ID handling.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:62",
-              "evidence": "BIPs 62 and 66 alleviate the problem of third-party modification",
-              "reason": "The proposal’s motivation and design explicitly build on BIP 62’s malleability mitigation context.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:66",
-              "evidence": "BIPs 62 and 66 alleviate the problem of third-party modification",
-              "reason": "The proposal’s motivation and design explicitly build on BIP 66’s strict-signature encoding context.",
-              "confidence": "low"
+              "evidence": "This is the standard ''m-of-n'' script defined in [https://github.com/bitcoin/bips/blob/master/bip-0011.mediawiki BIP 11] with an additional version parameter",
+              "reason": "The proposed signature script format is explicitly based on the BIP 11 multisig script structure and extends it with a version field.",
+              "confidence": "high"
             }
           ]
         }

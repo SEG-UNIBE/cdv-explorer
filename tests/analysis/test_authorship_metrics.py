@@ -15,10 +15,7 @@ class TestAuthorshipMetrics(TestCase):
         }
 
         payload = prepare_authorship_payload(network_data)
-        rows = {
-            row["author"]: row
-            for row in payload["collaboration_metrics_rows"]
-        }
+        rows = {row["author"]: row for row in payload["collaboration_metrics_rows"]}
 
         self.assertIn("rawDegreeRank", rows["Alice"])
         self.assertIn("weightedDegreeRank", rows["Alice"])

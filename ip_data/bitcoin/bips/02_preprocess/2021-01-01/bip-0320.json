@@ -477,19 +477,21 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:56Z",
+          "timestamp": "2026-06-30T11:36:18Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:8",
               "evidence": "removed from BIP8 and BIP9 specifications",
-              "reason": "The proposal directly amends BIP 8's version-bits signaling by excluding reserved bits from its activation semantics.",
+              "reason": "The proposal changes the version-bits soft-fork signaling scheme defined by BIP 8, specifically reserving some nVersion bits and excluding them from its signaling semantics.",
               "confidence": "high"
             },
             {
               "target": "bips:9",
               "evidence": "removed from BIP8 and BIP9 specifications",
-              "reason": "The proposal directly changes BIP 9 soft-fork signaling by reserving block-header version bits and ignoring them for BIP 9 warnings/activation.",
+              "reason": "The proposal directly modifies the BIP 9 version-bits activation behavior by reserving 16 nVersion bits and instructing implementations to ignore them for soft-fork signaling.",
               "confidence": "high"
             }
           ]

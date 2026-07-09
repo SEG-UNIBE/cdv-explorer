@@ -880,6 +880,15 @@
         "author": "Wladimir J. van der Laan",
         "path": "bip-0038.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0038.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       }
     ],
@@ -888,9 +897,24 @@
       "body_extracted_regex": [],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:00:35Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:35:23Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "with respect to the [[secp256k1]] elliptic curve",
+              "reason": "The EC-multiply mode uses secp256k1 point-scalar operations and derived points, which are dependent on the curve definition referenced here.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:43",
+              "evidence": "it can be understood in the future to include keys participating in multisig transactions",
+              "reason": "The flagbyte reserves bits for a future multisig-related specification, indicating the format is designed to accommodate that later proposal's semantics.",
+              "confidence": "low"
+            }
+          ]
         }
       ]
     }

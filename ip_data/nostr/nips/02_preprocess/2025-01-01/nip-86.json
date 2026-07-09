@@ -146,13 +146,15 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:58:25Z_gpt-5.4-mini_0bc643e4",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:08:32Z",
+          "timestamp": "2026-06-30T11:59:11Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:98",
-              "evidence": "The request must contain an `Authorization` header with a valid [NIP-98](./98.md) event",
-              "reason": "This proposal’s authorization mechanism relies on NIP-98 events and their validation rules, with an added payload requirement and relay URL tag usage.",
+              "evidence": "a valid [NIP-98](./98.md) event",
+              "reason": "The management API requires NIP-98 authorization events in the HTTP Authorization header, so implementing authentication depends on NIP-98 event format and validation rules.",
               "confidence": "high"
             }
           ]

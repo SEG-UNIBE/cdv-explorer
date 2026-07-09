@@ -1092,20 +1092,16 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:53:11Z",
+          "timestamp": "2026-06-30T11:17:34Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:21",
-              "evidence": "The receiver of the payment, presents a BIP 21 URI to the sender",
-              "reason": "The protocol relies on BIP21 URI parameters to advertise the payjoin endpoint and control behavior.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:174",
-              "evidence": "This proposal is very similar.",
-              "reason": "The proposal materially builds on the PSBT format and fields for exchanging partially signed transactions.",
-              "confidence": "low"
+              "evidence": "The receiver of the payment, presents a [[bip-0021.mediawiki|BIP 21 URI]] to the sender with a parameter",
+              "reason": "The proposal uses BIP21 URIs and defines new URI parameters carried in that scheme.",
+              "confidence": "high"
             }
           ]
         }

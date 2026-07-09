@@ -864,13 +864,22 @@
         "author": "Peter Todd",
         "path": "bip-0070.mediawiki",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "8571f42a6c0cdf9ba25817a2ea60b1b5ba988181",
         "timestamp": "2014-06-12T10:46:59-04:00",
         "date": "2014-06-12",
         "author": "Gavin Andresen",
+        "path": "bip-0070.mediawiki",
+        "status": "Final",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
         "path": "bip-0070.mediawiki",
         "status": "Final",
         "standard": "bip2"
@@ -899,14 +908,22 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:58:00Z",
+          "timestamp": "2026-06-30T11:42:37Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:71",
               "evidence": "Wallet software sending Payment messages via HTTP must set appropriate Content-Type and Accept headers, as specified in BIP 71",
-              "reason": "The proposal explicitly relies on BIP 71 for the required HTTP content types used by the payment protocol.",
+              "reason": "The proposal explicitly relies on BIP 71 for the MIME/content-type header conventions used when POSTing Payment messages and receiving PaymentACKs.",
               "confidence": "high"
+            },
+            {
+              "target": "bips:72",
+              "evidence": "[[bip-0072.mediawiki|BIP 0072]] : Payment Protocol bitcoin: URI extensions",
+              "reason": "The proposal points to BIP 72 as the URI-extension mechanism associated with this payment protocol, indicating the protocol family is designed to work with those bitcoin: URI extensions.",
+              "confidence": "medium"
             }
           ]
         }

@@ -301,31 +301,33 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:59:52Z_gpt-5.4-mini_b29b8ccc",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:07:29Z",
+          "timestamp": "2026-06-30T12:00:05Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:10",
               "evidence": "Comments MUST NOT be used to reply to kind 1 notes. [NIP-10](10.md) should instead be followed.",
-              "reason": "This proposal constrains reply behavior by deferring note replies to the threading rules in NIP-10.",
+              "reason": "The proposal explicitly constrains reply handling by deferring kind-1 note replies to NIP-10 threading semantics.",
               "confidence": "high"
             },
             {
               "target": "nips:21",
               "evidence": "`q` tags MAY be used when citing events in the `.content` with [NIP-21](21.md).",
-              "reason": "The proposal introduces optional use of q-tags specifically in the content-citation syntax defined by NIP-21.",
+              "reason": "The proposal reuses NIP-21’s content-citation convention for optional event references inside comment text.",
               "confidence": "high"
             },
             {
               "target": "nips:73",
               "evidence": "The possible values for `i` tags – and `k` tags, when related to an external identity – are listed on [NIP-73](73.md).",
-              "reason": "The comment tag model for external identifiers relies on the value set and semantics defined by NIP-73.",
+              "reason": "The proposal defines comment-scoping tags using the value conventions from NIP-73 for external identifiers.",
               "confidence": "high"
             },
             {
               "target": "nips:94",
               "evidence": "A comment on a [NIP-94](94.md) file looks like this:",
-              "reason": "The proposal defines comment scoping and tagging for NIP-94 file events, using that event type as a concrete supported target.",
+              "reason": "The proposal includes a dedicated comment example that threads directly to a NIP-94 file event, relying on that event type as a supported root scope.",
               "confidence": "medium"
             }
           ]

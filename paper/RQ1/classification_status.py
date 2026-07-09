@@ -4,13 +4,13 @@ from pathlib import Path
 import matplotlib
 import matplotlib.patheffects as pe
 import numpy as np
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
 from matplotlib.ticker import MaxNLocator
 
 from analysis.artifact_io import resolve_latest_snapshot_label
-from pipeline.source_context import SourceContext
 from paper.plot_colors import with_plot_alpha
 from paper.RQ3._plotting import (
     BAR_EDGE_COLOR,
@@ -20,7 +20,7 @@ from paper.RQ3._plotting import (
     match_axis_label_fontsize,
     save_figure,
 )
-
+from pipeline.source_context import SourceContext
 
 STATUS_ORDER = [
     "Draft",
@@ -141,7 +141,7 @@ def _monotone_cubic_curve(
 
         alpha = tangents[index] / slope
         beta = tangents[index + 1] / slope
-        scale = alpha ** 2 + beta ** 2
+        scale = alpha**2 + beta**2
         if scale > 9:
             tau = 3 / np.sqrt(scale)
             tangents[index] = tau * alpha * slope
@@ -159,10 +159,10 @@ def _monotone_cubic_curve(
 
         steps = np.linspace(0, 1, points_per_segment, endpoint=False)
         for step in steps:
-            h00 = (2 * step ** 3) - (3 * step ** 2) + 1
-            h10 = step ** 3 - (2 * step ** 2) + step
-            h01 = (-2 * step ** 3) + (3 * step ** 2)
-            h11 = step ** 3 - step ** 2
+            h00 = (2 * step**3) - (3 * step**2) + 1
+            h10 = step**3 - (2 * step**2) + step
+            h01 = (-2 * step**3) + (3 * step**2)
+            h11 = step**3 - step**2
 
             smooth_x.append(x0 + step * segment_width)
             smooth_y.append(
@@ -191,17 +191,12 @@ def _normalize_status_series(
         for status, count in yearly_statuses.items()
         if int(count) > 0
     }
-    ordered_statuses = [
-        status
-        for status in order
-        if status in observed_statuses
-    ]
+    ordered_statuses = [status for status in order if status in observed_statuses]
     ordered_statuses.extend(sorted(observed_statuses - set(ordered_statuses)))
 
     series = {
         status: [
-            int(status_over_time.get(str(year), {}).get(status, 0))
-            for year in years
+            int(status_over_time.get(str(year), {}).get(status, 0)) for year in years
         ]
         for status in ordered_statuses
     }
@@ -225,10 +220,7 @@ def plot_classification_status(
         status_over_time,
         order or resolve_rq1_status_order(snapshot_label),
     )
-    totals = {
-        status: sum(counts)
-        for status, counts in series.items()
-    }
+    totals = {status: sum(counts) for status, counts in series.items()}
     total_bips = sum(totals.values())
     if total_bips <= 0:
         raise ValueError("Classification plot requires positive category counts.")
@@ -237,7 +229,7 @@ def plot_classification_status(
     colors = [palette.get(status, "#868e96") for status in ordered_statuses]
     legend_handles = [
         Patch(facecolor=with_plot_alpha(color), edgecolor="none", label=status)
-        for status, color in zip(ordered_statuses, colors)
+        for status, color in zip(ordered_statuses, colors, strict=True)
     ]
     donut_colors = [bar_style(color)["color"] for color in colors]
     x_positions = np.arange(len(years))
@@ -290,7 +282,7 @@ def plot_classification_status(
     axis_left.set_ylim(-1.28, 1.28)
 
     bar_bottom = np.zeros(len(years), dtype=int)
-    for status, color in zip(ordered_statuses, colors):
+    for status, color in zip(ordered_statuses, colors, strict=True):
         counts = series[status]
         axis_right.bar(
             x_positions,
@@ -314,24 +306,28 @@ def plot_classification_status(
     despine(axis_right)
 
     cumulative_max = 0
-    for status, color in zip(ordered_statuses, colors):
+    for status, color in zip(ordered_statuses, colors, strict=True):
         cumulative_counts = np.cumsum(series[status]).astype(float)
-        cumulative_max = max(cumulative_max, int(cumulative_counts[-1]) if len(cumulative_counts) else 0)
+        cumulative_max = max(
+            cumulative_max, int(cumulative_counts[-1]) if len(cumulative_counts) else 0
+        )
         smooth_x, smooth_y = _monotone_cubic_curve(
             x_positions.astype(float),
             cumulative_counts,
         )
-        line, = axis_right_secondary.plot(
+        (line,) = axis_right_secondary.plot(
             smooth_x,
             smooth_y,
             color=with_plot_alpha(color),
             linewidth=1,
             zorder=4,
         )
-        line.set_path_effects([
-            pe.Stroke(linewidth=2, foreground="white", alpha=0.9),
-            pe.Normal(),
-        ])
+        line.set_path_effects(
+            [
+                pe.Stroke(linewidth=2, foreground="white", alpha=0.9),
+                pe.Normal(),
+            ]
+        )
         axis_right_secondary.scatter(
             x_positions,
             cumulative_counts,

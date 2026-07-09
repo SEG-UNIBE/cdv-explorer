@@ -220,20 +220,22 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:59:52Z_gpt-5.4-mini_b29b8ccc",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:07:51Z",
+          "timestamp": "2026-06-30T12:00:39Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:71",
-              "evidence": "might be used with [NIP-71](71.md)'s kind `22`",
-              "reason": "The proposal extends the same picture-first feed concept to short vertical videos using NIP-71's kind 22, so it relies on that event kind and its media semantics.",
-              "confidence": "high"
+              "evidence": "\"Picture events might be used with [NIP-71](71.md)'s kind `22` to display short vertical videos in the same feed.\"",
+              "reason": "The proposal is explicitly designed to be used alongside NIP-71 kind 22 as part of the same feed workflow.",
+              "confidence": "low"
             },
             {
               "target": "nips:94",
-              "evidence": "`x <sha256 hash as specified in NIP 94>`",
-              "reason": "The `imeta` tag format reuses the SHA-256 hash specification from NIP 94 for image references, making that hash definition part of the event data semantics.",
-              "confidence": "low"
+              "evidence": "\"x <sha256 hash as specified in NIP 94>\"",
+              "reason": "The picture-event `imeta` tag reuses the SHA-256 hash specification from the target NIP for image identification.",
+              "confidence": "high"
             }
           ]
         }

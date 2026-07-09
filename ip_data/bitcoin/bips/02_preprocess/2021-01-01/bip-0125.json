@@ -564,12 +564,21 @@
         "author": "David A. Harding",
         "path": "bip-opt-in-rbf.mediawiki",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "387fc6011bd804609fd751786e50439d5c11a097",
         "timestamp": "2016-08-23T19:47:29Z",
         "date": "2016-08-23",
+        "author": "Luke Dashjr",
+        "path": "bip-0125.mediawiki",
+        "status": "Accepted",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
         "author": "Luke Dashjr",
         "path": "bip-0125.mediawiki",
         "status": "Accepted",
@@ -599,19 +608,21 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:15Z",
+          "timestamp": "2026-06-30T11:35:52Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:68",
-              "evidence": "compatible with consensus-enforced locktime as provided in ... draft BIP68",
-              "reason": "The proposal relies on sequence-number semantics and locktime behavior defined by BIP 68 to avoid conflicting with relative lock-time usage.",
-              "confidence": "low"
+              "evidence": "compatible with consensus-enforced locktime as provided in the Bitcoin 0.1 implementation, draft BIP68",
+              "reason": "The proposal explicitly states compatibility with BIP68’s sequence-number-based relative locktime semantics, which constrain how nSequence can be used alongside opt-in replacement signaling.",
+              "confidence": "high"
             },
             {
               "target": "bips:112",
-              "evidence": "and draft BIP112 (CHECKSEQUENCEVERIFY)",
-              "reason": "The proposal’s use of nSequence for replaceability must remain compatible with CHECKSEQUENCEVERIFY rules introduced by BIP 112.",
+              "evidence": "draft BIP112 (CHECKSEQUENCEVERIFY)",
+              "reason": "The proposal explicitly states compatibility with BIP112, which uses sequence numbers and therefore shares the transaction input semantics the proposal relies on.",
               "confidence": "high"
             }
           ]

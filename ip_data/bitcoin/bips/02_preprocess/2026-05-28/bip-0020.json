@@ -618,7 +618,7 @@
         "author": "genjix",
         "path": "bip-0020.md",
         "status": "Final",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "1be9cbdbaf9e53b26e9e5cd72f1d229baece9ac5",
@@ -627,13 +627,22 @@
         "author": "genjix",
         "path": "bip-0020.md",
         "status": "Rejected",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "dc00d6cf02410bd1a4ba23c2c845ae8b9001fc59",
         "timestamp": "2013-10-21T00:47:13-04:00",
         "date": "2013-10-21",
         "author": "Peter Todd",
+        "path": "bip-0020.mediawiki",
+        "status": "Replaced",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
         "path": "bip-0020.mediawiki",
         "status": "Replaced",
         "standard": "bip2"
@@ -663,9 +672,18 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:52:50Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:17:15Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:21",
+              "evidence": "'''And has been replaced by BIP 0021'''",
+              "reason": "The document explicitly states that this URI scheme proposal was superseded by BIP 21, indicating the current proposal is designed around or replaced by that later specification.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

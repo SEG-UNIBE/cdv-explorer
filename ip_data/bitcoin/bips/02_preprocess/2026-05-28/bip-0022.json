@@ -682,12 +682,21 @@
         "author": "genjix",
         "path": "bip-0022.md",
         "status": "Accepted",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "f31f7d43473fadcfafbc886b15e8c488654839c2",
         "timestamp": "2016-02-01T20:14:22Z",
         "date": "2016-02-01",
+        "author": "Luke Dashjr",
+        "path": "bip-0022.mediawiki",
+        "status": "Final",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
         "author": "Luke Dashjr",
         "path": "bip-0022.mediawiki",
         "status": "Final",
@@ -721,25 +730,27 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:52:53Z",
+          "timestamp": "2026-06-30T11:17:17Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:16",
-              "evidence": "Due to the BIP 0016 changes regarding rules on block sigops",
-              "reason": "The proposal relies on BIP 16’s sigop-counting rules to define the meaning of the sigops fields in templates and transactions.",
-              "confidence": "low"
+              "evidence": "Due to the [[bip-0016.mediawiki|BIP 0016]] changes regarding rules on block sigops",
+              "reason": "The proposal's transaction sigop reporting depends on BIP 16's changed sigop counting rules.",
+              "confidence": "high"
             },
             {
               "target": "bips:23",
               "evidence": "a [[bip-0023.mediawiki#block-proposal|\"proposal\"]]",
-              "reason": "This proposal explicitly supports the proposal mode and related capabilities defined by BIP 23, extending its pooled-mining protocol.",
+              "reason": "The getblocktemplate method and its capabilities/mode handling are defined in terms of BIP 23 proposal and related pooled-mining semantics.",
               "confidence": "high"
             },
             {
               "target": "bips:34",
-              "evidence": "comply with [[bip-0034.mediawiki|BIP 0034]] for version 2",
-              "reason": "The block template’s version handling and coinbase contents require adherence to BIP 34’s block-version and coinbase-height rules.",
+              "evidence": "clients MUST understand the implications of the version they use (eg, comply with [[bip-0034.mediawiki|BIP 0034]] for version 2)",
+              "reason": "The template's block version field is constrained by BIP 34's version-2 rules and coinbase height requirement.",
               "confidence": "high"
             }
           ]

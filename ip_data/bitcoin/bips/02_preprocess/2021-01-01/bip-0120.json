@@ -554,6 +554,15 @@
         "author": "Kalle Rosenbaum",
         "path": "bip-0120.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0120.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -584,9 +593,30 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:10Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:36:01Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:21",
+              "evidence": "amount, label, message or other information from a BIP0021 URI",
+              "reason": "The PoP request uses BIP0021 URI fields as hints for identifying the transaction to prove.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:70",
+              "evidence": "PaymentRequest.PaymentDetails.merchant_data (in case of a BIP0070 payment)",
+              "reason": "The proposal explicitly reuses BIP0070 payment-request merchant data as transaction-identification input.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:121",
+              "evidence": "see BIP0121",
+              "reason": "The transfer method for the PoP request is delegated to BIP0121, so implementing the process depends on that URI scheme specification.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

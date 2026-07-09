@@ -704,9 +704,24 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:59:03Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:44:20Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:325",
+              "evidence": "follow an analogous specification to the BIP-325 challenges and solutions used by Signet",
+              "reason": "The full signature format is explicitly modeled on BIP325's challenge/solution transaction structure and thus reuses that mechanism.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:340",
+              "evidence": "message_hash is a BIP340-tagged hash of the message",
+              "reason": "The proposal defines its message hashing and signing challenge using BIP340-tagged hashing, so correct implementation depends on BIP340's tagged-hash convention.",
+              "confidence": "low"
+            }
+          ]
         }
       ]
     }

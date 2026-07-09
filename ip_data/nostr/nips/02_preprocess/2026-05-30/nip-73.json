@@ -227,9 +227,18 @@
       "body_extracted_regex": [],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:59:52Z_gpt-5.4-mini_b29b8ccc",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:07:54Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T12:00:42Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "nips:52",
+              "evidence": "`i` tags are used for referencing these external content ids",
+              "reason": "This proposal is built around the `i` tag field and its event representation, which NIP 52 defines and governs.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

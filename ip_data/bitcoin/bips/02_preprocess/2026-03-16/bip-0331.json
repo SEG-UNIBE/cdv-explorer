@@ -813,25 +813,27 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:59:11Z",
+          "timestamp": "2026-06-30T11:44:49Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:133",
-              "evidence": "If the peers are using BIP133 fee filters and a low-feerate transaction is below the node's fee filter, the sender will not announce it",
-              "reason": "The package-relay flow assumes fee-filter behavior can suppress announcements of low-fee ancestors, affecting relay semantics.",
+              "evidence": "If the peers are using BIP133 fee filters and a low-feerate transaction is below the node's fee filter",
+              "reason": "The fee-filter behavior affects whether low-feerate ancestors are announced and therefore conditions package relay’s propagation flow.",
               "confidence": "medium"
             },
             {
               "target": "bips:330",
-              "evidence": "A client using BIP330 reconciliation-based transaction relay (Erlay) is able to use package relay without interference",
-              "reason": "The proposal is designed to operate alongside and depends on the transaction reconciliation relay mechanism defined by this proposal.",
+              "evidence": "A client using BIP330 reconciliation-based transaction relay (Erlay) is able to use package relay without interference.",
+              "reason": "The proposal is explicitly designed to interoperate with BIP330-based transaction relay, making its deployment context depend on that relay mechanism.",
               "confidence": "medium"
             },
             {
               "target": "bips:339",
-              "evidence": "nodes that both support BIP339 wtxid-based transaction relay",
-              "reason": "The proposal relies on wtxid-based relay as a prerequisite for package messages and orphan handling.",
+              "evidence": "two nodes that both support BIP339 wtxid-based transaction relay shouldn't ever need to use txid-based transaction relay",
+              "reason": "Package relay relies on wtxid-based relay support for transaction identification and avoids txid-based orphan handling when both peers support it.",
               "confidence": "high"
             }
           ]

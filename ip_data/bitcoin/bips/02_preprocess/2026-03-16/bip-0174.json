@@ -1713,74 +1713,70 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:58:54Z",
+          "timestamp": "2026-06-30T11:44:05Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
               "evidence": "The 78 byte serialized extended public key as defined by BIP 32",
-              "reason": "PSBT key origin and xpub fields reuse BIP 32 extended public keys and derivation-path semantics for signer discovery and change detection.",
+              "reason": "PSBT encodes xpubs and BIP32 derivation paths using the formats and fingerprint/path semantics defined by BIP 32.",
               "confidence": "high"
-            },
-            {
-              "target": "bips:127",
-              "evidence": "The UTF-8 encoded commitment message string for the proof-of-reserves. See BIP 127 for more information.",
-              "reason": "The proof-of-reserves PSBT input field carries commitment data specifically defined by BIP 127.",
-              "confidence": "low"
             },
             {
               "target": "bips:143",
               "evidence": "The sighash algorithm for Segwit specified in BIP 143",
-              "reason": "Signer validation and compatibility for segwit inputs depend on the Segwit sighash algorithm defined by this proposal.",
+              "reason": "The signer behavior and UTXO verification logic rely on the SegWit sighash rules from BIP 143.",
               "confidence": "high"
             },
             {
               "target": "bips:341",
-              "evidence": "The control block for this leaf as specified in BIP 341",
-              "reason": "Taproot PSBT fields encode Taproot control blocks, leaf hashes, and internal/output keys using BIP 341 semantics.",
+              "evidence": "as specified in BIP 341",
+              "reason": "Taproot PSBT fields use BIP 341 control blocks, tapleaf hashes, and taproot signing data semantics.",
               "confidence": "high"
             },
             {
               "target": "bips:352",
-              "evidence": "Must be omitted in PSBTv0. Must be provided in PSBTv2 if not sending to a BIP352 silent payment address",
-              "reason": "PSBT output script handling is constrained by Silent Payments address requirements introduced by BIP 352.",
+              "evidence": "Must be provided in PSBTv2 if not sending to a BIP352 silent payment address",
+              "reason": "Silent payment PSBT fields and output-script rules are explicitly designed around BIP 352 addresses.",
               "confidence": "high"
             },
             {
               "target": "bips:353",
-              "evidence": "The currently defined per-output types are defined as follows: ... BIP 353 DNSSEC proof",
-              "reason": "PSBT defines a dedicated output field for BIP 353 DNSSEC proofs, relying on that proposal's address-validation data model.",
-              "confidence": "low"
+              "evidence": "BIP 353 DNSSEC proof",
+              "reason": "The output type stores a BIP 353 name and DNSSEC AuthenticationChain proof, depending on BIP 353's address proof format.",
+              "confidence": "high"
             },
             {
               "target": "bips:370",
-              "evidence": "PSBT_GLOBAL_TX_VERSION = 0x02",
-              "reason": "PSBTv2 transaction version, input/output counts, locktime, and modifiable flags are introduced as version-2 fields by BIP 370.",
+              "evidence": "[[bip-0370.mediawiki|370]]",
+              "reason": "PSBTv2 global and input/output fields for transaction versioning, counts, txid/index, sequence, and locktime are introduced as version-370-defined extensions.",
               "confidence": "high"
             },
             {
               "target": "bips:371",
-              "evidence": "Taproot Key Spend Signature ... Taproot Leaf Script ... as specified in BIP 341",
-              "reason": "PSBT taproot input/output fields for key path, script path, leaves, and Merkle data extend the Taproot signing model.",
-              "confidence": "low"
+              "evidence": "[[bip-0371.mediawiki|371]]",
+              "reason": "Taproot-related PSBT fields are added as BIP 371 extensions to the base PSBT format.",
+              "confidence": "high"
             },
             {
               "target": "bips:373",
-              "evidence": "MuSig2 Participant Public Keys ... Public Nonce ... Partial Signature",
-              "reason": "PSBT includes MuSig2 coordination fields for aggregate keys, nonces, and partial signatures defined by BIP 373.",
-              "confidence": "low"
+              "evidence": "[[bip-0373.mediawiki|373]]",
+              "reason": "MuSig2 participant key, nonce, and partial-signature PSBT fields are defined as BIP 373 extensions.",
+              "confidence": "high"
             },
             {
               "target": "bips:374",
-              "evidence": "A BIP374 DLEQ proof computed for the matching ECDH share",
-              "reason": "PSBT silent-payment proof fields rely on the DLEQ proof concept defined by BIP 374.",
+              "evidence": "A BIP374 DLEQ proof",
+              "reason": "Silent payment DLEQ proof fields use the BIP 374 proof format for matching ECDH shares.",
               "confidence": "high"
             },
             {
               "target": "bips:375",
-              "evidence": "Silent Payment Global ECDH Share ... Silent Payment Input DLEQ Proof",
-              "reason": "PSBT adds silent-payment-specific global/input/output fields that depend on the Silent Payments protocol introduced by BIP 375.",
-              "confidence": "low"
+              "evidence": "[[bip-0375.mediawiki|375]]",
+              "reason": "Silent payment PSBT fields for ECDH shares, proofs, and output data are explicitly defined by BIP 375.",
+              "confidence": "high"
             }
           ]
         }

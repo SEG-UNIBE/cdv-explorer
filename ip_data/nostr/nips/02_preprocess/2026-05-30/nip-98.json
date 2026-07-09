@@ -169,9 +169,18 @@
       "body_extracted_regex": [],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:59:52Z_gpt-5.4-mini_b29b8ccc",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:07:57Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T12:00:51Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "nips:01",
+              "evidence": "An ephemeral event used to authorize requests to HTTP servers using nostr events.",
+              "reason": "The proposal relies on the core Nostr event model, including event kinds, timestamps, tags, and signatures, to represent HTTP authorization messages.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

@@ -3,19 +3,37 @@
 Covers: hex NIP ID normalization, verbose git date parsing, first-day author
 extraction, preamble backfill, and NIP file tag parsing.
 """
+
 import unittest
 
-from analysis.utils import parse_date_ymd
 from analysis.authorship.mining import get_git_authors_on_first_day
 from analysis.dependencies.network import normalize_proposal_ids
-
+from analysis.utils import parse_date_ymd
 
 _NIP_SRC_CONFIG = {
     "classification": {
         "dimensions": {
-            "status": {"aliases": {"draft": "Draft", "final": "Final", "deprecated": "Deprecated"}},
-            "type":   {"aliases": {"mandatory": "Mandatory", "optional": "Optional", "unrecommended": "Unrecommended"}},
-            "layer":  {"aliases": {"relay": "Relay", "client": "Client", "cryptography": "Cryptography"}},
+            "status": {
+                "aliases": {
+                    "draft": "Draft",
+                    "final": "Final",
+                    "deprecated": "Deprecated",
+                }
+            },
+            "type": {
+                "aliases": {
+                    "mandatory": "Mandatory",
+                    "optional": "Optional",
+                    "unrecommended": "Unrecommended",
+                }
+            },
+            "layer": {
+                "aliases": {
+                    "relay": "Relay",
+                    "client": "Client",
+                    "cryptography": "Cryptography",
+                }
+            },
         }
     }
 }
@@ -24,6 +42,7 @@ _NIP_SRC_CONFIG = {
 # ---------------------------------------------------------------------------
 # parse_date_ymd
 # ---------------------------------------------------------------------------
+
 
 class ParseDateYmdTests(unittest.TestCase):
     def test_iso_short(self):
@@ -49,6 +68,7 @@ class ParseDateYmdTests(unittest.TestCase):
 # ---------------------------------------------------------------------------
 # normalize_proposal_ids — hex NIP IDs
 # ---------------------------------------------------------------------------
+
 
 class NormalizeNipIdsTests(unittest.TestCase):
     def test_plain_hex_id_uppercased(self):
@@ -82,6 +102,7 @@ class NormalizeNipIdsTests(unittest.TestCase):
 # ---------------------------------------------------------------------------
 # get_git_authors_on_first_day
 # ---------------------------------------------------------------------------
+
 
 class GetGitAuthorsOnFirstDayTests(unittest.TestCase):
     def _history(self):
@@ -136,21 +157,25 @@ class GetGitAuthorsOnFirstDayTests(unittest.TestCase):
 # NIP file parsing (_parse_nip_file)
 # ---------------------------------------------------------------------------
 
+
 class ParseNipFileTests(unittest.TestCase):
     def _parse(self, content, filename="01.md"):
         from pipeline.preprocess.nip_tags import _parse_nip_file
+
         return _parse_nip_file(content, filename, _NIP_SRC_CONFIG)
 
     def test_setext_heading_with_tag_line(self):
-        content = "\n".join([
-            "NIP-01",
-            "======",
-            "",
-            "Basic Protocol Flow",
-            "-------------------",
-            "",
-            "`draft` `mandatory` `relay`",
-        ])
+        content = "\n".join(
+            [
+                "NIP-01",
+                "======",
+                "",
+                "Basic Protocol Flow",
+                "-------------------",
+                "",
+                "`draft` `mandatory` `relay`",
+            ]
+        )
         p = self._parse(content)
         self.assertEqual(p["nip"], "01")
         self.assertEqual(p["title"], "Basic Protocol Flow")
@@ -159,65 +184,75 @@ class ParseNipFileTests(unittest.TestCase):
         self.assertEqual(p["layer"], "Relay")
 
     def test_hex_nip_id_from_filename(self):
-        content = "\n".join([
-            "NIP-CC",
-            "======",
-            "",
-            "Commerce",
-            "--------",
-            "",
-            "`draft` `optional`",
-        ])
+        content = "\n".join(
+            [
+                "NIP-CC",
+                "======",
+                "",
+                "Commerce",
+                "--------",
+                "",
+                "`draft` `optional`",
+            ]
+        )
         p = self._parse(content, filename="CC.md")
         self.assertEqual(p["nip"], "CC")
 
     def test_lowercase_filename_uppercased(self):
-        content = "\n".join([
-            "NIP-b7",
-            "======",
-            "",
-            "Something",
-            "---------",
-            "",
-            "`final`",
-        ])
+        content = "\n".join(
+            [
+                "NIP-b7",
+                "======",
+                "",
+                "Something",
+                "---------",
+                "",
+                "`final`",
+            ]
+        )
         p = self._parse(content, filename="b7.md")
         self.assertEqual(p["nip"], "B7")
 
     def test_unknown_tokens_stored_as_kind(self):
-        content = "\n".join([
-            "NIP-01",
-            "======",
-            "",
-            "Some NIP",
-            "---------",
-            "",
-            "`draft` `event-kind-1234`",
-        ])
+        content = "\n".join(
+            [
+                "NIP-01",
+                "======",
+                "",
+                "Some NIP",
+                "---------",
+                "",
+                "`draft` `event-kind-1234`",
+            ]
+        )
         p = self._parse(content)
         self.assertIn("event-kind-1234", p.get("kind", ""))
 
     def test_no_tag_line_status_defaults_to_unknown(self):
-        content = "\n".join([
-            "NIP-01",
-            "======",
-            "",
-            "Untitled NIP",
-            "------------",
-            "",
-            "Just body text here, no tags.",
-        ])
+        content = "\n".join(
+            [
+                "NIP-01",
+                "======",
+                "",
+                "Untitled NIP",
+                "------------",
+                "",
+                "Just body text here, no tags.",
+            ]
+        )
         p = self._parse(content)
         self.assertEqual(p["status"], "Unknown")
 
     def test_atx_heading_fallback(self):
-        content = "\n".join([
-            "# NIP-05",
-            "",
-            "## Mapping Nostr keys to DNS-based identifiers",
-            "",
-            "`final` `optional`",
-        ])
+        content = "\n".join(
+            [
+                "# NIP-05",
+                "",
+                "## Mapping Nostr keys to DNS-based identifiers",
+                "",
+                "`final` `optional`",
+            ]
+        )
         p = self._parse(content, filename="05.md")
         self.assertEqual(p["nip"], "05")
         self.assertEqual(p["title"], "Mapping Nostr keys to DNS-based identifiers")

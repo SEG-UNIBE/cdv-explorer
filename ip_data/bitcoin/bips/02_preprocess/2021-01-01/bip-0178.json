@@ -490,9 +490,18 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:44Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:36:12Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:16",
+              "evidence": "Segwit nested in BIP16 P2SH",
+              "reason": "The proposal defines one of its extended WIF address-type suffixes in terms of BIP16 P2SH, so understanding that encoding depends on BIP16's P2SH concept.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

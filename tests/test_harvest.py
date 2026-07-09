@@ -1,5 +1,5 @@
-import tempfile
 import subprocess
+import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import patch
@@ -43,7 +43,9 @@ class CloneOrUpdateTests(unittest.TestCase):
                 _clone_or_update(
                     "https://example.invalid/repo.git",
                     target,
-                    progress_callback=lambda message, _advance=0: messages.append(message),
+                    progress_callback=lambda message, _advance=0: messages.append(
+                        message
+                    ),
                 )
 
         run.assert_called_once_with(
@@ -59,12 +61,16 @@ class CloneOrUpdateTests(unittest.TestCase):
 
             def fake_run(command, **kwargs):
                 if "symbolic-ref" in command:
-                    return subprocess.CompletedProcess(command, 0, stdout="refs/remotes/origin/master\n")
+                    return subprocess.CompletedProcess(
+                        command, 0, stdout="refs/remotes/origin/master\n"
+                    )
                 if "rev-list" in command:
                     return subprocess.CompletedProcess(command, 0, stdout="abc123\n")
                 return subprocess.CompletedProcess(command, 0)
 
-            with patch("pipeline.harvest.github_repo.subprocess.run", side_effect=fake_run) as run:
+            with patch(
+                "pipeline.harvest.github_repo.subprocess.run", side_effect=fake_run
+            ) as run:
                 _checkout_snapshot(target, "2026-05-28")
 
         run.assert_any_call(
@@ -75,4 +81,3 @@ class CloneOrUpdateTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

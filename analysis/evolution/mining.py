@@ -2,7 +2,7 @@ import re
 import subprocess
 from datetime import date
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any
 
 from analysis.classification.preprocess import normalize_classification_fields
 from pipeline.source_context import SourceContext
@@ -36,12 +36,14 @@ def _extract_raw_pre_block(file_content: str) -> str:
     return ""
 
 
-def _parse_pre_block_preamble(file_content: str, source_context: SourceContext) -> Dict[str, Any]:
+def _parse_pre_block_preamble(
+    file_content: str, source_context: SourceContext
+) -> dict[str, Any]:
     pre_block = _extract_raw_pre_block(file_content)
     if not pre_block:
         return {}
 
-    preamble: Dict[str, Any] = {}
+    preamble: dict[str, Any] = {}
     current_key = None
     current_value = ""
 
@@ -49,7 +51,9 @@ def _parse_pre_block_preamble(file_content: str, source_context: SourceContext) 
         match = PRE_BLOCK_LINE_PATTERN.match(line)
         if match:
             if current_key:
-                preamble[current_key] = _format_value(current_key, current_value, source_context)
+                preamble[current_key] = _format_value(
+                    current_key, current_value, source_context
+                )
             current_key = match.group(1).strip().lower().replace("-", "_")
             current_value = match.group(2).strip()
             continue
@@ -58,7 +62,9 @@ def _parse_pre_block_preamble(file_content: str, source_context: SourceContext) 
             current_value += "\n" + line.strip()
 
     if current_key:
-        preamble[current_key] = _format_value(current_key, current_value, source_context)
+        preamble[current_key] = _format_value(
+            current_key, current_value, source_context
+        )
 
     return preamble
 
@@ -66,7 +72,7 @@ def _parse_pre_block_preamble(file_content: str, source_context: SourceContext) 
 def _extract_top_rfc822_block(file_content: str) -> str | None:
     content = file_content.lstrip("\ufeff")
     lines = content.splitlines()
-    block_lines: List[str] = []
+    block_lines: list[str] = []
     started = False
 
     for line in lines:
@@ -93,14 +99,14 @@ def _extract_top_rfc822_block(file_content: str) -> str | None:
     return "\n".join(block_lines) if block_lines else None
 
 
-def _parse_rfc822_preamble(file_content: str) -> Dict[str, Any]:
+def _parse_rfc822_preamble(file_content: str) -> dict[str, Any]:
     block = _extract_top_rfc822_block(file_content)
     if not block:
         return {}
 
-    preamble: Dict[str, Any] = {}
+    preamble: dict[str, Any] = {}
     current_key = None
-    current_value_lines: List[str] = []
+    current_value_lines: list[str] = []
 
     for raw_line in block.splitlines():
         if not raw_line.strip():
@@ -128,13 +134,13 @@ def _parse_nip_tag_preamble(
     source_context: SourceContext,
     *,
     fallback_path: str | None = None,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     if source_context.preprocessor != "nip_tags":
         return {}
 
     lines = file_content.splitlines()
     title: str | None = None
-    tag_tokens: List[str] = []
+    tag_tokens: list[str] = []
 
     h1_found = False
     index = 0
@@ -184,14 +190,20 @@ def _parse_nip_tag_preamble(
         index += 1
 
     dims = source_context.classification_dimensions
-    status_aliases = {k.lower(): v for k, v in (dims.get("status", {}).get("aliases") or {}).items()}
-    type_aliases = {k.lower(): v for k, v in (dims.get("type", {}).get("aliases") or {}).items()}
-    layer_aliases = {k.lower(): v for k, v in (dims.get("layer", {}).get("aliases") or {}).items()}
+    status_aliases = {
+        k.lower(): v for k, v in (dims.get("status", {}).get("aliases") or {}).items()
+    }
+    type_aliases = {
+        k.lower(): v for k, v in (dims.get("type", {}).get("aliases") or {}).items()
+    }
+    layer_aliases = {
+        k.lower(): v for k, v in (dims.get("layer", {}).get("aliases") or {}).items()
+    }
 
     status: str | None = None
     proposal_type: str | None = None
     layer: str | None = None
-    kind_parts: List[str] = []
+    kind_parts: list[str] = []
 
     for token in tag_tokens:
         lower = token.lower()
@@ -208,11 +220,13 @@ def _parse_nip_tag_preamble(
     if fallback_path:
         proposal_id = Path(fallback_path).stem
         document_prefix = source_context.document_prefix
-        if document_prefix and proposal_id.lower().startswith(f"{document_prefix.lower()}-"):
-            proposal_id = proposal_id[len(document_prefix) + 1:]
+        if document_prefix and proposal_id.lower().startswith(
+            f"{document_prefix.lower()}-"
+        ):
+            proposal_id = proposal_id[len(document_prefix) + 1 :]
         proposal_id = proposal_id.upper()
 
-    preamble: Dict[str, Any] = {}
+    preamble: dict[str, Any] = {}
     if proposal_id:
         preamble[source_context.primary_id_field or "id"] = proposal_id
     if title:
@@ -229,7 +243,9 @@ def _parse_nip_tag_preamble(
     return preamble
 
 
-def _normalize_preamble(preamble: Dict[str, Any], source_context: SourceContext) -> Dict[str, Any]:
+def _normalize_preamble(
+    preamble: dict[str, Any], source_context: SourceContext
+) -> dict[str, Any]:
     normalized = dict(preamble)
 
     for source_key, canonical_key in source_context.field_aliases.items():
@@ -245,7 +261,7 @@ def _extract_snapshot_preamble(
     source_context: SourceContext,
     *,
     fallback_path: str | None = None,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     pre_block_preamble = _parse_pre_block_preamble(file_content, source_context)
     if pre_block_preamble:
         return _normalize_preamble(pre_block_preamble, source_context)
@@ -254,7 +270,9 @@ def _extract_snapshot_preamble(
     if rfc822_preamble:
         return _normalize_preamble(rfc822_preamble, source_context)
 
-    nip_tag_preamble = _parse_nip_tag_preamble(file_content, source_context, fallback_path=fallback_path)
+    nip_tag_preamble = _parse_nip_tag_preamble(
+        file_content, source_context, fallback_path=fallback_path
+    )
     if nip_tag_preamble:
         return _normalize_preamble(nip_tag_preamble, source_context)
 
@@ -265,7 +283,9 @@ def _extract_status_snapshot(
     file_content: str,
     source_context: SourceContext | None = None,
 ) -> str | None:
-    normalized = _extract_snapshot_preamble(file_content, source_context or SourceContext.default())
+    normalized = _extract_snapshot_preamble(
+        file_content, source_context or SourceContext.default()
+    )
     status = str(normalized.get("status") or "").strip()
     if status:
         return status
@@ -318,7 +338,7 @@ def _extract_path_proposal_id(file_path: Path, source_context: SourceContext) ->
     stem = file_path.stem.strip()
     document_prefix = source_context.document_prefix
     if document_prefix and stem.lower().startswith(f"{document_prefix.lower()}-"):
-        stem = stem[len(document_prefix) + 1:]
+        stem = stem[len(document_prefix) + 1 :]
 
     normalized = _normalize_proposal_id(stem)
     if normalized:
@@ -331,11 +351,11 @@ def _extract_path_proposal_id(file_path: Path, source_context: SourceContext) ->
 
 
 def _build_snapshot_identity(
-    preamble: Dict[str, Any],
+    preamble: dict[str, Any],
     source_context: SourceContext,
     *,
     fallback_path: str | None = None,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     primary_id_field = source_context.primary_id_field
     raw_proposal_id = preamble.get(primary_id_field)
     has_declared_proposal_id = (
@@ -364,8 +384,8 @@ def _is_placeholder_path(path: str) -> bool:
 
 
 def _is_same_proposal_snapshot(
-    candidate_identity: Dict[str, Any],
-    target_identity: Dict[str, Any],
+    candidate_identity: dict[str, Any],
+    target_identity: dict[str, Any],
     *,
     candidate_path: str,
 ) -> bool:
@@ -390,7 +410,8 @@ def _is_same_proposal_snapshot(
         and target_identity["title"] == candidate_identity["title"]
     )
     author_matches = bool(
-        set(target_identity.get("authors") or set()) & set(candidate_identity.get("authors") or set())
+        set(target_identity.get("authors") or set())
+        & set(candidate_identity.get("authors") or set())
     )
 
     if created_matches and (title_matches or author_matches):
@@ -410,7 +431,9 @@ def _parse_snapshot_date(value: str | None) -> date | None:
         return None
 
 
-def _resolve_reporting_standard(event_date_text: str, source_context: SourceContext) -> str:
+def _resolve_reporting_standard(
+    event_date_text: str, source_context: SourceContext
+) -> str:
     event_date = _parse_snapshot_date(event_date_text[:10])
     regimes = source_context.classification_config.get("regimes", [])
     last_seen = ""
@@ -439,16 +462,16 @@ def _resolve_reporting_standard(event_date_text: str, source_context: SourceCont
     return last_seen
 
 
-def _parse_git_history_with_paths(stdout: str) -> List[Dict[str, str]]:
-    entries: List[Dict[str, str]] = []
-    current: Dict[str, str] | None = None
+def _parse_git_history_with_paths(stdout: str) -> list[dict[str, str]]:
+    entries: list[dict[str, str]] = []
+    current: dict[str, str] | None = None
 
     for raw_line in stdout.splitlines():
         line = raw_line.rstrip("\n")
         if line.startswith("__COMMIT__"):
             if current and current.get("path"):
                 entries.append(current)
-            commit, timestamp, author = line[len("__COMMIT__"):].split("|", 2)
+            commit, timestamp, author = line[len("__COMMIT__") :].split("|", 2)
             current = {
                 "commit": commit,
                 "timestamp": timestamp,
@@ -472,7 +495,7 @@ def extract_status_timeline(
     repo_dir: Path,
     file_path: Path,
     source_context: SourceContext | None = None,
-) -> List[Dict[str, str]]:
+) -> list[dict[str, str]]:
     context = source_context or SourceContext.default()
     try:
         relative_file_path = file_path.relative_to(repo_dir)
@@ -518,7 +541,7 @@ def extract_status_timeline(
         return []
 
     history_entries = list(reversed(_parse_git_history_with_paths(log_result.stdout)))
-    timeline: List[Dict[str, str]] = []
+    timeline: list[dict[str, str]] = []
     previous_snapshot = None
 
     for entry in history_entries:

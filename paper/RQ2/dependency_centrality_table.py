@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Any, Dict, List, Tuple
+from typing import Any
 
 from analysis.dependencies.constants import (
     BODY_EXTRACTED_LLM,
@@ -8,17 +8,16 @@ from analysis.dependencies.constants import (
     PREAMBLE_EXTRACTED,
 )
 
-
 LATEX_TABCOLSEP_PT = 4
 LATEX_ARRAYSTRETCH = 1.15
 APPROACH_ORDER = [PREAMBLE_EXTRACTED, BODY_EXTRACTED_REGEX, BODY_EXTRACTED_LLM]
 SHORT_LABELS = DEPENDENCY_APPROACH_SHORT_LABELS
 
-METRICS: List[Tuple[str, str]] = [
-    ("in_degree",           "In Deg."),
-    ("weighted_eigenvector","W. EV"),
-    ("pagerank",            "PageRank"),
-    ("betweenness",         "BC"),
+METRICS: list[tuple[str, str]] = [
+    ("in_degree", "In Deg."),
+    ("weighted_eigenvector", "W. EV"),
+    ("pagerank", "PageRank"),
+    ("betweenness", "BC"),
 ]
 
 TOP_N = 5
@@ -91,7 +90,7 @@ def _format_value(value: float, metric: str) -> str:
     return f"{value:.4f}"
 
 
-def _top5(per_bip: List[Dict], metric: str) -> List[Dict]:
+def _top5(per_bip: list[dict], metric: str) -> list[dict]:
     return sorted(per_bip, key=lambda r: r.get(metric, 0), reverse=True)[:TOP_N]
 
 
@@ -105,18 +104,18 @@ def _build_header_line() -> str:
 
 def _build_approach_rows(
     approach: str,
-    per_bip: List[Dict],
-) -> List[str]:
+    per_bip: list[dict],
+) -> list[str]:
     tops = {metric: _top5(per_bip, metric) for metric, _ in METRICS}
 
     # Identify cross-metric BIPs (appear in >1 metric column) in first-appearance order.
-    id_metric_count: Dict[str, int] = {}
+    id_metric_count: dict[str, int] = {}
     for metric, _ in METRICS:
         for entry in tops[metric]:
             bip_id = str(entry["id"])
             id_metric_count[bip_id] = id_metric_count.get(bip_id, 0) + 1
 
-    ordered_cross: List[str] = []
+    ordered_cross: list[str] = []
     seen: set = set()
     for metric, _ in METRICS:
         for entry in tops[metric]:
@@ -125,7 +124,7 @@ def _build_approach_rows(
                 seen.add(bip_id)
                 ordered_cross.append(bip_id)
 
-    color_map: Dict[str, str] = {
+    color_map: dict[str, str] = {
         bip_id: HIGHLIGHT_COLORS[i % len(HIGHLIGHT_COLORS)]
         for i, bip_id in enumerate(ordered_cross)
     }
@@ -145,7 +144,10 @@ def _build_approach_rows(
             raw_id = str(entry["id"])
             color = color_map.get(raw_id)
             bip_cell = _bip(raw_id, color=color)
-            title = _colored_title(_latex_escape(_title_substr(entry.get("title") or "")) + r"\mydots", color=color)
+            title = _colored_title(
+                _latex_escape(_title_substr(entry.get("title") or "")) + r"\mydots",
+                color=color,
+            )
             value = _format_value(entry.get(metric, 0), metric)
             cells += [bip_cell, title, value]
         rows.append("        " + " & ".join(cells) + r" \\")
@@ -153,7 +155,7 @@ def _build_approach_rows(
 
 
 def export_centrality_top5_latex_table(
-    dep_metrics: Dict[str, Any],
+    dep_metrics: dict[str, Any],
     output_path: Path,
     *,
     tabcolsep_pt: float = LATEX_TABCOLSEP_PT,

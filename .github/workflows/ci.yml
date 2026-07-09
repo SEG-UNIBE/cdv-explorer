@@ -17,10 +17,13 @@ on:
       - 'ip_data/**/03_analysis/**'
       - 'ip_data/**/04_postprocess/**'
       - 'analysis/**'
+      - 'cli/**'
       - 'pipeline/**'
       - 'ecosystems/**'
       - 'tests/**'
       - 'requirements*.txt'
+      - 'ruff.toml'
+      - 'mypy.ini'
       - 'main.py'
   pull_request:
     branches:
@@ -38,10 +41,13 @@ on:
       - 'ip_data/**/03_analysis/**'
       - 'ip_data/**/04_postprocess/**'
       - 'analysis/**'
+      - 'cli/**'
       - 'pipeline/**'
       - 'ecosystems/**'
       - 'tests/**'
       - 'requirements*.txt'
+      - 'ruff.toml'
+      - 'mypy.ini'
       - 'main.py'
   workflow_dispatch:
 
@@ -63,10 +69,13 @@ jobs:
           python-version: '3.12'
 
       - name: Install dev dependencies
-        run: pip install -r requirements-dev.txt
+        run: pip install -r requirements-dev.lock.txt
 
       - name: Run ruff check
         run: ruff check .
+
+      - name: Run mypy
+        run: mypy
 
   test-unit:
     needs: lint
@@ -79,7 +88,7 @@ jobs:
           python-version: '3.12'
 
       - name: Install dev dependencies
-        run: pip install -r requirements-dev.txt
+        run: pip install -r requirements-dev.lock.txt
 
       - name: Run pytest
         run: pytest
@@ -95,7 +104,7 @@ jobs:
           python-version: '3.12'
 
       - name: Install dev dependencies
-        run: pip install -r requirements-dev.txt
+        run: pip install -r requirements-dev.lock.txt
 
       - name: Validate snapshot artifacts
         run: python scripts/validate_artifacts.py

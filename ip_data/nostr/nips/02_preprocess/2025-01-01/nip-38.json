@@ -181,14 +181,16 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:58:25Z_gpt-5.4-mini_0bc643e4",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:08:20Z",
+          "timestamp": "2026-06-30T11:58:49Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:30",
-              "evidence": "The content MAY include emoji(s), or [NIP-30](30.md) custom emoji(s).",
-              "reason": "This proposal explicitly relies on NIP-30’s custom emoji format as an allowed content encoding.",
-              "confidence": "low"
+              "evidence": "The `content` MAY include emoji(s), or [NIP-30](30.md) custom emoji(s).",
+              "reason": "The proposal explicitly allows NIP-30 custom emoji syntax in the status content, so implementation of content rendering can depend on that emoji mechanism.",
+              "confidence": "high"
             }
           ]
         }

@@ -20,6 +20,8 @@ import { getSlipCommitUrl, getSlipUrl, normalizeSlipId } from './slipLinks';
 import { getRepositoryCommitUrl, getRepositoryProposalUrl } from './proposalLinkResolver';
 import { renderProposalListHtml } from './bipTooltipContent';
 import {
+  GROUND_TRUTH_CUTOFF_MODE_BETWEEN,
+  GROUND_TRUTH_CUTOFF_MODE_ON_OR_AFTER,
   buildDefaultTypeMapping,
   buildGroundTruthEvaluation,
   GROUND_TRUTH_CUTOFF_MODE_ON_OR_BEFORE,
@@ -29,14 +31,21 @@ import {
 import { resolveRelationOntology } from './dependencyRelationOntology';
 import { buildDashboardData, buildWordCloudData, parseProposalFilterExpression } from './dashboard/dashboardData';
 import {
+  applySectionData,
   buildProposalGraphId,
   fetchDatasetForSelection,
+  fetchSectionDataForSelection,
   getPublishedDependencyLlmModel,
   getSourceCombinationKey,
   scopeDependencyLinksForSource,
 } from './data';
 import { filterCrossSourceAuthorNetwork } from './authorNetwork/authorNetworkUtils';
-import { filterCrossSourceDependencyGraph } from './networkDiagram/networkDiagramUtils';
+import {
+  buildComparisonLinks,
+  buildDisplayedLinks,
+  filterCrossSourceDependencyGraph,
+  RELATION_SUBTYPE_ALL_VALUE,
+} from './networkDiagram/networkDiagramUtils';
 import {
   getDefaultExperimentalFeaturesEnabled,
   getEnvironmentBadge,
@@ -83,6 +92,8 @@ test('renders the selected llm model label in dependency comparison and ground-t
         missed_rate: 0,
         approach_only: 0,
         approach_total: 1,
+        candidate_pairs: 12,
+        kappa: 0.4,
       },
       edges: [],
     },
@@ -124,6 +135,9 @@ test('renders the selected llm model label in dependency comparison and ground-t
   );
 
   expect(screen.getAllByText('LLM (gpt-5.4-mini)').length).toBeGreaterThan(0);
+  // Kappa footer in the matrix cell plus the metric badge for the selection.
+  expect(screen.getAllByText('0.40').length).toBeGreaterThan(1);
+  expect(screen.getByText('Cohen’s κ')).toBeInTheDocument();
 });
 
 test('normalizes canonical dependency edges into grouped dependency links', () => {
@@ -317,16 +331,25 @@ test('multi-source fetch uses combined dependency metrics when combined artifact
 
     expect(dataset.isMergedSelection).toBe(true);
     expect(dataset.combinationKey).toBe('bips+slips');
-    expect(dataset.dependencyMetrics.by_approach[BODY_EXTRACTED_REGEX].summary.edge_count).toBe(99);
-    expect(dataset.bySource.bip.dependencyMetrics.by_approach[BODY_EXTRACTED_REGEX].summary.edge_count).toBe(1);
-    expect(dataset.bySource.slip.dependencyMetrics.by_approach[BODY_EXTRACTED_REGEX].summary.edge_count).toBe(2);
     expect(dataset.links[BODY_EXTRACTED_REGEX][0]).toMatchObject({
       sourceKey: 'bips:1',
       targetKey: 'slips:32',
       sourceSourceId: 'bip',
       targetSourceId: 'slip',
     });
-    expect(global.fetch).toHaveBeenCalledWith(expect.stringContaining('/_combined/bips+slips/03_analysis/2026-03-16/dependencies/dependency_metrics.json'));
+
+    // Section payloads are deferred: the core fetch must not touch them.
+    expect(global.fetch).not.toHaveBeenCalledWith(expect.stringContaining('dependency_metrics.json'));
+    expect(global.fetch).not.toHaveBeenCalledWith(expect.stringContaining('evolution_payload.json'));
+    expect(global.fetch).not.toHaveBeenCalledWith(expect.stringContaining('conformity_metrics.json'));
+
+    const sectionData = await fetchSectionDataForSelection('bitcoin', '2026-03-16', ['bip', 'slip'], 'dependencyMetrics');
+    const withMetrics = applySectionData(dataset, 'dependencyMetrics', sectionData);
+
+    expect(withMetrics.dependencyMetrics.by_approach[BODY_EXTRACTED_REGEX].summary.edge_count).toBe(99);
+    expect(withMetrics.bySource.bip.dependencyMetrics.by_approach[BODY_EXTRACTED_REGEX].summary.edge_count).toBe(1);
+    expect(withMetrics.bySource.slip.dependencyMetrics.by_approach[BODY_EXTRACTED_REGEX].summary.edge_count).toBe(2);
+    expect(global.fetch).toHaveBeenCalledWith(expect.stringContaining('/_combined/bips+slips/04_postprocess/2026-03-16/dependencies/dependency_metrics.json'));
   } finally {
     global.fetch = previousFetch;
   }
@@ -388,7 +411,10 @@ test('single-source fetch exposes the published LLM model without extra selectio
 
     expect(getPublishedDependencyLlmModel(dataset)).toBe('gpt-5.4-mini');
     expect(dataset.links[BODY_EXTRACTED_LLM]).toHaveLength(1);
-    expect(dataset.dependencyMetrics.llm_model).toBe('gpt-5.4-mini');
+
+    const sectionData = await fetchSectionDataForSelection('bitcoin', '2099-01-01', ['bip'], 'dependencyMetrics');
+    const withMetrics = applySectionData(dataset, 'dependencyMetrics', sectionData);
+    expect(withMetrics.dependencyMetrics.llm_model).toBe('gpt-5.4-mini');
   } finally {
     global.fetch = previousFetch;
   }
@@ -485,18 +511,18 @@ test('ground-truth evaluation can require exact relation-type matches', () => {
       fp: 0,
       fn: 0,
     }),
-    // Regex and LLM have no included subtype by default: not scored in Exact Type.
+    // Regex and LLM both default to "(all types)", so both are scored.
     expect.objectContaining({
       approach: BODY_EXTRACTED_REGEX,
-      evaluated: false,
-      tp: 0,
+      evaluated: true,
+      tp: 1,
       fp: 0,
       fn: 0,
     }),
     expect.objectContaining({
       approach: BODY_EXTRACTED_LLM,
-      evaluated: false,
-      tp: 0,
+      evaluated: true,
+      tp: 1,
       fp: 0,
       fn: 0,
     }),
@@ -535,8 +561,8 @@ test('default type mapping is discovered from data and prefilled from the ontolo
     { approach: PREAMBLE_EXTRACTED, subtype: 'requires', include: true, target: 'depends_on' },
     { approach: PREAMBLE_EXTRACTED, subtype: 'replaces', include: true, target: 'supersedes' },
     { approach: PREAMBLE_EXTRACTED, subtype: 'proposed_replacement', include: true, target: 'superseded_by' },
-    { approach: BODY_EXTRACTED_REGEX, subtype: 'reference', include: false, target: null },
-    { approach: BODY_EXTRACTED_LLM, subtype: 'implicit_dependency', include: false, target: null },
+    { approach: BODY_EXTRACTED_REGEX, subtype: 'reference', include: true, target: 'depends_on' },
+    { approach: BODY_EXTRACTED_LLM, subtype: 'implicit_dependency', include: true, target: 'depends_on' },
   ]);
 });
 
@@ -677,7 +703,7 @@ test('reviewed IP scope includes reviewed proposals with zero curated edges', ()
 
 test('ground-truth evaluation can filter curated edges by review-date cutoff', () => {
   const dataset = {
-    nodes: [{ id: '1' }, { id: '2' }, { id: '3' }],
+    nodes: [{ id: '1', graph_key: 'bips:1' }, { id: '2', graph_key: 'bips:2' }, { id: '3', graph_key: 'bips:3' }],
     groundTruthReviewedIps: [
       { ip: 'bips:1', reviewed_at: '2026-06-20' },
       { ip: 'bips:2', reviewed_at: '2026-06-22' },
@@ -706,11 +732,82 @@ test('ground-truth evaluation can filter curated edges by review-date cutoff', (
   expect(regex).toEqual(expect.objectContaining({ tp: 1, fp: 1, fn: 0 }));
 });
 
+test('ground-truth evaluation can filter curated edges reviewed on or later than a cutoff', () => {
+  const dataset = {
+    nodes: [{ id: '1', graph_key: 'bips:1' }, { id: '2', graph_key: 'bips:2' }, { id: '3', graph_key: 'bips:3' }],
+    groundTruthReviewedIps: [
+      { ip: 'bips:1', reviewed_at: '2026-06-20' },
+      { ip: 'bips:2', reviewed_at: '2026-06-22' },
+    ],
+    links: {
+      [GROUND_TRUTH_CURATED]: [
+        { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'depends_on', reviewed_at: '2026-06-20' },
+        { sourceKey: 'bips:2', targetKey: 'bips:3', relation_type: 'depends_on', reviewed_at: '2026-06-22' },
+      ],
+      [BODY_EXTRACTED_REGEX]: [
+        { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'reference' },
+        { sourceKey: 'bips:2', targetKey: 'bips:3', relation_type: 'reference' },
+      ],
+    },
+  };
+
+  const evaluation = buildGroundTruthEvaluation(dataset, {
+    gtCutoffMode: GROUND_TRUTH_CUTOFF_MODE_ON_OR_AFTER,
+    gtCutoffDate: '2026-06-21',
+  });
+  const regex = evaluation.approaches.find((approach) => approach.approach === BODY_EXTRACTED_REGEX);
+
+  expect(evaluation.goldEdgeCount).toBe(1);
+  expect(evaluation.reviewedProposalCount).toBe(1);
+  expect(regex).toEqual(expect.objectContaining({ tp: 1, fp: 0, fn: 0 }));
+});
+
+test('ground-truth evaluation can filter curated edges reviewed between two dates', () => {
+  const dataset = {
+    nodes: [{ id: '1', graph_key: 'bips:1' }, { id: '2', graph_key: 'bips:2' }, { id: '3', graph_key: 'bips:3' }, { id: '4', graph_key: 'bips:4' }],
+    groundTruthReviewedIps: [
+      { ip: 'bips:1', reviewed_at: '2026-06-20' },
+      { ip: 'bips:2', reviewed_at: '2026-06-22' },
+      { ip: 'bips:3', reviewed_at: '2026-06-24' },
+    ],
+    links: {
+      [GROUND_TRUTH_CURATED]: [
+        { sourceKey: 'bips:1', targetKey: 'bips:4', relation_type: 'depends_on', reviewed_at: '2026-06-20' },
+        { sourceKey: 'bips:2', targetKey: 'bips:4', relation_type: 'depends_on', reviewed_at: '2026-06-22' },
+        { sourceKey: 'bips:3', targetKey: 'bips:4', relation_type: 'depends_on', reviewed_at: '2026-06-24' },
+      ],
+      [BODY_EXTRACTED_REGEX]: [
+        { sourceKey: 'bips:1', targetKey: 'bips:4', relation_type: 'reference' },
+        { sourceKey: 'bips:2', targetKey: 'bips:4', relation_type: 'reference' },
+        { sourceKey: 'bips:3', targetKey: 'bips:4', relation_type: 'reference' },
+      ],
+    },
+  };
+
+  const evaluation = buildGroundTruthEvaluation(dataset, {
+    gtCutoffMode: GROUND_TRUTH_CUTOFF_MODE_BETWEEN,
+    gtCutoffStartDate: '2026-06-21',
+    gtCutoffEndDate: '2026-06-23',
+  });
+  const regex = evaluation.approaches.find((approach) => approach.approach === BODY_EXTRACTED_REGEX);
+
+  expect(evaluation.goldEdgeCount).toBe(1);
+  expect(evaluation.reviewedProposalCount).toBe(1);
+  expect(regex).toEqual(expect.objectContaining({ tp: 1, fp: 0, fn: 0 }));
+});
+
 test('runtime environment detection distinguishes local dev and prod hosts', () => {
   expect(getRuntimeEnvironment('localhost')).toBe('local');
   expect(getRuntimeEnvironment('127.0.0.1')).toBe('local');
   expect(getRuntimeEnvironment('cdv-explorer.pages.dev')).toBe('dev');
   expect(getRuntimeEnvironment('seg-unibe.github.io')).toBe('prod');
+});
+
+test('runtime environment helpers do not require a browser hostname argument', () => {
+  expect(() => getRuntimeEnvironment()).not.toThrow();
+  expect(() => getEnvironmentBadge()).not.toThrow();
+  expect(() => getRepositoryUrl()).not.toThrow();
+  expect(() => getDefaultExperimentalFeaturesEnabled()).not.toThrow();
 });
 
 test('environment badge is shown for local, dev, and prod hosts', () => {
@@ -798,7 +895,7 @@ test('an approach is only scored against the gold types it is mapped to', () => 
   expect(regex.falseNegativeEdges).toEqual([]);
 });
 
-test('editing the type mapping changes which edges are scored', () => {
+test('editing the type mapping changes which GT type the LLM edges are scored against', () => {
   const dataset = {
     groundTruthReviewedIps: [
       { ip: 'bips:1', reviewed_at: '2026-06-22' },
@@ -813,16 +910,16 @@ test('editing the type mapping changes which edges are scored', () => {
     },
   };
 
-  // By default the LLM subtype is excluded -> LLM is not scored.
+  // By default the LLM subtype is mapped to depends_on, so it is scored.
   const baseline = buildGroundTruthEvaluation(dataset, { matchMode: GROUND_TRUTH_MATCH_MODE_EXACT_TYPE });
   const llmBaseline = baseline.approaches.find((approach) => approach.approach === BODY_EXTRACTED_LLM);
-  expect(llmBaseline.evaluated).toBe(false);
+  expect(llmBaseline).toEqual(expect.objectContaining({ evaluated: true, tp: 1, fp: 0, fn: 0 }));
 
-  // Opt the LLM subtype in and map it to depends_on -> it now matches the gold edge.
+  // Remap the LLM subtype to a different GT type -> the same edge no longer matches.
   const typeMapping = {
-    gtTypes: ['depends_on'],
+    gtTypes: ['depends_on', 'references'],
     rows: [
-      { approach: BODY_EXTRACTED_LLM, subtype: 'implicit_dependency', include: true, target: 'depends_on' },
+      { approach: BODY_EXTRACTED_LLM, subtype: 'implicit_dependency', include: true, target: 'references' },
     ],
   };
   const edited = buildGroundTruthEvaluation(dataset, {
@@ -830,7 +927,7 @@ test('editing the type mapping changes which edges are scored', () => {
     typeMapping,
   });
   const llmEdited = edited.approaches.find((approach) => approach.approach === BODY_EXTRACTED_LLM);
-  expect(llmEdited).toEqual(expect.objectContaining({ evaluated: true, tp: 1, fp: 0, fn: 0 }));
+  expect(llmEdited).toEqual(expect.objectContaining({ evaluated: true, tp: 0, fp: 1, fn: 0 }));
 });
 
 test('ground-truth evaluation can match proposed_replacement against superseded_by', () => {
@@ -904,6 +1001,51 @@ test('source-scopes canonical dependency edge graph keys for display', () => {
     sourceKey: 'bips:32',
     targetKey: 'slips:44',
   });
+});
+
+test('ground-truth graph links can be filtered to a selected relation subtype', () => {
+  const linksByType = {
+    [GROUND_TRUTH_CURATED]: [
+      { source: 'bips:1', target: 'bips:2', relation_type: 'depends_on' },
+      { source: 'bips:3', target: 'bips:4', relation_type: 'supersedes' },
+    ],
+  };
+
+  expect(buildDisplayedLinks(linksByType, GROUND_TRUTH_CURATED, {
+    relationSubtype: RELATION_SUBTYPE_ALL_VALUE,
+  })).toHaveLength(2);
+
+  const filtered = buildDisplayedLinks(linksByType, GROUND_TRUTH_CURATED, {
+    relationSubtype: 'supersedes',
+  });
+  expect(filtered).toHaveLength(1);
+  expect(filtered[0]).toMatchObject({
+    source: 'bips:3',
+    target: 'bips:4',
+    relationType: 'supersedes',
+    semanticRelationType: 'supersedes',
+  });
+});
+
+test('comparison links preserve approach and baseline relation subtypes', () => {
+  const linksByType = {
+    [PREAMBLE_EXTRACTED]: {
+      requires: [
+        { source: 'bips:1', target: 'bips:2', relation_type: 'requires' },
+      ],
+    },
+    [GROUND_TRUTH_CURATED]: [
+      { source: 'bips:1', target: 'bips:2', relation_type: 'depends_on' },
+    ],
+  };
+
+  const [edge] = buildComparisonLinks(linksByType, PREAMBLE_EXTRACTED, GROUND_TRUTH_CURATED, {
+    baselineRelationSubtype: 'depends_on',
+  });
+
+  expect(edge.comparisonStatus).toBe('overlap');
+  expect(edge.approachRelationType).toBe('requires');
+  expect(edge.baselineRelationType).toBe('depends_on');
 });
 
 test('filters dependency graph to cross-source edges and their endpoint nodes', () => {

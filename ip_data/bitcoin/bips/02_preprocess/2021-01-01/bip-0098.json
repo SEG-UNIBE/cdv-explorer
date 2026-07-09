@@ -725,14 +725,16 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:00:57Z",
+          "timestamp": "2026-06-30T11:35:34Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:116",
-              "evidence": "This BIP is used by BIP116 (MERKLEBRANCHVERIFY) to add Merkle inclusion proof verification to script",
-              "reason": "The proposal explicitly relies on BIP 116 for on-chain verification of the Merkle proof format it defines.",
-              "confidence": "low"
+              "evidence": "This BIP is used by BIP116 (MERKLEBRANCHVERIFY)[4] to add Merkle inclusion proof verification to script",
+              "reason": "The proposal is explicitly designed to be used by BIP116, which would consume and validate the Merkle proof format defined here.",
+              "confidence": "high"
             }
           ]
         }

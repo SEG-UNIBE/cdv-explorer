@@ -1202,73 +1202,63 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:59:27Z",
+          "timestamp": "2026-06-30T11:45:18Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
-              "evidence": "wallets MAY use BIP32 derivation",
-              "reason": "The proposal’s optional key derivation and backup/recovery workflow relies on BIP32 hierarchical derivation paths and hardened child keys.",
+              "evidence": "To ensure compatibility, wallets MAY use BIP32 derivation with the following derivation paths",
+              "reason": "Silent payment scan and spend keys may be derived from a BIP32 seed hierarchy, so backup/recovery depends on BIP32 derivation support.",
               "confidence": "high"
             },
             {
-              "target": "bips:34",
-              "evidence": "For everything not defined above, we use the notation from BIP340",
-              "reason": "The proposal relies on BIP340’s secp256k1/X-only key conventions and tagged-hash notation for its protocol definitions.",
-              "confidence": "low"
-            },
-            {
               "target": "bips:43",
-              "evidence": "purpose is a constant set to '352' following the BIP43 recommendation",
-              "reason": "The proposed wallet derivation paths are specialized by BIP43 purpose-field conventions.",
-              "confidence": "low"
+              "evidence": "<code>purpose</code> is a constant set to ''352'' following the BIP43 recommendation.",
+              "reason": "The recommended derivation path structure uses the BIP43 purpose field convention with purpose 352 for silent payments keys.",
+              "confidence": "high"
             },
             {
               "target": "bips:44",
-              "evidence": "taking inspiration from BIP44",
-              "reason": "The proposal’s BIP32 account/path layout for scan and spend keys is modeled on the BIP44 derivation structure.",
-              "confidence": "low"
+              "evidence": "A scan and spend key pair using BIP32 derivation are defined (taking inspiration from [https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki BIP44])",
+              "reason": "The wallet key-derivation layout for scan and spend keys follows the BIP44-style hierarchical path organization.",
+              "confidence": "medium"
             },
             {
               "target": "bips:143",
-              "evidence": "BIP143 recommends restricting P2WPKH inputs to compressed keys",
-              "reason": "The input-public-key handling for P2WPKH/P2SH-P2WPKH is constrained by BIP143’s key-type expectations for SegWit signing.",
+              "evidence": "[https://github.com/bitcoin/bips/blob/master/bip-0143.mediawiki#restrictions-on-public-key-type BIP143] recommends restricting P2WPKH inputs to compressed keys as a default policy",
+              "reason": "The input key-type restrictions for shared-secret derivation are informed by BIP143's compressed-key policy for SegWit inputs.",
               "confidence": "low"
             },
             {
               "target": "bips:158",
-              "evidence": "they can determine whether or not an output to them exists in the block using BIP158 block filters",
-              "reason": "The light-client scanning approach depends on BIP158 block filters to locate candidate blocks after computing tweak data.",
-              "confidence": "high"
+              "evidence": "Bob can then use BIP158 block filters to determine if any of the outputs exist in a block",
+              "reason": "The light-client scanning approach explicitly relies on BIP158 block filters to identify candidate blocks without downloading everything.",
+              "confidence": "medium"
             },
             {
               "target": "bips:173",
               "evidence": "Version is communicated through the address in the same way as bech32 addresses",
-              "reason": "The address encoding and versioning scheme depends on bech32-style encoding and version handling established by BIP173.",
-              "confidence": "high"
+              "reason": "Address versioning and encoding behavior are designed around Bech32-style encoding conventions from BIP173.",
+              "confidence": "medium"
             },
             {
               "target": "bips:340",
-              "evidence": "we use the notation from BIP340",
-              "reason": "The protocol uses BIP340’s secp256k1/X-only key assumptions, scalar handling, and tagged hash notation in its core formulas.",
-              "confidence": "low"
+              "evidence": "For everything not defined above, we use the notation from [https://github.com/bitcoin/bips/blob/master/bip-0340.mediawiki#specification BIP340]",
+              "reason": "The proposal reuses BIP340 notation and scalar/public-key conventions for its cryptographic operations.",
+              "confidence": "high"
             },
             {
               "target": "bips:341",
-              "evidence": "Receiver addresses are always BIP341 taproot outputs",
-              "reason": "The protocol restricts received outputs to Taproot and uses taproot scriptPubKey/keypath semantics for scanning and spending.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:343",
-              "evidence": "SIGHASH_ANYONECANPAY is unsafe",
-              "reason": "The signing and input-stability constraints are defined in terms of Bitcoin sighash semantics introduced by Taproot/Tapscript.",
-              "confidence": "low"
+              "evidence": "Encode ''P'' as a [https://github.com/bitcoin/bips/blob/master/bip-0341.mediawiki BIP341] taproot output",
+              "reason": "Silent payment outputs are explicitly encoded as Taproot outputs, so the proposal depends on BIP341 output construction and semantics.",
+              "confidence": "high"
             },
             {
               "target": "bips:350",
-              "evidence": "The final address is a Bech32m encoding",
-              "reason": "The address format depends on Bech32m encoding rules for checksum and character set.",
+              "evidence": "The final address is a ... encoding of:",
+              "reason": "The address payload and checksum are encoded using Bech32m, which is the address-encoding mechanism introduced by BIP350.",
               "confidence": "low"
             }
           ]

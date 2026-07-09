@@ -533,44 +533,46 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:55:12Z",
+          "timestamp": "2026-06-30T11:19:22Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:340",
-              "evidence": "OP_CHECKSIGFROMSTACK introduces [BIP 340][schnorr-bip] signature verification for arbitrary messages",
-              "reason": "The proposed opcode relies on Schnorr signature verification semantics defined by BIP 340.",
-              "confidence": "low"
+              "evidence": "`OP_CHECKSIGFROMSTACK` introduces [BIP 340][schnorr-bip] signature verification for arbitrary messages",
+              "reason": "The proposed arbitrary-message signature verification is based on BIP 340 Schnorr verification semantics.",
+              "confidence": "high"
             },
             {
               "target": "bips:341",
-              "evidence": "OP_INTERNALKEY allows to push the [Taproot][taproot-bip] internal key on the stack",
-              "reason": "The opcode depends on Taproot internal key concepts introduced by BIP 341.",
-              "confidence": "low"
+              "evidence": "`OP_INTERNALKEY` allows to push the [Taproot][taproot-bip] internal key on the stack.",
+              "reason": "The meaning of OP_INTERNALKEY depends on Taproot internal key semantics from BIP 341.",
+              "confidence": "medium"
             },
             {
               "target": "bips:342",
-              "evidence": "In [BIP 342 Tapscript], the following operations are updated.",
-              "reason": "The proposal directly amends Tapscript opcode behavior defined by BIP 342.",
-              "confidence": "low"
+              "evidence": "In [BIP 342 Tapscript](bip-0342.mediawiki), the following operations are updated.",
+              "reason": "The proposal modifies Tapscript opcode semantics within BIP 342, so its rules depend on the Tapscript execution context defined there.",
+              "confidence": "high"
             },
             {
               "target": "bips:348",
-              "evidence": "OP_CHECKSIGFROMSTACK redefines OP_SUCCESS204 (0xcc) as per the specification of [BIP 348]",
-              "reason": "The opcode definition and semantics are taken from BIP 348.",
-              "confidence": "low"
+              "evidence": "[BIP 446 `OP_TEMPLATEHASH`][templatehash-bip], [BIP 348 `OP_CHECKSIGFROMSTACK`][csfs-bip], and [BIP 349 `OP_INTERNALKEY`][internalkey-bip]",
+              "reason": "The proposal directly deploys and defines behavior by reusing OP_CHECKSIGFROMSTACK from BIP 348.",
+              "confidence": "high"
             },
             {
               "target": "bips:349",
-              "evidence": "OP_INTERNALKEY redefines OP_SUCCESS203 (0xcb) as per the specification of [BIP 349]",
-              "reason": "The opcode definition and semantics are taken from BIP 349.",
-              "confidence": "low"
+              "evidence": "[BIP 446 `OP_TEMPLATEHASH`][templatehash-bip], [BIP 348 `OP_CHECKSIGFROMSTACK`][csfs-bip], and [BIP 349 `OP_INTERNALKEY`][internalkey-bip]",
+              "reason": "The proposal directly deploys and defines behavior by reusing OP_INTERNALKEY from BIP 349.",
+              "confidence": "high"
             },
             {
               "target": "bips:446",
-              "evidence": "OP_TEMPLATEHASH redefines OP_SUCCESS206 (0xce) as per the specification of [BIP 446]",
-              "reason": "The opcode definition and semantics are taken from BIP 446.",
-              "confidence": "low"
+              "evidence": "[BIP 446 `OP_TEMPLATEHASH`][templatehash-bip], [BIP 348 `OP_CHECKSIGFROMSTACK`][csfs-bip], and [BIP 349 `OP_INTERNALKEY`][internalkey-bip]",
+              "reason": "The proposal directly deploys and defines behavior by reusing OP_TEMPLATEHASH from BIP 446.",
+              "confidence": "high"
             }
           ]
         }

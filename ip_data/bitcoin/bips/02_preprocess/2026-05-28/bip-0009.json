@@ -842,12 +842,21 @@
         "author": "Rusty Russell",
         "path": "bip-wuille-todd-maxwell-russell.mediawiki",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "d35a3d33da628fb3da543bb8652a2153d65562c5",
         "timestamp": "2016-08-20T23:50:14Z",
         "date": "2016-08-20",
+        "author": "Luke Dashjr",
+        "path": "bip-0009.mediawiki",
+        "status": "Final",
+        "standard": "bip1"
+      },
+      {
+        "commit": "959fecc15bdad070afa63455468b1dba54655fa6",
+        "timestamp": "2016-11-30T09:51:01Z",
+        "date": "2016-11-30",
         "author": "Luke Dashjr",
         "path": "bip-0009.mediawiki",
         "status": "Final",
@@ -901,55 +910,57 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:52:47Z",
+          "timestamp": "2026-06-30T11:17:13Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:16",
-              "evidence": "examples of this would be BIPs 16, 65, 66, 68, 112, and 113",
-              "reason": "The proposal’s getblocktemplate semantics are designed around deployments that invalidate transactions like BIP 16, affecting how templates can be used for mining.",
-              "confidence": "low"
+              "evidence": "typical examples of this would be when previously valid transactions cease to be valid, such as BIPs [[bip-0016.mediawiki|16]], [[bip-0065.mediawiki|65]], [[bip-0066.mediawiki|66]], [[bip-0068.mediawiki|68]], [[bip-0112.mediawiki|112]], and [[bip-0113.mediawiki|113]].",
+              "reason": "BIP 9's getblocktemplate rule prefixing and template compatibility semantics are illustrated using BIP 16 as an example of a soft fork that changes transaction validity.",
+              "confidence": "medium"
             },
             {
               "target": "bips:34",
-              "evidence": "BIP 34 introduced a mechanism for doing soft-forking changes without a predefined flag timestamp",
-              "reason": "The proposal builds on BIP 34’s version-based soft-fork activation concept and replaces its integer-threshold semantics.",
-              "confidence": "low"
+              "evidence": "[[bip-0034.mediawiki|BIP 34]] introduced a mechanism",
+              "reason": "The proposal builds its motivation and version-bit limitations around BIP 34's earlier soft-fork signaling mechanism and threshold-based deployment approach.",
+              "confidence": "high"
             },
             {
               "target": "bips:65",
-              "evidence": "This approach was later reused in BIP 66 and BIP 65",
-              "reason": "The proposal depends on BIP 65 as part of the prior version-number-based activation pattern it supersedes and constrains.",
-              "confidence": "low"
+              "evidence": "This approach was later reused in [[bip-0066.mediawiki|BIP 66]] and [[bip-0065.mediawiki|BIP 65]]",
+              "reason": "The proposal explicitly relies on BIP 65 as another example of the integer-version signaling mechanism that consumes version space.",
+              "confidence": "high"
             },
             {
               "target": "bips:66",
-              "evidence": "This approach was later reused in BIP 66 and BIP 65",
-              "reason": "The proposal depends on BIP 66 as part of the prior version-number-based activation pattern it supersedes and constrains.",
-              "confidence": "low"
+              "evidence": "This approach was later reused in [[bip-0066.mediawiki|BIP 66]] and [[bip-0065.mediawiki|BIP 65]]",
+              "reason": "The proposal explicitly relies on BIP 66 as another example of the integer-version signaling mechanism that consumes version space.",
+              "confidence": "high"
             },
             {
               "target": "bips:68",
-              "evidence": "examples of this would be BIPs 16, 65, 66, 68, 112, and 113",
-              "reason": "The getblocktemplate '!' prefix rule is defined for deployments like BIP 68 that change transaction validity, so the proposal’s template semantics extend to such activation rules.",
-              "confidence": "low"
+              "evidence": "typical examples of this would be when previously valid transactions cease to be valid, such as BIPs [[bip-0016.mediawiki|16]], [[bip-0065.mediawiki|65]], [[bip-0066.mediawiki|66]], [[bip-0068.mediawiki|68]], [[bip-0112.mediawiki|112]], and [[bip-0113.mediawiki|113]].",
+              "reason": "BIP 9 references BIP 68 as an example of a deployment that affects template usage because it changes transaction validity rules.",
+              "confidence": "medium"
             },
             {
               "target": "bips:112",
-              "evidence": "examples of this would be BIPs 16, 65, 66, 68, 112, and 113",
-              "reason": "The proposal’s getblocktemplate rule-prefix semantics are meant to support deployments like BIP 112 that alter validation rules and may impact mining templates.",
-              "confidence": "low"
+              "evidence": "typical examples of this would be when previously valid transactions cease to be valid, such as BIPs [[bip-0016.mediawiki|16]], [[bip-0065.mediawiki|65]], [[bip-0066.mediawiki|66]], [[bip-0068.mediawiki|68]], [[bip-0112.mediawiki|112]], and [[bip-0113.mediawiki|113]].",
+              "reason": "BIP 9 mentions BIP 112 as an example of a soft fork whose deployment status affects transaction/template validity.",
+              "confidence": "medium"
             },
             {
               "target": "bips:113",
-              "evidence": "examples of this would be BIPs 16, 65, 66, 68, 112, and 113",
-              "reason": "The proposal’s getblocktemplate rule-prefix semantics are meant to support deployments like BIP 113 that alter validation rules and may impact mining templates.",
-              "confidence": "low"
+              "evidence": "typical examples of this would be when previously valid transactions cease to be valid, such as BIPs [[bip-0016.mediawiki|16]], [[bip-0065.mediawiki|65]], [[bip-0066.mediawiki|66]], [[bip-0068.mediawiki|68]], [[bip-0112.mediawiki|112]], and [[bip-0113.mediawiki|113]].",
+              "reason": "BIP 9 references BIP 113 as an example of a rule change relevant to getblocktemplate compatibility handling.",
+              "confidence": "medium"
             },
             {
               "target": "bips:141",
-              "evidence": "an example of this would be BIP 141 (since it modifies the txid hashing and adds a commitment to the generation transaction)",
-              "reason": "The proposal’s '!' prefix mechanism explicitly treats BIP 141-style changes as requiring special handling in block template generation.",
+              "evidence": "examples of this would be [[bip-0141.mediawiki|141]] (since it modifies the txid hashing and adds a commitment to the generation transaction).",
+              "reason": "BIP 9 explicitly uses BIP 141 as an example of a soft fork that changes block structure or the generation transaction, which is the kind of change the '!' template rule is designed to signal.",
               "confidence": "low"
             }
           ]

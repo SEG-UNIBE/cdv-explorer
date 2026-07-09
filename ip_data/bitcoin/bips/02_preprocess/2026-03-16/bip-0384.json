@@ -524,14 +524,16 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:59:34Z",
+          "timestamp": "2026-06-30T11:45:53Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:380",
-              "evidence": "use the format and general operation specified in [[bip-0380.mediawiki|380]]",
-              "reason": "The proposal relies on the descriptor framework and parsing/operation rules defined by BIP 380.",
-              "confidence": "high"
+              "evidence": "combo() descriptors use the format and general operation specified in [[bip-0380.mediawiki|380]].",
+              "reason": "The proposal explicitly relies on BIP 380 for descriptor syntax and overall descriptor handling.",
+              "confidence": "low"
             }
           ]
         }

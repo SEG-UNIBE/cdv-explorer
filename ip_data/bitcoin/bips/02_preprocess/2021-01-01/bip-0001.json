@@ -770,7 +770,7 @@
         "author": "genjix",
         "path": "bip-0001.txt",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "0455253e4e74b85d21e461c528521acfc26c4247",
@@ -779,7 +779,7 @@
         "author": "genjix",
         "path": "bip-0001.md",
         "status": "Active",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "c5e1b25bc4d458edc1043bc3c63e3fa2007050fc",
@@ -788,7 +788,7 @@
         "author": "Peter Todd",
         "path": "bip-0001.mediawiki",
         "status": "Accepted",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "7576a135dd78e8d5faa88746476e836785e9327d",
@@ -797,7 +797,7 @@
         "author": "Wladimir J. van der Laan",
         "path": "bip-0001.mediawiki",
         "status": "Active",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "959fecc15bdad070afa63455468b1dba54655fa6",
@@ -824,22 +824,11 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:00:18Z",
-          "dependencies": [
-            {
-              "target": "bips:7",
-              "evidence": "code style (examples should match BIP 8 & 7)",
-              "reason": "This process document explicitly references BIP 7 as a style convention that later BIPs should follow.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:8",
-              "evidence": "code style (examples should match BIP 8 & 7)",
-              "reason": "This process document explicitly references BIP 8 as a style convention that later BIPs should follow.",
-              "confidence": "medium"
-            }
-          ]
+          "timestamp": "2026-06-30T11:35:04Z",
+          "status": "success",
+          "dependencies": []
         }
       ]
     }

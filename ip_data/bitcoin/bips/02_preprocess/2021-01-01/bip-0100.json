@@ -530,13 +530,15 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:00:58Z",
+          "timestamp": "2026-06-30T11:35:34Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:34",
               "evidence": "If the block height is encoded at the start of the coinbase scriptSig, as per BIP34, it is ignored.",
-              "reason": "The proposal’s coinbase vote parsing explicitly accounts for and overrides the block-height-in-coinbase format defined by BIP 34.",
+              "reason": "The vote-parsing rules explicitly depend on BIP34's coinbase height encoding convention and specify how to handle it.",
               "confidence": "high"
             }
           ]

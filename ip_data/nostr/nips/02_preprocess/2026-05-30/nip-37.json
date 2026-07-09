@@ -169,31 +169,33 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:59:52Z_gpt-5.4-mini_b29b8ccc",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:07:36Z",
+          "timestamp": "2026-06-30T12:00:16Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:40",
-              "evidence": "[NIP-40](40.md) `expiration` tags are recommended",
-              "reason": "The proposal incorporates NIP-40 expiration tags as part of the draft event metadata and lifecycle guidance.",
+              "evidence": "[NIP-40](40.md) `expiration` tags are recommended.",
+              "reason": "The proposal reuses NIP-40 expiration tags as the recommended expiry mechanism for draft events.",
               "confidence": "high"
             },
             {
               "target": "nips:42",
-              "evidence": "Private Storage relays SHOULD be [NIP-42](42.md)-authed",
-              "reason": "The private storage relay behavior is constrained by NIP-42 authentication requirements.",
+              "evidence": "It's recommended that Private Storage relays SHOULD be [NIP-42](42.md)-authed",
+              "reason": "The proposed private storage relay behavior is constrained by NIP-42 authentication.",
               "confidence": "high"
             },
             {
               "target": "nips:44",
               "evidence": "The draft is JSON-stringified, [NIP44-encrypted](44.md) to the signer's public key",
-              "reason": "NIP-44 encryption is the core mechanism used to encode draft content and private relay lists.",
+              "reason": "The proposal's storage format and private-tag encoding rely on NIP-44 encryption semantics.",
               "confidence": "high"
             },
             {
               "target": "nips:65",
-              "evidence": "Clients MUST publish kind `10013` events to the author's [NIP-65](65.md) `write` relays",
-              "reason": "The relay publication rule depends on NIP-65 write-relay semantics.",
+              "evidence": "Clients MUST publish kind `10013` events to the author's [NIP-65](65.md) `write` relays.",
+              "reason": "Publication of the relay-list events depends on the NIP-65 write-relay concept and routing rule.",
               "confidence": "high"
             }
           ]

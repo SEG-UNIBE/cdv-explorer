@@ -131,9 +131,18 @@
       "body_extracted_regex": [],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:59:52Z_gpt-5.4-mini_b29b8ccc",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:07:59Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T12:00:56Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "nips:03",
+              "evidence": "most importantly Nostr clients SHOULD make use of [BUD-03][] to fetch `kind:10063` lists of servers for each user",
+              "reason": "The proposal’s server-discovery workflow is built around the BUD-03 mechanism for publishing and retrieving per-user Blossom server lists.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

@@ -3,7 +3,6 @@ from pathlib import Path
 
 from paper.RQ1.classification_type import TYPE_ORDER
 
-
 LATEX_TABCOLSEP_PT = 5
 DIAGBOX_INNERWIDTH_CM = 2.8
 TABLE_STATUS_ORDER = [
@@ -58,9 +57,7 @@ def export_classification_status_type_latex_table(
 
     observed_types = set(pivot.keys())
     observed_statuses = {
-        status
-        for counts in pivot.values()
-        for status in counts.keys()
+        status for counts in pivot.values() for status in counts.keys()
     }
     ordered_types = _ordered_categories(observed_types, TYPE_ORDER)
     ordered_statuses = _ordered_categories(
@@ -72,12 +69,18 @@ def export_classification_status_type_latex_table(
         for status in ordered_statuses
     }
 
-    header_line = " & ".join(
-        [
-            rf"\diagbox[innerwidth={DIAGBOX_INNERWIDTH_CM}cm]{{\textbf{{Type}}}}{{\textbf{{Status}}}}"
-        ]
-        + [f"{_latex_escape(status)} ({status_totals[status]})" for status in ordered_statuses]
-    ) + r" \\"
+    header_line = (
+        " & ".join(
+            [
+                rf"\diagbox[innerwidth={DIAGBOX_INNERWIDTH_CM}cm]{{\textbf{{Type}}}}{{\textbf{{Status}}}}"
+            ]
+            + [
+                f"{_latex_escape(status)} ({status_totals[status]})"
+                for status in ordered_statuses
+            ]
+        )
+        + r" \\"
+    )
 
     body_lines = []
     for proposal_type in ordered_types:

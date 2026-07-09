@@ -842,12 +842,21 @@
         "author": "Rusty Russell",
         "path": "bip-wuille-todd-maxwell-russell.mediawiki",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "d35a3d33da628fb3da543bb8652a2153d65562c5",
         "timestamp": "2016-08-20T23:50:14Z",
         "date": "2016-08-20",
+        "author": "Luke Dashjr",
+        "path": "bip-0009.mediawiki",
+        "status": "Final",
+        "standard": "bip1"
+      },
+      {
+        "commit": "959fecc15bdad070afa63455468b1dba54655fa6",
+        "timestamp": "2016-11-30T09:51:01Z",
+        "date": "2016-11-30",
         "author": "Luke Dashjr",
         "path": "bip-0009.mediawiki",
         "status": "Final",
@@ -901,26 +910,28 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:57:36Z",
+          "timestamp": "2026-06-30T11:42:01Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:34",
               "evidence": "BIP 34 introduced a mechanism for doing soft-forking changes",
-              "reason": "The proposal extends BIP 34’s soft-fork deployment mechanism by replacing integer version comparison with bit-based version signaling.",
+              "reason": "The proposal builds on BIP 34’s soft-fork deployment concept and uses it as the motivating precursor for the version-bit mechanism.",
               "confidence": "low"
             },
             {
               "target": "bips:65",
-              "evidence": "This approach was later reused in BIP 66 and BIP 65",
-              "reason": "The proposal constrains allowed nVersion values by referencing the consensus restrictions introduced by BIP 65.",
+              "evidence": "This approach was later reused in [[bip-0065.mediawiki|BIP 65]]",
+              "reason": "The proposal’s version-number constraints explicitly account for BIP 65 as part of the allowed nVersion space and deployment history.",
               "confidence": "low"
             },
             {
               "target": "bips:66",
-              "evidence": "This approach was later reused in BIP 66 and BIP 65",
-              "reason": "The proposal constrains allowed nVersion values by referencing the consensus restrictions introduced by BIP 66.",
-              "confidence": "low"
+              "evidence": "This approach was later reused in [[bip-0066.mediawiki|BIP 66]]",
+              "reason": "The proposal’s version-number constraints explicitly account for BIP 66 as part of the allowed nVersion space and deployment history.",
+              "confidence": "medium"
             }
           ]
         }

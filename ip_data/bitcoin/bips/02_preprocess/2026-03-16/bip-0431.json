@@ -792,14 +792,16 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:59:41Z",
+          "timestamp": "2026-06-30T11:46:10Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:125",
-              "evidence": "signaling BIP125 replaceability",
-              "reason": "The proposal’s replacement behavior and opt-in signaling explicitly rely on BIP 125’s replaceability semantics.",
-              "confidence": "low"
+              "evidence": "RBF rules require that no replacement trigger the removal of more than 100 transactions",
+              "reason": "The proposal's replacement behavior is explicitly framed against and constrained by BIP 125 RBF rules, including inherited replacement semantics and limits.",
+              "confidence": "high"
             }
           ]
         }

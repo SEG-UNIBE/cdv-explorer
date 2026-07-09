@@ -650,6 +650,15 @@
         "author": "TomZ",
         "path": "bip-flexibleTransactions.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0134.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -681,14 +690,16 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:58:30Z",
+          "timestamp": "2026-06-30T11:43:28Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:68",
-              "evidence": "This protocol upgrade cleans up past soft fork changes like BIP68 which reuse existing fields",
-              "reason": "The proposal explicitly builds on and reorganizes the sequence-lock semantics introduced by BIP68.",
-              "confidence": "high"
+              "evidence": "clean up past soft fork changes like BIP68 which reuse existing fields",
+              "reason": "The proposal explicitly builds on BIP68 as a prior soft-fork change whose field-reuse approach it aims to replace with this new transaction format.",
+              "confidence": "low"
             }
           ]
         }

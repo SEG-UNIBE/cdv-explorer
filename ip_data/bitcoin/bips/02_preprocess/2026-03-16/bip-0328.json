@@ -525,9 +525,24 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:59:06Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:44:48Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "This document specifies how BIP 32 extended public keys can be constructed",
+              "reason": "The proposal defines a synthetic xpub format and derives child keys using BIP 32 extended-key derivation semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:327",
+              "evidence": "from a BIP 327 MuSig2 aggregate public key",
+              "reason": "The synthetic xpub is constructed from a MuSig2 aggregate public key, so the proposal depends on the MuSig2 aggregate-key definition and signing context.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

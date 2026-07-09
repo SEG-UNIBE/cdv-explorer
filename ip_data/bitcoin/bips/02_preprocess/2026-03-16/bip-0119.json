@@ -1284,9 +1284,42 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:58:23Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:43:14Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:65",
+              "evidence": "Similar soft forks for OP_CHECKSEQUENCEVERIFY and OP_CHECKLOCKTIMEVERIFY (see BIP-0065 and BIP-0112)",
+              "reason": "The proposal relies on the semantics of OP_CHECKLOCKTIMEVERIFY as an existing script opcode example and compares its soft-fork activation pattern to that mechanism.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:112",
+              "evidence": "Similar soft forks for OP_CHECKSEQUENCEVERIFY and OP_CHECKLOCKTIMEVERIFY (see BIP-0065 and BIP-0112)",
+              "reason": "The proposal relies on the semantics of OP_CHECKSEQUENCEVERIFY as an existing script opcode example and compares its soft-fork activation pattern to that mechanism.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:118",
+              "evidence": "SIGHASH_ANYPREVOUTANYSCRIPT capabilities above are similar to what CHECKTEMPLATEVERIFY offers.",
+              "reason": "The proposal directly compares and partially overlaps CTV functionality with the ANYPREVOUT/ANYSCRIPT signature semantics, indicating a functional dependency for alternative implementation paths.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "The same value is also pre-computed for and defined in BIP-341 and can be shared.",
+              "reason": "The proposal explicitly reuses precomputed transaction data defined by BIP-341 for sequences and outputs hashing.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:342",
+              "evidence": "Future Taproot scripts may contain many logical branches",
+              "reason": "The proposal's future-upgrade discussion assumes Taproot script branching as a mechanism for extending CTV usage.",
+              "confidence": "low"
+            }
+          ]
         }
       ]
     }

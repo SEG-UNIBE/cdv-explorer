@@ -762,7 +762,7 @@
         "author": "Peter Todd",
         "path": "bip-0065.mediawiki",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "694a073e15577b45fdbd679e43ff8ae76f46b7ba",
@@ -771,7 +771,7 @@
         "author": "Daniel Cousens",
         "path": "bip-0065.mediawiki",
         "status": "Accepted",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "f3d94433e252ad9bc56edd4485c3da7d5e0d3d52",
@@ -780,12 +780,21 @@
         "author": "Peter Todd",
         "path": "bip-0065.mediawiki",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "f31f7d43473fadcfafbc886b15e8c488654839c2",
         "timestamp": "2016-02-01T20:14:22Z",
         "date": "2016-02-01",
+        "author": "Luke Dashjr",
+        "path": "bip-0065.mediawiki",
+        "status": "Final",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
         "author": "Luke Dashjr",
         "path": "bip-0065.mediawiki",
         "status": "Final",
@@ -806,9 +815,18 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:00:43Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:35:24Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:66",
+              "evidence": "We reuse the double-threshold IsSuperMajority() switchover mechanism used in BIP66",
+              "reason": "The deployment method is explicitly based on BIP66's threshold-based activation and reuses its switchover logic.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

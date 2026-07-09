@@ -302,14 +302,22 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:58:25Z_gpt-5.4-mini_0bc643e4",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:08:07Z",
+          "timestamp": "2026-06-30T11:58:29Z",
+          "status": "success",
           "dependencies": [
             {
-              "target": "nips:19",
-              "evidence": "Keys in NIP-19 `npub` format are only meant to be used for display",
-              "reason": "The proposal constrains how NIP-19 bech32-encoded keys may be used in clients, distinguishing display-only usage from the hex key format required here.",
+              "target": "nips:00",
+              "evidence": "On events of kind `0` (`user metadata`)",
+              "reason": "The proposal assigns and validates the nip05 field within kind 0 user metadata events, so it depends on the kind 0 event structure.",
               "confidence": "high"
+            },
+            {
+              "target": "nips:19",
+              "evidence": "NIP-19 `npub` format are only meant to be used for display in client UIs, not in this NIP.",
+              "reason": "The proposal explicitly distinguishes its hex-key handling from NIP-19 npub encoding, relying on that format as an alternative representation.",
+              "confidence": "medium"
             }
           ]
         }

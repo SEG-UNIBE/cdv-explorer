@@ -1,7 +1,10 @@
 import unittest
 
 from analysis.dependencies.metrics import build_graph, extract_dependency_metrics
-from analysis.dependencies.network import build_network_data, collapse_network_data_to_llm_model
+from analysis.dependencies.network import (
+    build_network_data,
+    collapse_network_data_to_llm_model,
+)
 from analysis.pipeline import combined_source_key, merge_source_network_data
 from analysis.validation.ground_truth import (
     load_ground_truth_curated_entries,
@@ -15,9 +18,17 @@ from tests.helpers import proposal as _proposal
 
 
 class BuildNetworkDataTests(unittest.TestCase):
+    def _build(self, proposals, **kwargs):
+        kwargs.setdefault("ground_truth_entries", [])
+        kwargs.setdefault("reviewed_ips_entries", [])
+        return build_network_data(proposals, **kwargs)
+
     def test_link_created_when_both_nodes_exist(self):
-        result = build_network_data([_proposal("1", regex_refs=["BIP 2"]), _proposal("2")],
-                                    id_field="bip", proposal_label="BIP")
+        result = self._build(
+            [_proposal("1", regex_refs=["BIP 2"]), _proposal("2")],
+            id_field="bip",
+            proposal_label="BIP",
+        )
         edges = result["dependency_edges"]
         self.assertEqual(len(edges), 1)
         self.assertEqual(edges[0]["source"], "bips:1")
@@ -26,9 +37,12 @@ class BuildNetworkDataTests(unittest.TestCase):
         self.assertNotIn("links", result)
 
     def test_generator_input_still_creates_edges(self):
-        proposals = (_proposal(value, regex_refs=["BIP 2"] if value == "1" else []) for value in ["1", "2"])
+        proposals = (
+            _proposal(value, regex_refs=["BIP 2"] if value == "1" else [])
+            for value in ["1", "2"]
+        )
 
-        result = build_network_data(proposals, id_field="bip", proposal_label="BIP")
+        result = self._build(proposals, id_field="bip", proposal_label="BIP")
 
         self.assertEqual(
             result["dependency_edges"],
@@ -48,7 +62,7 @@ class BuildNetworkDataTests(unittest.TestCase):
             {"classification": {"dimensions": {}}},
             source_slug="bips",
         )
-        result = build_network_data(
+        result = self._build(
             [_proposal("1", regex_refs=["BIP 2"], requires=["BIP 2"]), _proposal("2")],
             id_field="bip",
             proposal_label="BIP",
@@ -84,7 +98,7 @@ class BuildNetworkDataTests(unittest.TestCase):
             source_slug="bips",
         )
 
-        result = build_network_data(
+        result = self._build(
             [
                 _proposal(
                     "1",
@@ -120,6 +134,8 @@ class BuildNetworkDataTests(unittest.TestCase):
             ecosystem_slug="bitcoin",
             source_slug="bips",
         )
+        configured_model = source_context.llm_model
+        self.assertIsNotNone(configured_model)
         proposal = {
             "raw": {"preamble": {"bip": "1", "title": "Proposal 1", "status": "Draft"}},
             "insights": {
@@ -132,7 +148,7 @@ class BuildNetworkDataTests(unittest.TestCase):
                             "dependencies": [{"target": "bips:2"}],
                         },
                         {
-                            "model": "gpt-5.4",
+                            "model": configured_model,
                             "timestamp": "2026-06-02T00:00:00Z",
                             "dependencies": [],
                         },
@@ -142,19 +158,21 @@ class BuildNetworkDataTests(unittest.TestCase):
             },
         }
 
-        result = build_network_data(
+        result = self._build(
             [proposal, _proposal("2")],
             id_field="bip",
             proposal_label="BIP",
             source_context=source_context,
         )
 
-        self.assertEqual(result["llm_models"]["default_model"], "gpt-5.4-mini")
+        self.assertEqual(result["llm_models"]["default_model"], configured_model)
         self.assertEqual(
             [entry["model"] for entry in result["llm_models"]["available_models"]],
-            ["gpt-5.4", "gpt-5.4-mini"],
+            sorted([configured_model, "gpt-5.4-mini"]),
         )
-        self.assertEqual(result["llm_models"]["dependency_edges_by_model"]["gpt-5.4"], [])
+        self.assertEqual(
+            result["llm_models"]["dependency_edges_by_model"][configured_model], []
+        )
         self.assertEqual(
             result["llm_models"]["dependency_edges_by_model"]["gpt-5.4-mini"],
             [
@@ -176,17 +194,30 @@ class BuildNetworkDataTests(unittest.TestCase):
             source_slug="slips",
         )
         slip_132 = {
-            "raw": {"preamble": {"slip": "132", "title": "Registered HD version bytes for BIP-0032"}},
+            "raw": {
+                "preamble": {
+                    "slip": "132",
+                    "title": "Registered HD version bytes for BIP-0032",
+                }
+            },
             "insights": {
                 "interrelations": {
-                    "body_extracted_regex": [{"target": "bips:32", "count": 1}, {"target": "slips:32", "count": 1}],
+                    "body_extracted_regex": [
+                        {"target": "bips:32", "count": 1},
+                        {"target": "slips:32", "count": 1},
+                    ],
                     "body_extracted_llm": [],
                     "preamble_extracted": [],
                 }
             },
         }
         slip_32 = {
-            "raw": {"preamble": {"slip": "32", "title": "Extended serialization format for BIP-32 wallets"}},
+            "raw": {
+                "preamble": {
+                    "slip": "32",
+                    "title": "Extended serialization format for BIP-32 wallets",
+                }
+            },
             "insights": {
                 "interrelations": {
                     "body_extracted_regex": [],
@@ -196,7 +227,7 @@ class BuildNetworkDataTests(unittest.TestCase):
             },
         }
 
-        result = build_network_data(
+        result = self._build(
             [slip_132, slip_32],
             id_field="slip",
             proposal_label="SLIP",
@@ -231,7 +262,7 @@ class BuildNetworkDataTests(unittest.TestCase):
             ecosystem_slug="bitcoin",
             source_slug="bips",
         )
-        result = build_network_data(
+        result = self._build(
             [_proposal("44"), _proposal("32")],
             id_field="bip",
             proposal_label="BIP",
@@ -272,7 +303,11 @@ class BuildNetworkDataTests(unittest.TestCase):
             result["dependency_edges"],
         )
         self.assertEqual(
-            [edge for edge in result["dependency_edges"] if edge["extraction_method"] == "ground_truth_curated"],
+            [
+                edge
+                for edge in result["dependency_edges"]
+                if edge["extraction_method"] == "ground_truth_curated"
+            ],
             [
                 {
                     "source": "bips:44",
@@ -290,7 +325,7 @@ class BuildNetworkDataTests(unittest.TestCase):
         )
 
     def test_ground_truth_csv_loader_trims_headers_and_skips_comments(self):
-        rows = load_ground_truth_curated_entries("bitcoin")
+        rows = load_ground_truth_curated_entries("bitcoin", strict=False)
 
         self.assertTrue(rows)
         self.assertEqual(rows[0]["reviewed_at"], "2026-06-22")
@@ -304,24 +339,28 @@ class BuildNetworkDataTests(unittest.TestCase):
                     "source": "bips:44",
                     "target": "bips:32",
                     "relation_type": "depends_on",
+                    "reviewer": "test-reviewer",
                     "__line__": 2,
                 },
                 {
                     "source": "bips:44",
                     "target": "bips:32",
                     "relation_type": "depends_on",
+                    "reviewer": "test-reviewer",
                     "__line__": 3,
                 },
                 {
                     "source": "bips:44",
                     "target": "bips:32",
                     "relation_type": "supersedes",
+                    "reviewer": "test-reviewer",
                     "__line__": 4,
                 },
                 {
                     "source": "bogus:1",
                     "target": "bips:32",
                     "relation_type": "depends_on",
+                    "reviewer": "test-reviewer",
                     "__line__": 5,
                 },
             ],
@@ -348,9 +387,24 @@ class BuildNetworkDataTests(unittest.TestCase):
     def test_reviewed_ips_validation_rejects_duplicates_and_bad_dates(self):
         errors = validate_reviewed_ip_entries(
             [
-                {"ip": "bips:44", "reviewed_at": "2026-06-22", "__line__": 2},
-                {"ip": "bips:44", "reviewed_at": "2026-06-23", "__line__": 3},
-                {"ip": "oops", "reviewed_at": "2026-99-99", "__line__": 4},
+                {
+                    "ip": "bips:44",
+                    "reviewer": "test-reviewer",
+                    "reviewed_at": "2026-06-22",
+                    "__line__": 2,
+                },
+                {
+                    "ip": "bips:44",
+                    "reviewer": "test-reviewer",
+                    "reviewed_at": "2026-06-23",
+                    "__line__": 3,
+                },
+                {
+                    "ip": "oops",
+                    "reviewer": "test-reviewer",
+                    "reviewed_at": "2026-99-99",
+                    "__line__": 4,
+                },
             ],
             source_configs_by_slug={
                 "bips": {
@@ -373,7 +427,7 @@ class BuildNetworkDataTests(unittest.TestCase):
             ecosystem_slug="bitcoin",
             source_slug="bips",
         )
-        result = build_network_data(
+        result = self._build(
             [_proposal("44"), _proposal("32")],
             id_field="bip",
             proposal_label="BIP",
@@ -418,19 +472,28 @@ class BuildNetworkDataTests(unittest.TestCase):
             ],
         )
 
-    def test_unknown_cross_source_targets_are_excluded_when_known_ids_are_available(self):
+    def test_unknown_cross_source_targets_are_excluded_when_known_ids_are_available(
+        self,
+    ):
         context = SourceContext.from_config(
             ECOSYSTEM_REGISTRY["bitcoin"]["sources"]["slips"],
             ecosystem_slug="bitcoin",
             source_slug="slips",
         )
-        result = build_network_data(
+        result = self._build(
             [
                 {
-                    "raw": {"preamble": {"slip": "132", "title": "Registered HD version bytes"}},
+                    "raw": {
+                        "preamble": {
+                            "slip": "132",
+                            "title": "Registered HD version bytes",
+                        }
+                    },
                     "insights": {
                         "interrelations": {
-                            "body_extracted_regex": [{"target": "bips:999", "count": 1}],
+                            "body_extracted_regex": [
+                                {"target": "bips:999", "count": 1}
+                            ],
                             "body_extracted_llm": [],
                             "preamble_extracted": [],
                         }
@@ -464,8 +527,12 @@ class BuildNetworkDataTests(unittest.TestCase):
 
         metrics = extract_dependency_metrics(network_data)
 
-        self.assertEqual(metrics["by_approach"]["preamble_extracted"]["summary"]["edge_count"], 1)
-        per_bip_ids = {row["id"] for row in metrics["by_approach"]["preamble_extracted"]["per_bip"]}
+        self.assertEqual(
+            metrics["by_approach"]["preamble_extracted"]["summary"]["edge_count"], 1
+        )
+        per_bip_ids = {
+            row["id"] for row in metrics["by_approach"]["preamble_extracted"]["per_bip"]
+        }
         self.assertEqual(per_bip_ids, {"bips:1", "bips:2"})
 
     def test_dependency_metrics_precompute_rank_fields(self):
@@ -509,6 +576,64 @@ class BuildNetworkDataTests(unittest.TestCase):
         self.assertIn("betweenness_rank", rows["bips:1"])
         self.assertIn("weighted_eigenvector_rank", rows["bips:1"])
 
+    def test_dependency_metrics_pairwise_agreement_scores(self):
+        network_data = {
+            "nodes": [
+                {"id": str(i), "graph_key": f"bips:{i}", "title": f"BIP {i}"}
+                for i in range(1, 5)
+            ],
+            "dependency_edges": [
+                {
+                    "source": "bips:1",
+                    "target": "bips:2",
+                    "extraction_method": "preamble_extracted",
+                    "relation_type": "requires",
+                    "value": 1,
+                },
+                {
+                    "source": "bips:1",
+                    "target": "bips:3",
+                    "extraction_method": "preamble_extracted",
+                    "relation_type": "requires",
+                    "value": 1,
+                },
+                {
+                    "source": "bips:1",
+                    "target": "bips:2",
+                    "extraction_method": "body_extracted_regex",
+                    "relation_type": "reference",
+                    "value": 1,
+                },
+                {
+                    "source": "bips:2",
+                    "target": "bips:3",
+                    "extraction_method": "body_extracted_regex",
+                    "relation_type": "reference",
+                    "value": 1,
+                },
+            ],
+        }
+
+        metrics = extract_dependency_metrics(network_data)
+        summary = metrics["pairwise_comparisons"][
+            "body_extracted_regex__vs__preamble_extracted"
+        ]["summary"]
+
+        # 4 nodes -> 12 candidate ordered pairs; a=1 shared, b=1, c=1, d=9.
+        # p_o = 10/12, p_e = (2*2 + 10*10)/144 -> kappa = 0.4 exactly.
+        self.assertEqual(summary["candidate_pairs"], 12)
+        self.assertAlmostEqual(summary["kappa"], 0.4)
+
+        diagonal = metrics["pairwise_comparisons"][
+            "preamble_extracted__vs__preamble_extracted"
+        ]["summary"]
+        self.assertAlmostEqual(diagonal["kappa"], 1.0)
+
+        empty = metrics["pairwise_comparisons"][
+            "body_extracted_llm__vs__body_extracted_llm"
+        ]["summary"]
+        self.assertIsNone(empty["kappa"])
+
     def test_dependency_metrics_preserve_duplicate_ids_across_sources(self):
         network_data = {
             "nodes": [
@@ -535,7 +660,10 @@ class BuildNetworkDataTests(unittest.TestCase):
         }
 
         metrics = extract_dependency_metrics(network_data)
-        per_bip_ids = {row["id"] for row in metrics["by_approach"]["body_extracted_regex"]["per_bip"]}
+        per_bip_ids = {
+            row["id"]
+            for row in metrics["by_approach"]["body_extracted_regex"]["per_bip"]
+        }
 
         self.assertEqual(per_bip_ids, {"bips:32", "slips:32", "slips:132"})
 
@@ -581,11 +709,15 @@ class BuildNetworkDataTests(unittest.TestCase):
 
         self.assertEqual(metrics["llm_models"]["default_model"], "gpt-5.4-mini")
         self.assertEqual(
-            metrics["llm_models"]["by_model"]["gpt-5.4"]["by_approach"]["body_extracted_llm"]["summary"]["edge_count"],
+            metrics["llm_models"]["by_model"]["gpt-5.4"]["by_approach"][
+                "body_extracted_llm"
+            ]["summary"]["edge_count"],
             0,
         )
         self.assertEqual(
-            metrics["llm_models"]["by_model"]["gpt-5.4-mini"]["by_approach"]["body_extracted_llm"]["summary"]["edge_count"],
+            metrics["llm_models"]["by_model"]["gpt-5.4-mini"]["by_approach"][
+                "body_extracted_llm"
+            ]["summary"]["edge_count"],
             1,
         )
 
@@ -634,64 +766,53 @@ class BuildNetworkDataTests(unittest.TestCase):
     def test_merge_source_network_data_preserves_source_scoped_nodes_and_edges(self):
         self.assertEqual(combined_source_key(["slips", "bips"]), "bips+slips")
 
-        merged = merge_source_network_data([
-            (
-                "bips",
-                {
-                    "nodes": [{"id": "32", "graph_key": "bips:32", "title": "BIP 32"}],
-                    "dependency_edges": [
-                        {
-                            "source": "bips:32",
-                            "target": "slips:132",
-                            "extraction_method": "body_extracted_regex",
-                            "relation_type": "reference",
-                            "value": 1,
-                        }
-                    ],
-                },
-            ),
-            (
-                "slips",
-                {
-                    "nodes": [
-                        {"id": "32", "graph_key": "slips:32", "title": "SLIP 32"},
-                        {"id": "132", "graph_key": "slips:132", "title": "SLIP 132"},
-                    ],
-                    "dependency_edges": [],
-                },
-            ),
-        ])
+        merged = merge_source_network_data(
+            [
+                (
+                    "bips",
+                    {
+                        "nodes": [
+                            {"id": "32", "graph_key": "bips:32", "title": "BIP 32"}
+                        ],
+                        "dependency_edges": [
+                            {
+                                "source": "bips:32",
+                                "target": "slips:132",
+                                "extraction_method": "body_extracted_regex",
+                                "relation_type": "reference",
+                                "value": 1,
+                            }
+                        ],
+                    },
+                ),
+                (
+                    "slips",
+                    {
+                        "nodes": [
+                            {"id": "32", "graph_key": "slips:32", "title": "SLIP 32"},
+                            {
+                                "id": "132",
+                                "graph_key": "slips:132",
+                                "title": "SLIP 132",
+                            },
+                        ],
+                        "dependency_edges": [],
+                    },
+                ),
+            ]
+        )
 
-        self.assertEqual({node["graph_key"] for node in merged["nodes"]}, {"bips:32", "slips:32", "slips:132"})
+        self.assertEqual(
+            {node["graph_key"] for node in merged["nodes"]},
+            {"bips:32", "slips:32", "slips:132"},
+        )
         self.assertEqual(merged["meta"]["combination_key"], "bips+slips")
         self.assertEqual(merged["dependency_edges"][0]["source"], "bips:32")
         self.assertEqual(merged["dependency_edges"][0]["target"], "slips:132")
 
     def test_merge_source_network_data_requires_one_shared_published_llm_model(self):
-        merged = merge_source_network_data([
-            (
-                "bips",
-                {
-                    "nodes": [{"id": "1", "graph_key": "bips:1", "title": "BIP 1"}],
-                    "dependency_edges": [],
-                    "llm_model": "gpt-5.4-mini",
-                },
-            ),
-            (
-                "slips",
-                {
-                    "nodes": [{"id": "2", "graph_key": "slips:2", "title": "SLIP 2"}],
-                    "dependency_edges": [],
-                    "llm_model": "gpt-5.4-mini",
-                },
-            ),
-        ])
-
-        self.assertEqual(merged["llm_model"], "gpt-5.4-mini")
-
-    def test_merge_source_network_data_rejects_mixed_published_llm_models(self):
-        with self.assertRaises(ValueError):
-            merge_source_network_data([
+        merged = merge_source_network_data(
+            [
                 (
                     "bips",
                     {
@@ -703,12 +824,44 @@ class BuildNetworkDataTests(unittest.TestCase):
                 (
                     "slips",
                     {
-                        "nodes": [{"id": "2", "graph_key": "slips:2", "title": "SLIP 2"}],
+                        "nodes": [
+                            {"id": "2", "graph_key": "slips:2", "title": "SLIP 2"}
+                        ],
                         "dependency_edges": [],
-                        "llm_model": "gpt-5.4",
+                        "llm_model": "gpt-5.4-mini",
                     },
                 ),
-            ])
+            ]
+        )
+
+        self.assertEqual(merged["llm_model"], "gpt-5.4-mini")
+
+    def test_merge_source_network_data_rejects_mixed_published_llm_models(self):
+        with self.assertRaises(ValueError):
+            merge_source_network_data(
+                [
+                    (
+                        "bips",
+                        {
+                            "nodes": [
+                                {"id": "1", "graph_key": "bips:1", "title": "BIP 1"}
+                            ],
+                            "dependency_edges": [],
+                            "llm_model": "gpt-5.4-mini",
+                        },
+                    ),
+                    (
+                        "slips",
+                        {
+                            "nodes": [
+                                {"id": "2", "graph_key": "slips:2", "title": "SLIP 2"}
+                            ],
+                            "dependency_edges": [],
+                            "llm_model": "gpt-5.4",
+                        },
+                    ),
+                ]
+            )
 
     def test_dependency_metrics_can_filter_custom_preamble_relation_type(self):
         network_data = {
@@ -732,18 +885,23 @@ class BuildNetworkDataTests(unittest.TestCase):
         self.assertEqual(list(graph.edges()), [("xips:1", "xips:2")])
 
     def test_link_to_unknown_node_excluded(self):
-        result = build_network_data([_proposal("1", regex_refs=["BIP 99"])],
-                                    id_field="bip", proposal_label="BIP")
+        result = self._build(
+            [_proposal("1", regex_refs=["BIP 99"])],
+            id_field="bip",
+            proposal_label="BIP",
+        )
         self.assertEqual(result["dependency_edges"], [])
 
     def test_llm_link_to_unknown_node_excluded(self):
-        result = build_network_data([_proposal("1", llm_deps=["BIP 99"])],
-                                    id_field="bip", proposal_label="BIP")
+        result = self._build(
+            [_proposal("1", llm_deps=["BIP 99"])], id_field="bip", proposal_label="BIP"
+        )
         self.assertEqual(result["dependency_edges"], [])
 
     def test_duplicate_proposal_ids_deduplicated(self):
-        result = build_network_data([_proposal("1"), _proposal("1")],
-                                    id_field="bip", proposal_label="BIP")
+        result = self._build(
+            [_proposal("1"), _proposal("1")], id_field="bip", proposal_label="BIP"
+        )
         self.assertEqual(len(result["nodes"]), 1)
 
     def test_first_day_git_committers_drive_network_author_fallback(self):
@@ -754,7 +912,9 @@ class BuildNetworkDataTests(unittest.TestCase):
             ("c1", "2022-05-01T08:00:00+00:00", "GitHub"),
         ]
         proposal = {
-            "raw": {"preamble": {"nip": "01", "title": "Proposal 01", "status": "Draft"}},
+            "raw": {
+                "preamble": {"nip": "01", "title": "Proposal 01", "status": "Draft"}
+            },
             "meta": {"git_history": history},
             "insights": {
                 "formal_compliance": {},
@@ -766,7 +926,7 @@ class BuildNetworkDataTests(unittest.TestCase):
             },
         }
 
-        result = build_network_data([proposal], id_field="nip", proposal_label="NIP")
+        result = self._build([proposal], id_field="nip", proposal_label="NIP")
 
         self.assertEqual(result["nodes"][0]["author"], ["First Day B", "First Day A"])
 

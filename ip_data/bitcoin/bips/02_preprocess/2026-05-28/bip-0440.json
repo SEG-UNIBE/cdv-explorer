@@ -628,14 +628,16 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:55:06Z",
+          "timestamp": "2026-06-30T11:19:17Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:342",
-              "evidence": "generalizes the \"sigops budget\" introduced in BIP342 to non-signature operations",
-              "reason": "The proposal explicitly extends BIP 342’s budget model to cover additional opcode costs, so it relies on that mechanism.",
-              "confidence": "low"
+              "evidence": "generalizes the \"sigops budget\" introduced in [[bip-0342.mediawiki|BIP342]] to non-signature operations",
+              "reason": "The proposal explicitly extends BIP342’s sigops budget concept into a broader varops budget model.",
+              "confidence": "high"
             }
           ]
         }

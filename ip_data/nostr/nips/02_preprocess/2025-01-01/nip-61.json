@@ -198,31 +198,21 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:58:25Z_gpt-5.4-mini_0bc643e4",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:08:28Z",
+          "timestamp": "2026-06-30T11:59:03Z",
+          "status": "success",
           "dependencies": [
             {
-              "target": "nips:44",
-              "evidence": "store the private key in the `kind:37375` event in the nip44-encrypted `content` field",
-              "reason": "The proposal relies on NIP-44 encryption to protect wallet/key material stored in event content.",
-              "confidence": "high"
-            },
-            {
-              "target": "nips:46",
-              "evidence": "clients can: ... store the private key in the `kind:37375` event in the nip44-encrypted `content` field",
-              "reason": "The appendix explicitly relies on NIP-46 signing constraints as the motivation for this fallback key-storage approach.",
-              "confidence": "low"
-            },
-            {
               "target": "nips:60",
-              "evidence": "swap the tokens into a wallet the user controls, either a [[NIP-60]] wallet",
-              "reason": "Receiving nut zaps depends on the NIP-60 wallet model as one of the defined redemption targets.",
-              "confidence": "high"
+              "evidence": "either a [[NIP-60]] wallet",
+              "reason": "The receiving workflow explicitly allows swapping claimed tokens into a NIP-60 wallet, so understanding wallet handling depends on that proposal.",
+              "confidence": "medium"
             },
             {
               "target": "nips:65",
               "evidence": "Clients SHOULD normalize and deduplicate mint URLs as described in NIP-65.",
-              "reason": "The proposal directly depends on NIP-65's mint URL normalization/deduplication rules and its relay publishing guidance.",
+              "reason": "The proposal relies on NIP-65’s URL normalization/deduplication rules for mint relay handling and publishing redemption events to sender relays.",
               "confidence": "high"
             }
           ]

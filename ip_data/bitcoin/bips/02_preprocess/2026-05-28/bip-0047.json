@@ -888,6 +888,15 @@
         "author": "Justus Ranvier",
         "path": "bip-0047.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0047.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -927,25 +936,27 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:53:00Z",
+          "timestamp": "2026-06-30T11:17:23Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
-              "evidence": "This BIP is a particular application of BIP43",
-              "reason": "The proposal relies on hierarchical deterministic key derivation and path semantics defined by BIP 32 throughout its payment code and address derivation scheme.",
+              "evidence": "This BIP is a particular application of BIP43 and is intended to supplement HD wallets which implement BIP44.",
+              "reason": "The proposal’s key derivation paths and wallet structure rely on hierarchical deterministic wallet derivation from BIP32.",
               "confidence": "high"
             },
             {
               "target": "bips:43",
               "evidence": "This BIP is a particular application of BIP43",
-              "reason": "The proposal explicitly adopts BIP 43's purpose field convention to define its path subtree and indicate this specification's namespace.",
+              "reason": "The proposal explicitly adopts BIP43’s purpose-field convention, including the fixed purpose value 47'.",
               "confidence": "high"
             },
             {
               "target": "bips:44",
-              "evidence": "intended to supplement HD wallets which implement BIP44",
-              "reason": "The payment code identity level is defined as equivalent to the BIP 44 account level, and the proposal pairs payment codes with BIP 44 accounts and uses BIP 44 address hierarchy assumptions.",
+              "evidence": "and is intended to supplement HD wallets which implement BIP44.",
+              "reason": "The proposal aligns payment codes with BIP44 accounts and reuses the BIP44 coin type/account hierarchy.",
               "confidence": "high"
             }
           ]

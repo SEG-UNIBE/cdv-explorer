@@ -705,26 +705,30 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:34Z",
+          "timestamp": "2026-06-30T11:36:09Z",
+          "status": "api_error",
+          "dependencies": [],
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 200000, Requested 5995. Please try again in 1.798s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+        },
+        {
+          "run_id": "2026-06-30T11:38:11Z_gpt-5.4-mini_422651ce",
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-30T11:38:23Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:37",
-              "evidence": "The standard light client protocol in use today, defined in BIP 37",
-              "reason": "This proposal replaces and interoperates with the BIP 37 light-client model, so it depends on that protocol as the prior baseline it supersedes.",
+              "evidence": "defined in BIP 37",
+              "reason": "The proposal explicitly replaces and contrasts with BIP 37 as the existing light client protocol and frames the new protocol as an alternative to it.",
               "confidence": "high"
             },
             {
               "target": "bips:111",
               "evidence": "similar to attacks against BIP 37 enabled nodes noted in BIP 111",
-              "reason": "The proposal explicitly relies on the DoS characteristics identified in BIP 111 to motivate node behavior and resource-handling constraints.",
+              "reason": "The node-operation rules for avoiding on-demand filter generation are justified using the DoS considerations previously documented there, indicating reliance on that threat model.",
               "confidence": "medium"
-            },
-            {
-              "target": "bips:158",
-              "evidence": "The initial filter types are defined separately in BIP 158",
-              "reason": "The filter messages and filter type codes in this proposal require the filter construction and serialization defined by BIP 158.",
-              "confidence": "low"
             }
           ]
         }

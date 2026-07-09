@@ -535,7 +535,7 @@
         "author": "genjix",
         "path": "bip-0014.md",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "1edc52dddfb1ac6952e6be5057b9a7fdfbe75b21",
@@ -544,7 +544,7 @@
         "author": "genjix",
         "path": "bip-0014.md",
         "status": "Accepted",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "f31f7d43473fadcfafbc886b15e8c488654839c2",
@@ -553,7 +553,7 @@
         "author": "Luke Dashjr",
         "path": "bip-0014.mediawiki",
         "status": "Final",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "4edd6d2badd9a6ad2ff09bb6792fe0d0e365a7de",
@@ -562,7 +562,7 @@
         "author": "Luke Dashjr",
         "path": "bip-0014.mediawiki",
         "status": "Accepted",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
@@ -579,16 +579,11 @@
       "body_extracted_regex": [],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:00:25Z",
-          "dependencies": [
-            {
-              "target": "bips:9",
-              "evidence": "concerning a process-BIP type",
-              "reason": "The document explicitly classifies the needed coordination as a process BIP, which is the type introduced by BIP 9's version-bits deployment process context, but the text does not rely on its mechanisms directly; this is a weak dependency and likely only contextual.",
-              "confidence": "low"
-            }
-          ]
+          "timestamp": "2026-06-30T11:35:07Z",
+          "status": "success",
+          "dependencies": []
         }
       ]
     }

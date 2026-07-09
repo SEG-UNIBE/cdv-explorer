@@ -524,7 +524,7 @@
         "author": "genjix",
         "path": "bip-0013.txt",
         "status": "Pre-Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "1edc52dddfb1ac6952e6be5057b9a7fdfbe75b21",
@@ -533,7 +533,7 @@
         "author": "genjix",
         "path": "bip-0013.md",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "0e319fccf551a9524b0f6d3a7174c956f5a6f3e7",
@@ -542,13 +542,22 @@
         "author": "genjix",
         "path": "bip-0013.md",
         "status": "Accepted",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "4be890738e6e867fb2c96eee065747a29e8dc7a5",
         "timestamp": "2013-10-21T00:40:40-04:00",
         "date": "2013-10-21",
         "author": "Peter Todd",
+        "path": "bip-0013.mediawiki",
+        "status": "Final",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
         "path": "bip-0013.mediawiki",
         "status": "Final",
         "standard": "bip2"
@@ -581,26 +590,28 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:57:39Z",
+          "timestamp": "2026-06-30T11:42:05Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:12",
-              "evidence": "OP_EVAL, the original P2SH design",
-              "reason": "The proposal’s script-hash address concept is directly tied to the earlier P2SH design introduced here.",
-              "confidence": "high"
+              "evidence": "BIP 12: OP_EVAL, the original P2SH design",
+              "reason": "The proposal explicitly identifies BIP 12 as the original P2SH design that this address scheme is based around conceptually.",
+              "confidence": "medium"
             },
             {
               "target": "bips:16",
-              "evidence": "BIP 16: Pay to Script Hash (aka \"/P2SH/\")",
-              "reason": "This proposal defines the address format for pay-to-script-hash outputs, which is the mechanism established by BIP 16.",
+              "evidence": "The 20-byte hash is the hash of the script that will be used to redeem the coins.",
+              "reason": "This proposal defines a pay-to-script-hash address format whose payload is the hash of a redeem script, materially relying on the P2SH concept introduced by BIP 16.",
               "confidence": "high"
             },
             {
               "target": "bips:17",
-              "evidence": "OP_CHECKHASHVERIFY, another P2SH design",
-              "reason": "The proposal’s scope is the script-hash address type used for P2SH-style spending, which is the substantive mechanism discussed in BIP 17.",
-              "confidence": "medium"
+              "evidence": "BIP 17: OP_CHECKHASHVERIFY, another P2SH design",
+              "reason": "The proposal explicitly frames the new address type as part of the family of P2SH designs that BIP 17 also addresses, indicating a technical relationship to that script-hash approach.",
+              "confidence": "low"
             }
           ]
         }

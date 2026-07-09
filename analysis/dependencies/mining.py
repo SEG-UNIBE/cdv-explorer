@@ -1,20 +1,68 @@
 import os
 import re
+import time
+from collections.abc import Callable, Mapping
 from json import JSONDecodeError, loads
 from pathlib import Path
-from typing import Any, Dict, List, Mapping
+from typing import Any
 
-from openai import OpenAI
+try:
+    from openai import OpenAI, RateLimitError
+except ImportError:
+    from openai import OpenAI
 
-from analysis.reference_ids import normalize_reference_id, normalize_reference_id_for_config, uses_hex_proposal_ids
-from analysis.proposal_schema import get_preamble_interrelations
+    class RateLimitError(Exception):
+        def __init__(self, *args, response=None, **kwargs):
+            super().__init__(*args)
+            self.response = response
+
+
+LLM_RATE_LIMIT_MAX_ATTEMPTS = 4
+LLM_RATE_LIMIT_WAIT_SECONDS = 1.5
+
+
+def _call_with_rate_limit_retry(fn: Callable[[], Any]) -> Any:
+    """Call fn(); on HTTP 429, sleep ~1.5s (or Retry-After if larger) and retry."""
+    for attempt in range(1, LLM_RATE_LIMIT_MAX_ATTEMPTS + 1):
+        try:
+            return fn()
+        except RateLimitError as exc:
+            if attempt >= LLM_RATE_LIMIT_MAX_ATTEMPTS:
+                raise
+            wait = LLM_RATE_LIMIT_WAIT_SECONDS
+            try:
+                retry_after = exc.response.headers.get("retry-after")
+                if retry_after:
+                    wait = max(wait, float(retry_after))
+            except (AttributeError, TypeError, ValueError):
+                # Missing/malformed response or Retry-After header: keep default backoff.
+                pass
+            time.sleep(wait)
+    raise RuntimeError("Unreachable: retry loop exited without returning or raising")
+
+
+from analysis.proposal_schema import (
+    LLM_RUN_STATUS_API_ERROR,
+    LLM_RUN_STATUS_PARSE_ERROR,
+    LLM_RUN_STATUS_REFUSAL,
+    LLM_RUN_STATUS_SUCCESS,
+    LLM_RUN_STATUS_TIMEOUT,
+    get_preamble_interrelations,
+)
+from analysis.reference_ids import (
+    normalize_reference_id,
+    normalize_reference_id_for_config,
+    uses_hex_proposal_ids,
+)
 from pipeline.source_context import SourceContext
-
 
 TOP_PRE_BLOCK_PATTERN = re.compile(r"^\s*<pre>.*?</pre>\s*", re.DOTALL | re.IGNORECASE)
 TOP_FENCED_BLOCK_PATTERN = re.compile(r"^\s*```[^\n]*\n.*?\n```\s*(?:\n|$)", re.DOTALL)
-STRUCTURED_OUTPUT_NAME = "implicit_dependency_list"
+STRUCTURED_OUTPUT_NAME = "semantic_dependency_list"
 MAX_REFERENCE_DIGITS = 6
+LLM_SEMANTIC_METHOD_NAME = "llm_assisted_semantic_dependency_extraction"
+LLM_SEMANTIC_METHOD_LABEL = "LLM-Assisted Semantic Dependency Extraction"
+LLM_SEMANTIC_METHOD_VERSION = 4
 
 
 def _strip_top_preamble_block(text: str) -> str:
@@ -23,18 +71,25 @@ def _strip_top_preamble_block(text: str) -> str:
         return without_pre
     return TOP_FENCED_BLOCK_PATTERN.sub("", text, count=1)
 
+
 def prepare_llm_dependency_text(raw_content: str) -> str:
     if not raw_content:
         return ""
 
-    return _strip_top_preamble_block(raw_content).replace("\r\n", "\n").replace("\r", "\n").strip()
+    return (
+        _strip_top_preamble_block(raw_content)
+        .replace("\r\n", "\n")
+        .replace("\r", "\n")
+        .strip()
+    )
+
 
 def _reference_configs_for_context(
     context: SourceContext,
     proposal_label: str | None = None,
     reference_pattern: str | None = None,
-) -> List[Dict[str, Any]]:
-    configs: List[Dict[str, Any]] = []
+) -> list[dict[str, Any]]:
+    configs: list[dict[str, Any]] = []
     sources = context.ecosystem_source_configs
 
     for source_slug, source_config in sources.items():
@@ -64,8 +119,7 @@ def _reference_configs_for_context(
     active_label = proposal_label or context.proposal_label
     active_pattern = reference_pattern or context.reference_pattern
     has_active = any(
-        config["proposal_label"].upper() == active_label.upper()
-        for config in configs
+        config["proposal_label"].upper() == active_label.upper() for config in configs
     )
     if not has_active and active_label and active_pattern:
         configs.insert(
@@ -81,14 +135,14 @@ def _reference_configs_for_context(
     return configs
 
 
-def _reference_label_order(configs: List[Dict[str, Any]]) -> Mapping[str, int]:
+def _reference_label_order(configs: list[dict[str, Any]]) -> Mapping[str, int]:
     return {
         str(config["proposal_label"]).upper(): index
         for index, config in enumerate(configs)
     }
 
 
-def _reference_patterns_by_label(configs: List[Dict[str, Any]]) -> Mapping[str, str]:
+def _reference_patterns_by_label(configs: list[dict[str, Any]]) -> Mapping[str, str]:
     return {
         str(config["proposal_label"]).upper(): str(config["reference_pattern"])
         for config in configs
@@ -133,14 +187,18 @@ def _format_reference(label: str, normalized_id: str) -> str:
     return f"{label} {normalized_id}"
 
 
-def _id_chars_for_reference_config(config: Dict[str, Any]) -> str:
-    return r"[0-9A-Fa-f]" if uses_hex_proposal_ids(
-        str(config["proposal_label"]),
-        str(config["reference_pattern"]),
-    ) else r"\d"
+def _id_chars_for_reference_config(config: dict[str, Any]) -> str:
+    return (
+        r"[0-9A-Fa-f]"
+        if uses_hex_proposal_ids(
+            str(config["proposal_label"]),
+            str(config["reference_pattern"]),
+        )
+        else r"\d"
+    )
 
 
-def _normalize_with_reference_config(value: Any, config: Dict[str, Any]) -> str | None:
+def _normalize_with_reference_config(value: Any, config: dict[str, Any]) -> str | None:
     return normalize_reference_id_for_config(
         value,
         config,
@@ -150,7 +208,7 @@ def _normalize_with_reference_config(value: Any, config: Dict[str, Any]) -> str 
 
 def _match_reference_item(
     item: Any,
-    config: Dict[str, Any],
+    config: dict[str, Any],
     *,
     allow_bare: bool,
 ) -> str | None:
@@ -168,7 +226,11 @@ def _match_reference_item(
     if not match:
         return None
     normalized_id = _normalize_with_reference_config(match.group(1), config)
-    return None if normalized_id is None else _format_reference(str(config["proposal_label"]), normalized_id)
+    return (
+        None
+        if normalized_id is None
+        else _format_reference(str(config["proposal_label"]), normalized_id)
+    )
 
 
 def create_reference_list(
@@ -176,9 +238,11 @@ def create_reference_list(
     proposal_label: str | None = None,
     reference_pattern: str | None = None,
     source_context: SourceContext | None = None,
-) -> List[str]:
+) -> list[str]:
     context = source_context or SourceContext.default()
-    reference_configs = _reference_configs_for_context(context, proposal_label, reference_pattern)
+    reference_configs = _reference_configs_for_context(
+        context, proposal_label, reference_pattern
+    )
     label_order = _reference_label_order(reference_configs)
     reference_patterns_by_label = _reference_patterns_by_label(reference_configs)
     proposal_references = set()
@@ -186,13 +250,19 @@ def create_reference_list(
     for config in reference_configs:
         active_proposal_label = str(config["proposal_label"])
         active_reference_pattern = str(config["reference_pattern"])
-        normalized_reference_pattern = active_reference_pattern.replace(r"\d+", rf"\d{{1,{MAX_REFERENCE_DIGITS}}}")
-        single_reference_pattern = re.compile(normalized_reference_pattern, re.IGNORECASE)
+        normalized_reference_pattern = active_reference_pattern.replace(
+            r"\d+", rf"\d{{1,{MAX_REFERENCE_DIGITS}}}"
+        )
+        single_reference_pattern = re.compile(
+            normalized_reference_pattern, re.IGNORECASE
+        )
 
         for num in single_reference_pattern.findall(raw_content):
             normalized_id = _normalize_with_reference_config(num, config)
             if normalized_id is not None:
-                proposal_references.add(_format_reference(active_proposal_label, normalized_id))
+                proposal_references.add(
+                    _format_reference(active_proposal_label, normalized_id)
+                )
 
         if uses_hex_proposal_ids(active_proposal_label, active_reference_pattern):
             list_pattern = re.compile(
@@ -209,12 +279,16 @@ def create_reference_list(
             for raw_id in re.findall(token_pattern, match):
                 normalized_id = _normalize_with_reference_config(raw_id, config)
                 if normalized_id is not None:
-                    proposal_references.add(_format_reference(active_proposal_label, normalized_id))
+                    proposal_references.add(
+                        _format_reference(active_proposal_label, normalized_id)
+                    )
 
     active_label = proposal_label or context.proposal_label
     return sorted(
         proposal_references,
-        key=lambda value: _reference_sort_key(value, active_label, label_order, reference_patterns_by_label),
+        key=lambda value: _reference_sort_key(
+            value, active_label, label_order, reference_patterns_by_label
+        ),
     )
 
 
@@ -224,24 +298,32 @@ def _format_target_key(source_slug: Any, proposal_id: Any) -> str:
 
 def _resolve_target_reference(
     item: Any,
-    reference_configs: List[Dict[str, Any]],
-    active_config: Dict[str, Any],
-) -> Dict[str, str] | None:
+    reference_configs: list[dict[str, Any]],
+    active_config: dict[str, Any],
+) -> dict[str, str] | None:
     if isinstance(item, dict):
         target = item.get("target")
         if isinstance(target, str) and ":" in target:
             source_slug, proposal_id = target.split(":", 1)
             matching_config = next(
-                (config for config in reference_configs if str(config["source_slug"]) == source_slug),
+                (
+                    config
+                    for config in reference_configs
+                    if str(config["source_slug"]) == source_slug
+                ),
                 active_config,
             )
-            normalized_id = _normalize_with_reference_config(proposal_id, matching_config)
+            normalized_id = _normalize_with_reference_config(
+                proposal_id, matching_config
+            )
             if normalized_id is None:
                 return None
             return {
                 "source_slug": str(matching_config["source_slug"]),
                 "proposal_id": normalized_id,
-                "label": _format_reference(str(matching_config["proposal_label"]), normalized_id),
+                "label": _format_reference(
+                    str(matching_config["proposal_label"]), normalized_id
+                ),
             }
 
     for config in reference_configs:
@@ -269,13 +351,15 @@ def create_reference_targets(
     proposal_label: str | None = None,
     reference_pattern: str | None = None,
     source_context: SourceContext | None = None,
-) -> List[Dict[str, Any]]:
+) -> list[dict[str, Any]]:
     context = source_context or SourceContext.default()
-    reference_configs = _reference_configs_for_context(context, proposal_label, reference_pattern)
+    reference_configs = _reference_configs_for_context(
+        context, proposal_label, reference_pattern
+    )
     active_label = proposal_label or context.proposal_label
     label_order = _reference_label_order(reference_configs)
     reference_patterns_by_label = _reference_patterns_by_label(reference_configs)
-    counts: Dict[str, Dict[str, Any]] = {}
+    counts: dict[str, dict[str, Any]] = {}
 
     for config in reference_configs:
         active_proposal_label = str(config["proposal_label"])
@@ -303,24 +387,30 @@ def create_reference_targets(
                     {
                         "target": target,
                         "count": 0,
-                        "_label": _format_reference(active_proposal_label, normalized_id),
+                        "_label": _format_reference(
+                            active_proposal_label, normalized_id
+                        ),
                     },
                 )["count"] += 1
 
     items = sorted(
         counts.values(),
-        key=lambda item: _reference_sort_key(item["_label"], active_label, label_order, reference_patterns_by_label),
+        key=lambda item: _reference_sort_key(
+            item["_label"], active_label, label_order, reference_patterns_by_label
+        ),
     )
     return [{"target": item["target"], "count": item["count"]} for item in items]
 
 
 def create_explicit_dependency_list(
-    preamble: Dict[str, Any],
+    preamble: dict[str, Any],
     proposal_label: str | None = None,
     source_context: SourceContext | None = None,
-) -> List[str]:
+) -> list[str]:
     context = source_context or SourceContext.default()
-    reference_configs = _reference_configs_for_context(context, proposal_label, context.reference_pattern)
+    reference_configs = _reference_configs_for_context(
+        context, proposal_label, context.reference_pattern
+    )
     active_label = proposal_label or context.proposal_label
     active_config = next(
         (
@@ -333,7 +423,9 @@ def create_explicit_dependency_list(
     label_order = _reference_label_order(reference_configs)
     reference_patterns_by_label = _reference_patterns_by_label(reference_configs)
     dependency_ids = set()
-    preamble_interrelations = get_preamble_interrelations(preamble, source_context=context)
+    preamble_interrelations = get_preamble_interrelations(
+        preamble, source_context=context
+    )
 
     for value in preamble_interrelations.values():
         if not value:
@@ -355,17 +447,21 @@ def create_explicit_dependency_list(
 
     return sorted(
         dependency_ids,
-        key=lambda value: _reference_sort_key(value, active_label, label_order, reference_patterns_by_label),
+        key=lambda value: _reference_sort_key(
+            value, active_label, label_order, reference_patterns_by_label
+        ),
     )
 
 
 def create_explicit_dependency_targets(
-    preamble: Dict[str, Any],
+    preamble: dict[str, Any],
     proposal_label: str | None = None,
     source_context: SourceContext | None = None,
-) -> List[Dict[str, str]]:
+) -> list[dict[str, str]]:
     context = source_context or SourceContext.default()
-    reference_configs = _reference_configs_for_context(context, proposal_label, context.reference_pattern)
+    reference_configs = _reference_configs_for_context(
+        context, proposal_label, context.reference_pattern
+    )
     active_label = proposal_label or context.proposal_label
     active_config = next(
         (
@@ -377,24 +473,32 @@ def create_explicit_dependency_targets(
     )
     label_order = _reference_label_order(reference_configs)
     reference_patterns_by_label = _reference_patterns_by_label(reference_configs)
-    preamble_interrelations = get_preamble_interrelations(preamble, source_context=context)
-    result: List[Dict[str, str]] = []
+    preamble_interrelations = get_preamble_interrelations(
+        preamble, source_context=context
+    )
+    result: list[dict[str, str]] = []
 
     for subtype in context.preamble_interrelation_types:
         value = preamble_interrelations.get(subtype)
         if not value:
             continue
         raw_items = value if isinstance(value, list) else str(value).split(",")
-        targets: Dict[str, Dict[str, str]] = {}
+        targets: dict[str, dict[str, str]] = {}
         for item in raw_items:
-            reference = _resolve_target_reference(item, reference_configs, active_config)
+            reference = _resolve_target_reference(
+                item, reference_configs, active_config
+            )
             if reference is None:
                 continue
-            target = _format_target_key(reference["source_slug"], reference["proposal_id"])
+            target = _format_target_key(
+                reference["source_slug"], reference["proposal_id"]
+            )
             targets[target] = {"target": target, "_label": reference["label"]}
         ordered = sorted(
             targets.values(),
-            key=lambda item: _reference_sort_key(item["_label"], active_label, label_order, reference_patterns_by_label),
+            key=lambda item: _reference_sort_key(
+                item["_label"], active_label, label_order, reference_patterns_by_label
+            ),
         )
         result.extend({"target": item["target"], "type": subtype} for item in ordered)
 
@@ -419,12 +523,14 @@ def normalize_dependency_output(
     proposal_label: str | None = None,
     current_proposal_number: str | None = None,
     source_context: SourceContext | None = None,
-) -> List[str]:
+) -> list[str]:
     if not isinstance(payload, list):
         return []
 
     context = source_context or SourceContext.default()
-    reference_configs = _reference_configs_for_context(context, proposal_label, context.reference_pattern)
+    reference_configs = _reference_configs_for_context(
+        context, proposal_label, context.reference_pattern
+    )
     active_proposal_label = proposal_label or context.proposal_label
     active_config = next(
         (
@@ -436,13 +542,19 @@ def normalize_dependency_output(
     )
     label_order = _reference_label_order(reference_configs)
     reference_patterns_by_label = _reference_patterns_by_label(reference_configs)
-    current_id = None if current_proposal_number is None else _normalize_reference_id(
-        current_proposal_number,
-        active_proposal_label,
-        str(active_config["reference_pattern"]),
-        active_config.get("max_proposal_id"),
+    current_id = (
+        None
+        if current_proposal_number is None
+        else _normalize_reference_id(
+            current_proposal_number,
+            active_proposal_label,
+            str(active_config["reference_pattern"]),
+            active_config.get("max_proposal_id"),
+        )
     )
-    current_normalized = None if current_id is None else f"{active_proposal_label} {current_id}"
+    current_normalized = (
+        None if current_id is None else f"{active_proposal_label} {current_id}"
+    )
     normalized_ids = set()
 
     for item in payload:
@@ -461,15 +573,17 @@ def normalize_dependency_output(
 
     return sorted(
         normalized_ids,
-        key=lambda value: _reference_sort_key(value, active_proposal_label, label_order, reference_patterns_by_label),
+        key=lambda value: _reference_sort_key(
+            value, active_proposal_label, label_order, reference_patterns_by_label
+        ),
     )
 
 
 def _resolve_llm_target(
     item: Any,
-    reference_configs: List[Dict[str, Any]],
-    active_config: Dict[str, Any],
-) -> Dict[str, str] | None:
+    reference_configs: list[dict[str, Any]],
+    active_config: dict[str, Any],
+) -> dict[str, str] | None:
     raw_target = item
     raw_source = None
     raw_id = None
@@ -481,7 +595,11 @@ def _resolve_llm_target(
 
     if raw_source and raw_id is not None:
         matching_config = next(
-            (config for config in reference_configs if str(config.get("source_slug")) == str(raw_source)),
+            (
+                config
+                for config in reference_configs
+                if str(config.get("source_slug")) == str(raw_source)
+            ),
             active_config,
         )
         normalized_id = _normalize_with_reference_config(raw_id, matching_config)
@@ -490,7 +608,9 @@ def _resolve_llm_target(
         return {
             "source_slug": str(matching_config["source_slug"]),
             "proposal_id": normalized_id,
-            "label": _format_reference(str(matching_config["proposal_label"]), normalized_id),
+            "label": _format_reference(
+                str(matching_config["proposal_label"]), normalized_id
+            ),
         }
 
     if raw_target is None:
@@ -503,7 +623,11 @@ def _resolve_llm_target(
     if ":" in target_text:
         target_source, target_id = target_text.split(":", 1)
         matching_config = next(
-            (config for config in reference_configs if str(config.get("source_slug")) == target_source),
+            (
+                config
+                for config in reference_configs
+                if str(config.get("source_slug")) == target_source
+            ),
             active_config,
         )
         normalized_id = _normalize_with_reference_config(target_id, matching_config)
@@ -512,7 +636,9 @@ def _resolve_llm_target(
         return {
             "source_slug": str(matching_config["source_slug"]),
             "proposal_id": normalized_id,
-            "label": _format_reference(str(matching_config["proposal_label"]), normalized_id),
+            "label": _format_reference(
+                str(matching_config["proposal_label"]), normalized_id
+            ),
         }
 
     for config in reference_configs:
@@ -540,12 +666,14 @@ def normalize_llm_dependency_output(
     proposal_label: str | None = None,
     current_proposal_number: str | None = None,
     source_context: SourceContext | None = None,
-) -> List[Dict[str, str]]:
+) -> list[dict[str, str]]:
     if not isinstance(payload, list):
         return []
 
     context = source_context or SourceContext.default()
-    reference_configs = _reference_configs_for_context(context, proposal_label, context.reference_pattern)
+    reference_configs = _reference_configs_for_context(
+        context, proposal_label, context.reference_pattern
+    )
     active_proposal_label = proposal_label or context.proposal_label
     active_config = next(
         (
@@ -557,12 +685,18 @@ def normalize_llm_dependency_output(
     )
     label_order = _reference_label_order(reference_configs)
     reference_patterns_by_label = _reference_patterns_by_label(reference_configs)
-    current_id = None if current_proposal_number is None else _normalize_with_reference_config(
-        current_proposal_number,
-        active_config,
+    current_id = (
+        None
+        if current_proposal_number is None
+        else _normalize_with_reference_config(
+            current_proposal_number,
+            active_config,
+        )
     )
-    current_target = None if current_id is None else f"{active_config['source_slug']}:{current_id}"
-    normalized_entries: List[Dict[str, str]] = []
+    current_target = (
+        None if current_id is None else f"{active_config['source_slug']}:{current_id}"
+    )
+    normalized_entries: list[dict[str, str]] = []
     seen_targets = set()
 
     for item in payload:
@@ -574,9 +708,15 @@ def normalize_llm_dependency_output(
             continue
         seen_targets.add(target_key)
 
-        evidence = str(item.get("evidence", "")).strip() if isinstance(item, dict) else ""
+        evidence = (
+            str(item.get("evidence", "")).strip() if isinstance(item, dict) else ""
+        )
         reason = str(item.get("reason", "")).strip() if isinstance(item, dict) else ""
-        confidence = str(item.get("confidence", "low")).strip().lower() if isinstance(item, dict) else "low"
+        confidence = (
+            str(item.get("confidence", "low")).strip().lower()
+            if isinstance(item, dict)
+            else "low"
+        )
         if confidence not in {"low", "medium", "high"}:
             confidence = "low"
 
@@ -605,7 +745,9 @@ def normalize_llm_dependency_output(
     ]
 
 
-def _ground_evidence(entries: List[Dict[str, str]], source_text: str) -> List[Dict[str, str]]:
+def _ground_evidence(
+    entries: list[dict[str, str]], source_text: str
+) -> list[dict[str, str]]:
     """Lower confidence to 'low' when the LLM's evidence quote cannot be found verbatim in the source."""
     if not source_text:
         return entries
@@ -646,9 +788,12 @@ def _extract_response_content(response: Any) -> str | None:
     return None
 
 
-def _to_responses_text_format(response_format: Dict[str, Any]) -> Dict[str, Any]:
+def _to_responses_text_format(response_format: dict[str, Any]) -> dict[str, Any]:
     """Convert a Chat Completions response_format dict to Responses API text.format shape."""
-    if response_format.get("type") == "json_schema" and "json_schema" in response_format:
+    if (
+        response_format.get("type") == "json_schema"
+        and "json_schema" in response_format
+    ):
         return {"type": "json_schema", **response_format["json_schema"]}
     return dict(response_format)
 
@@ -659,7 +804,7 @@ def _dependencies_from_llm_response(
     proposal_label: str,
     current_proposal_number: str | None,
     source_context: SourceContext,
-) -> List[Dict[str, str]]:
+) -> list[dict[str, str]]:
     content = _extract_response_content(response)
     if content is None:
         return []
@@ -672,29 +817,19 @@ def _dependencies_from_llm_response(
     )
 
 
-def llm_extract_implicit_dependencies(
+def _build_llm_semantic_dependency_prompt_bundle(
+    *,
     text: str,
     current_proposal_number: str | None = None,
     proposal_label: str | None = None,
     proposal_singular: str | None = None,
-    api_key: str | None = None,
-    model: str | None = None,
     source_context: SourceContext | None = None,
-) -> List[str]:
+) -> dict[str, Any]:
     context = source_context or SourceContext.default()
-    resolved_model = model or context.llm_model
-    if not resolved_model:
-        raise RuntimeError("No LLM model configured. Set `llm.model` in the ecosystem YAML.")
     active_proposal_label = proposal_label or context.proposal_label
     active_proposal_singular = proposal_singular or context.proposal_singular
-    reference_configs = _reference_configs_for_context(context, active_proposal_label, context.reference_pattern)
-    active_config = next(
-        (
-            config
-            for config in reference_configs
-            if str(config["proposal_label"]).upper() == active_proposal_label.upper()
-        ),
-        reference_configs[0],
+    reference_configs = _reference_configs_for_context(
+        context, active_proposal_label, context.reference_pattern
     )
     source_labels = ", ".join(
         f"{config['proposal_label']} ({config['source_slug']})"
@@ -704,67 +839,89 @@ def llm_extract_implicit_dependencies(
         f"{config['proposal_label']} => {config['source_slug']}:ID"
         for config in reference_configs
     )
-    sibling_config = next(
-        (c for c in reference_configs if c["source_slug"] != active_config["source_slug"]),
-        None,
+    exclusion_rule = (
+        f"Exclude {active_proposal_label} {current_proposal_number} if present."
+        if current_proposal_number
+        else "Exclude the current proposal if it appears in the result."
     )
-    if sibling_config:
-        cross_source_example = f"""
-<example>
-<text>This proposal uses the version byte registry from {sibling_config['proposal_label']} 132 and builds on {active_proposal_label} 32 for key derivation.</text>
-<output>{{"dependencies":[{{"target":"{active_config['source_slug']}:32","evidence":"builds on {active_proposal_label} 32 for key derivation","reason":"The proposal extends key derivation mechanisms from the target.","confidence":"high"}},{{"target":"{sibling_config['source_slug']}:132","evidence":"uses the version byte registry from {sibling_config['proposal_label']} 132","reason":"The proposal relies on version byte definitions established by the target.","confidence":"high"}}]}}</output>
-</example>
-"""
-    else:
-        cross_source_example = ""
+    current_identifier = (
+        f" {current_proposal_number}" if current_proposal_number else ""
+    )
+
     system_prompt = f"""
-You extract implicit technical dependencies from {active_proposal_singular} documents.
+You extract technical dependencies from {active_proposal_singular} documents.
+
+Task:
+- Identify only substantive proposal-to-proposal dependencies.
+- Use only the provided proposal text. Do not use outside knowledge.
 
 Decision rule:
-- Include another proposal only when the proposal materially builds on, requires, extends, constrains, amends, specializes, or otherwise substantively relies on concepts, mechanisms, formats, semantics, activation rules, or assumptions introduced by that proposal.
-- Judge the technical context, not just surface mentions.
-- If a candidate is ambiguous or weakly supported, omit it.
+- Include another proposal only when the current proposal materially relies on, reuses, extends, constrains, amends, specializes, is compatible with, or is designed around concepts, mechanisms, formats, semantics, activation rules, workflows, or assumptions introduced by that proposal.
+- Ask whether understanding, implementing, evaluating, or adopting the current proposal would meaningfully depend on the target proposal beyond a passing reference.
+- Statements such as "requires", "depends on", "based on", "extends", or "fully implement X with the following changes" are strong indicators of dependency.
+- If support is ambiguous, weak, speculative, or purely contextual, omit the candidate.
 
 Do not include:
 - mere mentions or citations
-- history or background
-- comparisons to alternative approaches
-- examples
+- historical or background references
+- related work or motivation
+- comparisons to alternatives when no mechanism, format, rule, or semantic dependency is reused
+- examples or illustrative references
+- "See also" or "references" sections by themselves
 - topical relatedness
-- speculation
+- speculation about future interactions
 - self-references
 
 Output policy:
 - Return JSON only, with no explanation and no markdown.
-- Return a normalized, sorted, distinct list of dependency objects.
+- Return one object per dependency target.
 - Each object must use target format "source_slug:ID".
 - Valid labels for this ecosystem: {source_labels}.
 - Target format mapping: {target_formats}.
 - Preserve hexadecimal identifiers and leading zeroes when the ecosystem uses them.
-- Sort by source label, then ascending proposal identifier.
-- Exclude {active_proposal_label} {current_proposal_number} if present.
+- {exclusion_rule}
 - Return an empty list when there are no real dependencies.
-- Evidence must be a short exact quote or close excerpt from the proposal text.
-- Reason must briefly explain why the target is a technical dependency, not just a citation.
+- Evidence must be a short verbatim contiguous quote copied from the proposal text.
+- Reason must briefly explain the dependency in technical terms.
 - Confidence must be one of: low, medium, high.
+- Use confidence `high` for explicit or normatively stated dependencies, `medium` for strong but implicit technical reliance, and `low` only for weaker but still defensible cases that remain worth keeping.
+
+Example vocabulary:
+- The examples below use fixed placeholders so the same examples work across ecosystems.
+- `MAIN_LABEL` means the primary proposal label for the current source.
+- `SIBLING_LABEL` means another valid proposal label in the same ecosystem.
+- `main_source` and `sibling_source` are illustrative source slugs used only inside the examples.
+- In your actual answer, use the real labels and source slugs listed above.
 """.strip()
     user_prompt = f"""
-Analyze {active_proposal_singular} {active_proposal_label}{f" {current_proposal_number}" if current_proposal_number else ""}.
+Analyze {active_proposal_singular} {active_proposal_label}{current_identifier}.
 
 <examples>
 <example>
-<text>This proposal depends on {active_proposal_label} 39 and 32.</text>
-<output>{{"dependencies":[{{"target":"{active_config['source_slug']}:32","evidence":"depends on {active_proposal_label} 39 and 32","reason":"The proposal explicitly says it depends on this target.","confidence":"high"}},{{"target":"{active_config['source_slug']}:39","evidence":"depends on {active_proposal_label} 39 and 32","reason":"The proposal explicitly says it depends on this target.","confidence":"high"}}]}}</output>
+<text>Requires: 32, 43. This proposal defines a logical hierarchy based on an algorithm described in MAIN_LABEL-0032 and a purpose scheme described in MAIN_LABEL-0043.</text>
+<output>{{"dependencies":[{{"target":"main_source:32","evidence":"based on an algorithm described in MAIN_LABEL-0032","reason":"The proposal reuses the underlying derivation scheme from the target.","confidence":"high"}},{{"target":"main_source:43","evidence":"a purpose scheme described in MAIN_LABEL-0043","reason":"The proposal depends on the target's purpose-field convention to define its hierarchy.","confidence":"high"}}]}}</output>
 </example>
 <example>
-<text>This proposal builds upon {active_proposal_label}-0016 for partially signed transactions.</text>
-<output>{{"dependencies":[{{"target":"{active_config['source_slug']}:16","evidence":"builds upon {active_proposal_label}-0016 for partially signed transactions","reason":"The proposal builds on mechanisms introduced by the target.","confidence":"high"}}]}}</output>
+<text>The protocol defined in MAIN_LABEL 70 should be fully implemented with the following changes. This proposal allows zero value extension records in serialized messages.</text>
+<output>{{"dependencies":[{{"target":"main_source:70","evidence":"MAIN_LABEL 70 should be fully implemented with the following changes","reason":"The proposal modifies and builds directly on the earlier protocol rather than merely mentioning it.","confidence":"high"}}]}}</output>
 </example>
 <example>
-<text>Unlike {active_proposal_label} 44, which defines a symmetric encryption scheme, this proposal introduces a standalone asymmetric key agreement protocol. No primitives or formats from {active_proposal_label} 44 are reused.</text>
+<text>This proposal describes an enhancement to the protocol (MAIN_LABEL 70). Implementation of this proposal does not require full MAIN_LABEL 70 support.</text>
 <output>{{"dependencies":[]}}</output>
 </example>
-{cross_source_example}</examples>
+<example>
+<text>Unlike MAIN_LABEL 44, which defines a symmetric encryption scheme, this proposal introduces a standalone asymmetric key agreement protocol. No primitives or formats from MAIN_LABEL 44 are reused.</text>
+<output>{{"dependencies":[]}}</output>
+</example>
+<example>
+<text>Example: schemes following MAIN_LABEL 44 should use purpose value 44'. This example illustrates how purpose values are assigned.</text>
+<output>{{"dependencies":[]}}</output>
+</example>
+<example>
+<text>We adapt the master node generation from MAIN_LABEL-0032 and SIBLING_LABEL-0010.</text>
+<output>{{"dependencies":[{{"target":"main_source:32","evidence":"adapt the master node generation from MAIN_LABEL-0032","reason":"The proposal reuses the main-source master-node derivation procedure.","confidence":"high"}},{{"target":"sibling_source:10","evidence":"and SIBLING_LABEL-0010","reason":"The proposal also builds on a sibling-source derivation standard named in the same sentence.","confidence":"medium"}}]}}</output>
+</example>
+</examples>
 
 Now apply the same rules to the actual proposal text below.
 
@@ -788,7 +945,10 @@ Now apply the same rules to the actual proposal text below.
                                 "target": {"type": "string"},
                                 "evidence": {"type": "string"},
                                 "reason": {"type": "string"},
-                                "confidence": {"type": "string", "enum": ["low", "medium", "high"]},
+                                "confidence": {
+                                    "type": "string",
+                                    "enum": ["low", "medium", "high"],
+                                },
                             },
                             "required": ["target", "evidence", "reason", "confidence"],
                             "additionalProperties": False,
@@ -800,6 +960,81 @@ Now apply the same rules to the actual proposal text below.
             },
         },
     }
+    return {
+        "system_prompt": system_prompt,
+        "user_prompt": user_prompt,
+        "response_format": response_format,
+    }
+
+
+def build_llm_semantic_dependency_manifest_record(
+    *,
+    run_id: str,
+    model: str,
+    source_context: SourceContext | None = None,
+    proposal_label: str | None = None,
+    proposal_singular: str | None = None,
+    created_at: str,
+    focus: list[str] | None = None,
+) -> dict[str, Any]:
+    context = source_context or SourceContext.default()
+    bundle = _build_llm_semantic_dependency_prompt_bundle(
+        text="{proposal_text}",
+        current_proposal_number="{current_proposal_number}",
+        proposal_label=proposal_label,
+        proposal_singular=proposal_singular,
+        source_context=context,
+    )
+    return {
+        "run_id": run_id,
+        "method_name": LLM_SEMANTIC_METHOD_NAME,
+        "method_label": LLM_SEMANTIC_METHOD_LABEL,
+        "method_version": LLM_SEMANTIC_METHOD_VERSION,
+        "model": model,
+        "created_at": created_at,
+        "api_surface": (
+            "responses" if context.llm_reasoning is not None else "chat_completions"
+        ),
+        "reasoning": dict(context.llm_reasoning) if context.llm_reasoning else None,
+        "system_prompt": bundle["system_prompt"],
+        "user_prompt_template": bundle["user_prompt"],
+        "response_format": bundle["response_format"],
+        "source_context": {
+            "ecosystem_slug": context.ecosystem_slug,
+            "source_slug": context.source_slug,
+            "proposal_label": proposal_label or context.proposal_label,
+            "proposal_singular": proposal_singular or context.proposal_singular,
+        },
+        "focus": list(focus or []),
+    }
+
+
+def llm_extract_semantic_dependencies(
+    text: str,
+    current_proposal_number: str | None = None,
+    proposal_label: str | None = None,
+    proposal_singular: str | None = None,
+    api_key: str | None = None,
+    model: str | None = None,
+    source_context: SourceContext | None = None,
+) -> dict[str, Any]:
+    context = source_context or SourceContext.default()
+    resolved_model = model or context.llm_model
+    if not resolved_model:
+        raise RuntimeError(
+            "No LLM model configured. Set `llm.model` in the ecosystem YAML."
+        )
+    active_proposal_label = proposal_label or context.proposal_label
+    bundle = _build_llm_semantic_dependency_prompt_bundle(
+        text=text,
+        current_proposal_number=current_proposal_number,
+        proposal_label=proposal_label,
+        proposal_singular=proposal_singular,
+        source_context=context,
+    )
+    system_prompt = bundle["system_prompt"]
+    user_prompt = bundle["user_prompt"]
+    response_format = bundle["response_format"]
 
     resolved_api_key = api_key or load_api_key()
     if not resolved_api_key:
@@ -813,44 +1048,122 @@ Now apply the same rules to the actual proposal text below.
         {"role": "user", "content": user_prompt},
     ]
 
-    def _parse(response: Any) -> List[Dict[str, str]]:
-        results = _dependencies_from_llm_response(
-            response,
-            proposal_label=active_proposal_label,
-            current_proposal_number=current_proposal_number,
-            source_context=context,
-        )
-        return _ground_evidence(results, text)
+    def _result(
+        status: str,
+        dependencies: list[dict[str, str]] | None = None,
+        error_message: str | None = None,
+    ) -> dict[str, Any]:
+        payload: dict[str, Any] = {
+            "status": status,
+            "dependencies": dependencies or [],
+        }
+        if error_message:
+            payload["error_message"] = error_message
+        return payload
+
+    def _parse(response: Any) -> dict[str, Any]:
+        content = _extract_response_content(response)
+        if content is None:
+            return _result(
+                LLM_RUN_STATUS_PARSE_ERROR,
+                error_message="LLM returned no JSON content.",
+            )
+        try:
+            payload = loads(content)
+            results = normalize_llm_dependency_output(
+                payload.get("dependencies"),
+                proposal_label=active_proposal_label,
+                current_proposal_number=current_proposal_number,
+                source_context=context,
+            )
+        except (JSONDecodeError, TypeError, ValueError, KeyError) as exc:
+            return _result(LLM_RUN_STATUS_PARSE_ERROR, error_message=str(exc))
+        return _result(LLM_RUN_STATUS_SUCCESS, _ground_evidence(results, text))
 
     if llm_reasoning is not None:
-        # Responses API path (reasoning models)
         try:
-            kwargs: Dict[str, Any] = {
+            kwargs: dict[str, Any] = {
                 "model": resolved_model,
                 "input": messages,
                 "text": {"format": _to_responses_text_format(response_format)},
             }
             if llm_reasoning:
                 kwargs["reasoning"] = llm_reasoning
-            response = client.responses.create(**kwargs)
+            response = _call_with_rate_limit_retry(
+                lambda: client.responses.create(**kwargs)
+            )
+            if getattr(response, "status", None) == "failed":
+                return _result(
+                    LLM_RUN_STATUS_API_ERROR,
+                    error_message="Responses API returned failed status.",
+                )
             return _parse(response)
-        except (JSONDecodeError, TypeError, ValueError, KeyError, OSError, TimeoutError, ConnectionError) as exc:
-            raise RuntimeError(f"LLM API call failed: {exc}") from exc
-    else:
-        # Chat Completions API path
+        except TimeoutError as exc:
+            return _result(LLM_RUN_STATUS_TIMEOUT, error_message=str(exc))
+        except RateLimitError as exc:
+            return _result(LLM_RUN_STATUS_API_ERROR, error_message=f"Rate limit: {exc}")
+        except (TypeError, ValueError, KeyError, OSError, ConnectionError) as exc:
+            return _result(LLM_RUN_STATUS_API_ERROR, error_message=str(exc))
+
+    try:
         try:
-            try:
-                response = client.chat.completions.create(
+            response = _call_with_rate_limit_retry(
+                lambda: client.chat.completions.create(
                     model=resolved_model,
                     messages=messages,
                     response_format=response_format,
                 )
-            except TypeError:
-                response = client.chat.completions.create(
+            )
+        except TypeError:
+            response = _call_with_rate_limit_retry(
+                lambda: client.chat.completions.create(
                     model=resolved_model,
                     messages=messages,
                     response_format={"type": "json_object"},
                 )
-            return _parse(response)
-        except (JSONDecodeError, TypeError, ValueError, KeyError, OSError, TimeoutError, ConnectionError) as exc:
-            raise RuntimeError(f"LLM API call failed: {exc}") from exc
+            )
+
+        choices = getattr(response, "choices", None)
+        if choices:
+            message = choices[0].message
+            if getattr(message, "refusal", None):
+                refusal_message = str(message.refusal).strip()
+                return _result(
+                    LLM_RUN_STATUS_REFUSAL,
+                    error_message=refusal_message or "Model refused the request.",
+                )
+        return _parse(response)
+    except TimeoutError as exc:
+        return _result(LLM_RUN_STATUS_TIMEOUT, error_message=str(exc))
+    except RateLimitError as exc:
+        return _result(LLM_RUN_STATUS_API_ERROR, error_message=f"Rate limit: {exc}")
+    except (TypeError, ValueError, KeyError, OSError, ConnectionError) as exc:
+        return _result(LLM_RUN_STATUS_API_ERROR, error_message=str(exc))
+
+
+def llm_extract_implicit_dependencies(
+    text: str,
+    current_proposal_number: str | None = None,
+    proposal_label: str | None = None,
+    proposal_singular: str | None = None,
+    api_key: str | None = None,
+    model: str | None = None,
+    source_context: SourceContext | None = None,
+) -> list[dict[str, str]]:
+    result = llm_extract_semantic_dependencies(
+        text=text,
+        current_proposal_number=current_proposal_number,
+        proposal_label=proposal_label,
+        proposal_singular=proposal_singular,
+        api_key=api_key,
+        model=model,
+        source_context=source_context,
+    )
+    if result.get("status") != LLM_RUN_STATUS_SUCCESS:
+        error_message = str(result.get("error_message") or "").strip()
+        detail = f": {error_message}" if error_message else ""
+        raise RuntimeError(
+            f"LLM semantic dependency extraction failed with status "
+            f"`{result.get('status')}`{detail}"
+        )
+    return list(result.get("dependencies") or [])

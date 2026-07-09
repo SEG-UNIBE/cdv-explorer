@@ -527,6 +527,15 @@
         "author": "Luke Dashjr",
         "path": "bip-0074.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0074.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -558,14 +567,16 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:53:09Z",
+          "timestamp": "2026-06-30T11:17:32Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:70",
-              "evidence": "\"The Payment Protocol (defined in BIP70)\"",
-              "reason": "The proposal directly changes the Payment Protocol defined by BIP 70 and relies on its PaymentRequest and output-handling semantics.",
-              "confidence": "low"
+              "evidence": "The Payment Protocol (defined in BIP70)",
+              "reason": "This proposal directly alters the Payment Protocol specified by BIP70 and relies on its PaymentRequest output semantics and wallet processing rules.",
+              "confidence": "high"
             }
           ]
         }

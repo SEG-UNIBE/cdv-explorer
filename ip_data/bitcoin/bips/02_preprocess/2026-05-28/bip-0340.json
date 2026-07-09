@@ -1273,32 +1273,34 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:54:28Z",
+          "timestamp": "2026-06-30T11:18:44Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
-              "evidence": "bip-0032.mediawiki#public-parent-key--public-child-key|BIP32's unhardened derivation",
-              "reason": "The signature design is constrained to remain secure under BIP32-style additive key derivation, so it depends on that derivation mechanism being supported.",
+              "evidence": "key generation algorithms for ECDSA in a compatible way",
+              "reason": "The proposal explicitly relies on BIP32-compatible key generation and unhardened derivation behavior when discussing safe reuse and conversion of existing keys.",
               "confidence": "high"
             },
             {
               "target": "bips:118",
               "evidence": "may change with proposals such as SIGHASH_NOINPUT ([[bip-0118.mediawiki|BIP118]])",
-              "reason": "The key-prefixing requirement is justified by and anticipates this transaction-signing change, which affects the public-key commitment assumptions.",
+              "reason": "The key-prefixing rationale depends on transaction-message commitment behavior that could be altered by BIP118, affecting whether signatures remain safe outside transaction-signing contexts.",
               "confidence": "medium"
             },
             {
               "target": "bips:327",
-              "evidence": "participants can aggregate their public keys into a single public key by means of an interactive scheme such as MuSig2 ([[bip-0327.mediawiki|BIP327]])",
-              "reason": "The application of multisignatures relies on the MuSig2 protocol as a concrete higher-level scheme built for Schnorr signatures.",
-              "confidence": "low"
+              "evidence": "By means of an interactive scheme such as [https://eprint.iacr.org/2020/1261.pdf MuSig2] ([[bip-0327.mediawiki|BIP327]])",
+              "reason": "The proposal’s multisignature application section is built around BIP327 as a concrete interactive signing scheme using Schnorr signatures.",
+              "confidence": "high"
             },
             {
               "target": "bips:341",
-              "evidence": "as for example done in [[bip-0341.mediawiki|BIP341]]",
-              "reason": "The proposal explicitly relies on BIP341 as an example of pre-hashing and transaction-message handling in the taproot context.",
-              "confidence": "low"
+              "evidence": "as for example done in [[bip-0341.mediawiki|BIP341]].",
+              "reason": "The message-size discussion explicitly relies on BIP341 as an example of pre-hashing 32-byte message digests for signature inputs.",
+              "confidence": "medium"
             }
           ]
         }

@@ -573,13 +573,22 @@
         "author": "Johnson Lau",
         "path": "bip-segwitaddress.mediawiki",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "159cc9bd0eb1bdf97facac7f839069c81a4cc301",
         "timestamp": "2016-03-16T23:20:58+08:00",
         "date": "2016-03-16",
         "author": "Johnson Lau",
+        "path": "bip-0142.mediawiki",
+        "status": "Deferred",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
         "path": "bip-0142.mediawiki",
         "status": "Deferred",
         "standard": "bip2"
@@ -633,9 +642,30 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:53:44Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:18:14Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:13",
+              "evidence": "The drawbacks of Bitcoin addresses have been extensively discussed in BIP13.",
+              "reason": "The proposal is designed as a new address format in the existing Bitcoin address ecosystem defined by BIP13, and it explicitly contrasts and builds on that address-format framework.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:16",
+              "evidence": "Segwit-in-P2SH is a BIP16 P2SH redeemScript with a push of version byte followed by a push of witness program",
+              "reason": "The proposal relies on BIP16's P2SH redeemScript mechanism as one of the witness-program encoding modes it describes.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "The new Bitcoin address format defined is for the Pay-to-Witness-Public-Key-Hash (P2WPKH) and Pay-to-Witness-Script-Hash (P2WSH) transaction described in segregated witness soft fork (BIP141).",
+              "reason": "The address format is explicitly defined around BIP141 witness-program types and uses its versioned witness-program semantics.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

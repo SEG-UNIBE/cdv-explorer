@@ -573,13 +573,22 @@
         "author": "Johnson Lau",
         "path": "bip-segwitaddress.mediawiki",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "159cc9bd0eb1bdf97facac7f839069c81a4cc301",
         "timestamp": "2016-03-16T23:20:58+08:00",
         "date": "2016-03-16",
         "author": "Johnson Lau",
+        "path": "bip-0142.mediawiki",
+        "status": "Deferred",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
         "path": "bip-0142.mediawiki",
         "status": "Deferred",
         "standard": "bip2"
@@ -633,25 +642,27 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:58:36Z",
+          "timestamp": "2026-06-30T11:43:33Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:13",
-              "evidence": "BIP13 P2SH address has been defined in 2012",
-              "reason": "The proposal’s address format is explicitly modeled on and contrasted with the existing P2SH address format introduced by BIP13.",
-              "confidence": "high"
+              "evidence": "similar to existing address formats:",
+              "reason": "The proposal explicitly models its encoding after the existing address format used by BIP13 P2SH addresses, indicating dependence on that address-format convention.",
+              "confidence": "medium"
             },
             {
               "target": "bips:16",
-              "evidence": "A native witness program output is ... ; Segwit-in-P2SH is a BIP16 P2SH redeemScript",
-              "reason": "The proposal relies on BIP16’s P2SH redeemScript mechanism as one of the witness-program encodings discussed in its specification.",
-              "confidence": "low"
+              "evidence": "a BIP16 P2SH redeemScript with a push of version byte followed by a push of witness program",
+              "reason": "The rationale defines one supported segwit-in-P2SH path in terms of BIP16 P2SH redeemScript handling, so understanding that workflow depends on BIP16.",
+              "confidence": "high"
             },
             {
               "target": "bips:141",
-              "evidence": "support native segregated witness transactions",
-              "reason": "The new address format is defined specifically for segwit witness programs and the witness version/program semantics introduced by BIP141.",
+              "evidence": "The new Bitcoin address format defined is for the Pay-to-Witness-Public-Key-Hash (P2WPKH) and Pay-to-Witness-Script-Hash (P2WSH) transaction described in segregated witness soft fork (BIP141).",
+              "reason": "The proposal’s address format, scriptPubKey shape, and versioning are defined around BIP141 witness programs and segwit semantics.",
               "confidence": "high"
             }
           ]

@@ -850,9 +850,18 @@
       "body_extracted_regex": [],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:57:52Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:42:27Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:4",
+              "evidence": "add oPoW as a dual PoW to Bitcoin as a soft fork",
+              "reason": "The proposal’s deployment path is explicitly framed as a soft fork, so it relies on the soft-fork activation/deployment mechanism from the target proposal family.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

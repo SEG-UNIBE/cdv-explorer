@@ -889,14 +889,16 @@
       "body_extracted_regex": [],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:58:45Z",
+          "timestamp": "2026-06-30T11:43:43Z",
+          "status": "success",
           "dependencies": [
             {
-              "target": "bips:32",
-              "evidence": "The Bitcoin network has a maximum number of inbound and outbound connections (125).",
-              "reason": "No substantive dependency on another proposal is established; the document defines its own peer-rate-limiting protocol and formats.",
-              "confidence": "high"
+              "target": "bips:38",
+              "evidence": "the proof weight would have to be raised",
+              "reason": "The proposal explicitly contrasts its POW mechanism against Bitcoin's existing proof-of-work behavior and references block-mining difficulty semantics as the baseline it avoids reusing.",
+              "confidence": "low"
             }
           ]
         }

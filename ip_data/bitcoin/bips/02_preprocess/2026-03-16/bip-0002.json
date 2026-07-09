@@ -1241,7 +1241,7 @@
         "author": "Luke Dashjr",
         "path": "bip-biprevised.mediawiki",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "2fd18113315d9675bfcfca23e8f25656f7088606",
@@ -1250,7 +1250,7 @@
         "author": "Luke Dashjr",
         "path": "bip-0002.mediawiki",
         "status": "Deferred",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "e89b98facd4b52e0d248ca7dfc6f60a030d4cc59",
@@ -1259,7 +1259,7 @@
         "author": "Luke Dashjr",
         "path": "bip-0002.mediawiki",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "959fecc15bdad070afa63455468b1dba54655fa6",
@@ -1316,19 +1316,21 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:57:35Z",
+          "timestamp": "2026-06-30T11:41:59Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:1",
               "evidence": "This particular BIP replaces BIP 1 with a more well-defined and clear process.",
-              "reason": "The proposal directly amends and supersedes the prior BIP process defined by BIP 1.",
+              "reason": "The proposal is explicitly a replacement and revision of BIP 1, so its process rules depend on and modify BIP 1's framework.",
               "confidence": "high"
             },
             {
               "target": "bips:123",
-              "evidence": "See [[bip-0123.mediawiki|BIP 123]] for definitions of the various BIP layers. Activation of this BIP implies activation of BIP 123.",
-              "reason": "The Layer header semantics and activation rule are defined by BIP 123, which this proposal incorporates.",
+              "evidence": "See [[bip-0123.mediawiki|BIP 123]] for definitions of the various BIP layers.",
+              "reason": "The proposal uses BIP 123 to define the Layer header and states that activation of this BIP implies activation of BIP 123.",
               "confidence": "high"
             }
           ]

@@ -702,37 +702,39 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:59:21Z",
+          "timestamp": "2026-06-30T11:45:12Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
-              "evidence": "The derivation path for this BIP follows BIP44. The following BIP32 path levels are defined",
-              "reason": "The proposal uses BIP32 hierarchical key derivation and non-hardened child keys as part of its payment code and notification scheme.",
+              "evidence": "The following BIP32 path levels are defined:",
+              "reason": "The proposal uses BIP32 derivation concepts and non-hardened child key derivation for payment code keys.",
               "confidence": "high"
             },
             {
               "target": "bips:43",
-              "evidence": "The derivation path for this BIP follows BIP44. The following BIP32 path levels are defined",
-              "reason": "The proposal adopts the purpose field structure defined by BIP43 to allocate a dedicated purpose number in the derivation path.",
-              "confidence": "high"
+              "evidence": "The derivation path for this BIP follows BIP44.",
+              "reason": "BIP44's hierarchy is defined as a specialization of the BIP43 purpose-field convention, which this proposal adopts via the purpose-based path.",
+              "confidence": "medium"
             },
             {
               "target": "bips:44",
-              "evidence": "The derivation path for this BIP follows BIP44. The following BIP32 path levels are defined",
-              "reason": "The proposal explicitly bases its account-level derivation path on the BIP44 hierarchy.",
+              "evidence": "The derivation path for this BIP follows BIP44.",
+              "reason": "The proposal explicitly bases its key derivation hierarchy on BIP44's path structure and account model.",
               "confidence": "high"
             },
             {
-              "target": "bips:157",
-              "evidence": "Compact Block Filters, as formulated in BIP-0158, do not cover OP_RETURN data payloads.",
-              "reason": "The proposal relies on the BIP157/BIP158 light-client filtering context when discussing how recipients can detect notifications.",
+              "target": "bips:47",
+              "evidence": "Sharing a BIP47 payment code addresses most of the above shortcomings.",
+              "reason": "The proposal is designed as an alternative reusable-payment-code system in direct response to and replacement of BIP47's payment-code workflow, including notification and address derivation semantics.",
               "confidence": "low"
             },
             {
               "target": "bips:158",
               "evidence": "Compact Block Filters, as formulated in BIP-0158, do not cover OP_RETURN data payloads.",
-              "reason": "The proposal depends on the compact block filter format from BIP158 to explain the limitation that motivates its external notification scanning approach.",
+              "reason": "The appendix assumes BIP158 filter behavior when discussing why notification data cannot be found through compact block filters and motivates an external service workaround.",
               "confidence": "low"
             }
           ]

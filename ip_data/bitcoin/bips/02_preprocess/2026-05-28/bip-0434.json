@@ -650,22 +650,20 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:55:07Z",
-          "dependencies": [
-            {
-              "target": "bips:324",
-              "evidence": "Nodes implementing both this BIP and [BIP 324 (v2 P2P encrypted transport)] MUST treat a message with a 1-byte `message_type` equal to `37` that is received prior to `verack` as the `feature` message.",
-              "reason": "The proposal reuses BIP 324's 1-byte message_type transport framing to define how feature messages are identified on that transport.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:339",
-              "evidence": "we propose codifying and generalising the mechanism used by [BIP 339] for future P2P upgrades",
-              "reason": "This proposal generalizes BIP 339's pre-verack feature negotiation mechanism and adopts its negotiation model as the basis for the new feature message.",
-              "confidence": "low"
-            }
-          ]
+          "timestamp": "2026-06-30T11:19:14Z",
+          "status": "api_error",
+          "dependencies": [],
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 196643, Requested 4936. Please try again in 473ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+        },
+        {
+          "run_id": "2026-06-30T11:33:45Z_gpt-5.4-mini_fbc31d5d",
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-30T11:34:15Z",
+          "status": "api_error",
+          "dependencies": [],
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 200000, Requested 4936. Please try again in 1.48s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
         }
       ]
     }

@@ -583,6 +583,15 @@
         "author": "Kalle Rosenbaum",
         "path": "bip-0120.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0120.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -622,25 +631,27 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:53:30Z",
+          "timestamp": "2026-06-30T11:17:56Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:21",
               "evidence": "amount, label, message or other information from a BIP0021 URI",
-              "reason": "The proposal uses BIP 21 URI fields as transaction hints in the PoP request process.",
+              "reason": "The PoP request uses BIP0021 URI fields as transaction-identification hints, so understanding the request workflow depends on that URI scheme.",
               "confidence": "high"
             },
             {
               "target": "bips:70",
               "evidence": "PaymentRequest.PaymentDetails.merchant_data (in case of a BIP0070 payment)",
-              "reason": "The proof request process can use BIP 70 payment data to identify the transaction to prove.",
+              "reason": "The proposal reuses BIP0070 payment details as a hint for selecting the transaction to prove.",
               "confidence": "high"
             },
             {
               "target": "bips:121",
-              "evidence": "Instead that is specified in separate specifications, see BIP0121.",
-              "reason": "The proposal delegates the PoP request transfer mechanism to BIP 121, making it a supporting protocol dependency.",
+              "evidence": "that is specified in separate specifications, see BIP0121",
+              "reason": "The proposal explicitly outsources the PoP-request transfer method to BIP0121, so the process depends on that separate URI scheme specification.",
               "confidence": "high"
             }
           ]

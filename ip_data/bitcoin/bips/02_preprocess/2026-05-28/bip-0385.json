@@ -520,13 +520,15 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:54:56Z",
+          "timestamp": "2026-06-30T11:19:05Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:380",
               "evidence": "use the format and general operation specified in [[bip-0380.mediawiki|380]]",
-              "reason": "The descriptor syntax and operation are defined by BIP 380, which this proposal relies on for its new expressions.",
+              "reason": "The proposal explicitly relies on BIP 380 for descriptor syntax and overall descriptor operation, while adding new descriptor forms.",
               "confidence": "high"
             }
           ]

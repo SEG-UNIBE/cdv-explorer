@@ -606,9 +606,42 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:55:05Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:19:08Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "further [[bip-0032.mediawiki|BIP-32]] derivation will be performed on the aggregate public key",
+              "reason": "The ranged musig() variant performs BIP-32 derivation on the aggregate public key and restricts derivation paths accordingly.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:327",
+              "evidence": "using [[bip-0327.mediawiki|BIP-327]]",
+              "reason": "The proposal's musig() aggregate key generation is explicitly based on BIP-327 MuSig2 and its KeyAgg algorithm.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:328",
+              "evidence": "as described in [[bip-0328.mediawiki|BIP-328]]",
+              "reason": "The proposal delegates aggregate-public-key derivation semantics to BIP-328 for the musig()/NUM/.../* form.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:380",
+              "evidence": "the term <tt>KEY</tt> refers to key expressions as defined in [[bip-0380.mediawiki|BIP-380]]",
+              "reason": "The new musig() expression is defined within the descriptor key-expression framework from BIP-380 and uses its general descriptor syntax and operation.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:389",
+              "evidence": "and [[bip-0389.mediawiki|BIP-389]]",
+              "reason": "The proposal defines KEY in terms of BIP-389 as well, so its accepted key-expression forms depend on that specification.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

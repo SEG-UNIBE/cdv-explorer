@@ -338,13 +338,15 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:59:52Z_gpt-5.4-mini_b29b8ccc",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:07:58Z",
+          "timestamp": "2026-06-30T12:00:51Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:96",
               "evidence": "service type which is serving the file (eg. [NIP-96](96.md))",
-              "reason": "The file metadata format includes an optional service tag that explicitly references NIP 96 as the serving backend, so this proposal relies on NIP 96 to identify upload/service provenance.",
+              "reason": "The file-metadata event format explicitly allows a service tag whose meaning is defined by NIP-96, so understanding that tag depends on NIP-96's upload service semantics.",
               "confidence": "high"
             }
           ]

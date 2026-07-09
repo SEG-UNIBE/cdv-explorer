@@ -1045,9 +1045,54 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:56Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:36:25Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:114",
+              "evidence": "Merkle branches (\"MAST\", [[bip-0114.mediawiki|BIP114]], [[bip-0117.mediawiki|BIP117]])",
+              "reason": "The proposal is explicitly based on prior Merkle-branch/MAST constructions and uses Merkle trees of scripts as a core mechanism.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:117",
+              "evidence": "Merkle branches (\"MAST\", [[bip-0114.mediawiki|BIP114]], [[bip-0117.mediawiki|BIP117]])",
+              "reason": "The proposal is explicitly based on prior Merkle-branch/MAST constructions and uses Merkle trees of scripts as a core mechanism.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:118",
+              "evidence": "new sighash modes ([[bip-0118.mediawiki|BIP118]])",
+              "reason": "The design discussion includes new sighash modes as part of the feature set being compared and incorporated into Taproot’s signature-hashing changes.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "A Taproot output is a native SegWit output (see [[bip-0141.mediawiki|BIP141]]) with version number 1, and a 32-byte witness program.",
+              "reason": "Taproot is defined as a specific SegWit v1 witness program and inherits the SegWit output structure from BIP141.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:143",
+              "evidence": "In summary, the semantics of the [[bip-0143.mediawiki|BIP143]] sighash types remain unchanged, except the following:",
+              "reason": "The proposal explicitly builds on BIP143’s sighash semantics while modifying the serialization and committed fields.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:340",
+              "evidence": "The notation below follows that of [[bip-0340.mediawiki#design|BIP340]].",
+              "reason": "The proposal relies on BIP340’s public-key and Schnorr signature primitives, including lift_x, tagged hashes, and signature verification.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:342",
+              "evidence": "[[bip-0342.mediawiki|BIP342]] specifies validity rules that apply for leaf version 0xc0, but future proposals can introduce rules for other leaf versions.",
+              "reason": "Script-path validation delegates execution semantics for leaf version 0xc0 to BIP342, so spending taproot script leaves depends on BIP342 rules.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

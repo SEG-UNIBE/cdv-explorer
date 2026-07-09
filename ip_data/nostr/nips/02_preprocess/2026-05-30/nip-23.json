@@ -264,38 +264,40 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:59:52Z_gpt-5.4-mini_b29b8ccc",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:07:30Z",
+          "timestamp": "2026-06-30T12:00:06Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:19",
-              "evidence": "may be linked to using the [NIP-19] `naddr` code along with the `a` tag",
-              "reason": "Long-form articles rely on the NIP-19 `naddr` identifier format for addressing and linking these events.",
-              "confidence": "low"
+              "evidence": "The article may be linked to using the [NIP-19](19.md) `naddr` code along with the `a` tag.",
+              "reason": "This proposal relies on NIP-19's `naddr` encoding for linking to long-form articles.",
+              "confidence": "high"
             },
             {
               "target": "nips:21",
-              "evidence": "References ... must be made according to [NIP-27], i.e. by using [NIP-21] `nostr:...` links",
-              "reason": "The content format and reference handling depend on the NIP-21 link syntax for embedding references.",
-              "confidence": "low"
+              "evidence": "by using [NIP-21](21.md) `nostr:...` links",
+              "reason": "The proposal depends on NIP-21 URI-style links as the mechanism for inline references.",
+              "confidence": "high"
             },
             {
               "target": "nips:22",
-              "evidence": "Replies to `kind 30023` MUST use [NIP-22] `kind 1111` comments",
-              "reason": "Commenting and reply behavior for these articles is defined in terms of NIP-22 comment events.",
-              "confidence": "low"
+              "evidence": "Replies to `kind 30023` MUST use [NIP-22](./22.md) `kind 1111` comments.",
+              "reason": "Commenting on long-form articles is constrained to the NIP-22 comment event type, so reply behavior depends on that specification.",
+              "confidence": "high"
             },
             {
               "target": "nips:27",
-              "evidence": "References to other Nostr notes, articles or profiles must be made according to [NIP-27]",
-              "reason": "The proposal constrains how internal references are encoded within long-form content, relying on NIP-27 semantics.",
+              "evidence": "References to other Nostr notes, articles or profiles must be made according to [NIP-27](27.md),",
+              "reason": "The content-linking and reference semantics are defined by NIP-27 and reused here.",
               "confidence": "high"
             },
             {
               "target": "nips:37",
-              "evidence": "The preferred way of doing long-form drafts is to use [NIP-37] instead",
-              "reason": "Draft handling is explicitly delegated to NIP-37, making it the specified mechanism for long-form drafts.",
-              "confidence": "low"
+              "evidence": "The preferred way of doing long-form drafts is to use [NIP-37](37.md) instead.",
+              "reason": "The proposal explicitly defers the long-form draft use case to NIP-37, making draft support depend on that draft-format proposal rather than kind 30024.",
+              "confidence": "high"
             }
           ]
         }

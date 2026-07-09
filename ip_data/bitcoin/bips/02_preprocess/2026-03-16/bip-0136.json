@@ -792,9 +792,24 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:58:34Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:43:29Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:173",
+              "evidence": "TxRef MUST use the '''Bech32m'''",
+              "reason": "The TxRef format is defined directly in terms of Bech32/Bech32m encoding and its alphabet/checksum behavior.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:350",
+              "evidence": "later refined in [https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki BIP-0350]",
+              "reason": "The proposal explicitly relies on the Bech32m refinement to encode and decode TxRefs.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

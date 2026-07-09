@@ -1,12 +1,16 @@
 import re
-from typing import Any, Mapping
-
+from collections.abc import Mapping
+from typing import Any
 
 HEX_REFERENCE_CLASS_PATTERN = re.compile(r"\[[^\]]*0-9[^\]]*A-F[^\]]*a-f[^\]]*\]")
 
 
-def uses_hex_proposal_ids(proposal_label: str = "IP", reference_pattern: str = "") -> bool:
-    return proposal_label.upper() == "NIP" or bool(HEX_REFERENCE_CLASS_PATTERN.search(reference_pattern))
+def uses_hex_proposal_ids(
+    proposal_label: str = "IP", reference_pattern: str = ""
+) -> bool:
+    return proposal_label.upper() == "NIP" or bool(
+        HEX_REFERENCE_CLASS_PATTERN.search(reference_pattern)
+    )
 
 
 def normalize_reference_id(

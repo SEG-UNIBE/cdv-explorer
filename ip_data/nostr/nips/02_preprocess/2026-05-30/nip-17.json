@@ -344,37 +344,39 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:59:52Z_gpt-5.4-mini_b29b8ccc",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:07:28Z",
+          "timestamp": "2026-06-30T12:00:02Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:21",
-              "evidence": "q tags MAY be used when citing events in the .content with NIP-21",
-              "reason": "The proposal adds a permitted tag format and encoding for cited events, relying on NIP-21 event reference syntax.",
-              "confidence": "low"
+              "evidence": "with [NIP-21](21.md)",
+              "reason": "The proposal reuses NIP-21 event-address/event-id citation semantics for q tags in chat content.",
+              "confidence": "medium"
             },
             {
               "target": "nips:25",
-              "evidence": "kind 7 reactions may be sent to an encrypted chat",
-              "reason": "It extends encrypted chat participation rules to include reaction events defined by NIP-25.",
-              "confidence": "low"
+              "evidence": "[`kind 7` reactions](./25.md) may be sent to an encrypted chat",
+              "reason": "The proposal extends encrypted-chat handling to reaction events defined by NIP-25.",
+              "confidence": "medium"
             },
             {
               "target": "nips:42",
-              "evidence": "enforced using NIP 42 AUTH",
-              "reason": "Relay protection for serving gift-wrapped events depends on authenticated access control defined by NIP-42.",
-              "confidence": "low"
+              "evidence": "using [NIP 42 AUTH](./42.md)",
+              "reason": "The proposal's relay access control for serving gift-wrap events depends on NIP-42 authentication.",
+              "confidence": "medium"
             },
             {
               "target": "nips:44",
-              "evidence": "uses NIP-44 encryption",
-              "reason": "The encrypted chat scheme relies on NIP-44 for encrypting the inner content and for the latest-version requirement.",
-              "confidence": "low"
+              "evidence": "uses [NIP-44](44.md) encryption",
+              "reason": "The proposal relies on NIP-44 for encrypting the chat payloads and specifies using its latest version.",
+              "confidence": "high"
             },
             {
               "target": "nips:59",
-              "evidence": "uses NIP-59 seals and gift wraps",
-              "reason": "The proposal's message construction is built around sealing and gift-wrapping semantics from NIP-59, including unsigned messages and deletion behavior.",
+              "evidence": "uses [NIP-59](59.md) seals and gift wraps",
+              "reason": "The proposal is built around NIP-59 sealing and gift-wrapping semantics for unsigned chat messages and deletion behavior.",
               "confidence": "low"
             }
           ]

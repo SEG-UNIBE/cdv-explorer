@@ -599,12 +599,21 @@
         "author": "Peter Todd",
         "path": "bip-0018.mediawiki",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "387fc6011bd804609fd751786e50439d5c11a097",
         "timestamp": "2016-08-23T19:47:29Z",
         "date": "2016-08-23",
+        "author": "Luke Dashjr",
+        "path": "bip-0018.mediawiki",
+        "status": "Accepted",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
         "author": "Luke Dashjr",
         "path": "bip-0018.mediawiki",
         "status": "Accepted",
@@ -664,37 +673,39 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:57:41Z",
+          "timestamp": "2026-06-30T11:42:08Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:11",
-              "evidence": "The purpose of pay-to-script-hash is to move the responsibility for supplying the conditions to redeem a transaction",
-              "reason": "This proposal extends the multisignature/script construction addressed by BIP 11 and relies on those transaction patterns as a motivating use case and compatibility target.",
+              "evidence": "M-of-N Multisignature Transactions [[bip-0011.mediawiki|BIP 11]]",
+              "reason": "The proposal is explicitly designed to support multisignature transactions and uses M-of-N multisig as a concrete motivating and compatibility case.",
               "confidence": "medium"
             },
             {
               "target": "bips:12",
-              "evidence": "This BIP replaces BIPs 12 and 17, which propose extensions to the Script system",
-              "reason": "The proposal explicitly supersedes BIP 12’s script-system extension with a new transaction input/output format and validation model.",
+              "evidence": "This BIP replaces BIPs 12 and 17",
+              "reason": "The proposal directly supersedes BIP 12 as an extension to Script that outsources scriptPubKey verification.",
               "confidence": "high"
             },
             {
               "target": "bips:13",
               "evidence": "The Motivation for this BIP (and BIP 13, the pay-to-script-hash address type)",
-              "reason": "The proposal relies on the pay-to-script-hash address type as the address-format counterpart to the transaction/script changes it defines.",
-              "confidence": "high"
+              "reason": "The proposal is tied to the pay-to-script-hash address type and depends on that address-format concept for deployment and compatibility.",
+              "confidence": "medium"
             },
             {
               "target": "bips:16",
               "evidence": "It also replaces BIP 16, which is identical in terms of protocol",
-              "reason": "The proposal inherits and supersedes BIP 16’s pay-to-script-hash protocol semantics, including the same validation model with additional deprecation and activation rules.",
+              "reason": "The proposal reuses the same pay-to-script-hash protocol semantics while changing implementation and deprecation behavior.",
               "confidence": "high"
             },
             {
               "target": "bips:17",
               "evidence": "This BIP replaces BIPs 12 and 17",
-              "reason": "The proposal explicitly replaces BIP 17’s script-system extension, making it a technical predecessor that this BIP supersedes.",
+              "reason": "The proposal directly supersedes BIP 17 as an earlier Script extension for outsourced verification.",
               "confidence": "high"
             }
           ]

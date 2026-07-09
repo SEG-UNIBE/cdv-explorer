@@ -43,6 +43,14 @@ function formatPercent(value) {
   return `${Math.round(Number(value || 0) * 100)}%`;
 }
 
+function formatScore(value) {
+  const numeric = Number(value);
+  if (value === null || value === undefined || !Number.isFinite(numeric)) {
+    return 'n/a';
+  }
+  return numeric.toFixed(2);
+}
+
 function buildDefaultSelection(pairwiseComparisons) {
   const comparisons = Object.values(pairwiseComparisons || {});
   return comparisons.find(
@@ -73,22 +81,34 @@ function buildComparisonMetricCards(comparison, llmModel) {
   }
 
   const approachShortLabel = getDependencyApproachLabel(comparison.approach, llmModel);
+  const baselineShortLabel = getDependencyApproachLabel(comparison.baseline, llmModel);
+  // Badge text stays compact: no LLM model suffix ("LLM", not "LLM (model)").
+  const approachBadgeLabel = getDependencyApproachLabel(comparison.approach);
+  const baselineBadgeLabel = getDependencyApproachLabel(comparison.baseline);
   return [
     {
       label: 'Approach',
-      value: `${getDependencyApproachLabel(comparison.approach, llmModel)} vs ${getDependencyApproachLabel(comparison.baseline, llmModel)}`,
+      value: `${approachBadgeLabel} vs ${baselineBadgeLabel}`,
+      description: 'The row approach compared against the column baseline selected in the matrix above.',
     },
     {
       label: 'Same',
       value: `${comparison.summary.overlap} (${formatPercent(comparison.summary.hit_rate)})`,
+      description: 'Edges found by both approaches, as a share of the baseline’s edges.',
     },
     {
-      label: `Not in ${approachShortLabel}`,
+      label: `Not in ${approachBadgeLabel}`,
       value: `${comparison.summary.baseline_only} (${formatPercent(comparison.summary.missed_rate)})`,
+      description: `Edges ${baselineShortLabel} found that ${approachShortLabel} did not.`,
     },
     {
-      label: `Only in ${approachShortLabel}`,
+      label: `Only in ${approachBadgeLabel}`,
       value: `${comparison.summary.approach_only} (${formatPercent(getApproachOnlyRate(comparison))})`,
+      description: `Edges ${approachShortLabel} found that are absent from ${baselineShortLabel}.`,
+    },
+    {
+      label: 'Cohen’s κ',
+      value: formatScore(comparison.summary.kappa),
     },
   ];
 }
@@ -245,6 +265,12 @@ function ComparisonTable({
                         </button>
                       );
                     })}
+                    <div className="dependency-heatmap-cell__agreement">
+                      <span className="dependency-heatmap-cell__agreement-label">κ</span>
+                      <span className="dependency-heatmap-cell__agreement-value">
+                        {formatScore(comparison?.summary?.kappa)}
+                      </span>
+                    </div>
                   </div>
                 </td>
               );
@@ -528,6 +554,12 @@ export function DependencyComparisonHeatmaps({
                 <div
                   key={metric.label}
                   className={`metric-badge${metric.label === 'Approach' ? ' metric-badge--wide-value' : ''}`}
+                  onMouseEnter={(event) => showTooltip(event, metric.description ? renderTooltipCardHtml({
+                    titleHtml: `<strong>${metric.label}</strong>`,
+                    bodyHtml: metric.description,
+                  }) : '')}
+                  onMouseMove={moveTooltip}
+                  onMouseLeave={hideTooltip}
                 >
                   <span className="metric-badge__label">{metric.label}</span>
                   <span className="metric-badge__value">{metric.value}</span>

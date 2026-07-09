@@ -532,6 +532,15 @@
         "author": "Justus Ranvier",
         "path": "bip-0126.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "959fecc15bdad070afa63455468b1dba54655fa6",
+        "timestamp": "2016-11-30T09:51:01Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0126.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       }
     ],
@@ -545,14 +554,16 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:15Z",
+          "timestamp": "2026-06-30T11:35:50Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:69",
-              "evidence": "\"Applications which wish to comply both with this procedure and BIP69 should apply this procedure prior to applying BIP69.\"",
-              "reason": "The proposal’s transaction construction rules are ordered relative to BIP69’s output/input sorting, so compliance depends on BIP69's lexicographical ordering semantics.",
-              "confidence": "low"
+              "evidence": "Applications which wish to comply both with this procedure and BIP69 should apply this procedure prior to applying BIP69.",
+              "reason": "The proposal explicitly defines ordering interaction with BIP69, so implementation must account for BIP69's input/output sorting after applying these HIT rules.",
+              "confidence": "high"
             }
           ]
         }

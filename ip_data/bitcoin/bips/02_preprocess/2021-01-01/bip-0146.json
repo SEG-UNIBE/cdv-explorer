@@ -553,6 +553,15 @@
         "author": "Johnson Lau",
         "path": "bip-lows.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0146.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -591,37 +600,47 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:27Z",
+          "timestamp": "2026-06-30T11:36:04Z",
+          "status": "api_error",
+          "dependencies": [],
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 200000, Requested 3183. Please try again in 954ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+        },
+        {
+          "run_id": "2026-06-30T11:38:11Z_gpt-5.4-mini_422651ce",
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-30T11:38:22Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
               "evidence": "This BIP will be deployed by \"version bits\" [https://github.com/bitcoin/bips/blob/master/bip-0009.mediawiki BIP9].",
-              "reason": "The activation method relies on version-bits deployment semantics defined by BIP9.",
+              "reason": "Activation and deployment are specified using the version-bits mechanism defined by BIP9, so adoption depends on that deployment framework.",
               "confidence": "high"
             },
             {
               "target": "bips:62",
-              "evidence": "This document is extracted from the previous BIP62 proposal",
-              "reason": "The proposal is derived from BIP62 and inherits its malleability-fix context and ruleset lineage.",
-              "confidence": "low"
+              "evidence": "This document is extracted from the previous [https://github.com/bitcoin/bips/blob/master/bip-0062.mediawiki BIP62] proposal",
+              "reason": "The proposal is derived from BIP62 and reuses its previously proposed malleability-fix rules for script and signature validation.",
+              "confidence": "medium"
             },
             {
               "target": "bips:66",
-              "evidence": "with strict DER encoding (see BIP66)",
-              "reason": "The LOW_S and NULLFAIL rules apply to signatures already constrained by BIP66 DER encoding, so the validity rules depend on that signature format.",
+              "evidence": "Since the enforcement of Strict DER signatures (BIP66)",
+              "reason": "The proposal’s low-S and NULLFAIL rules explicitly rely on BIP66-compliant DER encoding as a precondition for signature validity and failure behavior.",
               "confidence": "low"
             },
             {
               "target": "bips:141",
-              "evidence": "segregated witness ([... BIP141]) transactions",
-              "reason": "The proposal explicitly applies its new rules to segregated witness scripts and references P2WPKH as part of that witness system.",
-              "confidence": "low"
+              "evidence": "segregated witness ([https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki BIP141]) transactions",
+              "reason": "The proposal distinguishes applicability for segregated-witness scripts and explicitly includes P2WPKH as described by BIP141, so its validity rules depend on that script type framework.",
+              "confidence": "high"
             },
             {
               "target": "bips:152",
-              "evidence": "may reduce the efficiency of compact block relay ([... BIP152])",
-              "reason": "The motivation depends on the wtxid behavior introduced by compact block relay for segregated witness transactions.",
+              "evidence": "may reduce the efficiency of compact block relay ([https://github.com/bitcoin/bips/blob/master/bip-0152.mediawiki BIP152])",
+              "reason": "This is only a motivation reference to compact block relay and does not introduce a mechanism or rule dependency for implementing the proposal.",
               "confidence": "low"
             }
           ]

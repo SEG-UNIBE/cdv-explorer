@@ -570,19 +570,27 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:54:58Z",
+          "timestamp": "2026-06-30T11:19:08Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
-              "evidence": "extended public key or xprv encoded extended private key (as defined in BIP 32)",
-              "reason": "The proposal modifies how BIP 32 derivation path steps are expressed within descriptors, so it relies on BIP 32 key and path semantics.",
+              "evidence": "xpub encoded extended public key or xprv encoded extended private key (as defined in BIP 32)",
+              "reason": "The proposal's extended-key and derivation-path syntax is built around BIP 32 extended keys and BIP 32 derivation steps.",
               "confidence": "low"
             },
             {
+              "target": "bips:88",
+              "evidence": "This proposal is in contrast to similar proposals such as BIP 88 which allow for multiple derivation indexes in a single element.",
+              "reason": "The text explicitly frames its multi-index syntax as a design choice in contrast to BIP 88's related multi-derivation-index mechanism, indicating a substantive schema-level relationship.",
+              "confidence": "medium"
+            },
+            {
               "target": "bips:380",
-              "evidence": "A modification to Key Expressions of Descriptors that are described in BIP 380",
-              "reason": "The proposal directly amends the Key Expression grammar and behavior defined by this BIP.",
+              "evidence": "This document specifies a modification to Key Expressions of Descriptors that are described in BIP 380.",
+              "reason": "The proposal directly amends the Key Expression descriptor syntax defined by BIP 380 and relies on that grammar as the base format.",
               "confidence": "high"
             }
           ]

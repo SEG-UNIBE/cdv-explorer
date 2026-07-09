@@ -490,7 +490,7 @@
         "author": "genjix",
         "path": "bip-0031.md",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "1e40c8fba58d31da0ce5991e897010ada15549cd",
@@ -499,12 +499,21 @@
         "author": "Peter Todd",
         "path": "bip-0031.mediawiki",
         "status": "Accepted",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "f31f7d43473fadcfafbc886b15e8c488654839c2",
         "timestamp": "2016-02-01T20:14:22Z",
         "date": "2016-02-01",
+        "author": "Luke Dashjr",
+        "path": "bip-0031.mediawiki",
+        "status": "Final",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
         "author": "Luke Dashjr",
         "path": "bip-0031.mediawiki",
         "status": "Final",
@@ -525,13 +534,15 @@
       "body_extracted_regex": [],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:57:43Z",
+          "timestamp": "2026-06-30T11:42:12Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:29",
-              "evidence": "When the protocol version as negotiated in the \"ver\" message is greater than 60000",
-              "reason": "The proposal’s new ping/pong behavior is gated on the negotiated protocol version established by the version message format and semantics from this proposal.",
+              "evidence": "the \"ping\" message must contain a uint64 field called \"nonce\"",
+              "reason": "This proposal depends on the existing ping message format and extends it by adding a nonce and a corresponding pong response.",
               "confidence": "high"
             }
           ]

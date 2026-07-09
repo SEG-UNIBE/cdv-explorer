@@ -180,20 +180,16 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:37:15Z_gpt-5.4-mini_3159fb60",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:02:03Z",
+          "timestamp": "2026-06-30T11:37:19Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
-              "evidence": "derive the HD node `m/17'/A'/B'/C'/D'` according to BIP32",
-              "reason": "The proposal relies on BIP32 hierarchical deterministic key derivation to generate the private key material used for ECDH sessions.",
+              "evidence": "Derive the HD node `m/17'/A'/B'/C'/D'` according to BIP32.",
+              "reason": "The proposal’s key hierarchy and node derivation explicitly rely on BIP32 HD wallet derivation rules.",
               "confidence": "high"
-            },
-            {
-              "target": "bips:43",
-              "evidence": "References: * [BIP-0043: Purpose Field for Deterministic Wallets]",
-              "reason": "The derivation path starts with a purpose field (`m/17'`), which uses the BIP43 purpose-branch convention to specialize the HD hierarchy.",
-              "confidence": "low"
             }
           ]
         }

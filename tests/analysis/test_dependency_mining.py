@@ -9,10 +9,13 @@ if "openai" not in sys.modules:
     sys.modules["openai"] = fake_openai
 
 from analysis.dependencies.mining import (
+    _call_with_rate_limit_retry,
+    build_llm_semantic_dependency_manifest_record,
     create_explicit_dependency_targets,
     create_reference_list,
     create_reference_targets,
     llm_extract_implicit_dependencies,
+    llm_extract_semantic_dependencies,
     normalize_dependency_output,
     normalize_llm_dependency_output,
     prepare_llm_dependency_text,
@@ -24,27 +27,39 @@ from pipeline.source_context import SourceContext
 
 class NormalizeDependencyOutputTests(unittest.TestCase):
     def test_recognizes_various_formats_as_same_id(self):
-        result = normalize_dependency_output(["BIP 32", "BIP-32", "BIP-0032", "32"], proposal_label="BIP")
+        result = normalize_dependency_output(
+            ["BIP 32", "BIP-32", "BIP-0032", "32"], proposal_label="BIP"
+        )
         self.assertEqual(result, ["BIP 32"])
 
     def test_excludes_current_proposal(self):
-        result = normalize_dependency_output(["BIP 32", "BIP 39"], proposal_label="BIP", current_proposal_number="32")
+        result = normalize_dependency_output(
+            ["BIP 32", "BIP 39"], proposal_label="BIP", current_proposal_number="32"
+        )
         self.assertEqual(result, ["BIP 39"])
 
     def test_non_list_input_returns_empty(self):
-        self.assertEqual(normalize_dependency_output("BIP 32", proposal_label="BIP"), [])
+        self.assertEqual(
+            normalize_dependency_output("BIP 32", proposal_label="BIP"), []
+        )
         self.assertEqual(normalize_dependency_output(None, proposal_label="BIP"), [])
 
     def test_garbled_items_are_skipped(self):
-        result = normalize_dependency_output(["BIP 32", "not a bip", "", "BIP 39"], proposal_label="BIP")
+        result = normalize_dependency_output(
+            ["BIP 32", "not a bip", "", "BIP 39"], proposal_label="BIP"
+        )
         self.assertEqual(result, ["BIP 32", "BIP 39"])
 
     def test_output_is_sorted_numerically(self):
-        result = normalize_dependency_output(["BIP 200", "BIP 1", "BIP 50"], proposal_label="BIP")
+        result = normalize_dependency_output(
+            ["BIP 200", "BIP 1", "BIP 50"], proposal_label="BIP"
+        )
         self.assertEqual(result, ["BIP 1", "BIP 50", "BIP 200"])
 
     def test_ids_exceeding_ecosystem_max_are_excluded(self):
-        result = normalize_dependency_output(["BIP 999", "BIP 1000"], proposal_label="BIP")
+        result = normalize_dependency_output(
+            ["BIP 999", "BIP 1000"], proposal_label="BIP"
+        )
         self.assertEqual(result, ["BIP 999"])
 
     def test_hex_nip_ids_preserve_width_and_exclude_current_proposal(self):
@@ -262,6 +277,82 @@ class PrepareLlmDependencyTextTests(unittest.TestCase):
 
 
 class LlmModelConfigTests(unittest.TestCase):
+    def test_rate_limit_retry_retries_and_uses_retry_after(self):
+        attempts = {"count": 0}
+
+        class FakeRateLimitError(Exception):
+            def __init__(self, retry_after=None):
+                headers = {}
+                if retry_after is not None:
+                    headers["retry-after"] = str(retry_after)
+                self.response = types.SimpleNamespace(headers=headers)
+
+        def flaky_call():
+            attempts["count"] += 1
+            if attempts["count"] < 3:
+                raise FakeRateLimitError(retry_after=2.0)
+            return "ok"
+
+        with (
+            patch("analysis.dependencies.mining.RateLimitError", FakeRateLimitError),
+            patch("analysis.dependencies.mining.time.sleep") as sleep,
+        ):
+            result = _call_with_rate_limit_retry(flaky_call)
+
+        self.assertEqual(result, "ok")
+        self.assertEqual(attempts["count"], 3)
+        self.assertEqual([call.args[0] for call in sleep.call_args_list], [2.0, 2.0])
+
+    def test_manifest_record_preserves_shared_prompt_provenance(self):
+        context = SourceContext.from_config(
+            ECOSYSTEM_REGISTRY["bitcoin"]["sources"]["bips"],
+            ecosystem_slug="bitcoin",
+            source_slug="bips",
+        )
+
+        record = build_llm_semantic_dependency_manifest_record(
+            run_id="run-123",
+            model="gpt-5.4-mini",
+            source_context=context,
+            created_at="2026-06-30T12:00:00Z",
+            focus=["32", "39"],
+        )
+
+        self.assertEqual(record["run_id"], "run-123")
+        self.assertEqual(
+            record["method_name"], "llm_assisted_semantic_dependency_extraction"
+        )
+        self.assertEqual(
+            record["method_label"], "LLM-Assisted Semantic Dependency Extraction"
+        )
+        self.assertEqual(record["method_version"], 4)
+        self.assertEqual(record["source_context"]["source_slug"], "bips")
+        self.assertIn("{proposal_text}", record["user_prompt_template"])
+        self.assertIn("{current_proposal_number}", record["user_prompt_template"])
+        self.assertIn("Do not use outside knowledge", record["system_prompt"])
+        self.assertIn(
+            "verbatim contiguous quote copied from the proposal text",
+            record["system_prompt"],
+        )
+        self.assertIn("MAIN_LABEL", record["system_prompt"])
+        self.assertIn("main_source", record["system_prompt"])
+        self.assertIn(
+            "fully implemented with the following changes",
+            record["user_prompt_template"],
+        )
+        self.assertIn(
+            "does not require full MAIN_LABEL 70 support",
+            record["user_prompt_template"],
+        )
+        self.assertIn(
+            "schemes following MAIN_LABEL 44 should use purpose value 44'",
+            record["user_prompt_template"],
+        )
+        self.assertIn(
+            "master node generation from MAIN_LABEL-0032 and SIBLING_LABEL-0010",
+            record["user_prompt_template"],
+        )
+
     def test_llm_extraction_requires_configured_model(self):
         context = SourceContext.from_config(
             {
@@ -292,7 +383,9 @@ class LlmModelConfigTests(unittest.TestCase):
             if kwargs["response_format"]["type"] == "json_schema":
                 raise TypeError("structured outputs unsupported")
             message = types.SimpleNamespace(content="{not json", refusal=None)
-            return types.SimpleNamespace(choices=[types.SimpleNamespace(message=message)])
+            return types.SimpleNamespace(
+                choices=[types.SimpleNamespace(message=message)]
+            )
 
         client = types.SimpleNamespace(
             chat=types.SimpleNamespace(
@@ -301,7 +394,9 @@ class LlmModelConfigTests(unittest.TestCase):
         )
 
         with patch("analysis.dependencies.mining.OpenAI", return_value=client):
-            with self.assertRaisesRegex(RuntimeError, "LLM API call failed"):
+            with self.assertRaisesRegex(
+                RuntimeError, "failed with status `parse_error`"
+            ):
                 llm_extract_implicit_dependencies(
                     "This proposal depends on BIP 32.",
                     api_key="test-key",
@@ -309,7 +404,45 @@ class LlmModelConfigTests(unittest.TestCase):
                     source_context=context,
                 )
 
-    def test_responses_api_reasoning_path_uses_responses_client_with_default_reasoning(self):
+    def test_semantic_extraction_returns_parse_error_status(self):
+        context = SourceContext.from_config(
+            {
+                "proposal_acronym": "BIP",
+                "proposal_term_singular": "Bitcoin Improvement Proposal",
+                "reference_pattern": r"\bBIP[-#\s]?(\d+)\b",
+            },
+            source_slug="bips",
+        )
+
+        def create_completion(**kwargs):
+            if kwargs["response_format"]["type"] == "json_schema":
+                raise TypeError("structured outputs unsupported")
+            message = types.SimpleNamespace(content="{not json", refusal=None)
+            return types.SimpleNamespace(
+                choices=[types.SimpleNamespace(message=message)]
+            )
+
+        client = types.SimpleNamespace(
+            chat=types.SimpleNamespace(
+                completions=types.SimpleNamespace(create=create_completion)
+            )
+        )
+
+        with patch("analysis.dependencies.mining.OpenAI", return_value=client):
+            result = llm_extract_semantic_dependencies(
+                "This proposal depends on BIP 32.",
+                api_key="test-key",
+                model="test-model",
+                source_context=context,
+            )
+
+        self.assertEqual(result["status"], "parse_error")
+        self.assertEqual(result["dependencies"], [])
+        self.assertIn("Expecting property name", result["error_message"])
+
+    def test_responses_api_reasoning_path_uses_responses_client_with_default_reasoning(
+        self,
+    ):
         source_config = {
             "proposal_acronym": "BIP",
             "proposal_term_singular": "Bitcoin Improvement Proposal",
@@ -320,7 +453,9 @@ class LlmModelConfigTests(unittest.TestCase):
             "llm": {"model": "reasoning-model", "reasoning_effort": None},
             "sources": {"bips": source_config},
         }
-        context = SourceContext.from_config(source_config, ecosystem_slug="testcoin", source_slug="bips")
+        context = SourceContext.from_config(
+            source_config, ecosystem_slug="testcoin", source_slug="bips"
+        )
         calls = []
 
         def create_response(**kwargs):
@@ -334,7 +469,11 @@ class LlmModelConfigTests(unittest.TestCase):
         )
 
         with (
-            patch.dict("pipeline.source_context.ECOSYSTEM_REGISTRY", {"testcoin": ecosystem}, clear=False),
+            patch.dict(
+                "pipeline.source_context.ECOSYSTEM_REGISTRY",
+                {"testcoin": ecosystem},
+                clear=False,
+            ),
             patch("analysis.dependencies.mining.OpenAI", return_value=client),
         ):
             result = llm_extract_implicit_dependencies(
@@ -372,7 +511,9 @@ class NormalizeLlmDependencyOutputTests(unittest.TestCase):
             source_context=context,
         )
 
-        self.assertEqual([entry["target"] for entry in result], ["bips:32", "slips:132"])
+        self.assertEqual(
+            [entry["target"] for entry in result], ["bips:32", "slips:132"]
+        )
         self.assertTrue(all("_label" not in entry for entry in result))
 
     def test_excludes_current_proposal_and_deduplicates_targets(self):

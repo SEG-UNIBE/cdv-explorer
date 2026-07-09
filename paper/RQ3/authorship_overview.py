@@ -3,6 +3,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 
+from paper.plot_colors import AUTHORS_PER_BIP_COLOR, AUTHORSHIP_DISTRIBUTION_COLOR
 from paper.RQ3._plotting import (
     bar_style,
     despine,
@@ -10,8 +11,6 @@ from paper.RQ3._plotting import (
     save_figure,
     style_ellipsis_ticklabels,
 )
-from paper.plot_colors import AUTHORSHIP_DISTRIBUTION_COLOR, AUTHORS_PER_BIP_COLOR
-
 
 TOP_AUTHORS_COLOR = "#d94841"
 HISTOGRAM_COLOR = AUTHORSHIP_DISTRIBUTION_COLOR
@@ -19,7 +18,9 @@ MIN_HISTOGRAM_GAP_LENGTH = 3
 HISTOGRAM_GAP_LABEL = "..."
 
 
-def _prepare_top_ten(top_authors: list[dict[str, int | str]]) -> list[dict[str, int | str]]:
+def _prepare_top_ten(
+    top_authors: list[dict[str, int | str]],
+) -> list[dict[str, int | str]]:
     if not top_authors:
         raise ValueError("Authorship overview requires non-empty top_authors data.")
 
@@ -40,7 +41,9 @@ def _prepare_histogram_series(
     contribution_histogram: list[dict[str, int]],
 ) -> list[dict[str, int]]:
     if not contribution_histogram:
-        raise ValueError("Authorship overview requires non-empty contribution_histogram data.")
+        raise ValueError(
+            "Authorship overview requires non-empty contribution_histogram data."
+        )
 
     histogram_points = sorted(
         (
@@ -59,8 +62,7 @@ def _prepare_histogram_series(
     min_bips_written = histogram_points[0]["bips_written"]
     max_bips_written = histogram_points[-1]["bips_written"]
     authors_by_bucket = {
-        entry["bips_written"]: entry["authors"]
-        for entry in histogram_points
+        entry["bips_written"]: entry["authors"] for entry in histogram_points
     }
     histogram_series = [
         {
@@ -98,9 +100,7 @@ def _compress_histogram_zero_gaps(
         zero_runs.append((run_start, len(histogram_series) - 1))
 
     eligible_runs = [
-        (start, end)
-        for start, end in zero_runs
-        if (end - start + 1) >= min_gap_length
+        (start, end) for start, end in zero_runs if (end - start + 1) >= min_gap_length
     ]
     if not eligible_runs:
         return [
@@ -115,11 +115,7 @@ def _compress_histogram_zero_gaps(
     compressed: list[dict[str, int | str | bool]] = []
     for index, entry in enumerate(histogram_series):
         matching_run = next(
-            (
-                (start, end)
-                for start, end in eligible_runs
-                if start <= index <= end
-            ),
+            ((start, end) for start, end in eligible_runs if start <= index <= end),
             None,
         )
         if matching_run is None:
@@ -163,7 +159,9 @@ def prepare_authors_per_bip(
     return series, total
 
 
-def _draw_top_authors_axis(axis, top_ten: list[dict[str, int | str]], *, title: str | None) -> None:
+def _draw_top_authors_axis(
+    axis, top_ten: list[dict[str, int | str]], *, title: str | None
+) -> None:
     author_names = [entry["author"] for entry in top_ten]
     author_counts = [entry["count"] for entry in top_ten]
 
@@ -194,16 +192,24 @@ def _draw_authorship_distribution_axis(
     histogram_positions = np.arange(len(histogram_x))
     labeled_histogram_positions = [
         position
-        for position, authors, label in zip(histogram_positions, histogram_y, histogram_labels)
+        for position, authors, label in zip(
+            histogram_positions, histogram_y, histogram_labels, strict=True
+        )
         if authors > 0 or label == HISTOGRAM_GAP_LABEL
     ]
     labeled_histogram_values = [
         label
-        for label, authors in zip(histogram_labels, histogram_y)
+        for label, authors in zip(histogram_labels, histogram_y, strict=True)
         if authors > 0 or label == HISTOGRAM_GAP_LABEL
     ]
 
-    axis.bar(histogram_positions, histogram_y, width=0.8, zorder=2, **bar_style(HISTOGRAM_COLOR))
+    axis.bar(
+        histogram_positions,
+        histogram_y,
+        width=0.8,
+        zorder=2,
+        **bar_style(HISTOGRAM_COLOR),
+    )
     if title:
         axis.set_title(title)
     axis.set_xlabel("# BIPs")
@@ -213,12 +219,20 @@ def _draw_authorship_distribution_axis(
     axis.grid(axis="y", alpha=0.35)
     axis.grid(axis="x", visible=False)
     match_axis_label_fontsize(axis)
-    for index, authors, entry in zip(histogram_positions, histogram_y, display_series):
+    for index, authors, entry in zip(
+        histogram_positions, histogram_y, display_series, strict=True
+    ):
         if bool(entry.get("is_gap")):
             continue
         if authors <= 0:
             continue
-        axis.text(index, authors + max(histogram_y) * 0.015, str(authors), ha="center", va="bottom")
+        axis.text(
+            index,
+            authors + max(histogram_y) * 0.015,
+            str(authors),
+            ha="center",
+            va="bottom",
+        )
     style_ellipsis_ticklabels(
         axis,
         labeled_histogram_values,
@@ -231,7 +245,9 @@ def _prepare_bip_author_count_series(
     bip_author_count_histogram: list[dict[str, int]],
 ) -> list[dict[str, int | str | bool]]:
     if not bip_author_count_histogram:
-        raise ValueError("Authors per BIP plot requires non-empty bip_author_count_histogram data.")
+        raise ValueError(
+            "Authors per BIP plot requires non-empty bip_author_count_histogram data."
+        )
 
     sparse = sorted(
         (
@@ -250,7 +266,11 @@ def _prepare_bip_author_count_series(
     display: list[dict[str, int | str | bool]] = []
     ellipsis_idx = 0
     for i, entry in enumerate(sparse):
-        if i > 0 and entry["author_count"] - sparse[i - 1]["author_count"] >= MIN_HISTOGRAM_GAP_LENGTH:
+        if (
+            i > 0
+            and entry["author_count"] - sparse[i - 1]["author_count"]
+            >= MIN_HISTOGRAM_GAP_LENGTH
+        ):
             display.append(
                 {
                     "author_count": -1,
@@ -282,10 +302,18 @@ def _draw_authors_per_bip_axis(
     bip_counts = [int(entry["bip_count"]) for entry in display_series]
     axis_labels = [str(entry["axis_label"]) for entry in display_series]
 
-    data_positions = [p for p, e in zip(positions, display_series) if not e["is_gap"]]
+    data_positions = [
+        p for p, e in zip(positions, display_series, strict=True) if not e["is_gap"]
+    ]
     data_counts = [int(e["bip_count"]) for e in display_series if not e["is_gap"]]
 
-    axis.bar(data_positions, data_counts, width=0.8, zorder=2, **bar_style(AUTHORS_PER_BIP_COLOR))
+    axis.bar(
+        data_positions,
+        data_counts,
+        width=0.8,
+        zorder=2,
+        **bar_style(AUTHORS_PER_BIP_COLOR),
+    )
     if title:
         axis.set_title(title)
     axis.set_xlabel("# Authors")
@@ -296,10 +324,16 @@ def _draw_authors_per_bip_axis(
     axis.grid(axis="x", visible=False)
     match_axis_label_fontsize(axis)
     max_count = max(bip_counts) if bip_counts else 1
-    for pos, entry in zip(positions, display_series):
+    for pos, entry in zip(positions, display_series, strict=True):
         if entry["is_gap"] or int(entry["bip_count"]) <= 0:
             continue
-        axis.text(pos, int(entry["bip_count"]) + max_count * 0.015, str(entry["bip_count"]), ha="center", va="bottom")
+        axis.text(
+            pos,
+            int(entry["bip_count"]) + max_count * 0.015,
+            str(entry["bip_count"]),
+            ha="center",
+            va="bottom",
+        )
     style_ellipsis_ticklabels(axis, axis_labels, ellipsis_label=HISTOGRAM_GAP_LABEL)
     despine(axis)
 
@@ -354,7 +388,9 @@ def plot_authorship_overview(
     )
 
     _draw_top_authors_axis(axis_left, top_ten, title="(a) Top 10 Authors")
-    _draw_authorship_distribution_axis(axis_right, authorship_series, title="(b) BIPs per Author")
+    _draw_authorship_distribution_axis(
+        axis_right, authorship_series, title="(b) BIPs per Author"
+    )
 
     figure.suptitle(f"Authorship Overview ({snapshot_label})", y=1.02)
     figure.tight_layout()

@@ -836,9 +836,26 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:54:10Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:18:31Z",
+          "status": "api_error",
+          "dependencies": [],
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 195364, Requested 6041. Please try again in 421ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+        },
+        {
+          "run_id": "2026-06-30T11:33:45Z_gpt-5.4-mini_fbc31d5d",
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-30T11:33:57Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:118",
+              "evidence": "it does not commit to its first tx-input (in that way, it is like [https://github.com/bitcoin/bips/blob/master/bip-0118.mediawiki BIP-118])",
+              "reason": "The withdrawal-bundle hash intentionally reuses the same non-committing input property described by BIP 118, so implementing the bundle commitment format depends on that design pattern.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

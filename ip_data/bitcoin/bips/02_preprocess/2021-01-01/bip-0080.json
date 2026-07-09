@@ -489,12 +489,21 @@
         "author": "Justus Ranvier",
         "path": "bip-0080.mediawiki",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "387fc6011bd804609fd751786e50439d5c11a097",
         "timestamp": "2016-08-23T19:47:29Z",
         "date": "2016-08-23",
+        "author": "Luke Dashjr",
+        "path": "bip-0080.mediawiki",
+        "status": "Deferred",
+        "standard": "bip1"
+      },
+      {
+        "commit": "959fecc15bdad070afa63455468b1dba54655fa6",
+        "timestamp": "2016-11-30T09:51:01Z",
+        "date": "2016-11-30",
         "author": "Luke Dashjr",
         "path": "bip-0080.mediawiki",
         "status": "Deferred",
@@ -519,9 +528,30 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:00:54Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:35:30Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "based on an algorithm described in BIP-0032",
+              "reason": "The proposal’s path structure and hardened/public derivation levels are built on BIP32 derivation rules.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:43",
+              "evidence": "purpose scheme described in BIP-0043",
+              "reason": "The proposal uses BIP43’s purpose-field convention and is explicitly framed as an application of it.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:44",
+              "evidence": "This BIP is a particular application of BIP43 and is based on BIP44.",
+              "reason": "The hierarchy reuses the BIP44-style multi-level account structure, including coin-type registration from BIP44.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

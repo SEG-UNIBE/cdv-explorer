@@ -673,13 +673,15 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:58:34Z",
+          "timestamp": "2026-06-30T11:43:30Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:322",
               "evidence": "See BIP 322 [1] for full details on the new signature scheme.",
-              "reason": "The proposal explicitly defers to BIP 322 for the replacement message-signing scheme, which constrains the context of this format as a backwards-compatible legacy scheme.",
+              "reason": "The proposal explicitly defers to BIP 322 for the newer message-signing scheme, framing itself as the backward-compatible legacy format relative to that specification.",
               "confidence": "high"
             }
           ]

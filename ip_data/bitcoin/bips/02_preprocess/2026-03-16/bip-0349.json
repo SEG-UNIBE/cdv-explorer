@@ -548,9 +548,24 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:59:18Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:45:08Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:341",
+              "evidence": "as defined in [BIP 342]",
+              "reason": "The opcode’s validity and the definition of the taproot internal key are specified in terms of BIP 342/341 taproot rules, and it explicitly reuses the internal key concept from BIP 341.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:342",
+              "evidence": "When verifying taproot script path spends having leaf version `0xc0` (as defined in [BIP 342])",
+              "reason": "The proposal’s opcode behavior is only defined for taproot script-path spends with the leaf-version semantics introduced by BIP 342.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

@@ -850,6 +850,15 @@
         "author": "Johnson Lau",
         "path": "bip-segwit-checksig.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0143.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -903,9 +912,32 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:53:45Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:18:12Z",
+          "status": "api_error",
+          "dependencies": [],
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 197836, Requested 26671. Please try again in 7.352s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+        },
+        {
+          "run_id": "2026-06-30T11:33:45Z_gpt-5.4-mini_fbc31d5d",
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-30T11:33:53Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:141",
+              "evidence": "However, the introduction of segregated witness softfork offers an opportunity",
+              "reason": "The proposal’s digest rules and witness-program semantics are designed specifically for Segregated Witness activation and script behavior.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:144",
+              "evidence": "The new serialization format is described in BIP144",
+              "reason": "The proposal relies on BIP144’s transaction serialization format for witness-aware transaction encoding.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

@@ -201,9 +201,24 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:46:34Z_gpt-5.4-mini_dd2b314a",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:59:54Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:46:41Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:43",
+              "evidence": "BIP-0043: Purpose Field for Deterministic Wallets",
+              "reason": "The derivation path uses a purpose field and explicitly references the BIP-0043 purpose convention as the scheme for this hierarchy.",
+              "confidence": "high"
+            },
+            {
+              "target": "slips:10",
+              "evidence": "derive the HD node `m/17'/A'/B'/C'/D'` according to SLIP-0010.",
+              "reason": "The hierarchical deterministic node derivation is defined to follow SLIP-0010, so implementing the proposal depends on that key-derivation standard.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

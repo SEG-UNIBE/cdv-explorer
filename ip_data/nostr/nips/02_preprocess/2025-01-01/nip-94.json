@@ -338,14 +338,16 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:58:25Z_gpt-5.4-mini_0bc643e4",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:08:35Z",
+          "timestamp": "2026-06-30T11:59:14Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:96",
-              "evidence": "\"service\" (optional) service type which is serving the file (eg. [NIP-96](96.md))",
-              "reason": "The file metadata schema includes an optional service tag that references and relies on the upload/service semantics defined by NIP-96.",
-              "confidence": "low"
+              "evidence": "service type which is serving the file (eg. [NIP-96](96.md))",
+              "reason": "The file-metadata event can include a service tag that explicitly points to NIP-96 as the serving protocol, so understanding that tag's meaning depends on NIP-96.",
+              "confidence": "high"
             }
           ]
         }

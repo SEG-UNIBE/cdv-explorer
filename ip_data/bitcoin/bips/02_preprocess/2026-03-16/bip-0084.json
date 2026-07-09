@@ -576,38 +576,52 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:58:05Z",
+          "timestamp": "2026-06-30T11:42:48Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
-              "evidence": "This BIP defines the two needed steps to derive multiple deterministic addresses based on a BIP 32 root account.",
-              "reason": "It relies on BIP 32 hierarchical deterministic key derivation as the root account model for the scheme.",
-              "confidence": "low"
+              "evidence": "based on a [[bip-0032.mediawiki|BIP 32]] root account",
+              "reason": "The proposal defines its derivation scheme starting from a BIP 32 hierarchical deterministic root account.",
+              "confidence": "high"
             },
             {
               "target": "bips:43",
-              "evidence": "For the purpose-path level it uses 84'.",
-              "reason": "Using a purpose field value in the derivation path depends on the BIP 43 purpose-field structure.",
-              "confidence": "low"
+              "evidence": "[[bip-0043.mediawiki|BIP43 - Purpose Field for Deterministic Wallets]]",
+              "reason": "The scheme uses a purpose field with a dedicated value (84') in the BIP 43 style hierarchy.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:44",
+              "evidence": "uses the same account-structure as defined in [[bip-0044.mediawiki|BIP 44]] and [[bip-0049.mediawiki|BIP 49]]",
+              "reason": "The derivation path structure reuses the BIP 44 account hierarchy and path level semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:49",
+              "evidence": "uses the same account-structure as defined in [[bip-0044.mediawiki|BIP 44]] and [[bip-0049.mediawiki|BIP 49]]",
+              "reason": "The proposal explicitly reuses BIP 49's account-structure conventions and also borrows its rationale for compatibility assumptions.",
+              "confidence": "high"
             },
             {
               "target": "bips:141",
-              "evidence": "To derive the P2WPKH address from the above calculated public key, we use the encapsulation defined in BIP 141",
-              "reason": "The address and script format are specialized to Segregated Witness P2WPKH as defined by BIP 141.",
-              "confidence": "low"
+              "evidence": "we use the encapsulation defined in [[bip-0141.mediawiki#p2wpkh|BIP 141]]",
+              "reason": "Address derivation depends on BIP 141's P2WPKH witness/output encapsulation and script form.",
+              "confidence": "high"
             },
             {
               "target": "bips:173",
-              "evidence": "This BIP defines the derivation scheme for HD wallets using the P2WPKH (BIP 173) serialization format",
-              "reason": "The proposal’s address derivation and serialization assume the Bech32 P2WPKH address format introduced by BIP 173.",
-              "confidence": "low"
+              "evidence": "using the P2WPKH ([[bip-0173.mediawiki|BIP 173]]) serialization format",
+              "reason": "The proposal is specifically designed around the P2WPKH serialization/address format defined by BIP 173.",
+              "confidence": "high"
             },
             {
               "target": "slips:132",
-              "evidence": "Additional registered version bytes are listed in SLIP-0132.",
-              "reason": "The extended key prefixes and version bytes used by this scheme are defined through the SLIP-0132 registry.",
-              "confidence": "low"
+              "evidence": "Additional registered version bytes are listed in [[https://github.com/satoshilabs/slips/blob/master/slip-0132.md|SLIP-0132]].",
+              "reason": "The proposal relies on SLIP-0132 for the registered extended key version-byte scheme it uses.",
+              "confidence": "high"
             }
           ]
         }

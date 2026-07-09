@@ -652,67 +652,63 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:59:48Z",
+          "timestamp": "2026-06-30T11:46:28Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:119",
-              "evidence": "`OP_CHECKTEMPLATEVERIFY`",
-              "reason": "The proposal’s example scripts and witness commitments rely on CTV semantics to bind transaction templates and state hashes.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:327",
-              "evidence": "`BIP-327 aggregate key of channel participants`",
-              "reason": "The channel example uses the aggregate key format defined by MuSig2 for the internal key in the script template.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:340",
-              "evidence": "Notation follows [BIP-340], including the tagged hash notation",
-              "reason": "The opcode specification uses the tagged hash construction and notation defined by BIP-340.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:341",
-              "evidence": "For taproot script spends with leaf version *0xc0* (see [BIP-342])",
-              "reason": "The proposal’s opcode activation and script-spend context are within the Taproot script framework established by BIP-341.",
+              "evidence": "Combined with `OP_CHECKSIGFROMSTACK`, signing commitments to multiple items enables complex delegation",
+              "reason": "The motivation and example scripts explicitly build on CTV-based commitments together with the new opcode, so implementing the described use cases depends on BIP-119's commitment semantics.",
               "confidence": "medium"
             },
             {
+              "target": "bips:327",
+              "evidence": "# internal-key:                        BIP-327 aggregate key of channel participants",
+              "reason": "The Lightning Symmetry example assumes an aggregate key format from BIP-327 for the internal key used in the script.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:340",
+              "evidence": "Notation follows [BIP-340], including the tagged hash notation:",
+              "reason": "The proposal's hash construction directly relies on BIP-340 tagged-hash semantics and notation.",
+              "confidence": "high"
+            },
+            {
               "target": "bips:342",
-              "evidence": "For taproot script spends with leaf version *0xc0* (see [BIP-342]), `OP_PAIRCOMMIT` replaces `OP_SUCCESS205`",
-              "reason": "The opcode is defined as a Tapscript opcode replacing an OP_SUCCESS slot under BIP-342’s tapscript rules and leaf versioning.",
+              "evidence": "For taproot script spends with leaf version *0xc0* (see [BIP-342]), `OP_PAIRCOMMIT` replaces `OP_SUCCESS205` (*0xcd*).",
+              "reason": "The opcode is defined specifically for Tapscript spends under the leaf-version rules introduced by BIP-342.",
               "confidence": "high"
             },
             {
               "target": "bips:347",
-              "evidence": "`OP_CAT`[^6][^9]",
-              "reason": "The proposal discusses CAT-based commitment constructions as an alternative and contrasts them with the new opcode’s semantics.",
+              "evidence": "- `OP_CAT`[^6][^9]",
+              "reason": "The proposal explicitly evaluates OP_CAT as an alternative for combining commitment elements, and its rationale depends on the comparison point defined by BIP-347.",
               "confidence": "low"
             },
             {
               "target": "bips:348",
-              "evidence": "Combined with `OP_CHECKSIGFROMSTACK`",
-              "reason": "The proposal’s motivating contract constructions require CSFS to sign over committed data pairs.",
-              "confidence": "high"
+              "evidence": "Combined with `OP_CHECKSIGFROMSTACK`, signing commitments to multiple items enables complex delegation",
+              "reason": "The proposal's intended contract patterns rely on CSFS as a complementary signing primitive in the script workflow.",
+              "confidence": "medium"
             },
             {
               "target": "bips:349",
-              "evidence": "`OP_INTERNALKEY`",
-              "reason": "The example scripts use OP_INTERNALKEY to form taproot key-path/script-path constructions around the new commitment opcode.",
-              "confidence": "low"
+              "evidence": "OP_INTERNALKEY                     # <sig>, PC(state-n-recovery-data, state-n-hash), <internal-key>",
+              "reason": "The example scripts use OP_INTERNALKEY as part of the construction, so the proposal is designed around that opcode's semantics.",
+              "confidence": "high"
             },
             {
               "target": "bips:443",
-              "evidence": "`OP_CHECKCONTRACTVERIFY`",
-              "reason": "The examples and rationale refer to CHECKCONTRACTVERIFY-style contract validation as part of the script constructions that paircommit supports.",
+              "evidence": "- `OP_CHECKCONTRACTVERIFY`[^6]",
+              "reason": "The proposal lists OP_CHECKCONTRACTVERIFY as a considered alternative mechanism for commitments, indicating partial design overlap in contract-verification semantics.",
               "confidence": "low"
             },
             {
               "target": "bips:446",
-              "evidence": "`OP_TEMPLATEHASH`",
-              "reason": "The document relies on template-hash-style transaction commitments in its Lightning Symmetry constructions and comparisons.",
+              "evidence": "- `OP_TEMPLATEHASH`[^8]",
+              "reason": "The alternative-approach discussion and Lightning Symmetry examples rely on template-hash style transaction commitments, making the proposal technically adjacent to BIP-446's mechanism.",
               "confidence": "low"
             }
           ]

@@ -584,7 +584,7 @@
         "author": "genjix",
         "path": "bip-0014.md",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "1edc52dddfb1ac6952e6be5057b9a7fdfbe75b21",
@@ -593,7 +593,7 @@
         "author": "genjix",
         "path": "bip-0014.md",
         "status": "Accepted",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "f31f7d43473fadcfafbc886b15e8c488654839c2",
@@ -602,7 +602,7 @@
         "author": "Luke Dashjr",
         "path": "bip-0014.mediawiki",
         "status": "Final",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "4edd6d2badd9a6ad2ff09bb6792fe0d0e365a7de",
@@ -611,7 +611,7 @@
         "author": "Luke Dashjr",
         "path": "bip-0014.mediawiki",
         "status": "Accepted",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
@@ -637,9 +637,18 @@
       "body_extracted_regex": [],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:57:38Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:42:04Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:10",
+              "evidence": "a process-BIP type",
+              "reason": "The proposal explicitly frames the governance/communication aspects as a process BIP, indicating reliance on the process-BIP category for that part of the change rather than a protocol mechanism.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

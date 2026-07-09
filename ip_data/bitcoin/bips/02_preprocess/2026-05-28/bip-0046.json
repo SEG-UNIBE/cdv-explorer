@@ -757,44 +757,46 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:53:01Z",
+          "timestamp": "2026-06-30T11:17:23Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
-              "evidence": "defines the two needed steps to derive multiple deterministic addresses based on a BIP 32 master private key",
-              "reason": "The derivation scheme directly relies on BIP32 hierarchical key derivation for the wallet keys.",
+              "evidence": "based on a BIP 32 master private key",
+              "reason": "The proposal’s deterministic address derivation is built directly from BIP32 hierarchical key derivation.",
               "confidence": "low"
             },
             {
               "target": "bips:44",
-              "evidence": "uses a similar account-structure as defined in BIP 44 but with change set to 2",
-              "reason": "The proposal specializes the BIP44 account/path structure for its own derivation path format.",
-              "confidence": "low"
+              "evidence": "a similar account-structure as defined in BIP [[bip-0084.mediawiki|44]] but with <tt>change</tt> set to <tt>2</tt>",
+              "reason": "The derivation path intentionally reuses the BIP44-style account structure and alters its change branch convention.",
+              "confidence": "high"
             },
             {
               "target": "bips:49",
               "evidence": "We largely use the same approach used in BIPs 49, 84 and 86 for ease of implementation.",
-              "reason": "The proposal intentionally follows the derivation/account conventions introduced by BIP49's wallet structure.",
+              "reason": "The proposal explicitly bases its derivation approach on the same structure used by BIP49-family derivation schemes.",
               "confidence": "medium"
             },
             {
               "target": "bips:65",
-              "evidence": "fidelity bonds are created by locking up bitcoins using the `OP_CHECKLOCKTIMEVERIFY` opcode",
-              "reason": "The address script depends on CLTV semantics defined by BIP65.",
-              "confidence": "low"
+              "evidence": "created by locking up bitcoins using the `OP_CHECKLOCKTIMEVERIFY` opcode",
+              "reason": "The timelocked output script relies on CLTV semantics to enforce the locktime in the witness script.",
+              "confidence": "high"
             },
             {
               "target": "bips:84",
               "evidence": "We largely use the same approach used in BIPs 49, 84 and 86 for ease of implementation.",
-              "reason": "The proposal adopts the BIP84-style derivation pattern and uses a BIP84-like path.",
+              "reason": "The proposal explicitly reuses the derivation approach from BIP84 as the model for its own HD wallet path design.",
               "confidence": "high"
             },
             {
               "target": "bips:86",
               "evidence": "We largely use the same approach used in BIPs 49, 84 and 86 for ease of implementation.",
-              "reason": "The proposal explicitly reuses the derivation approach introduced by BIP86.",
-              "confidence": "medium"
+              "reason": "The proposal explicitly reuses the derivation approach from BIP86 as the model for its own HD wallet path design.",
+              "confidence": "high"
             }
           ]
         }

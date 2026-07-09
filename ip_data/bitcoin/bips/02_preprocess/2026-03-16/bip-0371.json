@@ -757,9 +757,42 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:59:25Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:45:27Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:174",
+              "evidence": "additional fields for BIP 174 PSBTv0",
+              "reason": "The proposal extends the PSBTv0 field format defined by BIP 174 and relies on that container's serialization/extensibility rules.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:340",
+              "evidence": "BIP 340/341/342 Taproot data",
+              "reason": "The new signature fields use Schnorr signatures introduced by BIP 340 and are defined around its signing algorithm.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "BIP 340/341/342 Taproot data",
+              "reason": "The new fields encode Taproot internal keys, control blocks, leaf hashes, and merkle roots that are based on BIP 341's Taproot output and script-path semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:342",
+              "evidence": "BIP 340/341/342 Taproot data",
+              "reason": "The proposal is explicitly designed to carry data for the Taproot script semantics introduced by BIP 342.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:370",
+              "evidence": "and BIP 370 PSBTv2 that allow for",
+              "reason": "The proposal adds Taproot-specific fields to PSBTv2 as defined by BIP 370, so implementation depends on that PSBT version format.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

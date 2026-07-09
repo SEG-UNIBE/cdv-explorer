@@ -2,8 +2,21 @@ const LOCAL_HOSTS = new Set(['localhost', '127.0.0.1', '::1']);
 const REPOSITORY_URL = 'https://github.com/SEG-UNIBE/cdv-explorer';
 const DEV_BRANCH_URL = `${REPOSITORY_URL}/tree/dev`;
 
-export function getRuntimeEnvironment(hostname = window.location.hostname) {
-  const normalizedHostname = String(hostname || '').trim().toLowerCase();
+function getCurrentHostname(hostname) {
+  if (hostname !== undefined) {
+    return hostname;
+  }
+
+  if (typeof window !== 'undefined' && window.location) {
+    return window.location.hostname;
+  }
+
+  return '';
+}
+
+export function getRuntimeEnvironment(hostname) {
+  const currentHostname = getCurrentHostname(hostname);
+  const normalizedHostname = String(currentHostname || '').trim().toLowerCase();
 
   if (LOCAL_HOSTS.has(normalizedHostname)) {
     return 'local';
@@ -16,7 +29,7 @@ export function getRuntimeEnvironment(hostname = window.location.hostname) {
   return 'prod';
 }
 
-export function getEnvironmentBadge(hostname = window.location.hostname) {
+export function getEnvironmentBadge(hostname) {
   const environment = getRuntimeEnvironment(hostname);
 
   if (environment === 'local') {
@@ -30,10 +43,10 @@ export function getEnvironmentBadge(hostname = window.location.hostname) {
   return 'PROD';
 }
 
-export function getRepositoryUrl(hostname = window.location.hostname) {
+export function getRepositoryUrl(hostname) {
   return getRuntimeEnvironment(hostname) === 'dev' ? DEV_BRANCH_URL : REPOSITORY_URL;
 }
 
-export function getDefaultExperimentalFeaturesEnabled(hostname = window.location.hostname) {
+export function getDefaultExperimentalFeaturesEnabled(hostname) {
   return getRuntimeEnvironment(hostname) !== 'prod';
 }

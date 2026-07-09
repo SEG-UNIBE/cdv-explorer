@@ -782,9 +782,50 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:55:10Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:19:21Z",
+          "status": "api_error",
+          "dependencies": [],
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 194801, Requested 9836. Please try again in 1.391s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+        },
+        {
+          "run_id": "2026-06-30T11:33:45Z_gpt-5.4-mini_fbc31d5d",
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-30T11:34:17Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:340",
+              "evidence": "the operation mirrors the Taproot tweak used by BIP340 signers",
+              "reason": "The opcode's semantics are explicitly modeled on BIP340's tweak and x-only key lifting behavior.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "It also rejects the point at infinity, ensuring that `OP_TWEAKADD` never produces a value that cannot be interpreted as a usable x-only public key.",
+              "reason": "The proposal is designed around Taproot x-only output key conventions and BIP341-compatible Taproot tweaking.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:348",
+              "evidence": "proposed opcodes such as BIP 348 `OP_CHECKSIGFROMSTACK`",
+              "reason": "The proposal's motivating constructions and example scripts compose `OP_TWEAKADD` with this opcode.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:349",
+              "evidence": "proposed opcodes such as BIP 349 `OP_INTERNALKEY`",
+              "reason": "The proposal's motivating constructions and example scripts rely on this opcode to supply the internal key in tweak-reveal scripts.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:442",
+              "evidence": "For comparison, BIP 442 `OP_PAIRCOMMIT` is purpose-built for pair commitments",
+              "reason": "The proposal discusses an alternative commitment mechanism and notes that its Merkleized constructions are best understood relative to this dedicated opcode.",
+              "confidence": "low"
+            }
+          ]
         }
       ]
     }

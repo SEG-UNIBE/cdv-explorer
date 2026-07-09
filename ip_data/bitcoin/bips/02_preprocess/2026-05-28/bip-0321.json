@@ -720,55 +720,27 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:54:16Z",
+          "timestamp": "2026-06-30T11:18:32Z",
+          "status": "success",
           "dependencies": [
-            {
-              "target": "bips:20",
-              "evidence": "BIP 21 was based on BIP 20",
-              "reason": "BIP 321 inherits the bitcoin URI payment instruction format lineage from BIP 20 via BIP 21, which it modifies and replaces.",
-              "confidence": "high"
-            },
             {
               "target": "bips:21",
               "evidence": "This BIP is a modification and intended replacement of [[bip-0021.mediawiki|BIP 0021]]",
-              "reason": "The document directly amends and extends BIP 21's URI scheme, query parameters, and handling rules.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:173",
-              "evidence": "bech32 Segwit version 0 address, bech32m Segwit address",
-              "reason": "Support for bech32 and bech32m address encodings depends on the Segwit address formats defined by this proposal.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:350",
-              "evidence": "bech32m Segwit address",
-              "reason": "Bech32m is the address encoding introduced by this proposal and is required for the URI's allowed address types.",
+              "reason": "The proposal explicitly modifies and replaces BIP 21, so understanding or implementing it depends on the earlier URI scheme specification it amends.",
               "confidence": "high"
             },
             {
               "target": "bips:351",
               "evidence": "*pay: [[bip-0351.mediawiki|BIP 351 Private Payment addresses]]",
-              "reason": "The proposal defines a payment-instruction query key whose semantics depend on the private payment address format from this BIP.",
+              "reason": "The proposal defines a payment-instruction query key specifically for BIP 351 private payment addresses, reusing that scheme as one supported URI payment instruction.",
               "confidence": "high"
             },
             {
               "target": "bips:352",
               "evidence": "*sp: [[bip-0352.mediawiki|BIP 352 Silent Payment addresses]]",
-              "reason": "The proposal defines a payment-instruction query key for silent payment addresses, relying on the address semantics from this BIP.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:380",
-              "evidence": "For payments made using a BOLT 11 invoice (communicated via the `lightning` parameter)",
-              "reason": "The URI scheme incorporates Lightning BOLT 11 invoices as a payment instruction type, depending on the invoice format defined by this BIP.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:388",
-              "evidence": "*lno: Lightning BOLT12 offers",
-              "reason": "The URI scheme includes a query key for Lightning BOLT 12 offers, relying on the offer format and semantics defined by this BIP.",
+              "reason": "The proposal defines a payment-instruction query key specifically for BIP 352 silent payment addresses, so handling those URI instructions depends on BIP 352 address semantics.",
               "confidence": "high"
             }
           ]

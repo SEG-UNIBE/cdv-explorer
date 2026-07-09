@@ -1,4 +1,5 @@
 import { Dropdown } from 'primereact/dropdown';
+import { InputText } from 'primereact/inputtext';
 import { InputSwitch } from 'primereact/inputswitch';
 import { MultiSelect } from 'primereact/multiselect';
 import {
@@ -15,6 +16,8 @@ import {
   getPreambleRelationDasharray,
   getPreambleRelationStroke,
   getPreambleRelationTypes,
+  GROUND_TRUTH_CURATED,
+  RELATION_SUBTYPE_ALL_VALUE,
 } from './networkDiagramUtils';
 
 function EdgeLegendLine({ stroke, dasharray }) {
@@ -41,6 +44,11 @@ export function NetworkDiagramToolbar({
   setLinkType,
   baselineType,
   setBaselineType,
+  linkSubtype,
+  setLinkSubtype,
+  baselineSubtype,
+  setBaselineSubtype,
+  groundTruthRelationSubtypeOptions,
   activeLlmModel,
   layoutMode,
   setLayoutMode,
@@ -96,6 +104,8 @@ export function NetworkDiagramToolbar({
       { label: `Missing from ${getLinkTypeLabelForModel(linkType, activeLlmModel)}`, dasharray: '7 5', stroke: DIFFERENTIAL_EDGE_COLORS.baseline_only },
     ]
     : [];
+  const showApproachSubtypeSelector = linkType === GROUND_TRUTH_CURATED;
+  const showBaselineSubtypeSelector = baselineType === GROUND_TRUTH_CURATED;
 
   return (
     <>
@@ -232,7 +242,7 @@ export function NetworkDiagramToolbar({
           <div className="dependency-graph-detail-field">
             <div className="network-layout-picker">
               <label className="network-layout-picker__label" htmlFor="linkType">Approach</label>
-              <div className="network-layout-picker__dropdown-row">
+              <div className="network-layout-picker__dropdown-row dependency-graph-type-row">
                 <Dropdown
                   inputId="linkType"
                   value={linkType}
@@ -242,6 +252,17 @@ export function NetworkDiagramToolbar({
                   className="w-full md:w-18rem"
                   style={{ minWidth: '260px' }}
                 />
+                {showApproachSubtypeSelector ? (
+                  <Dropdown
+                    inputId="linkSubtype"
+                    value={linkSubtype || RELATION_SUBTYPE_ALL_VALUE}
+                    options={groundTruthRelationSubtypeOptions}
+                    onChange={(event) => setLinkSubtype(event.value)}
+                    placeholder="Ground-truth subtype"
+                    aria-label="Ground-truth relation subtype for approach"
+                    className="dependency-graph-type-row__subtype"
+                  />
+                ) : null}
               </div>
             </div>
             <div className="dependency-edge-legend">
@@ -257,7 +278,7 @@ export function NetworkDiagramToolbar({
           <div className="dependency-graph-detail-field">
             <div className="network-layout-picker">
               <label className="network-layout-picker__label" htmlFor="baselineType">Baseline</label>
-              <div className="network-layout-picker__dropdown-row">
+              <div className="network-layout-picker__dropdown-row dependency-graph-type-row">
                 <Dropdown
                   inputId="baselineType"
                   value={baselineType}
@@ -267,6 +288,17 @@ export function NetworkDiagramToolbar({
                   className="w-full md:w-18rem"
                   style={{ minWidth: '260px' }}
                 />
+                {showBaselineSubtypeSelector ? (
+                  <Dropdown
+                    inputId="baselineSubtype"
+                    value={baselineSubtype || RELATION_SUBTYPE_ALL_VALUE}
+                    options={groundTruthRelationSubtypeOptions}
+                    onChange={(event) => setBaselineSubtype(event.value)}
+                    placeholder="Ground-truth subtype"
+                    aria-label="Ground-truth relation subtype for baseline"
+                    className="dependency-graph-type-row__subtype"
+                  />
+                ) : null}
               </div>
             </div>
             {baselineLegendItems.length > 0 ? (

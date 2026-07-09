@@ -537,6 +537,15 @@
         "author": "genjix",
         "path": "bip-0019.md",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0019.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -568,13 +577,15 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:57:40Z",
+          "timestamp": "2026-06-30T11:42:08Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:11",
               "evidence": "This is already specified in [[bip-0011.mediawiki|BIP 0011]].",
-              "reason": "The proposal’s multisig transaction design explicitly relies on the multisig semantics and sigop accounting introduced by BIP 11.",
+              "reason": "The proposal explicitly references BIP 11’s OP_CHECKMULTISIG-based multisig transaction specification as the existing standard it is replacing/contrasting against.",
               "confidence": "high"
             }
           ]

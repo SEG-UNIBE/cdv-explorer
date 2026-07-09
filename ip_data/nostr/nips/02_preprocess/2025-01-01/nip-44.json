@@ -449,14 +449,16 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:58:25Z_gpt-5.4-mini_0bc643e4",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:08:21Z",
+          "timestamp": "2026-06-30T11:58:51Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "nips:01",
-              "evidence": "\"MUST be used in the context of a signed event as described in NIP-01\"",
-              "reason": "This proposal requires NIP-01 event structure, hashing, and signing rules for the encrypted payload format to function.",
-              "confidence": "low"
+              "evidence": "MUST be used in the context of a signed event as described in NIP-01",
+              "reason": "The payload format is designed to be embedded inside signed NIP-01 events, and its authentication and validation flow depends on NIP-01 event semantics.",
+              "confidence": "high"
             }
           ]
         }

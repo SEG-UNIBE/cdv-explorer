@@ -587,9 +587,24 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:59:05Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:44:31Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:68",
+              "evidence": "set the nSequence field in their taproot transactions as in BIP68[5]",
+              "reason": "The proposal explicitly reuses BIP68-relative locktime semantics for nSequence-based anti-fee-sniping behavior.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "uses BIP341 taproot",
+              "reason": "The proposal is specifically about wallet behavior for taproot transactions and relies on Taproot being the transaction type it modifies.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

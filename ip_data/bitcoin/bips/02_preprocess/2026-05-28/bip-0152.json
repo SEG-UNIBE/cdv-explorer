@@ -936,6 +936,15 @@
         "author": "Matt Corallo",
         "path": "bip-0152.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0152.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -975,25 +984,35 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:53:53Z",
+          "timestamp": "2026-06-30T11:18:17Z",
+          "status": "api_error",
+          "dependencies": [],
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 197477, Requested 7865. Please try again in 1.602s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+        },
+        {
+          "run_id": "2026-06-30T11:33:45Z_gpt-5.4-mini_fbc31d5d",
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-30T11:33:55Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:130",
-              "evidence": "announcements (as per BIP130, and after fully validating the block)",
-              "reason": "The low-bandwidth announcement flow reuses the inv/headers block announcement mechanism defined by this proposal.",
+              "evidence": "invs or headers, as defined by BIP130",
+              "reason": "The low-bandwidth announcement mode reuses BIP130-style inv/header relay behavior as part of the protocol flow.",
               "confidence": "high"
             },
             {
               "target": "bips:141",
               "evidence": "supports segregated witness transactions (BIP 141 and BIP 144)",
-              "reason": "Version 2 compact blocks use wtxids and witness-encoded transactions introduced by this proposal.",
+              "reason": "Version 2 of compact blocks depends on BIP 141's witness and wtxid semantics for transaction identification and encoding.",
               "confidence": "high"
             },
             {
               "target": "bips:144",
               "evidence": "supports segregated witness transactions (BIP 141 and BIP 144)",
-              "reason": "Version 2 compact blocks rely on the witness transaction and witness block encoding rules from this proposal.",
+              "reason": "Version 2 reuses BIP 144's witness-bearing transaction/message encoding for cmpctblock, blocktxn, and fallback block responses.",
               "confidence": "high"
             }
           ]

@@ -814,12 +814,21 @@
         "author": "BtcDrak",
         "path": "bip-csv.mediawiki",
         "status": "Draft",
-        "standard": "bip2"
+        "standard": "bip1"
       },
       {
         "commit": "c98859fe20617df141da0dd08d399921c7097be9",
         "timestamp": "2016-07-18T23:37:42Z",
         "date": "2016-07-18",
+        "author": "Luke Dashjr",
+        "path": "bip-0112.mediawiki",
+        "status": "Final",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
         "author": "Luke Dashjr",
         "path": "bip-0112.mediawiki",
         "status": "Final",
@@ -848,9 +857,44 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:35:02Z_gpt-5.4-mini_cd52ff7d",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T09:01:06Z",
-          "dependencies": []
+          "timestamp": "2026-06-30T11:35:43Z",
+          "status": "api_error",
+          "dependencies": [],
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 200000, Requested 5161. Please try again in 1.548s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+        },
+        {
+          "run_id": "2026-06-30T11:38:11Z_gpt-5.4-mini_422651ce",
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-30T11:38:14Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:9",
+              "evidence": "This BIP is to be deployed by \"versionbits\" BIP9 using bit 0.",
+              "reason": "Activation depends on BIP 9 versionbits deployment rules and bit-based signaling.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:65",
+              "evidence": "With CHECKLOCKTIMEVERIFY, this would look like:",
+              "reason": "The proposal is explicitly designed to complement and compare against CHECKLOCKTIMEVERIFY in script branch timing.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:68",
+              "evidence": "in combination with BIP 68 allows execution",
+              "reason": "The opcode's semantics and spendability checks rely on BIP 68 relative lock-time rules and nSequence interpretation.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:113",
+              "evidence": "This BIP must be deployed simultaneously with BIP68 and BIP113 using the same deployment mechanism.",
+              "reason": "The deployment is coordinated with BIP 113 as part of the same activation process.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

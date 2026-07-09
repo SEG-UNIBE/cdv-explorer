@@ -779,26 +779,36 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:17:06Z_gpt-5.4-mini_7d0d1f6b",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:53:57Z",
+          "timestamp": "2026-06-30T11:18:21Z",
+          "status": "api_error",
+          "dependencies": [],
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 197772, Requested 5997. Please try again in 1.13s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+        },
+        {
+          "run_id": "2026-06-30T11:33:45Z_gpt-5.4-mini_fbc31d5d",
+          "model": "gpt-5.4-mini",
+          "timestamp": "2026-06-30T11:33:58Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:37",
               "evidence": "The standard light client protocol in use today, defined in BIP 37",
-              "reason": "The proposal replaces and is designed as an alternative to the BIP 37 light client protocol, inheriting its use case and constraints.",
+              "reason": "The proposal is explicitly a replacement for and alternative to BIP 37, reusing the light-client problem domain while changing the mechanism.",
               "confidence": "high"
             },
             {
               "target": "bips:111",
               "evidence": "similar to attacks against BIP 37 enabled nodes noted in BIP 111",
-              "reason": "The proposal’s node operation and DoS discussion explicitly rely on the BIP 111 analysis of BIP 37-style resource abuse.",
+              "reason": "BIP 111 is cited as describing the DoS issue that motivates the proposal's non-dynamic filter-serving rules.",
               "confidence": "medium"
             },
             {
               "target": "bips:158",
-              "evidence": "The initial filter types are defined separately in BIP 158",
-              "reason": "The protocol’s filter type signaling and compact filter contents depend on the filter definitions introduced by BIP 158.",
-              "confidence": "low"
+              "evidence": "The initial filter types are defined separately in [[bip-0158.mediawiki|BIP 158]]",
+              "reason": "This proposal's filter-type framework depends on BIP 158 for the concrete initial filter definitions and corresponding support bit.",
+              "confidence": "high"
             }
           ]
         }

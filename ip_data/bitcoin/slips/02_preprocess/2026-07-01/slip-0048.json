@@ -1,0 +1,387 @@
+{
+  "raw": {
+    "preamble": {
+      "slip": "48",
+      "title": "Deterministic key hierarchy for Graphene-based networks",
+      "author": [
+        "Fabian Schuh <Fabian@chainsquad.com>"
+      ],
+      "status": "Active",
+      "type": "Standard",
+      "created": "2016-10-18"
+    }
+  },
+  "meta": {
+    "last_commit": "Thu Mar 27 09:15:08 2025 +0100",
+    "total_commits": 22,
+    "git_history": [
+      [
+        "ba7049d988ed128aa67cd908f6d4ca66a1cbffd4",
+        "Thu Mar 27 09:15:08 2025 +0100",
+        "Bartek Wrona"
+      ],
+      [
+        "d3c9c0520d9287393f0bb6135640804804710967",
+        "Thu Feb 15 13:20:23 2024 +0000",
+        "Christophe Diederichs"
+      ],
+      [
+        "69588956e73b1f4896266d2086dd805bc3cfd0aa",
+        "Fri Jan 12 19:05:54 2024 -0700",
+        "Mike Ellertson"
+      ],
+      [
+        "508968da89aeb23a07d14109207cbd49aa0ca12a",
+        "Tue Mar 9 17:28:27 2021 +0100",
+        "Andrew Kozlik"
+      ],
+      [
+        "b58f28682fe4e4f74925b1477969047136754d0e",
+        "Wed May 6 09:52:21 2020 +0200",
+        "Holger Nahrstaedt"
+      ],
+      [
+        "b20d84b65393f12a80ff521ab29ece4bcdee57c3",
+        "Wed Jun 12 17:07:59 2019 +0200",
+        "Richard Roznovjak"
+      ],
+      [
+        "20a0e37a9fd85beaf041fcc6b2d8ab2c7e2ffba0",
+        "Wed Jun 5 16:13:14 2019 +0530",
+        "Adam Barlam"
+      ],
+      [
+        "541f85eaff448326b29af2635fefc0b8511fc5ae",
+        "Sun May 12 17:58:17 2019 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "8126f39daafff30f4eab64b122faf7e7b916497e",
+        "Tue Mar 12 14:35:53 2019 +0100",
+        "Adrián Matejov"
+      ],
+      [
+        "dcfafbd2b51c140d6b3fc5b874ac484f9b69a5f0",
+        "Tue Jan 15 16:33:32 2019 +0800",
+        "crazybits"
+      ],
+      [
+        "34d5a35d544d745778605230d59267434976186d",
+        "Fri Nov 30 14:15:11 2018 +0100",
+        "yoyow-dev"
+      ],
+      [
+        "2d11c15f13f405cd29e012e1ae3409e8de7bd567",
+        "Wed Aug 29 17:43:33 2018 +0800",
+        "onechainone"
+      ],
+      [
+        "f2e3b00ed8e05305f4e25db51cf7e5cffd9e2f6d",
+        "Tue Aug 28 15:40:47 2018 +0800",
+        "crazybits"
+      ],
+      [
+        "61762244ab2c0c18efedf24b6e0615b831caadfb",
+        "Sat Aug 25 19:06:37 2018 +0800",
+        "crazybits"
+      ],
+      [
+        "55596f6bddb3d378887f01d04f48c27c94111df5",
+        "Fri Jun 29 18:28:17 2018 +0800",
+        "crazybits"
+      ],
+      [
+        "9e95489ba7c8d318f7555a13c0841ff0e92f2508",
+        "Fri Jun 29 18:27:52 2018 +0800",
+        "MickWang"
+      ],
+      [
+        "6e774b1cfc0dedb08c9ab0c7707bcbac8775fc75",
+        "Wed Jun 27 21:25:40 2018 +0800",
+        "pluswave"
+      ],
+      [
+        "387a49e7f2ed0928dd854b88b92eaa01df001422",
+        "Thu Nov 23 15:55:09 2017 +0100",
+        "Jonathan Cross"
+      ],
+      [
+        "cc5a312cbdacf87e7b83e53ec0b2470657aa69ad",
+        "Thu Sep 7 18:28:55 2017 +0200",
+        "Pavol Rusnak"
+      ],
+      [
+        "70d95d0c966e8d7b1355b476200dad08c0ffaef6",
+        "Thu Sep 7 14:52:29 2017 +0200",
+        "Fabian Schuh"
+      ],
+      [
+        "40c88470be714e81a5149b50adf2db25ab230bf4",
+        "Tue Mar 14 21:54:43 2017 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "e488787c95ce412217af5bf03fb660988154d748",
+        "Wed Oct 19 15:44:16 2016 +0200",
+        "Fabian Schuh"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 85.71,
+      "passed_checks": 6,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 7,
+      "slip": {
+        "score": 85.71,
+        "passed_checks": 6,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 7,
+        "checks": [
+          {
+            "id": "slip.required_field.slip",
+            "label": "Required field 'slip' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.author",
+            "label": "Required field 'author' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.type",
+            "label": "Required field 'type' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.created",
+            "label": "Required field 'created' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "slip",
+            "passed": false,
+            "details": "Missing: abstract"
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "account": 36,
+      "key": 31,
+      "owner": 31,
+      "active": 25,
+      "0": 22,
+      "keys": 21,
+      "role": 19,
+      "roles": 17,
+      "0x0": 16,
+      "0x1": 15,
+      "index": 13,
+      "networks": 12,
+      "accounts": 11,
+      "network": 10,
+      "memo": 10,
+      "m": 10,
+      "graphene": 9,
+      "associated": 9,
+      "48": 9,
+      "public": 9,
+      "0x3": 9,
+      "s": 7,
+      "gap": 7,
+      "limit": 7,
+      "5": 7,
+      "hierarchy": 6,
+      "wallets": 6,
+      "0044": 6,
+      "derivation": 6,
+      "specific": 6,
+      "1": 6,
+      "software": 6,
+      "posting": 6,
+      "slip": 5,
+      "deterministic": 5,
+      "based": 5,
+      "bip": 5,
+      "master": 5,
+      "specification": 5,
+      "steem": 5,
+      "allow": 5,
+      "level": 5,
+      "node": 5,
+      "obtain": 5,
+      "new": 5,
+      "0x4": 5,
+      "com": 4,
+      "available": 4,
+      "bitshares": 4,
+      "use": 4,
+      "registered": 4,
+      "e": 4,
+      "different": 4,
+      "derive": 4,
+      "purpose": 4,
+      "hardened": 4,
+      "set": 4,
+      "following": 4,
+      "seed": 4,
+      "tree": 4,
+      "discovery": 4,
+      "number": 3,
+      "standard": 3,
+      "https": 3,
+      "github": 3,
+      "bitcoin": 3,
+      "blockchains": 3,
+      "peerplays": 3,
+      "multiple": 3,
+      "subtree": 3,
+      "unused": 3,
+      "wallet": 3,
+      "want": 3,
+      "needs": 3,
+      "algorithm": 3,
+      "g": 3,
+      "able": 3,
+      "device": 3,
+      "user": 3,
+      "procedure": 3,
+      "existing": 3,
+      "3": 3,
+      "0048": 2,
+      "fabian": 2,
+      "10": 2,
+      "bips": 2,
+      "blob": 2,
+      "mediawiki": 2,
+      "going": 2,
+      "defined": 2,
+      "reason": 2,
+      "muse": 2,
+      "scheme": 2,
+      "case": 2,
+      "weighted": 2,
+      "hierarchical": 2,
+      "blockchain": 2,
+      "single": 2,
+      "private": 2,
+      "described": 2,
+      "path": 2,
+      "indicates": 2,
+      "constant": 2,
+      "according": 2,
+      "disadvantages": 2,
+      "chapter": 2,
+      "sub": 2,
+      "indices": 2,
+      "parent": 2,
+      "allows": 2,
+      "child": 2,
+      "infinite": 2,
+      "discover": 2,
+      "external": 2,
+      "source": 2,
+      "update": 2,
+      "previous": 2,
+      "api": 2,
+      "step": 2,
+      "creation": 2,
+      "compromised": 2,
+      "access": 2,
+      "setup": 2,
+      "onboard": 2,
+      "specifications": 2,
+      "added": 2,
+      "account_update": 2,
+      "operation": 2,
+      "multi": 2,
+      "eos": 2,
+      "fibos": 2,
+      "bos": 2,
+      "onegram": 2,
+      "hive": 2,
+      "comms": 2,
+      "forth": 2,
+      "wiki": 2
+    },
+    "changes_in_status": [],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        {
+          "target": "bips:32",
+          "count": 1
+        },
+        {
+          "target": "bips:43",
+          "count": 1
+        },
+        {
+          "target": "bips:44",
+          "count": 5
+        },
+        {
+          "target": "slips:44",
+          "count": 1
+        }
+      ],
+      "body_extracted_llm": [
+        {
+          "run_id": "2026-07-02T21:12:45Z_gpt-5.4-2026-03-05_b188040c",
+          "model": "gpt-5.4-2026-03-05",
+          "timestamp": "2026-07-02T21:13:19Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:44",
+              "evidence": "It extends BIP-0044 known from Bitcoin which should be read and understood before going into the details of this specification.",
+              "reason": "The proposal explicitly extends BIP-44's deterministic wallet hierarchy and modifies its structure for Graphene networks.",
+              "confidence": "low"
+            },
+            {
+              "target": "slips:44",
+              "evidence": "The key derivation structure defined in BIP-0044/SLIP-0044 does not properly represent the possibilities available to Graphene based networks.",
+              "reason": "The proposal is designed around and adapts the coin-type-based hierarchy defined in SLIP-44 as part of the existing derivation structure it changes.",
+              "confidence": "medium"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

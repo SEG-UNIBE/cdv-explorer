@@ -1,46 +1,52 @@
 """Shared enrichment stage: git metadata, word list, and dependency extraction."""
+
 import json
 import re
 import sys
-from concurrent.futures import ThreadPoolExecutor, as_completed
 from collections import Counter
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict, Tuple
+from typing import Any
+from uuid import uuid4
 
 from tqdm import tqdm
 
 from analysis.authorship.mining import update_metadata_from_git
-from analysis.proposal_schema import is_llm_runs_format
 from analysis.dependencies.constants import (
     BODY_EXTRACTED_LLM,
     BODY_EXTRACTED_REGEX,
     PREAMBLE_EXTRACTED,
 )
 from analysis.dependencies.mining import (
+    build_llm_semantic_dependency_manifest_record,
     create_explicit_dependency_targets,
     create_reference_targets,
-    llm_extract_implicit_dependencies,
+    llm_extract_semantic_dependencies,
     load_api_key,
     prepare_llm_dependency_text,
 )
 from analysis.dependencies.utils import normalize_reference_id_for_config
 from analysis.evolution import extract_status_timeline
-from analysis.proposal_schema import normalize_proposal_document
+from analysis.proposal_schema import (
+    LLM_RUN_STATUS_API_ERROR,
+    LLM_RUN_STATUS_SUCCESS,
+    is_llm_runs_format,
+    normalize_proposal_document,
+)
 from pipeline.source_context import SourceContext
 
 MIN_WORD_OCCURRENCE = 2
-LLM_MAX_CONCURRENCY = 5
+LLM_MAX_CONCURRENCY = 3
 
 
-def _preserved_llm_runs(raw_llm: Any, llm_model: str | None, replace_model_runs: bool) -> list[dict[str, Any]]:
+def _preserved_llm_runs(
+    raw_llm: Any, llm_model: str | None, replace_model_runs: bool
+) -> list[dict[str, Any]]:
     runs = list(raw_llm) if is_llm_runs_format(raw_llm) else []
     if not replace_model_runs or not llm_model:
         return runs
-    return [
-        run for run in runs
-        if str(run.get("model") or "").strip() != llm_model
-    ]
+    return [run for run in runs if str(run.get("model") or "").strip() != llm_model]
 
 
 def _load_stop_words(path_value: str | None) -> set[str]:
@@ -59,7 +65,7 @@ def _load_stop_words(path_value: str | None) -> set[str]:
         }
 
 
-def _build_word_list(raw_content: str, stop_words: set[str]) -> Dict[str, int]:
+def _build_word_list(raw_content: str, stop_words: set[str]) -> dict[str, int]:
     if not raw_content:
         return {}
     words = re.findall(r"\b\w+\b", raw_content.lower())
@@ -117,22 +123,26 @@ def _self_targets(
     targets = {f"{source_slug}:{proposal_number}"}
     if raw_proposal_id:
         targets.add(f"{source_slug}:{raw_proposal_id}")
-        canonical_id = normalize_reference_id_for_config(raw_proposal_id, reference_config)
+        canonical_id = normalize_reference_id_for_config(
+            raw_proposal_id, reference_config
+        )
         if canonical_id is not None:
             targets.add(f"{source_slug}:{canonical_id}")
     return targets
 
 
 def _build_base_insights(
-    json_data: Dict[str, Any],
+    json_data: dict[str, Any],
     source_file: Path,
     stop_words: set[str],
     proposal_label: str,
     id_field: str,
     reference_pattern: str,
     source_context: SourceContext,
-) -> Tuple[Dict[str, Any], str, str]:
-    raw_content = source_file.read_text(encoding="utf-8") if source_file.exists() else ""
+) -> tuple[dict[str, Any], str, str]:
+    raw_content = (
+        source_file.read_text(encoding="utf-8") if source_file.exists() else ""
+    )
     body_content = prepare_llm_dependency_text(raw_content)
     preamble = json_data.get("raw", {}).get("preamble", {})
     proposal_number = _proposal_number(preamble, id_field)
@@ -155,8 +165,16 @@ def _build_base_insights(
         {
             "word_list": _build_word_list(raw_content, stop_words),
             "interrelations": {
-                PREAMBLE_EXTRACTED: [entry for entry in explicit_deps if entry.get("target") not in self_targets],
-                BODY_EXTRACTED_REGEX: [entry for entry in references if entry.get("target") not in self_targets],
+                PREAMBLE_EXTRACTED: [
+                    entry
+                    for entry in explicit_deps
+                    if entry.get("target") not in self_targets
+                ],
+                BODY_EXTRACTED_REGEX: [
+                    entry
+                    for entry in references
+                    if entry.get("target") not in self_targets
+                ],
             },
         },
         body_content,
@@ -173,10 +191,42 @@ def _in_focus(proposal_number: str, raw_id: str, focus: set[str]) -> bool:
     )
 
 
+def _append_llm_manifest_run(manifest_path: Path, entry: dict[str, Any]) -> None:
+    if manifest_path.exists():
+        try:
+            payload = json.loads(manifest_path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            payload = {}
+    else:
+        payload = {}
+
+    runs = payload.get("runs")
+    if not isinstance(runs, list):
+        runs = []
+
+    run_id = str(entry.get("run_id") or "").strip()
+    runs = [
+        run
+        for run in runs
+        if not (
+            isinstance(run, dict)
+            and str(run.get("run_id") or "").strip()
+            and str(run.get("run_id") or "").strip() == run_id
+        )
+    ]
+    runs.append(entry)
+    manifest_path.parent.mkdir(parents=True, exist_ok=True)
+    manifest_path.write_text(
+        json.dumps({"schema_version": 1, "runs": runs}, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+
+
 def enrich(
     src_config: dict,
     preprocess_dir: Path,
     harvest_dir: Path,
+    analysis_snapshot_dir: Path | None = None,
     skip_llm: bool = False,
     focus: set[str] | None = None,
     replace_llm_model_runs: bool = False,
@@ -223,24 +273,51 @@ def enrich(
         )
 
     max_workers = max(1, LLM_MAX_CONCURRENCY)
-    pending: Dict[object, Dict[str, Any]] = {}
+    pending: dict[object, dict[str, Any]] = {}
     submitted_llm = 0
     completed_llm = 0
 
     executor = ThreadPoolExecutor(max_workers=max_workers) if llm_enabled else None
-    llm_bar = tqdm(
-        total=0,
-        desc="  ↳ LLM",
-        unit="ip",
-        position=1,
-        leave=False,
-        dynamic_ncols=True,
-        file=sys.stdout,
-        mininterval=0.1,
-    ) if (llm_enabled and progress_callback is not None) else None
+    llm_run_id = ""
+    llm_run_created_at = ""
+    if llm_enabled:
+        llm_run_created_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        llm_run_id = (
+            f"{llm_run_created_at}_{str(llm_model or '').strip()}_{uuid4().hex[:8]}"
+        )
+        if analysis_snapshot_dir is not None:
+            manifest_path = (
+                analysis_snapshot_dir / f"{src_config['document_prefix']}_llm_runs.json"
+            )
+            _append_llm_manifest_run(
+                manifest_path,
+                build_llm_semantic_dependency_manifest_record(
+                    run_id=llm_run_id,
+                    model=str(llm_model or "").strip(),
+                    source_context=source_context,
+                    created_at=llm_run_created_at,
+                    focus=sorted(focus) if focus else [],
+                ),
+            )
+    llm_bar = (
+        tqdm(
+            total=0,
+            desc="  ↳ LLM",
+            unit="ip",
+            position=1,
+            leave=False,
+            dynamic_ncols=True,
+            file=sys.stdout,
+            mininterval=0.1,
+        )
+        if (llm_enabled and progress_callback is not None)
+        else None
+    )
 
-    def _write(output_path: Path, data: Dict[str, Any], msg: str) -> None:
-        output_path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+    def _write(output_path: Path, data: dict[str, Any], msg: str) -> None:
+        output_path.write_text(
+            json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8"
+        )
         if progress_callback is not None:
             progress_callback(msg, 1)
         if local_progress:
@@ -253,21 +330,50 @@ def enrich(
         try:
             result = future.result()
         except Exception as exc:
-            print(f"WARNING: LLM extraction failed for {record['job_id']}: {exc}", file=sys.stderr)
-            result = []
+            print(
+                f"WARNING: LLM extraction failed for {record['job_id']}: {exc}",
+                file=sys.stderr,
+            )
+            result = {
+                "status": LLM_RUN_STATUS_API_ERROR,
+                "dependencies": [],
+                "error_message": str(exc),
+            }
+        if result.get("status") != LLM_RUN_STATUS_SUCCESS:
+            message = str(result.get("error_message") or "").strip()
+            suffix = f": {message}" if message else ""
+            print(
+                f"WARNING: LLM semantic extraction for {record['job_id']} finished with "
+                f"status `{result.get('status')}`{suffix}",
+                file=sys.stderr,
+            )
         data = record["json_data"]
         prior_runs = record.get("preserved_runs") or []
+        run_entry = {
+            "run_id": llm_run_id,
+            "model": llm_model,
+            "timestamp": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "status": str(result.get("status") or ""),
+            "dependencies": (
+                list(result.get("dependencies") or [])
+                if isinstance(result.get("dependencies"), list)
+                else []
+            ),
+        }
+        error_message = str(result.get("error_message") or "").strip()
+        if error_message:
+            run_entry["error_message"] = error_message
         data["insights"]["interrelations"][BODY_EXTRACTED_LLM] = prior_runs + [
-            {
-                "model": llm_model,
-                "timestamp": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-                "dependencies": result if isinstance(result, list) else [],
-            }
+            run_entry
         ]
         completed_llm += 1
         if llm_bar is not None:
             llm_bar.update(1)
-        _write(record["output_path"], data, f"{record['job_id']} | LLM {completed_llm}/{submitted_llm}")
+        _write(
+            record["output_path"],
+            data,
+            f"{record['job_id']} | LLM {completed_llm}/{submitted_llm}",
+        )
 
     try:
         for json_file in json_files:
@@ -279,15 +385,21 @@ def enrich(
             raw_json = json.loads(json_file.read_text(encoding="utf-8"))
             raw_llm = (
                 raw_json.get("insights", {})
-                        .get("interrelations", {})
-                        .get(BODY_EXTRACTED_LLM, [])
+                .get("interrelations", {})
+                .get(BODY_EXTRACTED_LLM, [])
             )
-            preserved_runs = _preserved_llm_runs(raw_llm, llm_model, replace_llm_model_runs)
-            json_data = normalize_proposal_document(raw_json, source_context=source_context)
+            preserved_runs = _preserved_llm_runs(
+                raw_llm, llm_model, replace_llm_model_runs
+            )
+            json_data = normalize_proposal_document(
+                raw_json, source_context=source_context
+            )
             preamble = json_data.get("raw", {}).get("preamble", {})
             id_value = str(preamble.get(id_field, ""))
 
-            if focus is not None and not _in_focus(_proposal_number(preamble, id_field), id_value, focus):
+            if focus is not None and not _in_focus(
+                _proposal_number(preamble, id_field), id_value, focus
+            ):
                 if progress_callback is not None:
                     progress_callback(json_file.name, 1)
                 if local_progress:
@@ -319,17 +431,21 @@ def enrich(
                 source_context,
             )
             json_data["insights"]["word_list"] = base_insights["word_list"]
-            json_data["insights"]["interrelations"].update(base_insights["interrelations"])
+            json_data["insights"]["interrelations"].update(
+                base_insights["interrelations"]
+            )
 
             output_path = preprocess_dir / json_file.name
 
             if not llm_enabled or executor is None:
-                json_data["insights"]["interrelations"][BODY_EXTRACTED_LLM] = preserved_runs
+                json_data["insights"]["interrelations"][BODY_EXTRACTED_LLM] = (
+                    preserved_runs
+                )
                 _write(output_path, json_data, output_path.name)
                 continue
 
             future = executor.submit(
-                llm_extract_implicit_dependencies,
+                llm_extract_semantic_dependencies,
                 text=llm_content,
                 current_proposal_number=proposal_number,
                 api_key=api_key,

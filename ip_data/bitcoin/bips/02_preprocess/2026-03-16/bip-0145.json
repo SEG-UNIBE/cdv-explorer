@@ -609,6 +609,15 @@
         "author": "Luke Dashjr",
         "path": "bip-segwit-gbt.mediawiki",
         "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0145.mediawiki",
+        "status": "Draft",
         "standard": "bip2"
       },
       {
@@ -652,32 +661,34 @@
       ],
       "body_extracted_llm": [
         {
+          "run_id": "2026-06-30T11:41:56Z_gpt-5.4-mini_ffcd38ac",
           "model": "gpt-5.4-mini",
-          "timestamp": "2026-06-11T08:58:39Z",
+          "timestamp": "2026-06-30T11:43:36Z",
+          "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
-              "evidence": "the template's \"rules\" list (see BIP 9) includes \"segwit\"",
-              "reason": "The proposal relies on BIP 9 rule signaling semantics to determine when segregated witness is active in templates.",
-              "confidence": "low"
+              "evidence": "see [[bip-0009.mediawiki#getblocktemplate_changes|BIP 9]]) includes \"segwit\"",
+              "reason": "Template inclusion and activation behavior depend on the BIP 9 version-bits rule state for 'segwit'.",
+              "confidence": "high"
             },
             {
               "target": "bips:22",
-              "evidence": "modifications to the getblocktemplate JSON-RPC call (BIP 22)",
-              "reason": "This proposal directly amends the getblocktemplate protocol defined by BIP 22.",
-              "confidence": "low"
+              "evidence": "This BIP describes modifications to the getblocktemplate JSON-RPC call ([[bip-0022.mediawiki|BIP 22]])",
+              "reason": "The proposal directly amends the getblocktemplate protocol defined by BIP 22, so implementing it depends on that base specification.",
+              "confidence": "high"
             },
             {
               "target": "bips:23",
-              "evidence": "see BIP 23 Mutations",
-              "reason": "The coinbase commitment placement rule depends on BIP 23 mutation support and its generation mutability semantics.",
-              "confidence": "low"
+              "evidence": "see [[bip-0023.mediawiki#Mutations|BIP 23 Mutations]]",
+              "reason": "The coinbase commitment placement rules depend on BIP 23's mutation mechanism for allowing generation transaction modification.",
+              "confidence": "high"
             },
             {
               "target": "bips:141",
-              "evidence": "support segregated witness as defined by BIP 141",
-              "reason": "The proposal extends getblocktemplate to convey witness-specific block data and consensus-derived limits introduced by BIP 141.",
-              "confidence": "low"
+              "evidence": "to support segregated witness as defined by [[bip-0141.mediawiki|BIP 141]].",
+              "reason": "The proposal is designed around Segregated Witness and reuses BIP 141's block structure, commitment, sigop, and weight semantics.",
+              "confidence": "high"
             }
           ]
         }

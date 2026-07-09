@@ -171,4 +171,3 @@ def _build_source_scaffold(
             "regimes": [],
         },
     }
-

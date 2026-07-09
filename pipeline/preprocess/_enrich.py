@@ -286,7 +286,9 @@ def enrich(
             f"{llm_run_created_at}_{str(llm_model or '').strip()}_{uuid4().hex[:8]}"
         )
         if analysis_snapshot_dir is not None:
-            manifest_path = analysis_snapshot_dir / f"{src_config['document_prefix']}_llm_runs.json"
+            manifest_path = (
+                analysis_snapshot_dir / f"{src_config['document_prefix']}_llm_runs.json"
+            )
             _append_llm_manifest_run(
                 manifest_path,
                 build_llm_semantic_dependency_manifest_record(
@@ -361,7 +363,9 @@ def enrich(
         error_message = str(result.get("error_message") or "").strip()
         if error_message:
             run_entry["error_message"] = error_message
-        data["insights"]["interrelations"][BODY_EXTRACTED_LLM] = prior_runs + [run_entry]
+        data["insights"]["interrelations"][BODY_EXTRACTED_LLM] = prior_runs + [
+            run_entry
+        ]
         completed_llm += 1
         if llm_bar is not None:
             llm_bar.update(1)

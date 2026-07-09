@@ -21,9 +21,7 @@ def resolve_latest_snapshot_label(artifact_root: Path | None = None) -> str | No
         return None
 
     dated_snapshots = sorted(
-        path.name
-        for path in root.iterdir()
-        if path.is_dir() and path.name != "latest"
+        path.name for path in root.iterdir() if path.is_dir() and path.name != "latest"
     )
     return dated_snapshots[-1] if dated_snapshots else None
 
@@ -73,9 +71,7 @@ def resolve_dependency_metrics_artifact(snapshot: str | None = None) -> Path:
 
 
 def resolve_authorship_metrics_artifact(snapshot: str | None = None) -> Path:
-    return _resolve_analysis_artifact(
-        snapshot, "authorship", "authorship_metrics.json"
-    )
+    return _resolve_analysis_artifact(snapshot, "authorship", "authorship_metrics.json")
 
 
 def resolve_authorship_payload_artifact(snapshot: str | None = None) -> Path:

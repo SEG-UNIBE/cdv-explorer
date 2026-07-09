@@ -214,4 +214,3 @@ def snapshots_remove(
     console.print(
         f"[green]Removed {len(targets)} generated snapshot director{'y' if len(targets) == 1 else 'ies'}.[/green]"
     )
-

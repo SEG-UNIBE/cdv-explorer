@@ -308,9 +308,12 @@ class ArtifactRebuildTests(unittest.TestCase):
                 },
             }
 
-            with patch.dict(
-                "ecosystems.ECOSYSTEM_REGISTRY", {"bitcoin": eco}, clear=True
-            ), patch("cli.pipeline._run_source_pipeline") as run_source_pipeline:
+            with (
+                patch.dict(
+                    "ecosystems.ECOSYSTEM_REGISTRY", {"bitcoin": eco}, clear=True
+                ),
+                patch("cli.pipeline._run_source_pipeline") as run_source_pipeline,
+            ):
                 result = runner.invoke(
                     app,
                     [

@@ -92,9 +92,7 @@ def _failed_llm_model_focus(
             continue
 
         model_runs = [
-            run
-            for run in raw_llm
-            if str(run.get("model") or "").strip() == llm_model
+            run for run in raw_llm if str(run.get("model") or "").strip() == llm_model
         ]
         if not model_runs:
             continue

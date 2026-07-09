@@ -16,6 +16,7 @@ except ImportError:
             super().__init__(*args)
             self.response = response
 
+
 LLM_RATE_LIMIT_MAX_ATTEMPTS = 4
 LLM_RATE_LIMIT_WAIT_SECONDS = 1.5
 
@@ -34,8 +35,11 @@ def _call_with_rate_limit_retry(fn: Callable[[], Any]) -> Any:
                 if retry_after:
                     wait = max(wait, float(retry_after))
             except (AttributeError, TypeError, ValueError):
+                # Missing/malformed response or Retry-After header: keep default backoff.
                 pass
             time.sleep(wait)
+    raise RuntimeError("Unreachable: retry loop exited without returning or raising")
+
 
 from analysis.proposal_schema import (
     LLM_RUN_STATUS_API_ERROR,

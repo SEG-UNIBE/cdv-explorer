@@ -33,9 +33,7 @@ def _build_file_manifest(harvest_root: Path, src: dict) -> dict:
             continue
         stem = path.stem
         id_part = (
-            stem[len(prefix) + 1 :]
-            if stem.lower().startswith(f"{prefix}-")
-            else stem
+            stem[len(prefix) + 1 :] if stem.lower().startswith(f"{prefix}-") else stem
         )
         try:
             id_key = str(int(id_part))
@@ -328,4 +326,3 @@ def run(
         _rebuild_combined_source_artifacts(eco_slug, eco, snapshot)
         elapsed = time.monotonic() - run_started
         console.print(f"\n[green]All sources done in {elapsed:.1f}s[/green]")
-

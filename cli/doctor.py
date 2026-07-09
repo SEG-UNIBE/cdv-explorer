@@ -330,4 +330,3 @@ def doctor() -> None:
 
     console.print("[red]Doctor found blocking issues.[/red]")
     raise typer.Exit(1)
-

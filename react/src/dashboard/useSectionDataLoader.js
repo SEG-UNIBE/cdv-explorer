@@ -42,7 +42,7 @@ export function useSectionDataLoader({
       fetchSectionDataForSelection(ecosystemId, selectedSnapshot, orderedSelectedSourceIds, field)
         .then(store)
         .catch((error) => {
-          console.error(`Failed to load ${field} payload for ${selectionKey}`, error);
+          console.error('Failed to load %s payload for %s', field, selectionKey, error);
           // Mark the section ready anyway so it renders its empty state
           // instead of a permanent loading placeholder.
           store(null);

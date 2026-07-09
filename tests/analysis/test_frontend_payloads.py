@@ -58,7 +58,9 @@ class TestTrimConformityChecks(TestCase):
         self.assertEqual(row["formal_compliance"]["bip2"]["total_checks"], 2)
         self.assertEqual(trimmed["check_summary"], metrics["check_summary"])
         # The input payload is not mutated (Stage III artifacts share it).
-        original_checks = metrics["per_proposal"][0]["formal_compliance"]["bip2"]["checks"]
+        original_checks = metrics["per_proposal"][0]["formal_compliance"]["bip2"][
+            "checks"
+        ]
         self.assertEqual(len(original_checks), 2)
         self.assertIn("category", original_checks[0])
 

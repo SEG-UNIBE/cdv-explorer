@@ -104,8 +104,6 @@ GROUND_TRUTH_WORKBOOK_SHEETS = (
 _XLSX_MAIN_NS = "http://schemas.openxmlformats.org/spreadsheetml/2006/main"
 _XLSX_REL_NS = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
 _XLSX_PKG_REL_NS = "http://schemas.openxmlformats.org/package/2006/relationships"
-_XLSX_NAMESPACES = {"x": _XLSX_MAIN_NS, "r": _XLSX_REL_NS, "pr": _XLSX_PKG_REL_NS}
-_XLSX_MAIN_NS_STRICT = "http://purl.oclc.org/ooxml/spreadsheetml/main"
 _XLSX_REL_NS_STRICT = "http://purl.oclc.org/ooxml/officeDocument/relationships"
 
 

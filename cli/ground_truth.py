@@ -56,7 +56,9 @@ def _density_basis_description(value: str) -> str:
 def _payload_snapshot_labels_with_networks(postprocess_root: Path) -> list[str]:
     labels: list[str] = []
     for snapshot in _snapshot_labels(postprocess_root):
-        network_path = postprocess_root / snapshot / "dependencies" / "network_data.json"
+        network_path = (
+            postprocess_root / snapshot / "dependencies" / "network_data.json"
+        )
         if network_path.exists():
             labels.append(snapshot)
     return labels
@@ -374,4 +376,3 @@ def ground_truth_sample_ips(
         console.print(
             "[yellow]No new IPs were added. The reviewed set already covers the available candidates.[/yellow]"
         )
-

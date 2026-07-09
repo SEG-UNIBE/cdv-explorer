@@ -294,7 +294,9 @@ def prepare_combined_source_artifacts(
             _save_json(authorship_metrics, authorship_path)
             authorship_payload = prepare_authorship_payload(network_data)
 
-            emit(f"{combo_key}: preparing non-mergeable section placeholders", advance=1)
+            emit(
+                f"{combo_key}: preparing non-mergeable section placeholders", advance=1
+            )
             classification_payload = _combined_placeholder_payload(
                 snapshot, combo_key, combo, "classification"
             )
@@ -604,9 +606,7 @@ def prepare_ecosystem_artifacts(
     saved_paths.update(
         {
             "network_json": payload_paths["payload_network_data_json"],
-            "dependency_metrics_json": payload_paths[
-                "payload_dependency_metrics_json"
-            ],
+            "dependency_metrics_json": payload_paths["payload_dependency_metrics_json"],
             "authorship_payload_json": payload_paths["payload_authorship_payload_json"],
             "classification_json": payload_paths["payload_classification_payload_json"],
             "evolution_json": payload_paths["payload_evolution_payload_json"],

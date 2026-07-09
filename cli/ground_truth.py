@@ -141,6 +141,7 @@ def ground_truth_sample_ips(
     )
     from analysis.validation import (
         reviewed_ip_policy_for_ecosystem,
+        reviewed_ip_source_policies,
         validate_ground_truth_ips_file,
     )
 
@@ -161,6 +162,7 @@ def ground_truth_sample_ips(
         source = _prompt_choice("Source", available_sources)
     src = _get_source(eco, source)
     reviewed_ip_policy = reviewed_ip_policy_for_ecosystem(ecosystem)
+    source_policies = reviewed_ip_source_policies(reviewed_ip_policy)
 
     available_snapshots = _payload_snapshot_labels_with_networks(
         Path(str(src["postprocess"]))
@@ -224,13 +226,9 @@ def ground_truth_sample_ips(
             else 2
         )
     if proposal_type is None:
-        default_proposal_type = ""
-        if reviewed_ip_policy and source in set(
-            reviewed_ip_policy.get("allowed_source_slugs", ())
-        ):
-            default_proposal_type = str(
-                reviewed_ip_policy.get("required_type") or ""
-            ).strip()
+        default_proposal_type = str(
+            source_policies.get(source, {}).get("required_type") or ""
+        ).strip()
         proposal_type = (
             typer.prompt(
                 "Restrict to proposal type (optional)",
@@ -256,25 +254,18 @@ def ground_truth_sample_ips(
             replace = False
 
     policy_warnings: list[str] = []
-    if reviewed_ip_policy:
-        allowed_source_slugs = {
-            str(value).strip()
-            for value in reviewed_ip_policy.get("allowed_source_slugs", ())
-            if str(value).strip()
-        }
-        required_type = str(reviewed_ip_policy.get("required_type") or "").strip()
-        if allowed_source_slugs and source not in allowed_source_slugs:
+    if source_policies:
+        required_type = str(
+            source_policies.get(source, {}).get("required_type") or ""
+        ).strip()
+        if source not in source_policies:
             policy_warnings.append(
-                f"Current GT policy for `{ecosystem}` expects source `{', '.join(sorted(allowed_source_slugs))}`, but you selected `{source}`."
+                f"Current GT policy for `{ecosystem}` expects source `{', '.join(sorted(source_policies))}`, but you selected `{source}`."
             )
-        if (
-            required_type
-            and source in allowed_source_slugs
-            and proposal_type != required_type
-        ):
+        elif required_type and proposal_type != required_type:
             selected_type = proposal_type or "no type filter"
             policy_warnings.append(
-                f"Current GT policy for `{ecosystem}` expects proposal type `{required_type}`, but this run uses `{selected_type}`."
+                f"Current GT policy for `{ecosystem}` expects proposal type `{required_type}` for source `{source}`, but this run uses `{selected_type}`."
             )
 
     if interactive:
@@ -298,14 +289,12 @@ def ground_truth_sample_ips(
             "  Pending append workbook: "
             + ("replace ips_append.xlsx" if replace else "append to ips_append.xlsx")
         )
-        if reviewed_ip_policy:
-            policy_bits = []
-            if reviewed_ip_policy.get("allowed_source_slugs"):
-                policy_bits.append(
-                    f"source in {', '.join(reviewed_ip_policy['allowed_source_slugs'])}"
-                )
-            if reviewed_ip_policy.get("required_type"):
-                policy_bits.append(f"type = {reviewed_ip_policy['required_type']}")
+        if source_policies:
+            policy_bits = [f"source in {', '.join(sorted(source_policies))}"]
+            for slug, source_policy in sorted(source_policies.items()):
+                required_type = str(source_policy.get("required_type") or "").strip()
+                if required_type:
+                    policy_bits.append(f"{slug} type = {required_type}")
             console.print(f"  GT policy: {'; '.join(policy_bits)}")
         for warning in policy_warnings:
             console.print(f"  [yellow]Warning:[/yellow] {warning}")

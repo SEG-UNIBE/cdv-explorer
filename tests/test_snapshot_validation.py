@@ -228,7 +228,8 @@ class SnapshotValidationTests(unittest.TestCase):
                     [
                         "ip\treviewer\treviewed_at\tsampling_strategy\tdensity_bucket\tdensity_basis\tcreated\ttype",
                         "bips:44\trbo\t2026-06-22\tsampler\tlow\tall_methods\t2014-04-24\tSpecification",
-                        "slips:55\trbo\t2026-06-22\tmanual\t-\t-\t2015-01-01\tWallet",
+                        "slips:55\trbo\t2026-06-22\tmanual\t-\t-\t2015-01-01\tStandard",
+                        "bolts:2\trbo\t2026-06-22\tmanual\t-\t-\t2019-03-01\tStandard",
                         "bips:78\trbo\t2026-06-22\tmanual\t-\t-\t2018-12-01\tInformational",
                     ]
                 ),
@@ -247,6 +248,11 @@ class SnapshotValidationTests(unittest.TestCase):
                         "reference_pattern": r"\bSLIP[-#\s]?(\d+)\b",
                         "max_proposal_id": 9999,
                     },
+                    "bolts": {
+                        "proposal_acronym": "BOLT",
+                        "reference_pattern": r"\bBOLT[-#\s]?(\d+)\b",
+                        "max_proposal_id": 9999,
+                    },
                 }
             }
 
@@ -262,8 +268,12 @@ class SnapshotValidationTests(unittest.TestCase):
         self.assertTrue(result.ok)
         self.assertEqual("⚠️ policy", result.file_status["reviewed_ips"])
         warning_text = "\n".join(result.warnings)
-        self.assertIn("expects source `bips`", warning_text)
-        self.assertIn("expects proposal type `Specification`", warning_text)
+        self.assertIn("expects source `bips, slips`", warning_text)
+        self.assertIn("bolts:2", warning_text)
+        self.assertIn(
+            "expects proposal type `Specification` for source `bips`", warning_text
+        )
+        self.assertNotIn("slips:55", warning_text)
 
     def test_ground_truth_validation_rejects_inconsistent_review_scope_dates_and_timeline(
         self,

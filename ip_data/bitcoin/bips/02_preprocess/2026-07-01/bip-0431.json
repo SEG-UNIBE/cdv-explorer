@@ -792,15 +792,15 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:12:37Z",
+          "timestamp": "2026-07-09T08:00:30Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:125",
               "evidence": "A TRUC transaction signals replaceability, even if it does not signal BIP125 replaceability.",
-              "reason": "The proposal explicitly defines TRUC replaceability semantics in relation to and as an override of BIP125 signaling, materially constraining how replacement signaling is interpreted.",
+              "reason": "The proposal defines TRUC replaceability semantics in direct relation to and as an override of BIP125 signaling behavior, so understanding implementation requires BIP125's replaceability concept.",
               "confidence": "high"
             }
           ]

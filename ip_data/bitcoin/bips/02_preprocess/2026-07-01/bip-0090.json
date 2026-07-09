@@ -610,27 +610,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:10:48Z",
+          "timestamp": "2026-07-09T07:57:42Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:34",
               "evidence": "replace the test which governs enforcement of BIP 34",
-              "reason": "The proposal directly modifies the activation and enforcement mechanism for BIP 34 by replacing its lookback-based trigger with a fixed activation height while preserving its consensus rule.",
+              "reason": "The proposal directly modifies the activation and enforcement logic for BIP 34 by hardcoding its activation height and replacing its historical lookback-based trigger.",
               "confidence": "low"
             },
             {
               "target": "bips:65",
               "evidence": "replace the test which governs enforcement of BIP 34, BIP 65, and BIP 66",
-              "reason": "The proposal directly modifies how BIP 65 enforcement is triggered, substituting fixed-height activation for the original signaling-based mechanism.",
+              "reason": "The proposal directly modifies the activation and enforcement logic for BIP 65 by hardcoding its activation height and using that height to enable CHECKLOCKTIMEVERIFY.",
               "confidence": "low"
             },
             {
               "target": "bips:66",
               "evidence": "replace the test which governs enforcement of BIP 34, BIP 65, and BIP 66",
-              "reason": "The proposal directly modifies how BIP 66 enforcement is triggered, substituting fixed-height activation for the original signaling-based mechanism.",
+              "reason": "The proposal directly modifies the activation and enforcement logic for BIP 66 by hardcoding its activation height and using that height to enable DERSIG enforcement.",
               "confidence": "low"
             }
           ]

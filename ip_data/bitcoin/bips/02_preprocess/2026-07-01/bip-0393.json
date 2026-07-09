@@ -526,11 +526,30 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:12:36Z",
+          "timestamp": "2026-07-09T08:00:30Z",
           "status": "success",
-          "dependencies": []
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "for BIP 32 derived-key wallets",
+              "reason": "The defined gl annotation is specifically given semantics in the context of BIP 32 derived-key wallet scanning.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:352",
+              "evidence": "for BIP 352 silent payment wallets",
+              "reason": "The defined ml annotation is specifically designed around BIP 352 wallet label scanning semantics.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:380",
+              "evidence": "optional annotation syntax for output script descriptors as defined in BIP 380",
+              "reason": "The proposal extends BIP 380 descriptors with annotation syntax and reuses its descriptor format and checksum rules.",
+              "confidence": "low"
+            }
+          ]
         }
       ]
     }

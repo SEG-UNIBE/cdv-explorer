@@ -610,15 +610,15 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:11:35Z",
+          "timestamp": "2026-07-09T07:58:34Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:151",
               "evidence": "Authentication initialization must only happen if encrypted channels have been established (according to BIP-151 [1]).",
-              "reason": "The proposal normatively requires encrypted channels and reuses BIP 151's encryption-session-ID and re-keying process as the basis for its authentication protocol.",
+              "reason": "The proposal normatively requires encrypted channels from BIP 151 before authentication can begin, and it reuses BIP 151's encryption-session-ID and re-keying mechanism.",
               "confidence": "high"
             }
           ]

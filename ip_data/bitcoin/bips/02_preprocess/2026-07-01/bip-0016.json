@@ -687,15 +687,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:10:05Z",
+          "timestamp": "2026-07-09T07:56:38Z",
           "status": "success",
           "dependencies": [
             {
+              "target": "bips:11",
+              "evidence": "M-of-N Multisignature Transactions [[bip-0011.mediawiki|BIP 11]]",
+              "reason": "The proposal constrains redeemed scripts to be standard transaction types and is motivated by supporting multisignature transactions, making the standard multisignature form a reused redeemScript target.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:12",
+              "evidence": "This BIP replaces BIP 12, which proposed a new Script opcode (\"OP_EVAL\") to accomplish everything in this BIP and more.",
+              "reason": "The proposal is defined as a replacement for the earlier proposal addressing the same mechanism, making BIP 12 a substantive technical predecessor considered directly in this design.",
+              "confidence": "medium"
+            },
+            {
               "target": "bips:13",
-              "evidence": "BIP 13, the pay-to-script-hash address type",
-              "reason": "The proposal is designed alongside the pay-to-script-hash address format, explicitly naming it as the address type for the same mechanism.",
+              "evidence": "The Motivation for this BIP (and BIP 13, the pay-to-script-hash address type)",
+              "reason": "The proposal is designed alongside the pay-to-script-hash address format, which provides the address representation for the new script-hash output type introduced here.",
               "confidence": "medium"
             }
           ]

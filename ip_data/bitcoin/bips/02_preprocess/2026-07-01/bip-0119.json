@@ -1289,27 +1289,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:11:12Z",
+          "timestamp": "2026-07-09T07:58:05Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:65",
               "evidence": "Similar soft forks for OP_CHECKSEQUENCEVERIFY and OP_CHECKLOCKTIMEVERIFY (see BIP-0065 and BIP-0112) have similarly changed OP_NOP semantics",
-              "reason": "The proposal is designed around the same OP_NOP-to-stricter-semantics soft-fork mechanism previously used by BIP-65.",
+              "reason": "The proposal is designed around the same OP_NOP-to-enforced-opcode soft-fork semantic transition pattern used by BIP-65.",
               "confidence": "medium"
             },
             {
               "target": "bips:112",
               "evidence": "Similar soft forks for OP_CHECKSEQUENCEVERIFY and OP_CHECKLOCKTIMEVERIFY (see BIP-0065 and BIP-0112) have similarly changed OP_NOP semantics",
-              "reason": "The proposal is designed around the same OP_NOP-to-stricter-semantics soft-fork mechanism previously used by BIP-112.",
+              "reason": "The proposal is designed around the same OP_NOP-to-enforced-opcode soft-fork semantic transition pattern used by BIP-112.",
               "confidence": "medium"
             },
             {
               "target": "bips:341",
               "evidence": "The same value is also pre-computed for and defined in BIP-341 and can be shared.",
-              "reason": "The proposal explicitly reuses BIP-341-defined transaction precomputed hash components for sequences and outputs in its hash construction and implementation strategy.",
+              "reason": "The proposal explicitly reuses BIP-341's precomputed transaction hash components for sequences and outputs in its template-hash computation.",
               "confidence": "high"
             }
           ]

@@ -782,39 +782,45 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:12:44Z",
+          "timestamp": "2026-07-09T08:00:40Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:340",
               "evidence": "attempt the BIP340 even-Y lift",
-              "reason": "The proposal normatively reuses BIP340's x-only key semantics and even-Y lift procedure for opcode behavior and failure conditions.",
+              "reason": "The opcode's core semantics explicitly use BIP340's x-only key encoding and even-Y lift, so implementing and understanding it depends on that rule.",
               "confidence": "high"
             },
             {
               "target": "bips:341",
-              "evidence": "derive BIP341-compatible Taproot output keys entirely on-chain",
-              "reason": "The proposal is explicitly designed around Taproot's tweak model and tapscript/Taproot context, including compatibility with BIP341-style output key derivation.",
+              "evidence": "Constructions that require a BIP341 tweak",
+              "reason": "The proposal is designed around Taproot's tweak model and repeatedly frames compatibility and use in terms of BIP341-style Taproot tweaks and output keys.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:342",
+              "evidence": "Only valid in tapscript (witness version 1, leaf version 0xc0)",
+              "reason": "The proposal is tapscript-only and defines opcode behavior within the tapscript execution context, relying on that script version and environment.",
               "confidence": "high"
             },
             {
               "target": "bips:348",
-              "evidence": "composes `OP_TWEAKADD` with BIP 348 `OP_CHECKSIGFROMSTACK`",
-              "reason": "Illustrative constructions materially rely on the target opcode to consume derived keys and signatures in script workflows built around OP_TWEAKADD.",
-              "confidence": "medium"
+              "evidence": "compose `OP_TWEAKADD` with BIP 348 `OP_CHECKSIGFROMSTACK`",
+              "reason": "Several concrete constructions are explicitly built by composing the new opcode with BIP 348's opcode, indicating technical interoperability for those workflows.",
+              "confidence": "low"
             },
             {
               "target": "bips:349",
               "evidence": "BIP 349 `OP_INTERNALKEY`",
-              "reason": "Illustrative constructions use the target opcode to obtain the Taproot internal key that OP_TWEAKADD then modifies, creating a concrete compositional dependency for those workflows.",
+              "reason": "Concrete script constructions explicitly use BIP 349 together with OP_TWEAKADD to obtain and tweak the internal key inside script.",
               "confidence": "medium"
             },
             {
               "target": "bips:442",
               "evidence": "BIP 442 `OP_PAIRCOMMIT` is purpose-built for pair commitments",
-              "reason": "The proposal includes a substantive comparison where Merkleized constructions using OP_TWEAKADD are evaluated against the dedicated pair-commitment mechanism of the target proposal.",
+              "reason": "The proposal evaluates one of its Merkleized constructions directly against BIP 442's dedicated opcode, making that target relevant to assessing this proposal's tree-commitment design space.",
               "confidence": "low"
             }
           ]

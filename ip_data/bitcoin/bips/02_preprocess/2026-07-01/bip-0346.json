@@ -694,33 +694,33 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:12:11Z",
+          "timestamp": "2026-07-09T07:59:35Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:118",
               "evidence": "The 1-byte TxFieldSelector format explicitly supports these modes.",
-              "reason": "The proposal is explicitly designed to emulate and support the signature hash modes defined by BIP-118, incorporating those semantics into its selector format.",
+              "reason": "The proposal is designed to emulate and support the signature hash modes defined in BIP-118, reusing its sighash semantics as a target compatibility set.",
               "confidence": "high"
             },
             {
               "target": "bips:119",
               "evidence": "making this proposal a generalization of BIP-119",
-              "reason": "The proposal reuses and generalizes the semantics of BIP-119's transaction template hash via its default empty TxFieldSelector behavior.",
+              "reason": "The empty TxFieldSelector is specified to produce a semantically equivalent hash to BIP-119's OP_CHECKTEMPLATEVERIFY, so this proposal directly generalizes that mechanism.",
               "confidence": "high"
             },
             {
               "target": "bips:342",
               "evidence": "Using the same validation budget (\"sigops budget\") introduced in BIP-0342",
-              "reason": "The proposal relies on tapscript-only execution and reuses BIP-342's OP_SUCCESS semantics and validation budget model for opcode activation and resource limits.",
+              "reason": "The proposal relies on tapscript context and reuses BIP-342's OP_SUCCESS mechanism and validation budget model for activation and resource limits.",
               "confidence": "high"
             },
             {
               "target": "bips:348",
               "evidence": "Together with `OP_CHECKSIGFROMSTACK`, `OP_TXHASH` provides a fully generalized signature hash construction",
-              "reason": "The proposal is materially designed to operate with BIP-348 to realize generalized signature hashing and emulate existing and proposed sighash modes.",
+              "reason": "The proposal is explicitly intended to combine with BIP-348 to realize generalized signature hashing and emulate modes like ANYPREVOUT.",
               "confidence": "high"
             }
           ]

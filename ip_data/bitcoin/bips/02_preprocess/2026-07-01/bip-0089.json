@@ -830,34 +830,34 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:10:49Z",
+          "timestamp": "2026-07-09T07:57:44Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
-              "evidence": "Run the BIP32 non-hardened derivation ''CKDpub'' on ''E'' with child index ''i''",
-              "reason": "The proposal's core tweak computation explicitly reuses BIP32 non-hardened public child derivation and its scalar tweak semantics.",
-              "confidence": "high"
+              "evidence": "Run the BIP32 non-hardened derivation CKDpub on E with child index i",
+              "reason": "The proposal's core tweak computation and delegation model directly reuse BIP32 non-hardened public derivation semantics and tweak values.",
+              "confidence": "low"
             },
             {
               "target": "bips:327",
               "evidence": "The notation, algorithmic patterns, and test-vector style are adapted from [BIP‑327 (MuSig2)]",
-              "reason": "The blind-signing specification reuses algorithmic patterns and notation from BIP327 in a substantive way for its protocol design.",
+              "reason": "The blinded signing protocol reuses algorithmic structure and conventions from the target for its nonce, tweak, and session handling patterns.",
               "confidence": "low"
             },
             {
               "target": "bips:340",
               "evidence": "Both modes produce valid BIP340 signatures.",
-              "reason": "The signing and blind-signing procedures are defined to output and verify BIP340 Schnorr signatures, relying on that signature format and challenge semantics.",
+              "reason": "The signing protocols are defined to output and verify BIP340 Schnorr signatures, reusing its signature format and challenge semantics.",
               "confidence": "high"
             },
             {
               "target": "bips:341",
-              "evidence": "Consequently the protocol is compatible with [https://github.com/bitcoin/bips/blob/master/bip-0341.mediawiki BIP341].",
-              "reason": "The blinded signing design is explicitly built to support X-only tweaks such as Tapscript tweaks, making compatibility with BIP341 a technical design target.",
-              "confidence": "medium"
+              "evidence": "Consequently the protocol is compatible with BIP341.",
+              "reason": "The blinded signing mode is explicitly designed around X-only tweak application exemplified by Tapscript tweaks, making compatibility with BIP341 a stated technical design goal.",
+              "confidence": "low"
             }
           ]
         }

@@ -890,27 +890,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:10:25Z",
+          "timestamp": "2026-07-09T07:57:06Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:16",
               "evidence": "The accounting is the same as for [bip-0016][BIP16 specs]",
-              "reason": "The signature-operation limit directly reuses BIP16's sigop counting semantics, including separate accounting over scriptSig, scriptPubKey, and P2SH redeemScript.",
+              "reason": "The proposal explicitly reuses BIP16's signature operation counting semantics, including evaluation of scriptSig, scriptPubKey, and redeemScript.",
               "confidence": "high"
             },
             {
               "target": "bips:30",
               "evidence": "avoid duplicate transactions without [bip-0030][BIP30] validation",
-              "reason": "The proposal is designed to eliminate the need for the duplicate-transaction validation rule defined by BIP30, and its coinbase uniqueness rules are specified in relation to skipping that check.",
+              "reason": "A core part of the proposal is designed to eliminate the need for BIP30 duplicate-transaction validation by introducing alternate consensus constraints.",
               "confidence": "high"
             },
             {
               "target": "bips:34",
               "evidence": "Since [bip-0034][BIP34] activation, explicit [bip-0030][BIP30] validation is not necessary",
-              "reason": "The proposal's coinbase uniqueness rationale and deployment assumptions explicitly rely on the post-BIP34 regime and on differentiating coinbases from early BIP34 violations.",
+              "reason": "The proposal's duplicate-coinbase logic and rationale are framed around and constrained by BIP34's activation and prior violations, which it explicitly uses to define when BIP30 can be skipped.",
               "confidence": "high"
             }
           ]

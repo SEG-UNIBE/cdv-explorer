@@ -548,33 +548,39 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:12:37Z",
+          "timestamp": "2026-07-09T08:00:29Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:341",
               "evidence": "The output scripts produced are BIP341 taproot outputs",
-              "reason": "The proposal's produced scripts are specifically Taproot outputs and therefore rely on the output type defined by BIP341.",
+              "reason": "The proposal's generated scripts are specifically BIP341 taproot outputs, so its output semantics depend on that script type.",
               "confidence": "high"
+            },
+            {
+              "target": "bips:350",
+              "evidence": "It is a Bech32m encoding of:",
+              "reason": "The new spscan and spspend key expression encodings are defined using Bech32m, relying on that encoding format.",
+              "confidence": "low"
             },
             {
               "target": "bips:352",
               "evidence": "describe P2TR outputs when combined with sender input public keys as defined in BIP352",
-              "reason": "The proposal is designed around silent payments semantics, key material, serialization, derivation recommendations, and output construction defined by BIP352.",
+              "reason": "The proposal is explicitly designed around silent payments semantics, key material, serialization, and derivation-path recommendations defined in BIP352.",
               "confidence": "high"
             },
             {
               "target": "bips:380",
               "evidence": "sp() descriptors use the format and general operation specified in BIP380",
-              "reason": "The proposal defines a new descriptor within and reusing the descriptor syntax and operational framework established by BIP380.",
+              "reason": "The proposal reuses the output descriptor framework and key expression rules from BIP380 for its descriptor syntax and behavior.",
               "confidence": "low"
             },
             {
               "target": "bips:390",
               "evidence": "musig() as defined in BIP390",
-              "reason": "The two-argument form explicitly allows reuse of the musig() key expression format from BIP390 for the spend key.",
+              "reason": "The two-argument form explicitly allows spend keys expressed via musig() from BIP390, making compatibility with that key expression part of the descriptor design.",
               "confidence": "low"
             }
           ]

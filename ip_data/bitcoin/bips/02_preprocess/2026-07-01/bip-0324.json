@@ -1336,21 +1336,21 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:11:54Z",
+          "timestamp": "2026-07-09T07:59:00Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:31",
               "evidence": "the timeout interval for post-[https://github.com/bitcoin/bips/blob/master/bip-0031.mediawiki BIP31] connections",
-              "reason": "BIP31 is referenced only as contextual motivation for a timeout assumption in rationale, not as a mechanism reused or required by the proposal.",
+              "reason": "BIP31 is mentioned only as background for estimating a rekey interval, not as a reused mechanism or requirement.",
               "confidence": "low"
             },
             {
               "target": "bips:340",
               "evidence": "as in BIP340",
-              "reason": "The proposal normatively defines its tagged hash notation by reusing the tagged-hash construction specified in BIP340 for shared secret computation.",
+              "reason": "The proposal normatively defines sha256_tagged using the tagged-hash construction specified by BIP340 and reuses its notation for elliptic-curve operations.",
               "confidence": "low"
             }
           ]

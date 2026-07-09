@@ -692,39 +692,15 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:11:20Z",
+          "timestamp": "2026-07-09T07:58:13Z",
           "status": "success",
           "dependencies": [
             {
-              "target": "bips:65",
-              "evidence": "as explained in [[bip-0065.mediawiki|BIP-65]]",
-              "reason": "The proposal uses BIP-65 as an example and comparison point for absolute timelocks, but does not build its format or rules on BIP-65.",
-              "confidence": "low"
-            },
-            {
               "target": "bips:68",
-              "evidence": "following the rules of [[bip-0068.mediawiki|BIP-68]]",
-              "reason": "The proposal's recovery transaction requires nSequence relative-locktime semantics and calculation defined by BIP-68.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:112",
-              "evidence": "OP_CHECKSEQUENCEVERIFY ([[bip-0112.mediawiki|BIP-112]])",
-              "reason": "BIP-112 is mentioned only in comparison with script-based wallets; the proposal does not reuse or require its script mechanism.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:140",
-              "evidence": "It is important that the ''Alert Transaction'' will be non-malleable (e.g. by using [[bip-0140.mediawiki|BIP-140]])",
-              "reason": "The proposal requires a non-malleable alert transaction and cites BIP-140 as a way to achieve that property, making it a technical design dependency candidate.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:433",
-              "evidence": "P2A addresses (described in [[bip-0433.mediawiki|BIP-433]])",
-              "reason": "BIP-433 is referenced as an optional address type for CPFP anchor addresses, but the proposal explicitly recommends regular addresses instead, so reliance is weak.",
+              "evidence": "following the rules of BIP-68",
+              "reason": "The proposal's recovery transaction uses nSequence relative-locktime semantics defined by BIP-68, including the calculation and limits for the cancellation period.",
               "confidence": "low"
             }
           ]

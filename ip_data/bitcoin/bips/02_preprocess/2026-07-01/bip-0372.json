@@ -652,21 +652,21 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:12:21Z",
+          "timestamp": "2026-07-09T07:59:57Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:174",
               "evidence": "This document proposes additional fields for BIP 174 PSBTv0",
-              "reason": "The proposal explicitly adds new fields to the PSBTv0 format defined by BIP 174, so understanding and implementing it relies on that PSBT specification and field model.",
+              "reason": "The proposal extends PSBTv0 by defining a new per-input field within that format.",
               "confidence": "high"
             },
             {
               "target": "bips:370",
-              "evidence": "and BIP 370 PSBTv2 that allow for pay-to-contract",
-              "reason": "The proposal explicitly extends the PSBTv2 format from BIP 370 with new per-input fields, making it technically dependent on that version's structure and semantics.",
+              "evidence": "and BIP 370 PSBTv2",
+              "reason": "The proposal extends PSBTv2 by defining the same new per-input field for that version.",
               "confidence": "high"
             }
           ]

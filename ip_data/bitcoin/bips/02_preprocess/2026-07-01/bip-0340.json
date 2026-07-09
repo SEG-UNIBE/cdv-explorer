@@ -1273,33 +1273,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:12:05Z",
+          "timestamp": "2026-07-09T07:59:22Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
-              "evidence": "[[bip-0032.mediawiki|BIP32]] and schemes built on top of it remain usable.",
-              "reason": "The proposal is explicitly designed to be compatible with BIP32 key generation and public key formats, including handling unhardened derivation and conversion from compressed BIP32-style public keys.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:118",
-              "evidence": "proposals such as SIGHASH_NOINPUT ([[bip-0118.mediawiki|BIP118]])",
-              "reason": "The proposal's key-prefixing design is motivated to remain secure under semantics introduced by BIP118-like sighash changes, making compatibility with that altered transaction commitment model a stated design assumption.",
-              "confidence": "medium"
+              "evidence": "BIP32 and schemes built on top of it remain usable.",
+              "reason": "The proposal is designed to be compatible with BIP32-derived keys and explicitly specifies public key conversion/usability for that key format and derivation ecosystem.",
+              "confidence": "low"
             },
             {
               "target": "bips:327",
-              "evidence": "such as [https://eprint.iacr.org/2020/1261.pdf MuSig2] ([[bip-0327.mediawiki|BIP327]])",
-              "reason": "The proposal states compatibility with MuSig2 multisignatures and presents the signature scheme as suitable for such constructions, which materially reuse BIP340 signature semantics.",
+              "evidence": "an interactive scheme such as [https://eprint.iacr.org/2020/1261.pdf MuSig2] ([[bip-0327.mediawiki|BIP327]])",
+              "reason": "The proposal states its Schnorr signature scheme is compatible with multisignature schemes such as BIP327, which materially rely on the proposal's signature semantics for aggregated signing.",
               "confidence": "medium"
             },
             {
               "target": "bips:341",
               "evidence": "(as for example done in [[bip-0341.mediawiki|BIP341]].)",
-              "reason": "BIP341 is cited as an example of pre-hashing messages before using this scheme; understanding or implementing BIP340 does not depend on BIP341.",
+              "reason": "The proposal text identifies BIP341 as using the 32-byte message prehashing pattern that this scheme was originally designed around, indicating technical compatibility of signing inputs and usage assumptions.",
               "confidence": "low"
             }
           ]

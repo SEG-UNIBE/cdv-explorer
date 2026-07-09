@@ -645,21 +645,21 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:10:30Z",
+          "timestamp": "2026-07-09T07:57:08Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:34",
               "evidence": "We reuse the double-threshold switchover mechanism from BIP 34, with the same thresholds, but for nVersion = 3.",
-              "reason": "The proposal explicitly adopts BIP 34's block-version activation mechanism and thresholds for deployment.",
+              "reason": "The proposal explicitly adopts BIP 34's activation mechanism and thresholds for deployment of its new consensus rules.",
               "confidence": "high"
             },
             {
               "target": "bips:62",
               "evidence": "This document is extracted from the previous BIP62 proposal",
-              "reason": "The proposal is directly derived from and specializes part of the earlier BIP62 proposal's rules around signature encoding.",
+              "reason": "The proposal is carved out from and reuses the earlier proposal's strict-DER signature rule as its standalone consensus change.",
               "confidence": "high"
             }
           ]

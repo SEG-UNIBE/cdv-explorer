@@ -575,11 +575,30 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:10:15Z",
+          "timestamp": "2026-07-09T07:56:53Z",
           "status": "success",
-          "dependencies": []
+          "dependencies": [
+            {
+              "target": "bips:16",
+              "evidence": "A softfork (see BIP16, BIP34, BIP62) will take place",
+              "reason": "The proposal is explicitly framed as a softfork and points to these BIPs as the relevant softfork mechanism/context it is designed around.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:34",
+              "evidence": "A softfork (see BIP16, BIP34, BIP62) will take place",
+              "reason": "The proposal is explicitly framed as a softfork and points to these BIPs as the relevant softfork mechanism/context it is designed around.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:62",
+              "evidence": "A softfork (see BIP16, BIP34, BIP62) will take place",
+              "reason": "The proposal is explicitly framed as a softfork and points to these BIPs as the relevant softfork mechanism/context it is designed around.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

@@ -642,21 +642,21 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:11:27Z",
+          "timestamp": "2026-07-09T07:58:26Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:13",
-              "evidence": "similar to the BIP13 P2SH address",
-              "reason": "The proposal explicitly models P2WSH address behavior as analogous to the P2SH address format and workflow defined by BIP13.",
+              "evidence": "Considering the BIP13 P2SH address has been defined in 2012, using segwit-in-P2SH allows most existing wallets to pay a segwit-compatible wallet without any upgrade.",
+              "reason": "The proposal is designed around compatibility and comparison with the existing BIP13 P2SH address format as the transition path from older wallets.",
               "confidence": "medium"
             },
             {
               "target": "bips:16",
               "evidence": "Segwit-in-P2SH is a BIP16 P2SH redeemScript with a push of version byte followed by a push of witness program",
-              "reason": "The proposal's rationale and interoperability discussion rely on the BIP16 P2SH redeemScript mechanism for wrapped segwit usage and transition behavior.",
+              "reason": "The proposal's rationale and interoperability framing rely on the BIP16 P2SH redeemScript mechanism for segwit-in-P2SH compatibility.",
               "confidence": "medium"
             },
             {

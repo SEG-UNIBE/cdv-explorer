@@ -656,22 +656,22 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:12:41Z",
+          "timestamp": "2026-07-09T08:00:35Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:340",
               "evidence": "Notation follows [BIP-340], including the tagged hash notation",
-              "reason": "The proposal normatively adopts the target's tagged-hash notation and construction semantics for PairCommit.",
+              "reason": "The proposal directly adopts the target's tagged-hash notation and hash construction semantics for PairCommit.",
               "confidence": "high"
             },
             {
               "target": "bips:342",
-              "evidence": "For taproot script spends with leaf version *0xc0* (see [BIP-342]), `OP_PAIRCOMMIT` replaces `OP_SUCCESS205`",
-              "reason": "The proposal is explicitly defined within tapscript leaf-version semantics introduced by the target and repurposes an OP_SUCCESS opcode in that context.",
-              "confidence": "high"
+              "evidence": "For taproot script spends with leaf version 0xc0 (see [BIP-342]), `OP_PAIRCOMMIT` replaces `OP_SUCCESS205`",
+              "reason": "The proposal defines its opcode semantics specifically within the tapscript leaf-version and OP_SUCCESS framework introduced by the target.",
+              "confidence": "low"
             }
           ]
         }

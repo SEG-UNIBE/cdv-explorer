@@ -833,11 +833,24 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:11:04Z",
+          "timestamp": "2026-07-09T07:58:00Z",
           "status": "success",
-          "dependencies": []
+          "dependencies": [
+            {
+              "target": "bips:9",
+              "evidence": "will be deployed by version-bits [[bip-0009.mediawiki|BIP9]]",
+              "reason": "The proposal specifies activation using the version-bits deployment mechanism defined by BIP9.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "This BIP depends on [[bip-0141.mediawiki|BIP141]]",
+              "reason": "The proposal defines its new witness program semantics and deployment around Segregated Witness rules introduced by BIP141, including witness version handling and P2WSH-like script evaluation context.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

@@ -880,24 +880,11 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:10:51Z",
+          "timestamp": "2026-07-09T07:57:44Z",
           "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:32",
-              "evidence": "a standard for backing up and restoring the master seed of a BIP-0032 hierarchical deterministic wallet using it",
-              "reason": "The proposal is specifically designed to encode, split, and recover BIP-0032 master seeds, so its core format and semantics materially rely on BIP-0032 seed concepts and sizes.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:173",
-              "evidence": "It reuses the base-32 character set from BIP-0173",
-              "reason": "The proposal directly reuses bech32 character set, decoding table, and related string semantics from BIP-0173 as part of its encoding and checksum handling.",
-              "confidence": "high"
-            }
-          ]
+          "dependencies": []
         }
       ]
     }

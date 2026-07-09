@@ -661,27 +661,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:11:44Z",
+          "timestamp": "2026-07-09T07:58:46Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
               "evidence": "Utilizing hierarchical deterministic wallets as described in BIP-0032",
-              "reason": "The proposal defines its derivation scheme and paths using BIP32 hierarchical deterministic wallet semantics and hardened/public derivation behavior.",
+              "reason": "The proposal's key derivation scheme is built on BIP32 paths, hardened derivation, and extended public keys.",
               "confidence": "high"
             },
             {
               "target": "bips:43",
               "evidence": "the \"Purpose Field\" in BIP-0043",
-              "reason": "The proposal uses BIP43's purpose-field convention to assign and interpret purpose 175' for this subtree.",
+              "reason": "The proposal uses BIP43's purpose-field convention to assign purpose 175' and define its subtree semantics.",
               "confidence": "high"
             },
             {
               "target": "bips:44",
               "evidence": "The coin type field is identical to the same field in BIP-0044.",
-              "reason": "The proposal reuses BIP44's coin_type field semantics within its derivation path structure.",
+              "reason": "The proposal adopts BIP44's coin_type field semantics within its derivation path.",
               "confidence": "high"
             }
           ]

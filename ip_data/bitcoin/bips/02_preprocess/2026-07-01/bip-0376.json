@@ -652,60 +652,11 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:12:28Z",
+          "timestamp": "2026-07-09T08:00:00Z",
           "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:32",
-              "evidence": "The master key fingerprint as defined by BIP 32",
-              "reason": "The proposal introduces a Silent Payment spend-key derivation field that reuses BIP 32 fingerprints and derivation paths for signer key retrieval.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:340",
-              "evidence": "The Signer MUST produce a BIP 340 Schnorr signature",
-              "reason": "The signing procedure normatively requires producing signatures according to BIP 340.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:341",
-              "evidence": "as per the BIP 341 key path spending rule",
-              "reason": "The finalization and key verification steps follow BIP 341 Taproot key-path spending semantics.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:352",
-              "evidence": "BIP 352 specifies the Silent Payment protocol",
-              "reason": "The proposal is designed around BIP 352 Silent Payment output creation and spending semantics, including the tweak formula and 33-byte spend keys.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:370",
-              "evidence": "additional per-input fields for BIP 370 PSBTv2",
-              "reason": "The proposal defines new PSBTv2 fields and inclusion/exclusion rules specifically within the BIP 370 PSBTv2 format.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:371",
-              "evidence": "set the result in the PSBT_IN_TAP_KEY_SIG field as defined in BIP 371",
-              "reason": "The proposal relies on the BIP 371 PSBT field definition for carrying the Taproot key-path Schnorr signature.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:374",
-              "evidence": "BIP 375 and complementary BIP 374 specify how to create outputs locked with Silent Payment keys using PSBTs. But they don't specify how to unlock these outputs",
-              "reason": "This proposal complements BIP 374 by extending the PSBT-based Silent Payment workflow to cover unlocking/spending those outputs.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:375",
-              "evidence": "BIP 375 and complementary BIP 374 specify how to create outputs locked with Silent Payment keys using PSBTs. But they don't specify how to unlock these outputs",
-              "reason": "This proposal complements BIP 375 by adding the missing PSBT fields and workflow for spending Silent Payment outputs.",
-              "confidence": "medium"
-            }
-          ]
+          "dependencies": []
         }
       ]
     }

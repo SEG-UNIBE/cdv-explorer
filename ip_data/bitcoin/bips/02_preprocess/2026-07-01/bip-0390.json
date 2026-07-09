@@ -606,11 +606,42 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:12:35Z",
+          "timestamp": "2026-07-09T08:00:28Z",
           "status": "success",
-          "dependencies": []
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "Then further [[bip-0032.mediawiki|BIP-32]] derivation will be performed",
+              "reason": "Ranged musig() expressions apply BIP-32 child derivation rules to aggregate public keys, including the unhardened-only constraint.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:327",
+              "evidence": "produce an aggregate public key using [[bip-0327.mediawiki|BIP-327]]",
+              "reason": "The proposal's musig() expression directly uses MuSig2 aggregation algorithms and semantics defined by BIP-327.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:328",
+              "evidence": "as described in [[bip-0328.mediawiki|BIP-328]]",
+              "reason": "The proposal relies on BIP-328 for how derivation from an aggregate public key is to be performed after aggregation.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:380",
+              "evidence": "KEY refers to key expressions as defined in [[bip-0380.mediawiki|BIP-380]]",
+              "reason": "The proposal reuses BIP-380 descriptor key-expression syntax and general operation as the basis for musig() expressions.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:389",
+              "evidence": "KEY refers to key expressions as defined in [[bip-0380.mediawiki|BIP-380]] and [[bip-0389.mediawiki|BIP-389]]",
+              "reason": "The proposal includes KEY forms defined by BIP-389 as valid inputs to musig(), so its accepted key-expression syntax depends on that extension.",
+              "confidence": "low"
+            }
+          ]
         }
       ]
     }

@@ -1161,45 +1161,45 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:12:12Z",
+          "timestamp": "2026-07-09T07:59:36Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:112",
               "evidence": "a way to enforce relative timelocks, like OP_CHECKSEQUENCEVERIFY",
-              "reason": "The proposal’s canonical vault construction uses relative timelocks in the trigger leaf to enforce spend delays, relying on CHECKSEQUENCEVERIFY semantics.",
+              "reason": "The described vault construction combines OP_VAULT with relative timelocks via OP_CHECKSEQUENCEVERIFY to implement delayed withdrawals.",
               "confidence": "low"
             },
             {
               "target": "bips:119",
               "evidence": "This BIP should be deployed concurrently with BIP-0119 to enable full use of vaults.",
-              "reason": "The proposal’s intended vault workflow relies on OP_CHECKTEMPLATEVERIFY to bind withdrawals to specific outputs, and full use is explicitly tied to concurrent deployment with BIP-119.",
+              "reason": "The proposal is designed around OP_CHECKTEMPLATEVERIFY for binding withdrawals to fixed outputs and explicitly requires concurrent deployment for full vault functionality.",
               "confidence": "high"
             },
             {
               "target": "bips:125",
               "evidence": "per [https://github.com/bitcoin/bips/blob/master/bip-0125.mediawiki BIP-0125]",
-              "reason": "The recovery-transaction policy rules explicitly depend on BIP-125 opt-in replaceability semantics to require recoveries be replaceable.",
+              "reason": "Recovery-transaction policy explicitly depends on BIP-125 opt-in replaceability semantics to prevent pinning attacks.",
               "confidence": "high"
             },
             {
               "target": "bips:340",
               "evidence": "where tagged_hash() is from the [https://github.com/bitcoin/bips/blob/master/bip-0340/reference.py BIP-0340 reference code]",
-              "reason": "OP_VAULT_RECOVER specifies its scriptPubKey commitment hash using the tagged_hash function defined in BIP-340.",
+              "reason": "The proposal defines recovery-output validation using the tagged_hash function specified by BIP-340.",
               "confidence": "low"
             },
             {
               "target": "bips:341",
               "evidence": "a vault is created by encumbering coins under a taptree [https://github.com/bitcoin/bips/blob/master/bip-0341.mediawiki (BIP-341)]",
-              "reason": "The proposal is designed around Taproot taptrees and script-path leaf replacement semantics in witness v1 outputs, so understanding and implementing it depends on BIP-341 structures.",
+              "reason": "The proposal's construction and semantics rely on Taproot taptrees and script-path spending as the container for OP_VAULT and OP_VAULT_RECOVER leaves.",
               "confidence": "high"
             },
             {
               "target": "bips:342",
               "evidence": "Decrement the per-script sigops budget (see [https://github.com/bitcoin/bips/blob/master/bip-0342.mediawiki#resource-limits BIP-0342]) by 60",
-              "reason": "The specification directly reuses tapscript resource-limit semantics from BIP-342 for OP_VAULT evaluation.",
+              "reason": "The specification directly reuses BIP-342 tapscript resource-limit semantics to define OP_VAULT validation.",
               "confidence": "high"
             }
           ]

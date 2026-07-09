@@ -849,39 +849,39 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:12:28Z",
+          "timestamp": "2026-07-09T08:00:20Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:141",
               "evidence": "These specifications apply to P2WSH ([BIP 141](bip-0141.mediawiki))",
-              "reason": "The proposal normatively defines Miniscript for the P2WSH script context introduced by BIP 141.",
+              "reason": "The proposal normatively scopes part of Miniscript to P2WSH scripts, relying on the P2WSH script context defined there.",
               "confidence": "high"
             },
             {
               "target": "bips:342",
-              "evidence": "and Tapscript ([BIP 342](bip-0342.mediawiki)) scripts",
-              "reason": "The proposal normatively defines Miniscript for Tapscript and includes Tapscript-specific fragments and rules based on BIP 342.",
+              "evidence": "These specifications apply to P2WSH ([BIP 141](bip-0141.mediawiki)) and Tapscript ([BIP 342](bip-0342.mediawiki)) scripts",
+              "reason": "The proposal normatively defines Miniscript behavior for Tapscript scripts, relying on the Tapscript context introduced there.",
               "confidence": "high"
             },
             {
               "target": "bips:380",
               "evidence": "Key expressions are specified in [BIP 380](bip-0380.mediawiki#key-expressions)",
-              "reason": "Miniscript reuses the descriptor key-expression syntax and semantics defined in BIP 380.",
+              "reason": "Miniscript directly reuses the descriptor key-expression format specified there for its keys.",
               "confidence": "high"
             },
             {
               "target": "bips:382",
               "evidence": "Miniscript fragments are expected to be used in [BIP 382](bip-0382.mediawiki) `wsh()` descriptors",
-              "reason": "The proposal is designed to be embedded in the descriptor format and P2WSH context specified by BIP 382, including applying its key-expression restrictions.",
+              "reason": "The proposal is designed to be embedded in the `wsh()` descriptor language and applies that BIP's key-expression restrictions in P2WSH contexts.",
               "confidence": "high"
             },
             {
               "target": "bips:386",
               "evidence": "and [BIP 386](bip-0386.mediawiki) `tr()` descriptors",
-              "reason": "The proposal is designed to be embedded in the descriptor format and P2TR context specified by BIP 386, including applying its key-expression restrictions.",
+              "reason": "The proposal is designed to be embedded in the `tr()` descriptor language and applies that BIP's key-expression restrictions in P2TR contexts.",
               "confidence": "high"
             }
           ]

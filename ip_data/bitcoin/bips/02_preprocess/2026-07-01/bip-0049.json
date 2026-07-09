@@ -632,27 +632,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:10:22Z",
+          "timestamp": "2026-07-09T07:57:00Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
               "evidence": "based on a BIP 32 root account",
-              "reason": "The proposal defines its derivation scheme on top of the target's HD wallet root/account derivation model.",
+              "reason": "The proposal defines its derivation scheme starting from the target's HD wallet root/account model.",
               "confidence": "low"
             },
             {
               "target": "bips:44",
               "evidence": "uses the same account-structure as defined in BIP 44",
-              "reason": "The proposal directly reuses the target's account hierarchy and path semantics, changing only the purpose value.",
+              "reason": "The proposal directly reuses the target's hierarchical path/account structure, changing only the purpose value.",
               "confidence": "low"
             },
             {
               "target": "bips:141",
               "evidence": "using the P2WPKH-nested-in-P2SH (BIP 141) serialization format",
-              "reason": "The proposal is designed around the target's SegWit nested address/script serialization and encapsulation rules.",
+              "reason": "The proposal is specifically defined around the nested SegWit address/script serialization introduced by the target.",
               "confidence": "low"
             }
           ]

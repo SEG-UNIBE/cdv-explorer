@@ -743,28 +743,22 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:10:19Z",
+          "timestamp": "2026-07-09T07:56:54Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
               "evidence": "based on an algorithm described in BIP-0032",
-              "reason": "The proposal defines its wallet hierarchy and path derivation on top of BIP32's deterministic derivation algorithm and hardened/public derivation semantics.",
+              "reason": "The proposal defines its wallet hierarchy and derivation path semantics using the derivation algorithm from BIP32.",
               "confidence": "high"
             },
             {
               "target": "bips:43",
               "evidence": "purpose scheme described in BIP-0043",
-              "reason": "The proposal is a specific application of BIP43 and relies on its purpose-field convention, including purpose value 44'.",
+              "reason": "The proposal is a particular application of BIP43 and relies on its purpose-field convention to define the 44' subtree.",
               "confidence": "high"
-            },
-            {
-              "target": "slips:44",
-              "evidence": "SLIP-0044 : Registered coin types for BIP-0044",
-              "reason": "The proposal's coin_type level uses the registered coin type list maintained in SLIP-0044 for allocating constants beyond the defaults listed here.",
-              "confidence": "medium"
             }
           ]
         }

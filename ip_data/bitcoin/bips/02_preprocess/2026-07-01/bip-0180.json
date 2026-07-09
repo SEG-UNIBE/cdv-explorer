@@ -594,15 +594,15 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:11:47Z",
+          "timestamp": "2026-07-09T07:58:49Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:141",
               "evidence": "The block weight defined by [[bip-0141.mediawiki|BIP 141]] is the size of the block stripped of its segwit signatures times 3, plus the full size of the block.",
-              "reason": "The proposal's overweight-block fraud proof directly relies on BIP 141's block weight definition and witness-commitment-based full-size proof semantics.",
+              "reason": "The proposal's overweight-block fraud proof and verification logic explicitly relies on BIP 141's block weight definition and stripped/full block size semantics.",
               "confidence": "high"
             }
           ]

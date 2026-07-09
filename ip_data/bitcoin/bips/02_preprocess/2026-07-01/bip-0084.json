@@ -576,42 +576,11 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:10:45Z",
+          "timestamp": "2026-07-09T07:57:34Z",
           "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:32",
-              "evidence": "based on a BIP 32 root account",
-              "reason": "The proposal defines its derivation steps starting from the target's HD wallet root/account model.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:44",
-              "evidence": "uses the same account-structure as defined in BIP 44",
-              "reason": "The proposal directly reuses the target's derivation path/account hierarchy semantics for all levels except purpose.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:49",
-              "evidence": "uses the same account-structure as defined in BIP 44 and BIP 49",
-              "reason": "The proposal explicitly reuses the target's account structure conventions and states remaining levels are used as defined there.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:141",
-              "evidence": "we use the encapsulation defined in BIP 141",
-              "reason": "The proposal's address/script derivation relies on the target's P2WPKH witness and scriptPubKey semantics.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:173",
-              "evidence": "using the P2WPKH (BIP 173) serialization format",
-              "reason": "The proposal is designed around the target's address serialization format for native segwit addresses.",
-              "confidence": "low"
-            }
-          ]
+          "dependencies": []
         }
       ]
     }

@@ -713,21 +713,21 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:11:08Z",
+          "timestamp": "2026-07-09T07:58:01Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:8",
               "evidence": "This BIP will be deployed by BIP8 (Version bits with lock-in by height)",
-              "reason": "The proposal explicitly adopts BIP8's activation mechanism and parameters for deployment.",
+              "reason": "The proposal explicitly adopts BIP8 as its activation mechanism.",
               "confidence": "high"
             },
             {
               "target": "bips:98",
-              "evidence": "not a serialized Merkle tree inclusion proof as specified by BIP98",
-              "reason": "The proposal normatively requires inclusion proofs in the format and semantics defined by BIP98 for validation.",
+              "evidence": "serialized Merkle tree inclusion proof as specified by BIP98",
+              "reason": "The proposal normatively requires BIP98's Merkle proof format and fast Merkle tree semantics for validation.",
               "confidence": "high"
             }
           ]

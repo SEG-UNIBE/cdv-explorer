@@ -1341,46 +1341,46 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:12:07Z",
+          "timestamp": "2026-07-09T07:59:26Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
-              "evidence": "using [[bip-0009.mediawiki|BIP9]] modified to use a lower threshold",
-              "reason": "The proposal's activation mechanism is explicitly based on and modifies BIP9 versionbits deployment rules.",
-              "confidence": "high"
+              "evidence": "using BIP9 modified to use a lower threshold, with an additional min_activation_height parameter",
+              "reason": "The deployment mechanism is defined as a modification of BIP9 versionbits activation, so activation logic is directly based on and constrained by BIP9.",
+              "confidence": "low"
             },
             {
               "target": "bips:141",
-              "evidence": "A Taproot output is a native SegWit output (see [[bip-0141.mediawiki|BIP141]]) with version number 1",
-              "reason": "The proposal is defined as a specific SegWit witness output type and relies on BIP141's witness-program structure and native SegWit framework.",
-              "confidence": "high"
+              "evidence": "A Taproot output is a native SegWit output (see BIP141) with version number 1",
+              "reason": "The proposal defines its output type as a SegWit witness program and relies on BIP141's native SegWit output structure and witness versioning model.",
+              "confidence": "low"
             },
             {
               "target": "bips:143",
-              "evidence": "the semantics of the [[bip-0143.mediawiki|BIP143]] sighash types remain unchanged, except the following:",
-              "reason": "The proposal explicitly reuses BIP143 sighash type semantics as the baseline while changing serialization and commitments.",
-              "confidence": "high"
+              "evidence": "the semantics of the BIP143 sighash types remain unchanged",
+              "reason": "The proposal's signature hashing explicitly reuses BIP143 sighash type semantics while changing serialization and commitments, so understanding the sighash behavior depends on BIP143.",
+              "confidence": "low"
             },
             {
               "target": "bips:340",
-              "evidence": "The notation below follows that of [[bip-0340.mediawiki#design|BIP340]].",
-              "reason": "The proposal normatively reuses BIP340's public key, point lifting, tagged hash notation, and Schnorr signature verification semantics throughout validation and construction.",
-              "confidence": "high"
+              "evidence": "The notation below follows that of BIP340.",
+              "reason": "The proposal explicitly reuses BIP340 notation, public key interpretation, lift_x semantics, and Schnorr signature verification rules throughout its consensus and wallet procedures.",
+              "confidence": "low"
             },
             {
               "target": "bips:342",
-              "evidence": "[[bip-0342.mediawiki|BIP342]] specifies validity rules that apply for leaf version 0xc0",
-              "reason": "Script-path execution for leaf version 0xc0 depends on BIP342's script validity rules, and deployment is defined concurrently with it.",
-              "confidence": "high"
+              "evidence": "BIP342 specifies validity rules that apply for leaf version 0xc0",
+              "reason": "Script-path execution for the defined leaf version delegates applicable script validity rules to BIP342, making full evaluation of those spends depend on it.",
+              "confidence": "low"
             },
             {
               "target": "bips:350",
-              "evidence": "if they support sending to [[bip-0350.mediawiki|BIP350]] Bech32m addresses",
-              "reason": "Adoption by non-upgraded wallets for sending to Taproot outputs depends on the BIP350 address format for SegWit v1 destinations.",
-              "confidence": "medium"
+              "evidence": "if they support sending to BIP350 Bech32m addresses",
+              "reason": "Adoption by wallets sending to Taproot outputs depends on the BIP350 address format for SegWit v1 destinations.",
+              "confidence": "low"
             }
           ]
         }

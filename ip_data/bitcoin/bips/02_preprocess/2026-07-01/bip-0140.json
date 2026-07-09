@@ -709,28 +709,16 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:11:27Z",
+          "timestamp": "2026-07-09T07:58:23Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:11",
               "evidence": "This is the standard ''m-of-n'' script defined in [https://github.com/bitcoin/bips/blob/master/bip-0011.mediawiki BIP 11] with an additional version parameter <code>v</code> and the new opcode.",
-              "reason": "The proposal explicitly reuses BIP 11's standard m-of-n multisig script format as the basis for its new Version 1 script form.",
+              "reason": "The proposal explicitly reuses and extends BIP 11's standard m-of-n script format as the basis for its version 1 script design.",
               "confidence": "high"
-            },
-            {
-              "target": "bips:30",
-              "evidence": "the coinbase transactions in blocks at heights 91842 and 91880, which are known to be identical<ref>[[https://github.com/bitcoin/bips/blob/master/bip-0030.mediawiki|BIP 30 - Duplicate transactions]]</ref>",
-              "reason": "The proposal's collision analysis for normalized coinbase transaction IDs relies on the duplicate-transaction condition identified by BIP 30.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:34",
-              "evidence": "and motivated the introduction of BIP 34.<ref>[[https://github.com/bitcoin/bips/blob/master/bip-0034.mediawiki|Block v2, Height in Coinbase]]</ref>",
-              "reason": "The safety rationale for normalized coinbase transaction IDs depends on the uniqueness property introduced by BIP 34 after the duplicate coinbase issue.",
-              "confidence": "medium"
             }
           ]
         }

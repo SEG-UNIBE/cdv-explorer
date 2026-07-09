@@ -600,21 +600,21 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:12:12Z",
+          "timestamp": "2026-07-09T07:59:35Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:340",
               "evidence": "it is considered to be a public key as described in [BIP 340]",
-              "reason": "The opcode's 32-byte key interpretation and signature validation semantics explicitly reuse BIP 340's public key and signature verification rules.",
+              "reason": "The opcode's signature verification rules for 32-byte keys directly reuse the target's public key and signature validation semantics.",
               "confidence": "high"
             },
             {
               "target": "bips:342",
-              "evidence": "When verifying taproot script spends having leaf version 0xc0 (as defined in [BIP 342])",
-              "reason": "The proposal is defined specifically for Tapscript spends with the BIP 342 leaf version and also reuses its unknown-key and sigops-budget semantics.",
+              "evidence": "When verifying taproot script spends having leaf version 0xc0 (as defined in [BIP 342]), we propose `OP_CHECKSIGFROMSTACK` to replace `OP_SUCCESS204`",
+              "reason": "The proposal is explicitly scoped to and modifies Tapscript behavior defined by the target, including its leaf version and sigops budgeting semantics.",
               "confidence": "high"
             }
           ]

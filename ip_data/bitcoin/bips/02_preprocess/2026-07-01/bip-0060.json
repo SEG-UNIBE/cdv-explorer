@@ -591,21 +591,21 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:10:39Z",
+          "timestamp": "2026-07-09T07:57:02Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:14",
               "evidence": "user_agent || var_str || [[bip-0014.mediawiki|User Agent]]",
-              "reason": "The version message format explicitly uses the user_agent field as defined by BIP 14.",
+              "reason": "The version message format in this proposal normatively incorporates the BIP 14 user agent field definition.",
               "confidence": "medium"
             },
             {
               "target": "bips:37",
-              "evidence": "see [[bip-0037.mediawiki|BIP 0037]], since version >= 70001",
-              "reason": "The proposal retains and specifies the relay field semantics introduced by BIP 37 while changing its placement/handling in the version message and bumping protocol version accordingly.",
+              "evidence": "the (now accepted) BIP 0037 became implemented",
+              "reason": "The proposal specifically modifies the version-message relay flag introduced by BIP 37 and defines its serialization semantics around that mechanism.",
               "confidence": "high"
             }
           ]

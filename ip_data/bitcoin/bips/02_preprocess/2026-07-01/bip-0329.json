@@ -680,27 +680,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:11:58Z",
+          "timestamp": "2026-07-09T07:59:10Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
               "evidence": "Extended public key as defined by BIP32",
-              "reason": "The format directly includes xpub references and requires the origin descriptor to describe a \"BIP32 compatible\" wallet, so implementing those fields depends on BIP32 semantics for extended public keys and key origin paths.",
+              "reason": "The proposal's xpub record type directly reuses BIP32 extended public keys, and the origin field must describe a BIP32 compatible wallet.",
               "confidence": "high"
             },
             {
               "target": "bips:380",
               "evidence": "an abbreviated output descriptor (as defined by BIP380",
-              "reason": "The optional origin field is normatively defined using BIP380 abbreviated output descriptors, so interpreting or producing origin depends on that descriptor format.",
+              "reason": "The optional origin field is normatively defined to contain a BIP380 abbreviated output descriptor, so implementing that field depends on BIP380 semantics and format.",
               "confidence": "high"
             },
             {
               "target": "bips:392",
-              "evidence": "single argument form of a silent payments output descriptor as defined by BIP392",
-              "reason": "The spscan record type reuses the key expression format defined by BIP392 for silent payments output descriptors.",
+              "evidence": "silent payments output descriptor as defined by BIP392",
+              "reason": "The spscan record type is defined as a key expression for the single-argument silent payments output descriptor from BIP392.",
               "confidence": "high"
             }
           ]

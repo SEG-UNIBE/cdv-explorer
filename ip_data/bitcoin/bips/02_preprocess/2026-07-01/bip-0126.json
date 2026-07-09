@@ -587,11 +587,18 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:11:15Z",
+          "timestamp": "2026-07-09T07:58:11Z",
           "status": "success",
-          "dependencies": []
+          "dependencies": [
+            {
+              "target": "bips:69",
+              "evidence": "Applications which wish to comply both with this procedure and BIP69 should apply this procedure prior to applying BIP69.",
+              "reason": "The proposal defines interoperability and ordering requirements for implementations that combine it with BIP69, indicating technical compatibility considerations around transaction construction and ordering.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

@@ -534,33 +534,39 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:11:35Z",
+          "timestamp": "2026-07-09T07:58:34Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:8",
-              "evidence": "This BIP will be deployed by BIP8",
-              "reason": "The proposal directly uses BIP8's deployment and activation mechanism, including starttime and timeout semantics.",
+              "evidence": "This BIP will be deployed by BIP8 with the name \"segwit\" and using bit 1.",
+              "reason": "The proposal directly uses BIP8's deployment mechanism and parameters for activation.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:9",
+              "evidence": "This BIP should only be deployed if BIP9-segwit fails to lock-in or activate before timeout",
+              "reason": "The proposal is conditioned around and made incompatible with the existing BIP9 segwit deployment, relying on its lock-in/activation state and versionbits context.",
               "confidence": "high"
             },
             {
               "target": "bips:141",
-              "evidence": "specifies a user activated soft fork for [[bip-0141.mediawiki|BIP141]]",
-              "reason": "The proposal's purpose is to activate the SegWit consensus changes defined by BIP141, so adopting it materially depends on that target's rules.",
+              "evidence": "This document specifies a user activated soft fork for [[bip-0141.mediawiki|BIP141]]",
+              "reason": "The proposal is explicitly a deployment mechanism for activating the consensus changes defined in BIP141.",
               "confidence": "high"
             },
             {
               "target": "bips:143",
-              "evidence": "specifies a user activated soft fork for [[bip-0143.mediawiki|BIP143]]",
-              "reason": "The proposal explicitly activates the witness transaction digest semantics defined in BIP143 as part of the soft fork.",
+              "evidence": "This document specifies a user activated soft fork for [[bip-0143.mediawiki|BIP143]]",
+              "reason": "The proposal is explicitly designed to activate the changes defined in BIP143 as part of segwit deployment.",
               "confidence": "low"
             },
             {
               "target": "bips:147",
-              "evidence": "specifies a user activated soft fork for [[bip-0147.mediawiki|BIP147]]",
-              "reason": "The proposal explicitly activates the consensus changes from BIP147 as part of the same deployment.",
+              "evidence": "This document specifies a user activated soft fork for [[bip-0147.mediawiki|BIP147]]",
+              "reason": "The proposal is explicitly designed to activate the changes defined in BIP147 as part of segwit deployment.",
               "confidence": "low"
             }
           ]

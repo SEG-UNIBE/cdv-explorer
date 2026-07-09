@@ -556,11 +556,30 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:10:51Z",
+          "timestamp": "2026-07-09T07:57:47Z",
           "status": "success",
-          "dependencies": []
+          "dependencies": [
+            {
+              "target": "bips:30",
+              "evidence": "avoids duplicate transactions without [bip-0030][BIP30] validation",
+              "reason": "The proposal's evaluation of BIP 54 rule effects refers to eliminating the need for BIP 30 validation as part of the enforced consensus behavior.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:54",
+              "evidence": "The rules specified in [BIP 54 version 1.0.0][BIP54] are active on Testnet 5 from block 1.",
+              "reason": "The proposal normatively incorporates BIP 54's consensus rules and requires implementations to enforce them on Testnet 5.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:94",
+              "evidence": "Testnet 5 is a new test network intended to replace [Testnet 4][BIP94].",
+              "reason": "The proposal is explicitly designed as a replacement for Testnet 4 and defines its consensus changes in direct contrast to Testnet 4's difficulty-exception design.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

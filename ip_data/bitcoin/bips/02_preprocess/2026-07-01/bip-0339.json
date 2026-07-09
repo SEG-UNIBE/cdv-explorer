@@ -531,21 +531,21 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:12:02Z",
+          "timestamp": "2026-07-09T07:59:21Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:141",
               "evidence": "support transaction relay based on the BIP 141 wtxid of a transaction",
-              "reason": "The proposal is explicitly designed around the wtxid defined by BIP 141 and relies on that identifier's semantics for announcement and retrieval.",
+              "reason": "The proposal is designed around the wtxid concept defined in BIP 141 and uses it as the identifier for relay announcements and requests.",
               "confidence": "high"
             },
             {
               "target": "bips:144",
               "evidence": "serialized with witness as well, as described in BIP 144",
-              "reason": "MSG_WTX getdata requests require witness-inclusive transaction serialization using the format specified by BIP 144.",
+              "reason": "MSG_WTX getdata semantics explicitly rely on the witness-inclusive transaction serialization defined by BIP 144.",
               "confidence": "high"
             }
           ]

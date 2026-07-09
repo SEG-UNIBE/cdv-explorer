@@ -668,15 +668,15 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-02T21:09:53Z_gpt-5.4-2026-03-05_9b6bf914",
+          "run_id": "2026-07-09T07:56:23Z_gpt-5.4-2026-03-05_86a0ba97",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-02T21:11:54Z",
+          "timestamp": "2026-07-09T07:59:18Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:141",
               "evidence": "Signet requires all blocks to have a BIP 141 commitment in the coinbase transaction.",
-              "reason": "The proposal normatively requires and reuses the BIP 141 witness commitment structure, including its optional data and witness serialization, to carry the signet solution and define validation semantics.",
+              "reason": "The proposal normatively relies on the witness commitment structure and witness serialization defined by BIP 141 to embed and interpret the signet solution.",
               "confidence": "high"
             }
           ]

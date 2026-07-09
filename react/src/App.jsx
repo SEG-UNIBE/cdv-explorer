@@ -34,6 +34,7 @@ const aboutPublications = [
   {
     title: 'CDV-Explorer: Navigating Improvement Proposal Spectra in Decentralized OSS Ecosystem',
     citation: 'Roman Bögli and Timo Kehrer, in Companion Proc. Int’l Conf. on Software and Systems Reuse, Product Lines, and Configuration (VARIABILITY), Limassol, Cyprus, Sep. 2026.',
+    preprint: 'https://romanboegli.ch/assets/pdf/Boegli_2026_CDVExplorer_Tool.pdf',
   },
 ];
 
@@ -218,6 +219,19 @@ function AboutPage() {
                     DOI: forthcoming
                   </span>
                 )}
+                {publication.preprint ? (
+                  <>
+                    {' '}
+                    <a
+                      className="about-page__publication-doi"
+                      href={publication.preprint}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      [Preprint]
+                    </a>
+                  </>
+                ) : null}
               </p>
             </Card>
           ))}

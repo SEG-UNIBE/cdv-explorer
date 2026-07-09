@@ -1,6 +1,6 @@
 # **CDV Explorer**
 
-_Modern decentralized software ecosystems evolve through crowdsourced improvement proposals (IPs) that are continuously shaped and autonomously implemented by independent actors. As a result, these ecosystems exhibit so-called **Community-Driven Variability (CDV)** [^1], a novel paradigm that extends beyond traditional variability-intensive systems. This tool allows to explore the proposal space of such ecosystems by providing interactive visualizations and insights about their evolution, authorship, classification, conformity, and inter-proposal relationships._
+_Modern decentralized software ecosystems evolve through crowdsourced improvement proposals (IPs) that are continuously shaped and autonomously implemented by independent actors. As a result, these ecosystems exhibit so-called **Community-Driven Variability (CDV)** [^1], a novel paradigm that extends beyond traditional variability-intensive systems. This tool allows to explore the proposal space of such ecosystems by providing interactive visualizations and insights about their evolution, authorship, classification, conformity, and inter-proposal relationships. For more contextual details, see accompanying tool paper [^2] presented at [VARIABILITY'26](https://conf.researchr.org/home/variability-2026)._
 
 
 <div align="center">
@@ -347,6 +347,16 @@ Development builds are deployed to Cloudflare Pages via [`.github/workflows/depl
 To enable GitHub Pages on a fork, go to `Settings > Pages` and set the source to `GitHub Actions`.
 Both workflows build the Vite app and publish the generated `react/build` directory.
 
+### Releases
+
+Releases are drafted automatically by [`.github/workflows/draft-release.yml`](.github/workflows/draft-release.yml) whenever a `v*` tag is pushed:
+
+0. Switch to `main` branch using e.g. `git switch main`.
+1. Bump the version in `react/package.json` (and `package-lock.json`), e.g. `cd react && npm version 4.1.0 --no-git-tag-version`, then commit.
+2. Merge into `main` and push a matching tag: `git tag v4.1.0 && git push origin v4.1.0`.
+3. The workflow validates that the tag matches the `react/package.json` version (mismatch fails the run), then creates a **draft** GitHub release with auto-generated notes.
+4. Review the draft under *Releases* on GitHub, polish the notes, and publish.
+
 </br>
 
 ## 🧹 Cleanup
@@ -375,3 +385,5 @@ cd .. && rm -rf cdv-explorer
 </br>
 
 [^1]: Bögli, R. et al. _Community-driven variability: characterizing a new software variability paradigm._ Autom Softw Eng **33**, 67 (2026). [10.1007/s10515-026-00594-0](https://doi.org/10.1007/s10515-026-00594-0)
+
+[^2]: Bögli, R. and Kehrer, T. _CDV-Explorer: Navigating Improvement Proposal Spectra in Decentralized OSS Ecosystem._ In Companion Proc. Int'l Conf. on Software and Systems Reuse, Product Lines, and Configuration (VARIABILITY), Limassol, Cyprus, Sep. 2026. DOI: forthcoming.

@@ -2,9 +2,23 @@ from matplotlib.colors import to_rgba
 
 PLOT_COLOR_ALPHA = 1.0
 
+# ORDERED_PLOT_PALETTE entries are the commented base colors blended ~20%
+# towards white; tint() reproduces that so ad-hoc colors match the family.
+PLOT_TINT_FRACTION = 0.2
+
 
 def with_plot_alpha(color, alpha: float | None = None):
     return to_rgba(color, PLOT_COLOR_ALPHA if alpha is None else alpha)
+
+
+def tint(color, fraction: float = PLOT_TINT_FRACTION):
+    red, green, blue, alpha = to_rgba(color)
+    return (
+        red + (1.0 - red) * fraction,
+        green + (1.0 - green) * fraction,
+        blue + (1.0 - blue) * fraction,
+        alpha,
+    )
 
 
 ORDERED_PLOT_PALETTE = (
@@ -87,6 +101,10 @@ TRIPTYCH_BIP_TYPE_COLORS = {
 
 BIP_TYPE_COLORS = TRIPTYCH_BIP_TYPE_COLORS
 
-AUTHORSHIP_DISTRIBUTION_COLOR = ORDERED_PLOT_PALETTE[0]
-COLLABORATION_COMPONENT_COLOR = ORDERED_PLOT_PALETTE[1]
-AUTHORS_PER_BIP_COLOR = ORDERED_PLOT_PALETTE[2]
+# Quartet panel colors: (a) top authors red, (b) clusters green,
+# (c) authors per BIP blue, (d) BIPs per author orange.
+TOP_AUTHORS_COLOR = ORDERED_PLOT_PALETTE[1]
+COLLABORATION_COMPONENT_COLOR = ORDERED_PLOT_PALETTE[2]
+AUTHORS_PER_BIP_COLOR = ORDERED_PLOT_PALETTE[0]
+AUTHORSHIP_DISTRIBUTION_COLOR = ORDERED_PLOT_PALETTE[4]
+COAUTHOR_DEGREE_COLOR = ORDERED_PLOT_PALETTE[0]

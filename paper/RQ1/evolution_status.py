@@ -10,45 +10,13 @@ from matplotlib.patches import Patch
 from matplotlib.ticker import MaxNLocator, MultipleLocator
 from matplotlib.transforms import ScaledTranslation
 
+from paper.plot_colors import REACT_CLASSIFICATION_PALETTE, tint
 from paper.RQ3._plotting import (
     BAR_EDGE_COLOR,
     bar_style,
     despine,
     match_axis_label_fontsize,
 )
-
-REACT_CLASSIFICATION_PALETTE = [
-    "#4e79a7",
-    "#f28e2c",
-    "#e15759",
-    "#76b7b2",
-    "#59a14f",
-    "#edc949",
-    "#af7aa1",
-    "#ff9da7",
-    "#9c755f",
-    "#bab0ab",
-    "#66c2a5",
-    "#fc8d62",
-    "#8da0cb",
-    "#e78ac3",
-    "#a6d854",
-    "#ffd92f",
-    "#e5c494",
-    "#b3b3b3",
-    "#8dd3c7",
-    "#ffffb3",
-    "#bebada",
-    "#fb8072",
-    "#80b1d3",
-    "#fdb462",
-    "#b3de69",
-    "#fccde5",
-    "#d9d9d9",
-    "#bc80bd",
-    "#ccebc5",
-    "#ffed6f",
-]
 
 ACTIVATION_GAP = 0.45
 ACTIVATION_YEAR_LABEL_NUDGE_POINTS = 6
@@ -59,6 +27,8 @@ LEGEND_TITLE_FONT_SIZE = 8.75
 LEGEND_LABEL_SPACING = 0.35
 LEGEND_SECTION_TOP = 1.0
 LEGEND_SECTION_BOTTOM = 0.01
+# Deliberately distinct from classification_status.STATUS_COLORS: this chart
+# stacks many statuses per bar and needs maximum adjacent-color separation.
 FIXED_STATUS_COLORS = {
     "Draft": "#4e79a7",
     "Active": "#f28e2c",
@@ -82,11 +52,13 @@ def _evolution_bar_style(color: str) -> dict[str, object]:
     return style
 
 
-def _react_color_map(categories: list[str]) -> dict[str, str]:
+def _react_color_map(categories: list[str]) -> dict[str, tuple]:
     return {
-        category: FIXED_STATUS_COLORS.get(
-            category,
-            REACT_CLASSIFICATION_PALETTE[index % len(REACT_CLASSIFICATION_PALETTE)],
+        category: tint(
+            FIXED_STATUS_COLORS.get(
+                category,
+                REACT_CLASSIFICATION_PALETTE[index % len(REACT_CLASSIFICATION_PALETTE)],
+            )
         )
         for index, category in enumerate(categories)
     }

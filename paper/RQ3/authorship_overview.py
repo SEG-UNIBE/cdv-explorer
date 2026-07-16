@@ -3,7 +3,11 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 
-from paper.plot_colors import AUTHORS_PER_BIP_COLOR, AUTHORSHIP_DISTRIBUTION_COLOR
+from paper.plot_colors import (
+    AUTHORS_PER_BIP_COLOR,
+    AUTHORSHIP_DISTRIBUTION_COLOR,
+    TOP_AUTHORS_COLOR,
+)
 from paper.RQ3._plotting import (
     bar_style,
     despine,
@@ -12,7 +16,6 @@ from paper.RQ3._plotting import (
     style_ellipsis_ticklabels,
 )
 
-TOP_AUTHORS_COLOR = "#d94841"
 HISTOGRAM_COLOR = AUTHORSHIP_DISTRIBUTION_COLOR
 MIN_HISTOGRAM_GAP_LENGTH = 3
 HISTOGRAM_GAP_LABEL = "..."

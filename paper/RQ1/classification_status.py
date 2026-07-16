@@ -46,6 +46,7 @@ STATUS_COLORS = {
     "Final": "#4263eb",
     "Replaced": "#8d6e63",
     "Deployed": "#2f9e44",
+    "Accepted": "#74b816",
     "Complete": "#1971c2",
     "Closed": "#d94841",
     "Rejected": "#868e96",
@@ -228,7 +229,12 @@ def plot_classification_status(
     palette = colors or STATUS_COLORS
     colors = [palette.get(status, "#868e96") for status in ordered_statuses]
     legend_handles = [
-        Patch(facecolor=with_plot_alpha(color), edgecolor="none", label=status)
+        Patch(
+            facecolor=bar_style(color)["color"],
+            edgecolor=BAR_EDGE_COLOR,
+            linewidth=BAR_EDGE_WIDTH,
+            label=status,
+        )
         for status, color in zip(ordered_statuses, colors, strict=True)
     ]
     donut_colors = [bar_style(color)["color"] for color in colors]

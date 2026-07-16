@@ -14,6 +14,8 @@ from paper.RQ1.classification_status import (
     plot_classification_status,
 )
 from paper.RQ3._plotting import (
+    BAR_EDGE_COLOR,
+    BAR_EDGE_WIDTH,
     bar_style,
     despine,
     match_axis_label_fontsize,
@@ -71,8 +73,8 @@ def plot_classification_type_stacked(
     legend_handles = [
         Patch(
             facecolor=bar_style(color)["color"],
-            edgecolor="#000000",
-            linewidth=0.7,
+            edgecolor=BAR_EDGE_COLOR,
+            linewidth=BAR_EDGE_WIDTH,
             label=f"{kind} ({totals[kind]})",
         )
         for kind, color in zip(ordered_types, colors, strict=True)

@@ -3,7 +3,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 
-from paper.plot_colors import COLLABORATION_COMPONENT_COLOR
+from paper.plot_colors import COAUTHOR_DEGREE_COLOR, COLLABORATION_COMPONENT_COLOR
 from paper.RQ3._plotting import (
     bar_style,
     despine,
@@ -17,7 +17,7 @@ from paper.RQ3.collaboration_common import (
 )
 
 COMPONENT_BAR_COLOR = COLLABORATION_COMPONENT_COLOR
-DEGREE_BAR_COLOR = "#4c78a8"
+DEGREE_BAR_COLOR = COAUTHOR_DEGREE_COLOR
 MIN_COMPRESSED_GAP_LENGTH = 2
 COMPONENT_GAP_LABEL = "..."
 

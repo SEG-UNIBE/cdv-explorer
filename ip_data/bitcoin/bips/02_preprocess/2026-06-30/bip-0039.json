@@ -1,0 +1,1094 @@
+{
+  "raw": {
+    "preamble": {
+      "bip": "39",
+      "title": "Mnemonic code for generating deterministic keys",
+      "author": [
+        "Marek Palatinus <slush@satoshilabs.com>",
+        "Pavol Rusnak <stick@satoshilabs.com>",
+        "Aaron Voisine <voisine@gmail.com>",
+        "Sean Bowe <ewillbefull@gmail.com>"
+      ],
+      "comments_uri": "https://github.com/bitcoin/bips/wiki/Comments:BIP-0039",
+      "status": "Deployed",
+      "type": "Specification",
+      "created": "2013-09-10",
+      "license": [
+        "MIT"
+      ],
+      "layer": "Applications",
+      "discussions_to": null,
+      "comments_summary": "Unanimously Discourage for implementation",
+      "license_code": null,
+      "post_history": null,
+      "requires": null,
+      "replaces": null,
+      "proposed_replacement": null
+    }
+  },
+  "meta": {
+    "last_commit": "Wed Oct 8 14:59:36 2025 -0700",
+    "total_commits": 105,
+    "git_history": [
+      [
+        "24e96e870fffaa257b465ce1f0370c14aac588e8",
+        "Wed Oct 8 14:59:36 2025 -0700",
+        "Murch"
+      ],
+      [
+        "5207ef92a52d0b8902895b0dbb40823a4d698ec9",
+        "Fri Apr 11 20:08:17 2025 -0700",
+        "Murch"
+      ],
+      [
+        "a233bde4af52c6a11269e2e6dd9707abce441ffe",
+        "Fri Apr 11 18:19:21 2025 -0700",
+        "Murch"
+      ],
+      [
+        "5d3ceb37734f80b2ec206fc94245e3bfd6d5b0f0",
+        "Fri Apr 11 18:08:44 2025 -0700",
+        "Murch"
+      ],
+      [
+        "b9f9a8d6e854fa0b0c8f818753420b0aa6e875aa",
+        "Tue Feb 4 13:10:53 2025 -0500",
+        "Mark \"Murch\" Erhardt"
+      ],
+      [
+        "829afccd1ae26403f8c3583d7347b04aeb54c2ca",
+        "Sat Oct 5 14:50:29 2024 +0200",
+        "scgbckbone"
+      ],
+      [
+        "541b6c4db4c4e6cd01f447b7e3bd12602ed462fb",
+        "Tue Oct 8 10:51:57 2024 -0600",
+        "Jon Atack"
+      ],
+      [
+        "fd5d424f551bf740f6f651b0158667d1fd052193",
+        "Wed Apr 24 16:27:24 2024 -0400",
+        "Ava Chow"
+      ],
+      [
+        "ee0a17ef08924f4cbab5faf30202b03203722a04",
+        "Mon Apr 15 17:12:02 2024 -0400",
+        "Jason Dreyzehner"
+      ],
+      [
+        "66a1a8151021913047934ebab3f8883f2f8ca75b",
+        "Sun Jul 2 18:42:24 2023 -0400",
+        "Luke Dashjr"
+      ],
+      [
+        "d16e96ae9cb791a7339e7ced8888788ee5449f47",
+        "Sun Jul 2 18:41:26 2023 -0400",
+        "Luke Dashjr"
+      ],
+      [
+        "9e6fd723149483b67be2a9095eacf47cb7c1e1fc",
+        "Thu Jan 26 17:27:43 2023 +0000",
+        "anquii"
+      ],
+      [
+        "5f3e216d3f144ff353786a49b534d927d0dc2ddc",
+        "Thu Apr 27 08:19:38 2023 +0100",
+        "yahiheb"
+      ],
+      [
+        "5cafddcccabe3f88a0a2c3cd74944172ab6b9776",
+        "Fri Feb 3 16:11:11 2023 -0700",
+        "AJ ONeal"
+      ],
+      [
+        "bcb66af5c353d2cfcd8da668b85886731c1810d0",
+        "Mon Jul 25 22:49:46 2022 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "20b460b6d2ac5b20533e0f933214a989c6957f40",
+        "Mon Jul 25 22:46:53 2022 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "d448bf667c54291b827d2962b4eca9f13d6910c1",
+        "Sat Jul 2 18:13:59 2022 +0800",
+        "hujiulong"
+      ],
+      [
+        "0a169e5d0d6272c87e4ad7741a45ae8937777c0c",
+        "Sun Jun 12 08:33:38 2022 +1000",
+        "Tim Wang"
+      ],
+      [
+        "a14a5dbcba1ef6dd76275e826e28c1d936db1fe8",
+        "Tue May 10 01:05:11 2022 +0530",
+        "Sunit Roy"
+      ],
+      [
+        "54ee25ee93a8f910b4e001d462a8fbd5b167fe53",
+        "Thu May 5 14:48:42 2022 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "ad745f2f0155c90f0471ba87e8687e9891e8a63f",
+        "Fri Jul 2 21:26:17 2021 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "36a0855546df6579dd70dd3dca875184ba764680",
+        "Sun Jun 13 12:43:09 2021 +0900",
+        "kallewoof"
+      ],
+      [
+        "cdbe675223d2324321836fa9fe9f8c6e1e0c734f",
+        "Sun Jun 6 17:34:30 2021 +0530",
+        "Chirag Bhatia"
+      ],
+      [
+        "135f95ffb706855582b7293384cfbd843825ea3d",
+        "Fri May 28 20:20:47 2021 -0300",
+        "Esteban A. Maringolo"
+      ],
+      [
+        "2349ee46f08d94d0161edddc3c52e64184b220c3",
+        "Tue May 18 00:09:16 2021 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "15503232255e82e70d2dc4443709221a2e5dbfd4",
+        "Wed Mar 31 17:01:51 2021 -0300",
+        "Esteban A. Maringolo"
+      ],
+      [
+        "3a7585365ff3280a4fc9d34ea6a1e43c39cfa7be",
+        "Fri Feb 12 21:29:20 2021 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "fbef072a9179768f5136a8b9a91cfbc3241116a8",
+        "Fri Feb 12 21:28:59 2021 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "a78b211d23788dd0bcbc57f54abf6a223356b839",
+        "Sun Dec 20 16:39:42 2020 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "e963414eee7ac8f85a5a92f9d170f5f3d38f816d",
+        "Thu Dec 17 22:20:40 2020 +0800",
+        "koushiro"
+      ],
+      [
+        "dfbbe04ddf9644e49eefb3de437d092c8563ef8f",
+        "Tue Nov 3 11:31:20 2020 +0300",
+        "Meheret Tesfaye"
+      ],
+      [
+        "cca9b983a164413f56624363b0b9d747d2b6755c",
+        "Mon Oct 5 19:58:29 2020 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "2a92499f7fb5034bf1ecc4377223a63c6c576e6e",
+        "Mon Oct 5 16:12:35 2020 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "9b7840a5139d656dcc506d978a20d94ed90f20c7",
+        "Wed Sep 9 15:46:31 2020 +0000",
+        "Lucien Nocelli"
+      ],
+      [
+        "7e8b5dfc304c0e3cd646b54bc49e23fad692d11e",
+        "Thu Sep 3 01:55:14 2020 +0800",
+        "Liu Pengpeng"
+      ],
+      [
+        "1e3e178fb8bd26cecdeabf73dc5d7a0b59abc054",
+        "Sat Aug 15 17:43:14 2020 -0300",
+        "Francisco Gindre"
+      ],
+      [
+        "41efd1361e0421730b059be5ac14c397e2d0513c",
+        "Thu Jun 25 14:07:01 2020 +0200",
+        "avirgovi"
+      ],
+      [
+        "357419ae84ce6152ae5f725e67c9e583c8bbea5e",
+        "Mon Jun 1 19:46:14 2020 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "2a6386bbf9066c01a72d4d69aa4502fc534c01a2",
+        "Mon Jun 1 19:12:53 2020 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "91a835887d15d46ab392ab42a329620360963696",
+        "Sun May 3 11:03:42 2020 +0700",
+        "Petr Korolev"
+      ],
+      [
+        "25b6d576b420f8b7940f19f121f86cc3e9499c93",
+        "Sun May 3 11:01:17 2020 +0700",
+        "Petr Korolev"
+      ],
+      [
+        "f572ebe9f2959738ab16a07fa7a0715a5ee92488",
+        "Sat May 2 14:23:01 2020 +0200",
+        "Bartosz Milczarek"
+      ],
+      [
+        "2e1fb61db696bdf3ee8d415b226f1a15ce86cf50",
+        "Tue Mar 17 20:18:43 2020 -0400",
+        "Kevin Gislason"
+      ],
+      [
+        "31ebc32e6f181a41537dcd2e41549943a8bc36c4",
+        "Fri Feb 28 22:05:00 2020 +0700",
+        "Petr Korolev"
+      ],
+      [
+        "1a42bb3450d2d2ef077e2dd383e6b82c3865a0b9",
+        "Sun Jan 26 02:25:25 2020 +0100",
+        "Adam Rutkowski"
+      ],
+      [
+        "0f1a825246c74a25a8896cd4d2022169985b698f",
+        "Mon Sep 9 00:34:07 2019 +0100",
+        "Thomas Grainger"
+      ],
+      [
+        "13dccfe663206cec416e404a75c5f59c9f2919d7",
+        "Fri Aug 30 15:53:22 2019 +0800",
+        "Liu Pengpeng"
+      ],
+      [
+        "6e4397038ebb10e2299114f6778d07ac23b1efd9",
+        "Fri Feb 15 17:05:09 2019 +0800",
+        "Lan, Haoxiang"
+      ],
+      [
+        "8c8a787206a10ccca5fd9bae01d483d1b47f8f66",
+        "Mon Apr 9 10:21:09 2018 +0300",
+        "Petr Korolev"
+      ],
+      [
+        "2d5fc7acb2c2d15f3941f93ec38576c0ebf4e17f",
+        "Mon Feb 5 04:31:02 2018 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "9d187e9ed9087c52c5ec3678c445aaa968234645",
+        "Fri Feb 2 20:03:23 2018 -0600",
+        "David Pennington"
+      ],
+      [
+        "499c11d51cbe949ca74260207aa629a7bbcb9ae0",
+        "Tue Jan 2 23:29:07 2018 +0900",
+        "yuzushioh"
+      ],
+      [
+        "aecfd94f1493ba95738ce366983d6e1fcda00f6c",
+        "Tue Oct 3 08:28:55 2017 +0300",
+        "Omar Shibli"
+      ],
+      [
+        "482aa02e825d84206be5bb95c198198a13c5b9e1",
+        "Sat Sep 30 19:36:44 2017 -0400",
+        "Logan Saether"
+      ],
+      [
+        "b1d2b451f282faaa248e2627fe559df98c557c51",
+        "Sat Sep 23 11:31:47 2017 +0200",
+        "Izel Nakri"
+      ],
+      [
+        "abb94297c333562923ad95c65996fb9e6c437b1d",
+        "Sat Sep 16 03:16:14 2017 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "6295c1a095a1fa33f38d334227fa4222d8e0a523",
+        "Thu Aug 24 23:50:20 2017 +1200",
+        "MeshCollider"
+      ],
+      [
+        "a4128372005d6c40da29d1b570b5b3af9e0fe92d",
+        "Fri Aug 11 22:31:00 2017 +0200",
+        "Lawrence Nahum"
+      ],
+      [
+        "545fd89a0f0eb21a3180384ed75b871e4957de9b",
+        "Mon Aug 7 13:05:42 2017 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "fbed7daba3b6d8df8d37cbd8dad8bfca81f4c6ee",
+        "Wed Jul 26 12:42:43 2017 -0700",
+        "evoskuil"
+      ],
+      [
+        "11bb375c545acd039c93d918d98aef9bc1c68b6a",
+        "Wed Jul 26 11:33:34 2017 +0800",
+        "CikeQiu"
+      ],
+      [
+        "d9396155350b16b098a0d0b5ec10da80ebd96d5f",
+        "Tue Mar 14 23:27:57 2017 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "959fecc15bdad070afa63455468b1dba54655fa6",
+        "Wed Nov 30 09:47:31 2016 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "Wed Nov 30 09:45:33 2016 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "5b1c59da6d4905610de0c779579cd2db890a7c4c",
+        "Thu Nov 3 10:14:41 2016 +0100",
+        "Thomas Kerin"
+      ],
+      [
+        "387fc6011bd804609fd751786e50439d5c11a097",
+        "Tue Aug 23 19:47:29 2016 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "93ef85891196b31c12d5772d8741d1f672aade46",
+        "Wed Aug 10 22:08:22 2016 +0530",
+        "Sreekanth G S"
+      ],
+      [
+        "34be169fe360c1f6109022bbf350440dc0fc1612",
+        "Mon Jul 18 20:43:23 2016 +0200",
+        "Sjors Provoost"
+      ],
+      [
+        "de90683130e346bd43abf62030f4434179aa91af",
+        "Tue Feb 23 11:24:29 2016 +0800",
+        "Sjors Provoost"
+      ],
+      [
+        "717228b8fdf4ab0f97d73531603b6c24244bf360",
+        "Mon Feb 22 15:10:48 2016 +0800",
+        "Sjors Provoost"
+      ],
+      [
+        "4edd6d2badd9a6ad2ff09bb6792fe0d0e365a7de",
+        "Wed Feb 3 07:02:36 2016 +0000",
+        "Luke Dashjr"
+      ],
+      [
+        "775dca5b0cf94d60e0a843b9f537f4af666e1a63",
+        "Wed Jan 28 18:57:28 2015 +0100",
+        "Nicolas Dorier"
+      ],
+      [
+        "33c59f5f4710e9af1ea2653c9e324652ff9dc64d",
+        "Fri Jan 30 11:58:44 2015 +0300",
+        "UdjinM6"
+      ],
+      [
+        "7f096c1ecdb315e6c5f0bb7a49dbe50ca78ebdcc",
+        "Tue Dec 16 17:59:57 2014 +1100",
+        "Thashiznets"
+      ],
+      [
+        "a3e6037ff9eee6864f350ce374247854d226e141",
+        "Thu Oct 16 09:05:47 2014 +0200",
+        "Wladimir J. van der Laan"
+      ],
+      [
+        "f081dad3adaa3ea64d3bb6f99c266a376e036073",
+        "Wed Oct 15 19:07:30 2014 +0200",
+        "ThomasV"
+      ],
+      [
+        "0557a3eb545bf404bcb73a8ca5de55d736f5db13",
+        "Wed Oct 15 14:15:43 2014 +0200",
+        "Wladimir J. van der Laan"
+      ],
+      [
+        "a85c7bfee0c98e5a7f90a03db15581c130aab151",
+        "Wed Oct 15 09:59:10 2014 +0200",
+        "Wladimir J. van der Laan"
+      ],
+      [
+        "c0ca4051d548ae1fa874393c804fa20a1f5ea804",
+        "Sun Oct 12 11:29:37 2014 +0200",
+        "Wladimir J. van der Laan"
+      ],
+      [
+        "98cc66a8698d07bad288145abdbd206aa5b6e6a1",
+        "Thu Sep 25 03:55:33 2014 +0300",
+        "vstoykovbg"
+      ],
+      [
+        "213b67e8f81967a265b6c29e0612b578e4994a3c",
+        "Wed Sep 3 23:52:24 2014 +0900",
+        "bip39jp"
+      ],
+      [
+        "0d0520e31269e1dd7e31a2543bc88c88cfddea13",
+        "Wed Sep 3 23:49:33 2014 +0900",
+        "bip39jp"
+      ],
+      [
+        "3675b3aa02e87dbcb2f25ec81bd57368ae1836a1",
+        "Mon Sep 1 22:37:06 2014 +0200",
+        "jurov"
+      ],
+      [
+        "8d90ebe9dbbda967e9e973ac7376c3cff4d10f42",
+        "Mon Sep 1 22:36:16 2014 +0200",
+        "jurov"
+      ],
+      [
+        "2402e67d8b003353543b3d735196326799072363",
+        "Thu Aug 21 23:18:05 2014 +0200",
+        "jurov"
+      ],
+      [
+        "2248c1dc74dd6c251473039561d63bdf811c1261",
+        "Sat Aug 16 01:51:56 2014 +0900",
+        "bip39jp"
+      ],
+      [
+        "89902494429a677a194bed43c789158f3dd4afe5",
+        "Fri Aug 15 01:21:48 2014 +0900",
+        "bip39jp"
+      ],
+      [
+        "6ac80993561f0934d56d21254ca4de354e59b4a5",
+        "Wed Jul 16 19:51:47 2014 -0400",
+        "christianlundkvist"
+      ],
+      [
+        "0bf935b552b25fefb9a6791bcb73bd883b1b87c7",
+        "Wed Jul 9 11:21:34 2014 -0700",
+        "Aaron Voisine"
+      ],
+      [
+        "3a94ead4dd67d74be4fb863cdaaf679658f89f10",
+        "Wed Jul 9 14:18:59 2014 +0000",
+        "Timothy Hobbs"
+      ],
+      [
+        "11643a7585504d94996650fb7c390df0f4db4e41",
+        "Wed Jul 2 21:08:56 2014 -0400",
+        "christianlundkvist"
+      ],
+      [
+        "e8a67ead35d6c3315f0e9aa77216e1ab13cff755",
+        "Wed Jul 2 20:58:05 2014 -0400",
+        "christianlundkvist"
+      ],
+      [
+        "4a58190577098c9caeda6a4028c90e53cfcc2bb0",
+        "Fri Feb 28 12:28:09 2014 -0500",
+        "Jud Stephenson"
+      ],
+      [
+        "1647c7e6d3e3866454b803fd874df2d0c4991f4a",
+        "Sat Apr 5 13:46:56 2014 +0200",
+        "Wladimir J. van der Laan"
+      ],
+      [
+        "13b7749520236a38710374bdca86de7cad808525",
+        "Mon Feb 10 02:47:19 2014 +0100",
+        "slush0"
+      ],
+      [
+        "6da6c402183fe75c39e1c0c1e7f22f7f6c2168d9",
+        "Sun Feb 9 18:10:22 2014 +0100",
+        "slush0"
+      ],
+      [
+        "041f51c2fffcee067b5fe61f544d686e0f2b0ecb",
+        "Fri Feb 7 21:01:10 2014 +0100",
+        "slush0"
+      ],
+      [
+        "6a3bb51e3fa158e37c739702da3fa64119f55396",
+        "Fri Feb 7 20:57:43 2014 +0100",
+        "slush0"
+      ],
+      [
+        "ce1862ac6bcffa1dd20aad858380e51e66e949ea",
+        "Fri Feb 7 20:43:04 2014 +0100",
+        "slush0"
+      ],
+      [
+        "78eaa26d9a80f69b17c9e97af079326f710c84d4",
+        "Fri Feb 7 12:41:26 2014 +0100",
+        "slush0"
+      ],
+      [
+        "8f8044b12db7af31c0250e8d74c26a742b965428",
+        "Mon Jan 20 12:21:43 2014 -0700",
+        "Sean Bowe"
+      ],
+      [
+        "8d639fd794d196446dd0cbf190d56f347dbee1c4",
+        "Thu Jan 9 19:31:22 2014 +0100",
+        "slush0"
+      ],
+      [
+        "9f1b2d738d6f9300d7d5db2bdb6f65be978856db",
+        "Sun Dec 15 17:23:44 2013 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "d9e890a8f27e46806238e298a346397871fd7e87",
+        "Mon Oct 21 02:18:47 2013 -0400",
+        "Peter Todd"
+      ],
+      [
+        "e6abf7e66d7a499696dc9ef152f2c9eaa5b1b8ef",
+        "Mon Oct 21 00:56:42 2013 -0400",
+        "Peter Todd"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 88.24,
+      "passed_checks": 30,
+      "failed_checks": 4,
+      "skipped_checks": 7,
+      "total_checks": 34,
+      "bip2": {
+        "score": 91.67,
+        "passed_checks": 11,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 12,
+        "checks": [
+          {
+            "id": "bip2.required_field.bip",
+            "label": "Required field 'bip' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.author",
+            "label": "Required field 'author' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.comments_uri",
+            "label": "Required field 'comments_uri' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.type",
+            "label": "Required field 'type' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.created",
+            "label": "Required field 'created' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.license",
+            "label": "Required field 'license' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.heading.motivation",
+            "label": "Heading 'motivation' exists at level 2",
+            "category": "heading",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.heading.specification",
+            "label": "Heading 'specification' exists at level 2",
+            "category": "heading",
+            "standard": "bip2",
+            "passed": false,
+            "details": "Missing heading 'specification'"
+          },
+          {
+            "id": "bip2.heading.copyright",
+            "label": "Heading 'copyright' exists at level 2",
+            "category": "heading",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          }
+        ]
+      },
+      "bip3": {
+        "score": 86.36,
+        "passed_checks": 19,
+        "failed_checks": 3,
+        "skipped_checks": 7,
+        "total_checks": 22,
+        "checks": [
+          {
+            "id": "bip3.preamble.top_rfc822",
+            "label": "Preamble exists as RFC-822-style metadata at the top",
+            "category": "preamble",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.bip",
+            "label": "Required header 'bip' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.title",
+            "label": "Required header 'title' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.authors",
+            "label": "Required header 'authors' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.status",
+            "label": "Required header 'status' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.type",
+            "label": "Required header 'type' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.assigned",
+            "label": "Required header 'assigned' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.license",
+            "label": "Required header 'license' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_order",
+            "label": "Headers appear in the expected BIP3 order",
+            "category": "header_order",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.bip",
+            "label": "Header 'BIP' is an integer without leading zeros or '?'",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.title",
+            "label": "Header 'Title' is 50 characters or fewer",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.authors",
+            "label": "Header 'authors' uses 'Name <email>' entries",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.deputies",
+            "label": "Header 'deputies' uses 'Name <email>' entries",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.status",
+            "label": "Header 'Status' is one of Draft, Complete, Deployed, Closed",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.type",
+            "label": "Header 'Type' is one of Specification, Informational, Process",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.assigned",
+            "label": "Header 'Assigned' is yyyy-mm-dd or '?'",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.license",
+            "label": "Header 'License' is non-empty",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.discussion",
+            "label": "Header 'Discussion' uses 'yyyy-mm-dd: URL' lines",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.version",
+            "label": "Header 'Version' uses MAJOR.MINOR.PATCH",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.requires",
+            "label": "Header 'requires' uses comma+space separated BIP numbers",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.replaces",
+            "label": "Header 'replaces' uses comma+space separated BIP numbers",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.proposed_replacement",
+            "label": "Header 'proposed_replacement' uses comma+space separated BIP numbers",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.required_section.abstract",
+            "label": "Required section 'abstract' is present",
+            "category": "required_section",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_section.motivation",
+            "label": "Required section 'motivation' is present",
+            "category": "required_section",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_section.copyright",
+            "label": "Required section 'copyright' is present",
+            "category": "required_section",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.type_specific.specification_section",
+            "label": "Type 'Specification' includes a 'Specification' section",
+            "category": "type_specific",
+            "standard": "bip3",
+            "passed": false,
+            "details": "Missing required section 'specification' for Type=Specification"
+          },
+          {
+            "id": "bip3.changelog.changelog_section",
+            "label": "Complete/Deployed proposals include a 'Changelog' section",
+            "category": "changelog",
+            "standard": "bip3",
+            "passed": false,
+            "details": "Missing required 'changelog' section"
+          },
+          {
+            "id": "bip3.changelog.version_header",
+            "label": "Complete/Deployed proposals include a 'Version' header",
+            "category": "changelog",
+            "standard": "bip3",
+            "passed": false,
+            "details": "Missing required 'version' header"
+          },
+          {
+            "id": "bip3.changelog.version_matches",
+            "label": "Latest changelog version matches the 'Version' header",
+            "category": "changelog",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "mnemonic": 22,
+      "sentence": 13,
+      "seed": 10,
+      "wordlist": 10,
+      "ent": 9,
+      "bip": 8,
+      "com": 8,
+      "wordlists": 8,
+      "code": 7,
+      "words": 7,
+      "entropy": 7,
+      "bits": 7,
+      "generating": 6,
+      "length": 6,
+      "use": 6,
+      "passphrase": 6,
+      "deterministic": 5,
+      "github": 5,
+      "binary": 5,
+      "generated": 5,
+      "cs": 5,
+      "pre": 4,
+      "implementation": 4,
+      "wallets": 4,
+      "wallet": 4,
+      "initial": 4,
+      "checksum": 4,
+      "8": 4,
+      "vectors": 4,
+      "comments": 3,
+      "https": 3,
+      "0039": 3,
+      "similar": 3,
+      "way": 3,
+      "32": 3,
+      "following": 3,
+      "ms": 3,
+      "instead": 3,
+      "utf": 3,
+      "nfkd": 3,
+      "test": 3,
+      "trezor": 3,
+      "satoshilabs": 2,
+      "voisine": 2,
+      "gmail": 2,
+      "type": 2,
+      "license": 2,
+      "mit": 2,
+      "describes": 2,
+      "later": 2,
+      "generate": 2,
+      "0032": 2,
+      "methods": 2,
+      "human": 2,
+      "s": 2,
+      "user": 2,
+      "created": 2,
+      "sentences": 2,
+      "128": 2,
+      "256": 2,
+      "11": 2,
+      "word": 2,
+      "difficult": 2,
+      "sorted": 2,
+      "allows": 2,
+      "e": 2,
+      "search": 2,
+      "string": 2,
+      "function": 2,
+      "described": 2,
+      "available": 2,
+      "english": 2,
+      "python": 2,
+      "blob": 2,
+      "master": 2,
+      "json": 2,
+      "bip32jp": 2,
+      "reference": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "e6abf7e66d7a499696dc9ef152f2c9eaa5b1b8ef",
+        "timestamp": "2013-10-21T00:56:42-04:00",
+        "date": "2013-10-21",
+        "author": "Peter Todd",
+        "path": "bip-0039.mediawiki",
+        "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "78eaa26d9a80f69b17c9e97af079326f710c84d4",
+        "timestamp": "2014-02-07T12:41:26+01:00",
+        "date": "2014-02-07",
+        "author": "slush0",
+        "path": "bip-0039.mediawiki",
+        "status": "Accepted",
+        "standard": "bip1"
+      },
+      {
+        "commit": "6da6c402183fe75c39e1c0c1e7f22f7f6c2168d9",
+        "timestamp": "2014-02-09T18:10:22+01:00",
+        "date": "2014-02-09",
+        "author": "slush0",
+        "path": "bip-0039.mediawiki",
+        "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "387fc6011bd804609fd751786e50439d5c11a097",
+        "timestamp": "2016-08-23T19:47:29Z",
+        "date": "2016-08-23",
+        "author": "Luke Dashjr",
+        "path": "bip-0039.mediawiki",
+        "status": "Accepted",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0039.mediawiki",
+        "status": "Accepted",
+        "standard": "bip2"
+      },
+      {
+        "commit": "959fecc15bdad070afa63455468b1dba54655fa6",
+        "timestamp": "2016-11-30T09:51:01Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0039.mediawiki",
+        "status": "Proposed",
+        "standard": "bip2"
+      },
+      {
+        "commit": "829afccd1ae26403f8c3583d7347b04aeb54c2ca",
+        "timestamp": "2024-11-08T11:32:40+01:00",
+        "date": "2024-11-08",
+        "author": "scgbckbone",
+        "path": "bip-0039.mediawiki",
+        "status": "Final",
+        "standard": "bip2"
+      },
+      {
+        "commit": "5d3ceb37734f80b2ec206fc94245e3bfd6d5b0f0",
+        "timestamp": "2026-01-12T14:22:33-08:00",
+        "date": "2026-01-12",
+        "author": "Murch",
+        "path": "bip-0039.mediawiki",
+        "status": "Deployed",
+        "standard": "bip3"
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        {
+          "target": "bips:32",
+          "count": 4
+        }
+      ],
+      "body_extracted_llm": [
+        {
+          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "model": "gpt-5.4-2026-03-05",
+          "timestamp": "2026-07-16T08:42:15Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "used to generate deterministic wallets using BIP-0032",
+              "reason": "The proposal's derived seed is explicitly intended for generating deterministic wallets via the target proposal's wallet derivation method.",
+              "confidence": "medium"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "raw": {
+    "preamble": {
+      "slip": "0",
+      "title": "SLIP Template",
+      "author": [
+        "SatoshiLabs <info@satoshilabs.com>"
+      ],
+      "status": "Accepted",
+      "type": "Informational",
+      "created": "2014-06-06"
+    }
+  },
+  "meta": {
+    "last_commit": "Tue Mar 14 21:54:43 2017 +0100",
+    "total_commits": 2,
+    "git_history": [
+      [
+        "40c88470be714e81a5149b50adf2db25ab230bf4",
+        "Tue Mar 14 21:54:43 2017 +0100",
+        "Pavol Rusnak"
+      ],
+      [
+        "b76151348a7430013a4b147725ed94b0f6b72994",
+        "Mon Feb 1 16:02:09 2016 +0100",
+        "Pavol Rusnak"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 85.71,
+      "passed_checks": 6,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 7,
+      "slip": {
+        "score": 85.71,
+        "passed_checks": 6,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 7,
+        "checks": [
+          {
+            "id": "slip.required_field.slip",
+            "label": "Required field 'slip' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.author",
+            "label": "Required field 'author' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.type",
+            "label": "Required field 'type' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.created",
+            "label": "Required field 'created' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "slip",
+            "passed": false,
+            "details": "Missing: abstract"
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "section": 6,
+      "slip": 5,
+      "0000": 2,
+      "template": 2,
+      "title": 2,
+      "satoshilabs": 2,
+      "06": 2,
+      "abstract": 2,
+      "motivation": 2,
+      "body": 2,
+      "references": 2
+    },
+    "changes_in_status": [],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [],
+      "body_extracted_llm": [
+        {
+          "run_id": "2026-07-16T08:44:46Z_gpt-5.4-2026-03-05_69e05a71",
+          "model": "gpt-5.4-2026-03-05",
+          "timestamp": "2026-07-16T08:44:47Z",
+          "status": "success",
+          "dependencies": []
+        }
+      ]
+    }
+  }
+}

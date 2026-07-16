@@ -558,11 +558,30 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:42:40Z",
+          "timestamp": "2026-07-16T09:29:56Z",
           "status": "success",
-          "dependencies": []
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "based on an algorithm described in BIP-0032",
+              "reason": "The proposal defines its wallet hierarchy and derivation path using the BIP32 deterministic derivation algorithm and hardened/public derivation semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:43",
+              "evidence": "purpose scheme described in BIP-0043",
+              "reason": "The proposal relies on BIP43's purpose-field convention to assign purpose 81' and define the subtree semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:44",
+              "evidence": "This BIP is a particular application of BIP43 and is based on BIP44.",
+              "reason": "The proposal is explicitly designed as a specialization based on BIP44's hierarchical wallet structure.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

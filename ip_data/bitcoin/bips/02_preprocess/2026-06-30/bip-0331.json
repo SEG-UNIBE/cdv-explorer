@@ -813,27 +813,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:44:00Z",
+          "timestamp": "2026-07-16T09:31:25Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:133",
               "evidence": "If the peers are using BIP133 fee filters",
-              "reason": "The protocol is explicitly designed to operate with the fee-filter behavior introduced by the target in one of its core relay flow examples, affecting announcement and orphan/package handling semantics.",
+              "reason": "The proposal is explicitly designed to interoperate with BIP133 fee filtering semantics for one of its package relay use cases, describing how package/orphan handling works under those announcement constraints.",
               "confidence": "medium"
             },
             {
               "target": "bips:330",
               "evidence": "A client using BIP330 reconciliation-based transaction relay (Erlay) is able to use package relay without interference.",
-              "reason": "The proposal specifies technical compatibility with reconciliation-based transaction relay and describes how ancestor package relay fits into that workflow.",
+              "reason": "The proposal specifies compatibility and operational interaction with BIP330 transaction relay workflow, indicating package relay is designed to coexist with that reconciliation-based mechanism.",
               "confidence": "medium"
             },
             {
               "target": "bips:339",
-              "evidence": "Package relay requires both peers to support wtxid-based relay because package transactions are referenced by their wtxids.",
-              "reason": "The proposal normatively relies on wtxid-based transaction relay for negotiation and for identifying package transactions.",
+              "evidence": "nodes that both support BIP339 wtxid-based transaction relay",
+              "reason": "The proposal materially relies on BIP339's wtxid-based relay because package transactions are referenced by wtxids and package relay requires both peers to support wtxidrelay.",
               "confidence": "high"
             }
           ]

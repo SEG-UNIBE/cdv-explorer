@@ -768,15 +768,15 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:44:39Z",
+          "timestamp": "2026-07-16T09:32:09Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:341",
-              "evidence": "the resulting key is the taproot internal key per BIP-341",
-              "reason": "The proposal is designed around Taproot/P2TR key and taptree semantics from BIP 341, reusing its internal key, tweak, scriptPubKey, NUMS key, and helper functions throughout the specification.",
+              "evidence": "The resulting key is the taproot internal key per BIP-341.",
+              "reason": "The proposal is explicitly designed around Taproot/P2TR key and taptree semantics, reusing BIP-341 internal-key, tweaking, NUMS key, and scriptPubKey construction mechanisms.",
               "confidence": "high"
             }
           ]

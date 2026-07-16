@@ -381,27 +381,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:44:46Z_gpt-5.4-2026-03-05_69e05a71",
+          "run_id": "2026-07-16T09:33:45Z_gpt-5.4-2026-03-05_090cf5e0",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:44:49Z",
+          "timestamp": "2026-07-16T09:33:49Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
               "evidence": "We adapt the master key generation from BIP-0032.",
-              "reason": "The proposal directly reuses and extends BIP-0032's HD wallet derivation algorithms, compatibility rules, and semantics for master and child key derivation.",
+              "reason": "The proposal directly reuses and extends BIP-0032's hierarchical deterministic key derivation scheme, including compatibility and modified invalid-key handling.",
               "confidence": "high"
             },
             {
               "target": "bips:39",
-              "evidence": "The value of S should be the binary seed obtained from a BIP-0039 mnemonic and optional passphrase",
-              "reason": "The proposal normatively relies on BIP-0039 as one specified source format and seed-generation method for the input seed S.",
+              "evidence": "The value of S should be the binary seed obtained from a BIP-0039 mnemonic",
+              "reason": "The proposal is designed to derive master keys from the seed format produced by BIP-0039 mnemonics, making seed generation from that proposal a substantive input workflow.",
               "confidence": "high"
             },
             {
               "target": "slips:39",
-              "evidence": "it should be the master secret obtained from a set of SLIP-0039 mnemonics and optional passphrase",
-              "reason": "The proposal normatively relies on SLIP-0039 as an alternative specified source for deriving the input seed/master secret used by the scheme.",
+              "evidence": "it should be the master secret obtained from a set of SLIP-0039 mnemonics",
+              "reason": "The proposal explicitly supports and relies on the master secret output workflow defined by SLIP-0039 as an input to derivation.",
               "confidence": "high"
             }
           ]

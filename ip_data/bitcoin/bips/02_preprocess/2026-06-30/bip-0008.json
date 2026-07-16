@@ -906,16 +906,34 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:41:59Z",
+          "timestamp": "2026-07-16T09:29:11Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
               "evidence": "This document specifies an alternative to [[bip-0009.mediawiki|BIP9]]",
-              "reason": "The proposal is designed as a modification/replacement of BIP9's versionbits deployment mechanism, reusing its signaling framework and explicitly contrasting changes to it.",
+              "reason": "The proposal is explicitly designed as an alternative to and modification of BIP9's versionbits soft fork deployment mechanism, reusing its signaling framework and compatibility assumptions.",
               "confidence": "high"
+            },
+            {
+              "target": "bips:34",
+              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
+              "reason": "The proposal's available nVersion space and bit allocation are constrained by consensus semantics introduced by BIP34.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:65",
+              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
+              "reason": "The proposal's available nVersion space and bit allocation are constrained by consensus semantics introduced by BIP65.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:66",
+              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
+              "reason": "The proposal's available nVersion space and bit allocation are constrained by consensus semantics introduced by BIP66.",
+              "confidence": "medium"
             }
           ]
         }

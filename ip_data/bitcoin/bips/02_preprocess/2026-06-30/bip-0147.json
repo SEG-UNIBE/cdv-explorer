@@ -571,33 +571,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:43:31Z",
+          "timestamp": "2026-07-16T09:30:50Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
               "evidence": "deployed by \"version bits\" BIP9",
-              "reason": "The proposal explicitly relies on BIP9's version-bits activation mechanism for deployment.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:62",
-              "evidence": "This document is extracted from the previous BIP62 proposal",
-              "reason": "The proposal is directly derived from and reuses the earlier NULLDUMMY rule work specified in BIP62.",
+              "reason": "The proposal normatively uses the BIP9 activation mechanism for deployment.",
               "confidence": "low"
             },
             {
               "target": "bips:141",
               "evidence": "using the same parameters for BIP141 and BIP143",
-              "reason": "The proposal is deployed together with SegWit parameters and explicitly applies its rule to pay-to-witness-script-hash scripts defined by BIP141.",
+              "reason": "The proposal is deployed together with SegWit using BIP141's parameters and explicitly applies its rule to pay-to-witness-script-hash scripts defined there.",
               "confidence": "high"
             },
             {
               "target": "bips:143",
               "evidence": "using the same parameters for BIP141 and BIP143",
-              "reason": "The proposal normatively specifies deployment using the same activation parameters as BIP143, tying its activation to that proposal's rollout.",
+              "reason": "The deployment is explicitly tied to the same versionbits parameters as BIP143, making activation of this proposal designed around that coordinated deployment.",
               "confidence": "high"
             }
           ]

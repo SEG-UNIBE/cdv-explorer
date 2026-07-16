@@ -533,22 +533,22 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:44:32Z",
+          "timestamp": "2026-07-16T09:31:59Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:380",
-              "evidence": "descriptors use the format and general operation specified in [[bip-0380.mediawiki|380]]",
-              "reason": "The proposal explicitly reuses BIP 380's descriptor format and operational semantics as the basis for the new descriptor expressions.",
+              "evidence": "use the format and general operation specified in [[bip-0380.mediawiki|380]]",
+              "reason": "The proposal defines new descriptors within the descriptor format and operational framework established by BIP 380.",
               "confidence": "high"
             },
             {
               "target": "bips:383",
-              "evidence": "Like BIP 383's <tt>multi()</tt> and <tt>sortedmulti()</tt>",
-              "reason": "The proposal defines analogous descriptor functions patterned after BIP 383's multisig descriptor concepts and semantics.",
-              "confidence": "medium"
+              "evidence": "Like BIP 383's multi() and sortedmulti()",
+              "reason": "The proposal is designed as a tapscript-specific counterpart to the existing multi() and sortedmulti() descriptor functions from BIP 383, reusing their function roles and argument structure.",
+              "confidence": "low"
             }
           ]
         }

@@ -978,24 +978,11 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:42:43Z",
+          "timestamp": "2026-07-16T09:29:57Z",
           "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:32",
-              "evidence": "This specification relies on BIP32",
-              "reason": "The proposal is built around deriving entropy from a BIP32 master root key using hardened derivation paths and BIP32 extended key semantics.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:39",
-              "evidence": "BIP39 mnemonic is the mnemonic phrase that is calculated from the entropy used before hashing of the mnemonic in BIP39.",
-              "reason": "One defined application derives BIP39 mnemonics from the proposal's entropy and specifies BIP39-specific word lengths, language codes, and output handling.",
-              "confidence": "low"
-            }
-          ]
+          "dependencies": []
         }
       ]
     }

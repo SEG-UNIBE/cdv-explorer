@@ -1092,16 +1092,16 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:42:38Z",
+          "timestamp": "2026-07-16T09:29:53Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:21",
-              "evidence": "presents a [[bip-0021.mediawiki|BIP 21 URI]] to the sender with a parameter <code>pj=</code>",
-              "reason": "The proposal is designed around extending the BIP 21 URI scheme with new payjoin parameters and uses that URI as the protocol entry point.",
-              "confidence": "high"
+              "evidence": "presents a BIP 21 URI to the sender with a parameter pj=",
+              "reason": "The proposal defines new payjoin parameters and receiver advertisement within the BIP 21 URI scheme, making BIP 21's URI format a core part of the protocol.",
+              "confidence": "low"
             }
           ]
         }

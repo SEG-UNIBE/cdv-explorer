@@ -179,21 +179,21 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:44:46Z_gpt-5.4-2026-03-05_69e05a71",
+          "run_id": "2026-07-16T09:33:45Z_gpt-5.4-2026-03-05_090cf5e0",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:45:11Z",
+          "timestamp": "2026-07-16T09:34:14Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
               "evidence": "BIP-0032 already defines a serialization format for hierarchical deterministic keys.",
-              "reason": "SLIP-32 explicitly presents an extended version of the BIP-32 serialization format and reuses BIP-32 concepts including path semantics and key material structure.",
+              "reason": "The proposal explicitly extends the serialization of BIP-32 wallets and reuses BIP-32 paths, chain codes, and key data semantics.",
               "confidence": "high"
             },
             {
               "target": "bips:173",
               "evidence": "This structure is encoded using Bech32 format described in BIP-0173.",
-              "reason": "The proposal normatively adopts the Bech32 encoding format from BIP-173 for its serialized keys.",
+              "reason": "The proposal normatively adopts the Bech32 encoding format from BIP-173 for its serialized extended keys.",
               "confidence": "high"
             }
           ]

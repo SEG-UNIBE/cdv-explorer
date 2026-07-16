@@ -383,21 +383,21 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:44:46Z_gpt-5.4-2026-03-05_69e05a71",
+          "run_id": "2026-07-16T09:33:45Z_gpt-5.4-2026-03-05_090cf5e0",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:44:58Z",
+          "timestamp": "2026-07-16T09:33:56Z",
           "status": "success",
           "dependencies": [
             {
               "target": "slips:10",
-              "evidence": "is derived from a master secret and from the version and authentication tag of the credential ID using the [SLIP-0010] key derivation scheme",
-              "reason": "The proposal normatively relies on SLIP-0010 for deriving the credential key pair from the master secret and credential ID components.",
+              "evidence": "derived from a master secret and from the version and authentication tag of the credential ID using the [SLIP-0010] key derivation scheme",
+              "reason": "The proposal directly relies on SLIP-0010 for deriving the credential key pair from the master secret and computed path.",
               "confidence": "low"
             },
             {
               "target": "slips:21",
-              "evidence": "The key is derived from the master secret using the [SLIP-0021] method for hierarchical derivation of symmetric keys",
-              "reason": "The proposal normatively uses SLIP-0021 to derive the credential encryption key and CredRandom from the master secret.",
+              "evidence": "derived from the master secret using the [SLIP-0021] method for hierarchical derivation of symmetric keys",
+              "reason": "The proposal normatively uses SLIP-0021 to derive the credential ID encryption key and CredRandom from the master secret.",
               "confidence": "low"
             }
           ]

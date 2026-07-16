@@ -1808,27 +1808,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:44:46Z_gpt-5.4-2026-03-05_69e05a71",
+          "run_id": "2026-07-16T09:33:45Z_gpt-5.4-2026-03-05_090cf5e0",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:45:19Z",
+          "timestamp": "2026-07-16T09:34:21Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:93",
               "evidence": "BIP-0032 master seed | `ms`",
-              "reason": "The codex32 section registers a human-readable part specifically for BIP-0093 codex32 usage, so this part of the SLIP is defined around that proposal's format.",
-              "confidence": "high"
+              "reason": "The proposal registers a codex32 human-readable part for BIP-0032 master seeds as part of its codex32 usage table, making that entry technically about the target proposal's seed data format.",
+              "confidence": "medium"
             },
             {
               "target": "bips:173",
               "evidence": "BIP-0173 defines a new format for segregated witness output addresses that contains a human-readable part",
-              "reason": "This SLIP is specifically a registry of human-readable parts for addresses in the format defined by BIP-0173, so its purpose and data are organized around that proposal's address format and HRP concept.",
+              "reason": "This SLIP is specifically a registry of human-readable parts for the address format introduced by BIP-0173, so its purpose and assignments depend on that format's HRP concept and Bech32 usage.",
               "confidence": "high"
             },
             {
               "target": "bips:350",
               "evidence": "Entries annotated with \"(m)\" use Bech32m [BIP-0350]",
-              "reason": "The registry explicitly classifies some registered human-readable parts as using Bech32m semantics from BIP-0350, so implementing those entries depends on that proposal's encoding rules.",
+              "reason": "The proposal includes registered HRPs for non-Segwit formats that explicitly use Bech32m semantics defined by BIP-0350.",
               "confidence": "high"
             }
           ]

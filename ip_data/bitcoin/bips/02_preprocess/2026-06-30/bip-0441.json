@@ -740,11 +740,24 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:44:37Z",
+          "timestamp": "2026-07-16T09:32:07Z",
           "status": "success",
-          "dependencies": []
+          "dependencies": [
+            {
+              "target": "bips:342",
+              "evidence": "All opcodes not explicitly defined here are treated exactly as defined by BIP342.",
+              "reason": "The proposal defines a new tapscript leaf version by inheriting baseline opcode semantics and modifying a specific success condition from the target.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:440",
+              "evidence": "relying on the Varops Budget in BIP440",
+              "reason": "The proposal's safety model and opcode cost accounting depend on the varops budget mechanism defined in the target, and it repeatedly delegates cost semantics to it.",
+              "confidence": "low"
+            }
+          ]
         }
       ]
     }

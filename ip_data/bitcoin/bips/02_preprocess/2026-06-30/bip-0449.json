@@ -782,11 +782,24 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:44:41Z",
+          "timestamp": "2026-07-16T09:32:11Z",
           "status": "success",
-          "dependencies": []
+          "dependencies": [
+            {
+              "target": "bips:340",
+              "evidence": "attempt the BIP340 even-Y lift",
+              "reason": "The proposal normatively uses BIP340's x-only key lifting and encoding semantics to define opcode behavior and valid inputs/outputs.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "Constructions that require a BIP341 tweak to be computed entirely on-chain",
+              "reason": "The proposal is designed around Taproot's tweak model and explicitly extends that tweak mechanism into script, relying on BIP341's Taproot tweak concept for compatibility and motivation.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

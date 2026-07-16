@@ -858,27 +858,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:44:15Z",
+          "timestamp": "2026-07-16T09:31:41Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:141",
               "evidence": "P2WPKH and P2WSH, see BIP141",
-              "reason": "The proposal's version 0 address rules and validity constraints for witness programs are defined around segregated witness output semantics introduced by BIP141.",
+              "reason": "The proposal's address-version rules and validity constraints for segregated witness outputs rely on witness program semantics and v0 length restrictions defined by BIP141.",
               "confidence": "low"
             },
             {
               "target": "bips:173",
               "evidence": "amends BIP173 to use Bech32m for native segregated witness outputs of version 1 and later",
-              "reason": "The proposal explicitly modifies BIP173's address encoding rules and reuses Bech32 semantics and format, changing only the checksum constant and version-specific usage.",
+              "reason": "The proposal explicitly modifies BIP173's Bech32 address encoding rules and reuses its format while changing checksum usage by witness version.",
               "confidence": "high"
             },
             {
               "target": "bips:341",
               "evidence": "In anticipation of the proposed Taproot soft fork introducing v1 segregated witness outputs on the network",
-              "reason": "The proposal is designed for v1 segregated witness outputs that BIP341 is expected to introduce, making adoption and evaluation of the new encoding materially tied to that use case.",
+              "reason": "The proposal is designed around supporting v1 segregated witness outputs introduced by Taproot, making adoption and evaluation materially tied to that output version's deployment.",
               "confidence": "low"
             }
           ]

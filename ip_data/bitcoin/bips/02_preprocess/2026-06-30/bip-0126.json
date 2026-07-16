@@ -587,15 +587,15 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:43:13Z",
+          "timestamp": "2026-07-16T09:30:32Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:69",
               "evidence": "Applications which wish to comply both with this procedure and BIP69 should apply this procedure prior to applying BIP69.",
-              "reason": "The proposal is explicitly designed to interoperate with BIP69 and specifies an implementation order for applying its transaction-construction rules alongside BIP69's ordering rules.",
+              "reason": "The proposal explicitly defines how it composes with BIP69, making implementations that aim for joint compliance depend on BIP69's transaction ordering procedure.",
               "confidence": "medium"
             }
           ]

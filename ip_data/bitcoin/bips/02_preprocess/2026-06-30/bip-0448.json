@@ -533,48 +533,11 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:44:43Z",
+          "timestamp": "2026-07-16T09:32:09Z",
           "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:340",
-              "evidence": "`OP_CHECKSIGFROMSTACK` introduces [BIP 340][schnorr-bip] signature verification for arbitrary messages",
-              "reason": "The CSFS functionality being deployed is explicitly based on BIP 340 signature verification semantics.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:341",
-              "evidence": "This proposal favours the minimal approach of [BIP 446 `OP_TEMPLATEHASH`][templatehash-bip] that does not modify legacy scripting contexts and reuses the existing Taproot signature hashes.",
-              "reason": "The proposal is designed around reusing existing Taproot signature hashes, making Taproot's hashing/signature context a technical basis for the chosen design.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:342",
-              "evidence": "In [BIP 342 Tapscript](bip-0342.mediawiki), the following operations are updated.",
-              "reason": "The proposal is defined as modifications within the Tapscript semantics introduced by BIP 342, so implementation relies on that scripting context and opcode rules.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:348",
-              "evidence": "`OP_CHECKSIGFROMSTACK` redefines `OP_SUCCESS204` (0xcc) as per the specification of [BIP 348][csfs-bip].",
-              "reason": "The proposal directly incorporates the opcode behavior specified by BIP 348 as one of its three deployed operations.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:349",
-              "evidence": "`OP_INTERNALKEY` redefines `OP_SUCCESS203` (0xcb) as per the specification of [BIP 349][internalkey-bip].",
-              "reason": "The proposal directly incorporates the opcode behavior specified by BIP 349 as one of its three deployed operations.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:446",
-              "evidence": "`OP_TEMPLATEHASH` redefines `OP_SUCCESS206` (0xce) as per the specification of [BIP 446][templatehash-bip].",
-              "reason": "The proposal directly incorporates the opcode behavior specified by BIP 446 as one of its three deployed operations.",
-              "confidence": "high"
-            }
-          ]
+          "dependencies": []
         }
       ]
     }

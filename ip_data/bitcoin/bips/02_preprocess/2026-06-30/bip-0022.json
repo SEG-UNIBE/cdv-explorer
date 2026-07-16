@@ -730,21 +730,21 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:42:10Z",
+          "timestamp": "2026-07-16T09:29:23Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:16",
               "evidence": "Due to the [[bip-0016.mediawiki|BIP 0016]] changes regarding rules on block sigops",
-              "reason": "The proposal's transaction sigops field is justified by and designed around the sigop-counting rules introduced by BIP 16, which miners need to evaluate block limits.",
-              "confidence": "medium"
+              "reason": "The proposal's requirement to provide transaction sigop counts is justified by and designed around BIP 16's sigop counting rules, which materially affect template construction and validation.",
+              "confidence": "high"
             },
             {
               "target": "bips:34",
               "evidence": "comply with [[bip-0034.mediawiki|BIP 0034]] for version 2",
-              "reason": "The proposal's handling of block version 2 templates explicitly requires compliance with BIP 34 semantics, affecting implementation and validity of produced blocks.",
+              "reason": "The template's version semantics explicitly require miners to follow BIP 34 rules when using version 2 blocks, so implementing and evaluating version handling depends on BIP 34.",
               "confidence": "high"
             }
           ]

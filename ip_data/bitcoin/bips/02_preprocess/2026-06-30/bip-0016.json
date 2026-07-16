@@ -687,21 +687,15 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:42:05Z",
+          "timestamp": "2026-07-16T09:29:17Z",
           "status": "success",
           "dependencies": [
             {
-              "target": "bips:12",
-              "evidence": "This BIP replaces BIP 12, which proposed a new Script opcode (\"OP_EVAL\") to accomplish everything in this BIP and more.",
-              "reason": "The proposal explicitly supersedes and substitutes for BIP 12's mechanism, making BIP 12 a direct technical predecessor whose approach is replaced.",
-              "confidence": "high"
-            },
-            {
               "target": "bips:13",
-              "evidence": "The Motivation for this BIP (and BIP 13, the pay-to-script-hash address type)",
-              "reason": "The proposal is designed alongside and around the pay-to-script-hash address type defined in BIP 13, making that address format a substantive companion mechanism for adopting this script-hash transaction type.",
+              "evidence": "BIP 13, the pay-to-script-hash address type",
+              "reason": "The proposal is explicitly designed alongside the pay-to-script-hash address format and relies on that address-type concept for its deployment and use.",
               "confidence": "medium"
             }
           ]

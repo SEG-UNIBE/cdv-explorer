@@ -709,28 +709,16 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:43:24Z",
+          "timestamp": "2026-07-16T09:30:46Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:11",
               "evidence": "This is the standard ''m-of-n'' script defined in [https://github.com/bitcoin/bips/blob/master/bip-0011.mediawiki BIP 11] with an additional version parameter",
-              "reason": "The proposal explicitly reuses BIP 11's standard multisig script format as the basis for its new versioned script.",
+              "reason": "The proposal explicitly reuses BIP 11's standard m-of-n script format as the basis for its new script form, extending it with a version parameter and new opcode.",
               "confidence": "high"
-            },
-            {
-              "target": "bips:30",
-              "evidence": "which are known to be identical<ref>[[https://github.com/bitcoin/bips/blob/master/bip-0030.mediawiki|BIP 30 - Duplicate transactions]]</ref>",
-              "reason": "BIP 30 is cited only as historical context for duplicate coinbase transactions, not as a mechanism this proposal builds on.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:34",
-              "evidence": "and motivated the introduction of BIP 34.<ref>[[https://github.com/bitcoin/bips/blob/master/bip-0034.mediawiki|Block v2, Height in Coinbase]]</ref>",
-              "reason": "The proposal's coinbase collision rationale depends on the assumption introduced by BIP 34 that coinbase transactions include height, preventing such duplicates going forward.",
-              "confidence": "medium"
             }
           ]
         }

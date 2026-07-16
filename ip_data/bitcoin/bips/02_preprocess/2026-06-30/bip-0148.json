@@ -593,11 +593,36 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:43:30Z",
+          "timestamp": "2026-07-16T09:30:53Z",
           "status": "success",
-          "dependencies": []
+          "dependencies": [
+            {
+              "target": "bips:9",
+              "evidence": "specifies a BIP16 like soft fork flag day activation of the segregated witness BIP9 deployment",
+              "reason": "The proposal is explicitly designed around the existing BIP9 segwit deployment, reusing its versionbits signaling and lock-in state machinery.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "to activate BIP141, BIP143 and BIP147",
+              "reason": "The proposal's purpose is to trigger activation of Segregated Witness consensus rules defined in BIP141.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:143",
+              "evidence": "to activate BIP141, BIP143 and BIP147",
+              "reason": "The proposal's activation mechanism is intended to activate the transaction signature verification rules from BIP143 as part of segwit.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:147",
+              "evidence": "to activate BIP141, BIP143 and BIP147",
+              "reason": "The proposal's activation mechanism is intended to activate the malleability-related consensus change from BIP147 as part of segwit.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

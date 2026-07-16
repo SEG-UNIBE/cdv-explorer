@@ -1069,11 +1069,18 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:42:39Z",
+          "timestamp": "2026-07-16T09:29:52Z",
           "status": "success",
-          "dependencies": []
+          "dependencies": [
+            {
+              "target": "bips:70",
+              "evidence": "This BIP is an extension to BIP 70",
+              "reason": "The proposal directly extends the BIP 70 Payment Protocol, reusing its messages, PKI fields, and process semantics as the base protocol being modified.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

@@ -910,28 +910,28 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:42:01Z",
+          "timestamp": "2026-07-16T09:29:12Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:34",
               "evidence": "BIP 34 introduced a mechanism for doing soft-forking changes",
-              "reason": "The proposal is explicitly designed as a replacement/generalization of BIP 34's miner-signaled soft-fork deployment mechanism and reuses its threshold baseline in rationale for modified thresholds.",
+              "reason": "The proposal is designed as a generalized replacement for the soft-fork deployment mechanism introduced by BIP 34, reusing its threshold-based miner signaling model and explicitly inheriting its 95% threshold basis.",
               "confidence": "low"
             },
             {
               "target": "bips:65",
-              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
-              "reason": "The proposal's available nVersion space and versionbits design are explicitly constrained around consensus restrictions introduced by this target.",
-              "confidence": "high"
+              "evidence": "This approach was later reused in BIP 66 and BIP 65",
+              "reason": "The proposal constrains its versionbits design around nVersion restrictions created by BIP 65's reuse of the earlier integer-version activation mechanism.",
+              "confidence": "low"
             },
             {
               "target": "bips:66",
-              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
-              "reason": "The proposal's available nVersion space and versionbits design are explicitly constrained around consensus restrictions introduced by this target.",
-              "confidence": "high"
+              "evidence": "This approach was later reused in BIP 66 and BIP 65",
+              "reason": "The proposal constrains its versionbits design around nVersion restrictions created by BIP 66's reuse of the earlier integer-version activation mechanism.",
+              "confidence": "low"
             }
           ]
         }

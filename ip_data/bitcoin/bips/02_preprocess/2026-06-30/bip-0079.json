@@ -672,27 +672,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:42:40Z",
+          "timestamp": "2026-07-16T09:29:55Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:21",
               "evidence": "The standard way of letting a sender know where to send a bustapay transaction is done via a bip21 encoded address.",
-              "reason": "The proposal uses BIP21 URI encoding as the standard mechanism to convey the bustapay URL parameter to senders.",
+              "reason": "The proposal uses the BIP21 URI/address encoding as the standard mechanism to communicate the bustapay endpoint via the \"bpu\" parameter.",
               "confidence": "high"
             },
             {
               "target": "bips:69",
               "evidence": "Check if the transaction was already sorted according to BIP69, if so ensure the result stays that way.",
-              "reason": "Implementations are instructed to preserve BIP69 ordering when present, making compatibility with that transaction ordering scheme part of the protocol behavior.",
+              "reason": "Implementations are instructed to preserve BIP69 ordering semantics when present, making compatibility with that transaction ordering convention part of receiver behavior.",
               "confidence": "medium"
             },
             {
               "target": "bips:125",
               "evidence": "The sender is also encouraged to use a slightly more aggressive feerate than usual as well as BIP125 (Opt-in Full Replace-by-Fee Signaling)",
-              "reason": "The protocol's transaction publishing and fallback behavior is designed to take advantage of replace-by-fee signaling from BIP125, though it is not strictly required.",
+              "reason": "The proposal's transaction publishing and fallback workflow is designed to take advantage of opt-in RBF behavior for replacing transactions when needed.",
               "confidence": "medium"
             }
           ]

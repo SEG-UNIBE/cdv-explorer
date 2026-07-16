@@ -684,21 +684,15 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:44:37Z",
+          "timestamp": "2026-07-16T09:32:07Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:324",
-              "evidence": "Nodes implementing both this BIP and [BIP 324 (v2 P2P encrypted transport)][BIP324] MUST treat a message with a 1-byte `message_type` equal to `37` that is received prior to `verack` as the `feature` message.",
-              "reason": "The proposal defines specific message-type handling when used with BIP 324 transport, making compatibility and implementation depend on BIP 324's 1-byte message type mechanism.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:339",
-              "evidence": "we propose codifying and generalising the mechanism used by [BIP 339][BIP339] for future P2P upgrades",
-              "reason": "The proposal explicitly generalizes and reuses the feature-negotiation mechanism introduced by BIP 339 as the basis for its design.",
+              "evidence": "Nodes implementing both this BIP and [BIP 324 (v2 P2P encrypted transport)][BIP324] MUST treat a message with a 1-byte `message_type` equal to `37`",
+              "reason": "The proposal defines a specific interoperability rule for BIP 324 transport, reusing its 1-byte message type mechanism for the feature message.",
               "confidence": "high"
             }
           ]

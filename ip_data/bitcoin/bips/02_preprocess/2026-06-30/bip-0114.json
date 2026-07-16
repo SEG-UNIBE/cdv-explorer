@@ -833,27 +833,21 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:43:02Z",
+          "timestamp": "2026-07-16T09:30:19Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
               "evidence": "will be deployed by version-bits [[bip-0009.mediawiki|BIP9]]",
-              "reason": "The proposal's activation method is explicitly specified to use the version-bits deployment mechanism from BIP9.",
+              "reason": "The proposal's activation method is explicitly specified to use the version-bits deployment mechanism defined by BIP9.",
               "confidence": "high"
-            },
-            {
-              "target": "bips:112",
-              "evidence": "The following is the \"Escrow with Timeout\" example in [[bip-0112.mediawiki|BIP112]]",
-              "reason": "The proposal uses BIP112 script constructs such as CHECKSEQUENCEVERIFY in concrete MAST branches, so understanding and evaluating those example branch semantics relies on BIP112.",
-              "confidence": "medium"
             },
             {
               "target": "bips:141",
               "evidence": "This BIP depends on [[bip-0141.mediawiki|BIP141]]",
-              "reason": "The proposal defines its witness program semantics and spending behavior within the segregated witness framework introduced by BIP141, and explicitly depends on it for deployment and script interpretation.",
+              "reason": "The proposal defines its new witness program semantics and validation rules within the witness-program framework introduced by BIP141 and explicitly requires it for deployment.",
               "confidence": "high"
             }
           ]

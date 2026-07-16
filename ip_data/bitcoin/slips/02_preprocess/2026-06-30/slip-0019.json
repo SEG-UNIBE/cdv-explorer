@@ -494,33 +494,33 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:44:46Z_gpt-5.4-2026-03-05_69e05a71",
+          "run_id": "2026-07-16T09:33:45Z_gpt-5.4-2026-03-05_090cf5e0",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:44:55Z",
+          "timestamp": "2026-07-16T09:33:58Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:174",
               "evidence": "This section proposes additional fields for [BIP-0174] PSBTv0",
-              "reason": "The proposal extends PSBTv0 by defining new global and input fields for carrying proof-of-ownership data.",
+              "reason": "The proposal extends BIP-0174 by defining new PSBT global and input fields for carrying proofs of ownership.",
               "confidence": "low"
             },
             {
               "target": "bips:322",
               "evidence": "signed using the Generic Signed Message Format as defined in the [original BIP-0322]",
-              "reason": "The proof signature format and verification are defined in terms of BIP-0322's SignatureProof container and signing semantics.",
+              "reason": "The proof signature format and verification semantics are defined by the original BIP-0322 Signed Message Format.",
               "confidence": "high"
             },
             {
               "target": "bips:370",
               "evidence": "and [BIP-0370] PSBTv2 that allow for SLIP-0019 proofs of ownership to be included in a PSBT",
-              "reason": "The proposal extends PSBTv2 by defining compatible fields and inclusion rules for ownership proofs.",
+              "reason": "The proposal extends BIP-0370 by defining compatible PSBTv2 fields for proofs of ownership.",
               "confidence": "low"
             },
             {
               "target": "slips:21",
               "evidence": "derived from the wallet's master secret using the [SLIP-0021] method for hierarchical derivation of symmetric keys",
-              "reason": "The proposal normatively defines its ownership identification key derivation using SLIP-0021.",
+              "reason": "The proposal normatively derives its ownership identification key using SLIP-0021's key-derivation method.",
               "confidence": "low"
             }
           ]

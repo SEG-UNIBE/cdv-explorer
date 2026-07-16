@@ -576,39 +576,45 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:42:44Z",
+          "timestamp": "2026-07-16T09:30:00Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
               "evidence": "based on a BIP 32 root account",
-              "reason": "The proposal defines its deterministic address derivation starting from the target's HD wallet root/account structure.",
+              "reason": "The proposal derives keys and accounts from the target's hierarchical deterministic wallet root structure.",
               "confidence": "low"
             },
             {
               "target": "bips:44",
               "evidence": "uses the same account-structure as defined in BIP 44",
-              "reason": "The proposal directly reuses the target's derivation path hierarchy and level semantics for accounts, change, and address indexes.",
+              "reason": "The proposal reuses the target's account hierarchy and path levels for derivation.",
               "confidence": "low"
             },
             {
               "target": "bips:49",
               "evidence": "uses the same account-structure as defined in BIP 44 and BIP 49",
-              "reason": "The proposal is designed as a variant of the target's segregated-witness account scheme, reusing its account structure and level definitions while changing purpose and serialization method.",
+              "reason": "The proposal explicitly reuses the target's derivation/account structure conventions aside from a different purpose value.",
               "confidence": "low"
             },
             {
               "target": "bips:141",
               "evidence": "we use the encapsulation defined in BIP 141",
-              "reason": "The proposal relies on the target's P2WPKH witness and scriptPubKey semantics to derive native SegWit addresses.",
+              "reason": "The proposal derives addresses and script semantics from the target's native SegWit P2WPKH output definition.",
               "confidence": "low"
             },
             {
               "target": "bips:173",
               "evidence": "using the P2WPKH (BIP 173) serialization format",
-              "reason": "The proposal defines wallet derivation specifically for addresses encoded in the target's Bech32 witness address format.",
+              "reason": "The proposal defines HD wallet derivation specifically for addresses serialized using the target's Bech32 address format.",
+              "confidence": "low"
+            },
+            {
+              "target": "slips:132",
+              "evidence": "Additional registered version bytes are listed in SLIP-0132",
+              "reason": "The proposal's extended key serialization uses alternate version bytes aligned with the registry identified in the target.",
               "confidence": "low"
             }
           ]

@@ -836,15 +836,15 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:43:47Z",
+          "timestamp": "2026-07-16T09:31:12Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:118",
-              "evidence": "it is like BIP-118",
-              "reason": "The proposal compares its blinded hash property to BIP-118 but does not reuse, require, or extend BIP-118 semantics or formats in a normative way.",
+              "evidence": "it does not commit to its first tx-input (in that way, it is like BIP-118)",
+              "reason": "The proposal explicitly compares a bundle-hash property to BIP-118, but does not state that it reuses or depends on BIP-118 semantics or implementation.",
               "confidence": "low"
             }
           ]

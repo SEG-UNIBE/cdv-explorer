@@ -720,27 +720,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:43:51Z",
+          "timestamp": "2026-07-16T09:31:15Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:21",
               "evidence": "This BIP is a modification and intended replacement of [[bip-0021.mediawiki|BIP 0021]]",
-              "reason": "The proposal directly amends and replaces the earlier Bitcoin URI scheme, reusing its URI framework and specifying changes to its behavior and fields.",
+              "reason": "The proposal directly modifies and replaces BIP 21's Bitcoin URI scheme, so understanding and implementing it materially depends on BIP 21 semantics and workflow.",
               "confidence": "high"
             },
             {
               "target": "bips:351",
               "evidence": "*pay: [[bip-0351.mediawiki|BIP 351 Private Payment addresses]]",
-              "reason": "The proposal defines a standard query key for carrying BIP 351 payment instructions, so supporting that payment method within this URI scheme depends on the target's address format and semantics.",
+              "reason": "The proposal standardizes a query parameter whose value is defined as a BIP 351 payment instruction, making interoperability depend on that address format.",
               "confidence": "medium"
             },
             {
               "target": "bips:352",
               "evidence": "*sp: [[bip-0352.mediawiki|BIP 352 Silent Payment addresses]]",
-              "reason": "The proposal defines a standard query key for carrying BIP 352 payment instructions, making use of that payment method within the URI scheme depend on the target's address format and semantics.",
+              "reason": "The proposal standardizes a query parameter whose value is defined as a BIP 352 payment instruction, so support for that instruction depends on the target's address semantics.",
               "confidence": "medium"
             }
           ]

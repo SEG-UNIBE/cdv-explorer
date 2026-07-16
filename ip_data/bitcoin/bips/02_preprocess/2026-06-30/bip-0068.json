@@ -834,27 +834,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:42:34Z",
+          "timestamp": "2026-07-16T09:29:46Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
               "evidence": "This BIP is to be deployed by \"versionbits\" BIP9 using bit 0.",
-              "reason": "The proposal's activation and deployment mechanism is explicitly defined in terms of BIP9 versionbits.",
+              "reason": "The proposal depends on BIP9's activation mechanism and parameters for deployment.",
               "confidence": "high"
             },
             {
               "target": "bips:112",
-              "evidence": "The flag (1<<22) is the highest order bit in a 3-byte signed integer for use in bitcoin scripts as a 3-byte PUSHDATA with OP_CHECKSEQUENCEVERIFY (BIP 112).",
-              "reason": "The proposal is designed to align nSequence encoding with OP_CHECKSEQUENCEVERIFY semantics introduced in BIP112 and must be deployed simultaneously with it.",
+              "evidence": "This BIP must be deployed simultaneously with BIP112 and BIP113",
+              "reason": "The proposal is designed to activate together with BIP112, and its sequence-number semantics are explicitly aligned for use with OP_CHECKSEQUENCEVERIFY.",
               "confidence": "high"
             },
             {
               "target": "bips:113",
               "evidence": "All references to median-time-past (MTP) are as defined by BIP113.",
-              "reason": "The proposal explicitly adopts BIP113's median-time-past definition for its time-based relative lock-time semantics.",
+              "reason": "The proposal relies on BIP113's MTP definition for its time-based relative lock-time semantics and deployment.",
               "confidence": "high"
             }
           ]

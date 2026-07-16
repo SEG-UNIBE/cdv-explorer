@@ -673,11 +673,18 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:42:05Z",
+          "timestamp": "2026-07-16T09:29:18Z",
           "status": "success",
-          "dependencies": []
+          "dependencies": [
+            {
+              "target": "bips:16",
+              "evidence": "it also replaces BIP 16, which is identical in terms of protocol",
+              "reason": "The proposal states that BIP 16 defines an identical protocol, so understanding and evaluating this BIP materially depends on the same protocol semantics introduced there.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

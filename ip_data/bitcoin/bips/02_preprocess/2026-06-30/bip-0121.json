@@ -625,21 +625,21 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:43:11Z",
+          "timestamp": "2026-07-16T09:30:28Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:21",
               "evidence": "The specification is the same as BIP0021, with the following differences:",
-              "reason": "The proposal directly reuses and specializes the BIP21 URI scheme semantics and extensibility rules.",
+              "reason": "The proposal directly reuses and specializes the BIP21 URI scheme, inheriting its structure, encoding, and extensibility rules.",
               "confidence": "high"
             },
             {
               "target": "bips:120",
               "evidence": "This is a proposal for a URI scheme to be used in the Proof of Payment process.",
-              "reason": "The URI scheme is designed around the Proof of Payment workflow and serialized PoP transmission defined by BIP120.",
+              "reason": "The proposal is designed around the Proof of Payment workflow and semantics introduced by BIP120, providing the request URI used in that process.",
               "confidence": "medium"
             }
           ]

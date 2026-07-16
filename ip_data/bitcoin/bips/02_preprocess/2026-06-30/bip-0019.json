@@ -577,11 +577,18 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:42:06Z",
+          "timestamp": "2026-07-16T09:29:19Z",
           "status": "success",
-          "dependencies": []
+          "dependencies": [
+            {
+              "target": "bips:11",
+              "evidence": "This is already specified in [[bip-0011.mediawiki|BIP 0011]].",
+              "reason": "The proposal is defined as an alternative standard transaction form for the same multisignature use cases and explicitly anchors its rationale against the mechanism specified in BIP 11.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

@@ -692,15 +692,15 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:43:14Z",
+          "timestamp": "2026-07-16T09:30:32Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:68",
               "evidence": "following the rules of [[bip-0068.mediawiki|BIP-68]]",
-              "reason": "The proposal's Recovery Transaction nSequence relative-locktime semantics and calculation are explicitly defined by the target proposal.",
+              "reason": "The proposal's recovery transaction uses nSequence relative-locktime semantics defined by the target, including its encoding and limits.",
               "confidence": "high"
             }
           ]

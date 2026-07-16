@@ -757,39 +757,39 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:44:22Z",
+          "timestamp": "2026-07-16T09:31:51Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:174",
-              "evidence": "This document proposes additional fields for BIP 174 PSBTv0",
-              "reason": "The proposal extends the PSBTv0 format defined by BIP 174 with new Taproot-related fields and relies on its existing structure and field semantics.",
+              "evidence": "additional fields for BIP 174 PSBTv0",
+              "reason": "The proposal extends the PSBTv0 format defined by BIP 174 with new Taproot-related fields and relies on its existing PSBT structure and field semantics.",
               "confidence": "high"
             },
             {
               "target": "bips:340",
-              "evidence": "allow for BIP 340/341/342 Taproot data to be included",
-              "reason": "The new PSBT fields carry Taproot Schnorr signature data whose format and signing semantics come from BIP 340.",
+              "evidence": "BIP 340/341/342 Taproot data",
+              "reason": "The new fields carry Schnorr signatures and x-only pubkeys whose formats and semantics come from BIP 340.",
               "confidence": "high"
             },
             {
               "target": "bips:341",
               "evidence": "The control block for this leaf as specified in BIP 341",
-              "reason": "The proposal directly reuses Taproot output, control block, internal key, Merkle root, and leaf-hash semantics defined in BIP 341.",
+              "reason": "The proposal depends on Taproot output, control block, leaf hash, internal key, and Merkle tree semantics defined in BIP 341.",
               "confidence": "high"
             },
             {
               "target": "bips:342",
-              "evidence": "allow for BIP 340/341/342 Taproot data to be included",
-              "reason": "The proposal includes fields for Taproot script-path spending data, which depends on Taproot script semantics introduced by BIP 342.",
+              "evidence": "BIP 340/341/342 Taproot data",
+              "reason": "The proposal is specifically for including Taproot script-spend data in PSBTs, which materially relies on Taproot script path semantics introduced with BIP 342.",
               "confidence": "high"
             },
             {
               "target": "bips:370",
               "evidence": "and BIP 370 PSBTv2",
-              "reason": "The proposal adds corresponding fields to the PSBTv2 format and is designed around that versioned PSBT structure.",
+              "reason": "The proposal adds corresponding fields to PSBTv2 and is designed around the PSBTv2 format introduced there.",
               "confidence": "high"
             }
           ]

@@ -655,21 +655,21 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:43:28Z",
+          "timestamp": "2026-07-16T09:30:48Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:130",
               "evidence": "we don't always use invs anymore (with 'sendheaders' BIP 130)",
-              "reason": "The relay design explicitly accounts for the sendheaders workflow from BIP130 when justifying how witness capability is advertised and requested.",
+              "reason": "The relay design explicitly accounts for and is made compatible with the sendheaders workflow introduced by BIP130.",
               "confidence": "medium"
             },
             {
               "target": "bips:141",
-              "evidence": "requiring commitments in future blocks ([https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki BIP141] - Consensus segwit BIP)",
-              "reason": "This proposal's relay messages and serialization formats are designed to propagate segregated witness structures and block commitments introduced by BIP141.",
+              "evidence": "In addition to defining witness structures and requiring commitments in future blocks ([https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki BIP141] - Consensus segwit BIP), new mechanisms must be defined",
+              "reason": "This proposal's messages and serialization are designed around the segregated witness structures and commitments defined by BIP141.",
               "confidence": "high"
             }
           ]

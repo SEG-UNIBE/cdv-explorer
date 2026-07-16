@@ -984,27 +984,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:43:34Z",
+          "timestamp": "2026-07-16T09:30:59Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:130",
               "evidence": "as defined by BIP130",
-              "reason": "The low-bandwidth announcement flow explicitly uses the inv/headers announcement mechanism defined by the target proposal.",
+              "reason": "The low-bandwidth announcement mode explicitly uses the inv/headers block announcement behavior defined by BIP130.",
               "confidence": "high"
             },
             {
               "target": "bips:141",
               "evidence": "using the wtxid as defined in BIP 141 instead of the txid",
-              "reason": "Version 2 compact blocks depend on segregated witness transaction semantics and wtxid definitions from the target proposal.",
+              "reason": "Version 2 compact blocks depend on BIP141's witness transaction identifier semantics and witness-format handling.",
               "confidence": "high"
             },
             {
               "target": "bips:144",
               "evidence": "using the same format as responses to getdata MSG_WITNESS_TX, specified in BIP144",
-              "reason": "Version 2 reuses the witness-aware transaction encoding and message format defined by the target proposal.",
+              "reason": "Version 2 reuses BIP144's witness-aware transaction and block serialization/relay formats for cmpctblock, blocktxn, and fallback block responses.",
               "confidence": "high"
             }
           ]

@@ -565,15 +565,15 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:42:57Z",
+          "timestamp": "2026-07-16T09:30:13Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:34",
               "evidence": "As per BIP34, the coinbase transaction scriptSig starts with a push of the block height.",
-              "reason": "The proposal defines its voting encoding in the coinbase scriptSig by building on the BIP34-required height prefix, so correct parsing and implementation rely on that format.",
+              "reason": "The proposal defines its voting data placement in the coinbase scriptSig relative to the BIP34 height prefix, so correct parsing and implementation rely on BIP34's coinbase format semantics.",
               "confidence": "high"
             }
           ]

@@ -471,27 +471,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:43:53Z",
+          "timestamp": "2026-07-16T09:31:17Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:8",
               "evidence": "removed from BIP8 and BIP9 specifications",
-              "reason": "The proposal directly constrains BIP8 by excluding bits 5-28 from its soft-fork signaling semantics.",
+              "reason": "The proposal explicitly alters BIP8 signaling semantics by excluding the reserved nVersion bits from soft-fork signaling.",
               "confidence": "high"
             },
             {
               "target": "bips:9",
               "evidence": "removed from BIP8 and BIP9 specifications",
-              "reason": "The proposal directly constrains BIP9 by excluding bits 5-28 from its soft-fork signaling semantics.",
+              "reason": "The proposal explicitly alters BIP9 signaling semantics by excluding the reserved nVersion bits from soft-fork signaling.",
               "confidence": "high"
             },
             {
               "target": "bips:320",
-              "evidence": "BIP 320 defined 16 bits of nVersion as nonce space",
-              "reason": "The proposal explicitly builds on and changes the earlier reservation of nVersion bits for nonce use, expanding that mechanism from 16 to 24 bits.",
+              "evidence": "BIP 320 defined 16 bits of nVersion as nonce space for additional nonce space.",
+              "reason": "The proposal directly builds on and modifies the earlier reservation of nVersion bits for nonce use by expanding it from 16 to 24 bits.",
               "confidence": "high"
             }
           ]

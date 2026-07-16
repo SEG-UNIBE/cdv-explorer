@@ -598,16 +598,16 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:42:02Z",
+          "timestamp": "2026-07-16T09:29:14Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:11",
-              "evidence": "M-of-N Multisignature Transactions BIP 11",
-              "reason": "The proposal's standardness rule for redeeming serialized scripts depends on existing standard transaction types, explicitly including multisignature transactions as a target use case and compatible script form.",
-              "confidence": "low"
+              "evidence": "Transactions that redeem standard OP_EVAL scriptPubKeys are only considered standard if the ''serialized script'' is, itself, one of the standard transaction types.",
+              "reason": "The proposal's standardness rule for redeemed OP_EVAL outputs depends on the existing set of standard transaction types, explicitly including the referenced multisignature standard in See Also as a target use case.",
+              "confidence": "medium"
             }
           ]
         }

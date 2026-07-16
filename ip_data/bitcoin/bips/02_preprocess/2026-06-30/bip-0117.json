@@ -712,33 +712,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:43:07Z",
+          "timestamp": "2026-07-16T09:30:22Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:8",
               "evidence": "This BIP will be deployed by BIP8 (Version bits with lock-in by height)[9]",
-              "reason": "The proposal specifies BIP8 as its activation mechanism, so deployment depends on that proposal's lock-in-by-height process.",
+              "reason": "The proposal normatively specifies BIP8 as its activation mechanism.",
               "confidence": "high"
-            },
-            {
-              "target": "bips:16",
-              "evidence": "BIP16 (Pay to Script Hash)[1] and BIP141 (Segregated Witness)[2] provide mechanisms by which script policy can be revealed at spend time as part of the execution witness.",
-              "reason": "The proposal is designed around and explicitly compares its tail-call execution model to the redeem-script execution mechanism introduced by P2SH, reusing that script-revelation workflow as a baseline.",
-              "confidence": "medium"
             },
             {
               "target": "bips:116",
               "evidence": "This BIP, in conjunction with BIP116 (MERKLEBRANCHVERIFY)[3] allows for a script to commit to a practically unbounded number of code pathways",
-              "reason": "The proposal's generalized MAST construction explicitly relies on MERKLEBRANCHVERIFY to commit to and prove inclusion of policy scripts before tail-call execution.",
+              "reason": "The proposal's generalized MAST design explicitly relies on MERKLEBRANCHVERIFY to commit to and prove membership of policy scripts before tail-call execution.",
               "confidence": "high"
             },
             {
               "target": "bips:141",
               "evidence": "Only one such tail-call of a subscript is allowed per script execution context, and only from within a segwit redeem script.",
-              "reason": "The proposal normatively restricts its semantics to segwit redeem scripts and discusses compatibility with segwit CLEANSTACK and versioning rules, making adoption dependent on BIP141 semantics.",
+              "reason": "The proposal constrains its semantics around segwit redeem-script execution and compatibility with segwit CLEANSTACK and witness rules.",
               "confidence": "high"
             }
           ]

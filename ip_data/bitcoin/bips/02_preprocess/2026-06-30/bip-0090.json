@@ -610,28 +610,28 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:42:47Z",
+          "timestamp": "2026-07-16T09:30:04Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:34",
-              "evidence": "replacing the test which governs enforcement of BIP 34",
-              "reason": "The proposal directly modifies how BIP 34 activation and enforcement are determined, using fixed activation heights in place of BIP 34's historical trigger logic.",
-              "confidence": "high"
+              "evidence": "replace the test which governs enforcement of BIP 34, BIP 65, and BIP 66 with simple height checks",
+              "reason": "The proposal directly modifies and simplifies BIP 34's activation and enforcement logic by hardcoding its activation height and removing the original lookback trigger.",
+              "confidence": "low"
             },
             {
               "target": "bips:65",
-              "evidence": "replacing the test which governs enforcement of BIP 34, BIP 65, and BIP 66 with simple height checks",
-              "reason": "The proposal directly changes the activation/enforcement mechanism for BIP 65 by substituting stored height checks for the original signaling-based deployment logic.",
-              "confidence": "high"
+              "evidence": "replace the test which governs enforcement of BIP 34, BIP 65, and BIP 66 with simple height checks",
+              "reason": "The proposal directly modifies and simplifies BIP 65's activation and enforcement logic by hardcoding its activation height and removing the original lookback trigger.",
+              "confidence": "low"
             },
             {
               "target": "bips:66",
-              "evidence": "replacing the test which governs enforcement of BIP 34, BIP 65, and BIP 66 with simple height checks",
-              "reason": "The proposal directly changes the activation/enforcement mechanism for BIP 66 by substituting stored height checks for the original signaling-based deployment logic.",
-              "confidence": "high"
+              "evidence": "replace the test which governs enforcement of BIP 34, BIP 65, and BIP 66 with simple height checks",
+              "reason": "The proposal directly modifies and simplifies BIP 66's activation and enforcement logic by hardcoding its activation height and removing the original lookback trigger.",
+              "confidence": "low"
             }
           ]
         }

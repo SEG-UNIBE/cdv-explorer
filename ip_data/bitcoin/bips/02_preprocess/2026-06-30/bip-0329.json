@@ -680,27 +680,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:43:59Z",
+          "timestamp": "2026-07-16T09:31:22Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
               "evidence": "Extended public key as defined by BIP32",
-              "reason": "The format's xpub record type explicitly uses the extended public key format and wallet compatibility assumptions defined by BIP32.",
+              "reason": "The proposal's xpub record type directly relies on BIP32's extended public key format and compatibility assumptions, and origin must describe a BIP32 compatible wallet.",
               "confidence": "high"
             },
             {
               "target": "bips:380",
               "evidence": "an abbreviated output descriptor (as defined by BIP380",
-              "reason": "The optional origin field is required to contain an abbreviated output descriptor using the format defined by BIP380.",
+              "reason": "The optional origin field is normatively specified using the abbreviated output descriptor format from BIP380.",
               "confidence": "high"
             },
             {
               "target": "bips:392",
-              "evidence": "single argument form of a silent payments output descriptor as defined by BIP392",
-              "reason": "The spscan record type is defined by reusing the silent payments scan key expression format from BIP392.",
+              "evidence": "silent payments output descriptor as defined by BIP392",
+              "reason": "The spscan record type is defined by reusing the silent payments output descriptor key expression from BIP392.",
               "confidence": "high"
             }
           ]

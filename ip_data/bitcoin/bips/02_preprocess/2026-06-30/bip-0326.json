@@ -587,21 +587,21 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:43:56Z",
+          "timestamp": "2026-07-16T09:31:19Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:68",
               "evidence": "set the nSequence field in their taproot transactions as in BIP68",
-              "reason": "The proposal relies on BIP68-style nSequence relative locktime semantics, including its encoding limits and version requirements, to define the wallet behavior.",
+              "reason": "The proposal relies on BIP68-style nSequence relative locktime semantics, including its encoding limits and version requirement, to implement the recommended wallet behavior.",
               "confidence": "high"
             },
             {
               "target": "bips:341",
               "evidence": "uses BIP341 taproot",
-              "reason": "The proposal is specifically defined for wallets creating transactions spending Taproot-protected UTXOs and is designed around Taproot spends as the anonymity set to blend with.",
+              "reason": "The proposal is explicitly designed for wallets creating transactions spending Taproot outputs and bases its behavior on Taproot spends.",
               "confidence": "high"
             }
           ]

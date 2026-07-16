@@ -1219,27 +1219,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:43:57Z",
+          "timestamp": "2026-07-16T09:31:20Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
               "evidence": "Plain tweaking can be used to derive child aggregate public keys per BIP32.",
-              "reason": "The proposal's plain tweaking mode is specified to support BIP32-style child key derivation from aggregate keys, reusing that derivation application and assumptions.",
+              "reason": "The proposal's plain tweak mode is explicitly designed around BIP32 child-key derivation semantics for aggregate public keys.",
               "confidence": "low"
             },
             {
               "target": "bips:340",
               "evidence": "the signature output at the end of the signing protocol is a BIP340 signature that passes BIP340 verification",
-              "reason": "The proposal is explicitly designed around BIP340 key and signature formats, verification semantics, and challenge hashing, producing signatures that must verify under BIP340.",
+              "reason": "The proposal defines its aggregate keys, signatures, and verification semantics to be BIP340-compatible and directly uses the BIP340 challenge hash in its algorithms.",
               "confidence": "high"
             },
             {
               "target": "bips:341",
               "evidence": "X-only tweaking is required for Taproot tweaking per BIP341.",
-              "reason": "The proposal's x-only tweak mode is defined to create Taproot-compatible tweaked keys and outputs according to BIP341 semantics.",
+              "reason": "The proposal's x-only tweak mode is specified to create Taproot tweaks and outputs according to BIP341 semantics.",
               "confidence": "low"
             }
           ]

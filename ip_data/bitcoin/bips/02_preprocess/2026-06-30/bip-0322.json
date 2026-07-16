@@ -978,33 +978,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:43:52Z",
+          "timestamp": "2026-07-16T09:31:15Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:174",
               "evidence": "The to_spend transaction is represented as a finalized PSBT instead of a raw transaction",
-              "reason": "The Proof of Funds and PSBT-based signing/finalization workflows explicitly use PSBT structure and BIP174 finalization/decoding rules.",
+              "reason": "The Proof of Funds and PSBT-based signing workflows directly use PSBT structure, fields, decoding, and finalization defined by BIP174.",
               "confidence": "low"
-            },
-            {
-              "target": "bips:325",
-              "evidence": "Full signatures follow an analogous specification to the BIP325 challenges and solutions used by Signet.",
-              "reason": "The full-signature construction is designed around the challenge/solution transaction pattern introduced by the target proposal.",
-              "confidence": "medium"
             },
             {
               "target": "bips:340",
               "evidence": "message_hash is a BIP340-tagged hash of the message",
-              "reason": "The proposal normatively defines its message hash using the tagged-hash construction specified by the target proposal.",
+              "reason": "The proposal defines its message hash using the tagged-hash construction specified by BIP340.",
               "confidence": "low"
             },
             {
               "target": "bips:341",
               "evidence": "unless the output type supports SIGHASH_DEFAULT, which then MAY be used alternatively (e.g., BIP341 P2TR)",
-              "reason": "Taproot outputs under this proposal use the target proposal's signature hash semantics and script type assumptions.",
+              "reason": "Support for P2TR signatures in this proposal relies on the BIP341 sighash semantics for SIGHASH_DEFAULT.",
               "confidence": "low"
             }
           ]

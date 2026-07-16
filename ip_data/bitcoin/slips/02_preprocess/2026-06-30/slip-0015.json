@@ -295,28 +295,28 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:44:46Z_gpt-5.4-2026-03-05_69e05a71",
+          "run_id": "2026-07-16T09:33:45Z_gpt-5.4-2026-03-05_090cf5e0",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:44:52Z",
+          "timestamp": "2026-07-16T09:33:51Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
               "evidence": "hardened path, see BIP32",
-              "reason": "The proposal uses BIP32 semantics for derivation paths and xpub strings when deriving master and account keys.",
+              "reason": "The proposal uses BIP32 path notation and xpub semantics to derive the master key and account key, so implementing it depends on BIP32 concepts and formats.",
               "confidence": "high"
             },
             {
               "target": "slips:11",
               "evidence": "CipherKeyValue is defined in [SLIP-0011]",
-              "reason": "The master-key derivation explicitly relies on the CipherKeyValue mechanism defined by SLIP-0011.",
+              "reason": "The master-key derivation explicitly uses the CipherKeyValue mechanism defined by SLIP-0011.",
               "confidence": "high"
             },
             {
               "target": "slips:14",
               "evidence": "For the \"stress test\" wallet, defined in SLIP-0014",
-              "reason": "The proposal's normative test vectors and examples are defined against the wallet fixture from SLIP-0014.",
-              "confidence": "medium"
+              "reason": "SLIP-0014 is used only to supply test vectors/examples, not normative mechanics.",
+              "confidence": "low"
             }
           ]
         }

@@ -632,28 +632,28 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:42:22Z",
+          "timestamp": "2026-07-16T09:29:35Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
-              "evidence": "based on a [[bip-0032.mediawiki|BIP 32]] root account",
-              "reason": "The proposal defines its address derivation scheme starting from the target's HD wallet root-account model.",
-              "confidence": "high"
+              "evidence": "derive multiple deterministic addresses based on a BIP 32 root account",
+              "reason": "The proposal's derivation scheme is built on a BIP 32 root account and hierarchical key derivation.",
+              "confidence": "low"
             },
             {
               "target": "bips:44",
-              "evidence": "uses the same account-structure as defined in [[bip-0044.mediawiki|BIP 44]]",
-              "reason": "The proposal directly reuses the target's account hierarchy and changes only the purpose value.",
-              "confidence": "high"
+              "evidence": "uses the same account-structure as defined in BIP 44",
+              "reason": "The proposal reuses BIP 44's account hierarchy and path semantics, changing only the purpose value.",
+              "confidence": "low"
             },
             {
               "target": "bips:141",
-              "evidence": "we use the encapsulation defined in [[bip-0141.mediawiki#p2wpkh-nested-in-bip16-p2sh|BIP 141]]",
-              "reason": "The proposal's address and transaction serialization are explicitly built around the target's nested SegWit encapsulation.",
-              "confidence": "high"
+              "evidence": "uses the encapsulation defined in BIP 141",
+              "reason": "The address derivation and transaction serialization are defined around BIP 141's nested P2WPKH-in-P2SH witness encapsulation.",
+              "confidence": "low"
             }
           ]
         }

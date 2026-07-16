@@ -1236,57 +1236,63 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:44:18Z",
+          "timestamp": "2026-07-16T09:31:45Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
               "evidence": "wallets MAY use BIP32 derivation with the following derivation paths",
-              "reason": "The proposal optionally defines scan/spend key derivation using the target's HD derivation scheme and path semantics.",
+              "reason": "The proposal defines compatible scan/spend key derivation paths and hardened derivation rules using BIP32 key derivation.",
               "confidence": "high"
             },
             {
               "target": "bips:43",
-              "evidence": "purpose is a constant set to '352' following the BIP43 recommendation",
-              "reason": "The proposal relies on the target's purpose-field convention when specifying compatible derivation paths.",
+              "evidence": "purpose is a constant set to 352 following the BIP43 recommendation",
+              "reason": "The proposal assigns its derivation-path purpose field according to BIP43's purpose scheme.",
               "confidence": "low"
             },
             {
               "target": "bips:44",
               "evidence": "taking inspiration from BIP44",
-              "reason": "The specified scan/spend derivation path structure is modeled on the target's account hierarchy conventions.",
+              "reason": "The defined scan/spend derivation path structure reuses the BIP44-style hierarchy components such as coin_type and account.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:143",
+              "evidence": "BIP143 recommends restricting P2WPKH inputs to compressed keys as a default policy.",
+              "reason": "The proposal's restriction to compressed public keys for supported input types is technically aligned with and justified by BIP143's witness-key policy for P2WPKH.",
               "confidence": "low"
             },
             {
               "target": "bips:158",
-              "evidence": "Bob can then use BIP158 block filters",
-              "reason": "The proposal's light-client scanning approach is designed around the target's block filter mechanism for detecting candidate outputs.",
+              "evidence": "they can determine whether or not an output to them exists in the block using BIP158 block filters",
+              "reason": "Its light-client scanning approach is explicitly built around using compact block filters from BIP158 to detect candidate outputs.",
               "confidence": "medium"
             },
             {
               "target": "bips:173",
-              "evidence": "Version is communicated through the address in the same way as bech32 addresses (see BIP173)",
-              "reason": "The proposal reuses the target's address version communication and bech32-style framing conventions for silent payment addresses.",
+              "evidence": "Version is communicated through the address in the same way as bech32 addresses (see BIP173).",
+              "reason": "The proposal designs its version-encoding and address HRP/data-part handling around Bech32 conventions introduced by BIP173.",
               "confidence": "low"
             },
             {
               "target": "bips:340",
               "evidence": "For everything not defined above, we use the notation from BIP340.",
-              "reason": "The specification adopts the target's notation and x-only key/hash-tagged semantics needed to define core protocol operations.",
+              "reason": "The specification adopts BIP340 notation and X-only key semantics used in sender and receiver calculations, making the protocol definition rely on those conventions.",
               "confidence": "low"
             },
             {
               "target": "bips:341",
               "evidence": "Receiver addresses are always BIP341 taproot outputs",
-              "reason": "The proposal is built around taproot outputs for recipient encoding, scanning eligibility, and spending semantics.",
+              "reason": "The proposal normatively requires silent payment outputs to be encoded and spent as Taproot outputs, so its address and output semantics rely on BIP341.",
               "confidence": "low"
             },
             {
               "target": "bips:350",
               "evidence": "The final address is a Bech32m encoding",
-              "reason": "The proposal defines its address format using the target's Bech32m encoding.",
+              "reason": "Silent payment addresses are normatively encoded using Bech32m, so address construction depends on the format defined by BIP350.",
               "confidence": "low"
             }
           ]

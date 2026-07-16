@@ -637,33 +637,33 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:42:51Z",
+          "timestamp": "2026-07-16T09:30:05Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
-              "evidence": "specifies a method to activate the existing BIP9 segwit deployment",
-              "reason": "The proposal is explicitly designed around the BIP9 version-bits deployment mechanism and reuses its activation states, signaling semantics, and threshold framework.",
+              "evidence": "activate the existing BIP9 segwit deployment",
+              "reason": "The proposal explicitly uses the BIP9 version-bits deployment mechanism and defines its own activation as a BIP9 deployment while coordinating an existing BIP9 deployment.",
               "confidence": "high"
             },
             {
               "target": "bips:141",
               "evidence": "This BIP will cease to be active when segwit (BIP141) is locked-in, active, or failed",
-              "reason": "The proposal exists to force signaling for and trigger activation of the existing segwit deployment, with its behavior and termination keyed directly to BIP141's deployment state.",
+              "reason": "The proposal is designed around activating and enforcing signaling for the existing segwit deployment, with behavior and lifetime keyed to BIP141's activation state.",
               "confidence": "high"
             },
             {
               "target": "bips:143",
               "evidence": "to activate BIP141, BIP143 and BIP147",
-              "reason": "The proposal targets activation of the existing segwit deployment explicitly defined as activating BIP143 along with segwit, so adopting it materially depends on that deployment bundle.",
+              "reason": "The proposal defines the existing segwit deployment as the one that activates BIP143, so its purpose and effect materially include that deployment target.",
               "confidence": "medium"
             },
             {
               "target": "bips:147",
               "evidence": "to activate BIP141, BIP143 and BIP147",
-              "reason": "The proposal targets activation of the existing segwit deployment explicitly defined as activating BIP147 along with segwit, so adopting it materially depends on that deployment bundle.",
+              "reason": "The proposal defines the existing segwit deployment as the one that activates BIP147, so its purpose and effect materially include that deployment target.",
               "confidence": "medium"
             }
           ]

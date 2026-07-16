@@ -1336,21 +1336,21 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:43:54Z",
+          "timestamp": "2026-07-16T09:31:18Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:31",
               "evidence": "the timeout interval for post-[https://github.com/bitcoin/bips/blob/master/bip-0031.mediawiki BIP31] connections",
-              "reason": "The proposal's rekey interval rationale explicitly assumes the ping behavior and timeout semantics introduced by BIP31 for estimating packet frequency and rekey timing.",
-              "confidence": "low"
+              "reason": "The proposal's rekeying rationale explicitly relies on the ping timeout behavior introduced by BIP31 to quantify the time bound corresponding to its packet-based rekey interval.",
+              "confidence": "medium"
             },
             {
               "target": "bips:340",
-              "evidence": "returns a tagged hash value <code>SHA256(SHA256(tag) || SHA256(tag) || x)</code> as in [https://github.com/bitcoin/bips/blob/master/bip-0340.mediawiki#specification BIP340].",
-              "reason": "The shared secret computation and ElligatorSwift specification normatively reuse BIP340's tagged hash and notation conventions in the protocol definition.",
+              "evidence": "as in [https://github.com/bitcoin/bips/blob/master/bip-0340.mediawiki#specification BIP340]",
+              "reason": "The proposal normatively defines shared-secret hashing and elliptic-curve notation using BIP340's tagged hash construction and specification conventions.",
               "confidence": "high"
             }
           ]

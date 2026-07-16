@@ -600,21 +600,21 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:44:12Z",
+          "timestamp": "2026-07-16T09:31:39Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:340",
               "evidence": "it is considered to be a public key as described in [BIP 340]",
-              "reason": "The opcode's 32-byte key and signature validation semantics directly rely on BIP 340 public key and signature verification rules.",
+              "reason": "The opcode's 32-byte key handling and signature validation semantics directly reuse BIP 340 public key and signature verification rules.",
               "confidence": "high"
             },
             {
               "target": "bips:342",
               "evidence": "When verifying taproot script spends having leaf version 0xc0 (as defined in [BIP 342])",
-              "reason": "The proposal is explicitly scoped to Tapscript spends and reuses BIP 342's leaf-version context, unknown key type handling, and sigops budget semantics.",
+              "reason": "The proposal is explicitly scoped to Tapscript spends defined by BIP 342 and also reuses its unknown key type and sigops budget semantics.",
               "confidence": "high"
             }
           ]

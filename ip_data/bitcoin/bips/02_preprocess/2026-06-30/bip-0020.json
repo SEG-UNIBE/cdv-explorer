@@ -672,11 +672,18 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:42:07Z",
+          "timestamp": "2026-07-16T09:29:22Z",
           "status": "success",
-          "dependencies": []
+          "dependencies": [
+            {
+              "target": "bips:21",
+              "evidence": "And has been replaced by BIP 0021",
+              "reason": "The proposal is explicitly superseded by the target, making the target the replacement specification for the same URI scheme.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

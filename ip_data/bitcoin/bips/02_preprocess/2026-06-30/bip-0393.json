@@ -526,11 +526,30 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:44:34Z",
+          "timestamp": "2026-07-16T09:32:03Z",
           "status": "success",
-          "dependencies": []
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "for BIP 32 derived-key wallets.",
+              "reason": "One defined annotation key (gl) is specifically for wallets using the BIP 32 derived-key model, so part of the proposal's semantics is specialized around that scheme.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:352",
+              "evidence": "for BIP 352 silent payment wallets.",
+              "reason": "One defined annotation key (ml) is specifically for BIP 352 silent payment wallets, making that annotation's meaning dependent on the target proposal's wallet model.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:380",
+              "evidence": "This document specifies an optional annotation syntax for output script descriptors as defined in BIP 380.",
+              "reason": "The proposal directly extends BIP 380 descriptors, reuses its descriptor syntax and checksum algorithm, and defines annotations as an added layer on that format.",
+              "confidence": "low"
+            }
+          ]
         }
       ]
     }

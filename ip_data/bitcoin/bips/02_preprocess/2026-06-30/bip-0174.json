@@ -1619,22 +1619,22 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:43:42Z",
+          "timestamp": "2026-07-16T09:31:06Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
-              "evidence": "The 78 byte serialized extended public key as defined by BIP 32",
-              "reason": "PSBT defines global XPUB fields and input/output derivation path fields using BIP 32 extended public key serialization, master fingerprints, and derivation path semantics.",
+              "evidence": "The 78 byte serialized extended public key as defined by BIP 32.",
+              "reason": "PSBT defines global XPUB and derivation-path fields using BIP 32 extended public key serialization, fingerprints, and derivation path semantics.",
               "confidence": "high"
             },
             {
               "target": "bips:143",
               "evidence": "The sighash algorithm for Segwit specified in BIP 143",
-              "reason": "The signer behavior and rationale for witness-input handling are explicitly designed around the SegWit sighash algorithm defined by BIP 143.",
-              "confidence": "high"
+              "reason": "The signer behavior and security rationale for segwit inputs are designed around the BIP 143 sighash algorithm and its properties.",
+              "confidence": "medium"
             }
           ]
         }

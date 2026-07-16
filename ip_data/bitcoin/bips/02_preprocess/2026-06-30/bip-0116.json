@@ -713,9 +713,9 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:43:05Z",
+          "timestamp": "2026-07-16T09:30:21Z",
           "status": "success",
           "dependencies": [
             {
@@ -726,8 +726,8 @@
             },
             {
               "target": "bips:98",
-              "evidence": "not a serialized Merkle tree inclusion proof as specified by BIP98",
-              "reason": "The proposal normatively requires BIP98's Merkle inclusion proof format and fast Merkle tree semantics for opcode validation.",
+              "evidence": "serialized Merkle tree inclusion proof as specified by BIP98",
+              "reason": "The proposal normatively requires BIP98's Merkle tree proof format and fast Merkle root semantics for opcode validation.",
               "confidence": "high"
             }
           ]

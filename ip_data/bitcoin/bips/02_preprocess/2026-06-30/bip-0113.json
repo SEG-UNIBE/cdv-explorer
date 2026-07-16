@@ -613,34 +613,34 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:43:03Z",
+          "timestamp": "2026-07-16T09:30:18Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
               "evidence": "This BIP is to be deployed by \"versionbits\" BIP9 using bit 0.",
-              "reason": "The proposal explicitly uses BIP9's versionbits activation mechanism for deployment.",
+              "reason": "The proposal normatively specifies BIP9's versionbits activation mechanism for deployment.",
               "confidence": "high"
             },
             {
               "target": "bips:65",
               "evidence": "as required by BIP65 (CHECKLOCKTIMEVERIFY)",
-              "reason": "The proposal is designed to provide the locktime semantics required for CHECKLOCKTIMEVERIFY behavior, making BIP65's semantics a direct technical dependency.",
-              "confidence": "medium"
+              "reason": "The proposal explicitly motivates its locktime semantic change as needed for BIP65's operation, making BIP65 a direct semantic dependency.",
+              "confidence": "high"
             },
             {
               "target": "bips:68",
               "evidence": "matching the behavior of BIP68 (sequence numbers)",
-              "reason": "The proposal is intended to align locktime evaluation semantics with BIP68 and is required to be deployed simultaneously with it, indicating coordinated technical reliance.",
+              "reason": "The proposal is designed to align locktime semantics with BIP68 and must be deployed simultaneously with it, indicating coordinated technical dependence.",
               "confidence": "high"
             },
             {
               "target": "bips:112",
-              "evidence": "matching the behavior of BIP68 (sequence numbers) and BIP112 (CHECKSEQUENCEVERIFY)",
-              "reason": "The proposal aligns time semantics with CHECKSEQUENCEVERIFY-related behavior and mandates simultaneous deployment with BIP112, showing strong technical coupling.",
-              "confidence": "high"
+              "evidence": "matching the behavior of BIP112 (CHECKSEQUENCEVERIFY)",
+              "reason": "The proposal is designed to align with BIP112 semantics and is required to be deployed simultaneously with it, indicating coordinated technical dependence.",
+              "confidence": "low"
             }
           ]
         }

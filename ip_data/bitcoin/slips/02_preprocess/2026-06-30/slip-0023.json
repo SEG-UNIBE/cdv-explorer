@@ -294,33 +294,33 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:44:46Z_gpt-5.4-2026-03-05_69e05a71",
+          "run_id": "2026-07-16T09:33:45Z_gpt-5.4-2026-03-05_090cf5e0",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:44:59Z",
+          "timestamp": "2026-07-16T09:34:00Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
               "evidence": "This scheme adapts the master node derivation used in BIP-0032",
-              "reason": "The proposal explicitly builds its Cardano universal master node derivation by adapting the master-node derivation mechanism from BIP-0032.",
+              "reason": "The proposal's universal master node derivation is explicitly built by adapting the BIP-0032 master-node derivation procedure and its salt usage semantics.",
               "confidence": "high"
             },
             {
               "target": "bips:39",
-              "evidence": "When BIP-0039 is used as the source of the master secret",
-              "reason": "The specified Icarus derivation scheme is defined around BIP-0039 mnemonics and entropy extraction, so implementing that part materially depends on BIP-0039 semantics.",
+              "evidence": "When BIP-0039 is used as the source of the master secret the master node for the Cardano deterministic key hierarchy SHOULD be derived using the Cardano Icarus master node derivation scheme",
+              "reason": "The proposal normatively defines behavior for BIP-0039-derived master secrets and its Icarus scheme specifically starts from a BIP-0039 mnemonic and passphrase.",
               "confidence": "high"
             },
             {
               "target": "slips:10",
               "evidence": "This scheme adapts the master node derivation used in BIP-0032 and SLIP-0010",
-              "reason": "The proposal directly reuses and adapts SLIP-0010's master-node derivation approach, including the curve-name salt concept.",
+              "reason": "The proposal directly reuses and modifies the SLIP-0010-style master-node derivation for Ed25519/Cardano by changing the curve name and related derivation details.",
               "confidence": "high"
             },
             {
               "target": "slips:39",
               "evidence": "When SLIP-0039 is used as the source of the master secret the master node for the Cardano deterministic key hierarchy MUST be derived using the Cardano universal master node derivation scheme",
-              "reason": "The proposal normatively specifies behavior for SLIP-0039-derived master secrets and is primarily intended for use with SLIP-0039.",
+              "reason": "The proposal is explicitly designed to work with SLIP-0039 master secrets and mandates its derivation method when SLIP-0039 is the seed source.",
               "confidence": "high"
             }
           ]

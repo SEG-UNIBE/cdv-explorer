@@ -362,21 +362,21 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:44:46Z_gpt-5.4-2026-03-05_69e05a71",
+          "run_id": "2026-07-16T09:33:45Z_gpt-5.4-2026-03-05_090cf5e0",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:45:13Z",
+          "timestamp": "2026-07-16T09:34:15Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:43",
               "evidence": "following the BIP43 recommendation",
-              "reason": "The proposal uses BIP43's purpose-field convention to assign purpose 48' and define the subtree semantics.",
+              "reason": "The proposal uses BIP43's purpose-field convention to assign purpose 48' for this hierarchy.",
               "confidence": "high"
             },
             {
               "target": "bips:44",
               "evidence": "It extends BIP-0044",
-              "reason": "The proposal directly builds on BIP-0044's multi-account hierarchy and adapts its key derivation structure for Graphene networks.",
+              "reason": "The proposal explicitly builds on and modifies the BIP-0044 deterministic wallet hierarchy for Graphene-based networks.",
               "confidence": "low"
             }
           ]

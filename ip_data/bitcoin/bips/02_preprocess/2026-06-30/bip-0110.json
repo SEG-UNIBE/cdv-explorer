@@ -916,11 +916,36 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:42:58Z",
+          "timestamp": "2026-07-16T09:30:16Z",
           "status": "success",
-          "dependencies": []
+          "dependencies": [
+            {
+              "target": "bips:9",
+              "evidence": "This deployment uses a modified version of BIP9 with the following parameters:",
+              "reason": "The proposal defines its activation mechanism as a direct modification of BIP9, reusing and altering its deployment state machine, signaling, and GBT behavior.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:16",
+              "evidence": "except for the redeemScript push in BIP16 scriptSigs",
+              "reason": "The proposal's rule 2 explicitly exempts the BIP16 redeemScript push, so implementing the rule depends on BIP16 scriptSig semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "not Witness v0/BIP 141, Taproot/BIP 341, or P2A",
+              "reason": "The proposal's validity rules distinguish defined versus undefined witness versions using Witness v0 as defined by BIP141.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "not Witness v0/BIP 141, Taproot/BIP 341, or P2A",
+              "reason": "The proposal constrains Taproot spends, annexes, control blocks, and Tapleaf versions around Taproot semantics introduced by BIP341.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

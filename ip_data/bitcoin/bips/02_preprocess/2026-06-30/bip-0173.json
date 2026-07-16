@@ -855,27 +855,33 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:43:41Z",
+          "timestamp": "2026-07-16T09:31:06Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:141",
-              "evidence": "witness program (as defined by BIP141)",
-              "reason": "The segwit address format directly encodes witness programs and applies validation rules defined by BIP141, so implementing the proposal depends on BIP141's witness program semantics.",
+              "evidence": "the 2-to-40-byte witness program (as defined by BIP141)",
+              "reason": "The segwit address format directly encodes witness programs whose semantics and validity rules are defined by the target proposal.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:142",
+              "evidence": "This replaces BIP142",
+              "reason": "The proposal supersedes and serves as the replacement for the earlier address-format proposal, indicating a direct proposal-to-proposal relationship.",
               "confidence": "low"
             },
             {
               "target": "bips:143",
               "evidence": "two instances of it (\"P2WPKH\" and \"P2WSH\", see BIP143)",
-              "reason": "The proposal is designed to provide addresses for the witness output types identified in BIP143, and its examples and intended usage rely on those output forms.",
+              "reason": "The proposal is designed to provide addresses for these witness output types and uses them as concrete supported instances of the encoded witness programs.",
               "confidence": "low"
             },
             {
               "target": "bips:350",
               "evidence": "BIP-350 proposes using the scheme described in this BIP only for Native Segwit v0 outputs",
-              "reason": "The disclosure states that later use of this scheme is constrained by BIP350 for segwit versions, creating a substantive compatibility/constraint relationship.",
+              "reason": "The disclosure states that the later proposal constrains this proposal's checksum scheme usage, creating a substantive compatibility/scope dependency relation.",
               "confidence": "low"
             }
           ]

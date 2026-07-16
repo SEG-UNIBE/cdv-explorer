@@ -678,21 +678,21 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:43:13Z",
+          "timestamp": "2026-07-16T09:30:30Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:68",
               "evidence": "opt-in full-RBF is compatible with consensus-enforced locktime as provided in the Bitcoin 0.1 implementation, BIP68",
-              "reason": "The proposal is explicitly designed around and constrained to remain compatible with the nSequence semantics introduced by BIP68.",
+              "reason": "The proposal is explicitly designed around nSequence semantics while constraining its signaling to remain compatible with the relative lock-time behavior defined by BIP68.",
               "confidence": "medium"
             },
             {
               "target": "bips:112",
               "evidence": "and BIP112 (CHECKSEQUENCEVERIFY)",
-              "reason": "The proposal is explicitly designed to be compatible with BIP112's sequence-based semantics, which materially affects evaluation of its nSequence signaling.",
+              "reason": "The proposal's use of nSequence-based replaceability signaling is explicitly constrained to be compatible with the CHECKSEQUENCEVERIFY semantics introduced by BIP112.",
               "confidence": "medium"
             }
           ]

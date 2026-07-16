@@ -1196,39 +1196,33 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:43:25Z",
+          "timestamp": "2026-07-16T09:30:44Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
               "evidence": "This BIP will be deployed by \"version bits\" BIP9",
-              "reason": "The proposal's activation method is explicitly defined using the target's version-bits deployment mechanism.",
+              "reason": "The activation mechanism is explicitly specified using BIP9 version-bits deployment rules.",
               "confidence": "high"
             },
             {
               "target": "bips:16",
               "evidence": "redeemScript as defined in BIP16/P2SH",
-              "reason": "The proposal explicitly reuses BIP16 P2SH redeemScript semantics and defines P2SH-wrapped witness programs around that mechanism.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:70",
-              "evidence": "using a native witness program through BIP70 payment protocol",
-              "reason": "Native witness program sending by non-upgraded wallets is designed around compatibility with the target payment protocol workflow.",
+              "reason": "The proposal explicitly reuses BIP16 P2SH redeemScript semantics and defines a P2SH-triggered witness program path around them.",
               "confidence": "low"
             },
             {
               "target": "bips:143",
-              "evidence": "a new transaction digest algorithm for signature verification is described in BIP143",
-              "reason": "Version 0 witness program signature verification uses the transaction digest algorithm defined in the target, making implementation and evaluation of those witness semantics depend on it.",
+              "evidence": "A major difference at consensus level is described in BIP143, as a new transaction digest algorithm for signature verification in version 0 witness program.",
+              "reason": "Version 0 witness program signature verification relies on the transaction digest algorithm defined in BIP143.",
               "confidence": "low"
             },
             {
               "target": "bips:144",
-              "evidence": "serialized as described in BIP144",
-              "reason": "The proposal's total size and weight definitions rely on the transaction serialization format defined in the target.",
+              "evidence": "transactions serialized as described in BIP144",
+              "reason": "The proposal defines total block and transaction size using the witness-inclusive serialization format from BIP144.",
               "confidence": "low"
             }
           ]

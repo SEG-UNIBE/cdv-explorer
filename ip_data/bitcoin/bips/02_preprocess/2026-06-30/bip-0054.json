@@ -890,28 +890,40 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:42:26Z",
+          "timestamp": "2026-07-16T09:29:42Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:16",
               "evidence": "The accounting is the same as for [bip-0016][BIP16 specs]",
-              "reason": "The proposal explicitly reuses BIP16's signature operation counting semantics for scriptSig, scriptPubKey, and P2SH redeemScript evaluation.",
+              "reason": "The proposal explicitly reuses BIP16's signature operation accounting semantics for scriptSig, scriptPubKey, and P2SH redeemScript evaluation.",
               "confidence": "high"
             },
             {
               "target": "bips:30",
               "evidence": "avoid duplicate transactions without [bip-0030][BIP30] validation",
-              "reason": "A core part of the proposal is designed to eliminate the need for BIP30 duplicate-transaction validation, so understanding its effect depends on BIP30's validation rule.",
+              "reason": "A core part of the proposal is designed around eliminating the need for BIP30 validation by introducing alternative consensus rules preventing duplicate coinbase transactions.",
               "confidence": "high"
             },
             {
               "target": "bips:34",
               "evidence": "Since [bip-0034][BIP34] activation, explicit [bip-0030][BIP30] validation is not necessary",
-              "reason": "The proposal's coinbase uniqueness rule and rationale are framed around BIP34 activation and its early violations, making the design dependent on BIP34's coinbase-height scheme and activation context.",
+              "reason": "The proposal's coinbase uniqueness rationale and transition assumptions explicitly rely on the post-BIP34 regime and its early violations.",
               "confidence": "high"
+            },
+            {
+              "target": "bips:94",
+              "evidence": "this approach has been adopted for [testnet4][BIP94 timewarp]",
+              "reason": "The timewarp-fix design is explicitly aligned with the same approach already adopted in BIP94, indicating technical compatibility around that mechanism.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:182",
+              "evidence": "preclude alternative full node designs (such as [bip-0182][BIP182] Utreexo)",
+              "reason": "The proposal is motivated in part to preserve compatibility with BIP182-style Utreexo full node designs by avoiding resumed BIP30 validation overhead.",
+              "confidence": "medium"
             }
           ]
         }

@@ -746,22 +746,22 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:42:08Z",
+          "timestamp": "2026-07-16T09:29:21Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:20",
               "evidence": "This BIP is a modification of an earlier [[bip-0020.mediawiki|BIP 0020]]",
-              "reason": "The proposal explicitly states it modifies the earlier BIP 20 design, indicating direct technical inheritance from that prior URI proposal.",
+              "reason": "The proposal explicitly modifies the earlier BIP 20 scheme, indicating it builds directly on that prior proposal rather than merely referencing it.",
               "confidence": "high"
             },
             {
               "target": "bips:321",
               "evidence": "This BIP has been superseded and replaced with BIP 321.",
-              "reason": "The proposal text explicitly designates BIP 321 as its replacement, making understanding current adoption of this BIP depend on the successor specification.",
-              "confidence": "high"
+              "reason": "The document normatively points readers to BIP 321 as the replacement specification, making adoption of the current proposal contingent on the successor proposal.",
+              "confidence": "medium"
             }
           ]
         }

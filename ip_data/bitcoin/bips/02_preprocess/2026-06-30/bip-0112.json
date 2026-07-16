@@ -917,33 +917,33 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:43:02Z",
+          "timestamp": "2026-07-16T09:30:18Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
-              "evidence": "This BIP is to be deployed by \"versionbits\" BIP9",
-              "reason": "The proposal normatively specifies activation using the deployment mechanism defined by BIP 9.",
+              "evidence": "This BIP is to be deployed by \"versionbits\" BIP9 using bit 0.",
+              "reason": "The proposal specifies activation through BIP 9 versionbits, making deployment and adoption depend on that mechanism.",
               "confidence": "high"
             },
             {
               "target": "bips:65",
-              "evidence": "based heavily on work done by Peter Todd for the closely related BIP 65",
-              "reason": "The proposal reuses and adapts the earlier opcode-based locktime script mechanism pattern from BIP 65 for CHECKSEQUENCEVERIFY semantics.",
+              "evidence": "this BIP was based heavily on work done by Peter Todd for the closely related BIP 65",
+              "reason": "The proposal reuses and adapts the prior opcode-based locktime design pattern from BIP 65 for CHECKSEQUENCEVERIFY semantics.",
               "confidence": "medium"
             },
             {
               "target": "bips:68",
               "evidence": "in combination with BIP 68",
-              "reason": "The proposal's opcode semantics and script checks are designed around BIP 68 relative lock-time semantics and masked nSequence rules.",
+              "reason": "The proposal's opcode semantics and validation explicitly rely on BIP 68's relative lock-time interpretation of nSequence, masking, flags, and version gating.",
               "confidence": "high"
             },
             {
               "target": "bips:113",
               "evidence": "This BIP must be deployed simultaneously with BIP68 and BIP113 using the same deployment mechanism.",
-              "reason": "The proposal explicitly requires coordinated deployment with BIP 113 as part of adoption of this soft fork.",
+              "reason": "The proposal normatively requires simultaneous deployment with BIP 113, coupling activation and use with that proposal.",
               "confidence": "high"
             }
           ]

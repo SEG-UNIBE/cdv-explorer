@@ -553,39 +553,39 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:42:45Z",
+          "timestamp": "2026-07-16T09:29:59Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
-              "evidence": "This BIP defines the two needed steps to derive multiple deterministic addresses based on a BIP 32 master private key.",
-              "reason": "The proposal explicitly builds its deterministic key derivation from a BIP 32 master private key.",
+              "evidence": "derive multiple deterministic addresses based on a BIP 32 master private key",
+              "reason": "The proposal's key derivation starts from and depends on the BIP 32 HD wallet master key scheme.",
               "confidence": "low"
             },
             {
               "target": "bips:44",
-              "evidence": "This BIP uses the same account-structure as defined in BIPs 44, 49, and 84",
-              "reason": "The proposal reuses the BIP 44 account hierarchy and path semantics for its derivation structure.",
+              "evidence": "uses the same account-structure as defined in BIPs 44, 49, and 84",
+              "reason": "The proposal reuses the BIP 44 account path structure and level semantics for its derivation hierarchy.",
               "confidence": "low"
             },
             {
               "target": "bips:49",
-              "evidence": "The rest of the levels are used as defined in BIPs 44, 49, and 84.",
-              "reason": "The proposal explicitly adopts the same derivation-path level semantics used in BIP 49.",
-              "confidence": "high"
+              "evidence": "uses the same account-structure as defined in BIPs 44, 49, and 84",
+              "reason": "The proposal is explicitly modeled on the derivation approach used by BIP 49 for script-type-specific accounts.",
+              "confidence": "low"
             },
             {
               "target": "bips:84",
-              "evidence": "The rest of the levels are used as defined in BIPs 44, 49, and 84.",
-              "reason": "The proposal explicitly adopts the same derivation-path level semantics used in BIP 84.",
-              "confidence": "high"
+              "evidence": "uses the same account-structure as defined in BIPs 44, 49, and 84",
+              "reason": "The proposal is explicitly modeled on the derivation approach used by BIP 84 for script-type-specific accounts.",
+              "confidence": "low"
             },
             {
               "target": "bips:341",
-              "evidence": "In a transaction, the scripts and witnesses are as defined in BIP 341",
-              "reason": "The proposal is designed around BIP 341 Taproot output-key construction and transaction script/witness rules for single-key P2TR.",
+              "evidence": "BIP 341 states: \"If the spending conditions do not require a script path, the output key should commit to an unspendable script path",
+              "reason": "The proposal defines Taproot output key construction and witness/scriptPubKey rules directly from BIP 341 semantics.",
               "confidence": "low"
             }
           ]

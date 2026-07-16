@@ -1273,33 +1273,33 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:44:07Z",
+          "timestamp": "2026-07-16T09:31:30Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
-              "evidence": "BIP32's unhardened derivation",
-              "reason": "The proposal's key-prefixing design is explicitly motivated by protecting signatures used with additive key tweaks from BIP32 unhardened derivation, and it also specifies BIP32 key conversion compatibility.",
-              "confidence": "high"
+              "evidence": "BIP32 and schemes built on top of it remain usable.",
+              "reason": "The proposal is explicitly designed to remain compatible with BIP32 key derivation and discusses BIP32 unhardened derivation as a security consideration for key prefixing.",
+              "confidence": "low"
             },
             {
               "target": "bips:118",
-              "evidence": "proposals such as SIGHASH_NOINPUT (BIP118)",
-              "reason": "The proposal's decision not to rely on indirect public-key commitment in transaction messages is explicitly designed around possible semantics introduced by BIP118.",
+              "evidence": "may change with proposals such as SIGHASH_NOINPUT (BIP118)",
+              "reason": "The proposal's choice of key prefixing is motivated by preserving security independently of assumptions that could be altered by BIP118's transaction signing semantics.",
               "confidence": "low"
             },
             {
               "target": "bips:327",
-              "evidence": "such as MuSig2] (BIP327)",
-              "reason": "The proposal states compatibility with multisignature schemes such as BIP327, making BIP327 a concrete higher-level protocol built on this signature scheme.",
+              "evidence": "interactive scheme such as MuSig2] (BIP327)",
+              "reason": "The applications section states this signature scheme is compatible with BIP327-style multisignature aggregation, making BIP327 a concrete protocol built around the scheme.",
               "confidence": "low"
             },
             {
               "target": "bips:341",
-              "evidence": "(as for example done in BIP341)",
-              "reason": "The text cites BIP341 as using the scheme's earlier 32-byte message prehashing workflow, indicating a concrete usage pattern built around this signature scheme.",
+              "evidence": "(as for example done in BIP341).",
+              "reason": "BIP341 is cited as an example of pre-hashing messages to 32 bytes before using this signature scheme, indicating direct use of BIP340 signatures there.",
               "confidence": "low"
             }
           ]

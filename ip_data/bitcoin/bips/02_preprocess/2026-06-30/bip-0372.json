@@ -652,21 +652,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:44:21Z",
+          "timestamp": "2026-07-16T09:31:49Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:174",
               "evidence": "This document proposes additional fields for BIP 174 PSBTv0",
-              "reason": "The proposal explicitly adds new fields to the PSBTv0 format defined by BIP 174, so understanding and implementing it depends on that PSBT structure and semantics.",
+              "reason": "The proposal explicitly adds new fields to the PSBTv0 format defined by BIP 174, so implementing it depends on that PSBT structure and semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:340",
+              "evidence": "BIP-340 keys are serialized by appending `0x02` byte.",
+              "reason": "The proposal defines serialization behavior for BIP-340 keys within the new PSBT field, reusing that key type's semantics.",
               "confidence": "high"
             },
             {
               "target": "bips:370",
               "evidence": "and BIP 370 PSBTv2",
-              "reason": "The proposal explicitly adds new fields to the PSBTv2 format defined by BIP 370, so it builds directly on that PSBT version's format and rules.",
+              "reason": "The proposal explicitly adds new fields to the PSBTv2 format defined by BIP 370, so it relies on that PSBT version's structure and rules.",
               "confidence": "high"
             }
           ]

@@ -779,15 +779,21 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:43:37Z",
+          "timestamp": "2026-07-16T09:31:03Z",
           "status": "success",
           "dependencies": [
             {
+              "target": "bips:37",
+              "evidence": "light clients may adopt protocols based on this as an alternative to the existing BIP 37",
+              "reason": "The proposal is specified as an alternative to BIP 37 and repeatedly contrasts operation with it, but does not normatively reuse its mechanisms.",
+              "confidence": "low"
+            },
+            {
               "target": "bips:158",
               "evidence": "The initial filter types are defined separately in [[bip-0158.mediawiki|BIP 158]]",
-              "reason": "This proposal's filter-type mechanism relies on BIP 158 to define the initial filter contents and serialization formats used by the protocol.",
+              "reason": "This proposal's filter-type support is designed around filter contents and serialization formats defined in BIP 158.",
               "confidence": "high"
             }
           ]

@@ -627,39 +627,39 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:44:43Z",
+          "timestamp": "2026-07-16T09:32:11Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:118",
               "evidence": "See [BIP118's rationale][apo-bip-spent-amounts] for more about this.",
-              "reason": "The proposal's treatment of commitments to spent amounts for rebindable signatures relies on rationale from the target, but only as supporting design context rather than a direct mechanism.",
-              "confidence": "low"
+              "reason": "The proposal relies on BIP118's rationale for the technical tradeoff around committing to spent amounts in rebindable signatures.",
+              "confidence": "medium"
             },
             {
               "target": "bips:119",
               "evidence": "This BIP draws on the design of BIP119",
-              "reason": "The proposal materially builds on and contrasts itself with BIP119's transaction-template commitment design, reusing that concept while altering semantics for Tapscript and annex handling.",
-              "confidence": "medium"
+              "reason": "The proposal materially builds on and adapts the design of BIP119's transaction-template commitment primitive.",
+              "confidence": "high"
             },
             {
               "target": "bips:340",
-              "evidence": "The template hash uses a tagged hash as introduced by [BIP340][schnorr-bip] and [BIP341][taproot-bip].",
-              "reason": "The proposal explicitly reuses the tagged-hash construction introduced by the target as part of its hash definition.",
+              "evidence": "The template hash uses a tagged hash as introduced by [BIP340][schnorr-bip]",
+              "reason": "The proposal explicitly reuses BIP340's tagged-hash mechanism for computing the template hash.",
               "confidence": "high"
             },
             {
               "target": "bips:341",
               "evidence": "The template hash re-uses the *sha_sequences*, *sha_outputs* and *sha_annex* pre-computed transaction data introduced in BIP341.",
-              "reason": "The proposal is designed around BIP341 transaction-hash semantics and precomputed fields, and follows its signature-message structure with specified deviations.",
+              "reason": "The proposal is designed around BIP341's transaction hash components, annex semantics, and signature-message structure.",
               "confidence": "high"
             },
             {
               "target": "bips:342",
-              "evidence": "`OP_TEMPLATEHASH` redefines `OP_SUCCESS206` (0xce) in the Tapscript execution context",
-              "reason": "The opcode is only defined within the Tapscript execution context, so understanding and implementing it depends on Tapscript semantics.",
+              "evidence": "This document proposes a new operation for [Tapscript][tapscript-bip]: `OP_TEMPLATEHASH`.",
+              "reason": "The opcode is defined specifically in the Tapscript execution context, so understanding and implementing it depends on BIP342.",
               "confidence": "high"
             }
           ]

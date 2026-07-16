@@ -705,15 +705,15 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:42:31Z",
+          "timestamp": "2026-07-16T09:29:47Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:16",
               "evidence": "Hash the redeem script according to BIP-0016 to get the P2SH address.",
-              "reason": "The proposal defines canonical multisig redeem scripts specifically for P2SH and relies on BIP-0016's redeem-script hashing/address construction semantics.",
+              "reason": "The proposal defines canonical multisig redeem scripts specifically for P2SH and normatively uses the target's hashing/address construction to derive the resulting address.",
               "confidence": "high"
             }
           ]

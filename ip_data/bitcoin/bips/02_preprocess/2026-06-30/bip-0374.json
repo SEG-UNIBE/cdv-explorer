@@ -640,27 +640,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:44:24Z",
+          "timestamp": "2026-07-16T09:31:51Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:327",
               "evidence": "All conventions and notations are used as defined in BIP327.",
-              "reason": "The specification explicitly reuses BIP327's conventions and notation as the basis for defining this protocol.",
+              "reason": "The specification explicitly reuses the target's conventions and notation, so understanding and implementing this proposal depends on those defined terms and representations.",
               "confidence": "low"
             },
             {
               "target": "bips:340",
               "evidence": "The same rationale and recommendations from BIP340 should be applied.",
-              "reason": "The proof-generation procedure normatively adopts BIP340's auxiliary-randomness rationale and recommendations for nonce-related input handling.",
+              "reason": "The nonce auxiliary randomness handling is explicitly designed around BIP340's signing recommendations, reusing its rationale for secure proof generation.",
               "confidence": "low"
             },
             {
               "target": "bips:352",
               "evidence": "BIP352 requires senders to compute output scripts using ECDH shared secrets",
-              "reason": "The proposal is motivated by and designed to provide proofs for the ECDH-based output-script construction required by BIP352, making adoption in that context technically dependent on BIP352's mechanism.",
+              "reason": "The proposal is motivated as a mechanism to prove correct generation of ECDH shared secrets for the workflow required by BIP352, making adoption and evaluation meaningfully tied to that use case.",
               "confidence": "low"
             }
           ]

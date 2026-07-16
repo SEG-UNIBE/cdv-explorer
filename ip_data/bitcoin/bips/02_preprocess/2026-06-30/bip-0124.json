@@ -585,22 +585,16 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:43:12Z",
+          "timestamp": "2026-07-16T09:30:29Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
               "evidence": "using the key derivation mechanism defined in BIP32",
-              "reason": "The proposal's script template format is built around BIP32 derivation paths and deterministic key generation semantics.",
+              "reason": "The proposal's script template format deterministically generates scripts from BIP32 derivation paths and indexes, making BIP32 foundational to understanding and implementing it.",
               "confidence": "high"
-            },
-            {
-              "target": "bips:65",
-              "evidence": "['''T'''] OP_CHECKLOCKTIMEVERIFY OP_DROP",
-              "reason": "The timelocked contract example directly uses OP_CHECKLOCKTIMEVERIFY semantics introduced by BIP65 as part of the script template design.",
-              "confidence": "medium"
             }
           ]
         }

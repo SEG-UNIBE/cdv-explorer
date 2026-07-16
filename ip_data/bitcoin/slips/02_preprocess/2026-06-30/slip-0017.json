@@ -201,15 +201,15 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:44:46Z_gpt-5.4-2026-03-05_69e05a71",
+          "run_id": "2026-07-16T09:33:45Z_gpt-5.4-2026-03-05_090cf5e0",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:44:55Z",
+          "timestamp": "2026-07-16T09:33:54Z",
           "status": "success",
           "dependencies": [
             {
               "target": "slips:10",
               "evidence": "Derive the HD node `m/17'/A'/B'/C'/D'` according to SLIP-0010.",
-              "reason": "The proposal normatively relies on SLIP-0010 for the hierarchical deterministic node derivation procedure used to generate the ECDH key path.",
+              "reason": "The proposal normatively uses the target's hierarchical deterministic private key derivation method to derive the node used for ECDH keys.",
               "confidence": "high"
             }
           ]

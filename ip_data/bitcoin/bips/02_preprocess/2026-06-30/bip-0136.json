@@ -792,11 +792,24 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:43:20Z",
+          "timestamp": "2026-07-16T09:30:42Z",
           "status": "success",
-          "dependencies": []
+          "dependencies": [
+            {
+              "target": "bips:173",
+              "evidence": "MUST use the Bech32m encoding as defined in [https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki BIP-0173]",
+              "reason": "The proposal's TxRef format is built around the Bech32 encoding structure, alphabet, separator, and checksum framework defined by BIP 173.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:350",
+              "evidence": "and later refined in [https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki BIP-0350]",
+              "reason": "The proposal normatively adopts the Bech32m refinement from BIP 350 for TxRef encoding and discusses compatibility with older Bech32 encodings.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

@@ -594,15 +594,15 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:42:59Z",
+          "timestamp": "2026-07-16T09:30:14Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
               "evidence": "0x10000000 was chosen to be compatible with the BIP 9 proposal for parallel deployment of soft forks",
-              "reason": "The proposal's version-bit choice is explicitly designed around BIP 9's parallel deployment mechanism, creating a technical compatibility dependency on that bit-assignment scheme.",
+              "reason": "The proposal explicitly designs its version-bit choice around compatibility with BIP 9's parallel deployment mechanism.",
               "confidence": "medium"
             }
           ]

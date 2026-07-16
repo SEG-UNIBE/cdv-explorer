@@ -515,15 +515,15 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:43:45Z",
+          "timestamp": "2026-07-16T09:31:09Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:16",
               "evidence": "Segwit nested in BIP16 P2SH",
-              "reason": "The proposal defines one WIF suffix value specifically for the P2WPKH-in-P2SH address type, reusing the P2SH wrapping semantics identified with BIP16.",
+              "reason": "The proposal defines one WIF suffix value specifically for addresses using the target's P2SH wrapping mechanism.",
               "confidence": "medium"
             }
           ]

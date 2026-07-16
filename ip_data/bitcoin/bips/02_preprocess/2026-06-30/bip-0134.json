@@ -690,16 +690,16 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:43:20Z",
+          "timestamp": "2026-07-16T09:30:38Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:68",
               "evidence": "This protocol upgrade cleans up past soft fork changes like BIP68 which reuse existing fields",
-              "reason": "The proposal explicitly redesigns and incorporates the relative locktime functionality introduced by BIP68 into its new transaction token format.",
-              "confidence": "high"
+              "reason": "The proposal explicitly incorporates and restructures semantics introduced by BIP68, namely relative locktime behavior currently encoded via reused existing fields.",
+              "confidence": "medium"
             }
           ]
         }

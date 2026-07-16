@@ -1341,9 +1341,9 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:44:07Z",
+          "timestamp": "2026-07-16T09:31:34Z",
           "status": "success",
           "dependencies": [
             {
@@ -1354,32 +1354,32 @@
             },
             {
               "target": "bips:141",
-              "evidence": "A Taproot output is a native SegWit output (see BIP141) with version number 1",
-              "reason": "The proposal is defined as a SegWit witness program and depends on BIP141's witness output structure and validation context.",
+              "evidence": "A Taproot output is a native SegWit output (see BIP141) with version number 1, and a 32-byte witness program.",
+              "reason": "The proposal is defined as a specific SegWit witness output type and relies on BIP141's witness program structure and native SegWit framework.",
               "confidence": "low"
             },
             {
               "target": "bips:143",
               "evidence": "the semantics of the BIP143 sighash types remain unchanged",
-              "reason": "The signature hashing design explicitly reuses BIP143 sighash semantics while modifying serialization and commitments.",
+              "reason": "The new signature hashing algorithm explicitly preserves and reuses BIP143 sighash type semantics while modifying serialization and commitments.",
               "confidence": "low"
             },
             {
               "target": "bips:340",
               "evidence": "The notation below follows that of BIP340.",
-              "reason": "The proposal normatively reuses BIP340's Schnorr key/signature definitions, notation, lift_x operation, and Verify algorithm for Taproot validation and construction.",
+              "reason": "The proposal normatively reuses BIP340's public key, point-lifting, tagged-hash notation, and Schnorr signature verification definitions throughout key and signature validation.",
               "confidence": "low"
             },
             {
               "target": "bips:342",
               "evidence": "BIP342 specifies validity rules that apply for leaf version 0xc0",
-              "reason": "Script-path execution for the defined leaf version relies on BIP342's script validation rules, and deployment is concurrent with it.",
+              "reason": "Script-path execution for leaf version 0xc0 depends on BIP342's script validation rules, and deployment is explicitly concurrent with BIP342.",
               "confidence": "low"
             },
             {
               "target": "bips:350",
               "evidence": "if they support sending to BIP350 Bech32m addresses",
-              "reason": "Wallet interoperability for sending to Taproot outputs depends on the address encoding defined by BIP350.",
+              "reason": "Adoption by wallets for sending to SegWit v1 outputs depends on the BIP350 Bech32m address format support described in the compatibility section and test vectors.",
               "confidence": "low"
             }
           ]

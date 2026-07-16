@@ -649,16 +649,22 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:42:55Z",
+          "timestamp": "2026-07-16T09:30:10Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:34",
-              "evidence": "Deployment shall be controlled by hash-power supermajority vote (similar to the technique used in BIP34)",
-              "reason": "The proposal's activation mechanism is explicitly designed around the supermajority block-version voting technique introduced by the target.",
+              "evidence": "similar to the technique used in BIP34",
+              "reason": "The proposal's deployment mechanism is explicitly modeled on the supermajority hash-power activation technique introduced there.",
               "confidence": "medium"
+            },
+            {
+              "target": "bips:100",
+              "evidence": "The deployment plan is taken from Jeff Garzik's proposed BIP100 block size increase",
+              "reason": "The proposal directly adopts the deployment plan from the target for activation timing and miner signaling workflow.",
+              "confidence": "high"
             }
           ]
         }

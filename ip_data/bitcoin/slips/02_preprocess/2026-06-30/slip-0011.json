@@ -242,15 +242,15 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:44:46Z_gpt-5.4-2026-03-05_69e05a71",
+          "run_id": "2026-07-16T09:33:45Z_gpt-5.4-2026-03-05_090cf5e0",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:44:48Z",
+          "timestamp": "2026-07-16T09:33:48Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
               "evidence": "Private key of the BIP32 node is derived.",
-              "reason": "The proposal's encryption key derivation directly uses a private key derived from a BIP32 path, so implementing it depends on BIP32 hierarchical derivation semantics.",
+              "reason": "The proposal derives its symmetric encryption key material from a private key obtained via a BIP32 path, so implementing it depends on BIP32 hierarchical derivation semantics.",
               "confidence": "high"
             }
           ]

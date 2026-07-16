@@ -1104,27 +1104,15 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:44:46Z_gpt-5.4-2026-03-05_69e05a71",
+          "run_id": "2026-07-16T09:33:45Z_gpt-5.4-2026-03-05_090cf5e0",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:45:11Z",
+          "timestamp": "2026-07-16T09:34:13Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
-              "evidence": "for backing up a BIP-0032 Hierarchical Deterministic Wallet MUST use the BIP-0032 master seed as the SLIP-0039 master secret",
-              "reason": "The proposal normatively defines how it is applied to BIP-0032 wallets by requiring use of the BIP-0032 master seed and referring to BIP-0032 master key generation semantics.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:39",
-              "evidence": "This SLIP is mainly intended as a replacement for BIP-0039",
-              "reason": "SLIP-0039 is explicitly designed around replacing BIP-0039 for mnemonic wallet backup workflows, and its compatibility section materially evaluates conversion and non-compatibility constraints relative to BIP-0039.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:173",
-              "evidence": "The checksum design is heavily inspired by Bech32 defined in BIP-0173",
-              "reason": "The proposal's RS1024 checksum design and related error-correction guidance are directly based on and reuse checksum-design concepts from Bech32.",
+              "evidence": "MUST use the BIP-0032 master seed as the SLIP-0039 master secret S",
+              "reason": "The proposal normatively defines how SLIP-0039 is applied to back up hierarchical deterministic wallets by reusing BIP-0032's master-seed semantics and master-key generation assumptions.",
               "confidence": "low"
             }
           ]

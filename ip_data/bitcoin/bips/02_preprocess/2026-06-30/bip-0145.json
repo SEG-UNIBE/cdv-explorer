@@ -666,33 +666,33 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:43:29Z",
+          "timestamp": "2026-07-16T09:30:50Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
-              "evidence": "see BIP 9",
-              "reason": "The proposal uses the BIP 9 getblocktemplate rules-list signaling mechanism for the \"segwit\" rule, making template interpretation depend on that specification.",
+              "evidence": "the template's \"rules\" list (see BIP 9) includes \"segwit\"",
+              "reason": "The proposal relies on BIP 9's getblocktemplate rules/vbavailable signaling mechanism to advertise and require segwit support in templates.",
               "confidence": "low"
             },
             {
               "target": "bips:22",
               "evidence": "modifications to the getblocktemplate JSON-RPC call (BIP 22)",
-              "reason": "The proposal directly amends the getblocktemplate call defined by BIP 22, so its format and behavior depend on that base specification.",
+              "reason": "The proposal explicitly revises and extends the getblocktemplate protocol defined by BIP 22.",
               "confidence": "low"
             },
             {
               "target": "bips:23",
               "evidence": "see BIP 23 Mutations",
-              "reason": "The proposal constrains commitment output placement based on the BIP 23 \"mutable\"/\"generation\" mutation semantics.",
+              "reason": "The proposal constrains witness commitment placement based on the mutable generation behavior defined by BIP 23.",
               "confidence": "low"
             },
             {
               "target": "bips:141",
-              "evidence": "to support segregated witness as defined by BIP 141",
-              "reason": "The proposal is designed around SegWit semantics, including witness transactions, commitment structure, and sigops calculations defined in BIP 141.",
+              "evidence": "support segregated witness as defined by BIP 141",
+              "reason": "The proposal's rules, transaction fields, sigops handling, and witness commitment logic are designed around segwit semantics introduced by BIP 141.",
               "confidence": "low"
             }
           ]

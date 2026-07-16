@@ -677,15 +677,15 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:44:44Z",
+          "timestamp": "2026-07-16T09:32:13Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:125",
               "evidence": "the resulting replacement transaction MUST satisfy BIP 125 RBF rules",
-              "reason": "The proposal's batching mechanism normatively relies on BIP 125 replace-by-fee rules and fee/eviction constraints for constructing compliant replacement transactions.",
+              "reason": "The proposal's batching mechanism explicitly relies on the target's replace-by-fee rules and semantics to construct valid replacement transactions.",
               "confidence": "high"
             }
           ]

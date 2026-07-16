@@ -1289,27 +1289,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:43:09Z",
+          "timestamp": "2026-07-16T09:30:27Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:65",
               "evidence": "Similar soft forks for OP_CHECKSEQUENCEVERIFY and OP_CHECKLOCKTIMEVERIFY (see BIP-0065 and BIP-0112) have similarly changed OP_NOP semantics",
-              "reason": "The proposal is designed around the same OP_NOP soft-fork replacement compatibility model previously used by BIP-65.",
+              "reason": "The proposal is designed around the same OP_NOP-to-opcode soft-fork activation pattern and compatibility assumptions used by BIP-65.",
               "confidence": "medium"
             },
             {
               "target": "bips:112",
               "evidence": "Similar soft forks for OP_CHECKSEQUENCEVERIFY and OP_CHECKLOCKTIMEVERIFY (see BIP-0065 and BIP-0112) have similarly changed OP_NOP semantics",
-              "reason": "The proposal is designed around the same OP_NOP soft-fork replacement compatibility model previously used by BIP-112.",
+              "reason": "The proposal is designed around the same OP_NOP-to-opcode soft-fork activation pattern and compatibility assumptions used by BIP-112.",
               "confidence": "medium"
             },
             {
               "target": "bips:341",
               "evidence": "The same value is also pre-computed for and defined in BIP-341 and can be shared.",
-              "reason": "The proposal explicitly reuses hash precomputations defined in BIP-341 for sequences and outputs in its template hash implementation.",
+              "reason": "The proposal explicitly reuses transaction hash precomputations defined by BIP-341 for sequences and outputs in its implementation.",
               "confidence": "high"
             }
           ]

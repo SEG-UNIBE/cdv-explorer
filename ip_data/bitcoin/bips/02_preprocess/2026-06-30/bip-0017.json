@@ -665,27 +665,33 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:42:06Z",
+          "timestamp": "2026-07-16T09:29:21Z",
           "status": "success",
           "dependencies": [
             {
+              "target": "bips:11",
+              "evidence": "M-of-N Multisignature Transactions (BIP 11)",
+              "reason": "Redeemed scripts are only standard if the appended script is one of the other standard transaction types, and the proposal's examples and motivation specifically use multisignature scripts from the target as a key supported case.",
+              "confidence": "medium"
+            },
+            {
               "target": "bips:12",
               "evidence": "This BIP replaces BIP 12",
-              "reason": "The proposal is explicitly designed as a replacement for the mechanism proposed in BIP 12 and preserves compatibility with its OP_EVAL transactions, indicating direct technical dependency on that earlier design context.",
+              "reason": "The proposal is explicitly defined as a replacement for the earlier proposal and preserves compatibility with its OP_EVAL transactions via opcode choice, indicating direct technical dependence on and amendment of that design space.",
               "confidence": "high"
             },
             {
               "target": "bips:13",
               "evidence": "The Motivation for this BIP (and BIP 13, the pay-to-script-hash address type)",
-              "reason": "The proposal is designed alongside the BIP 13 pay-to-script-hash address type; adoption and infrastructure compatibility are described in terms of that address mechanism.",
+              "reason": "The proposal is designed alongside the target's pay-to-script-hash address type, relying on that address mechanism as part of the intended deployment and infrastructure compatibility story.",
               "confidence": "medium"
             },
             {
               "target": "bips:16",
               "evidence": "This BIP replaces BIP 12 and BIP 16",
-              "reason": "The proposal is explicitly framed as replacing BIP 16, showing it builds against and modifies the pay-to-script-hash design space defined there.",
+              "reason": "The proposal is explicitly positioned as a replacement for BIP 16, making it a direct alternative/amendment to that proposal's pay-to-script-hash mechanism.",
               "confidence": "high"
             }
           ]

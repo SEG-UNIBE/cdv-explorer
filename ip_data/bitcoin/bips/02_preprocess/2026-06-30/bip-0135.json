@@ -731,33 +731,33 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:43:21Z",
+          "timestamp": "2026-07-16T09:30:41Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
-              "evidence": "This document describes a generalized signaling scheme",
-              "reason": "The proposal explicitly generalizes BIP9's versionbits state machine, retaining its states, parameters, signaling range, and getblocktemplate behavior while extending activation semantics and parameters.",
+              "evidence": "BIP9 introduced a mechanism for using the version bits",
+              "reason": "The proposal explicitly generalizes and preserves the BIP9 versionbits state machine, parameters, signaling range, and getblocktemplate behavior for compatibility.",
               "confidence": "high"
             },
             {
               "target": "bips:34",
               "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
-              "reason": "The proposal's rationale for available nVersion space and signaling-bit design is constrained by nVersion rules introduced by this BIP.",
+              "reason": "The proposal's available nVersion signaling space is defined around constraints introduced by this proposal.",
               "confidence": "medium"
             },
             {
               "target": "bips:65",
               "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
-              "reason": "The proposal's rationale for available nVersion space and signaling-bit design is constrained by nVersion rules introduced by this BIP.",
+              "reason": "The proposal's available nVersion signaling space is defined around constraints introduced by this proposal.",
               "confidence": "medium"
             },
             {
               "target": "bips:66",
               "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
-              "reason": "The proposal's rationale for available nVersion space and signaling-bit design is constrained by nVersion rules introduced by this BIP.",
+              "reason": "The proposal's available nVersion signaling space is defined around constraints introduced by this proposal.",
               "confidence": "medium"
             }
           ]

@@ -778,27 +778,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:43:59Z",
+          "timestamp": "2026-07-16T09:31:23Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:141",
               "evidence": "wtxid is the transaction hash including witness data as defined by BIP141",
-              "reason": "The proposal's short transaction ID computation is based on wtxids whose semantics are defined by BIP141.",
+              "reason": "The proposal's short transaction IDs and reconciliation sets are defined over wtxids using the target's transaction hash semantics.",
               "confidence": "low"
             },
             {
               "target": "bips:339",
               "evidence": "the negotiation and support of Erlay should be enabled only if both peers signal BIP-339 support",
-              "reason": "The protocol is explicitly designed to operate only when BIP-339 wtxid relay support is negotiated.",
+              "reason": "The protocol's negotiation and operation are explicitly conditioned on support for wtxidrelay from the target.",
               "confidence": "low"
             },
             {
               "target": "bips:340",
               "evidence": "TaggedHash is specified by BIP-340",
-              "reason": "The proposal normatively uses the TaggedHash construction defined in BIP-340 to compute short transaction IDs.",
+              "reason": "The proposal normatively uses the TaggedHash construction defined in the target to compute short transaction ID salts.",
               "confidence": "low"
             }
           ]

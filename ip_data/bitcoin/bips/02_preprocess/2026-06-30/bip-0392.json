@@ -548,11 +548,42 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:44:33Z",
+          "timestamp": "2026-07-16T09:32:03Z",
           "status": "success",
-          "dependencies": []
+          "dependencies": [
+            {
+              "target": "bips:341",
+              "evidence": "The scripts produced are BIP341 taproot outputs",
+              "reason": "The proposal's output scripts are specifically Taproot outputs, reusing BIP341 script/output semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:350",
+              "evidence": "It is a [https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki Bech32m] encoding of:",
+              "reason": "The proposal defines spscan and spspend key encodings using the Bech32m format from BIP350.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:352",
+              "evidence": "describe P2TR outputs when combined with sender input public keys as defined in BIP352",
+              "reason": "The proposal is designed around silent payments semantics, key material, serialization, derivation paths, and output construction defined by BIP352.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:380",
+              "evidence": "sp() descriptors use the format and general operation specified in BIP380",
+              "reason": "The proposal defines a new descriptor within and according to the output descriptor framework specified by BIP380.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:390",
+              "evidence": "musig() as defined in BIP390",
+              "reason": "The two-argument form explicitly allows BIP390 musig() key expressions as spend keys, making compatibility with that key-expression mechanism part of the design.",
+              "confidence": "low"
+            }
+          ]
         }
       ]
     }

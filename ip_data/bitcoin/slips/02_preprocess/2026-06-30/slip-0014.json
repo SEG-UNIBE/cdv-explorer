@@ -296,45 +296,45 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:44:46Z_gpt-5.4-2026-03-05_69e05a71",
+          "run_id": "2026-07-16T09:33:45Z_gpt-5.4-2026-03-05_090cf5e0",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:44:53Z",
+          "timestamp": "2026-07-16T09:33:52Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
-              "evidence": "root node:\n\n```\nmnemonic: all all all all all all all all all all all all",
-              "reason": "The proposal's test wallets are defined as deterministic root nodes and extended keys, which materially relies on hierarchical deterministic wallet derivation semantics.",
+              "evidence": "BIP-0032: Hierarchical Deterministic Wallets",
+              "reason": "The proposal is built around hierarchical deterministic wallet root nodes, xprv/xpub values, and derivation paths, which materially rely on BIP32 semantics.",
               "confidence": "medium"
             },
             {
               "target": "bips:39",
               "evidence": "mnemonic: all all all all all all all all all all all all",
-              "reason": "The wallet seed is specified as a mnemonic phrase, so reproducing the test vectors depends on mnemonic-to-seed semantics.",
+              "reason": "The proposal specifies the wallet seed using a mnemonic phrase, so reproducing the published root nodes depends on BIP39 mnemonic semantics.",
               "confidence": "medium"
             },
             {
               "target": "bips:44",
-              "evidence": "### Bitcoin: Legacy / P2PKH / BIP44\n\n```\nm/44'/0'/0'",
-              "reason": "The proposal defines legacy wallet test vectors using the BIP44 derivation path convention and account structure.",
+              "evidence": "### Bitcoin: Legacy / P2PKH / BIP44",
+              "reason": "The legacy wallet sections use the BIP44 account/path structure m/44'/...'/0', so the test wallet directly adopts that derivation convention.",
               "confidence": "high"
             },
             {
               "target": "bips:49",
-              "evidence": "### Bitcoin: Legacy SegWit / P2SH-P2WPKH / BIP49\n\n```\nm/49'/0'/0'",
-              "reason": "The proposal defines nested SegWit test vectors using the BIP49 derivation scheme and script type.",
+              "evidence": "### Bitcoin: Legacy SegWit / P2SH-P2WPKH / BIP49",
+              "reason": "The nested SegWit wallet sections are explicitly organized according to BIP49 derivation and script assumptions.",
               "confidence": "high"
             },
             {
               "target": "bips:84",
-              "evidence": "### Bitcoin: SegWit / P2WPKH / BIP84\n\n```\nm/84'/0'/0'",
-              "reason": "The proposal defines native SegWit test vectors using the BIP84 derivation scheme and address type.",
+              "evidence": "### Bitcoin: SegWit / P2WPKH / BIP84",
+              "reason": "The native SegWit wallet sections explicitly use the BIP84 derivation scheme and address type assumptions.",
               "confidence": "high"
             },
             {
               "target": "bips:86",
-              "evidence": "### Bitcoin: Taproot / P2TR / BIP86\n\n```\nm/86'/0'/0'",
-              "reason": "The proposal defines Taproot test vectors using the BIP86 single-key P2TR derivation convention.",
+              "evidence": "### Bitcoin: Taproot / P2TR / BIP86",
+              "reason": "The Taproot wallet sections explicitly use the BIP86 derivation scheme for single-key P2TR outputs.",
               "confidence": "high"
             }
           ]

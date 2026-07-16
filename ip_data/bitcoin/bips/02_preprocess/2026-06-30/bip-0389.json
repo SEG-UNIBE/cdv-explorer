@@ -570,11 +570,24 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:44:32Z",
+          "timestamp": "2026-07-16T09:32:00Z",
           "status": "success",
-          "dependencies": []
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "as defined in BIP 32",
+              "reason": "The proposal's multipath syntax is specifically for BIP 32 derivation path steps and extended keys, reusing BIP 32 derivation semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:380",
+              "evidence": "a modification to Key Expressions of Descriptors that are described in BIP 380",
+              "reason": "The proposal explicitly modifies and extends the Key Expression syntax defined by BIP 380, so understanding and implementing it depends on BIP 380's descriptor grammar and semantics.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

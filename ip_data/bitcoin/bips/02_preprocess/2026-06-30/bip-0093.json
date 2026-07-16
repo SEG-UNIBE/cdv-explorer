@@ -880,21 +880,21 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:42:50Z",
+          "timestamp": "2026-07-16T09:30:06Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
-              "evidence": "a standard for backing up and restoring the master seed of a BIP-0032 hierarchical deterministic wallet using it",
-              "reason": "The proposal specifically defines encoding, backup, and recovery for BIP-0032 master seeds and repeatedly constrains payload sizes and semantics around that seed format.",
+              "evidence": "a standard for backing up and restoring the master seed of a BIP-0032 hierarchical deterministic wallet",
+              "reason": "The proposal is specifically designed to encode, split, restore, and support the seed format and size constraints of BIP-0032 master seeds.",
               "confidence": "low"
             },
             {
               "target": "bips:173",
               "evidence": "A codex32 string is similar to a bech32 string defined in BIP-0173. It reuses the base-32 character set from BIP-0173",
-              "reason": "The proposal directly reuses Bech32's character set and decoding semantics as a core part of its string format and checksum handling.",
+              "reason": "The proposal directly reuses BIP-0173's bech32 character set and string semantics for encoding and checksum-related character mapping.",
               "confidence": "low"
             }
           ]

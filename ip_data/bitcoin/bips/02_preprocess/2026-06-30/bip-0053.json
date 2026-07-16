@@ -653,27 +653,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:42:24Z",
+          "timestamp": "2026-07-16T09:29:38Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:37",
-              "evidence": "BIP37provides a partial Merkle tree format",
+              "evidence": "BIP37 provides a partial Merkle tree format",
               "reason": "The proposal's SPV-client attack analysis and rationale explicitly rely on the partial Merkle tree format defined by BIP37.",
               "confidence": "low"
             },
             {
               "target": "bips:66",
               "evidence": "After BIP66 was activated on the Bitcoin network, Bitcoin transactions cannot have a digital signature smaller than 9 bytes.",
-              "reason": "The backward-compatibility analysis depends on BIP66's signature-size consensus rule to argue pre-segwit 64-byte transactions cannot spend signature-protected UTXOs.",
-              "confidence": "medium"
+              "reason": "The backward-compatibility analysis depends on BIP66's signature-size consensus rule to constrain which pre-segwit 64-byte transactions are possible.",
+              "confidence": "high"
             },
             {
               "target": "bips:141",
               "evidence": "BIP141 says witness programs can be 2 bytes in size",
-              "reason": "The proposal's segwit-specific scope is defined around witness-program semantics introduced by BIP141, including which segwit transactions would be disallowed.",
+              "reason": "The proposal's segwit applicability is defined around witness-program size semantics introduced by BIP141, determining which segwit 64-byte transactions are disallowed.",
               "confidence": "high"
             }
           ]

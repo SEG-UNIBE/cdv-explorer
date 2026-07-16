@@ -634,27 +634,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:43:30Z",
+          "timestamp": "2026-07-16T09:30:52Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
-              "evidence": "This BIP will be deployed by \"version bits\" BIP9",
-              "reason": "The proposal specifies activation using the deployment mechanism defined by BIP9.",
+              "evidence": "This BIP will be deployed by \"version bits\" BIP9.",
+              "reason": "The proposal's activation mechanism is explicitly specified to use the version-bits deployment process defined in BIP9.",
               "confidence": "low"
             },
             {
               "target": "bips:66",
               "evidence": "with strict DER encoding (see BIP66)",
-              "reason": "The LOW_S and NULLFAIL rules are defined for signatures that already satisfy BIP66 strict DER encoding, reusing that encoding validity baseline.",
+              "reason": "The proposal's signature validation rules are defined in terms of and constrained by strict DER encoding from BIP66, including NULLFAIL examples referring to BIP66-compliant byte arrays.",
               "confidence": "low"
             },
             {
               "target": "bips:141",
-              "evidence": "pay-to-witness-public-key-hash (P2WPKH) described in BIP141",
-              "reason": "The proposal explicitly applies its new signature rules to segregated witness scripts and references the BIP141-defined P2WPKH script type as in scope.",
+              "evidence": "Including pay-to-witness-public-key-hash (P2WPKH) described in BIP141",
+              "reason": "The proposal explicitly applies its signature rules to segregated witness scripts and specifically relies on the P2WPKH script type defined in BIP141.",
               "confidence": "high"
             }
           ]

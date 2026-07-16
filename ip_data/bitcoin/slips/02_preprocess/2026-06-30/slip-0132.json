@@ -361,33 +361,33 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:44:46Z_gpt-5.4-2026-03-05_69e05a71",
+          "run_id": "2026-07-16T09:33:45Z_gpt-5.4-2026-03-05_090cf5e0",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:45:17Z",
+          "timestamp": "2026-07-16T09:34:18Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
               "evidence": "BIP-0032 defines the derivation scheme for hierarchical deterministic wallets",
-              "reason": "The proposal is explicitly a registry of HD version bytes for the extended serialization format defined by BIP-0032, so its semantics and implementation rely on that format.",
+              "reason": "The proposal registers version bytes specifically for the extended key serialization and derivation scheme defined by BIP-0032.",
               "confidence": "high"
             },
             {
               "target": "bips:49",
               "evidence": "BIP-0049 proposes a method for encoding P2WPKH-nested-in-P2SH addresses",
-              "reason": "The registry assigns version bytes for the BIP-0049 derivation/address scheme, including m/49' paths and ypub/yprv semantics.",
+              "reason": "The registered ypub/yprv version bytes are designed around the BIP-0049 derivation/address scheme for P2WPKH-in-P2SH.",
               "confidence": "low"
             },
             {
               "target": "bips:84",
               "evidence": "BIP-0084 proposes a native-SegWit derivation scheme",
-              "reason": "The registry assigns version bytes for the BIP-0084 derivation/address scheme, including m/84' paths and zpub/zprv semantics.",
+              "reason": "The registered zpub/zprv version bytes are defined for the BIP-0084 native SegWit derivation/address scheme.",
               "confidence": "low"
             },
             {
               "target": "slips:32",
               "evidence": "The SLIP-0032 proposal attempts a remedy by including the full BIP-0032 derivation path within the serialized key.",
-              "reason": "SLIP-0132 is positioned as an interim registry until wallets implement SLIP-0032, which addresses the same serialization ambiguity with a different format; adopting or evaluating SLIP-0132 meaningfully depends on understanding that target's alternative serialization approach.",
+              "reason": "SLIP-0132 is positioned as an interim registry addressing confusion in extended key serialization until SLIP-0032 is implemented, making it technically designed around that alternative serialization proposal.",
               "confidence": "low"
             }
           ]

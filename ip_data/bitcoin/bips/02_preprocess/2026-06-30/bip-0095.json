@@ -556,21 +556,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:42:53Z",
+          "timestamp": "2026-07-16T09:30:08Z",
           "status": "success",
           "dependencies": [
             {
+              "target": "bips:30",
+              "evidence": "avoids duplicate transactions without [bip-0030][BIP30] validation",
+              "reason": "The proposal's evaluation of BIP 54's enforced rules relies on the semantics of BIP 30 validation as something those rules make unnecessary.",
+              "confidence": "medium"
+            },
+            {
               "target": "bips:54",
               "evidence": "The rules specified in [BIP 54 version 1.0.0][BIP54] are active on Testnet 5 from block 1.",
-              "reason": "The proposal normatively enforces BIP 54 consensus rules from genesis, so implementing Testnet 5 requires implementing BIP 54's rule set.",
+              "reason": "The proposal directly enforces BIP 54's consensus rules from genesis, so implementing Testnet 5 requires implementing those rules.",
               "confidence": "high"
             },
             {
               "target": "bips:94",
               "evidence": "Testnet 5 is a new test network intended to replace [Testnet 4][BIP94].",
-              "reason": "The proposal is explicitly designed as a replacement for Testnet 4 and defines its modified testnet behavior in direct relation to Testnet 4's rules, especially removing its difficulty exception.",
+              "reason": "The proposal is defined as a replacement for Testnet 4 and specifically removes Testnet 4's difficulty exception, making its design and compatibility constraints materially dependent on BIP 94's network rules.",
               "confidence": "medium"
             }
           ]

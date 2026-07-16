@@ -823,22 +823,22 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T08:41:54Z_gpt-5.4-2026-03-05_330df48c",
+          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T08:44:17Z",
+          "timestamp": "2026-07-16T09:31:44Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:21",
-              "evidence": "a standard format for encoding BIP 21 URI schemes in DNS TXT records",
-              "reason": "The proposal is explicitly designed to encode and transport BIP 21 URIs via DNS, so its payload format and parsing semantics rely on BIP 21.",
-              "confidence": "low"
+              "evidence": "This BIP proposes a standard format for encoding [[bip-0021.mediawiki|BIP 21]] URI schemes in DNS TXT records.",
+              "reason": "The proposal's core payload is a BIP 21 URI, so implementing the record format and resolution semantics depends on BIP 21 URI structure and parsing.",
+              "confidence": "high"
             },
             {
               "target": "bips:321",
-              "evidence": "Reference implementations for parsing the URI contents can be found in BIP 321.",
-              "reason": "The proposal carries bitcoin: URIs and points implementers to BIP 321 for parsing those URI contents, indicating reuse of that URI parsing format/semantics.",
-              "confidence": "low"
+              "evidence": "Reference implementations for parsing the URI contents can be found in [[bip-0321.mediawiki|BIP 321]].",
+              "reason": "The proposal relies on URI contents parsing compatible with the updated Bitcoin URI handling defined by BIP 321, especially as resolved records are reconstructed as bitcoin: URIs.",
+              "confidence": "medium"
             }
           ]
         }

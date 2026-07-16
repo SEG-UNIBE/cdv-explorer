@@ -349,7 +349,7 @@ export function DependencyGroundTruthEvaluationCharts({ evaluation, activeLlmMod
     <>
       <div className="dependency-evaluation-chart-grid">
         <GroupedBarChart
-          title="Confusion Counts"
+          title="Edge Match Counts"
           subtitle="True positives, false positives, and false negatives"
           rows={evaluatedApproaches}
           series={COUNT_SERIES}

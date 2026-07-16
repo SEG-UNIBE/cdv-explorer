@@ -61,8 +61,8 @@ SCORE_SERIES = [
     ("f1", "F1", ORDERED_PLOT_PALETTE[5]),
 ]
 
-EVALUATION_FIGSIZE = (4, 5)
-BAR_GROUP_WIDTH = 0.78
+EVALUATION_FIGSIZE = (5, 5)
+BAR_GROUP_WIDTH = 0.75
 # Fraction of each within-group slot filled by the bar; the rest is spacing.
 BAR_SLOT_FILL = 0.75
 
@@ -254,7 +254,7 @@ def plot_ground_truth_evaluation_exact_type(
         axis_counts,
         rows,
         COUNT_SERIES,
-        title="(a) Confusion Counts",
+        title="(a) Edge Match Counts",
         value_formatter=lambda value: f"{value:.0f}",
         label_offset=max(count_max * 0.015, 0.15),
     )

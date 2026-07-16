@@ -3,6 +3,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 
+from paper.config import FIGURE_TITLE_FONT_SIZE, SUBPLOT_TITLE_FONT_SIZE
 from paper.plot_colors import COAUTHOR_DEGREE_COLOR, COLLABORATION_COMPONENT_COLOR
 from paper.RQ3._plotting import (
     bar_style,
@@ -192,7 +193,7 @@ def _draw_component_distribution_axis(
     component_label_offset = max(component_max * 0.015, 0.15)
 
     if title:
-        axis.set_title(title)
+        axis.set_title(title, fontsize=SUBPLOT_TITLE_FONT_SIZE)
     axis.set_xlabel("# Authors in component")
     axis.set_ylabel(
         "# Connected components"
@@ -246,7 +247,7 @@ def _draw_degree_distribution_axis(
         **bar_style(DEGREE_BAR_COLOR),
     )
     if title:
-        axis.set_title(title)
+        axis.set_title(title, fontsize=SUBPLOT_TITLE_FONT_SIZE)
     axis.set_xlabel("Distinct co-authors per author")
     axis.set_ylabel("Number of authors")
     axis.set_xticks(degree_positions)
@@ -319,6 +320,10 @@ def plot_collaboration_structure_overview(
         title="(b) Co-Author Degree Distribution",
     )
 
-    figure.suptitle(f"Collaboration Structure Overview ({snapshot_label})", y=1.02)
+    figure.suptitle(
+        f"Collaboration Structure Overview ({snapshot_label})",
+        y=1.02,
+        fontsize=FIGURE_TITLE_FONT_SIZE,
+    )
     figure.tight_layout()
     save_figure(figure, output_path)

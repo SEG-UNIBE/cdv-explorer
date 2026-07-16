@@ -7,6 +7,7 @@ from matplotlib.patches import Patch
 from matplotlib.ticker import MaxNLocator
 
 from analysis.classification.metrics import build_type_over_time
+from paper.config import FIGURE_TITLE_FONT_SIZE
 from paper.plot_colors import BIP_TYPE_COLORS, BIP_TYPE_ORDER, with_plot_alpha
 from paper.RQ1.classification_status import (
     _monotone_cubic_curve,
@@ -228,6 +229,10 @@ def plot_classification_type_stacked(
             ]
         )
 
-    figure.suptitle(f"Classification Type ({snapshot_label})", y=0.97)
+    figure.suptitle(
+        f"Classification Type ({snapshot_label})",
+        y=0.97,
+        fontsize=FIGURE_TITLE_FONT_SIZE,
+    )
     figure.subplots_adjust(left=0.10, right=0.87, bottom=0.12, top=0.82)
     save_figure(figure, output_path)

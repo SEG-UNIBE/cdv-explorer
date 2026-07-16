@@ -22,6 +22,7 @@ from analysis.dependencies.constants import (
     GROUND_TRUTH_CURATED,
     PREAMBLE_EXTRACTED,
 )
+from paper.config import FIGURE_TITLE_FONT_SIZE, SUBPLOT_TITLE_FONT_SIZE
 from paper.plot_colors import ORDERED_PLOT_PALETTE
 from paper.RQ3._plotting import (
     bar_style,
@@ -60,7 +61,7 @@ SCORE_SERIES = [
     ("f1", "F1", ORDERED_PLOT_PALETTE[5]),
 ]
 
-EVALUATION_FIGSIZE = (4, 4.5)
+EVALUATION_FIGSIZE = (4, 5)
 BAR_GROUP_WIDTH = 0.78
 # Fraction of each within-group slot filled by the bar; the rest is spacing.
 BAR_SLOT_FILL = 0.75
@@ -215,7 +216,7 @@ def _draw_grouped_bars(
             )
 
     # The title gets extra padding so the legend fits between it and the axes.
-    axis.set_title(title, pad=24)
+    axis.set_title(title, pad=24, fontsize=SUBPLOT_TITLE_FONT_SIZE)
     axis.set_xticks(group_positions)
     axis.set_xticklabels([row["label"] for row in rows])
     axis.set_xlim(-0.6, len(rows) - 0.4)
@@ -274,10 +275,15 @@ def plot_ground_truth_evaluation_exact_type(
     axis_scores.set_yticklabels(["0%", "25%", "50%", "75%", "100%"])
     match_axis_label_fontsize(axis_scores)
 
+    # Keep the suptitle inside the figure bounds (y<1) so the exported PDF
+    # does not clip it, and wrap it because the single line is wider than the
+    # figure; tight_layout reserves the top band for both lines.
     figure.suptitle(
-        f"Ground-Truth Evaluation with Exact Type Matching ({snapshot_label})",
-        y=1.02,
+        "Ground-Truth Evaluation\n"
+        f"with Exact Type Matching ({snapshot_label})",
+        y=0.99,
+        fontsize=FIGURE_TITLE_FONT_SIZE,
     )
-    figure.tight_layout()
+    figure.tight_layout(rect=(0, 0, 1, 0.97))
     save_figure(figure, output_path)
     return evaluation

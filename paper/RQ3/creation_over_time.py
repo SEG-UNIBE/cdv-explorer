@@ -3,6 +3,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 
+from paper.config import FIGURE_TITLE_FONT_SIZE
 from paper.plot_colors import with_plot_alpha
 from paper.RQ3._plotting import (
     bar_style,
@@ -54,7 +55,9 @@ def plot_creation_over_time(
     axis_left.set_ylabel("New proposals")
     axis_right.set_ylabel("Cumulative total")
     axis_left.set_xlabel("Year")
-    axis_left.set_title(f"Creation Over Time ({snapshot_label})")
+    axis_left.set_title(
+        f"Creation Over Time ({snapshot_label})", fontsize=FIGURE_TITLE_FONT_SIZE
+    )
     axis_left.set_xlim(-0.6, len(years) - 0.4)
     axis_left.set_ylim(0, max(yearly_counts) * 1.16)
     axis_left.grid(axis="y", alpha=0.35)

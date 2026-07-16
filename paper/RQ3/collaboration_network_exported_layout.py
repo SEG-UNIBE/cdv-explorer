@@ -24,7 +24,7 @@ from analysis.artifact_io import (
     resolve_latest_snapshot_label,
 )
 from paper._utils.io import resolve_output_dir, snapshot_prefix
-from paper.config import SNAPSHOT
+from paper.config import FIGURE_TITLE_FONT_SIZE, SNAPSHOT
 from paper.plot_colors import ORDERED_PLOT_PALETTE, PLOT_COLOR_ALPHA
 from paper.RQ3._plotting import save_figure
 from paper.RQ3.collaboration_common import build_author_bip_map
@@ -575,7 +575,7 @@ def plot_collaboration_network_from_exported_layout(
     layout_mode = str(layout_payload.get("layout_mode") or "layout").strip() or "layout"
     cluster_count = len(visible_clusters)
     default_title = f"Collaboration Network ({snapshot_label}, {layout_mode}, {cluster_count} clusters)"
-    axis.set_title(title or default_title, pad=14)
+    axis.set_title(title or default_title, pad=14, fontsize=FIGURE_TITLE_FONT_SIZE)
     axis.axis("off")
     figure.tight_layout()
     save_figure(figure, output_path)

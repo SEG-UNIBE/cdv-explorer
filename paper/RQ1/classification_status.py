@@ -11,6 +11,7 @@ from matplotlib.patches import Patch
 from matplotlib.ticker import MaxNLocator
 
 from analysis.artifact_io import resolve_latest_snapshot_label
+from paper.config import FIGURE_TITLE_FONT_SIZE
 from paper.plot_colors import with_plot_alpha
 from paper.RQ3._plotting import (
     BAR_EDGE_COLOR,
@@ -353,7 +354,9 @@ def plot_classification_status(
     axis_right_secondary.spines["top"].set_visible(False)
     axis_right_secondary.spines["left"].set_visible(False)
 
-    figure.suptitle(f"{category_title} ({snapshot_label})", y=0.98)
+    figure.suptitle(
+        f"{category_title} ({snapshot_label})", y=0.98, fontsize=FIGURE_TITLE_FONT_SIZE
+    )
     figure.legend(
         handles=legend_handles,
         loc="upper center",

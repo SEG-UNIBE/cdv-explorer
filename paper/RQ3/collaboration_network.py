@@ -4,6 +4,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import networkx as nx
 
+from paper.config import FIGURE_TITLE_FONT_SIZE
 from paper.plot_colors import PLOT_COLOR_ALPHA, with_plot_alpha
 from paper.RQ3._plotting import save_figure
 from paper.RQ3.collaboration_common import build_author_bip_map
@@ -273,7 +274,10 @@ def plot_collaboration_network(
             zorder=5,
         )
 
-    axis.set_title(f"Collaboration Network ({snapshot_label}, {layout_name})")
+    axis.set_title(
+        f"Collaboration Network ({snapshot_label}, {layout_name})",
+        fontsize=FIGURE_TITLE_FONT_SIZE,
+    )
     axis.axis("off")
     figure.tight_layout()
     save_figure(figure, output_path)

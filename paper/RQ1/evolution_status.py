@@ -10,6 +10,7 @@ from matplotlib.patches import Patch
 from matplotlib.ticker import MaxNLocator, MultipleLocator
 from matplotlib.transforms import ScaledTranslation
 
+from paper.config import FIGURE_TITLE_FONT_SIZE
 from paper.plot_colors import REACT_CLASSIFICATION_PALETTE, tint
 from paper.RQ3._plotting import (
     BAR_EDGE_COLOR,
@@ -400,7 +401,9 @@ def plot_evolution_status(
     axis.tick_params(axis="x", which="minor", length=3, labelbottom=False)
     axis.set_xlim(float(x_positions.min()) - 0.6, float(x_positions.max()) + 0.6)
     axis.set_ylabel(y_axis_title)
-    axis.set_title(f"{category_title} ({snapshot_label})")
+    axis.set_title(
+        f"{category_title} ({snapshot_label})", fontsize=FIGURE_TITLE_FONT_SIZE
+    )
     axis.set_ylim(0, max(200, int(bar_bottom.max())))
     axis.yaxis.set_major_locator(MaxNLocator(integer=True))
     axis.yaxis.set_minor_locator(MultipleLocator(10))

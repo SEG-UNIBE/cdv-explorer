@@ -3,6 +3,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 
+from paper.config import FIGURE_TITLE_FONT_SIZE, SUBPLOT_TITLE_FONT_SIZE
 from paper.plot_colors import (
     AUTHORS_PER_BIP_COLOR,
     AUTHORSHIP_DISTRIBUTION_COLOR,
@@ -170,7 +171,7 @@ def _draw_top_authors_axis(
 
     axis.barh(author_names, author_counts, zorder=2, **bar_style(TOP_AUTHORS_COLOR))
     if title:
-        axis.set_title(title)
+        axis.set_title(title, fontsize=SUBPLOT_TITLE_FONT_SIZE)
     axis.set_xlabel("Proposals authored")
     axis.set_ylabel("")
     axis.invert_yaxis()
@@ -214,7 +215,7 @@ def _draw_authorship_distribution_axis(
         **bar_style(HISTOGRAM_COLOR),
     )
     if title:
-        axis.set_title(title)
+        axis.set_title(title, fontsize=SUBPLOT_TITLE_FONT_SIZE)
     axis.set_xlabel("# BIPs")
     axis.set_ylabel("# Authors" if total is None else f"# Authors ({total})")
     axis.set_xticks(labeled_histogram_positions)
@@ -318,7 +319,7 @@ def _draw_authors_per_bip_axis(
         **bar_style(AUTHORS_PER_BIP_COLOR),
     )
     if title:
-        axis.set_title(title)
+        axis.set_title(title, fontsize=SUBPLOT_TITLE_FONT_SIZE)
     axis.set_xlabel("# Authors")
     axis.set_ylabel("# BIPs" if total is None else f"# BIPs ({total})")
     axis.set_xticks(positions)
@@ -395,6 +396,10 @@ def plot_authorship_overview(
         axis_right, authorship_series, title="(b) BIPs per Author"
     )
 
-    figure.suptitle(f"Authorship Overview ({snapshot_label})", y=1.02)
+    figure.suptitle(
+        f"Authorship Overview ({snapshot_label})",
+        y=1.02,
+        fontsize=FIGURE_TITLE_FONT_SIZE,
+    )
     figure.tight_layout()
     save_figure(figure, output_path)

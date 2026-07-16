@@ -14,10 +14,13 @@ from matplotlib.patches import FancyArrowPatch
 from analysis.dependencies.constants import (
     BODY_EXTRACTED_LLM,
     BODY_EXTRACTED_REGEX,
-    PREAMBLE_DEPENDENCY_SUBTYPES,
     PREAMBLE_EXTRACTED,
 )
 from paper.plot_colors import PLOT_COLOR_ALPHA, with_plot_alpha
+
+# BIP preamble relation subtypes; kept local since the analysis-side constant
+# was removed when the preamble vocabulary became source-context configuration.
+PREAMBLE_DEPENDENCY_SUBTYPES = ("requires", "replaces", "proposed_replacement")
 
 try:
     import pygraphviz

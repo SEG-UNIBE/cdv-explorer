@@ -14,6 +14,7 @@ GENERATE_DEPENDENCY_PLOTS = False
 GENERATE_DIFFERENTIAL_DEPENDENCY_PLOTS = True
 GENERATE_DEPENDENCY_COMPARISON_TABLE = True
 GENERATE_CENTRALITY_TOP5_TABLE = True
+GENERATE_GROUND_TRUTH_EVALUATION_PLOT = True
 DIFFERENTIAL_FOCUS_BIPS = [67, 93, 350, 77]
 EXCLUDE_BIPS = [174, 21, 78, 324]
 
@@ -49,6 +50,9 @@ def main() -> None:
         render_differential_dependency_plots,
     )
     from paper.RQ2.dependency_plots import render_default_dependency_plot_suite
+    from paper.RQ2.ground_truth_evaluation import (
+        plot_ground_truth_evaluation_exact_type,
+    )
 
     snapshot_label = SNAPSHOT or resolve_latest_snapshot_label() or "latest"
     default_relative_path = Path("paper") / "RQ2" / "outputs"
@@ -92,6 +96,13 @@ def main() -> None:
                     exclude_bips=EXCLUDE_BIPS,
                     layout_name=alt_layout,
                 )
+    if GENERATE_GROUND_TRUTH_EVALUATION_PLOT:
+        plot_ground_truth_evaluation_exact_type(
+            network_data=network_data,
+            output_path=output_dir
+            / f"{filename_prefix}_ground_truth_evaluation_exact_type.pdf",
+            snapshot_label=snapshot_label,
+        )
     if GENERATE_CENTRALITY_TOP5_TABLE:
         export_centrality_top5_latex_table(
             dep_metrics=dep_metrics,

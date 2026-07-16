@@ -4,7 +4,7 @@ from pathlib import Path
 from paper.RQ1.classification_type import TYPE_ORDER
 
 LATEX_TABCOLSEP_PT = 5
-DIAGBOX_INNERWIDTH_CM = 2.8
+DIAGBOX_INNERWIDTH_CM = 2
 TABLE_STATUS_ORDER = [
     "Draft",
     "Complete",
@@ -68,33 +68,48 @@ def export_classification_status_type_latex_table(
         status: sum(pivot[t].get(status, 0) for t in ordered_types)
         for status in ordered_statuses
     }
+    type_totals = {
+        proposal_type: sum(pivot[proposal_type].values())
+        for proposal_type in ordered_types
+    }
 
     header_line = (
         " & ".join(
             [
-                rf"\diagbox[innerwidth={DIAGBOX_INNERWIDTH_CM}cm]{{\textbf{{Type}}}}{{\textbf{{Status}}}}"
+                rf"\diagbox[innerwidth={DIAGBOX_INNERWIDTH_CM}cm]{{\textbf{{Status}}}}{{\textbf{{Type}}}}"
             ]
             + [
-                f"{_latex_escape(status)} ({status_totals[status]})"
-                for status in ordered_statuses
+                rf"\begin{{tabular}}[c]{{@{{}}c@{{}}}}{_latex_escape(proposal_type)}\\({type_totals[proposal_type]})\end{{tabular}}"
+                for proposal_type in ordered_types
             ]
         )
         + r" \\"
     )
 
+    ranked_cells = sorted(
+        (
+            (int(pivot[proposal_type].get(status, 0)), status, proposal_type)
+            for status in ordered_statuses
+            for proposal_type in ordered_types
+        ),
+        reverse=True,
+    )
+    largest_cell = (ranked_cells[0][1], ranked_cells[0][2]) if ranked_cells else None
+
     body_lines = []
-    for proposal_type in ordered_types:
-        row_total = sum(pivot[proposal_type].values())
-        row_cells = [f"{_latex_escape(proposal_type)} ({row_total})"]
-        for status in ordered_statuses:
+    for status in ordered_statuses:
+        row_cells = [f"{_latex_escape(status)} ({status_totals[status]})"]
+        for proposal_type in ordered_types:
             cell_value = _format_count_share(
                 int(pivot[proposal_type].get(status, 0)),
-                row_total,
+                type_totals[proposal_type],
             )
+            if (status, proposal_type) == largest_cell:
+                cell_value = rf"\textbf{{{cell_value}}}"
             row_cells.append(cell_value)
         body_lines.append("        " + " & ".join(row_cells) + r" \\")
 
-    alignment = "l|" + ("c" * len(ordered_statuses))
+    alignment = "l|" + ("c" * len(ordered_types))
     latex_table = "\n".join(
         [
             "{%",

@@ -23,9 +23,7 @@ from paper.RQ3._plotting import (
 TYPE_ORDER = BIP_TYPE_ORDER
 TYPE_COLORS = BIP_TYPE_COLORS
 
-STACKED_TYPE_FIGSIZE = (9.8, 2.6)
-STACKED_TYPE_WIDTH_RATIOS = (0.63, 0.21)
-STACKED_TYPE_WSPACE = 0.16
+STACKED_TYPE_FIGSIZE = (5.5, 3.0)
 STACKED_TYPE_BAR_WIDTH = 0.8
 STACKED_TYPE_SHARE_LABEL_X_PADDING = 0.5
 STACKED_TYPE_RIGHT_MARGIN = 1.45
@@ -81,30 +79,21 @@ def plot_classification_type_stacked(
     ]
     x_positions = np.arange(len(years), dtype=float)
 
-    figure, (axis_right, legend_axis) = plt.subplots(
-        1,
-        2,
-        figsize=STACKED_TYPE_FIGSIZE,
-        gridspec_kw={
-            "width_ratios": list(STACKED_TYPE_WIDTH_RATIOS),
-            "wspace": STACKED_TYPE_WSPACE,
-        },
-    )
-    legend_axis.axis("off")
+    figure, axis_right = plt.subplots(figsize=STACKED_TYPE_FIGSIZE)
     axis_right_secondary = axis_right.twinx()
 
-    legend = legend_axis.legend(
+    figure.legend(
         handles=legend_handles,
-        loc="center right",
-        bbox_to_anchor=(0.98, 0.5),
+        loc="upper center",
+        bbox_to_anchor=(0.5, 0.92),
         frameon=False,
-        ncol=1,
-        title="BIP Type:",
-        handlelength=2.0,
-        labelspacing=0.8,
+        ncol=len(legend_handles),
+        handlelength=1.6,
+        columnspacing=1.4,
+        labelspacing=0.4,
+        fontsize=9,
         borderaxespad=0,
     )
-    legend._legend_box.align = "left"
 
     bar_bottom = np.zeros(len(years), dtype=int)
     for kind, color in zip(ordered_types, colors, strict=True):
@@ -237,8 +226,6 @@ def plot_classification_type_stacked(
             ]
         )
 
-    figure.suptitle(f"Classification Type ({snapshot_label})", y=0.98)
-    figure.subplots_adjust(
-        left=0.07, right=0.98, bottom=0.14, top=0.88, wspace=STACKED_TYPE_WSPACE
-    )
+    figure.suptitle(f"Classification Type ({snapshot_label})", y=0.97)
+    figure.subplots_adjust(left=0.10, right=0.87, bottom=0.12, top=0.82)
     save_figure(figure, output_path)

@@ -24,6 +24,7 @@ REGEX_VS_LLM_COLUMN_ORDER = [
     BODY_EXTRACTED_LLM,
 ]
 METRIC_ORDER = [r"$A \cap B$", r"$A' \cap B$", r"$A \cap B'$"]
+KAPPA_METRIC_LABEL = r"$\kappa$"
 
 
 def _latex_escape(value: str) -> str:
@@ -53,6 +54,11 @@ def _get_approach_only_rate(summary: dict[str, Any]) -> float:
     return float(summary.get("approach_only", 0) or 0) / approach_total
 
 
+def _format_kappa(summary: dict[str, Any]) -> str:
+    kappa = summary.get("kappa")
+    return "--" if kappa is None else f"{float(kappa):.2f}"
+
+
 def _build_cell(comparison: dict[str, Any]) -> dict[str, str]:
     summary = comparison.get("summary", {})
     return {
@@ -68,6 +74,7 @@ def _build_cell(comparison: dict[str, Any]) -> dict[str, str]:
             int(summary.get("baseline_only", 0) or 0),
             float(summary.get("missed_rate", 0.0) or 0.0),
         ),
+        KAPPA_METRIC_LABEL: _format_kappa(summary),
     }
 
 
@@ -109,6 +116,7 @@ def _build_partial_dependency_comparison_tabular(
     row_approach: str,
     column_approaches: list[str],
     stack_totals: bool = False,
+    include_kappa: bool = False,
 ) -> str:
     row_summary = _get_pairwise_summary(
         pairwise_comparisons,
@@ -152,12 +160,13 @@ def _build_partial_dependency_comparison_tabular(
         for baseline in column_approaches
     ]
 
+    metric_order = METRIC_ORDER + ([KAPPA_METRIC_LABEL] if include_kappa else [])
     body_lines = []
-    for metric_index, metric_label in enumerate(METRIC_ORDER):
+    for metric_index, metric_label in enumerate(metric_order):
         row_cells = []
         if metric_index == 0:
             row_cells.append(
-                rf"\multirow{{3}}{{*}}{{{label_formatter(SHORT_LABELS[row_approach], row_total)}}}"
+                rf"\multirow{{{len(metric_order)}}}{{*}}{{{label_formatter(SHORT_LABELS[row_approach], row_total)}}}"
             )
         else:
             row_cells.append("")
@@ -280,6 +289,69 @@ def export_preamble_dependency_comparison_latex_table(
     output_path.write_text(latex_table, encoding="utf-8")
 
 
+def _build_pivoted_dependency_comparison_tabular(
+    pairwise_comparisons: dict[str, Any],
+    *,
+    row_approach: str,
+    column_approaches: list[str],
+    include_kappa: bool = False,
+) -> str:
+    """Transposed variant: baselines as rows, metrics as columns.
+
+    Grows vertically with the number of baselines instead of horizontally,
+    which suits stacked (single-column) placement.
+    """
+    metric_order = METRIC_ORDER + ([KAPPA_METRIC_LABEL] if include_kappa else [])
+    row_summary = _get_pairwise_summary(
+        pairwise_comparisons,
+        approach=row_approach,
+        baseline=row_approach,
+    )
+    row_total = int(row_summary.get("approach_total", 0) or 0)
+
+    header_line = (
+        " & ".join(
+            [
+                rf"\diagbox{{\textbf{{$B$}}}}{{{_format_bold_label_with_plain_total(SHORT_LABELS[row_approach], row_total)}}}",
+                *metric_order,
+            ]
+        )
+        + r" \\"
+    )
+
+    body_lines = []
+    for baseline in column_approaches:
+        baseline_total = int(
+            _get_pairwise_summary(
+                pairwise_comparisons,
+                approach=row_approach,
+                baseline=baseline,
+            ).get("baseline_total", 0)
+            or 0
+        )
+        metric_values = _build_cell(
+            pairwise_comparisons.get(f"{row_approach}__vs__{baseline}", {})
+        )
+        row_cells = [
+            _format_bold_label_with_plain_total(SHORT_LABELS[baseline], baseline_total),
+            *[metric_values[metric_label] for metric_label in metric_order],
+        ]
+        body_lines.append("    " + " & ".join(row_cells) + r" \\")
+
+    tabular_spec = "l|" + ("c" * len(metric_order))
+    return "\n".join(
+        [
+            rf"\begin{{tabular}}{{{tabular_spec}}}",
+            r"    \toprule",
+            f"    {header_line}",
+            r"    \midrule%",
+            *body_lines,
+            r"    \bottomrule",
+            r"\end{tabular}%",
+        ]
+    )
+
+
 def export_preamble_plus_regex_llm_dependency_comparison_latex_table(
     network_data: dict[str, Any],
     output_path: Path,
@@ -292,12 +364,14 @@ def export_preamble_plus_regex_llm_dependency_comparison_latex_table(
         row_approach=PREAMBLE_EXTRACTED,
         column_approaches=PREAMBLE_ONLY_COLUMN_ORDER,
         stack_totals=True,
+        include_kappa=True,
     )
     right_tabular_block = _build_partial_dependency_comparison_tabular(
         pairwise_comparisons,
         row_approach=BODY_EXTRACTED_REGEX,
         column_approaches=REGEX_VS_LLM_COLUMN_ORDER,
         stack_totals=True,
+        include_kappa=True,
     )
 
     latex_table = "\n".join(

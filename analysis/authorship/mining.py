@@ -18,6 +18,10 @@ def get_git_history(repo_dir: Path, file_path: Path) -> list[tuple[str, str, str
                 "-C",
                 str(repo_dir),
                 "log",
+                # --follow tracks the file across renames (e.g. the
+                # mediawiki<->md conversions in the BIPs repo); without it,
+                # history silently starts at the rename.
+                "--follow",
                 "--pretty=format:%H|%ad|%an",
                 "--",
                 str(relative_file_path),
@@ -62,6 +66,27 @@ def get_git_authors_on_first_day(git_history: list) -> list[str]:
             seen.add(author)
             authors.append(author)
     return authors
+
+
+def get_git_contributors(git_history: list) -> list[str]:
+    """Unique non-bot committers over the full history, ordered by first touch.
+
+    Complements `get_git_authors_on_first_day`: this is the "everyone who
+    actually changed the file" view, while the first-day set approximates the
+    original authors.
+    """
+    seen: set = set()
+    contributors: list[str] = []
+    for entry in reversed(list(git_history or [])):  # history is newest-first
+        if len(entry) < 3:
+            continue
+        author = entry[2]
+        if not author or author in _GIT_BOTS:
+            continue
+        if author not in seen:
+            seen.add(author)
+            contributors.append(author)
+    return contributors
 
 
 def _insert_after(d: dict[str, Any], after_key: str, key: str, value: Any) -> None:

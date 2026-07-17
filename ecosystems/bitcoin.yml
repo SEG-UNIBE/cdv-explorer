@@ -11,7 +11,33 @@ frontend:
 
 llm:
   model: gpt-5.4-2026-03-05
-  reasoning_effort: 
+  reasoning_effort:
+
+# Contributor identities appearing under multiple names in git history or
+# preambles; each entry folds its aliases onto one canonical display name
+# during authorship metrics extraction.
+authorship:
+  identities:
+    - name: Luke Dashjr
+      aliases: [Luke-Jr]
+    - name: Craig Raw
+      aliases: [craigraw]
+    - name: Dan Gould
+      aliases: [DanGould]
+    - name: Daniel Weigl
+      aliases: [DanielWeigl]
+    - name: Dr. Maxim Orlovsky
+      aliases: [Dr Maxim Orlovsky]
+    - name: Ethan Kosakovsky
+      aliases: [ethankosakovsky]
+    - name: Nicolas Dorier
+      aliases: [nicolas.dorier]
+    - name: Omar Shibli
+      aliases: [omar shibli]
+    - name: Thebora Kompanioni
+      aliases: [theborakompanioni]
+    - name: gruve-p
+      aliases: [Gruve_p]
 
 sources:
   bips:

@@ -74,6 +74,12 @@ def resolve_authorship_metrics_artifact(snapshot: str | None = None) -> Path:
     return _resolve_analysis_artifact(snapshot, "authorship", "authorship_metrics.json")
 
 
+def resolve_contributor_metrics_artifact(snapshot: str | None = None) -> Path:
+    return _resolve_analysis_artifact(
+        snapshot, "authorship", "authorship_metrics_contributors.json"
+    )
+
+
 def resolve_authorship_payload_artifact(snapshot: str | None = None) -> Path:
     return _resolve_payload_artifact(snapshot, "authorship", "authorship_payload.json")
 
@@ -110,6 +116,11 @@ def load_dependency_metrics(snapshot: str | None = None) -> dict[str, Any]:
 
 def load_authorship_metrics(snapshot: str | None = None) -> dict[str, Any]:
     artifact_path = resolve_authorship_metrics_artifact(snapshot=snapshot)
+    return _load_json_artifact(artifact_path)
+
+
+def load_contributor_metrics(snapshot: str | None = None) -> dict[str, Any]:
+    artifact_path = resolve_contributor_metrics_artifact(snapshot=snapshot)
     return _load_json_artifact(artifact_path)
 
 

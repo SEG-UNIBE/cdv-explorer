@@ -287,11 +287,25 @@ def prepare_combined_source_artifacts(
             dependency_metrics = extract_dependency_metrics(network_data)
 
             emit(f"{combo_key}: preparing authorship artifacts", advance=1)
+            combined_author_aliases = SourceContext.from_config(
+                source_configs[combo[0]],
+                ecosystem_slug=ecosystem_slug,
+                source_slug=combo[0],
+            ).author_aliases
             authorship_metrics = extract_authorship_metrics(
-                network_data.get("nodes", [])
+                network_data.get("nodes", []),
+                aliases=combined_author_aliases,
             )
             authorship_path = snapshot_root / "authorship" / "authorship_metrics.json"
             _save_json(authorship_metrics, authorship_path)
+            _save_json(
+                extract_authorship_metrics(
+                    network_data.get("nodes", []),
+                    field="contributors",
+                    aliases=combined_author_aliases,
+                ),
+                snapshot_root / "authorship" / "authorship_metrics_contributors.json",
+            )
             authorship_payload = prepare_authorship_payload(network_data)
 
             emit(
@@ -508,9 +522,23 @@ def prepare_ecosystem_artifacts(
     save_network_data_artifacts(network_data, network_stem, include_json=False)
 
     emit("Preparing authorship artifacts", advance=1)
-    authorship_metrics = extract_authorship_metrics(network_data.get("nodes", []))
+    authorship_metrics = extract_authorship_metrics(
+        network_data.get("nodes", []),
+        aliases=context.author_aliases,
+    )
     authorship_path = snapshot_root / "authorship" / "authorship_metrics.json"
     _save_json(authorship_metrics, authorship_path)
+    # Same metrics over everyone who ever changed a proposal file (full git
+    # history), complementing the declared-author view above.
+    contributor_metrics = extract_authorship_metrics(
+        network_data.get("nodes", []),
+        field="contributors",
+        aliases=context.author_aliases,
+    )
+    _save_json(
+        contributor_metrics,
+        snapshot_root / "authorship" / "authorship_metrics_contributors.json",
+    )
     _save_csv_rows(
         authorship_metrics.get("top_authors", []),
         snapshot_root / "authorship" / "top_authors.csv",

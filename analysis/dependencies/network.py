@@ -5,7 +5,10 @@ from collections.abc import Iterable, Mapping, Sequence
 from pathlib import Path
 from typing import Any
 
-from analysis.authorship.mining import get_git_authors_on_first_day
+from analysis.authorship.mining import (
+    get_git_authors_on_first_day,
+    get_git_contributors,
+)
 from analysis.dependencies.constants import (
     BODY_EXTRACTED_LLM,
     BODY_EXTRACTED_REGEX,
@@ -550,6 +553,10 @@ def build_network_data(
                 first_day_authors = get_git_authors_on_first_day(git_history)
                 if first_day_authors:
                     node["author"] = first_day_authors
+
+            # Everyone who ever changed the file, as raw git names; identity
+            # normalization (aliases) happens at metrics time.
+            node["contributors"] = get_git_contributors(git_history)
 
             # Derive created date from oldest git commit when preamble has none
             if not node.get("created") and git_history:

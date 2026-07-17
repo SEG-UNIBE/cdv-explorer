@@ -10,7 +10,31 @@ frontend:
 
 llm:
   model: gpt-5.4-mini
-  reasoning_effort: 
+  reasoning_effort:
+
+# Contributor identities appearing under multiple names in git history or
+# preambles; each entry folds its aliases onto one canonical display name
+# during authorship metrics extraction.
+authorship:
+  identities:
+    - name: Asai Toshiya
+      aliases: [AsaiToshiya]
+    - name: Cody Tseng
+      aliases: [codytseng]
+    - name: fiatjaf
+      aliases: [fiatjaf_]
+    - name: Kieran
+      aliases: [kieran]
+    - name: nostr-wine
+      aliases: [nostr.wine]
+    - name: randymcmillan
+      aliases: ["@RandyMcMillan"]
+    - name: Sandwich
+      aliases: [sandwich]
+    - name: Sepehr Safari
+      aliases: [sepehr-safari]
+    - name: theborakompanioni
+      aliases: [Thebora Kompanioni]
 
 sources:
   nips:

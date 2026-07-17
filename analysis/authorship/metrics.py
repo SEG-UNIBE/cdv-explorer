@@ -1,7 +1,7 @@
 import math
 import re
 from collections import Counter, defaultdict
-from collections.abc import Iterable
+from collections.abc import Iterable, Mapping
 from datetime import datetime
 from typing import Any
 
@@ -15,18 +15,39 @@ AUTHOR_RANK_FIELDS = (
 )
 
 
-def _clean_author_name(author: str) -> str:
-    return re.split(r"<", author)[0].strip()
+def _clean_author_name(author: str, aliases: Mapping[str, str] | None = None) -> str:
+    cleaned = re.split(r"<", author)[0].strip()
+    if aliases and cleaned:
+        cleaned = str(aliases.get(cleaned, cleaned))
+    return cleaned
 
 
-def _iter_authors(nodes: Iterable[dict[str, Any]]) -> Iterable[str]:
+def _node_author_names(
+    node: dict[str, Any],
+    field: str,
+    aliases: Mapping[str, str] | None = None,
+) -> list[str]:
+    """Cleaned, alias-resolved, de-duplicated names for one node's field."""
+    authors = node.get(field)
+    if not isinstance(authors, list):
+        return []
+    seen: set[str] = set()
+    names: list[str] = []
+    for author in authors:
+        cleaned = _clean_author_name(str(author), aliases)
+        if cleaned and cleaned not in seen:
+            seen.add(cleaned)
+            names.append(cleaned)
+    return names
+
+
+def _iter_authors(
+    nodes: Iterable[dict[str, Any]],
+    field: str = "author",
+    aliases: Mapping[str, str] | None = None,
+) -> Iterable[str]:
     for node in nodes:
-        authors = node.get("author")
-        if isinstance(authors, list):
-            for author in authors:
-                cleaned = _clean_author_name(str(author))
-                if cleaned:
-                    yield cleaned
+        yield from _node_author_names(node, field, aliases)
 
 
 def _extract_year(date_text: str | None) -> int | None:
@@ -38,21 +59,19 @@ def _extract_year(date_text: str | None) -> int | None:
         return None
 
 
-def build_collaboration_network(nodes: list[dict[str, Any]]) -> nx.Graph:
+def build_collaboration_network(
+    nodes: list[dict[str, Any]],
+    field: str = "author",
+    aliases: Mapping[str, str] | None = None,
+) -> nx.Graph:
     graph = nx.Graph()
     edge_weights: dict[tuple[str, str], int] = defaultdict(int)
 
-    for author in _iter_authors(nodes):
+    for author in _iter_authors(nodes, field, aliases):
         graph.add_node(author)
 
     for node in nodes:
-        authors = node.get("author")
-        if not isinstance(authors, list):
-            continue
-
-        cleaned = [
-            _clean_author_name(str(a)) for a in authors if _clean_author_name(str(a))
-        ]
+        cleaned = _node_author_names(node, field, aliases)
         if len(cleaned) < 2:
             continue
 
@@ -67,8 +86,12 @@ def build_collaboration_network(nodes: list[dict[str, Any]]) -> nx.Graph:
     return graph
 
 
-def extract_authorship_metrics(nodes: list[dict[str, Any]]) -> dict[str, Any]:
-    author_counts = Counter(_iter_authors(nodes))
+def extract_authorship_metrics(
+    nodes: list[dict[str, Any]],
+    field: str = "author",
+    aliases: Mapping[str, str] | None = None,
+) -> dict[str, Any]:
+    author_counts = Counter(_iter_authors(nodes, field, aliases))
     top_authors = [
         {"author": name, "count": count}
         for name, count in author_counts.most_common(15)
@@ -93,18 +116,7 @@ def extract_authorship_metrics(nodes: list[dict[str, Any]]) -> dict[str, Any]:
 
     bip_author_counts = Counter()
     for node in nodes:
-        authors = node.get("author")
-        if isinstance(authors, list):
-            n = len(
-                [
-                    _clean_author_name(str(a))
-                    for a in authors
-                    if _clean_author_name(str(a))
-                ]
-            )
-            bip_author_counts[n] += 1
-        else:
-            bip_author_counts[0] += 1
+        bip_author_counts[len(_node_author_names(node, field, aliases))] += 1
     bip_author_count_histogram = [
         {"author_count": k, "bip_count": bip_author_counts[k]}
         for k in sorted(bip_author_counts.keys())
@@ -118,7 +130,7 @@ def extract_authorship_metrics(nodes: list[dict[str, Any]]) -> dict[str, Any]:
         (proposals_by_top_10 / total_proposals * 100.0) if total_proposals else 0.0
     )
 
-    collab_graph = build_collaboration_network(nodes)
+    collab_graph = build_collaboration_network(nodes, field, aliases)
     collab_nodes = [
         {"id": n, "degree": int(collab_graph.degree(n))} for n in collab_graph.nodes()
     ]

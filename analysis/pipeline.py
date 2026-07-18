@@ -302,6 +302,7 @@ def prepare_combined_source_artifacts(
                 network_data.get("nodes", []),
                 field="contributors",
                 aliases=combined_author_aliases,
+                include_network=False,
             )
             _save_json(
                 contributor_metrics,
@@ -540,6 +541,7 @@ def prepare_ecosystem_artifacts(
         network_data.get("nodes", []),
         field="contributors",
         aliases=context.author_aliases,
+        include_network=False,
     )
     _save_json(
         contributor_metrics,

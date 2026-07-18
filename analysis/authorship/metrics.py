@@ -90,6 +90,7 @@ def extract_authorship_metrics(
     nodes: list[dict[str, Any]],
     field: str = "author",
     aliases: Mapping[str, str] | None = None,
+    include_network: bool = True,
 ) -> dict[str, Any]:
     author_counts = Counter(_iter_authors(nodes, field, aliases))
     top_authors = [
@@ -130,16 +131,7 @@ def extract_authorship_metrics(
         (proposals_by_top_10 / total_proposals * 100.0) if total_proposals else 0.0
     )
 
-    collab_graph = build_collaboration_network(nodes, field, aliases)
-    collab_nodes = [
-        {"id": n, "degree": int(collab_graph.degree(n))} for n in collab_graph.nodes()
-    ]
-    collab_edges = [
-        {"source": u, "target": v, "weight": int(d.get("weight", 1))}
-        for u, v, d in collab_graph.edges(data=True)
-    ]
-
-    return {
+    metrics = {
         "author_count": len(author_counts),
         "top_authors": top_authors,
         "proposals_per_year": bips_per_year,
@@ -150,11 +142,25 @@ def extract_authorship_metrics(
             "proposals_by_top_10_authors": proposals_by_top_10,
             "percentage": round(top_10_share, 2),
         },
-        "collaboration_network": {
-            "nodes": collab_nodes,
-            "edges": collab_edges,
-        },
     }
+
+    # The pairwise co-authorship network is near-clique-dense for the
+    # contributors field (registry files like SLIP-44 have 1000+ committers),
+    # so callers that only need the count metrics skip it entirely.
+    if include_network:
+        collab_graph = build_collaboration_network(nodes, field, aliases)
+        metrics["collaboration_network"] = {
+            "nodes": [
+                {"id": n, "degree": int(collab_graph.degree(n))}
+                for n in collab_graph.nodes()
+            ],
+            "edges": [
+                {"source": u, "target": v, "weight": int(d.get("weight", 1))}
+                for u, v, d in collab_graph.edges(data=True)
+            ],
+        }
+
+    return metrics
 
 
 def compute_centrality_scores(graph: nx.Graph) -> list[dict[str, Any]]:

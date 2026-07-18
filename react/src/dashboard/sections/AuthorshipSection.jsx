@@ -1,5 +1,6 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { Button } from 'primereact/button';
+import { InputSwitch } from 'primereact/inputswitch';
 import { InputText } from 'primereact/inputtext';
 import { Card } from 'primereact/card';
 import { Tag } from 'primereact/tag';
@@ -18,6 +19,50 @@ import { ExportableCard } from '../ExportableCard';
 import { CollapsibleControls } from '../CollapsibleControls';
 import { SectionSourceToggle } from './SectionSourceToggle';
 
+// Section-wide terminology: an "Originator" is a person the proposal itself
+// declares (preamble authors, or the initial committer where no preamble
+// exists); a "Contributor" is anyone who committed changes to the proposal
+// file per full git history.
+const AUTHOR_BASIS_OPTIONS = [
+  { value: 'declared', label: 'Originators' },
+  { value: 'contributors', label: 'Contributors' },
+];
+
+function LogScaleToggle({ inputId, value, onChange }) {
+  return (
+    <div className="author-collaboration-switch-row">
+      <label htmlFor={inputId}>Log scale</label>
+      <InputSwitch
+        inputId={inputId}
+        checked={Boolean(value)}
+        onChange={(event) => onChange(event.value)}
+        aria-label="Toggle logarithmic y-axis"
+        className="author-collaboration-switch"
+      />
+    </div>
+  );
+}
+
+// Per-tile switch between the originator and contributor basis; rendered
+// inside each tile's collapsible controls panel.
+function AuthorBasisControl({ value, onChange }) {
+  return (
+    <div className="section-source-toggle" aria-label="Data basis">
+      {AUTHOR_BASIS_OPTIONS.map((option) => (
+        <button
+          key={option.value}
+          type="button"
+          className={`section-source-toggle__button${value === option.value ? ' is-active' : ''}`}
+          onClick={() => onChange(option.value)}
+          aria-pressed={value === option.value}
+        >
+          {option.label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
 export function AuthorshipSection({
   ecosystem,
   ecosystemBase,
@@ -29,6 +74,10 @@ export function AuthorshipSection({
   topAuthors,
   authorContributionHistogram,
   bipAuthorCountHistogram,
+  topContributors = [],
+  contributorContributionHistogram = [],
+  contributorsPerProposalHistogram = [],
+  contributorCoverage = null,
   collaborationNetwork,
   collaborationMetricsSummary,
   collaborationMetricsRows,
@@ -53,31 +102,82 @@ export function AuthorshipSection({
     hideTooltip: hideMetricTooltip,
   } = useAnalysisMetricTooltip();
 
+  // Contributor variants exist only for snapshots whose payload carries the
+  // pipeline-computed `contributors` block; without it the basis toggles are
+  // hidden and every tile shows declared authorship.
+  const hasContributorData = (contributorCoverage?.contributorCount ?? 0) > 0;
+  const [topBasis, setTopBasis] = useState('declared');
+  const [perPersonBasis, setPerPersonBasis] = useState('declared');
+  const [perProposalBasis, setPerProposalBasis] = useState('declared');
+  const [perPersonLogScale, setPerPersonLogScale] = useState(false);
+  const [perProposalLogScale, setPerProposalLogScale] = useState(false);
+  const topIsContributors = hasContributorData && topBasis === 'contributors';
+  const perPersonIsContributors = hasContributorData && perPersonBasis === 'contributors';
+  const perProposalIsContributors = hasContributorData && perProposalBasis === 'contributors';
+  const formatShare = (count, total) => (
+    total > 0 ? `${count} (${Math.round((count / total) * 100)}%)` : String(count)
+  );
+  const contributorCoverageCards = useMemo(() => {
+    const coverage = contributorCoverage || {};
+    return [
+      {
+        label: 'Contributors',
+        area: 'contributors',
+        value: coverage.contributorCount ?? 0,
+        description: 'Distinct people (bots excluded) who committed at least one change to any proposal file, according to full git history.',
+      },
+      {
+        label: 'Originators',
+        area: 'originators',
+        value: coverage.declaredAuthorCount ?? 0,
+        description: 'Distinct people declared as originator of at least one proposal (preamble authors, or the initial committer where no preamble exists).',
+      },
+      {
+        label: 'Also Originators',
+        area: 'also-originators',
+        value: formatShare(coverage.contributorsAlsoDeclared ?? 0, coverage.contributorCount ?? 0),
+        description: 'Contributors who are also declared as originator of at least one proposal, as a share of all contributors.',
+      },
+      {
+        label: 'Also Contributors',
+        area: 'also-contributors',
+        value: formatShare(coverage.contributorsAlsoDeclared ?? 0, coverage.declaredAuthorCount ?? 0),
+        description: 'Originators who also committed changes to proposal files themselves, as a share of all originators. These are the same people as in “Also Originators”, relative to the other total.',
+      },
+      {
+        label: (<>Proposals with<br />Non-Originator Edits</>),
+        area: 'proposals',
+        value: formatShare(coverage.proposalsWithUncredited ?? 0, coverage.proposalsWithGitData ?? 0),
+        description: 'Proposals where at least one contributor is not among that proposal’s originators, relative to all proposals with recorded git history.',
+      },
+    ];
+  }, [contributorCoverage]);
+
   const collaborationMetricCards = useMemo(() => ([
     {
       label: 'Nodes',
       value: collaborationMetricsSummary?.nodeCount ?? 0,
-      description: 'Total number of distinct authors, including solo-only authors with no co-authorship links.',
+      description: 'Total number of distinct originators, including solo-only originators with no collaboration links.',
     },
     {
       label: 'Edges',
       value: collaborationMetricsSummary?.edgeCount ?? 0,
-      description: 'Number of distinct author pairs that have co-authored at least one proposal together.',
+      description: 'Number of distinct originator pairs that have co-originated at least one proposal together.',
     },
     {
       label: 'Isolated Nodes',
       value: collaborationMetricsSummary?.isolatedAuthorCount ?? 0,
-      description: 'Authors with degree 0, meaning they appear in the corpus but never co-author a proposal with anyone else. For readability, they are shown together in one shared display cluster.',
+      description: 'Originators with degree 0, meaning they appear in the corpus but never co-originate a proposal with anyone else. For readability, they are shown together in one shared display cluster.',
     },
     {
       label: 'Clusters',
       value: collaborationMetricsSummary?.clusterCount ?? 0,
-      description: 'Number of display clusters in the collaboration graph and table. Authors with no co-authorship links are grouped into one shared cluster for readability.',
+      description: 'Number of display clusters in the collaboration graph and table. Originators with no collaboration links are grouped into one shared cluster for readability.',
     },
     {
       label: 'Density',
       value: Number(collaborationMetricsSummary?.density || 0).toFixed(4).replace(/\.?0+$/, ''),
-      description: 'Share of all possible author-to-author links that actually exist. Higher density means collaboration is more broadly interconnected.',
+      description: 'Share of all possible originator-to-originator links that actually exist. Higher density means collaboration is more broadly interconnected.',
     },
   ]), [collaborationMetricsSummary]);
   return (
@@ -98,15 +198,25 @@ export function AuthorshipSection({
           <p>
             Creation date of proposals according to date provided in preamble.
           </p>
-          <ProposalTimelineChart data={yearData} width={800} height={380} />
+          <ProposalTimelineChart data={yearData} width={800} height={450} />
         </ExportableCard>
         <ExportableCard className="mb-4" exportTitle="Top 10 Authors">
           <h3>Top 10 Authors</h3>
           <p>
-            Preamble authorship counts for the most mentioned contributors.
+            Number of proposals attributed to the ten most active authors, either
+            as originators or as (git) contributors.
           </p>
+          {hasContributorData && (
+            <CollapsibleControls>
+              <AuthorBasisControl value={topBasis} onChange={setTopBasis} />
+            </CollapsibleControls>
+          )}
           <div>
-            <TopAuthorsChart data={{ topAuthors }} width={340} height={325} />
+            <TopAuthorsChart
+              data={{ topAuthors: topIsContributors ? topContributors : topAuthors }}
+              width={420}
+              height={260}
+            />
           </div>
         </ExportableCard>
       </div>
@@ -114,27 +224,96 @@ export function AuthorshipSection({
         <ExportableCard className="mb-4" exportTitle="Proposals per Author">
           <h3>Proposals per Author</h3>
           <p>
-            Number of preamble authors who have written a given number of proposals.
+            Number of authors (originators or contributors) with a given number of
+            proposals.
           </p>
+          <CollapsibleControls>
+            <div className="authorship-tile-controls">
+              {hasContributorData && (
+                <AuthorBasisControl value={perPersonBasis} onChange={setPerPersonBasis} />
+              )}
+              <LogScaleToggle
+                inputId="proposals-per-author-log-switch"
+                value={perPersonLogScale}
+                onChange={setPerPersonLogScale}
+              />
+            </div>
+          </CollapsibleControls>
           <div>
-            <AuthorContributionHistogram data={authorContributionHistogram} width={640} height={380} />
+            <AuthorContributionHistogram
+              data={perPersonIsContributors ? contributorContributionHistogram : authorContributionHistogram}
+              width={640}
+              height={380}
+              logScale={perPersonLogScale}
+            />
           </div>
         </ExportableCard>
         <ExportableCard className="mb-4" exportTitle="Authors per Proposal">
           <h3>Authors per Proposal</h3>
           <p>
-            Distribution of proposals by their preamble author count.
+            Distribution of proposals by their number of authors (originators or
+            contributors).
           </p>
+          <CollapsibleControls>
+            <div className="authorship-tile-controls">
+              {hasContributorData && (
+                <AuthorBasisControl value={perProposalBasis} onChange={setPerProposalBasis} />
+              )}
+              <LogScaleToggle
+                inputId="authors-per-proposal-log-switch"
+                value={perProposalLogScale}
+                onChange={setPerProposalLogScale}
+              />
+            </div>
+          </CollapsibleControls>
           <div>
-            <BipAuthorCountHistogram data={bipAuthorCountHistogram} width={640} height={380} />
+            <BipAuthorCountHistogram
+              data={perProposalIsContributors ? contributorsPerProposalHistogram : bipAuthorCountHistogram}
+              width={640}
+              height={380}
+              logScale={perProposalLogScale}
+            />
           </div>
         </ExportableCard>
       </div>
 
-      <ExportableCard className="mb-4" exportTitle="Author Collaboration Graph">
-        <h3>Author Collaboration Graph</h3>
+      {hasContributorData && (
+          <Card className="mb-4">
+            <h3>Originators vs. Contributors</h3>
+            <p>
+              How declared origination compares with actual git activity on the proposal files.
+              {' '}<strong>Originators</strong> are the distinct people officially declared as
+              authors of a proposal — or, where no authorship is declared, the committers that
+              initially created the proposal. <strong>Contributors</strong> are the distinct
+              people who ever committed changes to a proposal file according to its full git
+              history, with bot accounts removed and known multiple commit identities of the
+              same person merged into one. The two groups are matched by name: declared author
+              names (with email addresses stripped) are compared against git commit author
+              names, using a curated alias list to bridge known cases where the same person
+              appears under different names.
+            </p>
+            <div className="contributor-coverage-grid">
+              {contributorCoverageCards.map((metric) => (
+                <div
+                  key={metric.area}
+                  className="metric-badge"
+                  style={{ gridArea: metric.area }}
+                  onMouseEnter={(event) => showMetricTooltip(event, metric.description)}
+                  onMouseMove={moveMetricTooltip}
+                  onMouseLeave={hideMetricTooltip}
+                >
+                  <span className="metric-badge__label">{metric.label}</span>
+                  <span className="metric-badge__value">{metric.value}</span>
+                </div>
+              ))}
+            </div>
+          </Card>
+      )}
+
+      <ExportableCard className="mb-4" exportTitle="Originator Collaboration Graph">
+        <h3>Originator Collaboration Graph</h3>
         <p>
-          Co-authorship across the selected proposal corpus, shown as a collaboration graph. Larger nodes indicate authors of more proposals, while thicker edges indicate more co-authored proposals. Colors encode connected components, while authors without collaborations are grouped into one shared component.
+          Co-authorship among originators across the selected proposal corpus, shown as a collaboration graph. Larger nodes indicate originators of more proposals, while thicker edges indicate more co-originated proposals. Colors encode connected components, while originators without collaborations are grouped into one shared component.
         </p>
         <div>
           <AuthorCollaborationNetwork
@@ -149,14 +328,14 @@ export function AuthorshipSection({
             extraControls={(
               <div className="network-finder author-collaboration-search">
                 <div className="network-finder__copy">
-                  <strong>Author Search</strong>
+                  <strong>Originator Search</strong>
                 </div>
                 <div className="network-finder__controls">
                   <InputText
                     value={highlightedAuthor}
                     onChange={(event) => setHighlightedAuthor(event.target.value)}
-                    placeholder="Type an author name"
-                    aria-label="Author search: type a name to highlight in the collaboration graph"
+                    placeholder="Type an originator name"
+                    aria-label="Originator search: type a name to highlight in the collaboration graph"
                     list="author-collaboration-options"
                   />
                   <datalist id="author-collaboration-options">
@@ -179,17 +358,17 @@ export function AuthorshipSection({
         </div>
       </ExportableCard>
       <Card className="mb-4">
-        <h3>Author Collaboration Metrics</h3>
+        <h3>Originator Collaboration Metrics</h3>
         <p>
-          Co-authorship according to preamble across the selected proposal corpus.
-          Author names marked with <strong><code>*</code></strong> are in the top 10 by authored proposals. <strong>Cluster</strong>
-          {' '}and <strong>Cluster Size</strong> show the connected co-authorship group an author belongs to and how large
-          that group is. Authors with no co-authorship links are grouped into one shared display cluster for readability.{' '} 
-          <strong>Degree</strong> measures how many different co-authors an author has. 
-          <strong>Weighted Degree</strong> captures how often an author collaborates in total, including repeated collaborations.{' '}
-          <strong>Weighted Eigenvector</strong> reflects how strongly an author is connected to other well-connected authors.{' '}
-          <strong>Betweenness</strong> measures how often an author lies on the shortest paths between other authors, indicating their role in connecting otherwise separate groups.
-          Each metric value is annotated with its rank among all authors in the network (e.g. <code>#1</code> = highest).
+          Co-authorship among originators according to preamble across the selected proposal corpus.
+          Originator names marked with <strong><code>*</code></strong> are in the top 10 by originated proposals. <strong>Cluster</strong>
+          {' '}and <strong>Cluster Size</strong> show the connected collaboration group an originator belongs to and how large
+          that group is. Originators with no collaboration links are grouped into one shared display cluster for readability.{' '}
+          <strong>Degree</strong> measures how many different co-originators an originator has.
+          <strong>Weighted Degree</strong> captures how often an originator collaborates in total, including repeated collaborations.{' '}
+          <strong>Weighted Eigenvector</strong> reflects how strongly an originator is connected to other well-connected originators.{' '}
+          <strong>Betweenness</strong> measures how often an originator lies on the shortest paths between other originators, indicating their role in connecting otherwise separate groups.
+          Each metric value is annotated with its rank among all originators in the network (e.g. <code>#1</code> = highest).
         </p>
         <div className="collaboration-metrics-summary">
           {collaborationMetricCards.map((metric) => (
@@ -224,7 +403,7 @@ export function AuthorshipSection({
             <div className="dashboard-plot-card__copy">
               <h3>Connected Component Size Distribution</h3>
               <p>
-                Connected components in co-authorship graph, grouped by size.
+                Connected components in the originator collaboration graph, grouped by size.
               </p>
             </div>
             <div className="dashboard-plot-card__plot">
@@ -239,9 +418,9 @@ export function AuthorshipSection({
         <ExportableCard className="mb-4 dashboard-plot-card-shell" exportTitle="Collaboration Degree Distribution">
           <div className="dashboard-plot-card">
             <div className="dashboard-plot-card__copy">
-              <h3>Co-Author Degree Distribution</h3>
+              <h3>Co-Originator Degree Distribution</h3>
               <p>
-                Distinct co-authors per author.
+                Distinct co-originators per originator.
               </p>
             </div>
             <div className="dashboard-plot-card__plot">

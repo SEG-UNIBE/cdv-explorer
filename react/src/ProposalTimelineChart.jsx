@@ -116,9 +116,9 @@ export const ProposalTimelineChart = ({ data, width = 600, height = 300 }) => {
       positionTooltip(tooltip, pageX, pageY);
     };
 
-    const legendHeight = isMultiSource ? 18 : 0;
-    const legendGap = isMultiSource ? 18 : 0;
-    const margin = { top: 24 + legendHeight + legendGap, right: 60, bottom: 36, left: 56 };
+    const legendHeight = isMultiSource ? 20 : 0;
+    const legendGap = isMultiSource ? 16 : 0;
+    const margin = { top: 24 + legendHeight + legendGap, right: 60, bottom: 40, left: 56 };
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
 
@@ -154,30 +154,30 @@ export const ProposalTimelineChart = ({ data, width = 600, height = 300 }) => {
         legend.append('rect')
           .attr('x', cursor)
           .attr('y', 2)
-          .attr('width', 10)
-          .attr('height', 10)
+          .attr('width', 12)
+          .attr('height', 12)
           .attr('fill', color);
         const text = legend.append('text')
-          .attr('x', cursor + 14)
-          .attr('y', 11)
-          .style('font-size', '11px')
+          .attr('x', cursor + 16)
+          .attr('y', 13)
+          .style('font-size', '13px')
           .style('fill', 'var(--chart-text)')
           .text(label);
-        cursor += 14 + text.node().getComputedTextLength() + 16;
+        cursor += 16 + text.node().getComputedTextLength() + 18;
       });
       // Total line marker
       legend.append('line')
         .attr('x1', cursor)
         .attr('x2', cursor + 18)
-        .attr('y1', 7)
-        .attr('y2', 7)
+        .attr('y1', 8)
+        .attr('y2', 8)
         .attr('stroke', TOTAL_LINE_COLOR)
         .attr('stroke-width', 2)
         .attr('stroke-dasharray', '4 3');
       legend.append('text')
         .attr('x', cursor + 22)
-        .attr('y', 11)
-        .style('font-size', '11px')
+        .attr('y', 13)
+        .style('font-size', '13px')
         .style('fill', 'var(--chart-text)')
         .text('Cumulative total');
     }
@@ -187,21 +187,25 @@ export const ProposalTimelineChart = ({ data, width = 600, height = 300 }) => {
       .call(d3.axisLeft(yBars).ticks(6))
       .call((axis) => axis.select('.domain').attr('stroke', isMultiSource ? '#888' : '#4c78a8'))
       .call((axis) => axis.selectAll('line').attr('stroke', '#d7dee8'))
-      .call((axis) => axis.selectAll('text').attr('fill', isMultiSource ? '#555' : '#4c78a8'));
+      .call((axis) => axis.selectAll('text')
+        .attr('fill', isMultiSource ? '#555' : '#4c78a8')
+        .style('font-size', '13px'));
 
     // Right axis (cumulative).
     g.append('g')
       .attr('transform', `translate(${innerWidth},0)`)
       .call(d3.axisRight(yLine).ticks(6))
       .call((axis) => axis.select('.domain').attr('stroke', TOTAL_LINE_COLOR))
-      .call((axis) => axis.selectAll('text').attr('fill', TOTAL_LINE_COLOR));
+      .call((axis) => axis.selectAll('text')
+        .attr('fill', TOTAL_LINE_COLOR)
+        .style('font-size', '13px'));
 
     const everyOtherYear = series.filter((_, i) => i % 2 === 0).map((d) => d.year);
     g.append('g')
       .attr('transform', `translate(0,${innerHeight})`)
       .call(d3.axisBottom(x).tickValues(everyOtherYear))
       .selectAll('text')
-      .style('font-size', '13px');
+      .style('font-size', '14px');
 
     // Compute stacked segments per source (always — for single source this collapses
     // to one segment per bar with the legacy color).
@@ -291,9 +295,9 @@ export const ProposalTimelineChart = ({ data, width = 600, height = 300 }) => {
       .append('text')
       .attr('class', 'bar-label')
       .attr('x', (d) => x(d.year) + x.bandwidth() / 2)
-      .attr('y', (d) => yBars(d.count) - 4)
+      .attr('y', (d) => yBars(d.count) - 5)
       .attr('text-anchor', 'middle')
-      .style('font-size', '11px')
+      .style('font-size', '12.5px')
       .style('fill', 'var(--chart-text)')
       .style('pointer-events', 'none')
       .text((d) => d.count);
@@ -376,7 +380,7 @@ export const ProposalTimelineChart = ({ data, width = 600, height = 300 }) => {
         .attr('x', 0)
         .attr('y', -8)
         .attr('fill', '#4c78a8')
-        .style('font-size', '12px')
+        .style('font-size', '13px')
         .text('New proposals');
 
       g.append('text')
@@ -384,7 +388,7 @@ export const ProposalTimelineChart = ({ data, width = 600, height = 300 }) => {
         .attr('y', -8)
         .attr('text-anchor', 'end')
         .attr('fill', TOTAL_LINE_COLOR)
-        .style('font-size', '12px')
+        .style('font-size', '13px')
         .text('Cumulative total');
     }
 

@@ -420,10 +420,14 @@ function mergeAuthorship(perSourceDatasets) {
     });
   });
 
+  // No `contributors` block here: the git-contributor tiles are pipeline-
+  // computed only. Combined artifacts provide them server-side; this client
+  // merge fallback hides the tiles rather than recomputing metrics.
   return {
     meta: {
       author_count: top_authors.length,
       node_count: perSourceDatasets.reduce((sum, d) => sum + (d.nodes?.length || 0), 0),
+      author_aliases: Object.assign({}, ...sources.map((s) => s.meta?.author_aliases || {})),
     },
     top_authors,
     bips_per_year,

@@ -1103,6 +1103,38 @@
   flex: 0 0 auto;
 }
 
+/* Originators-vs-contributors badges: 3-column grid, third column spans both
+   rows for the proposal-level stat. */
+.contributor-coverage-grid {
+  display: grid;
+  grid-template-areas:
+    'contributors also-originators proposals'
+    'originators  also-contributors proposals';
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.4rem 0.5rem;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 900px) {
+  .contributor-coverage-grid {
+    grid-template-areas:
+      'contributors'
+      'originators'
+      'also-originators'
+      'also-contributors'
+      'proposals';
+    grid-template-columns: 1fr;
+  }
+}
+
+.authorship-tile-controls {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: center;
+  justify-items: start;
+  gap: 0.75rem 1.5rem;
+}
+
 .card-title-with-badge {
   display: inline-flex;
   align-items: center;
@@ -1155,7 +1187,7 @@
 }
 
 .dashboard-grid--wide-left {
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 3fr 2fr;
 }
 
 .dashboard-grid--classification {

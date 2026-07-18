@@ -14,19 +14,43 @@ llm:
 
 # Contributor identities appearing under multiple names in git history or
 # preambles; each entry folds its aliases onto one canonical display name
-# during authorship metrics extraction.
+# during authorship metrics extraction. Candidates were derived from exact
+# e-mail matches (one git e-mail used under several commit names) and manually
+# curated; each alias was checked to be unambiguous within the harvested repo.
 authorship:
   identities:
+    - name: Abhay Raizada
+      aliases: [abhay-raizada]
     - name: Asai Toshiya
       aliases: [AsaiToshiya]
     - name: Cody Tseng
       aliases: [codytseng]
+    - name: dtonon
+      aliases: [daniele]
+    - name: ennmichael
+      aliases: [fcked]
     - name: fiatjaf
       aliases: [fiatjaf_]
+    - name: haorendashu
+      aliases: [DASHU]
+    - name: Jeff Gardner
+      aliases: [JeffG]
+    - name: Jon Staab
+      aliases: [Jonathan Staab, hodlbod]
+    - name: kehiy
+      aliases: [K, Kay, k.]
     - name: Kieran
       aliases: [kieran]
+    - name: ktecho
+      aliases: [Luis Miguel]
+    - name: Mike Dilger
+      aliases: [Michael Dilger]
+    - name: Mohammed Alotaibi
+      aliases: [Awiteb]
     - name: nostr-wine
       aliases: [nostr.wine]
+    - name: Pablo Fernandez
+      aliases: [pablof7z]
     - name: randymcmillan
       aliases: ["@RandyMcMillan"]
     - name: Sandwich
@@ -35,6 +59,8 @@ authorship:
       aliases: [sepehr-safari]
     - name: theborakompanioni
       aliases: [Thebora Kompanioni]
+    - name: Yasuhiro Matsumoto
+      aliases: [mattn]
 
 sources:
   nips:

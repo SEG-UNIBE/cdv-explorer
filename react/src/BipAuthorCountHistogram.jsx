@@ -8,7 +8,7 @@ import { renderTooltipCardHtml } from './tooltipHtml';
 const BAR_COLOR = '#7048e8';
 const BAR_HOVER_COLOR = '#5f3dc4';
 
-export const BipAuthorCountHistogram = ({ data, width = 600, height = 400 }) => {
+export const BipAuthorCountHistogram = ({ data, width = 600, height = 400, logScale = false }) => {
   const ref = useRef();
   const snapshotLabel = useDashboardSnapshot();
   const linkMode = useDashboardLinkMode();
@@ -68,10 +68,11 @@ export const BipAuthorCountHistogram = ({ data, width = 600, height = 400 }) => 
       .range([0, innerWidth])
       .padding(0.18);
 
-    const y = d3.scaleLinear()
-      .domain([0, d3.max(displayItems, (d) => d.bipCount) || 0])
-      .nice()
-      .range([innerHeight, 0]);
+    // Log domain starts below 1 so single-count bars keep a visible stub.
+    const yMax = d3.max(displayItems, (d) => d.bipCount) || 0;
+    const y = logScale
+      ? d3.scaleLog().domain([0.8, Math.max(yMax, 1)]).range([innerHeight, 0])
+      : d3.scaleLinear().domain([0, yMax]).nice().range([innerHeight, 0]);
 
     const g = svg
       .attr('width', width)
@@ -80,7 +81,7 @@ export const BipAuthorCountHistogram = ({ data, width = 600, height = 400 }) => 
       .attr('transform', `translate(${margin.left},${margin.top})`);
 
     g.append('g')
-      .call(d3.axisLeft(y).ticks(6))
+      .call(logScale ? d3.axisLeft(y).ticks(5, '~s') : d3.axisLeft(y).ticks(6))
       .call((axis) => axis.selectAll('line').attr('stroke', 'var(--chart-grid)'))
       .call((axis) => axis.selectAll('text').style('font-size', '13px'));
 
@@ -180,7 +181,7 @@ export const BipAuthorCountHistogram = ({ data, width = 600, height = 400 }) => 
       svg.selectAll('*').remove();
       tooltip.remove();
     };
-  }, [data, ecosystem, width, height, snapshotLabel, linkMode]);
+  }, [data, ecosystem, width, height, snapshotLabel, linkMode, logScale]);
 
   return <svg ref={ref} role="img" aria-label="Authors per proposal histogram" />;
 };

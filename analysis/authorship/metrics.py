@@ -542,12 +542,78 @@ def build_collaboration_metrics_payload(
     }
 
 
-def prepare_authorship_payload(network_data: dict[str, Any]) -> dict[str, Any]:
+def build_contributor_coverage(
+    nodes: list[dict[str, Any]],
+    aliases: Mapping[str, str] | None = None,
+) -> dict[str, Any]:
+    """Compare declared authorship with actual git activity on proposal files."""
+    declared = set(_iter_authors(nodes, "author", aliases))
+    contributors = set(_iter_authors(nodes, "contributors", aliases))
+    also_declared = len(declared & contributors)
+
+    proposals_with_git_data = 0
+    proposals_with_uncredited = 0
+    for node in nodes:
+        node_contributors = set(_node_author_names(node, "contributors", aliases))
+        if not node_contributors:
+            continue
+        proposals_with_git_data += 1
+        node_declared = set(_node_author_names(node, "author", aliases))
+        if node_contributors - node_declared:
+            proposals_with_uncredited += 1
+
+    return {
+        "contributor_count": len(contributors),
+        "declared_author_count": len(declared),
+        "contributors_also_declared": also_declared,
+        "contributors_never_declared": len(contributors) - also_declared,
+        "proposals_with_git_data": proposals_with_git_data,
+        "proposals_with_uncredited": proposals_with_uncredited,
+    }
+
+
+def _graph_from_collaboration_network(
+    collaboration_network: dict[str, Any],
+) -> nx.Graph:
+    """Rebuild the nx graph from an already-serialized collaboration network.
+
+    Much cheaper than build_collaboration_network, which re-derives the edge
+    cliques from every node's author list — expensive for the dense
+    contributor-basis graph.
+    """
+    graph = nx.Graph()
+    for node in collaboration_network.get("nodes", []):
+        if node.get("id") is not None:
+            graph.add_node(str(node["id"]))
+    for edge in collaboration_network.get("edges", []):
+        source = str(edge.get("source") or "")
+        target = str(edge.get("target") or "")
+        if source and target:
+            graph.add_edge(source, target, weight=edge.get("weight", 1))
+    return graph
+
+
+def prepare_authorship_payload(
+    network_data: dict[str, Any],
+    field: str = "author",
+    aliases: Mapping[str, str] | None = None,
+    authorship: dict[str, Any] | None = None,
+    contributor_metrics: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Build the frontend authorship payload.
+
+    Pass precomputed `authorship` metrics (from extract_authorship_metrics with
+    the same field/aliases) to avoid re-extracting them — the pipeline computes
+    them anyway for the metrics artifacts. `contributor_metrics` (the
+    field="contributors" extraction) feeds the small git-contributor tile block;
+    its dense collaboration network is deliberately NOT included.
+    """
     nodes = network_data.get("nodes", [])
-    authorship = extract_authorship_metrics(nodes)
+    if authorship is None:
+        authorship = extract_authorship_metrics(nodes, field=field, aliases=aliases)
     collaboration_network = authorship["collaboration_network"]
     collaboration_centrality = compute_centrality_scores(
-        build_collaboration_network(nodes)
+        _graph_from_collaboration_network(collaboration_network)
     )
     collaboration_metrics = build_collaboration_metrics_payload(
         collaboration_network,
@@ -558,6 +624,12 @@ def prepare_authorship_payload(network_data: dict[str, Any]) -> dict[str, Any]:
         "meta": {
             "node_count": len(nodes),
             "author_count": authorship["author_count"],
+            # Which node field the metrics were computed from ("author" =
+            # declared authors, "contributors" = everyone who committed to the
+            # file) and the alias map applied, so the frontend can resolve raw
+            # node names to the same canonical identities.
+            "author_field": field,
+            "author_aliases": dict(aliases or {}),
             "generated_metrics": [
                 "top_authors",
                 "bips_per_year",
@@ -582,6 +654,22 @@ def prepare_authorship_payload(network_data: dict[str, Any]) -> dict[str, Any]:
             ],
             "percentage": authorship["top_10_share"]["percentage"],
         },
+        # Git-contributor tiles: only the small aggregates, never the dense
+        # contributor collaboration graph (too large to ship or render).
+        "contributors": (
+            {
+                "top_contributors": contributor_metrics.get("top_authors", []),
+                "contribution_histogram": contributor_metrics.get(
+                    "author_contribution_histogram", []
+                ),
+                "per_proposal_histogram": contributor_metrics.get(
+                    "bip_author_count_histogram", []
+                ),
+                "coverage": build_contributor_coverage(nodes, aliases),
+            }
+            if contributor_metrics is not None
+            else None
+        ),
         "collaboration_network": collaboration_network,
         "collaboration_centrality": collaboration_centrality,
         "collaboration_metrics_summary": collaboration_metrics["summary"],

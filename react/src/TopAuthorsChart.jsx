@@ -100,7 +100,8 @@ export const TopAuthorsChart = ({ data, width = 600, height = 400 }) => {
     const longestAuthorLabel = d3.max(sortedAuthors, (entry) => String(entry.author || '').length) || 0;
     const margin = {
       top: 20,
-      right: 24,
+      // Wide enough for a 3-digit count label after the longest bar.
+      right: 40,
       bottom: 32,
       left: Math.min(132, Math.max(96, (longestAuthorLabel * 7) + 8)),
     };

@@ -298,15 +298,21 @@ def prepare_combined_source_artifacts(
             )
             authorship_path = snapshot_root / "authorship" / "authorship_metrics.json"
             _save_json(authorship_metrics, authorship_path)
+            contributor_metrics = extract_authorship_metrics(
+                network_data.get("nodes", []),
+                field="contributors",
+                aliases=combined_author_aliases,
+            )
             _save_json(
-                extract_authorship_metrics(
-                    network_data.get("nodes", []),
-                    field="contributors",
-                    aliases=combined_author_aliases,
-                ),
+                contributor_metrics,
                 snapshot_root / "authorship" / "authorship_metrics_contributors.json",
             )
-            authorship_payload = prepare_authorship_payload(network_data)
+            authorship_payload = prepare_authorship_payload(
+                network_data,
+                aliases=combined_author_aliases,
+                authorship=authorship_metrics,
+                contributor_metrics=contributor_metrics,
+            )
 
             emit(
                 f"{combo_key}: preparing non-mergeable section placeholders", advance=1
@@ -555,7 +561,12 @@ def prepare_ecosystem_artifacts(
         fieldnames=["bips_written", "authors"],
     )
 
-    authorship_payload = prepare_authorship_payload(network_data)
+    authorship_payload = prepare_authorship_payload(
+        network_data,
+        aliases=context.author_aliases,
+        authorship=authorship_metrics,
+        contributor_metrics=contributor_metrics,
+    )
     _save_csv_rows(
         authorship_payload.get("collaboration_centrality", []),
         snapshot_root / "authorship" / "collaboration_centrality.csv",

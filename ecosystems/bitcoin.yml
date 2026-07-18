@@ -15,29 +15,136 @@ llm:
 
 # Contributor identities appearing under multiple names in git history or
 # preambles; each entry folds its aliases onto one canonical display name
-# during authorship metrics extraction.
+# during authorship metrics extraction. Candidates were derived from exact
+# e-mail matches (declared preamble e-mail vs git commit e-mail, and one git
+# e-mail used under several commit names) and manually curated; each alias was
+# checked to be unambiguous within the harvested repos.
 authorship:
   identities:
-    - name: Luke Dashjr
-      aliases: [Luke-Jr]
+    - name: Adam Gibson
+      aliases: [AdamISZ]
+    - name: Alan Reiner
+      aliases: [etotheipi]
+    - name: Alex Akselrod
+      aliases: [Alex]
+    - name: Andrew Kozlik
+      aliases: [andrewkozlik, andrew]
+    - name: Andrew Toth
+      aliases: [andrewtoth]
+    - name: Antoine Poinsot
+      aliases: [darosior]
+    - name: Ariel Marshall-Smith
+      aliases: [Hypermist]
+    - name: Ava Chow
+      aliases: [Andrew Chow]
+    - name: Ben Carman
+      aliases: [benthecarman]
+    - name: bip39JP
+      aliases: [bip39jp]
+    - name: bubb1es
+      aliases: [bubb1es71]
+    - name: Christopher Gilliard
+      aliases: [cgilliard]
+    - name: Clark Moody
+      aliases: [Clark]
     - name: Craig Raw
       aliases: [craigraw]
     - name: Dan Gould
       aliases: [DanGould]
+    - name: Daniel Pape
+      aliases: [Daniel X. Pape]
     - name: Daniel Weigl
       aliases: [DanielWeigl]
     - name: Dr. Maxim Orlovsky
-      aliases: [Dr Maxim Orlovsky]
+      aliases: [Dr Maxim Orlovsky, Maxim Orlovsky]
+    - name: Dylan Schultz
+      aliases: [schultzie]
     - name: Ethan Kosakovsky
       aliases: [ethankosakovsky]
-    - name: Nicolas Dorier
-      aliases: [nicolas.dorier]
-    - name: Omar Shibli
-      aliases: [omar shibli]
-    - name: Thebora Kompanioni
-      aliases: [theborakompanioni]
+    - name: Eugene Siegel
+      aliases: [eugene]
+    - name: Fontaine
+      aliases: [Fonta1n3, Fontan3]
+    - name: Gleb Naumenko
+      aliases: [User]
+    - name: Gloria Zhao
+      aliases: [glozow]
+    - name: Gregory Maxwell
+      aliases: [Greg Maxwell]
+    - name: Gregory Sanders
+      aliases: [Greg Sanders, instagibbs]
     - name: gruve-p
       aliases: [Gruve_p]
+    - name: Janus Troelsen
+      aliases: [Janus]
+    - name: jiguangin
+      aliases: [jiguang]
+    - name: John L. Jegutanis
+      aliases: [Giannis Dzegoutanis, Giannis L. Jegutanis]
+    - name: Johnson Lau
+      aliases: [jl2012]
+    - name: Jonathan Underwood
+      aliases: [junderw]
+    - name: josibake
+      aliases: [josie]
+    - name: Karel Bílek
+      aliases: [Karel Bilek]
+    - name: Karl-Johan Alm
+      aliases: [Kalle Alm, kallewoof]
+    - name: Luke Dashjr
+      aliases: [Luke-Jr]
+    - name: Manuel Aráoz
+      aliases: [Manuel Araoz]
+    - name: Marco Pontello
+      aliases: [MarcoPon]
+    - name: MarcoFalke
+      aliases: [MacroFake]
+    - name: Marek Palatinus
+      aliases: [slush0]
+    - name: Masao Hidemitsu
+      aliases: [fish-en]
+    - name: Michael Straka
+      aliases: [mstraka100]
+    - name: mikeyb
+      aliases: [Baby Goat]
+    - name: Mostafa Sedaghat Joo
+      aliases: [b00f]
+    - name: Murch
+      aliases: ['Mark "Murch" Erhardt']
+    - name: Nicolas Dorier
+      aliases: [nicolas.dorier, NicolasDorier]
+    - name: Oliver Gugger
+      aliases: [Oli]
+    - name: Omar Shibli
+      aliases: [omar shibli]
+    - name: Ondřej Vejpustek
+      aliases: [Ondrej Vejpustek]
+    - name: Orfeas Stefanos Thyfronitis Litos
+      aliases: [Orfeas Litos]
+    - name: Panagiotis David
+      aliases: [onnateldome]
+    - name: Samuel Dobson
+      aliases: [MeshCollider]
+    - name: Sancho Panza
+      aliases: [sanch0panza]
+    - name: shalom lee
+      aliases: [lishenglin]
+    - name: Shaolin Fry
+      aliases: [shaolinfry]
+    - name: Shigeyuki Azuchi
+      aliases: [azuchi, shigeyuki azuchi]
+    - name: Thebora Kompanioni
+      aliases: [theborakompanioni]
+    - name: Thomas Kerin
+      aliases: [BitWasp]
+    - name: Tom Zander
+      aliases: [TomZ]
+    - name: Upal Chakraborty
+      aliases: [UpalChakraborty]
+    - name: Varunram Ganesh
+      aliases: [Varunram]
+    - name: Vitali Grabovkski
+      aliases: [vetal20600]
 
 sources:
   bips:

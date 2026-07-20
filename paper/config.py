@@ -9,3 +9,7 @@ SNAPSHOT = "2026-06-30"
 # smaller subplot titles on purpose.
 FIGURE_TITLE_FONT_SIZE = 12.0
 SUBPLOT_TITLE_FONT_SIZE = 12.0
+
+# Shared legend font size; individual figures may still opt for something
+# smaller when a legend has many entries and space is tight.
+LEGEND_FONT_SIZE = 9.5

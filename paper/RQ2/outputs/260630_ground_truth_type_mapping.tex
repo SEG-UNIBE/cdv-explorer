@@ -1,0 +1,23 @@
+{%
+    \setlength{\abovetopsep}{0pt}%
+    \setlength{\belowbottomsep}{0pt}%
+    \setlength{\aboverulesep}{0pt}%
+    \setlength{\belowrulesep}{0pt}%
+    \setlength{\tabcolsep}{6pt}%
+    \renewcommand{\arraystretch}{1.2}%
+    \begin{tabular}{c|l c l}
+        \toprule
+        \textbf{Mode} & \textbf{Approach Type} &  & \textbf{GT Type} \\
+        \midrule%
+        \multirow{5}{*}{\begin{tabular}[c]{@{}c@{}}Edge type\\agnostic\\(ETA)\end{tabular}} & Preamble:\texttt{requires} & $\rightarrow$ & \textit{(any)} \\
+         & Preamble:\texttt{replaces} & $\rightarrow$ & \textit{(any)} \\
+         & Preamble:\texttt{proposed\_replacement} & $\rightarrow$ & \textit{(any)} \\
+         & Regex & $\rightarrow$ & \textit{(any)} \\
+         & LLM & $\rightarrow$ & \textit{(any)} \\
+        \specialrule{0.65pt}{0pt}{0pt}%
+        \multirow{3}{*}{\begin{tabular}[c]{@{}c@{}}Dependency-\\only edges\\(DOE)\end{tabular}} & Preamble:\texttt{requires} & $\rightarrow$ & \texttt{depends\_on} \\
+         & Regex & $\rightarrow$ & \texttt{depends\_on} \\
+         & LLM & $\rightarrow$ & \texttt{depends\_on} \\
+        \bottomrule
+    \end{tabular}%
+}

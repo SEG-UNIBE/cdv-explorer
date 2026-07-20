@@ -15,6 +15,7 @@ GENERATE_DIFFERENTIAL_DEPENDENCY_PLOTS = True
 GENERATE_DEPENDENCY_COMPARISON_TABLE = True
 GENERATE_CENTRALITY_TOP5_TABLE = True
 GENERATE_GROUND_TRUTH_EVALUATION_PLOT = True
+GENERATE_TYPE_MAPPING_TABLE = True
 DIFFERENTIAL_FOCUS_BIPS = [67, 93, 350, 77]
 EXCLUDE_BIPS = [174, 21, 78, 324]
 
@@ -51,7 +52,11 @@ def main() -> None:
     )
     from paper.RQ2.dependency_plots import render_default_dependency_plot_suite
     from paper.RQ2.ground_truth_evaluation import (
-        plot_ground_truth_evaluation_exact_type,
+        plot_ground_truth_evaluation_doe,
+        plot_ground_truth_evaluation_eta,
+    )
+    from paper.RQ2.dependency_type_mapping_table import (
+        export_type_mapping_latex_table,
     )
 
     snapshot_label = SNAPSHOT or resolve_latest_snapshot_label() or "latest"
@@ -97,10 +102,14 @@ def main() -> None:
                     layout_name=alt_layout,
                 )
     if GENERATE_GROUND_TRUTH_EVALUATION_PLOT:
-        plot_ground_truth_evaluation_exact_type(
+        plot_ground_truth_evaluation_doe(
             network_data=network_data,
-            output_path=output_dir
-            / f"{filename_prefix}_ground_truth_evaluation_exact_type.pdf",
+            output_path=output_dir / f"{filename_prefix}_GT_eval_DOE.pdf",
+            snapshot_label=snapshot_label,
+        )
+        plot_ground_truth_evaluation_eta(
+            network_data=network_data,
+            output_path=output_dir / f"{filename_prefix}_GT_eval_ETA.pdf",
             snapshot_label=snapshot_label,
         )
     if GENERATE_CENTRALITY_TOP5_TABLE:
@@ -123,6 +132,10 @@ def main() -> None:
             network_data=network_data,
             output_path=output_dir
             / f"{filename_prefix}_dependency_pairwise_comparison_preamble_plus_regex_llm.tex",
+        )
+    if GENERATE_TYPE_MAPPING_TABLE:
+        export_type_mapping_latex_table(
+            output_path=output_dir / f"{filename_prefix}_ground_truth_type_mapping.tex",
         )
 
 

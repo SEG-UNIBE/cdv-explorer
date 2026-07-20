@@ -920,7 +920,9 @@ def render_differential_dependency_plots(
         pos = _compact_positions(
             base_pos, compaction=_get_layout_compaction(layout_name)
         )
-    axis_limits = _compute_axis_limits(base_pos)
+    # axis_limits is only needed for the per-comparison plots below, which are
+    # currently disabled.
+    # axis_limits = _compute_axis_limits(base_pos)
     combined_axis_limits = _compute_axis_limits(
         base_pos, margin_scale=COMBINED_AXIS_MARGIN_SCALE
     )
@@ -943,23 +945,25 @@ def render_differential_dependency_plots(
                 "subplot_title": plot_spec.get("subplot_title", plot_spec["title"]),
             }
         )
-        prefix = f"{filename_prefix}_" if filename_prefix else ""
-        output_path = (
-            output_dir
-            / f"{prefix}diffdep_{layout_name}_{plot_spec['filename_stem']}.pdf"
-        )
-        _save_single_comparison_plot(
-            layout_graph,
-            pos,
-            axis_limits,
-            comparison_edges=comparison_edges,
-            approach_type=plot_spec["approach"],
-            baseline_type=plot_spec["baseline"],
-            layout_name=layout_name,
-            title=plot_spec["title"],
-            output_path=output_path,
-        )
-        output_paths.append(output_path)
+        # Disabled: standalone diffdep_react_preamlbe_vs_regex / diffdep_react_regex_vs_llm
+        # figures are no longer needed on their own, only combined below.
+        # prefix = f"{filename_prefix}_" if filename_prefix else ""
+        # output_path = (
+        #     output_dir
+        #     / f"{prefix}diffdep_{layout_name}_{plot_spec['filename_stem']}.pdf"
+        # )
+        # _save_single_comparison_plot(
+        #     layout_graph,
+        #     pos,
+        #     axis_limits,
+        #     comparison_edges=comparison_edges,
+        #     approach_type=plot_spec["approach"],
+        #     baseline_type=plot_spec["baseline"],
+        #     layout_name=layout_name,
+        #     title=plot_spec["title"],
+        #     output_path=output_path,
+        # )
+        # output_paths.append(output_path)
 
     if layout_export_path is not None and len(plot_payloads) > 1:
         prefix = f"{filename_prefix}_" if filename_prefix else ""

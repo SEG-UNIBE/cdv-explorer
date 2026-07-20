@@ -1,11 +1,10 @@
 from pathlib import Path
 
+import matplotlib.pyplot as plt
 import numpy as np
 
-import matplotlib.pyplot as plt
-
 from paper.config import FIGURE_TITLE_FONT_SIZE, SUBPLOT_TITLE_FONT_SIZE
-from paper.plot_colors import AUTHORSHIP_DISTRIBUTION_COLOR, AUTHORS_PER_BIP_COLOR
+from paper.plot_colors import AUTHORS_PER_BIP_COLOR, AUTHORSHIP_DISTRIBUTION_COLOR
 from paper.RQ3._plotting import (
     bar_style,
     despine,

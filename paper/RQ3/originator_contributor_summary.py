@@ -43,10 +43,13 @@ def plot_originator_contributor_summary(
     chart is illegible here since contributor counts run a far longer tail
     than originator counts); row 3 is originator_contributor_ecdf.py's
     overlay panels."""
-    figure, (
-        (axis_a, axis_b),
-        (axis_c, axis_d),
-        (axis_e, axis_f),
+    (
+        figure,
+        (
+            (axis_a, axis_b),
+            (axis_c, axis_d),
+            (axis_e, axis_f),
+        ),
     ) = plt.subplots(
         3,
         2,

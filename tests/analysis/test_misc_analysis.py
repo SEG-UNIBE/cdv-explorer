@@ -26,7 +26,9 @@ class UpdateMetadataFromGitTests(unittest.TestCase):
         )
 
         with patch("analysis.authorship.mining.subprocess.run", return_value=completed):
-            history = get_git_history(Path("/repo"), Path("/repo/proposals/bip-0001.md"))
+            history = get_git_history(
+                Path("/repo"), Path("/repo/proposals/bip-0001.md")
+            )
 
         self.assertEqual(
             history,

@@ -73,7 +73,9 @@ def _subtype_cell(approach: str, subtype: str) -> str:
     return approach_label
 
 
-def _build_group_rows(mapping: dict[str, dict[str, str]], group_label_lines: list[str]) -> list[str]:
+def _build_group_rows(
+    mapping: dict[str, dict[str, str]], group_label_lines: list[str]
+) -> list[str]:
     rows = [
         (approach, subtype, target)
         for approach in EVALUATED_APPROACHES
@@ -84,7 +86,9 @@ def _build_group_rows(mapping: dict[str, dict[str, str]], group_label_lines: lis
     for row_index, (approach, subtype, target) in enumerate(rows):
         cells = []
         if row_index == 0:
-            cells.append(rf"\multirow{{{len(rows)}}}{{*}}{{{_stacked(group_label_lines)}}}")
+            cells.append(
+                rf"\multirow{{{len(rows)}}}{{*}}{{{_stacked(group_label_lines)}}}"
+            )
         else:
             cells.append("")
         cells.append(_subtype_cell(approach, subtype))

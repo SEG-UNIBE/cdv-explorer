@@ -98,8 +98,7 @@ def extract_authorship_metrics(
         key=lambda item: (-int(item[1]), str(item[0]).casefold(), str(item[0])),
     )
     top_authors = [
-        {"author": name, "count": count}
-        for name, count in top_author_counts[:15]
+        {"author": name, "count": count} for name, count in top_author_counts[:15]
     ]
 
     years = []

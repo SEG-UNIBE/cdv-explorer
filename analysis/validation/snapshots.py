@@ -728,9 +728,7 @@ def _validate_authorship_payload(
     missing = [key for key in required_coverage_keys if key not in coverage]
     if missing:
         result.file_status["authorship"] = "❌ schema"
-        result.fail(
-            f"`{rel_path}` `contributors.coverage` missing keys: {missing}"
-        )
+        result.fail(f"`{rel_path}` `contributors.coverage` missing keys: {missing}")
 
 
 def validate_ground_truth_curated_file(

@@ -3,7 +3,11 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FixedLocator, FuncFormatter, NullLocator
 
-from paper.config import FIGURE_TITLE_FONT_SIZE, LEGEND_FONT_SIZE, SUBPLOT_TITLE_FONT_SIZE
+from paper.config import (
+    FIGURE_TITLE_FONT_SIZE,
+    LEGEND_FONT_SIZE,
+    SUBPLOT_TITLE_FONT_SIZE,
+)
 from paper.plot_colors import ORDERED_PLOT_PALETTE
 from paper.RQ3._plotting import despine, match_axis_label_fontsize, save_figure
 

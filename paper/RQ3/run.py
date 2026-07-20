@@ -41,16 +41,6 @@ def main() -> None:
         plot_authorship_collaboration_triptych,
         plot_authorship_collaboration_triptych_row,
     )
-    from paper.RQ3.contributor_overlap_table import (
-        export_contributor_overlap_latex_table,
-    )
-    from paper.RQ3.contributor_overview import plot_contributor_overview
-    from paper.RQ3.originator_contributor_ecdf import (
-        plot_originator_contributor_ecdf,
-    )
-    from paper.RQ3.originator_contributor_summary import (
-        plot_originator_contributor_summary,
-    )
 
     # from paper.RQ3.authorship_overview import (
     #     plot_authors_per_bip,
@@ -77,6 +67,16 @@ def main() -> None:
         # plot_coauthor_degree_distribution,
         plot_collaboration_structure_overview,
         # plot_connected_component_size_distribution,
+    )
+    from paper.RQ3.contributor_overlap_table import (
+        export_contributor_overlap_latex_table,
+    )
+    from paper.RQ3.contributor_overview import plot_contributor_overview
+    from paper.RQ3.originator_contributor_ecdf import (
+        plot_originator_contributor_ecdf,
+    )
+    from paper.RQ3.originator_contributor_summary import (
+        plot_originator_contributor_summary,
     )
     # from paper.RQ3.creation_over_time import plot_creation_over_time
 

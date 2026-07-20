@@ -1,5 +1,6 @@
+from collections.abc import Mapping
 from pathlib import Path
-from typing import Any, Mapping
+from typing import Any
 
 from analysis.authorship.metrics import (
     build_contributor_coverage,
@@ -31,7 +32,9 @@ def _share_row(
 def _basis_block(basis: str, rows: list[tuple[str, str, str]]) -> list[str]:
     lines = []
     for row_index, cells in enumerate(rows):
-        basis_cell = rf"\multirow{{{len(rows)}}}{{*}}{{{basis}}}" if row_index == 0 else ""
+        basis_cell = (
+            rf"\multirow{{{len(rows)}}}{{*}}{{{basis}}}" if row_index == 0 else ""
+        )
         lines.append("        " + " & ".join([basis_cell, *cells]) + r" \\")
     return lines
 
@@ -54,7 +57,9 @@ def export_contributor_overlap_latex_table(
     coverage = build_contributor_coverage(nodes, aliases)
     overlap = build_contributor_overlap_breakdown(nodes, aliases)
 
-    declared_only = coverage["declared_author_count"] - coverage["contributors_also_declared"]
+    declared_only = (
+        coverage["declared_author_count"] - coverage["contributors_also_declared"]
+    )
     proposal_count = overlap["proposal_count"]
 
     person_rows = [

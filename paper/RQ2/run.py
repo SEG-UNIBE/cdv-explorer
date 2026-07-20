@@ -51,12 +51,12 @@ def main() -> None:
         render_differential_dependency_plots,
     )
     from paper.RQ2.dependency_plots import render_default_dependency_plot_suite
+    from paper.RQ2.dependency_type_mapping_table import (
+        export_type_mapping_latex_table,
+    )
     from paper.RQ2.ground_truth_evaluation import (
         plot_ground_truth_evaluation_doe,
         plot_ground_truth_evaluation_eta,
-    )
-    from paper.RQ2.dependency_type_mapping_table import (
-        export_type_mapping_latex_table,
     )
 
     snapshot_label = SNAPSHOT or resolve_latest_snapshot_label() or "latest"

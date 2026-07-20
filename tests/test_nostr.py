@@ -111,7 +111,12 @@ class GetGitAuthorsOnFirstDayTests(unittest.TestCase):
             ("c4", "2022-05-04T09:00:00+00:00", "Later Author", "later@example.com"),
             ("c3", "2022-05-01T15:00:00+00:00", "Second Author", "second@example.com"),
             ("c2", "2022-05-01T09:00:00+00:00", "First Author", "first@example.com"),
-            ("c1", "2022-05-01T08:00:00+00:00", "github-actions[bot]", "bot@example.com"),
+            (
+                "c1",
+                "2022-05-01T08:00:00+00:00",
+                "github-actions[bot]",
+                "bot@example.com",
+            ),
         ]
 
     def test_returns_first_day_committers_only(self):

@@ -236,9 +236,9 @@ def export_dependency_comparison_latex_table(
     pairwise_comparisons = _build_pairwise_comparisons(network_data)
     totals = {
         key: int(
-            _get_pairwise_summary(
-                pairwise_comparisons, approach=key, baseline=key
-            ).get("approach_total", 0)
+            _get_pairwise_summary(pairwise_comparisons, approach=key, baseline=key).get(
+                "approach_total", 0
+            )
             or 0
         )
         for key in APPROACH_ORDER
@@ -268,9 +268,7 @@ def export_dependency_comparison_latex_table(
             if baseline == approach:
                 # Self-comparisons carry no information; de-emphasise them.
                 metric_values = {
-                    label: (
-                        rf"\textcolor[gray]{{{DIAGONAL_GRAY_LEVEL}}}{{{value}}}"
-                    )
+                    label: (rf"\textcolor[gray]{{{DIAGONAL_GRAY_LEVEL}}}{{{value}}}")
                     for label, value in metric_values.items()
                 }
             metric_values_by_baseline.append(metric_values)

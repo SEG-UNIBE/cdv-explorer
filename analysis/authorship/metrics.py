@@ -582,6 +582,41 @@ def build_contributor_coverage(
     }
 
 
+def build_contributor_overlap_breakdown(
+    nodes: list[dict[str, Any]],
+    aliases: Mapping[str, str] | None = None,
+) -> dict[str, Any]:
+    """Per-proposal originator/contributor set-overlap classification.
+
+    Restricted to proposals that have both a declared originator set and
+    recorded git contributors; scoped independently of build_contributor_coverage
+    so each stays a simple single-pass count over its own predicate.
+    """
+    proposal_count = 0
+    contributors_within_originators = 0
+    originator_contributor_overlap = 0
+
+    for node in nodes:
+        node_declared = set(_node_author_names(node, "author", aliases))
+        node_contributors = set(_node_author_names(node, "contributors", aliases))
+        if not node_declared or not node_contributors:
+            continue
+        proposal_count += 1
+
+        if node_contributors <= node_declared:
+            contributors_within_originators += 1
+        if not node_declared.isdisjoint(node_contributors):
+            originator_contributor_overlap += 1
+
+    return {
+        "proposal_count": proposal_count,
+        "contributors_within_originators": contributors_within_originators,
+        "originator_contributor_overlap": originator_contributor_overlap,
+        "no_originator_contributor_overlap": proposal_count
+        - originator_contributor_overlap,
+    }
+
+
 def _graph_from_collaboration_network(
     collaboration_network: dict[str, Any],
 ) -> nx.Graph:

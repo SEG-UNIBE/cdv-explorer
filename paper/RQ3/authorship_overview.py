@@ -189,6 +189,7 @@ def _draw_authorship_distribution_axis(
     *,
     title: str | None,
     total: int | None = None,
+    entity_label: str = "Authors",
 ) -> None:
     histogram_x = [entry["bips_written"] for entry in display_series]
     histogram_y = [entry["authors"] for entry in display_series]
@@ -217,7 +218,9 @@ def _draw_authorship_distribution_axis(
     if title:
         axis.set_title(title, fontsize=SUBPLOT_TITLE_FONT_SIZE)
     axis.set_xlabel("# BIPs")
-    axis.set_ylabel("# Authors" if total is None else f"# Authors ({total})")
+    axis.set_ylabel(
+        f"# {entity_label}" if total is None else f"# {entity_label} ({total})"
+    )
     axis.set_xticks(labeled_histogram_positions)
     axis.set_xticklabels(labeled_histogram_values)
     axis.grid(axis="y", alpha=0.35)
@@ -301,6 +304,7 @@ def _draw_authors_per_bip_axis(
     *,
     title: str | None,
     total: int | None = None,
+    entity_label: str = "Authors",
 ) -> None:
     positions = np.arange(len(display_series))
     bip_counts = [int(entry["bip_count"]) for entry in display_series]
@@ -320,7 +324,7 @@ def _draw_authors_per_bip_axis(
     )
     if title:
         axis.set_title(title, fontsize=SUBPLOT_TITLE_FONT_SIZE)
-    axis.set_xlabel("# Authors")
+    axis.set_xlabel(f"# {entity_label}")
     axis.set_ylabel("# BIPs" if total is None else f"# BIPs ({total})")
     axis.set_xticks(positions)
     axis.set_xticklabels(axis_labels)

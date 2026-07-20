@@ -1,0 +1,23 @@
+{%
+    \setlength{\abovetopsep}{0pt}%
+    \setlength{\belowbottomsep}{0pt}%
+    \setlength{\aboverulesep}{0pt}%
+    \setlength{\belowrulesep}{0pt}%
+    \setlength{\tabcolsep}{6pt}%
+    \renewcommand{\arraystretch}{1.15}%
+    \begin{tabular}{c|lcc}
+        \toprule
+        \textbf{Basis} & \textbf{Metric} & \textbf{Formula} & \textbf{Count} \\
+        \midrule%
+        \multirow{5}{*}{Person} & Declared Originators & $|A_o|$ & 160 \\
+         & Git Contributors & $|A_c|$ & 455 \\
+         & In Both Roles & $|A_o \cap A_c|$ & 115 \\
+         & Originators Only & $|A_o \setminus A_c|$ & 45 \\
+         & Contributors Only & $|A_c \setminus A_o|$ & 340 \\
+        \specialrule{0.65pt}{0pt}{0pt}%
+        \multirow{3}{*}{IP} & Only Edited by Originators & $A_c \subseteq A_o$ & 17 (8.1\%) \\
+         & Edited by at Least 1 Originator & $A_o \cap A_c \neq \emptyset$ & 189 (90.0\%) \\
+         & Only Edited by Non-Originators & $A_o \cap A_c = \emptyset$ & 21 (10.0\%) \\
+        \bottomrule
+    \end{tabular}%
+}

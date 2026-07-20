@@ -19,6 +19,10 @@ GENERATE_AUTHORSHIP_PLOTS = True
 GENERATE_COLLABORATION_NETWORK_PLOT = True
 GENERATE_COLLABORATION_NETWORK_EXPORTED_PLOT = True
 GENERATE_COLLABORATION_METRICS_TABLE = True
+GENERATE_CONTRIBUTOR_OVERVIEW_PLOT = True
+GENERATE_CONTRIBUTOR_OVERLAP_TABLE = True
+GENERATE_ORIGINATOR_CONTRIBUTOR_ECDF_PLOT = True
+GENERATE_ORIGINATOR_CONTRIBUTOR_SUMMARY_PLOT = True
 COLLABORATION_NETWORK_EXPORTED_LAYOUT = None
 
 
@@ -26,6 +30,7 @@ def main() -> None:
     from analysis.artifact_io import (
         load_authorship_metrics,
         load_authorship_payload,
+        load_contributor_metrics,
         load_network_data,
         resolve_latest_snapshot_label,
     )
@@ -34,6 +39,16 @@ def main() -> None:
     )
     from paper.RQ3.authorship_collaboration_triptych import (
         plot_authorship_collaboration_triptych,
+    )
+    from paper.RQ3.contributor_overlap_table import (
+        export_contributor_overlap_latex_table,
+    )
+    from paper.RQ3.contributor_overview import plot_contributor_overview
+    from paper.RQ3.originator_contributor_ecdf import (
+        plot_originator_contributor_ecdf,
+    )
+    from paper.RQ3.originator_contributor_summary import (
+        plot_originator_contributor_summary,
     )
 
     # from paper.RQ3.authorship_overview import (
@@ -141,6 +156,61 @@ def main() -> None:
         #     / f"{filename_prefix}_coauthor_degree_distribution.pdf",
         # )
 
+    if GENERATE_CONTRIBUTOR_OVERVIEW_PLOT:
+        contributor_metrics = load_contributor_metrics(snapshot=SNAPSHOT)
+        plot_contributor_overview(
+            bip_author_count_histogram=contributor_metrics.get(
+                "bip_author_count_histogram", []
+            ),
+            contribution_histogram=contributor_metrics.get(
+                "author_contribution_histogram", []
+            ),
+            output_path=output_dir / f"{filename_prefix}_contributor_overview.pdf",
+            snapshot_label=snapshot_label,
+        )
+
+    if GENERATE_ORIGINATOR_CONTRIBUTOR_ECDF_PLOT:
+        originator_metrics = load_authorship_metrics(snapshot=SNAPSHOT)
+        contributor_metrics = load_contributor_metrics(snapshot=SNAPSHOT)
+        plot_originator_contributor_ecdf(
+            originator_bip_count_histogram=originator_metrics.get(
+                "bip_author_count_histogram", []
+            ),
+            contributor_bip_count_histogram=contributor_metrics.get(
+                "bip_author_count_histogram", []
+            ),
+            originator_contribution_histogram=originator_metrics.get(
+                "author_contribution_histogram", []
+            ),
+            contributor_contribution_histogram=contributor_metrics.get(
+                "author_contribution_histogram", []
+            ),
+            output_path=output_dir
+            / f"{filename_prefix}_originator_contributor_ecdf.pdf",
+            snapshot_label=snapshot_label,
+        )
+
+    if GENERATE_ORIGINATOR_CONTRIBUTOR_SUMMARY_PLOT:
+        originator_metrics = load_authorship_metrics(snapshot=SNAPSHOT)
+        contributor_metrics = load_contributor_metrics(snapshot=SNAPSHOT)
+        plot_originator_contributor_summary(
+            originator_bip_count_histogram=originator_metrics.get(
+                "bip_author_count_histogram", []
+            ),
+            contributor_bip_count_histogram=contributor_metrics.get(
+                "bip_author_count_histogram", []
+            ),
+            originator_contribution_histogram=originator_metrics.get(
+                "author_contribution_histogram", []
+            ),
+            contributor_contribution_histogram=contributor_metrics.get(
+                "author_contribution_histogram", []
+            ),
+            output_path=output_dir
+            / f"{filename_prefix}_originator_contributor_summary.pdf",
+            snapshot_label=snapshot_label,
+        )
+
     if GENERATE_COLLABORATION_NETWORK_EXPORTED_PLOT:
         if authorship_payload is None:
             authorship_payload = load_authorship_payload(snapshot=SNAPSHOT)
@@ -205,6 +275,17 @@ def main() -> None:
             network_data=network_data,
             output_path=output_dir
             / f"{filename_prefix}_collaboration_metrics_top_weighted_degree.tex",
+        )
+
+    if GENERATE_CONTRIBUTOR_OVERLAP_TABLE:
+        if authorship_payload is None:
+            authorship_payload = load_authorship_payload(snapshot=SNAPSHOT)
+        if network_data is None:
+            network_data = load_network_data(snapshot=SNAPSHOT)
+        export_contributor_overlap_latex_table(
+            network_data=network_data,
+            authorship_payload=authorship_payload,
+            output_path=output_dir / f"{filename_prefix}_contributor_overlap.tex",
         )
 
 

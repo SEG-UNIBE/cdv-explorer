@@ -352,7 +352,7 @@ def plot_evolution_status(
     color_map = _react_color_map(ordered_statuses)
 
     bar_bottom = np.zeros(len(rows), dtype=int)
-    figure, axis = plt.subplots(figsize=(10.0, 5))
+    figure, axis = plt.subplots(figsize=(10.0, 4.8))
 
     for segment in plot_segments:
         counts = np.array(segment_series[segment["key"]], dtype=int)

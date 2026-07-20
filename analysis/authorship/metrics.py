@@ -93,9 +93,13 @@ def extract_authorship_metrics(
     include_network: bool = True,
 ) -> dict[str, Any]:
     author_counts = Counter(_iter_authors(nodes, field, aliases))
+    top_author_counts = sorted(
+        author_counts.items(),
+        key=lambda item: (-int(item[1]), str(item[0]).casefold(), str(item[0])),
+    )
     top_authors = [
         {"author": name, "count": count}
-        for name, count in author_counts.most_common(15)
+        for name, count in top_author_counts[:15]
     ]
 
     years = []
@@ -125,7 +129,7 @@ def extract_authorship_metrics(
     ]
 
     total_proposals = len({str(n.get("id")) for n in nodes if n.get("id") is not None})
-    top_10 = author_counts.most_common(10)
+    top_10 = top_author_counts[:10]
     proposals_by_top_10 = sum(count for _, count in top_10)
     top_10_share = (
         (proposals_by_top_10 / total_proposals * 100.0) if total_proposals else 0.0
@@ -558,15 +562,15 @@ def build_contributor_coverage(
     also_declared = len(declared & contributors)
 
     proposals_with_git_data = 0
-    proposals_with_uncredited = 0
+    proposals_without_originator_git_edits = 0
     for node in nodes:
         node_contributors = set(_node_author_names(node, "contributors", aliases))
         if not node_contributors:
             continue
         proposals_with_git_data += 1
         node_declared = set(_node_author_names(node, "author", aliases))
-        if node_contributors - node_declared:
-            proposals_with_uncredited += 1
+        if node_declared and node_contributors.isdisjoint(node_declared):
+            proposals_without_originator_git_edits += 1
 
     return {
         "contributor_count": len(contributors),
@@ -574,7 +578,7 @@ def build_contributor_coverage(
         "contributors_also_declared": also_declared,
         "contributors_never_declared": len(contributors) - also_declared,
         "proposals_with_git_data": proposals_with_git_data,
-        "proposals_with_uncredited": proposals_with_uncredited,
+        "proposals_with_uncredited": proposals_without_originator_git_edits,
     }
 
 

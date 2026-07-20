@@ -78,7 +78,7 @@ def proposal_document(
         "meta": {
             "last_commit": "2020-01-02",
             "total_commits": 1,
-            "git_history": [["abc", "2020-01-02", "Author"]],
+            "git_history": [["abc", "2020-01-02", "Author", "author@example.com"]],
         },
         "insights": {
             "formal_compliance": {
@@ -416,7 +416,9 @@ class SchemaRefactorTests(unittest.TestCase):
                     {
                         "last_commit": "2020-01-02",
                         "total_commits": 3,
-                        "git_history": [["abc", "2020-01-02", "Author 1"]],
+                        "git_history": [
+                            ["abc", "2020-01-02", "Author 1", "author1@example.com"]
+                        ],
                     }
                 )
                 return document

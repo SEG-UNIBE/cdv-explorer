@@ -108,10 +108,10 @@ class GetGitAuthorsOnFirstDayTests(unittest.TestCase):
     def _history(self):
         # newest-first, as git log returns
         return [
-            ("c4", "2022-05-04T09:00:00+00:00", "Later Author"),
-            ("c3", "2022-05-01T15:00:00+00:00", "Second Author"),
-            ("c2", "2022-05-01T09:00:00+00:00", "First Author"),
-            ("c1", "2022-05-01T08:00:00+00:00", "github-actions[bot]"),
+            ("c4", "2022-05-04T09:00:00+00:00", "Later Author", "later@example.com"),
+            ("c3", "2022-05-01T15:00:00+00:00", "Second Author", "second@example.com"),
+            ("c2", "2022-05-01T09:00:00+00:00", "First Author", "first@example.com"),
+            ("c1", "2022-05-01T08:00:00+00:00", "github-actions[bot]", "bot@example.com"),
         ]
 
     def test_returns_first_day_committers_only(self):
@@ -131,15 +131,17 @@ class GetGitAuthorsOnFirstDayTests(unittest.TestCase):
 
     def test_verbose_git_dates_handled(self):
         history = [
-            ("c2", "Wed Oct 8 14:59:36 2025 -0700", "Author B"),
-            ("c1", "Wed Oct 8 09:00:00 2025 +0000", "Author A"),
+            ("c2", "Wed Oct 8 14:59:36 2025 -0700", "Author B", "b@example.com"),
+            ("c1", "Wed Oct 8 09:00:00 2025 +0000", "Author A", "a@example.com"),
         ]
         authors = get_git_authors_on_first_day(history)
         self.assertIn("Author A", authors)
         self.assertIn("Author B", authors)
 
     def test_single_commit_returns_that_author(self):
-        history = [("c1", "2022-05-01T08:00:00+00:00", "Solo Author")]
+        history = [
+            ("c1", "2022-05-01T08:00:00+00:00", "Solo Author", "solo@example.com")
+        ]
         self.assertEqual(get_git_authors_on_first_day(history), ["Solo Author"])
 
     def test_empty_history_returns_empty(self):
@@ -147,8 +149,8 @@ class GetGitAuthorsOnFirstDayTests(unittest.TestCase):
 
     def test_duplicate_author_on_same_day_deduplicated(self):
         history = [
-            ("c2", "2022-05-01T15:00:00+00:00", "Author A"),
-            ("c1", "2022-05-01T08:00:00+00:00", "Author A"),
+            ("c2", "2022-05-01T15:00:00+00:00", "Author A", "a@example.com"),
+            ("c1", "2022-05-01T08:00:00+00:00", "Author A", "a@example.com"),
         ]
         self.assertEqual(get_git_authors_on_first_day(history), ["Author A"])
 

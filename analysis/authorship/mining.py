@@ -8,7 +8,7 @@ from analysis.utils import parse_date_ymd as _parse_date_ymd
 _GIT_BOTS = {"github-actions[bot]", "dependabot[bot]", "web-flow", "GitHub"}
 
 
-def get_git_history(repo_dir: Path, file_path: Path) -> list[tuple[str, str, str]]:
+def get_git_history(repo_dir: Path, file_path: Path) -> list[tuple[str, str, str, str]]:
     """Retrieve commit history for a file using local Git."""
     try:
         relative_file_path = file_path.relative_to(repo_dir)
@@ -24,7 +24,7 @@ def get_git_history(repo_dir: Path, file_path: Path) -> list[tuple[str, str, str
                 "--follow",
                 # Use strict ISO author dates so first-day/created-date
                 # derivation is stable across local Git date-format configs.
-                "--pretty=format:%H|%aI|%an",
+                "--pretty=format:%H|%aI|%an|%ae",
                 "--",
                 str(relative_file_path),
             ],
@@ -33,9 +33,17 @@ def get_git_history(repo_dir: Path, file_path: Path) -> list[tuple[str, str, str
             check=True,
         )
         commits = [
-            line.split("|") for line in result.stdout.strip().split("\n") if line
+            line.split("|", 3) for line in result.stdout.strip().split("\n") if line
         ]
-        return [(commit[0], commit[1], commit[2]) for commit in commits]
+        return [
+            (
+                commit[0],
+                commit[1],
+                commit[2],
+                commit[3] if len(commit) > 3 else "",
+            )
+            for commit in commits
+        ]
     except subprocess.CalledProcessError:
         return []
 

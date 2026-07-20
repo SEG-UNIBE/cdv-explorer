@@ -43,6 +43,16 @@ class SnapshotValidationTests(unittest.TestCase):
                 json.dumps(
                     {
                         "raw": {"preamble": {"bip": "1"}},
+                        "meta": {
+                            "git_history": [
+                                [
+                                    "abc",
+                                    "2026-05-28T10:00:00+00:00",
+                                    "Author",
+                                    "author@example.com",
+                                ]
+                            ]
+                        },
                         "insights": {
                             "interrelations": {
                                 "preamble_extracted": [
@@ -89,6 +99,52 @@ class SnapshotValidationTests(unittest.TestCase):
         self.assertIn("missing positive integer `count`", error_text)
         self.assertIn("missing non-empty `timestamp`", error_text)
         self.assertIn("must use source_slug:id format", error_text)
+
+    def test_preprocess_validation_rejects_malformed_git_history(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            root = Path(tmp_dir)
+            bips = self._source_config(root, "bips")
+            preprocess_dir = Path(bips["preprocess"]) / "2026-05-28"
+            preprocess_dir.mkdir(parents=True)
+            (preprocess_dir / "bip-0001.json").write_text(
+                json.dumps(
+                    {
+                        "raw": {"preamble": {"bip": "1"}},
+                        "meta": {
+                            "git_history": [
+                                ["abc", "2026-05-28T10:00:00+00:00", "Author"],
+                                [
+                                    "def",
+                                    "2026-05-29T10:00:00+00:00",
+                                    "Other Author",
+                                    "",
+                                ],
+                            ]
+                        },
+                        "insights": {
+                            "interrelations": {
+                                "preamble_extracted": [],
+                                "body_extracted_regex": [],
+                                "body_extracted_llm": [],
+                            }
+                        },
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            result = validate_preprocess_snapshot(
+                preprocess_dir,
+                ecosystem_slug="bitcoin",
+                source_slug="bips",
+                source_config=bips,
+                ecosystem_config={"sources": {"bips": bips}},
+            )
+
+        self.assertFalse(result.ok)
+        error_text = "\n".join(result.errors)
+        self.assertIn("author_email must be non-empty", error_text)
+        self.assertIn("missing author_email", "\n".join(result.warnings))
 
     def test_payload_index_validation_rejects_missing_index_files(self) -> None:
         with tempfile.TemporaryDirectory() as tmp_dir:

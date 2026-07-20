@@ -906,10 +906,10 @@ class BuildNetworkDataTests(unittest.TestCase):
 
     def test_first_day_git_committers_drive_network_author_fallback(self):
         history = [
-            ("c4", "2022-05-04T09:00:00+00:00", "Later Author"),
-            ("c3", "2022-05-01T15:00:00+00:00", "First Day B"),
-            ("c2", "2022-05-01T09:00:00+00:00", "First Day A"),
-            ("c1", "2022-05-01T08:00:00+00:00", "GitHub"),
+            ("c4", "2022-05-04T09:00:00+00:00", "Later Author", "later@example.com"),
+            ("c3", "2022-05-01T15:00:00+00:00", "First Day B", "b@example.com"),
+            ("c2", "2022-05-01T09:00:00+00:00", "First Day A", "a@example.com"),
+            ("c1", "2022-05-01T08:00:00+00:00", "GitHub", "noreply@github.com"),
         ]
         proposal = {
             "raw": {

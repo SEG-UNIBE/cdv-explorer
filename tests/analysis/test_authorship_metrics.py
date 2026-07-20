@@ -67,6 +67,26 @@ class TestAuthorshipMetrics(TestCase):
                 "contributors_also_declared": 1,
                 "contributors_never_declared": 2,
                 "proposals_with_git_data": 2,
-                "proposals_with_uncredited": 2,
+                "proposals_with_uncredited": 1,
             },
+        )
+
+    def test_extract_authorship_metrics_sorts_tied_top_authors_by_name(self):
+        nodes = [
+            {"id": "1", "author": ["Zoe"]},
+            {"id": "2", "author": ["Alice"]},
+            {"id": "3", "author": ["Murch"]},
+            {"id": "4", "author": ["Alice"]},
+            {"id": "5", "author": ["Zoe"]},
+        ]
+
+        metrics = extract_authorship_metrics(nodes)
+
+        self.assertEqual(
+            metrics["top_authors"][:3],
+            [
+                {"author": "Alice", "count": 2},
+                {"author": "Zoe", "count": 2},
+                {"author": "Murch", "count": 1},
+            ],
         )

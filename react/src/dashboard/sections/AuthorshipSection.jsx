@@ -145,10 +145,10 @@ export function AuthorshipSection({
         description: 'Originators who also appear as git contributors anywhere in the selected proposal corpus, as a share of all originators. These are the same people as in “Also Originators”, relative to the other total.',
       },
       {
-        label: (<>Proposals with<br />Non-Originator Edits</>),
+        label: (<>No Originator<br />Git Edits</>),
         area: 'proposals',
         value: formatShare(coverage.proposalsWithUncredited ?? 0, coverage.proposalsWithGitData ?? 0),
-        description: 'Proposals where at least one contributor is not among that proposal’s originators, relative to all proposals with recorded git history.',
+        description: 'Proposals whose git history contains contributors, but none of that proposal’s originators, relative to all proposals with recorded git history.',
       },
     ];
   }, [contributorCoverage]);

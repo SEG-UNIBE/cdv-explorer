@@ -1,8 +1,9 @@
+import subprocess
 import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from analysis.authorship.mining import update_metadata_from_git
+from analysis.authorship.mining import get_git_history, update_metadata_from_git
 from analysis.conformity.metrics import extract_conformity_metrics
 from analysis.dependencies.network import build_network_data
 from analysis.proposal_schema import (
@@ -14,12 +15,33 @@ from tests.helpers import proposal as _proposal
 
 
 class UpdateMetadataFromGitTests(unittest.TestCase):
+    def test_git_history_includes_author_email(self):
+        completed = subprocess.CompletedProcess(
+            args=[],
+            returncode=0,
+            stdout=(
+                "c2|2022-05-02T09:00:00+00:00|Alias Name|alias@example.com\n"
+                "c1|2022-05-01T08:00:00+00:00|Real Name|real@example.com"
+            ),
+        )
+
+        with patch("analysis.authorship.mining.subprocess.run", return_value=completed):
+            history = get_git_history(Path("/repo"), Path("/repo/proposals/bip-0001.md"))
+
+        self.assertEqual(
+            history,
+            [
+                ("c2", "2022-05-02T09:00:00+00:00", "Alias Name", "alias@example.com"),
+                ("c1", "2022-05-01T08:00:00+00:00", "Real Name", "real@example.com"),
+            ],
+        )
+
     def test_backfills_authors_from_first_day_committers_only(self):
         history = [
-            ("c4", "2022-05-04T09:00:00+00:00", "Later Author"),
-            ("c3", "2022-05-01T15:00:00+00:00", "First Day B"),
-            ("c2", "2022-05-01T09:00:00+00:00", "First Day A"),
-            ("c1", "2022-05-01T08:00:00+00:00", "GitHub"),
+            ("c4", "2022-05-04T09:00:00+00:00", "Later Author", "later@example.com"),
+            ("c3", "2022-05-01T15:00:00+00:00", "First Day B", "b@example.com"),
+            ("c2", "2022-05-01T09:00:00+00:00", "First Day A", "a@example.com"),
+            ("c1", "2022-05-01T08:00:00+00:00", "GitHub", "noreply@github.com"),
         ]
         document = {
             "raw": {

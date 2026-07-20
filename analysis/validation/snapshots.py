@@ -488,6 +488,53 @@ def _validate_llm_interrelations(
             )
 
 
+def _validate_git_history(
+    proposal: Mapping[str, Any],
+    *,
+    result: SnapshotValidationResult,
+    proposal_path: str,
+) -> None:
+    meta = proposal.get("meta")
+    if not isinstance(meta, Mapping):
+        result.fail(f"{proposal_path}.meta must be an object")
+        return
+
+    git_history = meta.get("git_history")
+    if not isinstance(git_history, list):
+        result.fail(f"{proposal_path}.meta.git_history must be a list")
+        return
+
+    legacy_entries_missing_email = 0
+    for entry_index, entry in enumerate(git_history):
+        entry_path = f"{proposal_path}.meta.git_history[{entry_index}]"
+        if not isinstance(entry, list):
+            result.fail(
+                f"{entry_path} must contain commit, author_date, author_name, and author_email"
+            )
+            continue
+        if len(entry) == 3:
+            legacy_entries_missing_email += 1
+        elif len(entry) != 4:
+            result.fail(
+                f"{entry_path} must contain commit, author_date, author_name, and author_email"
+            )
+            continue
+        commit, author_date, author_name = entry[:3]
+        if not str(commit or "").strip():
+            result.fail(f"{entry_path}[0] commit must be non-empty")
+        if not str(author_date or "").strip():
+            result.fail(f"{entry_path}[1] author_date must be non-empty")
+        if not str(author_name or "").strip():
+            result.fail(f"{entry_path}[2] author_name must be non-empty")
+        if len(entry) == 4 and not str(entry[3] or "").strip():
+            result.fail(f"{entry_path}[3] author_email must be non-empty")
+
+    if legacy_entries_missing_email:
+        result.warn(
+            f"{proposal_path}.meta.git_history has {legacy_entries_missing_email} legacy entries missing author_email; regenerate preprocessing to make Git identity resolution auditable"
+        )
+
+
 def validate_preprocess_snapshot(
     preprocess_dir: Path,
     *,
@@ -524,6 +571,12 @@ def validate_preprocess_snapshot(
         if not isinstance(proposal, Mapping):
             result.fail(f"`{rel_name}` must contain a JSON object")
             continue
+
+        _validate_git_history(
+            proposal,
+            result=result,
+            proposal_path=f"`{rel_name}`",
+        )
 
         interrelations = (
             proposal.get("insights", {})

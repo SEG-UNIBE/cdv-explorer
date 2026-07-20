@@ -71,7 +71,10 @@ def _colored(text: str, color: str | None) -> str:
 
 
 def _bip(bip_id: str, color: str | None = None) -> str:
-    return rf"\BIPC{{{bip_id}}}{{{color or 'black'}}}"
+    # \BIPC already prepends "BIP" itself, so strip the "<source>:" prefix
+    # (e.g. "bips:32" -> "32") or it renders as "BIPbips:32".
+    display_id = bip_id.split(":", 1)[-1]
+    return rf"\BIPC{{{display_id}}}{{{color or 'black'}}}"
 
 
 def _colored_title(text: str, color: str | None = None) -> str:

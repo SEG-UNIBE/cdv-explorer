@@ -39,6 +39,7 @@ def main() -> None:
     )
     from paper.RQ3.authorship_collaboration_triptych import (
         plot_authorship_collaboration_triptych,
+        plot_authorship_collaboration_triptych_row,
     )
     from paper.RQ3.contributor_overlap_table import (
         export_contributor_overlap_latex_table,
@@ -126,6 +127,17 @@ def main() -> None:
             collaboration_network=authorship_metrics.get("collaboration_network", {}),
             output_path=output_dir
             / f"{filename_prefix}_authorship_collaboration_triptych.pdf",
+        )
+        plot_authorship_collaboration_triptych_row(
+            contribution_histogram=authorship_metrics.get(
+                "author_contribution_histogram", []
+            ),
+            bip_author_count_histogram=authorship_metrics.get(
+                "bip_author_count_histogram", []
+            ),
+            collaboration_network=authorship_metrics.get("collaboration_network", {}),
+            output_path=output_dir
+            / f"{filename_prefix}_authorship_collaboration_triptych_row.pdf",
         )
         plot_authorship_collaboration_quartet(
             contribution_histogram=authorship_metrics.get(

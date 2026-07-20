@@ -72,3 +72,60 @@ def plot_authorship_collaboration_triptych(
 
     figure.tight_layout(pad=0.45, w_pad=1.8, h_pad=1.8)
     save_figure(figure, output_path)
+
+
+def plot_authorship_collaboration_triptych_row(
+    contribution_histogram: list[dict[str, int]],
+    bip_author_count_histogram: list[dict[str, int]],
+    collaboration_network: dict,
+    output_path: Path,
+) -> None:
+    """Single-row, 3-column variant of the triptych above, sized for a
+    two-column-spanning placement (matches the (9.x, 2.8) convention used by
+    other wide figures, e.g. authorship_overview's combined panel)."""
+    authors_per_bip_series, total_bips = prepare_authors_per_bip(
+        bip_author_count_histogram
+    )
+    authorship_dist_series, total_authors = prepare_authorship_distribution(
+        contribution_histogram
+    )
+    component_series, total_components = prepare_component_distribution(
+        collaboration_network
+    )
+
+    figure, (axis_a, axis_b, axis_c) = plt.subplots(
+        1,
+        3,
+        figsize=(9.5, 2.8),
+        gridspec_kw={
+            "width_ratios": [
+                len(authors_per_bip_series),
+                len(authorship_dist_series),
+                len(component_series),
+            ]
+        },
+    )
+
+    _draw_authors_per_bip_axis(
+        axis_a, authors_per_bip_series, title="(a) Authors per BIP", total=total_bips
+    )
+    add_bar_label_headroom(axis_a, ratio=0.12)
+
+    _draw_authorship_distribution_axis(
+        axis_b,
+        authorship_dist_series,
+        title="(b) BIPs per Author",
+        total=total_authors,
+    )
+    add_bar_label_headroom(axis_b)
+
+    _draw_component_distribution_axis(
+        axis_c,
+        component_series,
+        title="(c) Collaboration Clusters",
+        total=total_components,
+    )
+    add_bar_label_headroom(axis_c)
+
+    figure.tight_layout(pad=0.45, w_pad=1.8)
+    save_figure(figure, output_path)

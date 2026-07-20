@@ -85,11 +85,12 @@ SCORE_SERIES = [
 
 # Sized for a single paper column: side by side like the other two-panel
 # figures (e.g. plot_authorship_overview), but narrower/shorter to match a
-# single-column width instead of a two-column-spanning one.
-EVALUATION_FIGSIZE = (6.9, 3.4)
-BAR_GROUP_WIDTH = 0.75
+# single-column width instead of a two-column-spanning one. Narrower than
+# before since rotating the value labels 90 degrees frees up horizontal room.
+EVALUATION_FIGSIZE = (5.6, 3.5)
+BAR_GROUP_WIDTH = 0.88
 # Fraction of each within-group slot filled by the bar; the rest is spacing.
-BAR_SLOT_FILL = 0.75
+BAR_SLOT_FILL = 0.88
 # Extra room left/right of the outermost bar groups, in x-axis data units;
 # just enough to clear the outermost bars without leaving a big empty margin.
 AXIS_EDGE_MARGIN = 0.45
@@ -264,6 +265,7 @@ def _draw_grouped_bars(
                 value_formatter(value),
                 ha="center",
                 va="bottom",
+                rotation=90,
                 fontsize=8,
                 zorder=5,
             )
@@ -288,6 +290,9 @@ def _draw_grouped_bars(
         loc="lower center",
         bbox_to_anchor=(0.5, 1.0),
         borderaxespad=0.2,
+        columnspacing=0.9,
+        handlelength=1.2,
+        handletextpad=0.4,
     )
     match_axis_label_fontsize(axis)
     despine(axis)
@@ -342,7 +347,7 @@ def _plot_ground_truth_evaluation(
     # suptitle (a plain tight_layout `rect` reserves that band far more
     # generously than the title actually needs, leaving a large blank gap).
     figure.tight_layout()
-    figure.subplots_adjust(top=0.66, wspace=0.3)
+    figure.subplots_adjust(top=0.66, wspace=0.4)
     figure.suptitle(
         f"Ground-Truth Evaluation\n{mode_title} ({snapshot_label})",
         y=0.99,

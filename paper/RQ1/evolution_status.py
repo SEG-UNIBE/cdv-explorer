@@ -8,7 +8,6 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
 from matplotlib.ticker import MaxNLocator, MultipleLocator
-from matplotlib.transforms import ScaledTranslation
 
 from paper.config import FIGURE_TITLE_FONT_SIZE
 from paper.plot_colors import REACT_CLASSIFICATION_PALETTE, tint
@@ -20,7 +19,7 @@ from paper.RQ3._plotting import (
 )
 
 ACTIVATION_GAP = 0.45
-ACTIVATION_YEAR_LABEL_NUDGE_POINTS = 6
+TITLE_PAD = 12
 BAR_WIDTH = 0.82
 EVOLUTION_BAR_EDGE_WIDTH = 0.5
 LEGEND_FONT_SIZE = 8.25
@@ -73,11 +72,22 @@ def _format_period_display_label(period_key: str, period_label: str) -> str:
     return period_label
 
 
+# The milestone annotation names its own activation date directly (no
+# separate "16"/"16'" split tick labels; see _select_tick_positions).
+MILESTONE_ACTIVATION_DATE_LABELS = {
+    "2": "Nov 16",
+    "3": "Jan 26",
+}
+
+
 def _format_milestone_label(label: str) -> str:
     text = label.strip()
     if text.startswith("BIP") and text.endswith(" Activation"):
         number = text[3:-11]
         if number.isdigit():
+            date_label = MILESTONE_ACTIVATION_DATE_LABELS.get(number)
+            if date_label:
+                return f"BIP{number} activation ({date_label})"
             return f"BIP-{number} activation"
     return text
 
@@ -257,42 +267,27 @@ def _build_period_positions(rows: list[dict[str, Any]]) -> np.ndarray:
 def _select_tick_positions(
     rows: list[dict[str, Any]], x_positions: np.ndarray
 ) -> tuple[np.ndarray, list[str]]:
-    positions_by_label: dict[str, list[float]] = {}
-    label_order: list[str] = []
-    activation_years = {
-        str(row.get("period") or "").strip().split("-", 1)[0]
-        for row in rows
-        if str(row.get("period_kind") or "").strip() == "milestone_remainder"
-        and str(row.get("period") or "").strip()
-        and "-" in str(row.get("period") or "").strip()
-    }
-
+    # Each year's tick aligns with its first bar (Q1, or Q1's pre-activation
+    # half if a milestone splits it) rather than some average/midpoint of
+    # that year's bars. A milestone stretches its split quarter's footprint,
+    # which pulled any average- or midpoint-based tick off-center or onto a
+    # bar; anchoring to a fixed, always-present bar (the year's first) is
+    # simple and consistent for every year regardless of milestones or
+    # partial data at the run's start/end.
+    positions_by_year: dict[str, float] = {}
+    year_order: list[str] = []
     for index, row in enumerate(rows):
         period_label = str(row.get("period") or "").strip()
         if not period_label or "-" not in period_label:
             continue
         year = period_label.split("-", 1)[0]
+        if year not in positions_by_year:
+            year_order.append(year)
+            positions_by_year[year] = float(x_positions[index])
 
-        if year in activation_years and row.get("period_kind") in {
-            "milestone",
-            "milestone_remainder",
-        }:
-            tick_label = (
-                year[-2:] if row.get("period_kind") == "milestone" else f"{year[-2:]}'"
-            )
-        else:
-            tick_label = year
-
-        if tick_label not in positions_by_label:
-            label_order.append(tick_label)
-        positions_by_label.setdefault(tick_label, []).append(float(x_positions[index]))
-
-    if positions_by_label:
-        tick_labels = label_order
-        tick_positions = [
-            sum(positions_by_label[label]) / len(positions_by_label[label])
-            for label in tick_labels
-        ]
+    if year_order:
+        tick_labels = year_order
+        tick_positions = [positions_by_year[year] for year in tick_labels]
         return np.array(tick_positions, dtype=float), tick_labels
 
     fallback_positions = [float(value) for value in x_positions]
@@ -357,7 +352,7 @@ def plot_evolution_status(
     color_map = _react_color_map(ordered_statuses)
 
     bar_bottom = np.zeros(len(rows), dtype=int)
-    figure, axis = plt.subplots(figsize=(12.0, 5))
+    figure, axis = plt.subplots(figsize=(10.0, 5))
 
     for segment in plot_segments:
         counts = np.array(segment_series[segment["key"]], dtype=int)
@@ -376,33 +371,15 @@ def plot_evolution_status(
     major_tick_positions, major_tick_labels = _select_tick_positions(rows, x_positions)
     axis.set_xticks(major_tick_positions)
     axis.set_xticklabels(major_tick_labels, rotation=0, ha="center")
-    for tick_label in axis.get_xticklabels():
-        text = tick_label.get_text().strip()
-        if text == "26 ":
-            tick_label.set_transform(
-                tick_label.get_transform()
-                + ScaledTranslation(
-                    -ACTIVATION_YEAR_LABEL_NUDGE_POINTS / 72,
-                    0,
-                    figure.dpi_scale_trans,
-                )
-            )
-        elif text == " 26'":
-            tick_label.set_transform(
-                tick_label.get_transform()
-                + ScaledTranslation(
-                    ACTIVATION_YEAR_LABEL_NUDGE_POINTS / 72,
-                    0,
-                    figure.dpi_scale_trans,
-                )
-            )
     axis.set_xticks(x_positions, minor=True)
     axis.tick_params(axis="x", which="major", length=6)
     axis.tick_params(axis="x", which="minor", length=3, labelbottom=False)
     axis.set_xlim(float(x_positions.min()) - 0.6, float(x_positions.max()) + 0.6)
     axis.set_ylabel(y_axis_title)
     axis.set_title(
-        f"{category_title} ({snapshot_label})", fontsize=FIGURE_TITLE_FONT_SIZE
+        f"{category_title} ({snapshot_label})",
+        fontsize=FIGURE_TITLE_FONT_SIZE,
+        pad=TITLE_PAD,
     )
     axis.set_ylim(0, max(200, int(bar_bottom.max())))
     axis.yaxis.set_major_locator(MaxNLocator(integer=True))

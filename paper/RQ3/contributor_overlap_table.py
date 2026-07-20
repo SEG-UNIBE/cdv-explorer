@@ -59,42 +59,46 @@ def export_contributor_overlap_latex_table(
 
     person_rows = [
         _count_row(
-            "Declared Originators", rf"$|{ORIGINATORS}|$", coverage["declared_author_count"]
+            r"Distinct originators",
+            rf"$|{ORIGINATORS}|$",
+            coverage["declared_author_count"],
         ),
         _count_row(
-            "Git Contributors", rf"$|{CONTRIBUTORS}|$", coverage["contributor_count"]
+            "Distinct contributors",
+            rf"$|{CONTRIBUTORS}|$",
+            coverage["contributor_count"],
         ),
         _count_row(
-            "In Both Roles",
+            "Present in both roles",
             rf"$|{ORIGINATORS} \cap {CONTRIBUTORS}|$",
             coverage["contributors_also_declared"],
         ),
         _count_row(
-            "Originators Only",
+            "Originators only",
             rf"$|{ORIGINATORS} \setminus {CONTRIBUTORS}|$",
             declared_only,
         ),
         _count_row(
-            "Contributors Only",
+            "Contributors only",
             rf"$|{CONTRIBUTORS} \setminus {ORIGINATORS}|$",
             coverage["contributors_never_declared"],
         ),
     ]
     ip_rows = [
         _share_row(
-            "Only Edited by Originators",
+            "Only edited by originators",
             rf"${CONTRIBUTORS} \subseteq {ORIGINATORS}$",
             overlap["contributors_within_originators"],
             proposal_count,
         ),
         _share_row(
-            "Edited by at Least 1 Originator",
+            "Edited by at least 1 originator",
             rf"${ORIGINATORS} \cap {CONTRIBUTORS} \neq \emptyset$",
             overlap["originator_contributor_overlap"],
             proposal_count,
         ),
         _share_row(
-            "Only Edited by Non-Originators",
+            "Only edited by non-originators",
             rf"${ORIGINATORS} \cap {CONTRIBUTORS} = \emptyset$",
             overlap["no_originator_contributor_overlap"],
             proposal_count,
@@ -112,7 +116,7 @@ def export_contributor_overlap_latex_table(
             [
                 r"\textbf{Basis}",
                 r"\textbf{Metric}",
-                r"\textbf{Formula}",
+                r"\textbf{Set}",
                 r"\textbf{Count}",
             ]
         )

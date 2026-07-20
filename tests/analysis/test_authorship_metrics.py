@@ -1,6 +1,9 @@
 from unittest import TestCase
 
-from analysis.authorship.metrics import prepare_authorship_payload
+from analysis.authorship.metrics import (
+    extract_authorship_metrics,
+    prepare_authorship_payload,
+)
 
 
 class TestAuthorshipMetrics(TestCase):
@@ -30,3 +33,40 @@ class TestAuthorshipMetrics(TestCase):
         self.assertIn("collaboration_metrics_summary", payload)
         self.assertIn("collaboration_cluster_size_distribution", payload)
         self.assertIn("collaboration_degree_distribution", payload)
+
+    def test_prepare_authorship_payload_includes_git_contributor_aggregates(self):
+        network_data = {
+            "nodes": [
+                {"id": "1", "author": ["Alice"], "contributors": ["Alice", "Dana"]},
+                {"id": "2", "author": ["Bob"], "contributors": ["Dana", "Eve"]},
+                {"id": "3", "author": ["Alice", "Carol"], "contributors": []},
+            ]
+        }
+        contributor_metrics = extract_authorship_metrics(
+            network_data["nodes"],
+            field="contributors",
+            include_network=False,
+        )
+
+        payload = prepare_authorship_payload(
+            network_data,
+            contributor_metrics=contributor_metrics,
+        )
+
+        contributors = payload["contributors"]
+        self.assertNotIn("collaboration_network", contributors)
+        self.assertEqual(
+            contributors["top_contributors"][0],
+            {"author": "Dana", "count": 2},
+        )
+        self.assertEqual(
+            contributors["coverage"],
+            {
+                "contributor_count": 3,
+                "declared_author_count": 3,
+                "contributors_also_declared": 1,
+                "contributors_never_declared": 2,
+                "proposals_with_git_data": 2,
+                "proposals_with_uncredited": 2,
+            },
+        )

@@ -36,6 +36,7 @@ PAYLOAD_REQUIRED_FILES: dict[str, list[str]] = {
         "top_authors",
         "bips_per_year",
         "top_10_share",
+        "contributors",
     ],
     "classification/classification_payload.json": [
         "meta",
@@ -601,8 +602,82 @@ def validate_payload_snapshot(snapshot_dir: Path) -> SnapshotValidationResult:
                 if isinstance(edge, Mapping)
                 and edge.get("extraction_method") == BODY_EXTRACTED_LLM
             )
+            _validate_network_payload(data, result, rel_path)
+
+        if rel_path == "authorship/authorship_payload.json":
+            _validate_authorship_payload(data, result, rel_path)
 
     return result
+
+
+def _validate_network_payload(
+    payload: Mapping[str, Any],
+    result: SnapshotValidationResult,
+    rel_path: str,
+) -> None:
+    nodes = payload.get("nodes")
+    if not isinstance(nodes, list):
+        result.file_status["network"] = "❌ schema"
+        result.fail(f"`{rel_path}` `nodes` must be a list")
+        return
+
+    for index, node in enumerate(nodes, start=1):
+        if not isinstance(node, Mapping):
+            result.file_status["network"] = "❌ schema"
+            result.fail(f"`{rel_path}` node {index} must be an object")
+            continue
+        if "contributors" not in node:
+            node_id = node.get("graph_key") or node.get("id") or index
+            result.file_status["network"] = "❌ schema"
+            result.fail(f"`{rel_path}` node `{node_id}` missing `contributors` list")
+            continue
+        if not isinstance(node.get("contributors"), list):
+            node_id = node.get("graph_key") or node.get("id") or index
+            result.file_status["network"] = "❌ schema"
+            result.fail(f"`{rel_path}` node `{node_id}` `contributors` must be a list")
+
+
+def _validate_authorship_payload(
+    payload: Mapping[str, Any],
+    result: SnapshotValidationResult,
+    rel_path: str,
+) -> None:
+    contributors = payload.get("contributors")
+    if not isinstance(contributors, Mapping):
+        result.file_status["authorship"] = "❌ schema"
+        result.fail(f"`{rel_path}` `contributors` must be an object")
+        return
+
+    list_fields = (
+        "top_contributors",
+        "contribution_histogram",
+        "per_proposal_histogram",
+    )
+    for field_name in list_fields:
+        if not isinstance(contributors.get(field_name), list):
+            result.file_status["authorship"] = "❌ schema"
+            result.fail(f"`{rel_path}` `contributors.{field_name}` must be a list")
+
+    coverage = contributors.get("coverage")
+    if not isinstance(coverage, Mapping):
+        result.file_status["authorship"] = "❌ schema"
+        result.fail(f"`{rel_path}` `contributors.coverage` must be an object")
+        return
+
+    required_coverage_keys = (
+        "contributor_count",
+        "declared_author_count",
+        "contributors_also_declared",
+        "contributors_never_declared",
+        "proposals_with_git_data",
+        "proposals_with_uncredited",
+    )
+    missing = [key for key in required_coverage_keys if key not in coverage]
+    if missing:
+        result.file_status["authorship"] = "❌ schema"
+        result.fail(
+            f"`{rel_path}` `contributors.coverage` missing keys: {missing}"
+        )
 
 
 def validate_ground_truth_curated_file(

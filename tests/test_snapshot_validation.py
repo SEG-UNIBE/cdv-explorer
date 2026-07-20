@@ -10,6 +10,7 @@ from analysis.validation.snapshots import (
     validate_ground_truth_curated_file,
     validate_ground_truth_ips_file,
     validate_payload_index,
+    validate_payload_snapshot,
     validate_preprocess_snapshot,
     validate_react_generated_indexes,
 )
@@ -104,6 +105,66 @@ class SnapshotValidationTests(unittest.TestCase):
 
         self.assertFalse(result.ok)
         self.assertIn("references missing files", "\n".join(result.errors))
+
+    def test_payload_validation_rejects_missing_contributor_contract(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            payload_dir = Path(tmp_dir) / "2026-05-28"
+            (payload_dir / "dependencies").mkdir(parents=True)
+            (payload_dir / "authorship").mkdir()
+            (payload_dir / "classification").mkdir()
+            (payload_dir / "evolution").mkdir()
+            (payload_dir / "conformity").mkdir()
+
+            (payload_dir / "dependencies" / "network_data.json").write_text(
+                json.dumps({"nodes": [{"id": "1"}], "dependency_edges": []}),
+                encoding="utf-8",
+            )
+            (payload_dir / "dependencies" / "dependency_metrics.json").write_text(
+                json.dumps({"by_approach": {}, "pairwise_comparisons": {}}),
+                encoding="utf-8",
+            )
+            (payload_dir / "authorship" / "authorship_payload.json").write_text(
+                json.dumps(
+                    {
+                        "meta": {},
+                        "top_authors": [],
+                        "bips_per_year": [],
+                        "top_10_share": {},
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (payload_dir / "classification" / "classification_payload.json").write_text(
+                json.dumps(
+                    {
+                        "meta": {},
+                        "sankey_grouped": {},
+                        "status_over_time": {},
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (payload_dir / "evolution" / "evolution_payload.json").write_text(
+                json.dumps(
+                    {
+                        "meta": {},
+                        "status_evolution": {},
+                        "proposal_timelines": [],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (payload_dir / "conformity" / "conformity_metrics.json").write_text(
+                json.dumps({"per_proposal": []}),
+                encoding="utf-8",
+            )
+
+            result = validate_payload_snapshot(payload_dir)
+
+        self.assertFalse(result.ok)
+        error_text = "\n".join(result.errors)
+        self.assertIn("node `1` missing `contributors` list", error_text)
+        self.assertIn("missing top-level keys: ['contributors']", error_text)
 
     def test_react_generated_validation_rejects_missing_indexes(self) -> None:
         with tempfile.TemporaryDirectory() as tmp_dir:

@@ -142,7 +142,7 @@ export function AuthorshipSection({
         label: 'Also Contributors',
         area: 'also-contributors',
         value: formatShare(coverage.contributorsAlsoDeclared ?? 0, coverage.declaredAuthorCount ?? 0),
-        description: 'Originators who also committed changes to proposal files themselves, as a share of all originators. These are the same people as in “Also Originators”, relative to the other total.',
+        description: 'Originators who also appear as git contributors anywhere in the selected proposal corpus, as a share of all originators. These are the same people as in “Also Originators”, relative to the other total.',
       },
       {
         label: (<>Proposals with<br />Non-Originator Edits</>),
@@ -204,7 +204,7 @@ export function AuthorshipSection({
           <h3>Top 10 Authors</h3>
           <p>
             Number of proposals attributed to the ten most active authors, either
-            as originators or as (git) contributors.
+            as <strong>originators</strong> or as <strong>(git) contributors</strong>.
           </p>
           {hasContributorData && (
             <CollapsibleControls>

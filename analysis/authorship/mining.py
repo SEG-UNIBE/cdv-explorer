@@ -22,7 +22,9 @@ def get_git_history(repo_dir: Path, file_path: Path) -> list[tuple[str, str, str
                 # mediawiki<->md conversions in the BIPs repo); without it,
                 # history silently starts at the rename.
                 "--follow",
-                "--pretty=format:%H|%ad|%an",
+                # Use strict ISO author dates so first-day/created-date
+                # derivation is stable across local Git date-format configs.
+                "--pretty=format:%H|%aI|%an",
                 "--",
                 str(relative_file_path),
             ],

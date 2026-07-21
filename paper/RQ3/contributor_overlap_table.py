@@ -12,9 +12,9 @@ LATEX_ARRAYSTRETCH = 1.15
 # Thicker than \midrule but lighter than \toprule/\bottomrule, to set the two
 # blocks apart without looking like an outer table edge.
 MEDIUM_RULE = r"\specialrule{0.65pt}{0pt}{0pt}"
-# A_o = originators, A_c = contributors (per proposal, for the second block).
-ORIGINATORS = r"A_o"
-CONTRIBUTORS = r"A_c"
+# O = originators, C = contributors (per proposal, for the second block).
+ORIGINATORS = r"O"
+CONTRIBUTORS = r"C"
 
 
 def _count_row(label: str, formula: str, count: int) -> tuple[str, str, str]:

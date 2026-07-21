@@ -55,6 +55,7 @@ def main() -> None:
         export_type_mapping_latex_table,
     )
     from paper.RQ2.ground_truth_evaluation import (
+        plot_ground_truth_evaluation_combined,
         plot_ground_truth_evaluation_doe,
         plot_ground_truth_evaluation_eta,
     )
@@ -110,6 +111,11 @@ def main() -> None:
         plot_ground_truth_evaluation_eta(
             network_data=network_data,
             output_path=output_dir / f"{filename_prefix}_GT_eval_ETA.pdf",
+            snapshot_label=snapshot_label,
+        )
+        plot_ground_truth_evaluation_combined(
+            network_data=network_data,
+            output_path=output_dir / f"{filename_prefix}_GT_eval_combined.pdf",
             snapshot_label=snapshot_label,
         )
     if GENERATE_CENTRALITY_TOP5_TABLE:

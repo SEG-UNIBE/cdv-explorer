@@ -88,9 +88,18 @@ SCORE_SERIES = [
 # single-column width instead of a two-column-spanning one. Narrower than
 # before since rotating the value labels 90 degrees frees up horizontal room.
 EVALUATION_FIGSIZE = (5.6, 3.5)
-BAR_GROUP_WIDTH = 0.88
+# Two-column-width, single-row layout combining both modes into four panels
+# (ETA counts, ETA scores, DOE counts, DOE scores) for a two-column print.
+# Per-panel width matches the solo figure's (EVALUATION_FIGSIZE width / 2) so
+# bars, gaps, and tick labels keep the same proportions as the solo plots.
+COMBINED_EVALUATION_FIGSIZE = (11.0, 3)
+# A bit more breathing room than the solo defaults (BAR_GROUP_WIDTH/
+# BAR_SLOT_FILL below) between bars within a group and between groups.
+COMBINED_BAR_GROUP_WIDTH = 0.8
+COMBINED_BAR_SLOT_FILL = 0.8
+BAR_GROUP_WIDTH = 0.9
 # Fraction of each within-group slot filled by the bar; the rest is spacing.
-BAR_SLOT_FILL = 0.88
+BAR_SLOT_FILL = 0.9
 # Extra room left/right of the outermost bar groups, in x-axis data units;
 # just enough to clear the outermost bars without leaving a big empty margin.
 AXIS_EDGE_MARGIN = 0.45
@@ -229,10 +238,15 @@ def build_exact_type_evaluation(
     }
 
 
+def _format_combined_score_label(value: float) -> str:
+    text = f"{value:.2f}"
+    return "1.0" if text == "1.00" else text.lstrip("0") or "0"
+
+
 def _grouped_bar_positions(
-    group_count: int, series_count: int
+    group_count: int, series_count: int, *, group_width: float = BAR_GROUP_WIDTH
 ) -> tuple[np.ndarray, float]:
-    bar_width = BAR_GROUP_WIDTH / series_count
+    bar_width = group_width / series_count
     group_positions = np.arange(group_count, dtype=float)
     return group_positions, bar_width
 
@@ -245,15 +259,21 @@ def _draw_grouped_bars(
     title: str,
     value_formatter,
     label_offset: float,
+    group_width: float = BAR_GROUP_WIDTH,
+    slot_fill: float = BAR_SLOT_FILL,
+    axis_edge_margin: float = AXIS_EDGE_MARGIN,
+    label_rotation: float = 90,
 ) -> None:
-    group_positions, bar_width = _grouped_bar_positions(len(rows), len(series))
+    group_positions, bar_width = _grouped_bar_positions(
+        len(rows), len(series), group_width=group_width
+    )
     for series_index, (key, label, color) in enumerate(series):
         offsets = group_positions + (series_index - (len(series) - 1) / 2) * bar_width
         values = [float(row[key]) for row in rows]
         axis.bar(
             offsets,
             values,
-            width=bar_width * BAR_SLOT_FILL,
+            width=bar_width * slot_fill,
             zorder=2,
             label=label,
             **bar_style(color),
@@ -265,7 +285,7 @@ def _draw_grouped_bars(
                 value_formatter(value),
                 ha="center",
                 va="bottom",
-                rotation=90,
+                rotation=label_rotation,
                 fontsize=8,
                 zorder=5,
             )
@@ -280,7 +300,7 @@ def _draw_grouped_bars(
     axis.set_title(title, pad=24, fontsize=SUBPLOT_TITLE_FONT_SIZE)
     axis.set_xticks(group_positions)
     axis.set_xticklabels([row["label"] for row in rows])
-    axis.set_xlim(-AXIS_EDGE_MARGIN, len(rows) - 1 + AXIS_EDGE_MARGIN)
+    axis.set_xlim(-axis_edge_margin, len(rows) - 1 + axis_edge_margin)
     axis.grid(axis="y", alpha=0.35)
     axis.grid(axis="x", visible=False)
     axis.legend(
@@ -372,6 +392,82 @@ def plot_ground_truth_evaluation_eta(
         type_mapping=type_mapping or ETA_TYPE_MAPPING,
         mode_title="Edge Type Agnostic (ETA)",
     )
+
+
+def plot_ground_truth_evaluation_combined(
+    network_data: dict,
+    output_path: Path,
+    snapshot_label: str,
+    eta_type_mapping: dict[str, dict[str, str]] | None = None,
+    doe_type_mapping: dict[str, dict[str, str]] | None = None,
+) -> dict:
+    """Single two-column-width figure combining the ETA and DOE ground-truth
+    evaluations into four side-by-side panels: ETA counts, ETA scores, DOE
+    counts, DOE scores. Meant for a two-column print, replacing the two
+    separate single-column figures."""
+    eta_evaluation = build_exact_type_evaluation(
+        network_data, type_mapping=eta_type_mapping or ETA_TYPE_MAPPING
+    )
+    doe_evaluation = build_exact_type_evaluation(
+        network_data, type_mapping=doe_type_mapping or DOE_TYPE_MAPPING
+    )
+
+    figure, (
+        axis_eta_counts,
+        axis_eta_scores,
+        axis_doe_counts,
+        axis_doe_scores,
+    ) = plt.subplots(1, 4, figsize=COMBINED_EVALUATION_FIGSIZE)
+
+    panels = (
+        (axis_eta_counts, axis_eta_scores, eta_evaluation, "ETA"),
+        (axis_doe_counts, axis_doe_scores, doe_evaluation, "DOE"),
+    )
+    letters = iter("abcd")
+    for axis_counts, axis_scores, evaluation, mode_label in panels:
+        rows = evaluation["approaches"]
+
+        count_max = max(float(row[key]) for row in rows for key, _, _ in COUNT_SERIES)
+        _draw_grouped_bars(
+            axis_counts,
+            rows,
+            COUNT_SERIES,
+            title=f"({next(letters)}) {mode_label} Counts",
+            value_formatter=lambda value: f"{value:.0f}",
+            label_offset=max(count_max * 0.015, 0.15),
+            group_width=COMBINED_BAR_GROUP_WIDTH,
+            slot_fill=COMBINED_BAR_SLOT_FILL,
+            label_rotation=0,
+        )
+        axis_counts.set_ylabel("# Edges")
+        axis_counts.set_ylim(0, count_max * 1.18 if count_max > 0 else 1)
+
+        _draw_grouped_bars(
+            axis_scores,
+            rows,
+            SCORE_SERIES,
+            title=f"({next(letters)}) {mode_label} Scores",
+            value_formatter=_format_combined_score_label,
+            label_offset=0.015,
+            group_width=COMBINED_BAR_GROUP_WIDTH,
+            slot_fill=COMBINED_BAR_SLOT_FILL,
+            label_rotation=0,
+        )
+        axis_scores.set_ylabel("Score")
+        axis_scores.set_ylim(0, 1.12)
+        axis_scores.set_yticks([0, 0.25, 0.5, 0.75, 1.0])
+        axis_scores.set_yticklabels(["0.00", "0.25", "0.50", "0.75", "1.00"])
+        match_axis_label_fontsize(axis_scores)
+
+    figure.tight_layout()
+    figure.subplots_adjust(top=0.72, wspace=0.4)
+    figure.suptitle(
+        f"Ground-Truth Evaluation ({snapshot_label})",
+        y=0.99,
+        fontsize=FIGURE_TITLE_FONT_SIZE,
+    )
+    save_figure(figure, output_path)
+    return {"eta": eta_evaluation, "doe": doe_evaluation}
 
 
 def plot_ground_truth_evaluation_doe(

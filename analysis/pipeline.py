@@ -509,11 +509,15 @@ def prepare_ecosystem_artifacts(
             network_data, available_llm_models[0]
         )
     elif len(available_llm_models) > 1:
-        raise ValueError(
-            "Multiple LLM models are present in the preprocessed data for "
-            f"{context.ecosystem_slug}/{context.source_slug}/{snapshot}: {', '.join(sorted(available_llm_models))}. "
-            "Re-run with `--artifact-llm-model <model>` to choose which model should be published into the web artifacts."
-        )
+        # No explicit override and more than one model's runs are present: keep the
+        # per-IP default already resolved by `_default_llm_run` (prefer the
+        # ecosystem-configured model for that IP, else fall back to whichever
+        # model's run is newest for that IP) instead of forcing a single flat model.
+        network_data = dict(network_data)
+        default_model = str(
+            (network_data.get("llm_models") or {}).get("default_model") or ""
+        ).strip()
+        network_data["llm_model"] = default_model or None
     else:
         network_data = collapse_network_data_to_llm_model(network_data, None)
 

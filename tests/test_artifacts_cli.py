@@ -366,7 +366,7 @@ class ArtifactRebuildTests(unittest.TestCase):
 
         self.assertEqual(models, ["gpt-5.4", "gpt-5.4-mini"])
 
-    def test_resolve_artifact_llm_model_fails_without_explicit_choice_when_multiple_exist(
+    def test_resolve_artifact_llm_model_defaults_to_none_when_multiple_exist(
         self,
     ) -> None:
         with tempfile.TemporaryDirectory() as tmp_dir:
@@ -396,14 +396,15 @@ class ArtifactRebuildTests(unittest.TestCase):
                 encoding="utf-8",
             )
 
-            with self.assertRaises(typer.Exit):
-                _resolve_artifact_llm_model(
-                    eco_slug="bitcoin",
-                    src_slug="bips",
-                    snapshot="2026-05-28",
-                    preprocess_dir=preprocess_dir,
-                    requested_model=None,
-                )
+            model = _resolve_artifact_llm_model(
+                eco_slug="bitcoin",
+                src_slug="bips",
+                snapshot="2026-05-28",
+                preprocess_dir=preprocess_dir,
+                requested_model=None,
+            )
+
+        self.assertIsNone(model)
 
     def test_resolve_artifact_llm_model_accepts_requested_model(self) -> None:
         with tempfile.TemporaryDirectory() as tmp_dir:

@@ -410,11 +410,14 @@ def plot_ground_truth_evaluation_combined(
         network_data, type_mapping=doe_type_mapping or DOE_TYPE_MAPPING
     )
 
-    figure, (
-        axis_eta_counts,
-        axis_eta_scores,
-        axis_doe_counts,
-        axis_doe_scores,
+    (
+        figure,
+        (
+            axis_eta_counts,
+            axis_eta_scores,
+            axis_doe_counts,
+            axis_doe_scores,
+        ),
     ) = plt.subplots(1, 4, figsize=COMBINED_EVALUATION_FIGSIZE)
 
     panels = (

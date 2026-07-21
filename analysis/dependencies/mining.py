@@ -859,13 +859,11 @@ Decision rule:
 - Include another proposal only when the current proposal materially relies on, reuses, extends, constrains, amends, specializes, implements or relies on compatibility rules defined by, or is designed around concepts, mechanisms, formats, semantics, activation rules, workflows, or assumptions introduced by that proposal.
 - Ask whether understanding, implementing, evaluating, or adopting the current proposal would meaningfully depend on the target proposal beyond a passing reference.
 - Statements such as "requires", "depends on", "based on", "extends", or "fully implement X with the following changes" are strong indicators of dependency.
-- If support is ambiguous, weak, speculative, or purely contextual, omit the candidate.
 
 Target resolution:
 - General knowledge may be used only to resolve a mechanism, format, or standard explicitly named in the proposal text to the specific proposal that introduced it.
 - The named concept does not establish a dependency by itself. The provided text must independently show substantive reliance on that concept.
 - Do not resolve broad or ambiguous umbrella terms to a single proposal unless the described mechanism uniquely identifies that proposal.
-- If either the dependency or the target identity is uncertain, omit it.
 
 Do not include:
 - mere mentions or citations
@@ -912,15 +910,11 @@ Analyze {active_proposal_singular} {active_proposal_label}{current_identifier}.
 <output>{{"dependencies":[{{"target":"main_source:70","evidence":"MAIN_LABEL 70 should be fully implemented with the following changes","reason":"The proposal modifies and builds directly on the earlier protocol rather than merely mentioning it.","confidence":"high"}}]}}</output>
 </example>
 <example>
-<text>This proposal is inspired by ideas discussed around MAIN_LABEL 70 but defines a completely separate message format, sharing no fields, encoding, or validation rules with it.</text>
+<text>See also: MAIN_LABEL 70, which addresses a related but separate problem using its own independent fields, encoding, and validation rules.</text>
 <output>{{"dependencies":[]}}</output>
 </example>
 <example>
 <text>Unlike MAIN_LABEL 44, which defines a symmetric encryption scheme, this proposal introduces a standalone asymmetric key agreement protocol. No primitives or formats from MAIN_LABEL 44 are reused.</text>
-<output>{{"dependencies":[]}}</output>
-</example>
-<example>
-<text>Example: schemes following MAIN_LABEL 44 should use purpose value 44'. This example illustrates how purpose values are assigned.</text>
 <output>{{"dependencies":[]}}</output>
 </example>
 <example>
@@ -930,10 +924,6 @@ Analyze {active_proposal_singular} {active_proposal_label}{current_identifier}.
 <example>
 <text>This proposal defines a new address type for outputs that spend via the witness program structure introduced for native segregated witness (SegWit) outputs, reusing that scheme's script versioning and witness serialization rules.</text>
 <output>{{"dependencies":[{{"target":"main_source:141","evidence":"the witness program structure introduced for native segregated witness (SegWit) outputs","reason":"The witness-program and script-versioning mechanism named here is what MAIN_LABEL-0141 specifically introduced; the umbrella term SegWit is resolved to that proposal only because the concrete mechanism it names uniquely identifies it, and the text shows real reuse of its script versioning and serialization rules.","confidence":"medium"}}]}}</output>
-</example>
-<example>
-<text>Wallets implementing this scheme should derive per-account keys using the standard hierarchical deterministic (HD) derivation tree, with hardened child keys at the account level.</text>
-<output>{{"dependencies":[{{"target":"main_source:32","evidence":"derive per-account keys using the standard hierarchical deterministic (HD) derivation tree","reason":"Hierarchical deterministic (HD) wallets are the well-established derivation scheme that proposal introduced; the current proposal directly relies on that derivation-tree structure for its own key derivation.","confidence":"medium"}}]}}</output>
 </example>
 <example>
 <text>This proposal is unrelated to Taproot: it shares no mechanism, script format, or validation rule with it and was designed independently.</text>

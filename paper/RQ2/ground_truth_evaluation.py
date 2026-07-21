@@ -58,8 +58,6 @@ GT_TYPE_ALL = "*"
 ETA_TYPE_MAPPING = {
     PREAMBLE_EXTRACTED: {
         "requires": GT_TYPE_ALL,
-        "replaces": GT_TYPE_ALL,
-        "proposed_replacement": GT_TYPE_ALL,
     },
     BODY_EXTRACTED_REGEX: {"reference": GT_TYPE_ALL},
     BODY_EXTRACTED_LLM: {"implicit_dependency": GT_TYPE_ALL},

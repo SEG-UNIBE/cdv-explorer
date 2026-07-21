@@ -11,7 +11,7 @@ from paper.RQ2.ground_truth_evaluation import (
     GT_TYPE_ALL,
 )
 
-LATEX_TABCOLSEP_PT = 6
+LATEX_TABCOLSEP_PT = 8
 LATEX_ARRAYSTRETCH = 1.2
 SHORT_LABELS = DEPENDENCY_APPROACH_SHORT_LABELS
 GT_TYPE_ALL_LABEL = r"\textit{(any)}"

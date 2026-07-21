@@ -14,8 +14,8 @@ APPROACH_ORDER = [PREAMBLE_EXTRACTED, BODY_EXTRACTED_REGEX, BODY_EXTRACTED_LLM]
 SHORT_LABELS = DEPENDENCY_APPROACH_SHORT_LABELS
 
 METRICS: list[tuple[str, str]] = [
-    ("in_degree", "In Deg."),
-    ("weighted_eigenvector", "W. EV"),
+    ("in_degree", "In Degree"),
+    ("weighted_eigenvector", "WEV"),
     ("pagerank", "PageRank"),
     ("betweenness", "BC"),
 ]

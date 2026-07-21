@@ -24,18 +24,20 @@
     }
   },
   "meta": {
-    "last_commit": "Mon Mar 16 20:25:46 2026 +0200",
+    "last_commit": "2026-03-16T20:25:46+02:00",
     "total_commits": 2,
     "git_history": [
       [
         "351ceef2747e46078efaa073246fce54d52e665d",
-        "Mon Mar 16 20:25:46 2026 +0200",
-        "Oren"
+        "2026-03-16T20:25:46+02:00",
+        "Oren",
+        "115847146+oren-z0@users.noreply.github.com"
       ],
       [
         "9ff061f8b95f5afd792a1358992ed753cd083319",
-        "Fri Feb 27 22:24:33 2026 +0200",
-        "Oren"
+        "2026-02-27T22:24:33+02:00",
+        "Oren",
+        "115847146+oren-z0@users.noreply.github.com"
       ]
     ]
   },
@@ -692,15 +694,15 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
+          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T09:30:32Z",
+          "timestamp": "2026-07-21T14:42:28Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:68",
               "evidence": "following the rules of [[bip-0068.mediawiki|BIP-68]]",
-              "reason": "The proposal's recovery transaction uses nSequence relative-locktime semantics defined by the target, including its encoding and limits.",
+              "reason": "The proposal's recovery transaction requires an nSequence relative-locktime and explicitly says it follows the target's rules, so implementing the format and semantics materially depends on BIP 68.",
               "confidence": "high"
             }
           ]

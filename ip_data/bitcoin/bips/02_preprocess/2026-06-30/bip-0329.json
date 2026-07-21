@@ -24,83 +24,98 @@
     }
   },
   "meta": {
-    "last_commit": "Mon Apr 27 17:01:58 2026 +0200",
+    "last_commit": "2026-04-27T17:01:58+02:00",
     "total_commits": 15,
     "git_history": [
       [
         "5253e9a294cd46bd94b505ec544992dacc0f2b98",
-        "Mon Apr 27 17:01:58 2026 +0200",
-        "craigraw"
+        "2026-04-27T17:01:58+02:00",
+        "craigraw",
+        "craigraw@gmail.com"
       ],
       [
         "24e96e870fffaa257b465ce1f0370c14aac588e8",
-        "Wed Oct 8 14:59:36 2025 -0700",
-        "Murch"
+        "2025-10-08T14:59:36-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "5207ef92a52d0b8902895b0dbb40823a4d698ec9",
-        "Fri Apr 11 20:08:17 2025 -0700",
-        "Murch"
+        "2025-04-11T20:08:17-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "59730dec4fb641a41589aa1b91d3c452f13e0e36",
-        "Fri Apr 11 20:05:13 2025 -0700",
-        "Murch"
+        "2025-04-11T20:05:13-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "c5220f8c3b43821efa3841a6c5e90af9ce5519e8",
-        "Mon Apr 14 22:35:42 2025 +0300",
-        "VolodymyrBg"
+        "2025-04-14T22:35:42+03:00",
+        "VolodymyrBg",
+        "aqdrgg19@gmail.com"
       ],
       [
         "cd1a2798775a897ff92f81c0778ffb4dde554dd5",
-        "Wed Feb 26 11:24:27 2025 +0200",
-        "Craig Raw"
+        "2025-02-26T11:24:27+02:00",
+        "Craig Raw",
+        "craigraw@gmail.com"
       ],
       [
         "5262b495af5be0bed6d58e78bea92a1d993d3c53",
-        "Wed Feb 26 10:42:34 2025 +0200",
-        "Craig Raw"
+        "2025-02-26T10:42:34+02:00",
+        "Craig Raw",
+        "craigraw@gmail.com"
       ],
       [
         "c8e208fb6c63b1feebf08f5979370a15283fc498",
-        "Tue Feb 25 15:26:27 2025 -0500",
-        "doc-hex"
+        "2025-02-25T15:26:27-05:00",
+        "doc-hex",
+        "1482781+doc-hex@users.noreply.github.com"
       ],
       [
         "9a56d3544eac1f949a747c251810f7a440d63fb9",
-        "Thu Jul 25 18:35:39 2024 +0300",
-        "Orfeas Stefanos Thyfronitis Litos"
+        "2024-07-25T18:35:39+03:00",
+        "Orfeas Stefanos Thyfronitis Litos",
+        "orfeas.litos@hotmail.com"
       ],
       [
         "fc0950e07eac6de2ebf68aa0493f17d3024fbe7c",
-        "Tue May 30 09:42:26 2023 -0400",
-        "Seth For Privacy"
+        "2023-05-30T09:42:26-04:00",
+        "Seth For Privacy",
+        "hello@sethforprivacy.com"
       ],
       [
         "d20444a3ae65296b3c8b3f364c63618662218c4f",
-        "Mon May 15 13:22:19 2023 -0400",
-        "Seth For Privacy"
+        "2023-05-15T13:22:19-04:00",
+        "Seth For Privacy",
+        "hello@sethforprivacy.com"
       ],
       [
         "1684344515eb1ec29fd931cbfacc86584572890f",
-        "Mon May 15 12:01:58 2023 -0400",
-        "Seth For Privacy"
+        "2023-05-15T12:01:58-04:00",
+        "Seth For Privacy",
+        "hello@sethforprivacy.com"
       ],
       [
         "96a9adedde84d622e0c135f013c78bac5eae7a03",
-        "Tue Feb 7 11:05:53 2023 +0200",
-        "Craig Raw"
+        "2023-02-07T11:05:53+02:00",
+        "Craig Raw",
+        "craigraw@gmail.com"
       ],
       [
         "0a5e3b0101f5f040fd34d83a13ebe59a445c12d8",
-        "Fri Feb 3 10:14:25 2023 +0200",
-        "Craig Raw"
+        "2023-02-03T10:14:25+02:00",
+        "Craig Raw",
+        "craigraw@gmail.com"
       ],
       [
         "41490b74f7a9d52a58d9a1e1fd94f3ee6d8553e7",
-        "Tue Jan 17 01:40:46 2023 +0200",
-        "craigraw"
+        "2023-01-17T01:40:46+02:00",
+        "craigraw",
+        "craigraw@gmail.com"
       ]
     ]
   },
@@ -680,27 +695,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
+          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T09:31:22Z",
+          "timestamp": "2026-07-21T14:43:30Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
               "evidence": "Extended public key as defined by BIP32",
-              "reason": "The proposal's xpub record type directly relies on BIP32's extended public key format and compatibility assumptions, and origin must describe a BIP32 compatible wallet.",
+              "reason": "The specification defines the xpub record type by reusing BIP32 extended public keys, and further requires the origin field to describe a \"BIP32 compatible originating wallet,\" so implementing xpub/origin handling materially depends on BIP32 semantics.",
               "confidence": "high"
             },
             {
               "target": "bips:380",
               "evidence": "an abbreviated output descriptor (as defined by BIP380",
-              "reason": "The optional origin field is normatively specified using the abbreviated output descriptor format from BIP380.",
+              "reason": "The optional origin field must contain an abbreviated output descriptor with specific exclusions, so the proposal directly relies on the descriptor format introduced by BIP380 for origin encoding.",
               "confidence": "high"
             },
             {
               "target": "bips:392",
               "evidence": "silent payments output descriptor as defined by BIP392",
-              "reason": "The spscan record type is defined by reusing the silent payments output descriptor key expression from BIP392.",
+              "reason": "The spscan record type is defined as a key expression for the single-argument form of a silent payments output descriptor, so support for that record type depends on the descriptor semantics defined by BIP392.",
               "confidence": "high"
             }
           ]

@@ -24,83 +24,98 @@
     }
   },
   "meta": {
-    "last_commit": "Fri Oct 24 13:40:42 2025 +0200",
+    "last_commit": "2025-10-24T13:40:42+02:00",
     "total_commits": 15,
     "git_history": [
       [
         "76efa4aabf087b10049f494a95b0473c172483b0",
-        "Fri Oct 24 13:40:42 2025 +0200",
-        "Murch"
+        "2025-10-24T13:40:42+02:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "8586c32fa26de94b6a8a91b30a9e3d93f8ee0555",
-        "Wed Oct 22 21:32:52 2025 +0200",
-        "Tim Ruffing"
+        "2025-10-22T21:32:52+02:00",
+        "Tim Ruffing",
+        "me@real-or-random.org"
       ],
       [
         "2885f13d3f37890e328683166dbcbc60b488d13a",
-        "Wed Oct 22 20:02:57 2025 +1000",
-        "Anthony Towns"
+        "2025-10-22T20:02:57+10:00",
+        "Anthony Towns",
+        "aj@erisian.com.au"
       ],
       [
         "24e96e870fffaa257b465ce1f0370c14aac588e8",
-        "Wed Oct 8 14:59:36 2025 -0700",
-        "Murch"
+        "2025-10-08T14:59:36-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "5207ef92a52d0b8902895b0dbb40823a4d698ec9",
-        "Fri Apr 11 20:08:17 2025 -0700",
-        "Murch"
+        "2025-04-11T20:08:17-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "59730dec4fb641a41589aa1b91d3c452f13e0e36",
-        "Fri Apr 11 20:05:13 2025 -0700",
-        "Murch"
+        "2025-04-11T20:05:13-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "01352f7f40cb7f61d0aa177341f8804de2f8fed9",
-        "Fri Apr 11 20:07:37 2025 -0700",
-        "Murch"
+        "2025-04-11T20:07:37-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "863573ab0f4fee4a66f17d53ec144e69027f6977",
-        "Mon Apr 14 13:32:03 2025 -0700",
-        "Murch"
+        "2025-04-14T13:32:03-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "66defbdc03ad64ccddfd373e1c59af9a41ab990f",
-        "Fri Apr 11 18:11:55 2025 -0700",
-        "Murch"
+        "2025-04-11T18:11:55-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "468e9759ba3ab9b58d1cadd300b92f5bd43727dc",
-        "Thu Feb 13 11:56:14 2025 -0600",
-        "Jon Atack"
+        "2025-02-13T11:56:14-06:00",
+        "Jon Atack",
+        "jon@atack.com"
       ],
       [
         "46a2440718ce96681155e4c96bfc373d079d2eef",
-        "Wed May 29 16:18:11 2024 +0800",
-        "cocoyeal"
+        "2024-05-29T16:18:11+08:00",
+        "cocoyeal",
+        "ricodigging@gmail.com"
       ],
       [
         "630bbe314dda89b8f64a5a8f64e116033048cc68",
-        "Fri Aug 21 08:12:58 2020 +0200",
-        "Janus"
+        "2020-08-21T08:12:58+02:00",
+        "Janus",
+        "ysangkok@gmail.com"
       ],
       [
         "5c1fd932666caaaf2fb6bac09a3968594e361de8",
-        "Sun May 21 13:48:48 2017 +0200",
-        "sanch0panza"
+        "2017-05-21T13:48:48+02:00",
+        "sanch0panza",
+        "sanch0panza@protonmail.com"
       ],
       [
         "3b3a9db960f98c6ea2c370f78fc4113a0761aeff",
-        "Sun May 7 22:05:18 2017 +0000",
-        "Luke Dashjr"
+        "2017-05-07T22:05:18Z",
+        "Luke Dashjr",
+        "luke-jr+git@utopios.org"
       ],
       [
         "b455cad3f85ae33f9bc92c9a71cacf4d88934e9b",
-        "Thu Apr 6 16:28:05 2017 +0200",
-        "sanch0panza"
+        "2017-04-06T16:28:05+02:00",
+        "sanch0panza",
+        "sanch0panza@protonmail.com"
       ]
     ]
   },
@@ -736,33 +751,33 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
+          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T09:30:41Z",
+          "timestamp": "2026-07-21T14:42:32Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
-              "evidence": "BIP9 introduced a mechanism for using the version bits",
-              "reason": "The proposal explicitly generalizes and preserves the BIP9 versionbits state machine, parameters, signaling range, and getblocktemplate behavior for compatibility.",
+              "evidence": "This document describes a generalized signaling scheme",
+              "reason": "The proposal directly generalizes and preserves the BIP9 versionbits mechanism, reusing its state machine, parameters, signaling-bit range, and getblocktemplate behavior with configurable extensions.",
               "confidence": "high"
             },
             {
               "target": "bips:34",
               "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
-              "reason": "The proposal's available nVersion signaling space is defined around constraints introduced by this proposal.",
+              "reason": "The proposal's available nVersion signaling space is explicitly constrained by block-version semantics introduced by this earlier consensus change, and the rationale for its 29-bit design relies on those constraints.",
               "confidence": "medium"
             },
             {
               "target": "bips:65",
               "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
-              "reason": "The proposal's available nVersion signaling space is defined around constraints introduced by this proposal.",
+              "reason": "The proposal's available nVersion signaling space is explicitly constrained by block-version semantics introduced by this earlier consensus change, and the rationale for its 29-bit design relies on those constraints.",
               "confidence": "medium"
             },
             {
               "target": "bips:66",
               "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
-              "reason": "The proposal's available nVersion signaling space is defined around constraints introduced by this proposal.",
+              "reason": "The proposal's available nVersion signaling space is explicitly constrained by block-version semantics introduced by this earlier consensus change, and the rationale for its 29-bit design relies on those constraints.",
               "confidence": "medium"
             }
           ]

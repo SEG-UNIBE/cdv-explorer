@@ -24,83 +24,98 @@
     }
   },
   "meta": {
-    "last_commit": "Wed Oct 8 14:59:36 2025 -0700",
+    "last_commit": "2025-10-08T14:59:36-07:00",
     "total_commits": 15,
     "git_history": [
       [
         "24e96e870fffaa257b465ce1f0370c14aac588e8",
-        "Wed Oct 8 14:59:36 2025 -0700",
-        "Murch"
+        "2025-10-08T14:59:36-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "5207ef92a52d0b8902895b0dbb40823a4d698ec9",
-        "Fri Apr 11 20:08:17 2025 -0700",
-        "Murch"
+        "2025-04-11T20:08:17-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "59730dec4fb641a41589aa1b91d3c452f13e0e36",
-        "Fri Apr 11 20:05:13 2025 -0700",
-        "Murch"
+        "2025-04-11T20:05:13-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "a233bde4af52c6a11269e2e6dd9707abce441ffe",
-        "Fri Apr 11 18:19:21 2025 -0700",
-        "Murch"
+        "2025-04-11T18:19:21-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "66defbdc03ad64ccddfd373e1c59af9a41ab990f",
-        "Fri Apr 11 18:11:55 2025 -0700",
-        "Murch"
+        "2025-04-11T18:11:55-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "9a56d3544eac1f949a747c251810f7a440d63fb9",
-        "Thu Jul 25 18:35:39 2024 +0300",
-        "Orfeas Stefanos Thyfronitis Litos"
+        "2024-07-25T18:35:39+03:00",
+        "Orfeas Stefanos Thyfronitis Litos",
+        "orfeas.litos@hotmail.com"
       ],
       [
         "2d293b73077762eaa966c89728dd9d57b6fb5da0",
-        "Thu Apr 30 09:37:22 2020 -0500",
-        "Janus"
+        "2020-04-30T09:37:22-05:00",
+        "Janus",
+        "ysangkok@gmail.com"
       ],
       [
         "959fecc15bdad070afa63455468b1dba54655fa6",
-        "Wed Nov 30 09:47:31 2016 +0000",
-        "Luke Dashjr"
+        "2016-11-30T09:47:31Z",
+        "Luke Dashjr",
+        "luke-jr+git@utopios.org"
       ],
       [
         "72f18918a8ae655212ea2700b30f0dc4d758b843",
-        "Wed Nov 30 09:45:33 2016 +0000",
-        "Luke Dashjr"
+        "2016-11-30T09:45:33Z",
+        "Luke Dashjr",
+        "luke-jr+git@utopios.org"
       ],
       [
         "506f959ffe87cb32fc6b642aae5c5a24b2fb9c82",
-        "Tue Nov 3 10:24:28 2015 +0000",
-        "฿tcDrak"
+        "2015-11-03T10:24:28Z",
+        "฿tcDrak",
+        "btcdrak@users.noreply.github.com"
       ],
       [
         "f749070a23b62fd603c1341c36142b7d1c7f0f94",
-        "Sat Sep 5 22:48:52 2015 +0100",
-        "฿tcDrak"
+        "2015-09-05T22:48:52+01:00",
+        "฿tcDrak",
+        "btcdrak@users.noreply.github.com"
       ],
       [
         "ff3d0a98b0637b6116aaba137257c304b850270e",
-        "Wed Sep 2 01:15:35 2015 +0100",
-        "฿tcDrak"
+        "2015-09-02T01:15:35+01:00",
+        "฿tcDrak",
+        "btcdrak@users.noreply.github.com"
       ],
       [
         "314a488b382b92e93b78d61d509fdcf58fa8f62c",
-        "Wed Sep 2 00:57:10 2015 +0100",
-        "฿tcDrak"
+        "2015-09-02T00:57:10+01:00",
+        "฿tcDrak",
+        "btcdrak@users.noreply.github.com"
       ],
       [
         "2a91434263790dca69799d2517edcbaab8340f14",
-        "Wed Sep 2 00:56:09 2015 +0100",
-        "฿tcDrak"
+        "2015-09-02T00:56:09+01:00",
+        "฿tcDrak",
+        "btcdrak@users.noreply.github.com"
       ],
       [
         "ba4062ab0d1b88e598487e1db5ae6113dd65b3f8",
-        "Fri Aug 28 01:34:48 2015 +0100",
-        "BtcDrak"
+        "2015-08-28T01:34:48+01:00",
+        "BtcDrak",
+        "btcdrak@gmail.com"
       ]
     ]
   },
@@ -575,15 +590,15 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
+          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T09:30:13Z",
+          "timestamp": "2026-07-21T14:41:51Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:34",
               "evidence": "As per BIP34, the coinbase transaction scriptSig starts with a push of the block height.",
-              "reason": "The proposal defines its voting data placement in the coinbase scriptSig relative to the BIP34 height prefix, so correct parsing and implementation rely on BIP34's coinbase format semantics.",
+              "reason": "The proposal defines its voting data as an additional push in the coinbase scriptSig after the block-height push, so its encoding and parsing rules materially rely on the BIP34 coinbase-height format.",
               "confidence": "high"
             }
           ]

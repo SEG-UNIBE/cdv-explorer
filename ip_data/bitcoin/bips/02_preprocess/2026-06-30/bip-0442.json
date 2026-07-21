@@ -25,18 +25,20 @@
     }
   },
   "meta": {
-    "last_commit": "Tue Mar 24 21:37:30 2026 +0100",
+    "last_commit": "2026-03-24T21:37:30+01:00",
     "total_commits": 2,
     "git_history": [
       [
         "805c9b54f6d38f644d1f9c3ce871e2ea3df1f7d8",
-        "Tue Mar 24 21:37:30 2026 +0100",
-        "moonsettler"
+        "2026-03-24T21:37:30+01:00",
+        "moonsettler",
+        "moonsettler@protonmail.com"
       ],
       [
         "f61d4b8ba381829644c197e000db0834f15af643",
-        "Tue Mar 3 20:38:26 2026 +0100",
-        "moonsettler"
+        "2026-03-03T20:38:26+01:00",
+        "moonsettler",
+        "moonsettler@protonmail.com"
       ]
     ]
   },
@@ -656,22 +658,46 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
+          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T09:32:08Z",
+          "timestamp": "2026-07-21T14:44:43Z",
           "status": "success",
           "dependencies": [
             {
+              "target": "bips:119",
+              "evidence": "OP_CHECKTEMPLATEVERIFY",
+              "reason": "The proposal's Lightning Symmetry constructions materially rely on OP_CHECKTEMPLATEVERIFY-based transaction commitments; BIP 119 is the proposal identified in the text for that opcode, and understanding the showcased mechanism depends on its semantics.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:327",
+              "evidence": "internal-key:                        BIP-327 aggregate key of channel participants",
+              "reason": "The example construction explicitly uses a BIP-327 aggregate key as the internal key, so the described script design relies on MuSig2 aggregate-key semantics introduced by BIP 327.",
+              "confidence": "medium"
+            },
+            {
               "target": "bips:340",
               "evidence": "Notation follows [BIP-340], including the tagged hash notation",
-              "reason": "The opcode's core commitment function is specified using the tagged hash construction and notation from the target.",
+              "reason": "The opcode's core commitment function is specified using the tagged-hash construction and notation from BIP 340, which the proposal explicitly adopts for its hash semantics.",
               "confidence": "high"
             },
             {
               "target": "bips:342",
-              "evidence": "For taproot script spends with leaf version *0xc0* (see [BIP-342]), `OP_PAIRCOMMIT` replaces `OP_SUCCESS205`",
-              "reason": "The proposal is explicitly defined for tapscript leaf version 0xc0 and reuses the OP_SUCCESS mechanism introduced by the target, so its semantics and deployment are built around that framework.",
+              "evidence": "For taproot script spends with leaf version *0xc0* (see [BIP-342]), `OP_PAIRCOMMIT` replaces `OP_SUCCESS205` (*0xcd*)",
+              "reason": "The proposal is defined specifically as a tapscript opcode in taproot script spends with leaf version 0xc0, and it reuses the OP_SUCCESS soft-forking context and tapscript execution environment introduced by BIP 342.",
               "confidence": "high"
+            },
+            {
+              "target": "bips:348",
+              "evidence": "Combined with `OP_CHECKSIGFROMSTACK`, signing commitments to multiple items enables complex delegation",
+              "reason": "A central described use of OP_PAIRCOMMIT is in combination with OP_CHECKSIGFROMSTACK to sign pair commitments for delegation and channel-update constructions; the text identifies that opcode with BIP 348, making the dependency substantive for those scripts.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:349",
+              "evidence": "OP_INTERNALKEY",
+              "reason": "The Lightning Symmetry example scripts use OP_INTERNALKEY as part of the spending construction, and the references identify that opcode with BIP 349; implementing or evaluating those constructions depends on its semantics.",
+              "confidence": "medium"
             }
           ]
         }

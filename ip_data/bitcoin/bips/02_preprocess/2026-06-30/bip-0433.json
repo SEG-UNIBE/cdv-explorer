@@ -24,33 +24,38 @@
     }
   },
   "meta": {
-    "last_commit": "Wed Oct 8 14:59:36 2025 -0700",
+    "last_commit": "2025-10-08T14:59:36-07:00",
     "total_commits": 5,
     "git_history": [
       [
         "24e96e870fffaa257b465ce1f0370c14aac588e8",
-        "Wed Oct 8 14:59:36 2025 -0700",
-        "Murch"
+        "2025-10-08T14:59:36-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "5207ef92a52d0b8902895b0dbb40823a4d698ec9",
-        "Fri Apr 11 20:08:17 2025 -0700",
-        "Murch"
+        "2025-04-11T20:08:17-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "59730dec4fb641a41589aa1b91d3c452f13e0e36",
-        "Fri Apr 11 20:05:13 2025 -0700",
-        "Murch"
+        "2025-04-11T20:05:13-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "01352f7f40cb7f61d0aa177341f8804de2f8fed9",
-        "Fri Apr 11 20:07:37 2025 -0700",
-        "Murch"
+        "2025-04-11T20:07:37-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "ab9bc69f93a4fc36a17813a4917cc62ed69036c2",
-        "Tue Sep 23 16:06:39 2025 -0400",
-        "Greg Sanders"
+        "2025-09-23T16:06:39-04:00",
+        "Greg Sanders",
+        "gsanders87@gmail.com"
       ]
     ]
   },
@@ -512,11 +517,18 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
+          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T09:32:04Z",
+          "timestamp": "2026-07-21T14:44:34Z",
           "status": "success",
-          "dependencies": []
+          "dependencies": [
+            {
+              "target": "bips:141",
+              "evidence": "Native segwit outputs are composed of a witness version and a witness program.",
+              "reason": "The proposal defines P2A as the scriptPubKey `OP_1 <0x4e73>` and relies on native segwit witness-program semantics, including witness versioning, witness program length rules, and the statement that creation has been standard since Segwit deployment. Those concrete mechanisms were introduced by BIP 141, so implementing or evaluating P2A depends on that proposal's output semantics.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

@@ -24,13 +24,14 @@
     }
   },
   "meta": {
-    "last_commit": "Tue Apr 7 17:31:42 2026 +0200",
+    "last_commit": "2026-04-07T17:31:42+02:00",
     "total_commits": 1,
     "git_history": [
       [
         "6c2023e542afa77a728186ba6a9197fdf6050f35",
-        "Tue Apr 7 17:31:42 2026 +0200",
-        "craigraw"
+        "2026-04-07T17:31:42+02:00",
+        "craigraw",
+        "craigraw@gmail.com"
       ]
     ]
   },
@@ -526,30 +527,11 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
+          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T09:32:03Z",
+          "timestamp": "2026-07-21T14:44:31Z",
           "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:32",
-              "evidence": "for BIP 32 derived-key wallets.",
-              "reason": "One defined annotation key (gl) is specifically for wallets using the BIP 32 derived-key model, so part of the proposal's semantics is specialized around that scheme.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:352",
-              "evidence": "for BIP 352 silent payment wallets.",
-              "reason": "One defined annotation key (ml) is specifically for BIP 352 silent payment wallets, making that annotation's meaning dependent on the target proposal's wallet model.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:380",
-              "evidence": "This document specifies an optional annotation syntax for output script descriptors as defined in BIP 380.",
-              "reason": "The proposal directly extends BIP 380 descriptors, reuses its descriptor syntax and checksum algorithm, and defines annotations as an added layer on that format.",
-              "confidence": "low"
-            }
-          ]
+          "dependencies": []
         }
       ]
     }

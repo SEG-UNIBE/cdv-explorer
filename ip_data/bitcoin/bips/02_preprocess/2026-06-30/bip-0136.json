@@ -26,43 +26,50 @@
     }
   },
   "meta": {
-    "last_commit": "Wed Oct 8 14:59:36 2025 -0700",
+    "last_commit": "2025-10-08T14:59:36-07:00",
     "total_commits": 7,
     "git_history": [
       [
         "24e96e870fffaa257b465ce1f0370c14aac588e8",
-        "Wed Oct 8 14:59:36 2025 -0700",
-        "Murch"
+        "2025-10-08T14:59:36-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "5207ef92a52d0b8902895b0dbb40823a4d698ec9",
-        "Fri Apr 11 20:08:17 2025 -0700",
-        "Murch"
+        "2025-04-11T20:08:17-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "59730dec4fb641a41589aa1b91d3c452f13e0e36",
-        "Fri Apr 11 20:05:13 2025 -0700",
-        "Murch"
+        "2025-04-11T20:05:13-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "349d2ee295ea585c00331c88e963289e3d8a8209",
-        "Thu Mar 18 14:52:48 2021 -0700",
-        "Daniel X. Pape"
+        "2021-03-18T14:52:48-07:00",
+        "Daniel X. Pape",
+        "dpape@dpape.com"
       ],
       [
         "4e2bb34d04cb2fdbb5a52fdc6a606f0dfa91adc8",
-        "Wed Nov 28 22:30:09 2018 -0800",
-        "Daniel X. Pape"
+        "2018-11-28T22:30:09-08:00",
+        "Daniel X. Pape",
+        "dpape@dpape.com"
       ],
       [
         "a8bb0a4e39a9eefa419d2f83f40b6af97699016f",
-        "Tue Nov 6 15:35:44 2018 +0800",
-        "Велеслав"
+        "2018-11-06T15:35:44+08:00",
+        "Велеслав",
+        "veleslav.bips@protonmail.com"
       ],
       [
         "e78c384755f2bd6bf233d585a0ffd70b57eb43db",
-        "Wed Sep 12 20:17:33 2018 +1000",
-        "Велеслав"
+        "2018-09-12T20:17:33+10:00",
+        "Велеслав",
+        "veleslav.bips@protonmail.com"
       ]
     ]
   },
@@ -792,21 +799,21 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
+          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T09:30:42Z",
+          "timestamp": "2026-07-21T14:42:33Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:173",
-              "evidence": "MUST use the Bech32m encoding as defined in [https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki BIP-0173]",
-              "reason": "The proposal's TxRef format is built around the Bech32 encoding structure, alphabet, separator, and checksum framework defined by BIP 173.",
+              "evidence": "Bech32m encoding as defined in [https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki BIP-0173]",
+              "reason": "The proposal normatively requires the Bech32/Bech32m encoding format and explicitly states that TxRef MUST use the encoding as defined in BIP-0173, making the serialization and checksum workflow depend on that proposal's format.",
               "confidence": "low"
             },
             {
               "target": "bips:350",
               "evidence": "and later refined in [https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki BIP-0350]",
-              "reason": "The proposal normatively adopts the Bech32m refinement from BIP 350 for TxRef encoding and discusses compatibility with older Bech32 encodings.",
+              "reason": "The proposal specifically requires Bech32m and says the encoding was later refined in BIP-0350; it also instructs parsers to handle obsolete pre-refinement Bech32 forms, so understanding the intended checksum variant materially depends on BIP-0350's Bech32m refinement.",
               "confidence": "high"
             }
           ]

@@ -24,63 +24,74 @@
     }
   },
   "meta": {
-    "last_commit": "Wed Oct 8 14:59:36 2025 -0700",
+    "last_commit": "2025-10-08T14:59:36-07:00",
     "total_commits": 11,
     "git_history": [
       [
         "24e96e870fffaa257b465ce1f0370c14aac588e8",
-        "Wed Oct 8 14:59:36 2025 -0700",
-        "Murch"
+        "2025-10-08T14:59:36-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "5207ef92a52d0b8902895b0dbb40823a4d698ec9",
-        "Fri Apr 11 20:08:17 2025 -0700",
-        "Murch"
+        "2025-04-11T20:08:17-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "59730dec4fb641a41589aa1b91d3c452f13e0e36",
-        "Fri Apr 11 20:05:13 2025 -0700",
-        "Murch"
+        "2025-04-11T20:05:13-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "66defbdc03ad64ccddfd373e1c59af9a41ab990f",
-        "Fri Apr 11 18:11:55 2025 -0700",
-        "Murch"
+        "2025-04-11T18:11:55-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "9a56d3544eac1f949a747c251810f7a440d63fb9",
-        "Thu Jul 25 18:35:39 2024 +0300",
-        "Orfeas Stefanos Thyfronitis Litos"
+        "2024-07-25T18:35:39+03:00",
+        "Orfeas Stefanos Thyfronitis Litos",
+        "orfeas.litos@hotmail.com"
       ],
       [
         "f61885edcf5e63ac205b1ca5f08173f1336bff74",
-        "Wed May 1 06:54:05 2024 +1000",
-        "John Bampton"
+        "2024-05-01T06:54:05+10:00",
+        "John Bampton",
+        "jbampton@users.noreply.github.com"
       ],
       [
         "959fecc15bdad070afa63455468b1dba54655fa6",
-        "Wed Nov 30 09:47:31 2016 +0000",
-        "Luke Dashjr"
+        "2016-11-30T09:47:31Z",
+        "Luke Dashjr",
+        "luke-jr+git@utopios.org"
       ],
       [
         "387fc6011bd804609fd751786e50439d5c11a097",
-        "Tue Aug 23 19:47:29 2016 +0000",
-        "Luke Dashjr"
+        "2016-08-23T19:47:29Z",
+        "Luke Dashjr",
+        "luke-jr+git@utopios.org"
       ],
       [
         "4edd6d2badd9a6ad2ff09bb6792fe0d0e365a7de",
-        "Wed Feb 3 07:02:36 2016 +0000",
-        "Luke Dashjr"
+        "2016-02-03T07:02:36Z",
+        "Luke Dashjr",
+        "luke-jr+git@utopios.org"
       ],
       [
         "d6af2d163c69bafea5c4252280b4b4a08a301a98",
-        "Tue Jan 19 17:59:41 2016 +0000",
-        "Luke Dashjr"
+        "2016-01-19T17:59:41Z",
+        "Luke Dashjr",
+        "luke-jr+git@utopios.org"
       ],
       [
         "0ee385bac444a6080b96b307036e7d265fb3d5e2",
-        "Mon Jan 18 17:34:06 2016 -0800",
-        "Andy Chase"
+        "2016-01-18T17:34:06-08:00",
+        "Andy Chase",
+        "asperous2@gmail.com"
       ]
     ]
   },
@@ -599,16 +610,16 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
+          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T09:30:39Z",
+          "timestamp": "2026-07-21T14:42:27Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:1",
-              "evidence": "it does not specify the precise method for which BIPs are considered accepted or rejected.",
-              "reason": "The proposal explicitly builds on the existing BIP submission/editor process defined by BIP-0001 and references the BIP Editor role from it, so adopting this proposal depends on that underlying process framework.",
-              "confidence": "high"
+              "evidence": "BIP Editor (BIP-001)",
+              "reason": "The proposal assigns responsibilities relative to the BIP Editor role defined in BIP 1, and earlier states that a BIP must be assigned a BIP number, i.e. approved by the BIP editor, before entering this process. Implementing or evaluating this process therefore materially relies on the existing BIP governance role and numbering workflow from BIP 1.",
+              "confidence": "medium"
             }
           ]
         }

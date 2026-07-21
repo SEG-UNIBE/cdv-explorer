@@ -24,13 +24,14 @@
     }
   },
   "meta": {
-    "last_commit": "Thu Apr 23 20:17:01 2026 +0200",
+    "last_commit": "2026-04-23T20:17:01+02:00",
     "total_commits": 1,
     "git_history": [
       [
         "9eb67f5764763746fcfd8aedd205bb9f4a6590a6",
-        "Thu Apr 23 20:17:01 2026 +0200",
-        "SeedHammer"
+        "2026-04-23T20:17:01+02:00",
+        "SeedHammer",
+        "93251679+seedhammer@users.noreply.github.com"
       ]
     ]
   },
@@ -578,40 +579,40 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
+          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T09:32:03Z",
+          "timestamp": "2026-07-21T14:44:29Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
               "evidence": "The 78-byte serialized extended public key, as defined by BIP 32.",
-              "reason": "The key serialization, fingerprint, and derivation-path semantics for extended public keys are taken from BIP 32.",
+              "reason": "The key-map encoding uses BIP 32 serialized extended public keys and master key fingerprints, so the format materially depends on BIP 32's xpub serialization and fingerprint semantics.",
               "confidence": "high"
             },
             {
               "target": "bips:174",
-              "evidence": "Based on key-value maps as defined by BIP 174",
-              "reason": "The proposal reuses BIP 174 key-value map structure and keypair definition as the core container encoding.",
-              "confidence": "low"
+              "evidence": "Based on key-value maps as defined by [[bip-0174.mediawiki|BIP 174]]",
+              "reason": "The proposal directly reuses BIP 174 key-value map structure and keypair definition as its container encoding, making BIP 174 foundational to the format.",
+              "confidence": "high"
             },
             {
               "target": "bips:380",
-              "evidence": "encoding an output descriptor as defined by BIP 380",
-              "reason": "The proposal serializes output descriptors using the descriptor language and format defined by BIP 380.",
-              "confidence": "low"
+              "evidence": "encoding an output descriptor as defined by [[bip-0380.mediawiki|BIP 380]]",
+              "reason": "The proposal's core payload is a BIP 380 output descriptor, and the specification requires the descriptor value to be in BIP 380 format, so implementing or using this format materially depends on BIP 380's descriptor syntax and semantics.",
+              "confidence": "high"
             },
             {
               "target": "bips:388",
               "evidence": "This specification builds upon the draft BIP 388 by specifying a serialization format for compact descriptors.",
-              "reason": "The proposal is explicitly built on BIP 388 and reuses its indexed key references, examples, and test vectors.",
+              "reason": "The proposal explicitly builds on BIP 388 and reuses its indexed key references, indicating direct technical dependence on that descriptor scheme.",
               "confidence": "high"
             },
             {
               "target": "bips:389",
-              "evidence": "Key references may be followed by derivation paths as specified in BIP 389",
-              "reason": "The proposal adopts BIP 389 path syntax for key references within descriptors.",
-              "confidence": "low"
+              "evidence": "Key references may be followed by derivation paths as specified in [[bip-0389.mediawiki#specification|BIP 389]].",
+              "reason": "The proposal permits and relies on BIP 389's derivation-path suffix syntax for key references inside descriptors, so support for that part of the format depends on BIP 389.",
+              "confidence": "high"
             }
           ]
         }

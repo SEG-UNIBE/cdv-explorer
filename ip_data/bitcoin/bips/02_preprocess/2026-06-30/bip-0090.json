@@ -24,68 +24,80 @@
     }
   },
   "meta": {
-    "last_commit": "Fri Feb 27 14:12:41 2026 -0800",
+    "last_commit": "2026-02-27T14:12:41-08:00",
     "total_commits": 12,
     "git_history": [
       [
         "b3a069464a8879dd858c392a788c9d19a9f7a075",
-        "Fri Feb 27 14:12:41 2026 -0800",
-        "Murch"
+        "2026-02-27T14:12:41-08:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "24e96e870fffaa257b465ce1f0370c14aac588e8",
-        "Wed Oct 8 14:59:36 2025 -0700",
-        "Murch"
+        "2025-10-08T14:59:36-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "5207ef92a52d0b8902895b0dbb40823a4d698ec9",
-        "Fri Apr 11 20:08:17 2025 -0700",
-        "Murch"
+        "2025-04-11T20:08:17-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "5d3ceb37734f80b2ec206fc94245e3bfd6d5b0f0",
-        "Fri Apr 11 18:08:44 2025 -0700",
-        "Murch"
+        "2025-04-11T18:08:44-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "9a56d3544eac1f949a747c251810f7a440d63fb9",
-        "Thu Jul 25 18:35:39 2024 +0300",
-        "Orfeas Stefanos Thyfronitis Litos"
+        "2024-07-25T18:35:39+03:00",
+        "Orfeas Stefanos Thyfronitis Litos",
+        "orfeas.litos@hotmail.com"
       ],
       [
         "7fecce0751c56899043b91aad1236fea5d300682",
-        "Tue Jun 2 02:02:56 2020 -0500",
-        "Janus"
+        "2020-06-02T02:02:56-05:00",
+        "Janus",
+        "ysangkok@gmail.com"
       ],
       [
         "d208ed3ff16c61093d46532181afe73aab325854",
-        "Mon Jan 29 13:35:36 2018 -0500",
-        "Suhas Daftuar"
+        "2018-01-29T13:35:36-05:00",
+        "Suhas Daftuar",
+        "sdaftuar@gmail.com"
       ],
       [
         "d9396155350b16b098a0d0b5ec10da80ebd96d5f",
-        "Tue Mar 14 23:27:57 2017 +0000",
-        "Luke Dashjr"
+        "2017-03-14T23:27:57Z",
+        "Luke Dashjr",
+        "luke-jr+git@utopios.org"
       ],
       [
         "2bc2f060895ed43edd1553d74405d5ba2c0dcfae",
-        "Thu Dec 1 15:11:16 2016 -0500",
-        "Suhas Daftuar"
+        "2016-12-01T15:11:16-05:00",
+        "Suhas Daftuar",
+        "sdaftuar@gmail.com"
       ],
       [
         "5d21c93a681180b99da6b78e462f8fab245989ca",
-        "Thu Dec 1 08:56:40 2016 -0500",
-        "Suhas Daftuar"
+        "2016-12-01T08:56:40-05:00",
+        "Suhas Daftuar",
+        "sdaftuar@gmail.com"
       ],
       [
         "0fc3fe20ca138821f81cf454c0f0ed50e7c94229",
-        "Wed Nov 30 12:25:52 2016 -0500",
-        "Suhas Daftuar"
+        "2016-11-30T12:25:52-05:00",
+        "Suhas Daftuar",
+        "sdaftuar@gmail.com"
       ],
       [
         "836d2dc91e1e21a77c0b0364ec4a0a9722c02a4f",
-        "Tue Nov 8 12:03:32 2016 -0500",
-        "Suhas Daftuar"
+        "2016-11-08T12:03:32-05:00",
+        "Suhas Daftuar",
+        "sdaftuar@gmail.com"
       ]
     ]
   },
@@ -610,27 +622,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
+          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T09:30:04Z",
+          "timestamp": "2026-07-21T14:41:35Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:34",
-              "evidence": "replace the test which governs enforcement of BIP 34, BIP 65, and BIP 66 with simple height checks",
-              "reason": "The proposal directly modifies and simplifies BIP 34's activation and enforcement logic by hardcoding its activation height and removing the original lookback trigger.",
+              "evidence": "replace the test which governs enforcement of BIP 34",
+              "reason": "This proposal directly modifies how BIP 34 is enforced by replacing its original activation trigger logic with a fixed-height rule, and also retains BIP 34's coinbase-height enforcement semantics after that height.",
               "confidence": "low"
             },
             {
               "target": "bips:65",
-              "evidence": "replace the test which governs enforcement of BIP 34, BIP 65, and BIP 66 with simple height checks",
-              "reason": "The proposal directly modifies and simplifies BIP 65's activation and enforcement logic by hardcoding its activation height and removing the original lookback trigger.",
+              "evidence": "replace the test which governs enforcement of BIP 34, BIP 65, and BIP 66",
+              "reason": "This proposal directly changes the activation/enforcement mechanism for BIP 65 by substituting a stored activation height for the prior version-signaling trigger while continuing to enforce CHECKLOCKTIMEVERIFY after that height.",
               "confidence": "low"
             },
             {
               "target": "bips:66",
-              "evidence": "replace the test which governs enforcement of BIP 34, BIP 65, and BIP 66 with simple height checks",
-              "reason": "The proposal directly modifies and simplifies BIP 66's activation and enforcement logic by hardcoding its activation height and removing the original lookback trigger.",
+              "evidence": "replace the test which governs enforcement of BIP 34, BIP 65, and BIP 66",
+              "reason": "This proposal directly changes the activation/enforcement mechanism for BIP 66 by substituting a stored activation height for the prior version-signaling trigger while continuing to enforce the DERSIG rule after that height.",
               "confidence": "low"
             }
           ]

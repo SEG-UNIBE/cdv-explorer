@@ -25,68 +25,80 @@
     }
   },
   "meta": {
-    "last_commit": "Mon Jun 1 19:56:45 2026 -0500",
+    "last_commit": "2026-06-01T19:56:45-05:00",
     "total_commits": 12,
     "git_history": [
       [
         "b69b8fef2146350f0d270b7e8ccf7c76ece1f930",
-        "Mon Jun 1 19:56:45 2026 -0500",
-        "Shinobi"
+        "2026-06-01T19:56:45-05:00",
+        "Shinobi",
+        "shinobius_monk@protonmail.com"
       ],
       [
         "2885f13d3f37890e328683166dbcbc60b488d13a",
-        "Wed Oct 22 20:02:57 2025 +1000",
-        "Anthony Towns"
+        "2025-10-22T20:02:57+10:00",
+        "Anthony Towns",
+        "aj@erisian.com.au"
       ],
       [
         "24e96e870fffaa257b465ce1f0370c14aac588e8",
-        "Wed Oct 8 14:59:36 2025 -0700",
-        "Murch"
+        "2025-10-08T14:59:36-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "5207ef92a52d0b8902895b0dbb40823a4d698ec9",
-        "Fri Apr 11 20:08:17 2025 -0700",
-        "Murch"
+        "2025-04-11T20:08:17-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "59730dec4fb641a41589aa1b91d3c452f13e0e36",
-        "Fri Apr 11 20:05:13 2025 -0700",
-        "Murch"
+        "2025-04-11T20:05:13-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "a233bde4af52c6a11269e2e6dd9707abce441ffe",
-        "Fri Apr 11 18:19:21 2025 -0700",
-        "Murch"
+        "2025-04-11T18:19:21-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "5d3ceb37734f80b2ec206fc94245e3bfd6d5b0f0",
-        "Fri Apr 11 18:08:44 2025 -0700",
-        "Murch"
+        "2025-04-11T18:08:44-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "9a56d3544eac1f949a747c251810f7a440d63fb9",
-        "Thu Jul 25 18:35:39 2024 +0300",
-        "Orfeas Stefanos Thyfronitis Litos"
+        "2024-07-25T18:35:39+03:00",
+        "Orfeas Stefanos Thyfronitis Litos",
+        "orfeas.litos@hotmail.com"
       ],
       [
         "f4a05c1ced66f9f6a10fb1d741648dbe5be10301",
-        "Tue Feb 21 22:05:30 2023 +0100",
-        "Christian Lewe"
+        "2023-02-21T22:05:30+01:00",
+        "Christian Lewe",
+        "ch_lewe@agdsn.me"
       ],
       [
         "e7ee4fe6d51727c37e3435815b693ca5e78a42bb",
-        "Mon May 17 23:33:22 2021 +0000",
-        "Luke Dashjr"
+        "2021-05-17T23:33:22Z",
+        "Luke Dashjr",
+        "luke-jr+git@utopios.org"
       ],
       [
         "14f731e3d2c87cc221505750ae63cab49f293ad5",
-        "Mon May 17 10:09:34 2021 +0100",
-        "Michael Folkson"
+        "2021-05-17T10:09:34+01:00",
+        "Michael Folkson",
+        "michaelfolkson@gmail.com"
       ],
       [
         "37b55d2fde5d7d724822ab121492aac9731ac286",
-        "Sun May 9 10:03:13 2021 +0100",
-        "Michael Folkson"
+        "2021-05-09T10:03:13+01:00",
+        "Michael Folkson",
+        "michaelfolkson@gmail.com"
       ]
     ]
   },
@@ -584,21 +596,33 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
+          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T09:31:34Z",
+          "timestamp": "2026-07-21T14:43:50Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:8",
-              "evidence": "This document specifies a BIP8 (LOT=true) deployment to activate taproot.",
-              "reason": "The proposal is explicitly defined as a BIP8 deployment and relies on BIP8's activation mechanism, parameters, and LOT semantics.",
+              "evidence": "specifies a BIP8 (LOT=true) deployment",
+              "reason": "The proposal is explicitly an activation deployment using the BIP8 mechanism and parameters, so understanding and implementing it materially relies on BIP8's activation rules.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:340",
+              "evidence": "intends to activate BIPs 340, 341, and 342",
+              "reason": "The proposal is an activation mechanism for Taproot, and the text explicitly states the compatible deployment intends to activate BIPs 340, 341, and 342; adopting this deployment therefore includes activation of BIP340 as part of the Taproot package.",
               "confidence": "high"
             },
             {
               "target": "bips:341",
-              "evidence": "to activate taproot",
-              "reason": "The proposal's purpose is to activate Taproot, so its adoption and meaning depend on the Taproot consensus change being deployed.",
+              "evidence": "activate taproot",
+              "reason": "This proposal's sole purpose is to activate Taproot; in the references and compatibility section, Taproot is concretely identified as BIP341 ('Taproot: SegWit version 1 spending rules'), so the deployment is designed around activating that proposal's rules.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:342",
+              "evidence": "intends to activate BIPs 340, 341, and 342",
+              "reason": "The proposal is an activation mechanism for Taproot, and the text explicitly states the compatible deployment intends to activate BIPs 340, 341, and 342; adopting this deployment therefore includes activation of BIP342 as part of the Taproot package.",
               "confidence": "high"
             }
           ]

@@ -24,33 +24,38 @@
     }
   },
   "meta": {
-    "last_commit": "Wed Oct 8 14:59:36 2025 -0700",
+    "last_commit": "2025-10-08T14:59:36-07:00",
     "total_commits": 5,
     "git_history": [
       [
         "24e96e870fffaa257b465ce1f0370c14aac588e8",
-        "Wed Oct 8 14:59:36 2025 -0700",
-        "Murch"
+        "2025-10-08T14:59:36-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "5207ef92a52d0b8902895b0dbb40823a4d698ec9",
-        "Fri Apr 11 20:08:17 2025 -0700",
-        "Murch"
+        "2025-04-11T20:08:17-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "59730dec4fb641a41589aa1b91d3c452f13e0e36",
-        "Fri Apr 11 20:05:13 2025 -0700",
-        "Murch"
+        "2025-04-11T20:05:13-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "01352f7f40cb7f61d0aa177341f8804de2f8fed9",
-        "Fri Apr 11 20:07:37 2025 -0700",
-        "Murch"
+        "2025-04-11T20:07:37-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "04d3a0609b548805fa2ebaf5d3a495f1b81a003c",
-        "Mon Jan 15 16:26:55 2024 +0000",
-        "glozow"
+        "2024-01-15T16:26:55Z",
+        "glozow",
+        "gloriajzhao@gmail.com"
       ]
     ]
   },
@@ -792,15 +797,15 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
+          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T09:32:05Z",
+          "timestamp": "2026-07-21T14:44:32Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:125",
               "evidence": "A TRUC transaction signals replaceability, even if it does not signal BIP125 replaceability.",
-              "reason": "The proposal explicitly defines TRUC replaceability semantics relative to BIP125 signaling, constraining and extending the existing replace-by-fee signaling model.",
+              "reason": "The proposal explicitly defines TRUC replaceability in relation to BIP 125 signaling semantics, overriding that mechanism for opt-in replaceability and therefore materially depending on the target's replaceability concept and signaling rules.",
               "confidence": "high"
             }
           ]

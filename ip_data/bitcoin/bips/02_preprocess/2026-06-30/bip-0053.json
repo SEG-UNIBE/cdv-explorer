@@ -24,43 +24,50 @@
     }
   },
   "meta": {
-    "last_commit": "Wed Oct 8 14:59:36 2025 -0700",
+    "last_commit": "2025-10-08T14:59:36-07:00",
     "total_commits": 7,
     "git_history": [
       [
         "24e96e870fffaa257b465ce1f0370c14aac588e8",
-        "Wed Oct 8 14:59:36 2025 -0700",
-        "Murch"
+        "2025-10-08T14:59:36-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "5207ef92a52d0b8902895b0dbb40823a4d698ec9",
-        "Fri Apr 11 20:08:17 2025 -0700",
-        "Murch"
+        "2025-04-11T20:08:17-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "59730dec4fb641a41589aa1b91d3c452f13e0e36",
-        "Fri Apr 11 20:05:13 2025 -0700",
-        "Murch"
+        "2025-04-11T20:05:13-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "a233bde4af52c6a11269e2e6dd9707abce441ffe",
-        "Fri Apr 11 18:19:21 2025 -0700",
-        "Murch"
+        "2025-04-11T18:19:21-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "c569e23641e6899c48e804a65f7c6cb15d9705f3",
-        "Thu Nov 27 21:03:42 2025 +0100",
-        "Hodlinator"
+        "2025-11-27T21:03:42+01:00",
+        "Hodlinator",
+        "172445034+hodlinator@users.noreply.github.com"
       ],
       [
         "cbaedf2dfc1f4a0104d934a3f2121f911d39f2bb",
-        "Wed Nov 26 17:30:11 2025 +0100",
-        "Hodlinator"
+        "2025-11-26T17:30:11+01:00",
+        "Hodlinator",
+        "172445034+hodlinator@users.noreply.github.com"
       ],
       [
         "4d495ab1a09d1495cf0fecc113852a7f8309ed92",
-        "Fri Dec 20 16:57:22 2024 -0600",
-        "Chris Stewart"
+        "2024-12-20T16:57:22-06:00",
+        "Chris Stewart",
+        "stewart.chris1234@gmail.com"
       ]
     ]
   },
@@ -653,27 +660,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
+          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T09:29:38Z",
+          "timestamp": "2026-07-21T14:40:34Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:37",
               "evidence": "BIP37 provides a partial Merkle tree format",
-              "reason": "The proposal's SPV-client attack analysis and rationale explicitly rely on the partial Merkle tree format defined by BIP37.",
+              "reason": "The proposal's SPV-client attack analysis materially relies on the partial Merkle tree proof format defined by BIP37; understanding the described exploit and one motivation for banning 64-byte transactions depends on that format's semantics.",
               "confidence": "low"
             },
             {
               "target": "bips:66",
               "evidence": "After BIP66 was activated on the Bitcoin network, Bitcoin transactions cannot have a digital signature smaller than 9 bytes.",
-              "reason": "The backward-compatibility analysis depends on BIP66's signature-size consensus rule to constrain which pre-segwit 64-byte transactions are possible.",
+              "reason": "The backward-compatibility analysis for pre-segwit 64-byte transactions relies on BIP66's DER-signature size constraint to argue such transactions cannot spend signature-protected UTXOs.",
               "confidence": "high"
             },
             {
               "target": "bips:141",
               "evidence": "BIP141 says witness programs can be 2 bytes in size",
-              "reason": "The proposal's segwit applicability is defined around witness-program size semantics introduced by BIP141, determining which segwit 64-byte transactions are disallowed.",
+              "reason": "The proposal's segwit-specific compatibility impact depends on witness-program rules introduced by SegWit. The text explicitly relies on BIP141's allowance of 2-byte witness programs to identify which segwit 64-byte transactions would be disallowed.",
               "confidence": "high"
             }
           ]

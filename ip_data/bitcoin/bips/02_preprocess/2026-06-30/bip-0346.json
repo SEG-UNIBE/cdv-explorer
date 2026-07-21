@@ -25,18 +25,20 @@
     }
   },
   "meta": {
-    "last_commit": "Wed Feb 4 16:39:50 2026 -0600",
+    "last_commit": "2026-02-04T16:39:50-06:00",
     "total_commits": 2,
     "git_history": [
       [
         "10c78888857fc5609a9b0ea1bf360407e3a5f203",
-        "Wed Feb 4 16:39:50 2026 -0600",
-        "Paul Miller"
+        "2026-02-04T16:39:50-06:00",
+        "Paul Miller",
+        "paul@paul.lol"
       ],
       [
         "6a0636da32ff34e100e887df21eb0d8ec1d4b834",
-        "Wed Sep 6 16:16:35 2023 +0100",
-        "Steven Roose"
+        "2023-09-06T16:16:35+01:00",
+        "Steven Roose",
+        "steven@stevenroose.org"
       ]
     ]
   },
@@ -694,33 +696,33 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
+          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T09:31:37Z",
+          "timestamp": "2026-07-21T14:43:55Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:118",
               "evidence": "The 1-byte TxFieldSelector format explicitly supports these modes.",
-              "reason": "The proposal is designed to emulate and support the sighash modes defined by BIP-118, making its selector encoding and generalized sighash construction materially dependent on those semantics.",
+              "reason": "The proposal is designed to emulate and support the signature hash modes introduced by BIP-118, especially ANYPREVOUT/ANYPREVOUTANYSCRIPT, making BIP-118's semantics a substantive compatibility target.",
               "confidence": "high"
             },
             {
               "target": "bips:119",
-              "evidence": "making this proposal a generalization of BIP-119",
-              "reason": "The proposal explicitly generalizes BIP-119 by reproducing its core transaction-template hash semantics via the default empty TxFieldSelector.",
+              "evidence": "`OP_TXHASH` with the empty TxFieldSelector produces a hash semantically equivalent to BIP-119's `OP_CHECKTEMPLATEVERIFY`",
+              "reason": "The proposal explicitly generalizes BIP-119 and defines its default empty-selector mode to reproduce BIP-119's covenant hash semantics, so understanding that behavior materially depends on BIP-119.",
               "confidence": "high"
             },
             {
               "target": "bips:342",
               "evidence": "Using the same validation budget (\"sigops budget\") introduced in BIP-0342",
-              "reason": "The proposal reuses tapscript-only execution context, OP_SUCCESS opcode semantics, and the validation budget mechanism introduced by BIP-342.",
+              "reason": "The proposal reuses BIP-342's tapscript context, OP_SUCCESS opcode upgrade mechanism, and validation budget rules. OP_TXHASH is only active in tapscript and specifically redefines OP_SUCCESS189 under the semantics introduced by BIP-342.",
               "confidence": "high"
             },
             {
               "target": "bips:348",
               "evidence": "Together with `OP_CHECKSIGFROMSTACK`, `OP_TXHASH` provides a fully generalized signature hash construction",
-              "reason": "The proposal's generalized signature-hash functionality is explicitly constructed to work in combination with BIP-348's opcode.",
+              "reason": "A central design goal and security model of the proposal is its combination with OP_CHECKSIGFROMSTACK to construct generalized sighashes and emulate BIP-118 modes, so it materially relies on the mechanism proposed in BIP-348.",
               "confidence": "high"
             }
           ]

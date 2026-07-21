@@ -24,13 +24,14 @@
     }
   },
   "meta": {
-    "last_commit": "Sat May 23 10:03:53 2026 -0400",
+    "last_commit": "2026-05-23T10:03:53-04:00",
     "total_commits": 1,
     "git_history": [
       [
         "76d434e5fc781b579495b336ab0b6a73e8e05a54",
-        "Sat May 23 10:03:53 2026 -0400",
-        "Jeremy Rubin"
+        "2026-05-23T10:03:53-04:00",
+        "Jeremy Rubin",
+        "jeremy.l.rubin@gmail.com"
       ]
     ]
   },
@@ -782,22 +783,40 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
+          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T09:32:11Z",
+          "timestamp": "2026-07-21T14:44:51Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:340",
               "evidence": "attempt the BIP340 even-Y lift",
-              "reason": "The proposal normatively uses BIP340's x-only key lifting and encoding semantics to define opcode behavior and valid inputs/outputs.",
+              "reason": "The proposal normatively defines its opcode semantics using BIP340's x-only public key model and specifically its even-Y lift procedure, so implementing or evaluating OP_TWEAKADD materially depends on BIP340 semantics.",
               "confidence": "high"
             },
             {
               "target": "bips:341",
-              "evidence": "Constructions that require a BIP341 tweak to be computed entirely on-chain",
-              "reason": "The proposal is designed around Taproot's tweak model and explicitly extends that tweak mechanism into script, relying on BIP341's Taproot tweak concept for compatibility and motivation.",
+              "evidence": "Only valid in tapscript (witness version 1, leaf version 0xc0)",
+              "reason": "The opcode is defined as tapscript-only and is repeatedly framed around Taproot key tweaking and BIP341-compatible tweaks. Tapscript witness version 1 / leaf version 0xc0 and Taproot tweak context are introduced by BIP341, so the proposal depends on BIP341's script context and compatibility rules.",
               "confidence": "high"
+            },
+            {
+              "target": "bips:342",
+              "evidence": "Un-upgraded nodes will continue\nto treat unknown tapscript opcode as OP_SUCCESSx.",
+              "reason": "The soft-fork design relies on tapscript opcode semantics, specifically unknown opcodes being OP_SUCCESSx and the OP_CHECKSIGADD cost model referenced later. Those tapscript validation rules come from BIP342, making this a substantive dependency.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:348",
+              "evidence": "built from `OP_TWEAKADD` together with proposed opcodes such as BIP 348 `OP_CHECKSIGFROMSTACK`",
+              "reason": "The proposal's motivating and illustrative constructions explicitly compose OP_TWEAKADD with OP_CHECKSIGFROMSTACK, but BIP348 is only used for optional examples rather than required semantics of OP_TWEAKADD itself, so the reliance is not core.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:349",
+              "evidence": "built from `OP_TWEAKADD` together with proposed opcodes such as BIP 349 `OP_INTERNALKEY`",
+              "reason": "The proposal's example constructions use OP_INTERNALKEY to access the Taproot internal key alongside OP_TWEAKADD, but this is illustrative composition rather than a requirement for the opcode's own semantics.",
+              "confidence": "low"
             }
           ]
         }

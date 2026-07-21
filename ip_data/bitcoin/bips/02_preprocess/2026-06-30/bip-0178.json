@@ -24,43 +24,50 @@
     }
   },
   "meta": {
-    "last_commit": "Wed Oct 8 14:59:36 2025 -0700",
+    "last_commit": "2025-10-08T14:59:36-07:00",
     "total_commits": 7,
     "git_history": [
       [
         "24e96e870fffaa257b465ce1f0370c14aac588e8",
-        "Wed Oct 8 14:59:36 2025 -0700",
-        "Murch"
+        "2025-10-08T14:59:36-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "5207ef92a52d0b8902895b0dbb40823a4d698ec9",
-        "Fri Apr 11 20:08:17 2025 -0700",
-        "Murch"
+        "2025-04-11T20:08:17-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "a233bde4af52c6a11269e2e6dd9707abce441ffe",
-        "Fri Apr 11 18:19:21 2025 -0700",
-        "Murch"
+        "2025-04-11T18:19:21-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "cfacb9d68901841f11e8d4bc7f8a852589c7ccba",
-        "Tue Jul 30 11:41:21 2019 +0200",
-        "wigy"
+        "2019-07-30T11:41:21+02:00",
+        "wigy",
+        "wigy_opensource_developer@yahoo.com"
       ],
       [
         "308594e098424cfc8555b56832e07119ea5d2c7c",
-        "Mon Jul 1 17:07:12 2019 +0200",
-        "wigy"
+        "2019-07-01T17:07:12+02:00",
+        "wigy",
+        "wigy-opensource-developer@users.noreply.github.com"
       ],
       [
         "20f5021940971a206580ca955af3925419f0df6e",
-        "Tue May 22 08:21:06 2018 +0900",
-        "Karl-Johan Alm"
+        "2018-05-22T08:21:06+09:00",
+        "Karl-Johan Alm",
+        "karljohan-alm@garage.co.jp"
       ],
       [
         "f667e7a3c737bb983f31632837c24cf0863d5f7b",
-        "Wed Apr 4 14:38:00 2018 +0900",
-        "Karl-Johan Alm"
+        "2018-04-04T14:38:00+09:00",
+        "Karl-Johan Alm",
+        "karljohan-alm@garage.co.jp"
       ]
     ]
   },
@@ -515,16 +522,16 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
+          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T09:31:09Z",
+          "timestamp": "2026-07-21T14:43:10Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:16",
               "evidence": "Segwit nested in BIP16 P2SH",
-              "reason": "The proposal defines one WIF suffix value specifically for addresses using the target's P2SH wrapping mechanism.",
-              "confidence": "medium"
+              "reason": "The proposal defines one WIF suffix value specifically for keys corresponding to addresses using SegWit nested inside P2SH, explicitly relying on the P2SH mechanism defined by BIP16 for that address type.",
+              "confidence": "high"
             }
           ]
         }

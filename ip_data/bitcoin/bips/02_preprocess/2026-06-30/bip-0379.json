@@ -28,58 +28,68 @@
     }
   },
   "meta": {
-    "last_commit": "Fri Feb 27 14:27:01 2026 -0800",
+    "last_commit": "2026-02-27T14:27:01-08:00",
     "total_commits": 10,
     "git_history": [
       [
         "442e9628b3dcca1b65f0df8af2308f8260e00caa",
-        "Fri Feb 27 14:27:01 2026 -0800",
-        "Murch"
+        "2026-02-27T14:27:01-08:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "24e96e870fffaa257b465ce1f0370c14aac588e8",
-        "Wed Oct 8 14:59:36 2025 -0700",
-        "Murch"
+        "2025-10-08T14:59:36-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "5207ef92a52d0b8902895b0dbb40823a4d698ec9",
-        "Fri Apr 11 20:08:17 2025 -0700",
-        "Murch"
+        "2025-04-11T20:08:17-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "59730dec4fb641a41589aa1b91d3c452f13e0e36",
-        "Fri Apr 11 20:05:13 2025 -0700",
-        "Murch"
+        "2025-04-11T20:05:13-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "bc66fdb1664781eacfa23c9077f268eb918103e2",
-        "Wed Jun 18 14:56:02 2025 -0700",
-        "Ava Chow"
+        "2025-06-18T14:56:02-07:00",
+        "Ava Chow",
+        "github@achow101.com"
       ],
       [
         "091824b3bbba90e639c1b193173b8bb049c48daf",
-        "Fri Feb 28 20:52:42 2025 +0200",
-        "Skylar Ray"
+        "2025-02-28T20:52:42+02:00",
+        "Skylar Ray",
+        "137945430+sky-coderay@users.noreply.github.com"
       ],
       [
         "6312ae3e2464e59009b700d5a4dee5ccf7137c0f",
-        "Fri Feb 28 17:33:21 2025 +0200",
-        "Skylar Ray"
+        "2025-02-28T17:33:21+02:00",
+        "Skylar Ray",
+        "137945430+sky-coderay@users.noreply.github.com"
       ],
       [
         "726df6f4d54c7c7f9f1856ab37d07ece5defa0eb",
-        "Sat Feb 8 20:04:18 2025 +1000",
-        "Anthony Towns"
+        "2025-02-08T20:04:18+10:00",
+        "Anthony Towns",
+        "aj@erisian.com.au"
       ],
       [
         "45fbec92cd6a1d016d96d6ce7616f9b346056112",
-        "Mon Dec 16 15:23:08 2024 -0500",
-        "Danbo"
+        "2024-12-16T15:23:08-05:00",
+        "Danbo",
+        "140512416+dannbbb1@users.noreply.github.com"
       ],
       [
         "3b995946605623c16adc954b5c841104db2d3022",
-        "Wed Apr 10 09:37:34 2024 -0400",
-        "Ava Chow"
+        "2024-04-10T09:37:34-04:00",
+        "Ava Chow",
+        "github@achow101.com"
       ]
     ]
   },
@@ -849,39 +859,39 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
+          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T09:31:55Z",
+          "timestamp": "2026-07-21T14:44:19Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:141",
               "evidence": "These specifications apply to P2WSH ([BIP 141](bip-0141.mediawiki))",
-              "reason": "The proposal explicitly scopes part of Miniscript to P2WSH scripts, relying on the witness script context defined there.",
+              "reason": "The proposal explicitly scopes its specification to P2WSH scripts, so understanding and implementing the P2WSH variant of Miniscript materially relies on the script form and witness rules defined by BIP 141.",
               "confidence": "high"
             },
             {
               "target": "bips:342",
-              "evidence": "and Tapscript ([BIP 342](bip-0342.mediawiki)) scripts",
-              "reason": "The proposal explicitly scopes part of Miniscript to Tapscript scripts and defines context-specific behavior around that script version.",
+              "evidence": "These specifications apply to P2WSH ([BIP 141](bip-0141.mediawiki)) and Tapscript ([BIP 342](bip-0342.mediawiki)) scripts",
+              "reason": "The proposal explicitly applies its specification to Tapscript scripts, and includes Tapscript-specific fragments and rules such as `multi_a`, so it materially relies on the Tapscript semantics introduced by BIP 342.",
               "confidence": "high"
             },
             {
               "target": "bips:380",
-              "evidence": "Key expressions are specified in [BIP 380](bip-0380.mediawiki#key-expressions).",
-              "reason": "The proposal reuses the target's key-expression syntax and semantics for Miniscript keys.",
+              "evidence": "Key expressions are specified in\n[BIP 380](bip-0380.mediawiki#key-expressions).",
+              "reason": "Miniscript reuses BIP 380 key expressions as its key syntax, so implementing Miniscript requires the key-expression semantics defined there.",
               "confidence": "high"
             },
             {
               "target": "bips:382",
               "evidence": "Miniscript fragments are expected to be used in [BIP 382](bip-0382.mediawiki) `wsh()` descriptors",
-              "reason": "The proposal is designed for use inside the target's descriptor format and applies its key-expression restrictions in P2WSH contexts.",
+              "reason": "The proposal is designed to be embedded in `wsh()` descriptors from BIP 382, and it further states that BIP 382's key-expression restrictions apply to Miniscript in P2WSH contexts, making BIP 382 a substantive descriptor-format dependency.",
               "confidence": "high"
             },
             {
               "target": "bips:386",
               "evidence": "and [BIP 386](bip-0386.mediawiki) `tr()` descriptors",
-              "reason": "The proposal is designed for use inside the target's descriptor format and applies its key-expression restrictions in P2TR contexts.",
+              "reason": "The proposal is designed to be embedded in `tr()` descriptors from BIP 386, and it states that BIP 386's key-expression restrictions apply to Miniscript in P2TR contexts, making BIP 386 a substantive descriptor-format dependency.",
               "confidence": "high"
             }
           ]

@@ -26,53 +26,62 @@
     }
   },
   "meta": {
-    "last_commit": "Fri Feb 27 23:40:25 2026 +0100",
+    "last_commit": "2026-02-27T23:40:25+01:00",
     "total_commits": 9,
     "git_history": [
       [
         "edb6856d25ee33641e8d492d2cacd2f22a5d785a",
-        "Fri Feb 27 23:40:25 2026 +0100",
-        "MoNyAvA"
+        "2026-02-27T23:40:25+01:00",
+        "MoNyAvA",
+        "bazarunetuNYC@gmail.com"
       ],
       [
         "24e96e870fffaa257b465ce1f0370c14aac588e8",
-        "Wed Oct 8 14:59:36 2025 -0700",
-        "Murch"
+        "2025-10-08T14:59:36-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "5207ef92a52d0b8902895b0dbb40823a4d698ec9",
-        "Fri Apr 11 20:08:17 2025 -0700",
-        "Murch"
+        "2025-04-11T20:08:17-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "59730dec4fb641a41589aa1b91d3c452f13e0e36",
-        "Fri Apr 11 20:05:13 2025 -0700",
-        "Murch"
+        "2025-04-11T20:05:13-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "a233bde4af52c6a11269e2e6dd9707abce441ffe",
-        "Fri Apr 11 18:19:21 2025 -0700",
-        "Murch"
+        "2025-04-11T18:19:21-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "c3e8379b611a53114544b0ed7af5307b022b8ac8",
-        "Sat Apr 14 11:16:32 2018 +0530",
-        "Varunram"
+        "2018-04-14T11:16:32+05:30",
+        "Varunram",
+        "vrg2009@ymail.com"
       ],
       [
         "612c002c65ed438a50f77d12d545f0c801f29a50",
-        "Thu Jan 11 14:41:45 2018 +0900",
-        "Mark Friedenbach"
+        "2018-01-11T14:41:45+09:00",
+        "Mark Friedenbach",
+        "mark@friedenbach.org"
       ],
       [
         "7cd6c2fb831466cd1236746d5e8e9c88fd030393",
-        "Wed Jan 10 13:14:28 2018 +0900",
-        "Mark Friedenbach"
+        "2018-01-10T13:14:28+09:00",
+        "Mark Friedenbach",
+        "mark@friedenbach.org"
       ],
       [
         "689f2a5d02a65ed4d21e57f55ff3e5e0ddd073c5",
-        "Tue Nov 14 17:39:53 2017 +0900",
-        "Karl-Johan Alm"
+        "2017-11-14T17:39:53+09:00",
+        "Karl-Johan Alm",
+        "karljohan-alm@garage.co.jp"
       ]
     ]
   },
@@ -712,27 +721,33 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
+          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T09:30:22Z",
+          "timestamp": "2026-07-21T14:42:12Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:8",
               "evidence": "This BIP will be deployed by BIP8 (Version bits with lock-in by height)[9]",
-              "reason": "The proposal normatively specifies BIP8 as its activation mechanism.",
+              "reason": "The proposal specifies BIP8 as its activation mechanism, so adoption and deployment of the consensus change depend on the target's defined versionbits lock-in procedure.",
               "confidence": "high"
+            },
+            {
+              "target": "bips:16",
+              "evidence": "BIP16 (Pay to Script Hash)[1] and BIP141 (Segregated Witness)[2] provide mechanisms by which script policy can be revealed at spend time as part of the execution witness.",
+              "reason": "The proposal is designed as a further generalization of delayed script revelation and explicitly constrains where tail-call execution can occur relative to scriptSig and P2SH redeem scripts, so understanding its semantics and compatibility meaningfully depends on the P2SH redeem-script mechanism introduced by BIP16.",
+              "confidence": "medium"
             },
             {
               "target": "bips:116",
               "evidence": "This BIP, in conjunction with BIP116 (MERKLEBRANCHVERIFY)[3] allows for a script to commit to a practically unbounded number of code pathways",
-              "reason": "The proposal's generalized MAST design explicitly relies on MERKLEBRANCHVERIFY to commit to and prove membership of policy scripts before tail-call execution.",
+              "reason": "The proposal's generalized MAST construction explicitly relies on MERKLEBRANCHVERIFY to commit to and prove membership of policy scripts before tail-call execution; the text states the mechanism works in conjunction with BIP116.",
               "confidence": "high"
             },
             {
               "target": "bips:141",
-              "evidence": "Only one such tail-call of a subscript is allowed per script execution context, and only from within a segwit redeem script.",
-              "reason": "The proposal constrains its semantics around segwit redeem-script execution and compatibility with segwit CLEANSTACK and witness rules.",
+              "evidence": "only from within a segwit redeem script",
+              "reason": "The proposal normatively restricts tail-call semantics to segwit redeem scripts and repeatedly relies on segwit rules such as CLEANSTACK and witness execution compatibility, so its operation and constraints materially depend on the SegWit script/witness framework introduced by BIP141.",
               "confidence": "high"
             }
           ]

@@ -25,13 +25,14 @@
     }
   },
   "meta": {
-    "last_commit": "Fri May 8 10:49:03 2026 +0200",
+    "last_commit": "2026-05-08T10:49:03+02:00",
     "total_commits": 1,
     "git_history": [
       [
         "c134c7db552d26801ba2ef86e00c50febe843718",
-        "Fri May 8 10:49:03 2026 +0200",
-        "Fabian Jahr"
+        "2026-05-08T10:49:03+02:00",
+        "Fabian Jahr",
+        "fjahr@protonmail.com"
       ]
     ]
   },
@@ -556,28 +557,22 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
+          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T09:30:08Z",
+          "timestamp": "2026-07-21T14:41:40Z",
           "status": "success",
           "dependencies": [
             {
-              "target": "bips:30",
-              "evidence": "avoids duplicate transactions without [bip-0030][BIP30] validation",
-              "reason": "The proposal's evaluation of BIP 54's enforced rules relies on the semantics of BIP 30 validation as something those rules make unnecessary.",
-              "confidence": "medium"
-            },
-            {
               "target": "bips:54",
               "evidence": "The rules specified in [BIP 54 version 1.0.0][BIP54] are active on Testnet 5 from block 1.",
-              "reason": "The proposal directly enforces BIP 54's consensus rules from genesis, so implementing Testnet 5 requires implementing those rules.",
+              "reason": "The proposal explicitly incorporates and enforces BIP 54's consensus rules as part of Testnet 5 from genesis, so implementing or evaluating this proposal materially depends on BIP 54's rule set.",
               "confidence": "high"
             },
             {
               "target": "bips:94",
-              "evidence": "Testnet 5 is a new test network intended to replace [Testnet 4][BIP94].",
-              "reason": "The proposal is defined as a replacement for Testnet 4 and specifically removes Testnet 4's difficulty exception, making its design and compatibility constraints materially dependent on BIP 94's network rules.",
-              "confidence": "medium"
+              "evidence": "Testnet 5 is a new test network intended to replace [Testnet 4][BIP94]. Testnet 5 removes the difficulty exception defined in Testnet 4.",
+              "reason": "The proposal is designed as a successor to Testnet 4 and substantively modifies the specific difficulty-exception mechanism introduced for that network, so understanding the change depends on the prior Testnet 4 rules it replaces.",
+              "confidence": "high"
             }
           ]
         }

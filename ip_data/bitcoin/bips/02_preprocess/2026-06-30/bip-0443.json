@@ -24,68 +24,80 @@
     }
   },
   "meta": {
-    "last_commit": "Wed Oct 8 14:59:36 2025 -0700",
+    "last_commit": "2025-10-08T14:59:36-07:00",
     "total_commits": 12,
     "git_history": [
       [
         "24e96e870fffaa257b465ce1f0370c14aac588e8",
-        "Wed Oct 8 14:59:36 2025 -0700",
-        "Murch"
+        "2025-10-08T14:59:36-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "5207ef92a52d0b8902895b0dbb40823a4d698ec9",
-        "Fri Apr 11 20:08:17 2025 -0700",
-        "Murch"
+        "2025-04-11T20:08:17-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "59730dec4fb641a41589aa1b91d3c452f13e0e36",
-        "Fri Apr 11 20:05:13 2025 -0700",
-        "Murch"
+        "2025-04-11T20:05:13-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "01352f7f40cb7f61d0aa177341f8804de2f8fed9",
-        "Fri Apr 11 20:07:37 2025 -0700",
-        "Murch"
+        "2025-04-11T20:07:37-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "a233bde4af52c6a11269e2e6dd9707abce441ffe",
-        "Fri Apr 11 18:19:21 2025 -0700",
-        "Murch"
+        "2025-04-11T18:19:21-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "5d06b3b976753e397d6b4b8de52a4977bae42722",
-        "Mon Aug 11 12:22:09 2025 +0200",
-        "Tomás Andróil"
+        "2025-08-11T12:22:09+02:00",
+        "Tomás Andróil",
+        "tomasandroil@gmail.com"
       ],
       [
         "c72c59a8db3492cc3f40fbdf94f02dd2e7422a06",
-        "Sat Aug 2 11:42:07 2025 +0800",
-        "hoffman"
+        "2025-08-02T11:42:07+08:00",
+        "hoffman",
+        "bettthoffman@gmail.com"
       ],
       [
         "e4e2b7ccd10af0ad0fdab6358461567326ee21e8",
-        "Sun Jun 22 20:27:23 2025 +0200",
-        "Salvatore Ingala"
+        "2025-06-22T20:27:23+02:00",
+        "Salvatore Ingala",
+        "6681844+bigspider@users.noreply.github.com"
       ],
       [
         "ff5703c7559237a224b9fe760544058bca766de7",
-        "Sun Jun 22 19:36:57 2025 +0200",
-        "Salvatore Ingala"
+        "2025-06-22T19:36:57+02:00",
+        "Salvatore Ingala",
+        "6681844+bigspider@users.noreply.github.com"
       ],
       [
         "0f47be10d68462d1b38af31ff127c907473bdeb2",
-        "Fri Jun 20 01:19:54 2025 +0200",
-        "Afounso Souza"
+        "2025-06-20T01:19:54+02:00",
+        "Afounso Souza",
+        "drewsmpk@gmail.com"
       ],
       [
         "6a311752dd4744e3886ab110ab356627884022e2",
-        "Mon Jun 2 14:09:04 2025 -0600",
-        "Johan T. Halseth"
+        "2025-06-02T14:09:04-06:00",
+        "Johan T. Halseth",
+        "johanth@gmail.com"
       ],
       [
         "ed6b6132f877ad21db0cb038ec773d8a83ba9e4d",
-        "Sun Dec 8 23:38:40 2024 +0100",
-        "Salvatore Ingala"
+        "2024-12-08T23:38:40+01:00",
+        "Salvatore Ingala",
+        "6681844+bigspider@users.noreply.github.com"
       ]
     ]
   },
@@ -768,15 +780,15 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
+          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T09:32:09Z",
+          "timestamp": "2026-07-21T14:44:39Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:341",
               "evidence": "The resulting key is the taproot internal key per BIP-341.",
-              "reason": "The proposal is explicitly designed around Taproot/P2TR key and taptree semantics, reusing BIP-341 internal-key, tweaking, NUMS key, and scriptPubKey construction mechanisms.",
+              "reason": "The proposal is explicitly designed around Taproot's internal-key, taptree, P2TR output, NUMS key, and helper tweak semantics. Implementing or evaluating OP_CHECKCONTRACTVERIFY materially depends on BIP 341's definitions and compatibility rules for taproot keys and scriptPubKeys.",
               "confidence": "high"
             }
           ]

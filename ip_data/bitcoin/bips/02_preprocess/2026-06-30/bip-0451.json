@@ -25,13 +25,14 @@
     }
   },
   "meta": {
-    "last_commit": "Wed May 6 02:22:45 2026 -0500",
+    "last_commit": "2026-05-06T02:22:45-05:00",
     "total_commits": 1,
     "git_history": [
       [
         "2cf42729484b385b310aeb590cb704ba3f0c9498",
-        "Wed May 6 02:22:45 2026 -0500",
-        "bubb1es71"
+        "2026-05-06T02:22:45-05:00",
+        "bubb1es71",
+        "bubb1es71@proton.me"
       ]
     ]
   },
@@ -677,15 +678,15 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
+          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T09:32:13Z",
+          "timestamp": "2026-07-21T14:44:50Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:125",
               "evidence": "the resulting replacement transaction MUST satisfy BIP 125 RBF rules",
-              "reason": "The proposal's batching mechanism explicitly relies on the target's replace-by-fee rules and semantics to construct valid replacement transactions.",
+              "reason": "The proposal's batching mechanism is explicitly designed around and normatively constrained by BIP 125 replace-by-fee rules.",
               "confidence": "high"
             }
           ]

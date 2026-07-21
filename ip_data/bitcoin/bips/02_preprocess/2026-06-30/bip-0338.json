@@ -24,78 +24,92 @@
     }
   },
   "meta": {
-    "last_commit": "Wed Oct 8 14:59:36 2025 -0700",
+    "last_commit": "2025-10-08T14:59:36-07:00",
     "total_commits": 14,
     "git_history": [
       [
         "24e96e870fffaa257b465ce1f0370c14aac588e8",
-        "Wed Oct 8 14:59:36 2025 -0700",
-        "Murch"
+        "2025-10-08T14:59:36-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "5207ef92a52d0b8902895b0dbb40823a4d698ec9",
-        "Fri Apr 11 20:08:17 2025 -0700",
-        "Murch"
+        "2025-04-11T20:08:17-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "59730dec4fb641a41589aa1b91d3c452f13e0e36",
-        "Fri Apr 11 20:05:13 2025 -0700",
-        "Murch"
+        "2025-04-11T20:05:13-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "a233bde4af52c6a11269e2e6dd9707abce441ffe",
-        "Fri Apr 11 18:19:21 2025 -0700",
-        "Murch"
+        "2025-04-11T18:19:21-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "66defbdc03ad64ccddfd373e1c59af9a41ab990f",
-        "Fri Apr 11 18:11:55 2025 -0700",
-        "Murch"
+        "2025-04-11T18:11:55-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "56f7e7099167173bf36073790b7aeeb1164f7ae5",
-        "Wed Jul 10 15:36:54 2024 -0400",
-        "Suhas Daftuar"
+        "2024-07-10T15:36:54-04:00",
+        "Suhas Daftuar",
+        "sdaftuar@chaincode.com"
       ],
       [
         "955715284b21c132ce8f1b040a8c36ce6b3e7c1c",
-        "Tue Apr 5 09:09:41 2022 -0400",
-        "Suhas Daftuar"
+        "2022-04-05T09:09:41-04:00",
+        "Suhas Daftuar",
+        "sdaftuar@gmail.com"
       ],
       [
         "f2d5867bc7effd6aa2b0a7b112ad2bf3ea87f2d0",
-        "Tue Mar 9 14:25:38 2021 -0500",
-        "Suhas Daftuar"
+        "2021-03-09T14:25:38-05:00",
+        "Suhas Daftuar",
+        "sdaftuar@gmail.com"
       ],
       [
         "d2853bcc511989d2ba96c0e3cffe51dd8b042879",
-        "Fri Feb 12 21:02:49 2021 +0000",
-        "Luke Dashjr"
+        "2021-02-12T21:02:49Z",
+        "Luke Dashjr",
+        "luke-jr+git@utopios.org"
       ],
       [
         "31f61e71759c8c205294b2065a8383a91c60b436",
-        "Fri Feb 12 08:46:49 2021 -0500",
-        "Suhas Daftuar"
+        "2021-02-12T08:46:49-05:00",
+        "Suhas Daftuar",
+        "sdaftuar@gmail.com"
       ],
       [
         "332b9a4854963e8afa8ab89682b9686b79956b95",
-        "Fri Feb 12 08:20:07 2021 -0500",
-        "Suhas Daftuar"
+        "2021-02-12T08:20:07-05:00",
+        "Suhas Daftuar",
+        "sdaftuar@gmail.com"
       ],
       [
         "55a31eb8ee304984534e6de8a9ef18691defa983",
-        "Thu Feb 11 13:45:26 2021 -0500",
-        "Suhas Daftuar"
+        "2021-02-11T13:45:26-05:00",
+        "Suhas Daftuar",
+        "sdaftuar@gmail.com"
       ],
       [
         "794f20a13148536e7627451adaf0534e5862f7fa",
-        "Tue Jan 26 11:46:35 2021 -0500",
-        "Suhas Daftuar"
+        "2021-01-26T11:46:35-05:00",
+        "Suhas Daftuar",
+        "sdaftuar@gmail.com"
       ],
       [
         "5f18700477e2c09653591b940caa40d285a21d95",
-        "Thu Sep 3 16:51:17 2020 -0400",
-        "Suhas Daftuar"
+        "2020-09-03T16:51:17-04:00",
+        "Suhas Daftuar",
+        "sdaftuar@gmail.com"
       ]
     ]
   },
@@ -593,33 +607,45 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
+          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T09:31:26Z",
+          "timestamp": "2026-07-21T14:43:42Z",
           "status": "success",
           "dependencies": [
             {
+              "target": "bips:35",
+              "evidence": "mempool (BIP 35)",
+              "reason": "The specification explicitly constrains BIP 35 by prohibiting the mempool message on disabletx connections, creating a direct compatibility rule with that proposal's message.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:37",
+              "evidence": "the transaction relay field (introduced by BIP 37",
+              "reason": "The proposal's disabletx negotiation is defined around the existing transaction relay field semantics introduced by BIP 37, and it further constrains BIP 37-specific transaction-filtering messages by forbidding merkleblock getdata and filteradd/filterload/filterclear when disabletx is used.",
+              "confidence": "high"
+            },
+            {
               "target": "bips:60",
-              "evidence": "transactions would not be relayed to peers sending the disabletx message (provided that BIP 37 or BIP 60 has been implemented)",
-              "reason": "The proposal's backward-compatible non-relay behavior on disabletx connections relies on the transaction relay field semantics defined in the target.",
+              "evidence": "also defined in BIP 60",
+              "reason": "The proposal relies on the transaction relay field as defined in the version message by BIP 60; disabletx may only be sent when that field is set to false, so its behavior is materially conditioned on BIP 60's relay-flag semantics.",
               "confidence": "high"
             },
             {
               "target": "bips:133",
               "evidence": "feefilter (BIP 133)",
-              "reason": "The proposal explicitly constrains use of the target's feefilter message by forbidding it on disabletx connections.",
-              "confidence": "medium"
+              "reason": "The specification explicitly constrains BIP 133 by prohibiting feefilter on connections where disabletx has been sent or received, so implementing this proposal requires handling that message-type interaction.",
+              "confidence": "high"
             },
             {
               "target": "bips:152",
               "evidence": "subject to the feature negotiation of BIP 152",
-              "reason": "The proposal preserves and is designed to operate alongside the target's compact block message negotiation and semantics on disabletx connections.",
-              "confidence": "medium"
+              "reason": "The proposal expressly preserves BIP 152 compact-block messages and states that their use on disabletx connections follows BIP 152 feature negotiation, so compatibility with this proposal depends on retaining BIP 152's negotiation and message semantics on such links.",
+              "confidence": "high"
             },
             {
               "target": "bips:155",
               "evidence": "addrv2 (BIP 155)",
-              "reason": "The proposal explicitly constrains use of the target's addrv2 address relay message by recommending it not be sent on disabletx connections.",
+              "reason": "The proposal gives normative relay guidance for the addrv2 message on disabletx connections, so adoption requires accounting for BIP 155's address-relay message in this restricted workflow.",
               "confidence": "medium"
             }
           ]

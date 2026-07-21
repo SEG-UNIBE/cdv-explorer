@@ -25,63 +25,74 @@
     }
   },
   "meta": {
-    "last_commit": "Wed Oct 8 14:59:36 2025 -0700",
+    "last_commit": "2025-10-08T14:59:36-07:00",
     "total_commits": 11,
     "git_history": [
       [
         "24e96e870fffaa257b465ce1f0370c14aac588e8",
-        "Wed Oct 8 14:59:36 2025 -0700",
-        "Murch"
+        "2025-10-08T14:59:36-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "5207ef92a52d0b8902895b0dbb40823a4d698ec9",
-        "Fri Apr 11 20:08:17 2025 -0700",
-        "Murch"
+        "2025-04-11T20:08:17-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "59730dec4fb641a41589aa1b91d3c452f13e0e36",
-        "Fri Apr 11 20:05:13 2025 -0700",
-        "Murch"
+        "2025-04-11T20:05:13-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "01352f7f40cb7f61d0aa177341f8804de2f8fed9",
-        "Fri Apr 11 20:07:37 2025 -0700",
-        "Murch"
+        "2025-04-11T20:07:37-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "98935ff1f903703db13a191262ce7e6dfe19938c",
-        "Mon Dec 15 11:29:21 2025 -0600",
-        "Ben Westgate"
+        "2025-12-15T11:29:21-06:00",
+        "Ben Westgate",
+        "BenWestgate@protonmail.com"
       ],
       [
         "46a2440718ce96681155e4c96bfc373d079d2eef",
-        "Wed May 29 16:18:11 2024 +0800",
-        "cocoyeal"
+        "2024-05-29T16:18:11+08:00",
+        "cocoyeal",
+        "ricodigging@gmail.com"
       ],
       [
         "c02efd1456ace504a8f12c1c741a4cf0c8275934",
-        "Thu Mar 30 01:48:22 2023 +0000",
-        "Andrew Poelstra"
+        "2023-03-30T01:48:22Z",
+        "Andrew Poelstra",
+        "apoelstra@wpsoftware.net"
       ],
       [
         "c3b330fdec2ccd65ac4eb85160034d7f744b79f2",
-        "Wed Mar 29 14:05:35 2023 +0000",
-        "Andrew Poelstra"
+        "2023-03-29T14:05:35Z",
+        "Andrew Poelstra",
+        "apoelstra@wpsoftware.net"
       ],
       [
         "eb62f6ea71629e63ab4dc40eb7e18770e10c7b33",
-        "Wed Mar 29 14:07:31 2023 +0000",
-        "Andrew Poelstra"
+        "2023-03-29T14:07:31Z",
+        "Andrew Poelstra",
+        "apoelstra@wpsoftware.net"
       ],
       [
         "838fd932190f2b54ec4bcdf7824aec5c76724571",
-        "Fri Mar 17 11:15:29 2023 -0400",
-        "Russell O'Connor"
+        "2023-03-17T11:15:29-04:00",
+        "Russell O'Connor",
+        "roconnor@blockstream.io"
       ],
       [
         "e761066fbcd41b6a10b1614d974ea09531c3f945",
-        "Fri Mar 17 02:39:01 2023 +0000",
-        "Andrew Poelstra"
+        "2023-03-17T02:39:01Z",
+        "Andrew Poelstra",
+        "apoelstra@wpsoftware.net"
       ]
     ]
   },
@@ -880,22 +891,34 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
+          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T09:30:06Z",
+          "timestamp": "2026-07-21T14:41:40Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
               "evidence": "a standard for backing up and restoring the master seed of a BIP-0032 hierarchical deterministic wallet",
-              "reason": "The proposal is specifically designed to encode, split, restore, and support the seed format and size constraints of BIP-0032 master seeds.",
+              "reason": "The proposal specifically defines codex32 as an encoding and sharing format for BIP-0032 master seeds, and repeatedly constrains payload size and semantics around the BIP-0032 HD master seed format.",
               "confidence": "low"
             },
             {
+              "target": "bips:39",
+              "evidence": "It is technically possible to derive the BIP32 master seed from seed words encoded in one of these schemes, and then to encode this seed in codex32.",
+              "reason": "Although mostly contrasted as an alternative, the proposal also defines backward-compatibility and conversion behavior for BIP-0039 by deriving a BIP32 master seed from BIP-0039-encoded data before encoding it as codex32. That makes BIP-0039 materially relevant for evaluating interoperability and migration.",
+              "confidence": "medium"
+            },
+            {
               "target": "bips:173",
-              "evidence": "A codex32 string is similar to a bech32 string defined in BIP-0173. It reuses the base-32 character set from BIP-0173",
-              "reason": "The proposal directly reuses BIP-0173's bech32 character set and string semantics for encoding and checksum-related character mapping.",
-              "confidence": "low"
+              "evidence": "It reuses the base-32 character set from BIP-0173",
+              "reason": "The proposal directly builds its codex32 format on Bech32 mechanisms from BIP-0173, reusing its character set, checksum-related lowercase handling, and decoding table semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "slips:39",
+              "evidence": "SLIP-0039 seed words can be reversibly converted to master seeds, so it is possible to interconvert between SLIP-0039 and codex32.",
+              "reason": "Beyond comparison, the proposal normatively discusses reversible interconversion between SLIP-0039 seed words and codex32 master-seed encodings, which materially affects interoperability and adoption considerations.",
+              "confidence": "medium"
             }
           ]
         }

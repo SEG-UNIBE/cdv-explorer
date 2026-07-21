@@ -24,78 +24,92 @@
     }
   },
   "meta": {
-    "last_commit": "Wed Oct 22 20:02:57 2025 +1000",
+    "last_commit": "2025-10-22T20:02:57+10:00",
     "total_commits": 14,
     "git_history": [
       [
         "2885f13d3f37890e328683166dbcbc60b488d13a",
-        "Wed Oct 22 20:02:57 2025 +1000",
-        "Anthony Towns"
+        "2025-10-22T20:02:57+10:00",
+        "Anthony Towns",
+        "aj@erisian.com.au"
       ],
       [
         "24e96e870fffaa257b465ce1f0370c14aac588e8",
-        "Wed Oct 8 14:59:36 2025 -0700",
-        "Murch"
+        "2025-10-08T14:59:36-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "5207ef92a52d0b8902895b0dbb40823a4d698ec9",
-        "Fri Apr 11 20:08:17 2025 -0700",
-        "Murch"
+        "2025-04-11T20:08:17-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "59730dec4fb641a41589aa1b91d3c452f13e0e36",
-        "Fri Apr 11 20:05:13 2025 -0700",
-        "Murch"
+        "2025-04-11T20:05:13-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "a233bde4af52c6a11269e2e6dd9707abce441ffe",
-        "Fri Apr 11 18:19:21 2025 -0700",
-        "Murch"
+        "2025-04-11T18:19:21-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "5d3ceb37734f80b2ec206fc94245e3bfd6d5b0f0",
-        "Fri Apr 11 18:08:44 2025 -0700",
-        "Murch"
+        "2025-04-11T18:08:44-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "d98333302f2a41114c6f006a77a51edc3d1e743b",
-        "Fri Aug 11 05:36:07 2017 +0000",
-        "shaolinfry"
+        "2017-08-11T05:36:07Z",
+        "shaolinfry",
+        "shaolinfry@protonmail.ch"
       ],
       [
         "5f34ed741a68cb4e2aaf0343d6a4ad5f3119a3d2",
-        "Tue Apr 4 12:55:33 2017 +0200",
-        "Cameron Garnham"
+        "2017-04-04T12:55:33+02:00",
+        "Cameron Garnham",
+        "da2ce7@gmail.com"
       ],
       [
         "1352c367a1431fef1a711edeb239fa822a564c4b",
-        "Tue Apr 4 12:30:31 2017 +0200",
-        "Cameron Garnham"
+        "2017-04-04T12:30:31+02:00",
+        "Cameron Garnham",
+        "da2ce7@gmail.com"
       ],
       [
         "2a97af80db8e82d77e1d40968f39774319e23868",
-        "Tue Apr 4 11:38:38 2017 +0200",
-        "Cameron Garnham"
+        "2017-04-04T11:38:38+02:00",
+        "Cameron Garnham",
+        "da2ce7@gmail.com"
       ],
       [
         "60d4b512b8ca9d57b479a5ee63c6825415ac0b20",
-        "Tue Mar 28 18:04:22 2017 +0100",
-        "shaolinfry"
+        "2017-03-28T18:04:22+01:00",
+        "shaolinfry",
+        "shaolinfry@users.noreply.github.com"
       ],
       [
         "cc67ae995c4df0b0e1040c34f8f68848954de35a",
-        "Sat Mar 25 03:59:43 2017 +0000",
-        "shaolinfry"
+        "2017-03-25T03:59:43Z",
+        "shaolinfry",
+        "shaolinfry@users.noreply.github.com"
       ],
       [
         "44b7b5300e265a82f286edacaa08c6254af5c7e1",
-        "Mon Mar 20 11:53:50 2017 +0000",
-        "shaolinfry"
+        "2017-03-20T11:53:50Z",
+        "shaolinfry",
+        "shaolinfry@users.noreply.github.com"
       ],
       [
         "ccef12cc4226edda0222d98861f2296f6cb9e26d",
-        "Sat Mar 18 20:09:37 2017 +0000",
-        "shaolinfry"
+        "2017-03-18T20:09:37Z",
+        "shaolinfry",
+        "shaolinfry@protonmail.ch"
       ]
     ]
   },
@@ -593,33 +607,39 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
+          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T09:30:53Z",
+          "timestamp": "2026-07-21T14:42:50Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
-              "evidence": "specifies a BIP16 like soft fork flag day activation of the segregated witness BIP9 deployment",
-              "reason": "The proposal is explicitly designed around the existing BIP9 segwit deployment, reusing its versionbits signaling and lock-in state machinery.",
+              "evidence": "the BIP9 \"segwit\" deployment",
+              "reason": "BIP148 is explicitly designed around the existing BIP9 version-bits deployment mechanism, reusing its deployment state machine, signaling bit, lock-in status, and timeout window rather than defining a separate activation framework.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:16",
+              "evidence": "a BIP16 like soft fork flag day activation",
+              "reason": "The proposal directly models its activation method on BIP16's predetermined flag-day enforcement approach, making BIP16 the substantive template for its activation design.",
               "confidence": "high"
             },
             {
               "target": "bips:141",
               "evidence": "to activate BIP141, BIP143 and BIP147",
-              "reason": "The proposal's purpose is to trigger activation of Segregated Witness consensus rules defined in BIP141.",
+              "reason": "BIP148's purpose is to force activation of the existing segwit deployment, whose consensus-layer feature set includes BIP141; adopting BIP148 materially depends on the semantics of that deployment target.",
               "confidence": "high"
             },
             {
               "target": "bips:143",
               "evidence": "to activate BIP141, BIP143 and BIP147",
-              "reason": "The proposal's activation mechanism is intended to activate the transaction signature verification rules from BIP143 as part of segwit.",
+              "reason": "The proposal specifies enforcement to trigger the existing segwit deployment, which explicitly activates BIP143 as part of that package, so BIP148 relies on that proposal's inclusion in the activated ruleset.",
               "confidence": "high"
             },
             {
               "target": "bips:147",
               "evidence": "to activate BIP141, BIP143 and BIP147",
-              "reason": "The proposal's activation mechanism is intended to activate the malleability-related consensus change from BIP147 as part of segwit.",
+              "reason": "The proposal's activation target is the existing segwit deployment that includes BIP147, so understanding what BIP148 is forcing into effect materially depends on that proposal as part of the deployed ruleset.",
               "confidence": "high"
             }
           ]

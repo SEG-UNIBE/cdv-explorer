@@ -25,68 +25,80 @@
     }
   },
   "meta": {
-    "last_commit": "Wed Oct 8 14:59:36 2025 -0700",
+    "last_commit": "2025-10-08T14:59:36-07:00",
     "total_commits": 12,
     "git_history": [
       [
         "24e96e870fffaa257b465ce1f0370c14aac588e8",
-        "Wed Oct 8 14:59:36 2025 -0700",
-        "Murch"
+        "2025-10-08T14:59:36-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "5207ef92a52d0b8902895b0dbb40823a4d698ec9",
-        "Fri Apr 11 20:08:17 2025 -0700",
-        "Murch"
+        "2025-04-11T20:08:17-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "59730dec4fb641a41589aa1b91d3c452f13e0e36",
-        "Fri Apr 11 20:05:13 2025 -0700",
-        "Murch"
+        "2025-04-11T20:05:13-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "a233bde4af52c6a11269e2e6dd9707abce441ffe",
-        "Fri Apr 11 18:19:21 2025 -0700",
-        "Murch"
+        "2025-04-11T18:19:21-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "66defbdc03ad64ccddfd373e1c59af9a41ab990f",
-        "Fri Apr 11 18:11:55 2025 -0700",
-        "Murch"
+        "2025-04-11T18:11:55-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "fd02fa4bb7ab2238e51fc943ba2d64d33655baf9",
-        "Thu Jun 25 05:11:46 2020 +0000",
-        "Luke Dashjr"
+        "2020-06-25T05:11:46Z",
+        "Luke Dashjr",
+        "luke-jr+git@utopios.org"
       ],
       [
         "959fecc15bdad070afa63455468b1dba54655fa6",
-        "Wed Nov 30 09:47:31 2016 +0000",
-        "Luke Dashjr"
+        "2016-11-30T09:47:31Z",
+        "Luke Dashjr",
+        "luke-jr+git@utopios.org"
       ],
       [
         "72f18918a8ae655212ea2700b30f0dc4d758b843",
-        "Wed Nov 30 09:45:33 2016 +0000",
-        "Luke Dashjr"
+        "2016-11-30T09:45:33Z",
+        "Luke Dashjr",
+        "luke-jr+git@utopios.org"
       ],
       [
         "40ba92af28fe7f60c3fd438994a018cf0f588eb3",
-        "Fri Sep 2 15:15:48 2016 +0800",
-        "Johnson Lau"
+        "2016-09-02T15:15:48+08:00",
+        "Johnson Lau",
+        "jl2012@xbt.hk"
       ],
       [
         "003cf078ff126a6fbb30a4575f8c2c28848c69ff",
-        "Wed Aug 17 19:57:01 2016 +0800",
-        "Johnson Lau"
+        "2016-08-17T19:57:01+08:00",
+        "Johnson Lau",
+        "jl2012@xbt.hk"
       ],
       [
         "55ea8052120c3e06993dd75b9f38d71d36565764",
-        "Tue Aug 16 19:43:53 2016 +0000",
-        "Luke Dashjr"
+        "2016-08-16T19:43:53Z",
+        "Luke Dashjr",
+        "luke-jr+git@utopios.org"
       ],
       [
         "b004187f14ef3fadd0851e1f3296e8ebac6109bd",
-        "Tue Aug 16 17:26:08 2016 +0800",
-        "Johnson Lau"
+        "2016-08-16T17:26:08+08:00",
+        "Johnson Lau",
+        "jl2012@xbt.hk"
       ]
     ]
   },
@@ -639,27 +651,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
+          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T09:30:52Z",
+          "timestamp": "2026-07-21T14:42:46Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
-              "evidence": "This BIP will be deployed by \"version bits\" BIP9.",
-              "reason": "The proposal's activation mechanism is explicitly specified to use the version-bits deployment process defined in BIP9.",
+              "evidence": "This BIP will be deployed by \"version bits\" BIP9",
+              "reason": "The proposal explicitly specifies deployment via the version-bits activation mechanism defined by BIP9, so adopting it depends on that activation framework.",
               "confidence": "low"
             },
             {
               "target": "bips:66",
               "evidence": "with strict DER encoding (see BIP66)",
-              "reason": "The proposal's signature validation rules are defined in terms of and constrained by strict DER encoding from BIP66, including NULLFAIL examples referring to BIP66-compliant byte arrays.",
+              "reason": "The proposal's LOW_S and NULLFAIL rules are defined on top of signatures already conforming to Strict DER encoding, and it explicitly relies on the BIP66-compliant/non-compliant distinction for validation behavior.",
               "confidence": "low"
             },
             {
               "target": "bips:141",
-              "evidence": "Including pay-to-witness-public-key-hash (P2WPKH) described in BIP141",
-              "reason": "The proposal explicitly applies its signature rules to segregated witness scripts and specifically relies on the P2WPKH script type defined in BIP141.",
+              "evidence": "pay-to-witness-public-key-hash (P2WPKH) described in BIP141",
+              "reason": "The proposal explicitly applies its new signature-validity rules to segregated witness scripts and specifically includes P2WPKH as described in BIP141, so part of its scope and implementation relies on witness-script semantics introduced there.",
               "confidence": "high"
             }
           ]

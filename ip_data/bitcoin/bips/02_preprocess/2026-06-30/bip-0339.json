@@ -24,63 +24,74 @@
     }
   },
   "meta": {
-    "last_commit": "Wed Oct 8 14:59:36 2025 -0700",
+    "last_commit": "2025-10-08T14:59:36-07:00",
     "total_commits": 11,
     "git_history": [
       [
         "24e96e870fffaa257b465ce1f0370c14aac588e8",
-        "Wed Oct 8 14:59:36 2025 -0700",
-        "Murch"
+        "2025-10-08T14:59:36-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "5207ef92a52d0b8902895b0dbb40823a4d698ec9",
-        "Fri Apr 11 20:08:17 2025 -0700",
-        "Murch"
+        "2025-04-11T20:08:17-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "59730dec4fb641a41589aa1b91d3c452f13e0e36",
-        "Fri Apr 11 20:05:13 2025 -0700",
-        "Murch"
+        "2025-04-11T20:05:13-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "a233bde4af52c6a11269e2e6dd9707abce441ffe",
-        "Fri Apr 11 18:19:21 2025 -0700",
-        "Murch"
+        "2025-04-11T18:19:21-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "5d3ceb37734f80b2ec206fc94245e3bfd6d5b0f0",
-        "Fri Apr 11 18:08:44 2025 -0700",
-        "Murch"
+        "2025-04-11T18:08:44-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "79e2d28efbc47212604cd41eb8b8466dc0e9a30e",
-        "Wed Jul 10 14:54:52 2024 -0400",
-        "Suhas Daftuar"
+        "2024-07-10T14:54:52-04:00",
+        "Suhas Daftuar",
+        "sdaftuar@users.noreply.github.com"
       ],
       [
         "f319663c04ea5796d6fec706a85f50599e146607",
-        "Fri Aug 7 15:37:03 2020 -0400",
-        "Suhas Daftuar"
+        "2020-08-07T15:37:03-04:00",
+        "Suhas Daftuar",
+        "sdaftuar@gmail.com"
       ],
       [
         "5909b91b939e9f9f11be7a99d3d1afe49af7d6f5",
-        "Mon Aug 3 09:44:47 2020 +0100",
-        "John Newbery"
+        "2020-08-03T09:44:47+01:00",
+        "John Newbery",
+        "john@johnnewbery.com"
       ],
       [
         "6014c8289ecca03ebe34fff7f2947a96c307dcac",
-        "Mon Aug 3 09:43:35 2020 +0100",
-        "John Newbery"
+        "2020-08-03T09:43:35+01:00",
+        "John Newbery",
+        "john@johnnewbery.com"
       ],
       [
         "b8fefbf5761d5cef6aed3f8a9a315e68c7ee06f4",
-        "Thu Jun 25 05:19:50 2020 +0000",
-        "Luke Dashjr"
+        "2020-06-25T05:19:50Z",
+        "Luke Dashjr",
+        "luke-jr+git@utopios.org"
       ],
       [
         "3c5aef89d66990b2e81c9bbaf1d53624c81cd6a5",
-        "Mon Feb 3 15:25:27 2020 -0500",
-        "Suhas Daftuar"
+        "2020-02-03T15:25:27-05:00",
+        "Suhas Daftuar",
+        "sdaftuar@gmail.com"
       ]
     ]
   },
@@ -536,21 +547,21 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
+          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T09:31:28Z",
+          "timestamp": "2026-07-21T14:43:38Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:141",
               "evidence": "support transaction relay based on the BIP 141 wtxid of a transaction",
-              "reason": "The proposal is explicitly designed around the wtxid concept defined in BIP 141 and uses it as the identifier for relay.",
+              "reason": "The proposal is explicitly built around using wtxid, a transaction identifier defined by BIP 141, for relay semantics instead of txid. Understanding and implementing this proposal materially depends on the wtxid concept introduced there.",
               "confidence": "high"
             },
             {
               "target": "bips:144",
               "evidence": "serialized with witness as well, as described in BIP 144",
-              "reason": "MSG_WTX getdata semantics rely on the witness serialization format defined in BIP 144 for requested transactions.",
+              "reason": "The proposal normatively specifies that MSG_WTX getdata requests return transactions using the witness-inclusive serialization defined by BIP 144, so its request/response behavior directly relies on that format.",
               "confidence": "high"
             }
           ]

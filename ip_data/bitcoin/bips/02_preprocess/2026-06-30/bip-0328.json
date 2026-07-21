@@ -24,53 +24,62 @@
     }
   },
   "meta": {
-    "last_commit": "Wed Oct 8 14:59:36 2025 -0700",
+    "last_commit": "2025-10-08T14:59:36-07:00",
     "total_commits": 9,
     "git_history": [
       [
         "24e96e870fffaa257b465ce1f0370c14aac588e8",
-        "Wed Oct 8 14:59:36 2025 -0700",
-        "Murch"
+        "2025-10-08T14:59:36-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "5207ef92a52d0b8902895b0dbb40823a4d698ec9",
-        "Fri Apr 11 20:08:17 2025 -0700",
-        "Murch"
+        "2025-04-11T20:08:17-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "59730dec4fb641a41589aa1b91d3c452f13e0e36",
-        "Fri Apr 11 20:05:13 2025 -0700",
-        "Murch"
+        "2025-04-11T20:05:13-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "6760ba87381ea97c79223cebef81478f4d4bbc6e",
-        "Fri Apr 11 18:02:31 2025 -0700",
-        "Murch"
+        "2025-04-11T18:02:31-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "151ec96c83b4c59453c553f49cf3183fbb9176b4",
-        "Wed Feb 12 10:00:35 2025 -0800",
-        "Ava Chow"
+        "2025-02-12T10:00:35-08:00",
+        "Ava Chow",
+        "github@achow101.com"
       ],
       [
         "3827648acc24e74f4e873f1cac6b1b59f2a50d8f",
-        "Wed Feb 12 09:59:59 2025 -0800",
-        "Ava Chow"
+        "2025-02-12T09:59:59-08:00",
+        "Ava Chow",
+        "github@achow101.com"
       ],
       [
         "7ab43ce11f47ed6416581ed81a3e42738bf2ddce",
-        "Tue Feb 11 12:38:24 2025 -0800",
-        "Ava Chow"
+        "2025-02-11T12:38:24-08:00",
+        "Ava Chow",
+        "github@achow101.com"
       ],
       [
         "081aa9a22e7694e9a3398c9175d4d367854b2f56",
-        "Tue Feb 11 11:55:08 2025 -0800",
-        "Ava Chow"
+        "2025-02-11T11:55:08-08:00",
+        "Ava Chow",
+        "github@achow101.com"
       ],
       [
         "48ebcb2191e9738efcff06b425cec41985c43f5f",
-        "Mon Jan 15 14:54:19 2024 -0500",
-        "Ava Chow"
+        "2024-01-15T14:54:19-05:00",
+        "Ava Chow",
+        "github@achow101.com"
       ]
     ]
   },
@@ -525,21 +534,21 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
+          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T09:31:22Z",
+          "timestamp": "2026-07-21T14:43:31Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
               "evidence": "BIP 32 extended public keys can be constructed",
-              "reason": "The proposal defines synthetic xpubs and derivation behavior by directly reusing BIP 32 extended public key structure and CKDpub derivation semantics.",
+              "reason": "The proposal defines synthetic xpubs, uses BIP 32 xpub structure and unhardened child derivation semantics, and explicitly relies on CKDpub-derived tweaks for signing. Implementing or evaluating the proposal materially depends on BIP 32's extended key format and derivation rules.",
               "confidence": "high"
             },
             {
               "target": "bips:327",
               "evidence": "from a BIP 327 MuSig2 aggregate public key",
-              "reason": "The proposal is designed around MuSig2 aggregate public keys and signing tweaks from BIP 327, reusing its aggregate key and signing context concepts.",
+              "reason": "The proposal is specifically built around constructing synthetic xpubs from MuSig2 aggregate public keys and using MuSig2 signing with derivation tweaks applied to partial signatures. Its mechanism directly relies on the aggregate-key and signing concepts defined by BIP 327.",
               "confidence": "high"
             }
           ]

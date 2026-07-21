@@ -26,58 +26,68 @@
     }
   },
   "meta": {
-    "last_commit": "Wed Oct 8 14:59:36 2025 -0700",
+    "last_commit": "2025-10-08T14:59:36-07:00",
     "total_commits": 10,
     "git_history": [
       [
         "24e96e870fffaa257b465ce1f0370c14aac588e8",
-        "Wed Oct 8 14:59:36 2025 -0700",
-        "Murch"
+        "2025-10-08T14:59:36-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "5207ef92a52d0b8902895b0dbb40823a4d698ec9",
-        "Fri Apr 11 20:08:17 2025 -0700",
-        "Murch"
+        "2025-04-11T20:08:17-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "59730dec4fb641a41589aa1b91d3c452f13e0e36",
-        "Fri Apr 11 20:05:13 2025 -0700",
-        "Murch"
+        "2025-04-11T20:05:13-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "a233bde4af52c6a11269e2e6dd9707abce441ffe",
-        "Fri Apr 11 18:19:21 2025 -0700",
-        "Murch"
+        "2025-04-11T18:19:21-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "22fc58d746b85ec94d2eaa0fb2bc3c70baa4a38c",
-        "Tue Nov 11 23:30:23 2025 +0200",
-        "Bashmunta"
+        "2025-11-11T23:30:23+02:00",
+        "Bashmunta",
+        "georgebashmunta@gmail.com"
       ],
       [
         "8137279570c2d38c8dda12c9654deed7f700c63c",
-        "Thu Apr 17 15:46:10 2025 +0800",
-        "Jon Atack"
+        "2025-04-17T15:46:10+08:00",
+        "Jon Atack",
+        "jon@atack.com"
       ],
       [
         "46a2440718ce96681155e4c96bfc373d079d2eef",
-        "Wed May 29 16:18:11 2024 +0800",
-        "cocoyeal"
+        "2024-05-29T16:18:11+08:00",
+        "cocoyeal",
+        "ricodigging@gmail.com"
       ],
       [
         "c3e8379b611a53114544b0ed7af5307b022b8ac8",
-        "Sat Apr 14 11:16:32 2018 +0530",
-        "Varunram"
+        "2018-04-14T11:16:32+05:30",
+        "Varunram",
+        "vrg2009@ymail.com"
       ],
       [
         "2d113795acf7fa6350faad0bbdabec8a90ded804",
-        "Fri Jan 5 17:46:08 2018 +0900",
-        "Nicolas Dorier"
+        "2018-01-05T17:46:08+09:00",
+        "Nicolas Dorier",
+        "nicolas.dorier@gmail.com"
       ],
       [
         "5dc731292da5994aaf1409cf4c9a0bbae9803159",
-        "Tue Nov 14 17:39:39 2017 +0900",
-        "Karl-Johan Alm"
+        "2017-11-14T17:39:39+09:00",
+        "Karl-Johan Alm",
+        "karljohan-alm@garage.co.jp"
       ]
     ]
   },
@@ -713,21 +723,21 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
+          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T09:30:21Z",
+          "timestamp": "2026-07-21T14:42:08Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:8",
               "evidence": "This BIP will be deployed by BIP8",
-              "reason": "The proposal explicitly adopts BIP8's activation mechanism and parameters for deployment.",
+              "reason": "The proposal explicitly adopts BIP8's activation mechanism and parameters for deployment, so adoption depends on that target's versionbits lock-in-by-height rules.",
               "confidence": "high"
             },
             {
               "target": "bips:98",
               "evidence": "serialized Merkle tree inclusion proof as specified by BIP98",
-              "reason": "The proposal normatively requires BIP98's Merkle tree proof format and fast Merkle root semantics for opcode validation.",
+              "reason": "The proposal normatively defines its proof format and validation around the Merkle inclusion proof specified by BIP98, so implementing MERKLEBRANCHVERIFY materially relies on that target's tree and proof semantics.",
               "confidence": "high"
             }
           ]

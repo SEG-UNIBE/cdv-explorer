@@ -26,23 +26,26 @@
     }
   },
   "meta": {
-    "last_commit": "Thu Jun 18 19:14:23 2026 -0600",
+    "last_commit": "2026-06-18T19:14:23-06:00",
     "total_commits": 3,
     "git_history": [
       [
         "6740c533e8dce4e912f17ee85a6f627644e1b783",
-        "Thu Jun 18 19:14:23 2026 -0600",
-        "conduition"
+        "2026-06-18T19:14:23-06:00",
+        "conduition",
+        "conduition@proton.me"
       ],
       [
         "1609a4f576d300c92f3e85c55c3cea454ace04ca",
-        "Thu Apr 23 04:03:40 2026 +0200",
-        "boskodev790"
+        "2026-04-23T04:03:40+02:00",
+        "boskodev790",
+        "boskomaljkovic790@outlook.com"
       ],
       [
         "eae7d9fc57a5f3a2b0c4853c127cb4d27377dbf3",
-        "Wed Feb 11 12:54:26 2026 -0800",
-        "Hunter Beast"
+        "2026-02-11T12:54:26-08:00",
+        "Hunter Beast",
+        "hunter@cryptoquick.com"
       ]
     ]
   },
@@ -950,11 +953,42 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
+          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T09:31:44Z",
+          "timestamp": "2026-07-21T14:44:06Z",
           "status": "success",
-          "dependencies": []
+          "dependencies": [
+            {
+              "target": "bips:141",
+              "evidence": "A P2MR output is a native SegWit output (see BIP 141) with version 2 and a 32-byte witness program.",
+              "reason": "The proposal normatively defines P2MR as a native SegWit output and relies on SegWit transaction structure and witness-program validation compatibility rules introduced by the target.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:173",
+              "evidence": "following BIP 173",
+              "reason": "The address format is defined to use SegWit addresses under the Bech32 address scheme introduced by the target.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "we follow the process outlined in BIP 341",
+              "reason": "The proposal is explicitly defined by reusing Taproot's script-tree construction and script-path validation, with specific modifications such as omitting the internal key and tweak and comparing the computed Merkle root directly to the witness program.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:342",
+              "evidence": "Execute the script, according to the script rules specified in BIP 342",
+              "reason": "P2MR spends execute tapscript under the target's script rules, and its common signature message construction is stated to be exactly the same as BIP 342's procedure.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:350",
+              "evidence": "Per BIP 350 older wallets should be able to spend funds to SegWit version 2 outputs.",
+              "reason": "The proposal's backward-compatibility and address encoding for witness version 2 rely on Bech32m semantics introduced by the target; the text explicitly invokes BIP 350 for how older wallets handle v2 SegWit outputs.",
+              "confidence": "low"
+            }
+          ]
         }
       ]
     }

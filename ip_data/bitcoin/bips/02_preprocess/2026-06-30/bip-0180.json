@@ -24,68 +24,80 @@
     }
   },
   "meta": {
-    "last_commit": "Wed Oct 8 14:59:36 2025 -0700",
+    "last_commit": "2025-10-08T14:59:36-07:00",
     "total_commits": 12,
     "git_history": [
       [
         "24e96e870fffaa257b465ce1f0370c14aac588e8",
-        "Wed Oct 8 14:59:36 2025 -0700",
-        "Murch"
+        "2025-10-08T14:59:36-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "5207ef92a52d0b8902895b0dbb40823a4d698ec9",
-        "Fri Apr 11 20:08:17 2025 -0700",
-        "Murch"
+        "2025-04-11T20:08:17-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "59730dec4fb641a41589aa1b91d3c452f13e0e36",
-        "Fri Apr 11 20:05:13 2025 -0700",
-        "Murch"
+        "2025-04-11T20:05:13-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "a233bde4af52c6a11269e2e6dd9707abce441ffe",
-        "Fri Apr 11 18:19:21 2025 -0700",
-        "Murch"
+        "2025-04-11T18:19:21-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "66defbdc03ad64ccddfd373e1c59af9a41ab990f",
-        "Fri Apr 11 18:11:55 2025 -0700",
-        "Murch"
+        "2025-04-11T18:11:55-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "03a8486bb7f87338cdf0a2346a0ca6d446073e9b",
-        "Sat Aug 1 17:37:26 2020 -0500",
-        "Janus"
+        "2020-08-01T17:37:26-05:00",
+        "Janus",
+        "ysangkok@gmail.com"
       ],
       [
         "9f366d61f3bd4efabf0337a274db5ea4599d9a9c",
-        "Sat Mar 25 05:21:57 2017 +0000",
-        "Luke Dashjr"
+        "2017-03-25T05:21:57Z",
+        "Luke Dashjr",
+        "luke-jr+git@utopios.org"
       ],
       [
         "82d1537ee742be8364a6887e0c0df6cb8ab54a01",
-        "Sat Mar 25 05:13:52 2017 +0000",
-        "Luke Dashjr"
+        "2017-03-25T05:13:52Z",
+        "Luke Dashjr",
+        "luke-jr+git@utopios.org"
       ],
       [
         "ab705800e5e7f5c4e9c8f6c4a7bdea87446d93aa",
-        "Sat Mar 25 04:10:25 2017 +0000",
-        "Luke Dashjr"
+        "2017-03-25T04:10:25Z",
+        "Luke Dashjr",
+        "luke-jr+git@utopios.org"
       ],
       [
         "50965e76b6441365c9bfa57c9cf7d5b425a29c84",
-        "Wed Mar 22 22:47:27 2017 +0000",
-        "Luke Dashjr"
+        "2017-03-22T22:47:27Z",
+        "Luke Dashjr",
+        "luke-jr+git@utopios.org"
       ],
       [
         "5291558603e58a79b6505ad17e5ee595cb1bb59f",
-        "Wed Mar 22 22:40:49 2017 +0000",
-        "Luke Dashjr"
+        "2017-03-22T22:40:49Z",
+        "Luke Dashjr",
+        "luke-jr+git@utopios.org"
       ],
       [
         "8b4f280c4c18fd603f154bdcd3c3699391cd231e",
-        "Fri Mar 17 21:52:33 2017 +0000",
-        "Luke Dashjr"
+        "2017-03-17T21:52:33Z",
+        "Luke Dashjr",
+        "luke-jr+git@utopios.org"
       ]
     ]
   },
@@ -614,15 +626,15 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
+          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T09:31:09Z",
+          "timestamp": "2026-07-21T14:43:13Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:141",
-              "evidence": "The block weight defined by [[bip-0141.mediawiki|BIP 141]] is the size of the block stripped of its segwit signatures times 3, plus the full size of the block.",
-              "reason": "The proposal's overweight-block fraud proof directly uses the block weight definition introduced by BIP 141 to calculate and verify lower-bound block weight.",
+              "evidence": "The block weight defined by [[bip-0141.mediawiki|BIP 141]]",
+              "reason": "The proposal’s weight-exceeded fraud proof explicitly relies on the block weight definition introduced by BIP 141, including stripped-size versus full-size semantics and the witness commitment used to verify the full-size proof.",
               "confidence": "high"
             }
           ]

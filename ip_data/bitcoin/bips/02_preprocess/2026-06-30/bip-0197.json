@@ -25,58 +25,68 @@
     }
   },
   "meta": {
-    "last_commit": "Wed Oct 22 20:02:57 2025 +1000",
+    "last_commit": "2025-10-22T20:02:57+10:00",
     "total_commits": 10,
     "git_history": [
       [
         "2885f13d3f37890e328683166dbcbc60b488d13a",
-        "Wed Oct 22 20:02:57 2025 +1000",
-        "Anthony Towns"
+        "2025-10-22T20:02:57+10:00",
+        "Anthony Towns",
+        "aj@erisian.com.au"
       ],
       [
         "24e96e870fffaa257b465ce1f0370c14aac588e8",
-        "Wed Oct 8 14:59:36 2025 -0700",
-        "Murch"
+        "2025-10-08T14:59:36-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "5207ef92a52d0b8902895b0dbb40823a4d698ec9",
-        "Fri Apr 11 20:08:17 2025 -0700",
-        "Murch"
+        "2025-04-11T20:08:17-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "59730dec4fb641a41589aa1b91d3c452f13e0e36",
-        "Fri Apr 11 20:05:13 2025 -0700",
-        "Murch"
+        "2025-04-11T20:05:13-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "a233bde4af52c6a11269e2e6dd9707abce441ffe",
-        "Fri Apr 11 18:19:21 2025 -0700",
-        "Murch"
+        "2025-04-11T18:19:21-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "9d960e9906abecea8ea2d3fe5009c9a71b3d5932",
-        "Mon Apr 28 20:51:55 2025 +0200",
-        "Maximilian Hubert"
+        "2025-04-28T20:51:55+02:00",
+        "Maximilian Hubert",
+        "64627729+gap-editor@users.noreply.github.com"
       ],
       [
         "e155b58f1370dd90f0b2020862dff7dd43d891f2",
-        "Wed May 1 17:59:53 2024 -0400",
-        "Ava Chow"
+        "2024-05-01T17:59:53-04:00",
+        "Ava Chow",
+        "github@achow101.com"
       ],
       [
         "23590c0508d6df6a68cd6fdf6e9aaa13cc77fe6a",
-        "Sun Mar 31 14:19:00 2019 +0900",
-        "azuchi"
+        "2019-03-31T14:19:00+09:00",
+        "azuchi",
+        "azuchi@chaintope.com"
       ],
       [
         "c260fcb69ae2f99681dc5dab45bab21315e79e67",
-        "Fri Mar 29 17:53:27 2019 -0400",
-        "Matthew Black"
+        "2019-03-29T17:53:27-04:00",
+        "Matthew Black",
+        "mblackmblackmblack@gmail.com"
       ],
       [
         "823f6ac0db3674987b70380ac2555a5ad98bb2eb",
-        "Wed Mar 27 10:28:52 2019 -0400",
-        "Matthew Black"
+        "2019-03-27T10:28:52-04:00",
+        "Matthew Black",
+        "mblackmblackmblack@gmail.com"
       ]
     ]
   },
@@ -632,11 +642,18 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
+          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T09:31:10Z",
+          "timestamp": "2026-07-21T14:43:12Z",
           "status": "success",
-          "dependencies": []
+          "dependencies": [
+            {
+              "target": "bips:199",
+              "evidence": "based on Hashed Time-Lock Contract (BIP 199) transactions",
+              "reason": "The proposal explicitly states that its generalized debt agreement contract is based on HTLC transactions defined by BIP 199, making BIP 199 a direct technical foundation for the script design and workflow.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

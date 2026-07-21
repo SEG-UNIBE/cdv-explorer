@@ -25,78 +25,92 @@
     }
   },
   "meta": {
-    "last_commit": "Wed Oct 8 14:59:36 2025 -0700",
+    "last_commit": "2025-10-08T14:59:36-07:00",
     "total_commits": 14,
     "git_history": [
       [
         "24e96e870fffaa257b465ce1f0370c14aac588e8",
-        "Wed Oct 8 14:59:36 2025 -0700",
-        "Murch"
+        "2025-10-08T14:59:36-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "5207ef92a52d0b8902895b0dbb40823a4d698ec9",
-        "Fri Apr 11 20:08:17 2025 -0700",
-        "Murch"
+        "2025-04-11T20:08:17-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "a233bde4af52c6a11269e2e6dd9707abce441ffe",
-        "Fri Apr 11 18:19:21 2025 -0700",
-        "Murch"
+        "2025-04-11T18:19:21-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "468e9759ba3ab9b58d1cadd300b92f5bd43727dc",
-        "Thu Feb 13 11:56:14 2025 -0600",
-        "Jon Atack"
+        "2025-02-13T11:56:14-06:00",
+        "Jon Atack",
+        "jon@atack.com"
       ],
       [
         "8bbf2a142415513123512de8520a4a70f3546e76",
-        "Tue Sep 20 06:15:54 2022 +1000",
-        "Anthony Towns"
+        "2022-09-20T06:15:54+10:00",
+        "Anthony Towns",
+        "aj@erisian.com.au"
       ],
       [
         "f62639ab52794fe3b99d4a1c10e8ec4daff938d4",
-        "Fri Jul 9 01:28:07 2021 -0700",
-        "Sanket Kanjalkar"
+        "2021-07-09T01:28:07-07:00",
+        "Sanket Kanjalkar",
+        "sanket1729@gmail.com"
       ],
       [
         "d616d5492bc6e6566af1b9f9e43b660bcd48ca29",
-        "Sun Jun 13 09:24:07 2021 +1000",
-        "Anthony Towns"
+        "2021-06-13T09:24:07+10:00",
+        "Anthony Towns",
+        "aj@erisian.com.au"
       ],
       [
         "420dc42f0e771b1ee131b4fff9c50530e140b463",
-        "Sun Jun 13 09:18:06 2021 +1000",
-        "Anthony Towns"
+        "2021-06-13T09:18:06+10:00",
+        "Anthony Towns",
+        "aj@erisian.com.au"
       ],
       [
         "0cbc8674dd642702fca2037fb105d3277381b784",
-        "Sat Jun 12 19:15:29 2021 +1000",
-        "Anthony Towns"
+        "2021-06-12T19:15:29+10:00",
+        "Anthony Towns",
+        "aj@erisian.com.au"
       ],
       [
         "5e052176efef4d54f5b6d02e86501e4417af2575",
-        "Thu Jun 10 08:06:46 2021 +1000",
-        "Anthony Towns"
+        "2021-06-10T08:06:46+10:00",
+        "Anthony Towns",
+        "aj@erisian.com.au"
       ],
       [
         "c3f7e6fe566299a18384a266471e15630afa657e",
-        "Mon Mar 1 23:01:26 2021 -0800",
-        "Sanket Kanjalkar"
+        "2021-03-01T23:01:26-08:00",
+        "Sanket Kanjalkar",
+        "sanket1729@gmail.com"
       ],
       [
         "f3a5954e79b2e3f28f889aa0498a9cdc6b66b95c",
-        "Fri Jul 13 12:54:26 2018 -0400",
-        "James O'Beirne"
+        "2018-07-13T12:54:26-04:00",
+        "James O'Beirne",
+        "james@chaincode.com"
       ],
       [
         "53fc064db5cf4bd2c18a70bc59d049b9c84cd208",
-        "Tue May 22 11:32:46 2018 +0200",
-        "Erik Arvstedt"
+        "2018-05-22T11:32:46+02:00",
+        "Erik Arvstedt",
+        "erik.arvstedt@gmail.com"
       ],
       [
         "98b7238f68d17f0e01275dd32075078702225356",
-        "Mon Apr 30 17:58:23 2018 +0200",
-        "Christian Decker"
+        "2018-04-30T17:58:23+02:00",
+        "Christian Decker",
+        "decker.christian@gmail.com"
       ]
     ]
   },
@@ -792,52 +806,52 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
+          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T09:30:25Z",
+          "timestamp": "2026-07-21T14:42:15Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:30",
-              "evidence": "which is not possible on the Bitcoin blockchain (due to enforcement of [[bip-0030.mediawiki|BIP 30]])",
-              "reason": "The security analysis relies on BIP 30's rule to explain why replay involving the same input cannot occur on-chain.",
-              "confidence": "medium"
+              "evidence": "due to enforcement of BIP 30",
+              "reason": "The security analysis relies on BIP 30's duplicate-txid prevention assumption to explain why ordinary signatures cannot be replayed by spending the same input multiple times.",
+              "confidence": "low"
             },
             {
               "target": "bips:68",
-              "evidence": "This risk may be mitigated somewhat by using [[bip-0068.mediawiki|BIP 68]]/[[bip-0112.mediawiki|BIP 112]] relative time locks",
-              "reason": "The proposal's mitigation strategy for malleability explicitly depends on relative timelock semantics from BIP 68.",
-              "confidence": "medium"
+              "evidence": "using BIP 68/BIP 112 relative time locks",
+              "reason": "The malleability mitigation specifically depends on relative timelock semantics, with BIP 68 providing the relative-locktime mechanism used by the recommended spending pattern.",
+              "confidence": "low"
             },
             {
               "target": "bips:112",
-              "evidence": "This risk may be mitigated somewhat by using [[bip-0068.mediawiki|BIP 68]]/[[bip-0112.mediawiki|BIP 112]] relative time locks",
-              "reason": "The proposal's mitigation strategy for malleability explicitly depends on script-enforced relative timelock behavior from BIP 112.",
-              "confidence": "medium"
+              "evidence": "using BIP 68/BIP 112 relative time locks",
+              "reason": "The proposal's suggested mitigation relies on relative timelock script enforcement, which BIP 112 introduces via CHECKSEQUENCEVERIFY in conjunction with BIP 68 semantics.",
+              "confidence": "low"
             },
             {
               "target": "bips:340",
-              "evidence": "retain the same elliptic curve and signature algorithm (ie, secp256k1 and [[bip-0340.mediawiki|BIP 340]])",
-              "reason": "The proposal uses BIP 340 Schnorr verification semantics and key conversion rules for its new public key type.",
-              "confidence": "high"
+              "evidence": "retain the same elliptic curve and signature algorithm (ie, secp256k1 and BIP 340)",
+              "reason": "BIP 118 keeps BIP 340 Schnorr verification as its signature algorithm, with public keys converted for use with BIP 340 and Verify invoked as defined there.",
+              "confidence": "low"
             },
             {
               "target": "bips:341",
-              "evidence": "the signature is validated according to the [[bip-0341.mediawiki|BIP 341]] signing validation rules",
-              "reason": "The proposal directly reuses BIP 341 signing validation, hash_type values, SigMsg structure, and taproot internal key/tapleaf definitions with modifications.",
-              "confidence": "high"
+              "evidence": "the signature is validated according to the BIP 341 signing validation rules",
+              "reason": "The proposal reuses BIP 341's Taproot signing validation rules, hash_type values, SigMsg function, taproot internal key, and tapleaf hash, modifying them for the new ANYPREVOUT digest.",
+              "confidence": "low"
             },
             {
               "target": "bips:342",
-              "evidence": "This BIP modifies the behaviour of the [[bip-0342.mediawiki|BIP 342]] signature opcodes",
-              "reason": "The proposal is an explicit modification of BIP 342 tapscript signature opcode behavior and unknown public key handling.",
-              "confidence": "high"
+              "evidence": "a new type of public key for tapscript (BIP 342) transactions",
+              "reason": "The proposal is explicitly defined for tapscript transactions and directly modifies BIP 342 signature-opcode behavior, including its handling of unknown public key types and signature verification rules.",
+              "confidence": "low"
             },
             {
               "target": "bips:350",
-              "evidence": "if they support sending to [[bip-0350.mediawiki|BIP350]] Bech32m addresses",
-              "reason": "Backwards-compatible wallet support for sending to relevant SegWit v1 outputs is described as depending on BIP 350 address support.",
-              "confidence": "medium"
+              "evidence": "support sending to BIP350 Bech32m addresses",
+              "reason": "Backward-compatibility discussion depends on Bech32m address support for sending to SegWit v1/Taproot outputs used by this proposal.",
+              "confidence": "low"
             }
           ]
         }

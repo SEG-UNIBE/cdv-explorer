@@ -24,83 +24,98 @@
     }
   },
   "meta": {
-    "last_commit": "Thu Mar 5 18:02:52 2026 +0200",
+    "last_commit": "2026-03-05T18:02:52+02:00",
     "total_commits": 15,
     "git_history": [
       [
         "41f99576308d192526093a39718fff842692d13c",
-        "Thu Mar 5 18:02:52 2026 +0200",
-        "craigraw"
+        "2026-03-05T18:02:52+02:00",
+        "craigraw",
+        "craigraw@gmail.com"
       ],
       [
         "24e96e870fffaa257b465ce1f0370c14aac588e8",
-        "Wed Oct 8 14:59:36 2025 -0700",
-        "Murch"
+        "2025-10-08T14:59:36-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "5207ef92a52d0b8902895b0dbb40823a4d698ec9",
-        "Fri Apr 11 20:08:17 2025 -0700",
-        "Murch"
+        "2025-04-11T20:08:17-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "59730dec4fb641a41589aa1b91d3c452f13e0e36",
-        "Fri Apr 11 20:05:13 2025 -0700",
-        "Murch"
+        "2025-04-11T20:05:13-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "7e8facb4793ea8baafc07a5f4e9b28283d7c86d7",
-        "Mon Dec 8 18:14:55 2025 +0200",
-        "yyhrnk"
+        "2025-12-08T18:14:55+02:00",
+        "yyhrnk",
+        "yaroslavnerest@gmail.com"
       ],
       [
         "f38f6c4e7bb98a8c843b32eaa79ec6ad3c5db2dd",
-        "Tue Jun 24 17:26:41 2025 +0200",
-        "Kendra Karol Sevilla"
+        "2025-06-24T17:26:41+02:00",
+        "Kendra Karol Sevilla",
+        "smpkdrew@gmail.com"
       ],
       [
         "c754a4d095704228de928deb817cda47a6499e3e",
-        "Wed Jun 18 15:04:33 2025 -0700",
-        "Ava Chow"
+        "2025-06-18T15:04:33-07:00",
+        "Ava Chow",
+        "github@achow101.com"
       ],
       [
         "bc66fdb1664781eacfa23c9077f268eb918103e2",
-        "Wed Jun 18 14:56:02 2025 -0700",
-        "Ava Chow"
+        "2025-06-18T14:56:02-07:00",
+        "Ava Chow",
+        "github@achow101.com"
       ],
       [
         "530b91d86bd125a8b3936d76215728468bfc10e7",
-        "Thu Jun 5 13:29:19 2025 -0700",
-        "Ava Chow"
+        "2025-06-05T13:29:19-07:00",
+        "Ava Chow",
+        "github@achow101.com"
       ],
       [
         "099b1807a4d3a1785159e442d47322551964da6b",
-        "Thu Jun 5 18:37:48 2025 +0530",
-        "rkrux"
+        "2025-06-05T18:37:48+05:30",
+        "rkrux",
+        "rkrux.connect@gmail.com"
       ],
       [
         "cde668d90346886f9ce5104d57d0c929fa9c2cc4",
-        "Thu Feb 13 15:26:29 2025 -0500",
-        "Murch"
+        "2025-02-13T15:26:29-05:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "574589f2a6faf05707ea89f7f8b6a27c7dfdf022",
-        "Tue Feb 11 12:43:40 2025 -0800",
-        "Ava Chow"
+        "2025-02-11T12:43:40-08:00",
+        "Ava Chow",
+        "github@achow101.com"
       ],
       [
         "2e8f6ba5e7cd803af3592253334a5230602da159",
-        "Fri Nov 8 10:11:47 2024 +0000",
-        "Salvatore Ingala"
+        "2024-11-08T10:11:47Z",
+        "Salvatore Ingala",
+        "6681844+bigspider@users.noreply.github.com"
       ],
       [
         "f61bdadafb82ae37166a4c2eb1ea1e4bed357f3a",
-        "Sun Jul 21 09:31:28 2024 +0200",
-        "omahs"
+        "2024-07-21T09:31:28+02:00",
+        "omahs",
+        "73983677+omahs@users.noreply.github.com"
       ],
       [
         "6b9138c1a1511719eb0477d2375c81a598ba07a0",
-        "Mon Jan 15 14:07:44 2024 -0500",
-        "Ava Chow"
+        "2024-01-15T14:07:44-05:00",
+        "Ava Chow",
+        "github@achow101.com"
       ]
     ]
   },
@@ -601,11 +616,42 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
+          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T09:32:00Z",
+          "timestamp": "2026-07-21T14:44:29Z",
           "status": "success",
-          "dependencies": []
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "Then further BIP-32 derivation will be performed on the aggregate public key",
+              "reason": "The ranged musig() form directly reuses BIP-32 derivation rules for aggregate public keys, with additional unhardened-only constraints.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:327",
+              "evidence": "produce an aggregate public key using BIP-327",
+              "reason": "The proposal's musig() expression defines its aggregate key semantics by using MuSig2 aggregation from the target, including KeyAgg and KeySort.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:328",
+              "evidence": "as described in BIP-328",
+              "reason": "The proposal relies on the target's specific method for deriving from an aggregate public key after MuSig aggregation, not merely generic BIP-32 derivation.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:380",
+              "evidence": "key expressions as defined in BIP-380",
+              "reason": "The proposal explicitly defines KEY by the descriptor key-expression rules from the target and states musig() uses the format and general operation specified there, so implementing musig() materially depends on BIP-380 descriptor semantics.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:389",
+              "evidence": "key expressions as defined in BIP-380 and BIP-389",
+              "reason": "The proposal defines KEY partly by reference to the target's key-expression extensions, so understanding valid musig() arguments depends on those added descriptor key-expression semantics.",
+              "confidence": "low"
+            }
+          ]
         }
       ]
     }

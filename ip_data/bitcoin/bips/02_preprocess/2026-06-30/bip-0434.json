@@ -24,33 +24,38 @@
     }
   },
   "meta": {
-    "last_commit": "Thu Jun 11 15:15:57 2026 +1000",
+    "last_commit": "2026-06-11T15:15:57+10:00",
     "total_commits": 5,
     "git_history": [
       [
         "b14d7c34e5ffa4dd910eeba3df4f92af6a9609d4",
-        "Thu Jun 11 15:15:57 2026 +1000",
-        "Anthony Towns"
+        "2026-06-11T15:15:57+10:00",
+        "Anthony Towns",
+        "aj@erisian.com.au"
       ],
       [
         "18ff6bb77b921e6952c11895c203bf1b4e0eaf2f",
-        "Fri May 29 15:28:41 2026 +1000",
-        "Anthony Towns"
+        "2026-05-29T15:28:41+10:00",
+        "Anthony Towns",
+        "aj@erisian.com.au"
       ],
       [
         "3709d73c2f168ac3977bab9329e53cd9d7008612",
-        "Tue Feb 3 14:47:51 2026 +1000",
-        "Anthony Towns"
+        "2026-02-03T14:47:51+10:00",
+        "Anthony Towns",
+        "aj@erisian.com.au"
       ],
       [
         "a50c0ea32b104832d15b10a3d65bc77ee8df98da",
-        "Sat Jan 31 17:25:09 2026 +1000",
-        "Anthony Towns"
+        "2026-01-31T17:25:09+10:00",
+        "Anthony Towns",
+        "aj@erisian.com.au"
       ],
       [
         "9630c4c8d076b289e24d7cad818d43440ce613ae",
-        "Sat Dec 6 07:27:13 2025 +1000",
-        "Anthony Towns"
+        "2025-12-06T07:27:13+10:00",
+        "Anthony Towns",
+        "aj@erisian.com.au"
       ]
     ]
   },
@@ -684,15 +689,21 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
+          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T09:32:07Z",
+          "timestamp": "2026-07-21T14:44:36Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:324",
-              "evidence": "Nodes implementing both this BIP and [BIP 324 (v2 P2P encrypted transport)][BIP324] MUST treat a message with a 1-byte `message_type` equal to `37`",
-              "reason": "The proposal defines a specific interoperability rule for BIP 324 transport, reusing its 1-byte message type mechanism for the feature message.",
+              "evidence": "Nodes implementing both this BIP and [BIP 324 (v2 P2P encrypted transport)][BIP324] MUST treat a message with a 1-byte `message_type` equal to `37` that is received prior to `verack` as the `feature` message.",
+              "reason": "This BIP defines interoperability behavior specifically within BIP 324's v2 transport framing by assigning a 1-byte message_type value for the feature message, so implementing that aspect materially depends on BIP 324's message-type mechanism.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:339",
+              "evidence": "we propose codifying and generalising the mechanism used by [BIP 339][BIP339] for future P2P upgrades",
+              "reason": "The proposal explicitly builds on and generalizes the pre-verack feature-negotiation mechanism introduced by BIP 339, making that mechanism a direct technical basis for this BIP.",
               "confidence": "high"
             }
           ]

@@ -25,13 +25,14 @@
     }
   },
   "meta": {
-    "last_commit": "Thu Feb 5 04:58:08 2026 +0800",
+    "last_commit": "2026-02-05T04:58:08+08:00",
     "total_commits": 1,
     "git_history": [
       [
         "57869d524abb9143ba96aa9f53fab906ec309383",
-        "Thu Feb 5 04:58:08 2026 +0800",
-        "Jurvis Tan"
+        "2026-02-05T04:58:08+08:00",
+        "Jurvis Tan",
+        "5944973+jurvis@users.noreply.github.com"
       ]
     ]
   },
@@ -830,28 +831,34 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
+          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T09:30:03Z",
+          "timestamp": "2026-07-21T14:41:34Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
-              "evidence": "Run the BIP32 non-hardened derivation CKDpub on E with child index i",
-              "reason": "The proposal's core tweak computation directly reuses BIP32 non-hardened public child derivation semantics and scalar tweak term.",
+              "evidence": "Run the BIP32 non-hardened derivation ''CKDpub'' on ''E'' with child index ''i'', yielding the child extended key ''P_child'' and its scalar tweak ''δ'' (the parse_256(''I_L'') term from BIP32).",
+              "reason": "The proposal's core tweak computation explicitly reuses BIP32 non-hardened CKDpub derivation semantics and its tweak scalar term, and the setup and derivation constraints are defined around withholding BIP32 chain codes.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:327",
+              "evidence": "The notation, algorithmic patterns, and test-vector style are adapted from [BIP‑327 (MuSig2)]",
+              "reason": "The blinded-signing section states that its notation and algorithmic structure are adapted from BIP327's MuSig2 specification, indicating substantive reuse of specification patterns for nonce/challenge/signature flow rather than a mere mention.",
               "confidence": "low"
             },
             {
               "target": "bips:340",
               "evidence": "Both modes produce valid BIP340 signatures.",
-              "reason": "The signing protocols are defined to output and verify BIP340 Schnorr signatures, relying on its signature semantics and challenge construction.",
+              "reason": "The signing procedures are specified to output standard BIP340 Schnorr signatures, and the blinded-signing algorithms explicitly use the BIP340 challenge hash and signature validity semantics.",
               "confidence": "high"
             },
             {
               "target": "bips:341",
-              "evidence": "Consequently the protocol is compatible with BIP341.",
-              "reason": "The blinded signing mode is designed around X-only tweaks including Tapscript-style tweaks, making compatibility with BIP341 part of its technical design.",
-              "confidence": "low"
+              "evidence": "Consequently the protocol is compatible with [https://github.com/bitcoin/bips/blob/master/bip-0341.mediawiki BIP341].",
+              "reason": "The blinded-signing design explicitly supports X-only tweaks 'e.g. Tapscript' and states compatibility with BIP341; this relies on the Taproot key-tweaking/X-only signing context introduced there.",
+              "confidence": "medium"
             }
           ]
         }

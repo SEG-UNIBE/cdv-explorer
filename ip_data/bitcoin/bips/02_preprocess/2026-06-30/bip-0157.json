@@ -26,78 +26,92 @@
     }
   },
   "meta": {
-    "last_commit": "Wed Oct 8 14:59:36 2025 -0700",
+    "last_commit": "2025-10-08T14:59:36-07:00",
     "total_commits": 14,
     "git_history": [
       [
         "24e96e870fffaa257b465ce1f0370c14aac588e8",
-        "Wed Oct 8 14:59:36 2025 -0700",
-        "Murch"
+        "2025-10-08T14:59:36-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "5207ef92a52d0b8902895b0dbb40823a4d698ec9",
-        "Fri Apr 11 20:08:17 2025 -0700",
-        "Murch"
+        "2025-04-11T20:08:17-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "59730dec4fb641a41589aa1b91d3c452f13e0e36",
-        "Fri Apr 11 20:05:13 2025 -0700",
-        "Murch"
+        "2025-04-11T20:05:13-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "a233bde4af52c6a11269e2e6dd9707abce441ffe",
-        "Fri Apr 11 18:19:21 2025 -0700",
-        "Murch"
+        "2025-04-11T18:19:21-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "5d3ceb37734f80b2ec206fc94245e3bfd6d5b0f0",
-        "Fri Apr 11 18:08:44 2025 -0700",
-        "Murch"
+        "2025-04-11T18:08:44-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "02fb392db96ce18c0666468889512549f02ead15",
-        "Wed Sep 10 21:37:39 2025 -0600",
-        "Jon Atack"
+        "2025-09-10T21:37:39-06:00",
+        "Jon Atack",
+        "jon@atack.com"
       ],
       [
         "3ba957d8d563168307cd47e0591924a1493b507b",
-        "Wed Sep 10 21:29:05 2025 -0600",
-        "Jon Atack"
+        "2025-09-10T21:29:05-06:00",
+        "Jon Atack",
+        "jon@atack.com"
       ],
       [
         "8137279570c2d38c8dda12c9654deed7f700c63c",
-        "Thu Apr 17 15:46:10 2025 +0800",
-        "Jon Atack"
+        "2025-04-17T15:46:10+08:00",
+        "Jon Atack",
+        "jon@atack.com"
       ],
       [
         "7420c04e841ec6617029ed0df316a52d78116b27",
-        "Wed Dec 11 03:04:22 2024 +0000",
-        "Jesus Christ"
+        "2024-12-11T03:04:22Z",
+        "Jesus Christ",
+        "120573631+Gudnessuche@users.noreply.github.com"
       ],
       [
         "b7ff66843e74a4c7cd7df30e17e8fd98a3bcf482",
-        "Thu Sep 16 08:07:36 2021 +1000",
-        "Tobin Harding"
+        "2021-09-16T08:07:36+10:00",
+        "Tobin Harding",
+        "me@tobin.cc"
       ],
       [
         "898559fd055689e30c7df524da9489ef46159fd6",
-        "Thu Oct 24 19:27:12 2019 -0700",
-        "Olaoluwa Osuntokun"
+        "2019-10-24T19:27:12-07:00",
+        "Olaoluwa Osuntokun",
+        "laolu32@gmail.com"
       ],
       [
         "f4948ddb4f4a2b536e774d7d80ad281b67c26a30",
-        "Mon Jul 9 23:44:03 2018 -0700",
-        "Jim Posen"
+        "2018-07-09T23:44:03-07:00",
+        "Jim Posen",
+        "jim.posen@gmail.com"
       ],
       [
         "c3e8379b611a53114544b0ed7af5307b022b8ac8",
-        "Sat Apr 14 11:16:32 2018 +0530",
-        "Varunram"
+        "2018-04-14T11:16:32+05:30",
+        "Varunram",
+        "vrg2009@ymail.com"
       ],
       [
         "996c7c8e882b3629d1a06a41536bdda6955c324b",
-        "Thu Jun 1 11:59:19 2017 -0700",
-        "Jim Posen"
+        "2017-06-01T11:59:19-07:00",
+        "Jim Posen",
+        "jimpo@coinbase.com"
       ]
     ]
   },
@@ -779,22 +793,28 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
+          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T09:31:03Z",
+          "timestamp": "2026-07-21T14:42:59Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:37",
-              "evidence": "light clients may adopt protocols based on this as an alternative to the existing BIP 37",
-              "reason": "The proposal is specified as an alternative to BIP 37 and repeatedly contrasts operation with it, but does not normatively reuse its mechanisms.",
-              "confidence": "low"
+              "evidence": "The alternative detailed in this document can be seen as the opposite of BIP 37",
+              "reason": "The proposal is explicitly designed as a replacement/alternative to the light-client protocol defined by BIP 37, reusing the same problem space and directly contrasting its client-server filtering workflow with a new one. Understanding and evaluating BIP 157 materially depends on the prior protocol it is improving upon.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:111",
+              "evidence": "similar to attacks against BIP 37 enabled nodes noted in BIP 111",
+              "reason": "BIP 157's node-operation rationale for precomputed filters and avoiding dynamic generation relies on the DoS concerns and service-bit deployment context associated with BIP 111's handling of bloom-filtered connections. This is supportive but not foundational, so confidence is moderate.",
+              "confidence": "medium"
             },
             {
               "target": "bips:158",
-              "evidence": "The initial filter types are defined separately in [[bip-0158.mediawiki|BIP 158]]",
-              "reason": "This proposal's filter-type support is designed around filter contents and serialization formats defined in BIP 158.",
-              "confidence": "high"
+              "evidence": "The initial filter types are defined separately in BIP 158",
+              "reason": "BIP 157 defines the transport, retrieval, and verification protocol for compact block filters, while the actual initial filter contents and serialization formats are normatively defined in BIP 158. Implementing the protocol for the initial filter types materially depends on BIP 158.",
+              "confidence": "low"
             }
           ]
         }

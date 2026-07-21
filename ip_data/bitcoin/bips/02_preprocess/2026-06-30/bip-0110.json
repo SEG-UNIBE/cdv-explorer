@@ -24,38 +24,44 @@
     }
   },
   "meta": {
-    "last_commit": "Thu Jun 25 21:53:42 2026 -0600",
+    "last_commit": "2026-06-25T21:53:42-06:00",
     "total_commits": 6,
     "git_history": [
       [
         "b0a1a276021cf371a93865315b274a55616e3b6c",
-        "Thu Jun 25 21:53:42 2026 -0600",
-        "Dathon Ohm"
+        "2026-06-25T21:53:42-06:00",
+        "Dathon Ohm",
+        "dathonohm@proton.me"
       ],
       [
         "422fca742a5e02bc0142f232f833936fc2158cde",
-        "Thu Jun 25 21:44:45 2026 -0600",
-        "Dathon Ohm"
+        "2026-06-25T21:44:45-06:00",
+        "Dathon Ohm",
+        "dathonohm@proton.me"
       ],
       [
         "f952fd1fc0a8f4921bddba7b7fe0561ca6c6e036",
-        "Wed Jun 24 15:42:44 2026 -0600",
-        "Dathon Ohm"
+        "2026-06-24T15:42:44-06:00",
+        "Dathon Ohm",
+        "dathonohm@proton.me"
       ],
       [
         "44b72212f261a1e9d8c07a386d59843db696a979",
-        "Wed Mar 4 13:23:51 2026 -0600",
-        "Dathon Ohm"
+        "2026-03-04T13:23:51-06:00",
+        "Dathon Ohm",
+        "dathonohm@proton.me"
       ],
       [
         "ddd5db9a63d6675c9b0a1c53bbd9d491784e438d",
-        "Wed Mar 4 13:03:45 2026 -0600",
-        "Dathon Ohm"
+        "2026-03-04T13:03:45-06:00",
+        "Dathon Ohm",
+        "dathonohm@proton.me"
       ],
       [
         "ed7af6ae7e80c90bcfc69b3936073505e2fc2503",
-        "Fri Feb 6 18:28:07 2026 -0600",
-        "Dathon Ohm"
+        "2026-02-06T18:28:07-06:00",
+        "Dathon Ohm",
+        "dathonohm@proton.me"
       ]
     ]
   },
@@ -916,33 +922,33 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
+          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T09:30:16Z",
+          "timestamp": "2026-07-21T14:42:08Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:9",
-              "evidence": "This deployment uses a modified version of BIP9 with the following parameters:",
-              "reason": "The proposal defines its activation mechanism as a direct modification of BIP9, reusing and altering its deployment state machine, signaling, and GBT behavior.",
+              "evidence": "This deployment uses a modified version of BIP9",
+              "reason": "The proposal defines its activation and signaling mechanism as a modification of BIP9, reusing BIP9's deployment framework, state machine, and GBT signaling semantics with specified deviations.",
               "confidence": "high"
             },
             {
               "target": "bips:16",
               "evidence": "except for the redeemScript push in BIP16 scriptSigs",
-              "reason": "The proposal's rule 2 explicitly exempts the BIP16 redeemScript push, so implementing the rule depends on BIP16 scriptSig semantics.",
+              "reason": "Rule 2 explicitly exempts the BIP16 redeemScript push, so implementing and evaluating the size restriction depends on the BIP16 redeemScript/scriptSig spending structure.",
               "confidence": "high"
             },
             {
               "target": "bips:141",
-              "evidence": "not Witness v0/BIP 141, Taproot/BIP 341, or P2A",
-              "reason": "The proposal's validity rules distinguish defined versus undefined witness versions using Witness v0 as defined by BIP141.",
+              "evidence": "not Witness v0/BIP 141",
+              "reason": "Rule 3 distinguishes defined versus undefined witness versions by explicitly treating Witness v0 as defined, so the proposal's validity rules rely on the witness-version semantics introduced by BIP141.",
               "confidence": "high"
             },
             {
               "target": "bips:341",
               "evidence": "not Witness v0/BIP 141, Taproot/BIP 341, or P2A",
-              "reason": "The proposal constrains Taproot spends, annexes, control blocks, and Tapleaf versions around Taproot semantics introduced by BIP341.",
+              "reason": "Multiple new consensus rules are built around Taproot-specific mechanisms named here, including annexes, control blocks, Tapleaf versions, and key-path signature constraints; these are defined by BIP341.",
               "confidence": "high"
             }
           ]

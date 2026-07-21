@@ -24,48 +24,56 @@
     }
   },
   "meta": {
-    "last_commit": "Wed Oct 8 14:59:36 2025 -0700",
+    "last_commit": "2025-10-08T14:59:36-07:00",
     "total_commits": 8,
     "git_history": [
       [
         "24e96e870fffaa257b465ce1f0370c14aac588e8",
-        "Wed Oct 8 14:59:36 2025 -0700",
-        "Murch"
+        "2025-10-08T14:59:36-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "5207ef92a52d0b8902895b0dbb40823a4d698ec9",
-        "Fri Apr 11 20:08:17 2025 -0700",
-        "Murch"
+        "2025-04-11T20:08:17-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "59730dec4fb641a41589aa1b91d3c452f13e0e36",
-        "Fri Apr 11 20:05:13 2025 -0700",
-        "Murch"
+        "2025-04-11T20:05:13-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "a233bde4af52c6a11269e2e6dd9707abce441ffe",
-        "Fri Apr 11 18:19:21 2025 -0700",
-        "Murch"
+        "2025-04-11T18:19:21-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "5d3ceb37734f80b2ec206fc94245e3bfd6d5b0f0",
-        "Fri Apr 11 18:08:44 2025 -0700",
-        "Murch"
+        "2025-04-11T18:08:44-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "516fae672639d998f00025809c57473d704a8f61",
-        "Wed Jul 10 18:54:37 2024 -0400",
-        "Ava Chow"
+        "2024-07-10T18:54:37-04:00",
+        "Ava Chow",
+        "github@achow101.com"
       ],
       [
         "a28b021b9933cb6b035cbb94fc1a15c30da3f6fd",
-        "Wed Dec 13 11:12:08 2023 -0500",
-        "Ava Chow"
+        "2023-12-13T11:12:08-05:00",
+        "Ava Chow",
+        "github@achow101.com"
       ],
       [
         "330b56b35867fa403634bf8d0ede0d2cb235aab5",
-        "Tue Jun 22 20:59:29 2021 -0400",
-        "Andrew Chow"
+        "2021-06-22T20:59:29-04:00",
+        "Andrew Chow",
+        "achow101-github@achow101.com"
       ]
     ]
   },
@@ -553,39 +561,39 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
+          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T09:29:59Z",
+          "timestamp": "2026-07-21T14:41:27Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
-              "evidence": "derive multiple deterministic addresses based on a BIP 32 master private key",
-              "reason": "The proposal's key derivation starts from and depends on the BIP 32 HD wallet master key scheme.",
+              "evidence": "based on a BIP 32 master private key",
+              "reason": "The proposal defines its address derivation starting from a BIP 32 master private key and uses the HD wallet derivation framework introduced there.",
               "confidence": "low"
             },
             {
               "target": "bips:44",
               "evidence": "uses the same account-structure as defined in BIPs 44, 49, and 84",
-              "reason": "The proposal reuses the BIP 44 account path structure and level semantics for its derivation hierarchy.",
+              "reason": "The proposal directly reuses the BIP 44 account hierarchy and says the remaining path levels are used as defined there, changing only the purpose value.",
               "confidence": "low"
             },
             {
               "target": "bips:49",
               "evidence": "uses the same account-structure as defined in BIPs 44, 49, and 84",
-              "reason": "The proposal is explicitly modeled on the derivation approach used by BIP 49 for script-type-specific accounts.",
+              "reason": "The proposal explicitly follows the same derivation-path method as BIP 49 for script-type-specific accounts, differing only in purpose value.",
               "confidence": "low"
             },
             {
               "target": "bips:84",
               "evidence": "uses the same account-structure as defined in BIPs 44, 49, and 84",
-              "reason": "The proposal is explicitly modeled on the derivation approach used by BIP 84 for script-type-specific accounts.",
+              "reason": "The proposal explicitly reuses the same account-structure and implementation approach as BIP 84, with a new purpose for this script type.",
               "confidence": "low"
             },
             {
               "target": "bips:341",
               "evidence": "BIP 341 states: \"If the spending conditions do not require a script path, the output key should commit to an unspendable script path",
-              "reason": "The proposal defines Taproot output key construction and witness/scriptPubKey rules directly from BIP 341 semantics.",
+              "reason": "The proposal's core output-key computation, scriptPubKey form, and witness rules are taken from Taproot as specified in BIP 341; it defines derivation specifically for single-key P2TR outputs using those semantics.",
               "confidence": "low"
             }
           ]

@@ -25,73 +25,86 @@
     }
   },
   "meta": {
-    "last_commit": "Wed Oct 8 14:59:36 2025 -0700",
+    "last_commit": "2025-10-08T14:59:36-07:00",
     "total_commits": 13,
     "git_history": [
       [
         "24e96e870fffaa257b465ce1f0370c14aac588e8",
-        "Wed Oct 8 14:59:36 2025 -0700",
-        "Murch"
+        "2025-10-08T14:59:36-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "5207ef92a52d0b8902895b0dbb40823a4d698ec9",
-        "Fri Apr 11 20:08:17 2025 -0700",
-        "Murch"
+        "2025-04-11T20:08:17-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "59730dec4fb641a41589aa1b91d3c452f13e0e36",
-        "Fri Apr 11 20:05:13 2025 -0700",
-        "Murch"
+        "2025-04-11T20:05:13-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "a233bde4af52c6a11269e2e6dd9707abce441ffe",
-        "Fri Apr 11 18:19:21 2025 -0700",
-        "Murch"
+        "2025-04-11T18:19:21-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "726df6f4d54c7c7f9f1856ab37d07ece5defa0eb",
-        "Sat Feb 8 20:04:18 2025 +1000",
-        "Anthony Towns"
+        "2025-02-08T20:04:18+10:00",
+        "Anthony Towns",
+        "aj@erisian.com.au"
       ],
       [
         "337f5591504b0c8175d9c2690c23e93e71aa2df4",
-        "Sat Dec 21 14:43:40 2024 -0500",
-        "Jeremy Rubin"
+        "2024-12-21T14:43:40-05:00",
+        "Jeremy Rubin",
+        "j@rubin.io"
       ],
       [
         "d3d34c04f362d369ab9861808de85c77e2eabe07",
-        "Sat Dec 21 12:39:05 2024 -0500",
-        "Jeremy Rubin"
+        "2024-12-21T12:39:05-05:00",
+        "Jeremy Rubin",
+        "j@rubin.io"
       ],
       [
         "b02d2db5860eabe6601954c72b91dc6de29ef593",
-        "Thu Dec 19 23:52:11 2024 -0500",
-        "Jeremy Rubin"
+        "2024-12-19T23:52:11-05:00",
+        "Jeremy Rubin",
+        "j@rubin.io"
       ],
       [
         "217ae0dfa8c51a16a5d1e1b66f20c6bfb2d64147",
-        "Thu Nov 14 16:28:11 2024 -0500",
-        "Murch"
+        "2024-11-14T16:28:11-05:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "669d3b3570adad74febcb054f21c4d56b3ee4106",
-        "Thu Nov 14 16:26:55 2024 -0500",
-        "Murch"
+        "2024-11-14T16:26:55-05:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "329b0d3db50dea3b348f7322cb5af4ec37064013",
-        "Thu Nov 14 18:10:42 2024 +0100",
-        "moonsettler"
+        "2024-11-14T18:10:42+01:00",
+        "moonsettler",
+        "moonsettler@protonmail.com"
       ],
       [
         "b35383b68f514c93e0e99e4d47472a79217348a0",
-        "Tue Nov 12 23:46:22 2024 +0100",
-        "moonsettler"
+        "2024-11-12T23:46:22+01:00",
+        "moonsettler",
+        "moonsettler@protonmail.com"
       ],
       [
         "75351f2587ebdf220a92ac9c89119343f4cf8584",
-        "Wed Apr 24 14:34:29 2024 -0700",
-        "Brandon Black"
+        "2024-04-24T14:34:29-07:00",
+        "Brandon Black",
+        "freedom@reardencode.com"
       ]
     ]
   },
@@ -553,24 +566,11 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
+          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T09:31:40Z",
+          "timestamp": "2026-07-21T14:43:56Z",
           "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:341",
-              "evidence": "the _taproot internal key_ (referred to as _p_), as defined in [BIP 341]",
-              "reason": "The proposal's opcode semantics directly depend on the taproot internal key concept and representation defined by the target.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:342",
-              "evidence": "When verifying taproot script path spends having leaf version `0xc0` (as defined in [BIP 342]), `OP_INTERNALKEY` replaces `OP_SUCCESS203` (0xcb).",
-              "reason": "The proposal modifies tapscript behavior specifically within the leaf-version and script-path verification framework defined by the target.",
-              "confidence": "high"
-            }
-          ]
+          "dependencies": []
         }
       ]
     }

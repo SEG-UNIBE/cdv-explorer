@@ -25,78 +25,92 @@
     }
   },
   "meta": {
-    "last_commit": "Wed Oct 8 14:59:36 2025 -0700",
+    "last_commit": "2025-10-08T14:59:36-07:00",
     "total_commits": 14,
     "git_history": [
       [
         "24e96e870fffaa257b465ce1f0370c14aac588e8",
-        "Wed Oct 8 14:59:36 2025 -0700",
-        "Murch"
+        "2025-10-08T14:59:36-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "5207ef92a52d0b8902895b0dbb40823a4d698ec9",
-        "Fri Apr 11 20:08:17 2025 -0700",
-        "Murch"
+        "2025-04-11T20:08:17-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "59730dec4fb641a41589aa1b91d3c452f13e0e36",
-        "Fri Apr 11 20:05:13 2025 -0700",
-        "Murch"
+        "2025-04-11T20:05:13-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "66defbdc03ad64ccddfd373e1c59af9a41ab990f",
-        "Fri Apr 11 18:11:55 2025 -0700",
-        "Murch"
+        "2025-04-11T18:11:55-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "2d9e431fbe654640b55bca3bf8c4b17462890109",
-        "Tue Apr 30 14:51:39 2024 -0400",
-        "Varunram Ganesh"
+        "2024-04-30T14:51:39-04:00",
+        "Varunram Ganesh",
+        "vrg2009@ymail.com"
       ],
       [
         "6295c1a095a1fa33f38d334227fa4222d8e0a523",
-        "Thu Aug 24 23:50:20 2017 +1200",
-        "MeshCollider"
+        "2017-08-24T23:50:20+12:00",
+        "MeshCollider",
+        "dobsonsa68@gmail.com"
       ],
       [
         "959fecc15bdad070afa63455468b1dba54655fa6",
-        "Wed Nov 30 09:47:31 2016 +0000",
-        "Luke Dashjr"
+        "2016-11-30T09:47:31Z",
+        "Luke Dashjr",
+        "luke-jr+git@utopios.org"
       ],
       [
         "387fc6011bd804609fd751786e50439d5c11a097",
-        "Tue Aug 23 19:47:29 2016 +0000",
-        "Luke Dashjr"
+        "2016-08-23T19:47:29Z",
+        "Luke Dashjr",
+        "luke-jr+git@utopios.org"
       ],
       [
         "3f859450dd209796bf50bf344cb8bf0a212c5417",
-        "Wed Feb 3 21:09:08 2016 +0000",
-        "Luke Dashjr"
+        "2016-02-03T21:09:08Z",
+        "Luke Dashjr",
+        "luke-jr+git@utopios.org"
       ],
       [
         "4edd6d2badd9a6ad2ff09bb6792fe0d0e365a7de",
-        "Wed Feb 3 07:02:36 2016 +0000",
-        "Luke Dashjr"
+        "2016-02-03T07:02:36Z",
+        "Luke Dashjr",
+        "luke-jr+git@utopios.org"
       ],
       [
         "1ae904c0115a109ee78c9d8c9ca6cb88b9bdfde4",
-        "Thu Jan 21 12:32:11 2016 +0000",
-        "Guilherme Salgado"
+        "2016-01-21T12:32:11Z",
+        "Guilherme Salgado",
+        "gsalgado@gmail.com"
       ],
       [
         "558ee51faf06d47e2b6ec57444159ba11e3c6802",
-        "Fri Jul 10 14:02:55 2015 -0500",
-        "Justus Ranvier"
+        "2015-07-10T14:02:55-05:00",
+        "Justus Ranvier",
+        "justusranvier@riseup.net"
       ],
       [
         "b079e559fbc41bd52f5d8d7d7d07c790f53421bc",
-        "Fri Jul 10 13:15:06 2015 -0500",
-        "Justus Ranvier"
+        "2015-07-10T13:15:06-05:00",
+        "Justus Ranvier",
+        "justusranvier@riseup.net"
       ],
       [
         "6fccd1ee05e593815e7b7f4db0f45f19604fe99d",
-        "Fri Jun 19 18:14:36 2015 -0500",
-        "Justus Ranvier"
+        "2015-06-19T18:14:36-05:00",
+        "Justus Ranvier",
+        "justusranvier@riseup.net"
       ]
     ]
   },
@@ -558,30 +572,11 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
+          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T09:29:56Z",
+          "timestamp": "2026-07-21T14:41:16Z",
           "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:32",
-              "evidence": "based on an algorithm described in BIP-0032",
-              "reason": "The proposal defines its wallet hierarchy and derivation path using the BIP32 deterministic derivation algorithm and hardened/public derivation semantics.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:43",
-              "evidence": "purpose scheme described in BIP-0043",
-              "reason": "The proposal relies on BIP43's purpose-field convention to assign purpose 81' and define the subtree semantics.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:44",
-              "evidence": "This BIP is a particular application of BIP43 and is based on BIP44.",
-              "reason": "The proposal is explicitly designed as a specialization based on BIP44's hierarchical wallet structure.",
-              "confidence": "high"
-            }
-          ]
+          "dependencies": []
         }
       ]
     }

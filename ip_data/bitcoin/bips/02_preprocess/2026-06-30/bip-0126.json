@@ -24,63 +24,74 @@
     }
   },
   "meta": {
-    "last_commit": "Wed Oct 8 14:59:36 2025 -0700",
+    "last_commit": "2025-10-08T14:59:36-07:00",
     "total_commits": 11,
     "git_history": [
       [
         "24e96e870fffaa257b465ce1f0370c14aac588e8",
-        "Wed Oct 8 14:59:36 2025 -0700",
-        "Murch"
+        "2025-10-08T14:59:36-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "5207ef92a52d0b8902895b0dbb40823a4d698ec9",
-        "Fri Apr 11 20:08:17 2025 -0700",
-        "Murch"
+        "2025-04-11T20:08:17-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "59730dec4fb641a41589aa1b91d3c452f13e0e36",
-        "Fri Apr 11 20:05:13 2025 -0700",
-        "Murch"
+        "2025-04-11T20:05:13-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "f61885edcf5e63ac205b1ca5f08173f1336bff74",
-        "Wed May 1 06:54:05 2024 +1000",
-        "John Bampton"
+        "2024-05-01T06:54:05+10:00",
+        "John Bampton",
+        "jbampton@users.noreply.github.com"
       ],
       [
         "9d879aaf5ce36c270d6874ef72aa723732f3bc12",
-        "Sat May 12 21:51:18 2018 +0700",
-        "nopara73"
+        "2018-05-12T21:51:18+07:00",
+        "nopara73",
+        "adam.ficsor73@gmail.com"
       ],
       [
         "959fecc15bdad070afa63455468b1dba54655fa6",
-        "Wed Nov 30 09:47:31 2016 +0000",
-        "Luke Dashjr"
+        "2016-11-30T09:47:31Z",
+        "Luke Dashjr",
+        "luke-jr+git@utopios.org"
       ],
       [
         "f64f3c3d9c9b6d36a90b270d7b971cec071ec10a",
-        "Mon Jul 11 14:01:08 2016 -0500",
-        "Justus Ranvier"
+        "2016-07-11T14:01:08-05:00",
+        "Justus Ranvier",
+        "justus@openbitcoinprivacyproject.org"
       ],
       [
         "b33ca0c97b6aa78cc938b74400956ad05a11b7ee",
-        "Thu Jun 23 09:52:16 2016 -0500",
-        "Justus Ranvier"
+        "2016-06-23T09:52:16-05:00",
+        "Justus Ranvier",
+        "justus@openbitcoinprivacyproject.org"
       ],
       [
         "f51a8e1d0eb4870069cccde1f739964aeca93515",
-        "Thu Jun 23 13:42:03 2016 +1000",
-        "Daniel Cousens"
+        "2016-06-23T13:42:03+10:00",
+        "Daniel Cousens",
+        "dcousens@users.noreply.github.com"
       ],
       [
         "05e96d2500258724f4d2cb04b1d803aea045c6bf",
-        "Thu Jun 23 13:30:24 2016 +1000",
-        "Daniel Cousens"
+        "2016-06-23T13:30:24+10:00",
+        "Daniel Cousens",
+        "dcousens@users.noreply.github.com"
       ],
       [
         "9ab38e9c1096e1e94bb28fe57620e56ad4045c96",
-        "Wed Jun 22 18:43:56 2016 -0500",
-        "Justus Ranvier"
+        "2016-06-22T18:43:56-05:00",
+        "Justus Ranvier",
+        "justus@openbitcoinprivacyproject.org"
       ]
     ]
   },
@@ -582,15 +593,15 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
+          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T09:30:32Z",
+          "timestamp": "2026-07-21T14:42:23Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:69",
               "evidence": "Applications which wish to comply both with this procedure and BIP69 should apply this procedure prior to applying BIP69.",
-              "reason": "The proposal explicitly defines how it composes with BIP69, making implementations that aim for joint compliance depend on BIP69's transaction ordering procedure.",
+              "reason": "The proposal defines an explicit interoperability workflow with BIP69: implementations that adopt both must sequence this procedure before BIP69's transaction ordering rules. That is a substantive compatibility dependency for combined implementation, not a mere citation.",
               "confidence": "medium"
             }
           ]

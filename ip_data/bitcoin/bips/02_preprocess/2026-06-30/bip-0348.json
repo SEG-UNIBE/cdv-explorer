@@ -25,58 +25,68 @@
     }
   },
   "meta": {
-    "last_commit": "Wed Oct 8 14:59:36 2025 -0700",
+    "last_commit": "2025-10-08T14:59:36-07:00",
     "total_commits": 10,
     "git_history": [
       [
         "24e96e870fffaa257b465ce1f0370c14aac588e8",
-        "Wed Oct 8 14:59:36 2025 -0700",
-        "Murch"
+        "2025-10-08T14:59:36-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "5207ef92a52d0b8902895b0dbb40823a4d698ec9",
-        "Fri Apr 11 20:08:17 2025 -0700",
-        "Murch"
+        "2025-04-11T20:08:17-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "59730dec4fb641a41589aa1b91d3c452f13e0e36",
-        "Fri Apr 11 20:05:13 2025 -0700",
-        "Murch"
+        "2025-04-11T20:05:13-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "a233bde4af52c6a11269e2e6dd9707abce441ffe",
-        "Fri Apr 11 18:19:21 2025 -0700",
-        "Murch"
+        "2025-04-11T18:19:21-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "1dee48343649585d5a4b469edfc40a0187d819c2",
-        "Mon Mar 10 16:20:42 2025 -0400",
-        "Antoine Poinsot"
+        "2025-03-10T16:20:42-04:00",
+        "Antoine Poinsot",
+        "darosior@protonmail.com"
       ],
       [
         "97a7edb0da7ec0ec7aaaff6cd43e106a3aee69e0",
-        "Mon Mar 10 16:16:36 2025 -0400",
-        "Antoine Poinsot"
+        "2025-03-10T16:16:36-04:00",
+        "Antoine Poinsot",
+        "darosior@protonmail.com"
       ],
       [
         "726df6f4d54c7c7f9f1856ab37d07ece5defa0eb",
-        "Sat Feb 8 20:04:18 2025 +1000",
-        "Anthony Towns"
+        "2025-02-08T20:04:18+10:00",
+        "Anthony Towns",
+        "aj@erisian.com.au"
       ],
       [
         "45fbec92cd6a1d016d96d6ce7616f9b346056112",
-        "Mon Dec 16 15:23:08 2024 -0500",
-        "Danbo"
+        "2024-12-16T15:23:08-05:00",
+        "Danbo",
+        "140512416+dannbbb1@users.noreply.github.com"
       ],
       [
         "f799ea1fa0509e45b0e5406e3ad19872ef5c240c",
-        "Tue Dec 10 20:37:01 2024 -0600",
-        "kdmukai"
+        "2024-12-10T20:37:01-06:00",
+        "kdmukai",
+        "keith.mukai@essaytagger.com"
       ],
       [
         "d2932bd00d16992d90df82d2a37db79c355046c4",
-        "Wed Apr 24 14:40:53 2024 -0700",
-        "Brandon Black"
+        "2024-04-24T14:40:53-07:00",
+        "Brandon Black",
+        "freedom@reardencode.com"
       ]
     ]
   },
@@ -600,21 +610,21 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
+          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T09:31:39Z",
+          "timestamp": "2026-07-21T14:43:57Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:340",
               "evidence": "it is considered to be a public key as described in [BIP 340]",
-              "reason": "The opcode's 32-byte key handling and signature validation semantics directly reuse BIP 340 public key and signature verification rules.",
+              "reason": "For 32-byte keys, the proposal directly uses BIP 340 public keys and signature validation rules; implementing the opcode's core verification semantics materially depends on BIP 340.",
               "confidence": "high"
             },
             {
               "target": "bips:342",
-              "evidence": "When verifying taproot script spends having leaf version 0xc0 (as defined in [BIP 342])",
-              "reason": "The proposal is explicitly scoped to Tapscript spends defined by BIP 342 and also reuses its unknown key type and sigops budget semantics.",
+              "evidence": "When verifying taproot script spends having leaf version 0xc0 (as defined in [BIP 342]), we propose `OP_CHECKSIGFROMSTACK` to replace `OP_SUCCESS204`",
+              "reason": "The proposal explicitly defines its opcode semantics as a modification to Tapscript spends with leaf version 0xc0, reusing the validation context, unknown key type handling, and sigops budget rules described in BIP 342.",
               "confidence": "high"
             }
           ]

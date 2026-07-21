@@ -24,48 +24,56 @@
     }
   },
   "meta": {
-    "last_commit": "Wed Oct 8 14:59:36 2025 -0700",
+    "last_commit": "2025-10-08T14:59:36-07:00",
     "total_commits": 8,
     "git_history": [
       [
         "24e96e870fffaa257b465ce1f0370c14aac588e8",
-        "Wed Oct 8 14:59:36 2025 -0700",
-        "Murch"
+        "2025-10-08T14:59:36-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "5207ef92a52d0b8902895b0dbb40823a4d698ec9",
-        "Fri Apr 11 20:08:17 2025 -0700",
-        "Murch"
+        "2025-04-11T20:08:17-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "59730dec4fb641a41589aa1b91d3c452f13e0e36",
-        "Fri Apr 11 20:05:13 2025 -0700",
-        "Murch"
+        "2025-04-11T20:05:13-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "01352f7f40cb7f61d0aa177341f8804de2f8fed9",
-        "Fri Apr 11 20:07:37 2025 -0700",
-        "Murch"
+        "2025-04-11T20:07:37-07:00",
+        "Murch",
+        "murch@murch.one"
       ],
       [
         "cd19d89e58b8c9b84f18efb5659220d4755fff0b",
-        "Thu Jul 10 02:24:55 2025 +0200",
-        "Yuval Kogman"
+        "2025-07-10T02:24:55+02:00",
+        "Yuval Kogman",
+        "nothingmuch@woobling.org"
       ],
       [
         "66aed730432eedc1dadc5436d0e4dd7a6d3b5216",
-        "Thu May 5 15:07:26 2022 +0000",
-        "Luke Dashjr"
+        "2022-05-05T15:07:26Z",
+        "Luke Dashjr",
+        "luke-jr+git@utopios.org"
       ],
       [
         "234bb915f41f85eb8e9845bab5349fb2eec83246",
-        "Thu Apr 7 10:42:55 2022 +1000",
-        "Anthony Towns"
+        "2022-04-07T10:42:55+10:00",
+        "Anthony Towns",
+        "aj@erisian.com.au"
       ],
       [
         "4d5e1cc162e5d93bcf8e0ea94cf2bb96e1d7594a",
-        "Sat Jan 8 15:32:00 2022 +0000",
-        "chris-belcher"
+        "2022-01-08T15:32:00Z",
+        "chris-belcher",
+        "chris-belcher@users.noreply.github.com"
       ]
     ]
   },
@@ -587,21 +595,21 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
+          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T09:31:19Z",
+          "timestamp": "2026-07-21T14:43:26Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:68",
               "evidence": "set the nSequence field in their taproot transactions as in BIP68",
-              "reason": "The proposal relies on BIP68-style nSequence relative locktime semantics, including its encoding limits and version requirement, to implement the recommended wallet behavior.",
+              "reason": "The proposal directly reuses BIP 68 relative-locktime semantics for nSequence, including the 65535 block-distance limit and version-2 requirement shown in the pseudocode, so its specified behavior materially depends on BIP 68 rules.",
               "confidence": "high"
             },
             {
               "target": "bips:341",
               "evidence": "uses BIP341 taproot",
-              "reason": "The proposal is explicitly designed for wallets creating transactions spending Taproot outputs and bases its behavior on Taproot spends.",
+              "reason": "The proposal is explicitly defined for wallets creating transactions spending UTXOs protected by Taproot and is designed around Taproot spends for its privacy goal, so understanding and adopting it materially relies on the Taproot mechanism introduced by BIP 341.",
               "confidence": "high"
             }
           ]

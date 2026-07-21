@@ -29,23 +29,26 @@
     }
   },
   "meta": {
-    "last_commit": "Fri Apr 17 10:44:09 2026 -0600",
+    "last_commit": "2026-04-17T10:44:09-06:00",
     "total_commits": 3,
     "git_history": [
       [
         "da7cc678d522c7ff09d3d4e3b5de1a1ccc1e90c9",
-        "Fri Apr 17 10:44:09 2026 -0600",
-        "conduition"
+        "2026-04-17T10:44:09-06:00",
+        "conduition",
+        "conduition@proton.me"
       ],
       [
         "ab2ebe2c5d3593dd1d74e2a13b5b9835ccbf28c0",
-        "Fri Apr 17 15:22:59 2026 +0000",
-        "conduition"
+        "2026-04-17T15:22:59Z",
+        "conduition",
+        "conduition@proton.me"
       ],
       [
         "86dfa19bef154c88a3fa4b2185400837f2d6cad9",
-        "Tue Apr 14 16:36:41 2026 +0200",
-        "Jameson Lopp"
+        "2026-04-14T16:36:41+02:00",
+        "Jameson Lopp",
+        "jameson.lopp@gmail.com"
       ]
     ]
   },
@@ -632,15 +635,15 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
+          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T09:31:46Z",
+          "timestamp": "2026-07-21T14:44:06Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:32",
-              "evidence": "used [[bip-0032.mediawiki|BIP-32]] to construct deterministic HD wallets",
-              "reason": "The proposal's described rescue protocol explicitly relies on BIP-32 hardened key derivation as a mechanism to prove knowledge unavailable to a quantum attacker.",
+              "evidence": "Any BIP-32 wallet which uses a hardened derivation step in its key-paths can thus satisfy a rescue protocol which uses BIP-32 hardened key derivation",
+              "reason": "The proposal's rescue-protocol design explicitly relies on BIP-32 hardened derivation and parent XPriv knowledge as the mechanism to distinguish authentic holders from quantum attackers for some legacy funds.",
               "confidence": "high"
             }
           ]

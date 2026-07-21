@@ -24,13 +24,14 @@
     }
   },
   "meta": {
-    "last_commit": "Tue May 12 23:06:55 2026 +0000",
+    "last_commit": "2026-05-12T23:06:55Z",
     "total_commits": 1,
     "git_history": [
       [
         "622e47722cd35514e96da37ae89f868e18d581e4",
-        "Tue May 12 23:06:55 2026 +0000",
-        "Matt Corallo"
+        "2026-05-12T23:06:55Z",
+        "Matt Corallo",
+        "649246+TheBlueMatt@users.noreply.github.com"
       ]
     ]
   },
@@ -471,27 +472,27 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-16T09:29:05Z_gpt-5.4-2026-03-05_3e61cfbf",
+          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
           "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-16T09:31:17Z",
+          "timestamp": "2026-07-21T14:43:22Z",
           "status": "success",
           "dependencies": [
             {
               "target": "bips:8",
               "evidence": "removed from BIP8 and BIP9 specifications",
-              "reason": "The proposal explicitly alters BIP8 signaling semantics by excluding the reserved nVersion bits from soft-fork signaling.",
+              "reason": "The proposal explicitly changes how the reserved nVersion bits interact with BIP 8 signaling rules, so implementing it requires applying an exception to BIP 8's version-bit activation mechanism.",
               "confidence": "high"
             },
             {
               "target": "bips:9",
               "evidence": "removed from BIP8 and BIP9 specifications",
-              "reason": "The proposal explicitly alters BIP9 signaling semantics by excluding the reserved nVersion bits from soft-fork signaling.",
+              "reason": "The proposal explicitly changes how the reserved nVersion bits interact with BIP 9 signaling rules, so implementing it requires applying an exception to BIP 9's version-bit activation and warning behavior.",
               "confidence": "high"
             },
             {
               "target": "bips:320",
-              "evidence": "BIP 320 defined 16 bits of nVersion as nonce space for additional nonce space.",
-              "reason": "The proposal directly builds on and modifies the earlier reservation of nVersion bits for nonce use by expanding it from 16 to 24 bits.",
+              "evidence": "BIP 320 defined 16 bits of nVersion as nonce space",
+              "reason": "The proposal directly revises the reservation of nVersion bits previously defined by BIP 320, expanding and replacing that earlier nonce-space allocation.",
               "confidence": "high"
             }
           ]

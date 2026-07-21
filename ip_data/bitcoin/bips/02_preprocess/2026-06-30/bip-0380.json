@@ -862,6 +862,26 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:12:50Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "as defined in BIP 32",
+              "reason": "The proposal's KEY expression grammar accepts BIP 32 extended public/private keys and specifies BIP 32 derivation steps and child-key derivation semantics, so implementing descriptors with extended keys materially depends on BIP 32 formats and derivation rules.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:173",
+              "evidence": "uses the same character set as bech32",
+              "reason": "The descriptor checksum reuses the Bech32 checksum alphabet; Bech32 is the encoding defined by BIP 173, so this is a technical reuse of a format element from that proposal.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

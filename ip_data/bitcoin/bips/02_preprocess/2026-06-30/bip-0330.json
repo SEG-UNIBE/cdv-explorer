@@ -853,6 +853,32 @@
               "confidence": "low"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:07:32Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:141",
+              "evidence": "wtxid is the transaction hash including witness data as defined by BIP141",
+              "reason": "The proposal computes short IDs and reconciliation sketches over wtxids, relying on the transaction identifier semantics defined by BIP141.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:339",
+              "evidence": "the negotiation and support of Erlay should be enabled only if both peers signal [https://github.com/bitcoin/bips/blob/master/bip-0339.mediawiki BIP-339] support",
+              "reason": "The proposal's protocol negotiation is explicitly conditioned on peers supporting the wtxid relay mechanism from BIP339.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:340",
+              "evidence": "TaggedHash is specified by [https://github.com/bitcoin/bips/blob/master/bip-0340.mediawiki BIP-340]",
+              "reason": "The proposal's short transaction ID computation uses the TaggedHash construction specified by BIP340.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

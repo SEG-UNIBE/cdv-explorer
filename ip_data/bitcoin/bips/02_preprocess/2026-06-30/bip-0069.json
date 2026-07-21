@@ -800,6 +800,20 @@
               "confidence": "medium"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T22:56:48Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:30",
+              "evidence": "each transaction hash has an extremely high probability of being unique in the blockchain — this is enforced for coinbase transactions by BIP30",
+              "reason": "The proposal justifies sorting inputs by previous transaction hash and output index using the transaction-hash uniqueness assumption, and explicitly points to BIP30 as the rule enforcing that uniqueness for coinbase transactions.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

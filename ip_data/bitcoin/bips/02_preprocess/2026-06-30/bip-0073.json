@@ -568,6 +568,26 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T22:57:04Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:21",
+              "evidence": "a valid Bitcoin URI should be returned",
+              "reason": "The proposal requires clients and servers to negotiate and return valid Bitcoin URIs; the Bitcoin URI scheme is the mechanism standardized by BIP 21, so implementing this behavior depends on that URI format and semantics.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:70",
+              "evidence": "enhancement to the payment protocol ([[bip-0070.mediawiki|BIP 70]])",
+              "reason": "The proposal explicitly enhances and is designed around the BIP 70 payment protocol and its payment request retrieval semantics.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

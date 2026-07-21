@@ -575,6 +575,20 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T22:58:59Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:54",
+              "evidence": "The rules specified in [BIP 54 version 1.0.0][BIP54] are active on Testnet 5 from block 1.",
+              "reason": "The proposal normatively requires Testnet 5 to enforce BIP 54 consensus rules from block 1, so implementing or adopting it materially depends on BIP 54's rule specification.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

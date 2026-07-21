@@ -892,6 +892,26 @@
               "confidence": "low"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:10:06Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:141",
+              "evidence": "Witness v0 programs must be exactly length 20 or 32.",
+              "reason": "The proposal’s address decoding rules depend on native segregated witness witness-version and witness-program semantics introduced by BIP141, including the version range, program length limits, and v0 length constraints.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:173",
+              "evidence": "amends BIP173 to use Bech32m",
+              "reason": "The proposal explicitly amends BIP173 and reuses the Bech32 address format while changing its checksum rule and version-to-encoding compatibility rules.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

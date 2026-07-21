@@ -529,6 +529,26 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:16:21Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:141",
+              "evidence": "Native segwit outputs are composed of a witness version and a witness program.",
+              "reason": "The proposal defines P2A as a native SegWit witness-program output and relies on the witness version/program scriptPubKey structure introduced by BIP141.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:350",
+              "evidence": "bech32m encoding",
+              "reason": "The proposal gives P2A addresses and chooses the witness-program bytes based on Bech32m encoding; Bech32m is the address checksum/encoding variant introduced by BIP350 for native SegWit v1+ addresses.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

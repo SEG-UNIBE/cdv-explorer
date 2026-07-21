@@ -624,6 +624,50 @@
               "confidence": "low"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T22:57:55Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "based on a [[bip-0032.mediawiki|BIP 32]] root account",
+              "reason": "The proposal's deterministic address derivation is built on BIP 32 HD wallet root-account derivation.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:43",
+              "evidence": "uses <code>84'</code>",
+              "reason": "The proposal assigns a hardened purpose value in the derivation path; this relies on the purpose-field convention introduced by BIP 43, which is explicitly referenced and materially needed to interpret the purpose path level.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:44",
+              "evidence": "uses the same account-structure as defined in [[bip-0044.mediawiki|BIP 44]]",
+              "reason": "The proposal reuses BIP 44's multi-level account hierarchy for its derivation path structure.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:49",
+              "evidence": "The rest of the levels are used as defined in BIP44 or BIP49.",
+              "reason": "The proposal reuses the derivation-path level semantics defined by BIP 49 as an alternative formulation of the account structure for segregated-witness accounts.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "we use the encapsulation defined in [[bip-0141.mediawiki#p2wpkh|BIP 141]]",
+              "reason": "The proposal directly relies on BIP 141's P2WPKH witness, scriptSig, and scriptPubKey encapsulation rules for address derivation.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:173",
+              "evidence": "using the P2WPKH ([[bip-0173.mediawiki|BIP 173]]) serialization format",
+              "reason": "The proposal depends on BIP 173's native witness address serialization format for its P2WPKH addresses.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

@@ -817,6 +817,26 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:02:43Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:173",
+              "evidence": "'''TxRef''' MUST use the '''Bech32m'''<ref>'''Why use Bech32 Encoding for Confirmed Transaction References?''' The error detection and correction properties of this encoding format make it very attractive. We expect that it will be reasonable for software to correct a maximum of two characters; however, we haven’t specified this yet.</ref> encoding as defined in [https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki BIP-0173]",
+              "reason": "The proposal normatively requires TxRef to use the Bech32/Bech32m encoding framework defined by BIP173, including its HRP, separator, data part, alphabet, and checksum structure.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:350",
+              "evidence": "'''TxRef''' MUST use the '''Bech32m'''<ref>'''Why use Bech32 Encoding for Confirmed Transaction References?''' The error detection and correction properties of this encoding format make it very attractive. We expect that it will be reasonable for software to correct a maximum of two characters; however, we haven’t specified this yet.</ref> encoding as defined in [https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki BIP-0173] and later refined in [https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki BIP-0350]",
+              "reason": "The proposal normatively requires the Bech32m variant and explicitly relies on the refinement codified by BIP350 for TxRef encoding and decoding compatibility.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

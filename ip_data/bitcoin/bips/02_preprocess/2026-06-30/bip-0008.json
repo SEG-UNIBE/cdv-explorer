@@ -952,6 +952,44 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T22:53:08Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:9",
+              "evidence": "This document specifies an alternative to [[bip-0009.mediawiki|BIP9]] that corrects for a number of perceived mistakes.",
+              "reason": "The proposal is designed as a replacement/modification of BIP9's version-bits soft-fork deployment mechanism, changing its timing and adding lock-in-on-timeout behavior.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:22",
+              "evidence": "===getblocktemplate changes===\n\nThe template request Object is extended",
+              "reason": "The proposal extends the getblocktemplate request/template format; getblocktemplate is the mining template protocol introduced by BIP22, so implementing these changes depends on that protocol's object workflow and fields.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:34",
+              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
+              "reason": "The proposal's available nVersion-bit space and top-bit design are constrained by the block-version rules introduced by BIP34, so its mechanism is designed around compatibility with that proposal.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:65",
+              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
+              "reason": "The proposal's available nVersion-bit space and top-bit design are constrained by the block-version rules associated with BIP65, so its mechanism is designed around compatibility with that proposal.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:66",
+              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
+              "reason": "The proposal's available nVersion-bit space and top-bit design are constrained by the block-version rules associated with BIP66, so its mechanism is designed around compatibility with that proposal.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

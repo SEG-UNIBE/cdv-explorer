@@ -620,6 +620,38 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:13:44Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:16",
+              "evidence": "this is limited by the P2SH script limit",
+              "reason": "The proposal constrains multisig key counts when nested in sh() by the P2SH script-size limit; P2SH and its redeem-script compatibility rules are specified by BIP 16.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:32",
+              "evidence": "extended keys, the derived keys use the same child index",
+              "reason": "The proposal defines behavior for multiple extended keys and child derivation in lockstep; extended keys and child-key derivation are the mechanisms introduced by BIP 32.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:380",
+              "evidence": "<tt>multi()</tt>, and <tt>sortedmulti()</tt> descriptors use the format and general operation specified in [[bip-0380.mediawiki|380]]",
+              "reason": "The proposal explicitly states that these descriptors use BIP 380's descriptor format and general operation, so implementing or interpreting them depends on BIP 380.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:381",
+              "evidence": "inside of either a <tt>sh()</tt> or <tt>wsh()</tt> descriptor",
+              "reason": "The proposal defines where multi() and sortedmulti() may be nested and relies on the semantics and restrictions of the sh() and wsh() output script descriptors; those descriptor functions are specified by BIP 381.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

@@ -2191,6 +2191,20 @@
               "confidence": "low"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:08:06Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "This would render signatures insecure when keys are generated using [[bip-0032.mediawiki#public-parent-key--public-child-key|BIP32's unhardened derivation]]",
+              "reason": "The proposal’s key-prefixing design is explicitly motivated by compatibility with BIP32 unhardened derivation, whose additive-tweak key semantics would otherwise create related-key attacks for the signature scheme.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

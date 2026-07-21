@@ -618,6 +618,26 @@
               "confidence": "medium"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:03:58Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:9",
+              "evidence": "deployed by \"version bits\" [https://github.com/bitcoin/bips/blob/master/bip-0009.mediawiki BIP9]",
+              "reason": "The proposal explicitly uses BIP9's version-bits deployment mechanism and parameters for activation.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "pay-to-witness-script-hash scripts described in BIP141",
+              "reason": "The proposal's NULLDUMMY consensus rule is explicitly applied to the P2WSH script type defined by BIP141, so implementation and evaluation depend on that script format.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

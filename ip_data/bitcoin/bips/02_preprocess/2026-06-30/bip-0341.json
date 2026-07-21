@@ -2160,6 +2160,50 @@
               "confidence": "low"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:08:43Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:9",
+              "evidence": "using [[bip-0009.mediawiki|BIP9]] modified to use a lower threshold, with an additional ''min_activation_height'' parameter and replacing the state transition logic",
+              "reason": "BIP341's activation mechanism is explicitly based on BIP9 version-bits deployment rules with specified modifications.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "A Taproot output is a native SegWit output (see [[bip-0141.mediawiki|BIP141]]) with version number 1, and a 32-byte witness program.",
+              "reason": "BIP341 defines Taproot as a new native SegWit witness-program output type and relies on BIP141's witness version/program structure and spending framework.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:143",
+              "evidence": "the semantics of the [[bip-0143.mediawiki|BIP143]] sighash types remain unchanged, except the following:",
+              "reason": "BIP341 reuses and amends the existing BIP143 SegWit sighash-type semantics while defining its new Taproot signature message algorithm.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:340",
+              "evidence": "A Taproot signature is a 64-byte Schnorr signature, as defined in [[bip-0340.mediawiki|BIP340]]",
+              "reason": "BIP341 uses BIP340 Schnorr public keys, signatures, verification, notation, tagged hashes, and reference-code primitives as core parts of Taproot validation and wallet construction.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:342",
+              "evidence": "[[bip-0342.mediawiki|BIP342]] specifies validity rules that apply for leaf version 0xc0",
+              "reason": "BIP341's script-path validation delegates script execution semantics for the defined Taproot leaf version 0xc0 to BIP342, and the proposal is deployed concurrently with it.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:350",
+              "evidence": "support sending to [[bip-0350.mediawiki|BIP350]] Bech32m addresses",
+              "reason": "BIP341 wallet interoperability for sending to SegWit version 1 Taproot programs relies on the BIP350 Bech32m address format.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

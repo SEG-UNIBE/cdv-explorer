@@ -643,6 +643,38 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:03:56Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:9",
+              "evidence": "BIP9 \"segwit\" deployment using bit 1",
+              "reason": "BIP148 is built around the BIP9 version-bits deployment mechanism for segwit, including bit-1 signaling, lock-in/activation state, and timeout behavior.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "to activate BIP141, BIP143 and BIP147",
+              "reason": "BIP148's purpose is to force activation of the existing segwit deployment, which includes the consensus rules defined by BIP141.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:143",
+              "evidence": "to activate BIP141, BIP143 and BIP147",
+              "reason": "BIP148's mandatory signaling is designed to activate the existing segwit deployment, including the signature-verification rules defined by BIP143.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:147",
+              "evidence": "to activate BIP141, BIP143 and BIP147",
+              "reason": "BIP148's mandatory signaling is designed to activate the existing segwit deployment, including the malleability-fix consensus rule defined by BIP147.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

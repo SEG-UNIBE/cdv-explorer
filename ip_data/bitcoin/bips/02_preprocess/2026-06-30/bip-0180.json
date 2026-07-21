@@ -638,6 +638,20 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:05:01Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:141",
+              "evidence": "The block weight defined by [[bip-0141.mediawiki|BIP 141]] is the size of the block stripped of its segwit signatures times 3, plus the full size of the block.",
+              "reason": "The proposal's weight fraud proof verifies overweight blocks by calculating lower-bound block weight from stripped and full block sizes, directly reusing BIP 141's block-weight definition and SegWit-related stripped/full-size semantics.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

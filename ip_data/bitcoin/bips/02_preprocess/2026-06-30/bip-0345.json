@@ -1308,6 +1308,56 @@
               "confidence": "low"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:09:37Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:112",
+              "evidence": "a way to enforce relative timelocks, like <code>OP_CHECKSEQUENCEVERIFY</code>",
+              "reason": "The proposal's vault workflow requires relative timelocks; OP_CHECKSEQUENCEVERIFY is the mechanism specified by BIP112 and is used in the described vault scripts.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:119",
+              "evidence": "deployed concurrently with BIP-0119 to enable full use of vaults",
+              "reason": "The proposal relies on OP_CHECKTEMPLATEVERIFY from BIP119 to commit withdrawals to a particular set of final outputs and states concurrent deployment is needed for full vault use.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:125",
+              "evidence": "nSequence number less than <code>0xffffffff - 1</code>, per [https://github.com/bitcoin/bips/blob/master/bip-0125.mediawiki BIP-0125]",
+              "reason": "The proposal's relay policy for recovery transactions relies on BIP125 opt-in replaceability rules.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "If the scriptPubKey of ''triggerOut'' is not a version 1 witness program, script execution MUST fail",
+              "reason": "The proposal uses witness-program versioning and scriptPubKey format rules introduced by BIP141 as part of its validation logic.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:340",
+              "evidence": "tagged_hash()</code> is from the [https://github.com/bitcoin/bips/blob/master/bip-0340/reference.py BIP-0340 reference code]",
+              "reason": "The recovery scriptPubKey hash computation normatively reuses BIP340's tagged_hash construction.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "encumbering coins under a\ntaptree [https://github.com/bitcoin/bips/blob/master/bip-0341.mediawiki (BIP-341)]\ncontaining at least two leaves",
+              "reason": "The proposal is designed around Taproot/taptree structures and tapleaf replacement semantics introduced by BIP341.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:342",
+              "evidence": "Decrement the per-script sigops budget (see [https://github.com/bitcoin/bips/blob/master/bip-0342.mediawiki#resource-limits BIP-0342]) by 60",
+              "reason": "The proposal defines new tapscript opcode semantics that use BIP342 resource-limit accounting and OP_SUCCESS/tapscript behavior.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

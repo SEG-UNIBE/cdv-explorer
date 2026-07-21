@@ -1240,6 +1240,26 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T22:57:24Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:21",
+              "evidence": "defining the following new [[bip-0021.mediawiki|BIP 21 URI]] parameters",
+              "reason": "The proposal extends and relies on the BIP 21 URI scheme to advertise payjoin capability and define the pj/pjos parameters used by senders and receivers.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:174",
+              "evidence": "The sender creates a signed, finalized PSBT with witness UTXO or previous transactions of the inputs.",
+              "reason": "The protocol is built around exchanging and validating PSBTs and their fields; PSBT is the Partially Signed Bitcoin Transaction format specified by BIP 174.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

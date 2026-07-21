@@ -696,6 +696,38 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:12:26Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:174",
+              "evidence": "additional fields for BIP 174 PSBTv0 and BIP 370 PSBTv2",
+              "reason": "The proposal defines new per-input PSBT fields for the PSBTv0 format introduced by BIP 174, so implementation and interpretation rely on BIP 174's PSBT structure and field semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:340",
+              "evidence": "BIP-340 keys are serialized by appending `0x02` byte",
+              "reason": "The specification defines how BIP-340 keys are represented in the new field, relying on BIP 340's public-key format and Schnorr-key semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:370",
+              "evidence": "additional fields for BIP 174 PSBTv0 and BIP 370 PSBTv2",
+              "reason": "The proposal explicitly extends PSBTv2, relying on BIP 370's PSBTv2 format and version-specific inclusion rules.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:371",
+              "evidence": "P2C-tweaked public keys are already exposed in the\n<tt>PSBT_IN_REDEEM_SCRIPT</tt>, <tt>PSBT_IN_WITNESS_SCRIPT</tt>,\n<tt>PSBT_IN_TAP_INTERNAL_KEY</tt> and <tt>PSBT_IN_TAP_LEAF_SCRIPT</tt> fields",
+              "reason": "The proposal relies on existing PSBT fields as locations where tweaked keys are exposed; PSBT_IN_TAP_INTERNAL_KEY and PSBT_IN_TAP_LEAF_SCRIPT are Taproot PSBT fields introduced by BIP 371.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

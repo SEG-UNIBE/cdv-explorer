@@ -652,6 +652,32 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:17:09Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:340",
+              "evidence": "uses a tagged hash as introduced by [BIP340][schnorr-bip]",
+              "reason": "The proposal explicitly uses the tagged-hash construction introduced by BIP340, with a new tag for OP_TEMPLATEHASH.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "re-uses the *sha_sequences*, *sha_outputs* and *sha_annex* pre-computed transaction data introduced in\nBIP341",
+              "reason": "The proposal directly reuses BIP341 precomputed transaction-hash fields and annex-related semantics in the definition of the template hash.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:342",
+              "evidence": "redefines `OP_SUCCESS206` (0xce) in the Tapscript execution context",
+              "reason": "The proposal is defined as a change to Tapscript execution by assigning consensus meaning to an OP_SUCCESS opcode; Tapscript and its OP_SUCCESS upgrade mechanism are defined by BIP342.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

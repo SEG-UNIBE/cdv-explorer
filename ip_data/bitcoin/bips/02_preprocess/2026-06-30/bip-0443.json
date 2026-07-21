@@ -792,6 +792,26 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:17:02Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:341",
+              "evidence": "the naked key is the internal key as defined in BIP-341",
+              "reason": "The proposal defines its commitment and output-checking semantics in terms of Taproot/P2TR internal keys, taptrees, taproot tweaking, the BIP341 NUMS key, and BIP341 helper logic, so implementing or evaluating it materially depends on BIP-341's Taproot output format and key/taptree semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:342",
+              "evidence": "The tapscript opcode OP_SUCCESS187 (0xbb) is constrained with new rules",
+              "reason": "The proposal implements OP_CHECKCONTRACTVERIFY by assigning stricter semantics to an OP_SUCCESSx opcode within tapscript. OP_SUCCESSx opcode behavior and tapscript execution semantics are introduced by BIP-342, so the proposal relies on BIP-342's upgrade mechanism and script-validation context.",
+              "confidence": "low"
+            }
+          ]
         }
       ]
     }

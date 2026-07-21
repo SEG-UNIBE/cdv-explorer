@@ -657,6 +657,32 @@
               "confidence": "medium"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:01:12Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:21",
+              "evidence": "The specification is the same as BIP0021, with the following\ndifferences",
+              "reason": "The proposal explicitly bases its URI scheme specification on BIP21 and then defines only differences from it, including reusing BIP21 query encoding and extensibility rules.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:70",
+              "evidence": "must, if present in the URI, exactly match\nthe data associated with the original payment according to the\nfollowing table:\n\n{|\n| <tt>btcpop:</tt> URI parameter || <tt>bitcoin:</tt> URI parameter || BIP70 PaymentDetails data",
+              "reason": "The proposal defines transaction-hint matching semantics by mapping URI parameters to BIP70 PaymentDetails fields such as memo and outputs.amount, relying on BIP70's payment-request data model.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:120",
+              "evidence": "a URI scheme to be used in the Proof of Payment\nprocess",
+              "reason": "The proposal is designed as a transport URI for the Proof of Payment workflow; the referenced Proof of Payment concept is identified in the proposal's references as BIP0120, so implementing or evaluating this URI scheme depends on that PoP process.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

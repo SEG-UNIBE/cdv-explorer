@@ -921,6 +921,26 @@
               "confidence": "medium"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T22:58:35Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "backing up and restoring the master seed of a\n[https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki BIP-0032] hierarchical deterministic wallet",
+              "reason": "The proposal’s primary encoded secret is a BIP-0032 HD wallet master seed, including BIP-0032 seed-size assumptions and restoration semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:173",
+              "evidence": "It reuses the base-32 character set from BIP-0173",
+              "reason": "The proposal materially reuses Bech32’s character set and related encoding/case/value conventions defined by BIP-0173 for codex32 strings.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

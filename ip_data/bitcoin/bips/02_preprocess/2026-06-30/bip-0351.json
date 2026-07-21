@@ -801,6 +801,50 @@
           "timestamp": "2026-07-21T14:43:58Z",
           "status": "success",
           "dependencies": []
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:11:02Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "The following BIP32 path levels are defined:",
+              "reason": "The proposal directly uses BIP32 hierarchical deterministic wallet path levels, extended keys, and non-hardened child derivation for its public-key derivation scheme.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:43",
+              "evidence": "<code>purpose</code> is set to 351.",
+              "reason": "The proposal relies on the deterministic-wallet purpose-field convention; that purpose-field scheme was introduced by BIP43, and the text assigns this proposal's purpose value within that convention.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:44",
+              "evidence": "The derivation path for this BIP follows BIP44.",
+              "reason": "The proposal explicitly bases its account-level derivation path on BIP44's hierarchy.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "| P2WPKH || <code>1 << 1</code> || <code>0x0002</code> || 1",
+              "reason": "The proposal defines payment-code address-type flags and notification commitments for P2WPKH outputs; P2WPKH is the native SegWit pay-to-witness-public-key-hash mechanism defined by BIP141.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "| P2TR || <code>1 << 2</code> || <code>0x0004</code> || 2",
+              "reason": "The proposal defines payment-code address-type flags and notification commitments for P2TR outputs; P2TR is the pay-to-taproot output type defined by BIP341.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:350",
+              "evidence": "Payment codes are encoded in bech32m",
+              "reason": "The proposal's payment-code serialization depends on the Bech32m encoding format, which is defined by BIP350.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

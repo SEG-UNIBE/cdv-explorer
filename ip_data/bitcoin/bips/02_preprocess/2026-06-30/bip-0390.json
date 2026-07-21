@@ -652,6 +652,50 @@
               "confidence": "low"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:15:53Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "further [[bip-0032.mediawiki|BIP-32]] derivation will be performed on the aggregate public key",
+              "reason": "The ranged musig() form depends on BIP-32 extended public keys and unhardened derivation semantics for deriving from the aggregate public key.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:327",
+              "evidence": "produce an aggregate public key using [[bip-0327.mediawiki|BIP-327]]",
+              "reason": "The proposal defines musig() by reusing BIP-327's MuSig2 aggregate public key mechanism, including the KeyAgg and KeySort algorithms referenced in the specification.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:328",
+              "evidence": "derivation will be performed on the aggregate public key as described in\n[[bip-0328.mediawiki|BIP-328]]",
+              "reason": "The proposal directly applies BIP-328's procedure for deriving from a MuSig2 aggregate public key after aggregation.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:380",
+              "evidence": "<tt>musig()</tt> expressions use the format and general operation specified in\n[[bip-0380.mediawiki|BIP-380]]",
+              "reason": "The proposal extends output script descriptors and explicitly relies on BIP-380's descriptor format, key-expression framework, and general operation rules.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:386",
+              "evidence": "can only be used inside of a <tt>tr()</tt>",
+              "reason": "The proposal constrains musig() to be used as a key expression within tr() descriptor contexts; tr() output script descriptors are defined by BIP-386, so implementing this placement relies on that descriptor expression's semantics.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:389",
+              "evidence": "the term <tt>KEY</tt> refers to key expressions as defined in [[bip-0380.mediawiki|BIP-380]]\nand [[bip-0389.mediawiki|BIP-389]]",
+              "reason": "The proposal's KEY operands and its restrictions on multipath and child derivation reuse the key-expression semantics defined by BIP-389.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

@@ -649,6 +649,50 @@
               "confidence": "medium"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:08:21Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:35",
+              "evidence": "## mempool (BIP 35)",
+              "reason": "The proposal normatively prohibits sending the BIP 35 mempool message on connections where disabletx has been sent or received.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:37",
+              "evidence": "transaction relay field (introduced by BIP 37 and also defined in BIP 60)",
+              "reason": "The proposal's disabletx message is designed around the existing transaction-relay field in the version message and also constrains BIP 37 transaction-relay-related messages such as merkleblock and bloom-filter messages.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:60",
+              "evidence": "transaction relay field (introduced by BIP 37 and also defined in BIP 60)",
+              "reason": "The proposal conditions use of disabletx on the version-message transaction relay field; the text identifies BIP 60 as also defining that field.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:133",
+              "evidence": "## feefilter (BIP 133)",
+              "reason": "The proposal normatively prohibits sending the BIP 133 feefilter message on connections where disabletx has been sent or received.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:152",
+              "evidence": "subject to the feature negotiation of BIP 152",
+              "reason": "The proposal explicitly preserves BIP 152 compact-block messages on disabletx connections according to BIP 152's own feature-negotiation rules.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:155",
+              "evidence": "## addrv2 (BIP 155)",
+              "reason": "The proposal gives a normative recommendation not to send the BIP 155 addrv2 message on disabletx connections, constraining behavior for that message type.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

@@ -688,6 +688,44 @@
               "confidence": "low"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T22:55:52Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:16",
+              "evidence": "P2WPKH-nested-in-BIP16-P2SH",
+              "reason": "The proposal is designed around P2SH-wrapped witness outputs; P2SH is the mechanism defined by BIP16, and nested P2SH compatibility is material to the address/output format used here.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:32",
+              "evidence": "based on a [[bip-0032.mediawiki|BIP 32]] root account",
+              "reason": "The proposal derives deterministic wallet addresses from a BIP32 root account and uses BIP32 HD wallet derivation/extended-key concepts.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:43",
+              "evidence": "uses a different purpose value to indicate the different transaction\nserialization method",
+              "reason": "The proposal assigns a purpose value for its derivation scheme; the purpose-field convention for deterministic wallets is introduced by BIP43, so implementing the path semantics depends on that convention.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:44",
+              "evidence": "uses the same account-structure as defined in\n[[bip-0044.mediawiki|BIP 44]]",
+              "reason": "The proposal reuses BIP44's multi-account derivation hierarchy and changes only the purpose value while keeping the remaining levels as defined by BIP44.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "we use the encapsulation defined in [[bip-0141.mediawiki#p2wpkh-nested-in-bip16-p2sh|BIP 141]]",
+              "reason": "The proposal's address derivation relies on BIP141's P2WPKH-nested-in-P2SH segregated-witness serialization and encapsulation format.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

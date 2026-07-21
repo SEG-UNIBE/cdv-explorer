@@ -615,6 +615,44 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:15:20Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "The 78-byte serialized extended public key, as defined by BIP 32.",
+              "reason": "The proposal defines a key type whose key data and related metadata use BIP 32 extended public key serialization, fingerprints, depth, and derivation path conventions.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:174",
+              "evidence": "Based on key-value maps as defined by [[bip-0174.mediawiki|BIP 174]]",
+              "reason": "The proposal reuses BIP 174's key-value map and keypair serialization structure as the basis for its binary container format.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:380",
+              "evidence": "encoding an output\ndescriptor as defined by [[bip-0380.mediawiki|BIP 380]]",
+              "reason": "The proposal's container encodes descriptors in the output descriptor format defined by BIP 380, so implementing or validating the container depends on BIP 380 descriptor syntax and semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:388",
+              "evidence": "builds upon the draft BIP 388 by specifying\na serialization format for compact descriptors. It also uses the indexed key\nreferences from that BIP",
+              "reason": "The proposal explicitly builds on BIP 388 and reuses its indexed key reference mechanism for descriptor key expressions.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:389",
+              "evidence": "derivation paths as specified in [[bip-0389.mediawiki#specification|BIP 389]]",
+              "reason": "The proposal permits derivation paths following key references according to BIP 389's specified syntax, making that rule part of valid BOD descriptors.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

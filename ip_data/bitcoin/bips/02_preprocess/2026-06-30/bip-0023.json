@@ -753,6 +753,20 @@
           "timestamp": "2026-07-21T14:40:03Z",
           "status": "success",
           "dependencies": []
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T22:53:51Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:22",
+              "evidence": "optional extensions on top of [[bip-0022.mediawiki|BIP 22]]",
+              "reason": "BIP 23 is defined as a set of optional extensions to the getblocktemplate protocol specified by BIP 22, so implementing or evaluating it materially depends on BIP 22's base mechanisms and fields.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

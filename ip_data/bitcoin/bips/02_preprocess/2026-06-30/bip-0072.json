@@ -591,6 +591,26 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T22:56:57Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:21",
+              "evidence": "extension to the bitcoin: URI scheme (BIP 21)",
+              "reason": "The proposal extends the URI scheme defined by BIP 21 by adding an optional r parameter and preserving compatibility with existing bitcoin: URI behavior.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:70",
+              "evidence": "follow the payment protocol, as described in BIP 70",
+              "reason": "The proposal uses BIP 70's PaymentRequest and payment protocol workflow as the mechanism fetched via the new URI parameter.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

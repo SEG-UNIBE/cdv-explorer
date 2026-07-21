@@ -854,6 +854,38 @@
               "confidence": "low"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:00:51Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:30",
+              "evidence": "which is not possible on the Bitcoin blockchain (due to enforcement of [[bip-0030.mediawiki|BIP 30]])",
+              "reason": "The proposal's security analysis relies on the BIP 30 duplicate-transaction/output-spendability rule to justify replay-resistance assumptions for existing sighash modes.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:340",
+              "evidence": "''Verify'' is as defined in [[bip-0340.mediawiki|BIP 340]]",
+              "reason": "The proposal uses BIP 340 Schnorr verification and public-key format as the signature algorithm for the new public key type.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "the signature is validated according to the [[bip-0341.mediawiki|BIP 341]] signing validation rules",
+              "reason": "The proposal reuses BIP 341 signing validation rules, hash type semantics, signature message components, taproot internal key, tapleaf hash, and TapSighash construction while defining modified digest behavior.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:342",
+              "evidence": "This BIP modifies the behaviour of the [[bip-0342.mediawiki|BIP 342]] signature opcodes",
+              "reason": "The proposal directly amends BIP 342 tapscript signature opcode behavior and its handling of public key types.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

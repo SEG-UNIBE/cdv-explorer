@@ -815,6 +815,50 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:12:14Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "Taproot Key BIP 32 Derivation Path",
+              "reason": "The proposal defines Taproot-specific PSBT fields that carry BIP32 key fingerprints and derivation paths, reusing BIP32 derivation-path semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:174",
+              "evidence": "additional fields for BIP 174 PSBTv0",
+              "reason": "The proposal adds new fields to the PSBTv0 format defined by BIP174 and reuses its PSBT field structure and workflows.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:340",
+              "evidence": "BIP 340/341/342 Taproot data to be included in a PSBT",
+              "reason": "The proposal defines PSBT fields for Taproot Schnorr signatures and x-only public keys, relying on the signature/key scheme specified by BIP340.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "The control block for this leaf as specified in BIP 341.",
+              "reason": "The proposal directly reuses Taproot control blocks, internal keys, Merkle paths, leaf hashes, and output semantics specified by BIP341.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:342",
+              "evidence": "BIP 340/341/342 Taproot data to be included in a PSBT",
+              "reason": "The proposal carries Taproot script-path data, leaf scripts, leaf versions, and script-path signatures whose semantics are specified as part of Tapscript in BIP342.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:370",
+              "evidence": "additional fields for BIP 174 PSBTv0 and BIP 370 PSBTv2",
+              "reason": "The proposal adds new fields for PSBTv2 and uses the versioned PSBT rules introduced by BIP370.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

@@ -1072,6 +1072,20 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T22:54:35Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "This seed can be later used to generate deterministic wallets using BIP-0032 or similar methods.",
+              "reason": "The proposal defines a mnemonic-to-binary-seed workflow whose output is intended to be used as input to BIP32-style deterministic wallet generation; however, BIP39's own mnemonic and seed derivation algorithms are largely standalone, so the reliance is downstream compatibility rather than a strict implementation requirement.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

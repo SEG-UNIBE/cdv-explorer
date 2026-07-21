@@ -872,6 +872,26 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:00:22Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:9",
+              "evidence": "will be deployed by version-bits [[bip-0009.mediawiki|BIP9]]",
+              "reason": "The proposal relies on BIP9's version-bits deployment/activation mechanism for rollout.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "This BIP depends on [[bip-0141.mediawiki|BIP141]]",
+              "reason": "The proposal explicitly depends on BIP141 and defines a new witness program type using BIP141 witness-program version semantics and validation behavior.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

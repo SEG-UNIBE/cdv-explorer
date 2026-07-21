@@ -1393,6 +1393,26 @@
               "confidence": "low"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T22:52:36Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:2",
+              "evidence": "replaces [BIP 2]",
+              "reason": "The proposal supersedes the prior BIP process and defines migration/changes from it, so understanding and adopting this process materially depends on the prior process it replaces.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:123",
+              "evidence": "Layer header rules specified in [BIP 123]",
+              "reason": "The proposal reuses BIP 123's Layer classification/rules to define the Layer header semantics for Specification BIPs.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

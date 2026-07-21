@@ -817,6 +817,20 @@
               "confidence": "low"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:04:27Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:158",
+              "evidence": "The initial filter types are defined separately in [[bip-0158.mediawiki|BIP 158]]",
+              "reason": "BIP 157's P2P messages and support-signaling rules are parameterized by filter types, and it relies on BIP 158 to define the initial filter types, their contents, and serialization formats used by the protocol.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

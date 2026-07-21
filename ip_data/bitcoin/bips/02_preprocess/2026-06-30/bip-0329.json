@@ -719,6 +719,38 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:07:37Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "Extended public key as defined by BIP32",
+              "reason": "The proposal defines an xpub record type whose reference value uses BIP32 extended public key format, so implementations must understand that format.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:173",
+              "evidence": "Address in base58 or bech32 format",
+              "reason": "The proposal constrains address references to include bech32-formatted Bitcoin addresses; the bech32 address format is defined by BIP173, so interpreting or validating those references depends on that format.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:380",
+              "evidence": "abbreviated output descriptor (as defined by BIP380",
+              "reason": "The optional origin field is specified to contain an abbreviated output descriptor using the descriptor syntax and semantics defined by BIP380.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:392",
+              "evidence": "silent payments output descriptor as defined by BIP392",
+              "reason": "The spscan record type is defined using the key-expression form from the silent payments output descriptor specified by BIP392.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

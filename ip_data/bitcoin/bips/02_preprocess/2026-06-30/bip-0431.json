@@ -809,6 +809,32 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:16:41Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:125",
+              "evidence": "signals replaceability, even if it does not signal BIP125 replaceability",
+              "reason": "The proposal changes replacement-signaling semantics for TRUC transactions by making them replaceable even when they do not use the opt-in replaceability signal defined by BIP125.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "sigop-adjusted virtual size larger than 10,000 vB",
+              "reason": "The proposal’s normative transaction size limits are expressed in virtual bytes/virtual size; that transaction-weight-derived virtual size metric was introduced by BIP141, so implementing the limits depends on that size semantics.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:331",
+              "evidence": "Much of this proposal's utility relies on the existence of package relay for 1-parent-1-child packages",
+              "reason": "The text explicitly says TRUC’s utility relies on package relay for 1-parent-1-child packages. The named Package Relay mechanism involving p2p relay of transaction packages corresponds to BIP331, Ancestor Package Relay.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

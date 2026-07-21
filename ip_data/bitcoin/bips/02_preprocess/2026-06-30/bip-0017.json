@@ -705,6 +705,20 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T22:53:41Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:12",
+              "evidence": "existing OP_EVAL (BIP 12) transactions in the block chain can still be redeemed",
+              "reason": "The proposal's opcode assignment is explicitly chosen for backward compatibility with transactions using BIP 12's OP_EVAL mechanism.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

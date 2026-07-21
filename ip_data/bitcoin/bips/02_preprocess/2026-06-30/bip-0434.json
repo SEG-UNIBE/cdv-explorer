@@ -707,6 +707,26 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:16:06Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:324",
+              "evidence": "Nodes implementing both this BIP and [BIP 324 (v2 P2P encrypted\ntransport)][BIP324] MUST treat a message with a 1-byte `message_type`\nequal to `37` that is received prior to `verack` as the `feature` message.",
+              "reason": "The proposal defines a mandatory compatibility rule for use with BIP 324's v2 encrypted transport 1-byte message_type mechanism.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:339",
+              "evidence": "codifying and generalising the mechanism used by\n[BIP 339][BIP339]",
+              "reason": "The proposal explicitly reuses and generalizes BIP 339's pre-verack feature-negotiation mechanism as the basis for its generic feature message workflow.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

@@ -726,6 +726,50 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:10:04Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:9",
+              "evidence": "can be deployed using a BIP 9 VersionBits deployment",
+              "reason": "The proposal identifies BIP 9 VersionBits as a deployment mechanism, so adoption via the stated deployment path depends on BIP 9 activation rules.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:118",
+              "evidence": "the proposed sighash flags from\n[BIP-118](bip-0118.mediawiki) (`SIGHASH_ANYPREVOUT`)",
+              "reason": "The proposal explicitly supports and emulates the sighash flag semantics defined by BIP 118 through its TxFieldSelector mappings.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:119",
+              "evidence": "the empty\n  TxFieldSelector produces a hash semantically equivalent to BIP-119's\n  `OP_CHECKTEMPLATEVERIFY`",
+              "reason": "The proposal defines its default TxFieldSelector to generalize and reproduce the semantics of BIP 119's OP_CHECKTEMPLATEVERIFY.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "BIP-341/118 sighash type",
+              "reason": "The proposal maps BIP 341 Taproot sighash types into its one-byte TxFieldSelector format and also uses Taproot concepts such as annexes and control blocks; those Taproot transaction and script-path semantics are defined by BIP 341.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:342",
+              "evidence": "validation budget (\"sigops budget\") introduced in BIP-0342",
+              "reason": "The proposal reuses BIP 342's tapscript execution context, OP_SUCCESS soft-fork mechanism, and sigops validation budget for OP_TXHASH resource limits.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:348",
+              "evidence": "`OP_TXHASH` can be combined with\n  `OP_CHECKSIGFROMSTACK` (BIP-348) to emulate `SIGHASH_ANYPREVOUT`",
+              "reason": "A specified construction combines OP_TXHASH with BIP 348's OP_CHECKSIGFROMSTACK to provide generalized signature-hash behavior and emulate BIP 118-style modes.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

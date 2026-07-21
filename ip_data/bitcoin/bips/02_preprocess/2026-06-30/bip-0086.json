@@ -597,6 +597,50 @@
               "confidence": "low"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T22:58:12Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "based on a\n[[bip-0032.mediawiki|BIP 32]] master private key",
+              "reason": "The proposal derives deterministic addresses from a BIP 32 HD wallet master private key, reusing BIP 32 key derivation foundations.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:43",
+              "evidence": "For the <tt>purpose</tt>-path level it uses <tt>86'</tt>.",
+              "reason": "The proposal depends on the purpose path-level convention; that purpose-field scheme for deterministic wallets is introduced by BIP 43, and the text substantively relies on assigning a purpose value for this derivation path.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:44",
+              "evidence": "same account-structure as\ndefined in BIPs [[bip-0044.mediawiki|44]]",
+              "reason": "The proposal reuses the BIP 44 account hierarchy structure and path levels for its derivation scheme.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:49",
+              "evidence": "defined in BIPs [[bip-0044.mediawiki|44]], [[bip-0049.mediawiki|49]]",
+              "reason": "The proposal explicitly reuses the account-structure/path-level conventions as defined in BIP 49 alongside related derivation-path BIPs.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:84",
+              "evidence": "and [[bip-0084.mediawiki|84]],\nbut with a different purpose value",
+              "reason": "The proposal explicitly reuses the account-structure/path-level conventions as defined in BIP 84 while changing the purpose value for Taproot.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "single key\nP2TR ([[bip-0341.mediawiki|BIP 341]]) outputs as the Taproot internal key",
+              "reason": "The proposal is specifically a derivation scheme for keys used as Taproot internal keys in single-key P2TR outputs defined by BIP 341.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

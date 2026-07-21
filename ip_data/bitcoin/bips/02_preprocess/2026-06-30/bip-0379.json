@@ -895,6 +895,44 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:12:38Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:141",
+              "evidence": "These specifications apply to P2WSH ([BIP 141](bip-0141.mediawiki))",
+              "reason": "The proposal explicitly scopes Miniscript semantics and analysis to P2WSH scripts, relying on the script and witness context defined by BIP 141.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:342",
+              "evidence": "Tapscript ([BIP 342](bip-0342.mediawiki)) scripts",
+              "reason": "The proposal explicitly specifies Miniscript for Tapscript and includes Tapscript-only fragments and rule variations, relying on BIP 342's script semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:380",
+              "evidence": "Key expressions are specified in\n[BIP 380](bip-0380.mediawiki#key-expressions)",
+              "reason": "Miniscript key syntax and interpretation are delegated to the key-expression rules specified by BIP 380, and the proposal also frames Miniscript as an extension of BIP 380 descriptors.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:382",
+              "evidence": "BIP 382's key expression restrictions apply to Miniscript in P2WSH contexts",
+              "reason": "The proposal makes BIP 382 descriptor-context restrictions normative for Miniscript used in P2WSH, so implementation and validation depend on BIP 382.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:386",
+              "evidence": "BIP 386's key expression restrictions apply to Miniscript in P2TR contexts",
+              "reason": "The proposal makes BIP 386 descriptor-context restrictions normative for Miniscript used in P2TR, so implementation and validation depend on BIP 386.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

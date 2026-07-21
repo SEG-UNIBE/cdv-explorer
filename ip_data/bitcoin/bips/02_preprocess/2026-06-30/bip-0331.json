@@ -844,6 +844,20 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:07:37Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:339",
+              "evidence": "Package relay requires both peers to support wtxid-based relay because package transactions are referenced by their wtxids.",
+              "reason": "The proposal normatively requires wtxid-based relay for package relay operation. The named wtxid-based transaction relay mechanism and wtxidrelay negotiation message are defined by BIP339.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

@@ -603,6 +603,44 @@
               "confidence": "low"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:04:05Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:8",
+              "evidence": "This BIP will be deployed by BIP8",
+              "reason": "The proposal explicitly uses BIP8 as its deployment mechanism, relying on BIP8 activation semantics such as starttime, timeout, version bits, and guaranteed lock-in behavior.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:9",
+              "evidence": "should only be deployed if BIP9-segwit fails to lock-in or activate before timeout",
+              "reason": "The proposal is designed around the status and timeout of the prior BIP9 segwit deployment and constrains its own deployment based on BIP9 activation states.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "user activated soft fork for [[bip-0141.mediawiki|BIP141]]",
+              "reason": "The proposal's purpose is to activate the soft-fork changes specified by BIP141, so implementation and adoption materially depend on BIP141's consensus rules.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:143",
+              "evidence": "user activated soft fork for [[bip-0141.mediawiki|BIP141]], [[bip-0143.mediawiki|BIP143]]",
+              "reason": "The proposal's activation bundle includes BIP143, so it relies on and deploys BIP143's signature hashing rules as part of the soft fork.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:147",
+              "evidence": "user activated soft fork for [[bip-0141.mediawiki|BIP141]], [[bip-0143.mediawiki|BIP143]] and [[bip-0147.mediawiki|BIP147]]",
+              "reason": "The proposal's activation bundle includes BIP147, so it relies on and deploys BIP147's consensus rule change.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

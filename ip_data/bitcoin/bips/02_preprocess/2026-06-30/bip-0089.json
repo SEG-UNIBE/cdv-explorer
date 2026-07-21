@@ -861,6 +861,38 @@
               "confidence": "medium"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T22:58:40Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "Run the BIP32 non-hardened derivation ''CKDpub''",
+              "reason": "CCD’s core tweak calculation directly uses BIP32 non-hardened public child derivation, including the CKDpub scalar tweak term, so implementation depends on BIP32 derivation semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:327",
+              "evidence": "algorithmic patterns, and test‑vector style are adapted from [BIP‑327 (MuSig2)]",
+              "reason": "The blind-signing section explicitly adapts algorithmic patterns from BIP327, indicating substantive reuse of that proposal’s protocol structure rather than a mere citation.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:340",
+              "evidence": "Both modes produce valid BIP340 signatures.",
+              "reason": "The signing outputs, blind-signing challenge construction, and final signature format are designed to produce and verify BIP340 Schnorr signatures.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "Consequently the protocol is compatible with [https://github.com/bitcoin/bips/blob/master/bip-0341.mediawiki BIP341].",
+              "reason": "The proposal’s blinded mode is designed around compatibility with BIP341-style X-only tweaked keys, not merely mentioning BIP341 historically.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

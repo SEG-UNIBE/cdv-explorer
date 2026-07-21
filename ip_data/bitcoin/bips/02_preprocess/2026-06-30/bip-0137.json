@@ -754,6 +754,32 @@
           "timestamp": "2026-07-21T14:42:32Z",
           "status": "success",
           "dependencies": []
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:03:35Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:13",
+              "evidence": "distinguish a P2PKH, P2SH, or bech32 address from one another",
+              "reason": "The proposal's signature header scheme is designed to distinguish existing address formats, including P2SH addresses; the P2SH address format is specified by BIP13.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "For P2SH-P2WPKH this value is 35 and for P2WPKH (version 0 witness) address this value is 39",
+              "reason": "The proposal assigns signature header constants to P2SH-P2WPKH and P2WPKH version-0 witness address types, reusing SegWit witness-program address concepts introduced by BIP141.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:173",
+              "evidence": "If the header value is between 39 and 42, it is a bech32 address",
+              "reason": "The proposal allocates a signature header range for Bech32 address signatures; Bech32 address encoding for native witness outputs is defined by BIP173.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

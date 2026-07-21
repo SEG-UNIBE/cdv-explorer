@@ -989,6 +989,44 @@
               "confidence": "low"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:11:28Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:141",
+              "evidence": "A P2MR output is a native SegWit output (see [[bip-0141.mediawiki|BIP 141]]) with version 2 and a 32-byte witness program.",
+              "reason": "The proposal defines P2MR as a native SegWit witness-program output and relies on SegWit transaction structure, witness versioning, and validation compatibility introduced by BIP 141.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:173",
+              "evidence": "P2MR outputs use SegWit version 2, resulting in mainnet addresses that start with <code>bc1z</code>, following [[bip-0173.mediawiki|BIP 173]].",
+              "reason": "The proposal uses the native SegWit address format conventions defined by BIP 173 for P2MR addresses.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "follow the process outlined in [[bip-0341.mediawiki|BIP 341]] to compute the final tapbranch hash",
+              "reason": "The proposal reuses Taproot/P2TR script-tree construction, tapleaf/tapbranch hashing, control-block semantics, and script-path validation from BIP 341 while modifying them to remove the key path.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:342",
+              "evidence": "Execute the script, according to the script rules specified in BIP 342",
+              "reason": "P2MR script execution and signature-message construction are defined by reusing the tapscript rules and common signature message procedure from BIP 342.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:350",
+              "evidence": "Per [[bip-0350.mediawiki|BIP 350]] older wallets should be able to spend funds to SegWit version 2 outputs.",
+              "reason": "The proposal relies on BIP 350 compatibility behavior for higher-version SegWit outputs; BIP 350 also defines Bech32m, the encoding the text uses for version 2 addresses.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

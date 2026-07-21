@@ -688,6 +688,38 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T22:58:56Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:9",
+              "evidence": "deployed by a \"version bits\" with an 80%(this can be adjusted if desired) 269 block activation threshold and 336 block confirmation window BIP9",
+              "reason": "The proposal directly uses BIP9 version-bits deployment mechanics, including bit assignment, activation threshold, confirmation window, start time, timeout, and version-bit state checks.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "This BIP will cease to be active when segwit (BIP141) is locked-in, active, or failed",
+              "reason": "The proposal is designed around the existing SegWit deployment and explicitly keys its own activity to BIP141 deployment states.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:143",
+              "evidence": "activate BIP141, BIP143",
+              "reason": "The proposal defines the existing SegWit deployment it is coordinating as the deployment that activates BIP143 along with the other SegWit consensus changes, so evaluating its effect depends on the BIP143 rules being activated.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:147",
+              "evidence": "activate BIP141, BIP143 and BIP147",
+              "reason": "The proposal defines the existing SegWit deployment it is coordinating as the deployment that activates BIP147 along with the other SegWit consensus changes, so evaluating its effect depends on the BIP147 rules being activated.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

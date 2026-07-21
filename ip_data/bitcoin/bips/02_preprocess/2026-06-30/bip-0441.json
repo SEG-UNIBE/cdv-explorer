@@ -771,6 +771,44 @@
               "confidence": "low"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:17:01Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:65",
+              "evidence": "opcodes are redefined in 0xC2 Tapscript to read numbers from the\nstack as arbitrary-length little-endian values (instead of CScriptNum):\n\n# OP_CHECKLOCKTIMEVERIFY",
+              "reason": "The proposal amends the operand numeric handling for OP_CHECKLOCKTIMEVERIFY while otherwise relying on that opcode's locktime semantics; OP_CHECKLOCKTIMEVERIFY was introduced by BIP65.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:112",
+              "evidence": "opcodes are redefined in 0xC2 Tapscript to read numbers from the\nstack as arbitrary-length little-endian values (instead of CScriptNum):\n\n# OP_CHECKLOCKTIMEVERIFY\n# OP_CHECKSEQUENCEVERIFY",
+              "reason": "The proposal amends the operand numeric handling for OP_CHECKSEQUENCEVERIFY while otherwise relying on that opcode's sequence-lock semantics; OP_CHECKSEQUENCEVERIFY was introduced by BIP112.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "introduces a new tapleaf version (0xc2)",
+              "reason": "The proposal is designed around Taproot tapleaf versioning; that taproot leaf/version mechanism is introduced by BIP341, so implementing or evaluating this new leaf version depends on BIP341's taproot structure.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:342",
+              "evidence": "All opcodes not explicitly defined here are treated exactly as defined\nby [[bip-0342.mediawiki|BIP342]]",
+              "reason": "The proposal defines a new tapscript leaf version by reusing BIP342 opcode semantics except where it explicitly changes them, and it also modifies a BIP342 validation success requirement.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:440",
+              "evidence": "relying on the Varops Budget in\n[[bip-0440.mediawiki|BIP440]]",
+              "reason": "The proposal uses BIP440's varops budget as the limiting mechanism that makes the restored script functionality safe and defines opcode costs in terms of BIP440's cost model.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

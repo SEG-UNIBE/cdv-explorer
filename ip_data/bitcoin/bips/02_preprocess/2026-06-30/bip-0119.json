@@ -1317,6 +1317,26 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:01:45Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:16",
+              "evidence": "P2SH is incompatible\n(unless the P2SH hash is broken) with CHECKTEMPLATEVERIFY because the template hash must commit\nto the ScriptSig, which must contain the redeemscript, which is a hash cycle.",
+              "reason": "P2SH resolves to BIP16, which introduced pay-to-script-hash and the redeemScript-in-scriptSig spending structure. The proposal materially constrains CTV use with that structure because CTV commits to the scriptSig, creating a hash cycle.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "It is expected to be common that no scriptSigs will be\nset as segwit mandates that the scriptSig must be empty",
+              "reason": "The segwit scriptSig emptiness rule resolves to BIP141, which introduced segregated witness witness-program validation rules. The proposal’s scriptSig commitment/elision and compatibility guidance are designed around that rule.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

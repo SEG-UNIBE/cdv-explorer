@@ -990,6 +990,32 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:00:14Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:9",
+              "evidence": "deployed by \"versionbits\" BIP9 using bit 0",
+              "reason": "The proposal uses BIP9 versionbits as its activation and deployment mechanism.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:68",
+              "evidence": "in combination with BIP 68 allows execution pathways of a script to be restricted based on the age of the output being spent",
+              "reason": "The proposal’s opcode semantics rely on BIP68’s consensus-enforced nSequence relative-lock-time meaning, flags, masking, and age interpretation.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:113",
+              "evidence": "must be deployed simultaneously with BIP68 and BIP113 using the same deployment mechanism",
+              "reason": "The proposal normatively constrains its activation to be simultaneous with BIP113 under the same deployment workflow.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

@@ -647,6 +647,32 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:11:51Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "uses BIP-32 hardened key derivation",
+              "reason": "The proposal's Phase B rescue-protocol discussion reuses BIP-32 hardened derivation as a mechanism for proving knowledge unavailable to a quantum attacker.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "post-quantum witness programs as anyone-can-spend scripts",
+              "reason": "The proposal relies on the witness-program forward-compatibility semantics introduced by BIP-141, under which older nodes treat unknown witness programs as spendable without enforcing the new rules.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:340",
+              "evidence": "tighten requirements on verification of ECDSA/Schnorr",
+              "reason": "The proposal constrains verification of Bitcoin Schnorr signatures; in Bitcoin, the Schnorr signature scheme and verification semantics are specified by BIP-340.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

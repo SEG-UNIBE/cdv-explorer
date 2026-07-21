@@ -600,6 +600,20 @@
           "timestamp": "2026-07-21T14:42:18Z",
           "status": "success",
           "dependencies": []
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:01:28Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "using the key derivation mechanism defined in BIP32",
+              "reason": "The proposal defines script templates around BIP32 derivation paths and requires BIP32 key-derivation semantics to generate the scripts deterministically.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

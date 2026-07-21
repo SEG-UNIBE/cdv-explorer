@@ -756,6 +756,20 @@
               "confidence": "medium"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:02:55Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:11",
+              "evidence": "standard ''m-of-n'' script defined in [https://github.com/bitcoin/bips/blob/master/bip-0011.mediawiki BIP 11] with an additional version parameter",
+              "reason": "The proposal reuses and extends BIP 11's standard m-of-n multisig script format by adding a version parameter and new opcode.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

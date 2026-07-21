@@ -595,6 +595,32 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T22:57:28Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "based on an algorithm described in BIP-0032",
+              "reason": "The proposal defines its wallet hierarchy using BIP32 deterministic derivation, including hardened and public child derivation semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:43",
+              "evidence": "purpose scheme described in BIP-0043",
+              "reason": "The proposal relies on BIP43's purpose-field convention to define the first hardened path level for this hierarchy.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:44",
+              "evidence": "is based on BIP44",
+              "reason": "The proposal builds on BIP44's multi-coin hierarchy conventions, including using BIP44-registered coin type constants.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

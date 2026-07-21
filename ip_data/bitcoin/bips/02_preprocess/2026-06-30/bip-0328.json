@@ -552,6 +552,26 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:07:17Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "BIP 32 extended public keys",
+              "reason": "The proposal defines synthetic extended public keys and their unhardened derivation using BIP 32 xpub/CKDpub semantics and compatibility rules.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:327",
+              "evidence": "BIP 327 MuSig2 plain aggregate public key",
+              "reason": "The proposal constructs synthetic xpubs from BIP 327 MuSig2 aggregate public keys and relies on MuSig2 signing/tweak handling semantics.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

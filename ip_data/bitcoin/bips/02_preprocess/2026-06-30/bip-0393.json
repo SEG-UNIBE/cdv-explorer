@@ -532,6 +532,32 @@
           "timestamp": "2026-07-21T14:44:31Z",
           "status": "success",
           "dependencies": []
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:15:38Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "for [[bip-0032.mediawiki|BIP 32]] derived-key wallets",
+              "reason": "The proposal defines the `gl` annotation semantics specifically for wallets using BIP 32 derived-key mechanisms, so interpreting that annotation depends on BIP 32-derived wallet structure.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:352",
+              "evidence": "for [[bip-0352.mediawiki|BIP 352]] silent payment wallets",
+              "reason": "The proposal defines the `ml` annotation semantics for BIP 352 silent payment wallets, relying on that proposal's silent-payment label scanning concept.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:380",
+              "evidence": "annotation syntax for output script descriptors as defined in [[bip-0380.mediawiki|BIP 380]]",
+              "reason": "The proposal extends BIP 380 output script descriptors with annotation syntax and relies on BIP 380 descriptor syntax, checksum character set, and checksum algorithm.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

@@ -540,6 +540,44 @@
           "timestamp": "2026-07-21T14:44:21Z",
           "status": "success",
           "dependencies": []
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:14:28Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:16",
+              "evidence": "P2SH-P2WPKH scripts are also produced",
+              "reason": "The proposal generates a P2SH-wrapped output form; P2SH script semantics and scriptPubKey format are introduced by BIP 16.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "P2WPKH and P2SH-P2WPKH scripts are also produced",
+              "reason": "The proposal's generated outputs include P2WPKH and nested P2SH-P2WPKH scripts; these witness-program output forms are introduced by Segregated Witness in BIP 141.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:380",
+              "evidence": "<tt>combo()</tt> descriptors use the format and general operation specified in [[bip-0380.mediawiki|380]].",
+              "reason": "The proposal explicitly depends on BIP 380 for the descriptor format and general descriptor operation used by combo().",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:381",
+              "evidence": "same as putting the key in both a <tt>pk()</tt> and a <tt>pkh()</tt> expression",
+              "reason": "The proposal defines part of combo() semantics by reusing the pk() and pkh() descriptor expressions, which are non-Segwit output script descriptors specified by BIP 381.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:382",
+              "evidence": "same as putting the key in both a <tt>wpkh()</tt> and <tt>sh(wpkh())</tt> expression",
+              "reason": "The proposal defines part of combo() semantics by reusing the wpkh() Segwit descriptor expression, which is specified by BIP 382.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

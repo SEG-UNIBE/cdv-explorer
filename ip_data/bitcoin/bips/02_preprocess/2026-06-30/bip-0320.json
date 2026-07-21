@@ -548,6 +548,26 @@
           "timestamp": "2026-07-21T14:43:18Z",
           "status": "success",
           "dependencies": []
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:06:06Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:8",
+              "evidence": "removed from BIP8",
+              "reason": "The proposal amends BIP8 by reserving nVersion bits and excluding them from BIP8 soft-fork signalling semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:9",
+              "evidence": "removed from BIP8 and BIP9 specifications",
+              "reason": "The proposal amends BIP9 by reserving nVersion bits and excluding them from BIP9 soft-fork signalling and warning semantics.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

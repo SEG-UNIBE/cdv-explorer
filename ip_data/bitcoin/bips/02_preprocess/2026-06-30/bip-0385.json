@@ -535,6 +535,20 @@
           "timestamp": "2026-07-21T14:44:22Z",
           "status": "success",
           "dependencies": []
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:13:43Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:380",
+              "evidence": "<tt>raw()</tt> and <tt>addr()</tt> descriptors use the format and general operation specified in [[bip-0380.mediawiki|380]]",
+              "reason": "The proposal explicitly states that the new descriptor forms rely on BIP 380's descriptor format and general operation.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

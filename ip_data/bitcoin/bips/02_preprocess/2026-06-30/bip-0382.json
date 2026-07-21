@@ -573,6 +573,32 @@
           "timestamp": "2026-07-21T14:44:21Z",
           "status": "success",
           "dependencies": []
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:13:31Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:141",
+              "evidence": "Segregated Witness added 2 additional standard output script formats: P2WPKH and P2WSH.",
+              "reason": "The proposal defines descriptors that produce P2WPKH and P2WSH outputs. These Segregated Witness witness-program output formats were introduced by BIP 141, so implementing or evaluating these descriptors depends on those script formats and semantics.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:380",
+              "evidence": "use the format and general operation specified in [[bip-0380.mediawiki|380]]",
+              "reason": "The proposal explicitly depends on BIP 380's descriptor format and general operation for the new wpkh() and wsh() descriptors.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:381",
+              "evidence": "inside of a <tt>sh()</tt> descriptor",
+              "reason": "The proposal defines nesting rules for wpkh() and wsh() inside the sh() output descriptor. The sh() descriptor is specified by BIP 381, so this compatibility and nesting behavior depends on that descriptor's semantics.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

@@ -571,6 +571,26 @@
           "timestamp": "2026-07-21T14:43:56Z",
           "status": "success",
           "dependencies": []
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:09:49Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:341",
+              "evidence": "_taproot internal key_ (referred to as _p_), as defined in [BIP 341]",
+              "reason": "The opcode's pushed value is the taproot internal key as defined by BIP 341, so its semantics rely on BIP 341's Taproot key structure.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:342",
+              "evidence": "leaf version `0xc0` (as\ndefined in [BIP 342]), `OP_INTERNALKEY` replaces `OP_SUCCESS203`",
+              "reason": "The opcode is specified only within the tapscript leaf version and OP_SUCCESS upgrade semantics defined by BIP 342, so implementing it depends on those tapscript rules.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

@@ -640,6 +640,20 @@
           "timestamp": "2026-07-21T14:39:55Z",
           "status": "success",
           "dependencies": []
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T22:53:40Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:16",
+              "evidence": "the encoded hash of a [https://en.bitcoin.it/wiki/Script script]",
+              "reason": "The proposal defines an address whose payload is a hash of the redeeming script, which is the address-level format for Pay to Script Hash. The proposal text separately identifies BIP 16 as “Pay to Script Hash (aka \"/P2SH/\")”, and implementing or adopting this address type depends on the P2SH script-hash spending semantics defined by BIP 16 rather than being a mere citation.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

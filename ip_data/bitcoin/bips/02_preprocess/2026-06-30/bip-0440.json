@@ -647,6 +647,26 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:16:23Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:141",
+              "evidence": "multiplying the total transaction weight by the fixed factor 10,000",
+              "reason": "The proposal defines its budget directly in terms of transaction weight; transaction/block weight accounting was introduced by BIP141, so implementing the budget depends on those weight calculation rules.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:342",
+              "evidence": "carried across from the existing [[bip-0342.mediawiki|BIP-342]] limit",
+              "reason": "The proposal reuses BIP342's sigops budget limit as the basis for its signature-operation cost within the varops budget framework.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

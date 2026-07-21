@@ -925,6 +925,50 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T22:55:35Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:16",
+              "evidence": "Nested Segwit (p2sh-p2wsh)",
+              "reason": "The nested script type uses P2SH wrapping; P2SH is the mechanism introduced by BIP16, so implementing that BIP48 script_type depends on BIP16 semantics.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:32",
+              "evidence": "We define the following 6 levels in BIP32 path:",
+              "reason": "The proposal's hierarchy is expressed as BIP32 derivation paths and uses BIP32 hardened/public child derivation semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:43",
+              "evidence": "This BIP is a particular application of BIP43.",
+              "reason": "The proposal specializes BIP43's purpose-field scheme by assigning purpose 48' and defining the subtree semantics under it.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:44",
+              "evidence": "following the BIP44 pattern",
+              "reason": "The proposal reuses BIP44's multi-account hierarchy pattern, including account separation and change/external chains.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:67",
+              "evidence": "deterministic key sorting as per BIP67",
+              "reason": "The proposal requires wallets to use BIP67 deterministic public-key sorting for multisignature address/script derivation.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "Native Segwit (p2wsh) and\nNested Segwit (p2sh-p2wsh)",
+              "reason": "The proposal assigns derivation-path script_type values to P2WSH and P2SH-P2WSH outputs; those witness program and pay-to-witness-script-hash semantics are introduced by BIP141.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

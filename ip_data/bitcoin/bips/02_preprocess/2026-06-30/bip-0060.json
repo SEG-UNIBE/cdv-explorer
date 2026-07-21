@@ -603,6 +603,26 @@
           "timestamp": "2026-07-21T14:40:32Z",
           "status": "success",
           "dependencies": []
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T22:56:14Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:14",
+              "evidence": "user_agent || var_str || [[bip-0014.mediawiki|User Agent]]",
+              "reason": "The version-message payload specified by this proposal reuses the user-agent field format defined by BIP 14.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:37",
+              "evidence": "[[BIP 0037]] introduced a new flag to version messages",
+              "reason": "The proposal is designed around the relay-transactions flag introduced by BIP 37 and changes how that flag is included in version messages.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

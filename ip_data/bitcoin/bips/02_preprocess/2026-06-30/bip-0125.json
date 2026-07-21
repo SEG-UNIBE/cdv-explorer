@@ -719,6 +719,20 @@
               "confidence": "medium"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:01:47Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:61",
+              "evidence": "makes use of P2P protocol reject messages for rejected replacements",
+              "reason": "The proposal reuses the P2P reject-message mechanism so clients can learn whether replacements were accepted. That mechanism is the reject message introduced by BIP61.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

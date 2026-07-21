@@ -1037,6 +1037,38 @@
               "confidence": "low"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T22:53:15Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:22",
+              "evidence": "getblocktemplate changes===\n\nThe template request Object is extended",
+              "reason": "The proposal extends the getblocktemplate request and template object format; getblocktemplate is the mining template protocol introduced by BIP 22, so these interface changes depend on that format.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:34",
+              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
+              "reason": "The proposal designs its version-bits range around existing consensus constraints on block nVersion values introduced by BIP 34 and reused by later version-number soft forks; it also bases its 95% threshold on BIP 34's prior activation threshold.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:65",
+              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
+              "reason": "The proposal explicitly accounts for nVersion validity constraints imposed by BIP 65 when defining the usable version-bits range.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:66",
+              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
+              "reason": "The proposal explicitly accounts for nVersion validity constraints imposed by BIP 66 when defining the usable version-bits range.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

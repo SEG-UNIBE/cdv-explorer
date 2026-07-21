@@ -556,6 +556,38 @@
           "timestamp": "2026-07-21T14:43:12Z",
           "status": "success",
           "dependencies": []
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:06:08Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:13",
+              "evidence": "P2SH address",
+              "reason": "The proposal requires parties to construct and pay to a P2SH address; BIP13 defines the P2SH address format.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:16",
+              "evidence": "P2SH address for the HTLC",
+              "reason": "The HTLC is funded through a P2SH output/redeem-script mechanism; BIP16 defines Pay-to-Script-Hash validation semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:65",
+              "evidence": "OP_CHECKLOCKTIMEVERIFY",
+              "reason": "The proposal permits the timeout operation to be OP_CHECKLOCKTIMEVERIFY; BIP65 introduced that opcode and its lock-time semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:112",
+              "evidence": "OP_CHECKSEQUENCEVERIFY",
+              "reason": "The proposal permits the timeout operation to be OP_CHECKSEQUENCEVERIFY; BIP112 introduced that opcode and its relative-timeout semantics.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

@@ -768,6 +768,20 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T22:56:58Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:16",
+              "evidence": "Hash the redeem script according to BIP-0016 to get the P2SH address.",
+              "reason": "The proposal relies on BIP16's P2SH redeem-script hashing/address construction to derive the canonical address after sorting keys.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

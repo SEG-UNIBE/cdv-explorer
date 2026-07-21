@@ -809,6 +809,32 @@
           "timestamp": "2026-07-21T14:44:13Z",
           "status": "success",
           "dependencies": []
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:13:28Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:352",
+              "evidence": "Compute the PSBT_OUT_SCRIPT using the procedure in [https://github.com/bitcoin/bips/blob/master/bip-0352.mediawiki#creating-outputs BIP352]",
+              "reason": "The proposal reuses BIP352 silent-payment output derivation and adapts it to PSBT fields.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:370",
+              "evidence": "additional fields and updated role responsibilities for BIP370 PSBTv2",
+              "reason": "The proposal extends PSBTv2 by adding fields and changing role requirements, so implementing it depends on the PSBTv2 format and workflow defined by BIP370.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:374",
+              "evidence": "A BIP374 DLEQ proof computed for the matching ECDH share.",
+              "reason": "The proposal requires BIP374 DLEQ proofs for its ECDH share fields and verification workflow.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

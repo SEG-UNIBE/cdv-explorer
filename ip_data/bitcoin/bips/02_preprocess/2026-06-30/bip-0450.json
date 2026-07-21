@@ -773,6 +773,20 @@
           "timestamp": "2026-07-21T14:44:47Z",
           "status": "success",
           "dependencies": []
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:17:18Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:39",
+              "evidence": "seed derivation re-encodes any Formosa mnemonic through the BIP-0039 English wordlist before applying PBKDF2",
+              "reason": "The proposal is an expansion of BIP-0039 and materially reuses its English wordlist and seed-derivation procedure to guarantee compatibility.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

@@ -932,6 +932,50 @@
               "confidence": "medium"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:06:44Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:13",
+              "evidence": "base58 P2SH",
+              "reason": "The proposal permits P2SH addresses in the URI address field; the base58 P2SH address format is defined by BIP 13, so validation and interpretation of that address type rely on it.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:21",
+              "evidence": "modification and intended replacement of [[bip-0021.mediawiki|BIP 0021]]",
+              "reason": "The proposal explicitly amends and replaces BIP 21's bitcoin URI scheme, so its format and compatibility behavior are central to this proposal.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:173",
+              "evidence": "bech32 Segwit version 0 address",
+              "reason": "The proposal permits bech32 SegWit version 0 addresses in the URI address field; that native SegWit bech32 address format is defined by BIP 173.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:350",
+              "evidence": "bech32m Segwit address",
+              "reason": "The proposal permits bech32m SegWit addresses in the URI address field; bech32m encoding for later SegWit address versions is defined by BIP 350.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:351",
+              "evidence": "[[bip-0351.mediawiki|BIP 351 Private Payment addresses]]",
+              "reason": "The proposal defines a URI query key for BIP 351 private payment addresses, directly reusing that payment-address format as a supported payment instruction.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:352",
+              "evidence": "[[bip-0352.mediawiki|BIP 352 Silent Payment addresses]]",
+              "reason": "The proposal defines a URI query key for BIP 352 silent payment addresses, directly reusing that payment-address format as a supported payment instruction.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

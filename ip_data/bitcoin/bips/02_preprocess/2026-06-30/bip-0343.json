@@ -626,6 +626,32 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:09:29Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:8",
+              "evidence": "specifies a BIP8 (LOT=true) deployment",
+              "reason": "The proposal directly uses BIP8's height-based version-bits activation mechanism and LOT=true semantics to define its deployment parameters.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "Non-upgraded nodes, however, will consider all SegWit version 1 witness programs as anyone-can-spend scripts.",
+              "reason": "The proposal relies on the SegWit witness-program compatibility rule under which unknown witness versions are treated as anyone-can-spend by old nodes; that witness-program/versioning mechanism was introduced by BIP141.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "to activate taproot",
+              "reason": "The proposal is an activation deployment for Taproot; the Taproot SegWit version 1 spending rules are specified by BIP341, so adopting or evaluating this activation depends on the rules being activated.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

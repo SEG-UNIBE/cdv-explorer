@@ -751,6 +751,38 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:00:55Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:8",
+              "evidence": "This BIP will be deployed by BIP8 (Version bits with lock-in by height)[9]",
+              "reason": "The proposal explicitly uses BIP8’s version-bits activation workflow for deployment.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:16",
+              "evidence": "tail-call from P2SH redeem scripts is not supported",
+              "reason": "The proposal constrains its new tail-call semantics relative to P2SH redeem-script execution; P2SH redeem scripts are the mechanism introduced by BIP16.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:116",
+              "evidence": "When combined with BIP116 (MERKLEBRANCHVERIFY)[3], tail-call semantics allows for generalized MAST capabilities",
+              "reason": "The proposal’s generalized MAST construction directly relies on BIP116’s MERKLEBRANCHVERIFY mechanism to prove membership of the policy script before tail-call execution.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "The v0 segwit rules prohibit leaving anything on the stack, so for v0 parameters have to be passed on the alt stack for compatibility reasons.",
+              "reason": "The proposal is designed around Segregated Witness v0 validation rules, including CLEANSTACK behavior and witness-script execution contexts defined by BIP141.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

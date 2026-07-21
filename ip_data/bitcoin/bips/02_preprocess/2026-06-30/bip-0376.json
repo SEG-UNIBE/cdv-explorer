@@ -701,6 +701,56 @@
               "confidence": "medium"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:13:03Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "The master key fingerprint as defined by BIP 32 concatenated with the derivation path of the spend public key.",
+              "reason": "The proposal defines a field whose value format and spend-key discovery rely on BIP 32 fingerprints and derivation paths.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:174",
+              "evidence": "These are new fields added to the existing PSBT format. Because PSBT is designed to be extensible",
+              "reason": "The proposal extends the PSBT key-value field format and role workflow; PSBT as an extensible transaction format was introduced by BIP 174, so implementing these fields depends on that base format beyond the PSBTv2 additions.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:340",
+              "evidence": "The Signer MUST produce a BIP 340 Schnorr signature",
+              "reason": "The proposal requires signers to produce signatures according to the Schnorr signature scheme defined by BIP 340.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "as per the BIP 341 key path spending rule.",
+              "reason": "The proposal finalizes spends according to BIP 341 Taproot key-path spending semantics and is designed around P2TR output keys.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:352",
+              "evidence": "Per [https://github.com/bitcoin/bips/blob/master/bip-0352.mediawiki#spending BIP 352 spending] the <tt><32-byte tweak></tt> is",
+              "reason": "The proposal carries and applies Silent Payment spending tweaks whose derivation and semantics are defined by BIP 352.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:370",
+              "evidence": "additional per-input fields for BIP 370 PSBTv2",
+              "reason": "The proposal defines new fields specifically for PSBT version 2 and uses BIP 370's versioned PSBT field inclusion/exclusion framework.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:371",
+              "evidence": "set the result in the <tt>PSBT_IN_TAP_KEY_SIG</tt> field as defined in BIP 371.",
+              "reason": "The proposal stores the produced Taproot key-path signature using the PSBT Taproot field defined by BIP 371.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

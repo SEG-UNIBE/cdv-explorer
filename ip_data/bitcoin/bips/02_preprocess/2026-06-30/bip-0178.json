@@ -534,6 +534,38 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:05:45Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:13",
+              "evidence": "P2SH (<code>3...</code>)",
+              "reason": "The proposal assigns an extended WIF type to keys corresponding to a P2SH '3...' address form; that P2SH address format is defined by BIP13.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:16",
+              "evidence": "BIP16 P2SH",
+              "reason": "The proposal defines a WIF suffix for keys whose address type is SegWit nested in BIP16 pay-to-script-hash, so it materially relies on BIP16's P2SH mechanism.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "P2SH-P2WPKH (SegWit public key inside P2SH)",
+              "reason": "The proposal defines suffixes for native and P2SH-wrapped P2WPKH SegWit address types; P2WPKH witness program semantics are introduced by BIP141.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:173",
+              "evidence": "Bech32 format (native Segwit)",
+              "reason": "The proposal defines a WIF suffix for the native SegWit bech32 address form; the bech32 SegWit address format is defined by BIP173.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

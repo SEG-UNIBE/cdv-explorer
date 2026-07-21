@@ -599,6 +599,20 @@
           "timestamp": "2026-07-21T14:42:19Z",
           "status": "success",
           "dependencies": []
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:01:54Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:174",
+              "evidence": "The following field is added to the BIP 174 <tt>INPUT</tt> map:",
+              "reason": "The proposal defines a PSBT extension by adding a new input-map field, so implementing or evaluating it depends on the PSBT map format and semantics specified by BIP 174.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

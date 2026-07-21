@@ -1375,6 +1375,20 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:06:57Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:340",
+              "evidence": "<code>sha256_tagged(tag, x)</code> returns a tagged hash value <code>SHA256(SHA256(tag) || SHA256(tag) || x)</code> as in [https://github.com/bitcoin/bips/blob/master/bip-0340.mediawiki#specification BIP340]",
+              "reason": "The proposal explicitly reuses BIP340's tagged-hash construction for shared secret computation, and also relies on BIP340-style secp256k1 notation elsewhere in the ElligatorSwift specification.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

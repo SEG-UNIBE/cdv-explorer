@@ -1021,6 +1021,32 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:04:16Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:130",
+              "evidence": "invs or headers, as defined by BIP130",
+              "reason": "The compact-block low-bandwidth and fallback announcement workflow relies on the headers announcement behavior defined by BIP130.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "using the wtxid as defined in BIP 141 instead of the txid",
+              "reason": "Version 2 compact blocks depend on SegWit transaction identity semantics from BIP141 for short transaction ID computation.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:144",
+              "evidence": "using the same format as responses to getdata MSG_WITNESS_TX, specified in BIP144",
+              "reason": "Version 2 compact blocks reuse BIP144 witness transaction relay serialization formats for transactions inside compact-block messages.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

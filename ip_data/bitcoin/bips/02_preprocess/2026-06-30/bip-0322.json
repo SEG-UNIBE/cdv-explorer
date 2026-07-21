@@ -1065,6 +1065,44 @@
               "confidence": "low"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:07:25Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:141",
+              "evidence": "Simple\n| <code>P2WPKH</code>, <code>P2WSH</code><sup>2</sup>, <code>P2TR</code><sup>2</sup> <br/>\n| <code>smp</code>\n| witness stack, consensus-encoded and base64-encoded",
+              "reason": "The proposal's simple signature format is built around witness stacks and P2WPKH/P2WSH script types. Those SegWit witness-program and witness-stack semantics were introduced by BIP141, so implementing this format depends on them.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:174",
+              "evidence": "They finalize the PSBT as specified in [[bip-0174.mediawiki#input-finalizer|BIP174]]",
+              "reason": "The proposal uses PSBT packets and relies on BIP174's PSBT encoding and finalization workflow for proof-of-funds and PSBT-based signing.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:325",
+              "evidence": "Full signatures follow an analogous specification to the BIP325 challenges and solutions used by\nSignet.",
+              "reason": "The proposal explicitly bases its full-signature construction on the challenge-and-solution mechanism used by Signet as specified in BIP325.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:340",
+              "evidence": "message_hash</code> is a BIP340-tagged hash of the message",
+              "reason": "The proposal explicitly uses BIP340's tagged-hash construction to define the message hash that is committed to by the virtual transactions.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "SIGHASH_DEFAULT</code>, which then MAY be used alternatively (e.g., [[bip-0341.mediawiki|BIP341 P2TR]])",
+              "reason": "The proposal adopts compatibility behavior for P2TR outputs and the SIGHASH_DEFAULT mode defined by BIP341.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

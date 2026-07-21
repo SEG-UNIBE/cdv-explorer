@@ -684,6 +684,38 @@
               "confidence": "low"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:00:26Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:9",
+              "evidence": "deployed by \"versionbits\" BIP9 using bit 0",
+              "reason": "The proposal specifies use of BIP9 versionbits as its deployment and activation mechanism.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:65",
+              "evidence": "as required by BIP65 (CHECKLOCKTIMEVERIFY)",
+              "reason": "The proposal is designed to provide reliable locktime semantics for the CHECKLOCKTIMEVERIFY behavior defined by BIP65.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:68",
+              "evidence": "matching the behavior of BIP68 (sequence numbers)",
+              "reason": "The proposal aligns its median-time-past locktime semantics with the sequence-number relative locktime behavior defined by BIP68, and also requires simultaneous deployment with it.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:112",
+              "evidence": "matching the behavior of BIP68 (sequence numbers) and BIP112 (CHECKSEQUENCEVERIFY)",
+              "reason": "The proposal aligns its locktime semantics with CHECKSEQUENCEVERIFY behavior and requires simultaneous deployment with BIP112.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

@@ -782,6 +782,32 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T22:54:56Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "based on an algorithm\ndescribed in BIP-0032",
+              "reason": "The proposal defines its wallet hierarchy using BIP32 deterministic derivation, including child indexes and hardened/public derivation semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:43",
+              "evidence": "This BIP is a particular application of BIP43.",
+              "reason": "The proposal specializes BIP43's purpose-field scheme by assigning purpose 44' and defining the subtree semantics under that purpose.",
+              "confidence": "high"
+            },
+            {
+              "target": "slips:44",
+              "evidence": "SatoshiLabs that maintains the full list:\n\n[[https://github.com/satoshilabs/slips/blob/master/slip-0044.md|SLIP-0044 : Registered coin types for BIP-0044]]",
+              "reason": "The proposal delegates the full coin-type registry used by its coin_type level, and the associated registration workflow, to SLIP-0044.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

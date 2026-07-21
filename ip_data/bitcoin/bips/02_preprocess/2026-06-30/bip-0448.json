@@ -576,6 +576,50 @@
               "confidence": "low"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:17:27Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:340",
+              "evidence": "`OP_CHECKSIGFROMSTACK` introduces [BIP 340][schnorr-bip] signature verification for arbitrary messages",
+              "reason": "The proposal relies on the Schnorr signature verification semantics specified by BIP 340 as the verification mechanism for the deployed OP_CHECKSIGFROMSTACK operation.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "`OP_INTERNALKEY` allows to push the [Taproot][taproot-bip] internal key on the stack.",
+              "reason": "The proposal deploys an opcode exposing the Taproot internal key; the Taproot output and internal-key semantics are defined by BIP 341.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:342",
+              "evidence": "In [BIP 342 Tapscript](bip-0342.mediawiki), the following operations are updated.",
+              "reason": "The proposal is specifically an extension of Tapscript and changes the meaning of OP_SUCCESS opcodes defined by BIP 342.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:348",
+              "evidence": "`OP_CHECKSIGFROMSTACK` redefines `OP_SUCCESS204` (0xcc) as per the\nspecification of [BIP 348][csfs-bip]",
+              "reason": "The proposal directly deploys OP_CHECKSIGFROMSTACK by assigning a Tapscript OP_SUCCESS opcode according to BIP 348's specification.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:349",
+              "evidence": "`OP_INTERNALKEY` redefines `OP_SUCCESS203` (0xcb) as per the specification of [BIP\n349][internalkey-bip]",
+              "reason": "The proposal directly deploys OP_INTERNALKEY by assigning a Tapscript OP_SUCCESS opcode according to BIP 349's specification.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:446",
+              "evidence": "`OP_TEMPLATEHASH` redefines `OP_SUCCESS206` (0xce) as per\nthe specification of [BIP 446][templatehash-bip]",
+              "reason": "The proposal directly deploys OP_TEMPLATEHASH by assigning a Tapscript OP_SUCCESS opcode according to BIP 446's specification.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

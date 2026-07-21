@@ -935,6 +935,38 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T22:56:20Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:16",
+              "evidence": "The accounting is the\nsame as for [bip-0016][BIP16 specs]",
+              "reason": "The proposal explicitly reuses BIP16's signature-operation accounting rules, including treatment of P2SH redeemScripts, for its new per-transaction sigops limit.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:30",
+              "evidence": "avoid duplicate transactions without\n[bip-0030][BIP30] validation",
+              "reason": "The proposal is designed to make the BIP30 duplicate-transaction validation check unnecessary, so evaluating the coinbase uniqueness rule depends on the semantics of the BIP30 check being replaced/obviated.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:34",
+              "evidence": "Enforcing that new coinbase transactions are different from the early [bip-0034][BIP34] violations",
+              "reason": "The proposal's coinbase nLockTime rule is designed around historical BIP34 coinbase-height violations to ensure new coinbase transactions cannot duplicate them, so understanding the duplicate-prevention mechanism materially depends on BIP34's coinbase-height scheme and activation history.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "Transactions whose witness-stripped serialized size is exactly 64 bytes are invalid.",
+              "reason": "The proposal defines a consensus rule using witness-stripped transaction serialization. That concept relies on the segregated-witness transaction format and witness-vs-base serialization semantics introduced by BIP141.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

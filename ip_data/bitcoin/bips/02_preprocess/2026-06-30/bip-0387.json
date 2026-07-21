@@ -545,6 +545,50 @@
           "timestamp": "2026-07-21T14:44:23Z",
           "status": "success",
           "dependencies": []
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:14:58Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "the derived keys use the same child index",
+              "reason": "The proposal specifies behavior for extended-key child derivation; extended keys, child indexes, and xpub/xprv derivation are defined by BIP 32.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:340",
+              "evidence": "the x-only public keys are sorted lexicographically",
+              "reason": "The proposal relies on x-only public key encoding for sorting and tapscript key placement; x-only public keys are defined by BIP 340.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:342",
+              "evidence": "KEY_1 OP_CHECKSIG KEY_2 OP_CHECKSIGADD ... KEY_n OP_CHECKSIGADD OP_k OP_NUMEQUAL",
+              "reason": "The script template relies on OP_CHECKSIGADD and tapscript execution semantics, which are introduced by BIP 342.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:380",
+              "evidence": "use the format and general operation specified in [[bip-0380.mediawiki|380]]",
+              "reason": "The proposal explicitly relies on BIP 380's output script descriptor format and general descriptor operation.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:383",
+              "evidence": "Like BIP 383's <tt>multi()</tt> and <tt>sortedmulti()</tt>",
+              "reason": "The proposal defines tapscript-specific analogues of BIP 383's multisignature descriptor expressions, reusing their threshold-and-key multisig descriptor model as the baseline.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:386",
+              "evidence": "can only be used inside of a <tt>tr()</tt> descriptor",
+              "reason": "The proposal constrains these expressions to the tr() descriptor context; tr() output script descriptors are defined by BIP 386, so implementing or adopting this proposal depends on that descriptor context.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

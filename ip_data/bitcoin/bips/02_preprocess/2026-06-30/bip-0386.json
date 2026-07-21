@@ -581,6 +581,32 @@
           "timestamp": "2026-07-21T14:44:22Z",
           "status": "success",
           "dependencies": []
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:14:02Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:340",
+              "evidence": "must only create x-only public keys",
+              "reason": "The proposal normatively constrains keys in tr() descriptors to x-only public keys and x-only serialization; that key format and lift_x convention are introduced by BIP 340.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "used as the internal key of a P2TR output as specified by [[bip-0341.mediawiki#cite_ref-22-0|BIP 341]]",
+              "reason": "The proposal constructs P2TR outputs by reusing BIP 341's Taproot internal-key, tweak, script-tree, and output-key rules.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:380",
+              "evidence": "<tt>tr()</tt> descriptors use the format and general operation specified in [[bip-0380.mediawiki|380]].",
+              "reason": "The proposal defines a new descriptor expression within the output script descriptor framework and explicitly depends on BIP 380's descriptor format and operation.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

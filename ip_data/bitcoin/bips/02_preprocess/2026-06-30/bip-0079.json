@@ -720,6 +720,32 @@
               "confidence": "medium"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T22:57:51Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:21",
+              "evidence": "via a bip21 encoded address. The key value \"bpu\" (short for \"BustaPayUrl\") should be used.",
+              "reason": "The proposal uses and extends the BIP21 payment URI format by defining a Bustapay URL parameter within it.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:69",
+              "evidence": "sorted according to BIP69, if so ensure the result stays that way",
+              "reason": "The proposal reuses BIP69 transaction input/output ordering as a compatibility rule that implementations should preserve when the template transaction already follows it.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "remove all witnesses from the original template transaction as they are no longer valid",
+              "reason": "The proposal materially relies on SegWit witness semantics and requires SegWit inputs; the witness mechanism and SegWit transaction semantics are introduced by BIP141.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

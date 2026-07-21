@@ -738,6 +738,32 @@
           "timestamp": "2026-07-21T14:43:04Z",
           "status": "success",
           "dependencies": []
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:04:38Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "Utilizing hierarchical deterministic wallets as described in BIP-0032",
+              "reason": "The proposal's payment-base and payment-address derivation paths, extended keys, hardened derivation, and public/private key derivation are built on BIP32 hierarchical deterministic wallet mechanics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:43",
+              "evidence": "following the BIP-0043 recommendation",
+              "reason": "The proposal uses BIP43's purpose-field convention to assign purpose 175' and define the subtree for this specification.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:44",
+              "evidence": "The coin type field is identical to the same field in BIP-0044.",
+              "reason": "The proposal reuses BIP44's coin_type path field semantics in its derivation hierarchy.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

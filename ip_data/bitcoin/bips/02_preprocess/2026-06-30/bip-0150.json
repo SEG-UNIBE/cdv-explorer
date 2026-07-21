@@ -626,6 +626,20 @@
           "timestamp": "2026-07-21T14:42:48Z",
           "status": "success",
           "dependencies": []
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:04:03Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:151",
+              "evidence": "must only happen if encrypted channels have been established (according to BIP-151 [1])",
+              "reason": "The authentication protocol is explicitly conditioned on BIP 151 encrypted channels and also uses BIP 151 session/re-keying concepts, so implementing or adopting it materially depends on BIP 151.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

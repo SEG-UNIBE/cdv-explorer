@@ -777,6 +777,26 @@
               "confidence": "low"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:12:24Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:327",
+              "evidence": "All conventions and notations are used as defined in [https://github.com/bitcoin/bips/blob/master/bip-0327.mediawiki#notation BIP327].",
+              "reason": "The proposal explicitly relies on BIP327's notation and conventions for its algorithms and serialization-related expressions.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:340",
+              "evidence": "The same rationale and recommendations from [https://github.com/bitcoin/bips/blob/master/bip-0340.mediawiki#default-signing BIP340] should be applied.",
+              "reason": "The proposal directs implementers to apply BIP340's default-signing guidance for auxiliary random data handling in proof generation.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

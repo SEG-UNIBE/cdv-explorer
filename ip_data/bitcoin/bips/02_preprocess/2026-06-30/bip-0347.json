@@ -1056,6 +1056,20 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:09:40Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:342",
+              "evidence": "tapscript softfork opcode upgrade path introduced in [[bip-0342.mediawiki|BIP342]]",
+              "reason": "The proposal activates OP_CAT by redefining an OP_SUCCESSx tapscript opcode, directly relying on the Tapscript opcode-upgrade mechanism defined by BIP342.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

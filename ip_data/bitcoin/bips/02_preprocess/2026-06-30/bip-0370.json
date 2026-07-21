@@ -869,6 +869,26 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:12:04Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:112",
+              "evidence": "the transaction version number must be set to at least 2. <ref>'''Why does the transaction version number need to be at least 2?''' The transaction version number is part of the validation rules for some features such as OP_CHECKSEQUENCEVERIFY",
+              "reason": "The proposal constrains the transaction version to preserve support for OP_CHECKSEQUENCEVERIFY-related validation behavior; OP_CHECKSEQUENCEVERIFY is the opcode introduced by BIP 112.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:174",
+              "evidence": "PSBTv2 shares the same generic format as PSBTv0 as defined in BIP 174",
+              "reason": "The proposal defines a new PSBT version while reusing the generic PSBT format and compatibility framework defined by BIP 174.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

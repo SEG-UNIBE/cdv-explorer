@@ -781,6 +781,38 @@
               "confidence": "medium"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:02:28Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:9",
+              "evidence": "The states of the BIP9 state machine and its original parameters (name, bit, starttime, timeout) are retained.",
+              "reason": "BIP 135 directly generalizes and extends BIP 9's version-bits signaling state machine, retaining its states and core deployment parameters while adding configurable threshold, window, and lock-in behavior.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:34",
+              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
+              "reason": "The proposal's available nVersion signaling space and top-bit restriction are designed around version-field constraints attributed to BIP 34, BIP 66, and BIP 65.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:65",
+              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
+              "reason": "The proposal's available nVersion signaling space and top-bit restriction are designed around version-field constraints attributed to BIP 34, BIP 66, and BIP 65.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:66",
+              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
+              "reason": "The proposal's available nVersion signaling space and top-bit restriction are designed around version-field constraints attributed to BIP 34, BIP 66, and BIP 65.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

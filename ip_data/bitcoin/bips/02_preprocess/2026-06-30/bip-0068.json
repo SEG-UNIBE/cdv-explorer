@@ -894,6 +894,32 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T22:56:38Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:9",
+              "evidence": "deployed by \"versionbits\" BIP9 using bit 0",
+              "reason": "The proposal adopts BIP9's versionbits deployment mechanism and specifies a bit within that activation framework.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:112",
+              "evidence": "must be deployed simultaneously with BIP112",
+              "reason": "The proposal normatively couples its deployment workflow with BIP112, and its sequence-number encoding is designed for use with OP_CHECKSEQUENCEVERIFY defined there.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:113",
+              "evidence": "All references to median-time-past (MTP) are as defined by BIP113.",
+              "reason": "The proposal's time-based relative lock-time semantics explicitly rely on BIP113's definition of median-time-past.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

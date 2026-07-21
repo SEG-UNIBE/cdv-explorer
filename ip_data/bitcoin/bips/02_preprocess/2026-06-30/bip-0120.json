@@ -657,6 +657,20 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:01:45Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:16",
+              "evidence": "If an input script type is P2SH, any satisfying script should do",
+              "reason": "The proposal specifies how Proofs of Payment should work for P2SH inputs, relying on P2SH script-validation semantics. P2SH is the pay-to-script-hash mechanism defined by BIP16.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

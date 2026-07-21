@@ -961,6 +961,44 @@
           "timestamp": "2026-07-21T14:40:15Z",
           "status": "success",
           "dependencies": []
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T22:55:21Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:16",
+              "evidence": "a script which spends any of the above script forms via P2SH",
+              "reason": "The proposal requires compatible implementations to recognize notification inputs using P2SH-wrapped scripts; P2SH validation and redeem-script semantics were introduced by BIP16.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:32",
+              "evidence": "Apostrophe in the path indicates that BIP32 hardened derivation is used.",
+              "reason": "The proposal defines its payment-code hierarchy and key generation using BIP32 paths, hardened/non-hardened derivation, and extended keys.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:37",
+              "evidence": "Bob detects notification transactions by adding his payment code identifier to his bloom filter.",
+              "reason": "Version 2 notification handling is designed around Bitcoin SPV bloom filtering; that network bloom-filter mechanism was introduced by BIP37, and the text relies on it for detecting notification transactions.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:43",
+              "evidence": "This BIP is a particular application of BIP43",
+              "reason": "The proposal explicitly specializes the BIP43 purpose-field scheme by assigning purpose 47' for this wallet subtree.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:44",
+              "evidence": "The coin type field is identical to the same field in BIP44",
+              "reason": "The proposal reuses BIP44's coin_type field and aligns payment-code identities with BIP44 account semantics.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

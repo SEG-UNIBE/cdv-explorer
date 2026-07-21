@@ -516,6 +516,20 @@
           "timestamp": "2026-07-21T14:40:54Z",
           "status": "success",
           "dependencies": []
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T22:56:53Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:70",
+              "evidence": "PaymentRequest || application/bitcoin-paymentrequest\n|-\n| Payment || application/bitcoin-payment\n|-\n| PaymentACK || application/bitcoin-paymentack",
+              "reason": "The proposal assigns MIME media types to the PaymentRequest, Payment, and PaymentACK message formats. Those Bitcoin payment protocol message types are defined by BIP 70, so implementing or adopting these media types depends on the BIP 70 message definitions.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

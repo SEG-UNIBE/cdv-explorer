@@ -735,6 +735,38 @@
               "confidence": "low"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:03:40Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:9",
+              "evidence": "the template's \"rules\" list (see [[bip-0009.mediawiki#getblocktemplate-changes|BIP 9]]) includes \"segwit\"",
+              "reason": "The proposal relies on BIP 9 getblocktemplate rule signaling and activation-related fields to determine when witness transactions may be included.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:22",
+              "evidence": "modifications to the getblocktemplate JSON-RPC call ([[bip-0022.mediawiki|BIP 22]])",
+              "reason": "The proposal extends and revises the getblocktemplate JSON-RPC interface defined by BIP 22, including block template and transaction object fields.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:23",
+              "evidence": "the template includes a \"mutable\" key (see [[bip-0023.mediawiki#mutations|BIP 23 Mutations]]) including \"generation\"",
+              "reason": "The proposal reuses BIP 23's getblocktemplate mutation mechanism to constrain where clients may place the witness commitment in the coinbase transaction.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "to support segregated witness as defined by [[bip-0141.mediawiki|BIP 141]]",
+              "reason": "The proposal is designed around BIP 141 segregated witness semantics, including witness transaction data, block weight, sigop accounting, and witness commitment structure.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

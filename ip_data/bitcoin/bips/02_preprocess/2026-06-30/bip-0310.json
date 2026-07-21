@@ -654,6 +654,20 @@
           "timestamp": "2026-07-21T14:43:16Z",
           "status": "success",
           "dependencies": []
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:05:59Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:320",
+              "evidence": "There is a [https://github.com/bitcoin/bips/pull/661/files Draft BIP] describing available nVersion bits. The server SHOULD pick a mask that preferably covers all bits specified in the BIP.",
+              "reason": "The proposal's version-rolling extension normatively recommends choosing masks according to the available nVersion bits specified by the referenced draft BIP. That draft describing available nVersion bits corresponds to BIP 320, which defines nVersion bits available for general-purpose use.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

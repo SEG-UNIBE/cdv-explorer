@@ -598,6 +598,32 @@
           "timestamp": "2026-07-21T14:43:33Z",
           "status": "success",
           "dependencies": []
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:08:48Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:16",
+              "evidence": "P2SH when it is a wrapped P2SH-WPKH",
+              "reason": "The proposal has special handling for P2SH and P2SH-wrapped witness spends, so implementing its compression/decompression relies on the P2SH redeem-script/output semantics introduced by BIP16.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "P2SH-WPKH",
+              "reason": "The proposal handles SegWit witness program forms such as P2WPKH/P2WSH and P2SH-wrapped P2WPKH in its script-type and signature-compression rules; these witness program forms are defined by BIP141.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "P2TR on a key spend",
+              "reason": "The proposal treats P2TR key-path spends and Taproot hash-type behavior specially for signature compression; P2TR/Taproot key-spend semantics are defined by BIP341.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

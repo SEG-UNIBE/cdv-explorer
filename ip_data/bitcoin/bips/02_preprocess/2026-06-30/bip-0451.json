@@ -690,6 +690,32 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:17:55Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:125",
+              "evidence": "resulting replacement transaction MUST satisfy BIP 125 RBF rules",
+              "reason": "The batching workflow is explicitly designed around and must comply with the target proposal's replace-by-fee rules.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "multiplied by the replacement transaction's virtual size",
+              "reason": "The proposal's fee and batching rules rely on virtual transaction size semantics; transaction weight and virtual size are introduced by BIP 141.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "For Taproot (P2TR) inputs using key-path spending, implementations MUST explicitly append the signature hash type byte `ALL|ANYONECANPAY` (0x81)",
+              "reason": "The proposal imposes special signing requirements for Taproot/P2TR key-path inputs; Taproot key-path spending and its sighash behavior, including SIGHASH_DEFAULT, are defined by BIP 341.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

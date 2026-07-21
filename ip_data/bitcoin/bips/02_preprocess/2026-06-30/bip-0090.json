@@ -646,6 +646,32 @@
               "confidence": "low"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T22:58:23Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:34",
+              "evidence": "if (nHeight >= consensusParams.BIP34Height)",
+              "reason": "The proposal changes validation to enforce BIP 34's coinbase-height rule by comparing block height to a cached BIP34 activation height, replacing BIP 34's original activation lookback logic.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:65",
+              "evidence": "Start enforcing CHECKLOCKTIMEVERIFY (BIP65) rule",
+              "reason": "The proposal changes validation to enforce BIP 65's CHECKLOCKTIMEVERIFY rule by cached activation height rather than the prior activation mechanism.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:66",
+              "evidence": "Start enforcing the DERSIG (BIP66) rule",
+              "reason": "The proposal changes validation to enforce BIP 66's strict DER signature rule by cached activation height rather than the prior activation mechanism.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

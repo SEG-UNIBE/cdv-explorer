@@ -819,6 +819,32 @@
               "confidence": "low"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:17:35Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:340",
+              "evidence": "attempt the BIP340 even-Y lift",
+              "reason": "The opcode normatively reuses BIP340's x-only public-key lifting rule to interpret inputs and define failure conditions.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "extends the Taproot tweak mechanism (BIP340/341) into script",
+              "reason": "The proposal reuses and extends the Taproot key-tweak operation associated with BIP341 output-key construction into script semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:342",
+              "evidence": "Only valid in tapscript (witness version 1, leaf version 0xc0)",
+              "reason": "The proposal is defined as a new opcode within the tapscript execution environment; tapscript, including leaf version 0xc0 and related opcode upgrade semantics, is defined by BIP342.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

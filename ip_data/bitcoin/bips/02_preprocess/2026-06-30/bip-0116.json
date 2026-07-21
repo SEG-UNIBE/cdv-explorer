@@ -741,6 +741,26 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:00:43Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:8",
+              "evidence": "will be deployed by BIP8",
+              "reason": "The proposal specifies BIP8 as its activation/deployment mechanism, so adopting it depends on BIP8's version-bits activation rules.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:98",
+              "evidence": "serialized Merkle tree inclusion proof as specified by BIP98",
+              "reason": "The opcode's validation semantics require BIP98's Merkle inclusion-proof format and fast Merkle tree computation.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

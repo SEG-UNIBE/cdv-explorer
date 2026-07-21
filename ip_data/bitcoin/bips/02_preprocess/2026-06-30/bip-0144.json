@@ -756,6 +756,20 @@
               "confidence": "low"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:03:26Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:141",
+              "evidence": "defining witness structures and requiring commitments in future blocks ([https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki BIP141] - Consensus segwit BIP)",
+              "reason": "BIP 144 defines peer-to-peer relay, serialization, service signaling, and witness-hash handling for the segregated witness structures and commitments specified by BIP 141, so implementing or evaluating it materially depends on those witness semantics.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

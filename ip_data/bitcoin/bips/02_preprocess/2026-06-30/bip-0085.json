@@ -996,6 +996,26 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T22:57:49Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "This specification relies on BIP32",
+              "reason": "The proposal derives application entropy from a BIP32 master/root key using BIP32 hardened derivation paths and extended-key semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:39",
+              "evidence": "128 bits of entropy as input to BIP39 to derive 12 word mnemonic",
+              "reason": "The proposal defines a BIP39 application mode that feeds derived entropy into BIP39 mnemonic generation and uses BIP39 word-length/language assumptions.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

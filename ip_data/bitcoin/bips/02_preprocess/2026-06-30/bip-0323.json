@@ -496,6 +496,32 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:06:21Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:8",
+              "evidence": "removed from BIP8 and BIP9 specifications",
+              "reason": "The proposal directly constrains BIP 8 activation signaling by removing the reserved nVersion bits from the bits available under that specification.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:9",
+              "evidence": "removed from BIP8 and BIP9 specifications",
+              "reason": "The proposal directly constrains BIP 9 version-bits signaling and related unknown soft-fork warnings by removing the reserved nVersion bits from that specification's usable signaling space.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:320",
+              "evidence": "BIP 320 defined 16 bits of nVersion as nonce space",
+              "reason": "The proposal amends and expands the nonce-space reservation in the nVersion field that BIP 320 defined, increasing it from 16 to 24 bits.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

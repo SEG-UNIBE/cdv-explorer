@@ -1627,6 +1627,44 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:05:39Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:16",
+              "evidence": "assert(witness_utxo.scriptPubKey == P2SH(redeemScript))",
+              "reason": "The signer validation algorithm uses P2SH redeemScript matching. P2SH is the pay-to-script-hash mechanism introduced by BIP16, so implementing these PSBT checks depends on BIP16 semantics.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:32",
+              "evidence": "The 78 byte serialized extended public key as defined by BIP 32.",
+              "reason": "The proposal defines PSBT fields for extended public keys, master key fingerprints, and derivation paths using BIP32 serialization and derivation semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "if IsP2WPKH(script):\n            sign_witness(P2PKH(script[2:22]), i)\n        else if IsP2WSH(script):",
+              "reason": "The signer algorithm is specialized for P2WPKH and P2WSH witness program templates, which are SegWit output forms introduced by BIP141.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:143",
+              "evidence": "The sighash algorithm for Segwit specified in BIP 143",
+              "reason": "The proposal's handling of SegWit input UTXO data and signer safety policy is designed around the BIP143 SegWit signature-hash algorithm and its amount-handling behavior.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:144",
+              "evidence": "construct complete scriptSigs and scriptWitnesses and encode them into network serialized transactions.",
+              "reason": "The transaction extractor must serialize transactions containing scriptWitness data; the witness transaction network serialization format is defined by BIP144.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

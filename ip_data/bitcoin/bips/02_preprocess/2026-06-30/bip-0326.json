@@ -613,6 +613,32 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:07:20Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:68",
+              "evidence": "set the nSequence field in their taproot transactions as in BIP68",
+              "reason": "The proposal reuses BIP68 nSequence relative-locktime semantics, including its version and encoding limits, to define the anti-fee-sniping behavior.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:125",
+              "evidence": "Initialize all nsequence to indicate the requested RBF state",
+              "reason": "The proposal's pseudocode preserves or signals the requested replace-by-fee state via nSequence values; nSequence-based opt-in RBF signaling is the mechanism specified by BIP125.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "spending UTXOs protected by BIP341 taproot",
+              "reason": "The proposal's wallet behavior is specifically defined for transactions spending taproot UTXOs and relies on the taproot output/spend model defined by BIP341.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

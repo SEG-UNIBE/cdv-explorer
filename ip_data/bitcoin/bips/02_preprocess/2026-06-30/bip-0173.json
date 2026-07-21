@@ -893,6 +893,20 @@
               "confidence": "low"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:04:49Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:141",
+              "evidence": "witness program (as defined by [https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki BIP141])",
+              "reason": "BIP 173's segwit address format encodes the witness version and witness program defined by BIP 141 and relies on BIP 141's witness-program semantics and length restrictions for decoding and scriptPubKey construction.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

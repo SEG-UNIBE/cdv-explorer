@@ -767,6 +767,32 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T22:54:05Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:16",
+              "evidence": "Due to the [[bip-0016.mediawiki|BIP 0016]] changes regarding rules on block sigops",
+              "reason": "The transaction sigops reporting field is designed around BIP 16's changed block sigop-counting rules, which affect how miners evaluate block templates.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:23",
+              "evidence": "[[bip-0023.mediawiki#block-proposal|\"proposal\"]], [[bip-0023.mediawiki#logical-services|\"serverlist\"]], \"workid\", and any of the [[bip-0023.mediawiki#mutations|mutations]]",
+              "reason": "The proposal's request capability negotiation incorporates BIP 23-defined proposal mode, server list, and mutation capability semantics rather than merely citing them.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:34",
+              "evidence": "comply with [[bip-0034.mediawiki|BIP 0034]] for version 2",
+              "reason": "The block template version field requires clients using version 2 blocks to follow BIP 34's block-version and coinbase-height rules.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

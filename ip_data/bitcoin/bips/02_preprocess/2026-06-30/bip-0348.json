@@ -628,6 +628,26 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:09:48Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:340",
+              "evidence": "signature is validated against the public key and message according to [BIP 340]",
+              "reason": "The proposal reuses BIP 340's public-key and Schnorr signature validation semantics for 32-byte keys.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:342",
+              "evidence": "taproot script spends having leaf version 0xc0 (as defined in\n[BIP 342])",
+              "reason": "The proposal is defined specifically as a Tapscript opcode for the leaf version and execution environment specified by BIP 342, and also follows its sigops-budget rules.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

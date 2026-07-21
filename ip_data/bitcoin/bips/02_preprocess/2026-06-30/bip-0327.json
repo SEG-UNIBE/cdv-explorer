@@ -1263,6 +1263,32 @@
               "confidence": "low"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:07:09Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "Plain tweaking can be used to derive child aggregate public keys per BIP32",
+              "reason": "The proposal’s plain tweaking mode is designed to support BIP32 child public-key derivation from aggregate public keys, so implementing or evaluating that feature depends on BIP32 derivation semantics.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:340",
+              "evidence": "the aggregate public key is a BIP340 X-only public key, and the signature output at the end of the signing protocol is a BIP340 signature that passes BIP340 verification",
+              "reason": "The proposal defines MuSig2 outputs and verification compatibility in terms of BIP340 x-only public keys, Schnorr signatures, and verification semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "X-only tweaking is required for Taproot tweaking per BIP341",
+              "reason": "The proposal’s x-only tweaking mode is designed around BIP341 Taproot tweaking and script-path output construction rules.",
+              "confidence": "low"
+            }
+          ]
         }
       ]
     }

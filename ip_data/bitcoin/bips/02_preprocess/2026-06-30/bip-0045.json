@@ -679,6 +679,32 @@
           "timestamp": "2026-07-21T14:40:12Z",
           "status": "success",
           "dependencies": []
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T22:54:48Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:16",
+              "evidence": "Multisig P2SH is used for all addresses.",
+              "reason": "The proposal requires Pay-to-Script-Hash address semantics for its multisig wallet outputs; P2SH is the mechanism introduced by BIP16, so implementing the proposed address generation depends on that script/address format.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:32",
+              "evidence": "BIP32 is used to derive public keys",
+              "reason": "The proposal relies on BIP32 hierarchical deterministic key derivation for its wallet path structure and public/private key derivation procedures.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:43",
+              "evidence": "purpose scheme described in\nBIP-0043",
+              "reason": "The proposal defines itself as an application of BIP43 and uses BIP43's purpose-field convention to assign purpose 45' for this wallet hierarchy.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

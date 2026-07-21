@@ -957,6 +957,26 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:03:44Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:141",
+              "evidence": "deployed with Segregated Witness softfork (BIP 141)",
+              "reason": "The proposal’s digest algorithm is scoped to version 0 witness programs and its deployment is tied to the Segregated Witness softfork defined by BIP141.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:144",
+              "evidence": "The new serialization format is described in BIP144",
+              "reason": "The proposal relies on the Segregated Witness transaction serialization format defined by BIP144 for the witness transaction format used with these signatures.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

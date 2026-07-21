@@ -952,6 +952,50 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:00:23Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:8",
+              "evidence": "uses a BIP8-like, height-based max_activation_height",
+              "reason": "The proposal adapts BIP8-style height-based activation timing as part of its modified deployment workflow.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:9",
+              "evidence": "This deployment uses a modified version of BIP9 with the following parameters:",
+              "reason": "The proposal bases its activation state machine and signaling parameters on BIP9 while specifying deviations from it.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:16",
+              "evidence": "except for the redeemScript push in BIP16 scriptSigs",
+              "reason": "The proposal's consensus data-size limit explicitly exempts the P2SH redeemScript push defined by BIP16.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "not Witness v0/BIP 141",
+              "reason": "The proposal's rule for invalidating undefined witness versions depends on the witness versioning and Witness v0 classification defined by BIP141.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:341",
+              "evidence": "Taproot key path signatures (limited to exactly 64 or 65 bytes by BIP 341 signature validation)",
+              "reason": "The proposal constrains and exempts Taproot-related witness elements using validation semantics defined by BIP341.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:342",
+              "evidence": "Tapscripts including OP_SUCCESS* opcodes anywhere (even unexecuted) are invalid.",
+              "reason": "The proposal imposes new validity constraints on Tapscript and OP_SUCCESS* behavior; those Tapscript semantics and OP_SUCCESS* upgrade hooks are defined by BIP342.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

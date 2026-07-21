@@ -1096,6 +1096,44 @@
               "confidence": "medium"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:15:26Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "serialized extended public key (as defined in [[bip-0032.mediawiki|BIP-32]])",
+              "reason": "The key information vector relies on BIP-32 extended public key serialization and derivation/origin semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:379",
+              "evidence": "See [[bip-0379.md|BIP-379]] for a precise specification of all the valid miniscript <tt>SCRIPT</tt> expressions.",
+              "reason": "Wallet policies permit miniscript templates and defer their valid SCRIPT-expression specification to BIP-379.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:380",
+              "evidence": "map directly to the corresponding concepts defined in [[bip-0380.mediawiki|BIP-380]] for output script descriptors.",
+              "reason": "The proposal is built around output script descriptor concepts and defines wallet policies by mapping templates to descriptors specified by BIP-380.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:389",
+              "evidence": "while [[bip-0389.mediawiki|BIP-389]] allows multipath <tt>/<NUM;NUM;...;NUM></tt> expressions with an arbitrary number of options, this specification restricts it to exactly 2 choices",
+              "reason": "The proposal reuses BIP-389 multipath descriptor syntax but constrains it to the two-branch receive/change case.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:390",
+              "evidence": "<tt>tr(musig(@0/**,@1/**))</tt>: Derivation before aggregation is not allowed in wallet policies (despite being allowed in [[bip-0390.mediawiki|BIP-390]])",
+              "reason": "The proposal supports and restricts musig descriptor forms relative to the MuSig2 descriptor semantics defined by BIP-390.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

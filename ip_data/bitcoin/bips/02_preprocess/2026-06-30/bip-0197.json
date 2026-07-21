@@ -654,6 +654,38 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:05:13Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:16",
+              "evidence": "collateral is locked in a P2SH",
+              "reason": "The proposal relies on Pay-to-Script-Hash locking and address semantics; P2SH is the mechanism introduced by BIP 16.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:65",
+              "evidence": "[TIMEOUTOP] is either OP_CHECKSEQUENCEVERIFY or OP_CHECKLOCKTIMEVERIFY",
+              "reason": "The proposal’s timeout branches can use OP_CHECKLOCKTIMEVERIFY; that opcode and its script semantics were introduced by BIP 65.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:112",
+              "evidence": "[TIMEOUTOP] is either OP_CHECKSEQUENCEVERIFY or OP_CHECKLOCKTIMEVERIFY",
+              "reason": "The proposal’s timeout branches can use OP_CHECKSEQUENCEVERIFY; that opcode and its script semantics were introduced by BIP 112.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:199",
+              "evidence": "based on Hashed Time-Lock Contract (BIP 199) transactions",
+              "reason": "The proposal explicitly bases its collateral contract script on the HTLC transaction pattern defined by the target.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

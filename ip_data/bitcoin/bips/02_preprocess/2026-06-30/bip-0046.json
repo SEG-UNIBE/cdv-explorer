@@ -836,6 +836,38 @@
               "confidence": "medium"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T22:56:02Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "based on a [[bip-0032.mediawiki|BIP 32]] master private key",
+              "reason": "The proposal derives its deterministic keys from a BIP32 master private key, so implementation depends on BIP32 HD key derivation semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:44",
+              "evidence": "uses a similar account-structure as defined in BIP [[bip-0084.mediawiki|44]] but with <tt>change</tt> set to <tt>2</tt>",
+              "reason": "The proposal reuses the BIP44-style account/change/index hierarchy and specializes it by assigning the change level to 2.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:65",
+              "evidence": "witnessScript: <timelock> OP_CHECKLOCKTIMEVERIFY",
+              "reason": "The timelocked output script relies on OP_CHECKLOCKTIMEVERIFY semantics, which are introduced by BIP65.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "evidence": "forms the <tt>witness program</tt> in the output script of the P2WSH address",
+              "reason": "The proposal uses P2WSH witness-program output and spending semantics; P2WSH witness programs are defined by BIP141.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

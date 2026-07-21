@@ -862,6 +862,44 @@
               "confidence": "medium"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T22:58:17Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:32",
+              "evidence": "based on an algorithm described in BIP-0032",
+              "reason": "The proposal defines its derivation hierarchy using the hierarchical deterministic wallet derivation algorithm from BIP32, including hardened and public child derivation semantics.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:43",
+              "evidence": "purpose scheme described in BIP-0043",
+              "reason": "The proposal is a BIP43 purpose-field application and uses BIP43's purpose-level convention to assign purpose 87'.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:44",
+              "evidence": "multi-account hierarchy described in BIP-0044",
+              "reason": "The proposal reuses the multi-account hierarchical path pattern and account/change/address-index semantics from BIP44.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:67",
+              "evidence": "deterministic key sorting as per BIP67",
+              "reason": "The proposal relies on BIP67's deterministic public-key sorting mechanism for sorted multisignature descriptors.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:174",
+              "evidence": "key origin information for maximum compatibility with BIP-0174",
+              "reason": "The proposal recommends including descriptor key-origin information to remain compatible with BIP174 Partially Signed Bitcoin Transaction workflows.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

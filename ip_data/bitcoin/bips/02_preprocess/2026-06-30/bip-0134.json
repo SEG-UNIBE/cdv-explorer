@@ -723,6 +723,20 @@
               "confidence": "high"
             }
           ]
+        },
+        {
+          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
+          "model": "gpt-5.5-2026-04-23",
+          "timestamp": "2026-07-21T23:02:25Z",
+          "status": "success",
+          "dependencies": [
+            {
+              "target": "bips:68",
+              "evidence": "cleans up past soft fork changes like BIP68 which reuse existing fields and do them in a better to maintain and easier to parse system",
+              "reason": "The proposal explicitly reworks BIP68-style relative lock-time functionality into the new transaction token format, so implementing or evaluating those v4 relative lock fields depends on the rules introduced by BIP68.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

@@ -504,7 +504,7 @@ def _validate_git_history(
         result.fail(f"{proposal_path}.meta.git_history must be a list")
         return
 
-    legacy_entries_missing_email = 0
+    entries_missing_email = 0
     for entry_index, entry in enumerate(git_history):
         entry_path = f"{proposal_path}.meta.git_history[{entry_index}]"
         if not isinstance(entry, list):
@@ -513,7 +513,7 @@ def _validate_git_history(
             )
             continue
         if len(entry) == 3:
-            legacy_entries_missing_email += 1
+            entries_missing_email += 1
         elif len(entry) != 4:
             result.fail(
                 f"{entry_path} must contain commit, author_date, author_name, and author_email"
@@ -526,12 +526,15 @@ def _validate_git_history(
             result.fail(f"{entry_path}[1] author_date must be non-empty")
         if not str(author_name or "").strip():
             result.fail(f"{entry_path}[2] author_name must be non-empty")
+        # A present-but-empty author_email is a real git data gap (some commits
+        # genuinely have no configured author email), not an extraction bug —
+        # treat it the same as the legacy 3-element case rather than failing.
         if len(entry) == 4 and not str(entry[3] or "").strip():
-            result.fail(f"{entry_path}[3] author_email must be non-empty")
+            entries_missing_email += 1
 
-    if legacy_entries_missing_email:
+    if entries_missing_email:
         result.warn(
-            f"{proposal_path}.meta.git_history has {legacy_entries_missing_email} legacy entries missing author_email; regenerate preprocessing to make Git identity resolution auditable"
+            f"{proposal_path}.meta.git_history has {entries_missing_email} entries missing author_email; regenerate preprocessing to make Git identity resolution auditable"
         )
 
 

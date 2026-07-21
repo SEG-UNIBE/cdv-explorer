@@ -73,6 +73,9 @@ EDGE_CURVATURE_OVERRIDES = {
     ("350", "173"): 0.1,
     ("350", "141"): 0.1,
     ("67", "13"): -0.1,
+    ("77", "321"): -0.2,
+    ("392", "350"): -0.2,
+    ("123", "67"): -0.2,
 }
 APPROACH_ONLY_EDGE_COLOR = "#9A9A9A"
 APPROACH_ONLY_EDGE_STYLE = "dotted"
@@ -101,7 +104,7 @@ COMPARISON_PLOTS = (
 )
 COMBINED_REACT_DIFFDEP_FILENAME_STEM = "combined"
 SINGLE_COMPARISON_FIGSIZE = (3, 5)
-COMBINED_COMPARISON_FIGSIZE = (8, 4.5)
+COMBINED_COMPARISON_FIGSIZE = (9, 5)
 DEFAULT_AXIS_MARGIN_SCALE = 0.18
 COMBINED_AXIS_MARGIN_SCALE = 0.1
 COMBINED_SUBPLOT_TITLE_FONT_SIZE = 9.0
@@ -311,7 +314,10 @@ def _load_exported_positions(
     if isinstance(raw_positions, dict):
         for node_id, coords in raw_positions.items():
             if isinstance(coords, SequenceABC) and len(coords) >= 2:
-                normalized_positions[str(node_id)] = (
+                # Some exports key positions by bare id ("77"), others by
+                # graph_key ("bips:77") — normalize to the bare id either way.
+                bare_node_id = str(node_id).rsplit(":", 1)[-1]
+                normalized_positions[bare_node_id] = (
                     float(coords[0]),
                     float(coords[1]),
                 )
@@ -323,7 +329,8 @@ def _load_exported_positions(
             y_coord = node.get("y")
             if node_id is None or x_coord is None or y_coord is None:
                 continue
-            normalized_positions[str(node_id)] = (float(x_coord), float(y_coord))
+            bare_node_id = str(node_id).rsplit(":", 1)[-1]
+            normalized_positions[bare_node_id] = (float(x_coord), float(y_coord))
 
     required_ids = {str(node_id) for node_id in required_node_ids}
     return {
@@ -854,7 +861,7 @@ def _save_combined_comparison_plot(
             title_fontsize=COMBINED_NODE_LEGEND_TITLE_FONT_SIZE,
         )
 
-    fig.tight_layout(rect=[0.015, 0.13, 0.985, 0.87], w_pad=-2)
+    fig.tight_layout(rect=[0.015, 0.13, 0.985, 0.87], w_pad=-1.5)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(output_path, format="pdf")
     plt.close(fig)

@@ -119,8 +119,8 @@ def plot_originator_contributor_ecdf(
                 CONTRIBUTOR_COLOR,
             ),
         ],
-        title="(a) People per BIP",
-        xlabel="# People",
+        title="(a) Authors per BIP",
+        xlabel="# Authors",
     )
     _draw_ecdf_axis(
         axis_bottom,
@@ -140,7 +140,7 @@ def plot_originator_contributor_ecdf(
                 CONTRIBUTOR_COLOR,
             ),
         ],
-        title="(b) BIPs per Person",
+        title="(b) BIPs per Author",
         xlabel="# BIPs",
     )
 

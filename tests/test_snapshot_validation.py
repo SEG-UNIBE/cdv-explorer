@@ -119,6 +119,12 @@ class SnapshotValidationTests(unittest.TestCase):
                                     "Other Author",
                                     "",
                                 ],
+                                [
+                                    "",
+                                    "2026-05-30T10:00:00+00:00",
+                                    "Third Author",
+                                    "third@example.com",
+                                ],
                             ]
                         },
                         "insights": {
@@ -143,7 +149,7 @@ class SnapshotValidationTests(unittest.TestCase):
 
         self.assertFalse(result.ok)
         error_text = "\n".join(result.errors)
-        self.assertIn("author_email must be non-empty", error_text)
+        self.assertIn("commit must be non-empty", error_text)
         self.assertIn("missing author_email", "\n".join(result.warnings))
 
     def test_payload_index_validation_rejects_missing_index_files(self) -> None:

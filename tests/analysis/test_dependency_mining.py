@@ -329,9 +329,12 @@ class LlmModelConfigTests(unittest.TestCase):
         self.assertEqual(record["source_context"]["source_slug"], "bips")
         self.assertIn("{proposal_text}", record["user_prompt_template"])
         self.assertIn("{current_proposal_number}", record["user_prompt_template"])
-        self.assertIn("Do not use outside knowledge", record["system_prompt"])
         self.assertIn(
-            "verbatim contiguous quote copied from the proposal text",
+            "General knowledge may be used only to resolve",
+            record["system_prompt"],
+        )
+        self.assertIn(
+            "verbatim contiguous passage that demonstrates reliance",
             record["system_prompt"],
         )
         self.assertIn("MAIN_LABEL", record["system_prompt"])
@@ -341,11 +344,11 @@ class LlmModelConfigTests(unittest.TestCase):
             record["user_prompt_template"],
         )
         self.assertIn(
-            "does not require full MAIN_LABEL 70 support",
+            "which addresses a related but separate problem using its own independent fields, encoding, and validation rules",
             record["user_prompt_template"],
         )
         self.assertIn(
-            "schemes following MAIN_LABEL 44 should use purpose value 44'",
+            "Unlike MAIN_LABEL 44, which defines a symmetric encryption scheme",
             record["user_prompt_template"],
         )
         self.assertIn(

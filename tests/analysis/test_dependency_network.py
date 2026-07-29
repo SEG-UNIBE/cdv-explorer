@@ -836,32 +836,37 @@ class BuildNetworkDataTests(unittest.TestCase):
 
         self.assertEqual(merged["llm_model"], "gpt-5.4-mini")
 
-    def test_merge_source_network_data_rejects_mixed_published_llm_models(self):
-        with self.assertRaises(ValueError):
-            merge_source_network_data(
-                [
-                    (
-                        "bips",
-                        {
-                            "nodes": [
-                                {"id": "1", "graph_key": "bips:1", "title": "BIP 1"}
-                            ],
-                            "dependency_edges": [],
-                            "llm_model": "gpt-5.4-mini",
-                        },
-                    ),
-                    (
-                        "slips",
-                        {
-                            "nodes": [
-                                {"id": "2", "graph_key": "slips:2", "title": "SLIP 2"}
-                            ],
-                            "dependency_edges": [],
-                            "llm_model": "gpt-5.4",
-                        },
-                    ),
-                ]
-            )
+    def test_merge_source_network_data_omits_ambiguous_llm_model_label(self):
+        # Each source's dependency edges are already resolved per-IP, so sources
+        # publishing different default-model labels is expected (not an error) -
+        # the combined artifact simply drops the label rather than picking one.
+        combined = merge_source_network_data(
+            [
+                (
+                    "bips",
+                    {
+                        "nodes": [
+                            {"id": "1", "graph_key": "bips:1", "title": "BIP 1"}
+                        ],
+                        "dependency_edges": [],
+                        "llm_model": "gpt-5.4-mini",
+                    },
+                ),
+                (
+                    "slips",
+                    {
+                        "nodes": [
+                            {"id": "2", "graph_key": "slips:2", "title": "SLIP 2"}
+                        ],
+                        "dependency_edges": [],
+                        "llm_model": "gpt-5.4",
+                    },
+                ),
+            ]
+        )
+
+        self.assertNotIn("llm_model", combined)
+        self.assertEqual(len(combined["nodes"]), 2)
 
     def test_dependency_metrics_can_filter_custom_preamble_relation_type(self):
         network_data = {

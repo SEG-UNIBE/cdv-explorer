@@ -30,9 +30,9 @@ from paper.RQ3._plotting import save_figure
 from paper.RQ3.collaboration_common import build_author_bip_map
 
 LAYOUT_EXPORT_DIR = Path("paper") / "RQ3"
-LAYOUT_EXPORT_FILENAME = "authorship_layout_260316_balanced"
+LAYOUT_EXPORT_FILENAME = "authorship_layout_260630_balanced"
 DEFAULT_OUTPUT_DIR = Path("paper") / "RQ3" / "outputs"
-DEFAULT_FIGSIZE = (11, 6)
+DEFAULT_FIGSIZE = (14, 7)
 DEFAULT_AXIS_MARGIN_SCALE = 0.08
 EDGE_WIDTH_RANGE = (1.2, 5.0)
 NODE_RADIUS_RANGE = (6.0, 18.0)
@@ -45,8 +45,10 @@ DEFAULT_EDGE_CURVE_DIRECTION = 1
 DEFAULT_EDGE_CURVE_STRENGTH = 1.0
 NODE_LABEL_MIN_BIP_COUNT = 3
 NODE_LABEL_MIN_DEGREE = 3
-NODE_LABEL_FONT_SIZE = 9.5
-NODE_LABEL_BOX_ALPHA = 0.6
+NODE_LABEL_FONT_SIZE = 9.0
+NODE_LABEL_BOX_ALPHA = 0.4
+NODE_LABEL_PADDING_MIN = 5.0
+NODE_LABEL_PADDING_SCALE = 0.4
 COLLABORATION_CLUSTER_COLORS = ORDERED_PLOT_PALETTE
 
 
@@ -432,6 +434,8 @@ def plot_collaboration_network_from_exported_layout(
     if graph.number_of_nodes() == 0:
         raise ValueError("Exported collaboration graph is empty.")
 
+    show_all_labels = bool((layout_payload.get("filter") or {}).get("show_all_labels"))
+
     ordered_nodes = sorted(
         graph.nodes(),
         key=lambda author: (
@@ -495,6 +499,7 @@ def plot_collaboration_network_from_exported_layout(
     axis_limits = _compute_axis_limits(positions)
     axis.set_xlim(axis_limits[0], axis_limits[1])
     axis.set_ylim(axis_limits[2], axis_limits[3])
+    axis.invert_yaxis()
     axis.set_aspect("equal", adjustable="box")
 
     if edge_list:
@@ -551,12 +556,15 @@ def plot_collaboration_network_from_exported_layout(
 
     for node_id in ordered_nodes:
         node_attrs = graph.nodes[node_id]
-        if not _should_draw_node_label(node_attrs):
+        if not show_all_labels and not _should_draw_node_label(node_attrs):
             continue
 
         x_coord, y_coord = positions[node_id]
+        label_padding = max(
+            NODE_LABEL_PADDING_MIN, node_radii[node_id] * NODE_LABEL_PADDING_SCALE
+        )
         axis.text(
-            x_coord + node_radii[node_id] + 4.0,
+            x_coord + node_radii[node_id] + label_padding,
             y_coord + 1.5,
             node_id,
             fontsize=NODE_LABEL_FONT_SIZE,

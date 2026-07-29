@@ -89,6 +89,8 @@ export function AuthorshipSection({
   setCollaborationLayoutMode,
   collaborationMinClusterCollaborations,
   setCollaborationMinClusterCollaborations,
+  collaborationMinAuthoredIps,
+  setCollaborationMinAuthoredIps,
   collaborationAuthorOptions,
   wordCloudFilterText,
   setWordCloudFilterText,
@@ -325,6 +327,8 @@ export function AuthorshipSection({
             setLayoutMode={setCollaborationLayoutMode}
             minClusterCollaborations={collaborationMinClusterCollaborations}
             setMinClusterCollaborations={setCollaborationMinClusterCollaborations}
+            minAuthoredIps={collaborationMinAuthoredIps}
+            setMinAuthoredIps={setCollaborationMinAuthoredIps}
             extraControls={(
               <div className="network-finder author-collaboration-search">
                 <div className="network-finder__copy">

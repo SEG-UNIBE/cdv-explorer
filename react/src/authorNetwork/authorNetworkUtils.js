@@ -138,6 +138,33 @@ export function filterCrossSourceAuthorNetwork(data) {
   };
 }
 
+export function filterAuthorNetworkByMinAuthoredIps(data, minAuthoredIps) {
+  const nodes = Array.isArray(data?.nodes) ? data.nodes : [];
+  const edges = Array.isArray(data?.edges) ? data.edges : [];
+  const threshold = Math.max(0, Number(String(minAuthoredIps).trim() || '0') || 0);
+
+  if (threshold <= 1) {
+    return data;
+  }
+
+  const visibleNodeIds = new Set(
+    nodes
+      .filter((node) => (Array.isArray(node?.bips) ? node.bips.length : 0) >= threshold)
+      .map((node) => String(node.id ?? ''))
+      .filter(Boolean)
+  );
+
+  return {
+    ...data,
+    nodes: nodes.filter((node) => visibleNodeIds.has(String(node.id ?? ''))),
+    edges: edges.filter((edge) => {
+      const sourceId = edgeEndpointId(edge?.source);
+      const targetId = edgeEndpointId(edge?.target);
+      return visibleNodeIds.has(sourceId) && visibleNodeIds.has(targetId);
+    }),
+  };
+}
+
 export function authorNetworkHasCrossSourceRefs(data) {
   const nodes = Array.isArray(data?.nodes) ? data.nodes : [];
   const edges = Array.isArray(data?.edges) ? data.edges : [];

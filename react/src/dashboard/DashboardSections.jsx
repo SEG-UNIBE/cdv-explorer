@@ -144,6 +144,8 @@ export function DashboardSections({
           setCollaborationLayoutMode: authorshipControls.setCollaborationLayoutMode,
           collaborationMinClusterCollaborations: authorshipControls.collaborationMinClusterCollaborations,
           setCollaborationMinClusterCollaborations: authorshipControls.setCollaborationMinClusterCollaborations,
+          collaborationMinAuthoredIps: authorshipControls.collaborationMinAuthoredIps,
+          setCollaborationMinAuthoredIps: authorshipControls.setCollaborationMinAuthoredIps,
           collaborationAuthorOptions,
           wordCloudFilterText: authorshipControls.wordCloudFilterText,
           setWordCloudFilterText: authorshipControls.setWordCloudFilterText,

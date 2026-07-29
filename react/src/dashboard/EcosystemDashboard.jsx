@@ -84,6 +84,7 @@ export function EcosystemDashboard() {
   const [highlightedAuthor, setHighlightedAuthor] = useState('');
   const [collaborationLayoutMode, setCollaborationLayoutMode] = useState('balanced');
   const [collaborationMinClusterCollaborations, setCollaborationMinClusterCollaborations] = useState('0');
+  const [collaborationMinAuthoredIps, setCollaborationMinAuthoredIps] = useState('1');
   const [highlightedDependencyProposal, setHighlightedDependencyProposal] = useState('');
   const [dependencyMinRelations, setDependencyMinRelations] = useState('0');
   const [dependencyMinRelationsIncludeConnections, setDependencyMinRelationsIncludeConnections] = useState(false);
@@ -569,6 +570,8 @@ export function EcosystemDashboard() {
                 setCollaborationLayoutMode,
                 collaborationMinClusterCollaborations,
                 setCollaborationMinClusterCollaborations,
+                collaborationMinAuthoredIps,
+                setCollaborationMinAuthoredIps,
                 wordCloudFilterText,
                 setWordCloudFilterText,
               }}

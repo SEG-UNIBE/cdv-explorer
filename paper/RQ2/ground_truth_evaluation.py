@@ -163,7 +163,24 @@ def build_exact_type_evaluation(
             "Ground-truth evaluation requires reviewed IPs in the network artifact."
         )
 
-    gold_edges = _edges_by_method(network_data, GROUND_TRUTH_CURATED)
+    # This evaluation covers interrelations within the reviewed IP repository
+    # only (e.g. BIP-to-BIP): edges targeting a different catalog (such as a
+    # BIP's reference to a SLIP) are dropped from both the gold set and every
+    # approach's predictions, in both ETA and DOE, rather than merely falling
+    # outside DOE's depends_on-only scope.
+    reviewed_catalogs = {
+        key.partition(":")[0] for key in reviewed_source_keys if ":" in key
+    }
+
+    def _targets_reviewed_catalog(edge: dict) -> bool:
+        target = str(edge.get("target") or "").strip()
+        return target.partition(":")[0] in reviewed_catalogs
+
+    gold_edges = [
+        edge
+        for edge in _edges_by_method(network_data, GROUND_TRUTH_CURATED)
+        if _targets_reviewed_catalog(edge)
+    ]
     gold_keys_by_type: dict[str, set[str]] = {}
     # Directed pair -> set of gold relation types, used to resolve GT_TYPE_ALL
     # ("match any type") targets to the type(s) actually recorded for that pair.
@@ -189,6 +206,8 @@ def build_exact_type_evaluation(
         predicted_keys: set[str] = set()
         for edge in _edges_by_method(network_data, approach):
             if str(edge.get("source") or "").strip() not in reviewed_source_keys:
+                continue
+            if not _targets_reviewed_catalog(edge):
                 continue
             relation_type = _normalize_relation_type(edge.get("relation_type"))
             if relation_type not in included:

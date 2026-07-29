@@ -198,21 +198,20 @@ def merge_source_network_data(
             seen_reviewed_ips.add(graph_key)
             reviewed_ips.append(reviewed_ip)
 
-    if len(published_llm_models) > 1:
-        raise ValueError(
-            "Cannot build combined-source artifacts from mixed published LLM models: "
-            f"{', '.join(sorted(published_llm_models))}. Rebuild the selected sources with the same "
-            "`--artifact-llm-model` value."
-        )
+    # Each source's dependency edges are already resolved per-IP (preferring the
+    # ecosystem-configured model, else falling back to that IP's newest run), so
+    # sources are free to publish different default-model labels here (e.g. bips
+    # has gpt-5.5 runs and prefers them while slips has only been run with
+    # gpt-5.4). The label is informational only, so merge regardless and simply
+    # omit it when it would be ambiguous across sources.
+    combined_llm_model = (
+        next(iter(published_llm_models)) if len(published_llm_models) == 1 else None
+    )
 
     return {
         "nodes": nodes,
         "dependency_edges": edges,
-        **(
-            {"llm_model": next(iter(published_llm_models))}
-            if published_llm_models
-            else {}
-        ),
+        **({"llm_model": combined_llm_model} if combined_llm_model else {}),
         "ground_truth_reviewed_ips": reviewed_ips,
         "meta": {
             "node_count": len(nodes),

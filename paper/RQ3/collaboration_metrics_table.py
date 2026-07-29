@@ -25,7 +25,7 @@ LATEX_ARRAYSTRETCH = 1.15
 LATEX_TABULAR_ALIGNMENT = "l|ccccc"
 
 LATEX_TABLE_HEADERS = [
-    "Author",
+    "Originator",
     "BIPs",
     "Deg.",
     ("W. Deg.", r"$^{\downarrow}$"),
@@ -233,7 +233,10 @@ def export_collaboration_metrics_latex_table(
     body_lines = []
     for row in top_rows:
         author = str(row.get("author", ""))
-        display_author = f"{author}*" if author in top_author_set else author
+        escaped_author = _latex_escape(author)
+        display_author = (
+            rf"{escaped_author}$^{{*}}$" if author in top_author_set else escaped_author
+        )
         bip_count = len(author_bip_map.get(author, []))
         degree = int(row.get("rawDegree", 0) or 0)
         w_degree = int(row.get("weightedDegree", 0) or 0)
@@ -243,7 +246,7 @@ def export_collaboration_metrics_latex_table(
             "        "
             + " & ".join(
                 [
-                    _latex_escape(display_author),
+                    display_author,
                     _ranked(str(bip_count), bip_ranks.get(author, n)),
                     _ranked(str(degree), degree_ranks.get(author, n)),
                     _ranked(str(w_degree), w_degree_ranks.get(author, n)),

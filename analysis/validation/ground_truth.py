@@ -63,9 +63,11 @@ GROUND_TRUTH_GRAPH_KEY_RE = re.compile(r"^(?P<source>[A-Za-z0-9_-]+):(?P<id>[^:\
 GROUND_TRUTH_REVIEW_POLICIES: dict[str, dict[str, Any]] = {
     "bitcoin": {
         # Reviewed IPs may come from any source listed here; `required_type`
-        # is enforced per source (SLIPs use `Standard`, so no restriction).
+        # is enforced per source when set. BIPs intentionally sample across
+        # all proposal types (Specification/Informational/Process) to match
+        # catalog-wide ratios, so no type restriction applies here.
         "source_policies": {
-            "bips": {"required_type": "Specification"},
+            "bips": {},
             "slips": {},
         },
     },

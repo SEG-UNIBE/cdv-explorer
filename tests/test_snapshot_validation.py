@@ -393,9 +393,10 @@ class SnapshotValidationTests(unittest.TestCase):
         warning_text = "\n".join(result.warnings)
         self.assertIn("expects source `bips, slips`", warning_text)
         self.assertIn("bolts:2", warning_text)
-        self.assertIn(
-            "expects proposal type `Specification` for source `bips`", warning_text
-        )
+        # bips has no required_type restriction: it intentionally samples
+        # across all proposal types to match catalog-wide ratios, so an
+        # Informational row is not a policy violation.
+        self.assertNotIn("expects proposal type", warning_text)
         self.assertNotIn("slips:55", warning_text)
 
     def test_ground_truth_validation_rejects_inconsistent_review_scope_dates_and_timeline(

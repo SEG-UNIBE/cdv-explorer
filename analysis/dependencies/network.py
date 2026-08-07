@@ -314,7 +314,13 @@ def _reference_id_chars(config: Mapping[str, Any]) -> str:
     )
 
 
-_REFERENCE_ITEM_PASSTHROUGH_FIELDS = ("count", "type", "evidence", "reason", "confidence")
+_REFERENCE_ITEM_PASSTHROUGH_FIELDS = (
+    "count",
+    "type",
+    "evidence",
+    "reason",
+    "confidence",
+)
 
 
 def _reference_item_extra_fields(item: Mapping[str, Any]) -> dict[str, Any]:

@@ -43,7 +43,9 @@ def _normalize_bucket(value: object) -> str:
     return text or "unknown"
 
 
-def _ordered_items(counter: Counter[str], preferred_order: list[str]) -> list[tuple[str, int]]:
+def _ordered_items(
+    counter: Counter[str], preferred_order: list[str]
+) -> list[tuple[str, int]]:
     ordered = [(key, counter[key]) for key in preferred_order if counter.get(key)]
     seen = {key for key, _count in ordered}
     ordered.extend(

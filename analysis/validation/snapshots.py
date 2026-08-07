@@ -475,9 +475,7 @@ def _validate_llm_interrelations(
             result.fail(f"{run_path}.findings must be a list")
             continue
         if status and status != LLM_RUN_STATUS_SUCCESS and findings:
-            result.fail(
-                f"{run_path}.findings must be empty when status is `{status}`"
-            )
+            result.fail(f"{run_path}.findings must be empty when status is `{status}`")
         if status and status != LLM_RUN_STATUS_SUCCESS:
             if not str(run.get("error_message") or "").strip():
                 result.fail(

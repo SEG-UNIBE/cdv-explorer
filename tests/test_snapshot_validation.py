@@ -71,7 +71,10 @@ class SnapshotValidationTests(unittest.TestCase):
                                         "model": "gpt-test",
                                         "status": "success",
                                         "findings": [
-                                            {"target": "slips:39", "type": "depends_on"},
+                                            {
+                                                "target": "slips:39",
+                                                "type": "depends_on",
+                                            },
                                             {"target": "BIP 32", "type": "depends_on"},
                                         ],
                                     }

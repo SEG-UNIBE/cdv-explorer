@@ -80,9 +80,7 @@ DOE_TYPE_MAPPING = {
     BODY_EXTRACTED_REGEX: {EXTRACTION_SUBTYPE_ALL: INTERRELATION_TYPE_DEPENDS_ON},
     # Dependency-only scoring only credits the LLM's own depends_on findings;
     # its references/supersedes/superseded_by findings are out of scope here.
-    BODY_EXTRACTED_LLM: {
-        INTERRELATION_TYPE_DEPENDS_ON: INTERRELATION_TYPE_DEPENDS_ON
-    },
+    BODY_EXTRACTED_LLM: {INTERRELATION_TYPE_DEPENDS_ON: INTERRELATION_TYPE_DEPENDS_ON},
 }
 
 COUNT_SERIES = [

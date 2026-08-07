@@ -94,7 +94,9 @@ def _edges_by_method(network_data: dict | None, extraction_method: str) -> list[
     ]
 
 
-def _reviewed_scope_edges(network_data: dict | None, extraction_method: str) -> list[dict]:
+def _reviewed_scope_edges(
+    network_data: dict | None, extraction_method: str
+) -> list[dict]:
     edges = _edges_by_method(network_data, extraction_method)
     if not network_data:
         return edges

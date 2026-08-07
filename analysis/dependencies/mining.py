@@ -724,9 +724,7 @@ def normalize_llm_dependency_output(
         if confidence not in {"low", "medium", "high"}:
             confidence = "low"
         relation_type = (
-            str(item.get("type", "")).strip().lower()
-            if isinstance(item, dict)
-            else ""
+            str(item.get("type", "")).strip().lower() if isinstance(item, dict) else ""
         )
         if relation_type not in INTERRELATION_TYPES:
             relation_type = INTERRELATION_TYPE_REFERENCES

@@ -639,7 +639,9 @@ class BuildNetworkDataTests(unittest.TestCase):
         ]["summary"]
         self.assertIsNone(empty["kappa"])
 
-    def test_dependency_metrics_pairwise_exact_type_scope_matches_by_canonical_type(self):
+    def test_dependency_metrics_pairwise_exact_type_scope_matches_by_canonical_type(
+        self,
+    ):
         network_data = {
             "nodes": [
                 {"id": str(i), "graph_key": f"bips:{i}", "title": f"BIP {i}"}
@@ -703,7 +705,9 @@ class BuildNetworkDataTests(unittest.TestCase):
         self.assertEqual(scoped["approach_only"], 1)
         self.assertEqual(scoped["baseline_only"], 1)
 
-    def test_dependency_metrics_pairwise_exact_type_wildcard_resolves_against_other_side(self):
+    def test_dependency_metrics_pairwise_exact_type_wildcard_resolves_against_other_side(
+        self,
+    ):
         network_data = {
             "nodes": [
                 {"id": str(i), "graph_key": f"bips:{i}", "title": f"BIP {i}"}
@@ -989,9 +993,7 @@ class BuildNetworkDataTests(unittest.TestCase):
                 (
                     "bips",
                     {
-                        "nodes": [
-                            {"id": "1", "graph_key": "bips:1", "title": "BIP 1"}
-                        ],
+                        "nodes": [{"id": "1", "graph_key": "bips:1", "title": "BIP 1"}],
                         "dependency_edges": [],
                         "llm_model": "gpt-5.4-mini",
                     },

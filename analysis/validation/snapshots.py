@@ -34,7 +34,7 @@ PAYLOAD_REQUIRED_FILES: dict[str, list[str]] = {
     "dependencies/dependency_metrics.json": [
         "by_approach",
         "pairwise_comparisons",
-        "pairwise_comparisons_dependency_only",
+        "pairwise_comparisons_exact_type",
     ],
     "authorship/authorship_payload.json": [
         "meta",

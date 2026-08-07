@@ -555,10 +555,10 @@ export function NetworkDiagramCanvas({
                 ? `Missing from ${getLinkTypeLabelForModel(linkType, activeLlmModel)}`
               : `Only in ${getLinkTypeLabelForModel(linkType, activeLlmModel)}`
           )],
-          ...((linkType === PREAMBLE_EXTRACTED || linkType === GROUND_TRUTH_CURATED) && approachSubtype
+          ...(approachSubtype
             ? [['Approach subtype', formatRelationTypeLabel(approachSubtype)]]
             : []),
-          ...((baselineType === PREAMBLE_EXTRACTED || baselineType === GROUND_TRUTH_CURATED) && baselineSubtypeLabel
+          ...(baselineSubtypeLabel
             ? [['Baseline subtype', formatRelationTypeLabel(baselineSubtypeLabel)]]
             : []),
         ];

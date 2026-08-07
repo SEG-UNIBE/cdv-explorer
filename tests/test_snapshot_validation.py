@@ -186,7 +186,7 @@ class SnapshotValidationTests(unittest.TestCase):
                     {
                         "by_approach": {},
                         "pairwise_comparisons": {},
-                        "pairwise_comparisons_dependency_only": {},
+                        "pairwise_comparisons_exact_type": {},
                     }
                 ),
                 encoding="utf-8",

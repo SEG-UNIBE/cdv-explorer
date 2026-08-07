@@ -31570,7 +31570,7 @@
       ]
     }
   },
-  "pairwise_comparisons_dependency_only": {
+  "pairwise_comparisons_exact_type": {
     "preamble_extracted__vs__preamble_extracted": {
       "approach": "preamble_extracted",
       "approach_label": "Preamble-Extracted Dependencies",
@@ -31578,17 +31578,45 @@
       "baseline_label": "Preamble-Extracted Dependencies",
       "summary": {
         "approach_only": 0,
-        "overlap": 3,
+        "overlap": 9,
         "baseline_only": 0,
-        "approach_total": 3,
-        "baseline_total": 3,
-        "union_total": 3,
+        "approach_total": 9,
+        "baseline_total": 9,
+        "union_total": 9,
         "hit_rate": 1.0,
         "missed_rate": 0.0,
         "candidate_pairs": 24180,
         "kappa": 1.0
       },
       "edges": [
+        {
+          "source": "bips:1",
+          "target": "bips:2",
+          "source_title": "BIP Purpose and Guidelines",
+          "target_title": "BIP process, revised",
+          "status": "overlap"
+        },
+        {
+          "source": "bips:135",
+          "target": "bips:9",
+          "source_title": "Generalized version bits voting",
+          "target_title": "Version bits with timeout and delay",
+          "status": "overlap"
+        },
+        {
+          "source": "bips:173",
+          "target": "bips:142",
+          "source_title": "Base32 address format for native v0-16 witness outputs",
+          "target_title": "Address Format for Segregated Witness",
+          "status": "overlap"
+        },
+        {
+          "source": "bips:2",
+          "target": "bips:1",
+          "source_title": "BIP process, revised",
+          "target_title": "BIP Purpose and Guidelines",
+          "status": "overlap"
+        },
         {
           "source": "bips:341",
           "target": "bips:340",
@@ -31608,6 +31636,20 @@
           "target": "bips:341",
           "source_title": "Validation of Taproot Scripts",
           "target_title": "Taproot: SegWit version 1 spending rules",
+          "status": "overlap"
+        },
+        {
+          "source": "bips:78",
+          "target": "bips:79",
+          "source_title": "A Simple Payjoin Proposal",
+          "target_title": "Bustapay :: a practical coinjoin protocol",
+          "status": "overlap"
+        },
+        {
+          "source": "bips:79",
+          "target": "bips:78",
+          "source_title": "Bustapay :: a practical coinjoin protocol",
+          "target_title": "A Simple Payjoin Proposal",
           "status": "overlap"
         }
       ]
@@ -31618,18 +31660,39 @@
       "baseline": "body_extracted_regex",
       "baseline_label": "Body-Extracted Dependencies (Regex)",
       "summary": {
-        "approach_only": 0,
-        "overlap": 3,
-        "baseline_only": 443,
-        "approach_total": 3,
+        "approach_only": 2,
+        "overlap": 7,
+        "baseline_only": 439,
+        "approach_total": 9,
         "baseline_total": 446,
-        "union_total": 446,
-        "hit_rate": 0.006726457399103139,
-        "missed_rate": 0.9932735426008968,
+        "union_total": 448,
+        "hit_rate": 0.01569506726457399,
+        "missed_rate": 0.984304932735426,
         "candidate_pairs": 24180,
-        "kappa": 0.013119781716551485
+        "kappa": 0.03006147424674612
       },
       "edges": [
+        {
+          "source": "bips:135",
+          "target": "bips:9",
+          "source_title": "Generalized version bits voting",
+          "target_title": "Version bits with timeout and delay",
+          "status": "overlap"
+        },
+        {
+          "source": "bips:173",
+          "target": "bips:142",
+          "source_title": "Base32 address format for native v0-16 witness outputs",
+          "target_title": "Address Format for Segregated Witness",
+          "status": "overlap"
+        },
+        {
+          "source": "bips:2",
+          "target": "bips:1",
+          "source_title": "BIP process, revised",
+          "target_title": "BIP Purpose and Guidelines",
+          "status": "overlap"
+        },
         {
           "source": "bips:341",
           "target": "bips:340",
@@ -31650,6 +31713,27 @@
           "source_title": "Validation of Taproot Scripts",
           "target_title": "Taproot: SegWit version 1 spending rules",
           "status": "overlap"
+        },
+        {
+          "source": "bips:78",
+          "target": "bips:79",
+          "source_title": "A Simple Payjoin Proposal",
+          "target_title": "Bustapay :: a practical coinjoin protocol",
+          "status": "overlap"
+        },
+        {
+          "source": "bips:1",
+          "target": "bips:2",
+          "source_title": "BIP Purpose and Guidelines",
+          "target_title": "BIP process, revised",
+          "status": "approach_only"
+        },
+        {
+          "source": "bips:79",
+          "target": "bips:78",
+          "source_title": "Bustapay :: a practical coinjoin protocol",
+          "target_title": "A Simple Payjoin Proposal",
+          "status": "approach_only"
         },
         {
           "source": "bips:1",
@@ -32723,13 +32807,6 @@
           "status": "baseline_only"
         },
         {
-          "source": "bips:135",
-          "target": "bips:9",
-          "source_title": "Generalized version bits voting",
-          "target_title": "Version bits with timeout and delay",
-          "status": "baseline_only"
-        },
-        {
           "source": "bips:136",
           "target": "bips:173",
           "source_title": "Bech32 Encoded Tx Position References",
@@ -33249,13 +33326,6 @@
         },
         {
           "source": "bips:173",
-          "target": "bips:142",
-          "source_title": "Base32 address format for native v0-16 witness outputs",
-          "target_title": "Address Format for Segregated Witness",
-          "status": "baseline_only"
-        },
-        {
-          "source": "bips:173",
           "target": "bips:143",
           "source_title": "Base32 address format for native v0-16 witness outputs",
           "target_title": "Transaction Signature Verification for Version 0 Witness Program",
@@ -33378,13 +33448,6 @@
           "target": "bips:199",
           "source_title": "Hashed Time-Locked Collateral Contract",
           "target_title": "Hashed Time-Locked Contract transactions",
-          "status": "baseline_only"
-        },
-        {
-          "source": "bips:2",
-          "target": "bips:1",
-          "source_title": "BIP process, revised",
-          "target_title": "BIP Purpose and Guidelines",
           "status": "baseline_only"
         },
         {
@@ -33959,13 +34022,6 @@
           "target": "bips:21",
           "source_title": "A Simple Payjoin Proposal",
           "target_title": "URI Scheme",
-          "status": "baseline_only"
-        },
-        {
-          "source": "bips:78",
-          "target": "bips:79",
-          "source_title": "A Simple Payjoin Proposal",
-          "target_title": "Bustapay :: a practical coinjoin protocol",
           "status": "baseline_only"
         },
         {
@@ -34760,16 +34816,16 @@
       "baseline": "body_extracted_llm",
       "baseline_label": "Body-Extracted Dependencies (LLM)",
       "summary": {
-        "approach_only": 0,
+        "approach_only": 6,
         "overlap": 3,
         "baseline_only": 311,
-        "approach_total": 3,
+        "approach_total": 9,
         "baseline_total": 314,
-        "union_total": 314,
+        "union_total": 320,
         "hit_rate": 0.009554140127388535,
         "missed_rate": 0.9904458598726115,
         "candidate_pairs": 24180,
-        "kappa": 0.01868624705996783
+        "kappa": 0.017865105308633777
       },
       "edges": [
         {
@@ -34792,6 +34848,48 @@
           "source_title": "Validation of Taproot Scripts",
           "target_title": "Taproot: SegWit version 1 spending rules",
           "status": "overlap"
+        },
+        {
+          "source": "bips:1",
+          "target": "bips:2",
+          "source_title": "BIP Purpose and Guidelines",
+          "target_title": "BIP process, revised",
+          "status": "approach_only"
+        },
+        {
+          "source": "bips:135",
+          "target": "bips:9",
+          "source_title": "Generalized version bits voting",
+          "target_title": "Version bits with timeout and delay",
+          "status": "approach_only"
+        },
+        {
+          "source": "bips:173",
+          "target": "bips:142",
+          "source_title": "Base32 address format for native v0-16 witness outputs",
+          "target_title": "Address Format for Segregated Witness",
+          "status": "approach_only"
+        },
+        {
+          "source": "bips:2",
+          "target": "bips:1",
+          "source_title": "BIP process, revised",
+          "target_title": "BIP Purpose and Guidelines",
+          "status": "approach_only"
+        },
+        {
+          "source": "bips:78",
+          "target": "bips:79",
+          "source_title": "A Simple Payjoin Proposal",
+          "target_title": "Bustapay :: a practical coinjoin protocol",
+          "status": "approach_only"
+        },
+        {
+          "source": "bips:79",
+          "target": "bips:78",
+          "source_title": "Bustapay :: a practical coinjoin protocol",
+          "target_title": "A Simple Payjoin Proposal",
+          "status": "approach_only"
         },
         {
           "source": "bips:10",
@@ -36978,18 +37076,39 @@
       "baseline": "preamble_extracted",
       "baseline_label": "Preamble-Extracted Dependencies",
       "summary": {
-        "approach_only": 443,
-        "overlap": 3,
-        "baseline_only": 0,
+        "approach_only": 439,
+        "overlap": 7,
+        "baseline_only": 2,
         "approach_total": 446,
-        "baseline_total": 3,
-        "union_total": 446,
-        "hit_rate": 1.0,
-        "missed_rate": 0.0,
+        "baseline_total": 9,
+        "union_total": 448,
+        "hit_rate": 0.7777777777777778,
+        "missed_rate": 0.2222222222222222,
         "candidate_pairs": 24180,
-        "kappa": 0.013119781716551485
+        "kappa": 0.03006147424674612
       },
       "edges": [
+        {
+          "source": "bips:135",
+          "target": "bips:9",
+          "source_title": "Generalized version bits voting",
+          "target_title": "Version bits with timeout and delay",
+          "status": "overlap"
+        },
+        {
+          "source": "bips:173",
+          "target": "bips:142",
+          "source_title": "Base32 address format for native v0-16 witness outputs",
+          "target_title": "Address Format for Segregated Witness",
+          "status": "overlap"
+        },
+        {
+          "source": "bips:2",
+          "target": "bips:1",
+          "source_title": "BIP process, revised",
+          "target_title": "BIP Purpose and Guidelines",
+          "status": "overlap"
+        },
         {
           "source": "bips:341",
           "target": "bips:340",
@@ -37009,6 +37128,13 @@
           "target": "bips:341",
           "source_title": "Validation of Taproot Scripts",
           "target_title": "Taproot: SegWit version 1 spending rules",
+          "status": "overlap"
+        },
+        {
+          "source": "bips:78",
+          "target": "bips:79",
+          "source_title": "A Simple Payjoin Proposal",
+          "target_title": "Bustapay :: a practical coinjoin protocol",
           "status": "overlap"
         },
         {
@@ -38083,13 +38209,6 @@
           "status": "approach_only"
         },
         {
-          "source": "bips:135",
-          "target": "bips:9",
-          "source_title": "Generalized version bits voting",
-          "target_title": "Version bits with timeout and delay",
-          "status": "approach_only"
-        },
-        {
           "source": "bips:136",
           "target": "bips:173",
           "source_title": "Bech32 Encoded Tx Position References",
@@ -38609,13 +38728,6 @@
         },
         {
           "source": "bips:173",
-          "target": "bips:142",
-          "source_title": "Base32 address format for native v0-16 witness outputs",
-          "target_title": "Address Format for Segregated Witness",
-          "status": "approach_only"
-        },
-        {
-          "source": "bips:173",
           "target": "bips:143",
           "source_title": "Base32 address format for native v0-16 witness outputs",
           "target_title": "Transaction Signature Verification for Version 0 Witness Program",
@@ -38738,13 +38850,6 @@
           "target": "bips:199",
           "source_title": "Hashed Time-Locked Collateral Contract",
           "target_title": "Hashed Time-Locked Contract transactions",
-          "status": "approach_only"
-        },
-        {
-          "source": "bips:2",
-          "target": "bips:1",
-          "source_title": "BIP process, revised",
-          "target_title": "BIP Purpose and Guidelines",
           "status": "approach_only"
         },
         {
@@ -39319,13 +39424,6 @@
           "target": "bips:21",
           "source_title": "A Simple Payjoin Proposal",
           "target_title": "URI Scheme",
-          "status": "approach_only"
-        },
-        {
-          "source": "bips:78",
-          "target": "bips:79",
-          "source_title": "A Simple Payjoin Proposal",
-          "target_title": "Bustapay :: a practical coinjoin protocol",
           "status": "approach_only"
         },
         {
@@ -40111,6 +40209,20 @@
           "source_title": "Deterministic blinding key derivation for Confidential Transactions",
           "target_title": "Hierarchical derivation of symmetric keys",
           "status": "approach_only"
+        },
+        {
+          "source": "bips:1",
+          "target": "bips:2",
+          "source_title": "BIP Purpose and Guidelines",
+          "target_title": "BIP process, revised",
+          "status": "baseline_only"
+        },
+        {
+          "source": "bips:79",
+          "target": "bips:78",
+          "source_title": "Bustapay :: a practical coinjoin protocol",
+          "target_title": "A Simple Payjoin Proposal",
+          "status": "baseline_only"
         }
       ]
     },
@@ -46546,14 +46658,14 @@
       "summary": {
         "approach_only": 311,
         "overlap": 3,
-        "baseline_only": 0,
+        "baseline_only": 6,
         "approach_total": 314,
-        "baseline_total": 3,
-        "union_total": 314,
-        "hit_rate": 1.0,
-        "missed_rate": 0.0,
+        "baseline_total": 9,
+        "union_total": 320,
+        "hit_rate": 0.3333333333333333,
+        "missed_rate": 0.6666666666666666,
         "candidate_pairs": 24180,
-        "kappa": 0.01868624705996783
+        "kappa": 0.017865105308633777
       },
       "edges": [
         {
@@ -48753,6 +48865,48 @@
           "source_title": "Deterministic blinding key derivation for Confidential Transactions",
           "target_title": "Hierarchical derivation of symmetric keys",
           "status": "approach_only"
+        },
+        {
+          "source": "bips:1",
+          "target": "bips:2",
+          "source_title": "BIP Purpose and Guidelines",
+          "target_title": "BIP process, revised",
+          "status": "baseline_only"
+        },
+        {
+          "source": "bips:135",
+          "target": "bips:9",
+          "source_title": "Generalized version bits voting",
+          "target_title": "Version bits with timeout and delay",
+          "status": "baseline_only"
+        },
+        {
+          "source": "bips:173",
+          "target": "bips:142",
+          "source_title": "Base32 address format for native v0-16 witness outputs",
+          "target_title": "Address Format for Segregated Witness",
+          "status": "baseline_only"
+        },
+        {
+          "source": "bips:2",
+          "target": "bips:1",
+          "source_title": "BIP process, revised",
+          "target_title": "BIP Purpose and Guidelines",
+          "status": "baseline_only"
+        },
+        {
+          "source": "bips:78",
+          "target": "bips:79",
+          "source_title": "A Simple Payjoin Proposal",
+          "target_title": "Bustapay :: a practical coinjoin protocol",
+          "status": "baseline_only"
+        },
+        {
+          "source": "bips:79",
+          "target": "bips:78",
+          "source_title": "Bustapay :: a practical coinjoin protocol",
+          "target_title": "A Simple Payjoin Proposal",
+          "status": "baseline_only"
         }
       ]
     },

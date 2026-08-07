@@ -2362,6 +2362,16 @@
   background: var(--app-surface-subtle);
 }
 
+// Used where the mapping table isn't itself a grid column (e.g. Pairwise
+// Comparison's controls aren't split into two columns like Ground Truth
+// Evaluation's are): caps its width to roughly half the collapsible instead
+// of stretching full width, and adds breathing room below it since the next
+// control sits directly underneath rather than in a separate grid column.
+.gt-type-mapping--half {
+  max-width: min(50%, 32rem);
+  margin-bottom: 0.75rem;
+}
+
 .gt-type-mapping__header {
   display: flex;
   align-items: center;
@@ -3127,6 +3137,9 @@
   grid-template-columns: minmax(390px, 1fr) minmax(390px, 1fr);
   gap: 0.75rem 2rem;
   align-items: start;
+  // Guarantees spacing from Match Mode above regardless of whether the
+  // Relation-type mapping table (Exact Type only) renders in between.
+  margin-top: 0.75rem;
 }
 
 .dependency-comparison-controls__filter {

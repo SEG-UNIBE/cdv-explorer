@@ -6,11 +6,12 @@ import networkx as nx
 from analysis.dependencies.constants import (
     BODY_EXTRACTED_LLM,
     BODY_EXTRACTED_REGEX,
+    CANONICAL_TYPE_BY_APPROACH_SUBTYPE,
     DEPENDENCY_APPROACH_LABELS,
     DEPENDENCY_APPROACH_ORDER,
     DEPENDENCY_PAIRWISE_COMPARISON_ORDER,
-    DEPENDS_ON_SUBTYPE_BY_APPROACH,
     GROUND_TRUTH_CURATED,
+    PAIRWISE_TYPE_WILDCARD,
     PREAMBLE_EXTRACTED,
 )
 
@@ -259,23 +260,63 @@ def _rank_rows(rows: list[dict[str, Any]], field: str) -> dict[str, int]:
     return ranks
 
 
-def _depends_on_links_for_approach(
+def _fixed_typed_edge_keys_for_approach(
     network_data: dict[str, Any], approach_key: str
-) -> list[dict[str, Any]]:
-    """Restrict an approach's links to its technical-dependency subtype only.
-
-    Excludes references/supersedes/superseded_by-typed LLM findings and
-    replaces/proposed_replacement-typed preamble entries, so the "dependency
-    only" pairwise comparison mirrors the DOE ground-truth evaluation mode.
+) -> set[tuple[str, str, str]]:
+    """Links whose subtype maps to a real canonical type, keyed by
+    (source, target, canonical_type). Excludes wildcard-typed subtypes (see
+    _wildcard_pairs_for_approach) since those carry no real type to key on.
     """
-    subtype = DEPENDS_ON_SUBTYPE_BY_APPROACH.get(approach_key)
-    if subtype is None:
-        return []
-    return [
-        link
-        for link in _links_for_type(network_data, approach_key)
-        if link.get("relation_type") == subtype
-    ]
+    subtype_map = CANONICAL_TYPE_BY_APPROACH_SUBTYPE.get(approach_key, {})
+    keys: set[tuple[str, str, str]] = set()
+    for link in _links_for_type(network_data, approach_key):
+        canonical_type = subtype_map.get(str(link.get("relation_type") or "").strip())
+        if canonical_type is None or canonical_type == PAIRWISE_TYPE_WILDCARD:
+            continue
+        keys.add((str(link.get("source")), str(link.get("target")), canonical_type))
+    return keys
+
+
+def _wildcard_pairs_for_approach(
+    network_data: dict[str, Any], approach_key: str
+) -> set[tuple[str, str]]:
+    """Directed (source, target) pairs from an approach's wildcard-typed
+    subtype(s) — i.e. regex's single reference subtype, a plain identifier
+    match with no semantic type information of its own.
+    """
+    subtype_map = CANONICAL_TYPE_BY_APPROACH_SUBTYPE.get(approach_key, {})
+    pairs: set[tuple[str, str]] = set()
+    for link in _links_for_type(network_data, approach_key):
+        canonical_type = subtype_map.get(str(link.get("relation_type") or "").strip())
+        if canonical_type == PAIRWISE_TYPE_WILDCARD:
+            pairs.add((str(link.get("source")), str(link.get("target"))))
+    return pairs
+
+
+def _expand_wildcard_pairwise_keys(
+    wildcard_pairs: set[tuple[str, str]],
+    other_typed_keys: set[tuple[str, str, str]],
+) -> set[tuple[str, ...]]:
+    """Resolve wildcard-typed pairs against the OTHER approach's fixed typed
+    keys: a wildcard edge agrees with whatever canonical type(s) the other
+    side recorded for the same directed pair (mirroring GT_TYPE_ALL in
+    paper/RQ2/ground_truth_evaluation.py), or falls back to a bare
+    (source, target) key when the other side has nothing there. A 2-tuple can
+    never equal a 3-tuple, so the fallback key can never accidentally collide
+    with a real typed key from either side.
+    """
+    types_by_pair: dict[tuple[str, str], set[str]] = {}
+    for source, target, canonical_type in other_typed_keys:
+        types_by_pair.setdefault((source, target), set()).add(canonical_type)
+
+    keys: set[tuple[str, ...]] = set()
+    for pair in wildcard_pairs:
+        types = types_by_pair.get(pair)
+        if types:
+            keys.update((pair[0], pair[1], canonical_type) for canonical_type in types)
+        else:
+            keys.add(pair)
+    return keys
 
 
 def _pairwise_cohens_kappa(
@@ -291,6 +332,10 @@ def _pairwise_cohens_kappa(
     from one side, and the remainder no from both. Kappa corrects the
     resulting raw agreement for chance and is ``None`` when undefined
     (no candidate pairs, or no variation between the raters at all).
+
+    Reported as-is, including negative values: a negative kappa means
+    observed agreement is worse than chance (systematic disagreement), which
+    is a distinct and meaningful result from kappa near 0 (no relationship).
     """
     union = overlap + approach_only + baseline_only
     if candidate_pairs <= 0 or union > candidate_pairs:
@@ -328,43 +373,60 @@ def _build_pairwise_comparisons(
     node_count = len(nodes_by_id)
     candidate_pairs = node_count * (node_count - 1)
 
-    def _approach_links(approach_key: str) -> list[dict[str, Any]]:
-        if type_scope == "depends_on":
-            return _depends_on_links_for_approach(network_data, approach_key)
-        return _links_for_type(network_data, approach_key)
+    fixed_keys_by_approach = {
+        key: _fixed_typed_edge_keys_for_approach(network_data, key)
+        for key in DEPENDENCY_PAIRWISE_COMPARISON_ORDER
+    }
+    wildcard_pairs_by_approach = {
+        key: _wildcard_pairs_for_approach(network_data, key)
+        for key in DEPENDENCY_PAIRWISE_COMPARISON_ORDER
+    }
+
+    def _edge_keys_for_pairing(key: str, other_key: str) -> set[tuple[str, ...]]:
+        if type_scope != "exact_type":
+            return {
+                (str(link.get("source")), str(link.get("target")))
+                for link in _links_for_type(network_data, key)
+            }
+        fixed = fixed_keys_by_approach[key]
+        wildcard_pairs = wildcard_pairs_by_approach[key]
+        if not wildcard_pairs:
+            return fixed
+        # Wildcard-typed edges (regex) resolve against the OTHER side's fixed
+        # typed keys, so a regex hit agrees with whatever type the other
+        # approach recorded there, rather than being pinned to one arbitrary
+        # canonical type. When comparing regex against itself, the other side
+        # has no fixed keys either, so every pair degrades to a bare
+        # (source, target) key on both sides — a plain edge-only match, which
+        # is the only sensible reading of "does regex agree with regex."
+        return fixed | _expand_wildcard_pairwise_keys(
+            wildcard_pairs, fixed_keys_by_approach[other_key]
+        )
 
     for approach_key in DEPENDENCY_PAIRWISE_COMPARISON_ORDER:
         approach_label = approach_labels[approach_key]
-        approach_links = _approach_links(approach_key)
-        approach_edge_keys = {
-            (str(link.get("source")), str(link.get("target")))
-            for link in approach_links
-        }
 
         for baseline_key in DEPENDENCY_PAIRWISE_COMPARISON_ORDER:
             baseline_label = approach_labels[baseline_key]
-            baseline_links = _approach_links(baseline_key)
-            baseline_edge_keys = {
-                (str(link.get("source")), str(link.get("target")))
-                for link in baseline_links
-            }
+            approach_edge_keys = _edge_keys_for_pairing(approach_key, baseline_key)
+            baseline_edge_keys = _edge_keys_for_pairing(baseline_key, approach_key)
             overlap_keys = approach_edge_keys & baseline_edge_keys
             approach_only_keys = approach_edge_keys - baseline_edge_keys
             baseline_only_keys = baseline_edge_keys - approach_edge_keys
             baseline_total = len(baseline_edge_keys)
 
             def _edge_rows(
-                keys: set[tuple[str, str]], status: str
+                keys: set[tuple[str, ...]], status: str
             ) -> list[dict[str, Any]]:
                 return [
                     {
-                        "source": source,
-                        "target": target,
-                        "source_title": nodes_by_id.get(source, {}).get("title"),
-                        "target_title": nodes_by_id.get(target, {}).get("title"),
+                        "source": key[0],
+                        "target": key[1],
+                        "source_title": nodes_by_id.get(key[0], {}).get("title"),
+                        "target_title": nodes_by_id.get(key[1], {}).get("title"),
                         "status": status,
                     }
-                    for source, target in sorted(
+                    for key in sorted(
                         keys,
                         key=lambda item: (
                             int(item[0]) if item[0].isdigit() else float("inf"),
@@ -467,8 +529,8 @@ def _extract_dependency_metrics_payload(network_data: dict[str, Any]) -> dict[st
     return {
         "by_approach": by_approach,
         "pairwise_comparisons": _build_pairwise_comparisons(network_data),
-        "pairwise_comparisons_dependency_only": _build_pairwise_comparisons(
-            network_data, type_scope="depends_on"
+        "pairwise_comparisons_exact_type": _build_pairwise_comparisons(
+            network_data, type_scope="exact_type"
         ),
     }
 

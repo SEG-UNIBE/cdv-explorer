@@ -556,7 +556,7 @@ export function DependenciesSection({
         </p>
         <DependencyComparisonHeatmaps
           pairwiseComparisons={dependencyMetrics?.pairwise_comparisons || {}}
-          pairwiseComparisonsDependencyOnly={dependencyMetrics?.pairwise_comparisons_dependency_only || {}}
+          pairwiseComparisonsExactType={dependencyMetrics?.pairwise_comparisons_exact_type || {}}
           proposalShortLabel={ecosystem.acronym || 'BIP'}
           activeLlmModel={activeDependencyLlmModel}
         />

@@ -637,7 +637,7 @@ class BuildNetworkDataTests(unittest.TestCase):
         ]["summary"]
         self.assertIsNone(empty["kappa"])
 
-    def test_dependency_metrics_pairwise_dependency_only_scope_filters_by_subtype(self):
+    def test_dependency_metrics_pairwise_exact_type_scope_matches_by_canonical_type(self):
         network_data = {
             "nodes": [
                 {"id": str(i), "graph_key": f"bips:{i}", "title": f"BIP {i}"}
@@ -685,15 +685,82 @@ class BuildNetworkDataTests(unittest.TestCase):
         self.assertEqual(unscoped["approach_total"], 2)
         self.assertEqual(unscoped["baseline_total"], 2)
 
-        # "Dependency only" restricts each approach to its depends_on-equivalent
-        # subtype: preamble's "replaces" and LLM's "references" drop out,
-        # leaving only the bips:1->2 edge on both sides.
-        scoped = metrics["pairwise_comparisons_dependency_only"][
+        # "Exact type" keeps every subtype but tags each with its canonical
+        # type (requires->depends_on, replaces->supersedes, LLM depends_on/
+        # references pass through unchanged): both approaches keep all their
+        # edges, but only the bips:1->2 depends_on-typed edge matches on both
+        # sides, since preamble's supersedes-typed edge and the LLM's
+        # references-typed edge don't share a canonical type with anything
+        # on the other side.
+        scoped = metrics["pairwise_comparisons_exact_type"][
             "body_extracted_llm__vs__preamble_extracted"
         ]["summary"]
-        self.assertEqual(scoped["approach_total"], 1)
+        self.assertEqual(scoped["approach_total"], 2)
+        self.assertEqual(scoped["baseline_total"], 2)
+        self.assertEqual(scoped["overlap"], 1)
+        self.assertEqual(scoped["approach_only"], 1)
+        self.assertEqual(scoped["baseline_only"], 1)
+
+    def test_dependency_metrics_pairwise_exact_type_wildcard_resolves_against_other_side(self):
+        network_data = {
+            "nodes": [
+                {"id": str(i), "graph_key": f"bips:{i}", "title": f"BIP {i}"}
+                for i in range(1, 4)
+            ],
+            "dependency_edges": [
+                {
+                    "source": "bips:1",
+                    "target": "bips:2",
+                    "extraction_method": "preamble_extracted",
+                    "relation_type": "requires",
+                    "value": 1,
+                },
+                {
+                    "source": "bips:1",
+                    "target": "bips:2",
+                    "extraction_method": "body_extracted_regex",
+                    "relation_type": "reference",
+                    "value": 1,
+                },
+                {
+                    "source": "bips:2",
+                    "target": "bips:3",
+                    "extraction_method": "body_extracted_regex",
+                    "relation_type": "reference",
+                    "value": 1,
+                },
+            ],
+        }
+
+        metrics = extract_dependency_metrics(network_data)
+
+        # Regex has no real type signal, so its bips:1->2 hit resolves
+        # against whatever canonical type preamble recorded there
+        # (requires -> depends_on) and counts as a match; its bips:2->3 hit
+        # has nothing to resolve against on the preamble side, so it falls
+        # back to a bare pair match and only shows up as approach_only.
+        scoped = metrics["pairwise_comparisons_exact_type"][
+            "body_extracted_regex__vs__preamble_extracted"
+        ]["summary"]
+        self.assertEqual(scoped["approach_total"], 2)
         self.assertEqual(scoped["baseline_total"], 1)
         self.assertEqual(scoped["overlap"], 1)
+        self.assertEqual(scoped["approach_only"], 1)
+        self.assertEqual(scoped["baseline_only"], 0)
+
+        # Regex compared against itself: both sides are wildcard-only, so the
+        # comparison degrades to a plain edge-only match and agrees with
+        # itself perfectly (kappa == 1.0), rather than every edge failing to
+        # resolve into a real type against another wildcard.
+        diagonal = metrics["pairwise_comparisons_exact_type"][
+            "body_extracted_regex__vs__body_extracted_regex"
+        ]["summary"]
+        self.assertEqual(diagonal["approach_total"], 2)
+        self.assertEqual(diagonal["baseline_total"], 2)
+        self.assertEqual(diagonal["overlap"], 2)
+        self.assertEqual(diagonal["approach_only"], 0)
+        self.assertEqual(diagonal["baseline_only"], 0)
+        self.assertAlmostEqual(diagonal["kappa"], 1.0)
 
     def test_dependency_metrics_preserve_duplicate_ids_across_sources(self):
         network_data = {

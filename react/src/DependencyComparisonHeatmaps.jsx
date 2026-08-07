@@ -3,12 +3,14 @@ import { positionTooltip } from './tooltipPosition';
 import { Button } from 'primereact/button';
 import { RadioButton } from 'primereact/radiobutton';
 import {
+  BODY_EXTRACTED_LLM,
   BODY_EXTRACTED_REGEX,
   DEFAULT_DEPENDENCY_APPROACH,
   PAIRWISE_LINK_TYPE_OPTIONS,
   PAIRWISE_MATCH_MODE_ALL,
-  PAIRWISE_MATCH_MODE_DEPENDS_ON,
+  PAIRWISE_MATCH_MODE_EXACT_TYPE,
   PAIRWISE_MATCH_MODE_OPTIONS,
+  PREAMBLE_EXTRACTED,
   getDependencyApproachLabel,
 } from './dependencyApproaches';
 import { ProposalFilterControl } from './ProposalFilterControl';
@@ -19,9 +21,35 @@ import { formatProposalLabel, getProposalUrl, normalizeProposalId } from './prop
 import { renderTooltipCardHtml } from './tooltipHtml';
 
 const MATCH_MODE_TOOLTIP = '<strong>Edge Only</strong> compares every extracted edge regardless of relation type.'
-  + '<br /><br /><strong>Exact Type</strong> restricts each approach to only its technical-dependency subtype '
-  + '(Preamble <code>requires</code>, Regex <code>reference</code>, LLM <code>depends_on</code>) before comparing overlap, '
-  + 'excluding references/supersedes/superseded_by-typed findings. Both variants are precomputed by the Python pipeline.';
+  + '<br /><br /><strong>Exact Type</strong> keeps every extracted subtype but tags each with its canonical relation '
+  + 'type, so two approaches only agree on an edge when both the pair and the type match. Regex has no real type '
+  + 'signal, so it matches <em>any</em> type the other approach recorded for the same pair. Both variants are '
+  + 'precomputed by the Python pipeline.';
+
+// Sentinel matching PAIRWISE_TYPE_WILDCARD in analysis/dependencies/constants.py.
+const PAIRWISE_TYPE_WILDCARD = '*';
+
+// Mirrors CANONICAL_TYPE_BY_APPROACH_SUBTYPE in analysis/dependencies/constants.py.
+// Static and read-only: Exact Type mode always tags every extracted subtype
+// with this fixed canonical type (or resolves it as a wildcard), precomputed
+// server-side — this map only documents that fixed rule, it never drives a
+// computation here.
+const CANONICAL_TYPE_BY_APPROACH_SUBTYPE = {
+  [PREAMBLE_EXTRACTED]: {
+    requires: 'depends_on',
+    replaces: 'supersedes',
+    proposed_replacement: 'superseded_by',
+  },
+  [BODY_EXTRACTED_REGEX]: {
+    reference: PAIRWISE_TYPE_WILDCARD,
+  },
+  [BODY_EXTRACTED_LLM]: {
+    depends_on: 'depends_on',
+    references: 'references',
+    supersedes: 'supersedes',
+    superseded_by: 'superseded_by',
+  },
+};
 
 function truncateTitle(value, maxLength = 45) {
   const text = String(value || '').trim();
@@ -293,7 +321,7 @@ function ComparisonTable({
 
 export function DependencyComparisonHeatmaps({
   pairwiseComparisons: pairwiseComparisonsAll,
-  pairwiseComparisonsDependencyOnly,
+  pairwiseComparisonsExactType,
   proposalShortLabel = 'BIP',
   activeLlmModel = '',
 }) {
@@ -302,12 +330,12 @@ export function DependencyComparisonHeatmaps({
   const ecosystem = useDashboardEcosystem();
   const [matchMode, setMatchMode] = useState(PAIRWISE_MATCH_MODE_ALL);
   const pairwiseComparisons = (
-    matchMode === PAIRWISE_MATCH_MODE_DEPENDS_ON
-      ? pairwiseComparisonsDependencyOnly
+    matchMode === PAIRWISE_MATCH_MODE_EXACT_TYPE
+      ? pairwiseComparisonsExactType
       : pairwiseComparisonsAll
   ) || {};
   const hasAnyComparisons = Object.keys(pairwiseComparisonsAll || {}).length > 0
-    || Object.keys(pairwiseComparisonsDependencyOnly || {}).length > 0;
+    || Object.keys(pairwiseComparisonsExactType || {}).length > 0;
   const [selectedComparisonKey, setSelectedComparisonKey] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [sourceFilterText, setSourceFilterText] = useState('');
@@ -589,6 +617,48 @@ export function DependencyComparisonHeatmaps({
             ))}
           </div>
         </div>
+        {matchMode === PAIRWISE_MATCH_MODE_EXACT_TYPE ? (
+          <div className="gt-type-mapping gt-type-mapping--half">
+            <div className="gt-type-mapping__header">
+              <span className="gt-type-mapping__title">Relation-type mapping</span>
+            </div>
+            <table className="gt-type-mapping__table">
+              <thead>
+                <tr>
+                  <th>Included</th>
+                  <th>Approach</th>
+                  <th>Extracted subtype</th>
+                  <th>Canonical type</th>
+                </tr>
+              </thead>
+              <tbody>
+                {PAIRWISE_LINK_TYPE_OPTIONS.flatMap((option) => (
+                  Object.entries(CANONICAL_TYPE_BY_APPROACH_SUBTYPE[option.value] || {}).map(
+                    ([subtype, canonicalType]) => (
+                      <tr key={`${option.value}:::${subtype}`}>
+                        <td>
+                          <input
+                            type="checkbox"
+                            checked
+                            disabled
+                            aria-label={`${getDependencyApproachLabel(option.value)} ${subtype} is included`}
+                          />
+                        </td>
+                        <td>{getDependencyApproachLabel(option.value, activeLlmModel)}</td>
+                        <td><code>{subtype}</code></td>
+                        <td>
+                          {canonicalType === PAIRWISE_TYPE_WILDCARD
+                            ? <span className="gt-type-mapping__muted">(any)</span>
+                            : <code>{canonicalType}</code>}
+                        </td>
+                      </tr>
+                    )
+                  )
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : null}
         {selectedComparison ? (
           <div className="dependency-comparison-controls__grid">
             <ProposalFilterControl

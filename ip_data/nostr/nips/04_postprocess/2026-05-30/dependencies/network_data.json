@@ -11903,1425 +11903,1959 @@
       "source": "nips:06",
       "target": "nips:32",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "[BIP32](https://bips.xyz/32) is used to derive the path `m/44'/1237'/<account>'/0/0`",
+      "reason": "The proposal directly depends on BIP32 hierarchical deterministic derivation to compute the private keys from the seed.",
+      "confidence": "high"
     },
     {
       "source": "nips:06",
       "target": "nips:39",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "[BIP39](https://bips.xyz/39) is used to generate mnemonic seed words and derive a binary seed from them.",
+      "reason": "The proposal relies on BIP39 for mnemonic generation and seed derivation as the input to its key-derivation flow.",
+      "confidence": "high"
     },
     {
       "source": "nips:07",
       "target": "nips:04",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "window.nostr.nip04.encrypt(pubkey, plaintext): string // returns ciphertext and iv as specified in nip-04 (deprecated)",
+      "reason": "The optional encryption/decryption methods are defined by and rely on the NIP-04 ciphertext/IV format.",
+      "confidence": "high"
     },
     {
       "source": "nips:07",
       "target": "nips:44",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "window.nostr.nip44.encrypt(pubkey, plaintext): string // returns ciphertext as specified in nip-44",
+      "reason": "The optional encryption/decryption methods are explicitly specified to use the NIP-44 ciphertext format and semantics.",
+      "confidence": "high"
     },
     {
       "source": "nips:09",
       "target": "nips:33",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "When an `a` tag is used",
+      "reason": "The proposal relies on the `a` tag’s addressable-event reference format and semantics for deletion requests against replaceable events.",
+      "confidence": "medium"
     },
     {
       "source": "nips:10",
       "target": "nips:01",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "as per NIP-01",
+      "reason": "The deprecated positional e-tag format explicitly relies on the event/tag syntax defined in NIP-01.",
+      "confidence": "high"
     },
     {
       "source": "nips:10",
       "target": "nips:21",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "citing events in the `.content` with [NIP-21](21.md)",
+      "reason": "The q-tag usage for citations depends on the event-URI/citation semantics introduced by NIP-21.",
+      "confidence": "high"
     },
     {
       "source": "nips:10",
       "target": "nips:22",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "use [NIP-22](22.md) instead.",
+      "reason": "This proposal delegates reply behavior for non-kind-1 events to NIP-22, making its reply rules dependent on that specification.",
+      "confidence": "high"
     },
     {
       "source": "nips:11",
       "target": "nips:13",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "based on [NIP-13](13.md)",
+      "reason": "The `min_pow_difficulty` limitation is defined in terms of NIP-13 proof-of-work difficulty.",
+      "confidence": "high"
     },
     {
       "source": "nips:11",
       "target": "nips:17",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "See [NIP-17](17.md)",
+      "reason": "The relay metadata field for administrative contact explicitly relies on NIP-17 direct-message semantics for contacting the administrator.",
+      "confidence": "high"
     },
     {
       "source": "nips:11",
       "target": "nips:42",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "requires [NIP-42](42.md) authentication",
+      "reason": "The `auth_required` limitation uses NIP-42 authentication as the mechanism required before other actions.",
+      "confidence": "high"
     },
     {
       "source": "nips:13",
       "target": "nips:01",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "difficulty is defined to be the number of leading zero bits in the `NIP-01` id",
+      "reason": "The proposal defines PoW difficulty directly in terms of the NIP-01 event id and requires recalculating that id during mining and validation.",
+      "confidence": "low"
     },
     {
       "source": "nips:15",
       "target": "nips:04",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "All checkout events are sent as JSON strings using [NIP-04](04.md).",
+      "reason": "The checkout workflow is explicitly encoded and transported via NIP-04 encrypted direct messages.",
+      "confidence": "high"
     },
     {
       "source": "nips:15",
       "target": "nips:19",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "Create a customized user experience using the `naddr` from [NIP-19](19.md#shareable-identifiers-with-extra-metadata).",
+      "reason": "Marketplace UI/UX customization is designed around NIP-19 naddr shareable identifiers and their metadata.",
+      "confidence": "high"
     },
     {
       "source": "nips:17",
       "target": "nips:21",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "with [NIP-21](21.md)",
+      "reason": "The proposal reuses NIP-21 event-address/event-id citation semantics for q tags in chat content.",
+      "confidence": "medium"
     },
     {
       "source": "nips:17",
       "target": "nips:25",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "[`kind 7` reactions](./25.md) may be sent to an encrypted chat",
+      "reason": "The proposal extends encrypted-chat handling to reaction events defined by NIP-25.",
+      "confidence": "medium"
     },
     {
       "source": "nips:17",
       "target": "nips:42",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "using [NIP 42 AUTH](./42.md)",
+      "reason": "The proposal's relay access control for serving gift-wrap events depends on NIP-42 authentication.",
+      "confidence": "medium"
     },
     {
       "source": "nips:17",
       "target": "nips:44",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "uses [NIP-44](44.md) encryption",
+      "reason": "The proposal relies on NIP-44 for encrypting the chat payloads and specifies using its latest version.",
+      "confidence": "high"
     },
     {
       "source": "nips:17",
       "target": "nips:59",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "uses [NIP-59](59.md) seals and gift wraps",
+      "reason": "The proposal is built around NIP-59 sealing and gift-wrapping semantics for unsigned chat messages and deletion behavior.",
+      "confidence": "low"
     },
     {
       "source": "nips:18",
       "target": "nips:21",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "Mentions to [NIP-21](21.md) entities like `nevent`, `note` and `naddr` on any event must be converted into `q` tags.",
+      "reason": "The quote-repost mechanism is defined in terms of NIP-21 entity syntax and requires converting those entities into a new tag format.",
+      "confidence": "high"
     },
     {
       "source": "nips:18",
       "target": "nips:70",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "Reposts of [NIP-70](70.md)-protected events SHOULD always have an empty `content`.",
+      "reason": "The repost content rule explicitly changes behavior for events protected by the target proposal.",
+      "confidence": "high"
     },
     {
       "source": "nips:19",
       "target": "nips:01",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "MUST NOT be used in NIP-01 events",
+      "reason": "The proposal explicitly constrains use of its bech32 encodings relative to the core event format defined by NIP-01.",
+      "confidence": "high"
     },
     {
       "source": "nips:19",
       "target": "nips:05",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "or in NIP-05 JSON responses",
+      "reason": "The proposal explicitly constrains use of its encodings in NIP-05 name-resolution JSON responses, so adopting it depends on that response format boundary.",
+      "confidence": "high"
     },
     {
       "source": "nips:21",
       "target": "nips:19",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "The identifiers that come after are expected to be the same as those defined in [NIP-19](19.md)",
+      "reason": "The URI scheme reuses the identifier formats defined by NIP-19, so implementing these URIs depends on understanding those encodings.",
+      "confidence": "high"
     },
     {
       "source": "nips:22",
       "target": "nips:10",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "Comments MUST NOT be used to reply to kind 1 notes. [NIP-10](10.md) should instead be followed.",
+      "reason": "The proposal explicitly constrains reply handling by deferring kind-1 note replies to NIP-10 threading semantics.",
+      "confidence": "high"
     },
     {
       "source": "nips:22",
       "target": "nips:21",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "`q` tags MAY be used when citing events in the `.content` with [NIP-21](21.md).",
+      "reason": "The proposal reuses NIP-21’s content-citation convention for optional event references inside comment text.",
+      "confidence": "high"
     },
     {
       "source": "nips:22",
       "target": "nips:73",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "The possible values for `i` tags – and `k` tags, when related to an external identity – are listed on [NIP-73](73.md).",
+      "reason": "The proposal defines comment-scoping tags using the value conventions from NIP-73 for external identifiers.",
+      "confidence": "high"
     },
     {
       "source": "nips:22",
       "target": "nips:94",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "A comment on a [NIP-94](94.md) file looks like this:",
+      "reason": "The proposal includes a dedicated comment example that threads directly to a NIP-94 file event, relying on that event type as a supported root scope.",
+      "confidence": "medium"
     },
     {
       "source": "nips:23",
       "target": "nips:19",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "The article may be linked to using the [NIP-19](19.md) `naddr` code along with the `a` tag.",
+      "reason": "This proposal relies on NIP-19's `naddr` encoding for linking to long-form articles.",
+      "confidence": "high"
     },
     {
       "source": "nips:23",
       "target": "nips:21",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "by using [NIP-21](21.md) `nostr:...` links",
+      "reason": "The proposal depends on NIP-21 URI-style links as the mechanism for inline references.",
+      "confidence": "high"
     },
     {
       "source": "nips:23",
       "target": "nips:22",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "Replies to `kind 30023` MUST use [NIP-22](./22.md) `kind 1111` comments.",
+      "reason": "Commenting on long-form articles is constrained to the NIP-22 comment event type, so reply behavior depends on that specification.",
+      "confidence": "high"
     },
     {
       "source": "nips:23",
       "target": "nips:27",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "References to other Nostr notes, articles or profiles must be made according to [NIP-27](27.md),",
+      "reason": "The content-linking and reference semantics are defined by NIP-27 and reused here.",
+      "confidence": "high"
     },
     {
       "source": "nips:23",
       "target": "nips:37",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "The preferred way of doing long-form drafts is to use [NIP-37](37.md) instead.",
+      "reason": "The proposal explicitly defers the long-form draft use case to NIP-37, making draft support depend on that draft-format proposal rather than kind 30024.",
+      "confidence": "high"
     },
     {
       "source": "nips:24",
       "target": "nips:51",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "`title`: name of [NIP-51] sets",
+      "reason": "The `title` tag is assigned a specific meaning for NIP-51 sets, so its interpretation depends on NIP-51.",
+      "confidence": "low"
     },
     {
       "source": "nips:24",
       "target": "nips:52",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "`title`: name of [NIP-51] sets, [NIP-52] calendar event",
+      "reason": "The `title` tag’s semantics for calendar events rely on NIP-52.",
+      "confidence": "low"
     },
     {
       "source": "nips:24",
       "target": "nips:53",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "`title`: name of [NIP-51] sets, [NIP-52] calendar event, [NIP-53] live event",
+      "reason": "The `title` tag’s semantics for live events rely on NIP-53.",
+      "confidence": "low"
     },
     {
       "source": "nips:24",
       "target": "nips:65",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "[NIP-65](65.md) should be used instead",
+      "reason": "The proposal explicitly deprecates a kind-3 relay mapping in favor of NIP-65, making adoption of that field semantics depend on NIP-65.",
+      "confidence": "high"
     },
     {
       "source": "nips:24",
       "target": "nips:73",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "`i`: an external id the event is referring to in some way - see [NIP-73](73.md)",
+      "reason": "The meaning of the `i` tag is defined by and refers to NIP-73, so this tag’s semantics depend on that proposal.",
+      "confidence": "high"
     },
     {
       "source": "nips:24",
       "target": "nips:99",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "`title`: name of [NIP-51] sets, [NIP-52] calendar event, [NIP-53] live event or [NIP-99] listing",
+      "reason": "The `title` tag’s semantics for listings rely on NIP-99.",
+      "confidence": "low"
     },
     {
       "source": "nips:25",
       "target": "nips:30",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "or [NIP-30](30.md) custom emoji",
+      "reason": "The proposal reuses NIP-30 custom emoji semantics to interpret reaction content and render shortcode-based reactions.",
+      "confidence": "high"
     },
     {
       "source": "nips:25",
       "target": "nips:73",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "MUST include [NIP-73](73.md) external content `k` + `i` tags",
+      "reason": "External content reactions are defined around NIP-73's `k` and `i` tag structure for referencing non-native targets.",
+      "confidence": "high"
     },
     {
       "source": "nips:27",
       "target": "nips:18",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "Including [NIP-18](18.md)'s quote tags",
+      "reason": "The proposal’s optional notification/reply behavior for event mentions depends on the quote-tag mechanism defined by NIP-18.",
+      "confidence": "high"
     },
     {
       "source": "nips:27",
       "target": "nips:19",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "the client will turn that into a `nostr:nevent1...` URL",
+      "reason": "The proposal relies on NIP-19 encodings for constructing and decoding referenced profile/event identifiers inside content.",
+      "confidence": "high"
     },
     {
       "source": "nips:27",
       "target": "nips:21",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "using [NIP-21](21.md) codes",
+      "reason": "The proposal standardizes inline reference rendering around the NIP-21 URL/code format and explicitly instructs clients to use it when creating mentions.",
+      "confidence": "high"
     },
     {
       "source": "nips:27",
       "target": "nips:23",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "for example, a [`kind:30023`](23.md) `nostr:naddr1...` URL reference",
+      "reason": "The proposal’s handling of addressable event references includes NIP-23-style kind/address references encoded as NIP-19 `naddr` values.",
+      "confidence": "medium"
     },
     {
       "source": "nips:28",
       "target": "nips:10",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "Clients SHOULD use [NIP-10](10.md) marked \"e\" tags",
+      "reason": "The proposal relies on NIP-10 tag semantics to encode root/reply structure and relay recommendations for channel metadata and messages.",
+      "confidence": "high"
     },
     {
       "source": "nips:29",
       "target": "nips:11",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "as stated by the [NIP-11](11.md) `\"self\"` pubkey",
+      "reason": "Relay-authored group metadata events rely on the NIP-11 notion of the relay's self public key.",
+      "confidence": "high"
     },
     {
       "source": "nips:29",
       "target": "nips:51",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "A definition for `kind:10009` was included in [NIP-51](51.md)",
+      "reason": "The proposal reuses the preexisting kind:10009 group-list storage event from NIP-51.",
+      "confidence": "high"
     },
     {
       "source": "nips:29",
       "target": "nips:98",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "with a [NIP-98](98.md)-style `Authorization` header",
+      "reason": "The LiveKit token endpoint authentication flow is explicitly based on NIP-98-style authorization.",
+      "confidence": "high"
     },
     {
       "source": "nips:30",
       "target": "nips:25",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "kind 7 ([NIP-25](25.md))",
+      "reason": "The proposal extends custom emoji support to kind 7 events defined by NIP-25, so understanding the affected event type depends on that proposal.",
+      "confidence": "low"
     },
     {
       "source": "nips:30",
       "target": "nips:38",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "kind 30315 ([NIP-38](38.md)) events",
+      "reason": "The proposal extends custom emoji support to kind 30315 events introduced by NIP-38, making that event kind part of the mechanism.",
+      "confidence": "low"
     },
     {
       "source": "nips:30",
       "target": "nips:51",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "the kind 30030 emoji set ([NIP-51](51.md)) the emoji belongs to",
+      "reason": "The emoji tag optionally carries an address pointer to a kind 30030 emoji set defined by NIP-51, so the addressing semantics depend on that proposal.",
+      "confidence": "high"
     },
     {
       "source": "nips:31",
       "target": "nips:89",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "by supporting [NIP-89](89.md)",
+      "reason": "The proposal explicitly points to NIP-89 as the mechanism that makes kind:1-centric clients more functional when interacting with custom event kinds.",
+      "confidence": "medium"
     },
     {
       "source": "nips:32",
       "target": "nips:09",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "events may be requested for deletion using [NIP-09](09.md) and a replacement may be published",
+      "reason": "The proposal’s bulk-labeling workflow explicitly relies on NIP-09 deletion and replacement semantics.",
+      "confidence": "high"
     },
     {
       "source": "nips:34",
       "target": "nips:10",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "SHOULD include a [NIP-10](10.md) `e` `reply` tag",
+      "reason": "Patch threading explicitly reuses NIP-10 comment/reply semantics for patch series ordering.",
+      "confidence": "high"
     },
     {
       "source": "nips:34",
       "target": "nips:22",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "Replies to either a `kind:1621` (_issue_), `kind:1617` (_patch_) or `kind:1618` (_pull request_) event should follow [NIP-22 comment](22.md).",
+      "reason": "Issue, patch, and PR replies are defined to use NIP-22 comment semantics.",
+      "confidence": "high"
     },
     {
       "source": "nips:34",
       "target": "nips:65",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "It is similar in function to the NIP-65 relay list",
+      "reason": "The user grasp list is modeled after NIP-65's relay-list concept and uses a comparable preference list structure for relays.",
+      "confidence": "medium"
     },
     {
       "source": "nips:34",
       "target": "nips:B7",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "and NIP-B7 blossom list.",
+      "reason": "The user grasp list is also described as functionally similar to the NIP-B7 blossom list, indicating a related list-based configuration pattern.",
+      "confidence": "low"
     },
     {
       "source": "nips:35",
       "target": "nips:10",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "should follow `NIP-10` for tagging",
+      "reason": "Torrent comment events reuse the reply/tagging semantics defined by NIP-10.",
+      "confidence": "high"
     },
     {
       "source": "nips:36",
       "target": "nips:32",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "`l` and `L` tags MAY be also be used as defined in [NIP-32](32.md)",
+      "reason": "The proposal explicitly reuses NIP-32's `l` and `L` tag semantics for additional qualification and querying of content warnings.",
+      "confidence": "high"
     },
     {
       "source": "nips:37",
       "target": "nips:40",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "[NIP-40](40.md) `expiration` tags are recommended.",
+      "reason": "The proposal reuses NIP-40 expiration tags as the recommended expiry mechanism for draft events.",
+      "confidence": "high"
     },
     {
       "source": "nips:37",
       "target": "nips:42",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "It's recommended that Private Storage relays SHOULD be [NIP-42](42.md)-authed",
+      "reason": "The proposed private storage relay behavior is constrained by NIP-42 authentication.",
+      "confidence": "high"
     },
     {
       "source": "nips:37",
       "target": "nips:44",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "The draft is JSON-stringified, [NIP44-encrypted](44.md) to the signer's public key",
+      "reason": "The proposal's storage format and private-tag encoding rely on NIP-44 encryption semantics.",
+      "confidence": "high"
     },
     {
       "source": "nips:37",
       "target": "nips:65",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "Clients MUST publish kind `10013` events to the author's [NIP-65](65.md) `write` relays.",
+      "reason": "Publication of the relay-list events depends on the NIP-65 write-relay concept and routing rule.",
+      "confidence": "high"
     },
     {
       "source": "nips:38",
       "target": "nips:30",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "[NIP-30](30.md) custom emoji(s)",
+      "reason": "The status content semantics explicitly allow custom emoji support from the referenced proposal.",
+      "confidence": "high"
     },
     {
       "source": "nips:40",
       "target": "nips:09",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "Clients SHOULD use the `supported_nips` field",
+      "reason": "The proposal’s client-side support detection and relay-compatibility guidance depends on the supported_nips mechanism defined elsewhere.",
+      "confidence": "high"
     },
     {
       "source": "nips:42",
       "target": "nips:01",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "like any `EVENT` message",
+      "reason": "The proposal reuses the existing event message/acknowledgement workflow and extends it with AUTH-specific handling.",
+      "confidence": "medium"
     },
     {
       "source": "nips:43",
       "target": "nips:11",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "signed by the pubkey specified in the `self` field of the relay's [NIP 11](./11.md) document",
+      "reason": "The proposal relies on NIP 11 relay metadata to identify the signing pubkey for multiple relay-generated events and to advertise support.",
+      "confidence": "high"
     },
     {
       "source": "nips:43",
       "target": "nips:42",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "same standard `\"restricted: \"` prefix specified by NIP 42",
+      "reason": "The join-request response format reuses NIP 42's standardized restricted-error prefix for failed claims.",
+      "confidence": "high"
     },
     {
       "source": "nips:43",
       "target": "nips:70",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "A [NIP 70](./70.md) `-` tag",
+      "reason": "The proposal requires NIP 70's special '-' tag on relay membership, add/remove, join, invite, and leave events.",
+      "confidence": "high"
     },
     {
       "source": "nips:44",
       "target": "nips:01",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "MUST be used in the context of a signed event as described in NIP-01",
+      "reason": "The encrypted payload format is explicitly defined to operate inside NIP-01 signed events, and the proposal relies on NIP-01 event structure and signature validation semantics.",
+      "confidence": "high"
     },
     {
       "source": "nips:45",
       "target": "nips:01",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "filters as specified in [NIP 01](01.md) for the verb `REQ`",
+      "reason": "The COUNT verb reuses the REQ filter syntax and query semantics defined by the referenced proposal.",
+      "confidence": "high"
     },
     {
       "source": "nips:46",
       "target": "nips:05",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "The remote-signer MAY publish its metadata by using [NIP-05](05.md)",
+      "reason": "The discovery and metadata publication flow reuses the NIP-05 well-known file format and name lookup mechanism.",
+      "confidence": "low"
     },
     {
       "source": "nips:46",
       "target": "nips:44",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "This proposal describes a method for 2-way communication",
+      "reason": "The request and response payloads are explicitly NIP-44 encrypted, so the proposal depends on that message encryption format and semantics.",
+      "confidence": "low"
     },
     {
       "source": "nips:46",
       "target": "nips:89",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "and [NIP-89](89.md).",
+      "reason": "Remote-signer discovery and metadata announcements are designed around NIP-89 events and tags.",
+      "confidence": "high"
     },
     {
       "source": "nips:47",
       "target": "nips:04",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "The initial version of the protocol used [NIP04](04.md).",
+      "reason": "The proposal preserves NIP-04 as the legacy fallback encryption mode and defines compatibility behavior around it.",
+      "confidence": "high"
     },
     {
       "source": "nips:47",
       "target": "nips:44",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "The content of requests and responses is encrypted with [NIP44](44.md)",
+      "reason": "The proposal uses NIP-44 as the primary encryption scheme for request, response, and notification payloads.",
+      "confidence": "high"
     },
     {
       "source": "nips:47",
       "target": "nips:57",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "a NIP-57 Zap Request event (kind 9734)",
+      "reason": "The proposal's metadata format explicitly recognizes and stores NIP-57 zap request events as structured metadata.",
+      "confidence": "low"
     },
     {
       "source": "nips:51",
       "target": "nips:02",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "Follow list       |     3 | microblogging basic follow list, see [NIP-02](02.md)",
+      "reason": "The standard follow list is explicitly defined as the NIP-02 follow list, so this proposal reuses that list semantics for kind 3.",
+      "confidence": "high"
     },
     {
       "source": "nips:51",
       "target": "nips:04",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "An earlier version of this specification used [NIP-04](04.md) for encryptions.",
+      "reason": "The proposal defines backward compatibility behavior that can decrypt legacy NIP-04 ciphertexts, making support for that format part of adoption.",
+      "confidence": "medium"
     },
     {
       "source": "nips:51",
       "target": "nips:17",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "DM relays         | 10050 | Where to receive [NIP-17](17.md) direct messages",
+      "reason": "The DM relays list is specifically for NIP-17 direct messages and depends on that DM model.",
+      "confidence": "high"
     },
     {
       "source": "nips:51",
       "target": "nips:28",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "Public chats      | 10005 | [NIP-28](28.md) chat channels the user is in",
+      "reason": "The public chats list relies on the chat channel concept from NIP-28.",
+      "confidence": "high"
     },
     {
       "source": "nips:51",
       "target": "nips:29",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "Simple groups    | 10009 | [NIP-29](29.md) groups the user is in",
+      "reason": "The simple groups list depends on the group identifier and relay syntax defined by NIP-29.",
+      "confidence": "high"
     },
     {
       "source": "nips:51",
       "target": "nips:30",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "Emojis            | 10030 | user preferred emojis and pointers to emoji sets            | \"emoji\" (see [NIP-30](30.md))",
+      "reason": "The emoji list expects the emoji tag item format defined by NIP-30.",
+      "confidence": "low"
     },
     {
       "source": "nips:51",
       "target": "nips:34",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "Git repositories  | 10018 | [NIP-34](34.md) followed repositories",
+      "reason": "The git repositories list depends on the repository announcement event type introduced by NIP-34.",
+      "confidence": "high"
     },
     {
       "source": "nips:51",
       "target": "nips:44",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "encrypted using the same scheme from [NIP-44](44.md)",
+      "reason": "Private list items are serialized and encrypted with NIP-44, so implementing private items depends on its encryption and shared-key scheme.",
+      "confidence": "high"
     },
     {
       "source": "nips:51",
       "target": "nips:54",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "Good wiki authors | 10101 | [NIP-54](54.md) user recommended wiki authors",
+      "reason": "The good wiki authors list is defined in terms of NIP-54 wiki authorship/recommendation semantics.",
+      "confidence": "high"
     },
     {
       "source": "nips:51",
       "target": "nips:58",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "Profile badges  | 10008 | [NIP-58](58.md) badges a user has accepted and chosen to display",
+      "reason": "The profile badges list uses the badge definitions and awards semantics from NIP-58.",
+      "confidence": "high"
     },
     {
       "source": "nips:51",
       "target": "nips:65",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "Read/write relays | 10002 | where a user publishes to and where they expect mentions | see [NIP-65](65.md)",
+      "reason": "The read/write relays list is defined by reference to NIP-65, so its relay-set semantics depend on that proposal.",
+      "confidence": "high"
     },
     {
       "source": "nips:51",
       "target": "nips:72",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "Communities       | 10004 | [NIP-72](72.md) communities the user belongs to",
+      "reason": "The communities list is built around the community concept defined by NIP-72.",
+      "confidence": "high"
     },
     {
       "source": "nips:51",
       "target": "nips:B7",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "Blossom servers   | 10063 | Servers where to upload and look for images and other blobs | \"server\" (see [NIP-B7](B7.md))",
+      "reason": "The blossom servers list uses the server reference defined by NIP-B7.",
+      "confidence": "low"
     },
     {
       "source": "nips:51",
       "target": "nips:F4",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "Favorite podcasts | 10054 | podcasts a user wants to bookmark as favorites              | \"p\" ([NIP-F4](F4.md) podcast pubkeys), \"url\" (RSS/XML podcast URLs)",
+      "reason": "The podcast list uses the podcast pubkey concept from NIP-F4.",
+      "confidence": "low"
     },
     {
       "source": "nips:52",
       "target": "nips:09",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "deletable per [NIP-09](09.md)",
+      "reason": "The proposal relies on NIP-09 for deletion semantics of calendar events.",
+      "confidence": "high"
     },
     {
       "source": "nips:53",
       "target": "nips:19",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "The activity MUST be linked to using the [NIP-19](19.md) `naddr` code",
+      "reason": "The proposal explicitly relies on NIP-19's naddr encoding for linking live activities, so implementation and addressing depend on that format.",
+      "confidence": "high"
     },
     {
       "source": "nips:54",
       "target": "nips:02",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "[NIP-02](02.md) contact lists can form the basis of a recommendation system",
+      "reason": "The proposal builds a wiki article recommendation system on top of NIP-02 contact lists, reusing their semantics as trust signals.",
+      "confidence": "high"
     },
     {
       "source": "nips:54",
       "target": "nips:21",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "Links can have target URIs in [NIP-21](21.md) format",
+      "reason": "The wiki content format explicitly reuses NIP-21 URI syntax for links and mentions nostr: links as a supported mechanism.",
+      "confidence": "high"
     },
     {
       "source": "nips:54",
       "target": "nips:25",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "The destination pubkey can create [NIP-25](25.md) reactions",
+      "reason": "Merge-request acceptance/rejection is defined in terms of NIP-25 reaction events, so this proposal relies on that reaction mechanism.",
+      "confidence": "high"
     },
     {
       "source": "nips:54",
       "target": "nips:51",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "[NIP-51](51.md) lists of relays can be created",
+      "reason": "Relay-list events from NIP-51 are used as an input for wiki client querying and ranking, making the proposal depend on that list format.",
+      "confidence": "high"
     },
     {
       "source": "nips:55",
       "target": "nips:46",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "You should consider using [NIP-46: Nostr Connect](46.md) for a better experience for web applications.",
+      "reason": "The proposal explicitly recommends NIP-46 as the preferred web-application approach, indicating the web workflow is designed around that external connection mechanism.",
+      "confidence": "high"
     },
     {
       "source": "nips:56",
       "target": "nips:32",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "`l` and `L` tags MAY be also be used as defined in [NIP-32](32.md)",
+      "reason": "The proposal explicitly reuses NIP-32 tag semantics for qualification and querying of reports.",
+      "confidence": "high"
     },
     {
       "source": "nips:57",
       "target": "nips:01",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "retrieved in step 1 of the protocol flow",
+      "reason": "The zap receipt validation flow relies on NIP-01-style filters to retrieve zap receipts by event or pubkey.",
+      "confidence": "medium"
     },
     {
       "source": "nips:57",
       "target": "nips:23",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "such as NIP-23 long-form notes",
+      "reason": "The zap request format includes an optional coordinate tag specifically for tipping addressable events defined by that proposal.",
+      "confidence": "medium"
     },
     {
       "source": "nips:58",
       "target": "nips:51",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "as a [NIP-51](51.md) standard list",
+      "reason": "The Profile Badges event is explicitly defined using the NIP-51 standard list structure.",
+      "confidence": "high"
     },
     {
       "source": "nips:59",
       "target": "nips:09",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "relays SHOULD delete `kind:1059` events whose p-tag matches the signer of [NIP-09](09.md) deletions",
+      "reason": "Relay cleanup behavior is tied to NIP-09 deletion semantics for identifying events to remove.",
+      "confidence": "medium"
     },
     {
       "source": "nips:59",
       "target": "nips:13",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "`tags` SHOULD include any information needed to route the event to its intended recipient, including the recipient's `p` tag or [NIP-13](13.md) proof of work.",
+      "reason": "Gift wrap events may incorporate NIP-13 proof-of-work as a routing/spam-mitigation tag, so adopting the proposal can depend on that tag convention.",
+      "confidence": "medium"
     },
     {
       "source": "nips:59",
       "target": "nips:17",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "`kind:1059` is intended for regular direct messages and asynchronous communication where message persistence and offline delivery are expected, such as in NIP-17.",
+      "reason": "The proposal explicitly positions the 1059 gift-wrap workflow as the transport/container mechanism for NIP-17-style direct-message usage.",
+      "confidence": "medium"
     },
     {
       "source": "nips:59",
       "target": "nips:42",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "a relay may enforce a [NIP-42](42.md) `auth-required` policy and authenticate clients before accepting gift wraps.",
+      "reason": "The proposal’s relay-side privacy mitigation assumes NIP-42 authentication as an access-control mechanism for accepting or serving wrapped events.",
+      "confidence": "high"
     },
     {
       "source": "nips:59",
       "target": "nips:44",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "This NIP relies on [NIP-44](./44.md)'s versioned encryption algorithms.",
+      "reason": "The proposal’s sealing and wrapping formats are built around NIP-44 encryption and decryption of the inner JSON-encoded events.",
+      "confidence": "high"
     },
     {
       "source": "nips:59",
       "target": "nips:62",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "relays SHOULD delete `kind:1059` events whose p-tag matches the signer of [NIP-09](09.md) deletions or [NIP-62](62.md) vanish requests.",
+      "reason": "Relay cleanup behavior is also tied to NIP-62 vanish-request semantics for identifying events to remove.",
+      "confidence": "medium"
     },
     {
       "source": "nips:5A",
       "target": "nips:01",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "defined in [NIP-01](01.md)",
+      "reason": "The site manifest event type is explicitly constrained to be a replaceable or addressable event per the referenced event model.",
+      "confidence": "high"
     },
     {
       "source": "nips:60",
       "target": "nips:09",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "the token event should be [NIP-09](09.md)-deleted",
+      "reason": "Token lifecycle management uses NIP-09 delete events to mark spent token events and drive state transitions.",
+      "confidence": "high"
     },
     {
       "source": "nips:60",
       "target": "nips:40",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "These events should be created with an expiration tag [NIP-40](40.md)",
+      "reason": "Quote-state events reuse NIP-40 expiration semantics and tag format to bound their lifetime.",
+      "confidence": "high"
     },
     {
       "source": "nips:60",
       "target": "nips:44",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "The proofs are encrypted with the user's private key.",
+      "reason": "The proposal relies on NIP-44 encryption for storing wallet, token, and history payloads in content fields.",
+      "confidence": "high"
     },
     {
       "source": "nips:60",
       "target": "nips:61",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "This is only used for receiving [NIP-61](61.md) nutzaps.",
+      "reason": "The wallet event’s private key field is specifically intended to support NIP-61 nutzaps, so understanding this proposal’s wallet state includes that receive flow.",
+      "confidence": "high"
     },
     {
       "source": "nips:60",
       "target": "nips:65",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "it should fall back to using the user's [NIP-65](65.md) relays.",
+      "reason": "Discovery of wallet and token events falls back to NIP-65 relay lists when kind:10019 is absent.",
+      "confidence": "high"
     },
     {
       "source": "nips:61",
       "target": "nips:60",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "This public key corresponds to the `privkey` field encrypted in a user's [nip-60](60.md) _wallet event_",
+      "reason": "The proposal defines the receiver’s P2PK public key as derived from the wallet-event private key in NIP-60, so implementing the receiving-key workflow depends on that wallet event format.",
+      "confidence": "high"
     },
     {
       "source": "nips:61",
       "target": "nips:65",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "published to the sender's [NIP-65](65.md) \"read\" relays",
+      "reason": "The proposal uses NIP-65 relay lists for where redemption events are published and for mint URL normalization guidance, so relay handling depends on NIP-65 conventions.",
+      "confidence": "high"
     },
     {
       "source": "nips:62",
       "target": "nips:09",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "including [NIP-09](09.md) Deletion Events",
+      "reason": "The proposal’s deletion scope explicitly includes and builds on NIP-09 deletion events as part of the data to remove.",
+      "confidence": "high"
     },
     {
       "source": "nips:62",
       "target": "nips:59",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "SHOULD delete all [NIP-59](59.md) Gift Wraps",
+      "reason": "The relay behavior for vanish requests extends to NIP-59 gift wraps, so implementation depends on that event type and its semantics.",
+      "confidence": "high"
     },
     {
       "source": "nips:64",
       "target": "nips:31",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "like [`\"alt\"`](31.md)",
+      "reason": "The proposal explicitly relies on the alt tag convention for representing notes to non-supporting clients.",
+      "confidence": "high"
     },
     {
       "source": "nips:66",
       "target": "nips:11",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "inferred either from a relay's [NIP 11] document",
+      "reason": "The relay discovery event format and semantics are built around NIP-11 relay metadata as a source of characteristics and limitations.",
+      "confidence": "low"
     },
     {
       "source": "nips:66",
       "target": "nips:52",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "- `g` - A [NIP-52] geohash",
+      "reason": "The proposal reuses the NIP-52 geohash tag within both event kinds, so implementers must understand that tag definition.",
+      "confidence": "low"
     },
     {
       "source": "nips:68",
       "target": "nips:71",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "\"Picture events might be used with [NIP-71](71.md)'s kind `22` to display short vertical videos in the same feed.\"",
+      "reason": "The proposal is explicitly designed to be used alongside NIP-71 kind 22 as part of the same feed workflow.",
+      "confidence": "low"
     },
     {
       "source": "nips:68",
       "target": "nips:94",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "\"x <sha256 hash as specified in NIP 94>\"",
+      "reason": "The picture-event `imeta` tag reuses the SHA-256 hash specification from the target NIP for image identification.",
+      "confidence": "high"
     },
     {
       "source": "nips:69",
       "target": "nips:01",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "Events are [addressable events](01.md#kinds)",
+      "reason": "The proposal relies on the addressable event concept and kind semantics defined in NIP-01 to classify these order events.",
+      "confidence": "high"
     },
     {
       "source": "nips:69",
       "target": "nips:40",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "the relay SHOULD delete it ([NIP-40](40.md))",
+      "reason": "The expiration tag's deletion behavior is defined by NIP-40, which this proposal explicitly adopts.",
+      "confidence": "high"
     },
     {
       "source": "nips:70",
       "target": "nips:42",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "authenticated](42.md) before publishing their own events",
+      "reason": "The proposal relies on NIP-42 authentication as the mechanism relays must use before accepting protected events from their authors.",
+      "confidence": "high"
     },
     {
       "source": "nips:71",
       "target": "nips:92",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "The primary source of video information is the `imeta` tags which is defined in [NIP-92](92.md)",
+      "reason": "The proposal relies on NIP-92's imeta tag format as the core mechanism for describing video media metadata.",
+      "confidence": "high"
     },
     {
       "source": "nips:71",
       "target": "nips:94",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "This NIP defines the following additional `imeta` properties aside from those listed in [NIP-92](92.md) & [NIP-94](94.md):",
+      "reason": "The proposal extends the existing imeta property set defined by NIP-94, so understanding its metadata fields depends on that base specification.",
+      "confidence": "high"
     },
     {
       "source": "nips:72",
       "target": "nips:09",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "using [NIP-09 event deletion requests](09.md)",
+      "reason": "Moderator revocation of approvals is explicitly built on the event deletion mechanism from NIP-09.",
+      "confidence": "high"
     },
     {
       "source": "nips:72",
       "target": "nips:18",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "post a NIP 18 `kind 6` or `kind 16` repost",
+      "reason": "Cross-posting is defined in terms of NIP-18 repost event kinds and their payload handling.",
+      "confidence": "low"
     },
     {
       "source": "nips:72",
       "target": "nips:22",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "[NIP-22](22.md) kind 1111 events SHOULD be used for text notes posted to a community",
+      "reason": "The proposal defines community posting semantics by reusing NIP-22 text note events and their tag conventions.",
+      "confidence": "high"
     },
     {
       "source": "nips:73",
       "target": "nips:52",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "`i` tags are used for referencing these external content ids",
+      "reason": "This proposal is built around the `i` tag field and its event representation, which NIP 52 defines and governs.",
+      "confidence": "high"
     },
     {
       "source": "nips:75",
       "target": "nips:57",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "specifying [`zap` tags](57.md#appendix-g-zap-tag-on-other-events)",
+      "reason": "The proposal reuses the zap-tag mechanism from NIP 57 to support multiple beneficiaries on a goal event.",
+      "confidence": "high"
     },
     {
       "source": "nips:77",
       "target": "nips:01",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "The filter is as described in [NIP-01](01.md).",
+      "reason": "The proposal uses NIP-01 filter semantics for NEG-OPEN queries and NIP-01-style error reason formatting.",
+      "confidence": "high"
     },
     {
       "source": "nips:7D",
       "target": "nips:22",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "Replies to `kind 11` MUST use [NIP-22](./22.md) `kind 1111` comments.",
+      "reason": "The proposal explicitly requires using NIP-22 comment events for thread replies, so its reply mechanism depends on NIP-22 semantics and format.",
+      "confidence": "high"
     },
     {
       "source": "nips:84",
       "target": "nips:94",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "e.g. NIP-94 audio/video",
+      "reason": "The proposal explicitly reuses NIP-94 as the example for non-text media whose highlighted content may have empty content.",
+      "confidence": "medium"
     },
     {
       "source": "nips:85",
       "target": "nips:44",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "using NIP-44",
+      "reason": "The proposal relies on NIP-44 for encrypting the preferred service-provider tag list stored in the content field.",
+      "confidence": "high"
     },
     {
       "source": "nips:85",
       "target": "nips:73",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "Providers can rate books, locations, movies, websites, and hashtags using [NIP-73](73.md) identifiers.",
+      "reason": "The external-identifier subject type is defined around NIP-73 identifier semantics and tag usage.",
+      "confidence": "high"
     },
     {
       "source": "nips:86",
       "target": "nips:98",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "a valid [NIP-98](./98.md) event",
+      "reason": "The management API requires NIP-98 event authentication in the Authorization header, so implementing authorization depends on NIP-98's event format and validation rules.",
+      "confidence": "high"
     },
     {
       "source": "nips:87",
       "target": "nips:01",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "\"content\" is an optional `metadata`-like stringified JSON object, as described in NIP-01.",
+      "reason": "The mint announcement events reuse the NIP-01 metadata/content format for optional profile-like information.",
+      "confidence": "low"
     },
     {
       "source": "nips:88",
       "target": "nips:05",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "do not honor kind:5 (delete) requests for vote events",
+      "reason": "The proposal’s relay guidance depends on the delete-event semantics of kind:5 when discussing vote integrity.",
+      "confidence": "high"
     },
     {
       "source": "nips:88",
       "target": "nips:33",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "It contains an e tag with the poll event it is referencing",
+      "reason": "The response event uses the event reference tag semantics to link each vote to its poll.",
+      "confidence": "medium"
     },
     {
       "source": "nips:88",
       "target": "nips:51",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "This can be achieved by creating `kind:30000` follow sets",
+      "reason": "The curation mechanism explicitly reuses follow-set events as the basis for restricting which results are fetched.",
+      "confidence": "medium"
     },
     {
       "source": "nips:89",
       "target": "nips:01",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "as described in NIP-01",
+      "reason": "The proposal relies on NIP-01 for the metadata-like content format of kind:31990 events.",
+      "confidence": "high"
     },
     {
       "source": "nips:89",
       "target": "nips:19",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "bech32 in a URL MUST be replaced by clients with the NIP-19-encoded entity",
+      "reason": "The handler URL replacement mechanism depends on NIP-19 entity encodings and related nomenclature.",
+      "confidence": "low"
     },
     {
       "source": "nips:89",
       "target": "nips:31",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "using its `alt` tag (as described in NIP-31)",
+      "reason": "The user flow explicitly depends on NIP-31 alt-tag display for unknown-kind events.",
+      "confidence": "high"
     },
     {
       "source": "nips:90",
       "target": "nips:04",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "Encryption for private tags will use [NIP-04 - Encrypted Direct Message encryption](04.md)",
+      "reason": "The proposal explicitly requires NIP-04 to encrypt private input parameters and content for job requests and outputs.",
+      "confidence": "high"
     },
     {
       "source": "nips:92",
       "target": "nips:94",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "imeta MAY include any field specified by [NIP 94](./94.md)",
+      "reason": "The proposal explicitly reuses the field set defined by NIP 94 for media metadata, so implementing imeta tags depends on NIP 94's tag semantics.",
+      "confidence": "low"
     },
     {
       "source": "nips:94",
       "target": "nips:96",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "service type which is serving the file (eg. [NIP-96](96.md))",
+      "reason": "The file-metadata event format explicitly allows a service tag whose meaning is defined by NIP-96, so understanding that tag depends on NIP-96's upload service semantics.",
+      "confidence": "high"
     },
     {
       "source": "nips:96",
       "target": "nips:94",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "This uses the NIP-94 event format",
+      "reason": "The upload response, file listing, and optional client publication all reuse NIP-94 event structure and tags for file metadata and URLs.",
+      "confidence": "high"
     },
     {
       "source": "nips:96",
       "target": "nips:98",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "clients must add an [NIP-98](98.md) `Authorization` header",
+      "reason": "The upload and delete authentication flow is built around NIP-98 authorization headers, making it a direct prerequisite for secure client-server operations.",
+      "confidence": "low"
     },
     {
       "source": "nips:98",
       "target": "nips:01",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "An ephemeral event used to authorize requests to HTTP servers using nostr events.",
+      "reason": "The proposal relies on the core Nostr event model, including event kinds, timestamps, tags, and signatures, to represent HTTP authorization messages.",
+      "confidence": "high"
     },
     {
       "source": "nips:99",
       "target": "nips:23",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "The structure of these events is very similar to [NIP-23](23.md) long-form content events.",
+      "reason": "The proposal explicitly models its event structure on NIP-23, so implementers need the long-form content event format as the structural reference.",
+      "confidence": "high"
     },
     {
       "source": "nips:99",
       "target": "nips:58",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "clients SHOULD use `image` tags as described in [NIP-58](58.md)",
+      "reason": "The proposal relies on NIP-58's image-tag convention for standardized image metadata and display behavior.",
+      "confidence": "high"
     },
     {
       "source": "nips:A0",
       "target": "nips:22",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "kind: 1244 events MUST follow the structure of `NIP-22`",
+      "reason": "Reply voice-message events are explicitly constrained to use the event structure defined by NIP-22.",
+      "confidence": "low"
     },
     {
       "source": "nips:A0",
       "target": "nips:92",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "Visual representation with `imeta` (NIP-92) tag (optional)",
+      "reason": "The proposal optionally reuses the NIP-92 imeta tag format for waveform and duration metadata.",
+      "confidence": "high"
     },
     {
       "source": "nips:A4",
       "target": "nips:17",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "Avoid confusing this kind with Kind `14` rumors in [NIP-17](17.md) DMs.",
+      "reason": "The proposal distinguishes its message kind from NIP-17 DM rumors, indicating the reader must understand that existing kind to avoid overlap.",
+      "confidence": "medium"
     },
     {
       "source": "nips:A4",
       "target": "nips:18",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "[NIP-18](18.md) quote repost `q` tags MAY be used when citing events in the `.content` with [NIP-21](21.md).",
+      "reason": "The proposal allows using NIP-18 quote repost tags for cited content.",
+      "confidence": "high"
     },
     {
       "source": "nips:A4",
       "target": "nips:19",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "links that use [NIP-19](19.md)'s `nevent1` MUST include a `kind` of `24`.",
+      "reason": "The proposal defines rendering and link semantics for NIP-19 nevent identifiers specifically when they reference kind 24.",
+      "confidence": "high"
     },
     {
       "source": "nips:A4",
       "target": "nips:21",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "with [NIP-21](21.md).",
+      "reason": "The proposal uses NIP-21 links as the mechanism for citing events and for nevent-based links.",
+      "confidence": "high"
     },
     {
       "source": "nips:A4",
       "target": "nips:25",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "[NIP-25](25.md) reactions MUST add a `k` tag to `24`.",
+      "reason": "Reaction events are constrained to include a kind tag pointing at this message kind.",
+      "confidence": "high"
     },
     {
       "source": "nips:A4",
       "target": "nips:40",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "[NIP-40](40.md) `expiration` tags are recommended.",
+      "reason": "The proposal reuses NIP-40 expiration tags as an optional advanced-support feature.",
+      "confidence": "high"
     },
     {
       "source": "nips:A4",
       "target": "nips:57",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "[NIP-57](57.md) zaps MUST include the `k` tag to `24`",
+      "reason": "Zap events are constrained to include a kind tag pointing at this message kind.",
+      "confidence": "high"
     },
     {
       "source": "nips:A4",
       "target": "nips:65",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "MUST be sent to the [NIP-65](65.md) inbox relays of each receiver and the outbox relay of the sender.",
+      "reason": "Message delivery is defined in terms of NIP-65 inbox and outbox relay routing.",
+      "confidence": "high"
     },
     {
       "source": "nips:A4",
       "target": "nips:92",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "[NIP-92](92.md) `imeta` tags SHOULD be added for image and video links.",
+      "reason": "The proposal extends media-link handling by recommending NIP-92 imeta tags.",
+      "confidence": "high"
     },
     {
       "source": "nips:B0",
       "target": "nips:22",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "Replies to `kind 39701` MUST use `kind 1111` events as comments with [NIP-22](22.md).",
+      "reason": "The proposal explicitly delegates reply/comment handling to NIP-22 semantics for comments on bookmark events.",
+      "confidence": "high"
     },
     {
       "source": "nips:B7",
       "target": "nips:03",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "most importantly Nostr clients SHOULD make use of [BUD-03][] to fetch `kind:10063` lists of servers for each user",
+      "reason": "The proposal’s server-discovery workflow is built around the BUD-03 mechanism for publishing and retrieving per-user Blossom server lists.",
+      "confidence": "high"
     },
     {
       "source": "nips:BE",
       "target": "nips:01",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "All messages will follow [NIP-01](/01.md) message structure.",
+      "reason": "The BLE transport serializes and exchanges messages using the NIP-01 event/message structure, so understanding the proposal depends on that format and semantics.",
+      "confidence": "high"
     },
     {
       "source": "nips:BE",
       "target": "nips:77",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "it's crucial to define a synchronization process by following [NIP-77](./77.md) but with an adaptation to the limitations of the technology.",
+      "reason": "The synchronization workflow is explicitly based on NIP-77 negotiation/message flow, with BLE-specific adaptations, so implementation depends on that protocol's sync semantics.",
+      "confidence": "high"
     },
     {
       "source": "nips:C0",
       "target": "nips:34",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "the address of a [NIP-34](34.md) Git repository announcement event",
+      "reason": "The proposal allows its repo tag to point to a NIP-34 repository announcement event, so understanding the repo reference format depends on NIP-34.",
+      "confidence": "high"
     },
     {
       "source": "nips:CC",
       "target": "nips:01",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "using NIP-01 `a` tag format",
+      "reason": "The log event's required reference tag explicitly depends on NIP-01's addressable-event tag format.",
+      "confidence": "high"
     },
     {
       "source": "nips:EE",
       "target": "nips:04",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "Originally, one-to-one direct messages (DMs) in Nostr happened via the scheme defined in [NIP-04](04.md).",
+      "reason": "The proposal contrasts its messaging approach against NIP-04 DM encryption and uses it as part of the design context for direct-message handling.",
+      "confidence": "low"
     },
     {
       "source": "nips:EE",
       "target": "nips:17",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "Most recently, [NIP-17](17.md) combines [NIP-44](44.md) encryption with [NIP-59](59.md) gift-wrapping",
+      "reason": "The proposal builds on the NIP-17 approach as prior art for private DMs and metadata hiding when explaining how its own design differs and extends messaging privacy goals.",
+      "confidence": "medium"
     },
     {
       "source": "nips:EE",
       "target": "nips:44",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "With the addition of [NIP-44](44.md), we have an updated encryption scheme",
+      "reason": "The proposal explicitly relies on NIP-44 as the encryption scheme reused for securing group message content and as the basis for its content encryption workflow.",
+      "confidence": "high"
     },
     {
       "source": "nips:EE",
       "target": "nips:59",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "combines [NIP-44](44.md) encryption with [NIP-59](59.md) gift-wrapping",
+      "reason": "The proposal requires NIP-59 gift-wrapping for Welcome Events to be delivered privately.",
+      "confidence": "high"
     },
     {
       "source": "nips:EE",
       "target": "nips:70",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "Read more in [NIP-70](70.md)",
+      "reason": "The proposal uses NIP-70's authenticated-author convention for KeyPackage publication and references it as an optional control on publication semantics.",
+      "confidence": "medium"
     },
     {
       "source": "nips:F4",
       "target": "nips:51",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "See [NIP-51](51.md) for the description of a `kind:10054` event",
+      "reason": "The proposal explicitly relies on NIP-51 to define the favorite-podcasts event kind and its semantics.",
+      "confidence": "high"
     }
   ],
   "ground_truth_reviewed_ips": [

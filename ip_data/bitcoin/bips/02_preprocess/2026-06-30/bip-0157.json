@@ -793,41 +793,30 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:42:59Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:10:41Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:37",
+              "type": "references",
               "evidence": "The alternative detailed in this document can be seen as the opposite of BIP 37",
-              "reason": "The proposal is explicitly designed as a replacement/alternative to the light-client protocol defined by BIP 37, reusing the same problem space and directly contrasting its client-server filtering workflow with a new one. Understanding and evaluating BIP 157 materially depends on the prior protocol it is improving upon.",
-              "confidence": "medium"
+              "reason": "BIP 37 is discussed as the existing light-client protocol and contrasted with the alternative defined here; the current protocol does not rely on BIP 37.",
+              "confidence": "high"
             },
             {
               "target": "bips:111",
+              "type": "references",
               "evidence": "similar to attacks against BIP 37 enabled nodes noted in BIP 111",
-              "reason": "BIP 157's node-operation rationale for precomputed filters and avoiding dynamic generation relies on the DoS concerns and service-bit deployment context associated with BIP 111's handling of bloom-filtered connections. This is supportive but not foundational, so confidence is moderate.",
-              "confidence": "medium"
+              "reason": "BIP 111 is cited only for its discussion of denial-of-service attacks against BIP 37 nodes; no mechanism or rule from it is required by this proposal.",
+              "confidence": "high"
             },
             {
               "target": "bips:158",
-              "evidence": "The initial filter types are defined separately in BIP 158",
-              "reason": "BIP 157 defines the transport, retrieval, and verification protocol for compact block filters, while the actual initial filter contents and serialization formats are normatively defined in BIP 158. Implementing the protocol for the initial filter types materially depends on BIP 158.",
-              "confidence": "low"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:04:27Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:158",
-              "evidence": "The initial filter types are defined separately in [[bip-0158.mediawiki|BIP 158]]",
-              "reason": "BIP 157's P2P messages and support-signaling rules are parameterized by filter types, and it relies on BIP 158 to define the initial filter types, their contents, and serialization formats used by the protocol.",
+              "type": "depends_on",
+              "evidence": "The initial filter types are defined separately in [[bip-0158.mediawiki|BIP 158]], and one service bit is allocated to signal support for them.",
+              "reason": "The protocol's messages carry typed serialized block filters, while the initial filter contents and serialization rules required to construct and query those filters are defined by BIP 158.",
               "confidence": "high"
             }
           ]

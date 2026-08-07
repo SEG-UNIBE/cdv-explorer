@@ -579,18 +579,19 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:43:09Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:11:13Z",
           "status": "success",
-          "dependencies": []
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:04:44Z",
-          "status": "success",
-          "dependencies": []
+          "findings": [
+            {
+              "target": "bips:176",
+              "type": "references",
+              "evidence": "An alternative suggestion (BIP 176) proposes using \"bits\" to represent one-millionth of a bitcoin (100 satoshis).",
+              "reason": "The current proposal discusses and critiques BIP 176 as an alternative denomination scheme, but does not require its rules or format to operate.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

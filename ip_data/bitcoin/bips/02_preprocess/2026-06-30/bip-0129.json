@@ -967,59 +967,73 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:42:23Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:08:34Z",
           "status": "success",
-          "dependencies": []
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:02:54Z",
-          "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
-              "evidence": "assumes the parties in the multisig support [https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki BIP-0032]",
-              "reason": "The proposal explicitly makes BIP32 support a prerequisite and uses XPUBs, key-origin information, fingerprints, and derivation paths in its key and descriptor records.",
-              "confidence": "high"
+              "type": "depends_on",
+              "evidence": "This proposal assumes the parties in the multisig support BIP-0032",
+              "reason": "The protocol exchanges extended public keys and uses hierarchical derivation paths, requiring the HD key derivation model defined by BIP 32.",
+              "confidence": "low"
             },
             {
               "target": "bips:39",
-              "evidence": "A mnemonic phrase using [https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki BIP-0039] word list",
-              "reason": "The proposal reuses the BIP39 word list as an allowed encoding for setup tokens, so implementing that token representation depends on BIP39’s word-list format.",
-              "confidence": "medium"
+              "type": "references",
+              "evidence": "A mnemonic phrase using BIP-0039 word list.",
+              "reason": "BIP 39 is cited for an optional human-readable TOKEN representation; the protocol also permits decimal, QR, and other formats, so it is not functionally required.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:44",
+              "type": "references",
+              "evidence": "Also refer to UR Type Definition for BIP44 Accounts",
+              "reason": "The proposal points readers to related QR/UR account-format material associated with BIP 44 but does not require BIP 44 derivation semantics for BSMS.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:174",
+              "type": "references",
+              "evidence": "The Bitcoin multisig experience has been greatly streamlined under BIP-0174\n(Partially Signed Bitcoin Transaction).",
+              "reason": "The proposal cites PSBT as background on improvements to multisig workflows but does not use its transaction format in the wallet-setup protocol.",
+              "confidence": "low"
             },
             {
               "target": "bips:322",
-              "evidence": "The signature should follow [https://github.com/bitcoin/bips/blob/master/bip-0322.mediawiki BIP-0322]",
-              "reason": "The proposal requires key records to be signed and specifies BIP322 as the signature format.",
-              "confidence": "high"
+              "type": "depends_on",
+              "evidence": "The signature should follow BIP-0322, legacy format accepted.",
+              "reason": "The required key-record signature is explicitly specified using the signing and verification format defined by BIP 322.",
+              "confidence": "low"
             },
             {
               "target": "bips:380",
-              "evidence": "assumes the parties in the multisig support [https://github.com/bitcoin/bips/blob/master/bip-0380.mediawiki BIP-0380 Output Script Descriptors]",
-              "reason": "The proposal uses output script descriptors as the core multisig configuration format and requires signers to parse, verify, display, and persist descriptor records.",
+              "type": "depends_on",
+              "evidence": "This proposal assumes the parties in the multisig support BIP-0380 Output Script Descriptors",
+              "reason": "Descriptor records and descriptor-formatted key-origin information are core protocol data, so the setup mechanism requires the descriptor language defined by BIP 380.",
               "confidence": "low"
             },
             {
               "target": "bips:381",
-              "evidence": "[https://github.com/bitcoin/bips/blob/master/bip-0380.mediawiki BIP-0380 Output Script Descriptors] ([https://github.com/bitcoin/bips/blob/master/bip-0381.mediawiki BIP-0381]",
-              "reason": "The proposal explicitly includes BIP381 in its descriptor prerequisites and uses descriptor records that may include forms such as sh(...), whose descriptor semantics are defined by BIP381.",
-              "confidence": "high"
+              "type": "depends_on",
+              "evidence": "This proposal assumes the parties in the multisig support BIP-0032, BIP-0322, BIP-0380 Output Script Descriptors (BIP-0381,BIP-0382,BIP-0383)",
+              "reason": "The prerequisites explicitly require participating implementations to support this output-descriptor extension as part of the descriptor functionality assumed by the protocol.",
+              "confidence": "low"
             },
             {
               "target": "bips:382",
-              "evidence": "[https://github.com/bitcoin/bips/blob/master/bip-0381.mediawiki BIP-0381],[https://github.com/bitcoin/bips/blob/master/bip-0382.mediawiki BIP-0382]",
-              "reason": "The proposal explicitly includes BIP382 in its descriptor prerequisites and uses SegWit descriptor forms such as wsh(...), whose semantics are defined by BIP382.",
-              "confidence": "high"
+              "type": "depends_on",
+              "evidence": "This proposal assumes the parties in the multisig support BIP-0032, BIP-0322, BIP-0380 Output Script Descriptors (BIP-0381,BIP-0382,BIP-0383)",
+              "reason": "The prerequisites explicitly require participating implementations to support this output-descriptor extension as part of the descriptor functionality assumed by the protocol.",
+              "confidence": "low"
             },
             {
               "target": "bips:383",
-              "evidence": "[https://github.com/bitcoin/bips/blob/master/bip-0382.mediawiki BIP-0382],[https://github.com/bitcoin/bips/blob/master/bip-0383.mediawiki BIP-0383]",
-              "reason": "The proposal explicitly includes BIP383 in its descriptor prerequisites and uses multisig descriptor expressions such as multi(...) and sortedmulti(...), which BIP383 defines.",
-              "confidence": "high"
+              "type": "depends_on",
+              "evidence": "This proposal assumes the parties in the multisig support BIP-0032, BIP-0322, BIP-0380 Output Script Descriptors (BIP-0381,BIP-0382,BIP-0383)",
+              "reason": "The protocol's multisig descriptors use expressions such as multi and sortedmulti defined by BIP 383, and the prerequisites explicitly require its support.",
+              "confidence": "low"
             }
           ]
         }

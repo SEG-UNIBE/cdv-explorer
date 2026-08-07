@@ -681,41 +681,37 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:39:59Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T07:57:59Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
+            {
+              "target": "bips:11",
+              "type": "references",
+              "evidence": "M-of-N Multisignature Transactions (BIP 11)",
+              "reason": "BIP 11 appears as a visible See Also citation for the related multisignature transaction standard, without stated functional reliance on it.",
+              "confidence": "high"
+            },
             {
               "target": "bips:12",
-              "evidence": "This BIP replaces BIP 12",
-              "reason": "The proposal is explicitly defined as a replacement for BIP 12, materially depending on understanding and superseding that earlier OP_EVAL-based pay-to-script-hash design.",
+              "type": "supersedes",
+              "evidence": "This BIP replaces BIP 12 and BIP 16",
+              "reason": "The proposal explicitly states that it replaces BIP 12.",
               "confidence": "high"
             },
             {
               "target": "bips:13",
-              "evidence": "The Motivation for this BIP (and BIP 13, the pay-to-script-hash address type)",
-              "reason": "The proposal is designed together with the pay-to-script-hash address type from BIP 13; adopting this proposal's new standard transaction type meaningfully relies on the corresponding address format for sending funds to it.",
-              "confidence": "medium"
+              "type": "references",
+              "evidence": "BIP 13, the pay-to-script-hash address type",
+              "reason": "The proposal discusses BIP 13 as the complementary address format motivated by pay-to-script-hash, but its opcode and transaction mechanism do not require that address format.",
+              "confidence": "high"
             },
             {
               "target": "bips:16",
+              "type": "supersedes",
               "evidence": "This BIP replaces BIP 12 and BIP 16",
-              "reason": "The proposal is explicitly defined as a replacement for BIP 16, directly building in the same pay-to-script-hash design space and superseding its mechanism.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:53:41Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:12",
-              "evidence": "existing OP_EVAL (BIP 12) transactions in the block chain can still be redeemed",
-              "reason": "The proposal's opcode assignment is explicitly chosen for backward compatibility with transactions using BIP 12's OP_EVAL mechanism.",
+              "reason": "The proposal explicitly states that it replaces BIP 16.",
               "confidence": "high"
             }
           ]

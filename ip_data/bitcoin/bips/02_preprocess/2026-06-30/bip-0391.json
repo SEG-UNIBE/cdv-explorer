@@ -579,77 +579,58 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:44:29Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:21:13Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
+              "type": "depends_on",
               "evidence": "The 78-byte serialized extended public key, as defined by BIP 32.",
-              "reason": "The key-map encoding uses BIP 32 serialized extended public keys and master key fingerprints, so the format materially depends on BIP 32's xpub serialization and fingerprint semantics.",
+              "reason": "The BOD extended-public-key field requires the serialized key format defined by BIP 32.",
               "confidence": "high"
             },
             {
               "target": "bips:174",
-              "evidence": "Based on key-value maps as defined by [[bip-0174.mediawiki|BIP 174]]",
-              "reason": "The proposal directly reuses BIP 174 key-value map structure and keypair definition as its container encoding, making BIP 174 foundational to the format.",
+              "type": "depends_on",
+              "evidence": "The definition for <tt><keypair></tt> follows [[bip-0174.mediawiki#specification|BIP 174]].",
+              "reason": "The BOD serialization directly adopts BIP 174's key-pair encoding, making those serialization rules necessary to implement the format.",
               "confidence": "high"
             },
             {
+              "target": "bips:379",
+              "type": "references",
+              "evidence": "Named references would allow Miniscript descriptors as-is in BOD_GLOBAL_OUTPUT_DESCRIPTOR.",
+              "reason": "The text discusses Miniscript descriptors only while explaining a rejected named-reference design. Miniscript is canonically specified by BIP 379, but its mechanism is not required by this proposal.",
+              "confidence": "medium"
+            },
+            {
               "target": "bips:380",
-              "evidence": "encoding an output descriptor as defined by [[bip-0380.mediawiki|BIP 380]]",
-              "reason": "The proposal's core payload is a BIP 380 output descriptor, and the specification requires the descriptor value to be in BIP 380 format, so implementing or using this format materially depends on BIP 380's descriptor syntax and semantics.",
+              "type": "depends_on",
+              "evidence": "encoding an output descriptor as defined by [[bip-0380.mediawiki|BIP 380]] and its extensions",
+              "reason": "The proposed container encodes descriptors whose language and format are defined by BIP 380, so its core payload depends on that proposal.",
               "confidence": "high"
             },
             {
               "target": "bips:388",
-              "evidence": "This specification builds upon the draft BIP 388 by specifying a serialization format for compact descriptors.",
-              "reason": "The proposal explicitly builds on BIP 388 and reuses its indexed key references, indicating direct technical dependence on that descriptor scheme.",
+              "type": "depends_on",
+              "evidence": "It also uses the indexed key references from that BIP",
+              "reason": "The proposal's descriptor encoding directly reuses BIP 388's indexed-key-reference concept as a required part of representing keys.",
               "confidence": "high"
             },
             {
               "target": "bips:389",
+              "type": "depends_on",
               "evidence": "Key references may be followed by derivation paths as specified in [[bip-0389.mediawiki#specification|BIP 389]].",
-              "reason": "The proposal permits and relies on BIP 389's derivation-path suffix syntax for key references inside descriptors, so support for that part of the format depends on BIP 389.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:15:20Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:32",
-              "evidence": "The 78-byte serialized extended public key, as defined by BIP 32.",
-              "reason": "The proposal defines a key type whose key data and related metadata use BIP 32 extended public key serialization, fingerprints, depth, and derivation path conventions.",
+              "reason": "Support for derivation paths after key references relies on the syntax and rules specified by BIP 389.",
               "confidence": "high"
             },
             {
-              "target": "bips:174",
-              "evidence": "Based on key-value maps as defined by [[bip-0174.mediawiki|BIP 174]]",
-              "reason": "The proposal reuses BIP 174's key-value map and keypair serialization structure as the basis for its binary container format.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:380",
-              "evidence": "encoding an output\ndescriptor as defined by [[bip-0380.mediawiki|BIP 380]]",
-              "reason": "The proposal's container encodes descriptors in the output descriptor format defined by BIP 380, so implementing or validating the container depends on BIP 380 descriptor syntax and semantics.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:388",
-              "evidence": "builds upon the draft BIP 388 by specifying\na serialization format for compact descriptors. It also uses the indexed key\nreferences from that BIP",
-              "reason": "The proposal explicitly builds on BIP 388 and reuses its indexed key reference mechanism for descriptor key expressions.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:389",
-              "evidence": "derivation paths as specified in [[bip-0389.mediawiki#specification|BIP 389]]",
-              "reason": "The proposal permits derivation paths following key references according to BIP 389's specified syntax, making that rule part of valid BOD descriptors.",
+              "target": "bips:393",
+              "type": "references",
+              "evidence": "Withdrawn after BIP393 proposed an alternative method of handling wallet metadata.",
+              "reason": "BIP 393 is identified as an alternative that prompted withdrawal, but the text does not state that it formally supersedes or replaces this proposal.",
               "confidence": "high"
             }
           ]

@@ -654,65 +654,37 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:42:00Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:05:34Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:9",
-              "evidence": "deployed by \"versionbits\" BIP9",
-              "reason": "The proposal explicitly specifies BIP9 as its deployment mechanism, so adopting and activating this proposal materially relies on BIP9's versionbits activation rules.",
+              "type": "depends_on",
+              "evidence": "This BIP is to be deployed by \"versionbits\" BIP9 using bit 0.",
+              "reason": "The proposal's activation explicitly uses the versionbits deployment mechanism defined by BIP 9.",
               "confidence": "high"
             },
             {
               "target": "bips:65",
-              "evidence": "as required by BIP65 (CHECKLOCKTIMEVERIFY)",
-              "reason": "The proposal changes locktime semantics specifically to provide the reliable behavior required for CHECKLOCKTIMEVERIFY, so understanding its purpose and effects materially depends on BIP65's locktime-enforcement semantics.",
+              "type": "references",
+              "evidence": "This proposal seeks to ensure reliable behaviour in locktime calculations as required by BIP65 (CHECKLOCKTIMEVERIFY)",
+              "reason": "BIP 65 motivates the need for reliable locktime calculations, but the proposed median-time rule can be implemented independently of CHECKLOCKTIMEVERIFY.",
               "confidence": "high"
             },
             {
               "target": "bips:68",
-              "evidence": "matching the behavior of BIP68 (sequence numbers)",
-              "reason": "The proposal is designed to align its time semantics with BIP68, and it further states it must be deployed simultaneously with BIP68, showing substantive coordination and compatibility dependence.",
+              "type": "depends_on",
+              "evidence": "This BIP must be deployed simultaneously with BIP68 and BIP112 using the same deployment mechanism.",
+              "reason": "The specified deployment requires coordinated activation with BIP 68, making it necessary to the proposal's intended deployment.",
               "confidence": "high"
             },
             {
               "target": "bips:112",
-              "evidence": "matching the behavior of BIP112 (CHECKSEQUENCEVERIFY)",
-              "reason": "The proposal is designed to align its time semantics with BIP112, and it further states it must be deployed simultaneously with BIP112, showing substantive coordination and compatibility dependence.",
-              "confidence": "low"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:00:26Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:9",
-              "evidence": "deployed by \"versionbits\" BIP9 using bit 0",
-              "reason": "The proposal specifies use of BIP9 versionbits as its deployment and activation mechanism.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:65",
-              "evidence": "as required by BIP65 (CHECKLOCKTIMEVERIFY)",
-              "reason": "The proposal is designed to provide reliable locktime semantics for the CHECKLOCKTIMEVERIFY behavior defined by BIP65.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:68",
-              "evidence": "matching the behavior of BIP68 (sequence numbers)",
-              "reason": "The proposal aligns its median-time-past locktime semantics with the sequence-number relative locktime behavior defined by BIP68, and also requires simultaneous deployment with it.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:112",
-              "evidence": "matching the behavior of BIP68 (sequence numbers) and BIP112 (CHECKSEQUENCEVERIFY)",
-              "reason": "The proposal aligns its locktime semantics with CHECKSEQUENCEVERIFY behavior and requires simultaneous deployment with BIP112.",
+              "type": "depends_on",
+              "evidence": "This BIP must be deployed simultaneously with BIP68 and BIP112 using the same deployment mechanism.",
+              "reason": "The specified deployment requires coordinated activation with BIP 112, making it necessary to the proposal's intended deployment.",
               "confidence": "high"
             }
           ]

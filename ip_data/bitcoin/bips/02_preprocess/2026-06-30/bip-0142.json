@@ -672,41 +672,51 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:42:39Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:09:19Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:13",
-              "evidence": "Considering the BIP13 P2SH address has been defined in 2012",
-              "reason": "The proposal is designed in relation to the existing base58 address scheme for P2SH introduced by BIP13, explicitly comparing native witness addresses to BIP13 P2SH addresses and reusing the same address-encoding style as the incumbent address workflow it aims to replace for segwit payments.",
-              "confidence": "medium"
+              "type": "references",
+              "evidence": "Considering the BIP13 P2SH address has been defined in 2012, using segwit-in-P2SH allows most existing wallets to pay a segwit-compatible wallet without any upgrade.",
+              "reason": "The proposal discusses BIP 13's P2SH address as background and as a comparison with native witness addresses, without requiring that address scheme.",
+              "confidence": "high"
             },
             {
               "target": "bips:16",
-              "evidence": "Segwit-in-P2SH is a BIP16 P2SH redeemScript",
-              "reason": "The rationale materially relies on the BIP16 P2SH embedding mechanism as one of the two BIP141 witness-program encodings and contrasts the new native format against that compatibility path.",
-              "confidence": "medium"
+              "type": "references",
+              "evidence": "Segwit-in-P2SH is a BIP16 P2SH redeemScript with a push of version byte followed by a push of witness program",
+              "reason": "BIP 16 is discussed as part of the alternative segwit-in-P2SH transition method, not as a requirement for the proposal's native witness address format.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:47",
+              "type": "references",
+              "evidence": "BIP47 Reusable Payment Codes for Hierarchical Deterministic Wallets",
+              "reason": "BIP 47 is listed as an example of a previously proposed better payment method, not as part of the specified address mechanism.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:63",
+              "type": "references",
+              "evidence": "BIP63 Stealth Addresses",
+              "reason": "BIP 63 is listed as related prior work on payment methods and is not functionally required by the proposal.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:70",
+              "type": "references",
+              "evidence": "BIP70 Payment protocol",
+              "reason": "BIP 70 is cited as an example of another payment method, without its protocol being reused by the proposed address format.",
+              "confidence": "high"
             },
             {
               "target": "bips:141",
+              "type": "depends_on",
               "evidence": "The new Bitcoin address format defined is for the Pay-to-Witness-Public-Key-Hash (P2WPKH) and Pay-to-Witness-Script-Hash (P2WSH) transaction described in segregated witness soft fork (BIP141).",
-              "reason": "The proposal defines address encodings specifically for the witness-program transaction types introduced by BIP141, and repeatedly relies on BIP141's witness program versions, scriptPubKey structure, and native witness semantics.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:03:06Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:141",
-              "evidence": "Pay-to-Witness-Public-Key-Hash (P2WPKH) and Pay-to-Witness-Script-Hash (P2WSH) transaction described in segregated witness soft fork (BIP141)",
-              "reason": "The proposal defines an address format specifically for P2WPKH/P2WSH native witness transactions and relies on BIP141's witness program semantics and versioning.",
+              "reason": "The proposed addresses encode the P2WPKH and P2WSH witness transaction types defined by BIP 141, so their intended operation requires BIP 141's witness-program rules.",
               "confidence": "high"
             }
           ]

@@ -658,65 +658,79 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:44:43Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:22:59Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:119",
-              "evidence": "OP_CHECKTEMPLATEVERIFY",
-              "reason": "The proposal's Lightning Symmetry constructions materially rely on OP_CHECKTEMPLATEVERIFY-based transaction commitments; BIP 119 is the proposal identified in the text for that opcode, and understanding the showcased mechanism depends on its semantics.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:327",
-              "evidence": "internal-key:                        BIP-327 aggregate key of channel participants",
-              "reason": "The example construction explicitly uses a BIP-327 aggregate key as the internal key, so the described script design relies on MuSig2 aggregate-key semantics introduced by BIP 327.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:340",
-              "evidence": "Notation follows [BIP-340], including the tagged hash notation",
-              "reason": "The opcode's core commitment function is specified using the tagged-hash construction and notation from BIP 340, which the proposal explicitly adopts for its hash semantics.",
+              "type": "references",
+              "evidence": "OP_CHECKTEMPLATEVERIFY: [BIP-119]",
+              "reason": "The target is cited for OP_CHECKTEMPLATEVERIFY, which appears in illustrative Lightning constructions and alternatives rather than being required by the proposed opcode.",
               "confidence": "high"
             },
             {
+              "target": "bips:327",
+              "type": "references",
+              "evidence": "internal-key:                        BIP-327 aggregate key of channel participants",
+              "reason": "BIP 327's MuSig2 aggregate key is used in an illustrative Lightning Symmetry construction, not required by OP_PAIRCOMMIT itself.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:340",
+              "type": "references",
+              "evidence": "Notation follows [BIP-340], including the tagged hash notation",
+              "reason": "The proposal cites BIP 340 as the source of its tagged-hash notation, but reproduces the complete hash construction locally, so implementation does not require rules left solely to that proposal.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:341",
+              "type": "references",
+              "evidence": "Taproot trees can be 128 levels deep",
+              "reason": "The proposal discusses a property of Taproot trees as context for possible computations. Taproot is resolved to BIP 341, but this passage does not establish reliance on its rules for the OP_PAIRCOMMIT mechanism itself.",
+              "confidence": "medium"
+            },
+            {
               "target": "bips:342",
+              "type": "depends_on",
               "evidence": "For taproot script spends with leaf version *0xc0* (see [BIP-342]), `OP_PAIRCOMMIT` replaces `OP_SUCCESS205` (*0xcd*)",
-              "reason": "The proposal is defined specifically as a tapscript opcode in taproot script spends with leaf version 0xc0, and it reuses the OP_SUCCESS soft-forking context and tapscript execution environment introduced by BIP 342.",
+              "reason": "The opcode is defined specifically as a replacement for an OP_SUCCESS opcode under the tapscript leaf-version and execution rules specified by BIP 342, so its deployment and operation require that framework.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:347",
+              "type": "references",
+              "evidence": "OP_CAT: [BIP-347]",
+              "reason": "BIP 347 is cited as the proposal for OP_CAT, an alternative and comparison point that OP_PAIRCOMMIT does not require.",
               "confidence": "high"
             },
             {
               "target": "bips:348",
-              "evidence": "Combined with `OP_CHECKSIGFROMSTACK`, signing commitments to multiple items enables complex delegation",
-              "reason": "A central described use of OP_PAIRCOMMIT is in combination with OP_CHECKSIGFROMSTACK to sign pair commitments for delegation and channel-update constructions; the text identifies that opcode with BIP 348, making the dependency substantive for those scripts.",
+              "type": "references",
+              "evidence": "OP_CHECKSIGFROMSTACK: [BIP-348]",
+              "reason": "The target's opcode is cited and used in optional example constructions, while OP_PAIRCOMMIT's specified operation remains independent of it.",
               "confidence": "high"
             },
             {
               "target": "bips:349",
-              "evidence": "OP_INTERNALKEY",
-              "reason": "The Lightning Symmetry example scripts use OP_INTERNALKEY as part of the spending construction, and the references identify that opcode with BIP 349; implementing or evaluating those constructions depends on its semantics.",
-              "confidence": "medium"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:16:51Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:340",
-              "evidence": "Notation follows [BIP-340], including the tagged hash notation",
-              "reason": "The proposal reuses BIP340's tagged-hash construction as the hashing mechanism for PairCommit.",
+              "type": "references",
+              "evidence": "OP_INTERNALKEY: [BIP-349]",
+              "reason": "BIP 349 is cited for an opcode used in the illustrative Lightning scripts, not as a prerequisite for OP_PAIRCOMMIT.",
               "confidence": "high"
             },
             {
-              "target": "bips:342",
-              "evidence": "For taproot script spends with leaf version *0xc0* (see [BIP-342]), `OP_PAIRCOMMIT` replaces `OP_SUCCESS205` (*0xcd*).",
-              "reason": "The proposal defines its opcode as a replacement for a Tapscript OP_SUCCESS opcode and limits it to the BIP342 Tapscript leaf-version context, so implementation and activation depend on BIP342's Tapscript and OP_SUCCESS rules.",
+              "target": "bips:443",
+              "type": "references",
+              "evidence": "OP_CHECKCONTRACTVERIFY: [BIP-443]",
+              "reason": "The target appears as an identifiable related-opcode citation in the visible references list without any stated functional reliance.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:446",
+              "type": "references",
+              "evidence": "OP_TEMPLATEHASH: [BIP-446]",
+              "reason": "The target is cited as the proposal for OP_TEMPLATEHASH, which is mentioned in comparative cost analysis rather than required by OP_PAIRCOMMIT.",
               "confidence": "high"
             }
           ]

@@ -820,41 +820,30 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:43:37Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:13:48Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:133",
-              "evidence": "If the peers are using BIP133 fee filters",
-              "reason": "The proposal's fee-bumped-transaction behavior is explicitly described in terms of compatibility with BIP133 fee filters; evaluating relay behavior for this use case depends on the target's fee-filter announcement rules.",
-              "confidence": "medium"
+              "type": "references",
+              "evidence": "This does not mean BIP133 is required for package relay to work",
+              "reason": "BIP133 fee filters are discussed as an optional interaction, and the text explicitly disclaims any functional dependency.",
+              "confidence": "high"
             },
             {
               "target": "bips:330",
+              "type": "references",
               "evidence": "A client using BIP330 reconciliation-based transaction relay (Erlay) is able to use package relay without interference.",
-              "reason": "The proposal specifies interoperability with BIP330 transaction reconciliation, including when ancestor resolution occurs after reconciliation, so adopting it in that relay mode depends on BIP330's workflow semantics.",
-              "confidence": "medium"
+              "reason": "BIP330 is mentioned to describe compatibility with Erlay, not as a requirement for package relay.",
+              "confidence": "high"
             },
             {
               "target": "bips:339",
+              "type": "depends_on",
               "evidence": "Package relay requires both peers to support wtxid-based relay because package transactions are referenced by their wtxids.",
-              "reason": "The proposal normatively requires wtxid-based relay, and the text explicitly names BIP339 as the mechanism for wtxid-based transaction relay that this protocol is designed around.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:07:37Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:339",
-              "evidence": "Package relay requires both peers to support wtxid-based relay because package transactions are referenced by their wtxids.",
-              "reason": "The proposal normatively requires wtxid-based relay for package relay operation. The named wtxid-based transaction relay mechanism and wtxidrelay negotiation message are defined by BIP339.",
+              "reason": "The protocol cannot operate as specified without wtxid-based transaction relay, which the proposal explicitly identifies elsewhere as BIP339.",
               "confidence": "high"
             }
           ]

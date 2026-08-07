@@ -857,35 +857,23 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:44:08Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:17:41Z",
           "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:174",
-              "evidence": "PSBT Version 2 (PSBTv2) only specifies new fields and field inclusion/exclusion requirements.",
-              "reason": "The proposal is a direct revision and extension of the PSBT format defined in BIP 174, reusing its generic format and altering its field set and roles.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:12:04Z",
-          "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:112",
-              "evidence": "the transaction version number must be set to at least 2. <ref>'''Why does the transaction version number need to be at least 2?''' The transaction version number is part of the validation rules for some features such as OP_CHECKSEQUENCEVERIFY",
-              "reason": "The proposal constrains the transaction version to preserve support for OP_CHECKSEQUENCEVERIFY-related validation behavior; OP_CHECKSEQUENCEVERIFY is the opcode introduced by BIP 112.",
-              "confidence": "medium"
+              "type": "references",
+              "evidence": "The transaction version number is part of the validation rules for some features such as OP_CHECKSEQUENCEVERIFY.",
+              "reason": "OP_CHECKSEQUENCEVERIFY is the opcode specified by BIP 112. It is cited only as an example motivating the transaction-version requirement, not as functionality required by PSBTv2 itself.",
+              "confidence": "high"
             },
             {
               "target": "bips:174",
-              "evidence": "PSBTv2 shares the same generic format as PSBTv0 as defined in BIP 174",
-              "reason": "The proposal defines a new PSBT version while reusing the generic PSBT format and compatibility framework defined by BIP 174.",
+              "type": "depends_on",
+              "evidence": "PSBTv2 shares the same generic format as PSBTv0 as defined in BIP 174.",
+              "reason": "BIP 370 defines only new fields and inclusion rules for a second PSBT version while retaining the generic PSBT format defined by BIP 174, making that base format necessary for implementation.",
               "confidence": "high"
             }
           ]

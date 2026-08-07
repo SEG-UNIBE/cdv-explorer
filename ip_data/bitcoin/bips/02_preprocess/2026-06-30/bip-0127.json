@@ -594,22 +594,16 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:42:19Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:07:39Z",
           "status": "success",
-          "dependencies": []
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:01:54Z",
-          "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:174",
-              "evidence": "The following field is added to the BIP 174 <tt>INPUT</tt> map:",
-              "reason": "The proposal defines a PSBT extension by adding a new input-map field, so implementing or evaluating it depends on the PSBT map format and semantics specified by BIP 174.",
+              "type": "depends_on",
+              "evidence": "The following field is added to the BIP 174 <tt>INPUT</tt> map",
+              "reason": "The proposal's PSBT extension directly adds a field to the input-map format defined by BIP 174, so that part of its specified mechanism requires BIP 174's PSBT structure.",
               "confidence": "high"
             }
           ]

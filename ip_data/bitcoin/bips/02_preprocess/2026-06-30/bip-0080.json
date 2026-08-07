@@ -571,53 +571,30 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:41:14Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:02:00Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
+              "type": "depends_on",
               "evidence": "based on an algorithm described in BIP-0032",
-              "reason": "The proposal defines its hierarchy and derivation path using the BIP32 deterministic-wallet derivation algorithm, including hardened and public derivation semantics.",
+              "reason": "The proposed wallet hierarchy uses BIP32 derivation paths, hardened derivation, and child indexes, so its mechanism requires the hierarchical deterministic wallet algorithm defined by BIP32.",
               "confidence": "high"
             },
             {
               "target": "bips:43",
-              "evidence": "purpose scheme described in BIP-0043",
-              "reason": "The proposal states that its hierarchy uses the BIP43 purpose scheme and further says it is a particular application of BIP43, so its purpose field semantics depend on that specification.",
+              "type": "depends_on",
+              "evidence": "This BIP is a particular application of BIP43",
+              "reason": "The proposal specializes BIP43's purpose-field scheme to identify its deterministic-wallet subtree, making that scheme necessary to the hierarchy.",
               "confidence": "high"
             },
             {
               "target": "bips:44",
-              "evidence": "This BIP is a particular application of BIP43 and is based on BIP44.",
-              "reason": "The proposal is explicitly based on BIP44 and reuses its coin_type registry, as shown by 'The list of registered coin type constants should be obtained from BIP44.'",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:57:28Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:32",
-              "evidence": "based on an algorithm described in BIP-0032",
-              "reason": "The proposal defines its wallet hierarchy using BIP32 deterministic derivation, including hardened and public child derivation semantics.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:43",
-              "evidence": "purpose scheme described in BIP-0043",
-              "reason": "The proposal relies on BIP43's purpose-field convention to define the first hardened path level for this hierarchy.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:44",
-              "evidence": "is based on BIP44",
-              "reason": "The proposal builds on BIP44's multi-coin hierarchy conventions, including using BIP44-registered coin type constants.",
+              "type": "depends_on",
+              "evidence": "The list of registered coin type constants should be obtained from BIP44.",
+              "reason": "The hierarchy's coin_type level requires the registered coin-type constants supplied by BIP44.",
               "confidence": "high"
             }
           ]

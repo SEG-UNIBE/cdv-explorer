@@ -848,47 +848,37 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:42:04Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:05:37Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:9",
+              "type": "depends_on",
               "evidence": "will be deployed by version-bits [[bip-0009.mediawiki|BIP9]]",
-              "reason": "The proposal specifies deployment using the activation mechanism defined by BIP9, so adopting it depends on that version-bits workflow.",
+              "reason": "The proposal specifies BIP9's version-bits mechanism as the means by which this soft fork will be deployed.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:16",
+              "type": "references",
+              "evidence": "The [[bip-0016.mediawiki|BIP16]] (Pay-to-script-hash, \"P2SH\") fixes the first 3 problems",
+              "reason": "BIP16 is discussed as historical background and contrasted with the proposal's privacy and script-size improvements; its P2SH mechanism is not required by this proposal.",
               "confidence": "high"
             },
             {
               "target": "bips:112",
+              "type": "references",
               "evidence": "The following is the \"Escrow with Timeout\" example in [[bip-0112.mediawiki|BIP112]]",
-              "reason": "Although most mentions of BIP112 are illustrative, the text also states that in the related MAST-based examples 'CHECKLOCKTIMEVERIFY and CHECKSEQUENCEVERIFY will pop the top stack item' in a separate placeholder proposal, so BIP112 itself is only used as source examples and not as a relied-on mechanism here.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:141",
-              "evidence": "This BIP depends on [[bip-0141.mediawiki|BIP141]]",
-              "reason": "The proposal defines its new witness program by reusing BIP141's witness-program framework and semantics, including versioned witness programs, witness serialization, and P2WSH-like script execution rules.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:00:22Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:9",
-              "evidence": "will be deployed by version-bits [[bip-0009.mediawiki|BIP9]]",
-              "reason": "The proposal relies on BIP9's version-bits deployment/activation mechanism for rollout.",
+              "reason": "BIP112 is cited as the source of an example transformed into MAST branches, not as a necessary part of the proposed MAST mechanism.",
               "confidence": "high"
             },
             {
               "target": "bips:141",
+              "type": "depends_on",
               "evidence": "This BIP depends on [[bip-0141.mediawiki|BIP141]]",
-              "reason": "The proposal explicitly depends on BIP141 and defines a new witness program type using BIP141 witness-program version semantics and validation behavior.",
+              "reason": "The text explicitly declares the dependency, and the proposal defines its MAST mechanism as a new witness-program type under BIP141's witness rules.",
               "confidence": "high"
             }
           ]

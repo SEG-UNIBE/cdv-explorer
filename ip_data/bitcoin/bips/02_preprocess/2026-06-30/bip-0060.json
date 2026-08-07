@@ -598,28 +598,23 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:40:32Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:00:20Z",
           "status": "success",
-          "dependencies": []
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:56:14Z",
-          "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:14",
-              "evidence": "user_agent || var_str || [[bip-0014.mediawiki|User Agent]]",
-              "reason": "The version-message payload specified by this proposal reuses the user-agent field format defined by BIP 14.",
-              "confidence": "medium"
+              "type": "references",
+              "evidence": "[[bip-0014.mediawiki|User Agent]] (0x00 if string is 0 bytes long)",
+              "reason": "BIP 14 is cited to identify the existing User Agent field, but the proposal's relay-field correction does not functionally depend on BIP 14.",
+              "confidence": "high"
             },
             {
               "target": "bips:37",
-              "evidence": "[[BIP 0037]] introduced a new flag to version messages",
-              "reason": "The proposal is designed around the relay-transactions flag introduced by BIP 37 and changes how that flag is included in version messages.",
+              "type": "depends_on",
+              "evidence": "Whether the remote peer should announce relayed transactions or not, see [[bip-0037.mediawiki|BIP 0037]], since version >= 70001",
+              "reason": "The proposal makes the relay flag a fixed version-message field while relying on BIP 37 for that field's transaction-relay semantics.",
               "confidence": "high"
             }
           ]

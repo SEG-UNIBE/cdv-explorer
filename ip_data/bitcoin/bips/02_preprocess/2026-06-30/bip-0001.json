@@ -928,25 +928,33 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:39:46Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T07:56:35Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:2",
+              "type": "superseded_by",
               "evidence": "Superseded by BIP2",
-              "reason": "The changelog explicitly states that this proposal was superseded by BIP 2, meaning BIP 2 replaces and obsoletes this document under the workflow this proposal defines.",
+              "reason": "The changelog explicitly states that BIP 2 supersedes and closes the current proposal.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:7",
+              "type": "depends_on",
+              "evidence": "code style (examples should match BIP 8 & 7)",
+              "reason": "The editor workflow relies on BIP 7 as a normative source for the code style that proposal examples should follow.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:8",
+              "type": "depends_on",
+              "evidence": "code style (examples should match BIP 8 & 7)",
+              "reason": "The editor workflow relies on BIP 8 as a normative source for the code style that proposal examples should follow.",
               "confidence": "high"
             }
           ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:52:33Z",
-          "status": "success",
-          "dependencies": []
         }
       ]
     }

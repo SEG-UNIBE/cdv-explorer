@@ -788,29 +788,23 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:40:51Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:01:21Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:30",
-              "evidence": "this is enforced for coinbase transactions by BIP30",
-              "reason": "The proposal's claim that previous transaction hashes are effectively unique for input sorting relies on the duplicate-transaction prohibition introduced by BIP30, specifically for coinbase transactions.",
-              "confidence": "medium"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:56:48Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:30",
+              "type": "references",
               "evidence": "each transaction hash has an extremely high probability of being unique in the blockchain — this is enforced for coinbase transactions by BIP30",
-              "reason": "The proposal justifies sorting inputs by previous transaction hash and output index using the transaction-hash uniqueness assumption, and explicitly points to BIP30 as the rule enforcing that uniqueness for coinbase transactions.",
+              "reason": "The proposal cites BIP 30 as enforcing coinbase transaction-hash uniqueness, but its sorting algorithm does not require BIP 30's rules to perform the specified comparisons.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:32",
+              "type": "references",
+              "evidence": "if an attacker can patch a victim’s HD wallet client to order inputs and outputs based on the bits of a master private key",
+              "reason": "The HD-wallet and master-private-key terminology identifies the hierarchical deterministic wallet scheme canonically defined by BIP 32. It appears only in an illustrative privacy attack and is not required by the sorting mechanism.",
               "confidence": "medium"
             }
           ]

@@ -1375,41 +1375,72 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:39:50Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T07:56:38Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
-              "target": "bips:2",
-              "evidence": "This BIP replaces BIP\u00102 as the guideline for the BIP\u000fprocess.",
-              "reason": "The proposal is explicitly a replacement and revision of the BIP process defined by BIP 2, materially amending its workflow, statuses, headers, and licensing rules.",
-              "confidence": "low"
+              "target": "bips:1",
+              "type": "references",
+              "evidence": "BIP 1: BIP Purpose and Guidelines",
+              "reason": "The proposal identifies BIP 1 as related work and later discusses its prior header guidance, without relying on it for the new process.",
+              "confidence": "high"
             },
             {
-              "target": "bips:123",
-              "evidence": "The Layer \u0014 The layer of Bitcoin the BIP applies to using the BIP classification defined in [BIP\u000123]",
-              "reason": "BIP 3's Layer header semantics are defined by the BIP classification from BIP 123, and it further states that Specification BIPs use the Layer header rules specified there. Implementing or applying BIP 3's Layer field meaningfully depends on BIP 123.",
-              "confidence": "low"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:52:36Z",
-          "status": "success",
-          "dependencies": [
-            {
               "target": "bips:2",
-              "evidence": "replaces [BIP 2]",
-              "reason": "The proposal supersedes the prior BIP process and defines migration/changes from it, so understanding and adopting this process materially depends on the prior process it replaces.",
+              "type": "supersedes",
+              "evidence": "It replaces [BIP 2](bip-0002.mediawiki) with a streamlined process",
+              "reason": "The text explicitly states that BIP 3 replaces BIP 2.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:50",
+              "type": "references",
+              "evidence": "incident reports (e.g.,\n[BIP 50](bip-0050.mediawiki))",
+              "reason": "BIP 50 is cited only as an example of an incident-report BIP.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:98",
+              "type": "references",
+              "evidence": "A few BIP2-era BIPs (98, 116, 117, 330, 340) have a no longer used \"License-Code\" header",
+              "reason": "BIP 98 is named as an example of an older proposal using the discontinued License-Code header; BIP 3 does not depend on it.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:116",
+              "type": "references",
+              "evidence": "A few BIP2-era BIPs (98, 116, 117, 330, 340) have a no longer used \"License-Code\" header",
+              "reason": "BIP 116 is named as an example of an older proposal using the discontinued License-Code header; BIP 3 does not depend on it.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:117",
+              "type": "references",
+              "evidence": "A few BIP2-era BIPs (98, 116, 117, 330, 340) have a no longer used \"License-Code\" header",
+              "reason": "BIP 117 is named as an example of an older proposal using the discontinued License-Code header; BIP 3 does not depend on it.",
               "confidence": "high"
             },
             {
               "target": "bips:123",
-              "evidence": "Layer header rules specified in [BIP 123]",
-              "reason": "The proposal reuses BIP 123's Layer classification/rules to define the Layer header semantics for Specification BIPs.",
+              "type": "depends_on",
+              "evidence": "The layer of Bitcoin the BIP applies to using the BIP classification defined in [BIP 123](bip-0123.mediawiki)",
+              "reason": "BIP 3's Layer-header rules expressly use the classification defined by BIP 123, so that part of its specified format requires BIP 123's definitions.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:330",
+              "type": "references",
+              "evidence": "A few BIP2-era BIPs (98, 116, 117, 330, 340) have a no longer used \"License-Code\" header",
+              "reason": "BIP 330 is named as an example of an older proposal using the discontinued License-Code header; BIP 3 does not depend on it.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:340",
+              "type": "references",
+              "evidence": "A few BIP2-era BIPs (98, 116, 117, 330, 340) have a no longer used \"License-Code\" header",
+              "reason": "BIP 340 is named as an example of an older proposal using the discontinued License-Code header; BIP 3 does not depend on it.",
               "confidence": "high"
             }
           ]

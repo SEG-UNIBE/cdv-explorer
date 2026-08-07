@@ -551,40 +551,30 @@
       "body_extracted_regex": [],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:43:12Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:11:46Z",
           "status": "success",
-          "dependencies": []
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:06:08Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:13",
-              "evidence": "P2SH address",
-              "reason": "The proposal requires parties to construct and pay to a P2SH address; BIP13 defines the P2SH address format.",
-              "confidence": "high"
-            },
+          "findings": [
             {
               "target": "bips:16",
-              "evidence": "P2SH address for the HTLC",
-              "reason": "The HTLC is funded through a P2SH output/redeem-script mechanism; BIP16 defines Pay-to-Script-Hash validation semantics.",
+              "type": "depends_on",
+              "evidence": "Both parties can now construct the script and P2SH address for the HTLC.",
+              "reason": "The HTLC funding flow requires the pay-to-script-hash address and redemption mechanism defined by BIP 16; P2SH uniquely identifies that proposal.",
               "confidence": "high"
             },
             {
               "target": "bips:65",
-              "evidence": "OP_CHECKLOCKTIMEVERIFY",
-              "reason": "The proposal permits the timeout operation to be OP_CHECKLOCKTIMEVERIFY; BIP65 introduced that opcode and its lock-time semantics.",
+              "type": "depends_on",
+              "evidence": "[TIMEOUTOP] is either OP_CHECKSEQUENCEVERIFY or OP_CHECKLOCKTIMEVERIFY.",
+              "reason": "One specified form of the HTLC uses OP_CHECKLOCKTIMEVERIFY for its refund timeout, requiring the opcode and consensus semantics defined by BIP 65.",
               "confidence": "high"
             },
             {
               "target": "bips:112",
-              "evidence": "OP_CHECKSEQUENCEVERIFY",
-              "reason": "The proposal permits the timeout operation to be OP_CHECKSEQUENCEVERIFY; BIP112 introduced that opcode and its relative-timeout semantics.",
+              "type": "depends_on",
+              "evidence": "[TIMEOUTOP] is either OP_CHECKSEQUENCEVERIFY or OP_CHECKLOCKTIMEVERIFY.",
+              "reason": "One specified form of the HTLC uses OP_CHECKSEQUENCEVERIFY for its refund timeout, requiring the opcode and consensus semantics defined by BIP 112.",
               "confidence": "high"
             }
           ]

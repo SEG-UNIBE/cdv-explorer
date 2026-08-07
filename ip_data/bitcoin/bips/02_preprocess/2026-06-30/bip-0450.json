@@ -768,22 +768,23 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:44:47Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:23:11Z",
           "status": "success",
-          "dependencies": []
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:17:18Z",
-          "status": "success",
-          "dependencies": [
+          "findings": [
+            {
+              "target": "bips:32",
+              "type": "references",
+              "evidence": "the resulting seed --- and therefore all derived BIP-0032 keys and addresses --- is identical to what BIP-0039 would have produced for the same entropy.",
+              "reason": "BIP 32 is named only to describe the downstream equivalence of derived keys and addresses; Formosa's mnemonic encoding and seed derivation do not require BIP 32.",
+              "confidence": "high"
+            },
             {
               "target": "bips:39",
-              "evidence": "seed derivation re-encodes any Formosa mnemonic through the BIP-0039 English wordlist before applying PBKDF2",
-              "reason": "The proposal is an expansion of BIP-0039 and materially reuses its English wordlist and seed-derivation procedure to guarantee compatibility.",
+              "type": "depends_on",
+              "evidence": "A binary seed is then produced from the BIP-0039 mnemonic exactly as in BIP-0039: PBKDF2 with the BIP-0039 mnemonic (UTF-8 NFKD) as password and the string <code>\"mnemonic\"</code> + passphrase (UTF-8 NFKD) as salt, with 2048 iterations of HMAC-SHA512, producing a 512-bit key.",
+              "reason": "Formosa's seed derivation explicitly reuses BIP 39's mnemonic conversion, salt construction, PBKDF2 parameters, and output format, making BIP 39 functionally necessary to the specified mechanism.",
               "confidence": "high"
             }
           ]

@@ -595,47 +595,30 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:43:26Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:12:45Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:68",
+              "type": "depends_on",
               "evidence": "set the nSequence field in their taproot transactions as in BIP68",
-              "reason": "The proposal directly reuses BIP 68 relative-locktime semantics for nSequence, including the 65535 block-distance limit and version-2 requirement shown in the pseudocode, so its specified behavior materially depends on BIP 68 rules.",
+              "reason": "The proposal's relative-locktime behavior uses the nSequence semantics defined by BIP 68, making those rules necessary to implement the specified mechanism.",
               "confidence": "high"
             },
             {
-              "target": "bips:341",
-              "evidence": "uses BIP341 taproot",
-              "reason": "The proposal is explicitly defined for wallets creating transactions spending UTXOs protected by Taproot and is designed around Taproot spends for its privacy goal, so understanding and adopting it materially relies on the Taproot mechanism introduced by BIP 341.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:07:20Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:68",
-              "evidence": "set the nSequence field in their taproot transactions as in BIP68",
-              "reason": "The proposal reuses BIP68 nSequence relative-locktime semantics, including its version and encoding limits, to define the anti-fee-sniping behavior.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:125",
-              "evidence": "Initialize all nsequence to indicate the requested RBF state",
-              "reason": "The proposal's pseudocode preserves or signals the requested replace-by-fee state via nSequence values; nSequence-based opt-in RBF signaling is the mechanism specified by BIP125.",
+              "target": "bips:112",
+              "type": "references",
+              "evidence": "One possible way of solving the problem is to include a 1-block relative timelock `1 OP_CSV` to all spend paths",
+              "reason": "OP_CSV uniquely identifies OP_CHECKSEQUENCEVERIFY, which is defined by BIP 112. It is discussed as a possible transaction-pinning mitigation that the proposal's wallet transactions provide cover for, not as a required part of the proposed mechanism.",
               "confidence": "medium"
             },
             {
               "target": "bips:341",
-              "evidence": "spending UTXOs protected by BIP341 taproot",
-              "reason": "The proposal's wallet behavior is specifically defined for transactions spending taproot UTXOs and relies on the taproot output/spend model defined by BIP341.",
+              "type": "depends_on",
+              "evidence": "When wallets create transactions spending UTXOs protected by BIP341 taproot, they should set either an nLockTime value or nSequence values",
+              "reason": "The proposed wallet behavior specifically applies to UTXOs protected by the taproot rules defined in BIP 341, so its intended operation requires that target's output and spending mechanism.",
               "confidence": "high"
             }
           ]

@@ -635,23 +635,31 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:39:55Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T07:57:24Z",
           "status": "success",
-          "dependencies": []
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:53:40Z",
-          "status": "success",
-          "dependencies": [
+          "findings": [
+            {
+              "target": "bips:12",
+              "type": "references",
+              "evidence": "BIP 12: OP_EVAL, the original P2SH design",
+              "reason": "The proposal cites BIP 12 in its See Also section as the original P2SH design, without stating that the address format depends on it.",
+              "confidence": "high"
+            },
             {
               "target": "bips:16",
-              "evidence": "the encoded hash of a [https://en.bitcoin.it/wiki/Script script]",
-              "reason": "The proposal defines an address whose payload is a hash of the redeeming script, which is the address-level format for Pay to Script Hash. The proposal text separately identifies BIP 16 as “Pay to Script Hash (aka \"/P2SH/\")”, and implementing or adopting this address type depends on the P2SH script-hash spending semantics defined by BIP 16 rather than being a mere citation.",
-              "confidence": "medium"
+              "type": "references",
+              "evidence": "BIP 16: Pay to Script Hash (aka \"/P2SH/\")",
+              "reason": "The proposal identifies BIP 16 as a related Pay-to-Script-Hash proposal but does not state that its address encoding requires BIP 16's rules.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:17",
+              "type": "references",
+              "evidence": "BIP 17: OP_CHECKHASHVERIFY, another P2SH design",
+              "reason": "The proposal cites BIP 17 as another P2SH design without functionally relying on its mechanism.",
+              "confidence": "high"
             }
           ]
         }

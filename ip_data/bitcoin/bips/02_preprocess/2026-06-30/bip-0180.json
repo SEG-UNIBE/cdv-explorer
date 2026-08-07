@@ -626,29 +626,16 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:43:13Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:11:21Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:141",
-              "evidence": "The block weight defined by [[bip-0141.mediawiki|BIP 141]]",
-              "reason": "The proposal’s weight-exceeded fraud proof explicitly relies on the block weight definition introduced by BIP 141, including stripped-size versus full-size semantics and the witness commitment used to verify the full-size proof.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:05:01Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:141",
+              "type": "depends_on",
               "evidence": "The block weight defined by [[bip-0141.mediawiki|BIP 141]] is the size of the block stripped of its segwit signatures times 3, plus the full size of the block.",
-              "reason": "The proposal's weight fraud proof verifies overweight blocks by calculating lower-bound block weight from stripped and full block sizes, directly reusing BIP 141's block-weight definition and SegWit-related stripped/full-size semantics.",
+              "reason": "The fraud proof's weight calculation and limit comparison require the block-weight definition specified by BIP 141.",
               "confidence": "high"
             }
           ]

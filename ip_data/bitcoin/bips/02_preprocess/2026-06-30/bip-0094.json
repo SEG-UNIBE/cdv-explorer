@@ -652,29 +652,17 @@
       "body_extracted_regex": [],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:41:36Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:04:18Z",
           "status": "success",
-          "dependencies": []
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:00:15Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:54",
-              "evidence": "based on The Great Consensus Cleanup proposal",
-              "reason": "The Testnet 4 time-warp prevention rule explicitly derives from the named Great Consensus Cleanup proposal; that proposal is BIP54 and introduced the corresponding consensus-cleanup time-warp restriction.",
-              "confidence": "high"
-            },
+          "findings": [
             {
               "target": "bips:341",
+              "type": "depends_on",
               "evidence": "All consensus rules active on mainnet at the time of this proposal are enforced from block 1, the newest of these rules being the Taproot softfork.",
-              "reason": "The proposal requires Testnet 4 to enforce Taproot consensus rules from genesis; the named Taproot softfork resolves to BIP341, which defines Taproot's SegWit v1 spending rules.",
-              "confidence": "high"
+              "reason": "Testnet 4 is specified to enforce Taproot from its first block, so implementing its consensus rules requires the Taproot validation rules defined by BIP 341. The target is inferred from the explicitly named Taproot softfork.",
+              "confidence": "medium"
             }
           ]
         }

@@ -753,59 +753,23 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:44:46Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:22:24Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:342",
-              "evidence": "All opcodes not explicitly defined here are treated exactly as defined by BIP342.",
-              "reason": "The proposal defines a new tapscript leaf version by inheriting BIP342 semantics for every opcode and rule it does not override, and it also amends BIP342's success requirement for this leaf version.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:440",
-              "evidence": "relying on the Varops Budget in BIP440",
-              "reason": "The proposal explicitly depends on BIP440's varops budget mechanism as the safety model that permits restoring broader script capability, and it repeatedly reuses BIP440-defined cost annotations and operator cost definitions.",
-              "confidence": "low"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:17:01Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:65",
-              "evidence": "opcodes are redefined in 0xC2 Tapscript to read numbers from the\nstack as arbitrary-length little-endian values (instead of CScriptNum):\n\n# OP_CHECKLOCKTIMEVERIFY",
-              "reason": "The proposal amends the operand numeric handling for OP_CHECKLOCKTIMEVERIFY while otherwise relying on that opcode's locktime semantics; OP_CHECKLOCKTIMEVERIFY was introduced by BIP65.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:112",
-              "evidence": "opcodes are redefined in 0xC2 Tapscript to read numbers from the\nstack as arbitrary-length little-endian values (instead of CScriptNum):\n\n# OP_CHECKLOCKTIMEVERIFY\n# OP_CHECKSEQUENCEVERIFY",
-              "reason": "The proposal amends the operand numeric handling for OP_CHECKSEQUENCEVERIFY while otherwise relying on that opcode's sequence-lock semantics; OP_CHECKSEQUENCEVERIFY was introduced by BIP112.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:341",
-              "evidence": "introduces a new tapleaf version (0xc2)",
-              "reason": "The proposal is designed around Taproot tapleaf versioning; that taproot leaf/version mechanism is introduced by BIP341, so implementing or evaluating this new leaf version depends on BIP341's taproot structure.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:342",
-              "evidence": "All opcodes not explicitly defined here are treated exactly as defined\nby [[bip-0342.mediawiki|BIP342]]",
-              "reason": "The proposal defines a new tapscript leaf version by reusing BIP342 opcode semantics except where it explicitly changes them, and it also modifies a BIP342 validation success requirement.",
+              "type": "depends_on",
+              "evidence": "All opcodes not explicitly defined here are treated exactly as defined by [[bip-0342.mediawiki|BIP342]].",
+              "reason": "The new tapscript version inherits BIP342’s definitions for every opcode not redefined here, making those rules necessary for complete execution semantics.",
               "confidence": "high"
             },
             {
               "target": "bips:440",
-              "evidence": "relying on the Varops Budget in\n[[bip-0440.mediawiki|BIP440]]",
-              "reason": "The proposal uses BIP440's varops budget as the limiting mechanism that makes the restored script functionality safe and defines opcode costs in terms of BIP440's cost model.",
+              "type": "depends_on",
+              "evidence": "relying on the Varops Budget in [[bip-0440.mediawiki|BIP440]] to prevent the excessive computational time which caused CVE-2010-5137",
+              "reason": "The proposal relies on BIP440’s varops budget to bound the computational cost of its restored and extended script operations.",
               "confidence": "high"
             }
           ]

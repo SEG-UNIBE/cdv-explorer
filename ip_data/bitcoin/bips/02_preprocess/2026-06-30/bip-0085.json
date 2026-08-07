@@ -978,41 +978,30 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:41:23Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:02:24Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
+              "type": "depends_on",
               "evidence": "This specification relies on BIP32",
-              "reason": "The proposal is built around deriving entropy from a BIP32 master root key using hardened derivation paths, so understanding and implementing it materially depends on BIP32's root key and child-derivation semantics.",
+              "reason": "The proposal explicitly depends on BIP32 for its master root key, hardened child-key derivation, and extended private-key format.",
               "confidence": "high"
             },
             {
               "target": "bips:39",
+              "type": "depends_on",
               "evidence": "128 bits of entropy as input to BIP39 to derive 12 word mnemonic",
-              "reason": "The BIP39 application defined by this proposal explicitly reuses BIP39 mnemonic generation from derived entropy, including word-count and language-dependent output conventions.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:57:49Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:32",
-              "evidence": "This specification relies on BIP32",
-              "reason": "The proposal derives application entropy from a BIP32 master/root key using BIP32 hardened derivation paths and extended-key semantics.",
+              "reason": "The specified BIP39 application uses the target's entropy-to-mnemonic procedure to produce its mnemonic output, so that application cannot operate as intended without BIP39.",
               "confidence": "high"
             },
             {
-              "target": "bips:39",
-              "evidence": "128 bits of entropy as input to BIP39 to derive 12 word mnemonic",
-              "reason": "The proposal defines a BIP39 application mode that feeds derived entropy into BIP39 mnemonic generation and uses BIP39 word-length/language assumptions.",
+              "target": "bips:44",
+              "type": "references",
+              "evidence": "We can use a BIP44-like categorization to ensure uniform derivation according to the target application type.",
+              "reason": "The proposal compares its application categorization to BIP44, but does not require BIP44's specific derivation-path rules or formats.",
               "confidence": "high"
             }
           ]

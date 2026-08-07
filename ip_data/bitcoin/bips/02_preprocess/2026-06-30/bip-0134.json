@@ -711,29 +711,16 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:42:30Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:08:23Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:68",
+              "type": "references",
               "evidence": "This protocol upgrade cleans up past soft fork changes like BIP68 which reuse existing fields",
-              "reason": "The proposal explicitly incorporates and restructures the relative-locktime functionality introduced by BIP68, replacing its reuse of existing fields with dedicated tokens such as TxRelativeBlockLock and TxRelativeTimeLock.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:02:25Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:68",
-              "evidence": "cleans up past soft fork changes like BIP68 which reuse existing fields and do them in a better to maintain and easier to parse system",
-              "reason": "The proposal explicitly reworks BIP68-style relative lock-time functionality into the new transaction token format, so implementing or evaluating those v4 relative lock fields depends on the rules introduced by BIP68.",
+              "reason": "BIP 68 is cited as an example of an earlier soft-fork change whose field reuse motivates the cleaner transaction format; the text does not state that BIP 134 requires BIP 68 to operate.",
               "confidence": "high"
             }
           ]

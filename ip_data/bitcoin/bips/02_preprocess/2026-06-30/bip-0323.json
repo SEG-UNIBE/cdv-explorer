@@ -472,53 +472,30 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:43:22Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:12:16Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:8",
-              "evidence": "removed from BIP8 and BIP9 specifications",
-              "reason": "The proposal explicitly changes how the reserved nVersion bits interact with BIP 8 signaling rules, so implementing it requires applying an exception to BIP 8's version-bit activation mechanism.",
+              "type": "depends_on",
+              "evidence": "24 bits from the block header nVersion field, starting from 5 and ending at 28 inclusive (0x1fffffe0), are reserved for nonce use and removed from BIP8 and BIP9 specifications",
+              "reason": "The proposal changes which nVersion bits participate in BIP 8 soft-fork signaling, so its intended bit reservation requires amending the signaling rules defined by BIP 8.",
               "confidence": "high"
             },
             {
               "target": "bips:9",
-              "evidence": "removed from BIP8 and BIP9 specifications",
-              "reason": "The proposal explicitly changes how the reserved nVersion bits interact with BIP 9 signaling rules, so implementing it requires applying an exception to BIP 9's version-bit activation and warning behavior.",
+              "type": "depends_on",
+              "evidence": "24 bits from the block header nVersion field, starting from 5 and ending at 28 inclusive (0x1fffffe0), are reserved for nonce use and removed from BIP8 and BIP9 specifications",
+              "reason": "The proposal changes which nVersion bits participate in BIP 9 soft-fork signaling, so its intended bit reservation requires amending the signaling rules defined by BIP 9.",
               "confidence": "high"
             },
             {
               "target": "bips:320",
-              "evidence": "BIP 320 defined 16 bits of nVersion as nonce space",
-              "reason": "The proposal directly revises the reservation of nVersion bits previously defined by BIP 320, expanding and replacing that earlier nonce-space allocation.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:06:21Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:8",
-              "evidence": "removed from BIP8 and BIP9 specifications",
-              "reason": "The proposal directly constrains BIP 8 activation signaling by removing the reserved nVersion bits from the bits available under that specification.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:9",
-              "evidence": "removed from BIP8 and BIP9 specifications",
-              "reason": "The proposal directly constrains BIP 9 version-bits signaling and related unknown soft-fork warnings by removing the reserved nVersion bits from that specification's usable signaling space.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:320",
-              "evidence": "BIP 320 defined 16 bits of nVersion as nonce space",
-              "reason": "The proposal amends and expands the nonce-space reservation in the nVersion field that BIP 320 defined, increasing it from 16 to 24 bits.",
+              "type": "references",
+              "evidence": "BIP 320 defined 16 bits of nVersion as nonce space for additional nonce space. It turns out that this isn't enough",
+              "reason": "The proposal cites BIP 320 as the prior 16-bit extra-nonce design and explains why 24 bits are proposed instead, but fully specifies the new reservation without requiring BIP 320's rules.",
               "confidence": "high"
             }
           ]

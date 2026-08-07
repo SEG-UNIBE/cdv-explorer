@@ -895,77 +895,51 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:40:19Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T07:59:31Z",
           "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:32",
-              "evidence": "based on an algorithm described in BIP-0032",
-              "reason": "The proposal defines its path structure as a BIP32 path and repeatedly relies on BIP32 hardened/public child derivation semantics for account, change, and index levels.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:43",
-              "evidence": "purpose scheme described in BIP-0043",
-              "reason": "The proposal is stated to be a particular application of BIP43 and uses BIP43's purpose-field convention to assign purpose 48' and define the subtree semantics.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:44",
-              "evidence": "multi-account hierarchy described in BIP-0044",
-              "reason": "The proposal reuses BIP44's multi-account hierarchy pattern, including account separation and the external/internal change-chain structure, as part of its own derivation scheme.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:67",
-              "evidence": "based on an algorithm described in BIP-0067",
-              "reason": "The proposal explicitly builds its deterministic multisig wallet hierarchy on BIP67, and later normatively requires deterministic key sorting as per BIP67 for deriving multisignature addresses/scripts.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:55:35Z",
-          "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:16",
-              "evidence": "Nested Segwit (p2sh-p2wsh)",
-              "reason": "The nested script type uses P2SH wrapping; P2SH is the mechanism introduced by BIP16, so implementing that BIP48 script_type depends on BIP16 semantics.",
+              "type": "depends_on",
+              "evidence": "The following path represents Nested Segwit (p2sh-p2wsh) mainnet, account 0",
+              "reason": "The nested script branch explicitly uses P2SH to wrap P2WSH; P2SH is canonically defined by BIP16 and is required for that supported branch.",
               "confidence": "medium"
             },
             {
               "target": "bips:32",
-              "evidence": "We define the following 6 levels in BIP32 path:",
-              "reason": "The proposal's hierarchy is expressed as BIP32 derivation paths and uses BIP32 hardened/public child derivation semantics.",
+              "type": "depends_on",
+              "evidence": "We define the following 6 levels in BIP32 path",
+              "reason": "The proposal defines its hierarchy as a BIP32 derivation path and uses BIP32 hardened and public child derivation, making that derivation system functionally necessary.",
               "confidence": "high"
             },
             {
               "target": "bips:43",
+              "type": "depends_on",
               "evidence": "This BIP is a particular application of BIP43.",
-              "reason": "The proposal specializes BIP43's purpose-field scheme by assigning purpose 48' and defining the subtree semantics under it.",
+              "reason": "The proposal specializes BIP43's purpose-field scheme, including its purpose level, so its hierarchy relies on that convention.",
               "confidence": "high"
             },
             {
               "target": "bips:44",
-              "evidence": "following the BIP44 pattern",
-              "reason": "The proposal reuses BIP44's multi-account hierarchy pattern, including account separation and change/external chains.",
+              "type": "depends_on",
+              "evidence": "This level splits the key space into independent user identities, following the BIP44 pattern",
+              "reason": "The account level adopts BIP44's multi-account organization and semantics as part of the specified hierarchy.",
               "confidence": "high"
             },
             {
               "target": "bips:67",
-              "evidence": "deterministic key sorting as per BIP67",
-              "reason": "The proposal requires wallets to use BIP67 deterministic public-key sorting for multisignature address/script derivation.",
+              "type": "depends_on",
+              "evidence": "Any wallet that supports BIP48 inherently supports deterministic key sorting as per BIP67",
+              "reason": "The specified multisignature wallet hierarchy requires BIP67 deterministic public-key sorting to derive its addresses and scripts consistently.",
               "confidence": "high"
             },
             {
               "target": "bips:141",
-              "evidence": "Native Segwit (p2wsh) and\nNested Segwit (p2sh-p2wsh)",
-              "reason": "The proposal assigns derivation-path script_type values to P2WSH and P2SH-P2WSH outputs; those witness program and pay-to-witness-script-hash semantics are introduced by BIP141.",
+              "type": "depends_on",
+              "evidence": "Currently the only script types covered by this BIP are Native Segwit (p2wsh) and\nNested Segwit (p2sh-p2wsh).",
+              "reason": "The hierarchy assigns script-type branches specifically to native P2WSH and P2SH-wrapped P2WSH, whose witness-program and P2WSH rules are defined by BIP141; those rules are necessary for the branches to operate as specified.",
               "confidence": "medium"
             }
           ]

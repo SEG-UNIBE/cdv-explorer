@@ -645,30 +645,31 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:42:16Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:06:31Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
+            {
+              "target": "bips:21",
+              "type": "references",
+              "evidence": "amount, label, message or other information from a BIP0021 URI",
+              "reason": "BIP 21 URI fields are identified as optional hints for locating a transaction; the PoP mechanism does not require them.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:70",
+              "type": "references",
+              "evidence": "PaymentRequest.PaymentDetails.merchant_data (in case of a BIP0070 payment)",
+              "reason": "BIP 70 merchant data is discussed as an optional transaction-identification hint only when the original payment used that protocol, so PoP is not functionally dependent on it.",
+              "confidence": "high"
+            },
             {
               "target": "bips:121",
-              "evidence": "that is specified in separate specifications, see BIP0121",
-              "reason": "The proposal explicitly delegates the transfer method for PoP requests to BIP 121, making deployment of the request workflow depend on that separate specification.",
+              "type": "depends_on",
+              "evidence": "The method of transferring the PoP request at step 1 is not specified here. Instead that is specified in separate specifications, see BIP0121.",
+              "reason": "The proposal delegates the request-transfer method needed by its process to a separate specification and specifically identifies BIP 121 as that specification.",
               "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:01:45Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:16",
-              "evidence": "If an input script type is P2SH, any satisfying script should do",
-              "reason": "The proposal specifies how Proofs of Payment should work for P2SH inputs, relying on P2SH script-validation semantics. P2SH is the pay-to-script-hash mechanism defined by BIP16.",
-              "confidence": "medium"
             }
           ]
         }

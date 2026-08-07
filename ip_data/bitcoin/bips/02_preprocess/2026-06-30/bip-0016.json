@@ -715,37 +715,33 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:40:00Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T07:57:49Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:11",
+              "type": "references",
               "evidence": "M-of-N Multisignature Transactions [[bip-0011.mediawiki|BIP 11]]",
-              "reason": "The proposal makes P2SH redemption scripts standard only if the redeemScript is itself one of the other standard transaction types, and its rationale explicitly targets earlier support for multisignature transactions. BIP 11 is the standard multisignature transaction type specifically named in the proposal, so P2SH standardness and examples materially rely on compatibility with that script form.",
-              "confidence": "medium"
+              "reason": "The proposal lists BIP 11 under See Also as related work concerning multisignature transactions without requiring its mechanism.",
+              "confidence": "high"
             },
             {
               "target": "bips:12",
+              "type": "supersedes",
               "evidence": "This BIP replaces BIP 12",
-              "reason": "The proposal is a direct replacement for the earlier OP_EVAL-based proposal, indicating it supersedes and is designed in relation to that prior mechanism rather than merely mentioning it.",
+              "reason": "The proposal explicitly states that it replaces BIP 12 and its OP_EVAL approach.",
               "confidence": "high"
             },
             {
               "target": "bips:13",
+              "type": "references",
               "evidence": "BIP 13, the pay-to-script-hash address type",
-              "reason": "The text states this proposal's motivation is paired with the pay-to-script-hash address type and defines the spending/validation semantics for the same P2SH mechanism that BIP 13's address format encodes, so adopting the address type meaningfully relies on this proposal's script rules.",
-              "confidence": "medium"
+              "reason": "BIP 13 is identified as the related address-format proposal, but BIP 16's transaction and validation mechanism does not functionally depend on that address format.",
+              "confidence": "high"
             }
           ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:53:26Z",
-          "status": "success",
-          "dependencies": []
         }
       ]
     }

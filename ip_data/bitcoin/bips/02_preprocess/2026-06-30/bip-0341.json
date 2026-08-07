@@ -2118,90 +2118,87 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:43:48Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:15:03Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:9",
-              "evidence": "using BIP9 modified to use a lower threshold, with an additional min_activation_height parameter",
-              "reason": "BIP341's deployment mechanism is defined as a modification of BIP9 versionbits activation, so understanding activation materially depends on BIP9's state machine and workflow.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:141",
-              "evidence": "A Taproot output is a native SegWit output (see BIP141) with version number 1, and a 32-byte witness program.",
-              "reason": "BIP341 is defined as a new SegWit witness version output and depends on BIP141's witness program structure and native SegWit output semantics.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:143",
-              "evidence": "the semantics of the BIP143 sighash types remain unchanged",
-              "reason": "BIP341's signature hashing explicitly reuses and preserves the existing sighash type semantics from BIP143 while changing serialization and committed fields.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:340",
-              "evidence": "The notation below follows that of BIP340.",
-              "reason": "BIP341 normatively reuses BIP340's Schnorr key/signature definitions and notation throughout validation, including public key interpretation, lift_x, Verify, and tagged hashes.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:342",
-              "evidence": "BIP342 specifies validity rules that apply for leaf version 0xc0",
-              "reason": "For script path spending, BIP341 delegates execution semantics for the defined leaf version 0xc0 to BIP342, so implementing/evaluating those spends materially relies on BIP342.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:350",
-              "evidence": "if they support sending to BIP350 Bech32m addresses",
-              "reason": "BIP341 Taproot outputs are encoded for wallet interoperability using Bech32m addresses; the explicit mention of mainnet scriptPubKey/BIP350 address test vectors and sending support shows practical adoption relies on BIP350's address format for v1 witness outputs.",
-              "confidence": "low"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:08:43Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:9",
-              "evidence": "using [[bip-0009.mediawiki|BIP9]] modified to use a lower threshold, with an additional ''min_activation_height'' parameter and replacing the state transition logic",
-              "reason": "BIP341's activation mechanism is explicitly based on BIP9 version-bits deployment rules with specified modifications.",
+              "type": "depends_on",
+              "evidence": "these BIPs are deployed by \"version bits\" with the name \"taproot\" and bit 2, using [[bip-0009.mediawiki|BIP9]] modified to use a lower threshold",
+              "reason": "BIP341's specified mainnet and testnet deployment builds on BIP9's version-bits activation mechanism, with enumerated modifications.",
               "confidence": "high"
             },
             {
-              "target": "bips:141",
-              "evidence": "A Taproot output is a native SegWit output (see [[bip-0141.mediawiki|BIP141]]) with version number 1, and a 32-byte witness program.",
-              "reason": "BIP341 defines Taproot as a new native SegWit witness-program output type and relies on BIP141's witness version/program structure and spending framework.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:143",
-              "evidence": "the semantics of the [[bip-0143.mediawiki|BIP143]] sighash types remain unchanged, except the following:",
-              "reason": "BIP341 reuses and amends the existing BIP143 SegWit sighash-type semantics while defining its new Taproot signature message algorithm.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:340",
-              "evidence": "A Taproot signature is a 64-byte Schnorr signature, as defined in [[bip-0340.mediawiki|BIP340]]",
-              "reason": "BIP341 uses BIP340 Schnorr public keys, signatures, verification, notation, tagged hashes, and reference-code primitives as core parts of Taproot validation and wallet construction.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:342",
-              "evidence": "[[bip-0342.mediawiki|BIP342]] specifies validity rules that apply for leaf version 0xc0",
-              "reason": "BIP341's script-path validation delegates script execution semantics for the defined Taproot leaf version 0xc0 to BIP342, and the proposal is deployed concurrently with it.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:350",
-              "evidence": "support sending to [[bip-0350.mediawiki|BIP350]] Bech32m addresses",
-              "reason": "BIP341 wallet interoperability for sending to SegWit version 1 Taproot programs relies on the BIP350 Bech32m address format.",
+              "target": "bips:16",
+              "type": "references",
+              "evidence": "'''Why is P2SH-wrapping not supported?'''",
+              "reason": "The text discusses and rejects P2SH wrapping. P2SH is the mechanism canonically specified by BIP16, but it is not required by BIP341.",
               "confidence": "medium"
+            },
+            {
+              "target": "bips:98",
+              "type": "references",
+              "evidence": "one of which can be avoided in theory (see [[bip-0098.mediawiki|BIP98]]). However, it seems preferable to stick to constructions that can be implemented using standard cryptographic primitives",
+              "reason": "BIP98 is cited as an alternative, more efficient Merkle-node hash construction that BIP341 deliberately does not adopt.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:114",
+              "type": "references",
+              "evidence": "Merkle branches (\"MAST\", [[bip-0114.mediawiki|BIP114]], [[bip-0117.mediawiki|BIP117]])",
+              "reason": "BIP114 is named as an earlier MAST proposal in the related-ideas discussion, without BIP341 requiring its specific rules or format.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:117",
+              "type": "references",
+              "evidence": "Merkle branches (\"MAST\", [[bip-0114.mediawiki|BIP114]], [[bip-0117.mediawiki|BIP117]])",
+              "reason": "BIP117 is named as an earlier MAST proposal in the related-ideas discussion, without BIP341 requiring its specific rules or format.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:118",
+              "type": "references",
+              "evidence": "new sighash modes ([[bip-0118.mediawiki|BIP118]])",
+              "reason": "BIP118 is cited as a previously proposed related idea; BIP341 does not adopt its new sighash modes.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "type": "depends_on",
+              "evidence": "A Taproot output is a native SegWit output (see [[bip-0141.mediawiki|BIP141]]) with version number 1, and a 32-byte witness program.",
+              "reason": "Taproot outputs are defined as native SegWit witness programs, so their output structure and versioning require the mechanism specified by BIP141.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:143",
+              "type": "references",
+              "evidence": "the semantics of the [[bip-0143.mediawiki|BIP143]] sighash types remain unchanged, except the following",
+              "reason": "BIP341 compares its fully specified signature-message algorithm with BIP143 and describes differences; it does not require BIP143's serialization algorithm to operate.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:340",
+              "type": "depends_on",
+              "evidence": "A Taproot signature is a 64-byte Schnorr signature, as defined in [[bip-0340.mediawiki|BIP340]]",
+              "reason": "BIP341 key-path validation requires the Schnorr signature format and verification scheme defined by BIP340.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:342",
+              "type": "depends_on",
+              "evidence": "[[bip-0342.mediawiki|BIP342]] specifies validity rules that apply for leaf version 0xc0",
+              "reason": "BIP341 delegates the executable script rules for its designated leaf version 0xc0 to BIP342, making those rules necessary for script-path validation as deployed.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:350",
+              "type": "references",
+              "evidence": "The first \"scriptPubKey\" tests concern computing the scriptPubKey and (mainnet) BIP350 address",
+              "reason": "BIP350 is cited for address encoding in wallet test vectors, but that address format is not required for BIP341's consensus mechanism.",
+              "confidence": "high"
             }
           ]
         }

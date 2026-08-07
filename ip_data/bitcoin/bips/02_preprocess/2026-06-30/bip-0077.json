@@ -967,53 +967,52 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:41:00Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:02:00Z",
           "status": "success",
-          "dependencies": []
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:57:32Z",
-          "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:21",
-              "evidence": "A `req-pj` parameter may be used as a [BIP 21 forwards compatibility `reqparam`](https://github.com/bitcoin/bips/blob/master/bip-0021.mediawiki#forward-compatibility)",
-              "reason": "The proposal relies on BIP 21 Bitcoin URI parameter semantics, including the forward-compatible required-parameter convention, to encode Payjoin support and requirements.",
+              "type": "depends_on",
+              "evidence": "Bitcoin URIs ([BIP 21](https://github.com/bitcoin/bips/blob/master/bip-0021.mediawiki) or [BIP 321](https://github.com/bitcoin/bips/blob/master/bip-0321.mediawiki)) are a standard way to request bitcoin.\n\nA Payjoin URI is a Bitcoin URI that contains a `pj` parameter.",
+              "reason": "The proposal defines its Payjoin URI by extending the Bitcoin URI format specified by BIP 21, including use of its forward-compatible required-parameter convention.",
               "confidence": "high"
             },
             {
               "target": "bips:78",
-              "evidence": "relative to and described in [BIP 78](bip-0078.mediawiki)",
-              "reason": "The proposal defines Payjoin Version 2 in relation to BIP 78, preserves backwards compatibility with it, reuses its Payjoin URI parameters, optional sender parameters, checklists, error codes, and compatibility behavior.",
+              "type": "depends_on",
+              "evidence": "This document proposes a second, backwards-compatible, asynchronous version of the Payjoin protocol (\"Version 2\") relative to and described in [BIP 78](bip-0078.mediawiki) (\"Version 1\").",
+              "reason": "The proposal defines Payjoin Version 2 relative to BIP 78 and later directly reuses its optional parameters, validation checklists, error format, and backward-compatible message handling.",
               "confidence": "high"
             },
             {
               "target": "bips:173",
-              "evidence": "using the bech32 character set",
-              "reason": "The proposal uses the bech32 character set and bech32-inspired encoding for mailbox short IDs and fragment parameters; bech32 is the encoding scheme introduced by BIP 173.",
+              "type": "depends_on",
+              "evidence": "encoding it in [uppercase](#uppercase-url) using the bech32 character set (like a bech32 string without the HRP, separator and checksum)",
+              "reason": "The proposal's Short ID and fragment encodings require the character set from the explicitly named bech32 format, canonically defined by BIP 173.",
               "confidence": "medium"
             },
             {
               "target": "bips:174",
-              "evidence": "serialized as a BIP 174 PSBTv0",
-              "reason": "The protocol messages carry Original and Proposal transactions using the PSBTv0 format defined by BIP 174, so implementation depends on that serialization and semantics.",
+              "type": "depends_on",
+              "evidence": "This transaction is serialized as a BIP 174 PSBTv0",
+              "reason": "The protocol exchanges Original and Proposal PSBTs, so its transaction messaging requires the PSBTv0 serialization format defined by BIP 174.",
               "confidence": "high"
             },
             {
               "target": "bips:321",
-              "evidence": "Bitcoin URIs ([BIP\n21](https://github.com/bitcoin/bips/blob/master/bip-0021.mediawiki)\nor [BIP\n321](https://github.com/bitcoin/bips/blob/master/bip-0321.mediawiki))\nare a standard way to request bitcoin.\n\nA Payjoin URI is a Bitcoin URI",
-              "reason": "The proposal defines Payjoin URIs as Bitcoin URIs and explicitly permits the BIP 321 URI format as one of the base request formats carrying the Payjoin parameter.",
+              "type": "depends_on",
+              "evidence": "Bitcoin URIs ([BIP 21](https://github.com/bitcoin/bips/blob/master/bip-0021.mediawiki) or [BIP 321](https://github.com/bitcoin/bips/blob/master/bip-0321.mediawiki)) are a standard way to request bitcoin.\n\nA Payjoin URI is a Bitcoin URI that contains a `pj` parameter.",
+              "reason": "BIP 321 is explicitly permitted as the underlying Bitcoin URI format that the proposal specializes with a `pj` parameter.",
               "confidence": "high"
             },
             {
               "target": "bips:324",
-              "evidence": "[ElligatorSwift as defined in BIP 324](https://github.com/bitcoin/bips/blob/master/bip-0324.mediawiki#elligatorswift-encoding-of-curve-x-coordinates)\nis used to encode encapsulated HPKE public keys",
-              "reason": "The proposal directly reuses the ElligatorSwift encoding specified in BIP 324 for its HPKE public-key wire format.",
-              "confidence": "high"
+              "type": "depends_on",
+              "evidence": "ElligatorSwift as defined in BIP 324 is used to encode encapsulated HPKE public keys prepended to the HPKE ciphertext",
+              "reason": "The specified HPKE wire representation directly requires BIP 324's ElligatorSwift encoding for its encapsulated public keys.",
+              "confidence": "low"
             }
           ]
         }

@@ -794,77 +794,58 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:40:22Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T07:59:51Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
-              "evidence": "based on a [[bip-0032.mediawiki|BIP 32]] master private key",
-              "reason": "The proposal explicitly defines its deterministic address derivation from a BIP 32 master key, so implementing or using it materially relies on BIP 32 HD wallet derivation.",
+              "type": "depends_on",
+              "evidence": "derive multiple deterministic addresses based on a [[bip-0032.mediawiki|BIP 32]] master private key",
+              "reason": "The address derivation starts from and requires the hierarchical deterministic master-key mechanism defined by BIP 32.",
               "confidence": "high"
             },
             {
               "target": "bips:44",
+              "type": "depends_on",
               "evidence": "uses a similar account-structure as defined in BIP [[bip-0084.mediawiki|44]] but with <tt>change</tt> set to <tt>2</tt>",
-              "reason": "Despite the apparent citation typo, the text explicitly says it reuses the BIP 44 account-structure with a modified change branch, so the derivation hierarchy is designed around BIP 44's path semantics.",
+              "reason": "The proposal specializes BIP 44's account hierarchy by assigning a particular change branch, so its derivation structure relies on that hierarchy.",
               "confidence": "high"
             },
             {
               "target": "bips:49",
-              "evidence": "This BIP is not backwards compatible by design as described in the Considerations section of [[bip-0049.mediawiki|BIP 49]].",
-              "reason": "The proposal adopts BIP 49's deliberate incompatibility/discovery model for wallet derivation schemes as part of its own compatibility assumptions.",
-              "confidence": "medium"
+              "type": "references",
+              "evidence": "We largely use the same approach used in BIPs 49, 84 and 86 for ease of implementation.",
+              "reason": "BIP 49 is cited as a similar derivation-scheme approach, but its nested P2WPKH mechanism is not required by this proposal's P2WSH fidelity bonds.",
+              "confidence": "high"
             },
             {
               "target": "bips:65",
-              "evidence": "locking up bitcoins using the `OP_CHECKLOCKTIMEVERIFY` opcode",
-              "reason": "The proposal's timelocked output construction fundamentally relies on OP_CHECKLOCKTIMEVERIFY, the mechanism introduced by BIP 65, to create fidelity-bond scripts.",
+              "type": "depends_on",
+              "evidence": "They are created by locking up bitcoins using the `OP_CHECKLOCKTIMEVERIFY` opcode.",
+              "reason": "The fidelity-bond mechanism requires OP_CHECKLOCKTIMEVERIFY, the opcode defined by BIP 65, to enforce its timelocks.",
               "confidence": "high"
             },
             {
               "target": "bips:84",
+              "type": "references",
               "evidence": "We largely use the same approach used in BIPs 49, 84 and 86 for ease of implementation.",
-              "reason": "The proposal says it largely uses the same derivation-scheme approach as BIP 84, and its path m / 84' / 0' / 0' / 2 / index is directly designed around BIP 84's native-segwit account convention with a different branch.",
+              "reason": "BIP 84 is named as a model for the general derivation approach, while this proposal independently specifies P2WSH rather than relying on BIP 84's P2WPKH account scheme.",
               "confidence": "high"
             },
             {
               "target": "bips:86",
+              "type": "references",
               "evidence": "We largely use the same approach used in BIPs 49, 84 and 86 for ease of implementation.",
-              "reason": "The proposal explicitly states it follows the same general derivation-scheme approach as BIP 86, making BIP 86 part of the design pattern this scheme extends for another output type.",
-              "confidence": "medium"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:56:02Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:32",
-              "evidence": "based on a [[bip-0032.mediawiki|BIP 32]] master private key",
-              "reason": "The proposal derives its deterministic keys from a BIP32 master private key, so implementation depends on BIP32 HD key derivation semantics.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:44",
-              "evidence": "uses a similar account-structure as defined in BIP [[bip-0084.mediawiki|44]] but with <tt>change</tt> set to <tt>2</tt>",
-              "reason": "The proposal reuses the BIP44-style account/change/index hierarchy and specializes it by assigning the change level to 2.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:65",
-              "evidence": "witnessScript: <timelock> OP_CHECKLOCKTIMEVERIFY",
-              "reason": "The timelocked output script relies on OP_CHECKLOCKTIMEVERIFY semantics, which are introduced by BIP65.",
+              "reason": "BIP 86 is cited as a comparable derivation-scheme approach, but its P2TR rules are not used by the specified fidelity-bond mechanism.",
               "confidence": "high"
             },
             {
               "target": "bips:141",
-              "evidence": "forms the <tt>witness program</tt> in the output script of the P2WSH address",
-              "reason": "The proposal uses P2WSH witness-program output and spending semantics; P2WSH witness programs are defined by BIP141.",
+              "type": "depends_on",
+              "evidence": "The <tt>witness script</tt> is hashed with SHA256 to produce a 32-byte hash value that forms the <tt>witness program</tt> in the output script of the P2WSH address.",
+              "reason": "The address construction requires the P2WSH witness-program and output-script rules defined by BIP 141; the target number is inferred from the explicitly named P2WSH mechanism.",
               "confidence": "medium"
             }
           ]

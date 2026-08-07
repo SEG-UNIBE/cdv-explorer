@@ -608,48 +608,38 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:44:22Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:20:26Z",
           "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:380",
-              "evidence": "use the format and general operation specified in [[bip-0380.mediawiki|380]]",
-              "reason": "This proposal defines new descriptor expressions that explicitly rely on the descriptor format and operational semantics established by BIP 380.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:13:44Z",
-          "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:16",
-              "evidence": "this is limited by the P2SH script limit",
-              "reason": "The proposal constrains multisig key counts when nested in sh() by the P2SH script-size limit; P2SH and its redeem-script compatibility rules are specified by BIP 16.",
+              "type": "depends_on",
+              "evidence": "When used inside of a <tt>sh()</tt> expression, there can only be most 15 compressed public keys (this is limited by the P2SH script limit).",
+              "reason": "The validity restriction for multisig descriptors nested in sh() relies on the P2SH mechanism and limits canonically specified by BIP 16.",
               "confidence": "medium"
             },
             {
               "target": "bips:32",
-              "evidence": "extended keys, the derived keys use the same child index",
-              "reason": "The proposal defines behavior for multiple extended keys and child derivation in lockstep; extended keys and child-key derivation are the mechanisms introduced by BIP 32.",
+              "type": "depends_on",
+              "evidence": "When one or more the key expressions in a <tt>multi()</tt> or <tt>sortedmulti()</tt> expression are extended keys, the derived keys use the same child index.",
+              "reason": "The specified lockstep derivation behavior requires hierarchical extended-key and child-derivation semantics; extended keys are canonically defined by BIP 32.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "type": "depends_on",
+              "evidence": "<tt>multi()</tt> and <tt>sortedmulti()</tt> expressions can be used as a top level expression, or inside of either a <tt>sh()</tt> or <tt>wsh()</tt> descriptor.",
+              "reason": "Supporting these expressions inside wsh() requires the P2WSH witness-script mechanism defined by BIP 141; the target is inferred from the explicitly named wsh descriptor.",
               "confidence": "medium"
             },
             {
               "target": "bips:380",
-              "evidence": "<tt>multi()</tt>, and <tt>sortedmulti()</tt> descriptors use the format and general operation specified in [[bip-0380.mediawiki|380]]",
-              "reason": "The proposal explicitly states that these descriptors use BIP 380's descriptor format and general operation, so implementing or interpreting them depends on BIP 380.",
+              "type": "depends_on",
+              "evidence": "<tt>multi()</tt>, and <tt>sortedmulti()</tt> descriptors use the format and general operation specified in [[bip-0380.mediawiki|380]].",
+              "reason": "The descriptors directly require BIP 380's common descriptor format and operational rules.",
               "confidence": "high"
-            },
-            {
-              "target": "bips:381",
-              "evidence": "inside of either a <tt>sh()</tt> or <tt>wsh()</tt> descriptor",
-              "reason": "The proposal defines where multi() and sortedmulti() may be nested and relies on the semantics and restrictions of the sh() and wsh() output script descriptors; those descriptor functions are specified by BIP 381.",
-              "confidence": "medium"
             }
           ]
         }

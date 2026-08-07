@@ -749,47 +749,30 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:40:03Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T07:58:31Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:16",
-              "evidence": "Due to the [[bip-0016.mediawiki|BIP 0016]] changes regarding rules on block sigops",
-              "reason": "The proposal's transaction object includes a sigops field specifically because BIP 16 changed how block sigops must be counted, so implementing or evaluating this field relies on BIP 16's sigop-counting rules.",
+              "type": "depends_on",
+              "evidence": "Due to the [[bip-0016.mediawiki|BIP 0016]] changes regarding rules on block sigops, it is impossible to count sigops from the transactions themselves (the sigops in the scriptCheck must also be included in the count).",
+              "reason": "Correctly supplying the transaction sigop counts required by the template depends on the block sigop-counting rules introduced by BIP 16.",
               "confidence": "high"
-            },
-            {
-              "target": "bips:34",
-              "evidence": "comply with [[bip-0034.mediawiki|BIP 0034]] for version 2",
-              "reason": "The proposal makes template handling for version 2 blocks contingent on compliance with BIP 34's block-version semantics and separately requires coinbase height inclusion defined by that proposal.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:54:05Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:16",
-              "evidence": "Due to the [[bip-0016.mediawiki|BIP 0016]] changes regarding rules on block sigops",
-              "reason": "The transaction sigops reporting field is designed around BIP 16's changed block sigop-counting rules, which affect how miners evaluate block templates.",
-              "confidence": "medium"
             },
             {
               "target": "bips:23",
-              "evidence": "[[bip-0023.mediawiki#block-proposal|\"proposal\"]], [[bip-0023.mediawiki#logical-services|\"serverlist\"]], \"workid\", and any of the [[bip-0023.mediawiki#mutations|mutations]]",
-              "reason": "The proposal's request capability negotiation incorporates BIP 23-defined proposal mode, server list, and mutation capability semantics rather than merely citing them.",
+              "type": "depends_on",
+              "evidence": "If the request parameters include a \"mode\" key, that is used to explicitly select between the default \"template\" request or a [[bip-0023.mediawiki#block-proposal|\"proposal\"]].",
+              "reason": "BIP 22 delegates the semantics of its proposal request mode to BIP 23, so that mode cannot be implemented from BIP 22 alone.",
               "confidence": "high"
             },
             {
               "target": "bips:34",
-              "evidence": "comply with [[bip-0034.mediawiki|BIP 0034]] for version 2",
-              "reason": "The block template version field requires clients using version 2 blocks to follow BIP 34's block-version and coinbase-height rules.",
+              "type": "depends_on",
+              "evidence": "This does not include the block height, which is required to be included in the scriptSig by [[bip-0034.mediawiki|BIP 0034]].",
+              "reason": "The coinbase template format relies on BIP 34's rule requiring the block height in the coinbase scriptSig.",
               "confidence": "high"
             }
           ]

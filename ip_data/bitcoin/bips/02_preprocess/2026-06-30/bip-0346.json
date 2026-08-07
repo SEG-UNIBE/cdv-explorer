@@ -696,78 +696,73 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:43:55Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:15:38Z",
           "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:118",
-              "evidence": "The 1-byte TxFieldSelector format explicitly supports these modes.",
-              "reason": "The proposal is designed to emulate and support the signature hash modes introduced by BIP-118, especially ANYPREVOUT/ANYPREVOUTANYSCRIPT, making BIP-118's semantics a substantive compatibility target.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:119",
-              "evidence": "`OP_TXHASH` with the empty TxFieldSelector produces a hash semantically equivalent to BIP-119's `OP_CHECKTEMPLATEVERIFY`",
-              "reason": "The proposal explicitly generalizes BIP-119 and defines its default empty-selector mode to reproduce BIP-119's covenant hash semantics, so understanding that behavior materially depends on BIP-119.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:342",
-              "evidence": "Using the same validation budget (\"sigops budget\") introduced in BIP-0342",
-              "reason": "The proposal reuses BIP-342's tapscript context, OP_SUCCESS opcode upgrade mechanism, and validation budget rules. OP_TXHASH is only active in tapscript and specifically redefines OP_SUCCESS189 under the semantics introduced by BIP-342.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:348",
-              "evidence": "Together with `OP_CHECKSIGFROMSTACK`, `OP_TXHASH` provides a fully generalized signature hash construction",
-              "reason": "A central design goal and security model of the proposal is its combination with OP_CHECKSIGFROMSTACK to construct generalized sighashes and emulate BIP-118 modes, so it materially relies on the mechanism proposed in BIP-348.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:10:04Z",
-          "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:9",
-              "evidence": "can be deployed using a BIP 9 VersionBits deployment",
-              "reason": "The proposal identifies BIP 9 VersionBits as a deployment mechanism, so adoption via the stated deployment path depends on BIP 9 activation rules.",
+              "type": "references",
+              "evidence": "This BIP can be deployed using a BIP 9 VersionBits deployment.",
+              "reason": "BIP 9 is named as a possible deployment method, while the deployment strategy is explicitly left unspecified and is not required by the opcode mechanism.",
               "confidence": "high"
             },
             {
               "target": "bips:118",
-              "evidence": "the proposed sighash flags from\n[BIP-118](bip-0118.mediawiki) (`SIGHASH_ANYPREVOUT`)",
-              "reason": "The proposal explicitly supports and emulates the sighash flag semantics defined by BIP 118 through its TxFieldSelector mappings.",
+              "type": "references",
+              "evidence": "The 1-byte TxFieldSelector format explicitly supports these modes.",
+              "reason": "The proposal discusses and emulates BIP 118 signature-hash modes, but OP_TXHASH remains independently operable without BIP 118 being implemented or activated.",
               "confidence": "high"
             },
             {
               "target": "bips:119",
-              "evidence": "the empty\n  TxFieldSelector produces a hash semantically equivalent to BIP-119's\n  `OP_CHECKTEMPLATEVERIFY`",
-              "reason": "The proposal defines its default TxFieldSelector to generalize and reproduce the semantics of BIP 119's OP_CHECKTEMPLATEVERIFY.",
+              "type": "references",
+              "evidence": "`OP_TXHASH` with the empty TxFieldSelector produces a hash semantically equivalent to BIP-119's `OP_CHECKTEMPLATEVERIFY`, making this proposal a generalization of BIP-119.",
+              "reason": "BIP 119 is used as a comparison whose behavior OP_TXHASH generalizes; the proposal does not require BIP 119's opcode to operate.",
               "confidence": "high"
             },
             {
               "target": "bips:341",
-              "evidence": "BIP-341/118 sighash type",
-              "reason": "The proposal maps BIP 341 Taproot sighash types into its one-byte TxFieldSelector format and also uses Taproot concepts such as annexes and control blocks; those Taproot transaction and script-path semantics are defined by BIP 341.",
+              "type": "depends_on",
+              "evidence": "current input control block (`TXFS_CURRENT_INPUT_CONTROL_BLOCK`)",
+              "reason": "The selector hashes Taproot control-block data whose format and role are defined by BIP 341; implementing this selected field therefore requires BIP 341's Taproot rules.",
               "confidence": "medium"
             },
             {
               "target": "bips:342",
-              "evidence": "validation budget (\"sigops budget\") introduced in BIP-0342",
-              "reason": "The proposal reuses BIP 342's tapscript execution context, OP_SUCCESS soft-fork mechanism, and sigops validation budget for OP_TXHASH resource limits.",
+              "type": "depends_on",
+              "evidence": "Using the same validation budget (\"sigops budget\") introduced in BIP-0342, each TransactionHash decreases the validation budget by 25.",
+              "reason": "The opcode directly reuses BIP 342's tapscript validation-budget mechanism and is defined only for the tapscript context established by that proposal.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:345",
+              "type": "references",
+              "evidence": "`OP_SUCCESS188` was used by [BIP-345](bip-0345.mediawiki) (`OP_VAULT`) at the time of first draft of this BIP",
+              "reason": "The target is mentioned only to explain neighboring opcode allocation history.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:347",
+              "type": "references",
+              "evidence": "When combined with `OP_CAT`, `OP_TXHASH` enables powerful transaction introspection capabilities.",
+              "reason": "The target is discussed as an optional combination that extends what OP_TXHASH can accomplish, not as a requirement for its operation.",
               "confidence": "high"
             },
             {
               "target": "bips:348",
-              "evidence": "`OP_TXHASH` can be combined with\n  `OP_CHECKSIGFROMSTACK` (BIP-348) to emulate `SIGHASH_ANYPREVOUT`",
-              "reason": "A specified construction combines OP_TXHASH with BIP 348's OP_CHECKSIGFROMSTACK to provide generalized signature-hash behavior and emulate BIP 118-style modes.",
-              "confidence": "medium"
+              "type": "references",
+              "evidence": "Together with `OP_CHECKSIGFROMSTACK`, `OP_TXHASH` provides a fully generalized signature hash construction",
+              "reason": "BIP 348 supplies an optional complementary opcode for constructing generalized signature hashes, but the OP_TXHASH mechanism itself does not require it.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:443",
+              "type": "references",
+              "evidence": "`OP_SUCCESS187` is used by [BIP-443](bip-0443.mediawiki) (`OP_CHECKCONTRACTVERIFY`)",
+              "reason": "The target is mentioned only to contextualize the choice of an available OP_SUCCESS opcode.",
+              "confidence": "high"
             }
           ]
         }

@@ -1353,22 +1353,23 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:40:59Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:01:38Z",
           "status": "success",
-          "dependencies": []
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:57:05Z",
-          "status": "success",
-          "dependencies": [
+          "findings": [
+            {
+              "target": "bips:32",
+              "type": "references",
+              "evidence": "BIP32 X-Pubs allow the generation of unique addresses, but watching an X-Pub chain for each person you wish to receive funds from is too resource-intensive for mobile applications",
+              "reason": "BIP 32 is discussed as an existing alternative for generating unique addresses and as motivation for this proposal; the proposed protocol does not require its hierarchical deterministic key mechanism.",
+              "confidence": "high"
+            },
             {
               "target": "bips:70",
-              "evidence": "This BIP is an extension to BIP 70",
-              "reason": "The proposal explicitly extends BIP 70's Payment Protocol, modifying its pki_type values and encapsulating/processing its PaymentRequest, Payment, and PaymentACK messages.",
+              "type": "depends_on",
+              "evidence": "This BIP is an extension to BIP 70 that provides two enhancements to the existing Payment Protocol.",
+              "reason": "The proposal explicitly extends BIP 70's Payment Protocol and adds behavior and message handling to it, so its mechanism requires the protocol defined by BIP 70.",
               "confidence": "high"
             }
           ]

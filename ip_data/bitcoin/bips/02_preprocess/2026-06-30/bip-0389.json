@@ -579,28 +579,30 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:44:24Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:20:37Z",
           "status": "success",
-          "dependencies": []
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:14:40Z",
-          "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
-              "evidence": "indicating BIP 32 derivation steps to be taken after the given extended key",
-              "reason": "The proposal's new multipath syntax represents alternatives within BIP 32 derivation paths, so implementation depends on BIP 32 derivation-step semantics and extended-key path handling.",
+              "type": "depends_on",
+              "evidence": "This modification allows Key Expressions to indicate BIP 32 derivation path steps that can have multiple values.",
+              "reason": "The multipath syntax operates by selecting among BIP 32 derivation steps and therefore requires BIP 32's extended-key derivation rules.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:88",
+              "type": "references",
+              "evidence": "This proposal is in contrast to similar proposals such as BIP 88 which allow for multiple derivation indexes in a single element.",
+              "reason": "BIP 88 is mentioned only as a contrasting alternative; the current proposal does not require its mechanism.",
               "confidence": "high"
             },
             {
               "target": "bips:380",
-              "evidence": "specifies a modification to Key Expressions of Descriptors that are described in BIP 380",
-              "reason": "The proposal directly amends the Key Expression syntax and parsing rules defined by BIP 380.",
+              "type": "depends_on",
+              "evidence": "This document specifies a modification to Key Expressions of Descriptors that are described in BIP 380.",
+              "reason": "The proposal directly modifies the Key Expression syntax defined by BIP 380, so its mechanism requires that descriptor framework.",
               "confidence": "high"
             }
           ]

@@ -780,36 +780,45 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:44:39Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:23:03Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
-              "target": "bips:341",
-              "evidence": "The resulting key is the taproot internal key per BIP-341.",
-              "reason": "The proposal is explicitly designed around Taproot's internal-key, taptree, P2TR output, NUMS key, and helper tweak semantics. Implementing or evaluating OP_CHECKCONTRACTVERIFY materially depends on BIP 341's definitions and compatibility rules for taproot keys and scriptPubKeys.",
+              "target": "bips:119",
+              "type": "references",
+              "evidence": "<code>OP_CHECKTEMPLATEVERIFY</code><ref>[[bip-0119.mediawiki|BIP-119]]</ref> is a long-proposed opcode to constrain a transaction to a ''template'' with a fixed set of outputs",
+              "reason": "BIP-119 is cited as related covenant work, but its transaction-template mechanism is not reused or required.",
               "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:17:02Z",
-          "status": "success",
-          "dependencies": [
+            },
+            {
+              "target": "bips:327",
+              "type": "references",
+              "evidence": "the naked key could be an aggregate key using [[bip-0327.mediawiki|MuSig2]]",
+              "reason": "MuSig2 is presented only as an example of a possible aggregate naked key for cooperative spending; the opcode does not require it.",
+              "confidence": "high"
+            },
             {
               "target": "bips:341",
-              "evidence": "the naked key is the internal key as defined in BIP-341",
-              "reason": "The proposal defines its commitment and output-checking semantics in terms of Taproot/P2TR internal keys, taptrees, taproot tweaking, the BIP341 NUMS key, and BIP341 helper logic, so implementing or evaluating it materially depends on BIP-341's Taproot output format and key/taptree semantics.",
+              "type": "depends_on",
+              "evidence": "The resulting key is the taproot internal key per BIP-341.",
+              "reason": "The proposal constructs and validates P2TR outputs through the internal-key and taproot-tweak model defined by BIP-341, so its state-carrying output mechanism requires those rules.",
               "confidence": "high"
             },
             {
               "target": "bips:342",
-              "evidence": "The tapscript opcode OP_SUCCESS187 (0xbb) is constrained with new rules",
-              "reason": "The proposal implements OP_CHECKCONTRACTVERIFY by assigning stricter semantics to an OP_SUCCESSx opcode within tapscript. OP_SUCCESSx opcode behavior and tapscript execution semantics are introduced by BIP-342, so the proposal relies on BIP-342's upgrade mechanism and script-validation context.",
-              "confidence": "low"
+              "type": "depends_on",
+              "evidence": "The tapscript opcode <code>OP_SUCCESS187</code> (<code>0xbb</code>) is constrained with new rules to implement <code>OP_CHECKCONTRACTVERIFY</code>.",
+              "reason": "The proposal relies on the tapscript OP_SUCCESSx mechanism canonically defined by BIP-342, specializing OP_SUCCESS187 with new soft-fork validation semantics.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:345",
+              "type": "references",
+              "evidence": "<code>OP_VAULT</code><ref>[[bip-0345.mediawiki|BIP-345]]</ref> is a proposed opcode to implement a 2-step withdrawal process",
+              "reason": "BIP-345 is mentioned as an example of an application using output restrictions, not as functionality required by this proposal.",
+              "confidence": "high"
             }
           ]
         }

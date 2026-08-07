@@ -887,29 +887,30 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:43:00Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:10:39Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
-              "target": "bips:157",
-              "evidence": "for use in the\nBIP 157 light client protocol",
-              "reason": "The proposal is explicitly designed for and used within the BIP 157 light client protocol, and its signaling section normatively states nodes must respond to BIP 157 messages for this filter type. Implementing or adopting BIP 158 materially depends on the protocol workflow and message semantics defined by BIP 157.",
+              "target": "bips:37",
+              "type": "references",
+              "evidence": "The filter construction proposed is an alternative to Bloom filters, as used in BIP 37",
+              "reason": "BIP 37 is discussed as the prior Bloom-filter approach that this proposal offers an alternative to; its mechanism is not reused or required.",
               "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:04:23Z",
-          "status": "success",
-          "dependencies": [
+            },
+            {
+              "target": "bips:141",
+              "type": "references",
+              "evidence": "A likely area for future commitments is an additional <code>OP_RETURN</code> output in the coinbase transaction similar to the current witness commitment\n<ref>https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki</ref>",
+              "reason": "The proposal cites BIP 141's witness commitment only as an analogy for a possible future filter commitment, not as a required part of the present filter construction.",
+              "confidence": "high"
+            },
             {
               "target": "bips:157",
-              "evidence": "for use in the\nBIP 157 light client protocol",
-              "reason": "The proposal defines the compact filter structure and initial filter type used by the BIP 157 light-client protocol, so implementing or adopting it materially depends on BIP 157's protocol workflow and message usage.",
+              "type": "depends_on",
+              "evidence": "If enabled, the node MUST respond to all BIP 157 messages for filter type <code>0x00</code>",
+              "reason": "The proposal's signaling behavior requires the compact-filter message protocol defined by BIP 157, so that portion of its specified operation cannot be implemented independently.",
               "confidence": "high"
             }
           ]

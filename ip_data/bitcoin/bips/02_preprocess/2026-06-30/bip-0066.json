@@ -660,35 +660,23 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:40:45Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:00:54Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:34",
+              "type": "depends_on",
               "evidence": "We reuse the double-threshold switchover mechanism from BIP 34, with the same thresholds, but for nVersion = 3.",
-              "reason": "The proposal explicitly adopts BIP 34's block-version soft-fork activation mechanism and thresholds for its own deployment rules.",
+              "reason": "BIP 66's deployment directly reuses BIP 34's activation mechanism and thresholds, making that mechanism necessary to its specified rollout.",
               "confidence": "high"
             },
             {
               "target": "bips:62",
-              "evidence": "This document is extracted from the previous BIP62 proposal",
-              "reason": "The proposal is carved out of BIP 62 and defines one of the concrete signature-encoding constraints from that earlier malleability proposal, making it a direct specialization rather than a mere citation.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:56:27Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:34",
-              "evidence": "reuse the double-threshold switchover mechanism from BIP 34",
-              "reason": "The proposal explicitly reuses BIP 34's activation/switchover mechanism and thresholds for deploying its new consensus rules.",
+              "type": "references",
+              "evidence": "This proposal has the added benefit of reducing transaction malleability (see BIP 62).",
+              "reason": "BIP 62 is cited for the related topic of transaction malleability, but BIP 66's strict-DER mechanism is specified independently and does not require BIP 62 to operate.",
               "confidence": "high"
             }
           ]

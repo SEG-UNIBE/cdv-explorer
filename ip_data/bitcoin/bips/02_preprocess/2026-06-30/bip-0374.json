@@ -753,48 +753,31 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:44:14Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:18:20Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:327",
+              "type": "depends_on",
               "evidence": "All conventions and notations are used as defined in BIP327.",
-              "reason": "The specification normatively reuses the conventions and notation defined in BIP327, making understanding and implementation of this proposal depend on that prior definition set.",
+              "reason": "The specification relies on conventions and notation defined by BIP 327 to interpret and implement its algorithms.",
               "confidence": "low"
             },
             {
               "target": "bips:340",
+              "type": "references",
               "evidence": "The same rationale and recommendations from BIP340 should be applied.",
-              "reason": "For proof generation, the proposal explicitly adopts BIP340's rationale and recommendations for fresh auxiliary randomness handling; this is a substantive reuse of its nonce-generation guidance rather than a mere mention.",
+              "reason": "BIP 340 is cited for auxiliary-randomness rationale and recommendations, while the current proposal independently specifies its proof algorithm and explicitly requires fresh randomness.",
               "confidence": "low"
             },
             {
               "target": "bips:352",
+              "type": "references",
               "evidence": "BIP352 requires senders to compute output scripts using ECDH shared secrets from the same secret keys used to sign the inputs.",
-              "reason": "The proposal's stated motivation is to provide DLEQ proofs for the ECDH shared-secret construction required by BIP352, so evaluating and adopting it materially depends on that workflow and correctness problem introduced there.",
+              "reason": "BIP 352 is discussed as a motivating application for DLEQ proofs, but the proof scheme itself does not require BIP 352.",
               "confidence": "low"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:12:24Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:327",
-              "evidence": "All conventions and notations are used as defined in [https://github.com/bitcoin/bips/blob/master/bip-0327.mediawiki#notation BIP327].",
-              "reason": "The proposal explicitly relies on BIP327's notation and conventions for its algorithms and serialization-related expressions.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:340",
-              "evidence": "The same rationale and recommendations from [https://github.com/bitcoin/bips/blob/master/bip-0340.mediawiki#default-signing BIP340] should be applied.",
-              "reason": "The proposal directs implementers to apply BIP340's default-signing guidance for auxiliary random data handling in proof generation.",
-              "confidence": "high"
             }
           ]
         }

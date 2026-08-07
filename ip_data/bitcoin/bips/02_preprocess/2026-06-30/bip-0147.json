@@ -594,48 +594,45 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:42:47Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:09:59Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:9",
-              "evidence": "deployed by \"version bits\" BIP9",
-              "reason": "The proposal specifies activation through the version-bits deployment mechanism defined by BIP9, making adoption and deployment dependent on that proposal's activation rules.",
+              "type": "depends_on",
+              "evidence": "This BIP will be deployed by \"version bits\" BIP9",
+              "reason": "The proposal's activation procedure explicitly uses the version-bits deployment mechanism defined by BIP9.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:62",
+              "type": "references",
+              "evidence": "This document is extracted from the previous BIP62 proposal",
+              "reason": "The text cites BIP62 as the earlier proposal from which this document was extracted, but does not explicitly state that BIP147 supersedes it or require BIP62 for operation.",
               "confidence": "low"
             },
             {
               "target": "bips:141",
-              "evidence": "pay-to-witness-script-hash scripts described in BIP141",
-              "reason": "The proposal explicitly extends its NULLDUMMY consensus rule to the P2WSH script type defined by BIP141, so understanding its scope and implementation materially relies on that script mechanism.",
-              "confidence": "high"
+              "type": "depends_on",
+              "evidence": "The NULLDUMMY rule applies to OP_CHECKMULTISIG and OP_CHECKMULTISIGVERIFY in pre-segregated scripts, and also pay-to-witness-script-hash scripts described in BIP141.",
+              "reason": "The proposal explicitly applies its new consensus rule to the pay-to-witness-script-hash script type defined by BIP141, so operation over that script class relies on BIP141's rules and format.",
+              "confidence": "low"
             },
             {
               "target": "bips:143",
+              "type": "references",
               "evidence": "using the same parameters for BIP141 and BIP143, with the name \"segwit\" and using bit 1",
-              "reason": "The proposal is deployed jointly with the SegWit bundle and explicitly shares deployment parameters with BIP143; this creates a substantive deployment dependency because its activation is designed around the same coordinated rollout.",
-              "confidence": "medium"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:03:58Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:9",
-              "evidence": "deployed by \"version bits\" [https://github.com/bitcoin/bips/blob/master/bip-0009.mediawiki BIP9]",
-              "reason": "The proposal explicitly uses BIP9's version-bits deployment mechanism and parameters for activation.",
+              "reason": "BIP143 is named to identify the coordinated SegWit deployment parameters; NULLDUMMY does not reuse functionality or rules defined by BIP143.",
               "confidence": "high"
             },
             {
-              "target": "bips:141",
-              "evidence": "pay-to-witness-script-hash scripts described in BIP141",
-              "reason": "The proposal's NULLDUMMY consensus rule is explicitly applied to the P2WSH script type defined by BIP141, so implementation and evaluation depend on that script format.",
-              "confidence": "high"
+              "target": "bips:152",
+              "type": "references",
+              "evidence": "this malleability vector will change the wtxid and may reduce the efficiency of compact block relay (BIP152)",
+              "reason": "BIP152 is cited to describe a possible efficiency impact on compact block relay, not as a required part of NULLDUMMY's mechanism.",
+              "confidence": "low"
             }
           ]
         }

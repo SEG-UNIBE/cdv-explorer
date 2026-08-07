@@ -743,29 +743,16 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:40:43Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:00:30Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:34",
+              "type": "depends_on",
               "evidence": "The same mechanism as in BIP 0034 is used to introduce v3 blocks.",
-              "reason": "The proposal explicitly reuses BIP 34's block-version activation mechanism to deploy its new consensus rules, so understanding and implementing BIP 62's activation depends on that prior mechanism.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:56:22Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:34",
-              "evidence": "The same mechanism as in BIP 0034 is used to introduce v3 blocks.",
-              "reason": "The proposal explicitly reuses BIP 34's block-version activation mechanism for introducing v3 blocks and associated consensus-rule enforcement thresholds.",
+              "reason": "BIP 62 reuses BIP 34's block-version threshold mechanism to activate its new consensus rules, making that mechanism necessary to the specified deployment process.",
               "confidence": "high"
             }
           ]

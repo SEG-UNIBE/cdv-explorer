@@ -796,53 +796,87 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:43:58Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:17:01Z",
           "status": "success",
-          "dependencies": []
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:11:02Z",
-          "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
-              "evidence": "The following BIP32 path levels are defined:",
-              "reason": "The proposal directly uses BIP32 hierarchical deterministic wallet path levels, extended keys, and non-hardened child derivation for its public-key derivation scheme.",
+              "type": "depends_on",
+              "evidence": "The following BIP32 path levels are defined",
+              "reason": "The proposal's key hierarchy and non-hardened child-key derivation use the extended-key structure and derivation rules defined by BIP32.",
               "confidence": "high"
             },
             {
               "target": "bips:43",
-              "evidence": "<code>purpose</code> is set to 351.",
-              "reason": "The proposal relies on the deterministic-wallet purpose-field convention; that purpose-field scheme was introduced by BIP43, and the text assigns this proposal's purpose value within that convention.",
-              "confidence": "medium"
+              "type": "depends_on",
+              "evidence": "m / purpose' / coin_type' / account'\n\npurpose is set to 351",
+              "reason": "The derivation hierarchy uses the purpose-field convention canonically defined by BIP43, assigning this application purpose 351.",
+              "confidence": "low"
             },
             {
               "target": "bips:44",
-              "evidence": "The derivation path for this BIP follows BIP44.",
-              "reason": "The proposal explicitly bases its account-level derivation path on BIP44's hierarchy.",
+              "type": "depends_on",
+              "evidence": "The derivation path for this BIP follows BIP44",
+              "reason": "The proposal explicitly adopts BIP44's hierarchical derivation-path structure for its keys.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:47",
+              "type": "references",
+              "evidence": "Private Payments is a new standard which is not compatible with any previous standard based on static payment codes, such as BIP47",
+              "reason": "BIP47 is discussed as an incompatible prior payment-code standard, not as a mechanism reused by this proposal.",
               "confidence": "high"
             },
             {
               "target": "bips:141",
-              "evidence": "| P2WPKH || <code>1 << 1</code> || <code>0x0002</code> || 1",
-              "reason": "The proposal defines payment-code address-type flags and notification commitments for P2WPKH outputs; P2WPKH is the native SegWit pay-to-witness-public-key-hash mechanism defined by BIP141.",
+              "type": "depends_on",
+              "evidence": "Currently defined flags:\n\n{| class=\"wikitable\"\n! Address Type !! Flag !! Flag Value !! Ordinal Value\n|-\n| P2PKH || <code>1 << 0</code> || <code>0x0001</code> || 0\n|-\n| P2WPKH || <code>1 << 1</code> || <code>0x0002</code> || 1",
+              "reason": "P2WPKH is a supported payment address type, so that portion of the protocol relies on the witness-program and P2WPKH spending rules canonically defined by BIP141.",
               "confidence": "medium"
             },
             {
+              "target": "bips:157",
+              "type": "references",
+              "evidence": "BIP157 - Client Side Block Filtering",
+              "reason": "The visible reference list cites BIP157, but the specified notification mechanism does not require its client-side filtering protocol.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:158",
+              "type": "references",
+              "evidence": "Compact Block Filters, as formulated in BIP-0158, do not cover <code>OP_RETURN</code> data payloads",
+              "reason": "The proposal discusses BIP158 to explain why its compact filters cannot directly locate notification payloads; BIP158 is not required by the protocol.",
+              "confidence": "high"
+            },
+            {
               "target": "bips:341",
+              "type": "depends_on",
               "evidence": "| P2TR || <code>1 << 2</code> || <code>0x0004</code> || 2",
-              "reason": "The proposal defines payment-code address-type flags and notification commitments for P2TR outputs; P2TR is the pay-to-taproot output type defined by BIP341.",
+              "reason": "P2TR is a supported payment address type, so implementing that option relies on the Taproot output and spending rules canonically defined by BIP341.",
               "confidence": "medium"
             },
             {
               "target": "bips:350",
+              "type": "depends_on",
               "evidence": "Payment codes are encoded in bech32m",
-              "reason": "The proposal's payment-code serialization depends on the Bech32m encoding format, which is defined by BIP350.",
+              "reason": "Bech32m is the checksum and encoding format defined by BIP350, and payment-code serialization cannot be implemented as specified without it.",
               "confidence": "high"
+            },
+            {
+              "target": "bips:380",
+              "type": "references",
+              "evidence": "Sharing a BIP380 descriptor containing an extended public key solves the address type issue from sharing a raw BIP32 extended key",
+              "reason": "BIP380 descriptors are discussed as an alternative method in the motivation, while the proposal defines its own payment-code format.",
+              "confidence": "low"
+            },
+            {
+              "target": "slips:132",
+              "type": "references",
+              "evidence": "Alternate version bytes have been proposed to specify address types, but wallet adoption is limited",
+              "reason": "The linked alternate extended-key version-byte scheme is SLIP-0132; it is cited as prior work rather than reused by the proposal.",
+              "confidence": "low"
             }
           ]
         }

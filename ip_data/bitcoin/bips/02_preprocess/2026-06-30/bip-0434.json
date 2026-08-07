@@ -689,42 +689,59 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:44:36Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:22:39Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
-              "target": "bips:324",
-              "evidence": "Nodes implementing both this BIP and [BIP 324 (v2 P2P encrypted transport)][BIP324] MUST treat a message with a 1-byte `message_type` equal to `37` that is received prior to `verack` as the `feature` message.",
-              "reason": "This BIP defines interoperability behavior specifically within BIP 324's v2 transport framing by assigning a 1-byte message_type value for the feature message, so implementing that aspect materially depends on BIP 324's message-type mechanism.",
+              "target": "bips:35",
+              "type": "references",
+              "evidence": "This approach is appropriate for many simple features that define\nnew messages, particularly where an implementation might only\nimplement sending or receiving a message, but not both, eg [BIP 35\n(mempool)][BIP35].",
+              "reason": "BIP 35 is cited only as an example of a feature suitable for the advertisement approach; its mechanism is not required by this proposal.",
               "confidence": "high"
             },
             {
-              "target": "bips:339",
-              "evidence": "we propose codifying and generalising the mechanism used by [BIP 339][BIP339] for future P2P upgrades",
-              "reason": "The proposal explicitly builds on and generalizes the pre-verack feature-negotiation mechanism introduced by BIP 339, making that mechanism a direct technical basis for this BIP.",
+              "target": "bips:130",
+              "type": "references",
+              "evidence": "[BIP 130][BIP130] requires version 70012 or higher",
+              "reason": "The proposal discusses BIP 130 as a historical example of feature deployment tied to a protocol-version increase.",
               "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:16:06Z",
-          "status": "success",
-          "dependencies": [
+            },
+            {
+              "target": "bips:133",
+              "type": "references",
+              "evidence": "[BIP 133][BIP133] requires version 70013 or higher",
+              "reason": "The proposal cites BIP 133 as a historical example of requiring a higher protocol version, not as a required component of its mechanism.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:152",
+              "type": "references",
+              "evidence": "[BIP 152][BIP152] recommends version 70014/70015 or higher",
+              "reason": "BIP 152 is discussed as an example of earlier protocol-version-based feature deployment.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:155",
+              "type": "references",
+              "evidence": "[BIP 155\n(addrv2)][BIP155] and [BIP 339 (wtxid-relay)][BIP339] are examples of\nthis approach",
+              "reason": "BIP 155 is cited as an example of pre-verack feature negotiation; the current proposal does not require its addrv2 rules or formats.",
+              "confidence": "high"
+            },
             {
               "target": "bips:324",
+              "type": "references",
               "evidence": "Nodes implementing both this BIP and [BIP 324 (v2 P2P encrypted\ntransport)][BIP324] MUST treat a message with a 1-byte `message_type`\nequal to `37` that is received prior to `verack` as the `feature` message.",
-              "reason": "The proposal defines a mandatory compatibility rule for use with BIP 324's v2 encrypted transport 1-byte message_type mechanism.",
-              "confidence": "high"
+              "reason": "The proposal defines conditional interoperability with BIP 324's v2 transport, but implementation of BIP 324 is not required for the feature-negotiation mechanism itself.",
+              "confidence": "medium"
             },
             {
               "target": "bips:339",
-              "evidence": "codifying and generalising the mechanism used by\n[BIP 339][BIP339]",
-              "reason": "The proposal explicitly reuses and generalizes BIP 339's pre-verack feature-negotiation mechanism as the basis for its generic feature message workflow.",
-              "confidence": "high"
+              "type": "references",
+              "evidence": "we propose codifying and generalising the mechanism used by\n[BIP 339][BIP339] for future P2P upgrades",
+              "reason": "BIP 339 is identified as the precedent being generalized, but this proposal fully specifies its own reusable feature message and does not require BIP 339's wtxid-relay feature to operate.",
+              "confidence": "medium"
             }
           ]
         }

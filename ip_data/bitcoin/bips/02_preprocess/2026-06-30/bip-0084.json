@@ -588,83 +588,58 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:41:28Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:02:49Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
-              "evidence": "based on a BIP 32 root account",
-              "reason": "The proposal defines its derivation steps from a BIP 32 root and thus materially relies on BIP 32's HD wallet/key-derivation scheme.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:44",
-              "evidence": "uses the same account-structure as defined in BIP 44",
-              "reason": "The proposal directly reuses BIP 44's account hierarchy and path structure for its derivation scheme, changing only the purpose value.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:49",
-              "evidence": "uses the same account-structure as defined in BIP 44 and BIP 49, but only uses a different purpose value",
-              "reason": "The proposal is designed as a specialization of the BIP 49 account scheme, explicitly reusing its structure and differing only in purpose/serialization method.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:141",
-              "evidence": "we use the encapsulation defined in BIP 141",
-              "reason": "The proposal's address/output derivation depends on the P2WPKH witness program and script form defined by BIP 141.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:173",
-              "evidence": "using the P2WPKH (BIP 173) serialization format",
-              "reason": "The proposal specifies addresses in the Bech32 native SegWit serialization format introduced by BIP 173, making that address encoding part of the scheme.",
-              "confidence": "low"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:57:55Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:32",
-              "evidence": "based on a [[bip-0032.mediawiki|BIP 32]] root account",
-              "reason": "The proposal's deterministic address derivation is built on BIP 32 HD wallet root-account derivation.",
+              "type": "depends_on",
+              "evidence": "derive multiple deterministic addresses based on a [[bip-0032.mediawiki|BIP 32]] root account",
+              "reason": "The derivation scheme requires the hierarchical deterministic root-account model defined by BIP 32.",
               "confidence": "high"
             },
             {
               "target": "bips:43",
-              "evidence": "uses <code>84'</code>",
-              "reason": "The proposal assigns a hardened purpose value in the derivation path; this relies on the purpose-field convention introduced by BIP 43, which is explicitly referenced and materially needed to interpret the purpose path level.",
+              "type": "depends_on",
+              "evidence": "For the <code>purpose</code>-path level it uses <code>84'</code>.",
+              "reason": "The specified hierarchy relies on the purpose-field convention canonically defined by BIP 43, which is also identified in the reference list as “Purpose Field for Deterministic Wallets.”",
               "confidence": "medium"
             },
             {
               "target": "bips:44",
+              "type": "depends_on",
               "evidence": "uses the same account-structure as defined in [[bip-0044.mediawiki|BIP 44]]",
-              "reason": "The proposal reuses BIP 44's multi-level account hierarchy for its derivation path structure.",
+              "reason": "The proposal directly adopts BIP 44's account hierarchy for its public-key derivation scheme.",
               "confidence": "high"
             },
             {
               "target": "bips:49",
+              "type": "references",
               "evidence": "The rest of the levels are used as defined in BIP44 or BIP49.",
-              "reason": "The proposal reuses the derivation-path level semantics defined by BIP 49 as an alternative formulation of the account structure for segregated-witness accounts.",
+              "reason": "BIP 49 is cited as an alternative description of levels also defined by BIP 44, so BIP 49 itself is not uniquely required for the mechanism.",
               "confidence": "high"
             },
             {
               "target": "bips:141",
+              "type": "depends_on",
               "evidence": "we use the encapsulation defined in [[bip-0141.mediawiki#p2wpkh|BIP 141]]",
-              "reason": "The proposal directly relies on BIP 141's P2WPKH witness, scriptSig, and scriptPubKey encapsulation rules for address derivation.",
+              "reason": "Address derivation requires the P2WPKH witness and script encapsulation rules defined by BIP 141.",
               "confidence": "high"
             },
             {
               "target": "bips:173",
+              "type": "depends_on",
               "evidence": "using the P2WPKH ([[bip-0173.mediawiki|BIP 173]]) serialization format",
-              "reason": "The proposal depends on BIP 173's native witness address serialization format for its P2WPKH addresses.",
+              "reason": "The wallet scheme's native P2WPKH addresses require the serialization format defined by BIP 173.",
+              "confidence": "high"
+            },
+            {
+              "target": "slips:132",
+              "type": "references",
+              "evidence": "Additional registered version bytes are listed in [[https://github.com/satoshilabs/slips/blob/master/slip-0132.md|SLIP-0132]].",
+              "reason": "SLIP-0132 is cited only as a source for additional registered version bytes; the proposal specifies its own required bytes directly.",
               "confidence": "high"
             }
           ]

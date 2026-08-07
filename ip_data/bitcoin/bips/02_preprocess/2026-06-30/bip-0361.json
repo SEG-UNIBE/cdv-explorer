@@ -635,42 +635,17 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:44:06Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:17:27Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
-              "evidence": "Any BIP-32 wallet which uses a hardened derivation step in its key-paths can thus satisfy a rescue protocol which uses BIP-32 hardened key derivation",
-              "reason": "The proposal's rescue-protocol design explicitly relies on BIP-32 hardened derivation and parent XPriv knowledge as the mechanism to distinguish authentic holders from quantum attackers for some legacy funds.",
+              "type": "references",
+              "evidence": "For instance, most wallets built since its introduction in 2012 have used [[bip-0032.mediawiki|BIP-32]] to construct deterministic HD wallets which derive Bitcoin keypairs from a seed.",
+              "reason": "BIP-32 is discussed as an example of a knowledge asymmetry that a possible rescue protocol could use. The proposal does not mandate a BIP-32-based rescue protocol, so it is not functionally dependent on BIP-32.",
               "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:11:51Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:32",
-              "evidence": "uses BIP-32 hardened key derivation",
-              "reason": "The proposal's Phase B rescue-protocol discussion reuses BIP-32 hardened derivation as a mechanism for proving knowledge unavailable to a quantum attacker.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:141",
-              "evidence": "post-quantum witness programs as anyone-can-spend scripts",
-              "reason": "The proposal relies on the witness-program forward-compatibility semantics introduced by BIP-141, under which older nodes treat unknown witness programs as spendable without enforcing the new rules.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:340",
-              "evidence": "tighten requirements on verification of ECDSA/Schnorr",
-              "reason": "The proposal constrains verification of Bitcoin Schnorr signatures; in Bitcoin, the Schnorr signature scheme and verification semantics are specified by BIP-340.",
-              "confidence": "medium"
             }
           ]
         }

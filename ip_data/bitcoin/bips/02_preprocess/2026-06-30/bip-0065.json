@@ -881,29 +881,30 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:40:49Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:00:46Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
-              "target": "bips:66",
-              "evidence": "We reuse the double-threshold IsSuperMajority() switchover mechanism used in BIP66 with the same thresholds",
-              "reason": "The proposal explicitly adopts the activation mechanism and thresholds defined by BIP66 for its own deployment rules.",
+              "target": "bips:9",
+              "type": "references",
+              "evidence": "It should be noted that BIP9 involves permanently setting a high-order bit to 1",
+              "reason": "BIP 9 is discussed to explain its interaction with earlier IsSuperMajority-based soft forks, but BIP 65 does not use BIP 9 for its own deployment.",
               "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:56:28Z",
-          "status": "success",
-          "dependencies": [
+            },
+            {
+              "target": "bips:16",
+              "type": "references",
+              "evidence": "In addition to using cold storage, hardware wallets, and P2SH multisig outputs to control funds",
+              "reason": "The proposal mentions P2SH multisig as an existing alternative for controlling funds. P2SH is canonically defined by BIP 16, but its rules are not required by CHECKLOCKTIMEVERIFY.",
+              "confidence": "high"
+            },
             {
               "target": "bips:66",
-              "evidence": "reuse the double-threshold IsSuperMajority() switchover mechanism used in\nBIP66 with the same thresholds",
-              "reason": "The proposal explicitly reuses BIP66's IsSuperMajority deployment/switchover mechanism and thresholds for activating its new consensus rules.",
+              "type": "depends_on",
+              "evidence": "We reuse the double-threshold IsSuperMajority() switchover mechanism used in BIP66 with the same thresholds",
+              "reason": "The proposal's deployment procedure directly reuses BIP 66's activation mechanism and thresholds, making that mechanism necessary to the specified rollout.",
               "confidence": "high"
             }
           ]

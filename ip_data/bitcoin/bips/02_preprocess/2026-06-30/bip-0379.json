@@ -859,77 +859,79 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:44:19Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:19:04Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
+            {
+              "target": "bips:16",
+              "type": "references",
+              "evidence": "P2SH and bare scripts are excluded from this specification.",
+              "reason": "The proposal mentions P2SH only to exclude it from scope. P2SH is the mechanism canonically specified by BIP 16, and Miniscript does not depend on it here.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:65",
+              "type": "depends_on",
+              "evidence": "nLockTime ≥ n (and compatible)                           | `after(n)`                   | `<n> CHECKLOCKTIMEVERIFY`",
+              "reason": "The `after(n)` fragment is implemented using CHECKLOCKTIMEVERIFY, whose consensus behavior is defined by BIP 65; the fragment cannot enforce its stated absolute timelock without that opcode.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:68",
+              "type": "depends_on",
+              "evidence": "nSequence ≥ n (and compatible)                           | `older(n)`                    | `<n> CHECKSEQUENCEVERIFY`",
+              "reason": "The `older(n)` fragment relies on relative-lock-time semantics encoded in nSequence, which are canonically defined by BIP 68.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:112",
+              "type": "depends_on",
+              "evidence": "nSequence ≥ n (and compatible)                           | `older(n)`                    | `<n> CHECKSEQUENCEVERIFY`",
+              "reason": "The `older(n)` fragment is implemented using CHECKSEQUENCEVERIFY, whose consensus behavior is defined by BIP 112; the fragment cannot enforce its stated relative timelock without that opcode.",
+              "confidence": "high"
+            },
             {
               "target": "bips:141",
+              "type": "depends_on",
               "evidence": "These specifications apply to P2WSH ([BIP 141](bip-0141.mediawiki))",
-              "reason": "The proposal explicitly scopes its specification to P2WSH scripts, so understanding and implementing the P2WSH variant of Miniscript materially relies on the script form and witness rules defined by BIP 141.",
+              "reason": "P2WSH is one of the two script environments for which the proposal defines Miniscript, so its operation in that context requires the P2WSH witness and validation rules defined by BIP 141.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:152",
+              "type": "references",
+              "evidence": "malleability can be exploited to add roundtrips to BIP152 block propagation",
+              "reason": "BIP 152 is cited only while discussing a possible consequence of transaction malleability; its compact-block protocol is not required by Miniscript.",
               "confidence": "high"
             },
             {
               "target": "bips:342",
+              "type": "depends_on",
               "evidence": "These specifications apply to P2WSH ([BIP 141](bip-0141.mediawiki)) and Tapscript ([BIP 342](bip-0342.mediawiki)) scripts",
-              "reason": "The proposal explicitly applies its specification to Tapscript scripts, and includes Tapscript-specific fragments and rules such as `multi_a`, so it materially relies on the Tapscript semantics introduced by BIP 342.",
+              "reason": "Tapscript is one of the two script environments directly targeted by the specification, and Tapscript-specific fragments and typing behavior require the execution rules defined by BIP 342.",
               "confidence": "high"
             },
             {
               "target": "bips:380",
-              "evidence": "Key expressions are specified in\n[BIP 380](bip-0380.mediawiki#key-expressions).",
-              "reason": "Miniscript reuses BIP 380 key expressions as its key syntax, so implementing Miniscript requires the key-expression semantics defined there.",
+              "type": "depends_on",
+              "evidence": "Key expressions are specified in [BIP 380](bip-0380.mediawiki#key-expressions).",
+              "reason": "Miniscript fragments containing keys use the key-expression syntax and semantics specified by BIP 380, making that format necessary to parse and resolve those expressions.",
               "confidence": "high"
             },
             {
               "target": "bips:382",
-              "evidence": "Miniscript fragments are expected to be used in [BIP 382](bip-0382.mediawiki) `wsh()` descriptors",
-              "reason": "The proposal is designed to be embedded in `wsh()` descriptors from BIP 382, and it further states that BIP 382's key-expression restrictions apply to Miniscript in P2WSH contexts, making BIP 382 a substantive descriptor-format dependency.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:386",
-              "evidence": "and [BIP 386](bip-0386.mediawiki) `tr()` descriptors",
-              "reason": "The proposal is designed to be embedded in `tr()` descriptors from BIP 386, and it states that BIP 386's key-expression restrictions apply to Miniscript in P2TR contexts, making BIP 386 a substantive descriptor-format dependency.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:12:38Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:141",
-              "evidence": "These specifications apply to P2WSH ([BIP 141](bip-0141.mediawiki))",
-              "reason": "The proposal explicitly scopes Miniscript semantics and analysis to P2WSH scripts, relying on the script and witness context defined by BIP 141.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:342",
-              "evidence": "Tapscript ([BIP 342](bip-0342.mediawiki)) scripts",
-              "reason": "The proposal explicitly specifies Miniscript for Tapscript and includes Tapscript-only fragments and rule variations, relying on BIP 342's script semantics.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:380",
-              "evidence": "Key expressions are specified in\n[BIP 380](bip-0380.mediawiki#key-expressions)",
-              "reason": "Miniscript key syntax and interpretation are delegated to the key-expression rules specified by BIP 380, and the proposal also frames Miniscript as an extension of BIP 380 descriptors.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:382",
+              "type": "depends_on",
               "evidence": "BIP 382's key expression restrictions apply to Miniscript in P2WSH contexts",
-              "reason": "The proposal makes BIP 382 descriptor-context restrictions normative for Miniscript used in P2WSH, so implementation and validation depend on BIP 382.",
+              "reason": "The proposal expressly incorporates BIP 382's key-expression restrictions for P2WSH Miniscript and expects Miniscript to be embedded in its `wsh()` descriptors.",
               "confidence": "high"
             },
             {
               "target": "bips:386",
-              "evidence": "BIP 386's key expression restrictions apply to Miniscript in P2TR contexts",
-              "reason": "The proposal makes BIP 386 descriptor-context restrictions normative for Miniscript used in P2TR, so implementation and validation depend on BIP 386.",
+              "type": "depends_on",
+              "evidence": "BIP 386's key expression restrictions apply to Miniscript in P2TR contexts.",
+              "reason": "The proposal expressly incorporates BIP 386's key-expression restrictions for P2TR Miniscript and expects Miniscript to be embedded in its `tr()` descriptors.",
               "confidence": "high"
             }
           ]

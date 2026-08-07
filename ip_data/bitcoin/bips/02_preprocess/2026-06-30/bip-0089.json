@@ -831,65 +831,58 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:41:34Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:03:47Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
-              "target": "bips:32",
-              "evidence": "Run the BIP32 non-hardened derivation ''CKDpub'' on ''E'' with child index ''i'', yielding the child extended key ''P_child'' and its scalar tweak ''δ'' (the parse_256(''I_L'') term from BIP32).",
-              "reason": "The proposal's core tweak computation explicitly reuses BIP32 non-hardened CKDpub derivation semantics and its tweak scalar term, and the setup and derivation constraints are defined around withholding BIP32 chain codes.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:327",
-              "evidence": "The notation, algorithmic patterns, and test-vector style are adapted from [BIP‑327 (MuSig2)]",
-              "reason": "The blinded-signing section states that its notation and algorithmic structure are adapted from BIP327's MuSig2 specification, indicating substantive reuse of specification patterns for nonce/challenge/signature flow rather than a mere mention.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:340",
-              "evidence": "Both modes produce valid BIP340 signatures.",
-              "reason": "The signing procedures are specified to output standard BIP340 Schnorr signatures, and the blinded-signing algorithms explicitly use the BIP340 challenge hash and signature validity semantics.",
+              "target": "bips:3",
+              "type": "references",
+              "evidence": "Fix acknowledgments spelling, BIP3 formatting",
+              "reason": "The changelog explicitly mentions BIP 3's formatting requirements without making them part of CCD's functional mechanism.",
               "confidence": "high"
             },
             {
-              "target": "bips:341",
-              "evidence": "Consequently the protocol is compatible with [https://github.com/bitcoin/bips/blob/master/bip-0341.mediawiki BIP341].",
-              "reason": "The blinded-signing design explicitly supports X-only tweaks 'e.g. Tapscript' and states compatibility with BIP341; this relies on the Taproot key-tweaking/X-only signing context introduced there.",
-              "confidence": "medium"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:58:40Z",
-          "status": "success",
-          "dependencies": [
-            {
               "target": "bips:32",
-              "evidence": "Run the BIP32 non-hardened derivation ''CKDpub''",
-              "reason": "CCD’s core tweak calculation directly uses BIP32 non-hardened public child derivation, including the CKDpub scalar tweak term, so implementation depends on BIP32 derivation semantics.",
+              "type": "depends_on",
+              "evidence": "Run the BIP32 non-hardened derivation ''CKDpub'' on ''E'' with child index ''i'', yielding the child extended key ''P<sub>child</sub>'' and its scalar tweak ''δ'' (the parse<sub>256</sub>(''I<sub>L</sub>'') term from BIP32).",
+              "reason": "CCD's tweak calculation directly requires BIP 32's non-hardened public-child derivation and scalar-tweak rules.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:174",
+              "type": "references",
+              "evidence": "implementers MAY use PSBT proprietary keys, RPC payloads, or bespoke messages",
+              "reason": "PSBT canonically refers to the format defined by BIP 174, but it is presented as one optional transport among several and is not required by CCD.",
               "confidence": "high"
             },
             {
               "target": "bips:327",
-              "evidence": "algorithmic patterns, and test‑vector style are adapted from [BIP‑327 (MuSig2)]",
-              "reason": "The blind-signing section explicitly adapts algorithmic patterns from BIP327, indicating substantive reuse of that proposal’s protocol structure rather than a mere citation.",
-              "confidence": "medium"
+              "type": "references",
+              "evidence": "The notation, algorithmic patterns, and test‑vector style are adapted from [BIP‑327 (MuSig2)]",
+              "reason": "The proposal credits BIP 327 as a source for notation, patterns, and test-vector style, while specifying its own complete signing algorithms rather than requiring MuSig2.",
+              "confidence": "high"
             },
             {
               "target": "bips:340",
+              "type": "depends_on",
               "evidence": "Both modes produce valid BIP340 signatures.",
-              "reason": "The signing outputs, blind-signing challenge construction, and final signature format are designed to produce and verify BIP340 Schnorr signatures.",
+              "reason": "The specified signing modes are intended to produce signatures conforming to BIP 340, and the blinded protocol also uses its signature and challenge construction.",
               "confidence": "high"
             },
             {
               "target": "bips:341",
+              "type": "references",
               "evidence": "Consequently the protocol is compatible with [https://github.com/bitcoin/bips/blob/master/bip-0341.mediawiki BIP341].",
-              "reason": "The proposal’s blinded mode is designed around compatibility with BIP341-style X-only tweaked keys, not merely mentioning BIP341 historically.",
+              "reason": "The proposal states compatibility with BIP 341 but does not require Taproot for CCD operation.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:342",
+              "type": "references",
+              "evidence": "X‑only (e.g. Tapscript) tweaks",
+              "reason": "Tapscript is canonically defined by BIP 342 and is mentioned only as an example of an X-only tweak context, not as a required part of CCD.",
               "confidence": "medium"
             }
           ]

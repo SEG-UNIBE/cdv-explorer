@@ -614,29 +614,30 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:41:19Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:02:13Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
-              "evidence": "based on the algorithm described in BIP32",
-              "reason": "The proposal explicitly defines its key-derivation scheme in terms of the hierarchical deterministic derivation algorithm from BIP32, and its specification repeatedly constrains and modifies how BIP32 child indices and nodes are used.",
+              "type": "depends_on",
+              "evidence": "key derivation that allows for dynamic creation of key hierarchies based on the algorithm described in BIP32",
+              "reason": "The proposal's dynamic key-hierarchy scheme is explicitly built on the hierarchical deterministic derivation algorithm defined by BIP32.",
               "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:57:38Z",
-          "status": "success",
-          "dependencies": [
+            },
             {
-              "target": "bips:32",
-              "evidence": "based on the algorithm described in BIP32",
-              "reason": "The proposal defines its key-derivation hierarchy by reusing BIP32's hierarchical deterministic derivation algorithm and path/index concepts.",
+              "target": "bips:44",
+              "type": "references",
+              "evidence": "Several proposals have been made to try to standardize a structure for hierarchical deterministic wallets for the sake of interoperability (reference BIP32, BIP44, BIP45).",
+              "reason": "BIP44 is cited as an earlier wallet-structure standardization proposal for motivational context, but its specific structure is not required by the scheme defined here.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:45",
+              "type": "references",
+              "evidence": "Several proposals have been made to try to standardize a structure for hierarchical deterministic wallets for the sake of interoperability (reference BIP32, BIP44, BIP45).",
+              "reason": "BIP45 is cited as an earlier wallet-structure standardization proposal for motivational context, without the current proposal relying on its rules or format.",
               "confidence": "high"
             }
           ]

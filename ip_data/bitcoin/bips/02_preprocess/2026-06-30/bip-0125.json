@@ -701,36 +701,24 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:42:21Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:07:21Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:68",
-              "evidence": "opt-in full-RBF is compatible with consensus-enforced locktime as provided in the Bitcoin 0.1 implementation, BIP68",
-              "reason": "The proposal's explicit signaling rule is designed around nSequence semantics and specifically states compatibility with the relative lock-time mechanism defined by BIP68, which materially affects how the same field is interpreted.",
-              "confidence": "medium"
+              "type": "references",
+              "evidence": "opt-in full-RBF is compatible with consensus-enforced locktime as provided in the Bitcoin 0.1 implementation, BIP68 (Relative lock-time using consensus-enforced sequence numbers)",
+              "reason": "The proposal discusses compatibility with BIP68's relative lock-time rules but does not require those rules for opt-in full-RBF to operate.",
+              "confidence": "high"
             },
             {
               "target": "bips:112",
-              "evidence": "and BIP112 (CHECKSEQUENCEVERIFY)",
-              "reason": "The proposal is designed to coexist with CHECKSEQUENCEVERIFY semantics, and the text explicitly identifies compatibility with BIP112's sequence-based spending rules as a relevant technical constraint on its nSequence signaling mechanism.",
-              "confidence": "medium"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:01:47Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:61",
-              "evidence": "makes use of P2P protocol reject messages for rejected replacements",
-              "reason": "The proposal reuses the P2P reject-message mechanism so clients can learn whether replacements were accepted. That mechanism is the reject message introduced by BIP61.",
-              "confidence": "medium"
+              "type": "references",
+              "evidence": "opt-in full-RBF is compatible with consensus-enforced locktime as provided in the Bitcoin 0.1 implementation, BIP68 (Relative lock-time using consensus-enforced sequence numbers), and BIP112 (CHECKSEQUENCEVERIFY)",
+              "reason": "The proposal mentions BIP112 to state that opt-in full-RBF is compatible with CHECKSEQUENCEVERIFY, not that its replacement policy depends on it.",
+              "confidence": "high"
             }
           ]
         }

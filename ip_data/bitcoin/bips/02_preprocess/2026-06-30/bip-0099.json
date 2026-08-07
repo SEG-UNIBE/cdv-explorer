@@ -858,47 +858,65 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:41:45Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:04:35Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:9",
-              "evidence": "it will required the version bits proposal",
-              "reason": "The proposal says its complementary concrete code proposal 'will required the version bits proposal' to avoid blocking other hardforks. The named 'version bits' mechanism resolves to BIP9 from the immediately cited versionbits reference, and the text states explicit implementation reliance on that deployment mechanism.",
+              "type": "depends_on",
+              "evidence": "The deployment of the proposal should not block any other potential hardforks (thus it will required the version bits proposal<ref name=\"versionbits\"/> to be implemented).",
+              "reason": "The concrete deployment explicitly requires implementation of the version-bits proposal. The referenced version-bits citation resolves to BIP 9 through the proposal's earlier BIP 9 link.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:12",
+              "type": "references",
+              "evidence": "There were competing proposals, but BIP12 had clear disadvantage",
+              "reason": "BIP 12 is discussed as a competing historical P2SH proposal, without functional reliance on it.",
               "confidence": "high"
             },
             {
               "target": "bips:16",
+              "type": "references",
               "evidence": "The first precedent of a softfork was the introduction of P2SH documented in BIP16.",
-              "reason": "The proposal's taxonomy and discussion of uncontroversial softfork deployment explicitly relies on P2SH as its first concrete softfork precedent, using the mechanism introduced by BIP16 as a substantive example for evaluating deployment paths.",
-              "confidence": "medium"
+              "reason": "The proposal cites BIP 16 as the historical precedent for softfork deployment and does not require its P2SH rules.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:17",
+              "type": "references",
+              "evidence": "BIP17 was considered a less tested but functionally equivalent version by most of the reviewers.",
+              "reason": "BIP 17 is compared historically with BIP 16 rather than reused by the current proposal.",
+              "confidence": "high"
             },
             {
               "target": "bips:30",
+              "type": "references",
               "evidence": "that's why the voting mechanism and first used for BIP30 and BIP66.",
-              "reason": "The proposal's analysis of softfork deployment mechanisms substantively relies on prior miner-voting activation practice, naming BIP30 as one of the first proposals using that mechanism as precedent for the deployment approach under discussion.",
-              "confidence": "medium"
+              "reason": "BIP 30 is named as an earlier use of the miners' voting mechanism, providing historical background rather than a required specification.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:50",
+              "type": "references",
+              "evidence": "There is a precedent of an accidental consensus fork at height 225430. Without entering into much detail (see <ref name=\"bip-50\">https://github.com/bitcoin/bips/blob/master/bip-0050.mediawiki</ref>)",
+              "reason": "The proposal cites BIP 50 as historical documentation of the March 2013 accidental chain fork; its mechanism does not rely on BIP 50.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:65",
+              "type": "references",
+              "evidence": "BIP65 is expected to be deployed with the improved mechanism.",
+              "reason": "BIP 65 is mentioned as an anticipated user of the improved deployment mechanism, but the current proposal does not require BIP 65.",
+              "confidence": "high"
             },
             {
               "target": "bips:66",
-              "evidence": "that's why the voting mechanism and first used for BIP30 and BIP66.",
-              "reason": "The proposal's deployment taxonomy and examples materially rely on BIP66 both as a precedent for the miner-voting activation mechanism and as a concrete consensus change used in the proposal's hardfork example discussion.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:59:10Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:9",
-              "evidence": "it\nwill required the version bits proposal<ref name=\"versionbits\"/> to be implemented",
-              "reason": "The proposal states that its concrete hardfork deployment requires the version-bits proposal. The reference definition points to bip-0009.mediawiki, resolving the named version bits proposal to BIP 9.",
+              "type": "references",
+              "evidence": "Let's imagine BIP66 had a crypto backdoor",
+              "reason": "BIP 66 is used in a hypothetical example illustrating an anti-cabal hardfork, not as a required part of the proposal's mechanism.",
               "confidence": "high"
             }
           ]

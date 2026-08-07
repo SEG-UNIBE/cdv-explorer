@@ -664,65 +664,51 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:40:22Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:00:01Z",
           "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:32",
-              "evidence": "based on a BIP 32 root account",
-              "reason": "The proposal defines its address derivation starting from a BIP 32 HD root account, so implementing it materially depends on BIP 32's hierarchical deterministic key derivation.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:44",
-              "evidence": "uses the same account-structure as defined in BIP 44",
-              "reason": "The proposal directly reuses BIP 44's account hierarchy and path levels, changing only the purpose value, so its derivation scheme depends on BIP 44's structure and semantics.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:141",
-              "evidence": "we use the encapsulation defined in BIP 141",
-              "reason": "The proposal's address derivation is built around the P2WPKH-nested-in-P2SH witness serialization and script construction defined in BIP 141.",
-              "confidence": "low"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:55:52Z",
-          "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:16",
-              "evidence": "P2WPKH-nested-in-BIP16-P2SH",
-              "reason": "The proposal is designed around P2SH-wrapped witness outputs; P2SH is the mechanism defined by BIP16, and nested P2SH compatibility is material to the address/output format used here.",
+              "type": "depends_on",
+              "evidence": "To derive the P2SH address from the above calculated public key",
+              "reason": "The specified address construction requires Pay-to-Script-Hash semantics; P2SH is the mechanism canonically defined by BIP 16.",
               "confidence": "medium"
             },
             {
               "target": "bips:32",
-              "evidence": "based on a [[bip-0032.mediawiki|BIP 32]] root account",
-              "reason": "The proposal derives deterministic wallet addresses from a BIP32 root account and uses BIP32 HD wallet derivation/extended-key concepts.",
+              "type": "depends_on",
+              "evidence": "derive multiple deterministic addresses based on a [[bip-0032.mediawiki|BIP 32]] root account",
+              "reason": "The derivation scheme requires the hierarchical deterministic root-account mechanism defined by BIP 32.",
               "confidence": "high"
             },
             {
               "target": "bips:43",
-              "evidence": "uses a different purpose value to indicate the different transaction\nserialization method",
-              "reason": "The proposal assigns a purpose value for its derivation scheme; the purpose-field convention for deterministic wallets is introduced by BIP43, so implementing the path semantics depends on that convention.",
-              "confidence": "medium"
+              "type": "references",
+              "evidence": "[[bip-0043.mediawiki|BIP43 - Purpose Field for Deterministic Wallets]]",
+              "reason": "BIP 43 appears as a visible reference, but the proposal does not explicitly require its rules independently of the BIP 44 hierarchy it adopts.",
+              "confidence": "high"
             },
             {
               "target": "bips:44",
-              "evidence": "uses the same account-structure as defined in\n[[bip-0044.mediawiki|BIP 44]]",
-              "reason": "The proposal reuses BIP44's multi-account derivation hierarchy and changes only the purpose value while keeping the remaining levels as defined by BIP44.",
+              "type": "depends_on",
+              "evidence": "this BIP uses the same account-structure as defined in [[bip-0044.mediawiki|BIP 44]]",
+              "reason": "The proposal directly adopts BIP 44's account hierarchy and relies on its definitions for all path levels other than purpose.",
               "confidence": "high"
             },
             {
               "target": "bips:141",
+              "type": "depends_on",
               "evidence": "we use the encapsulation defined in [[bip-0141.mediawiki#p2wpkh-nested-in-bip16-p2sh|BIP 141]]",
-              "reason": "The proposal's address derivation relies on BIP141's P2WPKH-nested-in-P2SH segregated-witness serialization and encapsulation format.",
+              "reason": "Address derivation requires the nested P2WPKH-in-P2SH encapsulation defined by BIP 141.",
+              "confidence": "high"
+            },
+            {
+              "target": "slips:132",
+              "type": "references",
+              "evidence": "Additional registered version bytes are listed in [[https://github.com/satoshilabs/slips/blob/master/slip-0132.md|SLIP-0132]]",
+              "reason": "The proposal cites SLIP-0132 as a list of additional registered version bytes, while defining its own required version bytes directly.",
               "confidence": "high"
             }
           ]

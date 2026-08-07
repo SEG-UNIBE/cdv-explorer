@@ -511,22 +511,16 @@
       "body_extracted_regex": [],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:40:54Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:01:23Z",
           "status": "success",
-          "dependencies": []
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:56:53Z",
-          "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:70",
-              "evidence": "PaymentRequest || application/bitcoin-paymentrequest\n|-\n| Payment || application/bitcoin-payment\n|-\n| PaymentACK || application/bitcoin-paymentack",
-              "reason": "The proposal assigns MIME media types to the PaymentRequest, Payment, and PaymentACK message formats. Those Bitcoin payment protocol message types are defined by BIP 70, so implementing or adopting these media types depends on the BIP 70 message definitions.",
+              "type": "depends_on",
+              "evidence": "This BIP defines a MIME (RFC 2046) Media Type for Bitcoin payment request messages.",
+              "reason": "The media types are defined specifically for the Bitcoin payment-protocol messages—PaymentRequest, Payment, and PaymentACK—whose formats BIP 70 defines. The proposal therefore requires BIP 70's message concepts to provide the content identified by these MIME types.",
               "confidence": "medium"
             }
           ]

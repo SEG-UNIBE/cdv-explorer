@@ -870,53 +870,30 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:40:50Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:01:10Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:9",
+              "type": "depends_on",
               "evidence": "This BIP is to be deployed by \"versionbits\" BIP9 using bit 0.",
-              "reason": "The proposal's activation mechanism is explicitly defined by BIP9 versionbits, so adopting the proposal on the network relies on BIP9's deployment rules.",
+              "reason": "The proposal specifies BIP 9's versionbits mechanism as the required method for activating its consensus rules.",
               "confidence": "high"
             },
             {
               "target": "bips:112",
-              "evidence": "The flag (1<<22) is the highest order bit in a 3-byte signed integer for use in bitcoin scripts as a 3-byte PUSHDATA with OP_CHECKSEQUENCEVERIFY (BIP 112).",
-              "reason": "BIP68's sequence-number encoding is explicitly designed to fit and be used with OP_CHECKSEQUENCEVERIFY from BIP112, and the deployment section requires simultaneous deployment with BIP112, showing direct technical co-design.",
+              "type": "depends_on",
+              "evidence": "This BIP must be deployed simultaneously with BIP112 and BIP113 using the same deployment mechanism.",
+              "reason": "The proposal expressly requires coordinated deployment with BIP 112, making that proposal necessary to the prescribed activation plan.",
               "confidence": "high"
             },
             {
               "target": "bips:113",
+              "type": "depends_on",
               "evidence": "All references to median-time-past (MTP) are as defined by BIP113.",
-              "reason": "The proposal normatively adopts BIP113's median-time-past definition for its time-based relative lock-time semantics, so understanding and implementing BIP68's validation rules depends on that definition.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:56:38Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:9",
-              "evidence": "deployed by \"versionbits\" BIP9 using bit 0",
-              "reason": "The proposal adopts BIP9's versionbits deployment mechanism and specifies a bit within that activation framework.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:112",
-              "evidence": "must be deployed simultaneously with BIP112",
-              "reason": "The proposal normatively couples its deployment workflow with BIP112, and its sequence-number encoding is designed for use with OP_CHECKSEQUENCEVERIFY defined there.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:113",
-              "evidence": "All references to median-time-past (MTP) are as defined by BIP113.",
-              "reason": "The proposal's time-based relative lock-time semantics explicitly rely on BIP113's definition of median-time-past.",
+              "reason": "The time-based relative-lock mechanism relies on the median-time-past definition supplied by BIP 113; the text also mandates simultaneous deployment with it.",
               "confidence": "high"
             }
           ]

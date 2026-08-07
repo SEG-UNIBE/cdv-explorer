@@ -804,34 +804,58 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:44:13Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:19:27Z",
           "status": "success",
-          "dependencies": []
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:13:28Z",
-          "status": "success",
-          "dependencies": [
+          "findings": [
             {
-              "target": "bips:352",
-              "evidence": "Compute the PSBT_OUT_SCRIPT using the procedure in [https://github.com/bitcoin/bips/blob/master/bip-0352.mediawiki#creating-outputs BIP352]",
-              "reason": "The proposal reuses BIP352 silent-payment output derivation and adapts it to PSBT fields.",
+              "target": "bips:16",
+              "type": "references",
+              "evidence": "only eligible inputs contribute shares (P2SH excluded)",
+              "reason": "The test vectors discuss P2SH, the output mechanism canonically specified by BIP 16, as an excluded input category without making BIP 16 part of the proposal's core mechanism.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:32",
+              "type": "references",
+              "evidence": "one P2WPKH input / two mixed outputs - labeled sp output and BIP 32 change",
+              "reason": "BIP 32 is mentioned in a test-vector description for change handling, but its derivation scheme is not required by the core silent-payment PSBT mechanism.",
               "confidence": "high"
             },
             {
+              "target": "bips:141",
+              "type": "depends_on",
+              "evidence": "Inputs spending an output with script using Segwit version > 1 may only be added if there are no outputs with PSBT_OUT_SP_V0_INFO set.",
+              "reason": "This normative input rule requires the witness-program versioning concept introduced by BIP 141 to recognize Segwit scripts and their versions; the target number is inferred from that explicitly named mechanism.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:341",
+              "type": "references",
+              "evidence": "P2TR input with NUMS internal key cannot derive sp output",
+              "reason": "The test vectors discuss a P2TR input and its internal key; P2TR is the Taproot output type defined by BIP 341, but the proposal is not generally dependent on Taproot inputs.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:352",
+              "type": "depends_on",
+              "evidence": "Compute the PSBT_OUT_SCRIPT using the procedure in BIP352",
+              "reason": "Silent-payment output scripts are explicitly computed using BIP 352's procedure, making that procedure necessary to the proposal's operation.",
+              "confidence": "low"
+            },
+            {
               "target": "bips:370",
-              "evidence": "additional fields and updated role responsibilities for BIP370 PSBTv2",
-              "reason": "The proposal extends PSBTv2 by adding fields and changing role requirements, so implementing it depends on the PSBTv2 format and workflow defined by BIP370.",
+              "type": "depends_on",
+              "evidence": "This document proposes additional fields and updated role responsibilities for BIP370 PSBTv2",
+              "reason": "The proposal extends PSBTv2 with new fields and role rules, so its format and operation require the PSBTv2 specification defined by BIP 370.",
               "confidence": "high"
             },
             {
               "target": "bips:374",
-              "evidence": "A BIP374 DLEQ proof computed for the matching ECDH share.",
-              "reason": "The proposal requires BIP374 DLEQ proofs for its ECDH share fields and verification workflow.",
+              "type": "depends_on",
+              "evidence": "Compute the DLEQ proof for ''C'' using [https://github.com/bitcoin/bips/blob/master/bip-0374.mediawiki#dleq-proof-generation BIP374 GenerateProof]",
+              "reason": "The proposal's required proof fields and verification workflow use the DLEQ proof algorithms defined by BIP 374.",
               "confidence": "high"
             }
           ]

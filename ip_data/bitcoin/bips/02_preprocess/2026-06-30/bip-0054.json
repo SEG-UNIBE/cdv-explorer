@@ -911,60 +911,52 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:40:36Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:01:01Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:16",
-              "evidence": "The accounting is the same as for [bip-0016][BIP16 specs]",
-              "reason": "The proposal reuses BIP16’s signature-operation counting semantics, including separate accounting across scriptSig, scriptPubKey, and P2SH redeemScript, as part of its new transaction validity rule.",
+              "type": "depends_on",
+              "evidence": "The accounting is the same as for [bip-0016][BIP16 specs], evaluating the scriptSig, scriptPubKey, and P2SH redeemScript separately",
+              "reason": "The transaction signature-operation limit directly adopts BIP 16's accounting rules, including its treatment of P2SH redeem scripts, so implementing the limit requires those rules.",
               "confidence": "high"
             },
             {
               "target": "bips:30",
-              "evidence": "avoid duplicate transactions without [bip-0030][BIP30] validation",
-              "reason": "The proposal’s coinbase uniqueness rule is explicitly designed to eliminate the need for BIP30 duplicate-transaction validation, so understanding its motivation and effect materially depends on the validation rule defined by BIP30.",
-              "confidence": "high"
+              "type": "supersedes",
+              "evidence": "Enforcing that new coinbase transactions are different from the early [bip-0034][BIP34] violations makes it possible to get rid of [bip-0030][BIP30] validation forever.",
+              "reason": "The proposal states that its new coinbase rule makes BIP 30 duplicate-transaction validation permanently unnecessary for blocks after activation, prospectively obsoleting that validation rule.",
+              "confidence": "medium"
             },
             {
               "target": "bips:34",
-              "evidence": "Since [bip-0034][BIP34] activation, explicit [bip-0030][BIP30] validation is not necessary",
-              "reason": "The proposal’s replacement for duplicate-coinbase protection is defined around assumptions introduced by BIP34 activation and specifically distinguishes itself from early BIP34 violations; its rationale and safety conditions materially rely on BIP34’s coinbase-height regime.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:56:20Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:16",
-              "evidence": "The accounting is the\nsame as for [bip-0016][BIP16 specs]",
-              "reason": "The proposal explicitly reuses BIP16's signature-operation accounting rules, including treatment of P2SH redeemScripts, for its new per-transaction sigops limit.",
+              "type": "references",
+              "evidence": "Using it to enforce that new coinbase transactions differ from early [bip-0034][BIP34] violations",
+              "reason": "BIP 34 is discussed to identify historical coinbase transactions from which new coinbases must differ; the proposal does not reuse BIP 34's height-encoding mechanism.",
               "confidence": "high"
             },
             {
-              "target": "bips:30",
-              "evidence": "avoid duplicate transactions without\n[bip-0030][BIP30] validation",
-              "reason": "The proposal is designed to make the BIP30 duplicate-transaction validation check unnecessary, so evaluating the coinbase uniqueness rule depends on the semantics of the BIP30 check being replaced/obviated.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:34",
-              "evidence": "Enforcing that new coinbase transactions are different from the early [bip-0034][BIP34] violations",
-              "reason": "The proposal's coinbase nLockTime rule is designed around historical BIP34 coinbase-height violations to ensure new coinbase transactions cannot duplicate them, so understanding the duplicate-prevention mechanism materially depends on BIP34's coinbase-height scheme and activation history.",
+              "target": "bips:94",
+              "type": "references",
+              "evidence": "this approach has been adopted for [testnet4][BIP94 timewarp]",
+              "reason": "BIP 94 is cited as prior adoption of a related timewarp mitigation on testnet4, while this proposal independently specifies its own timestamp restrictions and grace period.",
               "confidence": "high"
             },
             {
               "target": "bips:141",
+              "type": "depends_on",
               "evidence": "Transactions whose witness-stripped serialized size is exactly 64 bytes are invalid.",
-              "reason": "The proposal defines a consensus rule using witness-stripped transaction serialization. That concept relies on the segregated-witness transaction format and witness-vs-base serialization semantics introduced by BIP141.",
+              "reason": "Applying this validity rule requires the witness-stripped transaction serialization defined by BIP 141; the target is inferred from that specifically named SegWit serialization concept.",
               "confidence": "medium"
+            },
+            {
+              "target": "bips:182",
+              "type": "references",
+              "evidence": "preclude alternative full node designs (such as [bip-0182][BIP182] Utreexo)",
+              "reason": "BIP 182 is mentioned only as an example of an alternative full-node design that resumed BIP 30 validation could hinder; BIP 54 does not require Utreexo.",
+              "confidence": "high"
             }
           ]
         }

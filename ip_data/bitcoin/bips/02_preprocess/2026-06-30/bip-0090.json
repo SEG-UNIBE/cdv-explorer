@@ -622,53 +622,37 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:41:35Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:03:27Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
-              "target": "bips:34",
-              "evidence": "replace the test which governs enforcement of BIP 34",
-              "reason": "This proposal directly modifies how BIP 34 is enforced by replacing its original activation trigger logic with a fixed-height rule, and also retains BIP 34's coinbase-height enforcement semantics after that height.",
-              "confidence": "low"
+              "target": "bips:9",
+              "type": "references",
+              "evidence": "this mechanism for code deployments have been deprecated in favor of BIP 9 deployments, which offer several advantages",
+              "reason": "BIP 9 is cited as the preferred deployment mechanism motivating removal of the older signaling logic, but the fixed-height mechanism specified here does not require BIP 9.",
+              "confidence": "high"
             },
             {
-              "target": "bips:65",
-              "evidence": "replace the test which governs enforcement of BIP 34, BIP 65, and BIP 66",
-              "reason": "This proposal directly changes the activation/enforcement mechanism for BIP 65 by substituting a stored activation height for the prior version-signaling trigger while continuing to enforce CHECKLOCKTIMEVERIFY after that height.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:66",
-              "evidence": "replace the test which governs enforcement of BIP 34, BIP 65, and BIP 66",
-              "reason": "This proposal directly changes the activation/enforcement mechanism for BIP 66 by substituting a stored activation height for the prior version-signaling trigger while continuing to enforce the DERSIG rule after that height.",
-              "confidence": "low"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:58:23Z",
-          "status": "success",
-          "dependencies": [
-            {
               "target": "bips:34",
-              "evidence": "if (nHeight >= consensusParams.BIP34Height)",
-              "reason": "The proposal changes validation to enforce BIP 34's coinbase-height rule by comparing block height to a cached BIP34 activation height, replacing BIP 34's original activation lookback logic.",
+              "type": "depends_on",
+              "evidence": "replacing the test which governs enforcement of BIP 34, BIP 65, and BIP 66 with simple height checks",
+              "reason": "The proposal directly changes how BIP 34's consensus rule is activated and enforced, replacing its signaling-based trigger with a fixed-height check while retaining the underlying rule.",
               "confidence": "high"
             },
             {
               "target": "bips:65",
-              "evidence": "Start enforcing CHECKLOCKTIMEVERIFY (BIP65) rule",
-              "reason": "The proposal changes validation to enforce BIP 65's CHECKLOCKTIMEVERIFY rule by cached activation height rather than the prior activation mechanism.",
+              "type": "depends_on",
+              "evidence": "replacing the test which governs enforcement of BIP 34, BIP 65, and BIP 66 with simple height checks",
+              "reason": "The proposal's mechanism directly governs activation and enforcement of BIP 65's CHECKLOCKTIMEVERIFY rule, replacing its prior trigger with a fixed-height check.",
               "confidence": "high"
             },
             {
               "target": "bips:66",
-              "evidence": "Start enforcing the DERSIG (BIP66) rule",
-              "reason": "The proposal changes validation to enforce BIP 66's strict DER signature rule by cached activation height rather than the prior activation mechanism.",
+              "type": "depends_on",
+              "evidence": "replacing the test which governs enforcement of BIP 34, BIP 65, and BIP 66 with simple height checks",
+              "reason": "The proposal's mechanism directly governs activation and enforcement of BIP 66's strict-DER-signature rule, replacing its prior trigger with a fixed-height check.",
               "confidence": "high"
             }
           ]

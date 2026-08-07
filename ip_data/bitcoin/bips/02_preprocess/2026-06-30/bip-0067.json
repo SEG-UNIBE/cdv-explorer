@@ -756,30 +756,31 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:40:48Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:01:01Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
+            {
+              "target": "bips:11",
+              "type": "references",
+              "evidence": "Pay-to-script-hash (BIP-0011) is a transaction type that allows funding of arbitrary scripts",
+              "reason": "The target is cited in the motivation while describing transaction background; the proposal does not state that its canonical key-ordering mechanism requires rules from BIP 11.",
+              "confidence": "low"
+            },
             {
               "target": "bips:16",
+              "type": "depends_on",
               "evidence": "Hash the redeem script according to BIP-0016 to get the P2SH address.",
-              "reason": "The proposal defines canonical multisig redeem scripts specifically for P2SH and instructs deriving the address using the hashing rule from BIP-0016, so implementing or using this standard materially depends on BIP-0016's P2SH address semantics.",
+              "reason": "Generating the canonical P2SH address explicitly requires the redeem-script hashing and address construction rules defined by BIP 16.",
               "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:56:58Z",
-          "status": "success",
-          "dependencies": [
+            },
             {
-              "target": "bips:16",
-              "evidence": "Hash the redeem script according to BIP-0016 to get the P2SH address.",
-              "reason": "The proposal relies on BIP16's P2SH redeem-script hashing/address construction to derive the canonical address after sorting keys.",
-              "confidence": "high"
+              "target": "bips:45",
+              "type": "references",
+              "evidence": "BIP-0045 - Structure for Deterministic P2SH Multisignature Wallets",
+              "reason": "BIP 45 appears in the visible usage and implementations list as a related wallet structure, without the current proposal relying on it.",
+              "confidence": "low"
             }
           ]
         }

@@ -1035,71 +1035,51 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:43:22Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:13:24Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
-              "target": "bips:174",
-              "evidence": "The to_spend transaction is represented as a finalized PSBT instead of a raw transaction",
-              "reason": "BIP 322's Proof of Funds and PSBT-based signing workflows directly rely on the PSBT format, fields, decoding, and finalization procedures defined by BIP174.",
-              "confidence": "low"
+              "target": "bips:16",
+              "type": "references",
+              "evidence": "<code>P2PKH</code>, <code>P2SH-P2WPKH</code><sup>1</sup>, <code>P2WPKH</code><sup>1</sup>",
+              "reason": "The compatibility table mentions P2SH-P2WPKH, whose P2SH component is canonically defined by BIP16, but the proposal does not specifically rely on BIP16 for its core signing construction.",
+              "confidence": "medium"
             },
-            {
-              "target": "bips:325",
-              "evidence": "Full signatures follow an analogous specification to the BIP325 challenges and solutions used by Signet.",
-              "reason": "The full-signature construction is explicitly designed around the challenge/solution transaction mechanism from BIP325, reusing that structure for message signing.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:340",
-              "evidence": "message_hash is a BIP340-tagged hash of the message",
-              "reason": "BIP 322 normatively uses the tagged-hash construction defined by BIP340 for its message hashing.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:341",
-              "evidence": "unless the output type supports SIGHASH_DEFAULT, which then MAY be used alternatively (e.g., BIP341 P2TR)",
-              "reason": "BIP 322's verification rules explicitly accommodate and rely on the SIGHASH_DEFAULT semantics of P2TR, which are introduced by BIP341.",
-              "confidence": "low"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:07:25Z",
-          "status": "success",
-          "dependencies": [
             {
               "target": "bips:141",
-              "evidence": "Simple\n| <code>P2WPKH</code>, <code>P2WSH</code><sup>2</sup>, <code>P2TR</code><sup>2</sup> <br/>\n| <code>smp</code>\n| witness stack, consensus-encoded and base64-encoded",
-              "reason": "The proposal's simple signature format is built around witness stacks and P2WPKH/P2WSH script types. Those SegWit witness-program and witness-stack semantics were introduced by BIP141, so implementing this format depends on them.",
+              "type": "depends_on",
+              "evidence": "''A'' is a \"native\" Segwit address (P2WPKH, P2WSH, P2TR), then they may base64-encode <code>message_signature</code> with <code>smp</code> as prefix",
+              "reason": "The simple-signature mechanism for P2WPKH and P2WSH relies on the native Segwit witness programs and witness serialization rules defined by BIP141; the target is inferred from the explicitly named native Segwit script types.",
               "confidence": "medium"
             },
             {
               "target": "bips:174",
-              "evidence": "They finalize the PSBT as specified in [[bip-0174.mediawiki#input-finalizer|BIP174]]",
-              "reason": "The proposal uses PSBT packets and relies on BIP174's PSBT encoding and finalization workflow for proof-of-funds and PSBT-based signing.",
+              "type": "depends_on",
+              "evidence": "They finalize the PSBT as specified in [[bip-0174.mediawiki#input-finalizer|BIP174]].",
+              "reason": "The PSBT-based finalization process is explicitly required to follow BIP174, making its PSBT format and finalizer rules necessary for this part of the proposal.",
               "confidence": "high"
             },
             {
               "target": "bips:325",
-              "evidence": "Full signatures follow an analogous specification to the BIP325 challenges and solutions used by\nSignet.",
-              "reason": "The proposal explicitly bases its full-signature construction on the challenge-and-solution mechanism used by Signet as specified in BIP325.",
+              "type": "references",
+              "evidence": "Full signatures follow an analogous specification to the BIP325 challenges and solutions used by Signet.",
+              "reason": "The proposal identifies BIP325's Signet challenges and solutions as an analogous design, while subsequently defining its own transaction construction rather than requiring BIP325 operation.",
               "confidence": "high"
             },
             {
               "target": "bips:340",
-              "evidence": "message_hash</code> is a BIP340-tagged hash of the message",
-              "reason": "The proposal explicitly uses BIP340's tagged-hash construction to define the message hash that is committed to by the virtual transactions.",
+              "type": "depends_on",
+              "evidence": "<code>message_hash</code> is a BIP340-tagged hash of the message",
+              "reason": "The signing construction requires the tagged-hash convention defined by BIP340 to calculate the message hash.",
               "confidence": "high"
             },
             {
               "target": "bips:341",
-              "evidence": "SIGHASH_DEFAULT</code>, which then MAY be used alternatively (e.g., [[bip-0341.mediawiki|BIP341 P2TR]])",
-              "reason": "The proposal adopts compatibility behavior for P2TR outputs and the SIGHASH_DEFAULT mode defined by BIP341.",
+              "type": "depends_on",
+              "evidence": "unless the output type supports <code>SIGHASH_DEFAULT</code>, which then MAY be used alternatively (e.g., [[bip-0341.mediawiki|BIP341 P2TR]])",
+              "reason": "Validation and signing for the explicitly supported P2TR output type rely on BIP341's Taproot rules, including SIGHASH_DEFAULT.",
               "confidence": "high"
             }
           ]

@@ -610,29 +610,16 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:42:27Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:08:14Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:1",
-              "evidence": "BIP Editor (BIP-001)",
-              "reason": "The proposal assigns responsibilities relative to the BIP Editor role defined in BIP 1, and earlier states that a BIP must be assigned a BIP number, i.e. approved by the BIP editor, before entering this process. Implementing or evaluating this process therefore materially relies on the existing BIP governance role and numbering workflow from BIP 1.",
-              "confidence": "medium"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:02:13Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:1",
+              "type": "depends_on",
               "evidence": "BIP-0001] defines the process for writing and submitting a Bitcoin Improvement Proposal to the community it does not specify the precise method for which BIPs are considered accepted or rejected.\n\nThis proposal sets up a method for determining BIP acceptance.",
-              "reason": "The proposal extends the BIP process defined by BIP 1 by adding acceptance/rejection procedures and uses BIP-process roles and prerequisites such as assigned BIP numbers and the BIP editor.",
+              "reason": "The current proposal supplements BIP 1's existing submission process with acceptance rules; its mechanism operates on BIPs, champions, numbers, and editor roles established by that process.",
               "confidence": "high"
             }
           ]

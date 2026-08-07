@@ -567,77 +567,44 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:42:51Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:10:18Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:8",
-              "evidence": "This BIP will be deployed by BIP8",
-              "reason": "The proposal defines its activation mechanism using BIP8, including BIP8 starttime and timeout parameters, so implementing or evaluating this proposal materially depends on BIP8's deployment semantics.",
+              "type": "depends_on",
+              "evidence": "This BIP will be deployed by BIP8 with the name \"segwit\" and using bit 1.",
+              "reason": "The proposal expressly uses BIP8 as its deployment mechanism, including its naming and signaling-bit parameters, so its activation procedure depends on BIP8's rules.",
               "confidence": "high"
             },
             {
               "target": "bips:9",
-              "evidence": "This deployment is incompatible with the BIP9-segwit deployment",
-              "reason": "The proposal is designed around the existing BIP9 segwit deployment state, timeout, lock-in, activation conditions, versionbits signaling, and incompatibility constraints with concurrent BIP9 deployment, so understanding and safely deploying it materially depends on BIP9's activation rules.",
+              "type": "references",
+              "evidence": "This deployment is incompatible with the BIP9-segwit deployment and should not be run concurrently with it.",
+              "reason": "BIP9 is discussed as the mechanism for an earlier, incompatible SegWit deployment; the current deployment instead uses BIP8 and does not functionally require BIP9.",
               "confidence": "high"
             },
             {
               "target": "bips:141",
-              "evidence": "specifies a user activated soft fork for BIP141",
-              "reason": "The proposal is specifically an activation method for BIP141, so its substance depends on deploying the consensus changes introduced there.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:143",
-              "evidence": "specifies a user activated soft fork for BIP141, BIP143 and BIP147",
-              "reason": "The proposal is specifically an activation method for BIP143 as part of the segwit bundle, so its substance depends on deploying the consensus/signature-hash changes introduced there.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:147",
-              "evidence": "specifies a user activated soft fork for BIP141, BIP143 and BIP147",
-              "reason": "The proposal is specifically an activation method for BIP147 as part of the segwit bundle, so its substance depends on deploying the malleability fix introduced there.",
-              "confidence": "low"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:04:05Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:8",
-              "evidence": "This BIP will be deployed by BIP8",
-              "reason": "The proposal explicitly uses BIP8 as its deployment mechanism, relying on BIP8 activation semantics such as starttime, timeout, version bits, and guaranteed lock-in behavior.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:9",
-              "evidence": "should only be deployed if BIP9-segwit fails to lock-in or activate before timeout",
-              "reason": "The proposal is designed around the status and timeout of the prior BIP9 segwit deployment and constrains its own deployment based on BIP9 activation states.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:141",
-              "evidence": "user activated soft fork for [[bip-0141.mediawiki|BIP141]]",
-              "reason": "The proposal's purpose is to activate the soft-fork changes specified by BIP141, so implementation and adoption materially depend on BIP141's consensus rules.",
+              "type": "depends_on",
+              "evidence": "This document specifies a user activated soft fork for [[bip-0141.mediawiki|BIP141]]",
+              "reason": "The proposal provides an activation mechanism for the SegWit consensus rules specified by BIP141, so its intended soft fork relies on that target's rules.",
               "confidence": "high"
             },
             {
               "target": "bips:143",
-              "evidence": "user activated soft fork for [[bip-0141.mediawiki|BIP141]], [[bip-0143.mediawiki|BIP143]]",
-              "reason": "The proposal's activation bundle includes BIP143, so it relies on and deploys BIP143's signature hashing rules as part of the soft fork.",
+              "type": "depends_on",
+              "evidence": "This document specifies a user activated soft fork for [[bip-0141.mediawiki|BIP141]], [[bip-0143.mediawiki|BIP143]]",
+              "reason": "The activated soft fork expressly includes BIP143, making its transaction-signature rules part of what this proposal deploys.",
               "confidence": "high"
             },
             {
               "target": "bips:147",
-              "evidence": "user activated soft fork for [[bip-0141.mediawiki|BIP141]], [[bip-0143.mediawiki|BIP143]] and [[bip-0147.mediawiki|BIP147]]",
-              "reason": "The proposal's activation bundle includes BIP147, so it relies on and deploys BIP147's consensus rule change.",
+              "type": "depends_on",
+              "evidence": "This document specifies a user activated soft fork for [[bip-0141.mediawiki|BIP141]], [[bip-0143.mediawiki|BIP143]] and [[bip-0147.mediawiki|BIP147]]",
+              "reason": "The activated soft fork expressly includes BIP147, so the proposal's intended deployment relies on the consensus rules that BIP147 defines.",
               "confidence": "high"
             }
           ]

@@ -628,53 +628,44 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:44:44Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:22:56Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
+            {
+              "target": "bips:118",
+              "type": "references",
+              "evidence": "See [BIP118's rationale][apo-bip-spent-amounts] for more about this.",
+              "reason": "The proposal cites BIP118 for additional rationale about commitments to spent amounts, not as a required part of its mechanism.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:119",
+              "type": "references",
+              "evidence": "The design of `OP_TEMPLATEHASH` was inspired by the design of [BIP119][ctv-bip] `OP_CHECKTEMPLATEVERIFY` but differs in several important ways.",
+              "reason": "BIP119 is discussed as design inspiration and a point of comparison; the proposal defines a distinct opcode and does not require BIP119's operation.",
+              "confidence": "high"
+            },
             {
               "target": "bips:340",
-              "evidence": "The template hash uses a tagged hash as introduced by [BIP340][schnorr-bip] and [BIP341][taproot-bip].",
-              "reason": "The proposal normatively defines its hash construction using the tagged-hash mechanism introduced by BIP340, so implementing the new opcode's hash semantics materially relies on that mechanism.",
+              "type": "depends_on",
+              "evidence": "The template hash uses a tagged hash as introduced by [BIP340][schnorr-bip]",
+              "reason": "The template-hash construction requires the tagged-hash scheme introduced by BIP340 rather than merely mentioning it as background.",
               "confidence": "high"
             },
             {
               "target": "bips:341",
+              "type": "depends_on",
               "evidence": "The template hash re-uses the *sha_sequences*, *sha_outputs* and *sha_annex* pre-computed transaction data introduced in BIP341.",
-              "reason": "The proposal directly reuses BIP341's transaction subhashes, annex semantics, and signature-message structure to define OP_TEMPLATEHASH, making BIP341 a core technical dependency.",
+              "reason": "The specified hash directly reuses transaction-data definitions introduced by BIP341, so implementing its format requires those definitions.",
               "confidence": "high"
             },
             {
               "target": "bips:342",
-              "evidence": "`OP_TEMPLATEHASH` redefines `OP_SUCCESS206` (0xce) in the Tapscript execution context",
-              "reason": "The opcode is defined specifically inside the Tapscript execution context and as a reinterpretation of an OP_SUCCESS opcode there; Tapscript is the mechanism introduced by BIP342, so the proposal depends on BIP342's script version, execution context, and upgrade hooks.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:17:09Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:340",
-              "evidence": "uses a tagged hash as introduced by [BIP340][schnorr-bip]",
-              "reason": "The proposal explicitly uses the tagged-hash construction introduced by BIP340, with a new tag for OP_TEMPLATEHASH.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:341",
-              "evidence": "re-uses the *sha_sequences*, *sha_outputs* and *sha_annex* pre-computed transaction data introduced in\nBIP341",
-              "reason": "The proposal directly reuses BIP341 precomputed transaction-hash fields and annex-related semantics in the definition of the template hash.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:342",
-              "evidence": "redefines `OP_SUCCESS206` (0xce) in the Tapscript execution context",
-              "reason": "The proposal is defined as a change to Tapscript execution by assigning consensus meaning to an OP_SUCCESS opcode; Tapscript and its OP_SUCCESS upgrade mechanism are defined by BIP342.",
+              "type": "depends_on",
+              "evidence": "This document proposes a new operation for [Tapscript][tapscript-bip]: `OP_TEMPLATEHASH`.",
+              "reason": "The opcode is defined specifically within the Tapscript execution environment, whose consensus and execution rules are defined by BIP342; the visible Tapscript link resolves explicitly to that proposal.",
               "confidence": "high"
             }
           ]

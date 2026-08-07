@@ -721,65 +721,51 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:42:12Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:06:20Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:8",
-              "evidence": "This BIP will be deployed by BIP8 (Version bits with lock-in by height)[9]",
-              "reason": "The proposal specifies BIP8 as its activation mechanism, so adoption and deployment of the consensus change depend on the target's defined versionbits lock-in procedure.",
+              "type": "depends_on",
+              "evidence": "This BIP will be deployed by BIP8 (Version bits with lock-in by height)[9] with the name \"tailcall\" and using bit 3.",
+              "reason": "The proposal's specified deployment uses the activation mechanism defined by BIP8.",
               "confidence": "high"
             },
             {
               "target": "bips:16",
-              "evidence": "BIP16 (Pay to Script Hash)[1] and BIP141 (Segregated Witness)[2] provide mechanisms by which script policy can be revealed at spend time as part of the execution witness.",
-              "reason": "The proposal is designed as a further generalization of delayed script revelation and explicitly constrains where tail-call execution can occur relative to scriptSig and P2SH redeem scripts, so understanding its semantics and compatibility meaningfully depends on the P2SH redeem-script mechanism introduced by BIP16.",
-              "confidence": "medium"
+              "type": "references",
+              "evidence": "BIP16 (Pay to Script Hash)[1] and BIP141 (Segregated Witness)[2] allow delayed revelation of a script's policy until the time of spend.",
+              "reason": "BIP16 is discussed as a prior delayed-revelation mechanism and contrasted with the proposal; P2SH tail calls are explicitly unsupported, so it is not functionally required.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:68",
+              "type": "references",
+              "evidence": "making deployment easier than was the case with, for example, with BIP68 (Relative lock-time using consensus-enforced sequence numbers)[6].",
+              "reason": "BIP68 is mentioned only as a historical deployment comparison and supplies no required mechanism to this proposal.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:114",
+              "type": "references",
+              "evidence": "Unlike BIP114, the scheme proposed by this BIP in conjunction with BIP116 (MERKLEBRANCHVERIFY)[3] implicitly enables MAST constructs using script itself",
+              "reason": "BIP114 is discussed as an alternative explicit MAST design for comparison, not as a required component of this proposal.",
+              "confidence": "high"
             },
             {
               "target": "bips:116",
-              "evidence": "This BIP, in conjunction with BIP116 (MERKLEBRANCHVERIFY)[3] allows for a script to commit to a practically unbounded number of code pathways",
-              "reason": "The proposal's generalized MAST construction explicitly relies on MERKLEBRANCHVERIFY to commit to and prove membership of policy scripts before tail-call execution; the text states the mechanism works in conjunction with BIP116.",
+              "type": "depends_on",
+              "evidence": "This BIP, in conjunction with BIP116 (MERKLEBRANCHVERIFY)[3] allows for a script to commit to a practically unbounded number of code pathways, and then reveal the actual code pathway used at spend time.",
+              "reason": "The proposal's specified generalized-MAST construction relies on BIP116's MERKLEBRANCHVERIFY operation to prove that the selected policy script belongs to the committed Merkle tree.",
               "confidence": "high"
             },
             {
               "target": "bips:141",
-              "evidence": "only from within a segwit redeem script",
-              "reason": "The proposal normatively restricts tail-call semantics to segwit redeem scripts and repeatedly relies on segwit rules such as CLEANSTACK and witness execution compatibility, so its operation and constraints materially depend on the SegWit script/witness framework introduced by BIP141.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:00:55Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:8",
-              "evidence": "This BIP will be deployed by BIP8 (Version bits with lock-in by height)[9]",
-              "reason": "The proposal explicitly uses BIP8’s version-bits activation workflow for deployment.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:16",
-              "evidence": "tail-call from P2SH redeem scripts is not supported",
-              "reason": "The proposal constrains its new tail-call semantics relative to P2SH redeem-script execution; P2SH redeem scripts are the mechanism introduced by BIP16.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:116",
-              "evidence": "When combined with BIP116 (MERKLEBRANCHVERIFY)[3], tail-call semantics allows for generalized MAST capabilities",
-              "reason": "The proposal’s generalized MAST construction directly relies on BIP116’s MERKLEBRANCHVERIFY mechanism to prove membership of the policy script before tail-call execution.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:141",
-              "evidence": "The v0 segwit rules prohibit leaving anything on the stack, so for v0 parameters have to be passed on the alt stack for compatibility reasons.",
-              "reason": "The proposal is designed around Segregated Witness v0 validation rules, including CLEANSTACK behavior and witness-script execution contexts defined by BIP141.",
+              "type": "depends_on",
+              "evidence": "Only one such tail-call of a subscript is allowed per script execution context, and only from within a segwit redeem script.",
+              "reason": "The proposal restricts its tail-call mechanism to SegWit redeem scripts, whose consensus structure is defined by BIP141, so the mechanism requires BIP141's SegWit rules even though it does not require BIP141-style versioning for activation.",
               "confidence": "high"
             }
           ]

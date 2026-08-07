@@ -806,83 +806,65 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:42:15Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:06:05Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:30",
-              "evidence": "due to enforcement of BIP 30",
-              "reason": "The security analysis relies on BIP 30's duplicate-txid prevention assumption to explain why ordinary signatures cannot be replayed by spending the same input multiple times.",
-              "confidence": "low"
+              "type": "references",
+              "evidence": "replay of the signature is only possible if the same input can be spent multiple times, which is not possible on the Bitcoin blockchain (due to enforcement of [[bip-0030.mediawiki|BIP 30]])",
+              "reason": "BIP 30 is cited to explain an existing blockchain security property used in the replay comparison, rather than as a required part of the new signature mechanism.",
+              "confidence": "high"
             },
             {
               "target": "bips:68",
-              "evidence": "using BIP 68/BIP 112 relative time locks",
-              "reason": "The malleability mitigation specifically depends on relative timelock semantics, with BIP 68 providing the relative-locktime mechanism used by the recommended spending pattern.",
-              "confidence": "low"
+              "type": "references",
+              "evidence": "This risk may be mitigated somewhat by using [[bip-0068.mediawiki|BIP 68]]/[[bip-0112.mediawiki|BIP 112]] relative time locks",
+              "reason": "BIP 68 is mentioned as an optional mitigation for malleability-related risk, not as a requirement for implementing or using ANYPREVOUT.",
+              "confidence": "high"
             },
             {
               "target": "bips:112",
-              "evidence": "using BIP 68/BIP 112 relative time locks",
-              "reason": "The proposal's suggested mitigation relies on relative timelock script enforcement, which BIP 112 introduces via CHECKSEQUENCEVERIFY in conjunction with BIP 68 semantics.",
-              "confidence": "low"
+              "type": "references",
+              "evidence": "This risk may be mitigated somewhat by using [[bip-0068.mediawiki|BIP 68]]/[[bip-0112.mediawiki|BIP 112]] relative time locks",
+              "reason": "BIP 112 is mentioned as an optional mitigation for malleability-related risk, not as a requirement for implementing or using ANYPREVOUT.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "type": "references",
+              "evidence": "assuming deployment was fleshed out in a way similar to BIP 141 P2WPKH and P2WSH",
+              "reason": "BIP 141 is cited only as a comparison to a hypothetical deployment approach used by an earlier revision.",
+              "confidence": "high"
             },
             {
               "target": "bips:340",
-              "evidence": "retain the same elliptic curve and signature algorithm (ie, secp256k1 and BIP 340)",
-              "reason": "BIP 118 keeps BIP 340 Schnorr verification as its signature algorithm, with public keys converted for use with BIP 340 and Verify invoked as defined there.",
-              "confidence": "low"
+              "type": "depends_on",
+              "evidence": "''Verify'' is as defined in [[bip-0340.mediawiki|BIP 340]].",
+              "reason": "The proposal's signature-verification procedure directly requires the verification algorithm defined by BIP 340.",
+              "confidence": "high"
             },
             {
               "target": "bips:341",
-              "evidence": "the signature is validated according to the BIP 341 signing validation rules",
-              "reason": "The proposal reuses BIP 341's Taproot signing validation rules, hash_type values, SigMsg function, taproot internal key, and tapleaf hash, modifying them for the new ANYPREVOUT digest.",
-              "confidence": "low"
+              "type": "depends_on",
+              "evidence": "the signature is validated according to the [[bip-0341.mediawiki|BIP 341]] signing validation rules with the public key, allowable <code>hash_type</code> values, and transaction digest modified as defined below",
+              "reason": "Signature validation reuses and modifies the signing rules and hash-type framework defined by BIP 341, making those rules necessary to the mechanism.",
+              "confidence": "high"
             },
             {
               "target": "bips:342",
-              "evidence": "a new type of public key for tapscript (BIP 342) transactions",
-              "reason": "The proposal is explicitly defined for tapscript transactions and directly modifies BIP 342 signature-opcode behavior, including its handling of unknown public key types and signature verification rules.",
-              "confidence": "low"
+              "type": "depends_on",
+              "evidence": "This BIP modifies the behaviour of the [[bip-0342.mediawiki|BIP 342]] signature opcodes",
+              "reason": "The proposal directly extends BIP 342's tapscript signature-opcode rules to recognize and validate its new public-key type.",
+              "confidence": "high"
             },
             {
               "target": "bips:350",
-              "evidence": "support sending to BIP350 Bech32m addresses",
-              "reason": "Backward-compatibility discussion depends on Bech32m address support for sending to SegWit v1/Taproot outputs used by this proposal.",
-              "confidence": "low"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:00:51Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:30",
-              "evidence": "which is not possible on the Bitcoin blockchain (due to enforcement of [[bip-0030.mediawiki|BIP 30]])",
-              "reason": "The proposal's security analysis relies on the BIP 30 duplicate-transaction/output-spendability rule to justify replay-resistance assumptions for existing sighash modes.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:340",
-              "evidence": "''Verify'' is as defined in [[bip-0340.mediawiki|BIP 340]]",
-              "reason": "The proposal uses BIP 340 Schnorr verification and public-key format as the signature algorithm for the new public key type.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:341",
-              "evidence": "the signature is validated according to the [[bip-0341.mediawiki|BIP 341]] signing validation rules",
-              "reason": "The proposal reuses BIP 341 signing validation rules, hash type semantics, signature message components, taproot internal key, tapleaf hash, and TapSighash construction while defining modified digest behavior.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:342",
-              "evidence": "This BIP modifies the behaviour of the [[bip-0342.mediawiki|BIP 342]] signature opcodes",
-              "reason": "The proposal directly amends BIP 342 tapscript signature opcode behavior and its handling of public key types.",
+              "type": "references",
+              "evidence": "non-upgraded wallets may be able to send to SegWit version 1 programs if they support sending to [[bip-0350.mediawiki|BIP350]] Bech32m addresses",
+              "reason": "BIP 350 is discussed only as an optional capability affecting whether non-upgraded wallets can send to relevant addresses; it is not required by the signature mechanism itself.",
               "confidence": "high"
             }
           ]

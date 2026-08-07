@@ -694,29 +694,58 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:42:28Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:08:09Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
-              "target": "bips:68",
-              "evidence": "following the rules of [[bip-0068.mediawiki|BIP-68]]",
-              "reason": "The proposal's recovery transaction requires an nSequence relative-locktime and explicitly says it follows the target's rules, so implementing the format and semantics materially depends on BIP 68.",
+              "target": "bips:65",
+              "type": "references",
+              "evidence": "a single pre-signed transaction with an <code>nLocktime</code> set to a future date, as explained in [[bip-0065.mediawiki|BIP-65]]",
+              "reason": "The proposal cites BIP-65 while discussing timelocked transactions and script-based alternatives, but its plan format does not require BIP-65's OP_CHECKLOCKTIMEVERIFY mechanism.",
               "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:01:58Z",
-          "status": "success",
-          "dependencies": [
+            },
             {
               "target": "bips:68",
-              "evidence": "following the rules of [[bip-0068.mediawiki|BIP-68]]",
-              "reason": "The proposal requires the Recovery Transaction's nSequence relative timelock and cancellation-period calculation to follow BIP-68 semantics.",
+              "type": "depends_on",
+              "evidence": "This transaction should have a special <code>nSequence</code> relative-locktime according to the size of cancellation-period requested by the user, following the rules of [[bip-0068.mediawiki|BIP-68]]",
+              "reason": "The recovery transaction's cancellation period is implemented through the relative-locktime rules and nSequence encoding defined by BIP-68, making those rules necessary to the mechanism.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:112",
+              "type": "references",
+              "evidence": "relative locktimes using OP_CHECKLOCKTIMEVERIFY ([[bip-0065.mediawiki|BIP-65]]) and OP_CHECKSEQUENCEVERIFY ([[bip-0112.mediawiki|BIP-112]])",
+              "reason": "BIP-112 is cited as a mechanism available to the alternative script-based-wallet approach, not as a required part of the proposed pre-signed transaction format.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:119",
+              "type": "references",
+              "evidence": "New opcode suggestions, such as OP_CHECKTEMPLATEVERIFY ([[bip-0119.mediawiki|BIP-119]])",
+              "reason": "The proposal mentions BIP-119 as a suggested future opcode supporting an alternative recovery mechanism; the specified plan does not rely on it.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:140",
+              "type": "references",
+              "evidence": "It is important that the ''Alert Transaction'' will be non-malleable (e.g. by using [[bip-0140.mediawiki|BIP-140]])",
+              "reason": "BIP-140 is presented only as one example of achieving the required non-malleability, so that particular proposal is not itself mandatory.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:433",
+              "type": "references",
+              "evidence": "could possibly be P2A addresses (described in [[bip-0433.mediawiki|BIP-433]]), or other addresses under the participants' control",
+              "reason": "BIP-433's P2A addresses are an optional anchor choice, explicitly accompanied by other alternatives and not required by the plan.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:443",
+              "type": "references",
+              "evidence": "OP_CHECKCONTRACTVERIFY ([[bip-0443.mediawiki|BIP-443]])",
+              "reason": "The proposal discusses BIP-443 as another prospective script-based recovery mechanism, without requiring it for the proposed format or transactions.",
               "confidence": "high"
             }
           ]

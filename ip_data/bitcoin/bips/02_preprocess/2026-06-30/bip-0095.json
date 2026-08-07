@@ -557,35 +557,30 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:41:40Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:04:08Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
+            {
+              "target": "bips:30",
+              "type": "references",
+              "evidence": "avoids duplicate transactions without [bip-0030][BIP30] validation",
+              "reason": "The proposal mentions BIP 30 while summarizing a benefit of BIP 54, but does not require BIP 30 validation for its own mechanism.",
+              "confidence": "high"
+            },
             {
               "target": "bips:54",
+              "type": "depends_on",
               "evidence": "The rules specified in [BIP 54 version 1.0.0][BIP54] are active on Testnet 5 from block 1.",
-              "reason": "The proposal explicitly incorporates and enforces BIP 54's consensus rules as part of Testnet 5 from genesis, so implementing or evaluating this proposal materially depends on BIP 54's rule set.",
+              "reason": "Testnet 5's consensus specification incorporates and enforces the target's rules from genesis, so implementing the network as specified requires BIP 54.",
               "confidence": "high"
             },
             {
               "target": "bips:94",
-              "evidence": "Testnet 5 is a new test network intended to replace [Testnet 4][BIP94]. Testnet 5 removes the difficulty exception defined in Testnet 4.",
-              "reason": "The proposal is designed as a successor to Testnet 4 and substantively modifies the specific difficulty-exception mechanism introduced for that network, so understanding the change depends on the prior Testnet 4 rules it replaces.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:58:59Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:54",
-              "evidence": "The rules specified in [BIP 54 version 1.0.0][BIP54] are active on Testnet 5 from block 1.",
-              "reason": "The proposal normatively requires Testnet 5 to enforce BIP 54 consensus rules from block 1, so implementing or adopting it materially depends on BIP 54's rule specification.",
+              "type": "supersedes",
+              "evidence": "Testnet 5 is a new test network intended to replace [Testnet 4][BIP94]",
+              "reason": "The proposal explicitly states that its new test network is intended to replace Testnet 4, which BIP 94 defines.",
               "confidence": "high"
             }
           ]

@@ -764,48 +764,31 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:40:15Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T07:58:57Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
-              "evidence": "based on an algorithm described in BIP-0032",
-              "reason": "The proposal defines its wallet hierarchy and derivation path structure using the BIP32 hierarchical deterministic derivation algorithm, including hardened and public child derivation semantics.",
+              "type": "depends_on",
+              "evidence": "logical hierarchy for deterministic wallets based on an algorithm described in BIP-0032",
+              "reason": "BIP 44's hierarchy uses the hierarchical deterministic derivation algorithm, paths, and hardened/public derivation rules defined by BIP 32.",
               "confidence": "high"
             },
             {
               "target": "bips:43",
-              "evidence": "purpose scheme described in\nBIP-0043",
-              "reason": "The proposal is a particular application of BIP43 and relies on its purpose-field convention to assign purpose 44' and define the subtree as following this specification.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:54:56Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:32",
-              "evidence": "based on an algorithm\ndescribed in BIP-0032",
-              "reason": "The proposal defines its wallet hierarchy using BIP32 deterministic derivation, including child indexes and hardened/public derivation semantics.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:43",
+              "type": "depends_on",
               "evidence": "This BIP is a particular application of BIP43.",
-              "reason": "The proposal specializes BIP43's purpose-field scheme by assigning purpose 44' and defining the subtree semantics under that purpose.",
+              "reason": "BIP 44 specializes BIP 43's purpose-field scheme, including its purpose-level convention and recommendation.",
               "confidence": "high"
             },
             {
               "target": "slips:44",
-              "evidence": "SatoshiLabs that maintains the full list:\n\n[[https://github.com/satoshilabs/slips/blob/master/slip-0044.md|SLIP-0044 : Registered coin types for BIP-0044]]",
-              "reason": "The proposal delegates the full coin-type registry used by its coin_type level, and the associated registration workflow, to SLIP-0044.",
-              "confidence": "medium"
+              "type": "depends_on",
+              "evidence": "SLIP-0044 : Registered coin types for BIP-0044",
+              "reason": "The proposal delegates the maintained coin-type registry used by its coin_type path level to SLIP 44, including registration of new assignments.",
+              "confidence": "high"
             }
           ]
         }

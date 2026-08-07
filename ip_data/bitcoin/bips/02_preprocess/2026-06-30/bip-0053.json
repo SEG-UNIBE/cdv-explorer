@@ -660,53 +660,30 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:40:34Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:00:31Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:37",
-              "evidence": "BIP37 provides a partial Merkle tree format",
-              "reason": "The proposal's SPV-client attack analysis materially relies on the partial Merkle tree proof format defined by BIP37; understanding the described exploit and one motivation for banning 64-byte transactions depends on that format's semantics.",
+              "type": "references",
+              "evidence": "BIP37 provides a partial Merkle tree format that allows you to verify that your Bitcoin transaction is included in a Merkle root embedded in a Bitcoin block header",
+              "reason": "The proposal discusses BIP 37's partial Merkle proofs to explain the SPV-client attack, but its consensus rule against 64-byte transactions does not require that protocol.",
               "confidence": "low"
             },
             {
               "target": "bips:66",
+              "type": "references",
               "evidence": "After BIP66 was activated on the Bitcoin network, Bitcoin transactions cannot have a digital signature smaller than 9 bytes.",
-              "reason": "The backward-compatibility analysis for pre-segwit 64-byte transactions relies on BIP66's DER-signature size constraint to argue such transactions cannot spend signature-protected UTXOs.",
+              "reason": "BIP 66 is cited to support the backward-compatibility analysis concerning the minimum possible signature size, not as a required component of the proposed rule.",
               "confidence": "high"
             },
             {
               "target": "bips:141",
-              "evidence": "BIP141 says witness programs can be 2 bytes in size",
-              "reason": "The proposal's segwit-specific compatibility impact depends on witness-program rules introduced by SegWit. The text explicitly relies on BIP141's allowance of 2-byte witness programs to identify which segwit 64-byte transactions would be disallowed.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:56:16Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:37",
-              "evidence": "BIP37<ref>[https://github.com/bitcoin/bips/blob/master/bip-0037.mediawiki BIP37]</ref>provides a partial Merkle tree format",
-              "reason": "The proposal analyzes and mitigates an attack on SPV clients that depends on BIP37's partial Merkle tree proof format and its omission of tree height commitment.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:66",
-              "evidence": "After BIP66 was activated on the Bitcoin network, Bitcoin transactions cannot have a digital signature smaller than 9 bytes.",
-              "reason": "The proposal's backward-compatibility analysis for pre-segwit 64-byte transactions relies on the signature-size consensus effects of BIP66.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:141",
-              "evidence": "BIP141 says witness programs can be 2 bytes in size",
-              "reason": "The proposal is defined in terms of transaction serialization without witness and explicitly constrains segwit transactions paying to 2-byte witness programs, mechanisms introduced by BIP141.",
+              "type": "depends_on",
+              "evidence": "This BIP disallows Bitcoin transactions that are serialized to 64 bytes in length without their witness.",
+              "reason": "The size rule explicitly measures transaction serialization with witness data excluded, so it relies on the witness transaction structure and serialization introduced by BIP 141. The later explicit discussion of BIP 141's witness-program lengths confirms that target resolution.",
               "confidence": "high"
             }
           ]

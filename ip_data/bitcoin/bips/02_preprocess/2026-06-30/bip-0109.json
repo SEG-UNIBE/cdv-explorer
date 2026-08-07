@@ -597,29 +597,16 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:41:51Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:04:51Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:9",
+              "type": "references",
               "evidence": "0x10000000 was chosen to be compatible with the BIP 9 proposal for parallel deployment of soft forks",
-              "reason": "The proposal’s activation mechanism explicitly chooses its version bit to remain compatible with BIP 9’s parallel versionbits deployment scheme, so understanding and evaluating this activation design materially depends on BIP 9’s bit-allocation rules.",
-              "confidence": "medium"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:59:44Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:9",
-              "evidence": "compatible with the BIP 9 proposal for parallel deployment of soft forks",
-              "reason": "The proposal's activation bit choice is explicitly designed to be compatible with BIP 9's version-bits deployment scheme for parallel soft-fork deployments.",
+              "reason": "The proposal cites BIP 9 to explain its choice of version bit and compatibility with parallel soft-fork deployment, but defines its own activation mechanism and does not require BIP 9 to operate.",
               "confidence": "high"
             }
           ]

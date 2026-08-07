@@ -1460,41 +1460,30 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:39:46Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T07:56:25Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:1",
-              "evidence": "This particular BIP replaces BIP 1",
-              "reason": "The proposal directly amends and supersedes BIP 1's BIP-process rules, repeatedly defining changes from and constraints relative to that earlier process document.",
+              "type": "supersedes",
+              "evidence": "This particular BIP replaces BIP 1 with a more well-defined and clear process.",
+              "reason": "The proposal explicitly states that it replaces BIP 1.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:9",
+              "type": "references",
+              "evidence": "A soft-fork BIP strictly requires a clear miner majority expressed by blockchain voting (eg, using BIP 9).",
+              "reason": "BIP 9 is cited as an example of blockchain voting, not as the uniquely required mechanism for satisfying the status criterion.",
               "confidence": "high"
             },
             {
               "target": "bips:123",
-              "evidence": "The Layer header is included from BIP 123.",
-              "reason": "BIP 2 incorporates the Layer header from BIP 123 into its required BIP preamble structure, so implementing BIP 2's format relies on the layer classification mechanism defined there.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:52:36Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:1",
-              "evidence": "This particular BIP replaces BIP 1",
-              "reason": "The proposal explicitly replaces the prior BIP process document, so it materially amends/supersedes that proposal rather than merely citing it.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:123",
-              "evidence": "BIP 123]] for definitions of the various BIP layers",
-              "reason": "The proposal relies on BIP 123's layer classification definitions for the Layer header used in BIP preambles.",
+              "type": "depends_on",
+              "evidence": "See [[bip-0123.mediawiki|BIP 123]] for definitions of the various BIP layers. Activation of this BIP implies activation of BIP 123.",
+              "reason": "BIP 2 relies on BIP 123 to define the layer classifications used by its required Layer header and explicitly links their activation.",
               "confidence": "high"
             }
           ]

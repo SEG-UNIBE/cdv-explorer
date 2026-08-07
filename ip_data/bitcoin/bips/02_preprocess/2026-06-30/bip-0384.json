@@ -535,47 +535,52 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:44:21Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:20:17Z",
           "status": "success",
-          "dependencies": []
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:14:28Z",
-          "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:16",
-              "evidence": "P2SH-P2WPKH scripts are also produced",
-              "reason": "The proposal generates a P2SH-wrapped output form; P2SH script semantics and scriptPubKey format are introduced by BIP 16.",
+              "type": "depends_on",
+              "evidence": "produce P2PK, P2PKH, P2WPKH, and P2SH-P2WPKH output scripts",
+              "reason": "Producing P2SH-P2WPKH outputs requires the P2SH script construction and redemption rules canonically defined by BIP 16.",
               "confidence": "medium"
             },
             {
               "target": "bips:141",
-              "evidence": "P2WPKH and P2SH-P2WPKH scripts are also produced",
-              "reason": "The proposal's generated outputs include P2WPKH and nested P2SH-P2WPKH scripts; these witness-program output forms are introduced by Segregated Witness in BIP 141.",
+              "type": "depends_on",
+              "evidence": "If the key is/has a compressed public key, then P2WPKH and P2SH-P2WPKH scripts are also produced",
+              "reason": "P2WPKH and its P2SH-wrapped form rely on the witness-program and P2WPKH rules defined by BIP 141.",
               "confidence": "medium"
             },
             {
               "target": "bips:380",
-              "evidence": "<tt>combo()</tt> descriptors use the format and general operation specified in [[bip-0380.mediawiki|380]].",
-              "reason": "The proposal explicitly depends on BIP 380 for the descriptor format and general descriptor operation used by combo().",
-              "confidence": "high"
+              "type": "depends_on",
+              "evidence": "combo() descriptors use the format and general operation specified in [[bip-0380.mediawiki|380]]",
+              "reason": "The proposal explicitly requires BIP 380's descriptor format and general operational rules.",
+              "confidence": "low"
             },
             {
               "target": "bips:381",
-              "evidence": "same as putting the key in both a <tt>pk()</tt> and a <tt>pkh()</tt> expression",
-              "reason": "The proposal defines part of combo() semantics by reusing the pk() and pkh() descriptor expressions, which are non-Segwit output script descriptors specified by BIP 381.",
-              "confidence": "medium"
+              "type": "depends_on",
+              "evidence": "the same as putting the key in both a pk() and a pkh() expression",
+              "reason": "The behavior of combo() is partly specified through pk() and pkh(), the descriptor expressions canonically defined by BIP 381.",
+              "confidence": "low"
             },
             {
               "target": "bips:382",
-              "evidence": "same as putting the key in both a <tt>wpkh()</tt> and <tt>sh(wpkh())</tt> expression",
-              "reason": "The proposal defines part of combo() semantics by reusing the wpkh() Segwit descriptor expression, which is specified by BIP 382.",
-              "confidence": "medium"
+              "type": "depends_on",
+              "evidence": "the same as putting the key in both a wpkh() and sh(wpkh()) expression",
+              "reason": "The nested output behavior uses the sh() descriptor construction canonically defined by BIP 382.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:383",
+              "type": "depends_on",
+              "evidence": "the same as putting the key in both a wpkh() and sh(wpkh()) expression",
+              "reason": "The additional compressed-key outputs are defined using the wpkh() descriptor expression canonically specified by BIP 383.",
+              "confidence": "low"
             }
           ]
         }

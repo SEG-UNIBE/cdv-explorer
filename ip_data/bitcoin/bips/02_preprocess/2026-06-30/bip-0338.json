@@ -607,89 +607,51 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:43:42Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:14:29Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:35",
+              "type": "references",
               "evidence": "mempool (BIP 35)",
-              "reason": "The specification explicitly constrains BIP 35 by prohibiting the mempool message on disabletx connections, creating a direct compatibility rule with that proposal's message.",
+              "reason": "The proposal identifies BIP 35's mempool message as one that must not be sent after disabletx, but implementing that optional message is not required for disabletx to operate.",
               "confidence": "high"
             },
             {
               "target": "bips:37",
-              "evidence": "the transaction relay field (introduced by BIP 37",
-              "reason": "The proposal's disabletx negotiation is defined around the existing transaction relay field semantics introduced by BIP 37, and it further constrains BIP 37-specific transaction-filtering messages by forbidding merkleblock getdata and filteradd/filterload/filterclear when disabletx is used.",
+              "type": "references",
+              "evidence": "This proposal is compatible with, but independent of, BIP 37.",
+              "reason": "Although the proposal discusses BIP 37's transaction-relay field and messages, it explicitly states that its mechanism is independent of BIP 37.",
               "confidence": "high"
             },
             {
               "target": "bips:60",
-              "evidence": "also defined in BIP 60",
-              "reason": "The proposal relies on the transaction relay field as defined in the version message by BIP 60; disabletx may only be sent when that field is set to false, so its behavior is materially conditioned on BIP 60's relay-flag semantics.",
+              "type": "references",
+              "evidence": "the transaction relay field (introduced by BIP 37 and also defined in BIP 60)",
+              "reason": "BIP 60 is cited as another definition of the transaction-relay field used by existing software, but the proposal does not require BIP 60 specifically and allows compatibility through BIP 37 instead.",
               "confidence": "high"
             },
             {
               "target": "bips:133",
+              "type": "references",
               "evidence": "feefilter (BIP 133)",
-              "reason": "The specification explicitly constrains BIP 133 by prohibiting feefilter on connections where disabletx has been sent or received, so implementing this proposal requires handling that message-type interaction.",
+              "reason": "The proposal names BIP 133's feefilter message among messages that must not be sent after disabletx, but disabletx does not require implementation of that message.",
               "confidence": "high"
             },
             {
               "target": "bips:152",
-              "evidence": "subject to the feature negotiation of BIP 152",
-              "reason": "The proposal expressly preserves BIP 152 compact-block messages and states that their use on disabletx connections follows BIP 152 feature negotiation, so compatibility with this proposal depends on retaining BIP 152's negotiation and message semantics on such links.",
+              "type": "references",
+              "evidence": "all messages specified in BIP 152, including blocktxn and getblocktxn, are permitted between peers that have sent/received a disabletx message, subject to the feature negotiation of BIP 152",
+              "reason": "The proposal discusses how BIP 152 compact-block messages may coexist with disabletx, but compact-block support is not required for the proposed mechanism.",
               "confidence": "high"
             },
             {
               "target": "bips:155",
+              "type": "references",
               "evidence": "addrv2 (BIP 155)",
-              "reason": "The proposal gives normative relay guidance for the addrv2 message on disabletx connections, so adoption requires accounting for BIP 155's address-relay message in this restricted workflow.",
-              "confidence": "medium"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:08:21Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:35",
-              "evidence": "## mempool (BIP 35)",
-              "reason": "The proposal normatively prohibits sending the BIP 35 mempool message on connections where disabletx has been sent or received.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:37",
-              "evidence": "transaction relay field (introduced by BIP 37 and also defined in BIP 60)",
-              "reason": "The proposal's disabletx message is designed around the existing transaction-relay field in the version message and also constrains BIP 37 transaction-relay-related messages such as merkleblock and bloom-filter messages.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:60",
-              "evidence": "transaction relay field (introduced by BIP 37 and also defined in BIP 60)",
-              "reason": "The proposal conditions use of disabletx on the version-message transaction relay field; the text identifies BIP 60 as also defining that field.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:133",
-              "evidence": "## feefilter (BIP 133)",
-              "reason": "The proposal normatively prohibits sending the BIP 133 feefilter message on connections where disabletx has been sent or received.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:152",
-              "evidence": "subject to the feature negotiation of BIP 152",
-              "reason": "The proposal explicitly preserves BIP 152 compact-block messages on disabletx connections according to BIP 152's own feature-negotiation rules.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:155",
-              "evidence": "## addrv2 (BIP 155)",
-              "reason": "The proposal gives a normative recommendation not to send the BIP 155 addrv2 message on disabletx connections, constraining behavior for that message type.",
+              "reason": "The proposal identifies BIP 155's addrv2 message as one that is recommended not to be sent after disabletx, without requiring addrv2 support for its mechanism.",
               "confidence": "high"
             }
           ]

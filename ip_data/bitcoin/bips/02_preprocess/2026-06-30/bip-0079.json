@@ -696,53 +696,37 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:41:14Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:01:58Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:21",
-              "evidence": "via a bip21 encoded address",
-              "reason": "The proposal normatively defines sender-to-receiver discovery using a BIP21 Bitcoin URI and adds a new key-value parameter within that encoding, so implementing this mechanism materially depends on the BIP21 URI format.",
+              "type": "depends_on",
+              "evidence": "The standard way of letting a sender know where to send a bustapay transaction is done via a bip21 encoded address.",
+              "reason": "The specified standard discovery mechanism embeds the Bustapay URL in the payment URI format defined by BIP 21, so implementing that mechanism requires BIP 21 encoding.",
               "confidence": "high"
             },
             {
               "target": "bips:69",
-              "evidence": "sorted according to BIP69, if so ensure the result stays that way",
-              "reason": "The receiver is instructed to preserve BIP69 input/output sorting when the template transaction already uses it. That makes compatibility with the target's deterministic ordering rules part of processing the proposal in those cases.",
-              "confidence": "medium"
+              "type": "references",
+              "evidence": "Check if the transaction was already sorted according to BIP69, if so ensure the result stays that way.",
+              "reason": "BIP 69 is mentioned as conditional implementation guidance for preserving existing transaction ordering, not as a required part of Bustapay's mechanism.",
+              "confidence": "high"
             },
             {
               "target": "bips:125",
-              "evidence": "encouraged to use a slightly more aggressive feerate than usual as well as BIP125 (Opt-in Full Replace-by-Fee Signaling)",
-              "reason": "The protocol's transaction publishing behavior explicitly contemplates publishing the template transaction after the finalized transaction is on the network 'taking advantage of replace-by-fee', and the text specifically names BIP125 as the signaling mechanism. This is a substantive optional compatibility mechanism rather than a mere mention.",
-              "confidence": "medium"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:57:51Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:21",
-              "evidence": "via a bip21 encoded address. The key value \"bpu\" (short for \"BustaPayUrl\") should be used.",
-              "reason": "The proposal uses and extends the BIP21 payment URI format by defining a Bustapay URL parameter within it.",
+              "type": "references",
+              "evidence": "The sender is also encouraged to use a slightly more aggressive feerate than usual as well as BIP125 (Opt-in Full Replace-by-Fee Signaling), but neither is strictly required.",
+              "reason": "The proposal recommends BIP 125 signaling but explicitly says it is not required, so Bustapay is not functionally dependent on it.",
               "confidence": "high"
             },
             {
-              "target": "bips:69",
-              "evidence": "sorted according to BIP69, if so ensure the result stays that way",
-              "reason": "The proposal reuses BIP69 transaction input/output ordering as a compatibility rule that implementations should preserve when the template transaction already follows it.",
-              "confidence": "medium"
-            },
-            {
               "target": "bips:141",
-              "evidence": "remove all witnesses from the original template transaction as they are no longer valid",
-              "reason": "The proposal materially relies on SegWit witness semantics and requires SegWit inputs; the witness mechanism and SegWit transaction semantics are introduced by BIP141.",
+              "type": "depends_on",
+              "evidence": "This transaction must use segwit for all inputs",
+              "reason": "Bustapay requires every template input to use Segregated Witness and later removes and recalculates witnesses. SegWit's witness transaction structure and rules are canonically defined by BIP 141, making them necessary to the protocol.",
               "confidence": "medium"
             }
           ]

@@ -590,29 +590,23 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:41:51Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:04:45Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:34",
-              "evidence": "As per BIP34, the coinbase transaction scriptSig starts with a push of the block height.",
-              "reason": "The proposal defines its voting data as an additional push in the coinbase scriptSig after the block-height push, so its encoding and parsing rules materially rely on the BIP34 coinbase-height format.",
+              "type": "depends_on",
+              "evidence": "As per BIP34, the coinbase transaction scriptSig starts with a push of the block height. The next push is a little-endian number representing the preferred block size in bytes.",
+              "reason": "The voting format relies on BIP 34's required block-height push to establish where the new block-size vote is placed in the coinbase scriptSig.",
               "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:59:32Z",
-          "status": "success",
-          "dependencies": [
+            },
             {
-              "target": "bips:34",
-              "evidence": "As per BIP34, the coinbase transaction scriptSig starts with a push of the block height.",
-              "reason": "The proposal defines its voting data placement immediately after the coinbase height push, so implementing its coinbase scriptSig format depends on the block-height coinbase format rule specified by BIP34.",
+              "target": "bips:100",
+              "type": "references",
+              "evidence": "Free voting as suggested by BIP100 allows miners to sell their votes out of band at no risk",
+              "reason": "The proposal discusses BIP 100's free-voting approach as motivation for introducing a different, costly voting mechanism; it does not require BIP 100 to operate.",
               "confidence": "high"
             }
           ]

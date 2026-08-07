@@ -940,53 +940,79 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:39:49Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T07:57:43Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:9",
-              "evidence": "This document specifies an alternative to [[bip-0009.mediawiki|BIP9]]",
-              "reason": "The proposal is explicitly defined as an alternative to BIP9 and reuses its versionbits soft-fork deployment framework while changing core activation semantics such as timing, timeout behavior, and adding lockinontimeout. Understanding and implementing BIP8 materially depends on BIP9's mechanism.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:53:08Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:9",
+              "type": "references",
               "evidence": "This document specifies an alternative to [[bip-0009.mediawiki|BIP9]] that corrects for a number of perceived mistakes.",
-              "reason": "The proposal is designed as a replacement/modification of BIP9's version-bits soft-fork deployment mechanism, changing its timing and adding lock-in-on-timeout behavior.",
+              "reason": "BIP9 is explicitly discussed as the alternative design that motivates and is contrasted with this proposal; BIP8 supplies its own activation mechanism rather than requiring a BIP9 deployment.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:16",
+              "type": "references",
+              "evidence": "typical examples of this would be when previously valid transactions cease to be valid, such as BIPs 16, 65, 66, 68, 112, and 113.",
+              "reason": "BIP16 is cited only as an example of a soft-fork rule that can invalidate previously valid transactions.",
               "confidence": "high"
             },
             {
               "target": "bips:22",
-              "evidence": "===getblocktemplate changes===\n\nThe template request Object is extended",
-              "reason": "The proposal extends the getblocktemplate request/template format; getblocktemplate is the mining template protocol introduced by BIP22, so implementing these changes depends on that protocol's object workflow and fields.",
+              "type": "depends_on",
+              "evidence": "===getblocktemplate changes===\n\nThe template request Object is extended to include a new item:",
+              "reason": "The proposal defines extensions to the existing getblocktemplate request and response format, which is canonically specified by BIP22; these interface changes require that base protocol.",
               "confidence": "medium"
             },
             {
               "target": "bips:34",
-              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
-              "reason": "The proposal's available nVersion-bit space and top-bit design are constrained by the block-version rules introduced by BIP34, so its mechanism is designed around compatibility with that proposal.",
+              "type": "depends_on",
+              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65, we only have 0x7FFFFFFB possible nVersion values available.",
+              "reason": "The proposal's allocation and interpretation of nVersion values relies on the existing version-field constraints imposed by BIP34.",
               "confidence": "high"
             },
             {
               "target": "bips:65",
-              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
-              "reason": "The proposal's available nVersion-bit space and top-bit design are constrained by the block-version rules associated with BIP65, so its mechanism is designed around compatibility with that proposal.",
+              "type": "depends_on",
+              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65, we only have 0x7FFFFFFB possible nVersion values available.",
+              "reason": "The proposal's allocation and interpretation of nVersion values relies on the existing version-field constraints imposed by BIP65.",
               "confidence": "high"
             },
             {
               "target": "bips:66",
-              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
-              "reason": "The proposal's available nVersion-bit space and top-bit design are constrained by the block-version rules associated with BIP66, so its mechanism is designed around compatibility with that proposal.",
+              "type": "depends_on",
+              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65, we only have 0x7FFFFFFB possible nVersion values available.",
+              "reason": "The proposal's allocation and interpretation of nVersion values relies on the existing version-field constraints imposed by BIP66.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:68",
+              "type": "references",
+              "evidence": "typical examples of this would be when previously valid transactions cease to be valid, such as BIPs 16, 65, 66, 68, 112, and 113.",
+              "reason": "BIP68 is cited only as an example of a soft-fork rule that can invalidate previously valid transactions.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:112",
+              "type": "references",
+              "evidence": "typical examples of this would be when previously valid transactions cease to be valid, such as BIPs 16, 65, 66, 68, 112, and 113.",
+              "reason": "BIP112 is cited only as an example of a soft-fork rule that can invalidate previously valid transactions.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:113",
+              "type": "references",
+              "evidence": "typical examples of this would be when previously valid transactions cease to be valid, such as BIPs 16, 65, 66, 68, 112, and 113.",
+              "reason": "BIP113 is cited only as an example of a soft-fork rule that can invalidate previously valid transactions.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "type": "references",
+              "evidence": "examples of this would be BIP 34 (because it modifies coinbase construction) and 141 (since it modifies the txid hashing and adds a commitment to the generation transaction).",
+              "reason": "BIP141 is mentioned only as an example of a deployment whose rule affects block structure or the generation transaction.",
               "confidence": "high"
             }
           ]

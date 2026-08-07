@@ -556,35 +556,16 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:40:56Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:01:34Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:70",
-              "evidence": "This BIP should be fully compatible with BIP 70",
-              "reason": "The proposal is explicitly defined as an enhancement to the payment protocol from BIP 70 and reuses its payment-request mechanism and media type workflow, while modifying retrieval behavior via HTTP content negotiation.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:57:04Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:21",
-              "evidence": "a valid Bitcoin URI should be returned",
-              "reason": "The proposal requires clients and servers to negotiate and return valid Bitcoin URIs; the Bitcoin URI scheme is the mechanism standardized by BIP 21, so implementing this behavior depends on that URI format and semantics.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:70",
-              "evidence": "enhancement to the payment protocol ([[bip-0070.mediawiki|BIP 70]])",
-              "reason": "The proposal explicitly enhances and is designed around the BIP 70 payment protocol and its payment request retrieval semantics.",
+              "type": "depends_on",
+              "evidence": "This BIP describes an enhancement to the payment protocol ([[bip-0070.mediawiki|BIP 70]]) that addresses the need for short URLs when scanning from QR codes. It generalizes the specification for the behavior of a payment request URL",
+              "reason": "The proposal directly extends BIP 70's payment protocol and generalizes the behavior of its payment-request URL. Although full BIP 70 support is not required, the enhancement relies on the payment-request concepts and URL behavior defined there.",
               "confidence": "high"
             }
           ]

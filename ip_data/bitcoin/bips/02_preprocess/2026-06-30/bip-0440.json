@@ -635,35 +635,16 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:44:36Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:22:19Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:342",
-              "evidence": "generalizes the \"sigops budget\" introduced in [[bip-0342.mediawiki|BIP342]]",
-              "reason": "The proposal is explicitly designed as a generalization of the sigops budget mechanism from BIP342, and later reuses its signature-cost limit directly as part of the new varops budget model.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:16:23Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:141",
-              "evidence": "multiplying the total transaction weight by the fixed factor 10,000",
-              "reason": "The proposal defines its budget directly in terms of transaction weight; transaction/block weight accounting was introduced by BIP141, so implementing the budget depends on those weight calculation rules.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:342",
-              "evidence": "carried across from the existing [[bip-0342.mediawiki|BIP-342]] limit",
-              "reason": "The proposal reuses BIP342's sigops budget limit as the basis for its signature-operation cost within the varops budget framework.",
+              "type": "depends_on",
+              "evidence": "The signature cost is simply carried across from the existing [[bip-0342.mediawiki|BIP-342]] limit: 50 weight units allow you one signature.",
+              "reason": "BIP 440 directly incorporates BIP 342's signature-cost limit into its varops budget, so its specified costing mechanism relies on a rule defined by that proposal.",
               "confidence": "high"
             }
           ]

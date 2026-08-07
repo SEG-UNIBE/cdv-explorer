@@ -642,47 +642,37 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:43:12Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:11:39Z",
           "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:199",
-              "evidence": "based on Hashed Time-Lock Contract (BIP 199) transactions",
-              "reason": "The proposal explicitly states that its generalized debt agreement contract is based on HTLC transactions defined by BIP 199, making BIP 199 a direct technical foundation for the script design and workflow.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:05:13Z",
-          "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:16",
-              "evidence": "collateral is locked in a P2SH",
-              "reason": "The proposal relies on Pay-to-Script-Hash locking and address semantics; P2SH is the mechanism introduced by BIP 16.",
-              "confidence": "medium"
+              "type": "depends_on",
+              "evidence": "the collateral is locked in a P2SH",
+              "reason": "The proposal requires Pay-to-Script-Hash outputs to lock and spend its collateral scripts; P2SH is canonically defined by BIP 16.",
+              "confidence": "high"
             },
             {
               "target": "bips:65",
+              "type": "references",
               "evidence": "[TIMEOUTOP] is either OP_CHECKSEQUENCEVERIFY or OP_CHECKLOCKTIMEVERIFY",
-              "reason": "The proposal’s timeout branches can use OP_CHECKLOCKTIMEVERIFY; that opcode and its script semantics were introduced by BIP 65.",
-              "confidence": "medium"
+              "reason": "OP_CHECKLOCKTIMEVERIFY is the opcode specified by BIP 65. It is named as one of two alternative timeout mechanisms, so the proposal does not require BIP 65 specifically.",
+              "confidence": "high"
             },
             {
               "target": "bips:112",
+              "type": "references",
               "evidence": "[TIMEOUTOP] is either OP_CHECKSEQUENCEVERIFY or OP_CHECKLOCKTIMEVERIFY",
-              "reason": "The proposal’s timeout branches can use OP_CHECKSEQUENCEVERIFY; that opcode and its script semantics were introduced by BIP 112.",
-              "confidence": "medium"
+              "reason": "OP_CHECKSEQUENCEVERIFY is the opcode specified by BIP 112. It is named as one of two alternative timeout mechanisms, so the proposal does not require BIP 112 specifically.",
+              "confidence": "high"
             },
             {
               "target": "bips:199",
-              "evidence": "based on Hashed Time-Lock Contract (BIP 199) transactions",
-              "reason": "The proposal explicitly bases its collateral contract script on the HTLC transaction pattern defined by the target.",
+              "type": "depends_on",
+              "evidence": "a script for generalized debt agreement contract based on Hashed Time-Lock Contract (BIP 199) transactions",
+              "reason": "The proposed debt-contract script is explicitly built on the HTLC transaction mechanism defined by BIP 199.",
               "confidence": "high"
             }
           ]

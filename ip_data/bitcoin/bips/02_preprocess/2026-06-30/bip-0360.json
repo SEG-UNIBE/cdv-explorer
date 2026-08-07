@@ -953,77 +953,79 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:44:06Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:17:35Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
-              "target": "bips:141",
-              "evidence": "A P2MR output is a native SegWit output (see BIP 141) with version 2 and a 32-byte witness program.",
-              "reason": "The proposal normatively defines P2MR as a native SegWit output and relies on SegWit transaction structure and witness-program validation compatibility rules introduced by the target.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:173",
-              "evidence": "following BIP 173",
-              "reason": "The address format is defined to use SegWit addresses under the Bech32 address scheme introduced by the target.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:341",
-              "evidence": "we follow the process outlined in BIP 341",
-              "reason": "The proposal is explicitly defined by reusing Taproot's script-tree construction and script-path validation, with specific modifications such as omitting the internal key and tweak and comparing the computed Merkle root directly to the witness program.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:342",
-              "evidence": "Execute the script, according to the script rules specified in BIP 342",
-              "reason": "P2MR spends execute tapscript under the target's script rules, and its common signature message construction is stated to be exactly the same as BIP 342's procedure.",
+              "target": "bips:3",
+              "type": "references",
+              "evidence": "Fix bug in verification, minor review comments and adopt [[bip-0003.md|BIP 3]] conventions.",
+              "reason": "The changelog cites BIP 3 for document conventions; those conventions are not required for P2MR's technical operation.",
               "confidence": "high"
             },
             {
-              "target": "bips:350",
-              "evidence": "Per BIP 350 older wallets should be able to spend funds to SegWit version 2 outputs.",
-              "reason": "The proposal's backward-compatibility and address encoding for witness version 2 rely on Bech32m semantics introduced by the target; the text explicitly invokes BIP 350 for how older wallets handle v2 SegWit outputs.",
-              "confidence": "low"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:11:28Z",
-          "status": "success",
-          "dependencies": [
+              "target": "bips:16",
+              "type": "references",
+              "evidence": "P2MR and P2TR both provide greater script privacy than P2SH [[bip-0016.mediawiki|BIP 16]] because unused script paths are not revealed.",
+              "reason": "BIP 16 is cited only as a privacy comparison with P2SH; P2MR does not require its output or validation mechanism.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:32",
+              "type": "references",
+              "evidence": "using STARKs based on BIP 32 seeds to act as the authoritative secret when signing.",
+              "reason": "BIP 32 is mentioned only while describing a proposed Ethereum quantum-recovery approach used for comparison.",
+              "confidence": "high"
+            },
             {
               "target": "bips:141",
+              "type": "depends_on",
               "evidence": "A P2MR output is a native SegWit output (see [[bip-0141.mediawiki|BIP 141]]) with version 2 and a 32-byte witness program.",
-              "reason": "The proposal defines P2MR as a native SegWit witness-program output and relies on SegWit transaction structure, witness versioning, and validation compatibility introduced by BIP 141.",
+              "reason": "The new output type uses the native SegWit transaction structure, witness-program format, and versioning framework defined by BIP 141.",
               "confidence": "high"
             },
             {
               "target": "bips:173",
+              "type": "depends_on",
               "evidence": "P2MR outputs use SegWit version 2, resulting in mainnet addresses that start with <code>bc1z</code>, following [[bip-0173.mediawiki|BIP 173]].",
-              "reason": "The proposal uses the native SegWit address format conventions defined by BIP 173 for P2MR addresses.",
+              "reason": "The proposal's address format follows the SegWit address structure and human-readable prefix conventions established by BIP 173.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:340",
+              "type": "references",
+              "evidence": "Similar to BIP 341 test vectors, all signatures are created with an all-zero (0x0000...0000) [[bip-0340.mediawiki|BIP 340]] auxiliary randomness array.",
+              "reason": "BIP 340 is mentioned to describe how signatures in the test vectors were generated, rather than as a directly stated requirement of P2MR's output construction or validation rules.",
               "confidence": "high"
             },
             {
               "target": "bips:341",
-              "evidence": "follow the process outlined in [[bip-0341.mediawiki|BIP 341]] to compute the final tapbranch hash",
-              "reason": "The proposal reuses Taproot/P2TR script-tree construction, tapleaf/tapbranch hashing, control-block semantics, and script-path validation from BIP 341 while modifying them to remove the key path.",
+              "type": "depends_on",
+              "evidence": "To construct a P2MR output, we follow the process outlined in [[bip-0341.mediawiki|BIP 341]] to compute the final tapbranch hash",
+              "reason": "P2MR directly reuses BIP 341's script-tree construction, TapLeaf/TapBranch hashing, control-block concepts, and script-path validation logic, so its specified mechanism requires that proposal.",
               "confidence": "high"
             },
             {
               "target": "bips:342",
+              "type": "depends_on",
               "evidence": "Execute the script, according to the script rules specified in BIP 342",
-              "reason": "P2MR script execution and signature-message construction are defined by reusing the tapscript rules and common signature message procedure from BIP 342.",
+              "reason": "P2MR leaf scripts must be executed under the tapscript validation rules defined by BIP 342, making those rules operationally necessary.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:347",
+              "type": "references",
+              "evidence": "if we disable the key path spend in Taproot and activate OP_CAT [[bip-0347.mediawiki|BIP 347]], we could achieve quantum resistance by using Lamport signatures with OP_CAT.",
+              "reason": "BIP 347 is discussed as related work and an alternative way to obtain quantum resistance, not as functionality required by P2MR.",
               "confidence": "high"
             },
             {
               "target": "bips:350",
-              "evidence": "Per [[bip-0350.mediawiki|BIP 350]] older wallets should be able to spend funds to SegWit version 2 outputs.",
-              "reason": "The proposal relies on BIP 350 compatibility behavior for higher-version SegWit outputs; BIP 350 also defines Bech32m, the encoding the text uses for version 2 addresses.",
+              "type": "depends_on",
+              "evidence": "Bech32m encoding maps version 2 to the prefix <code>z</code>.",
+              "reason": "P2MR's version-2 address encoding requires Bech32m, the checksum and witness-address encoding rules canonically defined by BIP 350; the proposal also explicitly discusses compatibility with BIP 350 later.",
               "confidence": "high"
             }
           ]

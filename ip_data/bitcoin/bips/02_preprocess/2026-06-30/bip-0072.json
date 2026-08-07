@@ -573,41 +573,23 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:40:57Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:01:28Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:21",
-              "evidence": "extension to the bitcoin: URI scheme (BIP 21)",
-              "reason": "The proposal directly extends the bitcoin: URI scheme defined by BIP 21 by adding a new optional \"r\" parameter and preserving compatibility with existing URI handling.",
+              "type": "depends_on",
+              "evidence": "The bitcoin: URI scheme is extended with an additional, optional \"r\" parameter",
+              "reason": "The proposal directly extends the bitcoin URI scheme defined by BIP 21, so its mechanism requires that scheme's syntax and processing rules.",
               "confidence": "high"
             },
             {
               "target": "bips:70",
-              "evidence": "support the payment protocol (BIP 70)",
-              "reason": "The proposal is designed to initiate and hand off to the payment protocol from BIP 70; wallets fetch a PaymentRequest message and \"follow the payment protocol, as described in BIP 70.\"",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:56:57Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:21",
-              "evidence": "extension to the bitcoin: URI scheme (BIP 21)",
-              "reason": "The proposal extends the URI scheme defined by BIP 21 by adding an optional r parameter and preserving compatibility with existing bitcoin: URI behavior.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:70",
-              "evidence": "follow the payment protocol, as described in BIP 70",
-              "reason": "The proposal uses BIP 70's PaymentRequest and payment protocol workflow as the mechanism fetched via the new URI parameter.",
+              "type": "depends_on",
+              "evidence": "fetch a PaymentRequest message and then follow the payment protocol, as described in BIP 70",
+              "reason": "The URI extension operates by retrieving a PaymentRequest and invoking the payment protocol defined by BIP 70, making that protocol functionally necessary.",
               "confidence": "high"
             }
           ]

@@ -1609,59 +1609,51 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:43:07Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:11:31Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
-              "target": "bips:32",
-              "evidence": "as defined by BIP 32",
-              "reason": "The proposal normatively includes extended public keys, master fingerprints, and derivation paths using the serialization and semantics defined by BIP 32, and signers use those BIP 32 derivation structures for change detection and key identification.",
+              "target": "bips:3",
+              "type": "references",
+              "evidence": "Mark Final (Later updated to \"Deployed\" with adoption of BIP3)",
+              "reason": "The changelog mentions BIP 3 only to explain a later status-label update; BIP 174's mechanism does not rely on it.",
               "confidence": "high"
             },
             {
-              "target": "bips:143",
-              "evidence": "The sighash algorithm for Segwit specified in BIP 143",
-              "reason": "The proposal's signer behavior for witness inputs is explicitly designed around the SegWit sighash algorithm from BIP 143, including its security properties and the need for non-witness UTXOs in some segwit-signing workflows.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:05:39Z",
-          "status": "success",
-          "dependencies": [
-            {
               "target": "bips:16",
-              "evidence": "assert(witness_utxo.scriptPubKey == P2SH(redeemScript))",
-              "reason": "The signer validation algorithm uses P2SH redeemScript matching. P2SH is the pay-to-script-hash mechanism introduced by BIP16, so implementing these PSBT checks depends on BIP16 semantics.",
+              "type": "depends_on",
+              "evidence": "This should only be present for inputs which spend segwit outputs, including P2SH embedded ones.",
+              "reason": "The specified handling of P2SH-embedded witness outputs relies on the P2SH mechanism canonically defined by BIP 16.",
               "confidence": "medium"
             },
             {
               "target": "bips:32",
+              "type": "depends_on",
               "evidence": "The 78 byte serialized extended public key as defined by BIP 32.",
-              "reason": "The proposal defines PSBT fields for extended public keys, master key fingerprints, and derivation paths using BIP32 serialization and derivation semantics.",
+              "reason": "PSBT's global extended-public-key field directly uses the serialization format defined by BIP 32, and its derivation fields likewise use BIP 32 fingerprints and paths.",
               "confidence": "high"
             },
             {
               "target": "bips:141",
-              "evidence": "if IsP2WPKH(script):\n            sign_witness(P2PKH(script[2:22]), i)\n        else if IsP2WSH(script):",
-              "reason": "The signer algorithm is specialized for P2WPKH and P2WSH witness program templates, which are SegWit output forms introduced by BIP141.",
+              "type": "depends_on",
+              "evidence": "This should only be present for inputs which spend segwit outputs, including P2SH embedded ones.",
+              "reason": "PSBT's witness-UTXO handling requires the SegWit output and witness-program rules canonically defined by BIP 141; resolving the named umbrella term “segwit” to that proposal requires interpretation.",
               "confidence": "medium"
             },
             {
               "target": "bips:143",
+              "type": "depends_on",
               "evidence": "The sighash algorithm for Segwit specified in BIP 143",
-              "reason": "The proposal's handling of SegWit input UTXO data and signer safety policy is designed around the BIP143 SegWit signature-hash algorithm and its amount-handling behavior.",
+              "reason": "The proposal's SegWit signer behavior and its security handling rely on the signature-hash algorithm defined by BIP 143.",
               "confidence": "high"
             },
             {
-              "target": "bips:144",
-              "evidence": "construct complete scriptSigs and scriptWitnesses and encode them into network serialized transactions.",
-              "reason": "The transaction extractor must serialize transactions containing scriptWitness data; the witness transaction network serialization format is defined by BIP144.",
+              "target": "bips:147",
+              "type": "references",
+              "evidence": "not a value that would return false or be invalid otherwise (such as a NULLDUMMY)",
+              "reason": "NULLDUMMY, the validation rule canonically associated with BIP 147, is mentioned only as an illustrative example of an invalid value rather than as a required PSBT format component.",
               "confidence": "medium"
             }
           ]

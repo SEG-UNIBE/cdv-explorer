@@ -997,53 +997,30 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:42:55Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:10:18Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:130",
-              "evidence": "as defined by BIP130",
-              "reason": "The low-bandwidth announcement mode explicitly relies on the inv/headers announcement behavior defined by BIP130.",
+              "type": "references",
+              "evidence": "peers send new block announcements with the usual inv/headers announcements (as per BIP130, and after fully validating the block)",
+              "reason": "BIP 130 is cited as an existing announcement method used in low-bandwidth mode, but compact-block operation can alternatively use inv announcements and therefore is not functionally dependent on BIP 130.",
               "confidence": "high"
             },
             {
               "target": "bips:141",
+              "type": "depends_on",
               "evidence": "using the wtxid as defined in BIP 141 instead of the txid",
-              "reason": "Version 2 changes compact-block short-ID computation to depend on wtxid semantics introduced by BIP 141, and also references witness-format handling for the coinbase transaction defined there.",
+              "reason": "Version 2 short transaction IDs require the wtxid definition and witness transaction encoding rules specified by BIP 141.",
               "confidence": "high"
             },
             {
               "target": "bips:144",
-              "evidence": "using the same format as responses to getdata MSG_WITNESS_TX, specified in BIP144",
-              "reason": "Version 2 requires witness-bearing transaction/block relay encodings and fallback behavior that reuse the wire formats and message semantics specified by BIP 144.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:04:16Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:130",
-              "evidence": "invs or headers, as defined by BIP130",
-              "reason": "The compact-block low-bandwidth and fallback announcement workflow relies on the headers announcement behavior defined by BIP130.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:141",
-              "evidence": "using the wtxid as defined in BIP 141 instead of the txid",
-              "reason": "Version 2 compact blocks depend on SegWit transaction identity semantics from BIP141 for short transaction ID computation.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:144",
-              "evidence": "using the same format as responses to getdata MSG_WITNESS_TX, specified in BIP144",
-              "reason": "Version 2 compact blocks reuse BIP144 witness transaction relay serialization formats for transactions inside compact-block messages.",
+              "type": "depends_on",
+              "evidence": "should include witness data, using the same format as responses to getdata MSG_WITNESS_TX, specified in BIP144",
+              "reason": "Version 2 compact-block transaction serialization directly requires the witness-aware P2P format specified by BIP 144.",
               "confidence": "high"
             }
           ]

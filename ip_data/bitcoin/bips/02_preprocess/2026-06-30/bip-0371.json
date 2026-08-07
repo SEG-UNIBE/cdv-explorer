@@ -773,89 +773,51 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:44:13Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:18:07Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
-              "evidence": "Taproot Key BIP 32 Derivation Path",
-              "reason": "The proposal defines new PSBT fields carrying master key fingerprints and derivation paths using BIP 32 derivation structure. The explicit 'BIP 32 Derivation Path' naming and path/fingerprint encoding show direct reuse of BIP 32 hierarchical deterministic key-derivation metadata.",
+              "type": "depends_on",
+              "evidence": "Taproot Key BIP 32 Derivation Path\n| <tt>PSBT_IN_TAP_BIP32_DERIVATION = 0x16</tt>\n| <tt><32 byte xonlypubkey></tt>\n| A 32 byte X-only public key involved in this input. It may be the output key, the internal key, or a key present in a leaf script.\n| <tt><compact size uint number of hashes> <32 byte leaf hash>* <4 byte fingerprint> <32-bit little endian uint path element>*</tt>\n| A compact size unsigned integer representing the number of leaf hashes, followed by a list of leaf hashes, followed by the 4 byte master key fingerprint concatenated with the derivation path of the public key.",
+              "reason": "The proposed field encodes a BIP 32 master-key fingerprint and derivation path, so interpreting and using it depends on the hierarchical deterministic key-derivation scheme defined by BIP 32.",
               "confidence": "high"
             },
             {
               "target": "bips:174",
+              "type": "depends_on",
               "evidence": "additional fields for BIP 174 PSBTv0",
-              "reason": "The proposal extends the PSBTv0 format defined by BIP 174 with new Taproot-related fields, so implementing it materially depends on the underlying PSBT structure and semantics from BIP 174.",
+              "reason": "The proposal defines extensions to the PSBTv0 format specified by BIP 174, so its fields require that underlying PSBT format.",
               "confidence": "high"
             },
             {
               "target": "bips:340",
-              "evidence": "BIP 340/341/342 Taproot data",
-              "reason": "The proposal adds PSBT fields for Taproot signatures, and specifically uses 64 or 65 byte Schnorr signatures; Taproot's Schnorr signature scheme is specified by BIP 340, so the PSBT fields rely on that signature format and semantics.",
+              "type": "depends_on",
+              "evidence": "allow for\nBIP 340/341/342 Taproot data to be included in a PSBT of any version",
+              "reason": "The proposed PSBT fields carry Taproot signatures governed by BIP 340's Schnorr-signature rules, making those rules necessary to interpret and use the fields.",
               "confidence": "high"
             },
             {
               "target": "bips:341",
+              "type": "depends_on",
               "evidence": "The control block for this leaf as specified in BIP 341.",
-              "reason": "The proposal's new Taproot PSBT fields directly encode mechanisms from BIP 341, including control blocks, internal keys, merkle roots, key/script path spending, and Taproot tree reconstruction. Understanding and implementing these fields depends on BIP 341's Taproot structures and spending semantics.",
+              "reason": "The leaf-script field directly uses the control-block format specified by BIP 341, so it cannot be implemented correctly without that proposal.",
               "confidence": "high"
             },
             {
               "target": "bips:342",
-              "evidence": "BIP 340/341/342 Taproot data",
-              "reason": "The proposal includes leaf scripts and script-spend signatures for Taproot inputs. Taproot script-path execution semantics are defined by BIP 342, so these PSBT fields materially rely on the script rules introduced there.",
+              "type": "depends_on",
+              "evidence": "allow for\nBIP 340/341/342 Taproot data to be included in a PSBT of any version",
+              "reason": "The proposal carries Taproot script-spend data, including leaf scripts and versions, whose operative Tapscript rules are specified by BIP 342.",
               "confidence": "high"
             },
             {
               "target": "bips:370",
-              "evidence": "BIP 370 PSBTv2",
-              "reason": "The proposal adds corresponding fields to PSBTv2, directly building on the PSBTv2 format and versioning rules introduced by BIP 370.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:12:14Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:32",
-              "evidence": "Taproot Key BIP 32 Derivation Path",
-              "reason": "The proposal defines Taproot-specific PSBT fields that carry BIP32 key fingerprints and derivation paths, reusing BIP32 derivation-path semantics.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:174",
-              "evidence": "additional fields for BIP 174 PSBTv0",
-              "reason": "The proposal adds new fields to the PSBTv0 format defined by BIP174 and reuses its PSBT field structure and workflows.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:340",
-              "evidence": "BIP 340/341/342 Taproot data to be included in a PSBT",
-              "reason": "The proposal defines PSBT fields for Taproot Schnorr signatures and x-only public keys, relying on the signature/key scheme specified by BIP340.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:341",
-              "evidence": "The control block for this leaf as specified in BIP 341.",
-              "reason": "The proposal directly reuses Taproot control blocks, internal keys, Merkle paths, leaf hashes, and output semantics specified by BIP341.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:342",
-              "evidence": "BIP 340/341/342 Taproot data to be included in a PSBT",
-              "reason": "The proposal carries Taproot script-path data, leaf scripts, leaf versions, and script-path signatures whose semantics are specified as part of Tapscript in BIP342.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:370",
+              "type": "depends_on",
               "evidence": "additional fields for BIP 174 PSBTv0 and BIP 370 PSBTv2",
-              "reason": "The proposal adds new fields for PSBTv2 and uses the versioned PSBT rules introduced by BIP370.",
+              "reason": "The proposal defines fields for the PSBTv2 format specified by BIP 370 and therefore relies on that underlying format.",
               "confidence": "high"
             }
           ]

@@ -738,36 +738,31 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:42:42Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:09:34Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
-              "target": "bips:130",
-              "evidence": "with 'sendheaders' BIP 130",
-              "reason": "The relay design rationale explicitly relies on the fact that peers do not always use invs anymore because of the sendheaders workflow introduced by BIP130; that compatibility assumption materially informs this proposal's inventory/relay behavior.",
+              "target": "bips:37",
+              "type": "references",
+              "evidence": "Inventory messages themselves still use just MSG_TX and MSG_BLOCK, similar to MSG_FILTERED_BLOCK.",
+              "reason": "The proposal compares its inventory behavior with MSG_FILTERED_BLOCK, the filtered-block inventory type introduced by BIP 37, but does not require BIP 37 for witness relay.",
               "confidence": "medium"
             },
             {
-              "target": "bips:141",
-              "evidence": "defining witness structures and requiring commitments in future blocks (BIP141",
-              "reason": "This proposal's messages and serialization formats are designed to propagate the segregated witness structures and commitments introduced by BIP141, and the text explicitly says those structures are defined there.",
-              "confidence": "low"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:03:26Z",
-          "status": "success",
-          "dependencies": [
+              "target": "bips:130",
+              "type": "references",
+              "evidence": "we don't always use invs anymore (with 'sendheaders' BIP 130)",
+              "reason": "BIP 130 is cited to explain why witness status is not advertised in inventory messages; the sendheaders mechanism is contextual rationale rather than a requirement of BIP 144.",
+              "confidence": "high"
+            },
             {
               "target": "bips:141",
-              "evidence": "defining witness structures and requiring commitments in future blocks ([https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki BIP141] - Consensus segwit BIP)",
-              "reason": "BIP 144 defines peer-to-peer relay, serialization, service signaling, and witness-hash handling for the segregated witness structures and commitments specified by BIP 141, so implementing or evaluating it materially depends on those witness semantics.",
-              "confidence": "high"
+              "type": "depends_on",
+              "evidence": "defining witness structures and requiring commitments in future blocks (BIP141 - Consensus segwit BIP), new mechanisms must be defined to allow peers to advertise support for segregated witness and to relay the witness structures",
+              "reason": "BIP 144's serialization and relay mechanisms operate on the segregated-witness structures and commitments defined by BIP 141, so its intended operation requires that proposal's consensus framework.",
+              "confidence": "low"
             }
           ]
         }

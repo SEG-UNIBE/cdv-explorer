@@ -534,89 +534,65 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:44:48Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:23:16Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
+            {
+              "target": "bips:119",
+              "type": "references",
+              "evidence": "An alternative to [BIP 446 `OP_TEMPLATEHASH`][templatehash-bip] is [BIP 119 `OP_CHECKTEMPLATEVERIFY`][ctv-bip].",
+              "reason": "BIP 119 is identified only as an alternative to the selected OP_TEMPLATEHASH design and is not required by the proposal.",
+              "confidence": "high"
+            },
             {
               "target": "bips:340",
-              "evidence": "OP_CHECKSIGFROMSTACK introduces BIP 340 signature verification for arbitrary messages",
-              "reason": "The proposal states that OP_CHECKSIGFROMSTACK uses BIP 340 signature verification, so its behavior relies on the Schnorr signature scheme and verification semantics introduced by BIP 340.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:341",
-              "evidence": "reuses the existing Taproot signature hashes",
-              "reason": "The proposal's chosen design for OP_TEMPLATEHASH is explicitly built around reusing Taproot signature hashes. The named Taproot mechanism resolves to BIP 341, and the text shows substantive reliance on those sighash semantics rather than a mere mention.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:342",
-              "evidence": "In BIP 342 Tapscript",
-              "reason": "The proposal is explicitly defined as updates within Tapscript and reassigns Tapscript OP_SUCCESS opcodes, so understanding and implementing it materially depends on the Tapscript rules introduced by BIP 342.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:348",
-              "evidence": "OP_CHECKSIGFROMSTACK redefines OP_SUCCESS204 (0xcc) as per the specification of BIP 348",
-              "reason": "The proposal directly incorporates OP_CHECKSIGFROMSTACK according to BIP 348's specification, so implementing this proposal requires that opcode's semantics from BIP 348.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:349",
-              "evidence": "OP_INTERNALKEY redefines OP_SUCCESS203 (0xcb) as per the specification of BIP 349",
-              "reason": "The proposal directly incorporates OP_INTERNALKEY according to BIP 349's specification, making BIP 349 a core technical dependency.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:446",
-              "evidence": "OP_TEMPLATEHASH redefines OP_SUCCESS206 (0xce) as per the specification of BIP 446",
-              "reason": "The proposal directly incorporates OP_TEMPLATEHASH according to BIP 446's specification, making that opcode definition a substantive component of this proposal.",
-              "confidence": "low"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:17:27Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:340",
+              "type": "depends_on",
               "evidence": "`OP_CHECKSIGFROMSTACK` introduces [BIP 340][schnorr-bip] signature verification for arbitrary messages",
-              "reason": "The proposal relies on the Schnorr signature verification semantics specified by BIP 340 as the verification mechanism for the deployed OP_CHECKSIGFROMSTACK operation.",
+              "reason": "The deployed signature-checking operation requires the Schnorr signature verification scheme specified by BIP 340.",
               "confidence": "high"
             },
             {
               "target": "bips:341",
+              "type": "depends_on",
               "evidence": "`OP_INTERNALKEY` allows to push the [Taproot][taproot-bip] internal key on the stack.",
-              "reason": "The proposal deploys an opcode exposing the Taproot internal key; the Taproot output and internal-key semantics are defined by BIP 341.",
-              "confidence": "medium"
+              "reason": "The operation requires the Taproot internal-key concept and associated rules defined by BIP 341.",
+              "confidence": "high"
             },
             {
               "target": "bips:342",
+              "type": "depends_on",
               "evidence": "In [BIP 342 Tapscript](bip-0342.mediawiki), the following operations are updated.",
-              "reason": "The proposal is specifically an extension of Tapscript and changes the meaning of OP_SUCCESS opcodes defined by BIP 342.",
+              "reason": "The proposal deploys its new opcode meanings specifically within the Tapscript execution environment defined by BIP 342, so its mechanism requires that target's rules and opcode framework.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:346",
+              "type": "references",
+              "evidence": "More modular operations (such as [BIP 346][txhash-bip]) also enable these capabilities, and more.",
+              "reason": "BIP 346 is discussed as a more modular alternative with a different complexity tradeoff, not as functionality required by this proposal.",
               "confidence": "high"
             },
             {
               "target": "bips:348",
-              "evidence": "`OP_CHECKSIGFROMSTACK` redefines `OP_SUCCESS204` (0xcc) as per the\nspecification of [BIP 348][csfs-bip]",
-              "reason": "The proposal directly deploys OP_CHECKSIGFROMSTACK by assigning a Tapscript OP_SUCCESS opcode according to BIP 348's specification.",
+              "type": "depends_on",
+              "evidence": "`OP_CHECKSIGFROMSTACK` redefines `OP_SUCCESS204` (0xcc) as per the\nspecification of [BIP 348][csfs-bip].",
+              "reason": "The proposal delegates the operation's consensus behavior to BIP 348, making that specification necessary to implement the deployed opcode.",
               "confidence": "high"
             },
             {
               "target": "bips:349",
-              "evidence": "`OP_INTERNALKEY` redefines `OP_SUCCESS203` (0xcb) as per the specification of [BIP\n349][internalkey-bip]",
-              "reason": "The proposal directly deploys OP_INTERNALKEY by assigning a Tapscript OP_SUCCESS opcode according to BIP 349's specification.",
+              "type": "depends_on",
+              "evidence": "`OP_INTERNALKEY` redefines `OP_SUCCESS203` (0xcb) as per the specification of [BIP\n349][internalkey-bip].",
+              "reason": "The proposal delegates the operation's consensus behavior to BIP 349, making that specification necessary to implement the deployed opcode.",
               "confidence": "high"
             },
             {
               "target": "bips:446",
-              "evidence": "`OP_TEMPLATEHASH` redefines `OP_SUCCESS206` (0xce) as per\nthe specification of [BIP 446][templatehash-bip]",
-              "reason": "The proposal directly deploys OP_TEMPLATEHASH by assigning a Tapscript OP_SUCCESS opcode according to BIP 446's specification.",
+              "type": "depends_on",
+              "evidence": "`OP_TEMPLATEHASH` redefines `OP_SUCCESS206` (0xce) as per\nthe specification of [BIP 446][templatehash-bip].",
+              "reason": "The proposal delegates the operation's consensus behavior to BIP 446, making that specification necessary to implement the deployed opcode.",
               "confidence": "high"
             }
           ]

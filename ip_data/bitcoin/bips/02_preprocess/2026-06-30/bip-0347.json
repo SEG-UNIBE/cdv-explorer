@@ -1044,29 +1044,30 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:43:53Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:15:26Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
-              "target": "bips:342",
-              "evidence": "leverage the tapscript softfork opcode upgrade path introduced in [[bip-0342.mediawiki|BIP342]]",
-              "reason": "The proposal explicitly relies on the OP_SUCCESSx upgrade mechanism and tapscript semantics introduced by BIP342 to activate OP_CAT by redefining OP_SUCCESS126 within tapscript.",
+              "target": "bips:3",
+              "type": "references",
+              "evidence": "Made compliant with [[bip-0003.md|BIP 3]]",
+              "reason": "The changelog cites BIP 3 for document compliance, but BIP 347's opcode mechanism and operation do not functionally depend on it.",
               "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:09:40Z",
-          "status": "success",
-          "dependencies": [
+            },
+            {
+              "target": "bips:341",
+              "type": "references",
+              "evidence": "The use of \"Nothing Up My Sleeve\" (NUMS) points as described in [[bip-0341.mediawiki|BIP341]] to disable the key spend-path does not disable the key spend-path against a quantum attacker",
+              "reason": "BIP 341 is cited while discussing the limitations of NUMS points against quantum attackers; this is motivational analysis rather than a requirement of OP_CAT.",
+              "confidence": "high"
+            },
             {
               "target": "bips:342",
-              "evidence": "tapscript softfork opcode upgrade path introduced in [[bip-0342.mediawiki|BIP342]]",
-              "reason": "The proposal activates OP_CAT by redefining an OP_SUCCESSx tapscript opcode, directly relying on the Tapscript opcode-upgrade mechanism defined by BIP342.",
+              "type": "depends_on",
+              "evidence": "reenable OP_CAT by redefining a tapscript OP_SUCCESSx opcode to OP_CAT was motivated to leverage the tapscript softfork opcode upgrade path introduced in [[bip-0342.mediawiki|BIP342]]",
+              "reason": "The proposal activates OP_CAT by using the tapscript OP_SUCCESSx soft-fork upgrade mechanism defined by BIP 342, so its specified activation mechanism depends on that proposal.",
               "confidence": "high"
             }
           ]

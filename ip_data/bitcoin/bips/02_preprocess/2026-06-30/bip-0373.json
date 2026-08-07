@@ -884,65 +884,66 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:44:10Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:18:17Z",
           "status": "success",
-          "dependencies": []
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:12:26Z",
-          "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
-              "evidence": "BIP 32 unhardened derivation with the aggregate public key as the parent key",
-              "reason": "The proposal relies on BIP 32 public-key derivation semantics and tweaks when MuSig2 aggregate keys are used as parent keys.",
+              "type": "depends_on",
+              "evidence": "Signers must remember to apply any relevant tweaks such as a tweak that is the result of performing\nBIP 32 unhardened derivation with the aggregate public key as the parent key.",
+              "reason": "For aggregate keys subject to unhardened derivation, correct partial signatures require the derivation and tweak rules defined by BIP 32.",
               "confidence": "high"
             },
             {
               "target": "bips:174",
-              "evidence": "additional fields for [[bip-0174.mediawiki|BIP 174]] PSBTv0",
-              "reason": "The proposal defines new fields within the PSBTv0 format, so implementing it depends on the PSBT structure and extensibility rules defined by BIP 174.",
+              "type": "depends_on",
+              "evidence": "This document proposes additional fields for [[bip-0174.mediawiki|BIP 174]] PSBTv0",
+              "reason": "The proposal extends the PSBTv0 format defined by BIP 174, so its version-0 fields require that format and its extensibility rules.",
               "confidence": "high"
             },
             {
               "target": "bips:327",
-              "evidence": "[[bip-0327.mediawiki|BIP 327]] MuSig2 Multi-Signature data to be included in a PSBT",
-              "reason": "The proposal is specifically a PSBT encoding and workflow for MuSig2 data and uses BIP 327 algorithms such as KeyAgg, NonceGen, NonceAgg, Sign, and PartialSigAgg.",
+              "type": "depends_on",
+              "evidence": "allow for \n[[bip-0327.mediawiki|BIP 327]] MuSig2 Multi-Signature data to be included in a PSBT of any version",
+              "reason": "The new fields carry MuSig2 participant keys, nonces, and partial signatures and invoke the algorithms defined by BIP 327, so the proposal cannot operate as intended without that protocol.",
               "confidence": "high"
             },
             {
               "target": "bips:328",
-              "evidence": "Derivation from the aggregate pubkey can be assumed to follow [[bip-0328.mediawiki|BIP 328]]",
-              "reason": "The proposal explicitly uses BIP 328 as the assumed derivation scheme from a MuSig2 aggregate public key when no synthetic xpub is provided.",
+              "type": "depends_on",
+              "evidence": "Derivation from the aggregate pubkey can be assumed to follow [[bip-0328.mediawiki|BIP 328]]\nif there is no <tt>PSBT_GLOBAL_XPUB</tt> that specifies the synthetic xpub for the aggregate\npublic key.",
+              "reason": "The proposal uses BIP 328 as the default derivation procedure when no synthetic aggregate-key xpub is supplied, making its rules necessary for that specified case.",
               "confidence": "high"
             },
             {
               "target": "bips:340",
-              "evidence": "[[bip-0340.mediawiki|BIP 340]] compatible public keys and signatures",
-              "reason": "The proposal is designed to carry MuSig2 data that produces BIP 340-compatible public keys and signatures, and final signatures are treated as BIP 340 signatures.",
+              "type": "depends_on",
+              "evidence": "produce a [[bip-0340.mediawiki|BIP 340]] compatible signature that can be\nplaced into a <tt>PSBT_IN_TAP_KEY_SIG</tt> or a <tt>PSBT_IN_TAP_SCRIPT_SIG</tt>",
+              "reason": "The signing and finalization process produces and stores signatures according to BIP 340's signature format and validity rules.",
               "confidence": "high"
             },
             {
               "target": "bips:341",
-              "evidence": "[[bip-0341.mediawiki|BIP 341]] tapleaf hash",
-              "reason": "The proposal’s new keydata formats include Taproot tapleaf hashes and are designed around Taproot internal keys, output keys, and leaf scripts, whose semantics are defined by BIP 341.",
+              "type": "depends_on",
+              "evidence": "followed by the [[bip-0341.mediawiki|BIP 341]] tapleaf hash of\nthe Taproot leaf script that will be signed",
+              "reason": "The nonce and partial-signature keydata formats conditionally contain the tapleaf hash defined by BIP 341, and their interpretation relies on BIP 341's Taproot key and script-path concepts.",
               "confidence": "high"
             },
             {
               "target": "bips:370",
-              "evidence": "[[bip-0370.mediawiki|BIP 370]] PSBTv2",
-              "reason": "The proposal defines new fields for PSBTv2 and specifies their version inclusion rules, relying on the PSBTv2 format defined by BIP 370.",
+              "type": "depends_on",
+              "evidence": "and [[bip-0370.mediawiki|BIP 370]] PSBTv2",
+              "reason": "The proposal adds fields to the PSBTv2 format defined by BIP 370, making that format necessary for its version-2 operation.",
               "confidence": "high"
             },
             {
               "target": "bips:371",
+              "type": "depends_on",
               "evidence": "Reusing <tt>PSBT_IN_TAP_BIP32_DERIVATION</tt> to provide derivation paths for participant public\nkeys",
-              "reason": "The proposal reuses Taproot PSBT fields such as PSBT_IN_TAP_BIP32_DERIVATION, PSBT_OUT_TAP_BIP32_DERIVATION, PSBT_IN_TAP_KEY_SIG, and PSBT_IN_TAP_SCRIPT_SIG. These named Taproot PSBT fields are defined by BIP 371, so implementing the reuse depends on BIP 371’s field formats and semantics.",
-              "confidence": "medium"
+              "reason": "PSBT_IN_TAP_BIP32_DERIVATION is a Taproot PSBT field canonically defined by BIP 371. The proposal reuses that field to associate MuSig2 participant keys with derivation paths, so this part of its mechanism requires BIP 371's field format and semantics.",
+              "confidence": "high"
             }
           ]
         }

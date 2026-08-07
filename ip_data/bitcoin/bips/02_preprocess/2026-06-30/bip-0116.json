@@ -723,41 +723,65 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:42:08Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:06:13Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:8",
-              "evidence": "This BIP will be deployed by BIP8",
-              "reason": "The proposal explicitly adopts BIP8's activation mechanism and parameters for deployment, so adoption depends on that target's versionbits lock-in-by-height rules.",
+              "type": "depends_on",
+              "evidence": "This BIP will be deployed by BIP8 (Version bits with lock-in by height)[10] with the name \"merklebranchverify\" and using bit 2.",
+              "reason": "The specified activation and deployment process relies directly on the version-bits mechanism defined by BIP8.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:16",
+              "type": "references",
+              "evidence": "BIP16 (Pay to Script Hash)[2] and BIP141 (Segregated Witness)[3] both allow the redeem script to be kept out of the scriptPubKey and therefore out of the UTXO set",
+              "reason": "BIP16 is discussed as background for existing script commitment behavior, but MERKLEBRANCHVERIFY does not require P2SH to function.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:65",
+              "type": "references",
+              "evidence": "the more familiar NOP-expansion soft-fork mechanism used by BIP65 (CHECKLOCKTIMEVERIFY)[5] and BIP112 (CHECKSEQUENCEVERIFY)[6] was chosen over script versioning",
+              "reason": "BIP65 is cited as precedent for the selected NOP-expansion approach, but its CHECKLOCKTIMEVERIFY functionality is not required by this proposal.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:68",
+              "type": "references",
+              "evidence": "making deployment easier than was the case with, for example, with BIP68 (Relative lock-time using consensus-enforced sequence numbers)[9]",
+              "reason": "BIP68 is mentioned only as a comparison with an earlier deployment and is not required by MERKLEBRANCHVERIFY.",
               "confidence": "high"
             },
             {
               "target": "bips:98",
-              "evidence": "serialized Merkle tree inclusion proof as specified by BIP98",
-              "reason": "The proposal normatively defines its proof format and validation around the Merkle inclusion proof specified by BIP98, so implementing MERKLEBRANCHVERIFY materially relies on that target's tree and proof semantics.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:00:43Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:8",
-              "evidence": "will be deployed by BIP8",
-              "reason": "The proposal specifies BIP8 as its activation/deployment mechanism, so adopting it depends on BIP8's version-bits activation rules.",
+              "type": "depends_on",
+              "evidence": "the third item on the stack is not a serialized Merkle tree inclusion proof as specified by BIP98[1]",
+              "reason": "MERKLEBRANCHVERIFY validation requires the inclusion-proof format and fast Merkle-tree rules specified by BIP98.",
               "confidence": "high"
             },
             {
-              "target": "bips:98",
-              "evidence": "serialized Merkle tree inclusion proof as specified by BIP98",
-              "reason": "The opcode's validation semantics require BIP98's Merkle inclusion-proof format and fast Merkle tree computation.",
+              "target": "bips:112",
+              "type": "references",
+              "evidence": "the more familiar NOP-expansion soft-fork mechanism used by BIP65 (CHECKLOCKTIMEVERIFY)[5] and BIP112 (CHECKSEQUENCEVERIFY)[6] was chosen over script versioning",
+              "reason": "BIP112 is cited as precedent for the selected NOP-expansion approach, but its CHECKSEQUENCEVERIFY functionality is not required by this proposal.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "type": "references",
+              "evidence": "BIP141 (Segregated Witness)[3] provides support for a powerful form of script upgrades called script versioning",
+              "reason": "The proposal discusses BIP141 script versioning as an alternative deployment mechanism rather than a required component of MERKLEBRANCHVERIFY.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:143",
+              "type": "references",
+              "evidence": "without the need for BIP143[7] signing code",
+              "reason": "The proposal explicitly notes that its chosen deployment approach avoids requiring BIP143 signing rules.",
               "confidence": "high"
             }
           ]

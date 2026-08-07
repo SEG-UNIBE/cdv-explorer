@@ -547,41 +547,30 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:43:38Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:14:00Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:141",
-              "evidence": "support transaction relay based on the BIP 141 wtxid of a transaction",
-              "reason": "The proposal is explicitly built around using wtxid, a transaction identifier defined by BIP 141, for relay semantics instead of txid. Understanding and implementing this proposal materially depends on the wtxid concept introduced there.",
+              "type": "depends_on",
+              "evidence": "transaction relay based on the BIP 141 wtxid of a transaction, rather than its txid",
+              "reason": "The proposed relay mechanism uses the wtxid defined by BIP 141 as the transaction identifier, so it cannot operate as specified without that definition.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:143",
+              "type": "references",
+              "evidence": "Segregated Witness (BIP 141/143/144) has been adopted by the network",
+              "reason": "BIP 143 is mentioned only as part of the historical Segregated Witness deployment context; no rule or format from it is required by this proposal.",
               "confidence": "high"
             },
             {
               "target": "bips:144",
-              "evidence": "serialized with witness as well, as described in BIP 144",
-              "reason": "The proposal normatively specifies that MSG_WTX getdata requests return transactions using the witness-inclusive serialization defined by BIP 144, so its request/response behavior directly relies on that format.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:07:47Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:141",
-              "evidence": "based on the BIP 141 wtxid of a transaction",
-              "reason": "The proposal's relay mechanism relies on BIP 141's witness transaction identifier (wtxid) semantics rather than txid-based identification.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:144",
-              "evidence": "serialized with witness as well, as described in BIP 144",
-              "reason": "The proposal depends on BIP 144's witness transaction serialization rules for MSG_WTX getdata responses.",
+              "type": "depends_on",
+              "evidence": "the transaction being requested should be serialized with witness as well, as described in BIP 144",
+              "reason": "MSG_WTX getdata handling requires the witness transaction serialization specified by BIP 144.",
               "confidence": "high"
             }
           ]

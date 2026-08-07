@@ -596,59 +596,51 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:43:50Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:14:52Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:8",
-              "evidence": "specifies a BIP8 (LOT=true) deployment",
-              "reason": "The proposal is explicitly an activation deployment using the BIP8 mechanism and parameters, so understanding and implementing it materially relies on BIP8's activation rules.",
+              "type": "depends_on",
+              "evidence": "This document specifies a BIP8 (LOT=true) deployment to activate taproot.",
+              "reason": "The proposal's activation schedule and mandatory-signaling behavior are an application of the BIP8 deployment mechanism and cannot operate as specified without its rules.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:91",
+              "type": "references",
+              "evidence": "Lessons have been learned from the BIP148 and BIP91 deployments in 2017 with regards to giving many months of advance warning before the mandatory signaling is attempted.",
+              "reason": "BIP91 is cited as historical experience motivating the deployment design, not as a mechanism required by this proposal.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:148",
+              "type": "references",
+              "evidence": "The deployment of BIP148 demonstrated that multiple implementations with different activation mechanisms can incentivize the necessary actors to act so that the different deployments activate in sync.",
+              "reason": "BIP148 is discussed as historical precedent for parallel activation mechanisms; the current proposal does not require its deployment rules.",
               "confidence": "high"
             },
             {
               "target": "bips:340",
-              "evidence": "intends to activate BIPs 340, 341, and 342",
-              "reason": "The proposal is an activation mechanism for Taproot, and the text explicitly states the compatible deployment intends to activate BIPs 340, 341, and 342; adopting this deployment therefore includes activation of BIP340 as part of the Taproot package.",
+              "type": "depends_on",
+              "evidence": "It uses signaling bit 2, was deployed between midnight April 24th 2021 and midnight August 11th 2021, has a minimum activation height of 709632 and intends to activate BIPs 340, 341, and 342.",
+              "reason": "BIP340 is explicitly one of the Taproot upgrade proposals targeted by the compatible activation deployment, so the activation specified here relies on the upgrade rules it defines.",
               "confidence": "high"
             },
             {
               "target": "bips:341",
-              "evidence": "activate taproot",
-              "reason": "This proposal's sole purpose is to activate Taproot; in the references and compatibility section, Taproot is concretely identified as BIP341 ('Taproot: SegWit version 1 spending rules'), so the deployment is designed around activating that proposal's rules.",
+              "type": "depends_on",
+              "evidence": "It uses signaling bit 2, was deployed between midnight April 24th 2021 and midnight August 11th 2021, has a minimum activation height of 709632 and intends to activate BIPs 340, 341, and 342.",
+              "reason": "BIP341 defines the Taproot spending rules that this proposal is intended to activate, making it functionally necessary to the proposal's stated purpose.",
               "confidence": "high"
             },
             {
               "target": "bips:342",
-              "evidence": "intends to activate BIPs 340, 341, and 342",
-              "reason": "The proposal is an activation mechanism for Taproot, and the text explicitly states the compatible deployment intends to activate BIPs 340, 341, and 342; adopting this deployment therefore includes activation of BIP342 as part of the Taproot package.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:09:29Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:8",
-              "evidence": "specifies a BIP8 (LOT=true) deployment",
-              "reason": "The proposal directly uses BIP8's height-based version-bits activation mechanism and LOT=true semantics to define its deployment parameters.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:141",
-              "evidence": "Non-upgraded nodes, however, will consider all SegWit version 1 witness programs as anyone-can-spend scripts.",
-              "reason": "The proposal relies on the SegWit witness-program compatibility rule under which unknown witness versions are treated as anyone-can-spend by old nodes; that witness-program/versioning mechanism was introduced by BIP141.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:341",
-              "evidence": "to activate taproot",
-              "reason": "The proposal is an activation deployment for Taproot; the Taproot SegWit version 1 spending rules are specified by BIP341, so adopting or evaluating this activation depends on the rules being activated.",
+              "type": "depends_on",
+              "evidence": "It uses signaling bit 2, was deployed between midnight April 24th 2021 and midnight August 11th 2021, has a minimum activation height of 709632 and intends to activate BIPs 340, 341, and 342.",
+              "reason": "BIP342 supplies the Taproot script-validation rules included in the upgrade this deployment is intended to activate.",
               "confidence": "high"
             }
           ]

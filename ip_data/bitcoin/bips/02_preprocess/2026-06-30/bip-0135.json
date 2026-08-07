@@ -751,66 +751,38 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:42:32Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:09:03Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:9",
-              "evidence": "This document describes a generalized signaling scheme",
-              "reason": "The proposal directly generalizes and preserves the BIP9 versionbits mechanism, reusing its state machine, parameters, signaling-bit range, and getblocktemplate behavior with configurable extensions.",
+              "type": "depends_on",
+              "evidence": "The states of the BIP9 state machine and its original parameters (name, bit, starttime, timeout) are retained. Some state transition conditions are extended by additional parameters",
+              "reason": "The proposal directly retains and extends BIP 9's version-bits state machine, parameters, and transition model, making BIP 9 foundational to its generalized mechanism.",
               "confidence": "high"
             },
             {
               "target": "bips:34",
-              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
-              "reason": "The proposal's available nVersion signaling space is explicitly constrained by block-version semantics introduced by this earlier consensus change, and the rationale for its 29-bit design relies on those constraints.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:65",
-              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
-              "reason": "The proposal's available nVersion signaling space is explicitly constrained by block-version semantics introduced by this earlier consensus change, and the rationale for its 29-bit design relies on those constraints.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:66",
-              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
-              "reason": "The proposal's available nVersion signaling space is explicitly constrained by block-version semantics introduced by this earlier consensus change, and the rationale for its 29-bit design relies on those constraints.",
-              "confidence": "medium"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:02:28Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:9",
-              "evidence": "The states of the BIP9 state machine and its original parameters (name, bit, starttime, timeout) are retained.",
-              "reason": "BIP 135 directly generalizes and extends BIP 9's version-bits signaling state machine, retaining its states and core deployment parameters while adding configurable threshold, window, and lock-in behavior.",
+              "type": "references",
+              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65, there are only 0x7FFFFFFB possible nVersion values available.",
+              "reason": "BIP 34 is cited to explain existing constraints on block-version values and motivate the selected signaling range, rather than as a required component of the signaling mechanism.",
               "confidence": "high"
             },
             {
-              "target": "bips:34",
-              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
-              "reason": "The proposal's available nVersion signaling space and top-bit restriction are designed around version-field constraints attributed to BIP 34, BIP 66, and BIP 65.",
-              "confidence": "medium"
-            },
-            {
               "target": "bips:65",
-              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
-              "reason": "The proposal's available nVersion signaling space and top-bit restriction are designed around version-field constraints attributed to BIP 34, BIP 66, and BIP 65.",
-              "confidence": "medium"
+              "type": "references",
+              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65, there are only 0x7FFFFFFB possible nVersion values available.",
+              "reason": "BIP 65 is cited to explain existing constraints on block-version values and motivate the selected signaling range, rather than as a required component of the signaling mechanism.",
+              "confidence": "high"
             },
             {
               "target": "bips:66",
-              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
-              "reason": "The proposal's available nVersion signaling space and top-bit restriction are designed around version-field constraints attributed to BIP 34, BIP 66, and BIP 65.",
-              "confidence": "medium"
+              "type": "references",
+              "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65, there are only 0x7FFFFFFB possible nVersion values available.",
+              "reason": "BIP 66 is cited to explain existing constraints on block-version values and motivate the selected signaling range, rather than as a required component of the signaling mechanism.",
+              "confidence": "high"
             }
           ]
         }

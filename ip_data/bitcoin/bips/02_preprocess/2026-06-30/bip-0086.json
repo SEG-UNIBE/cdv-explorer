@@ -561,83 +561,51 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:41:27Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:03:01Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
-              "evidence": "based on a BIP 32 master private key",
-              "reason": "The proposal defines its address derivation starting from a BIP 32 master private key and uses the HD wallet derivation framework introduced there.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:44",
-              "evidence": "uses the same account-structure as defined in BIPs 44, 49, and 84",
-              "reason": "The proposal directly reuses the BIP 44 account hierarchy and says the remaining path levels are used as defined there, changing only the purpose value.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:49",
-              "evidence": "uses the same account-structure as defined in BIPs 44, 49, and 84",
-              "reason": "The proposal explicitly follows the same derivation-path method as BIP 49 for script-type-specific accounts, differing only in purpose value.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:84",
-              "evidence": "uses the same account-structure as defined in BIPs 44, 49, and 84",
-              "reason": "The proposal explicitly reuses the same account-structure and implementation approach as BIP 84, with a new purpose for this script type.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:341",
-              "evidence": "BIP 341 states: \"If the spending conditions do not require a script path, the output key should commit to an unspendable script path",
-              "reason": "The proposal's core output-key computation, scriptPubKey form, and witness rules are taken from Taproot as specified in BIP 341; it defines derivation specifically for single-key P2TR outputs using those semantics.",
-              "confidence": "low"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:58:12Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:32",
-              "evidence": "based on a\n[[bip-0032.mediawiki|BIP 32]] master private key",
-              "reason": "The proposal derives deterministic addresses from a BIP 32 HD wallet master private key, reusing BIP 32 key derivation foundations.",
+              "type": "depends_on",
+              "evidence": "derive multiple deterministic addresses based on a\n[[bip-0032.mediawiki|BIP 32]] master private key",
+              "reason": "The derivation scheme requires the HD master-key and child-key derivation framework defined by BIP 32.",
               "confidence": "high"
             },
             {
               "target": "bips:43",
-              "evidence": "For the <tt>purpose</tt>-path level it uses <tt>86'</tt>.",
-              "reason": "The proposal depends on the purpose path-level convention; that purpose-field scheme for deterministic wallets is introduced by BIP 43, and the text substantively relies on assigning a purpose value for this derivation path.",
-              "confidence": "medium"
+              "type": "references",
+              "evidence": "[[bip-0043.mediawiki|BIP43 - Purpose Field for Deterministic Wallets]]",
+              "reason": "BIP 43 is visibly cited as the purpose-field standard, but the proposal directly specifies its own purpose value and does not explicitly import additional rules from BIP 43.",
+              "confidence": "high"
             },
             {
               "target": "bips:44",
-              "evidence": "same account-structure as\ndefined in BIPs [[bip-0044.mediawiki|44]]",
-              "reason": "The proposal reuses the BIP 44 account hierarchy structure and path levels for its derivation scheme.",
+              "type": "depends_on",
+              "evidence": "uses the same account-structure as\ndefined in BIPs [[bip-0044.mediawiki|44]]",
+              "reason": "The proposal imports BIP 44's account hierarchy and relies on its definitions for the derivation-path levels other than purpose.",
               "confidence": "high"
             },
             {
               "target": "bips:49",
-              "evidence": "defined in BIPs [[bip-0044.mediawiki|44]], [[bip-0049.mediawiki|49]]",
-              "reason": "The proposal explicitly reuses the account-structure/path-level conventions as defined in BIP 49 alongside related derivation-path BIPs.",
+              "type": "references",
+              "evidence": "we largely use the same approach used in BIPs\n[[bip-0049.mediawiki|49]] and [[bip-0084.mediawiki|84]] for ease of implementation",
+              "reason": "BIP 49 is cited as an analogous script-specific derivation scheme; the shared account structure is independently defined by BIP 44, so BIP 49 is not individually required.",
               "confidence": "high"
             },
             {
               "target": "bips:84",
-              "evidence": "and [[bip-0084.mediawiki|84]],\nbut with a different purpose value",
-              "reason": "The proposal explicitly reuses the account-structure/path-level conventions as defined in BIP 84 while changing the purpose value for Taproot.",
+              "type": "references",
+              "evidence": "we largely use the same approach used in BIPs\n[[bip-0049.mediawiki|49]] and [[bip-0084.mediawiki|84]] for ease of implementation",
+              "reason": "BIP 84 is cited as an analogous script-specific derivation scheme; the shared account structure is independently defined by BIP 44, so BIP 84 is not individually required.",
               "confidence": "high"
             },
             {
               "target": "bips:341",
-              "evidence": "single key\nP2TR ([[bip-0341.mediawiki|BIP 341]]) outputs as the Taproot internal key",
-              "reason": "The proposal is specifically a derivation scheme for keys used as Taproot internal keys in single-key P2TR outputs defined by BIP 341.",
+              "type": "depends_on",
+              "evidence": "the scripts and witnesses are as defined in\n[[bip-0341.mediawiki#specification|BIP 341]]",
+              "reason": "The proposal's P2TR address and transaction construction requires BIP 341's Taproot output-key calculation, scripts, and witness spending rules.",
               "confidence": "high"
             }
           ]

@@ -576,18 +576,19 @@
       "body_extracted_regex": [],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:41:47Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:04:35Z",
           "status": "success",
-          "dependencies": []
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:59:31Z",
-          "status": "success",
-          "dependencies": []
+          "findings": [
+            {
+              "target": "bips:141",
+              "type": "references",
+              "evidence": "While SegWit and Lightning (and other off-chain solutions) will help, they will not solve this problem.",
+              "reason": "The proposal discusses SegWit as a partial solution but does not require its mechanism for Block75's automatic block-size adjustment. SegWit is resolved to BIP 141, its canonical consensus specification.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

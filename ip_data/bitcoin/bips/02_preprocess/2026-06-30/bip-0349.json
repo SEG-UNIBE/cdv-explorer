@@ -566,29 +566,52 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:43:56Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:16:03Z",
           "status": "success",
-          "dependencies": []
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:09:49Z",
-          "status": "success",
-          "dependencies": [
+          "findings": [
+            {
+              "target": "bips:65",
+              "type": "references",
+              "evidence": "Consider a program such `CTV <X> CSFS <S+1> CLTV`.",
+              "reason": "CLTV resolves to OP_CHECKLOCKTIMEVERIFY, specified by BIP 65. Its appearance is illustrative and is not required by the proposed opcode.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:118",
+              "type": "references",
+              "evidence": "inspired by BIP-0118's key punning technique for the internal key",
+              "reason": "The proposal credits BIP 118 as inspiration for the concept but does not require its mechanism or rules.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:119",
+              "type": "references",
+              "evidence": "Consider a program such `CTV <X> CSFS <S+1> CLTV`.",
+              "reason": "CTV resolves to OP_CHECKTEMPLATEVERIFY, canonically specified by BIP 119. It appears only in an illustrative re-keying example, so the current proposal does not functionally depend on it.",
+              "confidence": "medium"
+            },
             {
               "target": "bips:341",
-              "evidence": "_taproot internal key_ (referred to as _p_), as defined in [BIP 341]",
-              "reason": "The opcode's pushed value is the taproot internal key as defined by BIP 341, so its semantics rely on BIP 341's Taproot key structure.",
+              "type": "depends_on",
+              "evidence": "`OP_INTERNALKEY` pushes the 32-byte x-only representation of the _taproot internal key_ (referred to as _p_), as defined in [BIP 341], to the stack.",
+              "reason": "The opcode's output is the taproot internal key defined by BIP 341, making that proposal's key definition necessary to implement the opcode.",
               "confidence": "high"
             },
             {
               "target": "bips:342",
-              "evidence": "leaf version `0xc0` (as\ndefined in [BIP 342]), `OP_INTERNALKEY` replaces `OP_SUCCESS203`",
-              "reason": "The opcode is specified only within the tapscript leaf version and OP_SUCCESS upgrade semantics defined by BIP 342, so implementing it depends on those tapscript rules.",
+              "type": "depends_on",
+              "evidence": "When verifying taproot script path spends having leaf version `0xc0` (as defined in [BIP 342]), `OP_INTERNALKEY` replaces `OP_SUCCESS203` (0xcb).",
+              "reason": "The proposal defines OP_INTERNALKEY by modifying the tapscript leaf-version and OP_SUCCESS semantics established by BIP 342, so its mechanism requires that proposal's rules.",
               "confidence": "high"
+            },
+            {
+              "target": "bips:348",
+              "type": "references",
+              "evidence": "Consider a program such `CTV <X> CSFS <S+1> CLTV`.",
+              "reason": "CSFS resolves to OP_CHECKSIGFROMSTACK, specified by BIP 348. It is used only in a motivating example rather than as a requirement of OP_INTERNALKEY.",
+              "confidence": "medium"
             }
           ]
         }

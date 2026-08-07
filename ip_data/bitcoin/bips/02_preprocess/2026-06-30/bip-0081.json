@@ -572,34 +572,37 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:41:16Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:02:10Z",
           "status": "success",
-          "dependencies": []
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:57:35Z",
-          "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
+              "type": "depends_on",
               "evidence": "based on an algorithm described in BIP-0032",
-              "reason": "The proposal defines its wallet hierarchy using the deterministic derivation algorithm from BIP32, including BIP32 paths and child derivation semantics.",
+              "reason": "The proposed wallet hierarchy uses BIP32's deterministic key-derivation algorithm, including its path nodes, hardened derivation, and child indexes, so its mechanism requires BIP32.",
               "confidence": "high"
             },
             {
               "target": "bips:43",
-              "evidence": "purpose scheme described in BIP-0043",
-              "reason": "The proposal relies on BIP43's purpose-field convention to define the purpose level and identify this specification's subtree.",
+              "type": "depends_on",
+              "evidence": "This BIP is a particular application of BIP43",
+              "reason": "The proposal specializes BIP43's purpose-field scheme and explicitly follows its recommendation when defining the purpose level.",
               "confidence": "high"
             },
             {
               "target": "bips:44",
+              "type": "depends_on",
               "evidence": "is based on BIP44",
-              "reason": "The proposal explicitly states it is based on BIP44's multi-level deterministic wallet hierarchy.",
+              "reason": "The proposal explicitly bases its deterministic-wallet hierarchy on BIP44, indicating that its hierarchy specializes the structure defined there rather than merely citing it.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:80",
+              "type": "references",
+              "evidence": "BIP80 - Hierarchy for Non-Colored Voting Pool Deterministic Multisig Wallets",
+              "reason": "BIP80 appears as a visible reference to the related non-colored voting-pool hierarchy, but the proposal does not state that its mechanism relies on BIP80.",
               "confidence": "high"
             }
           ]

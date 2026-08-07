@@ -642,25 +642,26 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:39:55Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T07:57:13Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:11",
-              "evidence": "Transactions that redeem standard OP_EVAL scriptPubKeys are only considered standard if the ''serialized script'' is, itself, one of the standard transaction types.",
-              "reason": "The proposal's standardness and redeemability rules explicitly rely on the pre-existing set of standard transaction types; among the cited related proposals, BIP 11 is substantively reused because OP_EVAL-wrapped scripts are intended to embed and relay standard M-of-N multisignature scripts under those rules.",
+              "type": "references",
+              "evidence": "M-of-N Multisignature Transactions BIP 11",
+              "reason": "The proposal lists BIP 11 as related material but does not require its multisignature transaction mechanism.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:13",
+              "type": "references",
+              "evidence": "\"Bitcoin Address 01\" BIP",
+              "reason": "The proposal lists the recognizable working name of BIP 13 in its See Also section without stating that OP_EVAL depends on its address format.",
               "confidence": "medium"
             }
           ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:53:05Z",
-          "status": "success",
-          "dependencies": []
         }
       ]
     }

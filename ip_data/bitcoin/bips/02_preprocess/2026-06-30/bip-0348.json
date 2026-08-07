@@ -610,41 +610,58 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:43:57Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:16:04Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
-              "target": "bips:340",
-              "evidence": "it is considered to be a public key as described in [BIP 340]",
-              "reason": "For 32-byte keys, the proposal directly uses BIP 340 public keys and signature validation rules; implementing the opcode's core verification semantics materially depends on BIP 340.",
+              "target": "bips:118",
+              "type": "references",
+              "evidence": "APO-style ([BIP 118]) Taproot internal key: Rather than introducing an additional key type in this change",
+              "reason": "BIP 118's APO design is discussed as an alternative style and in comparisons with the proposed construction; the current opcode does not require it.",
               "confidence": "high"
             },
             {
-              "target": "bips:342",
-              "evidence": "When verifying taproot script spends having leaf version 0xc0 (as defined in [BIP 342]), we propose `OP_CHECKSIGFROMSTACK` to replace `OP_SUCCESS204`",
-              "reason": "The proposal explicitly defines its opcode semantics as a modification to Tapscript spends with leaf version 0xc0, reusing the validation context, unknown key type handling, and sigops budget rules described in BIP 342.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:09:48Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:340",
-              "evidence": "signature is validated against the public key and message according to [BIP 340]",
-              "reason": "The proposal reuses BIP 340's public-key and Schnorr signature validation semantics for 32-byte keys.",
+              "target": "bips:119",
+              "type": "references",
+              "evidence": "When combined with [BIP 119] (`OP_CHECKTEMPLATEVERIFY`/CTV), `OP_CHECKSIGFROMSTACK` (CSFS) can be used to implement Lightning Symmetry channels.",
+              "reason": "BIP 119 is an optional complementary proposal used for the Lightning Symmetry application, while OP_CHECKSIGFROMSTACK itself operates independently of it.",
               "confidence": "high"
             },
             {
+              "target": "bips:340",
+              "type": "depends_on",
+              "evidence": "the signature is validated against the public key and message according to [BIP 340]",
+              "reason": "Signature checking by the new opcode directly requires the Schnorr public-key and verification rules defined by BIP 340.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:341",
+              "type": "depends_on",
+              "evidence": "When verifying taproot script spends having leaf version 0xc0",
+              "reason": "The opcode applies specifically to Taproot script-path spends; Taproot is canonically defined by BIP 341, so the mechanism requires that spending framework. The target is inferred from the named Taproot concept.",
+              "confidence": "medium"
+            },
+            {
               "target": "bips:342",
-              "evidence": "taproot script spends having leaf version 0xc0 (as defined in\n[BIP 342])",
-              "reason": "The proposal is defined specifically as a Tapscript opcode for the leaf version and execution environment specified by BIP 342, and also follows its sigops-budget rules.",
+              "type": "depends_on",
+              "evidence": "When verifying taproot script spends having leaf version 0xc0 (as defined in [BIP 342]), we propose `OP_CHECKSIGFROMSTACK` to replace `OP_SUCCESS204` (0xcc).",
+              "reason": "The opcode is defined as a modification to BIP 342's Tapscript execution environment, replacing one of its OP_SUCCESS opcodes and reusing its key-type and sigops-budget rules.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:347",
+              "type": "references",
+              "evidence": "Implementing split/separate signatures is left as an exercise for other bitcoin upgrades, such as [BIP 347] (`OP_CAT`).",
+              "reason": "BIP 347 is cited as a possible separate upgrade for split-signature functionality, not as a requirement of this opcode.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:349",
+              "type": "references",
+              "evidence": "we suggest implementing `OP_INTERNALKEY` ([BIP 349]) or separately introducing that key type",
+              "reason": "BIP 349 is suggested as a separate complementary implementation option rather than required by the proposed opcode.",
               "confidence": "high"
             }
           ]

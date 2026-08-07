@@ -875,35 +875,58 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:43:08Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:11:06Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
+            {
+              "target": "bips:13",
+              "type": "references",
+              "evidence": "their scope was extended in BIP13 for Pay-to-script-hash",
+              "reason": "BIP 13 is cited as historical background on the extension of legacy Base58 addresses; the Bech32 mechanism does not require it.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:16",
+              "type": "references",
+              "evidence": "Pay-to-script-hash (BIP16)",
+              "reason": "BIP 16 is identified as the proposal for P2SH while discussing older address mechanisms, not as a requirement of the native witness address format.",
+              "confidence": "low"
+            },
             {
               "target": "bips:141",
+              "type": "depends_on",
               "evidence": "the 2-to-40-byte witness program (as defined by BIP141)",
-              "reason": "The proposal's segwit address payload is defined directly in terms of witness programs from BIP141, and its decoding/validation rules rely on witness version and program semantics introduced there.",
+              "reason": "The address format encodes the witness-program structure and constraints defined by BIP 141, so implementing the specified SegWit addresses requires those definitions.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:142",
+              "type": "supersedes",
+              "evidence": "This replaces BIP142",
+              "reason": "The proposal explicitly states that it replaces BIP 142.",
               "confidence": "low"
             },
             {
               "target": "bips:143",
+              "type": "references",
               "evidence": "two instances of it (\"P2WPKH\" and \"P2WSH\", see BIP143)",
-              "reason": "The proposal standardizes addresses for the native witness output types P2WPKH and P2WSH explicitly named here, so understanding the concrete addressed output forms materially relies on the proposal text's reuse of those output templates as identified by BIP143.",
+              "reason": "BIP 143 is cited in the background to identify P2WPKH and P2WSH, but the address specification explicitly derives its required witness-program rules from BIP 141 instead.",
               "confidence": "low"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:04:49Z",
-          "status": "success",
-          "dependencies": [
+            },
             {
-              "target": "bips:141",
-              "evidence": "witness program (as defined by [https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki BIP141])",
-              "reason": "BIP 173's segwit address format encodes the witness version and witness program defined by BIP 141 and relies on BIP 141's witness-program semantics and length restrictions for decoding and scriptPubKey construction.",
+              "target": "bips:350",
+              "type": "superseded_by",
+              "evidence": "Due to this weakness, BIP-350 proposes using the scheme described in this BIP only for Native Segwit v0 outputs",
+              "reason": "The disclosure states that BIP 350 restricts this proposal's previously broader native-SegWit address scheme to version 0, thereby replacing its rules for later witness versions.",
+              "confidence": "low"
+            },
+            {
+              "target": "slips:173",
+              "type": "references",
+              "evidence": "SLIP-0173 : Registered human-readable parts for BIP-0173",
+              "reason": "SLIP-0173 is visibly cited as the registry of human-readable prefixes for other cryptocurrencies, without being required to implement Bech32 or Bitcoin SegWit addresses.",
               "confidence": "high"
             }
           ]

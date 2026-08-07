@@ -835,54 +835,38 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:44:05Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:16:51Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:21",
-              "evidence": "encoding BIP 21 URI schemes in DNS TXT records",
-              "reason": "The proposal's core payload is explicitly a BIP 21 URI encoded into DNS TXT records, so understanding and implementing BIP 353 materially depends on BIP 21's URI format and semantics.",
-              "confidence": "low"
+              "type": "depends_on",
+              "evidence": "a standard format for encoding [[bip-0021.mediawiki|BIP 21]] URI schemes in DNS TXT records",
+              "reason": "The proposal's DNS records encode and reconstruct payment URIs whose scheme and parsing rules are defined by BIP 21, so its core record format depends on that proposal.",
+              "confidence": "high"
             },
             {
               "target": "bips:174",
-              "evidence": "per-output PSBT fields",
-              "reason": "The proposal defines a new PSBT output field (`PSBT_OUT_DNSSEC_PROOF`), which relies on the PSBT structure and field conventions introduced by BIP 174.",
-              "confidence": "high"
+              "type": "depends_on",
+              "evidence": "Wallets accepting payment information from external devices (e.g. hardware wallets) MAY examine the following per-output PSBT fields",
+              "reason": "The specified per-output field cannot be encoded or interpreted without the PSBT container and field model canonically defined by BIP 174; the target is inferred from the explicitly named PSBT concept.",
+              "confidence": "medium"
             },
             {
               "target": "bips:321",
-              "evidence": "Reference implementations for parsing the URI contents can be found in BIP 321.",
-              "reason": "BIP 353 embeds Bitcoin URIs and explicitly points implementers to BIP 321 for parsing those URI contents, indicating reliance on the updated Bitcoin URI parsing/format rules that BIP 321 specifies in relation to BIP 21.",
-              "confidence": "low"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:10:59Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:21",
-              "evidence": "standard format for encoding [[bip-0021.mediawiki|BIP 21]] URI schemes in DNS TXT records",
-              "reason": "The proposal stores and reconstructs Bitcoin payment instructions as BIP 21 bitcoin: URIs, so implementing its DNS records depends on the URI scheme defined by BIP 21.",
+              "type": "references",
+              "evidence": "Reference implementations for parsing the URI contents can be found in [[bip-0321.mediawiki|BIP 321]]",
+              "reason": "The proposal points to BIP 321 for related parsing implementations, but does not state that its rules or formats are required by BIP 353.",
               "confidence": "high"
             },
             {
-              "target": "bips:174",
-              "evidence": "MAY examine the following per-output PSBT fields",
-              "reason": "The proposal defines a new per-output PSBT field and its key/value structure. PSBT is the transaction interchange format introduced by BIP 174, so implementing this field depends on BIP 174's PSBT map and field semantics.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:370",
-              "evidence": "| 0, 2",
-              "reason": "In the PSBT field table, this value appears under the field's allowed PSBT versions and explicitly allows version 2; PSBT version 2 is defined by BIP 370, so compatibility for that version relies on BIP 370's PSBT v2 rules.",
-              "confidence": "medium"
+              "target": "bips:352",
+              "type": "references",
+              "evidence": "On-chain addresses which are re-used (i.e. not including schemes like [[bip-0352.mediawiki|Silent Payments]]) need to be rotated to avoid contributing substantially to address reuse",
+              "reason": "Silent Payments is mentioned only as an example of a scheme excluded from the address-reuse concern; BIP 353 does not require its mechanism.",
+              "confidence": "high"
             }
           ]
         }

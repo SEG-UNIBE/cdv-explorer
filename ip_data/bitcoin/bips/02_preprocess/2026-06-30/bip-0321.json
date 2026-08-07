@@ -908,71 +908,51 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:43:18Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:12:20Z",
           "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:21",
-              "evidence": "This BIP is a modification and intended replacement of [[bip-0021.mediawiki|BIP 0021]]",
-              "reason": "The proposal directly amends and supersedes BIP 21's Bitcoin URI scheme, reusing and changing its format and compatibility rules.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:351",
-              "evidence": "*pay: [[bip-0351.mediawiki|BIP 351 Private Payment addresses]]",
-              "reason": "The proposal defines the `pay` query parameter specifically as carrying BIP 351 Private Payment addresses, so supporting that payment instruction in this URI scheme depends on the address format and semantics introduced there.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:352",
-              "evidence": "*sp: [[bip-0352.mediawiki|BIP 352 Silent Payment addresses]]",
-              "reason": "The proposal defines the `sp` query parameter specifically as carrying BIP 352 Silent Payment addresses, so supporting that payment instruction in this URI scheme depends on the address format and semantics introduced there.",
-              "confidence": "medium"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:06:44Z",
-          "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:13",
-              "evidence": "base58 P2SH",
-              "reason": "The proposal permits P2SH addresses in the URI address field; the base58 P2SH address format is defined by BIP 13, so validation and interpretation of that address type rely on it.",
+              "type": "depends_on",
+              "evidence": "The bitcoinaddress body MUST be either a base58 P2SH or P2PKH address",
+              "reason": "Supporting the explicitly required base58 P2SH address format relies on the P2SH address representation canonically specified by BIP 13.",
               "confidence": "medium"
             },
             {
               "target": "bips:21",
-              "evidence": "modification and intended replacement of [[bip-0021.mediawiki|BIP 0021]]",
-              "reason": "The proposal explicitly amends and replaces BIP 21's bitcoin URI scheme, so its format and compatibility behavior are central to this proposal.",
+              "type": "supersedes",
+              "evidence": "This BIP is a modification and intended replacement of [[bip-0021.mediawiki|BIP 0021]]",
+              "reason": "The proposal explicitly states that it is intended to replace BIP 21.",
               "confidence": "high"
             },
             {
               "target": "bips:173",
+              "type": "depends_on",
               "evidence": "bech32 Segwit version 0 address",
-              "reason": "The proposal permits bech32 SegWit version 0 addresses in the URI address field; that native SegWit bech32 address format is defined by BIP 173.",
+              "reason": "The accepted bitcoinaddress formats include version 0 SegWit addresses encoded using bech32, the address format canonically defined by BIP 173.",
               "confidence": "medium"
             },
             {
               "target": "bips:350",
+              "type": "depends_on",
               "evidence": "bech32m Segwit address",
-              "reason": "The proposal permits bech32m SegWit addresses in the URI address field; bech32m encoding for later SegWit address versions is defined by BIP 350.",
+              "reason": "The URI grammar and address validation accept bech32m SegWit addresses, whose checksum and encoding rules are defined by BIP 350.",
               "confidence": "medium"
             },
             {
               "target": "bips:351",
-              "evidence": "[[bip-0351.mediawiki|BIP 351 Private Payment addresses]]",
-              "reason": "The proposal defines a URI query key for BIP 351 private payment addresses, directly reusing that payment-address format as a supported payment instruction.",
+              "type": "depends_on",
+              "evidence": "*pay: [[bip-0351.mediawiki|BIP 351 Private Payment addresses]]",
+              "reason": "The proposal defines the pay query parameter as carrying BIP 351 Private Payment addresses, so implementing that payment instruction requires the target's address format.",
               "confidence": "high"
             },
             {
               "target": "bips:352",
-              "evidence": "[[bip-0352.mediawiki|BIP 352 Silent Payment addresses]]",
-              "reason": "The proposal defines a URI query key for BIP 352 silent payment addresses, directly reusing that payment-address format as a supported payment instruction.",
+              "type": "depends_on",
+              "evidence": "*sp: [[bip-0352.mediawiki|BIP 352 Silent Payment addresses]]",
+              "reason": "The proposal defines the sp query parameter as carrying BIP 352 Silent Payment addresses, so implementing that payment instruction requires the target's address format.",
               "confidence": "high"
             }
           ]

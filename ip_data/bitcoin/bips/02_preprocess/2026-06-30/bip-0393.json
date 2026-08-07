@@ -527,35 +527,38 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:44:31Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:22:09Z",
           "status": "success",
-          "dependencies": []
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:15:38Z",
-          "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
-              "evidence": "for [[bip-0032.mediawiki|BIP 32]] derived-key wallets",
-              "reason": "The proposal defines the `gl` annotation semantics specifically for wallets using BIP 32 derived-key mechanisms, so interpreting that annotation depends on BIP 32-derived wallet structure.",
+              "type": "references",
+              "evidence": "The number of consecutive unused addresses to derive before stopping, for [[bip-0032.mediawiki|BIP 32]] derived-key wallets.",
+              "reason": "BIP 32 is named to identify wallets to which the optional gap-limit annotation applies, rather than as a required component of the annotation format itself.",
               "confidence": "high"
             },
             {
               "target": "bips:352",
-              "evidence": "for [[bip-0352.mediawiki|BIP 352]] silent payment wallets",
-              "reason": "The proposal defines the `ml` annotation semantics for BIP 352 silent payment wallets, relying on that proposal's silent-payment label scanning concept.",
+              "type": "references",
+              "evidence": "the maximum label index to scan for in the case of [[bip-0352.mediawiki|BIP 352]] silent payment wallets",
+              "reason": "BIP 352 is cited as a wallet type for which annotation metadata may aid recovery, but silent payments are not required for the general annotation syntax or checksum mechanism.",
               "confidence": "high"
             },
             {
               "target": "bips:380",
-              "evidence": "annotation syntax for output script descriptors as defined in [[bip-0380.mediawiki|BIP 380]]",
-              "reason": "The proposal extends BIP 380 output script descriptors with annotation syntax and relies on BIP 380 descriptor syntax, checksum character set, and checksum algorithm.",
+              "type": "depends_on",
+              "evidence": "specifies an optional annotation syntax for output script descriptors as defined in [[bip-0380.mediawiki|BIP 380]]",
+              "reason": "The proposal extends BIP 380 descriptors and relies on their descriptor syntax, character set, and checksum algorithm; its annotated format cannot operate as specified without that base standard.",
               "confidence": "high"
+            },
+            {
+              "target": "bips:386",
+              "type": "references",
+              "evidence": "Taproot descriptor with annotations",
+              "reason": "The proposal includes an illustrative annotated Taproot descriptor; the named descriptor format is canonically specified by BIP 386, but it is only an example and is not required by the annotation mechanism.",
+              "confidence": "medium"
             }
           ]
         }

@@ -783,65 +783,72 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:44:51Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:23:52Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
+            {
+              "target": "bips:141",
+              "type": "references",
+              "evidence": "In legacy or segwit v0 script, `OP_TWEAKADD` is disabled and causes script failure.",
+              "reason": "The proposal mentions SegWit v0, canonically introduced by BIP 141, only to specify a context where the new opcode is disabled; its mechanism does not rely on SegWit v0.",
+              "confidence": "medium"
+            },
             {
               "target": "bips:340",
-              "evidence": "attempt the BIP340 even-Y lift",
-              "reason": "The proposal normatively defines its opcode semantics using BIP340's x-only public key model and specifically its even-Y lift procedure, so implementing or evaluating OP_TWEAKADD materially depends on BIP340 semantics.",
+              "type": "depends_on",
+              "evidence": "Interpret `pubkey32` as an x-coordinate and attempt the BIP340 even-Y lift",
+              "reason": "The opcode's consensus operation requires BIP 340's canonical rule for lifting an x-coordinate to the even-Y curve point.",
               "confidence": "high"
             },
             {
               "target": "bips:341",
-              "evidence": "Only valid in tapscript (witness version 1, leaf version 0xc0)",
-              "reason": "The opcode is defined as tapscript-only and is repeatedly framed around Taproot key tweaking and BIP341-compatible tweaks. Tapscript witness version 1 / leaf version 0xc0 and Taproot tweak context are introduced by BIP341, so the proposal depends on BIP341's script context and compatibility rules.",
+              "type": "depends_on",
+              "evidence": "Only valid in tapscript (witness version 1, leaf version 0xc0).",
+              "reason": "The opcode operates exclusively within the witness-v1 Taproot script-path framework defined by BIP 341, so that framework is required for its intended deployment and execution context.",
               "confidence": "high"
             },
             {
               "target": "bips:342",
-              "evidence": "Un-upgraded nodes will continue\nto treat unknown tapscript opcode as OP_SUCCESSx.",
-              "reason": "The soft-fork design relies on tapscript opcode semantics, specifically unknown opcodes being OP_SUCCESSx and the OP_CHECKSIGADD cost model referenced later. Those tapscript validation rules come from BIP342, making this a substantive dependency.",
+              "type": "depends_on",
+              "evidence": "Only valid in tapscript (witness version 1, leaf version 0xc0).",
+              "reason": "Tapscript and its leaf-version and OP_SUCCESSx evaluation model are defined by BIP 342; the proposed opcode cannot operate in its specified context without those rules.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:346",
+              "type": "references",
+              "evidence": "Draft BIP: OP_TXHASH and OP_CHECKTXHASHVERIFY",
+              "reason": "The visible reference-list entry cites the draft defining OP_TXHASH and OP_CHECKTXHASHVERIFY, identifiable as BIP 346, without using its mechanism.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:347",
+              "type": "references",
+              "evidence": "A future upgrade, such as `OP_CAT` or an opcode that exposes tapleaf hashes or taptree commitments to script, could prepare the 32-byte scalar",
+              "reason": "OP_CAT is the opcode proposed by BIP 347; it is discussed only as a possible future complementary upgrade, not as a requirement of OP_TWEAKADD.",
               "confidence": "high"
             },
             {
               "target": "bips:348",
-              "evidence": "built from `OP_TWEAKADD` together with proposed opcodes such as BIP 348 `OP_CHECKSIGFROMSTACK`",
-              "reason": "The proposal's motivating and illustrative constructions explicitly compose OP_TWEAKADD with OP_CHECKSIGFROMSTACK, but BIP348 is only used for optional examples rather than required semantics of OP_TWEAKADD itself, so the reliance is not core.",
-              "confidence": "low"
+              "type": "references",
+              "evidence": "The following sketches are non-normative examples. Some of them compose `OP_TWEAKADD` with other proposed opcodes, notably BIP 348 `OP_CHECKSIGFROMSTACK`",
+              "reason": "BIP 348 is used only in optional, explicitly non-normative example constructions, so the proposed opcode itself does not depend on it.",
+              "confidence": "high"
             },
             {
               "target": "bips:349",
-              "evidence": "built from `OP_TWEAKADD` together with proposed opcodes such as BIP 349 `OP_INTERNALKEY`",
-              "reason": "The proposal's example constructions use OP_INTERNALKEY to access the Taproot internal key alongside OP_TWEAKADD, but this is illustrative composition rather than a requirement for the opcode's own semantics.",
-              "confidence": "low"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:17:35Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:340",
-              "evidence": "attempt the BIP340 even-Y lift",
-              "reason": "The opcode normatively reuses BIP340's x-only public-key lifting rule to interpret inputs and define failure conditions.",
+              "type": "references",
+              "evidence": "The following sketches are non-normative examples. Some of them compose `OP_TWEAKADD` with other proposed opcodes, notably BIP 348 `OP_CHECKSIGFROMSTACK` and BIP 349 `OP_INTERNALKEY`.",
+              "reason": "BIP 349 is used only in optional, explicitly non-normative example constructions, not by the core OP_TWEAKADD mechanism.",
               "confidence": "high"
             },
             {
-              "target": "bips:341",
-              "evidence": "extends the Taproot tweak mechanism (BIP340/341) into script",
-              "reason": "The proposal reuses and extends the Taproot key-tweak operation associated with BIP341 output-key construction into script semantics.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:342",
-              "evidence": "Only valid in tapscript (witness version 1, leaf version 0xc0)",
-              "reason": "The proposal is defined as a new opcode within the tapscript execution environment; tapscript, including leaf version 0xc0 and related opcode upgrade semantics, is defined by BIP342.",
+              "target": "bips:442",
+              "type": "references",
+              "evidence": "For comparison, BIP 442 `OP_PAIRCOMMIT` is purpose-built for pair commitments and yields simpler and cheaper Merkleized constructions in practice.",
+              "reason": "The proposal compares its illustrative commitment-tree construction with BIP 442's alternative pair-commitment opcode without requiring it.",
               "confidence": "high"
             }
           ]

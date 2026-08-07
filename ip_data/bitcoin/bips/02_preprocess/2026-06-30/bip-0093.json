@@ -891,54 +891,38 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:41:40Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:03:42Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
-              "evidence": "a standard for backing up and restoring the master seed of a BIP-0032 hierarchical deterministic wallet",
-              "reason": "The proposal specifically defines codex32 as an encoding and sharing format for BIP-0032 master seeds, and repeatedly constrains payload size and semantics around the BIP-0032 HD master seed format.",
-              "confidence": "low"
+              "type": "depends_on",
+              "evidence": "The payload in this case is a direct encoding of a BIP-0032 HD master seed.",
+              "reason": "The proposal's master-seed format is specifically defined around the HD master seed specified by BIP 32, including its permitted seed lengths, so that part of codex32 requires BIP 32's seed concept and constraints.",
+              "confidence": "high"
             },
             {
               "target": "bips:39",
-              "evidence": "It is technically possible to derive the BIP32 master seed from seed words encoded in one of these schemes, and then to encode this seed in codex32.",
-              "reason": "Although mostly contrasted as an alternative, the proposal also defines backward-compatibility and conversion behavior for BIP-0039 by deriving a BIP32 master seed from BIP-0039-encoded data before encoding it as codex32. That makes BIP-0039 materially relevant for evaluating interoperability and migration.",
-              "confidence": "medium"
+              "type": "references",
+              "evidence": "BIP-0039 serves the same purpose as this standard: encoding master seeds for storage by users.",
+              "reason": "BIP 39 is discussed as an alternative seed-backup format and compared extensively with codex32, but codex32 does not require its mnemonic format or derivation process.",
+              "confidence": "low"
             },
             {
               "target": "bips:173",
+              "type": "depends_on",
               "evidence": "It reuses the base-32 character set from BIP-0173",
-              "reason": "The proposal directly builds its codex32 format on Bech32 mechanisms from BIP-0173, reusing its character set, checksum-related lowercase handling, and decoding table semantics.",
+              "reason": "Codex32's encoding, decoding, payload conversion, and checksum inputs require the character set defined by BIP 173.",
               "confidence": "high"
             },
             {
               "target": "slips:39",
-              "evidence": "SLIP-0039 seed words can be reversibly converted to master seeds, so it is possible to interconvert between SLIP-0039 and codex32.",
-              "reason": "Beyond comparison, the proposal normatively discusses reversible interconversion between SLIP-0039 seed words and codex32 master-seed encodings, which materially affects interoperability and adoption considerations.",
-              "confidence": "medium"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:58:35Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:32",
-              "evidence": "backing up and restoring the master seed of a\n[https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki BIP-0032] hierarchical deterministic wallet",
-              "reason": "The proposal’s primary encoded secret is a BIP-0032 HD wallet master seed, including BIP-0032 seed-size assumptions and restoration semantics.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:173",
-              "evidence": "It reuses the base-32 character set from BIP-0173",
-              "reason": "The proposal materially reuses Bech32’s character set and related encoding/case/value conventions defined by BIP-0173 for codex32 strings.",
-              "confidence": "high"
+              "type": "references",
+              "evidence": "SLIP-0039 has essentially the same motivations as this standard.",
+              "reason": "SLIP 39 is cited and compared as an alternative secret-sharing backup scheme; the proposal explicitly describes differences and does not reuse its underlying format or field.",
+              "confidence": "low"
             }
           ]
         }

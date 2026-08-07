@@ -658,66 +658,66 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:41:35Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:03:45Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:9",
-              "evidence": "activate the existing BIP9 segwit deployment",
-              "reason": "The proposal explicitly activates and is deployed using the BIP9 version-bits mechanism, reusing its deployment states, signalling, thresholds, and timing semantics.",
+              "type": "depends_on",
+              "evidence": "This BIP will be deployed by a \"version bits\" with an 80%(this can be adjusted if desired) 269 block activation threshold and 336 block confirmation window BIP9",
+              "reason": "BIP 91 uses BIP 9's version-bits deployment and activation-state mechanism for its own deployment and for coordinating the existing SegWit deployment.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:16",
+              "type": "references",
+              "evidence": "BIP16 Pay to Script Hash",
+              "reason": "BIP 16 appears as a visible reference but no part of BIP 91's mechanism relies on its Pay-to-Script-Hash rules.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:66",
+              "type": "references",
+              "evidence": "Historically we have used IsSuperMajority() to activate soft forks such as BIP66 which has a mandatory signalling requirement for miners once activated",
+              "reason": "BIP 66 is discussed as a historical precedent for mandatory miner signaling, not as functionality required by BIP 91.",
               "confidence": "high"
             },
             {
               "target": "bips:141",
-              "evidence": "activate BIP141, BIP143 and BIP147",
-              "reason": "The proposal’s purpose is to force activation of the existing segwit deployment, and it ceases to be active when segwit (BIP141) is locked-in, active, or failed; adopting it materially depends on the BIP141 segwit activation target.",
+              "type": "depends_on",
+              "evidence": "the BIP9 \"segwit\" deployment using bit 1, between November 15th 2016 and November 15th 2017 to activate BIP141, BIP143 and BIP147",
+              "reason": "BIP 91 is specifically designed to force signaling for the existing SegWit deployment whose activation includes BIP 141's consensus rules; its lifecycle also explicitly tracks BIP 141's lock-in, activation, or failure.",
               "confidence": "high"
             },
             {
               "target": "bips:143",
-              "evidence": "activate BIP141, BIP143 and BIP147",
-              "reason": "The proposal defines the existing segwit deployment as one that activates BIP143 along with BIP141 and BIP147, so its activation method is designed to bring BIP143 into effect as part of that deployment.",
+              "type": "depends_on",
+              "evidence": "the BIP9 \"segwit\" deployment using bit 1, between November 15th 2016 and November 15th 2017 to activate BIP141, BIP143 and BIP147",
+              "reason": "BIP 143 is one of the consensus changes activated by the existing SegWit deployment that BIP 91 is intended to activate through mandatory signaling.",
               "confidence": "high"
             },
             {
               "target": "bips:147",
-              "evidence": "activate BIP141, BIP143 and BIP147",
-              "reason": "The proposal defines the existing segwit deployment as one that activates BIP147 along with BIP141 and BIP143, so its activation method is designed to bring BIP147 into effect as part of that deployment.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:58:56Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:9",
-              "evidence": "deployed by a \"version bits\" with an 80%(this can be adjusted if desired) 269 block activation threshold and 336 block confirmation window BIP9",
-              "reason": "The proposal directly uses BIP9 version-bits deployment mechanics, including bit assignment, activation threshold, confirmation window, start time, timeout, and version-bit state checks.",
+              "type": "depends_on",
+              "evidence": "the BIP9 \"segwit\" deployment using bit 1, between November 15th 2016 and November 15th 2017 to activate BIP141, BIP143 and BIP147",
+              "reason": "BIP 147 is one of the consensus changes activated by the existing SegWit deployment that BIP 91 is intended to activate through mandatory signaling.",
               "confidence": "high"
             },
             {
-              "target": "bips:141",
-              "evidence": "This BIP will cease to be active when segwit (BIP141) is locked-in, active, or failed",
-              "reason": "The proposal is designed around the existing SegWit deployment and explicitly keys its own activity to BIP141 deployment states.",
+              "target": "bips:148",
+              "type": "references",
+              "evidence": "BIP148 Mandatory activation of segwit deployment",
+              "reason": "BIP 148 is included as a visible reference concerning an alternative SegWit activation mechanism, but BIP 91 does not rely on it.",
               "confidence": "high"
             },
             {
-              "target": "bips:143",
-              "evidence": "activate BIP141, BIP143",
-              "reason": "The proposal defines the existing SegWit deployment it is coordinating as the deployment that activates BIP143 along with the other SegWit consensus changes, so evaluating its effect depends on the BIP143 rules being activated.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:147",
-              "evidence": "activate BIP141, BIP143 and BIP147",
-              "reason": "The proposal defines the existing SegWit deployment it is coordinating as the deployment that activates BIP147 along with the other SegWit consensus changes, so evaluating its effect depends on the BIP147 rules being activated.",
-              "confidence": "medium"
+              "target": "bips:149",
+              "type": "references",
+              "evidence": "BIP149 Segregated Witness (second deployment)",
+              "reason": "BIP 149 is included as a visible reference to a second SegWit deployment, without being required by BIP 91's mechanism.",
+              "confidence": "high"
             }
           ]
         }

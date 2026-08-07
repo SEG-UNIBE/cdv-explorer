@@ -748,22 +748,16 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:40:03Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T07:58:14Z",
           "status": "success",
-          "dependencies": []
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:53:51Z",
-          "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:22",
-              "evidence": "optional extensions on top of [[bip-0022.mediawiki|BIP 22]]",
-              "reason": "BIP 23 is defined as a set of optional extensions to the getblocktemplate protocol specified by BIP 22, so implementing or evaluating it materially depends on BIP 22's base mechanisms and fields.",
+              "type": "depends_on",
+              "evidence": "all sections of this specification are optional extensions on top of [[bip-0022.mediawiki|BIP 22]]",
+              "reason": "BIP 23 explicitly extends BIP 22's getblocktemplate specification, so its mechanisms require the foundational protocol and formats defined there.",
               "confidence": "high"
             }
           ]

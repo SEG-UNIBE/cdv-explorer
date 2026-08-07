@@ -1351,41 +1351,37 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:43:23Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:13:29Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:31",
-              "evidence": "post-[https://github.com/bitcoin/bips/blob/master/bip-0031.mediawiki BIP31] connections",
-              "reason": "The proposal’s rekeying rationale explicitly relies on the ping-message timeout behavior for BIP31 connections to justify its packet-based rekey interval assumption.",
+              "type": "references",
+              "evidence": "the timeout interval for post-[https://github.com/bitcoin/bips/blob/master/bip-0031.mediawiki BIP31] connections",
+              "reason": "BIP31 is cited only to explain the timeout used in a rekeying-interval calculation; BIP324 does not require BIP31's ping/pong behavior.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:152",
+              "type": "references",
+              "evidence": "if the \"getblocktxn\" message type is supported, then both the 1-byte <code>b'\\x0a'</code> encoding and the 13-byte <code>b'\\x00getblocktxn\\x00'</code> should be supported",
+              "reason": "The getblocktxn command is canonically defined by BIP152's compact-block relay protocol. BIP324 assigns it transport encodings but does not require compact-block relay for the transport to operate.",
               "confidence": "medium"
             },
             {
               "target": "bips:155",
-              "evidence": "using ADDR and ADDRV2 P2P messages",
-              "reason": "The signaling section relies on ADDRV2 message semantics for advertising the NODE_P2P_V2 service flag. The named ADDRV2 mechanism is introduced by BIP155, and the text specifies v2 support signaling through addr relay that includes it.",
+              "type": "references",
+              "evidence": "Service flags propagated through untrusted intermediaries using ADDR and ADDRV2 P2P messages",
+              "reason": "ADDRV2 uniquely identifies the address-relay message defined by BIP155. It is discussed as one way service flags may be propagated, while legacy ADDR remains an alternative, so BIP155 is not required.",
               "confidence": "medium"
             },
             {
               "target": "bips:340",
-              "evidence": "as in [https://github.com/bitcoin/bips/blob/master/bip-0340.mediawiki#specification BIP340]",
-              "reason": "The shared-secret computation and ElligatorSwift specification directly use BIP340’s tagged hash and notation conventions as part of the protocol definition, so implementing the specified hashes meaningfully depends on BIP340.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:06:57Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:340",
-              "evidence": "<code>sha256_tagged(tag, x)</code> returns a tagged hash value <code>SHA256(SHA256(tag) || SHA256(tag) || x)</code> as in [https://github.com/bitcoin/bips/blob/master/bip-0340.mediawiki#specification BIP340]",
-              "reason": "The proposal explicitly reuses BIP340's tagged-hash construction for shared secret computation, and also relies on BIP340-style secp256k1 notation elsewhere in the ElligatorSwift specification.",
+              "type": "depends_on",
+              "evidence": "In what follows, we use the notation from [https://github.com/bitcoin/bips/blob/master/bip-0340.mediawiki#specification BIP340].",
+              "reason": "The ElligatorSwift specification imports BIP340's secp256k1 notation and operations, including concepts such as lift_x, needed to define its algorithms.",
               "confidence": "high"
             }
           ]

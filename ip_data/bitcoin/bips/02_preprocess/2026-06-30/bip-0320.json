@@ -543,28 +543,23 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:43:18Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:11:53Z",
           "status": "success",
-          "dependencies": []
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:06:06Z",
-          "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:8",
-              "evidence": "removed from BIP8",
-              "reason": "The proposal amends BIP8 by reserving nVersion bits and excluding them from BIP8 soft-fork signalling semantics.",
+              "type": "depends_on",
+              "evidence": "removed from BIP8 and BIP9 specifications",
+              "reason": "The proposal changes which nVersion bits participate in the soft-fork signaling rules defined by BIP8, so implementing its intended reservation requires applying that change to BIP8.",
               "confidence": "high"
             },
             {
               "target": "bips:9",
+              "type": "depends_on",
               "evidence": "removed from BIP8 and BIP9 specifications",
-              "reason": "The proposal amends BIP9 by reserving nVersion bits and excluding them from BIP9 soft-fork signalling and warning semantics.",
+              "reason": "The proposal changes which nVersion bits participate in the soft-fork signaling and warning rules defined by BIP9, so implementing its intended reservation requires applying that change to BIP9.",
               "confidence": "high"
             }
           ]

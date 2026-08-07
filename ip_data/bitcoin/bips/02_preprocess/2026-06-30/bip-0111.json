@@ -597,29 +597,16 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:41:53Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:04:58Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:37",
-              "evidence": "This BIP extends BIP 37, Connection Bloom filtering",
-              "reason": "The proposal directly extends BIP 37 by adding an explicit service bit and compatibility behavior for the bloom-filtering protocol defined there.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:59:48Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:37",
-              "evidence": "extends BIP 37, Connection Bloom filtering",
-              "reason": "The proposal explicitly builds on BIP 37 by adding a service bit and compatibility behavior for the bloom filtering service and messages defined by that proposal.",
+              "type": "depends_on",
+              "evidence": "This BIP extends BIP 37, Connection Bloom filtering, by defining a service bit to allow peers to advertise that they support bloom filters explicitly.",
+              "reason": "The proposal directly extends BIP 37's connection bloom-filtering mechanism by adding a service-advertisement bit and compatibility behavior for that mechanism, so its operation relies on the bloom-filter service defined by BIP 37.",
               "confidence": "high"
             }
           ]

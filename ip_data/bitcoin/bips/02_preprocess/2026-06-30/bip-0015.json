@@ -849,18 +849,19 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:39:56Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T07:57:34Z",
           "status": "success",
-          "dependencies": []
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:53:16Z",
-          "status": "success",
-          "dependencies": []
+          "findings": [
+            {
+              "target": "bips:70",
+              "type": "references",
+              "evidence": "[[bip-0070.mediawiki|BIP 0070]] (payment protocol) may be seen as the alternative to Aliases",
+              "reason": "The proposal discusses BIP 70 as an alternative to its alias system, without requiring BIP 70's payment protocol for its own mechanism.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

@@ -960,59 +960,37 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:41:58Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:05:16Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:9",
-              "evidence": "deployed by \"versionbits\" BIP9",
-              "reason": "The proposal specifies activation via the versionbits mechanism defined by BIP 9, making adoption depend on that deployment workflow.",
+              "type": "depends_on",
+              "evidence": "This BIP is to be deployed by \"versionbits\" BIP9 using bit 0.",
+              "reason": "The proposal's specified activation and deployment procedure requires the versionbits mechanism defined by BIP 9.",
               "confidence": "high"
             },
             {
               "target": "bips:65",
-              "evidence": "based heavily on work done by Peter Todd for the closely related BIP 65",
-              "reason": "The proposal redefines a NOP opcode into a locktime-checking opcode and repeatedly uses CHECKLOCKTIMEVERIFY as the contrasting absolute-locktime mechanism; the text states the reference implementation and BIP were based heavily on BIP 65's closely related design.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:68",
-              "evidence": "in combination with BIP 68",
-              "reason": "The proposal's opcode semantics explicitly rely on BIP 68's repurposing of nSequence as a consensus-enforced relative locktime, including masking and type rules used by CHECKSEQUENCEVERIFY.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:113",
-              "evidence": "must be deployed simultaneously with BIP68 and BIP113 using the same deployment mechanism",
-              "reason": "The proposal normatively requires simultaneous deployment with BIP 113, indicating coordinated activation and compatibility assumptions for the soft fork package.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:00:14Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:9",
-              "evidence": "deployed by \"versionbits\" BIP9 using bit 0",
-              "reason": "The proposal uses BIP9 versionbits as its activation and deployment mechanism.",
+              "type": "references",
+              "evidence": "The reference implementation and this BIP was based heavily on work done by Peter Todd for the closely related BIP 65.",
+              "reason": "BIP 65 is identified as closely related prior work on which this proposal was based, but its CHECKLOCKTIMEVERIFY mechanism is not required for CHECKSEQUENCEVERIFY to operate.",
               "confidence": "high"
             },
             {
               "target": "bips:68",
-              "evidence": "in combination with BIP 68 allows execution pathways of a script to be restricted based on the age of the output being spent",
-              "reason": "The proposal’s opcode semantics rely on BIP68’s consensus-enforced nSequence relative-lock-time meaning, flags, masking, and age interpretation.",
+              "type": "depends_on",
+              "evidence": "This BIP describes a new opcode (CHECKSEQUENCEVERIFY) for the Bitcoin scripting system that in combination with BIP 68 allows execution pathways of a script to be restricted based on the age of the output being spent.",
+              "reason": "CHECKSEQUENCEVERIFY relies on BIP 68's consensus-enforced relative-lock-time semantics for nSequence to restrict spending according to output age.",
               "confidence": "high"
             },
             {
               "target": "bips:113",
-              "evidence": "must be deployed simultaneously with BIP68 and BIP113 using the same deployment mechanism",
-              "reason": "The proposal normatively constrains its activation to be simultaneous with BIP113 under the same deployment workflow.",
+              "type": "depends_on",
+              "evidence": "This BIP must be deployed simultaneously with BIP68 and BIP113 using the same deployment mechanism.",
+              "reason": "The proposal explicitly requires coordinated deployment with BIP 113, making it a necessary part of the specified deployment.",
               "confidence": "high"
             }
           ]

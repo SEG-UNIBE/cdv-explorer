@@ -820,84 +820,80 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:41:30Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:03:09Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
+              "type": "depends_on",
               "evidence": "based on an algorithm described in BIP-0032",
-              "reason": "The proposal defines its derivation hierarchy and repeatedly relies on BIP32 child derivation, including hardened and public derivation semantics.",
+              "reason": "The proposed hierarchy uses BIP32 child-key derivation, including its hardened and public derivation rules, so it cannot operate as specified without BIP32.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:39",
+              "type": "references",
+              "evidence": "single-sig wallets are able to restore funds using just the master private key data (in the format of BIP39 usually)",
+              "reason": "BIP39 is mentioned only as a usual backup format in an explanatory rationale for restricting the hierarchy to multisignature wallets.",
               "confidence": "high"
             },
             {
               "target": "bips:43",
-              "evidence": "purpose scheme described in BIP-0043",
-              "reason": "The proposal is explicitly framed as an application of BIP43 and uses its purpose-field convention to assign purpose 87'.",
+              "type": "depends_on",
+              "evidence": "This BIP is a particular application of BIP43.",
+              "reason": "The proposal specializes BIP43's purpose-field scheme by assigning purpose 87', making that scheme necessary to its hierarchy.",
               "confidence": "high"
             },
             {
               "target": "bips:44",
+              "type": "depends_on",
               "evidence": "multi-account hierarchy described in BIP-0044",
-              "reason": "The proposal reuses the BIP44-style multi-account path structure and explicitly says the account level follows the BIP44 pattern.",
+              "reason": "The proposal bases its coin-type, account, change, and address-index hierarchy on the multi-account structure defined by BIP44.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:45",
+              "type": "references",
+              "evidence": "For example, BIP45 specifies:\n\n<pre>\nm / purpose' / cosigner_index / change / address_index\n</pre>\n\nBIP45 unnecessarily demands a single script type",
+              "reason": "The proposal discusses BIP45 as an existing multisignature derivation alternative and criticizes its design rather than building on it.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:49",
+              "type": "references",
+              "evidence": "As background, BIP 44/49/84 specifies:",
+              "reason": "BIP49 is cited as background when comparing existing script-specific single-signature derivation schemes with the proposed multisignature hierarchy; its scheme is not required by this proposal.",
               "confidence": "high"
             },
             {
               "target": "bips:67",
-              "evidence": "deterministic key sorting as per BIP67",
-              "reason": "The specification requires deterministic multisig key sorting and ties descriptor usage to BIP67-style sorted public keys via sortedmulti.",
+              "type": "depends_on",
+              "evidence": "Any wallet that supports descriptors inherently supports deterministic key sorting as per BIP67 (through the <code>sortedmulti</code> function) so that all possible multisignature addresses/scripts are derived from deterministically sorted public keys.",
+              "reason": "The proposal's specified key-sorting behavior directly uses the deterministic public-key ordering rules defined by BIP67.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:84",
+              "type": "references",
+              "evidence": "As background, BIP 44/49/84 specifies:",
+              "reason": "BIP84 is cited as background when discussing existing script-specific derivation schemes, not as a required component of the proposed hierarchy.",
               "confidence": "high"
             },
             {
               "target": "bips:129",
-              "evidence": "Please see BIP-0129",
-              "reason": "The address discovery section relies on multisig descriptors or descriptor templates generated from cosigners' combined key records, and resolves those descriptor templates through BIP129, which specifically introduces Bitcoin Secure Multisig Setup descriptor templates referenced here.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:174",
-              "evidence": "maximum compatibility with BIP-0174",
-              "reason": "The proposal requires descriptor key origin information specifically to interoperate with PSBT workflows defined by BIP174, making compatibility with that format part of adoption and implementation.",
-              "confidence": "medium"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:58:17Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:32",
-              "evidence": "based on an algorithm described in BIP-0032",
-              "reason": "The proposal defines its derivation hierarchy using the hierarchical deterministic wallet derivation algorithm from BIP32, including hardened and public child derivation semantics.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:43",
-              "evidence": "purpose scheme described in BIP-0043",
-              "reason": "The proposal is a BIP43 purpose-field application and uses BIP43's purpose-level convention to assign purpose 87'.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:44",
-              "evidence": "multi-account hierarchy described in BIP-0044",
-              "reason": "The proposal reuses the multi-account hierarchical path pattern and account/change/address-index semantics from BIP44.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:67",
-              "evidence": "deterministic key sorting as per BIP67",
-              "reason": "The proposal relies on BIP67's deterministic public-key sorting mechanism for sorted multisignature descriptors.",
+              "type": "references",
+              "evidence": "Please see [https://github.com/bitcoin/bips/blob/master/bip-0129.mediawiki BIP-0129 (Bitcoin Secure Multisig Setup)] for an introduction on descriptor templates.",
+              "reason": "BIP129 is cited for introductory information about descriptor templates rather than as a required part of the hierarchy.",
               "confidence": "high"
             },
             {
               "target": "bips:174",
-              "evidence": "key origin information for maximum compatibility with BIP-0174",
-              "reason": "The proposal recommends including descriptor key-origin information to remain compatible with BIP174 Partially Signed Bitcoin Transaction workflows.",
-              "confidence": "medium"
+              "type": "references",
+              "evidence": "The descriptor or descriptor template should contain the key origin information for maximum compatibility with BIP-0174.",
+              "reason": "The proposal discusses including key-origin information to improve interoperability with BIP174, but its derivation hierarchy does not require the PSBT format to operate.",
+              "confidence": "high"
             }
           ]
         }

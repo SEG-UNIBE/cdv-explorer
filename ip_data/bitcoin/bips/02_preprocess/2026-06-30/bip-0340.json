@@ -2161,47 +2161,58 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:43:46Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:14:27Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
-              "evidence": "BIP32's unhardened derivation",
-              "reason": "The proposal explicitly identifies related-key attacks against additive tweaks as a concern for keys generated using BIP32 unhardened derivation, and later states that existing BIP32 public keys can be converted and that \"BIP32 and schemes built on top of it remain usable.\" Implementing and evaluating compatibility of this signature scheme therefore materially relies on BIP32's derivation semantics and key format.",
+              "type": "references",
+              "evidence": "This would render signatures insecure when keys are generated using [[bip-0032.mediawiki#public-parent-key--public-child-key|BIP32's unhardened derivation]]",
+              "reason": "BIP32's unhardened derivation is discussed as an example of additive key tweaking that motivates key prefixing; BIP340 remains independently implementable without BIP32.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:62",
+              "type": "references",
+              "evidence": "This issue is discussed in [[bip-0062.mediawiki|BIP62]] and [[bip-0146.mediawiki|BIP146]]",
+              "reason": "BIP62 is cited as prior discussion of ECDSA signature malleability; the Schnorr scheme does not require its rules or mechanisms.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:66",
+              "type": "references",
+              "evidence": "the lack of exact specification for the DER parsing of ECDSA signatures has caused problems for Bitcoin [https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2015-July/009697.html in the past], needing [[bip-0066.mediawiki|BIP66]] to address it",
+              "reason": "BIP66 is mentioned as a historical response to DER-parsing ambiguity, motivating complete specification but not supplying functionality required by this proposal.",
               "confidence": "high"
             },
             {
               "target": "bips:118",
-              "evidence": "SIGHASH_NOINPUT (BIP118)",
-              "reason": "The proposal's justification for key prefixing explicitly depends on compatibility with a changed transaction-signing assumption introduced by BIP118: indirect commitment to public keys in transaction messages \"may change with proposals such as SIGHASH_NOINPUT.\" This is a substantive design dependency because BIP340's chosen challenge construction is motivated to remain secure under BIP118-style sighash semantics.",
-              "confidence": "low"
+              "type": "references",
+              "evidence": "this indirect commitment should not be relied upon because it may change with proposals such as SIGHASH_NOINPUT ([[bip-0118.mediawiki|BIP118]])",
+              "reason": "BIP118 is cited as a possible change undermining an indirect public-key commitment, serving as design motivation rather than a required mechanism.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:146",
+              "type": "references",
+              "evidence": "This issue is discussed in [[bip-0062.mediawiki|BIP62]] and [[bip-0146.mediawiki|BIP146]]",
+              "reason": "BIP146 is cited as prior discussion of ECDSA signature malleability rather than as a required part of this proposal.",
+              "confidence": "high"
             },
             {
               "target": "bips:327",
-              "evidence": "MuSig2] (BIP327)",
-              "reason": "The Applications section specifies multisignatures \"by means of an interactive scheme such as MuSig2 (BIP327)\" using this signature scheme's linearity. This is a substantive extension relationship: BIP327 is a concrete multiparty signing protocol designed around BIP340 Schnorr signatures, and the text points to it as the mechanism for aggregated public keys and joint signing.",
-              "confidence": "low"
+              "type": "references",
+              "evidence": "By means of an interactive scheme such as [https://eprint.iacr.org/2020/1261.pdf MuSig2] ([[bip-0327.mediawiki|BIP327]]), participants can aggregate their public keys into a single public key which they can jointly sign for",
+              "reason": "BIP327 is cited as an application using BIP340-compatible signatures; the base signature proposal does not require MuSig2 to operate.",
+              "confidence": "high"
             },
             {
               "target": "bips:341",
-              "evidence": "as for example done in BIP341",
-              "reason": "The proposal states that earlier versions required 32-byte messages and that callers typically pre-hash messages to 32-byte digests \"as for example done in BIP341.\" This is substantive because BIP341 is identified as an actual usage of BIP340 signatures with pre-hashed message semantics; adopting BIP341 depends on BIP340's signature algorithm and this text explicitly reuses that workflow as an example of intended integration.",
-              "confidence": "low"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:08:06Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:32",
-              "evidence": "This would render signatures insecure when keys are generated using [[bip-0032.mediawiki#public-parent-key--public-child-key|BIP32's unhardened derivation]]",
-              "reason": "The proposal’s key-prefixing design is explicitly motivated by compatibility with BIP32 unhardened derivation, whose additive-tweak key semantics would otherwise create related-key attacks for the signature scheme.",
+              "type": "references",
+              "evidence": "to create a 32-byte digest which can be passed to signing or verification\n(as for example done in [[bip-0341.mediawiki|BIP341]].)",
+              "reason": "BIP341 is given only as an example of a caller that pre-hashes messages before using the signature scheme.",
               "confidence": "high"
             }
           ]

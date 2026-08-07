@@ -868,48 +868,31 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:44:01Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:16:16Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:141",
-              "evidence": "P2WPKH and P2WSH, see BIP141",
-              "reason": "The proposal is designed around native segregated witness output versions, witness programs, and v0 length constraints. Those semantics and script forms were introduced by BIP 141, which BIP 350 relies on to specify when Bech32 versus Bech32m applies and to validate segwit addresses.",
-              "confidence": "low"
+              "type": "depends_on",
+              "evidence": "Invalid program length for witness version 0 (per BIP141)",
+              "reason": "The address validator applies the witness-program length rules defined by BIP 141, making those rules necessary for determining valid version-0 addresses.",
+              "confidence": "high"
             },
             {
               "target": "bips:173",
-              "evidence": "amends BIP173 to use Bech32m",
-              "reason": "BIP 350 directly modifies the Bech32 specification and address-encoding rules defined by BIP 173, keeping Bech32 for v0 and changing later witness versions to Bech32m.",
+              "type": "depends_on",
+              "evidence": "amends BIP173 to use Bech32m for native segregated witness outputs of version 1 and later",
+              "reason": "BIP 350 directly amends BIP 173’s address-encoding rules and retains all other aspects of its Bech32 format, so its mechanism necessarily builds on that proposal.",
               "confidence": "high"
             },
             {
               "target": "bips:341",
-              "evidence": "Taproot soft fork introducing v1 segregated witness outputs",
-              "reason": "The proposal's adoption guidance and compatibility rationale are explicitly tied to v1 segwit outputs introduced by Taproot. The named Taproot soft fork uniquely resolves to BIP 341, and BIP 350 specifies Bech32m as the address encoding for those v1 outputs.",
+              "type": "references",
+              "evidence": "In anticipation of the proposed Taproot soft fork introducing v1 segregated witness outputs on the network",
+              "reason": "The proposal cites Taproot as the anticipated use of version-1 witness outputs, but Bech32m is independently specified and does not require Taproot. The named Taproot soft fork resolves to BIP 341.",
               "confidence": "low"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:10:06Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:141",
-              "evidence": "Witness v0 programs must be exactly length 20 or 32.",
-              "reason": "The proposal’s address decoding rules depend on native segregated witness witness-version and witness-program semantics introduced by BIP141, including the version range, program length limits, and v0 length constraints.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:173",
-              "evidence": "amends BIP173 to use Bech32m",
-              "reason": "The proposal explicitly amends BIP173 and reuses the Bech32 address format while changing its checksum rule and version-to-encoding compatibility rules.",
-              "confidence": "high"
             }
           ]
         }

@@ -563,18 +563,26 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:43:01Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:10:40Z",
           "status": "success",
-          "dependencies": []
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:04:30Z",
-          "status": "success",
-          "dependencies": []
+          "findings": [
+            {
+              "target": "bips:176",
+              "type": "references",
+              "evidence": "BIP-176 proposes using \"bits\" as a standard term for 100 satoshis (or 0.000001 BTC).",
+              "reason": "The proposal discusses BIP 176 as an alternative denomination approach but does not require its terminology or mechanism.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:177",
+              "type": "references",
+              "evidence": "BIP-177 takes a more radical approach by proposing to redefine the term \"bitcoin\" to refer to what is currently called a \"satoshi\"",
+              "reason": "The proposal compares its terminology standard with BIP 177's alternative redefinition without functionally relying on it.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

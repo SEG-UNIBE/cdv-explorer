@@ -914,30 +914,31 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:40:51Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:01:18Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
+            {
+              "target": "bips:21",
+              "type": "references",
+              "evidence": "follows a bitcoin: link and their wallet is launched with the amount to be paid",
+              "reason": "The proposal mentions the bitcoin URI mechanism as part of the preexisting payment flow, but its own payment protocol does not require that mechanism. The named bitcoin URI scheme is canonically specified by BIP 21.",
+              "confidence": "medium"
+            },
             {
               "target": "bips:71",
-              "evidence": "as specified in BIP 71",
-              "reason": "The proposal normatively requires specific HTTP Content-Type and Accept headers defined by BIP 71 for sending Payment messages and receiving PaymentACKs.",
+              "type": "depends_on",
+              "evidence": "Wallet software sending Payment messages via HTTP must set appropriate Content-Type and Accept headers, as specified in BIP 71",
+              "reason": "The HTTP transport portion of the protocol requires the MIME header definitions specified by BIP 71.",
               "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:56:45Z",
-          "status": "success",
-          "dependencies": [
+            },
             {
-              "target": "bips:71",
-              "evidence": "must set appropriate\nContent-Type and Accept headers, as specified in BIP 71",
-              "reason": "The proposal normatively relies on BIP 71 for the HTTP MIME Content-Type and Accept header values used when sending Payment messages.",
-              "confidence": "high"
+              "target": "bips:72",
+              "type": "references",
+              "evidence": "BIP 0072 : Payment Protocol bitcoin: URI extensions",
+              "reason": "BIP 72 appears as a visible reference concerning URI extensions, but the current proposal does not require those extensions for its specified protocol.",
+              "confidence": "low"
             }
           ]
         }

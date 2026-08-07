@@ -633,18 +633,19 @@
       "body_extracted_regex": [],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:39:52Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T07:56:57Z",
           "status": "success",
-          "dependencies": []
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:52:55Z",
-          "status": "success",
-          "dependencies": []
+          "findings": [
+            {
+              "target": "bips:12",
+              "type": "references",
+              "evidence": "these new multi-signature transactions will be used in combination with OP_EVAL (see the OP_EVAL BIP)",
+              "reason": "The proposal discusses anticipated use with the OP_EVAL proposal, canonically BIP 12, but its multisignature transaction mechanism already operates using OP_CHECKMULTISIG and does not require OP_EVAL.",
+              "confidence": "high"
+            }
+          ]
         }
       ]
     }

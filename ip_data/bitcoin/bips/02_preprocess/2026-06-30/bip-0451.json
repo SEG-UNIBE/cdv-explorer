@@ -678,42 +678,45 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:44:50Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:24:04Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
+            {
+              "target": "bips:16",
+              "type": "references",
+              "evidence": "Spending a single 2-of-2 P2SH multisig dust UTXO produces a single \"ash\" OP_RETURN output.",
+              "reason": "The test suite mentions P2SH, the mechanism standardized by BIP 16, as a supported example without making the overall disposal protocol dependent on that script type.",
+              "confidence": "medium"
+            },
             {
               "target": "bips:125",
+              "type": "depends_on",
               "evidence": "the resulting replacement transaction MUST satisfy BIP 125 RBF rules",
-              "reason": "The proposal's batching mechanism is explicitly designed around and normatively constrained by BIP 125 replace-by-fee rules.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:17:55Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:125",
-              "evidence": "resulting replacement transaction MUST satisfy BIP 125 RBF rules",
-              "reason": "The batching workflow is explicitly designed around and must comply with the target proposal's replace-by-fee rules.",
+              "reason": "The specified batching mechanism uses replacement transactions and normatively requires compliance with the target's RBF rules.",
               "confidence": "high"
             },
             {
               "target": "bips:141",
-              "evidence": "multiplied by the replacement transaction's virtual size",
-              "reason": "The proposal's fee and batching rules rely on virtual transaction size semantics; transaction weight and virtual size are introduced by BIP 141.",
+              "type": "references",
+              "evidence": "Support for P2PKH, P2SH, P2WPKH, P2WSH, and P2TR input descriptors",
+              "reason": "The reference implementation names P2WPKH and P2WSH, witness program types defined by BIP 141, among supported input types; the core protocol is not limited to or dependent on them.",
               "confidence": "medium"
             },
             {
               "target": "bips:341",
-              "evidence": "For Taproot (P2TR) inputs using key-path spending, implementations MUST explicitly append the signature hash type byte `ALL|ANYONECANPAY` (0x81)",
-              "reason": "The proposal imposes special signing requirements for Taproot/P2TR key-path inputs; Taproot key-path spending and its sighash behavior, including SIGHASH_DEFAULT, are defined by BIP 341.",
-              "confidence": "high"
+              "type": "depends_on",
+              "evidence": "For Taproot (P2TR) inputs using key-path spending, implementations MUST explicitly append the signature hash type byte `ALL|ANYONECANPAY` (0x81) to enable ANYONECANPAY semantics, as the default sighash for Taproot (SIGHASH_DEFAULT, which omits the byte) does not include ANYONECANPAY.",
+              "reason": "The protocol's required handling of P2TR key-path signatures relies on Taproot's sighash rules, canonically specified by BIP 341.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:350",
+              "type": "references",
+              "evidence": "Spending a single witness (Bech32m/P2TR) dust UTXO must produce a dust disposal transaction with a single \"ash\" OP_RETURN output.",
+              "reason": "The test case names Bech32m, the address encoding standardized by BIP 350, only to identify an example input address type; the disposal transaction mechanism does not require that encoding.",
+              "confidence": "medium"
             }
           ]
         }

@@ -660,41 +660,30 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:41:43Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:04:40Z",
           "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:34",
-              "evidence": "similar to the technique used in BIP34",
-              "reason": "The proposal’s deployment mechanism materially reuses BIP34’s hash-power supermajority block-version activation technique for consensus change rollout.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:59:22Z",
-          "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:9",
-              "evidence": "designed to be compatible with Pieter's Wuille's proposed \"Version bits\" BIP",
-              "reason": "The proposal designs its block version-number scheme around compatibility with the Version bits mechanism; that named mechanism resolves to BIP9.",
+              "type": "references",
+              "evidence": "The version number scheme is designed to be compatible with Pieter's Wuille's proposed \"Version bits\" BIP",
+              "reason": "The named “Version bits” proposal resolves to BIP 9. The text states compatibility with it, not reliance on its activation mechanism.",
               "confidence": "medium"
             },
             {
               "target": "bips:34",
-              "evidence": "hash-power supermajority vote (similar to the technique used in BIP34)",
-              "reason": "The proposal reuses the hash-power supermajority activation technique associated with BIP34 for its own deployment rules.",
+              "type": "references",
+              "evidence": "Deployment shall be controlled by hash-power supermajority vote (similar to the technique used in BIP34)",
+              "reason": "BIP 34 is cited as a comparison for the deployment technique, while this proposal independently specifies its own activation thresholds and rules.",
               "confidence": "high"
             },
             {
               "target": "bips:100",
+              "type": "references",
               "evidence": "The deployment plan is taken from Jeff Garzik's proposed BIP100 block size increase",
-              "reason": "The proposal explicitly takes its deployment plan from BIP100, making its activation workflow substantively derived from that proposal.",
+              "reason": "The proposal credits BIP 100 as the source of its deployment-plan design, but provides the operative deployment rules itself and does not require BIP 100 to be implemented.",
               "confidence": "high"
             }
           ]

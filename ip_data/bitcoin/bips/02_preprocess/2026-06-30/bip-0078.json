@@ -1216,47 +1216,30 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:41:14Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:01:53Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:21",
-              "evidence": "presents a [[bip-0021.mediawiki|BIP 21 URI]] to the sender with a parameter <code>pj=</code>",
-              "reason": "The proposal is designed around extending BIP 21 URIs with new payjoin parameters, and its discovery/advertisement workflow depends on that URI scheme.",
+              "type": "depends_on",
+              "evidence": "This proposal is defining the following new [[bip-0021.mediawiki|BIP 21 URI]] parameters",
+              "reason": "The payjoin protocol extends the URI scheme defined by BIP 21 with parameters used to advertise the endpoint and output-substitution policy, so its specified negotiation mechanism relies on BIP 21.",
               "confidence": "high"
             },
             {
               "target": "bips:79",
-              "evidence": "our proposal is very similar",
-              "reason": "The text frames this proposal as a closely related protocol variant of Bustapay and enumerates concrete deviations from it, showing direct design reliance on the earlier proposal rather than a mere mention.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:174",
-              "evidence": "The sender creates a signed, finalized PSBT",
-              "reason": "The protocol fundamentally exchanges and validates PSBTs, reusing the Partially Signed Bitcoin Transaction format and semantics introduced by BIP 174.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:57:24Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:21",
-              "evidence": "defining the following new [[bip-0021.mediawiki|BIP 21 URI]] parameters",
-              "reason": "The proposal extends and relies on the BIP 21 URI scheme to advertise payjoin capability and define the pj/pjos parameters used by senders and receivers.",
+              "type": "references",
+              "evidence": "We decided to deviate from it for several reasons",
+              "reason": "The proposal discusses BIP 79 Bustapay as a similar earlier design and explains its differences, but does not require BIP 79's mechanism or formats.",
               "confidence": "high"
             },
             {
               "target": "bips:174",
+              "type": "depends_on",
               "evidence": "The sender creates a signed, finalized PSBT with witness UTXO or previous transactions of the inputs.",
-              "reason": "The protocol is built around exchanging and validating PSBTs and their fields; PSBT is the Partially Signed Bitcoin Transaction format specified by BIP 174.",
+              "reason": "The protocol exchanges and validates PSBTs as its core transaction-negotiation format. PSBT uniquely resolves to BIP 174, which defines that format and its fields.",
               "confidence": "high"
             }
           ]

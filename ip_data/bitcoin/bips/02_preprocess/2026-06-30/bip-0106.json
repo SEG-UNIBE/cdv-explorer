@@ -584,18 +584,40 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:41:48Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:05:20Z",
           "status": "success",
-          "dependencies": []
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:59:34Z",
-          "status": "success",
-          "dependencies": []
+          "findings": [
+            {
+              "target": "bips:100",
+              "type": "references",
+              "evidence": "Making Decentralized Economic Policy] - by Jeff Garzik",
+              "reason": "The proposal cites Garzik's alternative block-size policy work among other solutions considered. The title, author, and linked BIP100 document identify BIP 100; no part of its mechanism is required here.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:101",
+              "type": "references",
+              "evidence": "Increase maximum block size] - by Gavin Andresen",
+              "reason": "The title and author identify BIP 101, which is listed only as another block-size solution considered by the current proposal.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:103",
+              "type": "references",
+              "evidence": "Block size following technological growth] - by Pieter Wuille",
+              "reason": "The exact title and author identify BIP 103. It is cited as an alternative block-size proposal, not as a required component of the current mechanism.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:107",
+              "type": "references",
+              "evidence": "Elastic block cap with rollover penalties] - by Meni Rosenfeld",
+              "reason": "This is cited as an alternative solution rather than reused. The named design and author identify the proposal that became BIP 107, though the displayed title differs from the BIP's formal title.",
+              "confidence": "medium"
+            }
+          ]
         }
       ]
     }

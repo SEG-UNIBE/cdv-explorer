@@ -1268,114 +1268,101 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:44:04Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:17:30Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
+            {
+              "target": "bips:16",
+              "type": "depends_on",
+              "evidence": "the sender and receiver MUST use inputs from the following list when deriving the shared secret:\n\n* ''P2TR''\n* ''P2WPKH''\n* ''P2SH-P2WPKH''\n* ''P2PKH''",
+              "reason": "The mandatory eligible-input rules include P2SH-wrapped P2WPKH. P2SH is the mechanism canonically defined by BIP16, whose script semantics are required to support this input form.",
+              "confidence": "medium"
+            },
             {
               "target": "bips:32",
+              "type": "references",
               "evidence": "wallets MAY use BIP32 derivation with the following derivation paths for the spend and scan key",
-              "reason": "The proposal defines compatible scan/spend key derivation using BIP32 and states recovery compatibility assumptions around BIP32-compatible wallets.",
+              "reason": "BIP32 derivation is an optional compatibility and recovery method; silent-payment keys can be created without it, so the protocol is not functionally dependent on BIP32.",
               "confidence": "high"
             },
             {
               "target": "bips:43",
-              "evidence": "purpose is a constant set to ''352'' following the BIP43 recommendation",
-              "reason": "The specified BIP32 derivation scheme depends on BIP43's purpose-field convention to assign purpose 352'.",
+              "type": "references",
+              "evidence": "<code>purpose</code> is a constant set to ''352'' following the BIP43 recommendation",
+              "reason": "The proposal cites BIP43 for the purpose-field convention used by its optional BIP32 derivation scheme, rather than requiring it for the core protocol.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:44",
+              "type": "references",
+              "evidence": "A scan and spend key pair using BIP32 derivation are defined (taking inspiration from BIP44)",
+              "reason": "BIP44 is explicitly identified as inspiration for an optional derivation layout, not as a required part of silent-payment operation.",
               "confidence": "low"
             },
             {
-              "target": "bips:44",
-              "evidence": "taking inspiration from [https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki BIP44]",
-              "reason": "The scan/spend derivation paths are structured after the BIP44 account hierarchy with purpose', coin_type', and account' components, making BIP44 part of the concrete derivation design.",
-              "confidence": "medium"
+              "target": "bips:47",
+              "type": "references",
+              "evidence": "the participants of the BIP47 Prague discussion",
+              "reason": "BIP47 appears only in the acknowledgements as the subject of a discussion whose participants contributed feedback.",
+              "confidence": "low"
             },
             {
-              "target": "bips:158",
-              "evidence": "Bob can then use BIP158 block filters to determine if any of the outputs exist in a block",
-              "reason": "The proposal's light-client scanning approach substantively relies on BIP158 block filters for detecting candidate blocks containing silent-payment outputs.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:340",
-              "evidence": "For everything not defined above, we use the notation from [https://github.com/bitcoin/bips/blob/master/bip-0340.mediawiki#specification BIP340].",
-              "reason": "The proposal normatively adopts BIP340's specification notation and later relies on BIP340's X-only key semantics for taproot private-key parity handling during shared-secret derivation.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:341",
-              "evidence": "Receiver addresses are always [https://github.com/bitcoin/bips/blob/master/bip-0341.mediawiki BIP341] taproot outputs",
-              "reason": "The protocol requires silent payment outputs to be encoded and spent as BIP341 taproot outputs, and repeatedly reuses taproot output-key and script-path/key-path rules defined there.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:350",
-              "evidence": "The final address is a [https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki Bech32m] encoding",
-              "reason": "The address format is defined by directly using Bech32m encoding from the target proposal.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:11:23Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:16",
-              "evidence": "''' P2SH-P2WPKH '''\n\n    witness:      <signature> <33-byte-compressed-key>\n    scriptSig:    <0 <20-byte-key-hash>>\n                  (0x160014{20-byte-key-hash})\n    scriptPubKey: HASH160 <20-byte-script-hash> EQUAL",
-              "reason": "The proposal includes nested P2SH-P2WPKH inputs in the shared-secret derivation rules and specifies the P2SH scriptPubKey form. P2SH and its HASH160 ... EQUAL script form are the mechanism introduced by BIP16.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:32",
-              "evidence": "wallets MAY use BIP32 derivation with the following derivation paths",
-              "reason": "The proposal defines an optional but specified wallet key derivation scheme using BIP32 paths and hardened derivation rules.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:43",
-              "evidence": "<code>purpose</code> is a constant set to ''352'' following the BIP43 recommendation",
-              "reason": "The proposal relies on BIP43's purpose-field convention to assign purpose 352 in its derivation paths.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:44",
-              "evidence": "A scan and spend key pair using BIP32 derivation are defined (taking inspiration from [https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki BIP44]) in the following manner:\n\n     scan_private_key: m / purpose' / coin_type' / account' / 1' / 0",
-              "reason": "The proposal's derivation path reuses the BIP44-style coin_type and account hierarchy, though it frames the reuse as inspiration rather than a strict requirement.",
+              "target": "bips:125",
+              "type": "references",
+              "evidence": "Ensure the silent payment address is re-derived if inputs are added or removed during RBF",
+              "reason": "The proposal discusses behavior during replace-by-fee, canonically specified as opt-in RBF by BIP125, but RBF is not required for silent payments to operate.",
               "confidence": "medium"
             },
             {
               "target": "bips:141",
+              "type": "depends_on",
               "evidence": "The transaction does not spend an output with SegWit version > 1",
-              "reason": "The proposal defines scanning eligibility using SegWit witness-version compatibility rules. SegWit witness program versioning is the mechanism introduced by BIP141.",
+              "reason": "Transaction eligibility depends on interpreting SegWit witness versions, a mechanism canonically introduced by BIP141; the proposal also requires support for BIP141 P2WPKH inputs.",
               "confidence": "medium"
             },
             {
-              "target": "bips:173",
-              "evidence": "Version is communicated through the address in the same way as bech32 addresses (see [https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki#bech32 BIP173]",
-              "reason": "The proposal reuses BIP173's Bech32 address version communication scheme for silent payment address versions.",
+              "target": "bips:143",
+              "type": "references",
+              "evidence": "BIP143 recommends restricting P2WPKH inputs to compressed keys as a default policy",
+              "reason": "BIP143 is cited as supporting rationale for the proposal's compressed-key restriction, rather than supplying a required silent-payment mechanism.",
+              "confidence": "low"
+            },
+            {
+              "target": "bips:158",
+              "type": "references",
+              "evidence": "Once a light client has the tweak data for a block, they can determine whether or not an output to them exists in the block using BIP158 block filters",
+              "reason": "BIP158 filters are discussed as one optional approach to light-client support in an appendix explicitly described as outside the current BIP's scope.",
               "confidence": "high"
+            },
+            {
+              "target": "bips:173",
+              "type": "depends_on",
+              "evidence": "Version is communicated through the address in the same way as bech32 addresses (see BIP173]",
+              "reason": "Silent-payment address versioning directly adopts the Bech32 address-version communication convention defined by BIP173.",
+              "confidence": "low"
             },
             {
               "target": "bips:340",
-              "evidence": "For everything not defined above, we use the notation from [https://github.com/bitcoin/bips/blob/master/bip-0340.mediawiki#specification BIP340]. This includes the ''hash<sub>tag</sub>(x)'' notation",
-              "reason": "The proposal explicitly adopts BIP340 notation and tagged-hash conventions for its cryptographic algorithms.",
-              "confidence": "high"
+              "type": "depends_on",
+              "evidence": "For everything not defined above, we use the notation from BIP340",
+              "reason": "The specification explicitly imports BIP340 notation, including its tagged-hash convention, to define silent-payment calculations.",
+              "confidence": "low"
             },
             {
               "target": "bips:341",
-              "evidence": "Receiver addresses are always [https://github.com/bitcoin/bips/blob/master/bip-0341.mediawiki BIP341] taproot outputs",
-              "reason": "The proposal requires silent payment receiver outputs to be encoded and spent as BIP341 Taproot outputs and builds its output scanning around Taproot output keys.",
-              "confidence": "high"
+              "type": "depends_on",
+              "evidence": "Receiver addresses are always BIP341 taproot outputs",
+              "reason": "Silent payments necessarily create, scan for, and spend Taproot outputs using the output form and key rules defined by BIP341.",
+              "confidence": "low"
             },
             {
               "target": "bips:350",
-              "evidence": "The final address is a [https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki Bech32m] encoding",
-              "reason": "The proposal defines the silent payment address format using Bech32m encoding, which is specified by BIP350.",
-              "confidence": "high"
+              "type": "depends_on",
+              "evidence": "The final address is a Bech32m encoding of",
+              "reason": "The mandatory silent-payment address format uses Bech32m, whose encoding and checksum rules are defined by BIP350.",
+              "confidence": "low"
             }
           ]
         }

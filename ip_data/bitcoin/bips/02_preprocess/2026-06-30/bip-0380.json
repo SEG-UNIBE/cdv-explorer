@@ -850,36 +850,115 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:44:18Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:19:39Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
-              "evidence": "see BIP 32 for details",
-              "reason": "The proposal's key-expression syntax normatively reuses BIP 32 fingerprints, extended keys (xpub/xprv), and derivation-path semantics; implementing descriptor key expressions materially depends on BIP 32's definitions.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:12:50Z",
-          "status": "success",
-          "dependencies": [
+              "type": "depends_on",
+              "evidence": "xpub encoded extended public key or xprv encoded extended private key (as defined in BIP 32)",
+              "reason": "Key expressions directly incorporate BIP 32 extended-key formats and use its child-derivation rules, so descriptors containing these keys cannot operate as specified without BIP 32.",
+              "confidence": "low"
+            },
             {
-              "target": "bips:32",
-              "evidence": "as defined in BIP 32",
-              "reason": "The proposal's KEY expression grammar accepts BIP 32 extended public/private keys and specifies BIP 32 derivation steps and child-key derivation semantics, so implementing descriptors with extended keys materially depends on BIP 32 formats and derivation rules.",
+              "target": "bips:39",
+              "type": "references",
+              "evidence": "Typically backups have consisted of solely the private keys, nowadays primarily in the form of BIP 39 mnemonics.",
+              "reason": "BIP 39 is mentioned as background about existing wallet-backup practices; the descriptor mechanism does not require its mnemonic format.",
               "confidence": "high"
             },
             {
-              "target": "bips:173",
-              "evidence": "uses the same character set as bech32",
-              "reason": "The descriptor checksum reuses the Bech32 checksum alphabet; Bech32 is the encoding defined by BIP 173, so this is a technical reuse of a format element from that proposal.",
+              "target": "bips:44",
+              "type": "references",
+              "evidence": "BIPs 44, 49, and 84 have specified standard BIP 32 derivation paths for different output scripts and addresses",
+              "reason": "BIP 44 is discussed as an existing derivation-path convention motivating explicit path information, but its particular path is not required by descriptors.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:49",
+              "type": "references",
+              "evidence": "BIPs 44, 49, and 84 have specified standard BIP 32 derivation paths for different output scripts and addresses",
+              "reason": "BIP 49 is discussed as an existing derivation-path convention motivating descriptors, without its path being required by the descriptor mechanism.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:84",
+              "type": "references",
+              "evidence": "BIPs 44, 49, and 84 have specified standard BIP 32 derivation paths for different output scripts and addresses",
+              "reason": "BIP 84 is discussed as an existing derivation-path convention motivating descriptors, without its path being required by the descriptor mechanism.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "type": "references",
+              "evidence": "especially since the introduction of Segregated Witness which added new output types",
+              "reason": "Segregated Witness is cited as historical motivation for explicitly recording output types, not as a required part of the descriptor syntax. The reference resolves to BIP 141 because it defines the Segregated Witness consensus structure and witness output programs discussed here.",
               "confidence": "medium"
+            },
+            {
+              "target": "bips:173",
+              "type": "references",
+              "evidence": "The checksum is an error correcting checksum similar to bech32.",
+              "reason": "The proposal compares its independently specified descriptor checksum with Bech32. The named checksum standard canonically resolves to BIP 173, but the complete descriptor checksum algorithm is provided here rather than requiring BIP 173.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:381",
+              "type": "references",
+              "evidence": "| <tt>pk(KEY)</tt>\n| [[bip-0381.mediawiki|381]]",
+              "reason": "The visible expression index identifies BIP 381 as specifying the listed script expression; it is an extension of the general descriptor language rather than a requirement for implementing this proposal's core syntax.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:382",
+              "type": "references",
+              "evidence": "| <tt>wpkh(KEY)</tt>\n| [[bip-0382.mediawiki|382]]",
+              "reason": "The visible expression index identifies BIP 382 as specifying the listed script expression, without making that optional expression necessary to the general descriptor syntax.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:383",
+              "type": "references",
+              "evidence": "| <tt>multi(NUM, KEY, ..., KEY)</tt>\n| [[bip-0383.mediawiki|383]]",
+              "reason": "The visible expression index identifies BIP 383 as specifying the listed script expression, which is an extension rather than a functional prerequisite of BIP 380.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:384",
+              "type": "references",
+              "evidence": "| <tt>combo(KEY)</tt>\n| [[bip-0384.mediawiki|384]]",
+              "reason": "The visible expression index identifies BIP 384 as specifying the optional combo expression, not as a requirement of the general descriptor language.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:385",
+              "type": "references",
+              "evidence": "| <tt>raw(HEX)</tt>\n| [[bip-0385.mediawiki|385]]",
+              "reason": "The visible expression index identifies BIP 385 as specifying the listed script expression, which is not required to implement BIP 380's general syntax and checksum rules.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:386",
+              "type": "references",
+              "evidence": "| Tree\n| <tt>TREE</tt>\n| [[bip-0386.mediawiki|386]]",
+              "reason": "The visible expression index identifies BIP 386 as defining an additional TREE expression type; BIP 380 is designed for such extensions but does not depend on this one.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:390",
+              "type": "references",
+              "evidence": "| <tt>musig(KEY, KEY, ..., KEY)</tt>\n| [[bip-0390.mediawiki|390]]",
+              "reason": "The visible expression index identifies BIP 390 as specifying an additional script expression, not as a prerequisite for the descriptor framework.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:392",
+              "type": "references",
+              "evidence": "| <tt>sp(KEY)</tt>, <tt>sp(KEY, KEY)</tt>\n| [[bip-0392.mediawiki|392]]",
+              "reason": "The visible expression index identifies BIP 392 as specifying additional script expressions, which are optional extensions rather than dependencies of BIP 380.",
+              "confidence": "high"
             }
           ]
         }

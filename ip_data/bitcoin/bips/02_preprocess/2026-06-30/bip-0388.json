@@ -1060,78 +1060,122 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:44:29Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:22:02Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
-              "target": "bips:32",
-              "evidence": "they can only sign with keys derived from a single seed via [[bip-0032.mediawiki|BIP-32]]",
-              "reason": "The proposal's key information format and derivation semantics materially rely on BIP-32 extended public keys, fingerprints, and derivation paths; wallet policies require BIP-32-based keys to function.",
+              "target": "bips:3",
+              "type": "references",
+              "evidence": "later updated to Complete per BIP3 adoption",
+              "reason": "The changelog cites BIP 3 only to explain the proposal's status update; its mechanism does not rely on BIP 3.",
               "confidence": "high"
             },
             {
-              "target": "bips:379",
-              "evidence": "See [[bip-0379.md|BIP-379]] for a precise specification of all the valid miniscript SCRIPT expressions.",
-              "reason": "Wallet policies directly permit 'any valid miniscript template' and defer validity of those SCRIPT expressions to BIP-379, so implementing miniscript-capable wallet policies depends on BIP-379 semantics.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:380",
-              "evidence": "SCRIPT, TREE and KEY expressions map directly to the corresponding concepts defined in [[bip-0380.mediawiki|BIP-380]] for output script descriptors.",
-              "reason": "The proposal defines wallet policies as a restricted representation that compiles to and from output script descriptors, explicitly reusing BIP-380 descriptor concepts and syntax mapping.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:389",
-              "evidence": "while [[bip-0389.mediawiki|BIP-389]] allows multipath </*NUM;NUM;...;NUM> expressions with an arbitrary number of options, this specification restricts it to exactly 2 choices",
-              "reason": "The proposal adopts the multipath descriptor mechanism from BIP-389 but constrains its cardinality to exactly two choices for receive/change derivation.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:390",
-              "evidence": "despite being allowed in [[bip-0390.mediawiki|BIP-390]]",
-              "reason": "The proposal adds musig key placeholders and defines them by contrast with BIP-390's allowed derivation-before-aggregation behavior, explicitly constraining that existing descriptor mechanism within wallet policies. The named 'musig' descriptor construct is the Taproot MuSig2 descriptor key expression introduced by BIP-390.",
+              "target": "bips:16",
+              "type": "depends_on",
+              "evidence": "<tt>sh(SCRIPT)</tt> (top level only): P2SH embed the argument",
+              "reason": "The wallet-policy language directly supports P2SH embedding, whose output and redemption rules are canonically defined by BIP 16.",
               "confidence": "medium"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:15:26Z",
-          "status": "success",
-          "dependencies": [
+            },
             {
               "target": "bips:32",
-              "evidence": "serialized extended public key (as defined in [[bip-0032.mediawiki|BIP-32]])",
-              "reason": "The key information vector relies on BIP-32 extended public key serialization and derivation/origin semantics.",
+              "type": "depends_on",
+              "evidence": "the actual key, which is a serialized extended public key (as defined in [[bip-0032.mediawiki|BIP-32]])",
+              "reason": "Key information items use BIP-32 serialized extended public keys, so deriving the public keys represented by a wallet policy requires BIP-32's format and derivation rules.",
               "confidence": "high"
             },
             {
+              "target": "bips:44",
+              "type": "references",
+              "evidence": "[[bip-0044.mediawiki|BIP-44]], first account",
+              "reason": "BIP-44 is used as an illustrative test vector and recommended account convention, not as a requirement for wallet policies generally.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:48",
+              "type": "references",
+              "evidence": "[[bip-0048.mediawiki|BIP-48]] P2WSH multisig",
+              "reason": "BIP-48 is cited to label an illustrative P2WSH multisig test vector rather than to define a mandatory part of wallet policies.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:49",
+              "type": "references",
+              "evidence": "[[bip-0049.mediawiki|BIP-49]], second account",
+              "reason": "BIP-49 is used as an illustrative account test vector; wallet policies are not required to follow its derivation scheme.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:84",
+              "type": "references",
+              "evidence": "[[bip-0084.mediawiki|BIP-84]], third account",
+              "reason": "BIP-84 is cited for an example account and as an optional established specification, not as a universal dependency.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:86",
+              "type": "references",
+              "evidence": "[[bip-0086.mediawiki|BIP-86]], first account",
+              "reason": "BIP-86 is used as an illustrative Taproot account pattern, while the proposal permits wallet policies outside that convention.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:129",
+              "type": "references",
+              "evidence": "See [[bip-0129.mediawiki|BIP-129 (Bitcoin Secure Multisig Setup)]] for an approach designed for multisig wallets.",
+              "reason": "The proposal points to BIP-129 as an out-of-scope approach to coordinating multisig wallets and does not require its protocol.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "type": "depends_on",
+              "evidence": "<tt>wsh(SCRIPT)</tt> (top level or inside <tt>sh</tt> only): P2WSH embed the argument.",
+              "reason": "The language directly supports P2WSH witness outputs, whose witness-program structure and validation rules are canonically defined by BIP 141.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:327",
+              "type": "depends_on",
+              "evidence": "<tt>tr(musig(@0,@1)/**)</tt> - MuSig2 2-of-2 in the taproot keypath",
+              "reason": "The proposal defines wallet policies containing MuSig2 aggregate-key placeholders; constructing and using those keys requires the MuSig2 scheme specified by BIP 327.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:341",
+              "type": "depends_on",
+              "evidence": "<tt>tr(KEY)</tt> or <tt>tr(KEY,TREE)</tt> (top level only): P2TR output with the specified key as internal key, and optionally a tree of script paths.",
+              "reason": "The specified tr expression directly constructs P2TR outputs with Taproot internal keys and script trees, uniquely identifying and requiring the Taproot rules defined by BIP 341.",
+              "confidence": "medium"
+            },
+            {
               "target": "bips:379",
+              "type": "depends_on",
               "evidence": "See [[bip-0379.md|BIP-379]] for a precise specification of all the valid miniscript <tt>SCRIPT</tt> expressions.",
-              "reason": "Wallet policies permit miniscript templates and defer their valid SCRIPT-expression specification to BIP-379.",
+              "reason": "Wallet descriptor templates permit any valid Miniscript template, so determining which expressions are valid and interpreting them requires BIP-379's specification.",
               "confidence": "high"
             },
             {
               "target": "bips:380",
-              "evidence": "map directly to the corresponding concepts defined in [[bip-0380.mediawiki|BIP-380]] for output script descriptors.",
-              "reason": "The proposal is built around output script descriptor concepts and defines wallet policies by mapping templates to descriptors specified by BIP-380.",
+              "type": "depends_on",
+              "evidence": "<tt>SCRIPT</tt>, <tt>TREE</tt> and <tt>KEY</tt> expressions map directly to the corresponding concepts defined in [[bip-0380.mediawiki|BIP-380]] for output script descriptors.",
+              "reason": "Wallet policies compile directly into BIP-380 output script descriptor concepts and therefore require its descriptor syntax and semantics.",
               "confidence": "high"
             },
             {
               "target": "bips:389",
+              "type": "depends_on",
               "evidence": "while [[bip-0389.mediawiki|BIP-389]] allows multipath <tt>/<NUM;NUM;...;NUM></tt> expressions with an arbitrary number of options, this specification restricts it to exactly 2 choices",
-              "reason": "The proposal reuses BIP-389 multipath descriptor syntax but constrains it to the two-branch receive/change case.",
+              "reason": "The proposal specializes BIP-389 multipath descriptor expressions for receive/change branches, so the resulting descriptor mechanism relies on BIP-389's multipath format and interpretation.",
               "confidence": "high"
             },
             {
               "target": "bips:390",
-              "evidence": "<tt>tr(musig(@0/**,@1/**))</tt>: Derivation before aggregation is not allowed in wallet policies (despite being allowed in [[bip-0390.mediawiki|BIP-390]])",
-              "reason": "The proposal supports and restricts musig descriptor forms relative to the MuSig2 descriptor semantics defined by BIP-390.",
-              "confidence": "medium"
+              "type": "references",
+              "evidence": "Derivation before aggregation is not allowed in wallet policies (despite being allowed in [[bip-0390.mediawiki|BIP-390]])",
+              "reason": "BIP-390 is cited to contrast its permitted derivation order with the stricter wallet-policy rule; this passage does not adopt that rule.",
+              "confidence": "high"
             }
           ]
         }

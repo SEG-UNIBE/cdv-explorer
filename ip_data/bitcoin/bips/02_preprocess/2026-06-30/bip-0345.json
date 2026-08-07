@@ -1266,95 +1266,65 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:43:57Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:15:47Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
+            {
+              "target": "bips:65",
+              "type": "references",
+              "evidence": "Backwards compatibility considerations are very comparable to previous\ndeployments for OP_CHECKSEQUENCEVERIFY and OP_CHECKLOCKTIMEVERIFY (see\n[https://github.com/bitcoin/bips/blob/master/bip-0065.mediawiki BIP-0065]",
+              "reason": "BIP-65 is cited only as a comparable prior soft-fork deployment for backwards-compatibility discussion.",
+              "confidence": "high"
+            },
             {
               "target": "bips:112",
-              "evidence": "a way to enforce relative timelocks, like OP_CHECKSEQUENCEVERIFY",
-              "reason": "The described vault construction combines OP_VAULT with relative timelocks enforced by OP_CHECKSEQUENCEVERIFY; that opcode and its semantics were introduced by BIP-112, making it a substantive dependency for the concrete vault workflow.",
-              "confidence": "low"
+              "type": "depends_on",
+              "evidence": "they are incomplete without two other pieces:\n\n* a way to enforce relative timelocks, like <code>OP_CHECKSEQUENCEVERIFY</code>",
+              "reason": "The described vault application requires relative timelock enforcement through OP_CHECKSEQUENCEVERIFY, the opcode canonically specified by BIP-112.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:118",
+              "type": "references",
+              "evidence": "The deployment of a \"precomputed\" covenant mechanism like\n[https://github.com/bitcoin/bips/blob/master/bip-0119.mediawiki OP_CHECKTEMPLATEVERIFY] or\n[https://github.com/bitcoin/bips/blob/master/bip-0118.mediawiki SIGHASH_ANYPREVOUT]\nwould both remove the necessity to use an ephemeral key",
+              "reason": "SIGHASH_ANYPREVOUT, defined by BIP-118, is discussed as an alternative precomputed covenant mechanism rather than a required part of this proposal.",
+              "confidence": "high"
             },
             {
               "target": "bips:119",
+              "type": "depends_on",
               "evidence": "This BIP should be deployed concurrently with BIP-0119 to enable full use of vaults.",
-              "reason": "The proposal’s intended vault workflow materially relies on OP_CHECKTEMPLATEVERIFY to commit withdrawals to fixed outputs, and it explicitly states concurrent deployment with BIP-0119 is needed for full use.",
+              "reason": "The proposal explicitly requires concurrent deployment of BIP-119's OP_CHECKTEMPLATEVERIFY to enable its full intended vault functionality.",
               "confidence": "high"
             },
             {
               "target": "bips:125",
-              "evidence": "per BIP-0125",
-              "reason": "The policy section requires recovery transactions to be opt-in replaceable via nSequence under the replace-by-fee rules defined by BIP-125 unless using nVersion 3, so adopting the policy rules materially depends on BIP-125.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:340",
-              "evidence": "where tagged_hash() is from the BIP-0340 reference code",
-              "reason": "OP_VAULT_RECOVER specifies computing a tagged hash using the tagged_hash function named from BIP-340; this is a direct reuse of that concrete hashing construction in consensus rules.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:341",
-              "evidence": "encumbering coins under a taptree (BIP-341)",
-              "reason": "The design is built around Taproot taptrees and script-path leaf replacement semantics in outputs that must remain version 1 witness programs, so implementing the proposal depends on the Taproot structure introduced by BIP-341.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:342",
-              "evidence": "see BIP-0342",
-              "reason": "OP_VAULT explicitly reuses tapscript resource accounting by decrementing the per-script sigops budget defined in BIP-342, so its validation rules depend on that tapscript semantics.",
-              "confidence": "low"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:09:37Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:112",
-              "evidence": "a way to enforce relative timelocks, like <code>OP_CHECKSEQUENCEVERIFY</code>",
-              "reason": "The proposal's vault workflow requires relative timelocks; OP_CHECKSEQUENCEVERIFY is the mechanism specified by BIP112 and is used in the described vault scripts.",
-              "confidence": "medium"
-            },
-            {
-              "target": "bips:119",
-              "evidence": "deployed concurrently with BIP-0119 to enable full use of vaults",
-              "reason": "The proposal relies on OP_CHECKTEMPLATEVERIFY from BIP119 to commit withdrawals to a particular set of final outputs and states concurrent deployment is needed for full vault use.",
+              "type": "depends_on",
+              "evidence": "the input is not marked as opt-in replaceable by having an nSequence number less than <code>0xffffffff - 1</code>, per [https://github.com/bitcoin/bips/blob/master/bip-0125.mediawiki BIP-0125]",
+              "reason": "The proposal's recovery-transaction policy relies on BIP-125's opt-in replaceability signaling rule.",
               "confidence": "high"
             },
             {
-              "target": "bips:125",
-              "evidence": "nSequence number less than <code>0xffffffff - 1</code>, per [https://github.com/bitcoin/bips/blob/master/bip-0125.mediawiki BIP-0125]",
-              "reason": "The proposal's relay policy for recovery transactions relies on BIP125 opt-in replaceability rules.",
-              "confidence": "high"
-            },
-            {
-              "target": "bips:141",
-              "evidence": "If the scriptPubKey of ''triggerOut'' is not a version 1 witness program, script execution MUST fail",
-              "reason": "The proposal uses witness-program versioning and scriptPubKey format rules introduced by BIP141 as part of its validation logic.",
-              "confidence": "medium"
-            },
-            {
               "target": "bips:340",
-              "evidence": "tagged_hash()</code> is from the [https://github.com/bitcoin/bips/blob/master/bip-0340/reference.py BIP-0340 reference code]",
-              "reason": "The recovery scriptPubKey hash computation normatively reuses BIP340's tagged_hash construction.",
+              "type": "depends_on",
+              "evidence": "where <code>tagged_hash()</code> is from the [https://github.com/bitcoin/bips/blob/master/bip-0340/reference.py BIP-0340 reference code]",
+              "reason": "The consensus calculation for recovery output hashes uses the tagged-hash function defined by BIP-340.",
               "confidence": "high"
             },
             {
               "target": "bips:341",
-              "evidence": "encumbering coins under a\ntaptree [https://github.com/bitcoin/bips/blob/master/bip-0341.mediawiki (BIP-341)]\ncontaining at least two leaves",
-              "reason": "The proposal is designed around Taproot/taptree structures and tapleaf replacement semantics introduced by BIP341.",
+              "type": "depends_on",
+              "evidence": "a vault is created by encumbering coins under a\ntaptree [https://github.com/bitcoin/bips/blob/master/bip-0341.mediawiki (BIP-341)]\ncontaining at least two leaves",
+              "reason": "The proposed vault construction requires BIP-341's Taproot taptree and script-path output structure.",
               "confidence": "high"
             },
             {
               "target": "bips:342",
+              "type": "depends_on",
               "evidence": "Decrement the per-script sigops budget (see [https://github.com/bitcoin/bips/blob/master/bip-0342.mediawiki#resource-limits BIP-0342]) by 60",
-              "reason": "The proposal defines new tapscript opcode semantics that use BIP342 resource-limit accounting and OP_SUCCESS/tapscript behavior.",
+              "reason": "OP_VAULT validation directly modifies and relies on the tapscript sigops-budget rules defined by BIP-342.",
               "confidence": "high"
             }
           ]

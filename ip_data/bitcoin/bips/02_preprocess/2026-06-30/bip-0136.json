@@ -799,41 +799,23 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:42:33Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:08:42Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:173",
-              "evidence": "Bech32m encoding as defined in [https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki BIP-0173]",
-              "reason": "The proposal normatively requires the Bech32/Bech32m encoding format and explicitly states that TxRef MUST use the encoding as defined in BIP-0173, making the serialization and checksum workflow depend on that proposal's format.",
-              "confidence": "low"
-            },
-            {
-              "target": "bips:350",
-              "evidence": "and later refined in [https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki BIP-0350]",
-              "reason": "The proposal specifically requires Bech32m and says the encoding was later refined in BIP-0350; it also instructs parsers to handle obsolete pre-refinement Bech32 forms, so understanding the intended checksum variant materially depends on BIP-0350's Bech32m refinement.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:02:43Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:173",
-              "evidence": "'''TxRef''' MUST use the '''Bech32m'''<ref>'''Why use Bech32 Encoding for Confirmed Transaction References?''' The error detection and correction properties of this encoding format make it very attractive. We expect that it will be reasonable for software to correct a maximum of two characters; however, we haven’t specified this yet.</ref> encoding as defined in [https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki BIP-0173]",
-              "reason": "The proposal normatively requires TxRef to use the Bech32/Bech32m encoding framework defined by BIP173, including its HRP, separator, data part, alphabet, and checksum structure.",
+              "type": "depends_on",
+              "evidence": "encoding as defined in [https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki BIP-0173]",
+              "reason": "TxRef's required encoding and decoding mechanism reuses the Bech32 format, alphabet, and algorithm defined by BIP 173, so it cannot operate as specified without that proposal.",
               "confidence": "high"
             },
             {
               "target": "bips:350",
-              "evidence": "'''TxRef''' MUST use the '''Bech32m'''<ref>'''Why use Bech32 Encoding for Confirmed Transaction References?''' The error detection and correction properties of this encoding format make it very attractive. We expect that it will be reasonable for software to correct a maximum of two characters; however, we haven’t specified this yet.</ref> encoding as defined in [https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki BIP-0173] and later refined in [https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki BIP-0350]",
-              "reason": "The proposal normatively requires the Bech32m variant and explicitly relies on the refinement codified by BIP350 for TxRef encoding and decoding compatibility.",
+              "type": "depends_on",
+              "evidence": "'''TxRef''' MUST use the '''Bech32m'''",
+              "reason": "The mandatory Bech32m encoding is canonically defined by BIP 350, which the same sentence explicitly identifies as the refinement governing the format; TxRef encoding therefore requires its checksum rules.",
               "confidence": "high"
             }
           ]

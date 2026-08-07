@@ -1293,48 +1293,94 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:42:13Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:07:54Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
-              "target": "bips:65",
-              "evidence": "Similar soft forks for OP_CHECKSEQUENCEVERIFY and OP_CHECKLOCKTIMEVERIFY (see BIP-0065 and BIP-0112) have similarly changed OP_NOP semantics",
-              "reason": "BIP 119 is designed as a soft fork by repurposing OP_NOP4 with stricter verification semantics, and it explicitly grounds compatibility in the same OP_NOP-upgrade pattern used by BIP 65.",
+              "target": "bips:16",
+              "type": "references",
+              "evidence": "P2SH is incompatible (unless the P2SH hash is broken) with CHECKTEMPLATEVERIFY",
+              "reason": "The proposal discusses an incompatibility with Pay-to-Script-Hash, the mechanism canonically specified by BIP 16; CTV does not require P2SH.",
               "confidence": "medium"
             },
             {
-              "target": "bips:112",
+              "target": "bips:65",
+              "type": "references",
               "evidence": "Similar soft forks for OP_CHECKSEQUENCEVERIFY and OP_CHECKLOCKTIMEVERIFY (see BIP-0065 and BIP-0112) have similarly changed OP_NOP semantics",
-              "reason": "BIP 119 is designed as a soft fork by repurposing OP_NOP4 with stricter verification semantics, and it explicitly grounds compatibility in the same OP_NOP-upgrade pattern used by BIP 112.",
+              "reason": "BIP 65 is cited as a precedent for assigning stricter semantics to an OP_NOP, not as functionality required by CTV.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:112",
+              "type": "references",
+              "evidence": "Similar soft forks for OP_CHECKSEQUENCEVERIFY and OP_CHECKLOCKTIMEVERIFY (see BIP-0065 and BIP-0112) have similarly changed OP_NOP semantics",
+              "reason": "BIP 112 is cited as a comparable historical soft fork and is not required for CTV's mechanism.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:118",
+              "type": "references",
+              "evidence": "The key functional difference between SIGHASH_ANYPREVOUTANYSCRIPT and OP_CHECKTEMPLATEVERIFY is that OP_CHECKTEMPLATEVERIFY restricts the number of additional inputs",
+              "reason": "The text compares CTV with SIGHASH_ANYPREVOUTANYSCRIPT, the signature-hash mechanism specified by BIP 118, as an alternative rather than a requirement.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:141",
+              "type": "references",
+              "evidence": "It is expected to be common that no scriptSigs will be set as segwit mandates that the scriptSig must be empty",
+              "reason": "The proposal discusses SegWit's scriptSig rule, canonically introduced by BIP 141, as a common usage context; CTV also supports non-SegWit inputs and therefore does not depend on it.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:340",
+              "type": "references",
+              "evidence": "The Taproot/Schnorr BIPs use Tagged Hashes (`SHA256(SHA256(tag)||SHA256(tag)||msg)`)",
+              "reason": "The proposal cites the Schnorr-signature BIP's tagged-hash practice to contrast it with CTV's untagged hashes; Schnorr signatures are canonically specified by BIP 340.",
               "confidence": "medium"
             },
             {
               "target": "bips:341",
+              "type": "references",
               "evidence": "The same value is also pre-computed for and defined in BIP-341 and can be shared.",
-              "reason": "BIP 119 explicitly reuses transaction-hash precomputed values defined by BIP 341 for its sequences and outputs components, so implementations can share that mechanism.",
-              "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:01:45Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:16",
-              "evidence": "P2SH is incompatible\n(unless the P2SH hash is broken) with CHECKTEMPLATEVERIFY because the template hash must commit\nto the ScriptSig, which must contain the redeemscript, which is a hash cycle.",
-              "reason": "P2SH resolves to BIP16, which introduced pay-to-script-hash and the redeemScript-in-scriptSig spending structure. The proposal materially constrains CTV use with that structure because CTV commits to the scriptSig, creating a hash cycle.",
+              "reason": "The proposal explicitly notes that an equivalent precomputed hash is defined by BIP 341 and may be shared, but independently specifies its own computation, so sharing is optional rather than a dependency.",
               "confidence": "high"
             },
             {
-              "target": "bips:141",
-              "evidence": "It is expected to be common that no scriptSigs will be\nset as segwit mandates that the scriptSig must be empty",
-              "reason": "The segwit scriptSig emptiness rule resolves to BIP141, which introduced segregated witness witness-program validation rules. The proposal’s scriptSig commitment/elision and compatibility guidance are designed around that rule.",
-              "confidence": "high"
+              "target": "bips:345",
+              "type": "references",
+              "evidence": "in the case of opcodes such as OP_VAULT, OP_CHECKCONTRACTVERIFY, and OP_TXHASH, OP_CHECKTEMPLATEVERIFY is a part of their currently proposed implementations",
+              "reason": "The proposal discusses OP_VAULT, canonically specified by BIP 345, as another proposed opcode whose implementation may incorporate CTV; this does not make CTV dependent on OP_VAULT.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:346",
+              "type": "references",
+              "evidence": "The work done for the OP_TXHASH pre-BIP details one approach to upgrading the OP_CHECKTEMPLATEVERIFY semantics.",
+              "reason": "The proposal discusses the OP_TXHASH design, subsequently formalized as BIP 346, as an approach for possible CTV upgrades rather than functionality required by the present proposal.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:347",
+              "type": "references",
+              "evidence": "OP_CHECKSIGFROMSTACKVERIFY along with OP_CAT may also be used to emulate CHECKTEMPLATEVERIFY.",
+              "reason": "The text names OP_CAT, canonically proposed in BIP 347, as part of an alternative way to emulate CTV, not as a requirement of CTV.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:348",
+              "type": "references",
+              "evidence": "OP_CHECKSIGFROMSTACKVERIFY along with OP_CAT may also be used to emulate CHECKTEMPLATEVERIFY.",
+              "reason": "The text compares CTV with an emulation using the CHECKSIGFROMSTACK family of operations formalized by BIP 348; CTV does not rely on that alternative.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:443",
+              "type": "references",
+              "evidence": "in the case of opcodes such as OP_VAULT, OP_CHECKCONTRACTVERIFY, and OP_TXHASH, OP_CHECKTEMPLATEVERIFY is a part of their currently proposed implementations",
+              "reason": "The proposal names OP_CHECKCONTRACTVERIFY, canonically specified by BIP 443, while discussing other proposed opcode implementations; the direction described does not make CTV dependent on it.",
+              "confidence": "medium"
             }
           ]
         }

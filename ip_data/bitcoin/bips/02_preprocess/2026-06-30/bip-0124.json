@@ -595,22 +595,37 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:42:18Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:07:11Z",
           "status": "success",
-          "dependencies": []
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:01:28Z",
-          "status": "success",
-          "dependencies": [
+          "findings": [
+            {
+              "target": "bips:16",
+              "type": "references",
+              "evidence": "The most popular formats are pay-to-pubkey-hash and m-of-n pay-to-script-hash (BIP16).",
+              "reason": "BIP16 is cited as an existing popular script format for background and is not required by the generalized template mechanism.",
+              "confidence": "high"
+            },
             {
               "target": "bips:32",
-              "evidence": "using the key derivation mechanism defined in BIP32",
-              "reason": "The proposal defines script templates around BIP32 derivation paths and requires BIP32 key-derivation semantics to generate the scripts deterministically.",
+              "type": "depends_on",
+              "evidence": "An individual key is determined by a BIP32 derivation path and an index.",
+              "reason": "The proposal's key and key-group template mechanism is defined in terms of BIP32 derivation paths, so it requires the hierarchical key-derivation scheme specified by BIP32.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:65",
+              "type": "references",
+              "evidence": "with the advent of hashlocked and timelocked contracts (BIP65, BIP112), it is necessary for different wallets to be able to cooperatively generate even more sophisticated scripts.",
+              "reason": "BIP65 is discussed as motivation for supporting sophisticated timelocked scripts; the template format itself does not require its rules to operate.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:112",
+              "type": "references",
+              "evidence": "with the advent of hashlocked and timelocked contracts (BIP65, BIP112), it is necessary for different wallets to be able to cooperatively generate even more sophisticated scripts.",
+              "reason": "BIP112 is cited as background motivation for generalized script templates, without its CHECKSEQUENCEVERIFY mechanism being required by the proposal.",
               "confidence": "high"
             }
           ]

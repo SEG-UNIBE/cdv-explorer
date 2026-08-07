@@ -517,36 +517,31 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:44:34Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:22:14Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:141",
+              "type": "depends_on",
               "evidence": "Native segwit outputs are composed of a witness version and a witness program.",
-              "reason": "The proposal defines P2A as the scriptPubKey `OP_1 <0x4e73>` and relies on native segwit witness-program semantics, including witness versioning, witness program length rules, and the statement that creation has been standard since Segwit deployment. Those concrete mechanisms were introduced by BIP 141, so implementing or evaluating P2A depends on that proposal's output semantics.",
+              "reason": "P2A is defined as a native SegWit witness-version output and therefore relies on the witness-program structure and consensus assumptions defined by BIP 141. The named native SegWit mechanism uniquely identifies that proposal.",
               "confidence": "high"
-            }
-          ]
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T23:16:21Z",
-          "status": "success",
-          "dependencies": [
-            {
-              "target": "bips:141",
-              "evidence": "Native segwit outputs are composed of a witness version and a witness program.",
-              "reason": "The proposal defines P2A as a native SegWit witness-program output and relies on the witness version/program scriptPubKey structure introduced by BIP141.",
-              "confidence": "medium"
             },
             {
               "target": "bips:350",
-              "evidence": "bech32m encoding",
-              "reason": "The proposal gives P2A addresses and chooses the witness-program bytes based on Bech32m encoding; Bech32m is the address checksum/encoding variant introduced by BIP350 for native SegWit v1+ addresses.",
-              "confidence": "medium"
+              "type": "depends_on",
+              "evidence": "The two bytes for the P2A witness program are chosen to spell \"fees\" in bech32m encoding.",
+              "reason": "The proposal's specified addresses and chosen witness-program representation use Bech32m, whose encoding and checksum rules are defined by BIP 350.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:431",
+              "type": "references",
+              "evidence": "There is no ineherent dependency on this concept and P2A.",
+              "reason": "The proposal discusses TRUC transactions as a related anti-pinning mechanism but explicitly disclaims an inherent dependency on them, so BIP 431 is only referenced.",
+              "confidence": "high"
             }
           ]
         }

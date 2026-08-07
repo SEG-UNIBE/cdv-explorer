@@ -577,22 +577,16 @@
       ],
       "body_extracted_llm": [
         {
-          "run_id": "2026-07-21T14:39:42Z_gpt-5.4-2026-03-05_424e159a",
-          "model": "gpt-5.4-2026-03-05",
-          "timestamp": "2026-07-21T14:41:00Z",
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:01:27Z",
           "status": "success",
-          "dependencies": []
-        },
-        {
-          "run_id": "2026-07-21T22:52:18Z_gpt-5.5-2026-04-23_bbdaba3d",
-          "model": "gpt-5.5-2026-04-23",
-          "timestamp": "2026-07-21T22:57:01Z",
-          "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:70",
+              "type": "depends_on",
               "evidence": "BIP70 should be fully implemented with the following changes",
-              "reason": "The proposal directly modifies the BIP70 Payment Protocol by changing how serialized PaymentRequest outputs with zero-value OP_RETURN scripts are handled.",
+              "reason": "BIP 74 directly modifies the Payment Protocol defined by BIP 70, so its mechanism requires BIP 70's protocol, formats, and existing output-handling rules.",
               "confidence": "high"
             }
           ]

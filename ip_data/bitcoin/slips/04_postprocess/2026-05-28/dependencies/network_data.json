@@ -5886,473 +5886,650 @@
       "source": "slips:10",
       "target": "bips:32",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "generalizing the derivation scheme used in [BIP-0032]",
+      "reason": "The proposal explicitly builds its master key derivation and child key derivation from BIP-0032, extending and altering that scheme.",
+      "confidence": "high"
     },
     {
       "source": "slips:10",
       "target": "bips:39",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "Trezor generates all keys from a [BIP-0039] mnemonic",
+      "reason": "The proposal assumes BIP-0039 mnemonics as one of the seed sources feeding SLIP-0010 key generation.",
+      "confidence": "low"
     },
     {
       "source": "slips:10",
       "target": "slips:39",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "or from a set of [SLIP-0039] mnemonic shares",
+      "reason": "The proposal also assumes SLIP-0039 shares as an input source for seed generation prior to SLIP-0010 derivation.",
+      "confidence": "low"
     },
     {
       "source": "slips:11",
       "target": "slips:15",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "It is used in algorithms described in [SLIP-0015](slip-0015.md)",
+      "reason": "The proposal states that SLIP-0015 uses this encryption scheme, so understanding SLIP-0015 depends on this mechanism.",
+      "confidence": "high"
     },
     {
       "source": "slips:11",
       "target": "slips:16",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "It is used in algorithms described in [SLIP-0016](slip-0016.md)",
+      "reason": "The proposal states that SLIP-0016 uses this encryption scheme, so understanding SLIP-0016 depends on this mechanism.",
+      "confidence": "low"
     },
     {
       "source": "slips:13",
       "target": "bips:43",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "m/13'/A'/B'/C'/D'",
+      "reason": "The proposed derivation path uses a hardened purpose field in the BIP-0043 style, so the proposal is designed around that hierarchy convention.",
+      "confidence": "medium"
     },
     {
       "source": "slips:13",
       "target": "slips:10",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "derive the HD node `m/13'/A'/B'/C'/D'` according to SLIP-0010",
+      "reason": "The key derivation procedure explicitly depends on SLIP-0010 for deriving the hierarchical deterministic node.",
+      "confidence": "high"
     },
     {
       "source": "slips:14",
       "target": "bips:32",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "Hierarchical Deterministic Wallets",
+      "reason": "The proposal’s root nodes and derivation paths are built on hierarchical deterministic wallet derivation.",
+      "confidence": "high"
     },
     {
       "source": "slips:14",
       "target": "bips:39",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "Mnemonic code for generating deterministic keys",
+      "reason": "The wallet seed is defined by a BIP39 mnemonic phrase, so the test vectors depend on that mnemonic format and seed generation.",
+      "confidence": "high"
     },
     {
       "source": "slips:14",
       "target": "bips:44",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "BIP44",
+      "reason": "The legacy wallet section uses the BIP44 account path structure and purpose field.",
+      "confidence": "high"
     },
     {
       "source": "slips:14",
       "target": "bips:49",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "BIP49",
+      "reason": "The nested SegWit account section uses the BIP49 derivation scheme and corresponding address type.",
+      "confidence": "high"
     },
     {
       "source": "slips:14",
       "target": "bips:84",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "BIP84",
+      "reason": "The native SegWit account section uses the BIP84 derivation scheme and address format.",
+      "confidence": "high"
     },
     {
       "source": "slips:14",
       "target": "bips:86",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "BIP86",
+      "reason": "The Taproot account section uses the BIP86 derivation scheme for single-key P2TR outputs.",
+      "confidence": "high"
     },
     {
       "source": "slips:15",
       "target": "bips:32",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "path: `m/10015'/0'` (hardened path, see BIP32)",
+      "reason": "The proposal uses BIP32 hardened derivation path conventions and defines account xpub handling using BIP32 semantics.",
+      "confidence": "high"
     },
     {
       "source": "slips:15",
       "target": "slips:11",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "CipherKeyValue is defined in [SLIP-0011](slip-0011.md).",
+      "reason": "Master-key derivation relies on the SLIP-0011 CipherKeyValue mechanism to fetch the initial secret from the hardware device.",
+      "confidence": "high"
     },
     {
       "source": "slips:15",
       "target": "slips:14",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "For the \"stress test\" wallet, defined in SLIP-0014",
+      "reason": "The worked examples and expected outputs are specialized for the SLIP-0014 stress test wallet, so understanding the examples depends on that wallet definition.",
+      "confidence": "medium"
     },
     {
       "source": "slips:16",
       "target": "bips:32",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "m/10016'/0` (hardened path, see BIP32)",
+      "reason": "The proposal’s key-derivation path is explicitly defined as a BIP32 hardened path.",
+      "confidence": "high"
     },
     {
       "source": "slips:16",
       "target": "slips:11",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "CipherKeyValue is defined in [SLIP-0011]",
+      "reason": "The proposal’s master-key and entry-key derivation workflow relies on the cipherKeyValue operation defined by SLIP-0011.",
+      "confidence": "high"
     },
     {
       "source": "slips:17",
       "target": "slips:10",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "Derive the HD node `m/17'/A'/B'/C'/D'` according to SLIP-0010.",
+      "reason": "The hierarchical deterministic node derivation explicitly depends on SLIP-0010 for deriving the path from the hardened components.",
+      "confidence": "high"
     },
     {
       "source": "slips:19",
       "target": "bips:174",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "The following new global type is defined",
+      "reason": "The proposal extends the PSBT format by adding new global and per-input fields to PSBTv0/PSBTv2, so it depends on the PSBT structure defined by BIP-0174.",
+      "confidence": "high"
     },
     {
       "source": "slips:19",
       "target": "bips:322",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "signed using the Generic Signed Message Format as defined in the [original BIP-0322]",
+      "reason": "The proof signature format and verification procedure are defined in terms of BIP-0322, making the proposal rely on that signing scheme.",
+      "confidence": "high"
     },
     {
       "source": "slips:19",
       "target": "bips:370",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "additional fields for [BIP-0174] PSBTv0 and [BIP-0370] PSBTv2",
+      "reason": "The PSBT extension explicitly targets PSBTv2 as defined by BIP-0370, so implementing the extension for version 2 depends on that proposal's PSBTv2 structure.",
+      "confidence": "low"
     },
     {
       "source": "slips:19",
       "target": "slips:21",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "derived from the wallet's master secret using the [SLIP-0021]",
+      "reason": "The ownership identification key is explicitly derived using SLIP-0021 hierarchical symmetric-key derivation, which is foundational to the proof identifier computation.",
+      "confidence": "high"
     },
     {
       "source": "slips:21",
       "target": "bips:32",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "We adapt the master node generation from BIP-0032 and SLIP-0010.",
+      "reason": "The proposal explicitly reuses and adapts the master-node generation scheme from BIP-0032.",
+      "confidence": "high"
     },
     {
       "source": "slips:21",
       "target": "slips:10",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "We adapt the master node generation from BIP-0032 and SLIP-0010.",
+      "reason": "The proposal explicitly reuses and adapts the master-node generation scheme from SLIP-0010.",
+      "confidence": "high"
     },
     {
       "source": "slips:22",
       "target": "bips:39",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "such as that defined in [SLIP-0039] or the binary seed defined in [BIP-0039]",
+      "reason": "The proposal explicitly treats the BIP-0039 seed as an acceptable master secret source for hierarchical deterministic wallets.",
+      "confidence": "low"
     },
     {
       "source": "slips:22",
       "target": "slips:10",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "derived from a master secret and from the version and authentication tag of the credential ID using the [SLIP-0010] key derivation scheme",
+      "reason": "The proposal defines the credential key pair derivation path using SLIP-0010-based key derivation.",
+      "confidence": "low"
     },
     {
       "source": "slips:22",
       "target": "slips:21",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "The key is derived from the master secret using the [SLIP-0021] method for hierarchical derivation of symmetric keys",
+      "reason": "The proposal uses SLIP-0021 as the derivation mechanism for the encryption key and CredRandom values.",
+      "confidence": "low"
     },
     {
       "source": "slips:23",
       "target": "bips:32",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "This scheme adapts the master node derivation used in BIP-0032 and SLIP-0010",
+      "reason": "The proposal directly reuses and modifies the BIP-0032 master-node derivation framework for Cardano.",
+      "confidence": "high"
     },
     {
       "source": "slips:23",
       "target": "bips:39",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "commonly used with BIP-0039 in Cardano wallets",
+      "reason": "The Icarus derivation branch takes a BIP-0039 mnemonic and passphrase as its input source material.",
+      "confidence": "high"
     },
     {
       "source": "slips:23",
       "target": "slips:10",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "This scheme adapts the master node derivation used in BIP-0032 and SLIP-0010",
+      "reason": "The proposal explicitly builds on SLIP-0010's master-node derivation mechanism, changing only the curve name and Cardano-specific compatibility bits.",
+      "confidence": "high"
     },
     {
       "source": "slips:23",
       "target": "slips:39",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "The new scheme is primarily intended for use with SLIP-0039 Shamir's Secret-Sharing for Mnemonic Codes.",
+      "reason": "The universal derivation scheme is designed around SLIP-0039 as the seed source and specifies compliance for SLIP-0039-derived secrets.",
+      "confidence": "high"
     },
     {
       "source": "slips:24",
       "target": "bips:21",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "The present specification defines a new query key `slip24sig` for BIP-0021 URIs",
+      "reason": "The proposal extends the BIP-0021 URI scheme by adding a new query parameter and related processing rules.",
+      "confidence": "high"
     },
     {
       "source": "slips:24",
       "target": "bips:32",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "The most common way of verifying address ownership by a wallet is to provide the BIP-0032 derivation path leading from the wallet's seed to the address.",
+      "reason": "The address ownership verification section uses the BIP-0032 derivation path as part of the address authentication input.",
+      "confidence": "high"
     },
     {
       "source": "slips:24",
       "target": "bips:70",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "The Trezor payment request format is heavily inspired by the earlier [BIP-0070] specification.",
+      "reason": "The proposal is designed as a variant of the BIP-0070 payment protocol and explicitly reuses its conceptual payment-request model.",
+      "confidence": "low"
     },
     {
       "source": "slips:24",
       "target": "slips:21",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "Let *k* be a secret *address authentication key* derived from the wallet's master secret using the [SLIP-0021]",
+      "reason": "The address authentication code mechanism depends on SLIP-0021 for hierarchical derivation of the symmetric key used in HMAC computation.",
+      "confidence": "high"
     },
     {
       "source": "slips:24",
       "target": "slips:44",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "*coinType* (4 bytes): 32-bit encoding of the SLIP-0044 coin type",
+      "reason": "The payment request digest and memo/output encodings are keyed by SLIP-0044 coin type identifiers.",
+      "confidence": "high"
     },
     {
       "source": "slips:25",
       "target": "bips:32",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "based on the algorithm defined in [BIP 32]",
+      "reason": "The proposal’s derivation hierarchy and path are built on BIP 32 key derivation.",
+      "confidence": "high"
     },
     {
       "source": "slips:25",
       "target": "bips:43",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "and the scheme described in [BIP 43]",
+      "reason": "The proposal uses the BIP 43 purpose-based hierarchical scheme to structure its derivation path.",
+      "confidence": "high"
     },
     {
       "source": "slips:25",
       "target": "bips:48",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "The inclusion of this field is inspired by [BIP 48]",
+      "reason": "The script-type level follows the multi-script account structure introduced by BIP 48.",
+      "confidence": "medium"
     },
     {
       "source": "slips:25",
       "target": "bips:78",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "such as [BIP 78] PayJoin",
+      "reason": "The script-type/accounting discussion explicitly uses BIP 78 as an example of the same multi-script matching requirement.",
+      "confidence": "low"
     },
     {
       "source": "slips:25",
       "target": "bips:86",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "the purpose of this document is largely the same as [BIP 86]",
+      "reason": "The proposal is designed around the same purpose as BIP 86 and reuses its Taproot address-derivation logic in one script type.",
+      "confidence": "medium"
     },
     {
       "source": "slips:25",
       "target": "slips:10",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "and [SLIP 10]",
+      "reason": "The proposal explicitly includes SLIP 10 as part of the algorithm basis for deriving keys.",
+      "confidence": "high"
     },
     {
       "source": "slips:25",
       "target": "slips:44",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "The value of `coin_type` MUST be one of the coin types defined in [SLIP 44]",
+      "reason": "The coin-type level is constrained by SLIP 44’s registered coin types, making the hierarchy depend on that registry.",
+      "confidence": "high"
     },
     {
       "source": "slips:32",
       "target": "bips:32",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "BIP-0032 already defines a serialization format for hierarchical deterministic keys.",
+      "reason": "The proposal extends and modifies the BIP-32 serialization format, including path encoding and removal of the fingerprint field.",
+      "confidence": "high"
     },
     {
       "source": "slips:32",
       "target": "bips:173",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "This structure is encoded using Bech32 format described in BIP-0173.",
+      "reason": "The extended serialization depends on BIP-173 for its wire encoding and human-readable prefixes.",
+      "confidence": "high"
     },
     {
       "source": "slips:39",
       "target": "bips:32",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "a specification for its use in backing up Hierarchical Deterministic Wallets described in [BIP-0032]",
+      "reason": "The proposal is designed around backing up BIP-32 wallet master seeds and defines recovery/restore semantics for them.",
+      "confidence": "high"
     },
     {
       "source": "slips:39",
       "target": "bips:39",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "This SLIP is mainly intended as a replacement for [BIP-0039]",
+      "reason": "The proposal explicitly positions itself as a replacement for BIP-39 and discusses compatibility constraints with it.",
+      "confidence": "high"
     },
     {
       "source": "slips:39",
       "target": "bips:173",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "The checksum design is heavily inspired by Bech32 defined in [BIP-0173]",
+      "reason": "The proposal reuses the Bech32-style checksum design and its error-detection approach.",
+      "confidence": "medium"
     },
     {
       "source": "slips:44",
       "target": "bips:44",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "BIP-0044 defines a logical hierarchy for deterministic wallets.",
+      "reason": "The SLIP assigns coin types specifically for level 2 of the BIP44 hierarchy, so its constants depend on BIP 44's path structure and coin_type semantics.",
+      "confidence": "high"
     },
     {
       "source": "slips:48",
       "target": "bips:43",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "following the BIP43 recommendation",
+      "reason": "The purpose field semantics and hardened purpose level are defined using BIP43-style derivation conventions.",
+      "confidence": "high"
     },
     {
       "source": "slips:48",
       "target": "bips:44",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "It extends [BIP-0044](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki)",
+      "reason": "The proposal explicitly extends BIP-0044 and relies on its hierarchical deterministic wallet structure as the basis for this SLIP.",
+      "confidence": "high"
     },
     {
       "source": "slips:77",
       "target": "bips:39",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "The above seed should be derived using [BIP-0039](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki#from-mnemonic-to-seed) mnemonic and passphrase",
+      "reason": "The master blinding key derivation depends on the BIP-0039 mnemonic-to-seed procedure to obtain the seed input.",
+      "confidence": "high"
     },
     {
       "source": "slips:77",
       "target": "slips:21",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "we suggest using [SLIP-0021](https://github.com/satoshilabs/slips/blob/master/slip-0021.md) derivation scheme for `master_blinding_key`",
+      "reason": "The proposal directly reuses SLIP-0021 to derive the master blinding key hierarchy.",
+      "confidence": "high"
     },
     {
       "source": "slips:132",
       "target": "bips:32",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "BIP-0032 defines the derivation scheme for hierarchical deterministic wallets",
+      "reason": "The proposal registers version bytes for the extended serialization defined by BIP-0032, so understanding the registry depends on BIP-0032's HD wallet and serialization scheme.",
+      "confidence": "high"
     },
     {
       "source": "slips:132",
       "target": "slips:32",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "The [SLIP-0032](https://github.com/satoshilabs/slips/blob/master/slip-0032.md) proposal attempts a remedy by including the full BIP-0032 derivation path within the serialized key.",
+      "reason": "The proposal directly discusses SLIP-0032 as a related mechanism for addressing the same serialization/coin-type ambiguity and positions the registry as a stopgap until SLIP-0032 is implemented.",
+      "confidence": "medium"
     },
     {
       "source": "slips:173",
       "target": "bips:93",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "BIP-0032 master seed",
+      "reason": "The codex32 HRP registry includes an application for BIP-0032 master seed storage, depending on the codex32 usage described in the referenced proposal.",
+      "confidence": "medium"
     },
     {
       "source": "slips:173",
       "target": "bips:173",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "BIP-0173 defines a new format for segregated witness output addresses",
+      "reason": "The proposal registers human-readable parts specifically for the address format defined by BIP-0173, so adopting it depends on that Bech32 witness-address scheme.",
+      "confidence": "high"
     },
     {
       "source": "slips:173",
       "target": "bips:350",
       "extraction_method": "body_extracted_llm",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
       "value": 1,
-      "llm_model": "gpt-5.4-mini"
+      "llm_model": "gpt-5.4-mini",
+      "evidence": "Entries annotated with \"(m)\" use Bech32m [BIP-0350]",
+      "reason": "Part of the registered HRP set is explicitly for Bech32m-based formats, which relies on BIP-0350 semantics.",
+      "confidence": "high"
     }
   ],
   "ground_truth_reviewed_ips": [
@@ -6362,18 +6539,18 @@
       "source_slug": "slips",
       "reviewer": "rbo",
       "reviewed_at": "2026-06-22",
-      "sampling_strategy": "manual",
-      "sampling_snapshot": "-",
-      "sampling_seed": "-",
-      "era_bucket": "-",
-      "density_bucket": "-",
-      "density_basis": "-",
+      "sampling_strategy": "sampler",
+      "sampling_snapshot": "2026-06-30",
+      "sampling_seed": "42",
+      "era_bucket": "early",
+      "density_bucket": "high",
+      "density_basis": "all_methods",
       "created": "2016-04-26",
       "status": "Final",
       "type": "Standard",
-      "layer": "-",
+      "layer": null,
       "title": "Universal private key derivation from master private key",
-      "extracted_target_count": null,
+      "extracted_target_count": "3",
       "note": null
     },
     {
@@ -6382,18 +6559,18 @@
       "source_slug": "slips",
       "reviewer": "rbo",
       "reviewed_at": "2026-06-22",
-      "sampling_strategy": "manual",
-      "sampling_snapshot": "-",
-      "sampling_seed": "-",
-      "era_bucket": "-",
-      "density_bucket": "-",
-      "density_basis": "-",
+      "sampling_strategy": "sampler",
+      "sampling_snapshot": "2026-06-30",
+      "sampling_seed": "42",
+      "era_bucket": "recent",
+      "density_bucket": "high",
+      "density_basis": "all_methods",
       "created": "2019-06-25",
       "status": "Final",
       "type": "Standard",
-      "layer": "-",
+      "layer": null,
       "title": "Hierarchical derivation of symmetric keys",
-      "extracted_target_count": null,
+      "extracted_target_count": "5",
       "note": null
     },
     {
@@ -6402,18 +6579,18 @@
       "source_slug": "slips",
       "reviewer": "rbo",
       "reviewed_at": "2026-06-22",
-      "sampling_strategy": "manual",
-      "sampling_snapshot": "-",
-      "sampling_seed": "-",
-      "era_bucket": "-",
-      "density_bucket": "-",
-      "density_basis": "-",
+      "sampling_strategy": "sampler",
+      "sampling_snapshot": "2026-06-30",
+      "sampling_seed": "42",
+      "era_bucket": "middle",
+      "density_bucket": "high",
+      "density_basis": "all_methods",
       "created": "2017-12-18",
       "status": "Final",
       "type": "Standard",
-      "layer": "-",
+      "layer": null,
       "title": "Shamir's Secret-Sharing for Mnemonic Codes",
-      "extracted_target_count": null,
+      "extracted_target_count": "3",
       "note": null
     },
     {
@@ -6422,18 +6599,18 @@
       "source_slug": "slips",
       "reviewer": "rbo",
       "reviewed_at": "2026-06-22",
-      "sampling_strategy": "manual",
-      "sampling_snapshot": "-",
-      "sampling_seed": "-",
-      "era_bucket": "-",
-      "density_bucket": "-",
-      "density_basis": "-",
+      "sampling_strategy": "sampler",
+      "sampling_snapshot": "2026-06-30",
+      "sampling_seed": "42",
+      "era_bucket": "early",
+      "density_bucket": "low",
+      "density_basis": "all_methods",
       "created": "2014-07-09",
       "status": "Active",
       "type": "Standard",
-      "layer": "-",
+      "layer": null,
       "title": "Registered coin types for BIP-0044",
-      "extracted_target_count": null,
+      "extracted_target_count": "1",
       "note": null
     }
   ],

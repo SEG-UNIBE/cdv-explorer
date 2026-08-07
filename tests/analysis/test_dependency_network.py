@@ -331,7 +331,7 @@ class BuildNetworkDataTests(unittest.TestCase):
         rows = load_ground_truth_curated_entries("bitcoin", strict=False)
 
         self.assertTrue(rows)
-        self.assertEqual(rows[0]["reviewed_at"], "2026-06-22")
+        self.assertEqual(rows[0]["reviewed_at"], "2026-08-07")
         self.assertIn("relation_type", rows[0])
         self.assertNotIn("reviewed_at ", rows[0])
 

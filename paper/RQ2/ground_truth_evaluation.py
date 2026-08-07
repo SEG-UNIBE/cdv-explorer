@@ -10,11 +10,11 @@ inside the reviewed benchmark scope.
 
 Two Mode mappings are provided (mirroring the "Mode" column in
 dependency_type_mapping_table.py):
-  - ETA_TYPE_MAPPING ("Edge type agnostic"): a subtype counts as a match
-    against any ground-truth relation type on the same directed edge, via the
-    GT_TYPE_ALL wildcard target.
-  - DOE_TYPE_MAPPING ("Dependency-only edges"): a subtype only counts as a
-    match when the ground truth records that edge as depends_on.
+  - ETA_TYPE_MAPPING ("Edge type agnostic"): every subtype of each extraction
+    approach counts as a match against any ground-truth relation type on the
+    same directed edge.
+  - DOE_TYPE_MAPPING ("Dependency-only edges"): only dependency-oriented
+    subtypes are scored, and only against depends_on ground-truth edges.
 """
 
 from pathlib import Path
@@ -28,6 +28,10 @@ from analysis.dependencies.constants import (
     BODY_EXTRACTED_REGEX,
     DEPENDENCY_APPROACH_SHORT_LABELS,
     GROUND_TRUTH_CURATED,
+    INTERRELATION_TYPE_DEPENDS_ON,
+    INTERRELATION_TYPE_REFERENCES,
+    INTERRELATION_TYPE_SUPERSEDED_BY,
+    INTERRELATION_TYPE_SUPERSEDES,
     PREAMBLE_EXTRACTED,
 )
 from paper.config import (
@@ -49,34 +53,36 @@ EVALUATED_APPROACHES = [
     BODY_EXTRACTED_LLM,
 ]
 
-# Sentinel target meaning "match any ground-truth type" (mirrors GT_TYPE_ALL in
-# react/src/dependencyGroundTruthEvaluation.js): a subtype mapped to this
-# target counts as a true positive against whichever relation type(s) the
-# ground truth actually recorded for that directed pair.
+# Sentinel used on both sides of the mapping:
+# - as a subtype key, it means "all extracted subtypes of this approach";
+# - as a target value, it means "match any ground-truth type for this pair."
+# It mirrors GT_TYPE_ALL in react/src/dependencyGroundTruthEvaluation.js.
 GT_TYPE_ALL = "*"
+EXTRACTION_SUBTYPE_ALL = "*"
 
 ETA_TYPE_MAPPING = {
     PREAMBLE_EXTRACTED: {
         "requires": GT_TYPE_ALL,
+        "replaces": GT_TYPE_ALL,
+        "proposed_replacement": GT_TYPE_ALL,
     },
-    BODY_EXTRACTED_REGEX: {"reference": GT_TYPE_ALL},
-    # The LLM approach classifies each finding into one of the four
-    # ground-truth relation types directly, so every subtype maps to the
-    # wildcard target: a match against any ground-truth type on the pair.
+    BODY_EXTRACTED_REGEX: {EXTRACTION_SUBTYPE_ALL: GT_TYPE_ALL},
     BODY_EXTRACTED_LLM: {
-        "depends_on": GT_TYPE_ALL,
-        "references": GT_TYPE_ALL,
-        "supersedes": GT_TYPE_ALL,
-        "superseded_by": GT_TYPE_ALL,
+        INTERRELATION_TYPE_DEPENDS_ON: GT_TYPE_ALL,
+        INTERRELATION_TYPE_REFERENCES: GT_TYPE_ALL,
+        INTERRELATION_TYPE_SUPERSEDES: GT_TYPE_ALL,
+        INTERRELATION_TYPE_SUPERSEDED_BY: GT_TYPE_ALL,
     },
 }
 
 DOE_TYPE_MAPPING = {
-    PREAMBLE_EXTRACTED: {"requires": "depends_on"},
-    BODY_EXTRACTED_REGEX: {"reference": "depends_on"},
+    PREAMBLE_EXTRACTED: {"requires": INTERRELATION_TYPE_DEPENDS_ON},
+    BODY_EXTRACTED_REGEX: {EXTRACTION_SUBTYPE_ALL: INTERRELATION_TYPE_DEPENDS_ON},
     # Dependency-only scoring only credits the LLM's own depends_on findings;
     # its references/supersedes/superseded_by findings are out of scope here.
-    BODY_EXTRACTED_LLM: {"depends_on": "depends_on"},
+    BODY_EXTRACTED_LLM: {
+        INTERRELATION_TYPE_DEPENDS_ON: INTERRELATION_TYPE_DEPENDS_ON
+    },
 }
 
 COUNT_SERIES = [
@@ -213,6 +219,7 @@ def build_exact_type_evaluation(
             _normalize_relation_type(subtype): _normalize_relation_type(target)
             for subtype, target in mapping.get(approach, {}).items()
         }
+        wildcard_target = included.get(EXTRACTION_SUBTYPE_ALL)
         predicted_keys: set[str] = set()
         for edge in _edges_by_method(network_data, approach):
             if str(edge.get("source") or "").strip() not in reviewed_source_keys:
@@ -220,9 +227,12 @@ def build_exact_type_evaluation(
             if not _targets_reviewed_catalog(edge):
                 continue
             relation_type = _normalize_relation_type(edge.get("relation_type"))
-            if relation_type not in included:
+            if relation_type in included:
+                target = included[relation_type]
+            elif wildcard_target:
+                target = wildcard_target
+            else:
                 continue
-            target = included[relation_type]
             if target != GT_TYPE_ALL:
                 predicted_keys.add(_typed_edge_key(edge, target))
                 continue

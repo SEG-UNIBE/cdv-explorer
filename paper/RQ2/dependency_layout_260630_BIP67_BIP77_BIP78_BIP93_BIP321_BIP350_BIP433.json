@@ -1,11 +1,11 @@
 {
   "snapshot": "2026-06-30",
-  "exported_at": "2026-07-22T06:13:23.249Z",
+  "exported_at": "2026-08-07T15:17:17.820Z",
   "width": 1200,
   "height": 700,
   "color_by": "type",
-  "link_type": "body_extracted_regex",
-  "baseline_type": "body_extracted_llm",
+  "link_type": "body_extracted_llm",
+  "baseline_type": "body_extracted_regex",
   "link_subtype": null,
   "baseline_subtype": null,
   "layout_mode": "balanced",
@@ -16,6 +16,7 @@
       "BIP77",
       "BIP78",
       "BIP93",
+      "BIP321",
       "BIP350",
       "BIP433"
     ],
@@ -42,6 +43,20 @@
       "type": "Specification"
     },
     {
+      "id": "13",
+      "source": "bip",
+      "graph_id": "bips:13",
+      "x": 932.6812133789062,
+      "y": 453.60285547524165,
+      "degree": 1,
+      "incomingDegree": 1,
+      "outgoingDegree": 0,
+      "group": "Specification",
+      "layer": "Applications",
+      "status": "Deployed",
+      "type": "Specification"
+    },
+    {
       "id": "16",
       "source": "bip",
       "graph_id": "bips:16",
@@ -56,14 +71,28 @@
       "type": "Specification"
     },
     {
+      "id": "20",
+      "source": "bip",
+      "graph_id": "bips:20",
+      "x": 479.8319091796875,
+      "y": 335.64622974644254,
+      "degree": 1,
+      "incomingDegree": 1,
+      "outgoingDegree": 0,
+      "group": "Specification",
+      "layer": "Applications",
+      "status": "Closed",
+      "type": "Specification"
+    },
+    {
       "id": "21",
       "source": "bip",
       "graph_id": "bips:21",
       "x": 499.699011485675,
       "y": 97.13166046142578,
-      "degree": 2,
-      "incomingDegree": 2,
-      "outgoingDegree": 0,
+      "degree": 4,
+      "incomingDegree": 3,
+      "outgoingDegree": 1,
       "group": "Specification",
       "layer": "Applications",
       "status": "Closed",
@@ -241,8 +270,8 @@
       "id": "128",
       "source": "bip",
       "graph_id": "bips:128",
-      "x": 435.47485475176427,
-      "y": 293.3242275246648,
+      "x": 407.25961427324864,
+      "y": 283.9191677102117,
       "degree": 1,
       "incomingDegree": 0,
       "outgoingDegree": 1,
@@ -269,8 +298,8 @@
       "id": "141",
       "source": "bip",
       "graph_id": "bips:141",
-      "x": 499.4469756634951,
-      "y": 325.85958324258337,
+      "x": 518.5844573529482,
+      "y": 318.094110830474,
       "degree": 2,
       "incomingDegree": 2,
       "outgoingDegree": 0,
@@ -283,10 +312,10 @@
       "id": "173",
       "source": "bip",
       "graph_id": "bips:173",
-      "x": 424.06073571392665,
-      "y": 388.92031630810976,
-      "degree": 4,
-      "incomingDegree": 3,
+      "x": 420.6407222861923,
+      "y": 398.752896874516,
+      "degree": 5,
+      "incomingDegree": 4,
       "outgoingDegree": 1,
       "group": "Informational",
       "layer": "Applications",
@@ -297,8 +326,8 @@
       "id": "174",
       "source": "bip",
       "graph_id": "bips:174",
-      "x": 407.14253035415925,
-      "y": 332.020544052124,
+      "x": 408.4250620924405,
+      "y": 329.02802085876465,
       "degree": 2,
       "incomingDegree": 2,
       "outgoingDegree": 0,
@@ -311,11 +340,11 @@
       "id": "321",
       "source": "bip",
       "graph_id": "bips:321",
-      "x": 436.64328522654705,
-      "y": 355.15820701985297,
-      "degree": 2,
-      "incomingDegree": 1,
-      "outgoingDegree": 1,
+      "x": 437.4086050507658,
+      "y": 359.25644310383734,
+      "degree": 10,
+      "incomingDegree": 3,
+      "outgoingDegree": 7,
       "group": "Specification",
       "layer": "Applications",
       "status": "Complete",
@@ -355,8 +384,8 @@
       "graph_id": "bips:350",
       "x": 525.286494177186,
       "y": 375.1403972424639,
-      "degree": 13,
-      "incomingDegree": 10,
+      "degree": 14,
+      "incomingDegree": 11,
       "outgoingDegree": 3,
       "group": "Specification",
       "layer": "Applications",
@@ -369,8 +398,8 @@
       "graph_id": "bips:351",
       "x": 503.0217687248646,
       "y": 429.9416927784762,
-      "degree": 1,
-      "incomingDegree": 0,
+      "degree": 2,
+      "incomingDegree": 1,
       "outgoingDegree": 1,
       "group": "Informational",
       "layer": "Applications",
@@ -383,6 +412,20 @@
       "graph_id": "bips:352",
       "x": 541.1754769021434,
       "y": 428.1537024196919,
+      "degree": 2,
+      "incomingDegree": 1,
+      "outgoingDegree": 1,
+      "group": "Specification",
+      "layer": "Applications",
+      "status": "Complete",
+      "type": "Specification"
+    },
+    {
+      "id": "353",
+      "source": "bip",
+      "graph_id": "bips:353",
+      "x": 888.9384155273438,
+      "y": 295.06609609606596,
       "degree": 1,
       "incomingDegree": 0,
       "outgoingDegree": 1,
@@ -423,8 +466,8 @@
       "id": "431",
       "source": "bip",
       "graph_id": "bips:431",
-      "x": 451.2750090709935,
-      "y": 326.33939477845934,
+      "x": 432.03736869013414,
+      "y": 304.1092312042406,
       "degree": 1,
       "incomingDegree": 1,
       "outgoingDegree": 0,
@@ -437,8 +480,8 @@
       "id": "433",
       "source": "bip",
       "graph_id": "bips:433",
-      "x": 481.0542600467388,
-      "y": 286.6513788832365,
+      "x": 474.21420267369194,
+      "y": 298.621471656674,
       "degree": 4,
       "incomingDegree": 1,
       "outgoingDegree": 3,
@@ -446,9 +489,33 @@
       "layer": "Applications",
       "status": "Draft",
       "type": "Informational"
+    },
+    {
+      "id": "451",
+      "source": "bip",
+      "graph_id": "bips:451",
+      "x": 595.7706298828125,
+      "y": 101.99849067395849,
+      "degree": 1,
+      "incomingDegree": 0,
+      "outgoingDegree": 1,
+      "group": "Specification",
+      "layer": "Applications",
+      "status": "Draft",
+      "type": "Specification"
     }
   ],
   "links": [
+    {
+      "source": "21",
+      "target": "321",
+      "source_source": "bip",
+      "target_source": "bip",
+      "source_graph_id": "bips:21",
+      "target_graph_id": "bips:321",
+      "relation_type": "superseded_by",
+      "comparison_status": "overlap"
+    },
     {
       "source": "48",
       "target": "67",
@@ -456,7 +523,7 @@
       "target_source": "bip",
       "source_graph_id": "bips:48",
       "target_graph_id": "bips:67",
-      "relation_type": "reference",
+      "relation_type": "depends_on",
       "comparison_status": "overlap"
     },
     {
@@ -466,8 +533,8 @@
       "target_source": "bip",
       "source_graph_id": "bips:67",
       "target_graph_id": "bips:11",
-      "relation_type": "reference",
-      "comparison_status": "approach_only"
+      "relation_type": "references",
+      "comparison_status": "overlap"
     },
     {
       "source": "67",
@@ -476,7 +543,7 @@
       "target_source": "bip",
       "source_graph_id": "bips:67",
       "target_graph_id": "bips:16",
-      "relation_type": "reference",
+      "relation_type": "depends_on",
       "comparison_status": "overlap"
     },
     {
@@ -486,8 +553,8 @@
       "target_source": "bip",
       "source_graph_id": "bips:67",
       "target_graph_id": "bips:45",
-      "relation_type": "reference",
-      "comparison_status": "approach_only"
+      "relation_type": "references",
+      "comparison_status": "overlap"
     },
     {
       "source": "77",
@@ -496,7 +563,7 @@
       "target_source": "bip",
       "source_graph_id": "bips:77",
       "target_graph_id": "bips:21",
-      "relation_type": "reference",
+      "relation_type": "depends_on",
       "comparison_status": "overlap"
     },
     {
@@ -506,8 +573,18 @@
       "target_source": "bip",
       "source_graph_id": "bips:77",
       "target_graph_id": "bips:78",
-      "relation_type": "reference",
+      "relation_type": "depends_on",
       "comparison_status": "overlap"
+    },
+    {
+      "source": "77",
+      "target": "173",
+      "source_source": "bip",
+      "target_source": "bip",
+      "source_graph_id": "bips:77",
+      "target_graph_id": "bips:173",
+      "relation_type": "depends_on",
+      "comparison_status": "approach_only"
     },
     {
       "source": "77",
@@ -516,7 +593,7 @@
       "target_source": "bip",
       "source_graph_id": "bips:77",
       "target_graph_id": "bips:174",
-      "relation_type": "reference",
+      "relation_type": "depends_on",
       "comparison_status": "overlap"
     },
     {
@@ -526,7 +603,7 @@
       "target_source": "bip",
       "source_graph_id": "bips:77",
       "target_graph_id": "bips:321",
-      "relation_type": "reference",
+      "relation_type": "depends_on",
       "comparison_status": "overlap"
     },
     {
@@ -536,7 +613,7 @@
       "target_source": "bip",
       "source_graph_id": "bips:77",
       "target_graph_id": "bips:324",
-      "relation_type": "reference",
+      "relation_type": "depends_on",
       "comparison_status": "overlap"
     },
     {
@@ -546,7 +623,7 @@
       "target_source": "bip",
       "source_graph_id": "bips:78",
       "target_graph_id": "bips:21",
-      "relation_type": "reference",
+      "relation_type": "depends_on",
       "comparison_status": "overlap"
     },
     {
@@ -556,7 +633,17 @@
       "target_source": "bip",
       "source_graph_id": "bips:78",
       "target_graph_id": "bips:79",
-      "relation_type": "reference",
+      "relation_type": "references",
+      "comparison_status": "overlap"
+    },
+    {
+      "source": "78",
+      "target": "174",
+      "source_source": "bip",
+      "target_source": "bip",
+      "source_graph_id": "bips:78",
+      "target_graph_id": "bips:174",
+      "relation_type": "depends_on",
       "comparison_status": "approach_only"
     },
     {
@@ -566,7 +653,7 @@
       "target_source": "bip",
       "source_graph_id": "bips:87",
       "target_graph_id": "bips:67",
-      "relation_type": "reference",
+      "relation_type": "depends_on",
       "comparison_status": "overlap"
     },
     {
@@ -576,7 +663,7 @@
       "target_source": "bip",
       "source_graph_id": "bips:93",
       "target_graph_id": "bips:32",
-      "relation_type": "reference",
+      "relation_type": "depends_on",
       "comparison_status": "overlap"
     },
     {
@@ -586,8 +673,8 @@
       "target_source": "bip",
       "source_graph_id": "bips:93",
       "target_graph_id": "bips:39",
-      "relation_type": "reference",
-      "comparison_status": "approach_only"
+      "relation_type": "references",
+      "comparison_status": "overlap"
     },
     {
       "source": "93",
@@ -596,7 +683,7 @@
       "target_source": "bip",
       "source_graph_id": "bips:93",
       "target_graph_id": "bips:173",
-      "relation_type": "reference",
+      "relation_type": "depends_on",
       "comparison_status": "overlap"
     },
     {
@@ -606,8 +693,8 @@
       "target_source": "bip",
       "source_graph_id": "bips:118",
       "target_graph_id": "bips:350",
-      "relation_type": "reference",
-      "comparison_status": "approach_only"
+      "relation_type": "references",
+      "comparison_status": "overlap"
     },
     {
       "source": "123",
@@ -616,8 +703,8 @@
       "target_source": "bip",
       "source_graph_id": "bips:123",
       "target_graph_id": "bips:67",
-      "relation_type": "reference",
-      "comparison_status": "approach_only"
+      "relation_type": "references",
+      "comparison_status": "overlap"
     },
     {
       "source": "128",
@@ -626,8 +713,8 @@
       "target_source": "bip",
       "source_graph_id": "bips:128",
       "target_graph_id": "bips:433",
-      "relation_type": "reference",
-      "comparison_status": "approach_only"
+      "relation_type": "references",
+      "comparison_status": "overlap"
     },
     {
       "source": "136",
@@ -636,7 +723,7 @@
       "target_source": "bip",
       "source_graph_id": "bips:136",
       "target_graph_id": "bips:350",
-      "relation_type": "reference",
+      "relation_type": "depends_on",
       "comparison_status": "overlap"
     },
     {
@@ -646,8 +733,68 @@
       "target_source": "bip",
       "source_graph_id": "bips:173",
       "target_graph_id": "bips:350",
-      "relation_type": "reference",
+      "relation_type": "superseded_by",
+      "comparison_status": "overlap"
+    },
+    {
+      "source": "321",
+      "target": "13",
+      "source_source": "bip",
+      "target_source": "bip",
+      "source_graph_id": "bips:321",
+      "target_graph_id": "bips:13",
+      "relation_type": "depends_on",
       "comparison_status": "approach_only"
+    },
+    {
+      "source": "321",
+      "target": "21",
+      "source_source": "bip",
+      "target_source": "bip",
+      "source_graph_id": "bips:321",
+      "target_graph_id": "bips:21",
+      "relation_type": "supersedes",
+      "comparison_status": "overlap"
+    },
+    {
+      "source": "321",
+      "target": "173",
+      "source_source": "bip",
+      "target_source": "bip",
+      "source_graph_id": "bips:321",
+      "target_graph_id": "bips:173",
+      "relation_type": "depends_on",
+      "comparison_status": "approach_only"
+    },
+    {
+      "source": "321",
+      "target": "350",
+      "source_source": "bip",
+      "target_source": "bip",
+      "source_graph_id": "bips:321",
+      "target_graph_id": "bips:350",
+      "relation_type": "depends_on",
+      "comparison_status": "approach_only"
+    },
+    {
+      "source": "321",
+      "target": "351",
+      "source_source": "bip",
+      "target_source": "bip",
+      "source_graph_id": "bips:321",
+      "target_graph_id": "bips:351",
+      "relation_type": "depends_on",
+      "comparison_status": "overlap"
+    },
+    {
+      "source": "321",
+      "target": "352",
+      "source_source": "bip",
+      "target_source": "bip",
+      "source_graph_id": "bips:321",
+      "target_graph_id": "bips:352",
+      "relation_type": "depends_on",
+      "comparison_status": "overlap"
     },
     {
       "source": "341",
@@ -656,7 +803,7 @@
       "target_source": "bip",
       "source_graph_id": "bips:341",
       "target_graph_id": "bips:350",
-      "relation_type": "reference",
+      "relation_type": "references",
       "comparison_status": "overlap"
     },
     {
@@ -666,7 +813,7 @@
       "target_source": "bip",
       "source_graph_id": "bips:350",
       "target_graph_id": "bips:141",
-      "relation_type": "reference",
+      "relation_type": "depends_on",
       "comparison_status": "overlap"
     },
     {
@@ -676,7 +823,7 @@
       "target_source": "bip",
       "source_graph_id": "bips:350",
       "target_graph_id": "bips:173",
-      "relation_type": "reference",
+      "relation_type": "depends_on",
       "comparison_status": "overlap"
     },
     {
@@ -686,7 +833,17 @@
       "target_source": "bip",
       "source_graph_id": "bips:350",
       "target_graph_id": "bips:341",
-      "relation_type": "reference",
+      "relation_type": "references",
+      "comparison_status": "overlap"
+    },
+    {
+      "source": "351",
+      "target": "350",
+      "source_source": "bip",
+      "target_source": "bip",
+      "source_graph_id": "bips:351",
+      "target_graph_id": "bips:350",
+      "relation_type": "depends_on",
       "comparison_status": "approach_only"
     },
     {
@@ -696,7 +853,17 @@
       "target_source": "bip",
       "source_graph_id": "bips:352",
       "target_graph_id": "bips:350",
-      "relation_type": "reference",
+      "relation_type": "depends_on",
+      "comparison_status": "overlap"
+    },
+    {
+      "source": "353",
+      "target": "321",
+      "source_source": "bip",
+      "target_source": "bip",
+      "source_graph_id": "bips:353",
+      "target_graph_id": "bips:321",
+      "relation_type": "references",
       "comparison_status": "overlap"
     },
     {
@@ -706,7 +873,7 @@
       "target_source": "bip",
       "source_graph_id": "bips:360",
       "target_graph_id": "bips:350",
-      "relation_type": "reference",
+      "relation_type": "depends_on",
       "comparison_status": "overlap"
     },
     {
@@ -716,58 +883,8 @@
       "target_source": "bip",
       "source_graph_id": "bips:392",
       "target_graph_id": "bips:350",
-      "relation_type": "reference",
+      "relation_type": "depends_on",
       "comparison_status": "overlap"
-    },
-    {
-      "source": "433",
-      "target": "431",
-      "source_source": "bip",
-      "target_source": "bip",
-      "source_graph_id": "bips:433",
-      "target_graph_id": "bips:431",
-      "relation_type": "reference",
-      "comparison_status": "approach_only"
-    },
-    {
-      "source": "77",
-      "target": "173",
-      "source_source": "bip",
-      "target_source": "bip",
-      "source_graph_id": "bips:77",
-      "target_graph_id": "bips:173",
-      "relation_type": "implicit_dependency",
-      "comparison_status": "baseline_only"
-    },
-    {
-      "source": "78",
-      "target": "174",
-      "source_source": "bip",
-      "target_source": "bip",
-      "source_graph_id": "bips:78",
-      "target_graph_id": "bips:174",
-      "relation_type": "implicit_dependency",
-      "comparison_status": "baseline_only"
-    },
-    {
-      "source": "321",
-      "target": "350",
-      "source_source": "bip",
-      "target_source": "bip",
-      "source_graph_id": "bips:321",
-      "target_graph_id": "bips:350",
-      "relation_type": "implicit_dependency",
-      "comparison_status": "baseline_only"
-    },
-    {
-      "source": "351",
-      "target": "350",
-      "source_source": "bip",
-      "target_source": "bip",
-      "source_graph_id": "bips:351",
-      "target_graph_id": "bips:350",
-      "relation_type": "implicit_dependency",
-      "comparison_status": "baseline_only"
     },
     {
       "source": "433",
@@ -776,8 +893,8 @@
       "target_source": "bip",
       "source_graph_id": "bips:433",
       "target_graph_id": "bips:141",
-      "relation_type": "implicit_dependency",
-      "comparison_status": "baseline_only"
+      "relation_type": "depends_on",
+      "comparison_status": "approach_only"
     },
     {
       "source": "433",
@@ -786,7 +903,37 @@
       "target_source": "bip",
       "source_graph_id": "bips:433",
       "target_graph_id": "bips:350",
-      "relation_type": "implicit_dependency",
+      "relation_type": "depends_on",
+      "comparison_status": "approach_only"
+    },
+    {
+      "source": "433",
+      "target": "431",
+      "source_source": "bip",
+      "target_source": "bip",
+      "source_graph_id": "bips:433",
+      "target_graph_id": "bips:431",
+      "relation_type": "references",
+      "comparison_status": "overlap"
+    },
+    {
+      "source": "451",
+      "target": "350",
+      "source_source": "bip",
+      "target_source": "bip",
+      "source_graph_id": "bips:451",
+      "target_graph_id": "bips:350",
+      "relation_type": "references",
+      "comparison_status": "approach_only"
+    },
+    {
+      "source": "321",
+      "target": "20",
+      "source_source": "bip",
+      "target_source": "bip",
+      "source_graph_id": "bips:321",
+      "target_graph_id": "bips:20",
+      "relation_type": "reference",
       "comparison_status": "baseline_only"
     }
   ],
@@ -795,9 +942,17 @@
       294.0289899548636,
       314.5114066821434
     ],
+    "bips:13": [
+      932.6812133789062,
+      453.60285547524165
+    ],
     "bips:16": [
       328.4846122600694,
       421.3750222317665
+    ],
+    "bips:20": [
+      479.8319091796875,
+      335.64622974644254
     ],
     "bips:21": [
       499.699011485675,
@@ -852,28 +1007,28 @@
       384.12397489476353
     ],
     "bips:128": [
-      435.47485475176427,
-      293.3242275246648
+      407.25961427324864,
+      283.9191677102117
     ],
     "bips:136": [
       575.4615478515625,
       372.57262649199436
     ],
     "bips:141": [
-      499.4469756634951,
-      325.85958324258337
+      518.5844573529482,
+      318.094110830474
     ],
     "bips:173": [
-      424.06073571392665,
-      388.92031630810976
+      420.6407222861923,
+      398.752896874516
     ],
     "bips:174": [
-      407.14253035415925,
-      332.020544052124
+      408.4250620924405,
+      329.02802085876465
     ],
     "bips:321": [
-      436.64328522654705,
-      355.15820701985297
+      437.4086050507658,
+      359.25644310383734
     ],
     "bips:324": [
       472.5771445690672,
@@ -895,6 +1050,10 @@
       541.1754769021434,
       428.1537024196919
     ],
+    "bips:353": [
+      888.9384155273438,
+      295.06609609606596
+    ],
     "bips:360": [
       570.3482739546982,
       405.2720425924744
@@ -904,12 +1063,16 @@
       114.85594482072094
     ],
     "bips:431": [
-      451.2750090709935,
-      326.33939477845934
+      432.03736869013414,
+      304.1092312042406
     ],
     "bips:433": [
-      481.0542600467388,
-      286.6513788832365
+      474.21420267369194,
+      298.621471656674
+    ],
+    "bips:451": [
+      595.7706298828125,
+      101.99849067395849
     ]
   }
 }

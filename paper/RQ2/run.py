@@ -16,14 +16,15 @@ GENERATE_DEPENDENCY_COMPARISON_TABLE = True
 GENERATE_CENTRALITY_TOP5_TABLE = True
 GENERATE_GROUND_TRUTH_EVALUATION_PLOT = True
 GENERATE_TYPE_MAPPING_TABLE = True
-DIFFERENTIAL_FOCUS_BIPS = [67, 77, 78, 93, 350, 433]
-EXCLUDE_BIPS = [79, 324, 21, 392]
+GENERATE_GROUND_TRUTH_DATASET_TABLE = True
+DIFFERENTIAL_FOCUS_BIPS = [20, 67, 77, 78, 93, 321, 350, 433]
+EXCLUDE_BIPS = [79, 324, 21, 353, 13, 392, 451]
 
 DIFFERENTIAL_LAYOUT = "kamada_kawai"
 DIFFERENTIAL_LAYOUT_EXPORT = (
     Path("paper")
     / "RQ2"
-    / "dependency_layout_260630_BIP67_BIP77_BIP78_BIP93_BIP350_BIP433.json"
+    / "dependency_layout_260630_BIP67_BIP77_BIP78_BIP93_BIP321_BIP350_BIP433.json"
 )
 DIFFERENTIAL_LAYOUT_EXPORT_LABEL = "react"
 DIFFERENTIAL_ALTERNATIVE_LAYOUTS = [
@@ -55,6 +56,9 @@ def main() -> None:
     from paper.RQ2.dependency_plots import render_default_dependency_plot_suite
     from paper.RQ2.dependency_type_mapping_table import (
         export_type_mapping_latex_table,
+    )
+    from paper.RQ2.ground_truth_dataset_table import (
+        export_ground_truth_dataset_latex_table,
     )
     from paper.RQ2.ground_truth_evaluation import (
         plot_ground_truth_evaluation_combined,
@@ -143,7 +147,14 @@ def main() -> None:
         )
     if GENERATE_TYPE_MAPPING_TABLE:
         export_type_mapping_latex_table(
+            network_data=network_data,
             output_path=output_dir / f"{filename_prefix}_ground_truth_type_mapping.tex",
+        )
+    if GENERATE_GROUND_TRUTH_DATASET_TABLE:
+        export_ground_truth_dataset_latex_table(
+            network_data=network_data,
+            output_path=output_dir
+            / f"{filename_prefix}_ground_truth_dataset_composition.tex",
         )
 
 

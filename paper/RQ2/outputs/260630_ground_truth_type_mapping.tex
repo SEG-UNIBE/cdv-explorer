@@ -5,17 +5,26 @@
     \setlength{\belowrulesep}{0pt}%
     \setlength{\tabcolsep}{8pt}%
     \renewcommand{\arraystretch}{1.2}%
-    \begin{tabular}{c|l c l}
+    \begin{tabular}{c|l r l r c l}
         \toprule
-        \textbf{Mode} & \textbf{Approach Type} &  & \textbf{GT Type} \\
+        \textbf{Mode} & \textbf{Approach} & \textbf{Total} & \textbf{Edge Type} & \textbf{Count} &  & \textbf{GT Type} \\
         \midrule%
-        \multirow{3}{*}{\begin{tabular}[c]{@{}c@{}}Edge type\\agnostic\\(ETA)\end{tabular}} & Preamble:\texttt{requires} & $\rightarrow$ & \textit{(any)} \\
-         & Regex & $\rightarrow$ & \textit{(any)} \\
-         & LLM & $\rightarrow$ & \textit{(any)} \\
+        \multirow{8}{*}{Edge type agnostic (ETA)} & \multirow{3}{*}{Preamble} & \multirow{3}{*}{40} & \texttt{requires} & 27 & $\rightarrow$ & \textit{(any)} \\
+         &  &  & \texttt{replaces} & 7 & $\rightarrow$ & \textit{(any)} \\
+         &  &  & \texttt{proposed\_replacement} & 6 & $\rightarrow$ & \textit{(any)} \\
+        \cmidrule(lr){2-7}
+         & \multirow{1}{*}{Regex} & \multirow{1}{*}{414} & - & 414 & $\rightarrow$ & \textit{(any)} \\
+        \cmidrule(lr){2-7}
+         & \multirow{4}{*}{LLM} & \multirow{4}{*}{489} & \texttt{depends\_on} & 190 & $\rightarrow$ & \textit{(any)} \\
+         &  &  & \texttt{references} & 286 & $\rightarrow$ & \textit{(any)} \\
+         &  &  & \texttt{supersedes} & 9 & $\rightarrow$ & \textit{(any)} \\
+         &  &  & \texttt{superseded\_by} & 4 & $\rightarrow$ & \textit{(any)} \\
         \specialrule{0.65pt}{0pt}{0pt}%
-        \multirow{3}{*}{\begin{tabular}[c]{@{}c@{}}Dependency-\\only edges\\(DOE)\end{tabular}} & Preamble:\texttt{requires} & $\rightarrow$ & \texttt{depends\_on} \\
-         & Regex & $\rightarrow$ & \texttt{depends\_on} \\
-         & LLM & $\rightarrow$ & \texttt{depends\_on} \\
+        \multirow{3}{*}{Dependency-only edges (DOE)} & \multirow{1}{*}{Preamble} & \multirow{1}{*}{27} & \texttt{requires} & 27 & $\rightarrow$ & \texttt{depends\_on} \\
+        \cmidrule(lr){2-7}
+         & \multirow{1}{*}{Regex} & \multirow{1}{*}{414} & - & 414 & $\rightarrow$ & \texttt{depends\_on} \\
+        \cmidrule(lr){2-7}
+         & \multirow{1}{*}{LLM} & \multirow{1}{*}{190} & \texttt{depends\_on} & 190 & $\rightarrow$ & \texttt{depends\_on} \\
         \bottomrule
     \end{tabular}%
 }

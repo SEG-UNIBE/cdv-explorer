@@ -131,12 +131,14 @@ def get_changes_in_status(proposal: dict[str, Any]) -> list[Any]:
 
 def is_llm_runs_format(value: Any) -> bool:
     """Return True when value is the timestamped multi-run list format for body_extracted_llm."""
-    return (
-        isinstance(value, list)
-        and bool(value)
-        and isinstance(value[0], dict)
-        and "timestamp" in value[0]
-        and "findings" in value[0]
+    if not isinstance(value, list) or not value:
+        return False
+    return all(
+        isinstance(run, dict)
+        and "timestamp" in run
+        and "status" in run
+        and "findings" in run
+        for run in value
     )
 
 
@@ -146,9 +148,6 @@ def llm_run_status(run: dict[str, Any] | Any) -> str:
     status = str(run.get("status") or "").strip().lower()
     if status:
         return status
-    # Legacy runs without an explicit status are treated as successful.
-    if "timestamp" in run and "findings" in run:
-        return LLM_RUN_STATUS_SUCCESS
     return ""
 
 

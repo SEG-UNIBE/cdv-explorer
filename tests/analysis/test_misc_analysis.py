@@ -119,25 +119,62 @@ class LlmRunsFormatTests(unittest.TestCase):
 
     def test_detects_new_runs_format(self):
         runs = [
-            {"model": "gpt-5", "timestamp": "2026-06-11T10:00:00Z", "findings": []}
+            {
+                "model": "gpt-5",
+                "timestamp": "2026-06-11T10:00:00Z",
+                "status": "success",
+                "findings": [],
+            }
         ]
         self.assertTrue(is_llm_runs_format(runs))
 
     def test_does_not_detect_old_flat_format_as_runs(self):
         self.assertFalse(is_llm_runs_format(["BIP 32"]))
         self.assertFalse(is_llm_runs_format([{"target": "bips:32"}]))
+        self.assertFalse(
+            is_llm_runs_format(
+                [
+                    {
+                        "model": "gpt-5",
+                        "timestamp": "2026-06-11T10:00:00Z",
+                        "findings": [],
+                    }
+                ]
+            )
+        )
         self.assertFalse(is_llm_runs_format([]))
+
+    def test_rejects_mixed_llm_run_shape(self):
+        self.assertFalse(
+            is_llm_runs_format(
+                [
+                    {
+                        "model": "gpt-5",
+                        "timestamp": "2026-06-11T10:00:00Z",
+                        "status": "success",
+                        "findings": [],
+                    },
+                    {
+                        "model": "gpt-5",
+                        "timestamp": "2026-06-12T10:00:00Z",
+                        "findings": [],
+                    },
+                ]
+            )
+        )
 
     def test_latest_run_findings_are_returned(self):
         runs = [
             {
                 "model": "gpt-4",
                 "timestamp": "2026-01-01T00:00:00Z",
+                "status": "success",
                 "findings": [{"target": "bips:1"}],
             },
             {
                 "model": "gpt-5",
                 "timestamp": "2026-06-01T00:00:00Z",
+                "status": "success",
                 "findings": [{"target": "bips:32"}],
             },
         ]
@@ -148,11 +185,13 @@ class LlmRunsFormatTests(unittest.TestCase):
             {
                 "model": "gpt-5",
                 "timestamp": "2026-06-01T00:00:00Z",
+                "status": "success",
                 "findings": [{"target": "bips:32"}],
             },
             {
                 "model": "gpt-4",
                 "timestamp": "2026-01-01T00:00:00Z",
+                "status": "success",
                 "findings": [{"target": "bips:1"}],
             },
         ]
@@ -167,11 +206,13 @@ class LlmRunsFormatTests(unittest.TestCase):
             {
                 "model": "gpt-4",
                 "timestamp": "2026-01-01T00:00:00Z",
+                "status": "success",
                 "findings": [{"target": "bips:1"}],
             },
             {
                 "model": "gpt-5",
                 "timestamp": "2026-06-01T00:00:00Z",
+                "status": "success",
                 "findings": [{"target": "bips:32"}],
             },
         ]
@@ -183,11 +224,13 @@ class LlmRunsFormatTests(unittest.TestCase):
             {
                 "model": "gpt-4",
                 "timestamp": "2026-01-01T00:00:00Z",
+                "status": "success",
                 "findings": [{"target": "bips:99", "type": "depends_on"}],
             },
             {
                 "model": "gpt-5",
                 "timestamp": "2026-06-01T00:00:00Z",
+                "status": "success",
                 "findings": [{"target": "bips:2", "type": "depends_on"}],
             },
         ]

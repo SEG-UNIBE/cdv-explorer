@@ -132,6 +132,7 @@ class SchemaRefactorTests(unittest.TestCase):
                         {
                             "model": "gpt-5",
                             "timestamp": "2026-06-01T00:00:00Z",
+                            "status": "success",
                             "findings": [
                                 {
                                     "target": "bips:3",
@@ -174,6 +175,7 @@ class SchemaRefactorTests(unittest.TestCase):
                 {
                     "model": "gpt-5",
                     "timestamp": "2026-06-01T00:00:00Z",
+                    "status": "success",
                     "findings": [
                         {
                             "target": "bips:3",
@@ -328,6 +330,7 @@ class SchemaRefactorTests(unittest.TestCase):
                         {
                             "model": "gpt-5",
                             "timestamp": "2026-06-01T00:00:00Z",
+                            "status": "success",
                             "findings": [
                                 {
                                     "target": "bips:2",

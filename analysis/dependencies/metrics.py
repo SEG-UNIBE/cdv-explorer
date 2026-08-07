@@ -11,6 +11,7 @@ from analysis.dependencies.constants import (
     DEPENDENCY_APPROACH_ORDER,
     DEPENDENCY_PAIRWISE_COMPARISON_ORDER,
     GROUND_TRUTH_CURATED,
+    INTERRELATION_TYPES,
     PAIRWISE_TYPE_WILDCARD,
     PREAMBLE_EXTRACTED,
 )
@@ -293,29 +294,26 @@ def _wildcard_pairs_for_approach(
     return pairs
 
 
-def _expand_wildcard_pairwise_keys(
+def _expand_wildcard_pairwise_keys_for_typed_universe(
     wildcard_pairs: set[tuple[str, str]],
     other_typed_keys: set[tuple[str, str, str]],
-) -> set[tuple[str, ...]]:
-    """Resolve wildcard-typed pairs against the OTHER approach's fixed typed
-    keys: a wildcard edge agrees with whatever canonical type(s) the other
-    side recorded for the same directed pair (mirroring GT_TYPE_ALL in
-    paper/RQ2/ground_truth_evaluation.py), or falls back to a bare
-    (source, target) key when the other side has nothing there. A 2-tuple can
-    never equal a 3-tuple, so the fallback key can never accidentally collide
-    with a real typed key from either side.
+) -> set[tuple[str, str, str]]:
+    """Resolve wildcard pairs into a strict (source, target, type) universe.
+
+    When the other approach has typed edges for the same pair, the wildcard
+    adopts those concrete types. Otherwise it expands to every canonical
+    relation type, because an untyped edge has no single valid coordinate in a
+    typed candidate universe.
     """
     types_by_pair: dict[tuple[str, str], set[str]] = {}
     for source, target, canonical_type in other_typed_keys:
         types_by_pair.setdefault((source, target), set()).add(canonical_type)
 
-    keys: set[tuple[str, ...]] = set()
-    for pair in wildcard_pairs:
-        types = types_by_pair.get(pair)
-        if types:
-            keys.update((pair[0], pair[1], canonical_type) for canonical_type in types)
-        else:
-            keys.add(pair)
+    all_types = set(INTERRELATION_TYPES)
+    keys: set[tuple[str, str, str]] = set()
+    for source, target in wildcard_pairs:
+        types = types_by_pair.get((source, target)) or all_types
+        keys.update((source, target, canonical_type) for canonical_type in types)
     return keys
 
 
@@ -369,9 +367,16 @@ def _build_pairwise_comparisons(
     approach_labels = _approach_labels()
     pairwise: dict[str, Any] = {}
     # Universe for the rater-agreement scores: every ordered pair of distinct
-    # network nodes is a candidate edge each approach implicitly judged.
+    # network nodes is a candidate edge each approach implicitly judged. In
+    # exact-type mode, each directed pair is crossed with the canonical
+    # relation-type vocabulary, so the rated item is (source, target, type).
     node_count = len(nodes_by_id)
     candidate_pairs = node_count * (node_count - 1)
+    candidate_items = (
+        candidate_pairs * len(INTERRELATION_TYPES)
+        if type_scope == "exact_type"
+        else candidate_pairs
+    )
 
     fixed_keys_by_approach = {
         key: _fixed_typed_edge_keys_for_approach(network_data, key)
@@ -382,24 +387,18 @@ def _build_pairwise_comparisons(
         for key in DEPENDENCY_PAIRWISE_COMPARISON_ORDER
     }
 
-    def _edge_keys_for_pairing(key: str, other_key: str) -> set[tuple[str, ...]]:
-        if type_scope != "exact_type":
-            return {
-                (str(link.get("source")), str(link.get("target")))
-                for link in _links_for_type(network_data, key)
-            }
+    def _edge_keys_for_pairing(key: str) -> set[tuple[str, ...]]:
+        return {
+            (str(link.get("source")), str(link.get("target")))
+            for link in _links_for_type(network_data, key)
+        }
+
+    def _typed_edge_keys_for_pairing(key: str, other_key: str) -> set[tuple[str, ...]]:
         fixed = fixed_keys_by_approach[key]
         wildcard_pairs = wildcard_pairs_by_approach[key]
         if not wildcard_pairs:
             return fixed
-        # Wildcard-typed edges (regex) resolve against the OTHER side's fixed
-        # typed keys, so a regex hit agrees with whatever type the other
-        # approach recorded there, rather than being pinned to one arbitrary
-        # canonical type. When comparing regex against itself, the other side
-        # has no fixed keys either, so every pair degrades to a bare
-        # (source, target) key on both sides — a plain edge-only match, which
-        # is the only sensible reading of "does regex agree with regex."
-        return fixed | _expand_wildcard_pairwise_keys(
+        return fixed | _expand_wildcard_pairwise_keys_for_typed_universe(
             wildcard_pairs, fixed_keys_by_approach[other_key]
         )
 
@@ -408,8 +407,16 @@ def _build_pairwise_comparisons(
 
         for baseline_key in DEPENDENCY_PAIRWISE_COMPARISON_ORDER:
             baseline_label = approach_labels[baseline_key]
-            approach_edge_keys = _edge_keys_for_pairing(approach_key, baseline_key)
-            baseline_edge_keys = _edge_keys_for_pairing(baseline_key, approach_key)
+            if type_scope == "exact_type":
+                approach_edge_keys = _typed_edge_keys_for_pairing(
+                    approach_key, baseline_key
+                )
+                baseline_edge_keys = _typed_edge_keys_for_pairing(
+                    baseline_key, approach_key
+                )
+            else:
+                approach_edge_keys = _edge_keys_for_pairing(approach_key)
+                baseline_edge_keys = _edge_keys_for_pairing(baseline_key)
             overlap_keys = approach_edge_keys & baseline_edge_keys
             approach_only_keys = approach_edge_keys - baseline_edge_keys
             baseline_only_keys = baseline_edge_keys - approach_edge_keys
@@ -424,6 +431,7 @@ def _build_pairwise_comparisons(
                         "target": key[1],
                         "source_title": nodes_by_id.get(key[0], {}).get("title"),
                         "target_title": nodes_by_id.get(key[1], {}).get("title"),
+                        "relation_type": key[2] if len(key) > 2 else None,
                         "status": status,
                     }
                     for key in sorted(
@@ -433,6 +441,7 @@ def _build_pairwise_comparisons(
                             int(item[1]) if item[1].isdigit() else float("inf"),
                             item[0],
                             item[1],
+                            item[2] if len(item) > 2 else "",
                         ),
                     )
                 ]
@@ -456,12 +465,12 @@ def _build_pairwise_comparisons(
                     "missed_rate": float(len(baseline_only_keys) / baseline_total)
                     if baseline_total
                     else 0.0,
-                    "candidate_pairs": candidate_pairs,
+                    "candidate_pairs": candidate_items,
                     "kappa": _pairwise_cohens_kappa(
                         len(overlap_keys),
                         len(approach_only_keys),
                         len(baseline_only_keys),
-                        candidate_pairs,
+                        candidate_items,
                     ),
                 },
                 "edges": (

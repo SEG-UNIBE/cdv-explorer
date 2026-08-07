@@ -129,11 +129,13 @@ class ArtifactRebuildTests(unittest.TestCase):
                                     {
                                         "model": "gpt-5.4-mini",
                                         "timestamp": "2026-06-01T00:00:00Z",
+                                        "status": "success",
                                         "findings": [],
                                     },
                                     {
                                         "model": "gpt-5.4",
                                         "timestamp": "2026-06-02T00:00:00Z",
+                                        "status": "success",
                                         "findings": [],
                                     },
                                 ]
@@ -153,6 +155,7 @@ class ArtifactRebuildTests(unittest.TestCase):
                                     {
                                         "model": "gpt-5.4-mini",
                                         "timestamp": "2026-06-03T00:00:00Z",
+                                        "status": "success",
                                         "findings": [],
                                     },
                                 ]
@@ -186,6 +189,7 @@ class ArtifactRebuildTests(unittest.TestCase):
                                         {
                                             "model": "gpt-5.4-mini",
                                             "timestamp": "2026-06-01T00:00:00Z",
+                                            "status": "success",
                                             "findings": [],
                                         },
                                     ]
@@ -347,11 +351,13 @@ class ArtifactRebuildTests(unittest.TestCase):
                                     {
                                         "model": "gpt-5.4-mini",
                                         "timestamp": "2026-06-01T00:00:00Z",
+                                        "status": "success",
                                         "findings": [],
                                     },
                                     {
                                         "model": "gpt-5.4",
                                         "timestamp": "2026-06-02T00:00:00Z",
+                                        "status": "success",
                                         "findings": [],
                                     },
                                 ]
@@ -381,11 +387,13 @@ class ArtifactRebuildTests(unittest.TestCase):
                                     {
                                         "model": "gpt-5.4-mini",
                                         "timestamp": "2026-06-01T00:00:00Z",
+                                        "status": "success",
                                         "findings": [],
                                     },
                                     {
                                         "model": "gpt-5.4",
                                         "timestamp": "2026-06-02T00:00:00Z",
+                                        "status": "success",
                                         "findings": [],
                                     },
                                 ]
@@ -419,11 +427,13 @@ class ArtifactRebuildTests(unittest.TestCase):
                                     {
                                         "model": "gpt-5.4-mini",
                                         "timestamp": "2026-06-01T00:00:00Z",
+                                        "status": "success",
                                         "findings": [],
                                     },
                                     {
                                         "model": "gpt-5.4",
                                         "timestamp": "2026-06-02T00:00:00Z",
+                                        "status": "success",
                                         "findings": [],
                                     },
                                 ]
@@ -449,11 +459,13 @@ class ArtifactRebuildTests(unittest.TestCase):
             {
                 "model": "gpt-5.4-mini",
                 "timestamp": "2026-06-01T00:00:00Z",
+                "status": "success",
                 "findings": [{"target": "bips:1"}],
             },
             {
                 "model": "gpt-5.4",
                 "timestamp": "2026-06-02T00:00:00Z",
+                "status": "success",
                 "findings": [{"target": "bips:2"}],
             },
         ]
@@ -466,6 +478,7 @@ class ArtifactRebuildTests(unittest.TestCase):
                 {
                     "model": "gpt-5.4",
                     "timestamp": "2026-06-02T00:00:00Z",
+                    "status": "success",
                     "findings": [{"target": "bips:2"}],
                 },
             ],

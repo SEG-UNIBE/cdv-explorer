@@ -26,6 +26,11 @@ const MATCH_MODE_TOOLTIP = '<strong>Edge Only</strong> compares every extracted 
   + 'signal, so it matches <em>any</em> type the other approach recorded for the same pair. Both variants are '
   + 'precomputed by the Python pipeline.';
 
+const EXACT_TYPE_MODE_TOOLTIP = '<strong>Exact Type κ</strong> treats each '
+  + '<code>(source, target, relation_type)</code> triple as the rated item. Use it as a stricter sensitivity check: '
+  + 'Edge Only remains the cleaner edge-detection agreement metric, while Regex is an untyped detector projected '
+  + 'into the typed relation universe.';
+
 // Sentinel matching PAIRWISE_TYPE_WILDCARD in analysis/dependencies/constants.py.
 const PAIRWISE_TYPE_WILDCARD = '*';
 
@@ -525,8 +530,8 @@ export function DependencyComparisonHeatmaps({
   const sortedEdges = useMemo(() => {
     const direction = sortDirection === 'desc' ? -1 : 1;
     const getSortableValue = (edge, field) => {
-      if (field === 'status') {
-        return String(edge.status || '').toLowerCase();
+      if (field === 'status' || field === 'relation_type') {
+        return String(edge[field] || '').toLowerCase();
       }
       const normalized = normalizeProposalId(edge[field], ecosystem);
       if (/^\d+$/.test(normalized)) {
@@ -557,6 +562,7 @@ export function DependencyComparisonHeatmaps({
       return String(left[secondaryField] || '').localeCompare(String(right[secondaryField] || ''), undefined, { numeric: true });
     });
   }, [ecosystem, filteredEdges, sortDirection, sortField]);
+  const showRelationTypeColumn = sortedEdges.some((edge) => edge.relation_type);
 
   const handleSortChange = (field) => {
     if (field === sortField) {
@@ -613,6 +619,18 @@ export function DependencyComparisonHeatmaps({
                   checked={matchMode === option.value}
                 />
                 <span>{option.label}</span>
+                {option.value === PAIRWISE_MATCH_MODE_EXACT_TYPE ? (
+                  <span
+                    className="match-mode-help"
+                    aria-label="Explain exact type match mode"
+                    onMouseEnter={(event) => showTooltip(event, EXACT_TYPE_MODE_TOOLTIP)}
+                    onMouseMove={moveTooltip}
+                    onMouseLeave={hideTooltip}
+                    onClick={(event) => event.preventDefault()}
+                  >
+                    ?
+                  </span>
+                ) : null}
               </label>
             ))}
           </div>
@@ -746,6 +764,17 @@ export function DependencyComparisonHeatmaps({
                       {`Target${getSortIndicator('target')}`}
                     </button>
                   </th>
+                  {showRelationTypeColumn ? (
+                    <th>
+                      <button
+                        type="button"
+                        className="analysis-table__sort-button"
+                        onClick={() => handleSortChange('relation_type')}
+                      >
+                        {`Type${getSortIndicator('relation_type')}`}
+                      </button>
+                    </th>
+                  ) : null}
                   <th>
                     <button
                       type="button"
@@ -759,7 +788,7 @@ export function DependencyComparisonHeatmaps({
               </thead>
               <tbody>
                 {sortedEdges.map((edge) => (
-                  <tr key={`${selectedComparisonKey}-${edge.status}-${edge.source}-${edge.target}`}>
+                  <tr key={`${selectedComparisonKey}-${edge.status}-${edge.source}-${edge.target}-${edge.relation_type || ''}`}>
                     <td>
                       <a href={getProposalUrl(edge.source, snapshotLabel, { linkMode }, ecosystem)} target="_blank" rel="noreferrer">
                         {formatProposalLabel(edge.source, ecosystem)}
@@ -772,12 +801,15 @@ export function DependencyComparisonHeatmaps({
                       </a>
                       {edge.target_title ? <span>{` ${truncateTitle(edge.target_title)}`}</span> : null}
                     </td>
+                    {showRelationTypeColumn ? (
+                      <td>{edge.relation_type || ''}</td>
+                    ) : null}
                     <td>{edge.status}</td>
                   </tr>
                 ))}
                 {sortedEdges.length === 0 ? (
                   <tr>
-                    <td colSpan={3}>No edges match the current filters.</td>
+                    <td colSpan={showRelationTypeColumn ? 4 : 3}>No edges match the current filters.</td>
                   </tr>
                 ) : null}
               </tbody>

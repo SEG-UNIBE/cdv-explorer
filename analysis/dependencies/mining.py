@@ -810,25 +810,6 @@ def _to_responses_text_format(response_format: dict[str, Any]) -> dict[str, Any]
     return dict(response_format)
 
 
-def _findings_from_llm_response(
-    response: Any,
-    *,
-    proposal_label: str,
-    current_proposal_number: str | None,
-    source_context: SourceContext,
-) -> list[dict[str, str]]:
-    content = _extract_response_content(response)
-    if content is None:
-        return []
-    payload = loads(content)
-    return normalize_llm_dependency_output(
-        payload.get("findings"),
-        proposal_label=proposal_label,
-        current_proposal_number=current_proposal_number,
-        source_context=source_context,
-    )
-
-
 def _build_llm_semantic_dependency_prompt_bundle(
     *,
     text: str,

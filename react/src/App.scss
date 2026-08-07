@@ -1669,6 +1669,27 @@
   cursor: pointer;
 }
 
+.match-mode-help {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.05rem;
+  height: 1.05rem;
+  border: 1px solid var(--app-border);
+  border-radius: 999px;
+  color: var(--app-text-muted);
+  background: var(--app-surface-subtle);
+  font-size: 0.72rem;
+  font-weight: 800;
+  line-height: 1;
+  cursor: help;
+}
+
+.match-mode-help:hover {
+  color: var(--app-text);
+  border-color: var(--chart-accent-blue);
+}
+
 .dependency-edge-legend {
   display: flex;
   align-items: center;

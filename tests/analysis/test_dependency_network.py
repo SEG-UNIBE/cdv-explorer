@@ -145,11 +145,13 @@ class BuildNetworkDataTests(unittest.TestCase):
                         {
                             "model": "gpt-5.4-mini",
                             "timestamp": "2026-06-01T00:00:00Z",
+                            "status": "success",
                             "findings": [{"target": "bips:2"}],
                         },
                         {
                             "model": configured_model,
                             "timestamp": "2026-06-02T00:00:00Z",
+                            "status": "success",
                             "findings": [],
                         },
                     ],
@@ -736,28 +738,42 @@ class BuildNetworkDataTests(unittest.TestCase):
 
         # Regex has no real type signal, so its bips:1->2 hit resolves
         # against whatever canonical type preamble recorded there
-        # (requires -> depends_on) and counts as a match; its bips:2->3 hit
-        # has nothing to resolve against on the preamble side, so it falls
-        # back to a bare pair match and only shows up as approach_only.
+        # (requires -> depends_on) and counts as a match. Its bips:2->3 hit
+        # has nothing to resolve against on the preamble side, so exact-type
+        # comparison expands it to every canonical relation type in the typed
+        # (source, target, type) candidate universe.
         scoped = metrics["pairwise_comparisons_exact_type"][
             "body_extracted_regex__vs__preamble_extracted"
         ]["summary"]
-        self.assertEqual(scoped["approach_total"], 2)
+        self.assertEqual(scoped["candidate_pairs"], 24)
+        self.assertEqual(scoped["approach_total"], 5)
         self.assertEqual(scoped["baseline_total"], 1)
         self.assertEqual(scoped["overlap"], 1)
-        self.assertEqual(scoped["approach_only"], 1)
+        self.assertEqual(scoped["approach_only"], 4)
         self.assertEqual(scoped["baseline_only"], 0)
+        scoped_edges = metrics["pairwise_comparisons_exact_type"][
+            "body_extracted_regex__vs__preamble_extracted"
+        ]["edges"]
+        self.assertTrue(
+            any(
+                edge["source"] == "bips:2"
+                and edge["target"] == "bips:3"
+                and edge["relation_type"] == "references"
+                and edge["status"] == "approach_only"
+                for edge in scoped_edges
+            )
+        )
 
         # Regex compared against itself: both sides are wildcard-only, so the
-        # comparison degrades to a plain edge-only match and agrees with
-        # itself perfectly (kappa == 1.0), rather than every edge failing to
-        # resolve into a real type against another wildcard.
+        # same typed expansion happens on both sides and still agrees with
+        # itself perfectly (kappa == 1.0).
         diagonal = metrics["pairwise_comparisons_exact_type"][
             "body_extracted_regex__vs__body_extracted_regex"
         ]["summary"]
-        self.assertEqual(diagonal["approach_total"], 2)
-        self.assertEqual(diagonal["baseline_total"], 2)
-        self.assertEqual(diagonal["overlap"], 2)
+        self.assertEqual(diagonal["candidate_pairs"], 24)
+        self.assertEqual(diagonal["approach_total"], 8)
+        self.assertEqual(diagonal["baseline_total"], 8)
+        self.assertEqual(diagonal["overlap"], 8)
         self.assertEqual(diagonal["approach_only"], 0)
         self.assertEqual(diagonal["baseline_only"], 0)
         self.assertAlmostEqual(diagonal["kappa"], 1.0)

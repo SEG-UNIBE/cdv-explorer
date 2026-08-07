@@ -39,6 +39,7 @@ def proposal(
             {
                 "model": "test-model",
                 "timestamp": "2026-06-01T00:00:00Z",
+                "status": "success",
                 "findings": llm_deps,
             }
         ]

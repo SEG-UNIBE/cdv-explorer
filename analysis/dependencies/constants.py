@@ -4,10 +4,28 @@
 from analysis.interrelation_types import (
     INTERRELATION_TYPE_DEPENDS_ON,
     INTERRELATION_TYPE_REFERENCES,
-    INTERRELATION_TYPE_SUPERSEDES,
     INTERRELATION_TYPE_SUPERSEDED_BY,
+    INTERRELATION_TYPE_SUPERSEDES,
     INTERRELATION_TYPES,
 )
+
+__all__ = [
+    "INTERRELATION_TYPE_DEPENDS_ON",
+    "INTERRELATION_TYPE_REFERENCES",
+    "INTERRELATION_TYPE_SUPERSEDES",
+    "INTERRELATION_TYPE_SUPERSEDED_BY",
+    "INTERRELATION_TYPES",
+    "PREAMBLE_EXTRACTED",
+    "BODY_EXTRACTED_REGEX",
+    "BODY_EXTRACTED_LLM",
+    "GROUND_TRUTH_CURATED",
+    "DEPENDENCY_APPROACH_ORDER",
+    "DEPENDENCY_PAIRWISE_COMPARISON_ORDER",
+    "DEPENDENCY_APPROACH_SHORT_LABELS",
+    "DEPENDENCY_APPROACH_LABELS",
+    "PAIRWISE_TYPE_WILDCARD",
+    "CANONICAL_TYPE_BY_APPROACH_SUBTYPE",
+]
 
 PREAMBLE_EXTRACTED = "preamble_extracted"
 BODY_EXTRACTED_REGEX = "body_extracted_regex"
@@ -46,7 +64,7 @@ DEPENDENCY_APPROACH_LABELS = {
 # to depends_on/references/supersedes/superseded_by specifically; pinning it
 # to one of those would make it agree with other approaches only when they
 # happen to pick that same arbitrary type. Wildcard resolution (see
-# _expand_wildcard_pairwise_keys in metrics.py) instead lets a regex edge
+# _expand_wildcard_pairwise_keys_for_typed_universe in metrics.py) instead lets a regex edge
 # agree with whatever canonical type the other approach recorded for the same
 # directed pair, mirroring GT_TYPE_ALL in paper/RQ2/ground_truth_evaluation.py.
 PAIRWISE_TYPE_WILDCARD = "*"

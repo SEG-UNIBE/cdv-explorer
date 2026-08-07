@@ -202,18 +202,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:59:03Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:60",
               "evidence": "either a [[NIP-60]] wallet",
               "reason": "The receiving workflow explicitly allows swapping claimed tokens into a NIP-60 wallet, so understanding wallet handling depends on that proposal.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "nips:65",
               "evidence": "Clients SHOULD normalize and deduplicate mint URLs as described in NIP-65.",
               "reason": "The proposal relies on NIP-65’s URL normalization/deduplication rules for mint relay handling and publishing redemption events to sender relays.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

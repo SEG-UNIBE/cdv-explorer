@@ -834,30 +834,34 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:17:39Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "BIP32 chain codes from one or more non-privileged participants",
               "reason": "The proposal’s delegation model is built around BIP32 chain codes and BIP32 non-hardened child derivation tweaks.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:327",
               "evidence": "The notation, algorithmic patterns, and test-vector style are adapted from [BIP‑327 (MuSig2)]",
               "reason": "The blind-signing section explicitly reuses BIP327-derived notation, algorithmic patterns, and test-vector conventions.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:340",
               "evidence": "Both modes produce valid BIP340 signatures.",
               "reason": "CCD’s signing and blind-signing workflows are designed to generate and verify Schnorr signatures under BIP340 semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:341",
               "evidence": "Consequently the protocol is compatible with BIP341.",
               "reason": "The blinded signing flow supports X-only public-key tweaks in the Taproot/BIP341 setting.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

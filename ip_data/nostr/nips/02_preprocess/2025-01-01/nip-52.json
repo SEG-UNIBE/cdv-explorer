@@ -344,12 +344,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:58:56Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:09",
               "evidence": "addressable and deletable per [NIP-09](09.md)",
               "reason": "The calendar event proposal relies on the deletion semantics defined by NIP-09 for addressable events.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

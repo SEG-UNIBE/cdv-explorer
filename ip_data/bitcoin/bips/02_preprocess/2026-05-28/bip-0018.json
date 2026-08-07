@@ -677,36 +677,41 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:17:16Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:11",
               "evidence": "M-of-N Multisignature Transactions [[bip-0011.mediawiki|BIP 11]]",
               "reason": "The proposal is designed to support multisignature transactions and uses M-of-N multisig examples and signature counting rules, so it depends on the multisig transaction format/concept introduced by BIP 11.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:12",
               "evidence": "This BIP replaces BIPs 12 and 17",
               "reason": "The proposal explicitly replaces BIP 12's script-system extension approach, indicating a direct protocol-level dependency and supersession.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:13",
               "evidence": "The Motivation for this BIP (and BIP 13, the pay-to-script-hash address type)",
               "reason": "This proposal is explicitly paired with the pay-to-script-hash address type and relies on that address format as part of the deployment and usage model.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:16",
               "evidence": "This BIP replaces BIPs 12 and 17",
               "reason": "The proposal explicitly supersedes BIP 16's pay-to-script-hash protocol and discusses compatibility with its validation behavior and deployment assumptions.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:17",
               "evidence": "This BIP replaces BIPs 12 and 17",
               "reason": "The proposal explicitly replaces BIP 17's script-system extension approach, indicating a direct protocol-level dependency and supersession.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

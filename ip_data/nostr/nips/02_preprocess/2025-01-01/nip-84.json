@@ -161,12 +161,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:59:11Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:94",
               "evidence": "e.g. NIP-94 audio/video",
               "reason": "The proposal explicitly relies on NIP-94 as the event type for non-text media whose highlights may have empty content.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

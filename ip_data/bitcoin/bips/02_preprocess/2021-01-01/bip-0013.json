@@ -564,12 +564,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:07Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:16",
               "evidence": "The 20-byte hash is the hash of the script that will be used to redeem the coins.",
               "reason": "The proposal defines a pay-to-script-hash address format whose semantics depend on P2SH-style script redemption.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

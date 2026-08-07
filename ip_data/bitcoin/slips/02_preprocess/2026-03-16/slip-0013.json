@@ -231,12 +231,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:46:38Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:43",
               "evidence": "Derive the HD node `m/13'/A'/B'/C'/D'` according to SLIP-0010.",
               "reason": "The proposal uses a purpose-based HD path with purpose 13' in the same structural role defined by BIP-0043’s purpose-field convention, which constrains the derivation format.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

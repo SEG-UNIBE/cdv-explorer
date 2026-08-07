@@ -729,12 +729,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:34Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:116",
               "evidence": "This BIP is used by BIP116 (MERKLEBRANCHVERIFY)[4] to add Merkle inclusion proof verification to script",
               "reason": "The proposal is explicitly designed to be used by BIP116, which would consume and validate the Merkle proof format defined here.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

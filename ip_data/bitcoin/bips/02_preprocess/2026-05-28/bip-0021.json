@@ -750,12 +750,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:17:16Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:20",
               "evidence": "This BIP is a modification of an earlier [[bip-0020.mediawiki|BIP 0020]]",
               "reason": "The proposal directly modifies the earlier Bitcoin URI scheme proposal, inheriting its URI concept and changing its semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

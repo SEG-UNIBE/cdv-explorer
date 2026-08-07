@@ -256,12 +256,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:42Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:52",
               "evidence": "`i` tags are used for referencing these external content ids",
               "reason": "This proposal is built around the `i` tag field and its event representation, which NIP 52 defines and governs.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

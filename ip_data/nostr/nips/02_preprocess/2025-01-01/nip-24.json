@@ -250,42 +250,48 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:58:42Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:51",
               "evidence": "`title`: name of [NIP-51] sets",
               "reason": "The `title` tag is defined as the name of NIP-51 sets, so this tag meaning depends on NIP-51's set model.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "nips:52",
               "evidence": "`title`: name of [NIP-51] sets, [NIP-52] calendar event, [NIP-53] live event or [NIP-99] listing.",
               "reason": "The `title` tag semantics include NIP-52 calendar events, so understanding this tag's allowed use depends on NIP-52.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "nips:53",
               "evidence": "`title`: name of [NIP-51] sets, [NIP-52] calendar event, [NIP-53] live event or [NIP-99] listing.",
               "reason": "The `title` tag semantics include NIP-53 live events, so this proposal relies on NIP-53 for one of the tag's meanings.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "nips:65",
               "evidence": "[NIP-65](65.md) should be used instead",
               "reason": "The proposal deprecates the relay-object field in kind 3 metadata in favor of the relay list semantics defined by NIP-65.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:73",
               "evidence": "`i`: an external id the event is referring to in some way - see [NIP-73](73.md).",
               "reason": "The meaning of the `i` tag is explicitly delegated to NIP-73, so interpreting this tag depends on that proposal.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:99",
               "evidence": "`title`: name of [NIP-51] sets, [NIP-52] calendar event, [NIP-53] live event or [NIP-99] listing.",
               "reason": "The `title` tag semantics include NIP-99 listings, so the tag definition depends on NIP-99 for that use case.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

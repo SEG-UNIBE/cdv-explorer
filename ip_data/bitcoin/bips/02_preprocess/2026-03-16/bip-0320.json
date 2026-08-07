@@ -512,18 +512,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:44:15Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:8",
               "evidence": "removed from BIP8 and BIP9 specifications",
               "reason": "The proposal explicitly changes the BIP8 signaling semantics by excluding reserved nVersion bits from soft-fork version-bits interpretation.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:9",
               "evidence": "removed from BIP8 and BIP9 specifications",
               "reason": "The proposal explicitly changes the BIP9 signaling semantics by excluding reserved nVersion bits from soft-fork version-bits interpretation.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

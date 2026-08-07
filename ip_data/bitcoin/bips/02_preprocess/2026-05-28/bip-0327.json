@@ -1223,38 +1223,42 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:18:36Z",
           "status": "api_error",
-          "dependencies": [],
-          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 195106, Requested 19945. Please try again in 4.515s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 195106, Requested 19945. Please try again in 4.515s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}",
+          "findings": []
         },
         {
           "run_id": "2026-06-30T11:33:45Z_gpt-5.4-mini_fbc31d5d",
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:34:02Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "allows deriving [https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki BIP32] child keys from aggregate public keys",
               "reason": "The proposal includes plain tweaking specifically for deriving child keys per BIP32 from aggregate public keys.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:340",
               "evidence": "compatible with [https://github.com/bitcoin/bips/blob/master/bip-0340.mediawiki BIP340] public keys and signatures",
               "reason": "The proposal explicitly requires BIP340 public-key and signature formats/verification semantics for aggregate keys and final signatures.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:341",
               "evidence": "creating [https://github.com/bitcoin/bips/blob/master/bip-0341.mediawiki BIP341] Taproot outputs with key and script paths",
               "reason": "The proposal supports Taproot output creation and x-only tweak handling designed around BIP341 key/script-path semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:342",
               "evidence": "implemented using <code>OP_CHECKSIGADD</code> as introduced in ([https://github.com/bitcoin/bips/blob/master/bip-0342.mediawiki BIP342])",
               "reason": "The proposal contrasts MuSig2 with n-of-n constructions built using OP_CHECKSIGADD, which is the mechanism introduced by BIP342; this is a comparative reference only and does not create a technical dependency.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

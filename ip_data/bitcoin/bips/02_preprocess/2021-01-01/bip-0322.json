@@ -624,18 +624,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:36:18Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:325",
               "evidence": "follow an analogous specification to the BIP-325 challenges and solutions used by Signet",
               "reason": "The full-signature construction is designed around the challenge/solution transaction pattern from BIP325.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:340",
               "evidence": "message_hash is a BIP340-tagged hash of the message",
               "reason": "The message digest format for signing and verification is explicitly defined using BIP340 tagged hashing.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

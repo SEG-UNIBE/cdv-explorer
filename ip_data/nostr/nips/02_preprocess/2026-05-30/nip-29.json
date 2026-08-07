@@ -483,24 +483,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:09Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:11",
               "evidence": "as stated by the [NIP-11](11.md) `\"self\"` pubkey",
               "reason": "Relay-authored group metadata events rely on the NIP-11 notion of the relay's self public key.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:51",
               "evidence": "A definition for `kind:10009` was included in [NIP-51](51.md)",
               "reason": "The proposal reuses the preexisting kind:10009 group-list storage event from NIP-51.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:98",
               "evidence": "with a [NIP-98](98.md)-style `Authorization` header",
               "reason": "The LiveKit token endpoint authentication flow is explicitly based on NIP-98-style authorization.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

@@ -551,12 +551,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:17:47Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:34",
               "evidence": "activation would occur at the next difficulty adjustment once 900 of the last 1,000 blocks mined signal support",
               "reason": "The proposal defines its own deployment rule in terms of block signaling and a threshold-based activation process, which is structurally dependent on the signaling/activation workflow introduced by BIP34-style mechanisms.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

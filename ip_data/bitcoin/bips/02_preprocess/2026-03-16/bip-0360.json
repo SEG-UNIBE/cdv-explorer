@@ -921,42 +921,48 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:45:30Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:141",
               "evidence": "A P2MR output is a native SegWit output (see [[bip-0141.mediawiki|BIP 141]])",
               "reason": "P2MR is specified as a native SegWit output, so its scriptPubKey and witness-program behavior depend on BIP 141's SegWit framework.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:173",
               "evidence": "P2MR outputs use SegWit version 2, resulting in mainnet addresses that start with bc1z, following [[bip-0173.mediawiki|BIP 173]]",
               "reason": "The proposal depends on Bech32 address encoding rules from BIP 173 to define the P2MR address format.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:340",
               "evidence": "all signatures are created with an all-zero (0x0000...0000) [[bip-0340.mediawiki|BIP 340]] auxiliary randomness array",
               "reason": "The reference test vectors rely on BIP 340 signature-generation conventions for the Schnorr signatures used in P2MR examples.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:341",
               "evidence": "operate with nearly the same functionality as P2TR (Pay-to-Taproot) outputs",
               "reason": "P2MR is explicitly designed as a variant of Taproot/P2TR and reuses its script-tree spend model with the key path removed.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:342",
               "evidence": "The initial stack elements of P2MR follow the same rules as P2TR script path spends.",
               "reason": "P2MR script execution and witness-stack handling depend on the tapscript input-stack rules from BIP 342.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:350",
               "evidence": "Per [[bip-0350.mediawiki|BIP 350]] older wallets should be able to spend funds to SegWit version 2 outputs.",
               "reason": "Backward-compatibility expectations for sending to version-2 witness programs are based on BIP 350's SegWit address handling.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

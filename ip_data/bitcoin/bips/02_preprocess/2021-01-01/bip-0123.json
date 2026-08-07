@@ -967,18 +967,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:48Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "a purpose scheme described in MAIN_LABEL-0043",
               "reason": "The classification of deterministic-wallet-related BIPs relies on the purpose-field/deterministic-wallet concepts introduced by this proposal's referenced BIP 32/43 family; however, the actual dependency from the text is only on the classification of existing BIPs, not on this proposal's own mechanism.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:43",
               "evidence": "a purpose scheme described in MAIN_LABEL-0043",
               "reason": "The proposal’s examples of existing BIP classifications explicitly depend on the purpose-field scheme for deterministic wallets when categorizing related BIPs.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

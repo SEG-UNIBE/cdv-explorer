@@ -663,18 +663,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:42:21Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "based on the algorithm described in BIP-0032",
               "reason": "The proposal’s wallet structure, path format, hardened/non-hardened derivation, and key/address generation all rely on BIP32 derivation semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:43",
               "evidence": "purpose scheme described in BIP-0043",
               "reason": "The proposal uses BIP43’s purpose-field convention, including the constant purpose value 45' and the overall application of the purpose subtree.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

@@ -709,12 +709,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:14Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:22",
               "evidence": "all sections of this specification are optional extensions on top of [[bip-0022.mediawiki|BIP 22]]",
               "reason": "This proposal is explicitly an extension of BIP 22 and depends on its getblocktemplate fundamentals and optional long-polling behavior.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

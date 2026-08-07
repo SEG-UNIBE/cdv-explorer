@@ -606,12 +606,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:42:45Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "based on the algorithm described in BIP32",
               "reason": "The proposal’s key-derivation and hierarchy scheme is built on BIP32’s derivation algorithm and node semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

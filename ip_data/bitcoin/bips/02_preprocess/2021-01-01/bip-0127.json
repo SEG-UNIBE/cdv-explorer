@@ -573,12 +573,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:51Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:174",
               "evidence": "The proposal also includes the description of a PSBT extension",
               "reason": "The proposal extends the PSBT format defined by BIP 174 and specifies new PSBT input-map semantics for proof-of-reserves signing.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

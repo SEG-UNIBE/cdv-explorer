@@ -294,24 +294,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:37:19Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "path: `m/10015'/0'` (hardened path, see BIP32)",
               "reason": "The proposal uses BIP32 hardened derivation path notation and treats xpub as defined by that scheme.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "slips:11",
               "evidence": "CipherKeyValue is defined in [SLIP-0011](slip-0011.md).",
               "reason": "The master key is obtained via the CipherKeyValue mechanism defined by SLIP-0011.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "slips:14",
               "evidence": "For the \"stress test\" wallet, defined in SLIP-0014,",
               "reason": "The examples and expected derived values are specialized for the stress test wallet defined by SLIP-0014.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

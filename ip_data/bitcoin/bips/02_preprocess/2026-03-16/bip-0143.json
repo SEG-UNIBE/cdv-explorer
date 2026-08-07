@@ -916,18 +916,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:43:33Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:141",
               "evidence": "Deploying the aforementioned fixes in the original script system is not a simple task. ... However, the introduction of segregated witness softfork offers an opportunity",
               "reason": "The new digest algorithm is explicitly designed for and deployed via Segregated Witness, relying on its witness-program semantics as the scope for the change.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:144",
               "evidence": "The new serialization format is described in BIP144",
               "reason": "The proposal depends on BIP144 for the witness transaction serialization format used in the new signing workflow.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

@@ -722,12 +722,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:17:37Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "constraints that can be imposed on BIP32 derivation paths",
               "reason": "The proposal defines templates and matching rules specifically for BIP32 derivation paths, so its semantics depend on BIP32 path structure.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

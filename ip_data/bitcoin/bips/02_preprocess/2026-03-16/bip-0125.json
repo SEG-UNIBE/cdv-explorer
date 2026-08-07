@@ -682,18 +682,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:43:23Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:68",
               "evidence": "opt-in full-RBF is compatible with consensus-enforced locktime as provided in the Bitcoin 0.1 implementation, BIP68",
               "reason": "The proposal explicitly states compatibility with BIP68, which defines consensus-enforced relative lock-time using sequence numbers that the proposal reuses and constrains.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:112",
               "evidence": "and BIP112 (CHECKSEQUENCEVERIFY).",
               "reason": "The proposal explicitly states compatibility with BIP112, indicating it is designed to work with the CHECKSEQUENCEVERIFY semantics that also use nSequence.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

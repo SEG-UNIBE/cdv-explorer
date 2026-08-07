@@ -796,12 +796,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:46:10Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:125",
               "evidence": "RBF rules require that no replacement trigger the removal of more than 100 transactions",
               "reason": "The proposal's replacement behavior is explicitly framed against and constrained by BIP 125 RBF rules, including inherited replacement semantics and limits.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

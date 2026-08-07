@@ -471,24 +471,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:59:58Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:13",
               "evidence": "based on [NIP-13](13.md)",
               "reason": "The `min_pow_difficulty` limitation is defined in terms of NIP-13 proof-of-work difficulty.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:17",
               "evidence": "See [NIP-17](17.md)",
               "reason": "The relay metadata field for administrative contact explicitly relies on NIP-17 direct-message semantics for contacting the administrator.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:42",
               "evidence": "requires [NIP-42](42.md) authentication",
               "reason": "The `auth_required` limitation uses NIP-42 authentication as the mechanism required before other actions.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

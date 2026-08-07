@@ -676,24 +676,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:17:34Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:21",
               "evidence": "The standard way of letting a sender know where to send a bustapay transaction is done via a bip21 encoded address.",
               "reason": "The proposal reuses BIP21 URI/address encoding to carry the bustapay URL parameter.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:69",
               "evidence": "Check if the transaction was already sorted according to BIP69",
               "reason": "The proposal conditionally preserves or uses BIP69 ordering for transaction inputs/outputs, so implementation must account for that transaction-sorting convention.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:125",
               "evidence": "encouraged to use a slightly more aggressive feerate than usual as well as BIP125 (Opt-in Full Replace-by-Fee Signaling)",
               "reason": "The protocol explicitly encourages opt-in RBF signaling for template/final transaction handling and fee-bumping behavior.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

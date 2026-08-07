@@ -791,32 +791,35 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:36:09Z",
           "status": "api_error",
-          "dependencies": [],
-          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 200000, Requested 5482. Please try again in 1.644s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 200000, Requested 5482. Please try again in 1.644s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}",
+          "findings": []
         },
         {
           "run_id": "2026-06-30T11:38:11Z_gpt-5.4-mini_422651ce",
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:38:26Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:37",
               "evidence": "The filter construction proposed is an alternative to Bloom filters, as used in BIP 37",
               "reason": "The proposal positions itself as a replacement for the BIP 37 Bloom-filter mechanism, but it does not reuse BIP 37's protocol rules or format, so this is not a substantive technical dependency.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:141",
               "evidence": "similar to the current witness commitment",
               "reason": "The omission of OP_RETURN outputs is justified by anticipated commitment structure analogous to the witness commitment, which constrains the filter contents around that commitment design.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:157",
               "evidence": "This BIP describes a structure for compact filters on block data, for use in the BIP 157 light client protocol",
               "reason": "The proposal is designed specifically as the filter format used by BIP 157, so its serialization and behavior depend on that protocol.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

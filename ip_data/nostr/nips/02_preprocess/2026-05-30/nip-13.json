@@ -238,12 +238,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:59:59Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:01",
               "evidence": "difficulty is defined to be the number of leading zero bits in the `NIP-01` id",
               "reason": "The proposal defines PoW difficulty directly in terms of the NIP-01 event id and requires recalculating that id during mining and validation.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

@@ -580,30 +580,34 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:32Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:9",
               "evidence": "this mechanism for code deployments have been deprecated in favor of BIP 9 deployments",
               "reason": "The proposal is framed around replacing the deprecated miner-signaling deployment mechanism with the newer BIP 9 deployment model as the background assumption for the change.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:34",
               "evidence": "the test which governs enforcement of BIP 34",
               "reason": "The proposal changes how BIP 34 activation and enforcement are determined, replacing the original deployment trigger with cached height checks.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:65",
               "evidence": "the test which governs enforcement of BIP 34, BIP 65, and BIP 66",
               "reason": "The proposal alters the activation/enforcement mechanism for BIP 65 by converting its deployment logic into a fixed height-based check.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:66",
               "evidence": "the test which governs enforcement of BIP 34, BIP 65, and BIP 66",
               "reason": "The proposal alters the activation/enforcement mechanism for BIP 66 by converting its deployment logic into a fixed height-based check.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

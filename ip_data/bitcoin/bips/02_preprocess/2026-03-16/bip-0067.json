@@ -709,18 +709,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:42:35Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:16",
               "evidence": "Hash the redeem script according to BIP-0016 to get the P2SH address.",
               "reason": "The proposal relies on BIP-0016 for the P2SH hash/address construction after forming the multisig redeem script.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:45",
               "evidence": "BIP-0045]] - Structure for Deterministic P2SH Multisignature Wallets",
               "reason": "The proposal is designed around deterministic multisignature wallet address generation and explicitly points to BIP-0045 as the wallet structure/procedure it uses or extends.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

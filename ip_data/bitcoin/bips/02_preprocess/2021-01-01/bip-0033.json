@@ -548,12 +548,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:16Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:7",
               "evidence": "This document will examine a proposal which will be termed ''stratized nodes'', a modification of an earlier concept termed ''blockchain service''.",
               "reason": "The proposal is explicitly described as a modification of the earlier blockchain service concept, so its node roles and message behavior are built around that prior proposal.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

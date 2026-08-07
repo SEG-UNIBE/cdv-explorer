@@ -185,24 +185,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:18Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:11",
               "evidence": "signed by the pubkey specified in the `self` field of the relay's [NIP 11](./11.md) document",
               "reason": "The proposal relies on NIP 11 relay metadata to identify the signing pubkey for multiple relay-generated events and to advertise support.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:42",
               "evidence": "same standard `\"restricted: \"` prefix specified by NIP 42",
               "reason": "The join-request response format reuses NIP 42's standardized restricted-error prefix for failed claims.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:70",
               "evidence": "A [NIP 70](./70.md) `-` tag",
               "reason": "The proposal requires NIP 70's special '-' tag on relay membership, add/remove, join, invite, and leave events.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

@@ -225,18 +225,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:39Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:01",
               "evidence": "Events are [addressable events](01.md#kinds)",
               "reason": "The proposal relies on the addressable event concept and kind semantics defined in NIP-01 to classify these order events.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:40",
               "evidence": "the relay SHOULD delete it ([NIP-40](40.md))",
               "reason": "The expiration tag's deletion behavior is defined by NIP-40, which this proposal explicitly adopts.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

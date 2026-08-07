@@ -568,12 +568,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:45:46Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:380",
               "evidence": "use the format and general operation specified in [[bip-0380.mediawiki|380]]",
               "reason": "The proposal explicitly relies on BIP 380 for descriptor format and overall descriptor semantics, while adding new descriptor expressions within that framework.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

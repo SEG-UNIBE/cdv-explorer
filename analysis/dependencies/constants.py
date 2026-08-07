@@ -1,3 +1,14 @@
+# Re-exported from analysis.interrelation_types (a dependency-free module) so
+# existing importers of analysis.dependencies.constants keep working; see that
+# module's docstring for why the definitions don't live here directly.
+from analysis.interrelation_types import (
+    INTERRELATION_TYPE_DEPENDS_ON,
+    INTERRELATION_TYPE_REFERENCES,
+    INTERRELATION_TYPE_SUPERSEDES,
+    INTERRELATION_TYPE_SUPERSEDED_BY,
+    INTERRELATION_TYPES,
+)
+
 PREAMBLE_EXTRACTED = "preamble_extracted"
 BODY_EXTRACTED_REGEX = "body_extracted_regex"
 BODY_EXTRACTED_LLM = "body_extracted_llm"
@@ -28,21 +39,6 @@ DEPENDENCY_APPROACH_LABELS = {
     BODY_EXTRACTED_REGEX: "Body-Extracted Dependencies (Regex)",
     BODY_EXTRACTED_LLM: "Body-Extracted Dependencies (LLM)",
     GROUND_TRUTH_CURATED: "Ground Truth (Human-Curated)",
-}
-
-# Shared interrelation-type vocabulary: the ground-truth curated dataset and
-# the LLM extraction approach both classify edges into these four types, so
-# they draw from a single source of truth rather than duplicating the list.
-INTERRELATION_TYPE_DEPENDS_ON = "depends_on"
-INTERRELATION_TYPE_REFERENCES = "references"
-INTERRELATION_TYPE_SUPERSEDES = "supersedes"
-INTERRELATION_TYPE_SUPERSEDED_BY = "superseded_by"
-
-INTERRELATION_TYPES = {
-    INTERRELATION_TYPE_DEPENDS_ON,
-    INTERRELATION_TYPE_REFERENCES,
-    INTERRELATION_TYPE_SUPERSEDES,
-    INTERRELATION_TYPE_SUPERSEDED_BY,
 }
 
 # Per-approach subtype that represents a technical dependency (as opposed to a

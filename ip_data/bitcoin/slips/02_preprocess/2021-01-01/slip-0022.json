@@ -377,30 +377,34 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:37:27Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:39",
               "evidence": "or the binary seed defined in [BIP-0039](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki)",
               "reason": "The proposal also assumes the binary seed from BIP-0039 as a possible master secret source for the wallet hierarchy.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "slips:10",
               "evidence": "using the [SLIP-0010](https://github.com/satoshilabs/slips/blob/master/slip-0010.md) key derivation scheme",
               "reason": "The credential key pair derivation is explicitly built on SLIP-0010 path-based key derivation.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "slips:21",
               "evidence": "derived from the master secret using the [SLIP-0021](https://github.com/satoshilabs/slips/blob/master/slip-0021.md) method",
               "reason": "The proposal uses SLIP-0021 as the hierarchical derivation scheme for the encryption key and CredRandom values.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "slips:39",
               "evidence": "such as that defined in [SLIP-0039](https://github.com/satoshilabs/slips/blob/master/slip-0039.md)",
               "reason": "The proposal frames its hierarchical deterministic wallet setting around a master secret that may come from SLIP-0039, making that seed format part of the assumed input environment.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

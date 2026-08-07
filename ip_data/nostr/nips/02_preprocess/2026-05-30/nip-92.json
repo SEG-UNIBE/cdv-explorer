@@ -166,12 +166,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:49Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:94",
               "evidence": "imeta MAY include any field specified by [NIP 94](./94.md)",
               "reason": "The proposal explicitly reuses the field set defined by NIP 94 for media metadata, so implementing imeta tags depends on NIP 94's tag semantics.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

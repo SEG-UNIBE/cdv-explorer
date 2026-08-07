@@ -656,60 +656,69 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:46:28Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:119",
               "evidence": "Combined with `OP_CHECKSIGFROMSTACK`, signing commitments to multiple items enables complex delegation",
               "reason": "The motivation and example scripts explicitly build on CTV-based commitments together with the new opcode, so implementing the described use cases depends on BIP-119's commitment semantics.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:327",
               "evidence": "# internal-key:                        BIP-327 aggregate key of channel participants",
               "reason": "The Lightning Symmetry example assumes an aggregate key format from BIP-327 for the internal key used in the script.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:340",
               "evidence": "Notation follows [BIP-340], including the tagged hash notation:",
               "reason": "The proposal's hash construction directly relies on BIP-340 tagged-hash semantics and notation.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:342",
               "evidence": "For taproot script spends with leaf version *0xc0* (see [BIP-342]), `OP_PAIRCOMMIT` replaces `OP_SUCCESS205` (*0xcd*).",
               "reason": "The opcode is defined specifically for Tapscript spends under the leaf-version rules introduced by BIP-342.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:347",
               "evidence": "- `OP_CAT`[^6][^9]",
               "reason": "The proposal explicitly evaluates OP_CAT as an alternative for combining commitment elements, and its rationale depends on the comparison point defined by BIP-347.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:348",
               "evidence": "Combined with `OP_CHECKSIGFROMSTACK`, signing commitments to multiple items enables complex delegation",
               "reason": "The proposal's intended contract patterns rely on CSFS as a complementary signing primitive in the script workflow.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:349",
               "evidence": "OP_INTERNALKEY                     # <sig>, PC(state-n-recovery-data, state-n-hash), <internal-key>",
               "reason": "The example scripts use OP_INTERNALKEY as part of the construction, so the proposal is designed around that opcode's semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:443",
               "evidence": "- `OP_CHECKCONTRACTVERIFY`[^6]",
               "reason": "The proposal lists OP_CHECKCONTRACTVERIFY as a considered alternative mechanism for commitments, indicating partial design overlap in contract-verification semantics.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:446",
               "evidence": "- `OP_TEMPLATEHASH`[^8]",
               "reason": "The alternative-approach discussion and Lightning Symmetry examples rely on template-hash style transaction commitments, making the proposal technically adjacent to BIP-446's mechanism.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

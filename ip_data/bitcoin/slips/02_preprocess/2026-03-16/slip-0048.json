@@ -366,18 +366,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:47:05Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:43",
               "evidence": "following the BIP43 recommendation",
               "reason": "The proposal’s purpose level is defined using BIP43’s purpose-field convention.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:44",
               "evidence": "It extends [BIP-0044](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki)",
               "reason": "The proposal explicitly builds on BIP-0044 as the base deterministic wallet hierarchy it modifies for Graphene networks.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

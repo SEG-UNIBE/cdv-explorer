@@ -641,12 +641,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:42:04Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:10",
               "evidence": "a process-BIP type",
               "reason": "The proposal explicitly frames the governance/communication aspects as a process BIP, indicating reliance on the process-BIP category for that part of the change rather than a protocol mechanism.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

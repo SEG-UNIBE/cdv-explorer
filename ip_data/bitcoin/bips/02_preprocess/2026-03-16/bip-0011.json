@@ -596,12 +596,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:42:03Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:270",
               "evidence": "will be used in combination with OP_EVAL (see the OP_EVAL BIP)",
               "reason": "The proposal anticipates using this multisig standard transaction type together with OP_EVAL, so adoption of the multisig design is technically tied to that proposal's script-evaluation mechanism.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

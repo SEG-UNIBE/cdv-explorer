@@ -406,12 +406,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:27Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:46",
               "evidence": "You should consider using [NIP-46: Nostr Connect](46.md) for a better experience for web applications.",
               "reason": "The proposal explicitly recommends NIP-46 as the preferred web-application approach, indicating the web workflow is designed around that external connection mechanism.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

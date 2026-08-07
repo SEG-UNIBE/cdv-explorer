@@ -473,12 +473,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:20Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:01",
               "evidence": "MUST be used in the context of a signed event as described in NIP-01",
               "reason": "The encrypted payload format is explicitly defined to operate inside NIP-01 signed events, and the proposal relies on NIP-01 event structure and signature validation semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

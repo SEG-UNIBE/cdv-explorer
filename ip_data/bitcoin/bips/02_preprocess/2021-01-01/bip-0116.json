@@ -671,48 +671,55 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:45Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:8",
               "evidence": "This BIP will be deployed by BIP8 (Version bits with lock-in by height)[9]",
               "reason": "Activation is specified to use the BIP8 version-bits deployment process.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:65",
               "evidence": "the NOP-expansion soft-fork mechanism used by BIP65",
               "reason": "The deployment choice explicitly reuses the NOP-expansion soft-fork mechanism described by BIP65.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:68",
               "evidence": "with, for example, with BIP68 (Relative lock-time using consensus-enforced sequence numbers)[9]",
               "reason": "The deployment discussion compares standardness and activation conditions against BIP68’s sequence-number mechanism, indicating reliance on that existing consensus-enforced sequence semantics as a deployment reference.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:98",
               "evidence": "serialized Merkle tree inclusion proof as specified by BIP98[1]",
               "reason": "The opcode’s proof format and Merkle-root verification are defined in terms of BIP98 fast Merkle trees.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:112",
               "evidence": "the NOP-expansion soft-fork mechanism used by BIP65 (CHECKLOCKTIMEVERIFY)[5] and BIP112 (CHECKSEQUENCEVERIFY)[6]",
               "reason": "The proposal adopts the same NOP-expansion deployment mechanism exemplified by BIP112.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:141",
               "evidence": "BIP141 (Segregated Witness)[3]",
               "reason": "The proposal relies on SegWit context for witness-based revelation and script versioning assumptions.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:143",
               "evidence": "without the need for BIP143[7] signing code",
               "reason": "The proposal’s compatibility claim and intended address/script forms are framed around avoiding BIP143 witness-signing requirements.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

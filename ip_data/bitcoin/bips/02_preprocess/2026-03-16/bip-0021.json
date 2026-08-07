@@ -745,12 +745,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:42:11Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:20",
               "evidence": "This BIP is a modification of an earlier [[bip-0020.mediawiki|BIP 0020]]",
               "reason": "The proposal explicitly modifies and supersedes BIP 20, so understanding its URI scheme depends on BIP 20's prior specification.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

@@ -198,12 +198,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:46Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:01",
               "evidence": "\"content\" is an optional `metadata`-like stringified JSON object, as described in NIP-01.",
               "reason": "The mint announcement events reuse the NIP-01 metadata/content format for optional profile-like information.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

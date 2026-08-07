@@ -647,36 +647,41 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:12Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:11",
               "evidence": "The signature operation counting rules are intended to be easy and quick to implement by statically scanning scriptCheck.",
               "reason": "The proposal's scriptCheck execution model and multisignature example rely on the same M-of-N multisignature transaction semantics introduced by BIP 11.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:12",
               "evidence": "This BIP replaces BIPs 12 and 17, which propose extensions to the Script system to allow scriptPubKey to outsource its verification.",
               "reason": "The proposal explicitly states it replaces BIP 12, indicating direct functional overlap and supersession of that script extension mechanism.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:13",
               "evidence": "The motivation for this BIP (and BIP 13, the pay-to-script-hash address type)",
               "reason": "The proposal is designed around the pay-to-script-hash address type and its 20-byte hash representation, making BIP 13's address format part of the deployment model.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:16",
               "evidence": "It also replaces BIP 16, which is identical in terms of protocol",
               "reason": "The proposal reuses the same pay-to-script-hash protocol behavior while changing implementation and deprecation details, so understanding the transaction format and validation rules depends on BIP 16.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:17",
               "evidence": "This BIP replaces BIPs 12 and 17, which propose extensions to the Script system to allow scriptPubKey to outsource its verification.",
               "reason": "The proposal explicitly states it replaces BIP 17, indicating direct reliance on and replacement of that earlier script extension design.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

@@ -560,20 +560,21 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:54Z",
           "status": "api_error",
-          "dependencies": [],
-          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 198931, Requested 3024. Please try again in 586ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 198931, Requested 3024. Please try again in 586ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}",
+          "findings": []
         },
         {
           "run_id": "2026-06-30T11:38:11Z_gpt-5.4-mini_422651ce",
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:38:16Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:1",
               "evidence": "The BIP must have been assigned BIP-number (i.e. been approved by the BIP editor)",
               "reason": "The proposal depends on BIP 1's editor-assignment process as a prerequisite for entering the comments workflow.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

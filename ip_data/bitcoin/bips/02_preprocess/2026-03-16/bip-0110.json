@@ -854,30 +854,34 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:43:04Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:9",
               "evidence": "This deployment uses the GBT deployment name \"reduced_data\" as defined in [[bip-0009.mediawiki#getblocktemplate_changes|BIP 9]].",
               "reason": "The proposal relies on BIP 9's deployment-name and signaling mechanism for activation and GBT fields.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:16",
               "evidence": "except for the redeemScript push in BIP16 scriptSigs.",
               "reason": "The script-size exception explicitly preserves BIP 16 redeemScript-push semantics while imposing a new size limit.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:141",
               "evidence": "not Witness v0/BIP 141, Taproot/BIP 341, or P2A",
               "reason": "The proposal's undefined-witness-version rule is defined relative to BIP 141 witness versioning.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:341",
               "evidence": "not Witness v0/BIP 141, Taproot/BIP 341, or P2A",
               "reason": "The proposal depends on BIP 341's Taproot/Tapscript and witness-version definitions, and later constrains Taproot-specific structures.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

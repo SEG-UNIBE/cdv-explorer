@@ -707,12 +707,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:43:44Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "as described in the legacy <code>addr</code> message",
               "reason": "The proposal’s new message format is explicitly modeled on the existing addr message and reuses its address-gossip semantics while changing the payload structure.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

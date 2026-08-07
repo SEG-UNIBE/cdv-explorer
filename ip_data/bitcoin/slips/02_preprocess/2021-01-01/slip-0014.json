@@ -220,24 +220,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:37:18Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:44",
               "evidence": "Bitcoin Legacy P2PKH (BIP44)",
               "reason": "The proposal explicitly organizes one wallet variant according to the BIP44 account/derivation scheme.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:49",
               "evidence": "Bitcoin Segwit P2SH (BIP49)",
               "reason": "The proposal explicitly defines a wallet variant using the BIP49 derivation/account format.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:84",
               "evidence": "Bitcoin Native Segwit P2SH (BIP84)",
               "reason": "The proposal explicitly defines a wallet variant using the BIP84 derivation/account format.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

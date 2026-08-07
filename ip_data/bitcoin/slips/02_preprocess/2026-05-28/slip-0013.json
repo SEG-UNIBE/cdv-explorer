@@ -231,18 +231,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:19:50Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:43",
               "evidence": "m/13'/A'/B'/C'/D'",
               "reason": "The proposed derivation path uses a hardened purpose field in the BIP-0043 style, so the proposal is designed around that hierarchy convention.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "slips:10",
               "evidence": "derive the HD node `m/13'/A'/B'/C'/D'` according to SLIP-0010",
               "reason": "The key derivation procedure explicitly depends on SLIP-0010 for deriving the hierarchical deterministic node.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

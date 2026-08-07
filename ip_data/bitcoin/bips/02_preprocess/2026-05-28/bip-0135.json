@@ -735,30 +735,34 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:18:08Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:9",
               "evidence": "BIP9 introduced a mechanism for using the version bits to signal support",
               "reason": "The proposal generalizes and extends the BIP9 version-bits signaling and deployment state machine, retaining its states and compatibility semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:34",
               "evidence": "Due to the constraints set by BIP 34",
               "reason": "The proposal relies on BIP 34 as part of the version-number constraints that bound available nVersion values.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:65",
               "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
               "reason": "The proposal relies on BIP 65 as part of the version-number constraints that bound available nVersion values.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:66",
               "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
               "reason": "The proposal relies on BIP 66 as part of the version-number constraints that bound available nVersion values.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

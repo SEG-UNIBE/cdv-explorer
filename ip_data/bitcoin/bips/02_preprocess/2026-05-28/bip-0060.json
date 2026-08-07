@@ -595,18 +595,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:17:25Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:14",
               "evidence": "[[bip-0014.mediawiki|User Agent]]",
               "reason": "The version-message payload reuses the User Agent field definition from BIP 14 as part of the serialized message format.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:37",
               "evidence": "[[BIP 0037]] introduced a new flag to version messages",
               "reason": "The proposal’s relay field is explicitly added to and defined in terms of the BIP 37 relay-transaction flag.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

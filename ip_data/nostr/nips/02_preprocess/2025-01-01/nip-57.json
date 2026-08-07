@@ -425,30 +425,34 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:59:01Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:01",
               "evidence": "using a NIP-01 filter",
               "reason": "The proposal relies on the standard NIP-01 event filtering mechanism to retrieve zap receipts.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:19",
               "evidence": "decode their lud06 or lud16 field on their profile according to the [lnurl specifications]",
               "reason": "The zap flow depends on lnurl-pay fields and callback semantics defined by LNURL/LUD06 and LUD16.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "nips:23",
               "evidence": "tipping addressable events such as NIP-23 long-form notes.",
               "reason": "The optional `a` tag in zap requests is defined specifically for tipping addressable events introduced by NIP-23.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:66",
               "evidence": "the recipient's lnurl pay endpoint supports nostr",
               "reason": "The proposal’s request/receipt flow is designed around an LNURL pay endpoint with nostr support and related server fields.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

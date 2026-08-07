@@ -1222,56 +1222,63 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:18:51Z",
           "status": "api_error",
-          "dependencies": [],
-          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 188505, Requested 14133. Please try again in 791ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 188505, Requested 14133. Please try again in 791ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}",
+          "findings": []
         },
         {
           "run_id": "2026-06-30T11:33:45Z_gpt-5.4-mini_fbc31d5d",
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:34:07Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "wallets MAY use BIP32 derivation with the following derivation paths for the spend and scan key",
               "reason": "The proposal optionally relies on BIP32 hierarchical deterministic key derivation for recoverable scan/spend keys.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:43",
               "evidence": "purpose is a constant set to ''352'' following the BIP43 recommendation",
               "reason": "The wallet derivation paths explicitly use the BIP43 purpose field convention.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:44",
               "evidence": "A scan and spend key pair using BIP32 derivation are defined (taking inspiration from BIP44)",
               "reason": "The proposal defines standardized HD wallet derivation paths for scan/spend keys based on BIP44-style account structure.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:173",
               "evidence": "Version is communicated through the address in the same way as bech32 addresses",
               "reason": "The address versioning and encoding behavior is modeled on BIP173-style Bech32 address conventions.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:340",
               "evidence": "For everything not defined above, we use the notation from BIP340",
               "reason": "The proposal reuses BIP340 notation and tagged-hash conventions as part of its cryptographic specification.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:341",
               "evidence": "Encode ''P'' as a BIP341 taproot output",
               "reason": "Silent payment outputs are defined as Taproot outputs and scanning/eligibility rules are built around BIP341 output semantics.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:350",
               "evidence": "The final address is a Bech32m encoding of:",
               "reason": "The proposal specifies silent payment addresses using Bech32m encoding, which depends on the Bech32m format defined by BIP350.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

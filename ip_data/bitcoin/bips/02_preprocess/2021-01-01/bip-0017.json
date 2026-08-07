@@ -631,30 +631,34 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:10Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:11",
               "evidence": "one of the other standard transaction types",
               "reason": "The new transaction type is defined to contain an appended script that must itself be a standard transaction type, and the examples specifically use multisignature scripts from BIP 11.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:12",
               "evidence": "This BIP replaces BIP 12 and BIP 16",
               "reason": "The proposal explicitly supersedes BIP 12 and its OP_EVAL-based script evaluation model while preserving compatibility with it.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:13",
               "evidence": "The Motivation for this BIP (and BIP 13, the pay-to-script-hash address type)",
               "reason": "The proposal is designed around the pay-to-script-hash address format and operational model introduced by BIP 13.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:16",
               "evidence": "This BIP replaces BIP 12 and BIP 16",
               "reason": "The proposal is framed as a replacement for BIP 16’s pay-to-script-hash semantics and validation approach.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

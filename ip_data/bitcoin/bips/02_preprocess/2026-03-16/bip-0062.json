@@ -732,12 +732,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:42:31Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:34",
               "evidence": "The same mechanism as in BIP 0034 is used to introduce v3 blocks.",
               "reason": "BIP 62 explicitly reuses the block-version activation mechanism from BIP 0034 to deploy its consensus changes.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

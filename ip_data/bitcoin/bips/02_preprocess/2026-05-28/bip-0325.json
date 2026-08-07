@@ -672,12 +672,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:18:34Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:141",
               "evidence": "Signet requires all blocks to have a BIP 141 commitment in the coinbase transaction.",
               "reason": "The proposal depends on the witness commitment structure defined by BIP 141 and embeds its signature data there.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

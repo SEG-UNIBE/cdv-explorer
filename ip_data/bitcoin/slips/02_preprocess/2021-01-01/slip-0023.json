@@ -284,30 +284,34 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:37:27Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "This scheme adapts the master node derivation used in BIP-0032 and SLIP-0010",
               "reason": "The proposal explicitly adapts the master-node derivation scheme from BIP-0032 as the basis for its Cardano master node generation.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:39",
               "evidence": "When BIP-0039 is used as the source of the master secret",
               "reason": "The proposal includes a separate Icarus derivation path specifically for BIP-0039 mnemonics, so understanding adoption depends on BIP-0039 as an input scheme.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "slips:10",
               "evidence": "This scheme adapts the master node derivation used in BIP-0032 and SLIP-0010",
               "reason": "The proposal explicitly reuses the master-node derivation approach from SLIP-0010, changing only the curve name/salt and output handling.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "slips:39",
               "evidence": "the master secret from SLIP-0039",
               "reason": "The universal master-node derivation is designed around SLIP-0039 as a seed source and its compliance rule requires using it as the source of the master secret.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

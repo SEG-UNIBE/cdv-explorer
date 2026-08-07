@@ -252,18 +252,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:02Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:21",
               "evidence": "Mentions to [NIP-21](21.md) entities like `nevent`, `note` and `naddr` on any event must be converted into `q` tags.",
               "reason": "The quote-repost mechanism is defined in terms of NIP-21 entity syntax and requires converting those entities into a new tag format.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:70",
               "evidence": "Reposts of [NIP-70](70.md)-protected events SHOULD always have an empty `content`.",
               "reason": "The repost content rule explicitly changes behavior for events protected by the target proposal.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

@@ -257,12 +257,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:57Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:34",
               "evidence": "the address of a [NIP-34](34.md) Git repository announcement event",
               "reason": "The proposal allows its repo tag to point to a NIP-34 repository announcement event, so understanding the repo reference format depends on NIP-34.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

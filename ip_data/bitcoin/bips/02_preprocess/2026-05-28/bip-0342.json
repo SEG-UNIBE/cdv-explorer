@@ -859,36 +859,41 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:18:44Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:65",
               "evidence": "including the <code>OP_CHECKLOCKTIMEVERIFY</code> and <code>OP_CHECKSEQUENCEVERIFY</code> opcodes defined in [[bip-0065.mediawiki|BIP65]] and [[bip-0112.mediawiki|BIP112]]",
               "reason": "Tapscript execution inherits the semantics of OP_CHECKLOCKTIMEVERIFY from BIP65 as part of the execution rules.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:112",
               "evidence": "including the <code>OP_CHECKLOCKTIMEVERIFY</code> and <code>OP_CHECKSEQUENCEVERIFY</code> opcodes defined in [[bip-0065.mediawiki|BIP65]] and [[bip-0112.mediawiki|BIP112]]",
               "reason": "Tapscript execution inherits the semantics of OP_CHECKSEQUENCEVERIFY from BIP112 as part of the execution rules.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:141",
               "evidence": "The transaction input is a '''segregated witness spend''' (i.e., the scriptPubKey contains a witness program as defined in [[bip-0141.mediawiki|BIP141]])",
               "reason": "Applicability and validation conditions are defined in terms of BIP141 witness programs and its P2WSH-style execution basis.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:340",
               "evidence": "signature opcodes <code>OP_CHECKSIG</code> and <code>OP_CHECKSIGVERIFY</code> are modified to verify Schnorr signatures as specified in [[bip-0340.mediawiki|BIP340]]",
               "reason": "The proposal changes script signature verification to use the Schnorr signature algorithm and verification rules from BIP340.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:341",
               "evidence": "This document specifies the semantics of the initial scripting system under [[bip-0341.mediawiki|BIP341]].",
               "reason": "The proposal defines tapscript as the scripting system introduced by BIP341 and relies on BIP341's transaction, witness, taproot spend, and script-path definitions.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

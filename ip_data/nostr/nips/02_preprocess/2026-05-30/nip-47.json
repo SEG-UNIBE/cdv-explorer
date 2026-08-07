@@ -552,24 +552,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:21Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:04",
               "evidence": "The initial version of the protocol used [NIP04](04.md).",
               "reason": "The proposal preserves NIP-04 as the legacy fallback encryption mode and defines compatibility behavior around it.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:44",
               "evidence": "The content of requests and responses is encrypted with [NIP44](44.md)",
               "reason": "The proposal uses NIP-44 as the primary encryption scheme for request, response, and notification payloads.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:57",
               "evidence": "a NIP-57 Zap Request event (kind 9734)",
               "reason": "The proposal's metadata format explicitly recognizes and stores NIP-57 zap request events as structured metadata.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

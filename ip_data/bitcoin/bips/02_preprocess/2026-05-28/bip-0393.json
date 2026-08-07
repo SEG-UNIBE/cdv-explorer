@@ -530,24 +530,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:19:12Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "for [[bip-0032.mediawiki|BIP 32]] derived-key wallets",
               "reason": "One defined annotation key and its scanning semantics are specifically for BIP 32 derived-key wallets.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:352",
               "evidence": "for [[bip-0352.mediawiki|BIP 352]] silent payment wallets",
               "reason": "One defined annotation key is specialized for BIP 352 silent payment wallets and their label-index scanning requirement.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:380",
               "evidence": "as defined in [[bip-0380.mediawiki|BIP 380]]",
               "reason": "The proposal extends the descriptor syntax and reuses BIP 380's descriptor and checksum rules as the base format.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

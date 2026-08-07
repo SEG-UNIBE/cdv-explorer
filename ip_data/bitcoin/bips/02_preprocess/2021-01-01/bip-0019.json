@@ -547,12 +547,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:11Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:11",
               "evidence": "This is already specified in [[bip-0011.mediawiki|BIP 0011]].",
               "reason": "The proposal explicitly relies on BIP 11 for the OP_CHECKMULTISIG-based multisignature transaction format and contrasts its own design against that mechanism.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

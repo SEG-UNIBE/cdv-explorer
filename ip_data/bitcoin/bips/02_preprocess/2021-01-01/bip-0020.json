@@ -624,12 +624,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:13Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:21",
               "evidence": "'''And has been replaced by BIP 0021'''",
               "reason": "The text explicitly states this proposal was replaced by BIP 21, making adoption of the current URI scheme dependent on the successor specification rather than this one.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

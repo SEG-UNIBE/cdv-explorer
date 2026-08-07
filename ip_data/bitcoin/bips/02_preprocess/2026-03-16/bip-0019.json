@@ -581,12 +581,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:42:08Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:11",
               "evidence": "This is already specified in [[bip-0011.mediawiki|BIP 0011]].",
               "reason": "The proposal explicitly references BIP 11’s OP_CHECKMULTISIG-based multisig transaction specification as the existing standard it is replacing/contrasting against.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

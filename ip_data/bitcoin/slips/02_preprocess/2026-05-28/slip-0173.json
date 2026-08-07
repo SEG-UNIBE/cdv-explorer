@@ -1790,24 +1790,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:20:10Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:93",
               "evidence": "BIP-0032 master seed",
               "reason": "The codex32 HRP registry includes an application for BIP-0032 master seed storage, depending on the codex32 usage described in the referenced proposal.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:173",
               "evidence": "BIP-0173 defines a new format for segregated witness output addresses",
               "reason": "The proposal registers human-readable parts specifically for the address format defined by BIP-0173, so adopting it depends on that Bech32 witness-address scheme.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:350",
               "evidence": "Entries annotated with \"(m)\" use Bech32m [BIP-0350]",
               "reason": "Part of the registered HRP set is explicitly for Bech32m-based formats, which relies on BIP-0350 semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

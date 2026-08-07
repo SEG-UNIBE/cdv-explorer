@@ -225,18 +225,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:59:04Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:71",
               "evidence": "\"might be used with [NIP-71](71.md)'s kind `34236`\"",
               "reason": "The proposal explicitly contemplates combining picture events with the other NIP's video event kind in the same feed.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "nips:94",
               "evidence": "\"x <sha256 hash as specified in NIP 94>\"",
               "reason": "The imeta tag reuses the hash definition from the target for image identification.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

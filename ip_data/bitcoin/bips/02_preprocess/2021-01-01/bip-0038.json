@@ -901,18 +901,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:23Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "with respect to the [[secp256k1]] elliptic curve",
               "reason": "The EC-multiply mode uses secp256k1 point-scalar operations and derived points, which are dependent on the curve definition referenced here.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:43",
               "evidence": "it can be understood in the future to include keys participating in multisig transactions",
               "reason": "The flagbyte reserves bits for a future multisig-related specification, indicating the format is designed to accommodate that later proposal's semantics.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

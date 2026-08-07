@@ -595,12 +595,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:43:01Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:101",
               "evidence": "Similar deployment model to BIP101",
               "reason": "The proposal explicitly adopts the activation/deployment model from BIP101, so implementing deployment depends on that consensus activation scheme.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

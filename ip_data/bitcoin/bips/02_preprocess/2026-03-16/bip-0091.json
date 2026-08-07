@@ -641,42 +641,48 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:42:55Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:9",
               "evidence": "This BIP will be deployed by a \"version bits\" with an 80%(this can be adjusted if desired) 269 block activation threshold and 336 block confirmation window BIP9",
               "reason": "The proposal’s activation mechanism directly uses BIP9 version-bits deployment and threshold/window semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:141",
               "evidence": "to activate BIP141, BIP143 and BIP147.",
               "reason": "The proposal is specifically designed to force activation of the existing segwit deployment defined by BIP141, and it also terminates when that deployment becomes active or fails.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:143",
               "evidence": "to activate BIP141, BIP143 and BIP147.",
               "reason": "The proposal’s stated purpose is to activate the existing segwit deployment, which includes BIP143 as part of the referenced deployment bundle.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:147",
               "evidence": "to activate BIP141, BIP143 and BIP147.",
               "reason": "The proposal’s forced signaling applies to the existing segwit deployment bundle that includes BIP147.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:148",
               "evidence": "This BIP provides a way for a simple majority of miners to coordinate activation of the existing segwit deployment with less than 95% hashpower.",
               "reason": "The proposal’s mechanism and goal are to enforce segwit activation via miner signaling below the usual threshold, which is the same problem domain addressed by BIP148; the text also explicitly discusses the mandatory signaling approach.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:149",
               "evidence": "This BIP provides a way for a simple majority of miners to coordinate activation of the existing segwit deployment with less than 95% hashpower.",
               "reason": "The proposal is a segwit redeployment/activation workaround tied to the existing segwit deployment, and it references the alternative second deployment as part of the same activation context.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

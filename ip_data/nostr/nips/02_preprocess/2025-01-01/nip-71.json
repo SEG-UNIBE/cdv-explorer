@@ -292,24 +292,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:59:08Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:09",
               "evidence": "addressable and delete-requestable per [NIP-09](09.md)",
               "reason": "The proposal relies on NIP-09 for addressability and deletion semantics of these video events.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "nips:92",
               "evidence": "The primary source of video information is the `imeta` tags which is defined in [NIP-92](92.md)",
               "reason": "The video event format is built around the `imeta` tag structure defined by NIP-92.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:96",
               "evidence": "service nip96 may be included to allow clients to search the authors NIP-96 server list",
               "reason": "The optional file-discovery mechanism explicitly depends on NIP-96 server lists to locate video files by hash.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

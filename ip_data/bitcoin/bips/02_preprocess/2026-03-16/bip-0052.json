@@ -854,12 +854,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:42:27Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:4",
               "evidence": "add oPoW as a dual PoW to Bitcoin as a soft fork",
               "reason": "The proposal’s deployment path is explicitly framed as a soft fork, so it relies on the soft-fork activation/deployment mechanism from the target proposal family.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

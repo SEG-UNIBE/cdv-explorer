@@ -910,60 +910,69 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:17:13Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:9",
               "evidence": "This document specifies an alternative to [[bip-0009.mediawiki|BIP9]]",
               "reason": "The proposal is explicitly designed as an alternative to BIP9 and reworks its deployment mechanism, so understanding the activation logic depends on BIP9 as the baseline being replaced.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:16",
               "evidence": "such as BIPs 16, 65, 66, 68, 112, and 113",
               "reason": "BIP16 is cited as an example of a deployment whose effect is only on transaction validity, which is used to define template-rule handling semantics for this proposal.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:34",
               "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
               "reason": "The versionbits encoding and available nVersion space are constrained by the earlier BIP34 header-version rules.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:65",
               "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
               "reason": "The proposal's usable version-bit space is explicitly limited by the header-version constraints introduced by BIP65.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:66",
               "evidence": "Due to the constraints set by BIP 34, BIP 66 and BIP 65",
               "reason": "The proposal relies on the nVersion constraints established by BIP66 to define valid deployment bits and version ranges.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:68",
               "evidence": "such as BIPs 16, 65, 66, 68, 112, and 113",
               "reason": "BIP68 is used as an example of a rule that can be represented in the getblocktemplate rule listing semantics described here.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:112",
               "evidence": "such as BIPs 16, 65, 66, 68, 112, and 113",
               "reason": "BIP112 is referenced as an example of a soft fork whose effect fits the rule-flag behavior defined for mining templates.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:113",
               "evidence": "such as BIPs 16, 65, 66, 68, 112, and 113",
               "reason": "BIP113 is referenced as an example of a rule whose activation impact is handled by the template rule mechanism in this proposal.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:141",
               "evidence": "examples of this would be BIP 34 (because it modifies coinbase construction) and 141",
               "reason": "BIP141 is explicitly used as an example of a rule that changes block-structure/template generation semantics, which the proposal's '!' rule prefix is designed to represent.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

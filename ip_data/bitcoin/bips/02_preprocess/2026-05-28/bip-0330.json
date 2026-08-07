@@ -782,32 +782,35 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:18:37Z",
           "status": "api_error",
-          "dependencies": [],
-          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 195780, Requested 6028. Please try again in 542ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 195780, Requested 6028. Please try again in 542ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}",
+          "findings": []
         },
         {
           "run_id": "2026-06-30T11:33:45Z_gpt-5.4-mini_fbc31d5d",
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:34:02Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:141",
               "evidence": "where ''wtxid'' is the transaction hash including witness data as defined by BIP141",
               "reason": "The proposal defines short IDs over wtxids, so it depends on BIP-141 for the witness-inclusive transaction hash format.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:339",
               "evidence": "the negotiation and support of Erlay should be enabled only if both peers signal BIP-339 support",
               "reason": "The protocol activation and peer negotiation are gated on BIP-339 signaling, so implementation depends on that support mechanism.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:340",
               "evidence": "TaggedHash is specified by BIP-340",
               "reason": "The short transaction ID derivation reuses BIP-340's TaggedHash construction for salting and hashing.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

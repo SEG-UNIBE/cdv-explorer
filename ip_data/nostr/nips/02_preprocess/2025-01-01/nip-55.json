@@ -341,30 +341,34 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:58:59Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:04",
               "evidence": "- **nip04_encrypt**",
               "reason": "The proposal explicitly defines nip04_encrypt and nip04_decrypt operations, relying on the NIP-04 encryption/decryption semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:44",
               "evidence": "- **nip44_encrypt**",
               "reason": "The proposal explicitly defines nip44_encrypt and nip44_decrypt operations, relying on the NIP-44 encryption/decryption semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:46",
               "evidence": "The Android signer uses Intents and Content Resolvers to communicate between applications.",
               "reason": "This proposal is built around external signer communication, including intent-based and content-resolver-based workflows, which is the core mechanism of NIP-46 signer interaction.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "nips:59",
               "evidence": "- **decrypt_zap_event**",
               "reason": "The proposal includes a dedicated decrypt_zap_event method, which depends on the zap event format/handling defined by the target proposal.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

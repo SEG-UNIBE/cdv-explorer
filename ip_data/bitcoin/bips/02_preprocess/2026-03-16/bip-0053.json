@@ -657,24 +657,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:42:27Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:37",
               "evidence": "BIP37 provides a partial Merkle tree format",
               "reason": "The SPV attack analysis depends on BIP37's partial Merkle tree proof format and its lack of Merkle-tree-height commitment.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:66",
               "evidence": "After BIP66 was activated on the Bitcoin network",
               "reason": "The proposal's backward-compatibility analysis relies on BIP66's signature-size constraint when discussing whether pre-segwit 64-byte transactions can spend signed UTXOs.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:141",
               "evidence": "BIP141 says witness programs can be 2 bytes in size",
               "reason": "The proposal explicitly depends on SegWit witness-program length rules to identify the class of 64-byte segwit transactions it disallows.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

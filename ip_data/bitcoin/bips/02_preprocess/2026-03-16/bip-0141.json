@@ -1200,42 +1200,48 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:43:33Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:9",
               "evidence": "This BIP will be deployed by \"version bits\" BIP9",
               "reason": "Activation and deployment are defined using BIP9 version-bits rules.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:16",
               "evidence": "as defined in BIP16/P2SH",
               "reason": "The witness-program trigger and nested-spend path explicitly rely on BIP16 P2SH script semantics and redeemScript handling.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:143",
               "evidence": "a new transaction digest algorithm for signature verification is described in BIP143",
               "reason": "Version-0 witness signature verification depends on the digest algorithm and public-key restrictions introduced by BIP143.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:144",
               "evidence": "serialized as described in BIP144",
               "reason": "Block size and transaction size calculations use the base/total serialization format defined by BIP144.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:146",
               "evidence": "See BIP146",
               "reason": "The witness semantics reference the null-vector failure rule for CHECKSIG/CHECKMULTISIG from BIP146.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:173",
               "evidence": "Base32 address format for native v0-16 witness outputs",
               "reason": "Native witness outputs are tied to the address format defined by BIP173 for representing v0-16 witness programs.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

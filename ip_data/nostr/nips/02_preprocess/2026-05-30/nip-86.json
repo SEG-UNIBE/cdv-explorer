@@ -155,12 +155,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:46Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:98",
               "evidence": "a valid [NIP-98](./98.md) event",
               "reason": "The management API requires NIP-98 event authentication in the Authorization header, so implementing authorization depends on NIP-98's event format and validation rules.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

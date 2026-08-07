@@ -501,12 +501,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:38Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:9",
               "evidence": "activation would occur at the next difficulty adjustment once 900 of the last 1,000 blocks mined signal support",
               "reason": "The proposal uses a versionbits-style miner signaling threshold and delay-based activation workflow, which is a substantive reliance on the activation mechanism introduced by BIP9.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

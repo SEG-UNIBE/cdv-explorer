@@ -604,44 +604,49 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:36:04Z",
           "status": "api_error",
-          "dependencies": [],
-          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 200000, Requested 3183. Please try again in 954ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 200000, Requested 3183. Please try again in 954ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}",
+          "findings": []
         },
         {
           "run_id": "2026-06-30T11:38:11Z_gpt-5.4-mini_422651ce",
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:38:22Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:9",
               "evidence": "This BIP will be deployed by \"version bits\" [https://github.com/bitcoin/bips/blob/master/bip-0009.mediawiki BIP9].",
               "reason": "Activation and deployment are specified using the version-bits mechanism defined by BIP9, so adoption depends on that deployment framework.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:62",
               "evidence": "This document is extracted from the previous [https://github.com/bitcoin/bips/blob/master/bip-0062.mediawiki BIP62] proposal",
               "reason": "The proposal is derived from BIP62 and reuses its previously proposed malleability-fix rules for script and signature validation.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:66",
               "evidence": "Since the enforcement of Strict DER signatures (BIP66)",
               "reason": "The proposal’s low-S and NULLFAIL rules explicitly rely on BIP66-compliant DER encoding as a precondition for signature validity and failure behavior.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:141",
               "evidence": "segregated witness ([https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki BIP141]) transactions",
               "reason": "The proposal distinguishes applicability for segregated-witness scripts and explicitly includes P2WPKH as described by BIP141, so its validity rules depend on that script type framework.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:152",
               "evidence": "may reduce the efficiency of compact block relay ([https://github.com/bitcoin/bips/blob/master/bip-0152.mediawiki BIP152])",
               "reason": "This is only a motivation reference to compact block relay and does not introduce a mechanism or rule dependency for implementing the proposal.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

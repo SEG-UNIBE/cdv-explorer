@@ -864,24 +864,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:41:58Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:2",
               "evidence": "This document was derived heavily from Python's PEP-0001.",
               "reason": "The BIP process document is structurally based on PEP-0001, making it a substantive template dependency for its organization and workflow text.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:7",
               "evidence": "code style (examples should match BIP 8 & 7)",
               "reason": "The workflow explicitly constrains BIP example formatting to match this earlier BIP's conventions.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:8",
               "evidence": "code style (examples should match BIP 8 & 7)",
               "reason": "The workflow explicitly constrains BIP example formatting to match this earlier BIP's conventions.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

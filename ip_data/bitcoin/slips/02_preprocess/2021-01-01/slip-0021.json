@@ -251,24 +251,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:37:21Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "We adapt the master node generation from BIP-0032 and SLIP-0010.",
               "reason": "The proposal explicitly reuses the master node generation approach from BIP-0032 as part of its own key hierarchy construction.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "slips:10",
               "evidence": "We adapt the master node generation from BIP-0032 and SLIP-0010.",
               "reason": "The proposal explicitly reuses the master node generation approach from SLIP-0010 for deriving its master node.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "slips:39",
               "evidence": "such as that defined in [SLIP-0039]",
               "reason": "The proposal treats the SLIP-0039-defined master secret as a supported input source for its derivation process.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

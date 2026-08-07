@@ -205,12 +205,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:19:51Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "slips:10",
               "evidence": "Derive the HD node `m/17'/A'/B'/C'/D'` according to SLIP-0010.",
               "reason": "The hierarchical deterministic node derivation explicitly depends on SLIP-0010 for deriving the path from the hardened components.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

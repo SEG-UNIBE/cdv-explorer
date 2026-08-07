@@ -538,12 +538,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:42:12Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:29",
               "evidence": "the \"ping\" message must contain a uint64 field called \"nonce\"",
               "reason": "This proposal depends on the existing ping message format and extends it by adding a nonce and a corresponding pong response.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

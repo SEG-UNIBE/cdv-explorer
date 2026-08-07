@@ -299,12 +299,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:46:40Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "path: `m/10015'/0'` (hardened path, see BIP32)",
               "reason": "The proposal uses BIP32 hardened derivation path notation as part of the master-key retrieval procedure and xpub semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

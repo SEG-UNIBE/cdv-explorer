@@ -439,18 +439,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:00Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:04",
               "evidence": "All checkout events are sent as JSON strings using [NIP-04](04.md).",
               "reason": "The checkout workflow is explicitly encoded and transported via NIP-04 encrypted direct messages.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:19",
               "evidence": "Create a customized user experience using the `naddr` from [NIP-19](19.md#shareable-identifiers-with-extra-metadata).",
               "reason": "Marketplace UI/UX customization is designed around NIP-19 naddr shareable identifiers and their metadata.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

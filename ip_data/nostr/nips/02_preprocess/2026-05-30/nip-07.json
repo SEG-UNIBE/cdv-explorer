@@ -276,18 +276,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:59:56Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:04",
               "evidence": "window.nostr.nip04.encrypt(pubkey, plaintext): string // returns ciphertext and iv as specified in nip-04 (deprecated)",
               "reason": "The optional encryption/decryption methods are defined by and rely on the NIP-04 ciphertext/IV format.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:44",
               "evidence": "window.nostr.nip44.encrypt(pubkey, plaintext): string // returns ciphertext as specified in nip-44",
               "reason": "The optional encryption/decryption methods are explicitly specified to use the NIP-44 ciphertext format and semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

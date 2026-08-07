@@ -226,12 +226,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:17Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:01",
               "evidence": "like any `EVENT` message",
               "reason": "The proposal reuses the existing event message/acknowledgement workflow and extends it with AUTH-specific handling.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

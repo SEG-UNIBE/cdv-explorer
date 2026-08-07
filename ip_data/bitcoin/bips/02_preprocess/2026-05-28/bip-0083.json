@@ -606,12 +606,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:17:35Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "based on the algorithm described in BIP32",
               "reason": "The proposal explicitly uses BIP32 as the derivation algorithm underlying its dynamic hierarchy scheme.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

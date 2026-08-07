@@ -734,24 +734,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:17:17Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:16",
               "evidence": "Due to the [[bip-0016.mediawiki|BIP 0016]] changes regarding rules on block sigops",
               "reason": "The proposal's transaction sigop reporting depends on BIP 16's changed sigop counting rules.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:23",
               "evidence": "a [[bip-0023.mediawiki#block-proposal|\"proposal\"]]",
               "reason": "The getblocktemplate method and its capabilities/mode handling are defined in terms of BIP 23 proposal and related pooled-mining semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:34",
               "evidence": "clients MUST understand the implications of the version they use (eg, comply with [[bip-0034.mediawiki|BIP 0034]] for version 2)",
               "reason": "The template's block version field is constrained by BIP 34's version-2 rules and coinbase height requirement.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

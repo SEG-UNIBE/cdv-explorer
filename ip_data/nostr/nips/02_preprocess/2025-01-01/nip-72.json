@@ -340,18 +340,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:59:09Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:09",
               "evidence": "using [NIP-09 event deletion requests](09.md)",
               "reason": "The moderation workflow explicitly relies on the event-deletion mechanism from NIP-09 to remove approvals.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:18",
               "evidence": "posting a NIP 18 `kind 6` or `kind 16` repost",
               "reason": "Cross-posting is defined in terms of NIP-18 repost event kinds and their expected content handling.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

@@ -647,18 +647,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:56Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:173",
               "evidence": "TxRef uses standard Bech32 as defined in [https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki BIP-173]",
               "reason": "The proposal directly reuses Bech32 encoding and checksum rules from BIP 173 for its wire format.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "slips:173",
               "evidence": "Please see [https://github.com/satoshilabs/slips/blob/master/slip-0173.md SLIP-0173 : Registered human-readable parts for BIP-0173]",
               "reason": "The proposal relies on the HRP registration scheme from SLIP-173 to allocate namespace prefixes like tx and txtest.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

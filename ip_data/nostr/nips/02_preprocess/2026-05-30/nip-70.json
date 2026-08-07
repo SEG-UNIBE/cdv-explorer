@@ -166,12 +166,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:40Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:42",
               "evidence": "authenticated](42.md) before publishing their own events",
               "reason": "The proposal relies on NIP-42 authentication as the mechanism relays must use before accepting protected events from their authors.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

@@ -377,18 +377,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:51Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:94",
               "evidence": "This uses the NIP-94 event format",
               "reason": "The upload response, file listing, and optional client publication all reuse NIP-94 event structure and tags for file metadata and URLs.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:98",
               "evidence": "clients must add an [NIP-98](98.md) `Authorization` header",
               "reason": "The upload and delete authentication flow is built around NIP-98 authorization headers, making it a direct prerequisite for secure client-server operations.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

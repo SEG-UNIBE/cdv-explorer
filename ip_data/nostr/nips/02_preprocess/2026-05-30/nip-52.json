@@ -344,12 +344,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:24Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:09",
               "evidence": "deletable per [NIP-09](09.md)",
               "reason": "The proposal relies on NIP-09 for deletion semantics of calendar events.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

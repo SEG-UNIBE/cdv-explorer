@@ -819,12 +819,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:24Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:66",
               "evidence": "We reuse the double-threshold IsSuperMajority() switchover mechanism used in BIP66",
               "reason": "The deployment method is explicitly based on BIP66's threshold-based activation and reuses its switchover logic.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

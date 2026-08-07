@@ -859,38 +859,42 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:18:23Z",
           "status": "api_error",
-          "dependencies": [],
-          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 196846, Requested 7347. Please try again in 1.257s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 196846, Requested 7347. Please try again in 1.257s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}",
+          "findings": []
         },
         {
           "run_id": "2026-06-30T11:33:45Z_gpt-5.4-mini_fbc31d5d",
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:33:58Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:141",
               "evidence": "Included in the Segregated Witness proposal are a new class of outputs\n(witness programs, see\n[https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki BIP141]),",
               "reason": "The address format encodes SegWit witness programs and explicitly relies on BIP141's witness-program concept and constraints.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:142",
               "evidence": "This replaces\n[https://github.com/bitcoin/bips/blob/master/bip-0142.mediawiki BIP142],",
               "reason": "The document states that this proposal supersedes BIP142, indicating the new format is intended as a replacement for that earlier address proposal.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:143",
               "evidence": "and two instances of it (\"P2WPKH\" and \"P2WSH\", see\n[https://github.com/bitcoin/bips/blob/master/bip-0143.mediawiki BIP143]).",
               "reason": "The proposal's concrete address examples and support include the P2WPKH and P2WSH witness-program instances introduced by BIP143.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "slips:173",
               "evidence": "SatoshiLabs maintains a full list of registered human-readable parts for other cryptocurrencies:\n\n[https://github.com/satoshilabs/slips/blob/master/slip-0173.md SLIP-0173 : Registered human-readable parts for BIP-0173]",
               "reason": "This proposal defines the Bech32 HRP-based address namespace and points to the registry of HRPs maintained for this format, making the registry relevant to adoption and interoperability.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

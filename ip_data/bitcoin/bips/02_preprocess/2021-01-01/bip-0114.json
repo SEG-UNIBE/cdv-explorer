@@ -801,30 +801,34 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:43Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:9",
               "evidence": "will be deployed by version-bits [[bip-0009.mediawiki|BIP9]] after BIP141 is enforced.",
               "reason": "The deployment plan explicitly depends on BIP9 version-bits activation to roll out the soft fork.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:16",
               "evidence": "The [[bip-0016.mediawiki|BIP16]] (Pay-to-script-hash, \"P2SH\") fixes the first 3 problems",
               "reason": "BIP114's motivation and design contrast with P2SH and rely on its script-hash model as the prior mechanism being extended beyond.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:112",
               "evidence": "The following is the \"Escrow with Timeout\" example in [[bip-0112.mediawiki|BIP112]]:",
               "reason": "The proposal reuses and reshapes example scripts built around CHECKSEQUENCEVERIFY and CHECKLOCKTIMEVERIFY from BIP112 into MAST branches.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:141",
               "evidence": "In [[bip-0141.mediawiki|BIP141]], witness programs with a version byte of 1 or larger are considered to be anyone-can-spend scripts.",
               "reason": "The proposal defines its new witness program type and validation rules in terms of BIP141 witness program semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

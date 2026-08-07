@@ -219,18 +219,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:58:37Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:10",
               "evidence": "`q` tags should follow the same conventions as NIP 10 `e` tags",
               "reason": "Quote repost tags explicitly reuse the tag-convention semantics defined by NIP 10, with only one exception.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:21",
               "evidence": "Quote reposts MUST include the [NIP-21](21.md) `nevent`, `note`, or `naddr` of the event in the content.",
               "reason": "Quote reposts rely on NIP-21 identifier encodings as required content for the quoted event reference.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

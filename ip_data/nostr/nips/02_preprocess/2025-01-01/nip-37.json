@@ -209,18 +209,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:58:49Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:44",
               "evidence": "NIP44-encrypted",
               "reason": "The draft and private relay-list payloads are encrypted using NIP-44, so the proposal depends on that encryption format and its handling.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:65",
               "evidence": "author's [NIP-65](65.md) `write` relays",
               "reason": "The publication rule for kind 10013 is explicitly based on the write-relay concept defined by NIP-65.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

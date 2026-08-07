@@ -916,26 +916,28 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:18:12Z",
           "status": "api_error",
-          "dependencies": [],
-          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 197836, Requested 26671. Please try again in 7.352s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 197836, Requested 26671. Please try again in 7.352s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}",
+          "findings": []
         },
         {
           "run_id": "2026-06-30T11:33:45Z_gpt-5.4-mini_fbc31d5d",
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:33:53Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:141",
               "evidence": "However, the introduction of segregated witness softfork offers an opportunity",
               "reason": "The proposal’s digest rules and witness-program semantics are designed specifically for Segregated Witness activation and script behavior.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:144",
               "evidence": "The new serialization format is described in BIP144",
               "reason": "The proposal relies on BIP144’s transaction serialization format for witness-aware transaction encoding.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

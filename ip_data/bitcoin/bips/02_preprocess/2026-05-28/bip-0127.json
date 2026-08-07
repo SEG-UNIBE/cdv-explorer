@@ -614,12 +614,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:18:01Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:174",
               "evidence": "The \"commitment input\" detailed in the proof format section does not spend an existing UTXO",
               "reason": "The proposal adds a PSBT extension and relies on the PSBT input map semantics defined by BIP 174 for wallet signing workflows.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

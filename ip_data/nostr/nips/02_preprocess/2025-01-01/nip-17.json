@@ -253,24 +253,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:58:36Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:10",
               "evidence": "Tags that mention, quote and assemble threading structures MUST follow [NIP-10](10.md).",
               "reason": "Threading and reply-tag structure in kind-14 messages is constrained by NIP-10 semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:44",
               "evidence": "using [NIP-44](44.md) encryption",
               "reason": "The proposal directly relies on NIP-44 for encrypting the sealed and wrapped DM payloads.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:59",
               "evidence": "[NIP-59](59.md) seals and gift wraps",
               "reason": "The proposal is designed around NIP-59's seal and gift-wrap event flow for private messaging.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

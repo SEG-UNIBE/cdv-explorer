@@ -549,12 +549,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:42:39Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:70",
               "evidence": "This BIP describes an enhancement to the payment protocol ([[bip-0070.mediawiki|BIP 70]])",
               "reason": "The proposal extends the payment protocol defined by BIP 70 and relies on its payment request/URI workflow.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

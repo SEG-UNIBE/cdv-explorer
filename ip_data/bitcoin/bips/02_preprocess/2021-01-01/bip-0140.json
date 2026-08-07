@@ -676,44 +676,49 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:58Z",
           "status": "api_error",
-          "dependencies": [],
-          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 195896, Requested 4339. Please try again in 70ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 195896, Requested 4339. Please try again in 70ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}",
+          "findings": []
         },
         {
           "run_id": "2026-06-30T11:38:11Z_gpt-5.4-mini_422651ce",
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:38:19Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:11",
               "evidence": "This is the standard ''m-of-n'' script defined in [https://github.com/bitcoin/bips/blob/master/bip-0011.mediawiki BIP 11] with an additional version parameter",
               "reason": "Version 1 of the proposal reuses the BIP 11 multisig script structure and extends it with a version parameter and new opcode, so implementation depends on BIP 11's script format.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:30",
               "evidence": "except for the coinbase transactions in blocks at heights 91842 and 91880, which are known to be identical",
               "reason": "The proposal relies on the duplicate-coinbase exception discussed by BIP 30 when reasoning about coinbase hash collisions and safety assumptions.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:34",
               "evidence": "and motivated the introduction of BIP 34.",
               "reason": "The proposal ties its coinbase collision discussion to BIP 34 as the follow-on mitigation, making that proposal relevant to the stated coinbase handling assumptions.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:62",
               "evidence": "BIPs 62<ref>[[https://github.com/bitcoin/bips/blob/master/bip-0062.mediawiki|BIP 62 - Dealing with malleability]]",
               "reason": "The proposal explicitly builds on BIP 62's canonical-signature approach as an existing malleability mitigation that its normalized-ID scheme supersedes or complements.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:66",
               "evidence": "and 66<ref>[[https://github.com/bitcoin/bips/blob/master/bip-0066.mediawiki|BIP 66 - Strict DER signatures]]",
               "reason": "The proposal explicitly references BIP 66's strict-DER signature rules as part of the malleability context and compatibility discussion.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

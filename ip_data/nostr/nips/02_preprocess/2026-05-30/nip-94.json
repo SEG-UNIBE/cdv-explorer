@@ -337,12 +337,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:51Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:96",
               "evidence": "service type which is serving the file (eg. [NIP-96](96.md))",
               "reason": "The file-metadata event format explicitly allows a service tag whose meaning is defined by NIP-96, so understanding that tag depends on NIP-96's upload service semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

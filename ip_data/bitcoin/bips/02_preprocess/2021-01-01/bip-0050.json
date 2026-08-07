@@ -593,12 +593,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:23Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:8",
               "evidence": "Release a version 0.8.1, forked directly from 0.8.0",
               "reason": "The proposal is explicitly a fork and modification of the 0.8.0 protocol/software lineage, so understanding or implementing it depends on BIP 8's 0.8.0 context.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

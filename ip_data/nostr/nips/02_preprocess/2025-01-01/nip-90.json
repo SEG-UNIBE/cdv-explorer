@@ -412,18 +412,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:59:13Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:04",
               "evidence": "Encryption for private tags will use [NIP-04 - Encrypted Direct Message encryption]",
               "reason": "The proposal explicitly requires NIP-04 to encrypt private input parameters and outputs.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:89",
               "evidence": "Service Providers MAY use NIP-89 announcements to advertise their support for job kinds",
               "reason": "The discoverability appendix relies on NIP-89 announcement events to advertise supported job kinds.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

@@ -518,12 +518,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:42:15Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:31",
               "evidence": "Extend the existing \"getdata\" message behavior to permit accessing the transaction memory pool.",
               "reason": "The proposal explicitly builds on and modifies the existing getdata message semantics defined by the referenced proposal.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

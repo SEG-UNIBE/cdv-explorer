@@ -1345,42 +1345,48 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:45:00Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:9",
               "evidence": "For Bitcoin mainnet and testnet3, these BIPs are deployed by \"version bits\" with the name \"taproot\" and bit 2, using [[bip-0009.mediawiki|BIP9]] modified",
               "reason": "Activation uses BIP9-style version-bits deployment with modified state transition logic and thresholds.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:141",
               "evidence": "A Taproot output is a native SegWit output (see [[bip-0141.mediawiki|BIP141]]) with version number 1",
               "reason": "Taproot output encoding and witness-program structure are defined as a SegWit v1 output under BIP141.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:143",
               "evidence": "In summary, the semantics of the [[bip-0143.mediawiki|BIP143]] sighash types remain unchanged",
               "reason": "The new signature message preserves BIP143 sighash semantics while changing serialization and committed data fields.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:340",
               "evidence": "The notation below follows that of [[bip-0340.mediawiki#design|BIP340]].",
               "reason": "The proposal uses BIP340's x-only public key lifting, tagged-hash notation, and Schnorr signature verification/signing definitions.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:342",
               "evidence": "Execute the script, according to the applicable script rules<ref>'''What are the applicable script rules in script path spends?''' [[bip-0342.mediawiki|BIP342]] specifies validity rules that apply for leaf version 0xc0, but future proposals can introduce rules for other leaf versions.</ref>",
               "reason": "Script-path validation explicitly defers leaf-version-0xc0 execution rules to BIP342 and deploys concurrently with it.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:350",
               "evidence": "The second \"scriptPubKey\" tests concern computing the scriptPubKey and (mainnet) BIP350 address",
               "reason": "The proposal's receiving/output encoding test vectors and compatibility discussion depend on BIP350 Bech32m address encoding for SegWit v1 outputs.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

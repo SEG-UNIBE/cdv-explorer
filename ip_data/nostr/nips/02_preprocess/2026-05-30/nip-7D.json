@@ -128,12 +128,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:45Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:22",
               "evidence": "Replies to `kind 11` MUST use [NIP-22](./22.md) `kind 1111` comments.",
               "reason": "The proposal explicitly requires using NIP-22 comment events for thread replies, so its reply mechanism depends on NIP-22 semantics and format.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

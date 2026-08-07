@@ -597,36 +597,41 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:43:39Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:9",
               "evidence": "the BIP9 \"segwit\" deployment",
               "reason": "The proposal’s activation logic is built around an existing BIP9 version-bits deployment state machine and its lock-in/active status.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:16",
               "evidence": "Historically, the P2SH soft fork (BIP16) was activated using a predetermined flag day",
               "reason": "The proposal explicitly models its soft-fork activation mechanism on BIP16’s flag-day enforcement approach.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:141",
               "evidence": "existing segwit deployment ... to activate BIP141",
               "reason": "The proposal is intended to force activation of SegWit as defined by BIP141, so its behavior depends on that deployment’s semantics.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:143",
               "evidence": "to activate BIP141, BIP143 and BIP147",
               "reason": "The proposal’s defined 'existing segwit deployment' includes BIP143 as one of the activated components, making the flag-day logic contingent on that SegWit sub-proposal.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:147",
               "evidence": "to activate BIP141, BIP143 and BIP147",
               "reason": "The proposal’s defined 'existing segwit deployment' includes BIP147 as one of the activated components, so the enforced signaling is tied to that proposal too.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

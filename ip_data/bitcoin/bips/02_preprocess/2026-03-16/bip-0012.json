@@ -602,12 +602,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:42:03Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:11",
               "evidence": "M-of-N Multisignature Transactions BIP 11",
               "reason": "The proposal explicitly points to BIP 11 as related prior work for the transaction/script constructions it introduces, indicating reliance on the multisignature transaction format as a referenced standard transaction type.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

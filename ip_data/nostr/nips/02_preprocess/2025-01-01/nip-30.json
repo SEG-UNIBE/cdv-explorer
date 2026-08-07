@@ -173,18 +173,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:58:45Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:25",
               "evidence": "kind 7 ([NIP-25](25.md))",
               "reason": "The proposal explicitly extends custom emoji support to reaction events defined by NIP-25, so that event kind's semantics are part of the proposal's applicability.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "nips:38",
               "evidence": "kind 30315 ([NIP-38](38.md))",
               "reason": "The proposal explicitly extends custom emoji support to the event kind introduced by NIP-38, making its use dependent on that kind's definition.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

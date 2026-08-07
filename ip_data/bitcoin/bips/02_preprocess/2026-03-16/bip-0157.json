@@ -783,24 +783,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:43:47Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:37",
               "evidence": "defined in BIP 37",
               "reason": "The proposal explicitly replaces and is designed as an alternative light-client protocol to BIP 37, reusing the light client use case while changing the mechanism.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:111",
               "evidence": "similar to attacks against BIP 37 enabled nodes noted in BIP 111",
               "reason": "The proposal’s node-operation guidance against on-demand filter generation is motivated by the DoS issue discussed in BIP 111, which informs the protocol’s server-side constraints.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:158",
               "evidence": "The initial filter types are defined separately in [[bip-0158.mediawiki|BIP 158]]",
               "reason": "This proposal’s filter-type framework depends on BIP 158 for the initial filter format and type definitions.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

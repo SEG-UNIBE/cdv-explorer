@@ -222,12 +222,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:37:17Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "Derive the HD node `m/13'/A'/B'/C'/D'` according to BIP32.",
               "reason": "The proposal explicitly relies on BIP32 hierarchical deterministic derivation to construct the authentication key path.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

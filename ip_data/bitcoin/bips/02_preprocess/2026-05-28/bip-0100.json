@@ -568,12 +568,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:17:43Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:34",
               "evidence": "If the block height is encoded at the start of the coinbase scriptSig, as per BIP34, it is ignored.",
               "reason": "The proposal explicitly incorporates BIP34 coinbase height encoding rules when parsing vote data in the coinbase scriptSig.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

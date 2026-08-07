@@ -681,12 +681,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:19:22Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:125",
               "evidence": "BIP 125 RBF rules",
               "reason": "The batching workflow explicitly relies on the replace-by-fee rule set to create and validate replacement transactions.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

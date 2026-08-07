@@ -399,30 +399,34 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:13Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:10",
               "evidence": "SHOULD include a [NIP-10](10.md) `e` `reply` tag",
               "reason": "Patch threading explicitly reuses NIP-10 comment/reply semantics for patch series ordering.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:22",
               "evidence": "Replies to either a `kind:1621` (_issue_), `kind:1617` (_patch_) or `kind:1618` (_pull request_) event should follow [NIP-22 comment](22.md).",
               "reason": "Issue, patch, and PR replies are defined to use NIP-22 comment semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:65",
               "evidence": "It is similar in function to the NIP-65 relay list",
               "reason": "The user grasp list is modeled after NIP-65's relay-list concept and uses a comparable preference list structure for relays.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "nips:B7",
               "evidence": "and NIP-B7 blossom list.",
               "reason": "The user grasp list is also described as functionally similar to the NIP-B7 blossom list, indicating a related list-based configuration pattern.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

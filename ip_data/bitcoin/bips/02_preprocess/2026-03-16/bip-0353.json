@@ -827,18 +827,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:45:15Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:21",
               "evidence": "a standard format for encoding [[bip-0021.mediawiki|BIP 21]] URI schemes in DNS TXT records",
               "reason": "The proposal is explicitly designed to carry and reconstruct BIP 21 URIs from DNS TXT records, so its core payload format depends on BIP 21.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:321",
               "evidence": "Reference implementations for parsing the URI contents can be found in [[bip-0321.mediawiki|BIP 321]].",
               "reason": "The proposal reuses BIP 321 for parsing the URI contents it encodes and resolves.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

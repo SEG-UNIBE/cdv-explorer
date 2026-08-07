@@ -901,24 +901,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:18:22Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:37",
               "evidence": "an alternative to Bloom filters, as used in BIP 37",
               "reason": "The proposal’s filter construction is designed as a replacement for the Bloom-filter-based mechanism introduced by the target, but it does not reuse its format or rules.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:141",
               "evidence": "similar to the current witness commitment",
               "reason": "The OP_RETURN exclusion is justified by compatibility with a future commitment mechanism modeled on the witness commitment described in the target proposal.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:157",
               "evidence": "for use in the BIP 157 light client protocol",
               "reason": "The proposal defines compact filters specifically as the filter format consumed by BIP 157, so implementing or evaluating it depends on that protocol's expectations.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

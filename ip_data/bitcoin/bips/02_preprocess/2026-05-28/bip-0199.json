@@ -546,12 +546,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:18:27Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:11",
               "evidence": "Both parties can now construct the script and P2SH address for the HTLC.",
               "reason": "The proposal relies on P2SH address construction for deploying the HTLC script as stated in the workflow.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

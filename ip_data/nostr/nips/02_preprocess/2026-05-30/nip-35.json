@@ -247,12 +247,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:16Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:10",
               "evidence": "should follow `NIP-10` for tagging",
               "reason": "Torrent comment events reuse the reply/tagging semantics defined by NIP-10.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

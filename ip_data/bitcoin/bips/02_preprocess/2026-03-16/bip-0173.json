@@ -859,36 +859,41 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:43:58Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:141",
               "evidence": "Included in the Segregated Witness proposal are a new class of outputs (witness programs, see",
               "reason": "The proposal defines segwit addresses by encoding witness programs and witness versions introduced by BIP141.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:142",
               "evidence": "This replaces",
               "reason": "The proposal states it supersedes BIP142, indicating direct replacement of that earlier address format specification.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:143",
               "evidence": "and two instances of it (\"P2WPKH\" and \"P2WSH\", see",
               "reason": "The proposal explicitly uses the P2WPKH and P2WSH output forms as examples of the segwit outputs it addresses.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:350",
               "evidence": "BIP-350 proposes using the scheme described in this BIP only for Native Segwit v0 outputs.",
               "reason": "The proposal is explicitly constrained by BIP350's later adjustment of Bech32 usage to native segwit v0 outputs.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "slips:173",
               "evidence": "SatoshiLabs maintains a full list of registered human-readable parts for other cryptocurrencies:",
               "reason": "The proposal relies on the registry of human-readable parts defined in SLIP-0173 for non-Bitcoin uses of the Bech32 format.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

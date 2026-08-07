@@ -1020,12 +1020,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:28Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:70",
               "evidence": "This BIP is an extension to BIP 70",
               "reason": "The proposal explicitly extends BIP70 and reuses its Payment Protocol as the base protocol being modified.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

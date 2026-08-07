@@ -594,24 +594,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:42:05Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:12",
               "evidence": "BIP 12: OP_EVAL, the original P2SH design",
               "reason": "The proposal explicitly identifies BIP 12 as the original P2SH design that this address scheme is based around conceptually.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:16",
               "evidence": "The 20-byte hash is the hash of the script that will be used to redeem the coins.",
               "reason": "This proposal defines a pay-to-script-hash address format whose payload is the hash of a redeem script, materially relying on the P2SH concept introduced by BIP 16.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:17",
               "evidence": "BIP 17: OP_CHECKHASHVERIFY, another P2SH design",
               "reason": "The proposal explicitly frames the new address type as part of the family of P2SH designs that BIP 17 also addresses, indicating a technical relationship to that script-hash approach.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

@@ -653,18 +653,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:42:57Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:34",
               "evidence": "similar to the technique used in BIP34",
               "reason": "The activation mechanism is explicitly modeled on the hash-power supermajority deployment technique from BIP34.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:100",
               "evidence": "The deployment plan is taken from Jeff Garzik's proposed BIP100 block size increase",
               "reason": "The proposal reuses the deployment plan from BIP100 as the basis for its own activation rollout.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

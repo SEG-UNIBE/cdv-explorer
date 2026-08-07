@@ -244,24 +244,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:59:16Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:15",
               "evidence": "distinct from the more strictly structured marketplaces defined in [NIP-15](15.md)",
               "reason": "The proposal explicitly contrasts its classifieds model with NIP-15 marketplaces, indicating a related but non-dependent distinction rather than reuse. This is not a substantive dependency.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "nips:23",
               "evidence": "very similar to [NIP-23](23.md) long-form content events",
               "reason": "The event structure is described as closely matching NIP-23, so understanding the format likely depends on the long-form content event structure it references.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "nips:58",
               "evidence": "clients SHOULD use `image` tags as described in [NIP-58](58.md)",
               "reason": "The listing metadata reuses the image tag semantics defined by NIP-58 for displaying images in a standardized way.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

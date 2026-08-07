@@ -552,12 +552,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:17:27Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:31",
               "evidence": "obtained via getheaders",
               "reason": "The proposal’s proof and verification discussion assumes the existing header-retrieval workflow to map chain heights to block hashes.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

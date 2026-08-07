@@ -1256,32 +1256,35 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:36:12Z",
           "status": "api_error",
-          "dependencies": [],
-          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 200000, Requested 58576. Please try again in 17.572s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 200000, Requested 58576. Please try again in 17.572s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}",
+          "findings": []
         },
         {
           "run_id": "2026-06-30T11:38:11Z_gpt-5.4-mini_422651ce",
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:38:27Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "defined by BIP 32",
               "reason": "PSBT encodes extended public keys and derivation paths using BIP 32 serialized xpubs, master fingerprints, and path semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:43",
               "evidence": "\"address tree\" and the corresponding BIP 32 path purpose number are described in BIP 43",
               "reason": "PSBT’s change-detection discussion relies on the BIP 43 purpose-number convention for interpreting derivation paths.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:127",
               "evidence": "See [[bip-0127.mediawiki|BIP 127]] for more information.",
               "reason": "PSBT defines the proof-of-reserves commitment input field by reference to BIP 127’s commitment semantics.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

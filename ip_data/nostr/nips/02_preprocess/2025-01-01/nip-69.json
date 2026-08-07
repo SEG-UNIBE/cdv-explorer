@@ -200,18 +200,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:59:07Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:01",
               "evidence": "Events are [addressable events]",
               "reason": "The proposal depends on the addressable-event model and its kind/tag structure defined by NIP-01.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:40",
               "evidence": "The expiration date of the order ([NIP-40]",
               "reason": "The proposal explicitly relies on NIP-40 for the meaning and handling of the expiration tag.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

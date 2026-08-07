@@ -242,12 +242,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:59:04Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:11",
               "evidence": "support for this NIP in their [NIP-11](11.md) document",
               "reason": "The proposal uses the relay's NIP-11 document as the mechanism for advertising support and acceptance of kind 10002 events.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

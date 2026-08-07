@@ -571,12 +571,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:42:39Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:70",
               "evidence": "The Payment Protocol (defined in BIP70)",
               "reason": "The proposal directly alters the Payment Protocol defined by BIP70 and relies on its PaymentRequest/output semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

@@ -1079,12 +1079,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:17:20Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "generate deterministic wallets using BIP-0032 or similar methods",
               "reason": "The mnemonic-derived seed is intended to feed into the BIP-0032 deterministic wallet scheme, so adoption of this proposal depends on that wallet-derivation format.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

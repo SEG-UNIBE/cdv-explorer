@@ -688,12 +688,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:58:27Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:24",
               "evidence": "[Extra metadata fields] may be set.",
               "reason": "The kind-0 metadata format explicitly extends the extra fields defined by the target proposal.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

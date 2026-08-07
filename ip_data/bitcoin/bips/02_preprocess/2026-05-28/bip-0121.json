@@ -629,18 +629,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:17:58Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:21",
               "evidence": "The specification is the same as BIP0021, with the following differences",
               "reason": "The proposal directly reuses BIP 21's URI scheme structure, query handling, and extensibility rules, modifying them for the btcpop scheme.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:120",
               "evidence": "This is a proposal for a URI scheme to be used in the Proof of Payment process.",
               "reason": "The URI scheme is designed specifically to support the Proof of Payment workflow defined by BIP 120.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

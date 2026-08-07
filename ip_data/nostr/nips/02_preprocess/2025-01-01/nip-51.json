@@ -466,48 +466,55 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:58:58Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:04",
               "evidence": "encrypted using the same scheme from [NIP-04](04.md)",
               "reason": "Private list items are encrypted with the NIP-04 scheme and stored in content, so implementing private items depends on NIP-04 encryption semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:17",
               "evidence": "| DM relays           | 10050 | Where to receive [NIP-17](17.md) direct messages",
               "reason": "The DM relays list is defined for receiving NIP-17 direct messages, so its purpose depends on NIP-17 messaging behavior.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:28",
               "evidence": "| Public chats         | 10005 | [NIP-28](28.md) chat channels the user is in",
               "reason": "The public chats list stores references to NIP-28 chat channels, making its semantics depend on NIP-28 channel definitions.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:29",
               "evidence": "| Simple groups        | 10009 | [NIP-29](29.md) groups the user is in",
               "reason": "The simple groups list uses NIP-29 group identifiers and relay information, so its expected tag format depends on NIP-29 group semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:30",
               "evidence": "| Emojis             | 10030 | user preferred emojis and pointers to emoji sets",
               "reason": "The emojis list and emoji sets use the NIP-30 emoji tag/type convention, so the list item format depends on NIP-30.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:54",
               "evidence": "| Good wiki authors    | 10101 | [NIP-54](54.md) user recommended wiki authors",
               "reason": "The good wiki authors and relays lists are defined as NIP-54-specific recommendation lists, so their meaning depends on NIP-54 wiki semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:72",
               "evidence": "| Communities         | 10004 | [NIP-72](72.md) communities the user belongs to",
               "reason": "The communities list kind is defined specifically in terms of NIP-72 communities, so its item meaning depends on NIP-72's community model.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

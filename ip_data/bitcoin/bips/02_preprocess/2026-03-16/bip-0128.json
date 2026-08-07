@@ -696,36 +696,41 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:43:22Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:65",
               "evidence": "as explained in [[bip-0065.mediawiki|BIP-65]].",
               "reason": "The proposal uses nLocktime-based recovery and references BIP-65 as the standard defining that absolute locktime mechanism.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:68",
               "evidence": "following the rules of [[bip-0068.mediawiki|BIP-68]].",
               "reason": "The recovery transaction’s nSequence relative-locktime encoding and cancellation-period calculation are explicitly based on BIP-68.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:112",
               "evidence": "can use absolute and relative locktimes using OP_CHECKLOCKTIMEVERIFY ([[bip-0065.mediawiki|BIP-65]]) and OP_CHECKSEQUENCEVERIFY ([[bip-0112.mediawiki|BIP-112]])",
               "reason": "The proposal’s comparison section relies on the relative-locktime opcode semantics introduced by BIP-112.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:140",
               "evidence": "It is important that the 'Alert Transaction' will be non-malleable (e.g. by using [[bip-0140.mediawiki|BIP-140]]).",
               "reason": "The proposal depends on non-malleability for the alert transaction to keep the recovery transaction valid, and cites BIP-140 as the mechanism.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:433",
               "evidence": "could possibly be P2A addresses (described in [[bip-0433.mediawiki|BIP-433]])",
               "reason": "The proposal’s CPFP anchor-address option can use the P2A address type defined by BIP-433.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

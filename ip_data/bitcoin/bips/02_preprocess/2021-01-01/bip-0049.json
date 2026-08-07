@@ -597,42 +597,48 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:24Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:16",
               "evidence": "the encapsulation defined in [[bip-0141.mediawiki#p2wpkh-nested-in-bip16-p2sh|BIP 141]]",
               "reason": "The address serialization nests a witness program inside a BIP16 P2SH envelope, so the proposal relies on the P2SH script form from BIP16.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:32",
               "evidence": "based on a [[bip-0032.mediawiki|BIP 32]] root account",
               "reason": "The derivation scheme is built on BIP32 hierarchical deterministic root/account derivation.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:43",
               "evidence": "[[bip-0043.mediawiki|BIP43 - Purpose Field for Deterministic Wallets]]",
               "reason": "The proposal uses the purpose field in the derivation path, which is the mechanism defined by BIP43.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:44",
               "evidence": "uses the same account-structure as defined in",
               "reason": "The path structure and account hierarchy are reused from BIP44, with only the purpose value changed.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:141",
               "evidence": "This BIP defines the derivation scheme for HD wallets using the P2WPKH-nested-in-P2SH",
               "reason": "The proposal’s key/address derivation and witness-in-P2SH encapsulation are designed around the nested P2WPKH format introduced by BIP141.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "slips:132",
               "evidence": "Additional registered version bytes are listed in [[https://github.com/satoshilabs/slips/blob/master/slip-0132.md|SLIP-0132]].",
               "reason": "The proposal uses alternate extended-key version bytes and explicitly relies on the registered version-byte scheme defined in SLIP-0132.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

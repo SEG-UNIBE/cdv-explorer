@@ -538,36 +538,41 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:43:40Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:8",
               "evidence": "This BIP will be deployed by BIP8 with the name \"segwit\" and using bit 1.",
               "reason": "The proposal’s activation and deployment mechanism is explicitly defined in terms of BIP8 parameters and workflow.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:9",
               "evidence": "a user activated soft fork (UASF) that deploys segwit again using versionbits with guaranteed lock-in on timeout if the BIP is not already locked-in or activated by the timeout.",
               "reason": "The proposal is framed as a fallback deployment for the BIP9 segwit process and depends on BIP9’s lock-in/activation state and timeout semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:141",
               "evidence": "This document specifies a user activated soft fork for [[bip-0141.mediawiki|BIP141]], [[bip-0143.mediawiki|BIP143]] and [[bip-0147.mediawiki|BIP147]]",
               "reason": "The proposal is specifically a deployment mechanism for activating BIP141’s segwit changes.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:143",
               "evidence": "This document specifies a user activated soft fork for [[bip-0141.mediawiki|BIP141]], [[bip-0143.mediawiki|BIP143]] and [[bip-0147.mediawiki|BIP147]]",
               "reason": "The proposal specifically deploys the witness/transaction-signing changes defined by BIP143.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:147",
               "evidence": "This document specifies a user activated soft fork for [[bip-0141.mediawiki|BIP141]], [[bip-0143.mediawiki|BIP143]] and [[bip-0147.mediawiki|BIP147]]",
               "reason": "The proposal is intended to activate the BIP147-related segwit rule changes as part of the same soft fork package.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

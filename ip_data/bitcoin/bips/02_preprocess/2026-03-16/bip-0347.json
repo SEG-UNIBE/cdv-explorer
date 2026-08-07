@@ -805,12 +805,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:45:05Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:342",
               "evidence": "motivated to leverage the tapscript softfork opcode upgrade path introduced in [[bip-0342.mediawiki|BIP342]]",
               "reason": "The proposal relies on BIP342's tapscript soft-fork mechanism and OP_SUCCESSx upgrade path to activate OP_CAT.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

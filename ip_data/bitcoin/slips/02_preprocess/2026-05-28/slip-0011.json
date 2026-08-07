@@ -246,18 +246,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:19:50Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "slips:15",
               "evidence": "It is used in algorithms described in [SLIP-0015](slip-0015.md)",
               "reason": "The proposal states that SLIP-0015 uses this encryption scheme, so understanding SLIP-0015 depends on this mechanism.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "slips:16",
               "evidence": "It is used in algorithms described in [SLIP-0016](slip-0016.md)",
               "reason": "The proposal states that SLIP-0016 uses this encryption scheme, so understanding SLIP-0016 depends on this mechanism.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

@@ -578,38 +578,42 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:41Z",
           "status": "api_error",
-          "dependencies": [],
-          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 200000, Requested 2322. Please try again in 696ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 200000, Requested 2322. Please try again in 696ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}",
+          "findings": []
         },
         {
           "run_id": "2026-06-30T11:38:11Z_gpt-5.4-mini_422651ce",
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:38:14Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:9",
               "evidence": "deployed by \"versionbits\" BIP9 using bit 0",
               "reason": "The activation mechanism is specified as BIP9 versionbits, so deployment of this proposal depends on BIP9’s signaling and activation rules.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:65",
               "evidence": "required by BIP65 (CHECKLOCKTIMEVERIFY)",
               "reason": "The proposal explicitly states that its locktime semantics are needed for BIP65 behavior, so implementing BIP113 depends on BIP65’s lock-time opcode semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:68",
               "evidence": "matching the behavior of BIP68 (sequence numbers)",
               "reason": "The proposal is designed to align locktime behavior with BIP68’s sequence-lock semantics, indicating a technical dependency for consistent relative lock-time handling.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:112",
               "evidence": "matching the behavior of BIP68 (sequence numbers) and BIP112 (CHECKSEQUENCEVERIFY)",
               "reason": "The proposal explicitly ties its semantics to BIP112’s sequence verification behavior, so understanding the intended consensus rule depends on that proposal.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

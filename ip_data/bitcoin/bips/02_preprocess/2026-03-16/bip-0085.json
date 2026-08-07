@@ -982,18 +982,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:42:47Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "This specification relies on BIP32",
               "reason": "The proposal derives a master root key and child keys via BIP32 hardened paths, and its entropy extraction is based on those derived keys.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:39",
               "evidence": "BIP39 was designed to solve this problem",
               "reason": "The BIP39 application explicitly derives entropy for BIP39 mnemonics and defines BIP39-specific path formats, word counts, and entropy truncation.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

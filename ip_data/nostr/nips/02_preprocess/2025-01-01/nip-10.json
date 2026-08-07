@@ -259,12 +259,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:58:32Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:01",
               "evidence": "`[\"e\", <event-id>, <relay-url>]` as per NIP-01.",
               "reason": "The proposal’s deprecated positional e-tag format explicitly reuses the event-tag syntax defined by NIP-01.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

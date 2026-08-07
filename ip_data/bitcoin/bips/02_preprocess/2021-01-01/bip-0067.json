@@ -649,24 +649,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:27Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:11",
               "evidence": "Pay-to-script-hash (BIP-0011",
               "reason": "The proposal is built around P2SH as the output type for the deterministic multisig scripts.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:16",
               "evidence": "Multi-signature pay-to-script-hash transactions are defined in BIP-0016",
               "reason": "The proposal relies on the multisignature P2SH transaction structure defined by the target and says to hash the redeem script according to it.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:45",
               "evidence": "BIP-0045]] - Structure for Deterministic P2SH Multisignature Wallets",
               "reason": "The proposal is used as the address-generation procedure for deterministic P2SH multisignature wallets, indicating direct workflow/format dependence.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

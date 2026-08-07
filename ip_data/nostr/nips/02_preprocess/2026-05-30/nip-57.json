@@ -441,18 +441,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:30Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:01",
               "evidence": "retrieved in step 1 of the protocol flow",
               "reason": "The zap receipt validation flow relies on NIP-01-style filters to retrieve zap receipts by event or pubkey.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "nips:23",
               "evidence": "such as NIP-23 long-form notes",
               "reason": "The zap request format includes an optional coordinate tag specifically for tipping addressable events defined by that proposal.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

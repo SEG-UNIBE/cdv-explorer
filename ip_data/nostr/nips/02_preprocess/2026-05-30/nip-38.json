@@ -195,12 +195,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:15Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:30",
               "evidence": "[NIP-30](30.md) custom emoji(s)",
               "reason": "The status content semantics explicitly allow custom emoji support from the referenced proposal.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

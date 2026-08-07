@@ -288,18 +288,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:46:40Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "path: `m/10016'/0` (hardened path, see BIP32)",
               "reason": "The proposal relies on BIP32-style hierarchical deterministic derivation paths for the hardware-device key input.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "slips:11",
               "evidence": "CipherKeyValue is defined in [SLIP-0011](slip-0011.md).",
               "reason": "The proposal uses the CipherKeyValue mechanism defined by SLIP-0011 as the core primitive for master-key and entry-key derivation.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

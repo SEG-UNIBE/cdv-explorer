@@ -730,12 +730,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:36:19Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:141",
               "evidence": "wtxid as defined by BIP141",
               "reason": "The proposal defines short transaction IDs by hashing the wtxid, so it depends on the witness transaction ID definition from the target proposal.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

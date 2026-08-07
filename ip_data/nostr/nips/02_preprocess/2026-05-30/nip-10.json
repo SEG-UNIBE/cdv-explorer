@@ -292,24 +292,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:59:58Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:01",
               "evidence": "as per NIP-01",
               "reason": "The deprecated positional e-tag format explicitly relies on the event/tag syntax defined in NIP-01.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:21",
               "evidence": "citing events in the `.content` with [NIP-21](21.md)",
               "reason": "The q-tag usage for citations depends on the event-URI/citation semantics introduced by NIP-21.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:22",
               "evidence": "use [NIP-22](22.md) instead.",
               "reason": "This proposal delegates reply behavior for non-kind-1 events to NIP-22, making its reply rules dependent on that specification.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

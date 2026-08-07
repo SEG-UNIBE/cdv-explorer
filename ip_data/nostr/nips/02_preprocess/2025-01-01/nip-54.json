@@ -264,30 +264,34 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:58:58Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:02",
               "evidence": "[NIP-02](02.md) contact lists can form the basis of a recommendation system",
               "reason": "The proposal incorporates NIP-02 contact lists as a basis for wiki article recommendation and trust ranking.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:21",
               "evidence": "`nostr:...` links, as per [NIP-21](21.md), should link to profiles or arbitrary Nostr events.",
               "reason": "The proposal explicitly relies on NIP-21’s `nostr:` link syntax for event/profile linking inside wiki content.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:25",
               "evidence": "[NIP-25](25.md) reactions are very simple and can be used",
               "reason": "The proposal uses NIP-25 reactions as a ranking and trust signal for wiki articles and merge requests.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:51",
               "evidence": "[NIP-51](51.md) lists of relays can be created with the kind 10102",
               "reason": "The proposal depends on NIP-51 relay lists for client relay selection and also for wiki-related contact lists.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

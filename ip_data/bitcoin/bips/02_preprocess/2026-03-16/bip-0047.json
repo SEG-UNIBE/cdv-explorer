@@ -940,24 +940,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:42:23Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "Apostrophe in the path indicates that BIP32 hardened derivation is used.",
               "reason": "The proposal's key hierarchy and hardened/public derivation semantics are built on BIP32 derivation rules.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:43",
               "evidence": "This BIP is a particular application of BIP43",
               "reason": "The proposal explicitly bases its purpose-field scheme on BIP43.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:44",
               "evidence": "intended to supplement HD wallets which implement BIP44",
               "reason": "The proposal aligns payment codes with BIP44 account structure and coin type, making BIP44 account handling part of its wallet model.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

@@ -376,24 +376,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:42Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:09",
               "evidence": "using [NIP-09 event deletion requests](09.md)",
               "reason": "Moderator revocation of approvals is explicitly built on the event deletion mechanism from NIP-09.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:18",
               "evidence": "post a NIP 18 `kind 6` or `kind 16` repost",
               "reason": "Cross-posting is defined in terms of NIP-18 repost event kinds and their payload handling.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "nips:22",
               "evidence": "[NIP-22](22.md) kind 1111 events SHOULD be used for text notes posted to a community",
               "reason": "The proposal defines community posting semantics by reusing NIP-22 text note events and their tag conventions.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

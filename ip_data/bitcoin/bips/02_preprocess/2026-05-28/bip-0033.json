@@ -581,12 +581,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:17:18Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:37",
               "evidence": "The other strategy for thin clients termed ''headers-only'' or ''Simplified. Payment. Verification.''",
               "reason": "The proposal explicitly relies on SPV as the referenced thin-client model and discusses its privacy behavior in relation to this design.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

@@ -591,18 +591,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:18:37Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:68",
               "evidence": "set the nSequence field in their taproot transactions as in BIP68[5]",
               "reason": "The proposal directly reuses BIP68-style nSequence semantics for relative locktime and anti-fee-sniping behavior.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:341",
               "evidence": "This document proposes a certain type of wallet behaviour which uses BIP341 taproot",
               "reason": "The proposal’s wallet behavior is specifically defined for Taproot outputs and spends, so implementing it depends on BIP341’s Taproot transaction/script model.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

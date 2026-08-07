@@ -579,24 +579,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:42:19Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:16",
               "evidence": "A softfork (see BIP16, BIP34, BIP62)",
               "reason": "The proposal explicitly frames its change as a softfork and cites BIP16 as part of that softfork mechanism context.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:34",
               "evidence": "A softfork (see BIP16, BIP34, BIP62)",
               "reason": "The proposal explicitly frames its change as a softfork and cites BIP34 as part of that softfork mechanism context.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:62",
               "evidence": "A softfork (see BIP16, BIP34, BIP62)",
               "reason": "The proposal explicitly frames its change as a softfork and cites BIP62 as part of that softfork mechanism context.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

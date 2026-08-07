@@ -602,12 +602,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:21:05Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:11",
               "evidence": "\"M-of-N Multisignature Transactions BIP 11\"",
               "reason": "The proposal explicitly references BIP 11 as related prior work, but the dependency is weak because no mechanism from it is actually reused in the body beyond the mention that standard OP_EVAL scripts may be one of the standard transaction types.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

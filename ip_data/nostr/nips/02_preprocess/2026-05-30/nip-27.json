@@ -239,30 +239,34 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:09Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:18",
               "evidence": "Including [NIP-18](18.md)'s quote tags",
               "reason": "The proposal’s optional notification/reply behavior for event mentions depends on the quote-tag mechanism defined by NIP-18.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:19",
               "evidence": "the client will turn that into a `nostr:nevent1...` URL",
               "reason": "The proposal relies on NIP-19 encodings for constructing and decoding referenced profile/event identifiers inside content.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:21",
               "evidence": "using [NIP-21](21.md) codes",
               "reason": "The proposal standardizes inline reference rendering around the NIP-21 URL/code format and explicitly instructs clients to use it when creating mentions.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:23",
               "evidence": "for example, a [`kind:30023`](23.md) `nostr:naddr1...` URL reference",
               "reason": "The proposal’s handling of addressable event references includes NIP-23-style kind/address references encoded as NIP-19 `naddr` values.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

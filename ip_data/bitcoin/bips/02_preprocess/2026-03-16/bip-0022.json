@@ -724,24 +724,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:42:11Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:16",
               "evidence": "Due to the [[bip-0016.mediawiki|BIP 0016]] changes regarding rules on block sigops",
               "reason": "The rationale for including sigop counts in transactions relies on BIP 16’s altered sigop accounting rules for blocks.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:23",
               "evidence": "a \"proposal\"]], [[bip-0023.mediawiki#Logical Services|\"serverlist\"]",
               "reason": "The proposal’s getblocktemplate workflow, capabilities, and submission semantics are explicitly extended by BIP 23 features such as proposal mode, serverlist, mutations, and merged-mining-chain responses.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:34",
               "evidence": "clients MUST understand the implications of the version they use (eg, comply with [[bip-0034.mediawiki|BIP 0034]] for version 2)",
               "reason": "The proposal constrains acceptable block version handling by requiring compatibility with BIP 34 when version 2 templates are used and by noting the block-height coinbase rule from BIP 34.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

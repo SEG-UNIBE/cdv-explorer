@@ -766,30 +766,34 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:42:31Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:16",
               "evidence": "The accounting is the same as for [bip-0016][BIP16 specs]",
               "reason": "The sigop counting rule directly reuses BIP16's script-evaluation accounting and counting semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:30",
               "evidence": "without [bip-0030][BIP30] validation",
               "reason": "The proposal explicitly changes consensus to eliminate or later reintroduce BIP30 duplicate-transaction validation, so its rules are defined in relation to BIP30 semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:34",
               "evidence": "Since [bip-0034][BIP34] activation",
               "reason": "The coinbase-duplication mitigation relies on BIP34 activation history and uses BIP34 coinbase-height commitments as part of the rationale for the new coinbase rules.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:94",
               "evidence": "also adopted for [testnet4][BIP94 timewarp]",
               "reason": "The timewarp-fix timestamp rule is presented as matching the same mitigation used in BIP94, indicating the proposal is designed around that earlier activation pattern.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

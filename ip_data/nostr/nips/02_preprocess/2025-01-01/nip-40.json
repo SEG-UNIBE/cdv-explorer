@@ -212,12 +212,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:58:51Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:89",
               "evidence": "Clients SHOULD use the `supported_nips` field to learn if a relay supports this NIP.",
               "reason": "The proposal relies on the relay capability advertisement field to determine support before sending or processing expiration-tagged events.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

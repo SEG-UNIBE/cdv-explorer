@@ -692,42 +692,48 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:17:38Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "based on an algorithm described in BIP-0032",
               "reason": "The proposal’s derivation path and hardened/public child-key semantics are built on BIP32 hierarchical deterministic wallet derivation.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:43",
               "evidence": "purpose scheme described in BIP-0043",
               "reason": "The proposal uses the BIP43 purpose-field convention and explicitly defines itself as a BIP43 application.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:44",
               "evidence": "multi-account hierarchy described in BIP-0044",
               "reason": "The account-level structure is adopted from BIP44 and the proposal says it follows the BIP44 pattern for independent identities.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:67",
               "evidence": "as described in [https://github.com/bitcoin/bips/blob/master/bip-0067.mediawiki BIP67]",
               "reason": "Deterministic key ordering for multisig scripts is treated as part of the wallet behavior through sortedmulti and lexicographic key sorting.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:129",
               "evidence": "Please see [https://github.com/bitcoin/bips/blob/master/bip-0129.mediawiki BIP-0129 (Bitcoin Secure Multisig Setup)]",
               "reason": "Descriptor templates from BIP129 are used as the mechanism for generating and discovering the multisig addresses described by this BIP.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:174",
               "evidence": "with key origin information for maximum compatibility with BIP-0174",
               "reason": "The proposal requires descriptors or templates to carry key origin information in a form compatible with BIP174 workflows.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

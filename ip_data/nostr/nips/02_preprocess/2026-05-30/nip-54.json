@@ -302,30 +302,34 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:27Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:02",
               "evidence": "[NIP-02](02.md) contact lists can form the basis of a recommendation system",
               "reason": "The proposal builds a wiki article recommendation system on top of NIP-02 contact lists, reusing their semantics as trust signals.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:21",
               "evidence": "Links can have target URIs in [NIP-21](21.md) format",
               "reason": "The wiki content format explicitly reuses NIP-21 URI syntax for links and mentions nostr: links as a supported mechanism.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:25",
               "evidence": "The destination pubkey can create [NIP-25](25.md) reactions",
               "reason": "Merge-request acceptance/rejection is defined in terms of NIP-25 reaction events, so this proposal relies on that reaction mechanism.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:51",
               "evidence": "[NIP-51](51.md) lists of relays can be created",
               "reason": "Relay-list events from NIP-51 are used as an input for wiki client querying and ranking, making the proposal depend on that list format.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

@@ -724,24 +724,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:18:32Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:21",
               "evidence": "This BIP is a modification and intended replacement of [[bip-0021.mediawiki|BIP 0021]]",
               "reason": "The proposal explicitly modifies and replaces BIP 21, so understanding or implementing it depends on the earlier URI scheme specification it amends.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:351",
               "evidence": "*pay: [[bip-0351.mediawiki|BIP 351 Private Payment addresses]]",
               "reason": "The proposal defines a payment-instruction query key specifically for BIP 351 private payment addresses, reusing that scheme as one supported URI payment instruction.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:352",
               "evidence": "*sp: [[bip-0352.mediawiki|BIP 352 Silent Payment addresses]]",
               "reason": "The proposal defines a payment-instruction query key specifically for BIP 352 silent payment addresses, so handling those URI instructions depends on BIP 352 address semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

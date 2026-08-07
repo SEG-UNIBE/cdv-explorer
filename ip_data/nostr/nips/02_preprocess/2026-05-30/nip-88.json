@@ -197,24 +197,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:48Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:05",
               "evidence": "do not honor kind:5 (delete) requests for vote events",
               "reason": "The proposal’s relay guidance depends on the delete-event semantics of kind:5 when discussing vote integrity.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:33",
               "evidence": "It contains an e tag with the poll event it is referencing",
               "reason": "The response event uses the event reference tag semantics to link each vote to its poll.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "nips:51",
               "evidence": "This can be achieved by creating `kind:30000` follow sets",
               "reason": "The curation mechanism explicitly reuses follow-set events as the basis for restricting which results are fetched.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

@@ -591,12 +591,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:43:19Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:69",
               "evidence": "Applications which wish to comply both with this procedure and BIP69 should apply this procedure prior to applying BIP69.",
               "reason": "The proposal explicitly constrains how its transaction-forming rules interact with BIP69’s input/output ordering procedure.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

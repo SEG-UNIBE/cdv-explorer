@@ -733,24 +733,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:19:00Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:352",
               "evidence": "as described in BIP352",
               "reason": "Silent payment output handling, address data, output script derivation, and ECDH computations are defined around BIP352 silent payment semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:370",
               "evidence": "This document proposes additional fields and updated role responsibilities for BIP370 PSBTv2",
               "reason": "The proposal extends PSBTv2 and preserves its role rules and transaction structure, adding silent-payment-specific fields and constraints on top of BIP370.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:374",
               "evidence": "A BIP374 DLEQ proof computed for the matching ECDH share.",
               "reason": "The proposal requires DLEQ proof generation and verification using BIP374 algorithms for the added ECDH shares.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

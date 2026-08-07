@@ -834,30 +834,34 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:42:51Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "Run the BIP32 non-hardened derivation ``CKDpub``",
               "reason": "The proposal’s delegated tweak computation explicitly reuses BIP32 public-child derivation and its scalar tweak term.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:327",
               "evidence": "The notation, algorithmic patterns, and test-vector style are adapted from [BIP-327 (MuSig2)]",
               "reason": "The blind-signing section explicitly adapts its protocol structure and test-vector style from BIP327.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:340",
               "evidence": "Both modes produce valid BIP340 signatures.",
               "reason": "The signing flow is designed to generate and verify Schnorr signatures under the BIP340 signature scheme.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:341",
               "evidence": "Consequently the protocol is compatible with [https://github.com/bitcoin/bips/blob/master/bip-0341.mediawiki BIP341].",
               "reason": "The blinded signing variant is built around X-only keys and tweaks intended for Taproot-compatible BIP341 usage.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

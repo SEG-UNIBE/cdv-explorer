@@ -696,12 +696,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:24Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:34",
               "evidence": "The same mechanism as in BIP 0034 is used to introduce v3 blocks.",
               "reason": "The proposal explicitly reuses BIP 0034’s block-version activation mechanism for deploying v3 blocks.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

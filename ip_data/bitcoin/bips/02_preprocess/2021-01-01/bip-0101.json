@@ -621,12 +621,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:34Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:100",
               "evidence": "BIP 100 proposes a dynamic limit determined by miner preferences",
               "reason": "The proposal explicitly contrasts and discusses BIP 100 as an alternative block-size limit mechanism, but it does not reuse BIP 100's miner-preference rule or depend on it for implementation.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

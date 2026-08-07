@@ -560,20 +560,21 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:19:04Z",
           "status": "api_error",
-          "dependencies": [],
-          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 196623, Requested 4143. Please try again in 229ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 196623, Requested 4143. Please try again in 229ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}",
+          "findings": []
         },
         {
           "run_id": "2026-06-30T11:33:45Z_gpt-5.4-mini_fbc31d5d",
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:34:12Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:380",
               "evidence": "use the format and general operation specified in [[bip-0380.mediawiki|380]]",
               "reason": "The proposal explicitly relies on the descriptor format and operational rules defined by BIP 380.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

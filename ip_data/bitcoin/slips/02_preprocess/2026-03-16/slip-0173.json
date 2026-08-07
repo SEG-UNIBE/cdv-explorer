@@ -1774,24 +1774,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:47:17Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:93",
               "evidence": "The codex32 format is used to store master secret data.",
               "reason": "The proposal includes codex32 as one of the registered Bech32-related formats and explicitly identifies it as the codex32 format defined by BIP-0093.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:173",
               "evidence": "BIP-0173 defines a new format for segregated witness output addresses",
               "reason": "The SLIP registers human-readable parts specifically for use with the Bech32 witness-address format introduced by BIP-0173.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:350",
               "evidence": "Entries annotated with \"(m)\" use Bech32m [BIP-0350];",
               "reason": "The proposal assigns some registered human-readable parts to Bech32m-based encodings, so its registry depends on the BIP-0350 variant semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

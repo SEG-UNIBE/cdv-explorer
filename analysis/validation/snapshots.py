@@ -12,9 +12,9 @@ from typing import Any
 from analysis.dependencies.constants import (
     BODY_EXTRACTED_LLM,
     BODY_EXTRACTED_REGEX,
-    INTERRELATION_TYPES,
     PREAMBLE_EXTRACTED,
 )
+from analysis.interrelation_types import INTERRELATION_TYPES
 from analysis.proposal_schema import LLM_RUN_STATUS_SUCCESS, LLM_RUN_STATUSES
 from analysis.reference_ids import normalize_reference_id_for_config
 from analysis.utils import parse_date_ymd

@@ -598,12 +598,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:18:04Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:1",
               "evidence": "BIP-0001 defines the process for writing and submitting a Bitcoin Improvement Proposal",
               "reason": "The proposal relies on BIP 0001 for the BIP submission/writing workflow and adds acceptance rules on top of that process.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

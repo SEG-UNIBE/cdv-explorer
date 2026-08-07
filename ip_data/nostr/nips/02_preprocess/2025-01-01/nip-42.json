@@ -214,12 +214,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:58:52Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:98",
               "evidence": "The signed event is an ephemeral event not meant to be published or queried",
               "reason": "This relies on the concept of an ephemeral, non-publishable/non-queryable event type introduced by the target proposal.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

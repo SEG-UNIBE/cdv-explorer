@@ -747,18 +747,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:17:21Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "based on an algorithm described in BIP-0032 (BIP32 from now on)",
               "reason": "The proposal defines its wallet hierarchy and derivation path using BIP32's deterministic key derivation algorithm.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:43",
               "evidence": "purpose scheme described in BIP-0043 (BIP43 from now on)",
               "reason": "The proposal is built around BIP43's purpose-field scheme and explicitly says it is a particular application of BIP43.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

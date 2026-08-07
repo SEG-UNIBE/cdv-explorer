@@ -717,12 +717,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:26Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:30",
               "evidence": "this is enforced for coinbase transactions by BIP30",
               "reason": "The input-sorting rule relies on BIP30's coinbase uniqueness guarantee to justify treating transaction hashes as effectively unique.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

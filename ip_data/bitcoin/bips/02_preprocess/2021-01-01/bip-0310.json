@@ -599,12 +599,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:36:21Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:30",
               "evidence": "there is a similar protocol feature '''mining.capabilities'''",
               "reason": "The proposal explicitly contrasts its new negotiation flow against the existing mining.capabilities feature and states incompatibility, so adopting it depends on that prior protocol mechanism for compatibility considerations.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

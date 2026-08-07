@@ -248,24 +248,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:50Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:01",
               "evidence": "as described in NIP-01",
               "reason": "The proposal relies on NIP-01 for the metadata-like content format of kind:31990 events.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:19",
               "evidence": "bech32 in a URL MUST be replaced by clients with the NIP-19-encoded entity",
               "reason": "The handler URL replacement mechanism depends on NIP-19 entity encodings and related nomenclature.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "nips:31",
               "evidence": "using its `alt` tag (as described in NIP-31)",
               "reason": "The user flow explicitly depends on NIP-31 alt-tag display for unknown-kind events.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

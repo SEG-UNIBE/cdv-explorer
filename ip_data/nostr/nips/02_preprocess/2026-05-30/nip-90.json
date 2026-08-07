@@ -423,12 +423,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:48Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:04",
               "evidence": "Encryption for private tags will use [NIP-04 - Encrypted Direct Message encryption](04.md)",
               "reason": "The proposal explicitly requires NIP-04 to encrypt private input parameters and content for job requests and outputs.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

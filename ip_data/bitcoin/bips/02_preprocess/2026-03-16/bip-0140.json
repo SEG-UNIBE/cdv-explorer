@@ -713,12 +713,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:43:31Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:11",
               "evidence": "This is the standard ''m-of-n'' script defined in [https://github.com/bitcoin/bips/blob/master/bip-0011.mediawiki BIP 11] with an additional version parameter",
               "reason": "The proposed signature script format is explicitly based on the BIP 11 multisig script structure and extends it with a version field.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

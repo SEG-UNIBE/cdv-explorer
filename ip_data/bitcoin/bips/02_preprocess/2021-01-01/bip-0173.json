@@ -807,38 +807,42 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:36:12Z",
           "status": "api_error",
-          "dependencies": [],
-          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 200000, Requested 7226. Please try again in 2.167s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 200000, Requested 7226. Please try again in 2.167s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}",
+          "findings": []
         },
         {
           "run_id": "2026-06-30T11:38:11Z_gpt-5.4-mini_422651ce",
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:38:25Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:141",
               "evidence": "witness programs, see [https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki BIP141]",
               "reason": "The address format encodes SegWit witness programs defined by the target proposal and uses its witness-version/program semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:142",
               "evidence": "This replaces [https://github.com/bitcoin/bips/blob/master/bip-0142.mediawiki BIP142]",
               "reason": "The proposal explicitly supersedes the earlier address-format proposal, so implementing it depends on the replacement relationship with that specification.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:143",
               "evidence": "and two instances of it (\"P2WPKH\" and \"P2WSH\", see",
               "reason": "The motivation discusses the concrete SegWit output types the proposal is designed to address, indicating reliance on those standardized witness-program uses.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "slips:173",
               "evidence": "SatoshiLabs maintains a full list of registered human-readable parts for other cryptocurrencies:\n\n[https://github.com/satoshilabs/slips/blob/master/slip-0173.md SLIP-0173",
               "reason": "The document points to the registered HRP registry for Bech32-style prefixes, which is a companion mechanism for the human-readable-part space used here.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

@@ -298,30 +298,34 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:46:50Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "This scheme adapts the master node derivation used in BIP-0032 and SLIP-0010",
               "reason": "The proposal explicitly reuses and adapts BIP-0032-style master node derivation semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:39",
               "evidence": "The Icarus master node derivation scheme, aka V2 derivation scheme, is commonly used with BIP-0039 in Cardano wallets.",
               "reason": "The Icarus derivation procedure is specified for use with BIP-0039 mnemonics and relies on BIP-0039's mnemonic-to-entropy relation.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "slips:10",
               "evidence": "This scheme adapts the master node derivation used in BIP-0032 and SLIP-0010",
               "reason": "The proposal explicitly reuses and adapts SLIP-0010 master node derivation semantics, including the HMAC-based seed-to-root process.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "slips:39",
               "evidence": "the master secret obtained from the following three SLIP-0039 share mnemonics",
               "reason": "The proposal defines behavior for seeds/master secrets produced by SLIP-0039 and is designed around that mnemonic sharing scheme.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

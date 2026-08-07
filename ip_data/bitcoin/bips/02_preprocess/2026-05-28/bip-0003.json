@@ -1332,18 +1332,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:17:10Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:2",
               "evidence": "It replaces [BIP 2](bip-0002.mediawiki) with a streamlined process",
               "reason": "The proposal is explicitly a replacement for BIP 2 and materially redefines the BIP workflow, headers, and status model.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:123",
               "evidence": "using the BIP classification defined in [BIP 123](bip-0123.mediawiki)",
               "reason": "The proposal’s Layer header rules depend on the classification scheme introduced by BIP 123.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

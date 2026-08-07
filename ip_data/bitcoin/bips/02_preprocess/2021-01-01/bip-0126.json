@@ -558,12 +558,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:50Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:69",
               "evidence": "Applications which wish to comply both with this procedure and BIP69 should apply this procedure prior to applying BIP69.",
               "reason": "The proposal explicitly defines ordering interaction with BIP69, so implementation must account for BIP69's input/output sorting after applying these HIT rules.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

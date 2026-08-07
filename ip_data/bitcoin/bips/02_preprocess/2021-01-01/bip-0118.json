@@ -521,18 +521,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:47Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:141",
               "evidence": "The <tt>NOINPUT</tt> sighash flag is only active for segwit scripts with",
               "reason": "The proposal is limited to segwit script versions and is deployed as a segwit script update, so it depends on segwit script semantics introduced by BIP 141.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:143",
               "evidence": "The transaction digest algorithm from BIP 143 is used when verifying a",
               "reason": "The proposal directly reuses and modifies the BIP 143 segwit signature digest algorithm for NOINPUT signatures.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

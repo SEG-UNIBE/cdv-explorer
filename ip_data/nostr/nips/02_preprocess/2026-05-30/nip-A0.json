@@ -200,18 +200,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:53Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:22",
               "evidence": "kind: 1244 events MUST follow the structure of `NIP-22`",
               "reason": "Reply voice-message events are explicitly constrained to use the event structure defined by NIP-22.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "nips:92",
               "evidence": "Visual representation with `imeta` (NIP-92) tag (optional)",
               "reason": "The proposal optionally reuses the NIP-92 imeta tag format for waveform and duration metadata.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

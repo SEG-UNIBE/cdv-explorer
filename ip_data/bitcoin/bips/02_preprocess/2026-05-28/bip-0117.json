@@ -716,36 +716,41 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:17:55Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:8",
               "evidence": "This BIP will be deployed by BIP8 (Version bits with lock-in by height)[9]",
               "reason": "The deployment section specifies BIP8 as the activation mechanism and uses its lock-in-by-height process and bit assignment.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:16",
               "evidence": "BIP16 (Pay to Script Hash)[1] and BIP141 (Segregated Witness)[2] provide mechanisms",
               "reason": "The proposal explicitly relies on P2SH as prior art for delayed script revelation and compares its own spend-time execution model against it.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:114",
               "evidence": "BIP114 (Merkelized Abstract Syntax Tree)[5] specifies an explicit MAST scheme activated by BIP141 script versioning[2].",
               "reason": "The proposal is designed as a generalized MAST alternative and directly contrasts its mechanism with BIP114's explicit MAST scheme.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:116",
               "evidence": "This BIP, in conjunction with BIP116 (MERKLEBRANCHVERIFY)[3]",
               "reason": "The generalized MAST design depends on MERKLEBRANCHVERIFY to commit to a set of policy scripts and prove membership before execution.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:141",
               "evidence": "BIP16 (Pay to Script Hash)[1] and BIP141 (Segregated Witness)[2] provide mechanisms",
               "reason": "The tail-call behavior is only permitted within a segwit redeem script, and the proposal repeatedly builds on Segregated Witness execution and compatibility rules.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

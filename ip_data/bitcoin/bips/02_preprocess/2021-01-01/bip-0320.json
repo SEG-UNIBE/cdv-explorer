@@ -481,18 +481,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:36:18Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:8",
               "evidence": "removed from BIP8 and BIP9 specifications",
               "reason": "The proposal changes the version-bits soft-fork signaling scheme defined by BIP 8, specifically reserving some nVersion bits and excluding them from its signaling semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:9",
               "evidence": "removed from BIP8 and BIP9 specifications",
               "reason": "The proposal directly modifies the BIP 9 version-bits activation behavior by reserving 16 nVersion bits and instructing implementations to ignore them for soft-fork signaling.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

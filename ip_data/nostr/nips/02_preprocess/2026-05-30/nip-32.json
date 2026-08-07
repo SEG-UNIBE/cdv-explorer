@@ -366,12 +366,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:11Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:09",
               "evidence": "events may be requested for deletion using [NIP-09](09.md) and a replacement may be published",
               "reason": "The proposal’s bulk-labeling workflow explicitly relies on NIP-09 deletion and replacement semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

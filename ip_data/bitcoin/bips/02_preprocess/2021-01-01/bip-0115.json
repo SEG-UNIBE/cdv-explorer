@@ -557,12 +557,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:43Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:9",
               "evidence": "This BIP will be deployed by \"version bits\" [[bip-0009.mediawiki|BIP9]]",
               "reason": "The proposal’s activation and deployment mechanism is explicitly based on BIP9 version-bits signaling.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

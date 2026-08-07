@@ -694,12 +694,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:43:28Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:68",
               "evidence": "clean up past soft fork changes like BIP68 which reuse existing fields",
               "reason": "The proposal explicitly builds on BIP68 as a prior soft-fork change whose field-reuse approach it aims to replace with this new transaction format.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

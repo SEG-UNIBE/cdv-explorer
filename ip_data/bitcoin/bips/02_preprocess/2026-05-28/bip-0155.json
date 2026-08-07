@@ -707,18 +707,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:18:18Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:31",
               "evidence": "The <code>sendaddrv2</code> message MUST only be sent in response to the <code>version</code> message from a peer and prior to sending the <code>verack</code> message.",
               "reason": "The new signaling message is constrained by the established version/verack handshake workflow defined by the version-handshake proposal.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:37",
               "evidence": "its format is similar to the current <code>addr</code> message format",
               "reason": "The proposal is a redesign of the existing peer address gossip format, preserving the addr-message role while changing its encoding and extending it for longer addresses.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

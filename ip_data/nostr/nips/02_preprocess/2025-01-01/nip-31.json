@@ -134,12 +134,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:58:45Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:89",
               "evidence": "by supporting [NIP-89](https://github.com/nostr-protocol/nips/blob/master/89.md)",
               "reason": "The proposal explicitly recommends using NIP-89 to improve interactions with custom event kinds in kind:1-centric clients.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

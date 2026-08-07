@@ -143,12 +143,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:54Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:22",
               "evidence": "Replies to `kind 39701` MUST use `kind 1111` events as comments with [NIP-22](22.md).",
               "reason": "The proposal explicitly delegates reply/comment handling to NIP-22 semantics for comments on bookmark events.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

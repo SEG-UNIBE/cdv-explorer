@@ -142,12 +142,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:14Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:32",
               "evidence": "`l` and `L` tags MAY be also be used as defined in [NIP-32](32.md)",
               "reason": "The proposal explicitly reuses NIP-32's `l` and `L` tag semantics for additional qualification and querying of content warnings.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

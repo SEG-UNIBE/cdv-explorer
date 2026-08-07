@@ -569,36 +569,41 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:18:44Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:8",
               "evidence": "This document specifies a BIP8 (LOT=true) deployment",
               "reason": "The proposal is explicitly an instance of BIP8 and relies on BIP8's versionbits deployment and LOT semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:148",
               "evidence": "Lessons have been learned from the BIP148 and BIP91 deployments",
               "reason": "The proposal's deployment rationale and compatibility discussion are shaped by BIP148's activation approach, indicating substantive deployment-model dependence.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:340",
               "evidence": "has a minimum activation height of 709632 and intends to activate BIPs 340, 341, and 342",
               "reason": "The activation schedule is designed to enable Taproot-related proposals, including BIP340, so adopting this deployment depends on the activation of that proposal set.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:341",
               "evidence": "has a minimum activation height of 709632 and intends to activate BIPs 340, 341, and 342",
               "reason": "The proposal's purpose is to activate Taproot, and it explicitly targets BIP341 as one of the activated specifications.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:342",
               "evidence": "has a minimum activation height of 709632 and intends to activate BIPs 340, 341, and 342",
               "reason": "The proposal's activation mechanism is intended to activate BIP342 along with the other Taproot-related proposals.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

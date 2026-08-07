@@ -274,48 +274,55 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:20:06Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "based on the algorithm defined in [BIP 32]",
               "reason": "The proposal’s derivation hierarchy and path are built on BIP 32 key derivation.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:43",
               "evidence": "and the scheme described in [BIP 43]",
               "reason": "The proposal uses the BIP 43 purpose-based hierarchical scheme to structure its derivation path.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:48",
               "evidence": "The inclusion of this field is inspired by [BIP 48]",
               "reason": "The script-type level follows the multi-script account structure introduced by BIP 48.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:78",
               "evidence": "such as [BIP 78] PayJoin",
               "reason": "The script-type/accounting discussion explicitly uses BIP 78 as an example of the same multi-script matching requirement.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:86",
               "evidence": "the purpose of this document is largely the same as [BIP 86]",
               "reason": "The proposal is designed around the same purpose as BIP 86 and reuses its Taproot address-derivation logic in one script type.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "slips:10",
               "evidence": "and [SLIP 10]",
               "reason": "The proposal explicitly includes SLIP 10 as part of the algorithm basis for deriving keys.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "slips:44",
               "evidence": "The value of `coin_type` MUST be one of the coin types defined in [SLIP 44]",
               "reason": "The coin-type level is constrained by SLIP 44’s registered coin types, making the hierarchy depend on that registry.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

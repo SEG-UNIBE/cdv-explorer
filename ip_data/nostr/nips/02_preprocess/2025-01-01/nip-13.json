@@ -233,12 +233,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:58:34Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:01",
               "evidence": "the `NIP-01` id",
               "reason": "The proposal defines PoW difficulty in terms of NIP-01 event ids and instructs miners to recalculate the id under NIP-01.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

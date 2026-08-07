@@ -1098,24 +1098,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:47:04Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "a specification for its use in backing up Hierarchical Deterministic Wallets described in [BIP-0032]",
               "reason": "The SLIP defines backup usage specifically for BIP-32 hierarchical deterministic wallets and relies on BIP-32 master seed semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:39",
               "evidence": "mainly intended as a replacement for [BIP-0039]",
               "reason": "The proposal is explicitly designed as a replacement for BIP-39 and discusses compatibility/migration constraints with it.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:173",
               "evidence": "The checksum design is heavily inspired by Bech32 defined in [BIP-0173]",
               "reason": "The checksum mechanism is modeled on Bech32's checksum design and related error-handling behavior.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

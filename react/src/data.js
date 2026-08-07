@@ -25,7 +25,7 @@ const EMPTY_DATASET = {
   groundTruthReviewedIps: [],
   links: EMPTY_LINKS,
   network: { nodes: [], links: EMPTY_LINKS, ground_truth_reviewed_ips: [] },
-  dependencyMetrics: { by_approach: {}, pairwise_comparisons: {} },
+  dependencyMetrics: { by_approach: {}, pairwise_comparisons: {}, pairwise_comparisons_dependency_only: {} },
   authorship: { meta: {}, top_authors: [], bips_per_year: [], top_10_share: {} },
   classification: { meta: {}, sankey_grouped: { links: [] }, status_over_time: {} },
   evolution: { meta: {}, status_evolution: { categories: [], rows: [] } },
@@ -209,6 +209,8 @@ function resolveDependencyMetricsForLlmModel(dependencyMetrics, llmModel) {
     ...metrics,
     by_approach: byModel[llmModel].by_approach || metrics.by_approach || {},
     pairwise_comparisons: byModel[llmModel].pairwise_comparisons || metrics.pairwise_comparisons || {},
+    pairwise_comparisons_dependency_only: byModel[llmModel].pairwise_comparisons_dependency_only
+      || metrics.pairwise_comparisons_dependency_only || {},
   };
 }
 

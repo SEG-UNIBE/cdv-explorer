@@ -336,7 +336,7 @@ def enrich(
             )
             result = {
                 "status": LLM_RUN_STATUS_API_ERROR,
-                "dependencies": [],
+                "findings": [],
                 "error_message": str(exc),
             }
         if result.get("status") != LLM_RUN_STATUS_SUCCESS:
@@ -354,9 +354,9 @@ def enrich(
             "model": llm_model,
             "timestamp": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
             "status": str(result.get("status") or ""),
-            "dependencies": (
-                list(result.get("dependencies") or [])
-                if isinstance(result.get("dependencies"), list)
+            "findings": (
+                list(result.get("findings") or [])
+                if isinstance(result.get("findings"), list)
                 else []
             ),
         }

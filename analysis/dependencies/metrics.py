@@ -9,6 +9,7 @@ from analysis.dependencies.constants import (
     DEPENDENCY_APPROACH_LABELS,
     DEPENDENCY_APPROACH_ORDER,
     DEPENDENCY_PAIRWISE_COMPARISON_ORDER,
+    DEPENDS_ON_SUBTYPE_BY_APPROACH,
     GROUND_TRUTH_CURATED,
     PREAMBLE_EXTRACTED,
 )
@@ -258,6 +259,25 @@ def _rank_rows(rows: list[dict[str, Any]], field: str) -> dict[str, int]:
     return ranks
 
 
+def _depends_on_links_for_approach(
+    network_data: dict[str, Any], approach_key: str
+) -> list[dict[str, Any]]:
+    """Restrict an approach's links to its technical-dependency subtype only.
+
+    Excludes references/supersedes/superseded_by-typed LLM findings and
+    replaces/proposed_replacement-typed preamble entries, so the "dependency
+    only" pairwise comparison mirrors the DOE ground-truth evaluation mode.
+    """
+    subtype = DEPENDS_ON_SUBTYPE_BY_APPROACH.get(approach_key)
+    if subtype is None:
+        return []
+    return [
+        link
+        for link in _links_for_type(network_data, approach_key)
+        if link.get("relation_type") == subtype
+    ]
+
+
 def _pairwise_cohens_kappa(
     overlap: int,
     approach_only: int,
@@ -287,7 +307,9 @@ def _pairwise_cohens_kappa(
     return float((observed - expected) / (1 - expected))
 
 
-def _build_pairwise_comparisons(network_data: dict[str, Any]) -> dict[str, Any]:
+def _build_pairwise_comparisons(
+    network_data: dict[str, Any], *, type_scope: str = "all"
+) -> dict[str, Any]:
     use_canonical_edges = bool(_canonical_dependency_edges(network_data))
     edge_keys = _network_edge_keys(network_data) if use_canonical_edges else set()
     nodes_by_id = {
@@ -306,9 +328,14 @@ def _build_pairwise_comparisons(network_data: dict[str, Any]) -> dict[str, Any]:
     node_count = len(nodes_by_id)
     candidate_pairs = node_count * (node_count - 1)
 
+    def _approach_links(approach_key: str) -> list[dict[str, Any]]:
+        if type_scope == "depends_on":
+            return _depends_on_links_for_approach(network_data, approach_key)
+        return _links_for_type(network_data, approach_key)
+
     for approach_key in DEPENDENCY_PAIRWISE_COMPARISON_ORDER:
         approach_label = approach_labels[approach_key]
-        approach_links = _links_for_type(network_data, approach_key)
+        approach_links = _approach_links(approach_key)
         approach_edge_keys = {
             (str(link.get("source")), str(link.get("target")))
             for link in approach_links
@@ -316,7 +343,7 @@ def _build_pairwise_comparisons(network_data: dict[str, Any]) -> dict[str, Any]:
 
         for baseline_key in DEPENDENCY_PAIRWISE_COMPARISON_ORDER:
             baseline_label = approach_labels[baseline_key]
-            baseline_links = _links_for_type(network_data, baseline_key)
+            baseline_links = _approach_links(baseline_key)
             baseline_edge_keys = {
                 (str(link.get("source")), str(link.get("target")))
                 for link in baseline_links
@@ -440,6 +467,9 @@ def _extract_dependency_metrics_payload(network_data: dict[str, Any]) -> dict[st
     return {
         "by_approach": by_approach,
         "pairwise_comparisons": _build_pairwise_comparisons(network_data),
+        "pairwise_comparisons_dependency_only": _build_pairwise_comparisons(
+            network_data, type_scope="depends_on"
+        ),
     }
 
 

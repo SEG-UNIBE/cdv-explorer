@@ -368,7 +368,7 @@ test('single-source fetch exposes the published LLM model without extra selectio
               source: 'bips:1',
               target: 'bips:2',
               extraction_method: BODY_EXTRACTED_LLM,
-              relation_type: 'implicit_dependency',
+              relation_type: 'depends_on',
               value: 1,
               llm_model: 'gpt-5.4-mini',
             },
@@ -385,7 +385,7 @@ test('single-source fetch exposes the published LLM model without extra selectio
                   source: 'bips:1',
                   target: 'bips:2',
                   extraction_method: BODY_EXTRACTED_LLM,
-                  relation_type: 'implicit_dependency',
+                  relation_type: 'depends_on',
                   value: 1,
                   llm_model: 'gpt-5.4-mini',
                 },
@@ -545,7 +545,7 @@ test('default type mapping is discovered from data and prefilled from the ontolo
         { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'reference' },
       ],
       [BODY_EXTRACTED_LLM]: [
-        { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'implicit_dependency' },
+        { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'depends_on' },
       ],
       [PREAMBLE_EXTRACTED]: {
         requires: [{ sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'requires' }],
@@ -562,7 +562,7 @@ test('default type mapping is discovered from data and prefilled from the ontolo
     { approach: PREAMBLE_EXTRACTED, subtype: 'replaces', include: true, target: 'supersedes' },
     { approach: PREAMBLE_EXTRACTED, subtype: 'proposed_replacement', include: true, target: 'superseded_by' },
     { approach: BODY_EXTRACTED_REGEX, subtype: 'reference', include: true, target: 'depends_on' },
-    { approach: BODY_EXTRACTED_LLM, subtype: 'implicit_dependency', include: true, target: 'depends_on' },
+    { approach: BODY_EXTRACTED_LLM, subtype: 'depends_on', include: true, target: 'depends_on' },
   ]);
 });
 
@@ -905,7 +905,7 @@ test('editing the type mapping changes which GT type the LLM edges are scored ag
         { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'depends_on' },
       ],
       [BODY_EXTRACTED_LLM]: [
-        { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'implicit_dependency' },
+        { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'depends_on' },
       ],
     },
   };
@@ -919,7 +919,7 @@ test('editing the type mapping changes which GT type the LLM edges are scored ag
   const typeMapping = {
     gtTypes: ['depends_on', 'references'],
     rows: [
-      { approach: BODY_EXTRACTED_LLM, subtype: 'implicit_dependency', include: true, target: 'references' },
+      { approach: BODY_EXTRACTED_LLM, subtype: 'depends_on', include: true, target: 'references' },
     ],
   };
   const edited = buildGroundTruthEvaluation(dataset, {
@@ -983,7 +983,7 @@ test('source-scopes canonical dependency edge graph keys for display', () => {
         source: 'bips:32',
         target: 'slips:44',
         extraction_method: BODY_EXTRACTED_LLM,
-        relation_type: 'implicit_dependency',
+        relation_type: 'depends_on',
         value: 1,
       },
     ],

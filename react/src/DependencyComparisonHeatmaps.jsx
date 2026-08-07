@@ -1,10 +1,14 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { positionTooltip } from './tooltipPosition';
 import { Button } from 'primereact/button';
+import { RadioButton } from 'primereact/radiobutton';
 import {
   BODY_EXTRACTED_REGEX,
   DEFAULT_DEPENDENCY_APPROACH,
   PAIRWISE_LINK_TYPE_OPTIONS,
+  PAIRWISE_MATCH_MODE_ALL,
+  PAIRWISE_MATCH_MODE_DEPENDS_ON,
+  PAIRWISE_MATCH_MODE_OPTIONS,
   getDependencyApproachLabel,
 } from './dependencyApproaches';
 import { ProposalFilterControl } from './ProposalFilterControl';
@@ -13,6 +17,11 @@ import { useDashboardEcosystem, useDashboardLinkMode, useDashboardSnapshot } fro
 import { parseProposalFilterExpression } from './dashboard/dashboardData';
 import { formatProposalLabel, getProposalUrl, normalizeProposalId } from './proposalLinks';
 import { renderTooltipCardHtml } from './tooltipHtml';
+
+const MATCH_MODE_TOOLTIP = '<strong>Edge Only</strong> compares every extracted edge regardless of relation type.'
+  + '<br /><br /><strong>Exact Type</strong> restricts each approach to only its technical-dependency subtype '
+  + '(Preamble <code>requires</code>, Regex <code>reference</code>, LLM <code>depends_on</code>) before comparing overlap, '
+  + 'excluding references/supersedes/superseded_by-typed findings. Both variants are precomputed by the Python pipeline.';
 
 function truncateTitle(value, maxLength = 45) {
   const text = String(value || '').trim();
@@ -283,13 +292,22 @@ function ComparisonTable({
 }
 
 export function DependencyComparisonHeatmaps({
-  pairwiseComparisons,
+  pairwiseComparisons: pairwiseComparisonsAll,
+  pairwiseComparisonsDependencyOnly,
   proposalShortLabel = 'BIP',
   activeLlmModel = '',
 }) {
   const snapshotLabel = useDashboardSnapshot();
   const linkMode = useDashboardLinkMode();
   const ecosystem = useDashboardEcosystem();
+  const [matchMode, setMatchMode] = useState(PAIRWISE_MATCH_MODE_ALL);
+  const pairwiseComparisons = (
+    matchMode === PAIRWISE_MATCH_MODE_DEPENDS_ON
+      ? pairwiseComparisonsDependencyOnly
+      : pairwiseComparisonsAll
+  ) || {};
+  const hasAnyComparisons = Object.keys(pairwiseComparisonsAll || {}).length > 0
+    || Object.keys(pairwiseComparisonsDependencyOnly || {}).length > 0;
   const [selectedComparisonKey, setSelectedComparisonKey] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [sourceFilterText, setSourceFilterText] = useState('');
@@ -529,7 +547,7 @@ export function DependencyComparisonHeatmaps({
     return sortDirection === 'asc' ? ' ↑' : ' ↓';
   };
 
-  if (!pairwiseComparisons || Object.keys(pairwiseComparisons).length === 0) {
+  if (!hasAnyComparisons) {
     return null;
   }
 
@@ -545,6 +563,75 @@ export function DependencyComparisonHeatmaps({
         onMoveTooltip={moveTooltip}
         onHideTooltip={hideTooltip}
       />
+
+      <CollapsibleControls className="dependency-comparison-controls">
+        <div className="network-layout-picker">
+          <div
+            className="network-layout-picker__label gt-help-label"
+            onMouseEnter={(event) => showTooltip(event, MATCH_MODE_TOOLTIP)}
+            onMouseMove={moveTooltip}
+            onMouseLeave={hideTooltip}
+          >
+            Match Mode
+          </div>
+          <div className="network-layout-picker__options">
+            {PAIRWISE_MATCH_MODE_OPTIONS.map((option) => (
+              <label key={option.value} className="network-layout-picker__option">
+                <RadioButton
+                  inputId={`pairwise-match-mode-${option.value}`}
+                  name="pairwise-match-mode"
+                  value={option.value}
+                  onChange={(event) => setMatchMode(event.value)}
+                  checked={matchMode === option.value}
+                />
+                <span>{option.label}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+        {selectedComparison ? (
+          <div className="dependency-comparison-controls__grid">
+            <ProposalFilterControl
+              value={sourceFilterText}
+              onChange={setSourceFilterText}
+              ecosystem={ecosystem}
+              ariaLabel="Filter source proposals for dependency comparison details"
+              layout="split"
+              entryLabel="Filter Proposals (Source)"
+              trailingControl={(
+                <Button
+                  type="button"
+                  label="Clear"
+                  severity="secondary"
+                  text
+                  onClick={() => setSourceFilterText('')}
+                  disabled={!sourceFilterText.trim()}
+                />
+              )}
+              className="dependency-comparison-controls__filter"
+            />
+            <ProposalFilterControl
+              value={targetFilterText}
+              onChange={setTargetFilterText}
+              ecosystem={ecosystem}
+              ariaLabel="Filter target proposals for dependency comparison details"
+              layout="split"
+              entryLabel="Filter Proposals (Target)"
+              trailingControl={(
+                <Button
+                  type="button"
+                  label="Clear"
+                  severity="secondary"
+                  text
+                  onClick={() => setTargetFilterText('')}
+                  disabled={!targetFilterText.trim()}
+                />
+              )}
+              className="dependency-comparison-controls__filter"
+            />
+          </div>
+        ) : null}
+      </CollapsibleControls>
 
       {selectedComparison ? (
         <div className="dependency-comparison-detail">
@@ -567,48 +654,6 @@ export function DependencyComparisonHeatmaps({
               ))}
             </div>
           </div>
-          <CollapsibleControls className="dependency-comparison-controls">
-            <div className="dependency-comparison-controls__grid">
-              <ProposalFilterControl
-                value={sourceFilterText}
-                onChange={setSourceFilterText}
-                ecosystem={ecosystem}
-                ariaLabel="Filter source proposals for dependency comparison details"
-                layout="split"
-                entryLabel="Filter Proposals (Source)"
-                trailingControl={(
-                  <Button
-                    type="button"
-                    label="Clear"
-                    severity="secondary"
-                    text
-                    onClick={() => setSourceFilterText('')}
-                    disabled={!sourceFilterText.trim()}
-                  />
-                )}
-                className="dependency-comparison-controls__filter"
-              />
-              <ProposalFilterControl
-                value={targetFilterText}
-                onChange={setTargetFilterText}
-                ecosystem={ecosystem}
-                ariaLabel="Filter target proposals for dependency comparison details"
-                layout="split"
-                entryLabel="Filter Proposals (Target)"
-                trailingControl={(
-                  <Button
-                    type="button"
-                    label="Clear"
-                    severity="secondary"
-                    text
-                    onClick={() => setTargetFilterText('')}
-                    disabled={!targetFilterText.trim()}
-                  />
-                )}
-                className="dependency-comparison-controls__filter"
-              />
-            </div>
-          </CollapsibleControls>
           <div className="dependency-comparison-table-wrap">
             <table className="analysis-table">
               <thead>

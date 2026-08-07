@@ -38,12 +38,13 @@ export const GROUND_TRUTH_CUTOFF_MODE_OPTIONS = [
 // in the ground truth, regardless of the curated relation type.
 export const GT_TYPE_ALL = '*';
 
+// The LLM approach's subtypes (depends_on/references/supersedes/
+// superseded_by) already equal their canonical ground-truth names, so they
+// need no override here: the generic canonicalToGtType fallback in
+// buildDefaultTypeMapping resolves them directly.
 const DEFAULT_GT_TARGET_BY_APPROACH_SUBTYPE = {
   [BODY_EXTRACTED_REGEX]: {
     reference: 'depends_on',
-  },
-  [BODY_EXTRACTED_LLM]: {
-    implicit_dependency: 'depends_on',
   },
 };
 

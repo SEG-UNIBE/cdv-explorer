@@ -129,12 +129,12 @@ class ArtifactRebuildTests(unittest.TestCase):
                                     {
                                         "model": "gpt-5.4-mini",
                                         "timestamp": "2026-06-01T00:00:00Z",
-                                        "dependencies": [],
+                                        "findings": [],
                                     },
                                     {
                                         "model": "gpt-5.4",
                                         "timestamp": "2026-06-02T00:00:00Z",
-                                        "dependencies": [],
+                                        "findings": [],
                                     },
                                 ]
                             }
@@ -153,7 +153,7 @@ class ArtifactRebuildTests(unittest.TestCase):
                                     {
                                         "model": "gpt-5.4-mini",
                                         "timestamp": "2026-06-03T00:00:00Z",
-                                        "dependencies": [],
+                                        "findings": [],
                                     },
                                 ]
                             }
@@ -186,7 +186,7 @@ class ArtifactRebuildTests(unittest.TestCase):
                                         {
                                             "model": "gpt-5.4-mini",
                                             "timestamp": "2026-06-01T00:00:00Z",
-                                            "dependencies": [],
+                                            "findings": [],
                                         },
                                     ]
                                 }
@@ -220,13 +220,13 @@ class ArtifactRebuildTests(unittest.TestCase):
                                         "model": "gpt-5.4-mini",
                                         "timestamp": "2026-06-01T00:00:00Z",
                                         "status": "failed",
-                                        "dependencies": [],
+                                        "findings": [],
                                     },
                                     {
                                         "model": "gpt-5.4-mini",
                                         "timestamp": "2026-06-02T00:00:00Z",
                                         "status": "success",
-                                        "dependencies": [],
+                                        "findings": [],
                                     },
                                 ]
                             }
@@ -246,7 +246,7 @@ class ArtifactRebuildTests(unittest.TestCase):
                                         "model": "gpt-5.4-mini",
                                         "timestamp": "2026-06-01T00:00:00Z",
                                         "status": "error",
-                                        "dependencies": [],
+                                        "findings": [],
                                     }
                                 ]
                             }
@@ -266,7 +266,7 @@ class ArtifactRebuildTests(unittest.TestCase):
                                         "model": "gpt-5.4-mini",
                                         "timestamp": "2026-06-01T00:00:00Z",
                                         "status": "success",
-                                        "dependencies": [],
+                                        "findings": [],
                                     }
                                 ]
                             }
@@ -347,12 +347,12 @@ class ArtifactRebuildTests(unittest.TestCase):
                                     {
                                         "model": "gpt-5.4-mini",
                                         "timestamp": "2026-06-01T00:00:00Z",
-                                        "dependencies": [],
+                                        "findings": [],
                                     },
                                     {
                                         "model": "gpt-5.4",
                                         "timestamp": "2026-06-02T00:00:00Z",
-                                        "dependencies": [],
+                                        "findings": [],
                                     },
                                 ]
                             }
@@ -381,12 +381,12 @@ class ArtifactRebuildTests(unittest.TestCase):
                                     {
                                         "model": "gpt-5.4-mini",
                                         "timestamp": "2026-06-01T00:00:00Z",
-                                        "dependencies": [],
+                                        "findings": [],
                                     },
                                     {
                                         "model": "gpt-5.4",
                                         "timestamp": "2026-06-02T00:00:00Z",
-                                        "dependencies": [],
+                                        "findings": [],
                                     },
                                 ]
                             }
@@ -419,12 +419,12 @@ class ArtifactRebuildTests(unittest.TestCase):
                                     {
                                         "model": "gpt-5.4-mini",
                                         "timestamp": "2026-06-01T00:00:00Z",
-                                        "dependencies": [],
+                                        "findings": [],
                                     },
                                     {
                                         "model": "gpt-5.4",
                                         "timestamp": "2026-06-02T00:00:00Z",
-                                        "dependencies": [],
+                                        "findings": [],
                                     },
                                 ]
                             }
@@ -449,12 +449,12 @@ class ArtifactRebuildTests(unittest.TestCase):
             {
                 "model": "gpt-5.4-mini",
                 "timestamp": "2026-06-01T00:00:00Z",
-                "dependencies": [{"target": "bips:1"}],
+                "findings": [{"target": "bips:1"}],
             },
             {
                 "model": "gpt-5.4",
                 "timestamp": "2026-06-02T00:00:00Z",
-                "dependencies": [{"target": "bips:2"}],
+                "findings": [{"target": "bips:2"}],
             },
         ]
 
@@ -466,7 +466,7 @@ class ArtifactRebuildTests(unittest.TestCase):
                 {
                     "model": "gpt-5.4",
                     "timestamp": "2026-06-02T00:00:00Z",
-                    "dependencies": [{"target": "bips:2"}],
+                    "findings": [{"target": "bips:2"}],
                 },
             ],
         )
@@ -520,7 +520,7 @@ class ArtifactRebuildTests(unittest.TestCase):
                   ],
                   "dependency_edges": [
                     {"source": "bips:2", "target": "bips:1", "extraction_method": "body_extracted_regex", "relation_type": "reference", "value": 1},
-                    {"source": "bips:3", "target": "bips:1", "extraction_method": "body_extracted_llm", "relation_type": "implicit_dependency", "value": 1},
+                    {"source": "bips:3", "target": "bips:1", "extraction_method": "body_extracted_llm", "relation_type": "depends_on", "value": 1},
                     {"source": "bips:3", "target": "bips:2", "extraction_method": "preamble_extracted", "relation_type": "requires", "value": 1}
                   ]
                 }
@@ -591,7 +591,7 @@ class ArtifactRebuildTests(unittest.TestCase):
                   ],
                   "dependency_edges": [
                     {"source": "bips:2", "target": "bips:1", "extraction_method": "body_extracted_regex", "relation_type": "reference", "value": 1},
-                    {"source": "bips:3", "target": "bips:1", "extraction_method": "body_extracted_llm", "relation_type": "implicit_dependency", "value": 1}
+                    {"source": "bips:3", "target": "bips:1", "extraction_method": "body_extracted_llm", "relation_type": "depends_on", "value": 1}
                   ]
                 }
                 """,
@@ -657,7 +657,7 @@ class ArtifactRebuildTests(unittest.TestCase):
                   ],
                   "dependency_edges": [
                     {"source": "bips:2", "target": "bips:1", "extraction_method": "body_extracted_regex", "relation_type": "reference", "value": 1},
-                    {"source": "bips:3", "target": "bips:1", "extraction_method": "body_extracted_llm", "relation_type": "implicit_dependency", "value": 1}
+                    {"source": "bips:3", "target": "bips:1", "extraction_method": "body_extracted_llm", "relation_type": "depends_on", "value": 1}
                   ]
                 }
                 """,

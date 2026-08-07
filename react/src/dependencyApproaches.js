@@ -17,6 +17,17 @@ export const PAIRWISE_LINK_TYPE_OPTIONS = [
   { label: 'LLM', value: BODY_EXTRACTED_LLM },
 ];
 
+// Which precomputed pairwise_comparisons* payload to read from
+// dependency_metrics.json. Both variants are computed server-side (Python);
+// the UI only selects between them, it never recomputes the comparison.
+export const PAIRWISE_MATCH_MODE_ALL = 'all';
+export const PAIRWISE_MATCH_MODE_DEPENDS_ON = 'depends_on';
+
+export const PAIRWISE_MATCH_MODE_OPTIONS = [
+  { label: 'Edge Only', value: PAIRWISE_MATCH_MODE_ALL },
+  { label: 'Exact Type', value: PAIRWISE_MATCH_MODE_DEPENDS_ON },
+];
+
 export const DEPENDENCY_SHORT_LABELS = {
   [PREAMBLE_EXTRACTED]: 'Preamble',
   [BODY_EXTRACTED_REGEX]: 'Regex',

@@ -320,21 +320,21 @@ class LlmModelConfigTests(unittest.TestCase):
 
         self.assertEqual(record["run_id"], "run-123")
         self.assertEqual(
-            record["method_name"], "llm_assisted_semantic_dependency_extraction"
+            record["method_name"], "llm_assisted_semantic_interrelation_extraction"
         )
         self.assertEqual(
-            record["method_label"], "LLM-Assisted Semantic Dependency Extraction"
+            record["method_label"], "LLM-Assisted Semantic Interrelation Extraction"
         )
-        self.assertEqual(record["method_version"], 4)
+        self.assertEqual(record["method_version"], 6)
         self.assertEqual(record["source_context"]["source_slug"], "bips")
         self.assertIn("{proposal_text}", record["user_prompt_template"])
         self.assertIn("{current_proposal_number}", record["user_prompt_template"])
         self.assertIn(
-            "General knowledge may be used only to resolve",
+            "General knowledge may be used only to map",
             record["system_prompt"],
         )
         self.assertIn(
-            "verbatim contiguous passage that demonstrates reliance",
+            "verbatim contiguous passage that contains enough surrounding context",
             record["system_prompt"],
         )
         self.assertIn("MAIN_LABEL", record["system_prompt"])
@@ -440,7 +440,7 @@ class LlmModelConfigTests(unittest.TestCase):
             )
 
         self.assertEqual(result["status"], "parse_error")
-        self.assertEqual(result["dependencies"], [])
+        self.assertEqual(result["findings"], [])
         self.assertIn("Expecting property name", result["error_message"])
 
     def test_responses_api_reasoning_path_uses_responses_client_with_default_reasoning(
@@ -464,7 +464,7 @@ class LlmModelConfigTests(unittest.TestCase):
         def create_response(**kwargs):
             calls.append(kwargs)
             return types.SimpleNamespace(
-                output_text='{"dependencies":[{"target":"bips:32"}]}'
+                output_text='{"findings":[{"target":"bips:32","type":"depends_on"}]}'
             )
 
         client = types.SimpleNamespace(

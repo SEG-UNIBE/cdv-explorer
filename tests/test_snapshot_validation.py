@@ -70,9 +70,9 @@ class SnapshotValidationTests(unittest.TestCase):
                                         "run_id": "run-1",
                                         "model": "gpt-test",
                                         "status": "success",
-                                        "dependencies": [
-                                            {"target": "slips:39"},
-                                            {"target": "BIP 32"},
+                                        "findings": [
+                                            {"target": "slips:39", "type": "depends_on"},
+                                            {"target": "BIP 32", "type": "depends_on"},
                                         ],
                                     }
                                 ],
@@ -182,7 +182,13 @@ class SnapshotValidationTests(unittest.TestCase):
                 encoding="utf-8",
             )
             (payload_dir / "dependencies" / "dependency_metrics.json").write_text(
-                json.dumps({"by_approach": {}, "pairwise_comparisons": {}}),
+                json.dumps(
+                    {
+                        "by_approach": {},
+                        "pairwise_comparisons": {},
+                        "pairwise_comparisons_dependency_only": {},
+                    }
+                ),
                 encoding="utf-8",
             )
             (payload_dir / "authorship" / "authorship_payload.json").write_text(

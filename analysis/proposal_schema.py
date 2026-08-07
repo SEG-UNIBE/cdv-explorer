@@ -136,7 +136,7 @@ def is_llm_runs_format(value: Any) -> bool:
         and bool(value)
         and isinstance(value[0], dict)
         and "timestamp" in value[0]
-        and "dependencies" in value[0]
+        and "findings" in value[0]
     )
 
 
@@ -147,7 +147,7 @@ def llm_run_status(run: dict[str, Any] | Any) -> str:
     if status:
         return status
     # Legacy runs without an explicit status are treated as successful.
-    if "timestamp" in run and "dependencies" in run:
+    if "timestamp" in run and "findings" in run:
         return LLM_RUN_STATUS_SUCCESS
     return ""
 
@@ -162,13 +162,13 @@ def latest_llm_run(value: Any) -> dict[str, Any] | None:
     return max(value, key=lambda r: str(r.get("timestamp", "")))
 
 
-def latest_llm_dependencies(value: Any) -> list[Any]:
-    """Resolve body_extracted_llm to the latest run's dependency list."""
+def latest_llm_findings(value: Any) -> list[Any]:
+    """Resolve body_extracted_llm to the latest run's findings list."""
     latest = latest_llm_run(value)
     if latest is not None:
         if not is_successful_llm_run(latest):
             return []
-        return list(latest.get("dependencies") or [])
+        return list(latest.get("findings") or [])
     return []
 
 
@@ -194,7 +194,7 @@ def normalize_interrelations(proposal: dict[str, Any]) -> dict[str, Any]:
 
 def get_interrelations(proposal: dict[str, Any]) -> dict[str, Any]:
     interrelations = normalize_interrelations(proposal)
-    interrelations["body_extracted_llm"] = latest_llm_dependencies(
+    interrelations["body_extracted_llm"] = latest_llm_findings(
         interrelations["body_extracted_llm"]
     )
     return interrelations

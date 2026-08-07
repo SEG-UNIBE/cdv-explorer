@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Any
 from xml.etree import ElementTree as ET
 
+from analysis.dependencies.constants import INTERRELATION_TYPES
 from analysis.reference_ids import normalize_reference_id_for_config
 
 GROUND_TRUTH_WORKBOOK_FILENAME = "ground_truth.xlsx"
@@ -44,12 +45,7 @@ REVIEWED_IPS_CSV_COLUMNS = (
     "extracted_target_count",
     "note",
 )
-GROUND_TRUTH_ALLOWED_RELATION_TYPES = {
-    "depends_on",
-    "supersedes",
-    "superseded_by",
-    "references",
-}
+GROUND_TRUTH_ALLOWED_RELATION_TYPES = INTERRELATION_TYPES
 GROUND_TRUTH_ALLOWED_CONFIDENCE = {"low", "medium", "high"}
 REVIEWED_IP_ALLOWED_SAMPLING_STRATEGIES = {"sampler", "manual"}
 REVIEWED_IP_ALLOWED_DENSITY_BUCKETS = {"none", "low", "high"}

@@ -132,9 +132,10 @@ class SchemaRefactorTests(unittest.TestCase):
                         {
                             "model": "gpt-5",
                             "timestamp": "2026-06-01T00:00:00Z",
-                            "dependencies": [
+                            "findings": [
                                 {
                                     "target": "bips:3",
+                                    "type": "depends_on",
                                     "evidence": "depends on BIP 3",
                                     "reason": "It relies on BIP 3.",
                                     "confidence": "high",
@@ -173,9 +174,10 @@ class SchemaRefactorTests(unittest.TestCase):
                 {
                     "model": "gpt-5",
                     "timestamp": "2026-06-01T00:00:00Z",
-                    "dependencies": [
+                    "findings": [
                         {
                             "target": "bips:3",
+                            "type": "depends_on",
                             "evidence": "depends on BIP 3",
                             "reason": "It relies on BIP 3.",
                             "confidence": "high",
@@ -326,9 +328,10 @@ class SchemaRefactorTests(unittest.TestCase):
                         {
                             "model": "gpt-5",
                             "timestamp": "2026-06-01T00:00:00Z",
-                            "dependencies": [
+                            "findings": [
                                 {
                                     "target": "bips:2",
+                                    "type": "depends_on",
                                     "evidence": "depends on BIP 2",
                                     "reason": "It relies on BIP 2.",
                                     "confidence": "high",

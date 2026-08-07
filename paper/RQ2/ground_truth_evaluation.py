@@ -60,13 +60,23 @@ ETA_TYPE_MAPPING = {
         "requires": GT_TYPE_ALL,
     },
     BODY_EXTRACTED_REGEX: {"reference": GT_TYPE_ALL},
-    BODY_EXTRACTED_LLM: {"implicit_dependency": GT_TYPE_ALL},
+    # The LLM approach classifies each finding into one of the four
+    # ground-truth relation types directly, so every subtype maps to the
+    # wildcard target: a match against any ground-truth type on the pair.
+    BODY_EXTRACTED_LLM: {
+        "depends_on": GT_TYPE_ALL,
+        "references": GT_TYPE_ALL,
+        "supersedes": GT_TYPE_ALL,
+        "superseded_by": GT_TYPE_ALL,
+    },
 }
 
 DOE_TYPE_MAPPING = {
     PREAMBLE_EXTRACTED: {"requires": "depends_on"},
     BODY_EXTRACTED_REGEX: {"reference": "depends_on"},
-    BODY_EXTRACTED_LLM: {"implicit_dependency": "depends_on"},
+    # Dependency-only scoring only credits the LLM's own depends_on findings;
+    # its references/supersedes/superseded_by findings are out of scope here.
+    BODY_EXTRACTED_LLM: {"depends_on": "depends_on"},
 }
 
 COUNT_SERIES = [

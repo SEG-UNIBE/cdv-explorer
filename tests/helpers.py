@@ -39,7 +39,7 @@ def proposal(
             {
                 "model": "test-model",
                 "timestamp": "2026-06-01T00:00:00Z",
-                "dependencies": llm_deps,
+                "findings": llm_deps,
             }
         ]
     )

@@ -12,6 +12,7 @@ from typing import Any
 from analysis.dependencies.constants import (
     BODY_EXTRACTED_LLM,
     BODY_EXTRACTED_REGEX,
+    INTERRELATION_TYPES,
     PREAMBLE_EXTRACTED,
 )
 from analysis.proposal_schema import LLM_RUN_STATUS_SUCCESS, LLM_RUN_STATUSES
@@ -30,7 +31,11 @@ from pipeline.source_context import SourceContext
 
 PAYLOAD_REQUIRED_FILES: dict[str, list[str]] = {
     "dependencies/network_data.json": ["nodes", "dependency_edges"],
-    "dependencies/dependency_metrics.json": ["by_approach", "pairwise_comparisons"],
+    "dependencies/dependency_metrics.json": [
+        "by_approach",
+        "pairwise_comparisons",
+        "pairwise_comparisons_dependency_only",
+    ],
     "authorship/authorship_payload.json": [
         "meta",
         "top_authors",
@@ -465,27 +470,38 @@ def _validate_llm_interrelations(
             result.fail(
                 f"{run_path} has invalid `status` `{status}`; allowed: {allowed}"
             )
-        dependencies = run.get("dependencies")
-        if not isinstance(dependencies, list):
-            result.fail(f"{run_path}.dependencies must be a list")
+        findings = run.get("findings")
+        if not isinstance(findings, list):
+            result.fail(f"{run_path}.findings must be a list")
             continue
-        if status and status != LLM_RUN_STATUS_SUCCESS and dependencies:
+        if status and status != LLM_RUN_STATUS_SUCCESS and findings:
             result.fail(
-                f"{run_path}.dependencies must be empty when status is `{status}`"
+                f"{run_path}.findings must be empty when status is `{status}`"
             )
         if status and status != LLM_RUN_STATUS_SUCCESS:
             if not str(run.get("error_message") or "").strip():
                 result.fail(
                     f"{run_path} missing non-empty `error_message` for failed run"
                 )
-        for dep_index, dependency in enumerate(dependencies):
+        for finding_index, finding in enumerate(findings):
+            finding_path = f"{run_path}.findings[{finding_index}]"
             _validate_target_entry(
-                dependency,
-                path=f"{run_path}.dependencies[{dep_index}]",
+                finding,
+                path=finding_path,
                 result=result,
                 source_configs=source_configs,
                 active_source_slug=str(context.source_slug or ""),
             )
+            if not isinstance(finding, Mapping):
+                continue
+            finding_type = finding.get("type")
+            if not isinstance(finding_type, str) or not finding_type.strip():
+                result.fail(f"{finding_path} missing `type`")
+            elif finding_type not in INTERRELATION_TYPES:
+                allowed = ", ".join(sorted(INTERRELATION_TYPES))
+                result.fail(
+                    f"{finding_path} has unknown relation type `{finding_type}`; allowed: {allowed}"
+                )
 
 
 def _validate_git_history(

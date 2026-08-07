@@ -1,0 +1,323 @@
+{
+  "raw": {
+    "preamble": {
+      "slip": "16",
+      "title": "Format for password storage and its encryption",
+      "author": [
+        "Peter Jensen <peteritsjustadream@gmail.com>"
+      ],
+      "status": "Final",
+      "type": "Standard",
+      "created": "2016-18-02"
+    }
+  },
+  "meta": {
+    "last_commit": "2023-11-05T11:40:54+08:00",
+    "total_commits": 12,
+    "git_history": [
+      [
+        "d50e06b4f183e6cd6f2f3f9b68661a32946d4ef8",
+        "2023-11-05T11:40:54+08:00",
+        "GoodDaisy",
+        "90915921+GoodDaisy@users.noreply.github.com"
+      ],
+      [
+        "2a40d4559e32054c7774b5a06b6ffba2f248a689",
+        "2023-02-02T19:51:12Z",
+        "Pavol Rusnak",
+        "pavol@rusnak.io"
+      ],
+      [
+        "508968da89aeb23a07d14109207cbd49aa0ca12a",
+        "2021-03-09T17:28:27+01:00",
+        "Andrew Kozlik",
+        "42678794+andrewkozlik@users.noreply.github.com"
+      ],
+      [
+        "af362ae4010ff69b886a76d91dd6d43bac0c6df6",
+        "2018-02-21T16:47:32+01:00",
+        "Pavol Rusnak",
+        "stick@gk2.sk"
+      ],
+      [
+        "750f3836564ba8af40999bf6ff6860762cbfafc3",
+        "2017-10-04T16:32:17+02:00",
+        "Tomas Susanka",
+        "tsusanka@gmail.com"
+      ],
+      [
+        "40c88470be714e81a5149b50adf2db25ab230bf4",
+        "2017-03-14T21:54:43+01:00",
+        "Pavol Rusnak",
+        "stick@gk2.sk"
+      ],
+      [
+        "bff6ca0cfc0500e03c70f9b9a954bbcdbb32964a",
+        "2016-06-08T18:44:49+02:00",
+        "Pavol Rusnak",
+        "stick@gk2.sk"
+      ],
+      [
+        "05f148de399bda7c54f97b74fa7f34363c686a14",
+        "2016-02-22T16:51:47+01:00",
+        "chren",
+        "peter.privalinec@gmail.com"
+      ],
+      [
+        "98357061ad36a06b9f2754b92d7773af2c6e8ffa",
+        "2016-02-18T20:41:57+01:00",
+        "Pavol Rusnak",
+        "stick@gk2.sk"
+      ],
+      [
+        "26ac59beda94341f0c232ec74b39d9d71690dc1c",
+        "2016-02-18T18:00:22+01:00",
+        "Peter Jensen",
+        "chren-de-large@users.noreply.github.com"
+      ],
+      [
+        "d1fd949052f56df705ad2f45ecf1bbfdf3440024",
+        "2016-02-18T17:56:53+01:00",
+        "Peter Jensen",
+        "chren-de-large@users.noreply.github.com"
+      ],
+      [
+        "908f24102b0b03c845ee97a8871606e43921648f",
+        "2016-02-18T17:54:50+01:00",
+        "Peter Jensen",
+        "chren-de-large@users.noreply.github.com"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 85.71,
+      "passed_checks": 6,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 7,
+      "slip": {
+        "score": 85.71,
+        "passed_checks": 6,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 7,
+        "checks": [
+          {
+            "id": "slip.required_field.slip",
+            "label": "Required field 'slip' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.author",
+            "label": "Required field 'author' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.type",
+            "label": "Required field 'type' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.created",
+            "label": "Required field 'created' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "slip",
+            "passed": false,
+            "details": "Missing: abstract"
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "encryption": 24,
+      "key": 13,
+      "string": 13,
+      "file": 11,
+      "true": 10,
+      "storage": 9,
+      "device": 9,
+      "cipherkeyvalue": 9,
+      "bytes": 9,
+      "output": 9,
+      "nonce": 9,
+      "password": 8,
+      "0": 8,
+      "title": 7,
+      "example": 7,
+      "decryption": 7,
+      "encrypted": 6,
+      "entry": 6,
+      "gcm": 6,
+      "step": 6,
+      "slip": 5,
+      "com": 5,
+      "master": 5,
+      "tags": 5,
+      "level": 5,
+      "deriving": 5,
+      "path": 5,
+      "unlock": 5,
+      "encrypt": 5,
+      "iv": 5,
+      "javascript": 5,
+      "result": 5,
+      "data": 5,
+      "process": 5,
+      "false": 5,
+      "second": 4,
+      "masterkey": 4,
+      "10016": 4,
+      "256": 4,
+      "2": 4,
+      "user": 4,
+      "use": 4,
+      "hex": 4,
+      "aes": 4,
+      "generated": 4,
+      "authtag": 4,
+      "github": 4,
+      "username": 4,
+      "safe_note": 4,
+      "values": 4,
+      "buffer": 4,
+      "array": 4,
+      "0016": 3,
+      "format": 3,
+      "derive": 3,
+      "json": 3,
+      "object": 3,
+      "entries": 3,
+      "following": 3,
+      "length": 3,
+      "2d650551248d792eabf628f451200d7f51cb63e46aadcbb1038aacb05e8c8aee2d650551248d792eabf628f451200d7f51cb63e46aadcbb1038aacb05e8c8aee": 3,
+      "session": 3,
+      "0x80000000": 3,
+      "half": 3,
+      "algorithm": 3,
+      "12": 3,
+      "tag": 3,
+      "https": 3,
+      "keys": 3,
+      "set": 3,
+      "satoshi": 3,
+      "nakamoto": 3,
+      "note": 3,
+      "1": 3,
+      "plain": 3,
+      "described": 3,
+      "later": 3,
+      "type": 2,
+      "hardware": 2,
+      "design": 2,
+      "contains": 2,
+      "max": 2,
+      "enc_value": 2,
+      "128": 2,
+      "0011": 2,
+      "hmac": 2,
+      "filekey": 2,
+      "filename_mess": 2,
+      "pswd": 2,
+      "32": 2,
+      "decrypt": 2,
+      "randomly": 2,
+      "info": 2,
+      "nodejs": 2,
+      "org": 2,
+      "api": 2,
+      "crypto": 2,
+      "html": 2,
+      "stored": 2,
+      "16": 2,
+      "rest": 2,
+      "ciphertext": 2,
+      "setup": 2,
+      "active": 2,
+      "8688105887642a3cbb61889d8762432ef864df107e097d2b19e93c8d808c2e21": 2,
+      "random": 2,
+      "ask": 2,
+      "askonencrypt": 2,
+      "askondecrypt": 2,
+      "want": 2,
+      "somebody": 2,
+      "rob": 2,
+      "instead": 2,
+      "python": 2,
+      "pwd_reader": 2,
+      "py": 2,
+      "trezor": 2
+    },
+    "changes_in_status": [],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        {
+          "target": "bips:32",
+          "count": 1
+        },
+        {
+          "target": "slips:11",
+          "count": 2
+        }
+      ],
+      "body_extracted_llm": [
+        {
+          "run_id": "2026-08-07T12:28:30Z_gpt-5.6-sol_a6f7bf17",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T12:28:50Z",
+          "status": "success",
+          "findings": [
+            {
+              "target": "bips:32",
+              "type": "depends_on",
+              "evidence": "path: `m/10016'/0` (hardened path, see BIP32)",
+              "reason": "Master-key derivation requires the hierarchical path and hardened-derivation semantics defined by BIP32.",
+              "confidence": "high"
+            },
+            {
+              "target": "slips:11",
+              "type": "depends_on",
+              "evidence": "CipherKeyValue is defined in [SLIP-0011](slip-0011.md).",
+              "reason": "The proposal uses CipherKeyValue to derive its master key and encrypt entry-level nonces, so its mechanism requires the operation defined by SLIP-0011.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -348,7 +348,7 @@ class LlmModelConfigTests(unittest.TestCase):
         self.assertEqual(
             record["method_label"], "LLM-Assisted Semantic Interrelation Extraction"
         )
-        self.assertEqual(record["method_version"], 6)
+        self.assertEqual(record["method_version"], 7)
         self.assertEqual(record["source_context"]["source_slug"], "bips")
         self.assertIn("{proposal_text}", record["user_prompt_template"])
         self.assertIn("{current_proposal_number}", record["user_prompt_template"])

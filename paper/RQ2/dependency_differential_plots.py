@@ -65,6 +65,8 @@ DIFF_ARROWHEAD_OVERLAY_WIDTH = 0.0
 DIFF_ARROW_SIZE = 14
 NODE_FILL_ALPHA = PLOT_COLOR_ALPHA
 NODE_LABEL_FONT_SIZE = 7
+HIGHLIGHT_INNER_RING_SIZE_SCALE = 0.72
+HIGHLIGHT_INNER_RING_WIDTH = 0.7
 EDGE_CURVATURE = 0.2
 RECIPROCAL_EDGE_CURVATURE = 0.2
 EDGE_CURVATURE_OVERRIDES = {
@@ -110,7 +112,7 @@ COMBINED_COMPARISON_FIGSIZE = (9, 5)
 DEFAULT_AXIS_MARGIN_SCALE = 0.18
 COMBINED_AXIS_MARGIN_SCALE = 0.1
 COMBINED_SUBPLOT_TITLE_FONT_SIZE = 9.0
-COMBINED_SUBPLOT_TITLE_PAD = 9
+COMBINED_SUBPLOT_TITLE_PAD = 5
 COMBINED_EDGE_LEGEND_FONT_SIZE = 7
 COMBINED_EDGE_LEGEND_TITLE_FONT_SIZE = 7
 COMBINED_EDGE_LEGEND_Y = 0.025
@@ -151,7 +153,10 @@ def _normalize_edge_keys(
     if edges is None:
         return None
     return {
-        (str(int(str(source).rsplit(":", 1)[-1])), str(int(str(target).rsplit(":", 1)[-1])))
+        (
+            str(int(str(source).rsplit(":", 1)[-1])),
+            str(int(str(target).rsplit(":", 1)[-1])),
+        )
         for source, target in edges
     }
 
@@ -623,6 +628,7 @@ def _draw_comparison_plot(
     baseline_type: str,
     layout_name: str,
     title: str,
+    highlighted_node_ids: set[str] | None = None,
     edge_styles: dict[str, dict[str, Any]] | None = None,
     title_fontsize: float | None = None,
     title_pad: float = 20,
@@ -645,6 +651,11 @@ def _draw_comparison_plot(
     ax.set_ylim(axis_limits[2], axis_limits[3])
     ax.set_aspect("equal", adjustable="box")
 
+    highlighted_ids = highlighted_node_ids or set()
+    highlighted_nodes = [
+        node_id for node_id in ordered_nodes if node_id in highlighted_ids
+    ]
+
     nx.draw_networkx_nodes(
         graph,
         pos,
@@ -656,6 +667,21 @@ def _draw_comparison_plot(
         linewidths=1.0,
         ax=ax,
     )
+
+    if highlighted_nodes:
+        node_index = {node_id: index for index, node_id in enumerate(ordered_nodes)}
+        ax.scatter(
+            [pos[node_id][0] for node_id in highlighted_nodes],
+            [pos[node_id][1] for node_id in highlighted_nodes],
+            s=[
+                node_sizes[node_index[node_id]] * HIGHLIGHT_INNER_RING_SIZE_SCALE
+                for node_id in highlighted_nodes
+            ],
+            facecolors="none",
+            edgecolors="black",
+            linewidths=HIGHLIGHT_INNER_RING_WIDTH,
+            zorder=3,
+        )
 
     all_edges = {edge for edgelist in comparison_edges.values() for edge in edgelist}
     for status, edgelist in comparison_edges.items():
@@ -816,6 +842,7 @@ def _save_combined_comparison_plot(
             baseline_type=payload["baseline_type"],
             layout_name=layout_name,
             title=f"({chr(96 + index)}) {payload['subplot_title']}",
+            highlighted_node_ids=payload["highlighted_node_ids"],
             edge_styles=combined_edge_styles,
             title_fontsize=COMBINED_SUBPLOT_TITLE_FONT_SIZE,
             title_pad=COMBINED_SUBPLOT_TITLE_PAD,
@@ -877,6 +904,7 @@ def render_differential_dependency_plots(
     *,
     filename_prefix: str | None = None,
     include_edges: Sequence[tuple[int | str, int | str]] | None = None,
+    highlight_bips_by_subplot: Sequence[Sequence[int | str]] | None = None,
     focus_bips: Sequence[int | str] = DEFAULT_FOCUS_BIPS,
     exclude_bips: Sequence[int | str] | None = DEFAULT_EXCLUDE_BIPS,
     layout_name: str = DEFAULT_LAYOUT_NAME,
@@ -898,7 +926,9 @@ def render_differential_dependency_plots(
         missing_node_ids = display_ids - available_ids
         if missing_node_ids:
             missing = ", ".join(sorted(missing_node_ids, key=int))
-            raise ValueError(f"Included differential BIPs are missing from the data: {missing}")
+            raise ValueError(
+                f"Included differential BIPs are missing from the data: {missing}"
+            )
         included_edge_keys = {
             edge
             for edge in included_edge_keys
@@ -917,9 +947,7 @@ def render_differential_dependency_plots(
     elif layout_export_path is not None:
         layout_export = _load_layout_export(layout_export_path)
         exported_node_ids = _extract_exported_node_ids(layout_export)
-        display_ids, _ = _collect_display_node_ids(
-            network_data, None, exclude_bips
-        )
+        display_ids, _ = _collect_display_node_ids(network_data, None, exclude_bips)
         display_ids &= exported_node_ids
         focus_ids: set[str] = set()
     else:
@@ -932,6 +960,12 @@ def render_differential_dependency_plots(
         focus_ids,
         include_edges=included_edge_keys,
     )
+    subplot_highlights = list(highlight_bips_by_subplot or ())
+    if subplot_highlights and len(subplot_highlights) != len(COMPARISON_PLOTS):
+        raise ValueError(
+            "Differential highlight configuration must provide one BIP set per "
+            f"subplot ({len(COMPARISON_PLOTS)} expected)."
+        )
     if included_edge_keys is not None:
         missing_edges = included_edge_keys - set(layout_graph.edges())
         if missing_edges:
@@ -947,9 +981,7 @@ def render_differential_dependency_plots(
 
     # Keep one shared union-layout graph so both plots inherit identical node positions.
     if layout_export is not None:
-        exported_pos = _extract_exported_positions(
-            layout_export, layout_graph.nodes()
-        )
+        exported_pos = _extract_exported_positions(layout_export, layout_graph.nodes())
         if not exported_pos:
             base_pos = _compute_base_positions(
                 layout_graph, layout_name=DEFAULT_LAYOUT_NAME
@@ -997,7 +1029,7 @@ def render_differential_dependency_plots(
 
     plot_payloads: list[dict[str, Any]] = []
     output_paths: list[Path] = []
-    for plot_spec in COMPARISON_PLOTS:
+    for plot_index, plot_spec in enumerate(COMPARISON_PLOTS):
         comparison_edges = _build_comparison_edges(
             network_data.get("dependency_edges", []),
             approach_type=plot_spec["approach"],
@@ -1011,6 +1043,11 @@ def render_differential_dependency_plots(
                 "approach_type": plot_spec["approach"],
                 "baseline_type": plot_spec["baseline"],
                 "subplot_title": plot_spec.get("subplot_title", plot_spec["title"]),
+                "highlighted_node_ids": (
+                    _normalize_focus_ids(subplot_highlights[plot_index]) & display_ids
+                    if subplot_highlights
+                    else set()
+                ),
             }
         )
         # Disabled: standalone diffdep_react_preamlbe_vs_regex / diffdep_react_regex_vs_llm

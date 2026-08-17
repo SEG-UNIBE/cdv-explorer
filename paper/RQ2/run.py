@@ -19,6 +19,12 @@ GENERATE_TYPE_MAPPING_TABLE = True
 GENERATE_GROUND_TRUTH_DATASET_TABLE = True
 DIFFERENTIAL_FALLBACK_FOCUS_BIPS = [20, 67, 77, 78, 93, 321, 350, 433]
 DIFFERENTIAL_FALLBACK_EXCLUDE_BIPS = [79, 324, 21, 353, 13, 392, 451]
+DIFFERENTIAL_HIGHLIGHT_BIPS_PREAMBLE_VS_REGEX = [77, 173, 67, 16, 48, 123, 20]
+DIFFERENTIAL_HIGHLIGHT_BIPS_REGEX_VS_LLM: list[int] = [48, 67, 350, 341, 77, 173, 78, 174, 32, 39, 321, 20]
+DIFFERENTIAL_HIGHLIGHT_BIPS_BY_SUBPLOT = (
+    DIFFERENTIAL_HIGHLIGHT_BIPS_PREAMBLE_VS_REGEX,
+    DIFFERENTIAL_HIGHLIGHT_BIPS_REGEX_VS_LLM,
+)
 # This directed edge set defines both the visible nodes and the plotted edges.
 # The layout export below supplies coordinates only.
 DIFFERENTIAL_INCLUDE_EDGES = [
@@ -127,6 +133,7 @@ def main() -> None:
                 output_dir=output_dir,
                 filename_prefix=filename_prefix,
                 include_edges=DIFFERENTIAL_INCLUDE_EDGES,
+                highlight_bips_by_subplot=DIFFERENTIAL_HIGHLIGHT_BIPS_BY_SUBPLOT,
                 layout_name=DIFFERENTIAL_LAYOUT_EXPORT_LABEL,
                 layout_export_path=Path(DIFFERENTIAL_LAYOUT_EXPORT),
             )
@@ -135,6 +142,7 @@ def main() -> None:
                 network_data,
                 output_dir=output_dir,
                 filename_prefix=filename_prefix,
+                highlight_bips_by_subplot=DIFFERENTIAL_HIGHLIGHT_BIPS_BY_SUBPLOT,
                 focus_bips=DIFFERENTIAL_FALLBACK_FOCUS_BIPS,
                 exclude_bips=DIFFERENTIAL_FALLBACK_EXCLUDE_BIPS,
                 layout_name=DIFFERENTIAL_LAYOUT,
@@ -144,6 +152,7 @@ def main() -> None:
                     network_data,
                     output_dir=output_dir,
                     filename_prefix=filename_prefix,
+                    highlight_bips_by_subplot=DIFFERENTIAL_HIGHLIGHT_BIPS_BY_SUBPLOT,
                     focus_bips=DIFFERENTIAL_FALLBACK_FOCUS_BIPS,
                     exclude_bips=DIFFERENTIAL_FALLBACK_EXCLUDE_BIPS,
                     layout_name=alt_layout,

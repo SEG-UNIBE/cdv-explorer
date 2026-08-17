@@ -66,7 +66,7 @@ STRUCTURED_OUTPUT_NAME = "semantic_interrelation_list"
 MAX_REFERENCE_DIGITS = 6
 LLM_SEMANTIC_METHOD_NAME = "llm_assisted_semantic_interrelation_extraction"
 LLM_SEMANTIC_METHOD_LABEL = "LLM-Assisted Semantic Interrelation Extraction"
-LLM_SEMANTIC_METHOD_VERSION = 6
+LLM_SEMANTIC_METHOD_VERSION = 7
 
 
 def _strip_top_preamble_block(text: str) -> str:
@@ -881,7 +881,7 @@ Decision rule:
 - A visible mention or citation without functional reliance is `references`. A number, link, or name is never sufficient by itself for `depends_on`.
 - Do not include speculation about future interactions or self-references.
 - Report only relations whose source is the current proposal. Do not report relations stated only between two other proposals.
-- Report at most one relation per target proposal. When more than one relation type would plausibly apply to the same target, report only the single most specific one, in this priority order: `supersedes`/`superseded_by` first, then `depends_on`, then `references`.
+- Assign exactly one primary relation per target proposal. If the text explicitly states a supersession relationship, use `supersedes` or `superseded_by`, according to its direction. Otherwise, use `depends_on` when the functional-necessity criterion is met; otherwise use `references`.
 
 Target resolution:
 - General knowledge may be used only to map a mechanism, format, or standard explicitly named in the proposal text to the specific proposal that canonically defines it.

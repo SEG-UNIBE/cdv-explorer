@@ -224,9 +224,9 @@ def export_type_mapping_latex_table(
             [
                 r"\textbf{Mode}",
                 r"\textbf{Approach}",
-                r"\textbf{Total}",
+                r"\textbf{Findings}",
                 r"\textbf{Edge Type}",
-                r"\textbf{Count}",
+                r"\textbf{Type Count}",
                 "",
                 r"\textbf{GT Type}",
             ]

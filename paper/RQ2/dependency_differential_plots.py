@@ -71,6 +71,8 @@ EDGE_CURVATURE_OVERRIDES = {
     # Nudge this reciprocal edge a bit further left than the shared default.
     ("350", "173"): 0.1,
     ("350", "141"): 0.1,
+    ("93", "173"): -0.2,
+    ("136", "350"): -0.2,
     ("67", "13"): -0.1,
     ("392", "350"): -0.2,
     ("123", "67"): -0.2,
@@ -111,8 +113,10 @@ COMBINED_SUBPLOT_TITLE_FONT_SIZE = 9.0
 COMBINED_SUBPLOT_TITLE_PAD = 9
 COMBINED_EDGE_LEGEND_FONT_SIZE = 7
 COMBINED_EDGE_LEGEND_TITLE_FONT_SIZE = 7
+COMBINED_EDGE_LEGEND_Y = 0.025
 COMBINED_NODE_LEGEND_FONT_SIZE = 7
 COMBINED_NODE_LEGEND_TITLE_FONT_SIZE = 7
+COMBINED_SUBPLOT_W_PAD = -0.5
 
 
 def _build_edge_styles(
@@ -826,7 +830,7 @@ def _save_combined_comparison_plot(
         ax.legend(
             handles=edge_legend_handles,
             loc="upper center",
-            bbox_to_anchor=(0.5, 0.07),
+            bbox_to_anchor=(0.5, COMBINED_EDGE_LEGEND_Y),
             ncol=3,
             handler_map=ARROW_LEGEND_HANDLER_MAP,
             frameon=False,
@@ -858,7 +862,10 @@ def _save_combined_comparison_plot(
             title_fontsize=COMBINED_NODE_LEGEND_TITLE_FONT_SIZE,
         )
 
-    fig.tight_layout(rect=[0.015, 0.13, 0.985, 0.87], w_pad=-1.5)
+    fig.tight_layout(
+        rect=[0.015, 0.13, 0.985, 0.87],
+        w_pad=COMBINED_SUBPLOT_W_PAD,
+    )
     output_path.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(output_path, format="pdf")
     plt.close(fig)

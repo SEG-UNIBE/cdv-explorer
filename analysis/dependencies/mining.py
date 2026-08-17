@@ -202,6 +202,34 @@ def _id_chars_for_reference_config(config: dict[str, Any]) -> str:
     )
 
 
+def _reference_list_patterns(
+    proposal_label: str,
+    reference_pattern: str,
+) -> tuple[re.Pattern[str], str]:
+    is_hex = uses_hex_proposal_ids(proposal_label, reference_pattern)
+    if is_hex:
+        id_pattern = rf"[0-9A-Fa-f]{{1,{MAX_REFERENCE_DIGITS}}}"
+        id_boundary = r"(?![0-9A-Fa-f])"
+        token_pattern = r"[0-9A-Fa-f]+"
+    else:
+        id_pattern = rf"\d{{1,{MAX_REFERENCE_DIGITS}}}"
+        id_boundary = r"(?!\d)"
+        token_pattern = r"\d+"
+
+    # A slash may separate references (for example, "BIPs 33/99"), but it is
+    # also common in paths. Reject a slash item that continues as a filename or
+    # non-numeric path segment, such as "bip-0053/2-BitcoinMerkle.pdf".
+    slash_item_boundary = r"(?![0-9A-Za-z_-]|\.[0-9A-Za-z]|/(?!\s*\d))"
+    list_pattern = re.compile(
+        rf"(?i)\b{re.escape(proposal_label)}s?[-#\s]*("
+        rf"{id_pattern}{id_boundary}"
+        rf"(?:\s*(?:,|and|or)\s*{id_pattern}{id_boundary}"
+        rf"|\s*/\s*{id_pattern}{slash_item_boundary})*"
+        rf")"
+    )
+    return list_pattern, token_pattern
+
+
 def _normalize_with_reference_config(value: Any, config: dict[str, Any]) -> str | None:
     return normalize_reference_id_for_config(
         value,
@@ -268,16 +296,10 @@ def create_reference_list(
                     _format_reference(active_proposal_label, normalized_id)
                 )
 
-        if uses_hex_proposal_ids(active_proposal_label, active_reference_pattern):
-            list_pattern = re.compile(
-                rf"(?i)\b{re.escape(active_proposal_label)}s?[-#\s]*([0-9A-Fa-f]{{1,{MAX_REFERENCE_DIGITS}}}(?![0-9A-Fa-f])(?:\s*(?:,|/|and|or)\s*[0-9A-Fa-f]{{1,{MAX_REFERENCE_DIGITS}}}(?![0-9A-Fa-f]))*)"
-            )
-            token_pattern = r"[0-9A-Fa-f]+"
-        else:
-            list_pattern = re.compile(
-                rf"(?i)\b{re.escape(active_proposal_label)}s?[-#\s]*(\d{{1,{MAX_REFERENCE_DIGITS}}}(?!\d)(?:\s*(?:,|/|and|or)\s*\d{{1,{MAX_REFERENCE_DIGITS}}}(?!\d))*)"
-            )
-            token_pattern = r"\d+"
+        list_pattern, token_pattern = _reference_list_patterns(
+            active_proposal_label,
+            active_reference_pattern,
+        )
 
         for match in list_pattern.findall(raw_content):
             for raw_id in re.findall(token_pattern, match):
@@ -369,16 +391,10 @@ def create_reference_targets(
         active_proposal_label = str(config["proposal_label"])
         active_reference_pattern = str(config["reference_pattern"])
 
-        if uses_hex_proposal_ids(active_proposal_label, active_reference_pattern):
-            list_pattern = re.compile(
-                rf"(?i)\b{re.escape(active_proposal_label)}s?[-#\s]*([0-9A-Fa-f]{{1,{MAX_REFERENCE_DIGITS}}}(?![0-9A-Fa-f])(?:\s*(?:,|/|and|or)\s*[0-9A-Fa-f]{{1,{MAX_REFERENCE_DIGITS}}}(?![0-9A-Fa-f]))*)"
-            )
-            token_pattern = r"[0-9A-Fa-f]+"
-        else:
-            list_pattern = re.compile(
-                rf"(?i)\b{re.escape(active_proposal_label)}s?[-#\s]*(\d{{1,{MAX_REFERENCE_DIGITS}}}(?!\d)(?:\s*(?:,|/|and|or)\s*\d{{1,{MAX_REFERENCE_DIGITS}}}(?!\d))*)"
-            )
-            token_pattern = r"\d+"
+        list_pattern, token_pattern = _reference_list_patterns(
+            active_proposal_label,
+            active_reference_pattern,
+        )
 
         for match in list_pattern.findall(raw_content):
             for raw_id in re.findall(token_pattern, match):

@@ -138,6 +138,13 @@ class CreateReferenceListTests(unittest.TestCase):
 
         self.assertEqual(result, ["BIP 32", "BIP 39", "BIP 44", "SLIP 132"])
 
+    def test_does_not_treat_numeric_filename_path_as_reference_list(self):
+        result = create_reference_list(
+            "See bip-0053/2-BitcoinMerkle.pdf for the diagram."
+        )
+
+        self.assertEqual(result, ["BIP 53"])
+
 
 class CreateReferenceTargetsTests(unittest.TestCase):
     def test_counts_repeated_regex_references_by_target(self):
@@ -187,6 +194,22 @@ class CreateReferenceTargetsTests(unittest.TestCase):
                 {"target": "slips:132", "count": 1},
             ],
         )
+
+    def test_does_not_count_numeric_filename_path_as_second_target(self):
+        context = SourceContext.from_config(
+            ECOSYSTEM_REGISTRY["bitcoin"]["sources"]["bips"],
+            ecosystem_slug="bitcoin",
+            source_slug="bips",
+        )
+
+        result = create_reference_targets(
+            "See bip-0053/2-BitcoinMerkle.pdf for the diagram.",
+            proposal_label="BIP",
+            reference_pattern=r"\bBIP[-#\s]?(\d+)\b",
+            source_context=context,
+        )
+
+        self.assertEqual(result, [{"target": "bips:53", "count": 1}])
 
     def test_detects_sibling_source_targets(self):
         context = SourceContext.from_config(

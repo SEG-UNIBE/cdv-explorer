@@ -17,14 +17,54 @@ GENERATE_CENTRALITY_TOP5_TABLE = True
 GENERATE_GROUND_TRUTH_EVALUATION_PLOT = True
 GENERATE_TYPE_MAPPING_TABLE = True
 GENERATE_GROUND_TRUTH_DATASET_TABLE = True
-DIFFERENTIAL_FOCUS_BIPS = [20, 67, 77, 78, 93, 321, 350, 433]
-EXCLUDE_BIPS = [79, 324, 21, 353, 13, 392, 451]
+DIFFERENTIAL_FALLBACK_FOCUS_BIPS = [20, 67, 77, 78, 93, 321, 350, 433]
+DIFFERENTIAL_FALLBACK_EXCLUDE_BIPS = [79, 324, 21, 353, 13, 392, 451]
+# This directed edge set defines both the visible nodes and the plotted edges.
+# The layout export below supplies coordinates only.
+DIFFERENTIAL_INCLUDE_EDGES = [
+    (32, 39),
+    (48, 67),
+    (67, 11),
+    (67, 16),
+    (67, 45),
+    (77, 78),
+    (77, 173),
+    (77, 174),
+    (77, 321),
+    (78, 174),
+    (87, 67),
+    (93, 32),
+    (93, 39),
+    (93, 173),
+    (118, 350),
+    (123, 20),
+    (123, 67),
+    (128, 433),
+    (136, 350),
+    (173, 350),
+    (321, 20),
+    (321, 173),
+    (321, 350),
+    (321, 351),
+    (321, 352),
+    (341, 350),
+    (347, 340),
+    (350, 141),
+    (350, 173),
+    (350, 341),
+    (351, 350),
+    (352, 350),
+    (360, 350),
+    (433, 141),
+    (433, 350),
+    (433, 431),
+]
 
 DIFFERENTIAL_LAYOUT = "kamada_kawai"
 DIFFERENTIAL_LAYOUT_EXPORT = (
     Path("paper")
     / "RQ2"
-    / "dependency_layout_260630_BIP67_BIP77_BIP78_BIP93_BIP321_BIP350_BIP433.json"
+    / "dependency_layout_260630_BIP20_BIP67_BIP77_BIP78_BIP93_BIP321_BIP347_BIP350_BIP433.json"
 )
 DIFFERENTIAL_LAYOUT_EXPORT_LABEL = "react"
 DIFFERENTIAL_ALTERNATIVE_LAYOUTS = [
@@ -85,8 +125,7 @@ def main() -> None:
                 network_data,
                 output_dir=output_dir,
                 filename_prefix=filename_prefix,
-                focus_bips=DIFFERENTIAL_FOCUS_BIPS,
-                exclude_bips=EXCLUDE_BIPS,
+                include_edges=DIFFERENTIAL_INCLUDE_EDGES,
                 layout_name=DIFFERENTIAL_LAYOUT_EXPORT_LABEL,
                 layout_export_path=Path(DIFFERENTIAL_LAYOUT_EXPORT),
             )
@@ -95,8 +134,8 @@ def main() -> None:
                 network_data,
                 output_dir=output_dir,
                 filename_prefix=filename_prefix,
-                focus_bips=DIFFERENTIAL_FOCUS_BIPS,
-                exclude_bips=EXCLUDE_BIPS,
+                focus_bips=DIFFERENTIAL_FALLBACK_FOCUS_BIPS,
+                exclude_bips=DIFFERENTIAL_FALLBACK_EXCLUDE_BIPS,
                 layout_name=DIFFERENTIAL_LAYOUT,
             )
             for alt_layout in DIFFERENTIAL_ALTERNATIVE_LAYOUTS:
@@ -104,8 +143,8 @@ def main() -> None:
                     network_data,
                     output_dir=output_dir,
                     filename_prefix=filename_prefix,
-                    focus_bips=DIFFERENTIAL_FOCUS_BIPS,
-                    exclude_bips=EXCLUDE_BIPS,
+                    focus_bips=DIFFERENTIAL_FALLBACK_FOCUS_BIPS,
+                    exclude_bips=DIFFERENTIAL_FALLBACK_EXCLUDE_BIPS,
                     layout_name=alt_layout,
                 )
     if GENERATE_GROUND_TRUTH_EVALUATION_PLOT:

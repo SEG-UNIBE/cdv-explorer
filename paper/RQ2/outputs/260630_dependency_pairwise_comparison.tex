@@ -7,20 +7,20 @@
     \renewcommand{\arraystretch}{1.3}%
     \begin{tabular}{cc|ccc}
         \toprule
-        \diagbox{\textbf{$A$}}{\textbf{$B$}} & \textbf{Metric} & \begin{tabular}[c]{@{}c@{}}\textbf{Preamble}\\(90)\end{tabular} & \begin{tabular}[c]{@{}c@{}}\textbf{Regex}\\(739)\end{tabular} & \begin{tabular}[c]{@{}c@{}}\textbf{LLM}\\(877)\end{tabular} \\
+        \diagbox{\textbf{$A$}}{\textbf{$B$}} & \textbf{Metric} & \begin{tabular}[c]{@{}c@{}}\textbf{Preamble}\\(90)\end{tabular} & \begin{tabular}[c]{@{}c@{}}\textbf{Regex}\\(734)\end{tabular} & \begin{tabular}[c]{@{}c@{}}\textbf{LLM}\\(877)\end{tabular} \\
         \midrule%
-        \multirow{4}{*}{\begin{tabular}[c]{@{}c@{}}\textbf{Preamble}\\(90)\end{tabular}} & $A \cap B$ & \textcolor[gray]{0.65}{90 (100.0\%)} & 82 (11.1\%) & 83 (9.5\%) \\
-         & $A' \cap B$ & \textcolor[gray]{0.65}{0 (0.0\%)} & 657 (88.9\%) & 794 (90.5\%) \\
+        \multirow{4}{*}{\begin{tabular}[c]{@{}c@{}}\textbf{Preamble}\\(90)\end{tabular}} & $A \cap B$ & \textcolor[gray]{0.65}{90 (100.0\%)} & 82 (11.2\%) & 83 (9.5\%) \\
+         & $A' \cap B$ & \textcolor[gray]{0.65}{0 (0.0\%)} & 652 (88.8\%) & 794 (90.5\%) \\
          & $A \cap B'$ & \textcolor[gray]{0.65}{0 (0.0\%)} & 8 (8.9\%) & 7 (7.8\%) \\
-         & $\kappa$ & \textcolor[gray]{0.65}{1.00} & 0.19 & 0.17 \\
+         & $\kappa$ & \textcolor[gray]{0.65}{1.00} & 0.20 & 0.17 \\
         \midrule%
-        \multirow{4}{*}{\begin{tabular}[c]{@{}c@{}}\textbf{Regex}\\(739)\end{tabular}} & $A \cap B$ & 82 (91.1\%) & \textcolor[gray]{0.65}{739 (100.0\%)} & 730 (83.2\%) \\
+        \multirow{4}{*}{\begin{tabular}[c]{@{}c@{}}\textbf{Regex}\\(734)\end{tabular}} & $A \cap B$ & 82 (91.1\%) & \textcolor[gray]{0.65}{734 (100.0\%)} & 730 (83.2\%) \\
          & $A' \cap B$ & 8 (8.9\%) & \textcolor[gray]{0.65}{0 (0.0\%)} & 147 (16.8\%) \\
-         & $A \cap B'$ & 657 (88.9\%) & \textcolor[gray]{0.65}{0 (0.0\%)} & 9 (1.2\%) \\
-         & $\kappa$ & 0.19 & \textcolor[gray]{0.65}{1.00} & 0.90 \\
+         & $A \cap B'$ & 652 (88.8\%) & \textcolor[gray]{0.65}{0 (0.0\%)} & 4 (0.5\%) \\
+         & $\kappa$ & 0.20 & \textcolor[gray]{0.65}{1.00} & 0.90 \\
         \midrule%
-        \multirow{4}{*}{\begin{tabular}[c]{@{}c@{}}\textbf{LLM}\\(877)\end{tabular}} & $A \cap B$ & 83 (92.2\%) & 730 (98.8\%) & \textcolor[gray]{0.65}{877 (100.0\%)} \\
-         & $A' \cap B$ & 7 (7.8\%) & 9 (1.2\%) & \textcolor[gray]{0.65}{0 (0.0\%)} \\
+        \multirow{4}{*}{\begin{tabular}[c]{@{}c@{}}\textbf{LLM}\\(877)\end{tabular}} & $A \cap B$ & 83 (92.2\%) & 730 (99.5\%) & \textcolor[gray]{0.65}{877 (100.0\%)} \\
+         & $A' \cap B$ & 7 (7.8\%) & 4 (0.5\%) & \textcolor[gray]{0.65}{0 (0.0\%)} \\
          & $A \cap B'$ & 794 (90.5\%) & 147 (16.8\%) & \textcolor[gray]{0.65}{0 (0.0\%)} \\
          & $\kappa$ & 0.17 & 0.90 & \textcolor[gray]{0.65}{1.00} \\
         \bottomrule

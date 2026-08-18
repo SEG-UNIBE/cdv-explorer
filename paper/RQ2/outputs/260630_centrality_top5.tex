@@ -4,29 +4,91 @@
     \setlength{\belowbottomsep}{0pt}%
     \setlength{\aboverulesep}{0pt}%
     \setlength{\belowrulesep}{0pt}%
+    \setlength{\fboxsep}{1.5pt}%
+    \newlength{\BadgeWidthTmp}%
+    \newlength{\BadgeIdWidth}%
+    \setlength{\BadgeIdWidth}{0pt}%
+    \settowidth{\BadgeWidthTmp}{\BIPC{380}{white}}%
+    \ifdim\BadgeWidthTmp>\BadgeIdWidth \setlength{\BadgeIdWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\BIPC{340}{white}}%
+    \ifdim\BadgeWidthTmp>\BadgeIdWidth \setlength{\BadgeIdWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\BIPC{321}{white}}%
+    \ifdim\BadgeWidthTmp>\BadgeIdWidth \setlength{\BadgeIdWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\BIPC{21}{blue!70!black}}%
+    \ifdim\BadgeWidthTmp>\BadgeIdWidth \setlength{\BadgeIdWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\BIPC{341}{white}}%
+    \ifdim\BadgeWidthTmp>\BadgeIdWidth \setlength{\BadgeIdWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\BIPC{2}{white}}%
+    \ifdim\BadgeWidthTmp>\BadgeIdWidth \setlength{\BadgeIdWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\BIPC{32}{violet!70!black}}%
+    \ifdim\BadgeWidthTmp>\BadgeIdWidth \setlength{\BadgeIdWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\BIPC{9}{green!55!black}}%
+    \ifdim\BadgeWidthTmp>\BadgeIdWidth \setlength{\BadgeIdWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\BIPC{141}{red!75!black}}%
+    \ifdim\BadgeWidthTmp>\BadgeIdWidth \setlength{\BadgeIdWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\BIPC{112}{red!75!black}}%
+    \ifdim\BadgeWidthTmp>\BadgeIdWidth \setlength{\BadgeIdWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\BIPC{68}{blue!70!black}}%
+    \ifdim\BadgeWidthTmp>\BadgeIdWidth \setlength{\BadgeIdWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\BIPC{65}{green!55!black}}%
+    \ifdim\BadgeWidthTmp>\BadgeIdWidth \setlength{\BadgeIdWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\BIPC{70}{violet!70!black}}%
+    \ifdim\BadgeWidthTmp>\BadgeIdWidth \setlength{\BadgeIdWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\BIPC{16}{teal!85!black}}%
+    \ifdim\BadgeWidthTmp>\BadgeIdWidth \setlength{\BadgeIdWidth}{\BadgeWidthTmp}\fi%
+    \newlength{\BadgeTitleWidth}%
+    \setlength{\BadgeTitleWidth}{0pt}%
+    \settowidth{\BadgeWidthTmp}{\textcolor{white}{Output Sc\mydots}}%
+    \ifdim\BadgeWidthTmp>\BadgeTitleWidth \setlength{\BadgeTitleWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\textcolor{white}{Schnorr S\mydots}}%
+    \ifdim\BadgeWidthTmp>\BadgeTitleWidth \setlength{\BadgeTitleWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\textcolor{white}{URI Schem\mydots}}%
+    \ifdim\BadgeWidthTmp>\BadgeTitleWidth \setlength{\BadgeTitleWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\textcolor{blue!70!black}{URI Schem\mydots}}%
+    \ifdim\BadgeWidthTmp>\BadgeTitleWidth \setlength{\BadgeTitleWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\textcolor{white}{Taproot:\mydots}}%
+    \ifdim\BadgeWidthTmp>\BadgeTitleWidth \setlength{\BadgeTitleWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\textcolor{white}{BIP proce\mydots}}%
+    \ifdim\BadgeWidthTmp>\BadgeTitleWidth \setlength{\BadgeTitleWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\textcolor{violet!70!black}{Hierarchi\mydots}}%
+    \ifdim\BadgeWidthTmp>\BadgeTitleWidth \setlength{\BadgeTitleWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\textcolor{green!55!black}{Version b\mydots}}%
+    \ifdim\BadgeWidthTmp>\BadgeTitleWidth \setlength{\BadgeTitleWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\textcolor{red!75!black}{Segregate\mydots}}%
+    \ifdim\BadgeWidthTmp>\BadgeTitleWidth \setlength{\BadgeTitleWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\textcolor{red!75!black}{CHECKSE\mydots}}%
+    \ifdim\BadgeWidthTmp>\BadgeTitleWidth \setlength{\BadgeTitleWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\textcolor{blue!70!black}{Relative\mydots}}%
+    \ifdim\BadgeWidthTmp>\BadgeTitleWidth \setlength{\BadgeTitleWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\textcolor{green!55!black}{OP\_CHEC\mydots}}%
+    \ifdim\BadgeWidthTmp>\BadgeTitleWidth \setlength{\BadgeTitleWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\textcolor{violet!70!black}{Payment P\mydots}}%
+    \ifdim\BadgeWidthTmp>\BadgeTitleWidth \setlength{\BadgeTitleWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\textcolor{teal!85!black}{Pay to Sc\mydots}}%
+    \ifdim\BadgeWidthTmp>\BadgeTitleWidth \setlength{\BadgeTitleWidth}{\BadgeWidthTmp}\fi%
     \setlength{\tabcolsep}{4pt}%
     \renewcommand{\arraystretch}{1.15}%
     \begin{tabular}{c@{\;}c|l@{\,}l@{\quad}r|l@{\,}l@{\quad}r|l@{\,}l@{\quad}r|l@{\,}l@{\quad}r}
         \toprule
         \multicolumn{2}{c|}{\textbf{Approach}} & \multicolumn{3}{c|}{\textbf{In Degree}} & \multicolumn{3}{c|}{\textbf{WEV}} & \multicolumn{3}{c|}{\textbf{PageRank}} & \multicolumn{3}{c}{\textbf{BC}} \\
         \midrule%
-        \multirow{5}{*}{\textbf{Preamble}} & \textit{\textcolor{gray}{(1)}} & \BIPC{380}{red!70!black} & \textcolor{red!70!black}{Output\mydots} & 13 & \BIPC{20}{black} & URI Sch\mydots & 0.507 & \BIPC{380}{red!70!black} & \textcolor{red!70!black}{Output\mydots} & 0.035 & \BIPC{352}{black} & Silent\mydots & 0.0002 \\
-         & \textit{\textcolor{gray}{(2)}} & \BIPC{340}{blue!70!black} & \textcolor{blue!70!black}{Schnorr\mydots} & 8 & \BIPC{321}{black} & URI Sch\mydots & 0.507 & \BIPC{21}{orange!80!black} & \textcolor{orange!80!black}{URI Sch\mydots} & 0.032 & \BIPC{350}{black} & Bech32m\mydots & 0.0002 \\
-         & \textit{\textcolor{gray}{(3)}} & \BIPC{341}{black} & Taproot\mydots & 8 & \BIPC{1}{black} & BIP Pur\mydots & 0.338 & \BIPC{78}{black} & A Simpl\mydots & 0.023 & \BIPC{173}{black} & Base32\mydots & 0.0002 \\
-         & \textit{\textcolor{gray}{(4)}} & \BIPC{174}{black} & Partial\mydots & 5 & \BIPC{2}{teal} & \textcolor{teal}{BIP pro\mydots} & 0.338 & \BIPC{79}{black} & Bustapa\mydots & 0.023 & \BIPC{21}{orange!80!black} & \textcolor{orange!80!black}{URI Sch\mydots} & 0.0001 \\
-         & \textit{\textcolor{gray}{(5)}} & \BIPC{32}{black} & Hierarc\mydots & 5 & \BIPC{21}{orange!80!black} & \textcolor{orange!80!black}{URI Sch\mydots} & 0.338 & \BIPC{340}{blue!70!black} & \textcolor{blue!70!black}{Schnorr\mydots} & 0.022 & \BIPC{2}{teal} & \textcolor{teal}{BIP pro\mydots} & 0.0001 \\
+        \multirow{5}{*}{\textbf{Preamble}} & \textit{\textcolor{gray}{(1)}} & \multicolumn{2}{l}{\colorbox{green!55!black}{\makebox[\BadgeIdWidth][l]{\BIPC{380}{white}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{white}{Output Sc\mydots}}}} & 13 & \BIPC{20}{black} & URI Schem\mydots & 0.507 & \multicolumn{2}{l}{\colorbox{green!55!black}{\makebox[\BadgeIdWidth][l]{\BIPC{380}{white}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{white}{Output Sc\mydots}}}} & 0.035 & \BIPC{352}{black} & Silent Pa\mydots & 0.0002 \\
+         & \textit{\textcolor{gray}{(2)}} & \multicolumn{2}{l}{\colorbox{violet!70!black}{\makebox[\BadgeIdWidth][l]{\BIPC{340}{white}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{white}{Schnorr S\mydots}}}} & 8 & \multicolumn{2}{l}{\colorbox{blue!70!black}{\makebox[\BadgeIdWidth][l]{\BIPC{321}{white}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{white}{URI Schem\mydots}}}} & 0.507 & \multicolumn{2}{l}{\colorbox{blue!10}{\makebox[\BadgeIdWidth][l]{\BIPC{21}{blue!70!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{blue!70!black}{URI Schem\mydots}}}} & 0.032 & \BIPC{350}{black} & Bech32m f\mydots & 0.0002 \\
+         & \textit{\textcolor{gray}{(3)}} & \multicolumn{2}{l}{\colorbox{red!75!black}{\makebox[\BadgeIdWidth][l]{\BIPC{341}{white}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{white}{Taproot:\mydots}}}} & 8 & \BIPC{1}{black} & BIP Purpo\mydots & 0.338 & \BIPC{78}{black} & A Simple\mydots & 0.023 & \BIPC{173}{black} & Base32 ad\mydots & 0.0002 \\
+         & \textit{\textcolor{gray}{(4)}} & \BIPC{174}{black} & Partially\mydots & 5 & \multicolumn{2}{l}{\colorbox{teal!85!black}{\makebox[\BadgeIdWidth][l]{\BIPC{2}{white}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{white}{BIP proce\mydots}}}} & 0.338 & \BIPC{79}{black} & Bustapay\mydots & 0.023 & \multicolumn{2}{l}{\colorbox{blue!10}{\makebox[\BadgeIdWidth][l]{\BIPC{21}{blue!70!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{blue!70!black}{URI Schem\mydots}}}} & 0.0001 \\
+         & \textit{\textcolor{gray}{(5)}} & \multicolumn{2}{l}{\colorbox{violet!12}{\makebox[\BadgeIdWidth][l]{\BIPC{32}{violet!70!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{violet!70!black}{Hierarchi\mydots}}}} & 5 & \multicolumn{2}{l}{\colorbox{blue!10}{\makebox[\BadgeIdWidth][l]{\BIPC{21}{blue!70!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{blue!70!black}{URI Schem\mydots}}}} & 0.338 & \multicolumn{2}{l}{\colorbox{violet!70!black}{\makebox[\BadgeIdWidth][l]{\BIPC{340}{white}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{white}{Schnorr S\mydots}}}} & 0.022 & \multicolumn{2}{l}{\colorbox{teal!85!black}{\makebox[\BadgeIdWidth][l]{\BIPC{2}{white}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{white}{BIP proce\mydots}}}} & 0.0001 \\
         \midrule%
-        \multirow{5}{*}{\textbf{Regex}} & \textit{\textcolor{gray}{(1)}} & \BIPC{32}{red!70!black} & \textcolor{red!70!black}{Hierarc\mydots} & 44 & \BIPC{9}{teal} & \textcolor{teal}{Version\mydots} & 0.457 & \BIPC{32}{red!70!black} & \textcolor{red!70!black}{Hierarc\mydots} & 0.107 & \BIPC{141}{blue!70!black} & \textcolor{blue!70!black}{Segrega\mydots} & 0.0887 \\
-         & \textit{\textcolor{gray}{(2)}} & \BIPC{141}{blue!70!black} & \textcolor{blue!70!black}{Segrega\mydots} & 31 & \BIPC{112}{black} & CHECK\mydots & 0.368 & \BIPC{39}{black} & Mnemoni\mydots & 0.095 & \BIPC{21}{black} & URI Sch\mydots & 0.0648 \\
-         & \textit{\textcolor{gray}{(3)}} & \BIPC{341}{black} & Taproot\mydots & 28 & \BIPC{68}{black} & Relativ\mydots & 0.367 & \BIPC{9}{teal} & \textcolor{teal}{Version\mydots} & 0.038 & \BIPC{321}{black} & URI Sch\mydots & 0.0622 \\
-         & \textit{\textcolor{gray}{(4)}} & \BIPC{9}{teal} & \textcolor{teal}{Version\mydots} & 25 & \BIPC{65}{black} & OP\_CH\mydots & 0.366 & \BIPC{34}{black} & Block v\mydots & 0.033 & \BIPC{70}{black} & Payment\mydots & 0.0533 \\
-         & \textit{\textcolor{gray}{(5)}} & \BIPC{16}{black} & Pay to\mydots & 24 & \BIPC{113}{black} & Median\mydots & 0.318 & \BIPC{141}{blue!70!black} & \textcolor{blue!70!black}{Segrega\mydots} & 0.030 & \BIPC{72}{black} & bitcoin\mydots & 0.0497 \\
+        \multirow{5}{*}{\textbf{Regex}} & \textit{\textcolor{gray}{(1)}} & \multicolumn{2}{l}{\colorbox{violet!12}{\makebox[\BadgeIdWidth][l]{\BIPC{32}{violet!70!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{violet!70!black}{Hierarchi\mydots}}}} & 44 & \multicolumn{2}{l}{\colorbox{green!13}{\makebox[\BadgeIdWidth][l]{\BIPC{9}{green!55!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{green!55!black}{Version b\mydots}}}} & 0.457 & \multicolumn{2}{l}{\colorbox{violet!12}{\makebox[\BadgeIdWidth][l]{\BIPC{32}{violet!70!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{violet!70!black}{Hierarchi\mydots}}}} & 0.107 & \multicolumn{2}{l}{\colorbox{red!12}{\makebox[\BadgeIdWidth][l]{\BIPC{141}{red!75!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{red!75!black}{Segregate\mydots}}}} & 0.0887 \\
+         & \textit{\textcolor{gray}{(2)}} & \multicolumn{2}{l}{\colorbox{red!12}{\makebox[\BadgeIdWidth][l]{\BIPC{141}{red!75!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{red!75!black}{Segregate\mydots}}}} & 31 & \multicolumn{2}{l}{\colorbox{blue!10}{\makebox[\BadgeIdWidth][l]{\BIPC{112}{red!75!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{red!75!black}{CHECKSE\mydots}}}} & 0.368 & \BIPC{39}{black} & Mnemonic\mydots & 0.095 & \multicolumn{2}{l}{\colorbox{blue!10}{\makebox[\BadgeIdWidth][l]{\BIPC{21}{blue!70!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{blue!70!black}{URI Schem\mydots}}}} & 0.0648 \\
+         & \textit{\textcolor{gray}{(3)}} & \multicolumn{2}{l}{\colorbox{red!75!black}{\makebox[\BadgeIdWidth][l]{\BIPC{341}{white}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{white}{Taproot:\mydots}}}} & 28 & \multicolumn{2}{l}{\colorbox{green!13}{\makebox[\BadgeIdWidth][l]{\BIPC{68}{blue!70!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{blue!70!black}{Relative\mydots}}}} & 0.367 & \multicolumn{2}{l}{\colorbox{green!13}{\makebox[\BadgeIdWidth][l]{\BIPC{9}{green!55!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{green!55!black}{Version b\mydots}}}} & 0.038 & \multicolumn{2}{l}{\colorbox{blue!70!black}{\makebox[\BadgeIdWidth][l]{\BIPC{321}{white}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{white}{URI Schem\mydots}}}} & 0.0622 \\
+         & \textit{\textcolor{gray}{(4)}} & \multicolumn{2}{l}{\colorbox{green!13}{\makebox[\BadgeIdWidth][l]{\BIPC{9}{green!55!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{green!55!black}{Version b\mydots}}}} & 25 & \multicolumn{2}{l}{\colorbox{violet!12}{\makebox[\BadgeIdWidth][l]{\BIPC{65}{green!55!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{green!55!black}{OP\_CHEC\mydots}}}} & 0.366 & \BIPC{34}{black} & Block v2,\mydots & 0.033 & \multicolumn{2}{l}{\colorbox{teal!12}{\makebox[\BadgeIdWidth][l]{\BIPC{70}{violet!70!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{violet!70!black}{Payment P\mydots}}}} & 0.0533 \\
+         & \textit{\textcolor{gray}{(5)}} & \multicolumn{2}{l}{\colorbox{teal!12}{\makebox[\BadgeIdWidth][l]{\BIPC{16}{teal!85!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{teal!85!black}{Pay to Sc\mydots}}}} & 24 & \BIPC{113}{black} & Median ti\mydots & 0.318 & \multicolumn{2}{l}{\colorbox{red!12}{\makebox[\BadgeIdWidth][l]{\BIPC{141}{red!75!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{red!75!black}{Segregate\mydots}}}} & 0.030 & \BIPC{72}{black} & bitcoin:\mydots & 0.0497 \\
         \midrule%
-        \multirow{5}{*}{\textbf{LLM}} & \textit{\textcolor{gray}{(1)}} & \BIPC{141}{red!70!black} & \textcolor{red!70!black}{Segrega\mydots} & 58 & \BIPC{9}{teal} & \textcolor{teal}{Version\mydots} & 0.403 & \BIPC{12}{black} & OP\_EV\mydots & 0.097 & \BIPC{141}{red!70!black} & \textcolor{red!70!black}{Segrega\mydots} & 0.1139 \\
-         & \textit{\textcolor{gray}{(2)}} & \BIPC{16}{blue!70!black} & \textcolor{blue!70!black}{Pay to\mydots} & 48 & \BIPC{16}{blue!70!black} & \textcolor{blue!70!black}{Pay to\mydots} & 0.378 & \BIPC{13}{black} & Address\mydots & 0.066 & \BIPC{21}{black} & URI Sch\mydots & 0.0733 \\
-         & \textit{\textcolor{gray}{(3)}} & \BIPC{32}{black} & Hierarc\mydots & 48 & \BIPC{112}{black} & CHECK\mydots & 0.324 & \BIPC{11}{black} & M-of-N\mydots & 0.065 & \BIPC{321}{black} & URI Sch\mydots & 0.0701 \\
-         & \textit{\textcolor{gray}{(4)}} & \BIPC{341}{black} & Taproot\mydots & 37 & \BIPC{68}{black} & Relativ\mydots & 0.323 & \BIPC{16}{blue!70!black} & \textcolor{blue!70!black}{Pay to\mydots} & 0.059 & \BIPC{70}{black} & Payment\mydots & 0.0685 \\
-         & \textit{\textcolor{gray}{(5)}} & \BIPC{9}{teal} & \textcolor{teal}{Version\mydots} & 26 & \BIPC{65}{black} & OP\_CH\mydots & 0.322 & \BIPC{141}{red!70!black} & \textcolor{red!70!black}{Segrega\mydots} & 0.035 & \BIPC{351}{black} & Private\mydots & 0.0529 \\
+        \multirow{5}{*}{\textbf{LLM}} & \textit{\textcolor{gray}{(1)}} & \multicolumn{2}{l}{\colorbox{red!12}{\makebox[\BadgeIdWidth][l]{\BIPC{141}{red!75!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{red!75!black}{Segregate\mydots}}}} & 58 & \multicolumn{2}{l}{\colorbox{green!13}{\makebox[\BadgeIdWidth][l]{\BIPC{9}{green!55!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{green!55!black}{Version b\mydots}}}} & 0.403 & \BIPC{12}{black} & OP\_EVAL\mydots & 0.097 & \multicolumn{2}{l}{\colorbox{red!12}{\makebox[\BadgeIdWidth][l]{\BIPC{141}{red!75!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{red!75!black}{Segregate\mydots}}}} & 0.1139 \\
+         & \textit{\textcolor{gray}{(2)}} & \multicolumn{2}{l}{\colorbox{teal!12}{\makebox[\BadgeIdWidth][l]{\BIPC{16}{teal!85!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{teal!85!black}{Pay to Sc\mydots}}}} & 48 & \multicolumn{2}{l}{\colorbox{teal!12}{\makebox[\BadgeIdWidth][l]{\BIPC{16}{teal!85!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{teal!85!black}{Pay to Sc\mydots}}}} & 0.378 & \BIPC{13}{black} & Address F\mydots & 0.066 & \multicolumn{2}{l}{\colorbox{blue!10}{\makebox[\BadgeIdWidth][l]{\BIPC{21}{blue!70!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{blue!70!black}{URI Schem\mydots}}}} & 0.0733 \\
+         & \textit{\textcolor{gray}{(3)}} & \multicolumn{2}{l}{\colorbox{violet!12}{\makebox[\BadgeIdWidth][l]{\BIPC{32}{violet!70!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{violet!70!black}{Hierarchi\mydots}}}} & 48 & \multicolumn{2}{l}{\colorbox{blue!10}{\makebox[\BadgeIdWidth][l]{\BIPC{112}{red!75!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{red!75!black}{CHECKSE\mydots}}}} & 0.324 & \BIPC{11}{black} & M-of-N St\mydots & 0.065 & \multicolumn{2}{l}{\colorbox{blue!70!black}{\makebox[\BadgeIdWidth][l]{\BIPC{321}{white}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{white}{URI Schem\mydots}}}} & 0.0701 \\
+         & \textit{\textcolor{gray}{(4)}} & \multicolumn{2}{l}{\colorbox{red!75!black}{\makebox[\BadgeIdWidth][l]{\BIPC{341}{white}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{white}{Taproot:\mydots}}}} & 37 & \multicolumn{2}{l}{\colorbox{green!13}{\makebox[\BadgeIdWidth][l]{\BIPC{68}{blue!70!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{blue!70!black}{Relative\mydots}}}} & 0.323 & \multicolumn{2}{l}{\colorbox{teal!12}{\makebox[\BadgeIdWidth][l]{\BIPC{16}{teal!85!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{teal!85!black}{Pay to Sc\mydots}}}} & 0.059 & \multicolumn{2}{l}{\colorbox{teal!12}{\makebox[\BadgeIdWidth][l]{\BIPC{70}{violet!70!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{violet!70!black}{Payment P\mydots}}}} & 0.0685 \\
+         & \textit{\textcolor{gray}{(5)}} & \multicolumn{2}{l}{\colorbox{green!13}{\makebox[\BadgeIdWidth][l]{\BIPC{9}{green!55!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{green!55!black}{Version b\mydots}}}} & 26 & \multicolumn{2}{l}{\colorbox{violet!12}{\makebox[\BadgeIdWidth][l]{\BIPC{65}{green!55!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{green!55!black}{OP\_CHEC\mydots}}}} & 0.322 & \multicolumn{2}{l}{\colorbox{red!12}{\makebox[\BadgeIdWidth][l]{\BIPC{141}{red!75!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{red!75!black}{Segregate\mydots}}}} & 0.035 & \BIPC{351}{black} & Private P\mydots & 0.0529 \\
         \bottomrule
     \end{tabular}%
 }

@@ -97,7 +97,7 @@ def export_contributor_overlap_latex_table(
             proposal_count,
         ),
         _share_row(
-            "Edited by at least 1 originator",
+            "Edited by at least one originator",
             rf"${ORIGINATORS} \cap {CONTRIBUTORS} \neq \emptyset$",
             overlap["originator_contributor_overlap"],
             proposal_count,
@@ -113,7 +113,7 @@ def export_contributor_overlap_latex_table(
     body_lines = [
         *_basis_block("Person", person_rows),
         f"        {MEDIUM_RULE}%",
-        *_basis_block("IP", ip_rows),
+        *_basis_block("BIP", ip_rows),
     ]
 
     header_line = (

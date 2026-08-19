@@ -46,7 +46,7 @@ jobs:
           github-token: ${{ github.token }}
           path: react/build
 
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
 

@@ -125,7 +125,7 @@ function DependencyMetricsCard({
         {' '}Preamble, Regex, and LLM.{' '}
         <strong>In Degree</strong> measures how many other proposals refer to a given one (incoming relation).{' '}
         <strong>Out Degree</strong> measures how many other proposals a given one refers to (outgoing relation).{' '}
-        <strong>Weighted Eigenvector</strong> measures how central a proposal is by considering how well-connected the ones it is linked to are.{' '}
+        <strong>Weighted Eigenvector</strong> measures how central a proposal is by considering how well-connected the ones it is linked to are (edge weights are uniformly 1 here, since duplicate links between the same pair are collapsed, so this reduces to standard eigenvector centrality (EV)).{' '}
         <strong>PageRank</strong> is similar, but additionally accounts for direction and distributes importance across outgoing links.{' '}
         <strong>Betweenness</strong> measures how often a proposal lies on the shortest paths between others, indicating its role in connecting otherwise separate parts of the dependency graph.
       </p>

@@ -200,9 +200,12 @@ def _safe_weighted_eigenvector(
 ) -> dict[str, float]:
     """Directed weighted eigenvector centrality via power iteration on incoming adjacency.
 
-    Each node's score is the normalised weighted sum of its predecessors' scores -
-    matching the algorithm used in the React front-end
-    (computeDirectedWeightedEigenvectorCentrality in dashboardData.js).
+    Each node's score is the normalised weighted sum of its predecessors' scores.
+    Implemented as a custom, portable iteration (rather than `nx.eigenvector_centrality`,
+    which raises on directed graphs that aren't strongly connected - a common case here
+    given isolated/weakly-connected BIPs) so the same algorithm can be reproduced outside
+    Python if the frontend ever needs to recompute it; today the dashboard avoids that
+    need entirely by displaying this pipeline-computed value directly.
     Edge weight equals the number of parallel edges between the same pair; because
     the underlying DiGraph already deduplicates edges this is always 1, but the
     formula is kept general for correctness.

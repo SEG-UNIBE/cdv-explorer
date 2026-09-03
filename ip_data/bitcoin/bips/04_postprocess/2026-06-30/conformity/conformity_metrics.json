@@ -1,7 +1,7 @@
 {
   "average_score_by_standard": {
     "bip2": 82.34,
-    "bip3": 85.2
+    "bip3": 85.19
   },
   "check_summary": [
     {
@@ -141,11 +141,11 @@
       "label": "Complete/Deployed proposals include a 'Changelog' section",
       "category": "changelog",
       "standard": "bip3",
-      "pass_count": 11,
+      "pass_count": 12,
       "fail_count": 81,
-      "skip_count": 118,
-      "evaluated_count": 92,
-      "pass_rate": 11.96
+      "skip_count": 117,
+      "evaluated_count": 93,
+      "pass_rate": 12.9
     },
     {
       "id": "bip3.changelog.version_header",
@@ -153,10 +153,10 @@
       "category": "changelog",
       "standard": "bip3",
       "pass_count": 10,
-      "fail_count": 82,
-      "skip_count": 118,
-      "evaluated_count": 92,
-      "pass_rate": 10.87
+      "fail_count": 83,
+      "skip_count": 117,
+      "evaluated_count": 93,
+      "pass_rate": 10.75
     },
     {
       "id": "bip3.changelog.version_matches",
@@ -6065,20 +6065,20 @@
     },
     {
       "id": "110",
-      "status": "Draft",
-      "compliance_score": 93.94,
+      "status": "Complete",
+      "compliance_score": 91.43,
       "bip2_score": 91.67,
-      "bip3_score": 95.24,
+      "bip3_score": 91.3,
       "standard_scores": {
         "bip2": 91.67,
-        "bip3": 95.24
+        "bip3": 91.3
       },
       "formal_compliance": {
-        "score": 93.94,
-        "passed_checks": 31,
-        "failed_checks": 2,
-        "skipped_checks": 8,
-        "total_checks": 33,
+        "score": 91.43,
+        "passed_checks": 32,
+        "failed_checks": 3,
+        "skipped_checks": 6,
+        "total_checks": 35,
         "bip2": {
           "score": 91.67,
           "passed_checks": 11,
@@ -6095,17 +6095,23 @@
           ]
         },
         "bip3": {
-          "score": 95.24,
-          "passed_checks": 20,
-          "failed_checks": 1,
-          "skipped_checks": 8,
-          "total_checks": 21,
+          "score": 91.3,
+          "passed_checks": 21,
+          "failed_checks": 2,
+          "skipped_checks": 6,
+          "total_checks": 23,
           "checks": [
             {
               "id": "bip3.header_value.discussion",
               "label": "Header 'Discussion' uses 'yyyy-mm-dd: URL' lines",
               "passed": false,
               "details": "Invalid Discussion entry 'https://groups.google.com/g/bitcoindev/c/nOZim6FbuF8'"
+            },
+            {
+              "id": "bip3.changelog.version_header",
+              "label": "Complete/Deployed proposals include a 'Version' header",
+              "passed": false,
+              "details": "Missing required 'version' header"
             }
           ]
         }

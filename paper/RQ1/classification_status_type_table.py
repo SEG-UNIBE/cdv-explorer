@@ -86,15 +86,13 @@ def export_classification_status_type_latex_table(
         + r" \\"
     )
 
-    ranked_cells = sorted(
-        (
-            (int(pivot[proposal_type].get(status, 0)), status, proposal_type)
-            for status in ordered_statuses
-            for proposal_type in ordered_types
-        ),
-        reverse=True,
-    )
-    largest_cell = (ranked_cells[0][1], ranked_cells[0][2]) if ranked_cells else None
+    column_maxima = {
+        proposal_type: max(
+            (int(pivot[proposal_type].get(status, 0)) for status in ordered_statuses),
+            default=0,
+        )
+        for proposal_type in ordered_types
+    }
 
     body_lines = []
     for status in ordered_statuses:
@@ -104,7 +102,11 @@ def export_classification_status_type_latex_table(
                 int(pivot[proposal_type].get(status, 0)),
                 type_totals[proposal_type],
             )
-            if (status, proposal_type) == largest_cell:
+            if (
+                type_totals[proposal_type] > 0
+                and int(pivot[proposal_type].get(status, 0))
+                == column_maxima[proposal_type]
+            ):
                 cell_value = rf"\textbf{{{cell_value}}}"
             row_cells.append(cell_value)
         body_lines.append("        " + " & ".join(row_cells) + r" \\")

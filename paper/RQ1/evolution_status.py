@@ -444,7 +444,7 @@ def plot_evolution_status(
                 if not segment.get("is_official", True)
                 else segment["status"],
             )
-            for segment in section["segments"]
+            for segment in reversed(section["segments"])
         ]
         if not handles:
             continue

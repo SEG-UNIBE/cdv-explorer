@@ -57,9 +57,6 @@ def export_contributor_overlap_latex_table(
     coverage = build_contributor_coverage(nodes, aliases)
     overlap = build_contributor_overlap_breakdown(nodes, aliases)
 
-    declared_only = (
-        coverage["declared_author_count"] - coverage["contributors_also_declared"]
-    )
     proposal_count = overlap["proposal_count"]
 
     person_rows = [
@@ -77,16 +74,6 @@ def export_contributor_overlap_latex_table(
             "Present in both roles",
             rf"$|{ORIGINATORS} \cap {CONTRIBUTORS}|$",
             coverage["contributors_also_declared"],
-        ),
-        _count_row(
-            "Originators only",
-            rf"$|{ORIGINATORS} \setminus {CONTRIBUTORS}|$",
-            declared_only,
-        ),
-        _count_row(
-            "Contributors only",
-            rf"$|{CONTRIBUTORS} \setminus {ORIGINATORS}|$",
-            coverage["contributors_never_declared"],
         ),
     ]
     ip_rows = [

@@ -28,7 +28,7 @@ LATEX_TABLE_HEADERS = [
     "Originator",
     "BIPs",
     "Deg.",
-    ("W. Deg.", r"$^{\downarrow}$"),
+    ("W. Deg.", ""),
     "W. EV",
     "BC",
 ]

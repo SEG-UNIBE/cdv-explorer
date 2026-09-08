@@ -203,29 +203,23 @@ def _build_approach_rows(
         for metric, _ in METRICS:
             entry = tops[metric][rank_idx]
             raw_id = str(entry["id"])
-            fg, bg = color_map.get(raw_id, (None, None))
+            fg, bg = color_map.get(raw_id, ("black", "white"))
             bip_text = _bip(raw_id, color=fg)
             title_text = _colored_title(
                 _latex_escape(_title_substr(entry.get("title") or "")) + r"\mydots",
                 color=fg,
             )
             value = _format_value(entry.get(metric, 0), metric)
-            if bg:
-                # Merge the ID and title sub-columns into one spanning cell so
-                # the badge is a single continuous block, not two separate
-                # \colorbox regions with a gap between them — while keeping the
-                # same internal left-aligned id/title layout as the plain (l@
-                # {\,}l) columns: each piece sits in its own fixed-width slot
-                # (\BadgeIdWidth / \BadgeTitleWidth, measured across every
-                # badge's own content in export_centrality_top5_latex_table),
-                # so ids line up under ids and titles line up under titles.
-                badge_id_contents.append(bip_text)
-                badge_title_contents.append(title_text)
-                cells.append(
-                    rf"\multicolumn{{2}}{{l}}{{\colorbox{{{bg}}}{{\makebox[\BadgeIdWidth][l]{{{bip_text}}}\,\makebox[\BadgeTitleWidth][l]{{{title_text}}}}}}}"
-                )
-            else:
-                cells += [bip_text, title_text]
+            # Every entry uses the same box geometry. Unhighlighted entries get
+            # a white box so its padding and alignment match colored badges.
+            # The fixed-width ID and title slots act as virtual sub-columns:
+            # both are left-aligned, while the unused ID width expands as needed
+            # so every title starts at the same horizontal position.
+            badge_id_contents.append(bip_text)
+            badge_title_contents.append(title_text)
+            cells.append(
+                rf"\multicolumn{{2}}{{l}}{{\colorbox{{{bg}}}{{\makebox[\BadgeIdWidth][l]{{{bip_text}}}\,\makebox[\BadgeTitleWidth][l]{{{title_text}}}}}}}"
+            )
             cells.append(value)
         rows.append("        " + " & ".join(cells) + r" \\")
     return rows

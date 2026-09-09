@@ -4,7 +4,7 @@ from pathlib import Path
 from xml.sax.saxutils import escape
 from zipfile import ZIP_DEFLATED, ZipFile
 
-from paper.RQ3.collaboration_common import (
+from paper.RQ4.collaboration_common import (
     build_author_bip_map,
     build_collaboration_metrics_rows,
 )

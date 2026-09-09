@@ -5,7 +5,7 @@ import numpy as np
 
 from paper.config import FIGURE_TITLE_FONT_SIZE, SUBPLOT_TITLE_FONT_SIZE
 from paper.plot_colors import AUTHORS_PER_BIP_COLOR, AUTHORSHIP_DISTRIBUTION_COLOR
-from paper.RQ3._plotting import (
+from paper._utils.plotting import (
     bar_style,
     despine,
     match_axis_label_fontsize,

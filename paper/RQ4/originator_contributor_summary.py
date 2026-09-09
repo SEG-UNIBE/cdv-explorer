@@ -4,15 +4,15 @@ import matplotlib.pyplot as plt
 
 from paper.config import FIGURE_TITLE_FONT_SIZE
 from paper.plot_colors import AUTHORS_PER_BIP_COLOR, AUTHORSHIP_DISTRIBUTION_COLOR
-from paper.RQ3._plotting import add_bar_label_headroom, save_figure
-from paper.RQ3.authorship_overview import (
+from paper._utils.plotting import add_bar_label_headroom, save_figure
+from paper.RQ4.authorship_overview import (
     _draw_authors_per_bip_axis,
     _draw_authorship_distribution_axis,
     prepare_authors_per_bip,
     prepare_authorship_distribution,
 )
-from paper.RQ3.contributor_overview import _draw_binned_histogram_axis, _log_bin
-from paper.RQ3.originator_contributor_ecdf import (
+from paper.RQ4.contributor_overview import _draw_binned_histogram_axis, _log_bin
+from paper.RQ4.originator_contributor_ecdf import (
     CONTRIBUTOR_COLOR,
     ORIGINATOR_COLOR,
     _draw_ecdf_axis,

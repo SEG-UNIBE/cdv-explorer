@@ -9,7 +9,7 @@ from paper.plot_colors import (
     AUTHORSHIP_DISTRIBUTION_COLOR,
     TOP_AUTHORS_COLOR,
 )
-from paper.RQ3._plotting import (
+from paper._utils.plotting import (
     bar_style,
     despine,
     match_axis_label_fontsize,

@@ -9,7 +9,7 @@ from paper.config import (
     SUBPLOT_TITLE_FONT_SIZE,
 )
 from paper.plot_colors import ORDERED_PLOT_PALETTE
-from paper.RQ3._plotting import despine, match_axis_label_fontsize, save_figure
+from paper._utils.plotting import despine, match_axis_label_fontsize, save_figure
 
 ORIGINATOR_COLOR = ORDERED_PLOT_PALETTE[0]  # blue
 CONTRIBUTOR_COLOR = ORDERED_PLOT_PALETTE[1]  # red

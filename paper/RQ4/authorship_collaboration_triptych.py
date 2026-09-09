@@ -6,14 +6,14 @@ matplotlib.use("Agg")
 
 import matplotlib.pyplot as plt
 
-from paper.RQ3._plotting import add_bar_label_headroom, save_figure
-from paper.RQ3.authorship_overview import (
+from paper._utils.plotting import add_bar_label_headroom, save_figure
+from paper.RQ4.authorship_overview import (
     _draw_authors_per_bip_axis,
     _draw_authorship_distribution_axis,
     prepare_authors_per_bip,
     prepare_authorship_distribution,
 )
-from paper.RQ3.collaboration_structure_overview import (
+from paper.RQ4.collaboration_structure_overview import (
     _draw_component_distribution_axis,
     prepare_component_distribution,
 )

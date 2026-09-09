@@ -40,7 +40,7 @@ from paper.config import (
     SUBPLOT_TITLE_FONT_SIZE,
 )
 from paper.plot_colors import ORDERED_PLOT_PALETTE
-from paper.RQ3._plotting import (
+from paper._utils.plotting import (
     bar_style,
     despine,
     match_axis_label_fontsize,

@@ -5,14 +5,14 @@ import numpy as np
 
 from paper.config import FIGURE_TITLE_FONT_SIZE, SUBPLOT_TITLE_FONT_SIZE
 from paper.plot_colors import COAUTHOR_DEGREE_COLOR, COLLABORATION_COMPONENT_COLOR
-from paper.RQ3._plotting import (
+from paper._utils.plotting import (
     bar_style,
     despine,
     match_axis_label_fontsize,
     save_figure,
     style_ellipsis_ticklabels,
 )
-from paper.RQ3.collaboration_common import (
+from paper.RQ4.collaboration_common import (
     build_collaboration_component_size_distribution,
     build_collaboration_degree_distribution,
 )

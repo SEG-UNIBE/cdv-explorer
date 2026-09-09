@@ -11,7 +11,7 @@ from matplotlib.ticker import MaxNLocator, MultipleLocator
 
 from paper.config import FIGURE_TITLE_FONT_SIZE
 from paper.plot_colors import REACT_CLASSIFICATION_PALETTE, tint
-from paper.RQ3._plotting import (
+from paper._utils.plotting import (
     BAR_EDGE_COLOR,
     bar_style,
     despine,

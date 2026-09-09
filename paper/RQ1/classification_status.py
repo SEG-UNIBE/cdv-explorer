@@ -13,7 +13,7 @@ from matplotlib.ticker import MaxNLocator
 from analysis.artifact_io import resolve_latest_snapshot_label
 from paper.config import FIGURE_TITLE_FONT_SIZE
 from paper.plot_colors import with_plot_alpha
-from paper.RQ3._plotting import (
+from paper._utils.plotting import (
     BAR_EDGE_COLOR,
     BAR_EDGE_WIDTH,
     bar_style,

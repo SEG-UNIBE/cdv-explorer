@@ -6,8 +6,8 @@ import networkx as nx
 
 from paper.config import FIGURE_TITLE_FONT_SIZE
 from paper.plot_colors import PLOT_COLOR_ALPHA, with_plot_alpha
-from paper.RQ3._plotting import save_figure
-from paper.RQ3.collaboration_common import build_author_bip_map
+from paper._utils.plotting import save_figure
+from paper.RQ4.collaboration_common import build_author_bip_map
 
 CLUSTER_COLORS = [
     "#2a6f97",

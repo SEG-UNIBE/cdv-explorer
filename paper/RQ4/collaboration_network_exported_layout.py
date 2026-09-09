@@ -26,12 +26,12 @@ from analysis.artifact_io import (
 from paper._utils.io import resolve_output_dir, snapshot_prefix
 from paper.config import FIGURE_TITLE_FONT_SIZE, SNAPSHOT
 from paper.plot_colors import ORDERED_PLOT_PALETTE, PLOT_COLOR_ALPHA
-from paper.RQ3._plotting import save_figure
-from paper.RQ3.collaboration_common import build_author_bip_map
+from paper._utils.plotting import save_figure
+from paper.RQ4.collaboration_common import build_author_bip_map
 
-LAYOUT_EXPORT_DIR = Path("paper") / "RQ3"
+LAYOUT_EXPORT_DIR = Path("paper") / "RQ4"
 LAYOUT_EXPORT_FILENAME = "authorship_layout_260630_balanced"
-DEFAULT_OUTPUT_DIR = Path("paper") / "RQ3" / "outputs"
+DEFAULT_OUTPUT_DIR = Path("paper") / "RQ4" / "outputs"
 DEFAULT_FIGSIZE = (14, 7)
 DEFAULT_AXIS_MARGIN_SCALE = 0.08
 EDGE_WIDTH_RANGE = (1.2, 5.0)

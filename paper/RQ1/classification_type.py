@@ -14,7 +14,7 @@ from paper.RQ1.classification_status import (
     _normalize_status_series,
     plot_classification_status,
 )
-from paper.RQ3._plotting import (
+from paper._utils.plotting import (
     BAR_EDGE_COLOR,
     BAR_EDGE_WIDTH,
     bar_style,

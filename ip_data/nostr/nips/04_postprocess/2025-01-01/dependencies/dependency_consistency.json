@@ -1,0 +1,400 @@
+{
+  "meta": {
+    "schema_version": 2,
+    "llm_model": "gpt-5.4-mini",
+    "approach_order": [
+      "preamble_extracted",
+      "body_extracted_llm"
+    ]
+  },
+  "by_approach": {
+    "preamble_extracted": {
+      "key": "preamble_extracted",
+      "label": "Preamble",
+      "dependency": {
+        "edge_count": 0,
+        "cyclic_group_count": 0,
+        "involved_node_count": 0,
+        "self_relation_count": 0,
+        "unresolved_target_count": 0,
+        "cyclic_groups": []
+      },
+      "supersession": {
+        "fact_count": 0,
+        "reciprocal_count": 0,
+        "reciprocal_percentage": 0.0,
+        "one_sided_count": 0,
+        "one_sided_percentage": 0.0,
+        "reciprocal_facts": [],
+        "one_sided_facts": [],
+        "cyclic_group_count": 0,
+        "self_relation_count": 0,
+        "unresolved_target_count": 0,
+        "cyclic_groups": []
+      },
+      "checks": {
+        "self_relation_count": 0,
+        "self_relations": [],
+        "unresolved_target_count": 0,
+        "unresolved_targets": []
+      }
+    },
+    "body_extracted_llm": {
+      "key": "body_extracted_llm",
+      "label": "LLM",
+      "dependency": {
+        "edge_count": 129,
+        "cyclic_group_count": 5,
+        "involved_node_count": 40,
+        "self_relation_count": 0,
+        "unresolved_target_count": 0,
+        "cyclic_groups": [
+          {
+            "nodes": [
+              {
+                "id": "nips:01",
+                "title": "Basic protocol flow description"
+              },
+              {
+                "id": "nips:04",
+                "title": "Encrypted Direct Message"
+              },
+              {
+                "id": "nips:05",
+                "title": "Mapping Nostr keys to DNS-based internet identifiers"
+              },
+              {
+                "id": "nips:09",
+                "title": "Event Deletion Request"
+              },
+              {
+                "id": "nips:10",
+                "title": "On \"e\" and \"p\" tags in Text Events (kind 1)"
+              },
+              {
+                "id": "nips:11",
+                "title": "Relay Information Document"
+              },
+              {
+                "id": "nips:13",
+                "title": "Proof of Work"
+              },
+              {
+                "id": "nips:15",
+                "title": "Nostr Marketplace"
+              },
+              {
+                "id": "nips:17",
+                "title": "Private Direct Messages"
+              },
+              {
+                "id": "nips:18",
+                "title": "Reposts"
+              },
+              {
+                "id": "nips:19",
+                "title": "bech32-encoded entities"
+              },
+              {
+                "id": "nips:21",
+                "title": "`nostr:` URI scheme"
+              },
+              {
+                "id": "nips:23",
+                "title": "Long-form Content"
+              },
+              {
+                "id": "nips:24",
+                "title": "Extra metadata fields and tags"
+              },
+              {
+                "id": "nips:27",
+                "title": "Text Note References"
+              },
+              {
+                "id": "nips:28",
+                "title": "Public Chat"
+              },
+              {
+                "id": "nips:29",
+                "title": "Relay-based Groups"
+              },
+              {
+                "id": "nips:33",
+                "title": "Parameterized Replaceable Events"
+              },
+              {
+                "id": "nips:42",
+                "title": "Authentication of clients to relays"
+              },
+              {
+                "id": "nips:44",
+                "title": "Encrypted Payloads (Versioned)"
+              },
+              {
+                "id": "nips:51",
+                "title": "Lists"
+              },
+              {
+                "id": "nips:52",
+                "title": "Calendar Events"
+              },
+              {
+                "id": "nips:53",
+                "title": "Live Activities"
+              },
+              {
+                "id": "nips:54",
+                "title": "Wiki"
+              },
+              {
+                "id": "nips:58",
+                "title": "Badges"
+              },
+              {
+                "id": "nips:59",
+                "title": "Gift Wrap"
+              },
+              {
+                "id": "nips:65",
+                "title": "Relay List Metadata"
+              },
+              {
+                "id": "nips:70",
+                "title": "Protected Events"
+              },
+              {
+                "id": "nips:72",
+                "title": "Moderated Communities (Reddit Style)"
+              },
+              {
+                "id": "nips:98",
+                "title": "HTTP Auth"
+              },
+              {
+                "id": "nips:99",
+                "title": "Classified Listings"
+              }
+            ]
+          },
+          {
+            "nodes": [
+              {
+                "id": "nips:25",
+                "title": "Reactions"
+              },
+              {
+                "id": "nips:30",
+                "title": "Custom Emoji"
+              },
+              {
+                "id": "nips:38",
+                "title": "User Statuses"
+              }
+            ]
+          },
+          {
+            "nodes": [
+              {
+                "id": "nips:31",
+                "title": "Dealing with unknown event kinds"
+              },
+              {
+                "id": "nips:89",
+                "title": "Recommended Application Handlers"
+              }
+            ]
+          },
+          {
+            "nodes": [
+              {
+                "id": "nips:60",
+                "title": "Cashu Wallet"
+              },
+              {
+                "id": "nips:61",
+                "title": "Nut Zaps"
+              }
+            ]
+          },
+          {
+            "nodes": [
+              {
+                "id": "nips:94",
+                "title": "File Metadata"
+              },
+              {
+                "id": "nips:96",
+                "title": "HTTP File Storage Integration"
+              }
+            ]
+          }
+        ]
+      },
+      "supersession": {
+        "fact_count": 0,
+        "reciprocal_count": 0,
+        "reciprocal_percentage": 0.0,
+        "one_sided_count": 0,
+        "one_sided_percentage": 0.0,
+        "reciprocal_facts": [],
+        "one_sided_facts": [],
+        "cyclic_group_count": 0,
+        "self_relation_count": 0,
+        "unresolved_target_count": 0,
+        "cyclic_groups": []
+      },
+      "checks": {
+        "self_relation_count": 0,
+        "self_relations": [],
+        "unresolved_target_count": 0,
+        "unresolved_targets": []
+      }
+    }
+  },
+  "table_rows": [
+    {
+      "group": "Dependency",
+      "metric": "Edges analyzed",
+      "values": {
+        "preamble_extracted": "0",
+        "body_extracted_llm": "129"
+      }
+    },
+    {
+      "group": "Dependency",
+      "metric": "Cyclic groups (SCCs)",
+      "values": {
+        "preamble_extracted": "0",
+        "body_extracted_llm": "5"
+      }
+    },
+    {
+      "group": "Dependency",
+      "metric": "IPs involved",
+      "values": {
+        "preamble_extracted": "0",
+        "body_extracted_llm": "40"
+      }
+    },
+    {
+      "group": "Supersession",
+      "metric": "Distinct relations",
+      "values": {
+        "preamble_extracted": "0",
+        "body_extracted_llm": "0"
+      }
+    },
+    {
+      "group": "Supersession",
+      "metric": "Reciprocally declared",
+      "values": {
+        "preamble_extracted": "0",
+        "body_extracted_llm": "0"
+      }
+    },
+    {
+      "group": "Supersession",
+      "metric": "One-sided declarations",
+      "values": {
+        "preamble_extracted": "0",
+        "body_extracted_llm": "0"
+      }
+    }
+  ],
+  "dashboard_table_rows": [
+    {
+      "group": "Dependency",
+      "metric": "Edges analyzed",
+      "values": {
+        "preamble_extracted": "0",
+        "body_extracted_llm": "129"
+      }
+    },
+    {
+      "group": "Dependency",
+      "metric": "Cyclic groups (SCCs)",
+      "values": {
+        "preamble_extracted": "0",
+        "body_extracted_llm": "5"
+      }
+    },
+    {
+      "group": "Dependency",
+      "metric": "IPs involved",
+      "values": {
+        "preamble_extracted": "0",
+        "body_extracted_llm": "40"
+      }
+    },
+    {
+      "group": "Dependency",
+      "metric": "Self-relations",
+      "values": {
+        "preamble_extracted": "0",
+        "body_extracted_llm": "0"
+      }
+    },
+    {
+      "group": "Supersession",
+      "metric": "Distinct relations",
+      "values": {
+        "preamble_extracted": "0",
+        "body_extracted_llm": "0"
+      }
+    },
+    {
+      "group": "Supersession",
+      "metric": "Reciprocally declared",
+      "values": {
+        "preamble_extracted": "0",
+        "body_extracted_llm": "0"
+      }
+    },
+    {
+      "group": "Supersession",
+      "metric": "One-sided declarations",
+      "values": {
+        "preamble_extracted": "0",
+        "body_extracted_llm": "0"
+      }
+    },
+    {
+      "group": "Supersession",
+      "metric": "Cyclic groups (SCCs)",
+      "values": {
+        "preamble_extracted": "0",
+        "body_extracted_llm": "0"
+      }
+    }
+  ],
+  "structural_check_rows": [
+    {
+      "metric": "Self-relations",
+      "values": {
+        "preamble_extracted": 0,
+        "body_extracted_llm": 0
+      }
+    },
+    {
+      "metric": "Supersession cycles",
+      "values": {
+        "preamble_extracted": 0,
+        "body_extracted_llm": 0
+      }
+    },
+    {
+      "metric": "Unresolved catalog targets",
+      "values": {
+        "preamble_extracted": 0,
+        "body_extracted_llm": 0
+      }
+    }
+  ],
+  "omitted_zero_checks": [
+    "Self-relations",
+    "Supersession cycles",
+    "Unresolved catalog targets"
+  ],
+  "omitted_zero_checks_text": "Neither network contains self-relations, supersession cycles, or unresolved catalog targets."
+}

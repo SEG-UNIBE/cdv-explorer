@@ -42,6 +42,7 @@ export function EcosystemDashboard() {
     links: {},
     authorship: {},
     classification: {},
+    dependencyConsistency: {},
     conformity: {},
     meta: {},
   }), []);
@@ -233,6 +234,7 @@ export function EcosystemDashboard() {
   };
 
   const dependencyViewMetrics = dependencyDashboardData.dependencyMetrics;
+  const dependencyViewConsistency = dependencyDashboardData.dependencyConsistency;
   const authorshipAvailableProposalNodes = useMemo(
     () => (authorshipViewDataset?.nodes || [])
       .filter((node) => node?.id != null),
@@ -593,6 +595,7 @@ export function EcosystemDashboard() {
               }}
               dependencyMetrics={{
                 dependencyViewMetrics,
+                dependencyViewConsistency,
                 activeDependencyLlmModel,
               }}
               filteredWordCloudData={filteredWordCloudData}

@@ -70,6 +70,12 @@ def resolve_dependency_metrics_artifact(snapshot: str | None = None) -> Path:
     )
 
 
+def resolve_dependency_consistency_artifact(snapshot: str | None = None) -> Path:
+    return _resolve_payload_artifact(
+        snapshot, "dependencies", "dependency_consistency.json"
+    )
+
+
 def resolve_authorship_metrics_artifact(snapshot: str | None = None) -> Path:
     return _resolve_analysis_artifact(snapshot, "authorship", "authorship_metrics.json")
 
@@ -111,6 +117,11 @@ def load_network_data(snapshot: str | None = None) -> dict[str, Any]:
 
 def load_dependency_metrics(snapshot: str | None = None) -> dict[str, Any]:
     artifact_path = resolve_dependency_metrics_artifact(snapshot=snapshot)
+    return _load_json_artifact(artifact_path)
+
+
+def load_dependency_consistency(snapshot: str | None = None) -> dict[str, Any]:
+    artifact_path = resolve_dependency_consistency_artifact(snapshot=snapshot)
     return _load_json_artifact(artifact_path)
 
 

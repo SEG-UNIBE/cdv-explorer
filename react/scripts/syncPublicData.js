@@ -11,6 +11,7 @@ const targetRoot = path.join(reactRoot, 'public', 'ip_data');
 const DATASET_FILES = [
   'dependencies/network_data.json',
   'dependencies/dependency_metrics.json',
+  'dependencies/dependency_consistency.json',
   'authorship/authorship_payload.json',
   'classification/classification_payload.json',
   'evolution/evolution_payload.json',

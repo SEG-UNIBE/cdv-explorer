@@ -2,7 +2,7 @@ import { vi } from 'vitest';
 
 vi.mock('d3', () => ({}));
 
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import {
   BODY_EXTRACTED_LLM,
   BODY_EXTRACTED_REGEX,
@@ -60,6 +60,7 @@ import {
 import { ProposalFilterControl } from './ProposalFilterControl';
 import { DependencyComparisonHeatmaps } from './DependencyComparisonHeatmaps';
 import { DependencyGroundTruthEvaluationCharts } from './DependencyGroundTruthEvaluationCharts';
+import { DependencyConsistencyCard } from './DependencyConsistencyCard';
 import { DashboardSnapshotProvider } from './dashboard/DashboardSnapshotContext';
 import proposalLinkIndex from './generated/proposalLinkIndex.json';
 import bitcoinEcosystem from './ecosystems/bitcoin';
@@ -138,6 +139,81 @@ test('renders the selected llm model label in dependency comparison and ground-t
   // Kappa footer in the matrix cell plus the metric badge for the selection.
   expect(screen.getAllByText('0.40').length).toBeGreaterThan(1);
   expect(screen.getByText('Cohen’s κ')).toBeInTheDocument();
+});
+
+test('renders separate consistency tables and copies anomaly proposal filters', async () => {
+  const writeText = vi.fn().mockResolvedValue(undefined);
+  Object.defineProperty(navigator, 'clipboard', {
+    configurable: true,
+    value: { writeText },
+  });
+  const payload = {
+    meta: {
+      approach_order: [PREAMBLE_EXTRACTED, BODY_EXTRACTED_LLM],
+      llm_model: 'gpt-test',
+    },
+    dashboard_table_rows: [
+      {
+        group: 'Dependency',
+        metric: 'Cyclic groups (SCCs)',
+        values: { [PREAMBLE_EXTRACTED]: '1', [BODY_EXTRACTED_LLM]: '0' },
+      },
+      {
+        group: 'Dependency',
+        metric: 'Self-relations',
+        values: { [PREAMBLE_EXTRACTED]: '0', [BODY_EXTRACTED_LLM]: '0' },
+      },
+      {
+        group: 'Supersession',
+        metric: 'One-sided declarations',
+        values: { [PREAMBLE_EXTRACTED]: '1', [BODY_EXTRACTED_LLM]: '0' },
+      },
+    ],
+    by_approach: {
+      [PREAMBLE_EXTRACTED]: {
+        dependency: {
+          cyclic_groups: [{ nodes: [{ id: 'bips:157' }, { id: 'bips:158' }] }],
+        },
+        supersession: {
+          one_sided_facts: [{
+            successor: { id: 'bips:95' },
+            predecessor: { id: 'bips:94' },
+          }],
+        },
+      },
+      [BODY_EXTRACTED_LLM]: {
+        dependency: { cyclic_groups: [] },
+        supersession: { one_sided_facts: [] },
+      },
+    },
+  };
+
+  const view = render(
+    <DashboardSnapshotProvider snapshot="2026-06-30" ecosystem={bitcoinEcosystem}>
+      <DependencyConsistencyCard payload={payload} />
+    </DashboardSnapshotProvider>
+  );
+
+  expect(screen.getAllByRole('table')).toHaveLength(2);
+  expect(screen.getByRole('heading', { name: 'Dependency' })).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: 'Supersession' })).toBeInTheDocument();
+  expect(screen.getAllByText('Self-relations').length).toBeGreaterThan(0);
+
+  fireEvent.click(screen.getByRole('button', {
+    name: 'Copy BIP157,BIP158 for proposal filtering',
+  }));
+  await waitFor(() => expect(writeText).toHaveBeenCalledWith('BIP157,BIP158'));
+
+  view.rerender(
+    <DashboardSnapshotProvider snapshot="2026-06-30" ecosystem={bitcoinEcosystem}>
+      <DependencyConsistencyCard payload={{
+        ...payload,
+        dashboard_table_rows: undefined,
+        table_rows: payload.dashboard_table_rows,
+      }} />
+    </DashboardSnapshotProvider>
+  );
+  expect(screen.getAllByRole('table')).toHaveLength(2);
 });
 
 test('normalizes canonical dependency edges into grouped dependency links', () => {
@@ -307,12 +383,26 @@ test('multi-source fetch uses combined dependency metrics when combined artifact
     }
     return { nodes: [{ id: '1' }], dependency_edges: [] };
   };
+  const consistencyPayload = (label) => ({
+    meta: { approach_order: [PREAMBLE_EXTRACTED] },
+    by_approach: { [PREAMBLE_EXTRACTED]: { label: 'Preamble' } },
+    table_rows: [{
+      group: 'Dependency',
+      metric: 'Edges analyzed',
+      values: { [PREAMBLE_EXTRACTED]: label },
+    }],
+  });
   const payloadForUrl = (url) => {
     if (url.endsWith('/dependencies/network_data.json')) return networkPayload(url);
     if (url.endsWith('/dependencies/dependency_metrics.json')) {
       if (url.includes('/_combined/bips+slips/')) return metricPayload('combined', 99);
       if (url.includes('/bips/')) return metricPayload('bips', 1);
       return metricPayload('slips', 2);
+    }
+    if (url.endsWith('/dependencies/dependency_consistency.json')) {
+      if (url.includes('/_combined/bips+slips/')) return consistencyPayload('combined');
+      if (url.includes('/bips/')) return consistencyPayload('bips');
+      return consistencyPayload('slips');
     }
     if (url.endsWith('/authorship/authorship_payload.json')) return {};
     if (url.endsWith('/classification/classification_payload.json')) return {};
@@ -340,6 +430,7 @@ test('multi-source fetch uses combined dependency metrics when combined artifact
 
     // Section payloads are deferred: the core fetch must not touch them.
     expect(global.fetch).not.toHaveBeenCalledWith(expect.stringContaining('dependency_metrics.json'));
+    expect(global.fetch).not.toHaveBeenCalledWith(expect.stringContaining('dependency_consistency.json'));
     expect(global.fetch).not.toHaveBeenCalledWith(expect.stringContaining('evolution_payload.json'));
     expect(global.fetch).not.toHaveBeenCalledWith(expect.stringContaining('conformity_metrics.json'));
 
@@ -350,6 +441,11 @@ test('multi-source fetch uses combined dependency metrics when combined artifact
     expect(withMetrics.bySource.bip.dependencyMetrics.by_approach[BODY_EXTRACTED_REGEX].summary.edge_count).toBe(1);
     expect(withMetrics.bySource.slip.dependencyMetrics.by_approach[BODY_EXTRACTED_REGEX].summary.edge_count).toBe(2);
     expect(global.fetch).toHaveBeenCalledWith(expect.stringContaining('/_combined/bips+slips/04_postprocess/2026-03-16/dependencies/dependency_metrics.json'));
+
+    const consistencyData = await fetchSectionDataForSelection('bitcoin', '2026-03-16', ['bip', 'slip'], 'dependencyConsistency');
+    const withConsistency = applySectionData(withMetrics, 'dependencyConsistency', consistencyData);
+    expect(withConsistency.dependencyConsistency.table_rows[0].values[PREAMBLE_EXTRACTED]).toBe('combined');
+    expect(withConsistency.bySource.bip.dependencyConsistency.table_rows[0].values[PREAMBLE_EXTRACTED]).toBe('bips');
   } finally {
     global.fetch = previousFetch;
   }

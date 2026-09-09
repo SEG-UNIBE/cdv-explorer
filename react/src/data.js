@@ -26,6 +26,12 @@ const EMPTY_DATASET = {
   links: EMPTY_LINKS,
   network: { nodes: [], links: EMPTY_LINKS, ground_truth_reviewed_ips: [] },
   dependencyMetrics: { by_approach: {}, pairwise_comparisons: {}, pairwise_comparisons_exact_type: {} },
+  dependencyConsistency: {
+    meta: {},
+    by_approach: {},
+    table_rows: [],
+    dashboard_table_rows: [],
+  },
   authorship: { meta: {}, top_authors: [], bips_per_year: [], top_10_share: {} },
   classification: { meta: {}, sankey_grouped: { links: [] }, status_over_time: {} },
   evolution: { meta: {}, status_evolution: { categories: [], rows: [] } },
@@ -291,6 +297,7 @@ function ensureSingleSourceShape(snapshotLabel, sourceId, sourceSlug, snapshotDa
     links,
     network: { ...network, nodes, links, llm_models: llmModels, ground_truth_reviewed_ips: groundTruthReviewedIps },
     dependencyMetrics: snapshotData.dependencyMetrics || EMPTY_DATASET.dependencyMetrics,
+    dependencyConsistency: snapshotData.dependencyConsistency || EMPTY_DATASET.dependencyConsistency,
     authorship: snapshotData.authorship || EMPTY_DATASET.authorship,
     classification: snapshotData.classification || EMPTY_DATASET.classification,
     evolution: snapshotData.evolution || EMPTY_DATASET.evolution,
@@ -344,6 +351,7 @@ function ensureCombinedSourceShape(snapshotLabel, sourceEntries, combinationKey,
     links,
     network: { ...network, nodes, links, llm_models: llmModels, ground_truth_reviewed_ips: groundTruthReviewedIps },
     dependencyMetrics: snapshotData.dependencyMetrics || EMPTY_DATASET.dependencyMetrics,
+    dependencyConsistency: snapshotData.dependencyConsistency || EMPTY_DATASET.dependencyConsistency,
     authorship: snapshotData.authorship || EMPTY_DATASET.authorship,
     classification: snapshotData.classification || EMPTY_DATASET.classification,
     evolution: snapshotData.evolution || EMPTY_DATASET.evolution,
@@ -536,6 +544,7 @@ function buildMergedDataset(snapshotLabel, entries, combinedDataset = null) {
       meta: { merge_status: 'not_mergeable', sourceIds },
     },
     dependencyMetrics: EMPTY_DATASET.dependencyMetrics,
+    dependencyConsistency: EMPTY_DATASET.dependencyConsistency,
     isMergedSelection: true,
     meta: {
       node_count: nodes.length,
@@ -630,6 +639,7 @@ function fetchCombinedSourceDataset(ecosystemId, sourceEntries, snapshot) {
 // Deferred payloads, keyed by the dataset field they populate.
 export const SECTION_PAYLOAD_FILES = {
   dependencyMetrics: 'dependencies/dependency_metrics.json',
+  dependencyConsistency: 'dependencies/dependency_consistency.json',
   evolution: 'evolution/evolution_payload.json',
   conformity: 'conformity/conformity_metrics.json',
 };

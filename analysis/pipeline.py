@@ -10,6 +10,7 @@ from analysis.classification import prepare_classification_payload
 from analysis.conformity import extract_conformity_metrics
 from analysis.dependencies import (
     available_llm_model_entries,
+    build_dependency_consistency_payload,
     build_network_data,
     collapse_network_data_to_llm_model,
     extract_dependency_metrics,
@@ -284,6 +285,7 @@ def prepare_combined_source_artifacts(
 
             emit(f"{combo_key}: recomputing dependency metrics", advance=1)
             dependency_metrics = extract_dependency_metrics(network_data)
+            dependency_consistency = build_dependency_consistency_payload(network_data)
 
             emit(f"{combo_key}: preparing authorship artifacts", advance=1)
             combined_author_aliases = SourceContext.from_config(
@@ -333,6 +335,7 @@ def prepare_combined_source_artifacts(
                 snapshot=snapshot,
                 network_data=network_data,
                 dependency_metrics=dependency_metrics,
+                dependency_consistency=dependency_consistency,
                 authorship_payload=authorship_payload,
                 classification_payload=classification_payload,
                 evolution_payload=evolution_payload,
@@ -343,6 +346,9 @@ def prepare_combined_source_artifacts(
                 "network_json": payload_paths["payload_network_data_json"],
                 "dependency_metrics_json": payload_paths[
                     "payload_dependency_metrics_json"
+                ],
+                "dependency_consistency_json": payload_paths[
+                    "payload_dependency_consistency_json"
                 ],
                 "authorship_json": authorship_path,
                 "authorship_payload_json": payload_paths[
@@ -415,6 +421,7 @@ def _trim_conformity_checks(conformity_metrics: dict[str, Any]) -> dict[str, Any
 FRONTEND_PAYLOAD_FILES: dict[str, str] = {
     "network_data": "dependencies/network_data.json",
     "dependency_metrics": "dependencies/dependency_metrics.json",
+    "dependency_consistency": "dependencies/dependency_consistency.json",
     "authorship_payload": "authorship/authorship_payload.json",
     "classification_payload": "classification/classification_payload.json",
     "evolution_payload": "evolution/evolution_payload.json",
@@ -427,6 +434,7 @@ def _save_frontend_payloads(
     snapshot: str,
     network_data: dict[str, Any],
     dependency_metrics: dict[str, Any],
+    dependency_consistency: dict[str, Any],
     authorship_payload: dict[str, Any],
     classification_payload: dict[str, Any],
     evolution_payload: dict[str, Any],
@@ -436,6 +444,7 @@ def _save_frontend_payloads(
     payloads: dict[str, dict[str, Any]] = {
         "network_data": network_data,
         "dependency_metrics": dependency_metrics,
+        "dependency_consistency": dependency_consistency,
         "authorship_payload": authorship_payload,
         "classification_payload": classification_payload,
         "evolution_payload": evolution_payload,
@@ -580,6 +589,7 @@ def prepare_ecosystem_artifacts(
 
     emit("Preparing dependency metrics artifacts", advance=1)
     dependency_metrics = extract_dependency_metrics(network_data)
+    dependency_consistency = build_dependency_consistency_payload(network_data)
 
     emit("Preparing classification artifacts", advance=1)
     classification_payload = prepare_classification_payload(
@@ -641,6 +651,7 @@ def prepare_ecosystem_artifacts(
         snapshot=snapshot,
         network_data=network_data,
         dependency_metrics=dependency_metrics,
+        dependency_consistency=dependency_consistency,
         authorship_payload=authorship_payload,
         classification_payload=classification_payload,
         evolution_payload=evolution_payload,
@@ -651,6 +662,9 @@ def prepare_ecosystem_artifacts(
         {
             "network_json": payload_paths["payload_network_data_json"],
             "dependency_metrics_json": payload_paths["payload_dependency_metrics_json"],
+            "dependency_consistency_json": payload_paths[
+                "payload_dependency_consistency_json"
+            ],
             "authorship_payload_json": payload_paths["payload_authorship_payload_json"],
             "classification_json": payload_paths["payload_classification_payload_json"],
             "evolution_json": payload_paths["payload_evolution_payload_json"],

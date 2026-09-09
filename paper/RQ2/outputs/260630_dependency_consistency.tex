@@ -1,0 +1,21 @@
+{%
+    \setlength{\abovetopsep}{0pt}%
+    \setlength{\belowbottomsep}{0pt}%
+    \setlength{\aboverulesep}{0pt}%
+    \setlength{\belowrulesep}{0pt}%
+    \setlength{\tabcolsep}{7pt}%
+    \renewcommand{\arraystretch}{1.15}%
+    \begin{tabular}{ll|cc}
+        \toprule
+        \textbf{Relation} & \textbf{Measure} & \textbf{Preamble} & \textbf{LLM} \\
+        \midrule%
+        \textbf{Dependency} & Edges analyzed & 69 & 393 \\
+         & Cyclic groups (SCCs) & 1 & 7 \\
+         & IPs involved & 2 & 16 \\
+        \midrule%
+        \textbf{Supersession} & Distinct relations & 13 & 14 \\
+         & Reciprocally declared & 8 (61.5\%) & 2 (14.3\%) \\
+         & One-sided declarations & 5 (38.5\%) & 12 (85.7\%) \\
+        \bottomrule
+    \end{tabular}%
+}

@@ -9,6 +9,7 @@ from itertools import combinations
 from pathlib import Path
 from typing import Any
 
+from analysis.dependencies.consistency import build_dependency_consistency_payload
 from analysis.dependencies.constants import (
     BODY_EXTRACTED_LLM,
     BODY_EXTRACTED_REGEX,
@@ -36,6 +37,14 @@ PAYLOAD_REQUIRED_FILES: dict[str, list[str]] = {
         "pairwise_comparisons",
         "pairwise_comparisons_exact_type",
     ],
+    "dependencies/dependency_consistency.json": [
+        "meta",
+        "by_approach",
+        "table_rows",
+        "dashboard_table_rows",
+        "structural_check_rows",
+        "omitted_zero_checks",
+    ],
     "authorship/authorship_payload.json": [
         "meta",
         "top_authors",
@@ -59,6 +68,7 @@ PAYLOAD_REQUIRED_FILES: dict[str, list[str]] = {
 PAYLOAD_COLUMN_LABELS: dict[str, str] = {
     "dependencies/network_data.json": "network",
     "dependencies/dependency_metrics.json": "dep_metrics",
+    "dependencies/dependency_consistency.json": "dep_consistency",
     "authorship/authorship_payload.json": "authorship",
     "classification/classification_payload.json": "classification",
     "evolution/evolution_payload.json": "evolution",
@@ -637,6 +647,7 @@ def validate_preprocess_snapshot(
 def validate_payload_snapshot(snapshot_dir: Path) -> SnapshotValidationResult:
     """Validate the frontend payloads under a 04_postprocess/<snapshot> directory."""
     result = SnapshotValidationResult()
+    loaded_payloads: dict[str, Mapping[str, Any]] = {}
 
     for rel_path, required_keys in PAYLOAD_REQUIRED_FILES.items():
         label = PAYLOAD_COLUMN_LABELS[rel_path]
@@ -663,6 +674,7 @@ def validate_payload_snapshot(snapshot_dir: Path) -> SnapshotValidationResult:
             continue
 
         result.file_status[label] = "✅"
+        loaded_payloads[rel_path] = data
 
         if rel_path == "dependencies/network_data.json":
             result.stats["proposals"] = len(data.get("nodes", []))
@@ -676,6 +688,19 @@ def validate_payload_snapshot(snapshot_dir: Path) -> SnapshotValidationResult:
 
         if rel_path == "authorship/authorship_payload.json":
             _validate_authorship_payload(data, result, rel_path)
+
+    network_data = loaded_payloads.get("dependencies/network_data.json")
+    consistency_payload = loaded_payloads.get(
+        "dependencies/dependency_consistency.json"
+    )
+    if network_data is not None and consistency_payload is not None:
+        expected = build_dependency_consistency_payload(network_data)
+        if consistency_payload != expected:
+            result.file_status["dep_consistency"] = "❌ stale"
+            result.fail(
+                "`dependencies/dependency_consistency.json` does not match "
+                "`dependencies/network_data.json`; rebuild the snapshot artifacts"
+            )
 
     return result
 

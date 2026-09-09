@@ -3,8 +3,8 @@ import { SECTION_PAYLOAD_FILES, applySectionData, fetchSectionDataForSelection }
 
 const SECTION_FIELDS = Object.keys(SECTION_PAYLOAD_FILES);
 
-// Loads the deferred per-section payloads (dependency metrics, evolution,
-// conformity) once their dashboard section has scrolled into view, and merges
+// Loads deferred section payloads (dependency metrics/consistency, evolution,
+// and conformity) once their dashboard section has scrolled into view, and merges
 // them into the core dataset. Results are keyed by the active selection so a
 // snapshot/source switch discards payloads from the previous selection.
 export function useSectionDataLoader({

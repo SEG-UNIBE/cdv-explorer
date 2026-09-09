@@ -103,7 +103,10 @@ export function DashboardSections({
   sectionReady = {},
 }) {
   const activateEvolution = useCallback(() => onSectionActivate?.('evolution'), [onSectionActivate]);
-  const activateDependencies = useCallback(() => onSectionActivate?.('dependencyMetrics'), [onSectionActivate]);
+  const activateDependencies = useCallback(() => {
+    onSectionActivate?.('dependencyMetrics');
+    onSectionActivate?.('dependencyConsistency');
+  }, [onSectionActivate]);
   const activateConformity = useCallback(() => onSectionActivate?.('conformity'), [onSectionActivate]);
   const collaborationAuthorOptions = (dashboardData.authorship.collaborationNetwork?.nodes || [])
     .map((node) => String(node.id || ''))
@@ -196,7 +199,7 @@ export function DashboardSections({
         Component={DependenciesSection}
         minHeight={320}
         onActivate={activateDependencies}
-        ready={sectionReady.dependencyMetrics !== false}
+        ready={sectionReady.dependencyMetrics !== false && sectionReady.dependencyConsistency !== false}
         componentProps={{
           ecosystem: datasets.dependencyViewEcosystem,
           ecosystemBase: ecosystem,
@@ -218,6 +221,7 @@ export function DashboardSections({
           selectedDependencyProposalIds,
           activeDependencyLlmModel: dependencyMetrics.activeDependencyLlmModel,
           dependencyMetrics: dependencyMetrics.dependencyViewMetrics,
+          dependencyConsistency: dependencyMetrics.dependencyViewConsistency,
           showExperimentalFeatures,
         }}
       />

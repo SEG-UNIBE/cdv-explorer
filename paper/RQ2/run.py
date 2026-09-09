@@ -16,6 +16,7 @@ GENERATE_DEPENDENCY_COMPARISON_TABLE = True
 GENERATE_GROUND_TRUTH_EVALUATION_PLOT = True
 GENERATE_TYPE_MAPPING_TABLE = True
 GENERATE_GROUND_TRUTH_DATASET_TABLE = True
+GENERATE_DEPENDENCY_CONSISTENCY_TABLE = True
 DIFFERENTIAL_FALLBACK_FOCUS_BIPS = [20, 67, 77, 78, 93, 321, 350, 433]
 DIFFERENTIAL_FALLBACK_EXCLUDE_BIPS = [79, 324, 21, 353, 13, 392, 451]
 DIFFERENTIAL_HIGHLIGHT_BIPS_PREAMBLE_VS_REGEX = [77, 174, 173, 67, 16]
@@ -86,6 +87,7 @@ DIFFERENTIAL_ALTERNATIVE_LAYOUTS = [
 
 def main() -> None:
     from analysis.artifact_io import (
+        load_dependency_consistency,
         load_network_data,
         resolve_latest_snapshot_label,
     )
@@ -93,6 +95,9 @@ def main() -> None:
         export_dependency_comparison_latex_table,
         export_preamble_dependency_comparison_latex_table,
         export_preamble_plus_regex_llm_dependency_comparison_latex_table,
+    )
+    from paper.RQ2.dependency_consistency_table import (
+        export_dependency_consistency_latex_table,
     )
     from paper.RQ2.dependency_differential_plots import (
         render_differential_dependency_plots,
@@ -195,6 +200,12 @@ def main() -> None:
             network_data=network_data,
             output_path=output_dir
             / f"{filename_prefix}_ground_truth_dataset_composition.tex",
+        )
+    if GENERATE_DEPENDENCY_CONSISTENCY_TABLE:
+        export_dependency_consistency_latex_table(
+            payload=load_dependency_consistency(snapshot=SNAPSHOT),
+            output_path=output_dir
+            / f"{filename_prefix}_dependency_consistency.tex",
         )
 
 

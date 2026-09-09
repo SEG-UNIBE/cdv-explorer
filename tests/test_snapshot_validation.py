@@ -194,6 +194,19 @@ class SnapshotValidationTests(unittest.TestCase):
                 ),
                 encoding="utf-8",
             )
+            (payload_dir / "dependencies" / "dependency_consistency.json").write_text(
+                json.dumps(
+                    {
+                        "meta": {},
+                        "by_approach": {},
+                        "table_rows": [],
+                        "dashboard_table_rows": [],
+                        "structural_check_rows": [],
+                        "omitted_zero_checks": [],
+                    }
+                ),
+                encoding="utf-8",
+            )
             (payload_dir / "authorship" / "authorship_payload.json").write_text(
                 json.dumps(
                     {
@@ -233,6 +246,7 @@ class SnapshotValidationTests(unittest.TestCase):
             result = validate_payload_snapshot(payload_dir)
 
         self.assertFalse(result.ok)
+        self.assertIn("does not match", "\n".join(result.errors))
         error_text = "\n".join(result.errors)
         self.assertIn("node `1` missing `contributors` list", error_text)
         self.assertIn("missing top-level keys: ['contributors']", error_text)

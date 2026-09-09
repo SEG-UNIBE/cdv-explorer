@@ -1,3 +1,4 @@
+from .consistency import build_dependency_consistency_payload
 from .constants import (
     BODY_EXTRACTED_LLM,
     BODY_EXTRACTED_REGEX,
@@ -35,6 +36,7 @@ __all__ = [
     "PREAMBLE_EXTRACTED",
     "available_llm_model_entries",
     "build_graph",
+    "build_dependency_consistency_payload",
     "build_network_data",
     "collapse_network_data_to_llm_model",
     "compute_graph_depth",

@@ -9,6 +9,7 @@ import { NetworkDiagram } from '../../NetworkDiagram';
 import { ProposalGraphMetricsTable } from '../../ProposalGraphMetricsTable';
 import { DependencyComparisonHeatmaps } from '../../DependencyComparisonHeatmaps';
 import { DependencyGroundTruthEvaluationCharts } from '../../DependencyGroundTruthEvaluationCharts';
+import { DependencyConsistencyCard } from '../../DependencyConsistencyCard';
 import { ProposalFilterControl } from '../../ProposalFilterControl';
 import {
   buildDefaultTypeMapping,
@@ -213,6 +214,7 @@ export function DependenciesSection({
   selectedDependencyProposalIds,
   activeDependencyLlmModel,
   dependencyMetrics,
+  dependencyConsistency,
   showExperimentalFeatures,
 }) {
   const [groundTruthMatchMode, setGroundTruthMatchMode] = useState(GROUND_TRUTH_MATCH_MODE_EDGE_ONLY);
@@ -544,6 +546,7 @@ export function DependenciesSection({
         moveMetricTooltip={moveMetricTooltip}
         hideMetricTooltip={hideMetricTooltip}
       />
+      <DependencyConsistencyCard payload={dependencyConsistency} />
       <ExportableCard className="mb-4" exportTitle="Comparison of Pairwise Interrelation Extraction Approach">
         <h3>Comparison of Pairwise Interrelation Extraction Approach</h3>
         <p>

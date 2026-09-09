@@ -175,6 +175,10 @@ test('renders separate consistency tables and copies anomaly proposal filters', 
           cyclic_groups: [{ nodes: [{ id: 'bips:157' }, { id: 'bips:158' }] }],
         },
         supersession: {
+          reciprocal_facts: [{
+            successor: { id: 'bips:2' },
+            predecessor: { id: 'bips:1' },
+          }],
           one_sided_facts: [{
             successor: { id: 'bips:95' },
             predecessor: { id: 'bips:94' },
@@ -183,7 +187,7 @@ test('renders separate consistency tables and copies anomaly proposal filters', 
       },
       [BODY_EXTRACTED_LLM]: {
         dependency: { cyclic_groups: [] },
-        supersession: { one_sided_facts: [] },
+        supersession: { reciprocal_facts: [], one_sided_facts: [] },
       },
     },
   };
@@ -198,6 +202,12 @@ test('renders separate consistency tables and copies anomaly proposal filters', 
   expect(screen.getByRole('heading', { name: 'Dependency' })).toBeInTheDocument();
   expect(screen.getByRole('heading', { name: 'Supersession' })).toBeInTheDocument();
   expect(screen.getAllByText('Self-relations').length).toBeGreaterThan(0);
+  expect(screen.getByText('Reciprocally declared supersessions')).toBeInTheDocument();
+
+  fireEvent.click(screen.getByRole('button', {
+    name: 'Copy BIP2,BIP1 for proposal filtering',
+  }));
+  await waitFor(() => expect(writeText).toHaveBeenCalledWith('BIP2,BIP1'));
 
   fireEvent.click(screen.getByRole('button', {
     name: 'Copy BIP157,BIP158 for proposal filtering',

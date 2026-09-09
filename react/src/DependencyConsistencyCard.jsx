@@ -126,11 +126,11 @@ function CyclicGroupList({ groups, ecosystem, snapshot, linkMode }) {
   );
 }
 
-function OneSidedFactList({ facts, ecosystem, snapshot, linkMode }) {
+function SupersessionFactList({ summary, facts, ecosystem, snapshot, linkMode }) {
   if (!facts?.length) return null;
   return (
     <details className="dependency-consistency-details">
-      <summary>One-sided supersession declarations</summary>
+      <summary>{summary}</summary>
       <ul>
         {facts.map((fact) => (
           <li key={`${fact.successor?.id}|${fact.predecessor?.id}`}>
@@ -254,7 +254,15 @@ export function DependencyConsistencyCard({ payload }) {
                 snapshot={snapshot}
                 linkMode={linkMode}
               />
-              <OneSidedFactList
+              <SupersessionFactList
+                summary="Reciprocally declared supersessions"
+                facts={analysis.supersession?.reciprocal_facts}
+                ecosystem={ecosystem}
+                snapshot={snapshot}
+                linkMode={linkMode}
+              />
+              <SupersessionFactList
+                summary="One-sided supersession declarations"
                 facts={analysis.supersession?.one_sided_facts}
                 ecosystem={ecosystem}
                 snapshot={snapshot}

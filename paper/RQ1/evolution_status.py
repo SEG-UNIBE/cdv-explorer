@@ -9,14 +9,14 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
 from matplotlib.ticker import MaxNLocator, MultipleLocator
 
-from paper.config import FIGURE_TITLE_FONT_SIZE
-from paper.plot_colors import REACT_CLASSIFICATION_PALETTE, tint
 from paper._utils.plotting import (
     BAR_EDGE_COLOR,
     bar_style,
     despine,
     match_axis_label_fontsize,
 )
+from paper.config import FIGURE_TITLE_FONT_SIZE
+from paper.plot_colors import REACT_CLASSIFICATION_PALETTE, tint
 
 ACTIVATION_GAP = 0.45
 TITLE_PAD = 12

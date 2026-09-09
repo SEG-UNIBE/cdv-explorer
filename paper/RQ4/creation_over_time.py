@@ -3,14 +3,14 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 
-from paper.config import FIGURE_TITLE_FONT_SIZE
-from paper.plot_colors import with_plot_alpha
 from paper._utils.plotting import (
     bar_style,
     despine,
     match_axis_label_fontsize,
     save_figure,
 )
+from paper.config import FIGURE_TITLE_FONT_SIZE
+from paper.plot_colors import with_plot_alpha
 
 TIMELINE_BAR_COLOR = "#4c78a8"
 TIMELINE_LINE_COLOR = "#e45756"

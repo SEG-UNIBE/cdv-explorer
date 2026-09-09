@@ -24,9 +24,9 @@ from analysis.artifact_io import (
     resolve_latest_snapshot_label,
 )
 from paper._utils.io import resolve_output_dir, snapshot_prefix
+from paper._utils.plotting import save_figure
 from paper.config import FIGURE_TITLE_FONT_SIZE, SNAPSHOT
 from paper.plot_colors import ORDERED_PLOT_PALETTE, PLOT_COLOR_ALPHA
-from paper._utils.plotting import save_figure
 from paper.RQ4.collaboration_common import build_author_bip_map
 
 LAYOUT_EXPORT_DIR = Path("paper") / "RQ4"

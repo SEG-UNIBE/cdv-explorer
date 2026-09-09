@@ -3,8 +3,6 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 
-from paper.config import FIGURE_TITLE_FONT_SIZE, SUBPLOT_TITLE_FONT_SIZE
-from paper.plot_colors import COAUTHOR_DEGREE_COLOR, COLLABORATION_COMPONENT_COLOR
 from paper._utils.plotting import (
     bar_style,
     despine,
@@ -12,6 +10,8 @@ from paper._utils.plotting import (
     save_figure,
     style_ellipsis_ticklabels,
 )
+from paper.config import FIGURE_TITLE_FONT_SIZE, SUBPLOT_TITLE_FONT_SIZE
+from paper.plot_colors import COAUTHOR_DEGREE_COLOR, COLLABORATION_COMPONENT_COLOR
 from paper.RQ4.collaboration_common import (
     build_collaboration_component_size_distribution,
     build_collaboration_degree_distribution,

@@ -34,18 +34,18 @@ from analysis.dependencies.constants import (
     INTERRELATION_TYPE_SUPERSEDES,
     PREAMBLE_EXTRACTED,
 )
-from paper.config import (
-    FIGURE_TITLE_FONT_SIZE,
-    LEGEND_FONT_SIZE,
-    SUBPLOT_TITLE_FONT_SIZE,
-)
-from paper.plot_colors import ORDERED_PLOT_PALETTE
 from paper._utils.plotting import (
     bar_style,
     despine,
     match_axis_label_fontsize,
     save_figure,
 )
+from paper.config import (
+    FIGURE_TITLE_FONT_SIZE,
+    LEGEND_FONT_SIZE,
+    SUBPLOT_TITLE_FONT_SIZE,
+)
+from paper.plot_colors import ORDERED_PLOT_PALETTE
 
 EVALUATED_APPROACHES = [
     PREAMBLE_EXTRACTED,

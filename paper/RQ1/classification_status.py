@@ -11,8 +11,6 @@ from matplotlib.patches import Patch
 from matplotlib.ticker import MaxNLocator
 
 from analysis.artifact_io import resolve_latest_snapshot_label
-from paper.config import FIGURE_TITLE_FONT_SIZE
-from paper.plot_colors import with_plot_alpha
 from paper._utils.plotting import (
     BAR_EDGE_COLOR,
     BAR_EDGE_WIDTH,
@@ -21,6 +19,8 @@ from paper._utils.plotting import (
     match_axis_label_fontsize,
     save_figure,
 )
+from paper.config import FIGURE_TITLE_FONT_SIZE
+from paper.plot_colors import with_plot_alpha
 from pipeline.source_context import SourceContext
 
 STATUS_ORDER = [

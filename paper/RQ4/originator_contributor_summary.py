@@ -2,9 +2,9 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 
+from paper._utils.plotting import add_bar_label_headroom, save_figure
 from paper.config import FIGURE_TITLE_FONT_SIZE
 from paper.plot_colors import AUTHORS_PER_BIP_COLOR, AUTHORSHIP_DISTRIBUTION_COLOR
-from paper._utils.plotting import add_bar_label_headroom, save_figure
 from paper.RQ4.authorship_overview import (
     _draw_authors_per_bip_axis,
     _draw_authorship_distribution_axis,

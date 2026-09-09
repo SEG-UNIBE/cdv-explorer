@@ -10,10 +10,10 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import PathPatch, Rectangle
 from matplotlib.path import Path as MplPath
 
+from paper._utils.plotting import BAR_EDGE_COLOR, bar_style, save_figure
 from paper.config import FIGURE_TITLE_FONT_SIZE
 from paper.RQ1.classification_status import STATUS_COLORS, resolve_rq1_status_order
 from paper.RQ1.classification_type import TYPE_COLORS, TYPE_ORDER
-from paper._utils.plotting import BAR_EDGE_COLOR, bar_style, save_figure
 
 LAYER_ORDER = [
     "Applications",

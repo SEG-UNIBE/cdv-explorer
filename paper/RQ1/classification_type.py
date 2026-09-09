@@ -7,13 +7,6 @@ from matplotlib.patches import Patch
 from matplotlib.ticker import MaxNLocator
 
 from analysis.classification.metrics import build_type_over_time
-from paper.config import FIGURE_TITLE_FONT_SIZE
-from paper.plot_colors import BIP_TYPE_COLORS, BIP_TYPE_ORDER, with_plot_alpha
-from paper.RQ1.classification_status import (
-    _monotone_cubic_curve,
-    _normalize_status_series,
-    plot_classification_status,
-)
 from paper._utils.plotting import (
     BAR_EDGE_COLOR,
     BAR_EDGE_WIDTH,
@@ -21,6 +14,13 @@ from paper._utils.plotting import (
     despine,
     match_axis_label_fontsize,
     save_figure,
+)
+from paper.config import FIGURE_TITLE_FONT_SIZE
+from paper.plot_colors import BIP_TYPE_COLORS, BIP_TYPE_ORDER, with_plot_alpha
+from paper.RQ1.classification_status import (
+    _monotone_cubic_curve,
+    _normalize_status_series,
+    plot_classification_status,
 )
 
 TYPE_ORDER = BIP_TYPE_ORDER

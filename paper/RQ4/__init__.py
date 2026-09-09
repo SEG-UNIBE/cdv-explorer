@@ -1,1 +1,1 @@
-"""Research question 3 paper entrypoints."""
+"""RQ4 paper artifacts: authorship and contributor analysis."""

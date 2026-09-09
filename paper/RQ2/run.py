@@ -13,7 +13,6 @@ OUTPUT_DIR = None
 GENERATE_DEPENDENCY_PLOTS = False
 GENERATE_DIFFERENTIAL_DEPENDENCY_PLOTS = True
 GENERATE_DEPENDENCY_COMPARISON_TABLE = True
-GENERATE_CENTRALITY_TOP5_TABLE = True
 GENERATE_GROUND_TRUTH_EVALUATION_PLOT = True
 GENERATE_TYPE_MAPPING_TABLE = True
 GENERATE_GROUND_TRUTH_DATASET_TABLE = True
@@ -87,11 +86,9 @@ DIFFERENTIAL_ALTERNATIVE_LAYOUTS = [
 
 def main() -> None:
     from analysis.artifact_io import (
-        load_dependency_metrics,
         load_network_data,
         resolve_latest_snapshot_label,
     )
-    from paper.RQ2.dependency_centrality_table import export_centrality_top5_latex_table
     from paper.RQ2.dependency_comparison_table import (
         export_dependency_comparison_latex_table,
         export_preamble_dependency_comparison_latex_table,
@@ -119,7 +116,6 @@ def main() -> None:
     filename_prefix = snapshot_prefix(snapshot_label)
 
     network_data = load_network_data(snapshot=SNAPSHOT)
-    dep_metrics = load_dependency_metrics(snapshot=SNAPSHOT)
     if GENERATE_DEPENDENCY_PLOTS:
         render_default_dependency_plot_suite(
             network_data,
@@ -172,11 +168,6 @@ def main() -> None:
             network_data=network_data,
             output_path=output_dir / f"{filename_prefix}_GT_eval_combined.pdf",
             snapshot_label=snapshot_label,
-        )
-    if GENERATE_CENTRALITY_TOP5_TABLE:
-        export_centrality_top5_latex_table(
-            dep_metrics=dep_metrics,
-            output_path=output_dir / f"{filename_prefix}_centrality_top5.tex",
         )
     if GENERATE_DEPENDENCY_COMPARISON_TABLE:
         export_dependency_comparison_latex_table(

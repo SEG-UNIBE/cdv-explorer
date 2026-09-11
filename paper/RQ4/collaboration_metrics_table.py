@@ -29,7 +29,7 @@ LATEX_TABLE_HEADERS = [
     "BIPs",
     "Deg.",
     ("W. Deg.", ""),
-    "W. EV",
+    "WEV",
     "BC",
 ]
 

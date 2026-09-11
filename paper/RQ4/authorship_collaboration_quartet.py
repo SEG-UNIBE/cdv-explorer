@@ -50,26 +50,32 @@ def plot_authorship_collaboration_quartet(
     axis_c = figure.add_subplot(grid[1, 0])
     axis_d = figure.add_subplot(grid[1, 1])
 
-    _draw_top_authors_axis(axis_a, top_ten, title="(a) Top 10 Authors")
+    _draw_top_authors_axis(axis_a, top_ten, title="(a) Top 10 Originators")
 
     _draw_component_distribution_axis(
         axis_b,
         component_series,
         title="(b) Collaboration Clusters",
         total=total_components,
+        entity_label="Originators",
     )
     add_bar_label_headroom(axis_b)
 
     _draw_authors_per_bip_axis(
-        axis_c, authors_per_bip_series, title="(c) Authors per BIP", total=total_bips
+        axis_c,
+        authors_per_bip_series,
+        title="(c) Originators per BIP",
+        total=total_bips,
+        entity_label="Originators",
     )
     add_bar_label_headroom(axis_c, ratio=0.12)
 
     _draw_authorship_distribution_axis(
         axis_d,
         authorship_dist_series,
-        title="(d) BIPs per Author",
+        title="(d) BIPs per Originator",
         total=total_authors,
+        entity_label="Originators",
     )
     add_bar_label_headroom(axis_d)
 

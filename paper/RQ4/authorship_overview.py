@@ -172,7 +172,7 @@ def _draw_top_authors_axis(
     axis.barh(author_names, author_counts, zorder=2, **bar_style(TOP_AUTHORS_COLOR))
     if title:
         axis.set_title(title, fontsize=SUBPLOT_TITLE_FONT_SIZE)
-    axis.set_xlabel("Proposals authored")
+    axis.set_xlabel("Authored BIPs")
     axis.set_ylabel("")
     axis.invert_yaxis()
     for index, count in enumerate(author_counts):

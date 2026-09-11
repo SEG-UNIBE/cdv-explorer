@@ -172,6 +172,7 @@ def _draw_component_distribution_axis(
     *,
     title: str | None,
     total: int | None = None,
+    entity_label: str = "Authors",
 ) -> None:
     component_positions = np.arange(len(displayed_component_series))
     component_counts = [
@@ -194,7 +195,7 @@ def _draw_component_distribution_axis(
 
     if title:
         axis.set_title(title, fontsize=SUBPLOT_TITLE_FONT_SIZE)
-    axis.set_xlabel("# Authors in component")
+    axis.set_xlabel(f"# {entity_label} in component")
     axis.set_ylabel(
         "# Connected components"
         if total is None

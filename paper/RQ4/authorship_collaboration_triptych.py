@@ -50,15 +50,20 @@ def plot_authorship_collaboration_triptych(
     axis_b = figure.add_subplot(grid[1, :])
 
     _draw_authors_per_bip_axis(
-        axis_a, authors_per_bip_series, title="(a) Authors per BIP", total=total_bips
+        axis_a,
+        authors_per_bip_series,
+        title="(a) Originators per BIP",
+        total=total_bips,
+        entity_label="Originators",
     )
     add_bar_label_headroom(axis_a, ratio=0.12)
 
     _draw_authorship_distribution_axis(
         axis_b,
         authorship_dist_series,
-        title="(b) BIPs per Author",
+        title="(b) BIPs per Originator",
         total=total_authors,
+        entity_label="Originators",
     )
     add_bar_label_headroom(axis_b)
 
@@ -67,6 +72,7 @@ def plot_authorship_collaboration_triptych(
         component_series,
         title="(c) Collaboration Clusters",
         total=total_components,
+        entity_label="Originators",
     )
     add_bar_label_headroom(axis_c)
 
@@ -107,15 +113,20 @@ def plot_authorship_collaboration_triptych_row(
     )
 
     _draw_authors_per_bip_axis(
-        axis_a, authors_per_bip_series, title="(a) Authors per BIP", total=total_bips
+        axis_a,
+        authors_per_bip_series,
+        title="(a) Originators per BIP",
+        total=total_bips,
+        entity_label="Originators",
     )
     add_bar_label_headroom(axis_a, ratio=0.12)
 
     _draw_authorship_distribution_axis(
         axis_b,
         authorship_dist_series,
-        title="(b) BIPs per Author",
+        title="(b) BIPs per Originator",
         total=total_authors,
+        entity_label="Originators",
     )
     add_bar_label_headroom(axis_b)
 
@@ -124,6 +135,7 @@ def plot_authorship_collaboration_triptych_row(
         component_series,
         title="(c) Collaboration Clusters",
         total=total_components,
+        entity_label="Originators",
     )
     add_bar_label_headroom(axis_c)
 

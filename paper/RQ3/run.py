@@ -17,6 +17,9 @@ def main() -> None:
         load_centrality_comparison,
         resolve_latest_snapshot_label,
     )
+    from paper.RQ3.centrality_concordance_table import (
+        export_centrality_concordance_latex_table,
+    )
     from paper.RQ3.dependency_centrality_table import (
         export_centrality_top5_latex_table,
     )
@@ -25,9 +28,14 @@ def main() -> None:
     output_dir = resolve_output_dir(OUTPUT_DIR, Path("paper") / "RQ3" / "outputs")
     filename_prefix = snapshot_prefix(snapshot_label)
 
+    centrality_comparison = load_centrality_comparison(snapshot=SNAPSHOT)
     export_centrality_top5_latex_table(
-        centrality_comparison=load_centrality_comparison(snapshot=SNAPSHOT),
+        centrality_comparison=centrality_comparison,
         output_path=output_dir / f"{filename_prefix}_centrality_top5.tex",
+    )
+    export_centrality_concordance_latex_table(
+        centrality_comparison=centrality_comparison,
+        output_path=output_dir / f"{filename_prefix}_centrality_concordance.tex",
     )
 
 

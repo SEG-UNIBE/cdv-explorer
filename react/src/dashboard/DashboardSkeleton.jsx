@@ -189,6 +189,11 @@ export function DashboardSkeleton() {
         <SkCard minHeight={380}><NetworkSvg /></SkCard>
       </SkSection>
 
+      {/* Centrality */}
+      <SkSection>
+        <SkCard><TableRowsSvg /></SkCard>
+      </SkSection>
+
       {/* Conformity */}
       <SkSection>
         <SkCard><TableRowsSvg /></SkCard>

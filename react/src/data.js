@@ -32,6 +32,14 @@ const EMPTY_DATASET = {
     table_rows: [],
     dashboard_table_rows: [],
   },
+  centralityComparison: {
+    meta: {},
+    by_approach: {},
+    concordance: {
+      top: { across_approaches: [], across_measures: [] },
+      all: { across_approaches: [], across_measures: [] },
+    },
+  },
   authorship: { meta: {}, top_authors: [], bips_per_year: [], top_10_share: {} },
   classification: { meta: {}, sankey_grouped: { links: [] }, status_over_time: {} },
   evolution: { meta: {}, status_evolution: { categories: [], rows: [] } },
@@ -545,6 +553,7 @@ function buildMergedDataset(snapshotLabel, entries, combinedDataset = null) {
     },
     dependencyMetrics: EMPTY_DATASET.dependencyMetrics,
     dependencyConsistency: EMPTY_DATASET.dependencyConsistency,
+    centralityComparison: EMPTY_DATASET.centralityComparison,
     isMergedSelection: true,
     meta: {
       node_count: nodes.length,
@@ -640,6 +649,7 @@ function fetchCombinedSourceDataset(ecosystemId, sourceEntries, snapshot) {
 export const SECTION_PAYLOAD_FILES = {
   dependencyMetrics: 'dependencies/dependency_metrics.json',
   dependencyConsistency: 'dependencies/dependency_consistency.json',
+  centralityComparison: 'centrality/centrality_comparison.json',
   evolution: 'evolution/evolution_payload.json',
   conformity: 'conformity/conformity_metrics.json',
 };

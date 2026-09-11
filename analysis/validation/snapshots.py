@@ -9,6 +9,7 @@ from itertools import combinations
 from pathlib import Path
 from typing import Any
 
+from analysis.dependencies.centrality import build_centrality_comparison_payload
 from analysis.dependencies.consistency import build_dependency_consistency_payload
 from analysis.dependencies.constants import (
     BODY_EXTRACTED_LLM,
@@ -36,6 +37,11 @@ PAYLOAD_REQUIRED_FILES: dict[str, list[str]] = {
         "by_approach",
         "pairwise_comparisons",
         "pairwise_comparisons_exact_type",
+    ],
+    "centrality/centrality_comparison.json": [
+        "meta",
+        "by_approach",
+        "concordance",
     ],
     "dependencies/dependency_consistency.json": [
         "meta",
@@ -68,6 +74,7 @@ PAYLOAD_REQUIRED_FILES: dict[str, list[str]] = {
 PAYLOAD_COLUMN_LABELS: dict[str, str] = {
     "dependencies/network_data.json": "network",
     "dependencies/dependency_metrics.json": "dep_metrics",
+    "centrality/centrality_comparison.json": "centrality",
     "dependencies/dependency_consistency.json": "dep_consistency",
     "authorship/authorship_payload.json": "authorship",
     "classification/classification_payload.json": "classification",
@@ -690,6 +697,25 @@ def validate_payload_snapshot(snapshot_dir: Path) -> SnapshotValidationResult:
             _validate_authorship_payload(data, result, rel_path)
 
     network_data = loaded_payloads.get("dependencies/network_data.json")
+    dependency_metrics = loaded_payloads.get("dependencies/dependency_metrics.json")
+    centrality_payload = loaded_payloads.get(
+        "centrality/centrality_comparison.json"
+    )
+    if (
+        dependency_metrics is not None
+        and centrality_payload is not None
+        and network_data is not None
+    ):
+        expected = build_centrality_comparison_payload(
+            dict(dependency_metrics), network_data=dict(network_data)
+        )
+        if centrality_payload != expected:
+            result.file_status["centrality"] = "❌ stale"
+            result.fail(
+                "`centrality/centrality_comparison.json` does not match "
+                "`dependencies/dependency_metrics.json`; rebuild the snapshot artifacts"
+            )
+
     consistency_payload = loaded_payloads.get(
         "dependencies/dependency_consistency.json"
     )

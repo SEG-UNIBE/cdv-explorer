@@ -1,0 +1,603 @@
+{
+  "meta": {
+    "schema_version": 2,
+    "approach_order": [
+      "preamble_extracted",
+      "body_extracted_regex",
+      "body_extracted_llm"
+    ],
+    "metric_order": [
+      "in_degree",
+      "weighted_eigenvector",
+      "pagerank",
+      "betweenness"
+    ],
+    "metric_labels": {
+      "in_degree": "In-Degree",
+      "weighted_eigenvector": "Weighted Eigenvector",
+      "pagerank": "PageRank",
+      "betweenness": "Betweenness"
+    },
+    "top_n": 5,
+    "node_count": 232,
+    "scope_item_counts": {
+      "top": 30,
+      "all": 232
+    },
+    "llm_model": "gpt-5.4-mini",
+    "highlight_count": 16
+  },
+  "by_approach": {
+    "preamble_extracted": {
+      "label": "Preamble",
+      "top_by_metric": {
+        "in_degree": [
+          {
+            "id": "bips:380",
+            "title": "Output Script Descriptors General Operation",
+            "value": 13,
+            "rank": 1,
+            "highlight_index": 5
+          },
+          {
+            "id": "bips:340",
+            "title": "Schnorr Signatures for secp256k1",
+            "value": 7,
+            "rank": 2,
+            "highlight_index": null
+          },
+          {
+            "id": "bips:341",
+            "title": "Taproot: SegWit version 1 spending rules",
+            "value": 7,
+            "rank": 2,
+            "highlight_index": 3
+          },
+          {
+            "id": "bips:32",
+            "title": "Hierarchical Deterministic Wallets",
+            "value": 5,
+            "rank": 4,
+            "highlight_index": 1
+          },
+          {
+            "id": "bips:174",
+            "title": "Partially Signed Bitcoin Transaction Format",
+            "value": 5,
+            "rank": 4,
+            "highlight_index": null
+          }
+        ],
+        "weighted_eigenvector": [
+          {
+            "id": "bips:20",
+            "title": "URI Scheme",
+            "value": 0.5070925528371101,
+            "rank": 1,
+            "highlight_index": null
+          },
+          {
+            "id": "bips:321",
+            "title": "URI Scheme",
+            "value": 0.5070925528371101,
+            "rank": 1,
+            "highlight_index": 6
+          },
+          {
+            "id": "bips:1",
+            "title": "BIP Purpose and Guidelines",
+            "value": 0.33806170189140655,
+            "rank": 3,
+            "highlight_index": null
+          },
+          {
+            "id": "bips:2",
+            "title": "BIP process, revised",
+            "value": 0.33806170189140655,
+            "rank": 3,
+            "highlight_index": 7
+          },
+          {
+            "id": "bips:3",
+            "title": "Updated BIP Process",
+            "value": 0.33806170189140655,
+            "rank": 3,
+            "highlight_index": 8
+          }
+        ],
+        "pagerank": [
+          {
+            "id": "bips:380",
+            "title": "Output Script Descriptors General Operation",
+            "value": 0.033050096874601614,
+            "rank": 1,
+            "highlight_index": 5
+          },
+          {
+            "id": "bips:21",
+            "title": "URI Scheme",
+            "value": 0.030637306472163797,
+            "rank": 2,
+            "highlight_index": 4
+          },
+          {
+            "id": "bips:78",
+            "title": "A Simple Payjoin Proposal",
+            "value": 0.02170267162841157,
+            "rank": 3,
+            "highlight_index": null
+          },
+          {
+            "id": "bips:79",
+            "title": "Bustapay :: a practical coinjoin protocol",
+            "value": 0.021370907959004884,
+            "rank": 4,
+            "highlight_index": null
+          },
+          {
+            "id": "bips:151",
+            "title": "Peer-to-Peer Communication Encryption",
+            "value": 0.019469012917473515,
+            "rank": 5,
+            "highlight_index": null
+          }
+        ],
+        "betweenness": [
+          {
+            "id": "bips:21",
+            "title": "URI Scheme",
+            "value": 7.528703180877094e-05,
+            "rank": 1,
+            "highlight_index": 4
+          },
+          {
+            "id": "bips:173",
+            "title": "Base32 address format for native v0-16 witness outputs",
+            "value": 7.528703180877094e-05,
+            "rank": 1,
+            "highlight_index": 9
+          },
+          {
+            "id": "bips:2",
+            "title": "BIP process, revised",
+            "value": 5.64652738565782e-05,
+            "rank": 3,
+            "highlight_index": 7
+          },
+          {
+            "id": "bips:3",
+            "title": "Updated BIP Process",
+            "value": 3.764351590438547e-05,
+            "rank": 4,
+            "highlight_index": 8
+          },
+          {
+            "id": "bips:322",
+            "title": "Generic Signed Message Format",
+            "value": 3.764351590438547e-05,
+            "rank": 4,
+            "highlight_index": null
+          }
+        ]
+      }
+    },
+    "body_extracted_regex": {
+      "label": "Regex",
+      "top_by_metric": {
+        "in_degree": [
+          {
+            "id": "bips:32",
+            "title": "Hierarchical Deterministic Wallets",
+            "value": 59,
+            "rank": 1,
+            "highlight_index": 1
+          },
+          {
+            "id": "bips:141",
+            "title": "Segregated Witness (Consensus layer)",
+            "value": 31,
+            "rank": 2,
+            "highlight_index": 2
+          },
+          {
+            "id": "bips:341",
+            "title": "Taproot: SegWit version 1 spending rules",
+            "value": 28,
+            "rank": 3,
+            "highlight_index": 3
+          },
+          {
+            "id": "bips:44",
+            "title": "Multi-Account Hierarchy for Deterministic Wallets",
+            "value": 27,
+            "rank": 4,
+            "highlight_index": null
+          },
+          {
+            "id": "bips:9",
+            "title": "Version bits with timeout and delay",
+            "value": 25,
+            "rank": 5,
+            "highlight_index": 0
+          }
+        ],
+        "weighted_eigenvector": [
+          {
+            "id": "bips:9",
+            "title": "Version bits with timeout and delay",
+            "value": 0.45429013308924854,
+            "rank": 1,
+            "highlight_index": 0
+          },
+          {
+            "id": "bips:112",
+            "title": "CHECKSEQUENCEVERIFY",
+            "value": 0.3651481342299091,
+            "rank": 2,
+            "highlight_index": 10
+          },
+          {
+            "id": "bips:68",
+            "title": "Relative lock-time using consensus-enforced sequence numbers",
+            "value": 0.363781519906508,
+            "rank": 3,
+            "highlight_index": 11
+          },
+          {
+            "id": "bips:65",
+            "title": "OP_CHECKLOCKTIMEVERIFY",
+            "value": 0.36284567908418824,
+            "rank": 4,
+            "highlight_index": 12
+          },
+          {
+            "id": "bips:113",
+            "title": "Median time-past as endpoint for lock-time calculations",
+            "value": 0.3129053034272743,
+            "rank": 5,
+            "highlight_index": 13
+          }
+        ],
+        "pagerank": [
+          {
+            "id": "bips:32",
+            "title": "Hierarchical Deterministic Wallets",
+            "value": 0.13999500262286854,
+            "rank": 1,
+            "highlight_index": 1
+          },
+          {
+            "id": "bips:39",
+            "title": "Mnemonic code for generating deterministic keys",
+            "value": 0.1255968271372898,
+            "rank": 2,
+            "highlight_index": null
+          },
+          {
+            "id": "bips:9",
+            "title": "Version bits with timeout and delay",
+            "value": 0.03261719066649296,
+            "rank": 3,
+            "highlight_index": 0
+          },
+          {
+            "id": "bips:34",
+            "title": "Block v2, Height in Coinbase",
+            "value": 0.028124410555244613,
+            "rank": 4,
+            "highlight_index": 14
+          },
+          {
+            "id": "bips:141",
+            "title": "Segregated Witness (Consensus layer)",
+            "value": 0.02641823837164989,
+            "rank": 5,
+            "highlight_index": 2
+          }
+        ],
+        "betweenness": [
+          {
+            "id": "bips:141",
+            "title": "Segregated Witness (Consensus layer)",
+            "value": 0.08829846325329105,
+            "rank": 1,
+            "highlight_index": 2
+          },
+          {
+            "id": "bips:21",
+            "title": "URI Scheme",
+            "value": 0.06524979161625125,
+            "rank": 2,
+            "highlight_index": 4
+          },
+          {
+            "id": "bips:321",
+            "title": "URI Scheme",
+            "value": 0.06253945847113548,
+            "rank": 3,
+            "highlight_index": 6
+          },
+          {
+            "id": "bips:70",
+            "title": "Payment Protocol",
+            "value": 0.05408082600629184,
+            "rank": 4,
+            "highlight_index": 15
+          },
+          {
+            "id": "bips:72",
+            "title": "bitcoin: uri extensions for Payment Protocol",
+            "value": 0.050479954827780914,
+            "rank": 5,
+            "highlight_index": null
+          }
+        ]
+      }
+    },
+    "body_extracted_llm": {
+      "label": "LLM",
+      "top_by_metric": {
+        "in_degree": [
+          {
+            "id": "bips:32",
+            "title": "Hierarchical Deterministic Wallets",
+            "value": 47,
+            "rank": 1,
+            "highlight_index": 1
+          },
+          {
+            "id": "bips:141",
+            "title": "Segregated Witness (Consensus layer)",
+            "value": 28,
+            "rank": 2,
+            "highlight_index": 2
+          },
+          {
+            "id": "bips:9",
+            "title": "Version bits with timeout and delay",
+            "value": 23,
+            "rank": 3,
+            "highlight_index": 0
+          },
+          {
+            "id": "bips:341",
+            "title": "Taproot: SegWit version 1 spending rules",
+            "value": 22,
+            "rank": 4,
+            "highlight_index": 3
+          },
+          {
+            "id": "bips:16",
+            "title": "Pay to Script Hash",
+            "value": 18,
+            "rank": 5,
+            "highlight_index": null
+          }
+        ],
+        "weighted_eigenvector": [
+          {
+            "id": "bips:9",
+            "title": "Version bits with timeout and delay",
+            "value": 0.40994069213381706,
+            "rank": 1,
+            "highlight_index": 0
+          },
+          {
+            "id": "bips:112",
+            "title": "CHECKSEQUENCEVERIFY",
+            "value": 0.39106596968195984,
+            "rank": 2,
+            "highlight_index": 10
+          },
+          {
+            "id": "bips:65",
+            "title": "OP_CHECKLOCKTIMEVERIFY",
+            "value": 0.3910638080729404,
+            "rank": 3,
+            "highlight_index": 12
+          },
+          {
+            "id": "bips:68",
+            "title": "Relative lock-time using consensus-enforced sequence numbers",
+            "value": 0.3910602840140982,
+            "rank": 4,
+            "highlight_index": 11
+          },
+          {
+            "id": "bips:113",
+            "title": "Median time-past as endpoint for lock-time calculations",
+            "value": 0.3443761818066337,
+            "rank": 5,
+            "highlight_index": 13
+          }
+        ],
+        "pagerank": [
+          {
+            "id": "bips:12",
+            "title": "OP_EVAL",
+            "value": 0.05847501202777247,
+            "rank": 1,
+            "highlight_index": null
+          },
+          {
+            "id": "bips:11",
+            "title": "M-of-N Standard Transactions",
+            "value": 0.05696090917586395,
+            "rank": 2,
+            "highlight_index": null
+          },
+          {
+            "id": "bips:32",
+            "title": "Hierarchical Deterministic Wallets",
+            "value": 0.05221842886801095,
+            "rank": 3,
+            "highlight_index": 1
+          },
+          {
+            "id": "bips:34",
+            "title": "Block v2, Height in Coinbase",
+            "value": 0.03468856044509065,
+            "rank": 4,
+            "highlight_index": 14
+          },
+          {
+            "id": "bips:9",
+            "title": "Version bits with timeout and delay",
+            "value": 0.03207889940827423,
+            "rank": 5,
+            "highlight_index": 0
+          }
+        ],
+        "betweenness": [
+          {
+            "id": "bips:141",
+            "title": "Segregated Witness (Consensus layer)",
+            "value": 0.040168963301374365,
+            "rank": 1,
+            "highlight_index": 2
+          },
+          {
+            "id": "bips:173",
+            "title": "Base32 address format for native v0-16 witness outputs",
+            "value": 0.021676488337979024,
+            "rank": 2,
+            "highlight_index": 9
+          },
+          {
+            "id": "bips:341",
+            "title": "Taproot: SegWit version 1 spending rules",
+            "value": 0.01488521375731991,
+            "rank": 3,
+            "highlight_index": 3
+          },
+          {
+            "id": "bips:9",
+            "title": "Version bits with timeout and delay",
+            "value": 0.014272770592646356,
+            "rank": 4,
+            "highlight_index": 0
+          },
+          {
+            "id": "bips:70",
+            "title": "Payment Protocol",
+            "value": 0.009542631281761716,
+            "rank": 5,
+            "highlight_index": 15
+          }
+        ]
+      }
+    }
+  },
+  "concordance": {
+    "top": {
+      "across_approaches": [
+        {
+          "metric": "in_degree",
+          "label": "In-Degree",
+          "kendalls_w": 0.5668023449299849,
+          "ranking_count": 3,
+          "item_count": 30
+        },
+        {
+          "metric": "weighted_eigenvector",
+          "label": "Weighted Eigenvector",
+          "kendalls_w": 0.36107880600321207,
+          "ranking_count": 3,
+          "item_count": 30
+        },
+        {
+          "metric": "pagerank",
+          "label": "PageRank",
+          "kendalls_w": 0.28059407441085094,
+          "ranking_count": 3,
+          "item_count": 30
+        },
+        {
+          "metric": "betweenness",
+          "label": "Betweenness",
+          "kendalls_w": 0.6395087657886293,
+          "ranking_count": 3,
+          "item_count": 30
+        }
+      ],
+      "across_measures": [
+        {
+          "approach": "preamble_extracted",
+          "label": "Preamble",
+          "kendalls_w": 0.6472681524083393,
+          "ranking_count": 4,
+          "item_count": 30
+        },
+        {
+          "approach": "body_extracted_regex",
+          "label": "Regex",
+          "kendalls_w": 0.5378052860488458,
+          "ranking_count": 4,
+          "item_count": 30
+        },
+        {
+          "approach": "body_extracted_llm",
+          "label": "LLM",
+          "kendalls_w": 0.5970486013790011,
+          "ranking_count": 4,
+          "item_count": 30
+        }
+      ]
+    },
+    "all": {
+      "across_approaches": [
+        {
+          "metric": "in_degree",
+          "label": "In-Degree",
+          "kendalls_w": 0.7145338880384241,
+          "ranking_count": 3,
+          "item_count": 232
+        },
+        {
+          "metric": "weighted_eigenvector",
+          "label": "Weighted Eigenvector",
+          "kendalls_w": 0.5866759864408967,
+          "ranking_count": 3,
+          "item_count": 232
+        },
+        {
+          "metric": "pagerank",
+          "label": "PageRank",
+          "kendalls_w": 0.7028895999688768,
+          "ranking_count": 3,
+          "item_count": 232
+        },
+        {
+          "metric": "betweenness",
+          "label": "Betweenness",
+          "kendalls_w": 0.6288750929985948,
+          "ranking_count": 3,
+          "item_count": 232
+        }
+      ],
+      "across_measures": [
+        {
+          "approach": "preamble_extracted",
+          "label": "Preamble",
+          "kendalls_w": 0.7110577816512349,
+          "ranking_count": 4,
+          "item_count": 232
+        },
+        {
+          "approach": "body_extracted_regex",
+          "label": "Regex",
+          "kendalls_w": 0.7919432222171672,
+          "ranking_count": 4,
+          "item_count": 232
+        },
+        {
+          "approach": "body_extracted_llm",
+          "label": "LLM",
+          "kendalls_w": 0.8211136399899057,
+          "ranking_count": 4,
+          "item_count": 232
+        }
+      ]
+    }
+  }
+}

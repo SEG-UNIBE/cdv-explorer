@@ -99,6 +99,7 @@ export function EcosystemDashboard() {
   const [classificationSourceView, setClassificationSourceView] = useState('');
   const [evolutionSourceView, setEvolutionSourceView] = useState('');
   const [dependenciesSourceView, setDependenciesSourceView] = useState(SECTION_VIEW_MERGED);
+  const [centralitySourceView, setCentralitySourceView] = useState(SECTION_VIEW_MERGED);
   const [conformitySourceView, setConformitySourceView] = useState('');
   const [showExperimentalFeatures, setShowExperimentalFeatures] = useLocalStorageState(
     `cdv-explorer-show-experimental-features-${runtimeEnvironment}`,
@@ -181,10 +182,12 @@ export function EcosystemDashboard() {
   const activeClassificationSourceView = normalizeSectionSourceView(classificationSourceView, orderedSelectedSourceIds, false);
   const activeEvolutionSourceView = normalizeSectionSourceView(evolutionSourceView, orderedSelectedSourceIds, false);
   const activeDependenciesSourceView = normalizeSectionSourceView(dependenciesSourceView, orderedSelectedSourceIds, true);
+  const activeCentralitySourceView = normalizeSectionSourceView(centralitySourceView, orderedSelectedSourceIds, true);
   const activeConformitySourceView = normalizeSectionSourceView(conformitySourceView, orderedSelectedSourceIds, false);
 
   const authorshipViewDataset = getSectionDataset(sectionDataset, activeAuthorshipSourceView);
   const rawDependencyViewDataset = getSectionDataset(sectionDataset, activeDependenciesSourceView);
+  const centralityViewDataset = getSectionDataset(sectionDataset, activeCentralitySourceView);
   const conformityViewDataset = getSectionDataset(sectionDataset, activeConformitySourceView);
   const activeDependencyLlmModel = useMemo(() => {
     return getPublishedDependencyLlmModel(rawDependencyViewDataset) || '';
@@ -192,6 +195,7 @@ export function EcosystemDashboard() {
   const dependencyViewDataset = rawDependencyViewDataset;
   const authorshipViewEcosystem = getSectionEcosystem(ecosystem, activeEcosystem, activeAuthorshipSourceView);
   const dependencyViewEcosystem = getSectionEcosystem(ecosystem, activeEcosystem, activeDependenciesSourceView);
+  const centralityViewEcosystem = getSectionEcosystem(ecosystem, activeEcosystem, activeCentralitySourceView);
   const authorshipDashboardData = activeAuthorshipSourceView === SECTION_VIEW_MERGED
     ? dashboardData
     : (perSourceDashboardData[activeAuthorshipSourceView] || dashboardData);
@@ -206,6 +210,7 @@ export function EcosystemDashboard() {
     activeClassificationSourceView,
     activeEvolutionSourceView,
     activeDependenciesSourceView,
+    activeCentralitySourceView,
     activeConformitySourceView,
   };
   const sectionViewState = {
@@ -213,14 +218,17 @@ export function EcosystemDashboard() {
     setClassificationSourceView,
     setEvolutionSourceView,
     setDependenciesSourceView,
+    setCentralitySourceView,
     setConformitySourceView,
   };
   const sectionDatasets = {
     authorshipViewDataset,
     dependencyViewDataset,
+    centralityViewDataset,
     conformityViewDataset,
     authorshipViewEcosystem,
     dependencyViewEcosystem,
+    centralityViewEcosystem,
   };
   const sectionDashboardData = {
     authorship: authorshipDashboardData,
@@ -235,6 +243,7 @@ export function EcosystemDashboard() {
 
   const dependencyViewMetrics = dependencyDashboardData.dependencyMetrics;
   const dependencyViewConsistency = dependencyDashboardData.dependencyConsistency;
+  const centralityViewComparison = centralityViewDataset?.centralityComparison || {};
   const authorshipAvailableProposalNodes = useMemo(
     () => (authorshipViewDataset?.nodes || [])
       .filter((node) => node?.id != null),
@@ -322,6 +331,7 @@ export function EcosystemDashboard() {
     { id: 'dashboard-classification', label: 'Classification' },
     { id: 'dashboard-evolution', label: 'Evolution' },
     { id: 'dashboard-dependencies', label: 'Dependencies' },
+    { id: 'dashboard-centrality', label: 'Centrality' },
     ...(showConformitySection ? [{ id: 'dashboard-conformity', label: 'Conformity' }] : []),
   ], [showConformitySection]);
 
@@ -598,6 +608,7 @@ export function EcosystemDashboard() {
                 dependencyViewConsistency,
                 activeDependencyLlmModel,
               }}
+              centralityComparison={centralityViewComparison}
               filteredWordCloudData={filteredWordCloudData}
               hasWordCloudFilter={hasWordCloudFilter}
               hasDependencyFilter={hasDependencyFilter}

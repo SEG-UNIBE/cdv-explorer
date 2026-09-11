@@ -1,0 +1,603 @@
+{
+  "meta": {
+    "schema_version": 2,
+    "approach_order": [
+      "preamble_extracted",
+      "body_extracted_regex",
+      "body_extracted_llm"
+    ],
+    "metric_order": [
+      "in_degree",
+      "weighted_eigenvector",
+      "pagerank",
+      "betweenness"
+    ],
+    "metric_labels": {
+      "in_degree": "In-Degree",
+      "weighted_eigenvector": "Weighted Eigenvector",
+      "pagerank": "PageRank",
+      "betweenness": "Betweenness"
+    },
+    "top_n": 5,
+    "node_count": 80,
+    "scope_item_counts": {
+      "top": 20,
+      "all": 80
+    },
+    "llm_model": "gpt-5.4-mini",
+    "highlight_count": 12
+  },
+  "by_approach": {
+    "preamble_extracted": {
+      "label": "Preamble",
+      "top_by_metric": {
+        "in_degree": [
+          {
+            "id": "nips:7D",
+            "title": "Threads",
+            "value": 0,
+            "rank": 1,
+            "highlight_index": 2
+          },
+          {
+            "id": "nips:C7",
+            "title": "Chats",
+            "value": 0,
+            "rank": 1,
+            "highlight_index": 3
+          },
+          {
+            "id": "nips:01",
+            "title": "Basic protocol flow description",
+            "value": 0,
+            "rank": 1,
+            "highlight_index": 0
+          },
+          {
+            "id": "nips:02",
+            "title": "Follow List",
+            "value": 0,
+            "rank": 1,
+            "highlight_index": 4
+          },
+          {
+            "id": "nips:03",
+            "title": "OpenTimestamps Attestations for Events",
+            "value": 0,
+            "rank": 1,
+            "highlight_index": 5
+          }
+        ],
+        "weighted_eigenvector": [
+          {
+            "id": "nips:7D",
+            "title": "Threads",
+            "value": 0.0,
+            "rank": 1,
+            "highlight_index": 2
+          },
+          {
+            "id": "nips:C7",
+            "title": "Chats",
+            "value": 0.0,
+            "rank": 1,
+            "highlight_index": 3
+          },
+          {
+            "id": "nips:01",
+            "title": "Basic protocol flow description",
+            "value": 0.0,
+            "rank": 1,
+            "highlight_index": 0
+          },
+          {
+            "id": "nips:02",
+            "title": "Follow List",
+            "value": 0.0,
+            "rank": 1,
+            "highlight_index": 4
+          },
+          {
+            "id": "nips:03",
+            "title": "OpenTimestamps Attestations for Events",
+            "value": 0.0,
+            "rank": 1,
+            "highlight_index": 5
+          }
+        ],
+        "pagerank": [
+          {
+            "id": "nips:7D",
+            "title": "Threads",
+            "value": 0.012499999999999983,
+            "rank": 1,
+            "highlight_index": 2
+          },
+          {
+            "id": "nips:C7",
+            "title": "Chats",
+            "value": 0.012499999999999983,
+            "rank": 1,
+            "highlight_index": 3
+          },
+          {
+            "id": "nips:01",
+            "title": "Basic protocol flow description",
+            "value": 0.012499999999999983,
+            "rank": 1,
+            "highlight_index": 0
+          },
+          {
+            "id": "nips:02",
+            "title": "Follow List",
+            "value": 0.012499999999999983,
+            "rank": 1,
+            "highlight_index": 4
+          },
+          {
+            "id": "nips:03",
+            "title": "OpenTimestamps Attestations for Events",
+            "value": 0.012499999999999983,
+            "rank": 1,
+            "highlight_index": 5
+          }
+        ],
+        "betweenness": [
+          {
+            "id": "nips:7D",
+            "title": "Threads",
+            "value": 0.0,
+            "rank": 1,
+            "highlight_index": 2
+          },
+          {
+            "id": "nips:C7",
+            "title": "Chats",
+            "value": 0.0,
+            "rank": 1,
+            "highlight_index": 3
+          },
+          {
+            "id": "nips:01",
+            "title": "Basic protocol flow description",
+            "value": 0.0,
+            "rank": 1,
+            "highlight_index": 0
+          },
+          {
+            "id": "nips:02",
+            "title": "Follow List",
+            "value": 0.0,
+            "rank": 1,
+            "highlight_index": 4
+          },
+          {
+            "id": "nips:03",
+            "title": "OpenTimestamps Attestations for Events",
+            "value": 0.0,
+            "rank": 1,
+            "highlight_index": 5
+          }
+        ]
+      }
+    },
+    "body_extracted_regex": {
+      "label": "Regex",
+      "top_by_metric": {
+        "in_degree": [
+          {
+            "id": "nips:01",
+            "title": "Basic protocol flow description",
+            "value": 15,
+            "rank": 1,
+            "highlight_index": 0
+          },
+          {
+            "id": "nips:04",
+            "title": "Encrypted Direct Message",
+            "value": 8,
+            "rank": 2,
+            "highlight_index": 8
+          },
+          {
+            "id": "nips:19",
+            "title": "bech32-encoded entities",
+            "value": 8,
+            "rank": 2,
+            "highlight_index": 1
+          },
+          {
+            "id": "nips:44",
+            "title": "Encrypted Payloads (Versioned)",
+            "value": 8,
+            "rank": 2,
+            "highlight_index": 10
+          },
+          {
+            "id": "nips:09",
+            "title": "Event Deletion Request",
+            "value": 7,
+            "rank": 5,
+            "highlight_index": null
+          }
+        ],
+        "weighted_eigenvector": [
+          {
+            "id": "nips:30",
+            "title": "Custom Emoji",
+            "value": 0.9040845062789732,
+            "rank": 1,
+            "highlight_index": 6
+          },
+          {
+            "id": "nips:25",
+            "title": "Reactions",
+            "value": 0.30216459736838924,
+            "rank": 2,
+            "highlight_index": null
+          },
+          {
+            "id": "nips:38",
+            "title": "User Statuses",
+            "value": 0.30176304973069035,
+            "rank": 3,
+            "highlight_index": null
+          },
+          {
+            "id": "nips:01",
+            "title": "Basic protocol flow description",
+            "value": 0.011587517545024125,
+            "rank": 4,
+            "highlight_index": 0
+          },
+          {
+            "id": "nips:19",
+            "title": "bech32-encoded entities",
+            "value": 0.005506939031298595,
+            "rank": 5,
+            "highlight_index": 1
+          }
+        ],
+        "pagerank": [
+          {
+            "id": "nips:01",
+            "title": "Basic protocol flow description",
+            "value": 0.12066002854985643,
+            "rank": 1,
+            "highlight_index": 0
+          },
+          {
+            "id": "nips:19",
+            "title": "bech32-encoded entities",
+            "value": 0.07360186309982715,
+            "rank": 2,
+            "highlight_index": 1
+          },
+          {
+            "id": "nips:30",
+            "title": "Custom Emoji",
+            "value": 0.05163979329236441,
+            "rank": 3,
+            "highlight_index": 6
+          },
+          {
+            "id": "nips:05",
+            "title": "Mapping Nostr keys to DNS-based internet identifiers",
+            "value": 0.040872042406518025,
+            "rank": 4,
+            "highlight_index": null
+          },
+          {
+            "id": "nips:96",
+            "title": "HTTP File Storage Integration",
+            "value": 0.03420201238607202,
+            "rank": 5,
+            "highlight_index": null
+          }
+        ],
+        "betweenness": [
+          {
+            "id": "nips:17",
+            "title": "Private Direct Messages",
+            "value": 0.012982797792924375,
+            "rank": 1,
+            "highlight_index": null
+          },
+          {
+            "id": "nips:04",
+            "title": "Encrypted Direct Message",
+            "value": 0.008479389808503733,
+            "rank": 2,
+            "highlight_index": 8
+          },
+          {
+            "id": "nips:51",
+            "title": "Lists",
+            "value": 0.008195391106783512,
+            "rank": 3,
+            "highlight_index": 9
+          },
+          {
+            "id": "nips:19",
+            "title": "bech32-encoded entities",
+            "value": 0.00654549388726604,
+            "rank": 4,
+            "highlight_index": 1
+          },
+          {
+            "id": "nips:59",
+            "title": "Gift Wrap",
+            "value": 0.005355404089581304,
+            "rank": 5,
+            "highlight_index": null
+          }
+        ]
+      }
+    },
+    "body_extracted_llm": {
+      "label": "LLM",
+      "top_by_metric": {
+        "in_degree": [
+          {
+            "id": "nips:01",
+            "title": "Basic protocol flow description",
+            "value": 15,
+            "rank": 1,
+            "highlight_index": 0
+          },
+          {
+            "id": "nips:19",
+            "title": "bech32-encoded entities",
+            "value": 8,
+            "rank": 2,
+            "highlight_index": 1
+          },
+          {
+            "id": "nips:10",
+            "title": "On \"e\" and \"p\" tags in Text Events (kind 1)",
+            "value": 7,
+            "rank": 3,
+            "highlight_index": 7
+          },
+          {
+            "id": "nips:44",
+            "title": "Encrypted Payloads (Versioned)",
+            "value": 7,
+            "rank": 3,
+            "highlight_index": 10
+          },
+          {
+            "id": "nips:04",
+            "title": "Encrypted Direct Message",
+            "value": 6,
+            "rank": 5,
+            "highlight_index": 8
+          }
+        ],
+        "weighted_eigenvector": [
+          {
+            "id": "nips:01",
+            "title": "Basic protocol flow description",
+            "value": 0.47506647836789895,
+            "rank": 1,
+            "highlight_index": 0
+          },
+          {
+            "id": "nips:30",
+            "title": "Custom Emoji",
+            "value": 0.29776981181297907,
+            "rank": 2,
+            "highlight_index": 6
+          },
+          {
+            "id": "nips:19",
+            "title": "bech32-encoded entities",
+            "value": 0.2975647971891,
+            "rank": 3,
+            "highlight_index": 1
+          },
+          {
+            "id": "nips:10",
+            "title": "On \"e\" and \"p\" tags in Text Events (kind 1)",
+            "value": 0.28025544803726254,
+            "rank": 4,
+            "highlight_index": 7
+          },
+          {
+            "id": "nips:51",
+            "title": "Lists",
+            "value": 0.23790151706952004,
+            "rank": 5,
+            "highlight_index": 9
+          }
+        ],
+        "pagerank": [
+          {
+            "id": "nips:01",
+            "title": "Basic protocol flow description",
+            "value": 0.1370612213196899,
+            "rank": 1,
+            "highlight_index": 0
+          },
+          {
+            "id": "nips:24",
+            "title": "Extra metadata fields and tags",
+            "value": 0.1188579660557966,
+            "rank": 2,
+            "highlight_index": 11
+          },
+          {
+            "id": "nips:19",
+            "title": "bech32-encoded entities",
+            "value": 0.06909125817145627,
+            "rank": 3,
+            "highlight_index": 1
+          },
+          {
+            "id": "nips:10",
+            "title": "On \"e\" and \"p\" tags in Text Events (kind 1)",
+            "value": 0.041926794148770846,
+            "rank": 4,
+            "highlight_index": 7
+          },
+          {
+            "id": "nips:30",
+            "title": "Custom Emoji",
+            "value": 0.03596209378232999,
+            "rank": 5,
+            "highlight_index": 6
+          }
+        ],
+        "betweenness": [
+          {
+            "id": "nips:01",
+            "title": "Basic protocol flow description",
+            "value": 0.31467056150600453,
+            "rank": 1,
+            "highlight_index": 0
+          },
+          {
+            "id": "nips:24",
+            "title": "Extra metadata fields and tags",
+            "value": 0.3098020123336579,
+            "rank": 2,
+            "highlight_index": 11
+          },
+          {
+            "id": "nips:51",
+            "title": "Lists",
+            "value": 0.14872065346748883,
+            "rank": 3,
+            "highlight_index": 9
+          },
+          {
+            "id": "nips:10",
+            "title": "On \"e\" and \"p\" tags in Text Events (kind 1)",
+            "value": 0.05650221789462296,
+            "rank": 4,
+            "highlight_index": 7
+          },
+          {
+            "id": "nips:99",
+            "title": "Classified Listings",
+            "value": 0.054771178188899705,
+            "rank": 5,
+            "highlight_index": null
+          }
+        ]
+      }
+    }
+  },
+  "concordance": {
+    "top": {
+      "across_approaches": [
+        {
+          "metric": "in_degree",
+          "label": "In-Degree",
+          "kendalls_w": 0.6515268154991019,
+          "ranking_count": 3,
+          "item_count": 20
+        },
+        {
+          "metric": "weighted_eigenvector",
+          "label": "Weighted Eigenvector",
+          "kendalls_w": 0.5641609719058466,
+          "ranking_count": 3,
+          "item_count": 20
+        },
+        {
+          "metric": "pagerank",
+          "label": "PageRank",
+          "kendalls_w": 0.527084908037289,
+          "ranking_count": 3,
+          "item_count": 20
+        },
+        {
+          "metric": "betweenness",
+          "label": "Betweenness",
+          "kendalls_w": 0.46959018533020097,
+          "ranking_count": 3,
+          "item_count": 20
+        }
+      ],
+      "across_measures": [
+        {
+          "approach": "preamble_extracted",
+          "label": "Preamble",
+          "kendalls_w": null,
+          "ranking_count": 4,
+          "item_count": 20
+        },
+        {
+          "approach": "body_extracted_regex",
+          "label": "Regex",
+          "kendalls_w": 0.6852156256043318,
+          "ranking_count": 4,
+          "item_count": 20
+        },
+        {
+          "approach": "body_extracted_llm",
+          "label": "LLM",
+          "kendalls_w": 0.7946683140087436,
+          "ranking_count": 4,
+          "item_count": 20
+        }
+      ]
+    },
+    "all": {
+      "across_approaches": [
+        {
+          "metric": "in_degree",
+          "label": "In-Degree",
+          "kendalls_w": 0.6421123659805812,
+          "ranking_count": 3,
+          "item_count": 80
+        },
+        {
+          "metric": "weighted_eigenvector",
+          "label": "Weighted Eigenvector",
+          "kendalls_w": 0.5890454172637879,
+          "ranking_count": 3,
+          "item_count": 80
+        },
+        {
+          "metric": "pagerank",
+          "label": "PageRank",
+          "kendalls_w": 0.6060175992264806,
+          "ranking_count": 3,
+          "item_count": 80
+        },
+        {
+          "metric": "betweenness",
+          "label": "Betweenness",
+          "kendalls_w": 0.5499360416390984,
+          "ranking_count": 3,
+          "item_count": 80
+        }
+      ],
+      "across_measures": [
+        {
+          "approach": "preamble_extracted",
+          "label": "Preamble",
+          "kendalls_w": null,
+          "ranking_count": 4,
+          "item_count": 80
+        },
+        {
+          "approach": "body_extracted_regex",
+          "label": "Regex",
+          "kendalls_w": 0.8112378341466002,
+          "ranking_count": 4,
+          "item_count": 80
+        },
+        {
+          "approach": "body_extracted_llm",
+          "label": "LLM",
+          "kendalls_w": 0.8783605273712288,
+          "ranking_count": 4,
+          "item_count": 80
+        }
+      ]
+    }
+  }
+}

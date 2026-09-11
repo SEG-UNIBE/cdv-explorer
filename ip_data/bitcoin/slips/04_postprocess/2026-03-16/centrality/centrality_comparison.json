@@ -1,0 +1,603 @@
+{
+  "meta": {
+    "schema_version": 2,
+    "approach_order": [
+      "preamble_extracted",
+      "body_extracted_regex",
+      "body_extracted_llm"
+    ],
+    "metric_order": [
+      "in_degree",
+      "weighted_eigenvector",
+      "pagerank",
+      "betweenness"
+    ],
+    "metric_labels": {
+      "in_degree": "In-Degree",
+      "weighted_eigenvector": "Weighted Eigenvector",
+      "pagerank": "PageRank",
+      "betweenness": "Betweenness"
+    },
+    "top_n": 5,
+    "node_count": 23,
+    "scope_item_counts": {
+      "top": 12,
+      "all": 23
+    },
+    "llm_model": "gpt-5.4-mini",
+    "highlight_count": 11
+  },
+  "by_approach": {
+    "preamble_extracted": {
+      "label": "Preamble",
+      "top_by_metric": {
+        "in_degree": [
+          {
+            "id": "slips:0",
+            "title": "SLIP Template",
+            "value": 0,
+            "rank": 1,
+            "highlight_index": 2
+          },
+          {
+            "id": "slips:10",
+            "title": "Universal private key derivation from master private key",
+            "value": 0,
+            "rank": 1,
+            "highlight_index": 0
+          },
+          {
+            "id": "slips:11",
+            "title": "Symmetric encryption of key-value pairs using deterministic hierarchy",
+            "value": 0,
+            "rank": 1,
+            "highlight_index": 1
+          },
+          {
+            "id": "slips:12",
+            "title": "Public key encryption using deterministic hierarchy",
+            "value": 0,
+            "rank": 1,
+            "highlight_index": 4
+          },
+          {
+            "id": "slips:13",
+            "title": "Authentication using deterministic hierarchy",
+            "value": 0,
+            "rank": 1,
+            "highlight_index": 5
+          }
+        ],
+        "weighted_eigenvector": [
+          {
+            "id": "slips:0",
+            "title": "SLIP Template",
+            "value": 0.0,
+            "rank": 1,
+            "highlight_index": 2
+          },
+          {
+            "id": "slips:10",
+            "title": "Universal private key derivation from master private key",
+            "value": 0.0,
+            "rank": 1,
+            "highlight_index": 0
+          },
+          {
+            "id": "slips:11",
+            "title": "Symmetric encryption of key-value pairs using deterministic hierarchy",
+            "value": 0.0,
+            "rank": 1,
+            "highlight_index": 1
+          },
+          {
+            "id": "slips:12",
+            "title": "Public key encryption using deterministic hierarchy",
+            "value": 0.0,
+            "rank": 1,
+            "highlight_index": 4
+          },
+          {
+            "id": "slips:13",
+            "title": "Authentication using deterministic hierarchy",
+            "value": 0.0,
+            "rank": 1,
+            "highlight_index": 5
+          }
+        ],
+        "pagerank": [
+          {
+            "id": "slips:0",
+            "title": "SLIP Template",
+            "value": 0.0434782608695652,
+            "rank": 1,
+            "highlight_index": 2
+          },
+          {
+            "id": "slips:10",
+            "title": "Universal private key derivation from master private key",
+            "value": 0.0434782608695652,
+            "rank": 1,
+            "highlight_index": 0
+          },
+          {
+            "id": "slips:11",
+            "title": "Symmetric encryption of key-value pairs using deterministic hierarchy",
+            "value": 0.0434782608695652,
+            "rank": 1,
+            "highlight_index": 1
+          },
+          {
+            "id": "slips:12",
+            "title": "Public key encryption using deterministic hierarchy",
+            "value": 0.0434782608695652,
+            "rank": 1,
+            "highlight_index": 4
+          },
+          {
+            "id": "slips:13",
+            "title": "Authentication using deterministic hierarchy",
+            "value": 0.0434782608695652,
+            "rank": 1,
+            "highlight_index": 5
+          }
+        ],
+        "betweenness": [
+          {
+            "id": "slips:0",
+            "title": "SLIP Template",
+            "value": 0.0,
+            "rank": 1,
+            "highlight_index": 2
+          },
+          {
+            "id": "slips:10",
+            "title": "Universal private key derivation from master private key",
+            "value": 0.0,
+            "rank": 1,
+            "highlight_index": 0
+          },
+          {
+            "id": "slips:11",
+            "title": "Symmetric encryption of key-value pairs using deterministic hierarchy",
+            "value": 0.0,
+            "rank": 1,
+            "highlight_index": 1
+          },
+          {
+            "id": "slips:12",
+            "title": "Public key encryption using deterministic hierarchy",
+            "value": 0.0,
+            "rank": 1,
+            "highlight_index": 4
+          },
+          {
+            "id": "slips:13",
+            "title": "Authentication using deterministic hierarchy",
+            "value": 0.0,
+            "rank": 1,
+            "highlight_index": 5
+          }
+        ]
+      }
+    },
+    "body_extracted_regex": {
+      "label": "Regex",
+      "top_by_metric": {
+        "in_degree": [
+          {
+            "id": "slips:10",
+            "title": "Universal private key derivation from master private key",
+            "value": 6,
+            "rank": 3,
+            "highlight_index": 0
+          },
+          {
+            "id": "slips:21",
+            "title": "Hierarchical derivation of symmetric keys",
+            "value": 4,
+            "rank": 4,
+            "highlight_index": 3
+          },
+          {
+            "id": "slips:39",
+            "title": "Shamir's Secret-Sharing for Mnemonic Codes",
+            "value": 4,
+            "rank": 4,
+            "highlight_index": 6
+          },
+          {
+            "id": "slips:11",
+            "title": "Symmetric encryption of key-value pairs using deterministic hierarchy",
+            "value": 3,
+            "rank": 8,
+            "highlight_index": 1
+          },
+          {
+            "id": "slips:44",
+            "title": "Registered coin types for BIP-0044",
+            "value": 3,
+            "rank": 8,
+            "highlight_index": 7
+          }
+        ],
+        "weighted_eigenvector": [
+          {
+            "id": "slips:11",
+            "title": "Symmetric encryption of key-value pairs using deterministic hierarchy",
+            "value": 0.4417261042993862,
+            "rank": 2,
+            "highlight_index": 1
+          },
+          {
+            "id": "slips:14",
+            "title": "Stress Test Deterministic Wallet",
+            "value": 0.2208630521496931,
+            "rank": 3,
+            "highlight_index": 9
+          },
+          {
+            "id": "slips:15",
+            "title": "Format for Bitcoin metadata and its encryption in HD wallets",
+            "value": 0.2208630521496931,
+            "rank": 3,
+            "highlight_index": 8
+          },
+          {
+            "id": "slips:16",
+            "title": "Format for password storage and its encryption",
+            "value": 0.2208630521496931,
+            "rank": 3,
+            "highlight_index": null
+          },
+          {
+            "id": "slips:0",
+            "title": "SLIP Template",
+            "value": 0.0,
+            "rank": 11,
+            "highlight_index": 2
+          }
+        ],
+        "pagerank": [
+          {
+            "id": "slips:10",
+            "title": "Universal private key derivation from master private key",
+            "value": 0.04132330252439086,
+            "rank": 4,
+            "highlight_index": 0
+          },
+          {
+            "id": "slips:11",
+            "title": "Symmetric encryption of key-value pairs using deterministic hierarchy",
+            "value": 0.03916255308024178,
+            "rank": 5,
+            "highlight_index": 1
+          },
+          {
+            "id": "slips:39",
+            "title": "Shamir's Secret-Sharing for Mnemonic Codes",
+            "value": 0.038657297562620714,
+            "rank": 6,
+            "highlight_index": 6
+          },
+          {
+            "id": "slips:21",
+            "title": "Hierarchical derivation of symmetric keys",
+            "value": 0.029654745541093114,
+            "rank": 9,
+            "highlight_index": 3
+          },
+          {
+            "id": "slips:15",
+            "title": "Format for Bitcoin metadata and its encryption in HD wallets",
+            "value": 0.026469544177799387,
+            "rank": 10,
+            "highlight_index": 8
+          }
+        ],
+        "betweenness": [
+          {
+            "id": "slips:21",
+            "title": "Hierarchical derivation of symmetric keys",
+            "value": 0.027136752136752137,
+            "rank": 1,
+            "highlight_index": 3
+          },
+          {
+            "id": "slips:11",
+            "title": "Symmetric encryption of key-value pairs using deterministic hierarchy",
+            "value": 0.026923076923076925,
+            "rank": 2,
+            "highlight_index": 1
+          },
+          {
+            "id": "slips:15",
+            "title": "Format for Bitcoin metadata and its encryption in HD wallets",
+            "value": 0.023076923076923078,
+            "rank": 3,
+            "highlight_index": 8
+          },
+          {
+            "id": "slips:14",
+            "title": "Stress Test Deterministic Wallet",
+            "value": 0.021794871794871794,
+            "rank": 4,
+            "highlight_index": 9
+          },
+          {
+            "id": "slips:10",
+            "title": "Universal private key derivation from master private key",
+            "value": 0.007264957264957265,
+            "rank": 5,
+            "highlight_index": 0
+          }
+        ]
+      }
+    },
+    "body_extracted_llm": {
+      "label": "LLM",
+      "top_by_metric": {
+        "in_degree": [
+          {
+            "id": "slips:10",
+            "title": "Universal private key derivation from master private key",
+            "value": 5,
+            "rank": 2,
+            "highlight_index": 0
+          },
+          {
+            "id": "slips:21",
+            "title": "Hierarchical derivation of symmetric keys",
+            "value": 4,
+            "rank": 4,
+            "highlight_index": 3
+          },
+          {
+            "id": "slips:39",
+            "title": "Shamir's Secret-Sharing for Mnemonic Codes",
+            "value": 2,
+            "rank": 8,
+            "highlight_index": 6
+          },
+          {
+            "id": "slips:44",
+            "title": "Registered coin types for BIP-0044",
+            "value": 2,
+            "rank": 8,
+            "highlight_index": 7
+          },
+          {
+            "id": "slips:11",
+            "title": "Symmetric encryption of key-value pairs using deterministic hierarchy",
+            "value": 1,
+            "rank": 11,
+            "highlight_index": 1
+          }
+        ],
+        "weighted_eigenvector": [
+          {
+            "id": "slips:0",
+            "title": "SLIP Template",
+            "value": 0.0,
+            "rank": 1,
+            "highlight_index": 2
+          },
+          {
+            "id": "slips:10",
+            "title": "Universal private key derivation from master private key",
+            "value": 0.0,
+            "rank": 1,
+            "highlight_index": 0
+          },
+          {
+            "id": "slips:11",
+            "title": "Symmetric encryption of key-value pairs using deterministic hierarchy",
+            "value": 0.0,
+            "rank": 1,
+            "highlight_index": 1
+          },
+          {
+            "id": "slips:12",
+            "title": "Public key encryption using deterministic hierarchy",
+            "value": 0.0,
+            "rank": 1,
+            "highlight_index": 4
+          },
+          {
+            "id": "slips:13",
+            "title": "Authentication using deterministic hierarchy",
+            "value": 0.0,
+            "rank": 1,
+            "highlight_index": 5
+          }
+        ],
+        "pagerank": [
+          {
+            "id": "slips:10",
+            "title": "Universal private key derivation from master private key",
+            "value": 0.053145876301666777,
+            "rank": 3,
+            "highlight_index": 0
+          },
+          {
+            "id": "slips:21",
+            "title": "Hierarchical derivation of symmetric keys",
+            "value": 0.037295557693878226,
+            "rank": 7,
+            "highlight_index": 3
+          },
+          {
+            "id": "slips:39",
+            "title": "Shamir's Secret-Sharing for Mnemonic Codes",
+            "value": 0.035313008724241944,
+            "rank": 8,
+            "highlight_index": 6
+          },
+          {
+            "id": "slips:11",
+            "title": "Symmetric encryption of key-value pairs using deterministic hierarchy",
+            "value": 0.023805543243788627,
+            "rank": 9,
+            "highlight_index": 1
+          },
+          {
+            "id": "slips:32",
+            "title": "Extended serialization format for BIP-32 wallets",
+            "value": 0.023805543243788627,
+            "rank": 9,
+            "highlight_index": 10
+          }
+        ],
+        "betweenness": [
+          {
+            "id": "slips:10",
+            "title": "Universal private key derivation from master private key",
+            "value": 0.01614114114114114,
+            "rank": 1,
+            "highlight_index": 0
+          },
+          {
+            "id": "slips:21",
+            "title": "Hierarchical derivation of symmetric keys",
+            "value": 0.010135135135135136,
+            "rank": 2,
+            "highlight_index": 3
+          },
+          {
+            "id": "slips:39",
+            "title": "Shamir's Secret-Sharing for Mnemonic Codes",
+            "value": 0.006756756756756757,
+            "rank": 3,
+            "highlight_index": 6
+          },
+          {
+            "id": "slips:44",
+            "title": "Registered coin types for BIP-0044",
+            "value": 0.0015015015015015015,
+            "rank": 4,
+            "highlight_index": 7
+          },
+          {
+            "id": "slips:32",
+            "title": "Extended serialization format for BIP-32 wallets",
+            "value": 0.0007507507507507507,
+            "rank": 5,
+            "highlight_index": 10
+          }
+        ]
+      }
+    }
+  },
+  "concordance": {
+    "top": {
+      "across_approaches": [
+        {
+          "metric": "in_degree",
+          "label": "In-Degree",
+          "kendalls_w": 0.6332691072575466,
+          "ranking_count": 3,
+          "item_count": 12
+        },
+        {
+          "metric": "weighted_eigenvector",
+          "label": "Weighted Eigenvector",
+          "kendalls_w": 0.3333333333333333,
+          "ranking_count": 3,
+          "item_count": 12
+        },
+        {
+          "metric": "pagerank",
+          "label": "PageRank",
+          "kendalls_w": 0.5668549905838042,
+          "ranking_count": 3,
+          "item_count": 12
+        },
+        {
+          "metric": "betweenness",
+          "label": "Betweenness",
+          "kendalls_w": 0.4508250825082508,
+          "ranking_count": 3,
+          "item_count": 12
+        }
+      ],
+      "across_measures": [
+        {
+          "approach": "preamble_extracted",
+          "label": "Preamble",
+          "kendalls_w": null,
+          "ranking_count": 4,
+          "item_count": 12
+        },
+        {
+          "approach": "body_extracted_regex",
+          "label": "Regex",
+          "kendalls_w": 0.640380859375,
+          "ranking_count": 4,
+          "item_count": 12
+        },
+        {
+          "approach": "body_extracted_llm",
+          "label": "LLM",
+          "kendalls_w": 0.71639231824417,
+          "ranking_count": 4,
+          "item_count": 12
+        }
+      ]
+    },
+    "all": {
+      "across_approaches": [
+        {
+          "metric": "in_degree",
+          "label": "In-Degree",
+          "kendalls_w": 0.6166003136687176,
+          "ranking_count": 3,
+          "item_count": 23
+        },
+        {
+          "metric": "weighted_eigenvector",
+          "label": "Weighted Eigenvector",
+          "kendalls_w": 0.3333333333333333,
+          "ranking_count": 3,
+          "item_count": 23
+        },
+        {
+          "metric": "pagerank",
+          "label": "PageRank",
+          "kendalls_w": 0.592072072072072,
+          "ranking_count": 3,
+          "item_count": 23
+        },
+        {
+          "metric": "betweenness",
+          "label": "Betweenness",
+          "kendalls_w": 0.5403759597564204,
+          "ranking_count": 3,
+          "item_count": 23
+        }
+      ],
+      "across_measures": [
+        {
+          "approach": "preamble_extracted",
+          "label": "Preamble",
+          "kendalls_w": null,
+          "ranking_count": 4,
+          "item_count": 23
+        },
+        {
+          "approach": "body_extracted_regex",
+          "label": "Regex",
+          "kendalls_w": 0.7923372348207754,
+          "ranking_count": 4,
+          "item_count": 23
+        },
+        {
+          "approach": "body_extracted_llm",
+          "label": "LLM",
+          "kendalls_w": 0.7207324106113033,
+          "ranking_count": 4,
+          "item_count": 23
+        }
+      ]
+    }
+  }
+}

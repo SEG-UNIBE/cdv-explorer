@@ -10,6 +10,7 @@ from analysis.classification import prepare_classification_payload
 from analysis.conformity import extract_conformity_metrics
 from analysis.dependencies import (
     available_llm_model_entries,
+    build_centrality_comparison_payload,
     build_dependency_consistency_payload,
     build_network_data,
     collapse_network_data_to_llm_model,
@@ -285,6 +286,9 @@ def prepare_combined_source_artifacts(
 
             emit(f"{combo_key}: recomputing dependency metrics", advance=1)
             dependency_metrics = extract_dependency_metrics(network_data)
+            centrality_comparison = build_centrality_comparison_payload(
+                dependency_metrics, network_data=network_data
+            )
             dependency_consistency = build_dependency_consistency_payload(network_data)
 
             emit(f"{combo_key}: preparing authorship artifacts", advance=1)
@@ -335,6 +339,7 @@ def prepare_combined_source_artifacts(
                 snapshot=snapshot,
                 network_data=network_data,
                 dependency_metrics=dependency_metrics,
+                centrality_comparison=centrality_comparison,
                 dependency_consistency=dependency_consistency,
                 authorship_payload=authorship_payload,
                 classification_payload=classification_payload,
@@ -346,6 +351,9 @@ def prepare_combined_source_artifacts(
                 "network_json": payload_paths["payload_network_data_json"],
                 "dependency_metrics_json": payload_paths[
                     "payload_dependency_metrics_json"
+                ],
+                "centrality_comparison_json": payload_paths[
+                    "payload_centrality_comparison_json"
                 ],
                 "dependency_consistency_json": payload_paths[
                     "payload_dependency_consistency_json"
@@ -421,6 +429,7 @@ def _trim_conformity_checks(conformity_metrics: dict[str, Any]) -> dict[str, Any
 FRONTEND_PAYLOAD_FILES: dict[str, str] = {
     "network_data": "dependencies/network_data.json",
     "dependency_metrics": "dependencies/dependency_metrics.json",
+    "centrality_comparison": "centrality/centrality_comparison.json",
     "dependency_consistency": "dependencies/dependency_consistency.json",
     "authorship_payload": "authorship/authorship_payload.json",
     "classification_payload": "classification/classification_payload.json",
@@ -434,6 +443,7 @@ def _save_frontend_payloads(
     snapshot: str,
     network_data: dict[str, Any],
     dependency_metrics: dict[str, Any],
+    centrality_comparison: dict[str, Any],
     dependency_consistency: dict[str, Any],
     authorship_payload: dict[str, Any],
     classification_payload: dict[str, Any],
@@ -444,6 +454,7 @@ def _save_frontend_payloads(
     payloads: dict[str, dict[str, Any]] = {
         "network_data": network_data,
         "dependency_metrics": dependency_metrics,
+        "centrality_comparison": centrality_comparison,
         "dependency_consistency": dependency_consistency,
         "authorship_payload": authorship_payload,
         "classification_payload": classification_payload,
@@ -589,6 +600,9 @@ def prepare_ecosystem_artifacts(
 
     emit("Preparing dependency metrics artifacts", advance=1)
     dependency_metrics = extract_dependency_metrics(network_data)
+    centrality_comparison = build_centrality_comparison_payload(
+        dependency_metrics, network_data=network_data
+    )
     dependency_consistency = build_dependency_consistency_payload(network_data)
 
     emit("Preparing classification artifacts", advance=1)
@@ -651,6 +665,7 @@ def prepare_ecosystem_artifacts(
         snapshot=snapshot,
         network_data=network_data,
         dependency_metrics=dependency_metrics,
+        centrality_comparison=centrality_comparison,
         dependency_consistency=dependency_consistency,
         authorship_payload=authorship_payload,
         classification_payload=classification_payload,
@@ -662,6 +677,9 @@ def prepare_ecosystem_artifacts(
         {
             "network_json": payload_paths["payload_network_data_json"],
             "dependency_metrics_json": payload_paths["payload_dependency_metrics_json"],
+            "centrality_comparison_json": payload_paths[
+                "payload_centrality_comparison_json"
+            ],
             "dependency_consistency_json": payload_paths[
                 "payload_dependency_consistency_json"
             ],

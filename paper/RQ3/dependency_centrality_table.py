@@ -134,10 +134,6 @@ def _format_value(value: float, metric: str) -> str:
     return f"{value:.4f}"
 
 
-def _top5(per_bip: list[dict], metric: str) -> list[dict]:
-    return sorted(per_bip, key=lambda r: r.get(metric, 0), reverse=True)[:TOP_N]
-
-
 def _build_header_line() -> str:
     cells = [r"\multicolumn{2}{c|}{\textbf{Approach}}"]
     for i, (_, label) in enumerate(METRICS):
@@ -147,49 +143,32 @@ def _build_header_line() -> str:
 
 
 def _build_global_color_map(
-    dep_metrics: dict[str, Any], approach_order: list[str]
+    centrality_comparison: dict[str, Any], approach_order: list[str]
 ) -> dict[str, tuple[str, str]]:
-    """Assign a (fg, bg) badge to every BIP that recurs in >1 cell anywhere in
-    the table, ranked by how many cells it appears in (most first), so it
-    keeps the same identity everywhere and the busiest BIP gets the cleanest
-    badge — rather than being recolored independently per approach block."""
-    tops_by_approach = {
-        approach: {
-            metric: _top5(dep_metrics["by_approach"][approach]["per_bip"], metric)
-            for metric, _ in METRICS
-        }
-        for approach in approach_order
-    }
-
-    cell_count: dict[str, int] = {}
-    first_seen_order: dict[str, int] = {}
+    """Map the payload's global highlight indexes to LaTeX badge colors."""
+    color_map: dict[str, tuple[str, str]] = {}
     for approach in approach_order:
         for metric, _ in METRICS:
-            for entry in tops_by_approach[approach][metric]:
+            entries = centrality_comparison["by_approach"][approach][
+                "top_by_metric"
+            ][metric]
+            for entry in entries:
                 bip_id = str(entry["id"])
-                if bip_id not in cell_count:
-                    first_seen_order[bip_id] = len(first_seen_order)
-                cell_count[bip_id] = cell_count.get(bip_id, 0) + 1
-
-    recurring = sorted(
-        (bip_id for bip_id, count in cell_count.items() if count > 1),
-        key=lambda bip_id: (-cell_count[bip_id], first_seen_order[bip_id]),
-    )
-    return {
-        bip_id: HIGHLIGHT_COLOR_PAIRS[i % len(HIGHLIGHT_COLOR_PAIRS)]
-        for i, bip_id in enumerate(recurring)
-    }
+                highlight_index = entry.get("highlight_index")
+                if isinstance(highlight_index, int):
+                    color_map[bip_id] = HIGHLIGHT_COLOR_PAIRS[
+                        highlight_index % len(HIGHLIGHT_COLOR_PAIRS)
+                    ]
+    return color_map
 
 
 def _build_approach_rows(
     approach: str,
-    per_bip: list[dict],
+    top_by_metric: dict[str, list[dict[str, Any]]],
     color_map: dict[str, tuple[str, str]],
     badge_id_contents: list[str],
     badge_title_contents: list[str],
 ) -> list[str]:
-    tops = {metric: _top5(per_bip, metric) for metric, _ in METRICS}
-
     rows = []
     for rank_idx in range(TOP_N):
         cells = []
@@ -201,7 +180,7 @@ def _build_approach_rows(
             cells.append("")
         cells.append(_rank_cell(rank_idx + 1))
         for metric, _ in METRICS:
-            entry = tops[metric][rank_idx]
+            entry = top_by_metric[metric][rank_idx]
             raw_id = str(entry["id"])
             fg, bg = color_map.get(raw_id, ("black", "white"))
             bip_text = _bip(raw_id, color=fg)
@@ -209,7 +188,7 @@ def _build_approach_rows(
                 _latex_escape(_title_substr(entry.get("title") or "")) + r"\mydots",
                 color=fg,
             )
-            value = _format_value(entry.get(metric, 0), metric)
+            value = _format_value(entry.get("value", 0), metric)
             # Every entry uses the same box geometry. Unhighlighted entries get
             # a white box so its padding and alignment match colored badges.
             # The fixed-width ID and title slots act as virtual sub-columns:
@@ -226,21 +205,32 @@ def _build_approach_rows(
 
 
 def export_centrality_top5_latex_table(
-    dep_metrics: dict[str, Any],
+    centrality_comparison: dict[str, Any],
     output_path: Path,
     *,
     tabcolsep_pt: float = LATEX_TABCOLSEP_PT,
 ) -> None:
-    color_map = _build_global_color_map(dep_metrics, APPROACH_ORDER)
+    by_approach = centrality_comparison.get("by_approach") or {}
+    missing_approaches = [
+        approach for approach in APPROACH_ORDER if approach not in by_approach
+    ]
+    if missing_approaches:
+        raise ValueError(
+            f"Centrality comparison payload missing approaches: {missing_approaches}"
+        )
+    color_map = _build_global_color_map(centrality_comparison, APPROACH_ORDER)
 
     badge_id_contents: list[str] = []
     badge_title_contents: list[str] = []
     body_lines = []
     for i, approach in enumerate(APPROACH_ORDER):
-        per_bip = dep_metrics["by_approach"][approach]["per_bip"]
         body_lines.extend(
             _build_approach_rows(
-                approach, per_bip, color_map, badge_id_contents, badge_title_contents
+                approach,
+                by_approach[approach]["top_by_metric"],
+                color_map,
+                badge_id_contents,
+                badge_title_contents,
             )
         )
         if i < len(APPROACH_ORDER) - 1:

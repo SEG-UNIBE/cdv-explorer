@@ -1669,6 +1669,18 @@
   cursor: pointer;
 }
 
+.centrality-concordance-scope-options {
+  width: 100%;
+}
+
+.centrality-concordance-scope-count {
+  margin-left: auto;
+  color: var(--app-text-muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
 .match-mode-help {
   display: inline-flex;
   align-items: center;
@@ -3311,6 +3323,93 @@
   font-size: 0.78rem;
 }
 
+.centrality-ranking-table-wrap {
+  margin-top: 1rem;
+  overflow-x: auto;
+}
+
+.centrality-ranking-table__approach-column {
+  width: 14rem;
+  min-width: 14rem;
+  white-space: nowrap;
+}
+
+.centrality-ranking-table__rank-column {
+  width: 4.5rem;
+  min-width: 4.5rem;
+  text-align: center;
+}
+
+.centrality-ranking-entry {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-width: 12rem;
+  transition: opacity 130ms ease;
+}
+
+.centrality-ranking-entry--dimmed {
+  opacity: 0.24;
+}
+
+.centrality-ranking-entry--highlighted .centrality-ranking-entry__proposal {
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--app-text) 72%, transparent);
+}
+
+.centrality-ranking-entry__proposal {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  min-width: 0;
+  padding: 0.18rem 0.35rem;
+  border-radius: 3px;
+}
+
+.centrality-ranking-entry__proposal--highlighted {
+  color: var(--centrality-highlight-foreground);
+  background: var(--centrality-highlight-background);
+}
+
+.centrality-ranking-entry__proposal > span {
+  overflow: hidden;
+  color: var(--text-color-secondary);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.centrality-ranking-entry__proposal.centrality-ranking-entry__proposal--highlighted a,
+.centrality-ranking-entry__proposal.centrality-ranking-entry__proposal--highlighted > span {
+  color: inherit;
+}
+
+.centrality-ranking-entry__value {
+  flex: 0 0 auto;
+  font-variant-numeric: tabular-nums;
+}
+
+.centrality-concordance-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
+.centrality-concordance-panel {
+  min-width: 0;
+}
+
+.centrality-concordance-panel h4 {
+  margin: 0 0 0.45rem;
+}
+
+.centrality-concordance-table .p-datatable-thead > tr > th:last-child,
+.centrality-concordance-table .p-datatable-tbody > tr > td:last-child {
+  width: 8rem;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
 .author-network-tooltip,
 .dependency-network-tooltip,
 .dependency-comparison-tooltip,
@@ -3428,7 +3527,8 @@
 
 @media (max-width: 900px) {
   .dependency-consistency-table-grid,
-  .dependency-consistency-case-grid {
+  .dependency-consistency-case-grid,
+  .centrality-concordance-grid {
     grid-template-columns: 1fr;
   }
 

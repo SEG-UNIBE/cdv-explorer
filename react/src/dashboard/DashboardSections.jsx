@@ -9,6 +9,9 @@ const ClassificationSection = lazy(() => import('./sections/ClassificationSectio
 const DependenciesSection = lazy(() => import('./sections/DependenciesSection').then((module) => ({
   default: module.DependenciesSection,
 })));
+const CentralitySection = lazy(() => import('./sections/CentralitySection').then((module) => ({
+  default: module.CentralitySection,
+})));
 const ConformitySection = lazy(() => import('./sections/ConformitySection').then((module) => ({
   default: module.ConformitySection,
 })));
@@ -95,6 +98,7 @@ export function DashboardSections({
   dependencyControls,
   conformityControls,
   dependencyMetrics,
+  centralityComparison,
   filteredWordCloudData,
   hasWordCloudFilter,
   hasDependencyFilter,
@@ -106,6 +110,9 @@ export function DashboardSections({
   const activateDependencies = useCallback(() => {
     onSectionActivate?.('dependencyMetrics');
     onSectionActivate?.('dependencyConsistency');
+  }, [onSectionActivate]);
+  const activateCentrality = useCallback(() => {
+    onSectionActivate?.('centralityComparison');
   }, [onSectionActivate]);
   const activateConformity = useCallback(() => onSectionActivate?.('conformity'), [onSectionActivate]);
   const collaborationAuthorOptions = (dashboardData.authorship.collaborationNetwork?.nodes || [])
@@ -223,6 +230,22 @@ export function DashboardSections({
           dependencyMetrics: dependencyMetrics.dependencyViewMetrics,
           dependencyConsistency: dependencyMetrics.dependencyViewConsistency,
           showExperimentalFeatures,
+        }}
+      />
+      <LazyDashboardSection
+        id="dashboard-centrality"
+        label="centrality"
+        Component={CentralitySection}
+        minHeight={320}
+        onActivate={activateCentrality}
+        ready={sectionReady.centralityComparison !== false}
+        componentProps={{
+          ecosystem: datasets.centralityViewEcosystem,
+          ecosystemBase: ecosystem,
+          selectedSourceIds,
+          sectionSourceView: sectionViews.activeCentralitySourceView,
+          setSectionSourceView: sectionViewState.setCentralitySourceView,
+          centralityComparison,
         }}
       />
       {showConformitySection && (

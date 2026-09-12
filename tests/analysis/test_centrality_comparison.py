@@ -2,6 +2,7 @@ import pytest
 
 from analysis.dependencies.centrality import (
     build_centrality_comparison_payload,
+    kendalls_tau_b,
     kendalls_w,
 )
 from analysis.dependencies.constants import (
@@ -16,6 +17,13 @@ def test_kendalls_w_handles_agreement_disagreement_and_ties() -> None:
     assert kendalls_w([[4, 3, 2, 1], [1, 2, 3, 4]]) == pytest.approx(0.0)
     assert kendalls_w([[2, 2, 1], [8, 8, 3]]) == pytest.approx(1.0)
     assert kendalls_w([[1, 1], [2, 2]]) is None
+
+
+def test_kendalls_tau_b_handles_agreement_disagreement_and_ties() -> None:
+    assert kendalls_tau_b([4, 3, 2, 1], [40, 30, 20, 10]) == pytest.approx(1.0)
+    assert kendalls_tau_b([4, 3, 2, 1], [10, 20, 30, 40]) == pytest.approx(-1.0)
+    assert kendalls_tau_b([2, 2, 1], [8, 8, 3]) == pytest.approx(1.0)
+    assert kendalls_tau_b([1, 1], [2, 2]) is None
 
 
 def test_build_centrality_comparison_payload_uses_all_nodes() -> None:
@@ -69,6 +77,11 @@ def test_build_centrality_comparison_payload_uses_all_nodes() -> None:
     assert payload["meta"]["node_count"] == 3
     assert payload["meta"]["top_n"] == 2
     assert payload["meta"]["llm_model"] == "test-model"
+    assert [pair["key"] for pair in payload["meta"]["approach_pairs"]] == [
+        f"{PREAMBLE_EXTRACTED}__{BODY_EXTRACTED_REGEX}",
+        f"{PREAMBLE_EXTRACTED}__{BODY_EXTRACTED_LLM}",
+        f"{BODY_EXTRACTED_REGEX}__{BODY_EXTRACTED_LLM}",
+    ]
     assert payload["meta"]["highlight_count"] == 2
     assert [
         row["id"]
@@ -88,6 +101,13 @@ def test_build_centrality_comparison_payload_uses_all_nodes() -> None:
     assert payload["concordance"]["all"]["across_approaches"][0][
         "kendalls_w"
     ] == pytest.approx(1.0)
+    assert set(
+        payload["concordance"]["all"]["across_approaches"][0][
+            "pairwise_kendalls_tau_b"
+        ]
+    ) == {
+        pair["key"] for pair in payload["meta"]["approach_pairs"]
+    }
     assert payload["concordance"]["top"]["across_approaches"][0][
         "item_count"
     ] == 2

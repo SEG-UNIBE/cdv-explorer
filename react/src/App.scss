@@ -3390,23 +3390,26 @@
 
 .centrality-concordance-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1.25rem;
+  grid-template-columns: minmax(0, 1fr);
   margin-top: 1rem;
 }
 
-.centrality-concordance-panel {
-  min-width: 0;
+.centrality-concordance-table .p-datatable-thead > tr > th:not(:first-child),
+.centrality-concordance-table .p-datatable-tbody > tr > td:not(:first-child) {
+  text-align: center;
+  font-variant-numeric: tabular-nums;
 }
 
-.centrality-concordance-panel h4 {
-  margin: 0 0 0.45rem;
+.centrality-concordance-table
+  .p-datatable-thead
+  > tr
+  > th:not(:first-child)
+  .p-column-header-content {
+  justify-content: center;
 }
 
-.centrality-concordance-table .p-datatable-thead > tr > th:last-child,
-.centrality-concordance-table .p-datatable-tbody > tr > td:last-child {
-  width: 8rem;
-  text-align: right;
+.centrality-concordance-table__value {
+  text-align: center;
   font-variant-numeric: tabular-nums;
 }
 

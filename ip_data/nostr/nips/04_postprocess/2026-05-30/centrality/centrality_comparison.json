@@ -1,10 +1,33 @@
 {
   "meta": {
-    "schema_version": 2,
+    "schema_version": 3,
     "approach_order": [
       "preamble_extracted",
       "body_extracted_regex",
       "body_extracted_llm"
+    ],
+    "approach_pairs": [
+      {
+        "key": "preamble_extracted__body_extracted_regex",
+        "left_approach": "preamble_extracted",
+        "right_approach": "body_extracted_regex",
+        "left_label": "Preamble",
+        "right_label": "Regex"
+      },
+      {
+        "key": "preamble_extracted__body_extracted_llm",
+        "left_approach": "preamble_extracted",
+        "right_approach": "body_extracted_llm",
+        "left_label": "Preamble",
+        "right_label": "LLM"
+      },
+      {
+        "key": "body_extracted_regex__body_extracted_llm",
+        "left_approach": "body_extracted_regex",
+        "right_approach": "body_extracted_llm",
+        "left_label": "Regex",
+        "right_label": "LLM"
+      }
     ],
     "metric_order": [
       "in_degree",
@@ -495,6 +518,11 @@
           "metric": "in_degree",
           "label": "In-Degree",
           "kendalls_w": 0.6504190844616377,
+          "pairwise_kendalls_tau_b": {
+            "preamble_extracted__body_extracted_regex": null,
+            "preamble_extracted__body_extracted_llm": null,
+            "body_extracted_regex__body_extracted_llm": 0.8764857524798385
+          },
           "ranking_count": 3,
           "item_count": 20
         },
@@ -502,6 +530,11 @@
           "metric": "weighted_eigenvector",
           "label": "Weighted Eigenvector",
           "kendalls_w": 0.604710701484895,
+          "pairwise_kendalls_tau_b": {
+            "preamble_extracted__body_extracted_regex": null,
+            "preamble_extracted__body_extracted_llm": null,
+            "body_extracted_regex__body_extracted_llm": 0.6667092298197884
+          },
           "ranking_count": 3,
           "item_count": 20
         },
@@ -509,6 +542,11 @@
           "metric": "pagerank",
           "label": "PageRank",
           "kendalls_w": 0.5352527191298785,
+          "pairwise_kendalls_tau_b": {
+            "preamble_extracted__body_extracted_regex": null,
+            "preamble_extracted__body_extracted_llm": null,
+            "body_extracted_regex__body_extracted_llm": 0.4789207443461594
+          },
           "ranking_count": 3,
           "item_count": 20
         },
@@ -516,6 +554,11 @@
           "metric": "betweenness",
           "label": "Betweenness",
           "kendalls_w": 0.5179817498658078,
+          "pairwise_kendalls_tau_b": {
+            "preamble_extracted__body_extracted_regex": null,
+            "preamble_extracted__body_extracted_llm": null,
+            "body_extracted_regex__body_extracted_llm": 0.43390467293674323
+          },
           "ranking_count": 3,
           "item_count": 20
         }
@@ -550,6 +593,11 @@
           "metric": "in_degree",
           "label": "In-Degree",
           "kendalls_w": 0.6466791934667919,
+          "pairwise_kendalls_tau_b": {
+            "preamble_extracted__body_extracted_regex": null,
+            "preamble_extracted__body_extracted_llm": null,
+            "body_extracted_regex__body_extracted_llm": 0.8956712518825835
+          },
           "ranking_count": 3,
           "item_count": 97
         },
@@ -557,6 +605,11 @@
           "metric": "weighted_eigenvector",
           "label": "Weighted Eigenvector",
           "kendalls_w": 0.6359876270687587,
+          "pairwise_kendalls_tau_b": {
+            "preamble_extracted__body_extracted_regex": null,
+            "preamble_extracted__body_extracted_llm": null,
+            "body_extracted_regex__body_extracted_llm": 0.828438961211586
+          },
           "ranking_count": 3,
           "item_count": 97
         },
@@ -564,6 +617,11 @@
           "metric": "pagerank",
           "label": "PageRank",
           "kendalls_w": 0.6252313887139559,
+          "pairwise_kendalls_tau_b": {
+            "preamble_extracted__body_extracted_regex": null,
+            "preamble_extracted__body_extracted_llm": null,
+            "body_extracted_regex__body_extracted_llm": 0.7810231966106511
+          },
           "ranking_count": 3,
           "item_count": 97
         },
@@ -571,6 +629,11 @@
           "metric": "betweenness",
           "label": "Betweenness",
           "kendalls_w": 0.5896299010626603,
+          "pairwise_kendalls_tau_b": {
+            "preamble_extracted__body_extracted_regex": null,
+            "preamble_extracted__body_extracted_llm": null,
+            "body_extracted_regex__body_extracted_llm": 0.6812328076865654
+          },
           "ranking_count": 3,
           "item_count": 97
         }

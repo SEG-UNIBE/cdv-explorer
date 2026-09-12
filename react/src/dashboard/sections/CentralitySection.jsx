@@ -1,7 +1,9 @@
 import { useMemo, useState } from 'react';
 import { Column } from 'primereact/column';
+import { ColumnGroup } from 'primereact/columngroup';
 import { DataTable } from 'primereact/datatable';
 import { RadioButton } from 'primereact/radiobutton';
+import { Row } from 'primereact/row';
 import { BODY_EXTRACTED_LLM, getDependencyApproachLabel } from '../../dependencyApproaches';
 import { formatProposalReference, getProposalUrl } from '../../proposalLinks';
 import { CollapsibleControls } from '../CollapsibleControls';
@@ -125,6 +127,7 @@ export function CentralitySection({
   const meta = centralityComparison?.meta || {};
   const byApproach = centralityComparison?.by_approach || {};
   const approachOrder = meta.approach_order || [];
+  const approachPairs = meta.approach_pairs || [];
   const metricOrder = meta.metric_order || [];
   const topN = Number(meta.top_n || 5);
   const llmModel = meta.llm_model || '';
@@ -165,15 +168,28 @@ export function CentralitySection({
   const concordance = centralityComparison?.concordance?.[concordanceScope] || {};
   const scopeItemCount = meta.scope_item_counts?.[concordanceScope];
   const approachConcordance = concordance.across_approaches || [];
-  const measureConcordance = useMemo(() => (
-    concordance.across_measures || []
-  ).map((row) => ({
-    ...row,
-    displayLabel: getDependencyApproachLabel(
-      row.approach,
-      row.approach === BODY_EXTRACTED_LLM ? llmModel : '',
-    ),
-  })), [concordance, llmModel]);
+  const concordanceHeader = approachPairs.length ? (
+    <ColumnGroup>
+      <Row>
+        <Column header="" />
+        <Column
+          header="Pairwise agreement (τb)"
+          colSpan={approachPairs.length}
+        />
+        <Column header="Collective (W)" />
+      </Row>
+      <Row>
+        <Column header="Measure" />
+        {approachPairs.map((pair) => (
+          <Column
+            key={pair.key}
+            header={[pair.left_label, pair.right_label].join('–')}
+          />
+        ))}
+        <Column header="All three" />
+      </Row>
+    </ColumnGroup>
+  ) : null;
 
   if (!approachOrder.length || !rankingRows.length) return null;
 
@@ -242,10 +258,11 @@ export function CentralitySection({
       <ExportableCard className="mb-4" exportTitle="Centrality Ranking Concordance">
         <h3>Centrality Ranking Concordance</h3>
         <p>
-          Kendall&apos;s W measures agreement among complete centrality rankings.
+          Pairwise Kendall&apos;s tau-b compares rankings from two extraction approaches,
+          while Kendall&apos;s W summarizes agreement across all three.
           By default, it compares the distinct IPs represented in the Top-{topN} table;
           the full catalog can be selected instead.
-          A value of 0 indicates no concordance; a value of 1 indicates identical rankings.
+          Larger values indicate more similar rankings.
         </p>
         <CollapsibleControls>
           <div className="network-layout-picker">
@@ -273,38 +290,31 @@ export function CentralitySection({
           </div>
         </CollapsibleControls>
         <div className="centrality-concordance-grid">
-          <section className="centrality-concordance-panel">
-            <h4>Across Extraction Approaches</h4>
-            <DataTable
-              value={approachConcordance}
-              dataKey="metric"
-              size="small"
-              className="centrality-concordance-table"
-            >
-              <Column field="label" header="Centrality Measure" />
+          <DataTable
+            value={approachConcordance}
+            dataKey="metric"
+            size="small"
+            className="centrality-concordance-table"
+            headerColumnGroup={concordanceHeader}
+          >
+            <Column field="label" header="Measure" />
+            {approachPairs.map((pair) => (
               <Column
-                field="kendalls_w"
-                header="Kendall’s W"
-                body={(row) => formatConcordance(row.kendalls_w)}
+                key={pair.key}
+                header={[pair.left_label, pair.right_label].join('–')}
+                body={(row) => formatConcordance(
+                  row.pairwise_kendalls_tau_b?.[pair.key],
+                )}
+                bodyClassName="centrality-concordance-table__value"
               />
-            </DataTable>
-          </section>
-          <section className="centrality-concordance-panel">
-            <h4>Across Centrality Measures</h4>
-            <DataTable
-              value={measureConcordance}
-              dataKey="approach"
-              size="small"
-              className="centrality-concordance-table"
-            >
-              <Column field="displayLabel" header="Extraction Approach" />
-              <Column
-                field="kendalls_w"
-                header="Kendall’s W"
-                body={(row) => formatConcordance(row.kendalls_w)}
-              />
-            </DataTable>
-          </section>
+            ))}
+            <Column
+              field="kendalls_w"
+              header="All three"
+              body={(row) => formatConcordance(row.kendalls_w)}
+              bodyClassName="centrality-concordance-table__value"
+            />
+          </DataTable>
         </div>
       </ExportableCard>
     </section>

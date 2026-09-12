@@ -26,9 +26,10 @@ def _latex_escape(value: object) -> str:
 def export_centrality_concordance_latex_table(
     centrality_comparison: dict[str, Any], output_path: Path
 ) -> None:
-    """Render all-IP concordance across extraction approaches."""
+    """Render all-IP pairwise and collective concordance across approaches."""
     meta = centrality_comparison.get("meta") or {}
     metric_order = meta.get("metric_order") or []
+    approach_pairs = meta.get("approach_pairs") or []
     rows = (
         centrality_comparison.get("concordance", {})
         .get("all", {})
@@ -37,21 +38,21 @@ def export_centrality_concordance_latex_table(
     rows_by_metric = {
         str(row.get("metric") or ""): row for row in rows if isinstance(row, dict)
     }
-    if not metric_order or any(metric not in rows_by_metric for metric in metric_order):
+    pair_keys = [str(pair.get("key") or "") for pair in approach_pairs]
+    if (
+        not metric_order
+        or not pair_keys
+        or any(metric not in rows_by_metric for metric in metric_order)
+        or any(
+            pair_key not in (rows_by_metric[metric].get("pairwise_kendalls_tau_b") or {})
+            for metric in metric_order
+            for pair_key in pair_keys
+        )
+    ):
         raise ValueError(
             "Centrality comparison payload contains no complete all-IP "
             "across-approach concordance"
         )
-
-    ordered_rows = [rows_by_metric[metric] for metric in metric_order]
-    values = [float(row["kendalls_w"]) for row in ordered_rows]
-    maximum = max(values)
-    formatted_values = []
-    for value in values:
-        formatted_value = f"{value:.3f}"
-        if value == maximum:
-            formatted_value = rf"\textbf{{{formatted_value}}}"
-        formatted_values.append(formatted_value)
 
     metric_headers = [
         _latex_escape(
@@ -62,10 +63,52 @@ def export_centrality_concordance_latex_table(
         for metric in metric_order
     ]
     header_line = " & ".join(
-        [""] + [rf"\textbf{{{header}}}" for header in metric_headers]
+        [r"\textbf{Comparison}"]
+        + [rf"\textbf{{{header}}}" for header in metric_headers]
     )
-    value_line = " & ".join(
-        [r"\textbf{Kendall's $W$}"] + formatted_values
+    pairwise_maximum = max(
+        float(rows_by_metric[metric]["pairwise_kendalls_tau_b"][pair["key"]])
+        for pair in approach_pairs
+        for metric in metric_order
+    )
+    body_lines = []
+    for pair in approach_pairs:
+        pair_label = _latex_escape(
+            f"{pair['left_label']} vs. {pair['right_label']}"
+        )
+        values = [
+            float(rows_by_metric[metric]["pairwise_kendalls_tau_b"][pair["key"]])
+            for metric in metric_order
+        ]
+        body_lines.append(
+            "        "
+            + " & ".join(
+                [rf"{pair_label} ($\tau_b$)"]
+                + [
+                    rf"\textbf{{{value:.3f}}}"
+                    if value == pairwise_maximum
+                    else f"{value:.3f}"
+                    for value in values
+                ]
+            )
+            + r" \\"
+        )
+    collective_values = [
+        float(rows_by_metric[metric]["kendalls_w"]) for metric in metric_order
+    ]
+    collective_maximum = max(collective_values)
+    collective_line = (
+        "        "
+        + " & ".join(
+            [r"All approaches ($W$)"]
+            + [
+                rf"\textbf{{{value:.3f}}}"
+                if value == collective_maximum
+                else f"{value:.3f}"
+                for value in collective_values
+            ]
+        )
+        + r" \\"
     )
 
     latex = "\n".join(
@@ -81,7 +124,9 @@ def export_centrality_concordance_latex_table(
             r"        \toprule",
             f"        {header_line}" + r" \\",
             r"        \midrule%",
-            f"        {value_line}" + r" \\",
+            *body_lines,
+            r"        \specialrule{0.65pt}{0pt}{0pt}%",
+            collective_line,
             r"        \bottomrule",
             r"    \end{tabular}%",
             r"}",

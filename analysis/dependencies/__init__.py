@@ -1,4 +1,8 @@
-from .centrality import build_centrality_comparison_payload, kendalls_w
+from .centrality import (
+    build_centrality_comparison_payload,
+    kendalls_tau_b,
+    kendalls_w,
+)
 from .consistency import build_dependency_consistency_payload
 from .constants import (
     BODY_EXTRACTED_LLM,
@@ -45,6 +49,7 @@ __all__ = [
     "compute_top_central_nodes",
     "extract_dependency_metrics",
     "find_circular_dependencies",
+    "kendalls_tau_b",
     "kendalls_w",
     "load_proposal_json_documents",
     "normalize_proposal_ids",

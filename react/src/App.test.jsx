@@ -233,6 +233,23 @@ test('renders precomputed centrality rankings and concordance', () => {
   const payload = {
     meta: {
       approach_order: approaches,
+      approach_pairs: [
+        {
+          key: 'preamble_extracted__body_extracted_regex',
+          left_label: 'Preamble',
+          right_label: 'Regex',
+        },
+        {
+          key: 'preamble_extracted__body_extracted_llm',
+          left_label: 'Preamble',
+          right_label: 'LLM',
+        },
+        {
+          key: 'body_extracted_regex__body_extracted_llm',
+          left_label: 'Regex',
+          right_label: 'LLM',
+        },
+      ],
       metric_order: metrics,
       metric_labels: {},
       top_n: 1,
@@ -259,6 +276,11 @@ test('renders precomputed centrality rankings and concordance', () => {
         metric,
         label: metric,
         kendalls_w: (scope === 'top' ? 0.1 : 0.5) + index / 10,
+        pairwise_kendalls_tau_b: {
+          preamble_extracted__body_extracted_regex: 0.91,
+          preamble_extracted__body_extracted_llm: 0.82,
+          body_extracted_regex__body_extracted_llm: 0.73,
+        },
       })),
       across_measures: approaches.map((approach) => ({
         approach,
@@ -287,10 +309,14 @@ test('renders precomputed centrality rankings and concordance', () => {
 
   expect(screen.getByRole('heading', { name: 'Centrality' })).toBeInTheDocument();
   expect(screen.getByRole('heading', { name: 'Top Central IPs' })).toBeInTheDocument();
-  expect(screen.getAllByText('LLM (gpt-test)')).toHaveLength(2);
-  expect(screen.getByText(/agreement among complete centrality rankings/)).toBeInTheDocument();
+  expect(screen.getAllByText('LLM (gpt-test)')).toHaveLength(1);
+  expect(screen.getByText(/summarizes agreement across all three/)).toBeInTheDocument();
   expect(screen.queryByText(/tied centrality values/)).not.toBeInTheDocument();
-  expect(screen.getAllByText('0.250')).toHaveLength(3);
+  expect(screen.getByRole('columnheader', { name: 'Pairwise agreement (τb)' })).toBeInTheDocument();
+  expect(screen.getByRole('columnheader', { name: 'Regex–LLM' })).toBeInTheDocument();
+  expect(screen.getByRole('columnheader', { name: 'All three' })).toBeInTheDocument();
+  expect(screen.getAllByText('0.910')).toHaveLength(4);
+  expect(screen.getByText('0.100')).toBeInTheDocument();
   expect(document.querySelectorAll('.centrality-ranking-entry__proposal--highlighted')).toHaveLength(12);
   expect(screen.getAllByRole('link', { name: 'BIP1' })[0]).toHaveAttribute(
     'href',
@@ -310,10 +336,10 @@ test('renders precomputed centrality rankings and concordance', () => {
   expect(screen.getByRole('radio', { name: 'Top 1' })).toBeChecked();
   expect(screen.getByText('7 IPs')).toBeInTheDocument();
   fireEvent.click(screen.getByText('All IPs'));
-  expect(screen.getAllByText('0.750')).toHaveLength(3);
+  expect(screen.getByText('0.500')).toBeInTheDocument();
   expect(screen.getByText('210 IPs')).toBeInTheDocument();
   fireEvent.click(screen.getByText('Top 1'));
-  expect(screen.getAllByText('0.250')).toHaveLength(3);
+  expect(screen.getByText('0.100')).toBeInTheDocument();
   expect(screen.getByText('7 IPs')).toBeInTheDocument();
 });
 

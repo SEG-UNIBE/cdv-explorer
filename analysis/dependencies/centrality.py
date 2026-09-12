@@ -1,4 +1,5 @@
 from collections.abc import Iterable, Sequence
+from itertools import combinations
 from typing import Any
 
 from analysis.dependencies.constants import (
@@ -82,6 +83,37 @@ def kendalls_w(rankings: Sequence[Sequence[float]]) -> float | None:
     return min(1.0, max(0.0, float(value)))
 
 
+def kendalls_tau_b(left: Sequence[float], right: Sequence[float]) -> float | None:
+    """Compute Kendall's tau-b for two score sequences, correcting for ties."""
+    if len(left) != len(right) or len(left) < 2:
+        return None
+
+    concordant = 0
+    discordant = 0
+    left_only_ties = 0
+    right_only_ties = 0
+    for first, second in combinations(range(len(left)), 2):
+        left_delta = float(left[first]) - float(left[second])
+        right_delta = float(right[first]) - float(right[second])
+        if left_delta == 0 and right_delta == 0:
+            continue
+        if left_delta == 0:
+            left_only_ties += 1
+        elif right_delta == 0:
+            right_only_ties += 1
+        elif left_delta * right_delta > 0:
+            concordant += 1
+        else:
+            discordant += 1
+
+    left_comparable = concordant + discordant + left_only_ties
+    right_comparable = concordant + discordant + right_only_ties
+    denominator = (left_comparable * right_comparable) ** 0.5
+    if denominator == 0:
+        return None
+    return float((concordant - discordant) / denominator)
+
+
 def _rows_by_id(per_bip: Iterable[dict[str, Any]]) -> dict[str, dict[str, Any]]:
     return {
         str(row.get("id")): row
@@ -129,6 +161,16 @@ def build_centrality_comparison_payload(
     ]
     metric_order = [metric for metric, _label in CENTRALITY_METRICS]
     metric_labels = dict(CENTRALITY_METRICS)
+    approach_pairs = [
+        {
+            "key": f"{left}__{right}",
+            "left_approach": left,
+            "right_approach": right,
+            "left_label": DEPENDENCY_APPROACH_SHORT_LABELS.get(left, left),
+            "right_label": DEPENDENCY_APPROACH_SHORT_LABELS.get(right, right),
+        }
+        for left, right in combinations(approach_order, 2)
+    ]
     rows_by_approach = {
         approach: _rows_by_id(source_by_approach[approach].get("per_bip") or [])
         for approach in approach_order
@@ -210,16 +252,24 @@ def build_centrality_comparison_payload(
         approach_concordance = []
         for metric in metric_order:
             selected_ids = list(scope_node_ids)
+            approach_scores = {
+                approach: scores(approach, metric, selected_ids)
+                for approach in approach_order
+            }
             approach_concordance.append(
                 {
                     "metric": metric,
                     "label": metric_labels[metric],
                     "kendalls_w": kendalls_w(
-                        [
-                            scores(approach, metric, selected_ids)
-                            for approach in approach_order
-                        ]
+                        [approach_scores[approach] for approach in approach_order]
                     ),
+                    "pairwise_kendalls_tau_b": {
+                        pair["key"]: kendalls_tau_b(
+                            approach_scores[pair["left_approach"]],
+                            approach_scores[pair["right_approach"]],
+                        )
+                        for pair in approach_pairs
+                    },
                     "ranking_count": len(approach_order),
                     "item_count": len(selected_ids),
                 }
@@ -268,8 +318,9 @@ def build_centrality_comparison_payload(
 
     return {
         "meta": {
-            "schema_version": 2,
+            "schema_version": 3,
             "approach_order": approach_order,
+            "approach_pairs": approach_pairs,
             "metric_order": metric_order,
             "metric_labels": metric_labels,
             "top_n": top_n,

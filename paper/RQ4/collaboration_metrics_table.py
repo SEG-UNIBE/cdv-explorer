@@ -18,7 +18,6 @@ TABLE_COLUMNS = [
 ]
 
 LATEX_TOP_N = 5
-LATEX_AUTHOR_TOP_N = 10
 LATEX_HEADER_WRAP_WIDTH = 14
 LATEX_TABCOLSEP_PT = 4.25
 LATEX_ARRAYSTRETCH = 1.15
@@ -199,14 +198,6 @@ def export_collaboration_metrics_latex_table(
         network_data,
         authorship_payload.get("meta", {}).get("author_aliases", {}),
     )
-    top_author_set = {
-        author
-        for author, _ in sorted(
-            author_bip_map.items(),
-            key=lambda item: (-len(item[1]), item[0]),
-        )[:LATEX_AUTHOR_TOP_N]
-    }
-
     n = len(metrics_rows)
     bip_ranks = _rank_dict(
         metrics_rows, lambda r: len(author_bip_map.get(str(r.get("author", "")), []))
@@ -237,9 +228,6 @@ def export_collaboration_metrics_latex_table(
     for row in top_rows:
         author = str(row.get("author", ""))
         escaped_author = _latex_escape(author)
-        display_author = (
-            rf"{escaped_author}$^{{*}}$" if author in top_author_set else escaped_author
-        )
         bip_count = len(author_bip_map.get(author, []))
         degree = int(row.get("rawDegree", 0) or 0)
         w_degree = int(row.get("weightedDegree", 0) or 0)
@@ -249,7 +237,7 @@ def export_collaboration_metrics_latex_table(
             "        "
             + " & ".join(
                 [
-                    display_author,
+                    escaped_author,
                     _ranked(str(bip_count), bip_ranks.get(author, n)),
                     _ranked(str(degree), degree_ranks.get(author, n)),
                     _ranked(str(w_degree), w_degree_ranks.get(author, n)),

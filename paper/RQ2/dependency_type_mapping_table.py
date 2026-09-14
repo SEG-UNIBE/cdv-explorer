@@ -28,7 +28,7 @@ APPROACH_GROUP_RULE = r"\cmidrule(lr){2-7}"
 # rules rather than a copy that can drift from them.
 MAPPING_GROUPS: list[dict] = [
     {
-        "label": "Edge type agnostic (ETA)",
+        "label": "Edge-type-agnostic (ETA)",
         "mapping": ETA_TYPE_MAPPING,
     },
     {

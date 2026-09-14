@@ -39,6 +39,8 @@ NODE_RADIUS_RANGE = (6.0, 18.0)
 NODE_FILL_ALPHA = PLOT_COLOR_ALPHA
 NODE_BORDER_COLOR = "#111111"
 NODE_BORDER_WIDTH = 1.5
+NODE_BIP_COUNT_COLOR = "#ffffff"
+NODE_BIP_COUNT_FONT_SIZE = 7.0
 EDGE_ALPHA = 0.7
 EDGE_CURVATURE = 0.08
 DEFAULT_EDGE_CURVE_DIRECTION = 1
@@ -295,7 +297,10 @@ def _build_visible_graph(
     collaboration_network = authorship_payload.get("collaboration_network", {}) or {}
     raw_nodes = collaboration_network.get("nodes", []) or []
     raw_edges = collaboration_network.get("edges", []) or []
-    author_bip_map = build_author_bip_map(network_data)
+    author_bip_map = build_author_bip_map(
+        network_data,
+        authorship_payload.get("meta", {}).get("author_aliases", {}),
+    )
     exported_positions = _normalize_imported_positions(layout_payload)
     edge_curve_overrides = _normalize_imported_edge_curves(layout_payload)
     if not exported_positions:
@@ -553,6 +558,20 @@ def plot_collaboration_network_from_exported_layout(
         linewidths=NODE_BORDER_WIDTH,
         ax=axis,
     )
+
+    for node_id in ordered_nodes:
+        x_coord, y_coord = positions[node_id]
+        axis.text(
+            x_coord,
+            y_coord,
+            str(int(graph.nodes[node_id].get("bip_count", 0) or 0)),
+            fontsize=NODE_BIP_COUNT_FONT_SIZE,
+            fontweight="bold",
+            ha="center",
+            va="center",
+            color=NODE_BIP_COUNT_COLOR,
+            zorder=5,
+        )
 
     for node_id in ordered_nodes:
         node_attrs = graph.nodes[node_id]

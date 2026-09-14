@@ -1,12 +1,16 @@
 import math
 from collections import defaultdict, deque
+from collections.abc import Mapping
 
 
 def clean_author_name(author) -> str:
     return str(author or "").split("<")[0].strip()
 
 
-def build_author_bip_map(network_data: dict) -> dict[str, list[str]]:
+def build_author_bip_map(
+    network_data: dict,
+    aliases: Mapping[str, str] | None = None,
+) -> dict[str, list[str]]:
     author_bips = defaultdict(set)
 
     for proposal in network_data.get("nodes", []):
@@ -24,6 +28,8 @@ def build_author_bip_map(network_data: dict) -> dict[str, list[str]]:
 
         for author in author_values:
             cleaned = clean_author_name(author)
+            if aliases and cleaned:
+                cleaned = str(aliases.get(cleaned, cleaned))
             if cleaned:
                 author_bips[cleaned].add(str(bip_id))
 

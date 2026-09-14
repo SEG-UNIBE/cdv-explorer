@@ -195,7 +195,10 @@ def export_collaboration_metrics_latex_table(
         authorship_payload.get("collaboration_network", {}),
         authorship_payload.get("collaboration_centrality", []),
     )
-    author_bip_map = build_author_bip_map(network_data)
+    author_bip_map = build_author_bip_map(
+        network_data,
+        authorship_payload.get("meta", {}).get("author_aliases", {}),
+    )
     top_author_set = {
         author
         for author, _ in sorted(
@@ -303,7 +306,10 @@ def export_collaboration_metrics_table(
         authorship_payload.get("collaboration_network", {}),
         authorship_payload.get("collaboration_centrality", []),
     )
-    author_bip_map = build_author_bip_map(network_data)
+    author_bip_map = build_author_bip_map(
+        network_data,
+        authorship_payload.get("meta", {}).get("author_aliases", {}),
+    )
 
     headers = [header for _, header in TABLE_COLUMNS]
     rows = [

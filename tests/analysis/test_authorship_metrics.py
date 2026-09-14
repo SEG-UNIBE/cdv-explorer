@@ -4,9 +4,25 @@ from analysis.authorship.metrics import (
     extract_authorship_metrics,
     prepare_authorship_payload,
 )
+from paper.RQ4.collaboration_common import build_author_bip_map
 
 
 class TestAuthorshipMetrics(TestCase):
+    def test_author_bip_map_applies_identity_aliases(self):
+        network_data = {
+            "nodes": [
+                {"id": "1", "author": ["Greg Maxwell <greg@example.com>"]},
+                {"id": "2", "author": ["Gregory Maxwell"]},
+            ]
+        }
+
+        author_bips = build_author_bip_map(
+            network_data,
+            aliases={"Greg Maxwell": "Gregory Maxwell"},
+        )
+
+        self.assertEqual(author_bips, {"Gregory Maxwell": ["1", "2"]})
+
     def test_prepare_authorship_payload_precomputes_collaboration_metric_ranks(self):
         network_data = {
             "nodes": [

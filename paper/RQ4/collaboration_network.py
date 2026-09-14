@@ -164,7 +164,10 @@ def plot_collaboration_network(
             "Collaboration network plot requires non-empty collaboration network data."
         )
 
-    author_bip_map = build_author_bip_map(network_data)
+    author_bip_map = build_author_bip_map(
+        network_data,
+        authorship_payload.get("meta", {}).get("author_aliases", {}),
+    )
 
     graph = nx.Graph()
     for node in raw_nodes:

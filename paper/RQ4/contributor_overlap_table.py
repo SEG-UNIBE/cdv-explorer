@@ -98,7 +98,7 @@ def export_contributor_overlap_latex_table(
     ]
 
     body_lines = [
-        *_basis_block("Person", person_rows),
+        *_basis_block("Catalog", person_rows),
         f"        {MEDIUM_RULE}%",
         *_basis_block("BIP", ip_rows),
     ]

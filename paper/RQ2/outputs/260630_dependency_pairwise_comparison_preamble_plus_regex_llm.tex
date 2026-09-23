@@ -1,0 +1,38 @@
+{%
+    \setlength{\abovetopsep}{0pt}%
+    \setlength{\belowbottomsep}{0pt}%
+    \setlength{\aboverulesep}{0pt}%
+    \setlength{\belowrulesep}{0pt}%
+    \setlength{\tabcolsep}{4pt}%
+    \renewcommand{\arraystretch}{1.3}%
+    \ifdefined\depCmpApproachColWidth\else\newlength{\depCmpApproachColWidth}\fi%
+    \ifdefined\depCmpApproachColWidthScratch\else\newlength{\depCmpApproachColWidthScratch}\fi%
+    \setlength{\depCmpApproachColWidth}{0pt}%
+    \settowidth{\depCmpApproachColWidthScratch}{\textbf{Preamble}}%
+    \ifdim\depCmpApproachColWidthScratch>\depCmpApproachColWidth\setlength{\depCmpApproachColWidth}{\depCmpApproachColWidthScratch}\fi%
+    \settowidth{\depCmpApproachColWidthScratch}{\textbf{Regex}}%
+    \ifdim\depCmpApproachColWidthScratch>\depCmpApproachColWidth\setlength{\depCmpApproachColWidth}{\depCmpApproachColWidthScratch}\fi%
+    \begin{tabular}{@{}l@{}}
+    \begin{tabular}{cc|cc}
+        \toprule
+    \diagbox{\textbf{$A$}}{\textbf{$B$}} & \textbf{Metric} & \begin{tabular}[c]{@{}c@{}}\textbf{Regex}\\(735)\end{tabular} & \begin{tabular}[c]{@{}c@{}}\textbf{LLM}\\(877)\end{tabular} \\
+        \midrule%
+        \multirow{4}{*}{\parbox{\depCmpApproachColWidth}{\centering \textbf{Preamble}\\(90)}} & $A \cap B$ & 82 (11.2\%) & 83 (9.5\%) \\
+         & $A' \cap B$ & 653 (88.8\%) & 794 (90.5\%) \\
+         & $A \cap B'$ & 8 (8.9\%) & 7 (7.8\%) \\
+         & $\kappa$ & 0.20 & 0.17 \\
+        \bottomrule
+    \end{tabular}%
+    \\[8pt]
+    \begin{tabular}{cc|c}
+        \toprule
+    \diagbox{\textbf{$A$}}{\textbf{$B$}} & \textbf{Metric} & \begin{tabular}[c]{@{}c@{}}\textbf{LLM}\\(877)\end{tabular} \\
+        \midrule%
+        \multirow{4}{*}{\parbox{\depCmpApproachColWidth}{\centering \textbf{Regex}\\(735)}} & $A \cap B$ & 730 (83.2\%) \\
+         & $A' \cap B$ & 147 (16.8\%) \\
+         & $A \cap B'$ & 5 (0.7\%) \\
+         & $\kappa$ & 0.90 \\
+        \bottomrule
+    \end{tabular}%
+    \end{tabular}%
+}

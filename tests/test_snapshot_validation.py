@@ -10,6 +10,7 @@ from analysis.validation.snapshots import (
     validate_ground_truth_curated_file,
     validate_ground_truth_ips_file,
     validate_payload_index,
+    validate_payload_snapshot,
     validate_preprocess_snapshot,
     validate_react_generated_indexes,
 )
@@ -42,6 +43,16 @@ class SnapshotValidationTests(unittest.TestCase):
                 json.dumps(
                     {
                         "raw": {"preamble": {"bip": "1"}},
+                        "meta": {
+                            "git_history": [
+                                [
+                                    "abc",
+                                    "2026-05-28T10:00:00+00:00",
+                                    "Author",
+                                    "author@example.com",
+                                ]
+                            ]
+                        },
                         "insights": {
                             "interrelations": {
                                 "preamble_extracted": [
@@ -59,9 +70,12 @@ class SnapshotValidationTests(unittest.TestCase):
                                         "run_id": "run-1",
                                         "model": "gpt-test",
                                         "status": "success",
-                                        "dependencies": [
-                                            {"target": "slips:39"},
-                                            {"target": "BIP 32"},
+                                        "findings": [
+                                            {
+                                                "target": "slips:39",
+                                                "type": "depends_on",
+                                            },
+                                            {"target": "BIP 32", "type": "depends_on"},
                                         ],
                                     }
                                 ],
@@ -89,6 +103,58 @@ class SnapshotValidationTests(unittest.TestCase):
         self.assertIn("missing non-empty `timestamp`", error_text)
         self.assertIn("must use source_slug:id format", error_text)
 
+    def test_preprocess_validation_rejects_malformed_git_history(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            root = Path(tmp_dir)
+            bips = self._source_config(root, "bips")
+            preprocess_dir = Path(bips["preprocess"]) / "2026-05-28"
+            preprocess_dir.mkdir(parents=True)
+            (preprocess_dir / "bip-0001.json").write_text(
+                json.dumps(
+                    {
+                        "raw": {"preamble": {"bip": "1"}},
+                        "meta": {
+                            "git_history": [
+                                ["abc", "2026-05-28T10:00:00+00:00", "Author"],
+                                [
+                                    "def",
+                                    "2026-05-29T10:00:00+00:00",
+                                    "Other Author",
+                                    "",
+                                ],
+                                [
+                                    "",
+                                    "2026-05-30T10:00:00+00:00",
+                                    "Third Author",
+                                    "third@example.com",
+                                ],
+                            ]
+                        },
+                        "insights": {
+                            "interrelations": {
+                                "preamble_extracted": [],
+                                "body_extracted_regex": [],
+                                "body_extracted_llm": [],
+                            }
+                        },
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            result = validate_preprocess_snapshot(
+                preprocess_dir,
+                ecosystem_slug="bitcoin",
+                source_slug="bips",
+                source_config=bips,
+                ecosystem_config={"sources": {"bips": bips}},
+            )
+
+        self.assertFalse(result.ok)
+        error_text = "\n".join(result.errors)
+        self.assertIn("commit must be non-empty", error_text)
+        self.assertIn("missing author_email", "\n".join(result.warnings))
+
     def test_payload_index_validation_rejects_missing_index_files(self) -> None:
         with tempfile.TemporaryDirectory() as tmp_dir:
             payload_dir = Path(tmp_dir) / "2026-05-28"
@@ -104,6 +170,86 @@ class SnapshotValidationTests(unittest.TestCase):
 
         self.assertFalse(result.ok)
         self.assertIn("references missing files", "\n".join(result.errors))
+
+    def test_payload_validation_rejects_missing_contributor_contract(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            payload_dir = Path(tmp_dir) / "2026-05-28"
+            (payload_dir / "dependencies").mkdir(parents=True)
+            (payload_dir / "authorship").mkdir()
+            (payload_dir / "classification").mkdir()
+            (payload_dir / "evolution").mkdir()
+            (payload_dir / "conformity").mkdir()
+
+            (payload_dir / "dependencies" / "network_data.json").write_text(
+                json.dumps({"nodes": [{"id": "1"}], "dependency_edges": []}),
+                encoding="utf-8",
+            )
+            (payload_dir / "dependencies" / "dependency_metrics.json").write_text(
+                json.dumps(
+                    {
+                        "by_approach": {},
+                        "pairwise_comparisons": {},
+                        "pairwise_comparisons_exact_type": {},
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (payload_dir / "dependencies" / "dependency_consistency.json").write_text(
+                json.dumps(
+                    {
+                        "meta": {},
+                        "by_approach": {},
+                        "table_rows": [],
+                        "dashboard_table_rows": [],
+                        "structural_check_rows": [],
+                        "omitted_zero_checks": [],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (payload_dir / "authorship" / "authorship_payload.json").write_text(
+                json.dumps(
+                    {
+                        "meta": {},
+                        "top_authors": [],
+                        "bips_per_year": [],
+                        "top_10_share": {},
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (payload_dir / "classification" / "classification_payload.json").write_text(
+                json.dumps(
+                    {
+                        "meta": {},
+                        "sankey_grouped": {},
+                        "status_over_time": {},
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (payload_dir / "evolution" / "evolution_payload.json").write_text(
+                json.dumps(
+                    {
+                        "meta": {},
+                        "status_evolution": {},
+                        "proposal_timelines": [],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (payload_dir / "conformity" / "conformity_metrics.json").write_text(
+                json.dumps({"per_proposal": []}),
+                encoding="utf-8",
+            )
+
+            result = validate_payload_snapshot(payload_dir)
+
+        self.assertFalse(result.ok)
+        self.assertIn("does not match", "\n".join(result.errors))
+        error_text = "\n".join(result.errors)
+        self.assertIn("node `1` missing `contributors` list", error_text)
+        self.assertIn("missing top-level keys: ['contributors']", error_text)
 
     def test_react_generated_validation_rejects_missing_indexes(self) -> None:
         with tempfile.TemporaryDirectory() as tmp_dir:
@@ -270,9 +416,10 @@ class SnapshotValidationTests(unittest.TestCase):
         warning_text = "\n".join(result.warnings)
         self.assertIn("expects source `bips, slips`", warning_text)
         self.assertIn("bolts:2", warning_text)
-        self.assertIn(
-            "expects proposal type `Specification` for source `bips`", warning_text
-        )
+        # bips has no required_type restriction: it intentionally samples
+        # across all proposal types to match catalog-wide ratios, so an
+        # Informational row is not a policy violation.
+        self.assertNotIn("expects proposal type", warning_text)
         self.assertNotIn("slips:55", warning_text)
 
     def test_ground_truth_validation_rejects_inconsistent_review_scope_dates_and_timeline(

@@ -609,30 +609,34 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:42:53Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:9",
               "evidence": "this mechanism for code deployments have been deprecated in favor of BIP 9 deployments",
               "reason": "The proposal explicitly situates the retired deployment mechanism relative to BIP 9 and motivates removing it in favor of BIP 9-style deployments.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:34",
               "evidence": "replace the trigger mechanism by caching the block heights at which those consensus rules became enforced",
               "reason": "The proposal changes validation by using BIP 34's activation height as a stored consensus parameter and relying on its previously defined enforcement point.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:65",
               "evidence": "replace the trigger mechanism by caching the block heights at which those consensus rules became enforced",
               "reason": "The proposal depends on BIP 65's activation height and enforcement semantics to replace the prior version-bit trigger logic with a height check.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:66",
               "evidence": "replace the trigger mechanism by caching the block heights at which those consensus rules became enforced",
               "reason": "The proposal depends on BIP 66's activation height and enforcement semantics to replace the prior version-bit trigger logic with a height check.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

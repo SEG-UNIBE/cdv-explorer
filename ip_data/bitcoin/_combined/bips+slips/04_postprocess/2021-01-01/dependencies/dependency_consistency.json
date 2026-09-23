@@ -1,0 +1,456 @@
+{
+  "meta": {
+    "schema_version": 2,
+    "llm_model": "gpt-5.4-mini",
+    "approach_order": [
+      "preamble_extracted",
+      "body_extracted_llm"
+    ]
+  },
+  "by_approach": {
+    "preamble_extracted": {
+      "key": "preamble_extracted",
+      "label": "Preamble",
+      "dependency": {
+        "edge_count": 3,
+        "cyclic_group_count": 0,
+        "involved_node_count": 0,
+        "self_relation_count": 0,
+        "unresolved_target_count": 0,
+        "cyclic_groups": []
+      },
+      "supersession": {
+        "fact_count": 4,
+        "reciprocal_count": 2,
+        "reciprocal_percentage": 50.0,
+        "one_sided_count": 2,
+        "one_sided_percentage": 50.0,
+        "reciprocal_facts": [
+          {
+            "successor": {
+              "id": "bips:2",
+              "title": "BIP process, revised"
+            },
+            "predecessor": {
+              "id": "bips:1",
+              "title": "BIP Purpose and Guidelines"
+            },
+            "declaration_sides": [
+              "predecessor_to_successor",
+              "successor_to_predecessor"
+            ]
+          },
+          {
+            "successor": {
+              "id": "bips:78",
+              "title": "A Simple Payjoin Proposal"
+            },
+            "predecessor": {
+              "id": "bips:79",
+              "title": "Bustapay :: a practical coinjoin protocol"
+            },
+            "declaration_sides": [
+              "predecessor_to_successor",
+              "successor_to_predecessor"
+            ]
+          }
+        ],
+        "one_sided_facts": [
+          {
+            "successor": {
+              "id": "bips:135",
+              "title": "Generalized version bits voting"
+            },
+            "predecessor": {
+              "id": "bips:9",
+              "title": "Version bits with timeout and delay"
+            },
+            "declaration_sides": [
+              "successor_to_predecessor"
+            ]
+          },
+          {
+            "successor": {
+              "id": "bips:173",
+              "title": "Base32 address format for native v0-16 witness outputs"
+            },
+            "predecessor": {
+              "id": "bips:142",
+              "title": "Address Format for Segregated Witness"
+            },
+            "declaration_sides": [
+              "successor_to_predecessor"
+            ]
+          }
+        ],
+        "cyclic_group_count": 0,
+        "self_relation_count": 0,
+        "unresolved_target_count": 0,
+        "cyclic_groups": []
+      },
+      "checks": {
+        "self_relation_count": 0,
+        "self_relations": [],
+        "unresolved_target_count": 0,
+        "unresolved_targets": []
+      }
+    },
+    "body_extracted_llm": {
+      "key": "body_extracted_llm",
+      "label": "LLM",
+      "dependency": {
+        "edge_count": 314,
+        "cyclic_group_count": 13,
+        "involved_node_count": 32,
+        "self_relation_count": 0,
+        "unresolved_target_count": 0,
+        "cyclic_groups": [
+          {
+            "nodes": [
+              {
+                "id": "bips:13",
+                "title": "Address Format for pay-to-script-hash"
+              },
+              {
+                "id": "bips:16",
+                "title": "Pay to Script Hash"
+              }
+            ]
+          },
+          {
+            "nodes": [
+              {
+                "id": "bips:20",
+                "title": "URI Scheme"
+              },
+              {
+                "id": "bips:21",
+                "title": "URI Scheme"
+              }
+            ]
+          },
+          {
+            "nodes": [
+              {
+                "id": "bips:22",
+                "title": "getblocktemplate - Fundamentals"
+              },
+              {
+                "id": "bips:23",
+                "title": "getblocktemplate - Pooled Mining"
+              }
+            ]
+          },
+          {
+            "nodes": [
+              {
+                "id": "bips:43",
+                "title": "Purpose Field for Deterministic Wallets"
+              },
+              {
+                "id": "bips:44",
+                "title": "Multi-Account Hierarchy for Deterministic Wallets"
+              },
+              {
+                "id": "slips:44",
+                "title": "Registered coin types for BIP-0044"
+              }
+            ]
+          },
+          {
+            "nodes": [
+              {
+                "id": "bips:68",
+                "title": "Relative lock-time using consensus-enforced sequence numbers"
+              },
+              {
+                "id": "bips:112",
+                "title": "CHECKSEQUENCEVERIFY"
+              },
+              {
+                "id": "bips:113",
+                "title": "Median time-past as endpoint for lock-time calculations"
+              }
+            ]
+          },
+          {
+            "nodes": [
+              {
+                "id": "bips:70",
+                "title": "Payment Protocol"
+              },
+              {
+                "id": "bips:72",
+                "title": "bitcoin: uri extensions for Payment Protocol"
+              }
+            ]
+          },
+          {
+            "nodes": [
+              {
+                "id": "bips:98",
+                "title": "Fast Merkle Trees"
+              },
+              {
+                "id": "bips:116",
+                "title": "MERKLEBRANCHVERIFY"
+              }
+            ]
+          },
+          {
+            "nodes": [
+              {
+                "id": "bips:120",
+                "title": "Proof of Payment"
+              },
+              {
+                "id": "bips:121",
+                "title": "Proof of Payment URI scheme"
+              }
+            ]
+          },
+          {
+            "nodes": [
+              {
+                "id": "bips:127",
+                "title": "Simple Proof-of-Reserves Transactions"
+              },
+              {
+                "id": "bips:174",
+                "title": "Partially Signed Bitcoin Transaction Format"
+              }
+            ]
+          },
+          {
+            "nodes": [
+              {
+                "id": "bips:141",
+                "title": "Segregated Witness (Consensus layer)"
+              },
+              {
+                "id": "bips:143",
+                "title": "Transaction Signature Verification for Version 0 Witness Program"
+              },
+              {
+                "id": "bips:144",
+                "title": "Segregated Witness (Peer Services)"
+              },
+              {
+                "id": "bips:146",
+                "title": "Dealing with signature encoding malleability"
+              },
+              {
+                "id": "bips:152",
+                "title": "Compact Block Relay"
+              }
+            ]
+          },
+          {
+            "nodes": [
+              {
+                "id": "bips:173",
+                "title": "Base32 address format for native v0-16 witness outputs"
+              },
+              {
+                "id": "slips:173",
+                "title": "Registered human-readable parts for BIP-0173"
+              }
+            ]
+          },
+          {
+            "nodes": [
+              {
+                "id": "bips:341",
+                "title": "Taproot: SegWit version 1 spending rules"
+              },
+              {
+                "id": "bips:342",
+                "title": "Validation of Taproot Scripts"
+              }
+            ]
+          },
+          {
+            "nodes": [
+              {
+                "id": "slips:11",
+                "title": "Symmetric encryption of key-value pairs using deterministic hierarchy"
+              },
+              {
+                "id": "slips:15",
+                "title": "Format for Bitcoin metadata and its encryption in HD wallets"
+              },
+              {
+                "id": "slips:16",
+                "title": "Format for password storage and its encryption"
+              }
+            ]
+          }
+        ]
+      },
+      "supersession": {
+        "fact_count": 0,
+        "reciprocal_count": 0,
+        "reciprocal_percentage": 0.0,
+        "one_sided_count": 0,
+        "one_sided_percentage": 0.0,
+        "reciprocal_facts": [],
+        "one_sided_facts": [],
+        "cyclic_group_count": 0,
+        "self_relation_count": 0,
+        "unresolved_target_count": 0,
+        "cyclic_groups": []
+      },
+      "checks": {
+        "self_relation_count": 0,
+        "self_relations": [],
+        "unresolved_target_count": 0,
+        "unresolved_targets": []
+      }
+    }
+  },
+  "table_rows": [
+    {
+      "group": "Dependency",
+      "metric": "Edges analyzed",
+      "values": {
+        "preamble_extracted": "3",
+        "body_extracted_llm": "314"
+      }
+    },
+    {
+      "group": "Dependency",
+      "metric": "Cyclic groups (SCCs)",
+      "values": {
+        "preamble_extracted": "0",
+        "body_extracted_llm": "13"
+      }
+    },
+    {
+      "group": "Dependency",
+      "metric": "IPs involved",
+      "values": {
+        "preamble_extracted": "0",
+        "body_extracted_llm": "32"
+      }
+    },
+    {
+      "group": "Supersession",
+      "metric": "Distinct relations",
+      "values": {
+        "preamble_extracted": "4",
+        "body_extracted_llm": "0"
+      }
+    },
+    {
+      "group": "Supersession",
+      "metric": "Reciprocally declared",
+      "values": {
+        "preamble_extracted": "2 (50.0%)",
+        "body_extracted_llm": "0"
+      }
+    },
+    {
+      "group": "Supersession",
+      "metric": "One-sided declarations",
+      "values": {
+        "preamble_extracted": "2 (50.0%)",
+        "body_extracted_llm": "0"
+      }
+    }
+  ],
+  "dashboard_table_rows": [
+    {
+      "group": "Dependency",
+      "metric": "Edges analyzed",
+      "values": {
+        "preamble_extracted": "3",
+        "body_extracted_llm": "314"
+      }
+    },
+    {
+      "group": "Dependency",
+      "metric": "Cyclic groups (SCCs)",
+      "values": {
+        "preamble_extracted": "0",
+        "body_extracted_llm": "13"
+      }
+    },
+    {
+      "group": "Dependency",
+      "metric": "IPs involved",
+      "values": {
+        "preamble_extracted": "0",
+        "body_extracted_llm": "32"
+      }
+    },
+    {
+      "group": "Dependency",
+      "metric": "Self-relations",
+      "values": {
+        "preamble_extracted": "0",
+        "body_extracted_llm": "0"
+      }
+    },
+    {
+      "group": "Supersession",
+      "metric": "Distinct relations",
+      "values": {
+        "preamble_extracted": "4",
+        "body_extracted_llm": "0"
+      }
+    },
+    {
+      "group": "Supersession",
+      "metric": "Reciprocally declared",
+      "values": {
+        "preamble_extracted": "2 (50.0%)",
+        "body_extracted_llm": "0"
+      }
+    },
+    {
+      "group": "Supersession",
+      "metric": "One-sided declarations",
+      "values": {
+        "preamble_extracted": "2 (50.0%)",
+        "body_extracted_llm": "0"
+      }
+    },
+    {
+      "group": "Supersession",
+      "metric": "Cyclic groups (SCCs)",
+      "values": {
+        "preamble_extracted": "0",
+        "body_extracted_llm": "0"
+      }
+    }
+  ],
+  "structural_check_rows": [
+    {
+      "metric": "Self-relations",
+      "values": {
+        "preamble_extracted": 0,
+        "body_extracted_llm": 0
+      }
+    },
+    {
+      "metric": "Supersession cycles",
+      "values": {
+        "preamble_extracted": 0,
+        "body_extracted_llm": 0
+      }
+    },
+    {
+      "metric": "Unresolved catalog targets",
+      "values": {
+        "preamble_extracted": 0,
+        "body_extracted_llm": 0
+      }
+    }
+  ],
+  "omitted_zero_checks": [
+    "Self-relations",
+    "Supersession cycles",
+    "Unresolved catalog targets"
+  ],
+  "omitted_zero_checks_text": "Neither network contains self-relations, supersession cycles, or unresolved catalog targets."
+}

@@ -580,48 +580,55 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:17:38Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "based on a [[bip-0032.mediawiki|BIP 32]] root account",
               "reason": "The proposal’s derivation scheme is built on BIP32 hierarchical deterministic wallet roots.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:43",
               "evidence": "The rest of the levels are used as defined in BIP44 or BIP49.",
               "reason": "The proposal uses the purpose-field hierarchy established by BIP43-compatible wallet structures.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:44",
               "evidence": "uses the same account-structure as defined in [[bip-0044.mediawiki|BIP 44]] and [[bip-0049.mediawiki|BIP 49]]",
               "reason": "The path structure for accounts, change, and address indices reuses the BIP44 account hierarchy.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:49",
               "evidence": "We use the same rationale as described in Considerations section of [[bip-0049.mediawiki|BIP 49]].",
               "reason": "The proposal explicitly reuses BIP49’s rationale for segregating wallet types and account discovery.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:141",
               "evidence": "we use the encapsulation defined in [[bip-0141.mediawiki#p2wpkh|BIP 141]]",
               "reason": "The address and script serialization for P2WPKH is defined using BIP141 witness output rules.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:173",
               "evidence": "using the P2WPKH ([[bip-0173.mediawiki|BIP 173]]) serialization format",
               "reason": "The proposal’s address format is specified as P2WPKH using the native segwit base32 address format from BIP173.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "slips:132",
               "evidence": "Additional registered version bytes are listed in [[https://github.com/satoshilabs/slips/blob/master/slip-0132.md|SLIP-0132]].",
               "reason": "The proposal relies on SLIP-0132 for registering and using alternate extended key version bytes.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

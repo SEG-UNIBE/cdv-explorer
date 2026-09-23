@@ -555,12 +555,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:41Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:9",
               "evidence": "0x10000000 was chosen to be compatible with the BIP 9 proposal for parallel deployment of soft forks",
               "reason": "The activation signaling bit is selected specifically to be compatible with BIP 9’s deployment mechanism, so the proposal’s activation scheme is designed around that prior proposal.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

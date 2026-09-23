@@ -666,12 +666,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:18:22Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:199",
               "evidence": "To be BIP 171 compatible, servers MUST support at least one currency-pair compared to XBT.",
               "reason": "The proposal’s compatibility rule is defined in terms of the currency-pair and XBT conventions from the referenced BIP, so implementing it depends on that standard’s data model and token semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

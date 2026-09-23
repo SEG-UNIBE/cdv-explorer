@@ -875,48 +875,55 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:45:37Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "BIP 32 requires public keys to include their evenness byte",
               "reason": "The proposal’s aggregate-key serialization and derivation handling rely on BIP 32 public-key encoding and unhardened derivation conventions.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:174",
               "evidence": "additional fields for [[bip-0174.mediawiki|BIP 174]] PSBTv0",
               "reason": "The proposal extends the PSBTv0 field set defined by BIP 174.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:327",
               "evidence": "allow for [[bip-0327.mediawiki|BIP 327]] MuSig2 Multi-Signature data",
               "reason": "The new PSBT fields are specifically designed to carry MuSig2 data and workflows from BIP 327.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:328",
               "evidence": "Derivation from the aggregate pubkey can be assumed to follow [[bip-0328.mediawiki|BIP 328]]",
               "reason": "The updater and derivation-path assumptions explicitly reuse BIP 328 for aggregate-pubkey derivation.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:340",
               "evidence": "[[bip-0327.mediawiki|BIP 327]] specifies a way to create [[bip-0340.mediawiki|BIP 340]] compatible public keys and signatures",
               "reason": "The proposal’s signatures and final outputs are intended to be BIP 340 compatible, so evaluation and use depend on BIP 340 semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:341",
               "evidence": "followed by the [[bip-0341.mediawiki|BIP 341]] tapleaf hash",
               "reason": "The nonce and partial-signature keydata incorporate the tapleaf hash defined by BIP 341 for Taproot leaf scripts.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:370",
               "evidence": "additional fields for [[bip-0370.mediawiki|BIP 370]] PSBTv2",
               "reason": "The proposal extends the PSBTv2 field set defined by BIP 370.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

@@ -638,24 +638,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:18:13Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:9",
               "evidence": "This BIP will be deployed by \"version bits\" [https://github.com/bitcoin/bips/blob/master/bip-0009.mediawiki BIP9].",
               "reason": "The proposal's activation mechanism is version-bits deployment as specified by BIP9.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:66",
               "evidence": "with strict DER encoding (see [https://github.com/bitcoin/bips/blob/master/bip-0066.mediawiki BIP66])",
               "reason": "The LOW_S rule is defined for signatures already subject to strict DER encoding under BIP66, so the validity check depends on BIP66's signature encoding rules.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:141",
               "evidence": "Including pay-to-witness-public-key-hash (P2WPKH) described in BIP141",
               "reason": "The proposal explicitly applies its script validity rules to P2WPKH as defined by BIP141, making the witness script context dependent on that proposal.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

@@ -366,18 +366,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:20:08Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:43",
               "evidence": "following the BIP43 recommendation",
               "reason": "The purpose field semantics and hardened purpose level are defined using BIP43-style derivation conventions.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:44",
               "evidence": "It extends [BIP-0044](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki)",
               "reason": "The proposal explicitly extends BIP-0044 and relies on its hierarchical deterministic wallet structure as the basis for this SLIP.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

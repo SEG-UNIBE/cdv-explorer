@@ -13,7 +13,7 @@
   },
   "meta": {
     "last_commit": "Tue Sep 3 20:41:31 2024 +0330",
-    "total_commits": 10,
+    "total_commits": 9,
     "git_history": [
       [
         "e6552476aa2e5ca7256be572a9aa226ec8a022ee",
@@ -39,11 +39,6 @@
         "5dcfe85306434f21ecb1e7a47edd92b2e3e64f9a",
         "Sat Nov 18 09:13:12 2023 -0300",
         "fiatjaf"
-      ],
-      [
-        "010b322fa14eba673a1b1e6489f6109507d6df2c",
-        "Thu Nov 16 22:03:13 2023 +0200",
-        "Pablo Fernandez"
       ],
       [
         "7f27800e27c437ce17d223799f37631105d1ae5f",
@@ -248,24 +243,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:59:12Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:01",
               "evidence": "\"content\" is an optional `metadata`-like stringified JSON object, as described in NIP-01.",
               "reason": "The handler event format explicitly reuses NIP-01 metadata/content semantics for application information.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "nips:19",
               "evidence": "`bech32` in a URL MUST be replaced by clients with the NIP-19-encoded entity that should be loaded by the application.",
               "reason": "The proposal depends on NIP-19 encoding rules to populate handler redirect URLs with the correct entity identifiers.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:31",
               "evidence": "using its `alt` tag (as described in NIP-31).",
               "reason": "The user-flow relies on NIP-31's alt-tag semantics for fallback display of unknown event kinds.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

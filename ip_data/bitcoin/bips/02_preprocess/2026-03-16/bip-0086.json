@@ -557,42 +557,48 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:42:49Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "based on a BIP 32 master private key",
               "reason": "The proposal’s derivation scheme is built on BIP 32 hierarchical deterministic key derivation.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:43",
               "evidence": "The rest of the levels are used as defined in BIPs 44, 49, and 84.",
               "reason": "The account path structure relies on the BIP 43 purpose-field hierarchy convention.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:44",
               "evidence": "This BIP uses the same account-structure as defined in BIPs 44, 49, and 84",
               "reason": "The proposal reuses the BIP 44 account and path layout for deriving addresses.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:49",
               "evidence": "This document suggests a derivation scheme for HD wallets whose keys are involved in single key P2TR",
               "reason": "The proposal explicitly says it largely uses the same derivation approach as BIP 49.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:84",
               "evidence": "This document suggests a derivation scheme for HD wallets whose keys are involved in single key P2TR",
               "reason": "The proposal explicitly says it largely uses the same derivation approach as BIP 84.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:341",
               "evidence": "This document suggests a derivation scheme for HD wallets whose keys are involved in single key P2TR",
               "reason": "The proposal depends on Taproot P2TR output semantics and the TapTweak/output-key construction defined by BIP 341.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

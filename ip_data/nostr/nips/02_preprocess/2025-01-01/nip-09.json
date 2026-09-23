@@ -198,12 +198,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:58:31Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:10",
               "evidence": "an `a` tag is used",
               "reason": "The proposal’s replaceable-event deletion behavior depends on the event-addressing semantics introduced by the `a` tag convention.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

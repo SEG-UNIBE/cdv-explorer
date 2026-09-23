@@ -262,18 +262,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:36Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:60",
               "evidence": "This public key corresponds to the `privkey` field encrypted in a user's [nip-60](60.md) _wallet event_",
               "reason": "The proposal defines the receiver’s P2PK public key as derived from the wallet-event private key in NIP-60, so implementing the receiving-key workflow depends on that wallet event format.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:65",
               "evidence": "published to the sender's [NIP-65](65.md) \"read\" relays",
               "reason": "The proposal uses NIP-65 relay lists for where redemption events are published and for mint URL normalization guidance, so relay handling depends on NIP-65 conventions.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

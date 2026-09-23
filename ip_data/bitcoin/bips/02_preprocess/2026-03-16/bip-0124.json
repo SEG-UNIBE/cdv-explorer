@@ -589,30 +589,34 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:43:19Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:16",
               "evidence": "pay-to-script-hash (BIP16)",
               "reason": "BIP16 is cited as an existing script format motivating and contextualizing the proposed template format, but the proposal does not materially reuse its mechanism beyond that reference.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:32",
               "evidence": "using the key derivation mechanism defined in BIP32",
               "reason": "The proposal's script templates are parameterized by BIP32 derivation paths and require that mechanism to generate deterministic keys and scripts.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:65",
               "evidence": "with the advent of hashlocked and timelocked contracts (BIP65, BIP112)",
               "reason": "The timelocked contract example uses OP_CHECKLOCKTIMEVERIFY, which is the semantic mechanism introduced by BIP65.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:112",
               "evidence": "with the advent of hashlocked and timelocked contracts (BIP65, BIP112)",
               "reason": "The proposal explicitly relies on the timelock-related script mechanism associated with BIP112 in its contract example and motivation.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

@@ -1,0 +1,1380 @@
+{
+  "raw": {
+    "preamble": {
+      "bip": "75",
+      "title": "Out of Band Address Exchange using Payment Protocol Encryption",
+      "author": [
+        "Justin Newton <justin@netki.com>",
+        "Matt David <mgd@mgddev.com>",
+        "Aaron Voisine <voisine@gmail.com>",
+        "James MacWhyte <macwhyte@gmail.com>"
+      ],
+      "comments_uri": "https://github.com/bitcoin/bips/wiki/Comments:BIP-0075",
+      "status": "Deployed",
+      "type": "Specification",
+      "created": "2015-11-20",
+      "license": [
+        "CC-BY-4.0"
+      ],
+      "layer": "Applications",
+      "discussions_to": null,
+      "comments_summary": "Recommended for implementation (one person)",
+      "license_code": null,
+      "post_history": null,
+      "requires": null,
+      "replaces": null,
+      "proposed_replacement": null
+    }
+  },
+  "meta": {
+    "last_commit": "2026-02-27T14:12:41-08:00",
+    "total_commits": 89,
+    "git_history": [
+      [
+        "b3a069464a8879dd858c392a788c9d19a9f7a075",
+        "2026-02-27T14:12:41-08:00",
+        "Murch",
+        "murch@murch.one"
+      ],
+      [
+        "24e96e870fffaa257b465ce1f0370c14aac588e8",
+        "2025-10-08T14:59:36-07:00",
+        "Murch",
+        "murch@murch.one"
+      ],
+      [
+        "5207ef92a52d0b8902895b0dbb40823a4d698ec9",
+        "2025-04-11T20:08:17-07:00",
+        "Murch",
+        "murch@murch.one"
+      ],
+      [
+        "a233bde4af52c6a11269e2e6dd9707abce441ffe",
+        "2025-04-11T18:19:21-07:00",
+        "Murch",
+        "murch@murch.one"
+      ],
+      [
+        "5d3ceb37734f80b2ec206fc94245e3bfd6d5b0f0",
+        "2025-04-11T18:08:44-07:00",
+        "Murch",
+        "murch@murch.one"
+      ],
+      [
+        "8137279570c2d38c8dda12c9654deed7f700c63c",
+        "2025-04-17T15:46:10+08:00",
+        "Jon Atack",
+        "jon@atack.com"
+      ],
+      [
+        "4b568f2c376c2946fbc91befbef1ef48460281ef",
+        "2025-04-14T18:17:43+03:00",
+        "leopardracer",
+        "136604165+leopardracer@users.noreply.github.com"
+      ],
+      [
+        "c25032a3ff2bd0140c56ea6dbfaa885c7ee75bfb",
+        "2024-07-27T22:58:20-03:00",
+        "Jose Storopoli",
+        "jose@storopoli.io"
+      ],
+      [
+        "9a56d3544eac1f949a747c251810f7a440d63fb9",
+        "2024-07-25T18:35:39+03:00",
+        "Orfeas Stefanos Thyfronitis Litos",
+        "orfeas.litos@hotmail.com"
+      ],
+      [
+        "213fb62ceabdbcfe3576d83c3ca3d986e4b45ae9",
+        "2019-07-26T16:28:21Z",
+        "Luke Dashjr",
+        "luke-jr+git@utopios.org"
+      ],
+      [
+        "6295c1a095a1fa33f38d334227fa4222d8e0a523",
+        "2017-08-24T23:50:20+12:00",
+        "MeshCollider",
+        "dobsonsa68@gmail.com"
+      ],
+      [
+        "d9396155350b16b098a0d0b5ec10da80ebd96d5f",
+        "2017-03-14T23:27:57Z",
+        "Luke Dashjr",
+        "luke-jr+git@utopios.org"
+      ],
+      [
+        "7d94bb685bd14cd8fb119af9c42f26b3eafa359a",
+        "2017-01-01T12:29:10Z",
+        "Luke Dashjr",
+        "luke-jr+git@utopios.org"
+      ],
+      [
+        "f51459368752ca3b2db881b6cd76108393e4478b",
+        "2016-12-21T15:28:43-08:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "b8c29597830995b9ac269c2c649efa1d4aafad99",
+        "2016-12-14T13:55:49-08:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "9ec4be28087c129d057bc7fb58a3aa3085f118f7",
+        "2016-12-02T14:37:32-08:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "959fecc15bdad070afa63455468b1dba54655fa6",
+        "2016-11-30T09:47:31Z",
+        "Luke Dashjr",
+        "luke-jr+git@utopios.org"
+      ],
+      [
+        "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "2016-11-30T09:45:33Z",
+        "Luke Dashjr",
+        "luke-jr+git@utopios.org"
+      ],
+      [
+        "7dd419e08acb5075815aac3963aeb1a7377e4daa",
+        "2016-11-28T10:39:58-08:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "e3a155c477eab1f0b78861b568b7cdda01f17e1e",
+        "2016-11-23T10:25:51-08:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "ac8a5f4df6d2f41b09379cffbb8897ccae16096f",
+        "2016-08-29T17:29:02-07:00",
+        "jmacwhyte",
+        "keatonatron@gmail.com"
+      ],
+      [
+        "c7fdd9d4289052a3fee8a82e9b8696ce3d11e8e4",
+        "2016-08-08T22:04:33-07:00",
+        "jmacwhyte",
+        "keatonatron@gmail.com"
+      ],
+      [
+        "6559767e03dca8394fd28f1fb7b823d294e17d3b",
+        "2016-07-28T15:13:32-07:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "f7e08aa1a7979cc97d4d45f9ca5d98fd6467291e",
+        "2016-07-28T09:26:36-07:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "40d4246d3d83b7f9be213b51bc7ca4ef6e0d3980",
+        "2016-05-11T12:59:02-07:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "e1d74be3b664798ce869bf4a9b565f96abd5c1ea",
+        "2016-05-11T11:19:30-07:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "f8f05f0ac943ec5fc688914c28b733fc9b31497f",
+        "2016-04-28T16:47:37-07:00",
+        "jmacwhyte",
+        "keatonatron@gmail.com"
+      ],
+      [
+        "a79432ac99e0ccda46720047166ef2500cabc8a6",
+        "2016-04-28T16:39:16-07:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "057591da8c25e296e71333b355d12fe6fa6e81d2",
+        "2016-04-27T10:01:03-07:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "dcbbc871dc552f946a1ddf56190f3bf22ed1fcdf",
+        "2016-04-27T09:54:43-07:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "1e6e914ca7ba8946614abff02fcd6d917771af0e",
+        "2016-04-27T09:54:06-07:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "7d9e11dbcbb9b14fa748848b4c75c69b9299d054",
+        "2016-04-27T09:52:22-07:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "b5517bab86c7039e654cc1c1f6584808a3cbba39",
+        "2016-04-26T18:53:05-07:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "32d9f9d266f7bca15ea248b15a75092a46a61902",
+        "2016-04-26T18:51:54-07:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "c2a73346a3b2c4da8189cbdd0278069a062e6ee0",
+        "2016-04-26T18:14:14-07:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "6c9625e8322359866c2bffc6812da5691e755d3d",
+        "2016-04-26T18:12:29-07:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "8bb63058fd80b6b89b2e09de402ad5ba635e9eeb",
+        "2016-04-26T15:23:12-07:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "8bf7d90d204db64f3af4a28abacb55b961d02c2c",
+        "2016-03-29T15:49:49-07:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "19845126ec697f043a23f382a2653c0bdd10a6a3",
+        "2016-03-17T05:21:40Z",
+        "Luke Dashjr",
+        "luke-jr+git@utopios.org"
+      ],
+      [
+        "e8c9f670059c61ba14bb51a13829de7f09055091",
+        "2016-03-16T22:03:49-07:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "9a5ba6688ca4a2cdf5e74f69f997ff1b0d731054",
+        "2016-03-15T18:04:48-07:00",
+        "jmacwhyte",
+        "keatonatron@gmail.com"
+      ],
+      [
+        "481f322d441b7ffbbeddb204c40ee3a4791894ca",
+        "2016-03-11T19:23:22+01:00",
+        "Jonathan Cross",
+        "jonathancross@users.noreply.github.com"
+      ],
+      [
+        "a8c02462951ebbe0c52248aa64a63c7ed547778e",
+        "2016-03-09T18:57:48-08:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "dddcb735f86e0d7b9ce703963369485b50c20e28",
+        "2016-03-09T18:25:02-08:00",
+        "jmacwhyte",
+        "keatonatron@gmail.com"
+      ],
+      [
+        "1b96cf1e78d8e015bb148d929f312da3ef495743",
+        "2016-03-07T18:59:24-08:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "c0c7d7f0a101a84523a581bff6edb922b44d560b",
+        "2016-03-07T18:18:58-08:00",
+        "jmacwhyte",
+        "keatonatron@gmail.com"
+      ],
+      [
+        "df01620ebc57a921be8c2350c0fc395f4ec87c00",
+        "2016-03-01T10:50:50-08:00",
+        "Matt David",
+        "matt.david@me.com"
+      ],
+      [
+        "efa3605fbec04a3661c44b6a82a5a15910bf97c4",
+        "2016-03-01T10:49:24-08:00",
+        "Matt David",
+        "matt.david@me.com"
+      ],
+      [
+        "1fc921c8728f76723118f54cf4fb9e94758f2976",
+        "2016-02-24T09:09:29-08:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "ca0f07cfa7012c968e0f809a3f8aaf77e24cd195",
+        "2016-02-22T13:47:49-08:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "27bfd6165fa8e24262701a875ac3803ec9e2f5bd",
+        "2016-02-22T13:09:06-08:00",
+        "jmacwhyte",
+        "keatonatron@gmail.com"
+      ],
+      [
+        "10e6f46569beb2b0d6f28609fd616eea79446f4f",
+        "2016-02-22T12:04:54-08:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "198188b9245eb3547b480f95ef5eef1e32557074",
+        "2016-02-21T21:31:16-08:00",
+        "jmacwhyte",
+        "keatonatron@gmail.com"
+      ],
+      [
+        "52b6cde023466771b2f3ae27ddd6ec9fb0738fcb",
+        "2016-02-21T14:06:03-08:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "8e8c9778e903de3246fa529682e7178241829e16",
+        "2016-02-21T14:00:02-08:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "b01c6b7089926f76e5786aeeb796ee3fb35a3e28",
+        "2016-02-18T17:47:48-08:00",
+        "jmacwhyte",
+        "keatonatron@gmail.com"
+      ],
+      [
+        "0c3d6d15aedcedffac0e72e34edba3b0370f488d",
+        "2016-02-17T16:11:59-08:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "101718fc6a93cce398db76c1aeb7100d839fe619",
+        "2016-02-16T15:22:18-08:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "f41e886f258961d65b696fbd9be01cb1515ca8c6",
+        "2016-02-16T13:41:56-08:00",
+        "Justin Newton",
+        "justin@gid.net"
+      ],
+      [
+        "79cc9bdaa6ce42eab9a311236e7bbcfe352b0a29",
+        "2016-02-16T13:19:16-08:00",
+        "Justin Newton",
+        "justin@gid.net"
+      ],
+      [
+        "d9bf987b99aee368769cce289e3c158ac2c7386d",
+        "2016-02-16T10:56:08-08:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "4e6ff9f14995a61ac6a2312d713c6d7e1ed40087",
+        "2016-02-16T10:52:47-08:00",
+        "Justin Newton",
+        "justin@gid.net"
+      ],
+      [
+        "961c51c3b2fd26cdd78239012f3dbbb78a05e5a2",
+        "2016-02-16T10:51:40-08:00",
+        "Justin Newton",
+        "justin@gid.net"
+      ],
+      [
+        "e0bd3b599adea03c3710610b411e9e145b2101c3",
+        "2016-02-15T17:35:23-08:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "62d19677c8d39ef82c37f0f11f6d29a672f0489e",
+        "2016-02-15T17:19:37-08:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "7ae2624bb3258544bfed8eb623d38f14f1b30468",
+        "2016-02-10T09:43:21-08:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "a715f2cdb18c9881bfba97a188e870cc12c5ecd8",
+        "2016-02-01T19:36:45-08:00",
+        "jmacwhyte",
+        "keatonatron@gmail.com"
+      ],
+      [
+        "88898c2f873946f9960a5146b0bcfa27bb60cf92",
+        "2016-01-20T13:19:25-08:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "8c78781cf08aff281b938e7f0ec8cf8fad66c39a",
+        "2016-01-20T13:16:22-08:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "a81b43b49b09413961936f490afacec9df1106b5",
+        "2016-01-11T15:22:06-08:00",
+        "jmacwhyte",
+        "keatonatron@gmail.com"
+      ],
+      [
+        "0c93de978e4a6c96a6df701ab80f83b35cd9e49f",
+        "2016-01-11T11:07:18-08:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "6c537eb0a74a9ca39052f6671f09afc4c1ff6169",
+        "2016-01-11T11:06:47-08:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "5ec3d52181b6b4558d6b364a2024776dc56f7945",
+        "2016-01-11T11:05:26-08:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "58754bd493e44187cf714abb4176b9d3536b1dff",
+        "2016-01-07T14:24:48-08:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "385287b3950d7a86b63a8ce3ac27289880aaec4e",
+        "2016-01-07T13:53:51-08:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "67470e0817042c9b4d752e990d2219b47f28b1cf",
+        "2016-01-07T11:37:09-08:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "d14e2054771ffbeb89fa15d0b76556c0fcf00344",
+        "2015-12-07T09:42:25-08:00",
+        "Aaron Voisine",
+        "voisine@gmail.com"
+      ],
+      [
+        "b2db2eba416113d723d7fe99deedfe6dcc4e2680",
+        "2015-12-04T15:16:32-08:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "e71e57216b355c414e1452deb0a752e318799c40",
+        "2015-12-04T13:26:50-08:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "845f24069b46d0ef5a68f30ab695d9cd52cbf909",
+        "2015-12-04T11:40:43-08:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "c91ec76f41448982a5ab2fb74677e8306b985e14",
+        "2015-12-04T11:33:06-08:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "2d9b626d6cc3682c1bc3c6daee0dbd1ff3c79a0a",
+        "2015-12-04T11:31:38-08:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "61cfbaefa7031a2534f152fac294c751c30f91f3",
+        "2015-12-04T11:29:44-08:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "543409c7f7b9bef8179f9627204e26ef3e8f0f00",
+        "2015-12-04T11:26:32-08:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "2c8bc2392b6034c5948f6bb9048136239d6bb120",
+        "2015-12-04T11:10:01-08:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "a876e47bd10354a4fb1f2174f3563cb3a9c90a26",
+        "2015-12-03T17:32:01-08:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "d698201463bdc840db9db435e12e9ec45c21d475",
+        "2015-12-03T17:31:09-08:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "4e3b9a5b069e6b53a2fc1c397638bd8cb3647a04",
+        "2015-12-03T17:30:04-08:00",
+        "Matt David",
+        "matt@netki.com"
+      ],
+      [
+        "94c23ddffdc603d6c709749d013fd41764db3440",
+        "2015-12-03T17:24:29-08:00",
+        "Matt David",
+        "matt@netki.com"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 85.29,
+      "passed_checks": 29,
+      "failed_checks": 5,
+      "skipped_checks": 7,
+      "total_checks": 34,
+      "bip2": {
+        "score": 91.67,
+        "passed_checks": 11,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 12,
+        "checks": [
+          {
+            "id": "bip2.required_field.bip",
+            "label": "Required field 'bip' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.author",
+            "label": "Required field 'author' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.comments_uri",
+            "label": "Required field 'comments_uri' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.type",
+            "label": "Required field 'type' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.created",
+            "label": "Required field 'created' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.license",
+            "label": "Required field 'license' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.heading.motivation",
+            "label": "Heading 'motivation' exists at level 2",
+            "category": "heading",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.heading.specification",
+            "label": "Heading 'specification' exists at level 2",
+            "category": "heading",
+            "standard": "bip2",
+            "passed": false,
+            "details": "Missing heading 'specification'"
+          },
+          {
+            "id": "bip2.heading.copyright",
+            "label": "Heading 'copyright' exists at level 2",
+            "category": "heading",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          }
+        ]
+      },
+      "bip3": {
+        "score": 81.82,
+        "passed_checks": 18,
+        "failed_checks": 4,
+        "skipped_checks": 7,
+        "total_checks": 22,
+        "checks": [
+          {
+            "id": "bip3.preamble.top_rfc822",
+            "label": "Preamble exists as RFC-822-style metadata at the top",
+            "category": "preamble",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.bip",
+            "label": "Required header 'bip' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.title",
+            "label": "Required header 'title' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.authors",
+            "label": "Required header 'authors' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.status",
+            "label": "Required header 'status' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.type",
+            "label": "Required header 'type' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.assigned",
+            "label": "Required header 'assigned' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.license",
+            "label": "Required header 'license' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_order",
+            "label": "Headers appear in the expected BIP3 order",
+            "category": "header_order",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.bip",
+            "label": "Header 'BIP' is an integer without leading zeros or '?'",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.title",
+            "label": "Header 'Title' is 50 characters or fewer",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": false,
+            "details": "Title length is 62, expected <= 50"
+          },
+          {
+            "id": "bip3.header_value.authors",
+            "label": "Header 'authors' uses 'Name <email>' entries",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.deputies",
+            "label": "Header 'deputies' uses 'Name <email>' entries",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.status",
+            "label": "Header 'Status' is one of Draft, Complete, Deployed, Closed",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.type",
+            "label": "Header 'Type' is one of Specification, Informational, Process",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.assigned",
+            "label": "Header 'Assigned' is yyyy-mm-dd or '?'",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.license",
+            "label": "Header 'License' is non-empty",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.discussion",
+            "label": "Header 'Discussion' uses 'yyyy-mm-dd: URL' lines",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.version",
+            "label": "Header 'Version' uses MAJOR.MINOR.PATCH",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.requires",
+            "label": "Header 'requires' uses comma+space separated BIP numbers",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.replaces",
+            "label": "Header 'replaces' uses comma+space separated BIP numbers",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.proposed_replacement",
+            "label": "Header 'proposed_replacement' uses comma+space separated BIP numbers",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.required_section.abstract",
+            "label": "Required section 'abstract' is present",
+            "category": "required_section",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_section.motivation",
+            "label": "Required section 'motivation' is present",
+            "category": "required_section",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_section.copyright",
+            "label": "Required section 'copyright' is present",
+            "category": "required_section",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.type_specific.specification_section",
+            "label": "Type 'Specification' includes a 'Specification' section",
+            "category": "type_specific",
+            "standard": "bip3",
+            "passed": false,
+            "details": "Missing required section 'specification' for Type=Specification"
+          },
+          {
+            "id": "bip3.changelog.changelog_section",
+            "label": "Complete/Deployed proposals include a 'Changelog' section",
+            "category": "changelog",
+            "standard": "bip3",
+            "passed": false,
+            "details": "Missing required 'changelog' section"
+          },
+          {
+            "id": "bip3.changelog.version_header",
+            "label": "Complete/Deployed proposals include a 'Version' header",
+            "category": "changelog",
+            "standard": "bip3",
+            "passed": false,
+            "details": "Missing required 'version' header"
+          },
+          {
+            "id": "bip3.changelog.version_matches",
+            "label": "Latest changelog version matches the 'Version' header",
+            "category": "changelog",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "payment": 66,
+      "message": 63,
+      "protocol": 45,
+      "invoicerequest": 45,
+      "encryptedprotocolmessage": 45,
+      "key": 39,
+      "public": 35,
+      "bip": 33,
+      "messages": 32,
+      "encrypted": 25,
+      "s": 25,
+      "set": 24,
+      "sender": 23,
+      "receiver": 23,
+      "paymentrequest": 20,
+      "protocolmessage": 20,
+      "version": 20,
+      "address": 19,
+      "use": 19,
+      "status": 18,
+      "required": 18,
+      "https": 17,
+      "gcm": 17,
+      "bitcoin": 16,
+      "signature": 16,
+      "1": 15,
+      "256": 15,
+      "http": 14,
+      "bip70": 14,
+      "information": 14,
+      "store": 14,
+      "optional": 13,
+      "org": 13,
+      "communication": 13,
+      "forward": 13,
+      "code": 13,
+      "ec": 13,
+      "number": 13,
+      "server": 13,
+      "aes": 13,
+      "value": 12,
+      "wallet": 12,
+      "bytes": 12,
+      "nonce": 12,
+      "4": 11,
+      "certificate": 11,
+      "0070": 11,
+      "mobile": 11,
+      "sha256": 11,
+      "br": 11,
+      "pre": 10,
+      "encryption": 10,
+      "type": 10,
+      "mediawiki": 10,
+      "transaction": 10,
+      "sending": 10,
+      "pki_type": 10,
+      "defined": 10,
+      "identifier": 10,
+      "allow": 9,
+      "process": 9,
+      "string": 9,
+      "encoded": 9,
+      "serialized": 9,
+      "status_code": 9,
+      "status_message": 9,
+      "exchange": 8,
+      "com": 8,
+      "rfc": 8,
+      "human": 8,
+      "party": 8,
+      "2": 8,
+      "ecdh": 8,
+      "sender_public_key": 8,
+      "default": 8,
+      "error": 8,
+      "client": 8,
+      "wiki": 7,
+      "0": 7,
+      "extension": 7,
+      "allows": 7,
+      "class": 7,
+      "wikitable": 7,
+      "readable": 7,
+      "x": 7,
+      "3": 7,
+      "case": 7,
+      "description": 7,
+      "initial": 7,
+      "encryptedprotocolmessages": 7,
+      "following": 7,
+      "setup": 7,
+      "point": 7,
+      "mode": 7,
+      "layer": 6,
+      "0075": 6,
+      "returned": 6,
+      "including": 6,
+      "time": 6,
+      "generation": 6,
+      "service": 6,
+      "en": 6,
+      "keys": 6,
+      "uint64": 6,
+      "field": 6,
+      "authenticated": 6,
+      "paymentack": 6,
+      "authentication": 6,
+      "ietf": 6,
+      "valid": 6,
+      "operation": 6,
+      "pdf": 6,
+      "implementation": 5,
+      "request": 5,
+      "identity": 5,
+      "details": 5,
+      "img": 5,
+      "src": 5,
+      "png": 5,
+      "way": 5,
+      "recipient": 5,
+      "addresses": 5,
+      "privacy": 5,
+      "like": 5,
+      "users": 5,
+      "unique": 5,
+      "new": 5,
+      "x509": 5,
+      "note": 5,
+      "5": 5,
+      "sec": 5,
+      "protocolmessagetype": 5,
+      "encrypted_message": 5,
+      "der": 5,
+      "received": 5,
+      "cancel": 5,
+      "nist": 5,
+      "800": 5,
+      "hmac_drbg": 5,
+      "www": 5,
+      "github": 4,
+      "provides": 4,
+      "sign": 4,
+      "payee": 4,
+      "tls": 4,
+      "described": 4,
+      "entity": 4,
+      "receiving": 4,
+      "data": 4,
+      "order": 4,
+      "example": 4,
+      "wallets": 4,
+      "requests": 4,
+      "funds": 4,
+      "book": 4,
+      "send": 4,
+      "pgp": 4,
+      "wikipedia": 4,
+      "ecdsa": 4,
+      "notification_url": 4,
+      "6": 4,
+      "sent": 4,
+      "enum": 4,
+      "message_type": 4,
+      "serialized_message": 4,
+      "epoch": 4,
+      "highest": 4,
+      "receiver_public_key": 4,
+      "communicated": 4,
+      "decrypting": 4,
+      "retrieval": 4,
+      "alt": 4,
+      "flow": 4,
+      "diagram": 4,
+      "content": 4,
+      "certificates": 4,
+      "generate": 4,
+      "decrypt": 4,
+      "csrc": 4,
+      "gov": 4,
+      "publications": 4,
+      "90a": 4,
+      "ciphertext": 4,
+      "txt": 4,
+      "addressimo": 4,
+      "comments": 3,
+      "bips": 3,
+      "existing": 3,
+      "original": 3,
+      "provide": 3,
+      "prevent": 3,
+      "motivation": 3,
+      "parties": 3,
+      "types": 3,
+      "pki": 3,
+      "user": 3,
+      "ability": 3,
+      "share": 3,
+      "needs": 3,
+      "requirements": 3,
+      "developer": 3,
+      "private": 3,
+      "qr": 3,
+      "e": 3,
+      "possible": 3,
+      "currently": 3,
+      "additional": 3,
+      "openpgp": 3,
+      "secp256k1": 3,
+      "bip75": 3,
+      "specified": 3,
+      "updated": 3,
+      "create": 3,
+      "pki_data": 3,
+      "memo": 3,
+      "protected": 3,
+      "encapsulating": 3,
+      "wrapper": 3,
+      "non": 3,
+      "transport": 3,
+      "current": 3,
+      "understands": 3,
+      "high": 3,
+      "secret": 3,
+      "encapsulated": 3,
+      "found": 3,
+      "validating": 3,
+      "standard": 3,
+      "developers": 3,
+      "want": 3,
+      "tools": 3,
+      "html": 3,
+      "repeated": 3,
+      "keypair": 3,
+      "encrypt": 3,
+      "initialize": 3,
+      "nistpubs": 3,
+      "bits": 3,
+      "tag": 3,
+      "formatted": 3,
+      "rfc5480": 3,
+      "5480": 3,
+      "submitted": 3,
+      "encoding": 3,
+      "reference": 3,
+      "38d": 3,
+      "fips": 3,
+      "applications": 2,
+      "justin": 2,
+      "voisine": 2,
+      "gmail": 2,
+      "macwhyte": 2,
+      "recommended": 2,
+      "person": 2,
+      "uri": 2,
+      "license": 2,
+      "70": 2,
+      "shall": 2,
+      "work": 2,
+      "transfer": 2,
+      "control": 2,
+      "permissioned": 2,
+      "automated": 2,
+      "supported": 2,
+      "shared": 2,
+      "creation": 2,
+      "logs": 2,
+      "servers": 2,
+      "based": 2,
+      "transactions": 2,
+      "meet": 2,
+      "static": 2,
+      "bip32": 2,
+      "pubs": 2,
+      "maintain": 2,
+      "offer": 2,
+      "multiple": 2,
+      "known": 2,
+      "reuse": 2,
+      "security": 2,
+      "risk": 2,
+      "pub": 2,
+      "receive": 2,
+      "lost": 2,
+      "access": 2,
+      "mail": 2,
+      "wishes": 2,
+      "identifying": 2,
+      "receives": 2,
+      "protect": 2,
+      "computed": 2,
+      "able": 2,
+      "modify": 2,
+      "values": 2,
+      "509": 2,
+      "hashing": 2,
+      "algorithm": 2,
+      "listed": 2,
+      "proto": 2,
+      "contains": 2,
+      "newly": 2,
+      "return": 2,
+      "7": 2,
+      "invoice": 2,
+      "secure": 2,
+      "includes": 2,
+      "rely": 2,
+      "handling": 2,
+      "identify": 2,
+      "entire": 2,
+      "seconds": 2,
+      "etc": 2,
+      "clients": 2,
+      "understand": 2,
+      "101": 2,
+      "microseconds": 2,
+      "invoicerequests": 2,
+      "subsequent": 2,
+      "unknown": 2,
+      "creating": 2,
+      "creates": 2,
+      "encapsulates": 2,
+      "interaction": 2,
+      "application": 2,
+      "paymentprotocol": 2,
+      "include": 2,
+      "ok": 2,
+      "previous": 2,
+      "requires": 2,
+      "present": 2,
+      "appropriately": 2,
+      "invalid": 2,
+      "errors": 2,
+      "messaging": 2,
+      "facilities": 2,
+      "extends": 2,
+      "signatures": 2,
+      "t": 2,
+      "method": 2,
+      "sure": 2,
+      "url": 2,
+      "blob": 2,
+      "master": 2,
+      "validate": 2,
+      "characters": 2,
+      "aes256": 2,
+      "spam": 2,
+      "hash": 2,
+      "elliptic_curve_diffie": 2,
+      "hellman": 2,
+      "sp800": 2,
+      "big": 2,
+      "endian": 2,
+      "byte": 2,
+      "12": 2,
+      "16": 2,
+      "resolution": 2,
+      "returns": 2,
+      "base64": 2,
+      "lookup": 2,
+      "included": 2,
+      "itu": 2,
+      "x690": 2,
+      "1994": 2,
+      "secg": 2,
+      "v2": 2,
+      "rfc4880": 2,
+      "netkicorp": 2,
+      "flowchart": 2,
+      "shows": 2,
+      "sample": 2,
+      "second": 2,
+      "submits": 2,
+      "network": 2,
+      "sf": 2,
+      "ir": 2,
+      "encrypting": 2,
+      "rfc6979": 2,
+      "180": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "94c23ddffdc603d6c709749d013fd41764db3440",
+        "timestamp": "2015-12-03T17:24:29-08:00",
+        "date": "2015-12-03",
+        "author": "Matt David",
+        "path": "bip-invoicerequest-extension.mediawiki",
+        "status": "Draft",
+        "standard": "bip1"
+      },
+      {
+        "commit": "72f18918a8ae655212ea2700b30f0dc4d758b843",
+        "timestamp": "2016-11-30T09:45:33Z",
+        "date": "2016-11-30",
+        "author": "Luke Dashjr",
+        "path": "bip-0075.mediawiki",
+        "status": "Draft",
+        "standard": "bip2"
+      },
+      {
+        "commit": "213fb62ceabdbcfe3576d83c3ca3d986e4b45ae9",
+        "timestamp": "2019-07-26T16:29:02Z",
+        "date": "2019-07-26",
+        "author": "Luke Dashjr",
+        "path": "bip-0075.mediawiki",
+        "status": "Final",
+        "standard": "bip2"
+      },
+      {
+        "commit": "5d3ceb37734f80b2ec206fc94245e3bfd6d5b0f0",
+        "timestamp": "2026-01-12T14:22:33-08:00",
+        "date": "2026-01-12",
+        "author": "Murch",
+        "path": "bip-0075.mediawiki",
+        "status": "Deployed",
+        "standard": "bip3"
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        {
+          "target": "bips:32",
+          "count": 2
+        },
+        {
+          "target": "bips:70",
+          "count": 27
+        }
+      ],
+      "body_extracted_llm": [
+        {
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:01:38Z",
+          "status": "success",
+          "findings": [
+            {
+              "target": "bips:32",
+              "type": "references",
+              "evidence": "BIP32 X-Pubs allow the generation of unique addresses, but watching an X-Pub chain for each person you wish to receive funds from is too resource-intensive for mobile applications",
+              "reason": "BIP 32 is discussed as an existing alternative for generating unique addresses and as motivation for this proposal; the proposed protocol does not require its hierarchical deterministic key mechanism.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:70",
+              "type": "depends_on",
+              "evidence": "This BIP is an extension to BIP 70 that provides two enhancements to the existing Payment Protocol.",
+              "reason": "The proposal explicitly extends BIP 70's Payment Protocol and adds behavior and message handling to it, so its mechanism requires the protocol defined by BIP 70.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

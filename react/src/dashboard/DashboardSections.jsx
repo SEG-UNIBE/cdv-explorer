@@ -9,6 +9,9 @@ const ClassificationSection = lazy(() => import('./sections/ClassificationSectio
 const DependenciesSection = lazy(() => import('./sections/DependenciesSection').then((module) => ({
   default: module.DependenciesSection,
 })));
+const CentralitySection = lazy(() => import('./sections/CentralitySection').then((module) => ({
+  default: module.CentralitySection,
+})));
 const ConformitySection = lazy(() => import('./sections/ConformitySection').then((module) => ({
   default: module.ConformitySection,
 })));
@@ -95,6 +98,7 @@ export function DashboardSections({
   dependencyControls,
   conformityControls,
   dependencyMetrics,
+  centralityComparison,
   filteredWordCloudData,
   hasWordCloudFilter,
   hasDependencyFilter,
@@ -103,7 +107,13 @@ export function DashboardSections({
   sectionReady = {},
 }) {
   const activateEvolution = useCallback(() => onSectionActivate?.('evolution'), [onSectionActivate]);
-  const activateDependencies = useCallback(() => onSectionActivate?.('dependencyMetrics'), [onSectionActivate]);
+  const activateDependencies = useCallback(() => {
+    onSectionActivate?.('dependencyMetrics');
+    onSectionActivate?.('dependencyConsistency');
+  }, [onSectionActivate]);
+  const activateCentrality = useCallback(() => {
+    onSectionActivate?.('centralityComparison');
+  }, [onSectionActivate]);
   const activateConformity = useCallback(() => onSectionActivate?.('conformity'), [onSectionActivate]);
   const collaborationAuthorOptions = (dashboardData.authorship.collaborationNetwork?.nodes || [])
     .map((node) => String(node.id || ''))
@@ -129,6 +139,10 @@ export function DashboardSections({
           topAuthors: dashboardData.authorship.topAuthors,
           authorContributionHistogram: dashboardData.authorship.authorContributionHistogram,
           bipAuthorCountHistogram: dashboardData.authorship.bipAuthorCountHistogram,
+          topContributors: dashboardData.authorship.topContributors,
+          contributorContributionHistogram: dashboardData.authorship.contributorContributionHistogram,
+          contributorsPerProposalHistogram: dashboardData.authorship.contributorsPerProposalHistogram,
+          contributorCoverage: dashboardData.authorship.contributorCoverage,
           collaborationNetwork: dashboardData.authorship.collaborationNetwork,
           collaborationMetricsSummary: dashboardData.authorship.collaborationMetricsSummary,
           collaborationMetricsRows: dashboardData.authorship.collaborationMetricsRows,
@@ -140,6 +154,8 @@ export function DashboardSections({
           setCollaborationLayoutMode: authorshipControls.setCollaborationLayoutMode,
           collaborationMinClusterCollaborations: authorshipControls.collaborationMinClusterCollaborations,
           setCollaborationMinClusterCollaborations: authorshipControls.setCollaborationMinClusterCollaborations,
+          collaborationMinAuthoredIps: authorshipControls.collaborationMinAuthoredIps,
+          setCollaborationMinAuthoredIps: authorshipControls.setCollaborationMinAuthoredIps,
           collaborationAuthorOptions,
           wordCloudFilterText: authorshipControls.wordCloudFilterText,
           setWordCloudFilterText: authorshipControls.setWordCloudFilterText,
@@ -190,7 +206,7 @@ export function DashboardSections({
         Component={DependenciesSection}
         minHeight={320}
         onActivate={activateDependencies}
-        ready={sectionReady.dependencyMetrics !== false}
+        ready={sectionReady.dependencyMetrics !== false && sectionReady.dependencyConsistency !== false}
         componentProps={{
           ecosystem: datasets.dependencyViewEcosystem,
           ecosystemBase: ecosystem,
@@ -212,7 +228,24 @@ export function DashboardSections({
           selectedDependencyProposalIds,
           activeDependencyLlmModel: dependencyMetrics.activeDependencyLlmModel,
           dependencyMetrics: dependencyMetrics.dependencyViewMetrics,
+          dependencyConsistency: dependencyMetrics.dependencyViewConsistency,
           showExperimentalFeatures,
+        }}
+      />
+      <LazyDashboardSection
+        id="dashboard-centrality"
+        label="centrality"
+        Component={CentralitySection}
+        minHeight={320}
+        onActivate={activateCentrality}
+        ready={sectionReady.centralityComparison !== false}
+        componentProps={{
+          ecosystem: datasets.centralityViewEcosystem,
+          ecosystemBase: ecosystem,
+          selectedSourceIds,
+          sectionSourceView: sectionViews.activeCentralitySourceView,
+          setSectionSourceView: sectionViewState.setCentralitySourceView,
+          centralityComparison,
         }}
       />
       {showConformitySection && (

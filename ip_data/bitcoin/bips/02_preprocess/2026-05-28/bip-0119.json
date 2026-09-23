@@ -1293,32 +1293,35 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:17:56Z",
           "status": "api_error",
-          "dependencies": [],
-          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 198053, Requested 9447. Please try again in 2.25s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 198053, Requested 9447. Please try again in 2.25s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}",
+          "findings": []
         },
         {
           "run_id": "2026-06-30T11:33:45Z_gpt-5.4-mini_fbc31d5d",
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:33:51Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:65",
               "evidence": "Similar soft forks for OP_CHECKSEQUENCEVERIFY and OP_CHECKLOCKTIMEVERIFY",
               "reason": "The proposal relies on the prior NOP-to-opcode soft-fork pattern exemplified by these earlier BIPs for its activation/backward-compatibility model.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:112",
               "evidence": "Similar soft forks for OP_CHECKSEQUENCEVERIFY and OP_CHECKLOCKTIMEVERIFY",
               "reason": "The proposal relies on the prior NOP-to-opcode soft-fork pattern exemplified by these earlier BIPs for its activation/backward-compatibility model.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:341",
               "evidence": "The same value is also pre-computed for and defined in BIP-341 and can be shared.",
               "reason": "CTV reuses Taproot-related precomputed transaction data for sequences and outputs, so implementation depends on the BIP 341 data conventions.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

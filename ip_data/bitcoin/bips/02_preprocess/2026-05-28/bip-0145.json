@@ -670,30 +670,34 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:18:13Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:9",
               "evidence": "the template's \"rules\" list (see [[bip-0009.mediawiki#getblocktemplate-changes|BIP 9]]) includes \"segwit\"",
               "reason": "Activation and validity of witness transactions depend on the BIP 9 rules list signaling 'segwit'.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:22",
               "evidence": "modifications to the getblocktemplate JSON-RPC call ([[bip-0022.mediawiki|BIP 22]])",
               "reason": "The proposal directly revises the BIP 22 getblocktemplate interface and its template/transaction semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:23",
               "evidence": "Only if the template includes a \"mutable\" key (see [[bip-0023.mediawiki#mutations|BIP 23 Mutations]]) including \"generation\"",
               "reason": "Coinbase commitment placement behavior depends on BIP 23's mutation mechanism for the generation transaction.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:141",
               "evidence": "to support segregated witness as defined by [[bip-0141.mediawiki|BIP 141]]",
               "reason": "The proposal's witness-related template fields, transaction handling, sigop calculation, and commitment rules are built around BIP 141 semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

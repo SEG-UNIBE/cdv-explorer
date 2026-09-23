@@ -173,12 +173,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:59:15Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:01",
               "evidence": "A `kind 27235`",
               "reason": "This proposal relies on the Nostr event kind and signature/event structure defined by the core event specification.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

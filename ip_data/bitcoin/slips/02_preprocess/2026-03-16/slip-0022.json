@@ -387,18 +387,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:46:48Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "slips:10",
               "evidence": "using the [SLIP-0010] key derivation scheme",
               "reason": "The credential key pair derivation is explicitly built on SLIP-0010 derivation paths.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "slips:21",
               "evidence": "derived from the master secret using the [SLIP-0021] method",
               "reason": "The proposal uses SLIP-0021 to derive the encryption key and CredRandom from the master secret.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

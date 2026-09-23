@@ -634,18 +634,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:21Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "based on the algorithm described in BIP-0032",
               "reason": "The proposal’s key derivation path, hardened/non-hardened derivation, and child public/private key generation are built on BIP32.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:43",
               "evidence": "purpose scheme described in BIP-0043",
               "reason": "The proposal adopts BIP43’s purpose-field scheme and explicitly sets purpose to 45' as a BIP43 application.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

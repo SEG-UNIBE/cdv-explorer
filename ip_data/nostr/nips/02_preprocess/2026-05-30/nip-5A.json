@@ -244,12 +244,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:32Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:01",
               "evidence": "defined in [NIP-01](01.md)",
               "reason": "The site manifest event type is explicitly constrained to be a replaceable or addressable event per the referenced event model.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

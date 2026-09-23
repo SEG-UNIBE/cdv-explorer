@@ -614,12 +614,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:18:15Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:151",
               "evidence": "Authentication initialization must only happen if encrypted channels have been established (according to BIP-151 [1]).",
               "reason": "The authentication protocol is explicitly gated on BIP 151-encrypted channels and uses the encryption-session-ID defined by that scheme.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

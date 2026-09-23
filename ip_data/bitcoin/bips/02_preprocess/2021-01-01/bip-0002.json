@@ -1179,18 +1179,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:05Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:1",
               "evidence": "This particular BIP replaces BIP 1 with a more well-defined and clear process.",
               "reason": "The document is explicitly a replacement and revision of the earlier BIP process specification.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:123",
               "evidence": "See [[bip-0123.mediawiki|BIP 123]] for definitions of the various BIP layers.",
               "reason": "The Layer header definitions and the statement that activation implies BIP 123 make this proposal depend on BIP 123’s layer taxonomy.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

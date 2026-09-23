@@ -802,12 +802,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:42:17Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:11",
               "evidence": "A filtered block is defined by the <code>merkleblock</code> message",
               "reason": "BIP 37 introduces the merkleblock message and partial Merkle proof workflow as part of its filtered block design.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

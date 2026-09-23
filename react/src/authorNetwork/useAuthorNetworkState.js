@@ -20,6 +20,7 @@ export function useAuthorNetworkState({ snapshotLabel, layoutMode, setMinCluster
   const [physicsEnabled, setPhysicsEnabled] = useState(true);
   const [importedLayout, setImportedLayout] = useState(null);
   const [onlyCrossSource, setOnlyCrossSource] = useState(false);
+  const [showAllLabels, setShowAllLabels] = useState(true);
 
   useEffect(() => {
     physicsEnabledRef.current = physicsEnabled;
@@ -96,6 +97,10 @@ export function useAuthorNetworkState({ snapshotLabel, layoutMode, setMinCluster
         setOnlyCrossSource(payload.filter.only_cross_source);
       }
 
+      if (typeof payload?.filter?.show_all_labels === 'boolean') {
+        setShowAllLabels(payload.filter.show_all_labels);
+      }
+
       setImportedLayout({
         fileName: file.name,
         positions: importedPositions,
@@ -122,6 +127,8 @@ export function useAuthorNetworkState({ snapshotLabel, layoutMode, setMinCluster
     importedLayout,
     onlyCrossSource,
     setOnlyCrossSource,
+    showAllLabels,
+    setShowAllLabels,
     handleLayoutExport,
     handlePhysicsToggle,
     handleLayoutImportClick,

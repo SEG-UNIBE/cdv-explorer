@@ -1,0 +1,595 @@
+{
+  "meta": {
+    "schema_version": 2,
+    "llm_model": "gpt-5.4-mini",
+    "approach_order": [
+      "preamble_extracted",
+      "body_extracted_llm"
+    ]
+  },
+  "by_approach": {
+    "preamble_extracted": {
+      "key": "preamble_extracted",
+      "label": "Preamble",
+      "dependency": {
+        "edge_count": 65,
+        "cyclic_group_count": 1,
+        "involved_node_count": 2,
+        "self_relation_count": 0,
+        "unresolved_target_count": 0,
+        "cyclic_groups": [
+          {
+            "nodes": [
+              {
+                "id": "bips:157",
+                "title": "Client Side Block Filtering"
+              },
+              {
+                "id": "bips:158",
+                "title": "Compact Block Filters for Light Clients"
+              }
+            ]
+          }
+        ]
+      },
+      "supersession": {
+        "fact_count": 12,
+        "reciprocal_count": 8,
+        "reciprocal_percentage": 66.7,
+        "one_sided_count": 4,
+        "one_sided_percentage": 33.3,
+        "reciprocal_facts": [
+          {
+            "successor": {
+              "id": "bips:2",
+              "title": "BIP process, revised"
+            },
+            "predecessor": {
+              "id": "bips:1",
+              "title": "BIP Purpose and Guidelines"
+            },
+            "declaration_sides": [
+              "predecessor_to_successor",
+              "successor_to_predecessor"
+            ]
+          },
+          {
+            "successor": {
+              "id": "bips:3",
+              "title": "Updated BIP Process"
+            },
+            "predecessor": {
+              "id": "bips:2",
+              "title": "BIP process, revised"
+            },
+            "declaration_sides": [
+              "predecessor_to_successor",
+              "successor_to_predecessor"
+            ]
+          },
+          {
+            "successor": {
+              "id": "bips:21",
+              "title": "URI Scheme"
+            },
+            "predecessor": {
+              "id": "bips:20",
+              "title": "URI Scheme"
+            },
+            "declaration_sides": [
+              "predecessor_to_successor",
+              "successor_to_predecessor"
+            ]
+          },
+          {
+            "successor": {
+              "id": "bips:78",
+              "title": "A Simple Payjoin Proposal"
+            },
+            "predecessor": {
+              "id": "bips:79",
+              "title": "Bustapay :: a practical coinjoin protocol"
+            },
+            "declaration_sides": [
+              "predecessor_to_successor",
+              "successor_to_predecessor"
+            ]
+          },
+          {
+            "successor": {
+              "id": "bips:321",
+              "title": "URI Scheme"
+            },
+            "predecessor": {
+              "id": "bips:21",
+              "title": "URI Scheme"
+            },
+            "declaration_sides": [
+              "predecessor_to_successor",
+              "successor_to_predecessor"
+            ]
+          },
+          {
+            "successor": {
+              "id": "bips:323",
+              "title": "24 nVersion bits for general purpose use"
+            },
+            "predecessor": {
+              "id": "bips:320",
+              "title": "nVersion bits for general purpose use"
+            },
+            "declaration_sides": [
+              "predecessor_to_successor",
+              "successor_to_predecessor"
+            ]
+          },
+          {
+            "successor": {
+              "id": "bips:324",
+              "title": "Version 2 P2P Encrypted Transport Protocol"
+            },
+            "predecessor": {
+              "id": "bips:151",
+              "title": "Peer-to-Peer Communication Encryption"
+            },
+            "declaration_sides": [
+              "predecessor_to_successor",
+              "successor_to_predecessor"
+            ]
+          },
+          {
+            "successor": {
+              "id": "bips:350",
+              "title": "Bech32m format for v1+ witness addresses"
+            },
+            "predecessor": {
+              "id": "bips:173",
+              "title": "Base32 address format for native v0-16 witness outputs"
+            },
+            "declaration_sides": [
+              "predecessor_to_successor",
+              "successor_to_predecessor"
+            ]
+          }
+        ],
+        "one_sided_facts": [
+          {
+            "successor": {
+              "id": "bips:135",
+              "title": "Generalized version bits voting"
+            },
+            "predecessor": {
+              "id": "bips:9",
+              "title": "Version bits with timeout and delay"
+            },
+            "declaration_sides": [
+              "successor_to_predecessor"
+            ]
+          },
+          {
+            "successor": {
+              "id": "bips:173",
+              "title": "Base32 address format for native v0-16 witness outputs"
+            },
+            "predecessor": {
+              "id": "bips:142",
+              "title": "Address Format for Segregated Witness"
+            },
+            "declaration_sides": [
+              "successor_to_predecessor"
+            ]
+          },
+          {
+            "successor": {
+              "id": "bips:393",
+              "title": "Output Script Descriptor Annotations"
+            },
+            "predecessor": {
+              "id": "bips:391",
+              "title": "Binary Output Descriptors"
+            },
+            "declaration_sides": [
+              "predecessor_to_successor"
+            ]
+          },
+          {
+            "successor": {
+              "id": "bips:443",
+              "title": "OP_CHECKCONTRACTVERIFY"
+            },
+            "predecessor": {
+              "id": "bips:345",
+              "title": "OP_VAULT"
+            },
+            "declaration_sides": [
+              "predecessor_to_successor"
+            ]
+          }
+        ],
+        "cyclic_group_count": 0,
+        "self_relation_count": 0,
+        "unresolved_target_count": 0,
+        "cyclic_groups": []
+      },
+      "checks": {
+        "self_relation_count": 0,
+        "self_relations": [],
+        "unresolved_target_count": 0,
+        "unresolved_targets": []
+      }
+    },
+    "body_extracted_llm": {
+      "key": "body_extracted_llm",
+      "label": "LLM",
+      "dependency": {
+        "edge_count": 499,
+        "cyclic_group_count": 12,
+        "involved_node_count": 37,
+        "self_relation_count": 0,
+        "unresolved_target_count": 0,
+        "cyclic_groups": [
+          {
+            "nodes": [
+              {
+                "id": "bips:1",
+                "title": "BIP Purpose and Guidelines"
+              },
+              {
+                "id": "bips:2",
+                "title": "BIP process, revised"
+              }
+            ]
+          },
+          {
+            "nodes": [
+              {
+                "id": "bips:9",
+                "title": "Version bits with timeout and delay"
+              },
+              {
+                "id": "bips:68",
+                "title": "Relative lock-time using consensus-enforced sequence numbers"
+              },
+              {
+                "id": "bips:112",
+                "title": "CHECKSEQUENCEVERIFY"
+              },
+              {
+                "id": "bips:113",
+                "title": "Median time-past as endpoint for lock-time calculations"
+              },
+              {
+                "id": "bips:130",
+                "title": "sendheaders message"
+              },
+              {
+                "id": "bips:141",
+                "title": "Segregated Witness (Consensus layer)"
+              },
+              {
+                "id": "bips:142",
+                "title": "Address Format for Segregated Witness"
+              },
+              {
+                "id": "bips:143",
+                "title": "Transaction Signature Verification for Version 0 Witness Program"
+              },
+              {
+                "id": "bips:144",
+                "title": "Segregated Witness (Peer Services)"
+              },
+              {
+                "id": "bips:146",
+                "title": "Dealing with signature encoding malleability"
+              },
+              {
+                "id": "bips:173",
+                "title": "Base32 address format for native v0-16 witness outputs"
+              }
+            ]
+          },
+          {
+            "nodes": [
+              {
+                "id": "bips:11",
+                "title": "M-of-N Standard Transactions"
+              },
+              {
+                "id": "bips:12",
+                "title": "OP_EVAL"
+              }
+            ]
+          },
+          {
+            "nodes": [
+              {
+                "id": "bips:13",
+                "title": "Address Format for pay-to-script-hash"
+              },
+              {
+                "id": "bips:16",
+                "title": "Pay to Script Hash"
+              },
+              {
+                "id": "bips:17",
+                "title": "OP_CHECKHASHVERIFY (CHV)"
+              }
+            ]
+          },
+          {
+            "nodes": [
+              {
+                "id": "bips:20",
+                "title": "URI Scheme"
+              },
+              {
+                "id": "bips:21",
+                "title": "URI Scheme"
+              }
+            ]
+          },
+          {
+            "nodes": [
+              {
+                "id": "bips:22",
+                "title": "getblocktemplate - Fundamentals"
+              },
+              {
+                "id": "bips:23",
+                "title": "getblocktemplate - Pooled Mining"
+              }
+            ]
+          },
+          {
+            "nodes": [
+              {
+                "id": "bips:43",
+                "title": "Purpose Field for Deterministic Wallets"
+              },
+              {
+                "id": "bips:44",
+                "title": "Multi-Account Hierarchy for Deterministic Wallets"
+              }
+            ]
+          },
+          {
+            "nodes": [
+              {
+                "id": "bips:70",
+                "title": "Payment Protocol"
+              },
+              {
+                "id": "bips:72",
+                "title": "bitcoin: uri extensions for Payment Protocol"
+              }
+            ]
+          },
+          {
+            "nodes": [
+              {
+                "id": "bips:98",
+                "title": "Fast Merkle Trees"
+              },
+              {
+                "id": "bips:116",
+                "title": "MERKLEBRANCHVERIFY"
+              }
+            ]
+          },
+          {
+            "nodes": [
+              {
+                "id": "bips:118",
+                "title": "SIGHASH_ANYPREVOUT for Taproot Scripts"
+              },
+              {
+                "id": "bips:327",
+                "title": "MuSig2 for BIP340-compatible Multi-Signatures"
+              },
+              {
+                "id": "bips:340",
+                "title": "Schnorr Signatures for secp256k1"
+              },
+              {
+                "id": "bips:341",
+                "title": "Taproot: SegWit version 1 spending rules"
+              },
+              {
+                "id": "bips:342",
+                "title": "Validation of Taproot Scripts"
+              }
+            ]
+          },
+          {
+            "nodes": [
+              {
+                "id": "bips:120",
+                "title": "Proof of Payment"
+              },
+              {
+                "id": "bips:121",
+                "title": "Proof of Payment URI scheme"
+              }
+            ]
+          },
+          {
+            "nodes": [
+              {
+                "id": "bips:157",
+                "title": "Client Side Block Filtering"
+              },
+              {
+                "id": "bips:158",
+                "title": "Compact Block Filters for Light Clients"
+              }
+            ]
+          }
+        ]
+      },
+      "supersession": {
+        "fact_count": 0,
+        "reciprocal_count": 0,
+        "reciprocal_percentage": 0.0,
+        "one_sided_count": 0,
+        "one_sided_percentage": 0.0,
+        "reciprocal_facts": [],
+        "one_sided_facts": [],
+        "cyclic_group_count": 0,
+        "self_relation_count": 0,
+        "unresolved_target_count": 0,
+        "cyclic_groups": []
+      },
+      "checks": {
+        "self_relation_count": 0,
+        "self_relations": [],
+        "unresolved_target_count": 0,
+        "unresolved_targets": []
+      }
+    }
+  },
+  "table_rows": [
+    {
+      "group": "Dependency",
+      "metric": "Edges analyzed",
+      "values": {
+        "preamble_extracted": "65",
+        "body_extracted_llm": "499"
+      }
+    },
+    {
+      "group": "Dependency",
+      "metric": "Cyclic groups (SCCs)",
+      "values": {
+        "preamble_extracted": "1",
+        "body_extracted_llm": "12"
+      }
+    },
+    {
+      "group": "Dependency",
+      "metric": "IPs involved",
+      "values": {
+        "preamble_extracted": "2",
+        "body_extracted_llm": "37"
+      }
+    },
+    {
+      "group": "Supersession",
+      "metric": "Distinct relations",
+      "values": {
+        "preamble_extracted": "12",
+        "body_extracted_llm": "0"
+      }
+    },
+    {
+      "group": "Supersession",
+      "metric": "Reciprocally declared",
+      "values": {
+        "preamble_extracted": "8 (66.7%)",
+        "body_extracted_llm": "0"
+      }
+    },
+    {
+      "group": "Supersession",
+      "metric": "One-sided declarations",
+      "values": {
+        "preamble_extracted": "4 (33.3%)",
+        "body_extracted_llm": "0"
+      }
+    }
+  ],
+  "dashboard_table_rows": [
+    {
+      "group": "Dependency",
+      "metric": "Edges analyzed",
+      "values": {
+        "preamble_extracted": "65",
+        "body_extracted_llm": "499"
+      }
+    },
+    {
+      "group": "Dependency",
+      "metric": "Cyclic groups (SCCs)",
+      "values": {
+        "preamble_extracted": "1",
+        "body_extracted_llm": "12"
+      }
+    },
+    {
+      "group": "Dependency",
+      "metric": "IPs involved",
+      "values": {
+        "preamble_extracted": "2",
+        "body_extracted_llm": "37"
+      }
+    },
+    {
+      "group": "Dependency",
+      "metric": "Self-relations",
+      "values": {
+        "preamble_extracted": "0",
+        "body_extracted_llm": "0"
+      }
+    },
+    {
+      "group": "Supersession",
+      "metric": "Distinct relations",
+      "values": {
+        "preamble_extracted": "12",
+        "body_extracted_llm": "0"
+      }
+    },
+    {
+      "group": "Supersession",
+      "metric": "Reciprocally declared",
+      "values": {
+        "preamble_extracted": "8 (66.7%)",
+        "body_extracted_llm": "0"
+      }
+    },
+    {
+      "group": "Supersession",
+      "metric": "One-sided declarations",
+      "values": {
+        "preamble_extracted": "4 (33.3%)",
+        "body_extracted_llm": "0"
+      }
+    },
+    {
+      "group": "Supersession",
+      "metric": "Cyclic groups (SCCs)",
+      "values": {
+        "preamble_extracted": "0",
+        "body_extracted_llm": "0"
+      }
+    }
+  ],
+  "structural_check_rows": [
+    {
+      "metric": "Self-relations",
+      "values": {
+        "preamble_extracted": 0,
+        "body_extracted_llm": 0
+      }
+    },
+    {
+      "metric": "Supersession cycles",
+      "values": {
+        "preamble_extracted": 0,
+        "body_extracted_llm": 0
+      }
+    },
+    {
+      "metric": "Unresolved catalog targets",
+      "values": {
+        "preamble_extracted": 0,
+        "body_extracted_llm": 0
+      }
+    }
+  ],
+  "omitted_zero_checks": [
+    "Self-relations",
+    "Supersession cycles",
+    "Unresolved catalog targets"
+  ],
+  "omitted_zero_checks_text": "Neither network contains self-relations, supersession cycles, or unresolved catalog targets."
+}

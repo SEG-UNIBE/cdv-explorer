@@ -557,12 +557,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:40Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:101",
               "evidence": "Similar deployment model to BIP101",
               "reason": "The proposal adopts BIP101's activation mechanism and grace-period deployment workflow for rollout.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

@@ -597,36 +597,41 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:18:15Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:9",
               "evidence": "the existing segwit deployment using bit 1",
               "reason": "The proposal's activation logic is built around a BIP9 versionbits deployment, reusing its bit-based signaling and lock-in/active state transitions.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:16",
               "evidence": "This document specifies a BIP16 like soft fork flag day activation",
               "reason": "The proposal explicitly models its activation approach on BIP16-style flag-day soft fork enforcement.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:141",
               "evidence": "to activate BIP141",
               "reason": "The proposal's purpose is to force activation of Segregated Witness, of which BIP141 defines the consensus-layer rules being activated.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:143",
               "evidence": "to activate BIP141, BIP143 and BIP147",
               "reason": "The proposal is designed to trigger the existing segwit deployment that includes BIP143, so its enforcement depends on that deployment's activation targets.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:147",
               "evidence": "to activate BIP141, BIP143 and BIP147",
               "reason": "The proposal is designed to trigger the existing segwit deployment that includes BIP147, so its enforcement depends on that deployment's activation targets.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

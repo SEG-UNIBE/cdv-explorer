@@ -467,24 +467,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:23Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:05",
               "evidence": "The remote-signer MAY publish its metadata by using [NIP-05](05.md)",
               "reason": "The discovery and metadata publication flow reuses the NIP-05 well-known file format and name lookup mechanism.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "nips:44",
               "evidence": "This proposal describes a method for 2-way communication",
               "reason": "The request and response payloads are explicitly NIP-44 encrypted, so the proposal depends on that message encryption format and semantics.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "nips:89",
               "evidence": "and [NIP-89](89.md).",
               "reason": "Remote-signer discovery and metadata announcements are designed around NIP-89 events and tags.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

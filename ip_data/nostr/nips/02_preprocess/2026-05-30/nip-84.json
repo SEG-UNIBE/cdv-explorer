@@ -182,12 +182,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:44Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:94",
               "evidence": "e.g. NIP-94 audio/video",
               "reason": "The proposal explicitly reuses NIP-94 as the example for non-text media whose highlighted content may have empty content.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

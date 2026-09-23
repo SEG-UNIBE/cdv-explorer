@@ -197,12 +197,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:58:49Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:01",
               "evidence": "kind 0 metadata event defined in [NIP-01](01.md)",
               "reason": "The proposal adds a new tag to NIP-01 kind 0 metadata events and therefore depends on NIP-01's event type and metadata event structure.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

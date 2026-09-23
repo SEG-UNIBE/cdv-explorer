@@ -848,36 +848,41 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:45:40Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:141",
               "evidence": "These specifications apply to P2WSH ([BIP 141](bip-0141.mediawiki)) and Tapscript ([BIP 342](bip-0342.mediawiki)) scripts",
               "reason": "The proposal's semantics and type rules are explicitly scoped to P2WSH as defined by the target BIP.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:342",
               "evidence": "These specifications apply to P2WSH ([BIP 141](bip-0141.mediawiki)) and Tapscript ([BIP 342](bip-0342.mediawiki)) scripts",
               "reason": "The proposal's semantics and type rules are explicitly scoped to Tapscript as defined by the target BIP.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:380",
               "evidence": "Miniscript's syntax is compatible with BIP 380 Output Script Descriptors",
               "reason": "Miniscript is presented as an extension of the descriptor language, so implementing its syntax depends on the descriptor framework introduced by BIP 380.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:382",
               "evidence": "Miniscript fragments are expected to be used in [BIP 382](bip-0382.mediawiki) `wsh()` descriptors",
               "reason": "The proposal relies on BIP 382 descriptor contexts and its key-expression restrictions for Miniscript in P2WSH.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:386",
               "evidence": "Miniscript fragments are expected to be used in [BIP 386](bip-0386.mediawiki) `tr()` descriptors",
               "reason": "The proposal relies on BIP 386 descriptor contexts and its key-expression restrictions for Miniscript in P2TR/Tapscript.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

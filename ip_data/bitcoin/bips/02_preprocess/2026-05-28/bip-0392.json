@@ -552,36 +552,41 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:19:13Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:341",
               "evidence": "The output scripts produced are BIP341 taproot outputs",
               "reason": "The resulting scripts are defined as Taproot outputs, so the proposal relies on BIP341 script/output semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:350",
               "evidence": "It is a [https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki Bech32m] encoding",
               "reason": "The spscan and spspend key expressions reuse Bech32m encoding rules from BIP350.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:352",
               "evidence": "combined with sender input public keys as defined in BIP352",
               "reason": "The descriptor’s silent-payment output behavior and key serialization are defined around the silent payments protocol in BIP352.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:380",
               "evidence": "sp() descriptors use the format and general operation specified in BIP380.",
               "reason": "The proposal explicitly builds its descriptor syntax and operation on the general output descriptor framework defined by BIP380.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:390",
               "evidence": "e.g. musig() as defined in BIP390",
               "reason": "The two-argument sp() form permits key expressions such as musig() from BIP390 as valid spend keys.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

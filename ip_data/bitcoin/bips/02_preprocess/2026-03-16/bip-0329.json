@@ -669,30 +669,34 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:44:46Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "a BIP32 compatible originating wallet",
               "reason": "The origin field is constrained to describe a BIP32-compatible wallet, and xpub records are defined by BIP32, so the proposal relies on BIP32 key-derivation conventions.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:322",
               "evidence": "an abbreviated output descriptor (as defined by BIP380)",
               "reason": "The optional origin field uses abbreviated output descriptors, so understanding the field depends on the descriptor semantics introduced by the referenced BIP.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:380",
               "evidence": "an abbreviated output descriptor (as defined by BIP380)",
               "reason": "The origin field format is directly defined in terms of abbreviated output descriptors from this proposal.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "slips:15",
               "evidence": "SLIP-0015 defines a format for exporting address and output labels",
               "reason": "The proposal explicitly discusses SLIP-0015 as an existing label-export format for overlapping record types and compares its encryption requirement against this proposal's format.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

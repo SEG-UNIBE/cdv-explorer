@@ -646,24 +646,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:43:33Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:13",
               "evidence": "similar to existing address formats:",
               "reason": "The proposal explicitly models its encoding after the existing address format used by BIP13 P2SH addresses, indicating dependence on that address-format convention.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:16",
               "evidence": "a BIP16 P2SH redeemScript with a push of version byte followed by a push of witness program",
               "reason": "The rationale defines one supported segwit-in-P2SH path in terms of BIP16 P2SH redeemScript handling, so understanding that workflow depends on BIP16.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:141",
               "evidence": "The new Bitcoin address format defined is for the Pay-to-Witness-Public-Key-Hash (P2WPKH) and Pay-to-Witness-Script-Hash (P2WSH) transaction described in segregated witness soft fork (BIP141).",
               "reason": "The proposal’s address format, scriptPubKey shape, and versioning are defined around BIP141 witness programs and segwit semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

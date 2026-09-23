@@ -175,60 +175,69 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:55Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:17",
               "evidence": "Avoid confusing this kind with Kind `14` rumors in [NIP-17](17.md) DMs.",
               "reason": "The proposal distinguishes its message kind from NIP-17 DM rumors, indicating the reader must understand that existing kind to avoid overlap.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "nips:18",
               "evidence": "[NIP-18](18.md) quote repost `q` tags MAY be used when citing events in the `.content` with [NIP-21](21.md).",
               "reason": "The proposal allows using NIP-18 quote repost tags for cited content.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:19",
               "evidence": "links that use [NIP-19](19.md)'s `nevent1` MUST include a `kind` of `24`.",
               "reason": "The proposal defines rendering and link semantics for NIP-19 nevent identifiers specifically when they reference kind 24.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:21",
               "evidence": "with [NIP-21](21.md).",
               "reason": "The proposal uses NIP-21 links as the mechanism for citing events and for nevent-based links.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:25",
               "evidence": "[NIP-25](25.md) reactions MUST add a `k` tag to `24`.",
               "reason": "Reaction events are constrained to include a kind tag pointing at this message kind.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:40",
               "evidence": "[NIP-40](40.md) `expiration` tags are recommended.",
               "reason": "The proposal reuses NIP-40 expiration tags as an optional advanced-support feature.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:57",
               "evidence": "[NIP-57](57.md) zaps MUST include the `k` tag to `24`",
               "reason": "Zap events are constrained to include a kind tag pointing at this message kind.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:65",
               "evidence": "MUST be sent to the [NIP-65](65.md) inbox relays of each receiver and the outbox relay of the sender.",
               "reason": "Message delivery is defined in terms of NIP-65 inbox and outbox relay routing.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:92",
               "evidence": "[NIP-92](92.md) `imeta` tags SHOULD be added for image and video links.",
               "reason": "The proposal extends media-link handling by recommending NIP-92 imeta tags.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

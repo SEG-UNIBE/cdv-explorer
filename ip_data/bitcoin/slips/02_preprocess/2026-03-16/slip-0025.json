@@ -274,36 +274,41 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:46:52Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "based on the algorithm defined in [BIP 32]",
               "reason": "The proposal’s wallet hierarchy and derivation path are built on BIP 32 key derivation.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:43",
               "evidence": "and the scheme described in [BIP 43]",
               "reason": "The proposal relies on BIP 43’s purpose-field hierarchy convention to structure the derivation path.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:86",
               "evidence": "the scriptPubKey is defined exactly as specified in the [Address derivation]",
               "reason": "The P2TR address derivation for script_type 1 reuses BIP 86’s exact address-derivation format and tweak computation.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "slips:10",
               "evidence": "and [SLIP 10]",
               "reason": "The proposal explicitly includes SLIP 10 as a required derivation algorithm basis.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "slips:44",
               "evidence": "The value of `coin_type` MUST be one of the coin types defined in [SLIP 44]",
               "reason": "The coin_type level is constrained by SLIP 44 registered coin type assignments.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

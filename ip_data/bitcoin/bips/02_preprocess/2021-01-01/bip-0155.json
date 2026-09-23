@@ -608,12 +608,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:36:09Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:34",
               "evidence": "The <code>addrv2</code> message is defined as a message where <code>pchCommand == \"addrv2\"</code>.",
               "reason": "The proposal introduces a new P2P message type into the Bitcoin message command namespace, which is the same kind of mechanism governed by earlier BIP-defined P2P message specifications.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

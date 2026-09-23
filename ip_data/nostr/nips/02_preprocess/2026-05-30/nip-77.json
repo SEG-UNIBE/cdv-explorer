@@ -257,12 +257,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:43Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:01",
               "evidence": "The filter is as described in [NIP-01](01.md).",
               "reason": "The proposal uses NIP-01 filter semantics for NEG-OPEN queries and NIP-01-style error reason formatting.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

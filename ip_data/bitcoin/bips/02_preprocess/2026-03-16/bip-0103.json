@@ -582,12 +582,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:42:59Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:9",
               "evidence": "Using the \"median time past\" guarantees monotonic behaviour, as this median is required to be increasing, according to Bitcoin's existing consensus rules.",
               "reason": "The proposal's activation schedule and block-size function rely on median-time-past monotonicity introduced by the consensus rule described in the target.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

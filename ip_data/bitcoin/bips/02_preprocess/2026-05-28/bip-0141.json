@@ -1200,80 +1200,91 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:18:10Z",
           "status": "api_error",
-          "dependencies": [],
-          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 196510, Requested 7348. Please try again in 1.157s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 196510, Requested 7348. Please try again in 1.157s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}",
+          "findings": []
         },
         {
           "run_id": "2026-06-30T11:33:45Z_gpt-5.4-mini_fbc31d5d",
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:33:54Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:9",
               "evidence": "This BIP will be deployed by \"version bits\" BIP9",
               "reason": "Activation is explicitly specified to use BIP9 version-bits deployment mechanics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:16",
               "evidence": "redeemScript as defined in BIP16/P2SH",
               "reason": "The proposal defines P2SH-wrapped witness programs by reusing the BIP16 redeemScript/scriptSig flow.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:62",
               "evidence": "This is superior to the canonical signature approach (BIP62):",
               "reason": "The motivation and malleability discussion compare the proposal against BIP62's canonical-signature approach, which the new design replaces as the malleability solution.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:65",
               "evidence": "a new script system that could sign and manipulate the new data (like BIP65",
               "reason": "The future per-input lock-time extension is framed as using a new script system analogous to BIP65's script-based lock-time semantics.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:68",
               "evidence": "BIP68 enables per-input relative-lock-time using the nSequence field",
               "reason": "The proposal's future extension for relative lock-time builds on BIP68's nSequence-based relative lock-time semantics.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:70",
               "evidence": "through BIP70 payment protocol",
               "reason": "The backward-compatibility section says upgraded wallet users can send to native witness programs through the BIP70 payment protocol.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:112",
               "evidence": "a new script system that could sign and manipulate the new data (like ... BIP112).",
               "reason": "The future per-input relative-lock-time extension is framed as using a new script system analogous to BIP112's relative-lock-time semantics.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:143",
               "evidence": "A major difference at consensus level is described in BIP143",
               "reason": "Version 0 witness signature verification relies on the BIP143 transaction digest algorithm and related rules.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:144",
               "evidence": "serialized as described in BIP144",
               "reason": "Block and transaction weight calculations depend on BIP144's segregation of base and witness serialization.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:146",
               "evidence": "See BIP146",
               "reason": "The proposal explicitly incorporates BIP146's NULLDUMMY-style consensus rules for failed CHECKSIG/CHECKMULTISIG witness/script evaluation.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:173",
               "evidence": "BIP173 Base32 address format for native v0-16 witness outputs",
               "reason": "Native witness outputs are tied to the address format defined by BIP173.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

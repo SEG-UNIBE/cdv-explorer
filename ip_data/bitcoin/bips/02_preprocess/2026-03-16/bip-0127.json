@@ -614,18 +614,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:43:20Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:174",
               "evidence": "The proposal also includes the description of a PSBT extension",
               "reason": "The proposal adds a new PSBT input field and signer behavior, so it depends on the PSBT format defined by BIP 174.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "slips:44",
               "evidence": "TODO consider BIP44 coin type ids instead:",
               "reason": "This is only a tentative note about using SLIP-0044 coin type IDs for the network field, not a required dependency.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

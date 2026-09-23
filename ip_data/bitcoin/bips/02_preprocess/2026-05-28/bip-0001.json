@@ -884,12 +884,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:21:06Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:2",
               "evidence": "Closed: [https://github.com/bitcoin/bips/pull/478 Superseded by BIP2]",
               "reason": "The text explicitly states this document was superseded by BIP 2, indicating a direct procedural dependency on that later BIP for the updated process specification.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

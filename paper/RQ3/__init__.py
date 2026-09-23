@@ -1,1 +1,1 @@
-"""Research question 3 paper entrypoints."""
+"""RQ3 paper artifacts: centrality analysis."""

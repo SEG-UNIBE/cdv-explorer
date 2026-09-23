@@ -635,24 +635,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:17:56Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:21",
               "evidence": "amount, label, message or other information from a BIP0021 URI",
               "reason": "The PoP request uses BIP0021 URI fields as transaction-identification hints, so understanding the request workflow depends on that URI scheme.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:70",
               "evidence": "PaymentRequest.PaymentDetails.merchant_data (in case of a BIP0070 payment)",
               "reason": "The proposal reuses BIP0070 payment details as a hint for selecting the transaction to prove.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:121",
               "evidence": "that is specified in separate specifications, see BIP0121",
               "reason": "The proposal explicitly outsources the PoP-request transfer method to BIP0121, so the process depends on that separate URI scheme specification.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

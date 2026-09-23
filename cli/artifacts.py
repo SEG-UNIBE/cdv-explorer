@@ -62,14 +62,12 @@ def _resolve_artifact_llm_model(
         return available_models[0] if available_models else None
 
     console.print(
-        f"[red]Multiple LLM models are present for {eco_slug}/{src_slug}/{snapshot}: "
-        f"{', '.join(available_models)}[/red]"
+        f"[yellow]Multiple LLM models are present for {eco_slug}/{src_slug}/{snapshot}: "
+        f"{', '.join(available_models)}. Publishing the per-IP default (the "
+        "ecosystem-configured model where available, else each IP's newest run). "
+        "Pass `--artifact-llm-model <model>` to force a single model instead.[/yellow]"
     )
-    console.print(
-        "[yellow]Choose which model should be published into the web artifacts with "
-        "`--artifact-llm-model <model>`.[/yellow]"
-    )
-    raise typer.Exit(1)
+    return None
 
 
 def _rebuild_source_artifacts(

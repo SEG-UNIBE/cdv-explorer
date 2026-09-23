@@ -604,42 +604,48 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:45:08Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:118",
               "evidence": "APO-style ([BIP 118]) Taproot internal key:",
               "reason": "The design discussion explicitly relies on BIP 118's APO-style key concept when considering key-type handling for signature checking.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:119",
               "evidence": "When combined with [BIP 119] (`OP_CHECKTEMPLATEVERIFY`/CTV),",
               "reason": "The motivation section describes a concrete construction that depends on BIP 119's CTV opcode and semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:340",
               "evidence": "it is considered to be a public key as described in [BIP 340]:",
               "reason": "Signature validation for 32-byte public keys is performed using BIP 340 semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:342",
               "evidence": "When verifying taproot script spends having leaf version 0xc0 (as defined in [BIP 342]),",
               "reason": "The opcode is defined specifically for Tapscript spends under BIP 342's leaf-version and script-execution rules.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:347",
               "evidence": "such as [BIP 347] (`OP_CAT`).",
               "reason": "The design explicitly relies on BIP 347 as a candidate mechanism for splitting signatures on the stack.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:349",
               "evidence": "we suggest implementing `OP_INTERNALKEY` ([BIP 349])",
               "reason": "The proposal is designed around the possible introduction of BIP 349's OP_INTERNALKEY for Tapscript signature checking.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

@@ -617,30 +617,34 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:43:13Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:9",
               "evidence": "deployed by \"versionbits\" BIP9 using bit 0",
               "reason": "Activation and deployment are defined using BIP9 versionbits signaling.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:65",
               "evidence": "as required by BIP65 (CHECKLOCKTIMEVERIFY)",
               "reason": "The proposal explicitly frames its locktime semantics as needed to support CHECKLOCKTIMEVERIFY behavior.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:68",
               "evidence": "matching the behavior of BIP68 (sequence numbers)",
               "reason": "The proposal is designed to align its time-lock semantics with BIP68's sequence-number-based locktime behavior.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:112",
               "evidence": "and BIP112 (CHECKSEQUENCEVERIFY)",
               "reason": "The proposal explicitly states it matches CHECKSEQUENCEVERIFY behavior, indicating semantic reliance.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

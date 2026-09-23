@@ -516,12 +516,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:46:16Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:431",
               "evidence": "If unsure, use in conjunction with [https://github.com/bitcoin/bips/blob/master/bip-0431.mediawiki TRUC transactions].",
               "reason": "The proposal recommends TRUC transactions as the anti-pinning mechanism to use alongside P2A, so adoption of P2A may depend on TRUC for safe fee-bumping behavior.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

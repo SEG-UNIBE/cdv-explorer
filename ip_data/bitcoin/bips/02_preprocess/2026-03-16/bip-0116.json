@@ -717,54 +717,62 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:43:10Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:8",
               "evidence": "This BIP will be deployed by BIP8 (Version bits with lock-in by height)[10]",
               "reason": "Activation is specified using BIP8 version-bits lock-in rules.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:16",
               "evidence": "Although BIP16 (Pay to Script Hash)[2]",
               "reason": "The deployment rationale relies on P2SH as an existing script-committing mechanism and addresses compatibility with it.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:65",
               "evidence": "used by BIP65 (CHECKLOCKTIMEVERIFY)[5]",
               "reason": "The soft-fork NOP-expansion deployment approach is justified by analogy to BIP65’s mechanism.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:68",
               "evidence": "we note that DISCOURAGE_UPGRADABLE_NOPS means",
               "reason": "The deployment section relies on the existing non-standardness rule discussed in relation to BIP68 to ease rollout.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:98",
               "evidence": "serialized Merkle tree inclusion proof as specified by BIP98[1]",
               "reason": "The opcode’s proof format and fast Merkle root computation are explicitly defined in terms of BIP98.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:112",
               "evidence": "used by BIP112 (CHECKSEQUENCEVERIFY)[6]",
               "reason": "The deployment mechanism is likewise based on the NOP-expansion soft-fork pattern used by BIP112.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:141",
               "evidence": "Although BIP16 (Pay to Script Hash)[2] and BIP141 (Segregated Witness)[3]",
               "reason": "The proposal depends on SegWit witness behavior and discusses script versioning within BIP141’s framework.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:143",
               "evidence": "without the need for BIP143[7] signing code",
               "reason": "The proposal explicitly aims for compatibility that avoids requiring BIP143-style witness signature code in many use cases.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

@@ -1001,12 +1001,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:17:20Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:17",
               "evidence": "This proposal is hereby placed in the public domain.",
               "reason": "No substantive technical dependency on another BIP is stated in the proposal text; the mention of Wallet Import Format is only backward-compatibility context, not a normative reuse of another proposal.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

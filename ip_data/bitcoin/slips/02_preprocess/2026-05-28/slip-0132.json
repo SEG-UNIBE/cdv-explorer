@@ -360,18 +360,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:20:08Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "BIP-0032 defines the derivation scheme for hierarchical deterministic wallets",
               "reason": "The proposal registers version bytes for the extended serialization defined by BIP-0032, so understanding the registry depends on BIP-0032's HD wallet and serialization scheme.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "slips:32",
               "evidence": "The [SLIP-0032](https://github.com/satoshilabs/slips/blob/master/slip-0032.md) proposal attempts a remedy by including the full BIP-0032 derivation path within the serialized key.",
               "reason": "The proposal directly discusses SLIP-0032 as a related mechanism for addressing the same serialization/coin-type ambiguity and positions the registry as a stopgap until SLIP-0032 is implemented.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

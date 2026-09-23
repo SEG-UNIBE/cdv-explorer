@@ -594,12 +594,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:36:14Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:199",
               "evidence": "based on Hashed Time-Lock Contract (BIP 199) transactions",
               "reason": "The proposal explicitly builds its collateral scripts on HTLC transaction mechanics defined by BIP 199.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

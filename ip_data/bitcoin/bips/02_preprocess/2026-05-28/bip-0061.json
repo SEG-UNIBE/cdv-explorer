@@ -559,12 +559,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:17:26Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:70",
               "evidence": "All implementations of the P2P protocol version 70,002 and later should support the reject message.",
               "reason": "The proposal is defined as a message extension for later P2P protocol implementations, so its adoption depends on that protocol version framework.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

@@ -861,38 +861,42 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:43Z",
           "status": "api_error",
-          "dependencies": [],
-          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 200000, Requested 5161. Please try again in 1.548s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 200000, Requested 5161. Please try again in 1.548s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}",
+          "findings": []
         },
         {
           "run_id": "2026-06-30T11:38:11Z_gpt-5.4-mini_422651ce",
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:38:14Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:9",
               "evidence": "This BIP is to be deployed by \"versionbits\" BIP9 using bit 0.",
               "reason": "Activation depends on BIP 9 versionbits deployment rules and bit-based signaling.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:65",
               "evidence": "With CHECKLOCKTIMEVERIFY, this would look like:",
               "reason": "The proposal is explicitly designed to complement and compare against CHECKLOCKTIMEVERIFY in script branch timing.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:68",
               "evidence": "in combination with BIP 68 allows execution",
               "reason": "The opcode's semantics and spendability checks rely on BIP 68 relative lock-time rules and nSequence interpretation.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:113",
               "evidence": "This BIP must be deployed simultaneously with BIP68 and BIP113 using the same deployment mechanism.",
               "reason": "The deployment is coordinated with BIP 113 as part of the same activation process.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

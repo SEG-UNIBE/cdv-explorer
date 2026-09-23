@@ -1103,6 +1103,38 @@
   flex: 0 0 auto;
 }
 
+/* Originators-vs-contributors badges: 3-column grid, third column spans both
+   rows for the proposal-level stat. */
+.contributor-coverage-grid {
+  display: grid;
+  grid-template-areas:
+    'contributors also-originators proposals'
+    'originators  also-contributors proposals';
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.4rem 0.5rem;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 900px) {
+  .contributor-coverage-grid {
+    grid-template-areas:
+      'contributors'
+      'originators'
+      'also-originators'
+      'also-contributors'
+      'proposals';
+    grid-template-columns: 1fr;
+  }
+}
+
+.authorship-tile-controls {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: center;
+  justify-items: start;
+  gap: 0.75rem 1.5rem;
+}
+
 .card-title-with-badge {
   display: inline-flex;
   align-items: center;
@@ -1155,7 +1187,7 @@
 }
 
 .dashboard-grid--wide-left {
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 3fr 2fr;
 }
 
 .dashboard-grid--classification {
@@ -1465,11 +1497,11 @@
 .proposal-filter-chip {
   display: inline-flex;
   align-items: center;
-  border: 1px solid rgba(60, 72, 88, 0.18);
+  border: 1px solid var(--app-border);
   border-radius: 999px;
-  background: rgba(247, 249, 252, 0.92);
+  background: var(--app-surface-elevated);
   color: var(--app-text);
-  box-shadow: 0 3px 10px rgba(15, 23, 42, 0.05);
+  box-shadow: 0 3px 10px color-mix(in srgb, var(--app-shadow-color) 38%, transparent);
   overflow: hidden;
   min-height: 2rem;
   font-size: 0.88rem;
@@ -1493,14 +1525,14 @@
 
 .proposal-filter-chip__remove {
   width: 1.9rem;
-  border-left: 1px solid rgba(60, 72, 88, 0.14);
+  border-left: 1px solid var(--app-border);
   cursor: pointer;
   color: var(--app-text-muted);
 }
 
 .proposal-filter-chip__label:hover,
 .proposal-filter-chip__remove:hover {
-  background: rgba(15, 23, 42, 0.06);
+  background: var(--surface-hover);
 }
 
 @media (max-width: 960px) {
@@ -1635,6 +1667,39 @@
   align-items: center;
   gap: 0.45rem;
   cursor: pointer;
+}
+
+.centrality-concordance-scope-options {
+  width: 100%;
+}
+
+.centrality-concordance-scope-count {
+  margin-left: auto;
+  color: var(--app-text-muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.match-mode-help {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.05rem;
+  height: 1.05rem;
+  border: 1px solid var(--app-border);
+  border-radius: 999px;
+  color: var(--app-text-muted);
+  background: var(--app-surface-subtle);
+  font-size: 0.72rem;
+  font-weight: 800;
+  line-height: 1;
+  cursor: help;
+}
+
+.match-mode-help:hover {
+  color: var(--app-text);
+  border-color: var(--chart-accent-blue);
 }
 
 .dependency-edge-legend {
@@ -2328,6 +2393,16 @@
   border: 1px solid var(--app-border);
   border-radius: 6px;
   background: var(--app-surface-subtle);
+}
+
+// Used where the mapping table isn't itself a grid column (e.g. Pairwise
+// Comparison's controls aren't split into two columns like Ground Truth
+// Evaluation's are): caps its width to roughly half the collapsible instead
+// of stretching full width, and adds breathing room below it since the next
+// control sits directly underneath rather than in a separate grid column.
+.gt-type-mapping--half {
+  max-width: min(50%, 32rem);
+  margin-bottom: 0.75rem;
 }
 
 .gt-type-mapping__header {
@@ -3095,6 +3170,9 @@
   grid-template-columns: minmax(390px, 1fr) minmax(390px, 1fr);
   gap: 0.75rem 2rem;
   align-items: start;
+  // Guarantees spacing from Match Mode above regardless of whether the
+  // Relation-type mapping table (Exact Type only) renders in between.
+  margin-top: 0.75rem;
 }
 
 .dependency-comparison-controls__filter {
@@ -3138,6 +3216,201 @@
 .dependency-comparison-table-wrap {
   max-height: 420px;
   overflow: auto;
+}
+
+.dependency-consistency-table-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
+.dependency-consistency-table-panel {
+  min-width: 0;
+}
+
+.dependency-consistency-table-panel h4 {
+  margin: 0 0 0.45rem;
+}
+
+.dependency-consistency-table-wrap {
+  overflow-x: auto;
+}
+
+.dependency-consistency-table .p-datatable-thead > tr > th:first-child,
+.dependency-consistency-table .p-datatable-tbody > tr > td:first-child {
+  width: 46%;
+}
+
+.dependency-consistency-table .p-datatable-thead > tr > th:not(:first-child),
+.dependency-consistency-table .p-datatable-tbody > tr > td:not(:first-child) {
+  text-align: center;
+}
+
+.dependency-consistency-case-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.dependency-consistency-case-column h4 {
+  margin: 0 0 0.45rem;
+}
+
+.dependency-consistency-details {
+  border-top: 1px solid var(--surface-border);
+  padding: 0.5rem 0;
+}
+
+.dependency-consistency-details summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.dependency-consistency-details ul {
+  margin: 0.55rem 0 0;
+  padding-left: 1.25rem;
+}
+
+.dependency-consistency-details li + li {
+  margin-top: 0.25rem;
+}
+
+.dependency-consistency-metric-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.dependency-consistency-info {
+  display: inline-flex;
+  color: var(--text-color-secondary);
+  cursor: help;
+}
+
+.dependency-consistency-info .pi {
+  font-size: 0.78rem;
+}
+
+.dependency-consistency-copy-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.35rem;
+  height: 1.35rem;
+  margin-left: 0.3rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text-color-secondary);
+  cursor: pointer;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+.dependency-consistency-copy-button:hover,
+.dependency-consistency-copy-button:focus-visible {
+  color: var(--primary-color);
+}
+
+.dependency-consistency-copy-button:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+.dependency-consistency-copy-button .pi {
+  font-size: 0.78rem;
+}
+
+.centrality-ranking-table-wrap {
+  margin-top: 1rem;
+  overflow-x: auto;
+}
+
+.centrality-ranking-table__approach-column {
+  width: 14rem;
+  min-width: 14rem;
+  white-space: nowrap;
+}
+
+.centrality-ranking-table__rank-column {
+  width: 4.5rem;
+  min-width: 4.5rem;
+  text-align: center;
+}
+
+.centrality-ranking-entry {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-width: 12rem;
+  transition: opacity 130ms ease;
+}
+
+.centrality-ranking-entry--dimmed {
+  opacity: 0.24;
+}
+
+.centrality-ranking-entry--highlighted .centrality-ranking-entry__proposal {
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--app-text) 72%, transparent);
+}
+
+.centrality-ranking-entry__proposal {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  min-width: 0;
+  padding: 0.18rem 0.35rem;
+  border-radius: 3px;
+}
+
+.centrality-ranking-entry__proposal--highlighted {
+  color: var(--centrality-highlight-foreground);
+  background: var(--centrality-highlight-background);
+}
+
+.centrality-ranking-entry__proposal > span {
+  overflow: hidden;
+  color: var(--text-color-secondary);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.centrality-ranking-entry__proposal.centrality-ranking-entry__proposal--highlighted a,
+.centrality-ranking-entry__proposal.centrality-ranking-entry__proposal--highlighted > span {
+  color: inherit;
+}
+
+.centrality-ranking-entry__value {
+  flex: 0 0 auto;
+  font-variant-numeric: tabular-nums;
+}
+
+.centrality-concordance-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  margin-top: 1rem;
+}
+
+.centrality-concordance-table .p-datatable-thead > tr > th:not(:first-child),
+.centrality-concordance-table .p-datatable-tbody > tr > td:not(:first-child) {
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.centrality-concordance-table
+  .p-datatable-thead
+  > tr
+  > th:not(:first-child)
+  .p-column-header-content {
+  justify-content: center;
+}
+
+.centrality-concordance-table__value {
+  text-align: center;
+  font-variant-numeric: tabular-nums;
 }
 
 .author-network-tooltip,
@@ -3256,6 +3529,12 @@
 }
 
 @media (max-width: 900px) {
+  .dependency-consistency-table-grid,
+  .dependency-consistency-case-grid,
+  .centrality-concordance-grid {
+    grid-template-columns: 1fr;
+  }
+
   .author-collaboration-controls {
     .network-finder {
       grid-template-columns: 1fr;

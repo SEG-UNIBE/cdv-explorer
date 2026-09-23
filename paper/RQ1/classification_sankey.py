@@ -10,9 +10,10 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import PathPatch, Rectangle
 from matplotlib.path import Path as MplPath
 
+from paper._utils.plotting import BAR_EDGE_COLOR, bar_style, save_figure
+from paper.config import FIGURE_TITLE_FONT_SIZE
 from paper.RQ1.classification_status import STATUS_COLORS, resolve_rq1_status_order
 from paper.RQ1.classification_type import TYPE_COLORS, TYPE_ORDER
-from paper.RQ3._plotting import BAR_EDGE_COLOR, bar_style, save_figure
 
 LAYER_ORDER = [
     "Applications",
@@ -497,6 +498,10 @@ def plot_classification_sankey(
         fontsize=11,
         fontweight="bold",
     )
-    figure.suptitle(f"Classification Sankey ({snapshot_label})", y=0.955)
+    figure.suptitle(
+        f"Classification Sankey ({snapshot_label})",
+        y=0.955,
+        fontsize=FIGURE_TITLE_FONT_SIZE,
+    )
     figure.tight_layout(rect=(0.01, 0.01, 0.99, 0.965))
     save_figure(figure, output_path)

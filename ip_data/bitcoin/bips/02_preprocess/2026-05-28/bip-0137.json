@@ -677,12 +677,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:18:10Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:322",
               "evidence": "See BIP 322 [1] for full details on the new signature scheme.",
               "reason": "The proposal explicitly positions itself as a legacy format relative to BIP 322 and depends on that newer scheme for the alternative signature standard.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

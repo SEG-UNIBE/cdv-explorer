@@ -910,12 +910,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:19Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "This seed can be later used to generate deterministic wallets using BIP-0032 or",
               "reason": "The proposal defines a seed intended for later deterministic wallet generation using BIP-0032, so implementing the full workflow depends on BIP-0032.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

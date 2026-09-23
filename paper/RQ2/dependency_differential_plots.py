@@ -65,16 +65,23 @@ DIFF_ARROWHEAD_OVERLAY_WIDTH = 0.0
 DIFF_ARROW_SIZE = 14
 NODE_FILL_ALPHA = PLOT_COLOR_ALPHA
 NODE_LABEL_FONT_SIZE = 7
-DIFF_LABEL_OFFSET = 0.035
+HIGHLIGHT_INNER_RING_SIZE_SCALE = 0.72
+HIGHLIGHT_INNER_RING_WIDTH = 0.7
 EDGE_CURVATURE = 0.2
 RECIPROCAL_EDGE_CURVATURE = 0.2
 EDGE_CURVATURE_OVERRIDES = {
     # Nudge this reciprocal edge a bit further left than the shared default.
     ("350", "173"): 0.1,
     ("350", "141"): 0.1,
+    ("93", "173"): -0.2,
+    ("136", "350"): -0.2,
     ("67", "13"): -0.1,
+    ("392", "350"): -0.2,
+    ("123", "67"): -0.2,
+    ("87", "67"): -0.2,
+    ("93", "39"): -0.2,
 }
-APPROACH_ONLY_EDGE_COLOR = "#9A9A9AF8"
+APPROACH_ONLY_EDGE_COLOR = "#9A9A9A"
 APPROACH_ONLY_EDGE_STYLE = "dotted"
 OVERLAP_EDGE_COLOR = "#16A34A"
 BASELINE_ONLY_EDGE_COLOR = "#FF0000"
@@ -101,15 +108,17 @@ COMPARISON_PLOTS = (
 )
 COMBINED_REACT_DIFFDEP_FILENAME_STEM = "combined"
 SINGLE_COMPARISON_FIGSIZE = (3, 5)
-COMBINED_COMPARISON_FIGSIZE = (8, 4.5)
+COMBINED_COMPARISON_FIGSIZE = (9, 5)
 DEFAULT_AXIS_MARGIN_SCALE = 0.18
 COMBINED_AXIS_MARGIN_SCALE = 0.1
 COMBINED_SUBPLOT_TITLE_FONT_SIZE = 9.0
-COMBINED_SUBPLOT_TITLE_PAD = 9
+COMBINED_SUBPLOT_TITLE_PAD = 5
 COMBINED_EDGE_LEGEND_FONT_SIZE = 7
 COMBINED_EDGE_LEGEND_TITLE_FONT_SIZE = 7
+COMBINED_EDGE_LEGEND_Y = 0.025
 COMBINED_NODE_LEGEND_FONT_SIZE = 7
 COMBINED_NODE_LEGEND_TITLE_FONT_SIZE = 7
+COMBINED_SUBPLOT_W_PAD = -0.5
 
 
 def _build_edge_styles(
@@ -136,6 +145,20 @@ def _build_edge_styles(
 
 def _build_edge_key(source: Any, target: Any) -> tuple[str, str]:
     return str(source), str(target)
+
+
+def _normalize_edge_keys(
+    edges: Iterable[tuple[int | str, int | str]] | None,
+) -> set[tuple[str, str]] | None:
+    if edges is None:
+        return None
+    return {
+        (
+            str(int(str(source).rsplit(":", 1)[-1])),
+            str(int(str(target).rsplit(":", 1)[-1])),
+        )
+        for source, target in edges
+    }
 
 
 def _normalize_focus_ids(bips: Iterable[int | str] | None) -> set[str]:
@@ -232,7 +255,10 @@ def _assign_multipartite_subsets(graph: nx.DiGraph, focus_ids: set[str]) -> None
 
 
 def _build_layout_graph(
-    network_data: dict[str, Any], display_ids: set[str], focus_ids: set[str]
+    network_data: dict[str, Any],
+    display_ids: set[str],
+    focus_ids: set[str],
+    include_edges: set[tuple[str, str]] | None = None,
 ) -> nx.DiGraph:
     graph = nx.DiGraph()
 
@@ -254,7 +280,7 @@ def _build_layout_graph(
             if (
                 source_id not in display_ids
                 or target_id not in display_ids
-                or not _edge_in_focus_neighborhood(source_id, target_id, focus_ids)
+                or (include_edges is not None and key not in include_edges)
                 or key in seen_edges
             ):
                 continue
@@ -301,17 +327,38 @@ def _get_layout_compaction(layout_name: str) -> float:
     return DIFF_LAYOUT_COMPACTION_BY_LAYOUT.get(layout_name, DIFF_LAYOUT_COMPACTION)
 
 
-def _load_exported_positions(
-    layout_export_path: Path, required_node_ids: Iterable[str]
+def _load_layout_export(layout_export_path: Path) -> dict[str, Any]:
+    return json.loads(layout_export_path.read_text(encoding="utf8"))
+
+
+def _extract_exported_node_ids(payload: dict[str, Any]) -> set[str]:
+    node_ids = {
+        str(node.get("graph_id") or node.get("id")).rsplit(":", 1)[-1]
+        for node in payload.get("nodes", [])
+        if node.get("graph_id") is not None or node.get("id") is not None
+    }
+    if node_ids:
+        return node_ids
+
+    positions = payload.get("positions")
+    if isinstance(positions, dict):
+        return {str(node_id).rsplit(":", 1)[-1] for node_id in positions}
+    return set()
+
+
+def _extract_exported_positions(
+    payload: dict[str, Any], required_node_ids: Iterable[str]
 ) -> dict[str, tuple[float, float]]:
-    payload = json.loads(layout_export_path.read_text(encoding="utf8"))
     raw_positions = payload.get("positions")
     normalized_positions: dict[str, tuple[float, float]] = {}
 
     if isinstance(raw_positions, dict):
         for node_id, coords in raw_positions.items():
             if isinstance(coords, SequenceABC) and len(coords) >= 2:
-                normalized_positions[str(node_id)] = (
+                # Some exports key positions by bare id ("77"), others by
+                # graph_key ("bips:77") — normalize to the bare id either way.
+                bare_node_id = str(node_id).rsplit(":", 1)[-1]
+                normalized_positions[bare_node_id] = (
                     float(coords[0]),
                     float(coords[1]),
                 )
@@ -323,7 +370,8 @@ def _load_exported_positions(
             y_coord = node.get("y")
             if node_id is None or x_coord is None or y_coord is None:
                 continue
-            normalized_positions[str(node_id)] = (float(x_coord), float(y_coord))
+            bare_node_id = str(node_id).rsplit(":", 1)[-1]
+            normalized_positions[bare_node_id] = (float(x_coord), float(y_coord))
 
     required_ids = {str(node_id) for node_id in required_node_ids}
     return {
@@ -403,7 +451,7 @@ def _build_comparison_edges(
     approach_type: str,
     baseline_type: str,
     display_ids: set[str],
-    focus_ids: set[str],
+    include_edges: set[tuple[str, str]] | None = None,
 ) -> dict[str, list[tuple[str, str]]]:
     approach_edges = {
         _build_edge_key(edge.get("source"), edge.get("target"))
@@ -411,8 +459,10 @@ def _build_comparison_edges(
         if (
             str(edge.get("source")) in display_ids
             and str(edge.get("target")) in display_ids
-            and _edge_in_focus_neighborhood(
-                str(edge.get("source")), str(edge.get("target")), focus_ids
+            and (
+                include_edges is None
+                or _build_edge_key(edge.get("source"), edge.get("target"))
+                in include_edges
             )
         )
     }
@@ -422,8 +472,10 @@ def _build_comparison_edges(
         if (
             str(edge.get("source")) in display_ids
             and str(edge.get("target")) in display_ids
-            and _edge_in_focus_neighborhood(
-                str(edge.get("source")), str(edge.get("target")), focus_ids
+            and (
+                include_edges is None
+                or _build_edge_key(edge.get("source"), edge.get("target"))
+                in include_edges
             )
         )
     }
@@ -539,51 +591,12 @@ def _compute_node_sizes(graph: nx.DiGraph, ordered_nodes: Sequence[str]) -> list
     if max_degree == min_degree:
         return [0.5 * (DIFF_NODE_SIZE_MIN + DIFF_NODE_SIZE_MAX)] * len(ordered_nodes)
 
-    sizes = []
-    for degree in degree_values:
-        normalized = (degree - min_degree) / (max_degree - min_degree)
-        sizes.append(
-            DIFF_NODE_SIZE_MIN + normalized * (DIFF_NODE_SIZE_MAX - DIFF_NODE_SIZE_MIN)
-        )
-    return sizes
-
-
-def _compute_label_positions(
-    pos: dict[str, Any], ordered_nodes: Sequence[str], node_sizes: Sequence[float]
-) -> dict[str, tuple[float, float, str, str]]:
-    if not pos:
-        return {}
-
-    x_values = [coords[0] for coords in pos.values()]
-    y_values = [coords[1] for coords in pos.values()]
-    x_center = sum(x_values) / len(x_values)
-    y_center = sum(y_values) / len(y_values)
-    x_span = (max(x_values) - min(x_values)) or 1.0
-    y_span = (max(y_values) - min(y_values)) or 1.0
-    diag = math.hypot(x_span, y_span) or 1.0
-
-    label_positions: dict[str, tuple[float, float, str, str]] = {}
-    for node_id, node_size in zip(ordered_nodes, node_sizes, strict=True):
-        x_coord, y_coord = pos[node_id]
-        dx = x_coord - x_center
-        dy = y_coord - y_center
-        norm = math.hypot(dx, dy)
-        if norm < 1e-9:
-            dx, dy = 1.0, 1.0
-            norm = math.hypot(dx, dy)
-        unit_x = dx / norm
-        unit_y = dy / norm
-        radial_offset = DIFF_LABEL_OFFSET * diag + 0.00003 * node_size
-        label_x = x_coord + unit_x * radial_offset
-        label_y = y_coord + unit_y * radial_offset
-        label_positions[node_id] = (
-            label_x,
-            label_y,
-            "left" if unit_x >= 0 else "right",
-            "bottom" if unit_y >= 0 else "top",
-        )
-
-    return label_positions
+    return [
+        DIFF_NODE_SIZE_MIN
+        + ((degree - min_degree) / (max_degree - min_degree))
+        * (DIFF_NODE_SIZE_MAX - DIFF_NODE_SIZE_MIN)
+        for degree in degree_values
+    ]
 
 
 def _edge_connectionstyle(
@@ -615,6 +628,7 @@ def _draw_comparison_plot(
     baseline_type: str,
     layout_name: str,
     title: str,
+    highlighted_node_ids: set[str] | None = None,
     edge_styles: dict[str, dict[str, Any]] | None = None,
     title_fontsize: float | None = None,
     title_pad: float = 20,
@@ -637,6 +651,11 @@ def _draw_comparison_plot(
     ax.set_ylim(axis_limits[2], axis_limits[3])
     ax.set_aspect("equal", adjustable="box")
 
+    highlighted_ids = highlighted_node_ids or set()
+    highlighted_nodes = [
+        node_id for node_id in ordered_nodes if node_id in highlighted_ids
+    ]
+
     nx.draw_networkx_nodes(
         graph,
         pos,
@@ -648,6 +667,21 @@ def _draw_comparison_plot(
         linewidths=1.0,
         ax=ax,
     )
+
+    if highlighted_nodes:
+        node_index = {node_id: index for index, node_id in enumerate(ordered_nodes)}
+        ax.scatter(
+            [pos[node_id][0] for node_id in highlighted_nodes],
+            [pos[node_id][1] for node_id in highlighted_nodes],
+            s=[
+                node_sizes[node_index[node_id]] * HIGHLIGHT_INNER_RING_SIZE_SCALE
+                for node_id in highlighted_nodes
+            ],
+            facecolors="none",
+            edgecolors="black",
+            linewidths=HIGHLIGHT_INNER_RING_WIDTH,
+            zorder=3,
+        )
 
     all_edges = {edge for edgelist in comparison_edges.values() for edge in edgelist}
     for status, edgelist in comparison_edges.items():
@@ -808,6 +842,7 @@ def _save_combined_comparison_plot(
             baseline_type=payload["baseline_type"],
             layout_name=layout_name,
             title=f"({chr(96 + index)}) {payload['subplot_title']}",
+            highlighted_node_ids=payload["highlighted_node_ids"],
             edge_styles=combined_edge_styles,
             title_fontsize=COMBINED_SUBPLOT_TITLE_FONT_SIZE,
             title_pad=COMBINED_SUBPLOT_TITLE_PAD,
@@ -822,7 +857,7 @@ def _save_combined_comparison_plot(
         ax.legend(
             handles=edge_legend_handles,
             loc="upper center",
-            bbox_to_anchor=(0.5, 0.07),
+            bbox_to_anchor=(0.5, COMBINED_EDGE_LEGEND_Y),
             ncol=3,
             handler_map=ARROW_LEGEND_HANDLER_MAP,
             frameon=False,
@@ -854,7 +889,10 @@ def _save_combined_comparison_plot(
             title_fontsize=COMBINED_NODE_LEGEND_TITLE_FONT_SIZE,
         )
 
-    fig.tight_layout(rect=[0.015, 0.13, 0.985, 0.87], w_pad=-2)
+    fig.tight_layout(
+        rect=[0.015, 0.13, 0.985, 0.87],
+        w_pad=COMBINED_SUBPLOT_W_PAD,
+    )
     output_path.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(output_path, format="pdf")
     plt.close(fig)
@@ -865,6 +903,8 @@ def render_differential_dependency_plots(
     output_dir: Path,
     *,
     filename_prefix: str | None = None,
+    include_edges: Sequence[tuple[int | str, int | str]] | None = None,
+    highlight_bips_by_subplot: Sequence[Sequence[int | str]] | None = None,
     focus_bips: Sequence[int | str] = DEFAULT_FOCUS_BIPS,
     exclude_bips: Sequence[int | str] | None = DEFAULT_EXCLUDE_BIPS,
     layout_name: str = DEFAULT_LAYOUT_NAME,
@@ -872,16 +912,76 @@ def render_differential_dependency_plots(
 ) -> list[Path]:
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    display_ids, focus_ids = _collect_display_node_ids(
-        network_data, focus_bips, exclude_bips
+    included_edge_keys = _normalize_edge_keys(include_edges)
+    layout_export = None
+    if included_edge_keys is not None:
+        excluded_ids = _normalize_focus_ids(exclude_bips)
+        display_ids = {
+            node_id
+            for edge in included_edge_keys
+            for node_id in edge
+            if node_id not in excluded_ids
+        }
+        available_ids, _ = _collect_display_node_ids(network_data, None, exclude_bips)
+        missing_node_ids = display_ids - available_ids
+        if missing_node_ids:
+            missing = ", ".join(sorted(missing_node_ids, key=int))
+            raise ValueError(
+                f"Included differential BIPs are missing from the data: {missing}"
+            )
+        included_edge_keys = {
+            edge
+            for edge in included_edge_keys
+            if edge[0] in display_ids and edge[1] in display_ids
+        }
+        focus_ids: set[str] = set()
+        if layout_export_path is not None:
+            layout_export = _load_layout_export(layout_export_path)
+            positioned_ids = _extract_exported_node_ids(layout_export)
+            missing_positions = display_ids - positioned_ids
+            if missing_positions:
+                missing = ", ".join(sorted(missing_positions, key=int))
+                raise ValueError(
+                    f"Included differential BIPs are missing from the layout export: {missing}"
+                )
+    elif layout_export_path is not None:
+        layout_export = _load_layout_export(layout_export_path)
+        exported_node_ids = _extract_exported_node_ids(layout_export)
+        display_ids, _ = _collect_display_node_ids(network_data, None, exclude_bips)
+        display_ids &= exported_node_ids
+        focus_ids: set[str] = set()
+    else:
+        display_ids, focus_ids = _collect_display_node_ids(
+            network_data, focus_bips, exclude_bips
+        )
+    layout_graph = _build_layout_graph(
+        network_data,
+        display_ids,
+        focus_ids,
+        include_edges=included_edge_keys,
     )
-    layout_graph = _build_layout_graph(network_data, display_ids, focus_ids)
+    subplot_highlights = list(highlight_bips_by_subplot or ())
+    if subplot_highlights and len(subplot_highlights) != len(COMPARISON_PLOTS):
+        raise ValueError(
+            "Differential highlight configuration must provide one BIP set per "
+            f"subplot ({len(COMPARISON_PLOTS)} expected)."
+        )
+    if included_edge_keys is not None:
+        missing_edges = included_edge_keys - set(layout_graph.edges())
+        if missing_edges:
+            missing = ", ".join(
+                f"{source}->{target}"
+                for source, target in sorted(
+                    missing_edges, key=lambda edge: (int(edge[0]), int(edge[1]))
+                )
+            )
+            raise ValueError(
+                f"Included differential edges are missing from the data: {missing}"
+            )
 
     # Keep one shared union-layout graph so both plots inherit identical node positions.
-    if layout_export_path is not None:
-        exported_pos = _load_exported_positions(
-            layout_export_path, layout_graph.nodes()
-        )
+    if layout_export is not None:
+        exported_pos = _extract_exported_positions(layout_export, layout_graph.nodes())
         if not exported_pos:
             base_pos = _compute_base_positions(
                 layout_graph, layout_name=DEFAULT_LAYOUT_NAME
@@ -920,20 +1020,22 @@ def render_differential_dependency_plots(
         pos = _compact_positions(
             base_pos, compaction=_get_layout_compaction(layout_name)
         )
-    axis_limits = _compute_axis_limits(base_pos)
+    # axis_limits is only needed for the per-comparison plots below, which are
+    # currently disabled.
+    # axis_limits = _compute_axis_limits(base_pos)
     combined_axis_limits = _compute_axis_limits(
         base_pos, margin_scale=COMBINED_AXIS_MARGIN_SCALE
     )
 
     plot_payloads: list[dict[str, Any]] = []
     output_paths: list[Path] = []
-    for plot_spec in COMPARISON_PLOTS:
+    for plot_index, plot_spec in enumerate(COMPARISON_PLOTS):
         comparison_edges = _build_comparison_edges(
             network_data.get("dependency_edges", []),
             approach_type=plot_spec["approach"],
             baseline_type=plot_spec["baseline"],
             display_ids=display_ids,
-            focus_ids=focus_ids,
+            include_edges=included_edge_keys,
         )
         plot_payloads.append(
             {
@@ -941,25 +1043,32 @@ def render_differential_dependency_plots(
                 "approach_type": plot_spec["approach"],
                 "baseline_type": plot_spec["baseline"],
                 "subplot_title": plot_spec.get("subplot_title", plot_spec["title"]),
+                "highlighted_node_ids": (
+                    _normalize_focus_ids(subplot_highlights[plot_index]) & display_ids
+                    if subplot_highlights
+                    else set()
+                ),
             }
         )
-        prefix = f"{filename_prefix}_" if filename_prefix else ""
-        output_path = (
-            output_dir
-            / f"{prefix}diffdep_{layout_name}_{plot_spec['filename_stem']}.pdf"
-        )
-        _save_single_comparison_plot(
-            layout_graph,
-            pos,
-            axis_limits,
-            comparison_edges=comparison_edges,
-            approach_type=plot_spec["approach"],
-            baseline_type=plot_spec["baseline"],
-            layout_name=layout_name,
-            title=plot_spec["title"],
-            output_path=output_path,
-        )
-        output_paths.append(output_path)
+        # Disabled: standalone diffdep_react_preamlbe_vs_regex / diffdep_react_regex_vs_llm
+        # figures are no longer needed on their own, only combined below.
+        # prefix = f"{filename_prefix}_" if filename_prefix else ""
+        # output_path = (
+        #     output_dir
+        #     / f"{prefix}diffdep_{layout_name}_{plot_spec['filename_stem']}.pdf"
+        # )
+        # _save_single_comparison_plot(
+        #     layout_graph,
+        #     pos,
+        #     axis_limits,
+        #     comparison_edges=comparison_edges,
+        #     approach_type=plot_spec["approach"],
+        #     baseline_type=plot_spec["baseline"],
+        #     layout_name=layout_name,
+        #     title=plot_spec["title"],
+        #     output_path=output_path,
+        # )
+        # output_paths.append(output_path)
 
     if layout_export_path is not None and len(plot_payloads) > 1:
         prefix = f"{filename_prefix}_" if filename_prefix else ""
@@ -1011,12 +1120,18 @@ def main() -> None:
     parser.add_argument(
         "--bips",
         default=",".join(str(bip) for bip in DEFAULT_FOCUS_BIPS),
-        help="Comma-separated focus BIP ids used to define the local comparison neighborhood.",
+        help=(
+            "Comma-separated focus BIP ids used to define the local comparison "
+            "neighborhood when no layout export is supplied."
+        ),
     )
     parser.add_argument(
         "--exclude-bips",
         default=",".join(str(bip) for bip in DEFAULT_EXCLUDE_BIPS),
-        help="Comma-separated BIP ids to exclude from the plotted local neighborhood.",
+        help=(
+            "Comma-separated BIP ids to exclude. With a layout export, its node list "
+            "defines the included set before these exclusions are applied."
+        ),
     )
     parser.add_argument(
         "--layout",

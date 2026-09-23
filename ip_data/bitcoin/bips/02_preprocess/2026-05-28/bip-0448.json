@@ -537,42 +537,48 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:19:22Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:340",
               "evidence": "`OP_CHECKSIGFROMSTACK` introduces [BIP 340][schnorr-bip] signature verification for arbitrary messages",
               "reason": "The proposed arbitrary-message signature verification is based on BIP 340 Schnorr verification semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:341",
               "evidence": "`OP_INTERNALKEY` allows to push the [Taproot][taproot-bip] internal key on the stack.",
               "reason": "The meaning of OP_INTERNALKEY depends on Taproot internal key semantics from BIP 341.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:342",
               "evidence": "In [BIP 342 Tapscript](bip-0342.mediawiki), the following operations are updated.",
               "reason": "The proposal modifies Tapscript opcode semantics within BIP 342, so its rules depend on the Tapscript execution context defined there.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:348",
               "evidence": "[BIP 446 `OP_TEMPLATEHASH`][templatehash-bip], [BIP 348 `OP_CHECKSIGFROMSTACK`][csfs-bip], and [BIP 349 `OP_INTERNALKEY`][internalkey-bip]",
               "reason": "The proposal directly deploys and defines behavior by reusing OP_CHECKSIGFROMSTACK from BIP 348.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:349",
               "evidence": "[BIP 446 `OP_TEMPLATEHASH`][templatehash-bip], [BIP 348 `OP_CHECKSIGFROMSTACK`][csfs-bip], and [BIP 349 `OP_INTERNALKEY`][internalkey-bip]",
               "reason": "The proposal directly deploys and defines behavior by reusing OP_INTERNALKEY from BIP 349.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:446",
               "evidence": "[BIP 446 `OP_TEMPLATEHASH`][templatehash-bip], [BIP 348 `OP_CHECKSIGFROMSTACK`][csfs-bip], and [BIP 349 `OP_INTERNALKEY`][internalkey-bip]",
               "reason": "The proposal directly deploys and defines behavior by reusing OP_TEMPLATEHASH from BIP 446.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

@@ -11,6 +11,8 @@ const targetRoot = path.join(reactRoot, 'public', 'ip_data');
 const DATASET_FILES = [
   'dependencies/network_data.json',
   'dependencies/dependency_metrics.json',
+  'dependencies/dependency_consistency.json',
+  'centrality/centrality_comparison.json',
   'authorship/authorship_payload.json',
   'classification/classification_payload.json',
   'evolution/evolution_payload.json',
@@ -104,4 +106,8 @@ function syncPublicData() {
   }
 }
 
-syncPublicData();
+if (require.main === module) {
+  syncPublicData();
+}
+
+module.exports = { DATASET_FILES };

@@ -817,24 +817,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:44:49Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:133",
               "evidence": "If the peers are using BIP133 fee filters and a low-feerate transaction is below the node's fee filter",
               "reason": "The fee-filter behavior affects whether low-feerate ancestors are announced and therefore conditions package relay’s propagation flow.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:330",
               "evidence": "A client using BIP330 reconciliation-based transaction relay (Erlay) is able to use package relay without interference.",
               "reason": "The proposal is explicitly designed to interoperate with BIP330-based transaction relay, making its deployment context depend on that relay mechanism.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:339",
               "evidence": "two nodes that both support BIP339 wtxid-based transaction relay shouldn't ever need to use txid-based transaction relay",
               "reason": "Package relay relies on wtxid-based relay support for transaction identification and avoids txid-based orphan handling when both peers support it.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

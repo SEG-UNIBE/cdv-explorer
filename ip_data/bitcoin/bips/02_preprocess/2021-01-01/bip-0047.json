@@ -863,24 +863,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:22Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "The child keys derived from an identity are used in different ways",
               "reason": "The proposal is built on BIP32 hierarchical key derivation and extended keys for its payment code and notification/address generation paths.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:43",
               "evidence": "This BIP is a particular application of BIP43",
               "reason": "It explicitly uses the BIP43 purpose-field scheme to define the BIP32 subtree for payment codes.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:44",
               "evidence": "intended to supplement HD wallets which implement BIP44",
               "reason": "The proposal aligns payment-code identities with BIP44 account structure and states the coin type field is identical to BIP44.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

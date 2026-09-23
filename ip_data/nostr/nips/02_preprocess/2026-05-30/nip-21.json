@@ -159,12 +159,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:04Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:19",
               "evidence": "The identifiers that come after are expected to be the same as those defined in [NIP-19](19.md)",
               "reason": "The URI scheme reuses the identifier formats defined by NIP-19, so implementing these URIs depends on understanding those encodings.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

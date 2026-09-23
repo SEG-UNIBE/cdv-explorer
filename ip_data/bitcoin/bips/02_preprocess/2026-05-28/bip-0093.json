@@ -884,30 +884,34 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:17:46Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "a standard for backing up and restoring the master seed of a [https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki BIP-0032] hierarchical deterministic wallet using it",
               "reason": "The proposal is explicitly designed to encode and recover BIP-0032 master seeds, so its format and recovery workflow depend on BIP-0032's seed concept.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:39",
               "evidence": "[https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki BIP-0039] serves the same purpose as this standard",
               "reason": "The proposal evaluates itself as an alternative to BIP-0039 and discusses compatibility and conversion from BIP-0039 mnemonics, making BIP-0039 a substantive comparison target for adoption and interoperability.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:173",
               "evidence": "similar to a bech32 string defined in [https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki BIP-0173]",
               "reason": "Codex32 reuses the bech32 character set, checksum construction, and case/decoding conventions from BIP-0173.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "slips:39",
               "evidence": "[https://github.com/satoshilabs/slips/blob/master/slip-0039.md SLIP-0039] has essentially the same motivations as this standard",
               "reason": "The proposal includes compatibility discussion and explicitly states that SLIP-0039 shares similar motivations and can be interconverted at the master-seed level, so understanding interoperability depends on SLIP-0039.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

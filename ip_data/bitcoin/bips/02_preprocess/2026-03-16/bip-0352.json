@@ -1206,60 +1206,69 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:45:18Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "To ensure compatibility, wallets MAY use BIP32 derivation with the following derivation paths",
               "reason": "Silent payment scan and spend keys may be derived from a BIP32 seed hierarchy, so backup/recovery depends on BIP32 derivation support.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:43",
               "evidence": "<code>purpose</code> is a constant set to ''352'' following the BIP43 recommendation.",
               "reason": "The recommended derivation path structure uses the BIP43 purpose field convention with purpose 352 for silent payments keys.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:44",
               "evidence": "A scan and spend key pair using BIP32 derivation are defined (taking inspiration from [https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki BIP44])",
               "reason": "The wallet key-derivation layout for scan and spend keys follows the BIP44-style hierarchical path organization.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:143",
               "evidence": "[https://github.com/bitcoin/bips/blob/master/bip-0143.mediawiki#restrictions-on-public-key-type BIP143] recommends restricting P2WPKH inputs to compressed keys as a default policy",
               "reason": "The input key-type restrictions for shared-secret derivation are informed by BIP143's compressed-key policy for SegWit inputs.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:158",
               "evidence": "Bob can then use BIP158 block filters to determine if any of the outputs exist in a block",
               "reason": "The light-client scanning approach explicitly relies on BIP158 block filters to identify candidate blocks without downloading everything.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:173",
               "evidence": "Version is communicated through the address in the same way as bech32 addresses",
               "reason": "Address versioning and encoding behavior are designed around Bech32-style encoding conventions from BIP173.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:340",
               "evidence": "For everything not defined above, we use the notation from [https://github.com/bitcoin/bips/blob/master/bip-0340.mediawiki#specification BIP340]",
               "reason": "The proposal reuses BIP340 notation and scalar/public-key conventions for its cryptographic operations.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:341",
               "evidence": "Encode ''P'' as a [https://github.com/bitcoin/bips/blob/master/bip-0341.mediawiki BIP341] taproot output",
               "reason": "Silent payment outputs are explicitly encoded as Taproot outputs, so the proposal depends on BIP341 output construction and semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:350",
               "evidence": "The final address is a ... encoding of:",
               "reason": "The address payload and checksum are encoded using Bech32m, which is the address-encoding mechanism introduced by BIP350.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

@@ -1,0 +1,282 @@
+{
+  "raw": {
+    "preamble": {
+      "slip": "11",
+      "title": "Symmetric encryption of key-value pairs using deterministic hierarchy",
+      "author": [
+        "Pavol Rusnak <stick@satoshilabs.com>",
+        "Marek Palatinus <slush@satoshilabs.com>",
+        "Karel Bilek <kb@karelbilek.com>"
+      ],
+      "status": "Final",
+      "type": "Standard",
+      "created": "2014-06-12"
+    }
+  },
+  "meta": {
+    "last_commit": "2021-03-09T17:28:27+01:00",
+    "total_commits": 6,
+    "git_history": [
+      [
+        "508968da89aeb23a07d14109207cbd49aa0ca12a",
+        "2021-03-09T17:28:27+01:00",
+        "Andrew Kozlik",
+        "42678794+andrewkozlik@users.noreply.github.com"
+      ],
+      [
+        "ab5ce4c3df56cab04518afe2d82880763dc663d2",
+        "2019-03-20T07:47:56+01:00",
+        "Pavol Rusnak",
+        "pavol@rusnak.io"
+      ],
+      [
+        "40c88470be714e81a5149b50adf2db25ab230bf4",
+        "2017-03-14T21:54:43+01:00",
+        "Pavol Rusnak",
+        "stick@gk2.sk"
+      ],
+      [
+        "0821035f9729426ac8fa8d8847442cef53d1b176",
+        "2016-06-29T12:18:53+02:00",
+        "Karel Bílek",
+        "kb@karelbilek.com"
+      ],
+      [
+        "bff6ca0cfc0500e03c70f9b9a954bbcdbb32964a",
+        "2016-06-08T18:44:49+02:00",
+        "Pavol Rusnak",
+        "stick@gk2.sk"
+      ],
+      [
+        "b76151348a7430013a4b147725ed94b0f6b72994",
+        "2016-02-01T16:02:09+01:00",
+        "Pavol Rusnak",
+        "stick@gk2.sk"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 85.71,
+      "passed_checks": 6,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 7,
+      "slip": {
+        "score": 85.71,
+        "passed_checks": 6,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 7,
+        "checks": [
+          {
+            "id": "slip.required_field.slip",
+            "label": "Required field 'slip' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.author",
+            "label": "Required field 'author' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.type",
+            "label": "Required field 'type' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.created",
+            "label": "Required field 'created' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "slip",
+            "passed": false,
+            "details": "Missing: abstract"
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "key": 26,
+      "value": 18,
+      "16": 15,
+      "iv": 10,
+      "python": 10,
+      "trezor": 9,
+      "0": 8,
+      "aes": 8,
+      "encryption": 7,
+      "encrypt": 7,
+      "slip": 6,
+      "com": 6,
+      "32": 6,
+      "len": 6,
+      "private_key": 6,
+      "secret": 6,
+      "symmetric": 5,
+      "blocks": 5,
+      "hmac": 5,
+      "res": 5,
+      "device": 4,
+      "confirm": 4,
+      "decrypt": 4,
+      "input": 4,
+      "e1": 4,
+      "e0": 4,
+      "d1": 4,
+      "d0": 4,
+      "aes_key": 4,
+      "aes_iv": 4,
+      "join": 4,
+      "range": 4,
+      "deterministic": 3,
+      "hierarchy": 3,
+      "hardware": 3,
+      "user": 3,
+      "private": 3,
+      "confirmation": 3,
+      "different": 3,
+      "self": 3,
+      "address_n": 3,
+      "ask_on_encrypt": 3,
+      "ask_on_decrypt": 3,
+      "return": 3,
+      "bip32": 3,
+      "sha512": 3,
+      "concatenated": 3,
+      "function": 3,
+      "py": 3,
+      "https": 3,
+      "github": 3,
+      "blob": 3,
+      "master": 3,
+      "0011": 2,
+      "pairs": 2,
+      "satoshilabs": 2,
+      "wallet": 2,
+      "bip": 2,
+      "path": 2,
+      "direction": 2,
+      "encrypted": 2,
+      "constructed": 2,
+      "displayed": 2,
+      "byte": 2,
+      "application": 2,
+      "pad": 2,
+      "ensure": 2,
+      "safety": 2,
+      "example": 2,
+      "pkcs7": 2,
+      "details": 2,
+      "emulator": 2,
+      "_cipher_keyvalue": 2,
+      "failure": 2,
+      "message": 2,
+      "length": 2,
+      "multiple": 2,
+      "storage": 2,
+      "get_node": 2,
+      "get_private_node": 2,
+      "list": 2,
+      "msg": 2,
+      "digestmod": 2,
+      "hashlib": 2,
+      "digest": 2,
+      "48": 2,
+      "pyaes": 2,
+      "aesmodeofoperationcbc": 2,
+      "cipher": 2,
+      "node": 2,
+      "bytes": 2,
+      "algorithm": 2,
+      "test": 2,
+      "vectors": 2,
+      "test_msg_cipherkeyvalue": 2,
+      "firmware": 2,
+      "0015": 2,
+      "md": 2,
+      "0016": 2
+    },
+    "changes_in_status": [],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        {
+          "target": "bips:32",
+          "count": 4
+        },
+        {
+          "target": "slips:15",
+          "count": 2
+        },
+        {
+          "target": "slips:16",
+          "count": 2
+        }
+      ],
+      "body_extracted_llm": [
+        {
+          "run_id": "2026-08-07T12:28:30Z_gpt-5.6-sol_a6f7bf17",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T12:28:37Z",
+          "status": "success",
+          "findings": [
+            {
+              "target": "bips:32",
+              "type": "depends_on",
+              "evidence": "Private key of the BIP32 node is derived.",
+              "reason": "The encryption key is constructed from a private key derived from the deterministic hierarchy defined by BIP 32, making that derivation mechanism necessary to the proposal.",
+              "confidence": "high"
+            },
+            {
+              "target": "slips:15",
+              "type": "references",
+              "evidence": "It is used in algorithms described in [SLIP-0015](slip-0015.md)",
+              "reason": "The proposal identifies SLIP-0015 as a user of this algorithm; it does not state that the current proposal depends on SLIP-0015.",
+              "confidence": "high"
+            },
+            {
+              "target": "slips:16",
+              "type": "references",
+              "evidence": "It is used in algorithms described in [SLIP-0015](slip-0015.md) and [SLIP-0016](slip-0016.md).",
+              "reason": "The proposal identifies SLIP-0016 as a user of this algorithm; it does not state that the current proposal depends on SLIP-0016.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

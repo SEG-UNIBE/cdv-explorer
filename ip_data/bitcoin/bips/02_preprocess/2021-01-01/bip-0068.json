@@ -786,24 +786,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:26Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:9",
               "evidence": "This BIP is to be deployed by \"versionbits\" BIP9 using bit 0.",
               "reason": "The activation mechanism and deployment parameters rely on BIP9 versionbits signaling.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:112",
               "evidence": "The flag (1<<22) is the highest order bit in a 3-byte signed integer for use in bitcoin scripts as a 3-byte PUSHDATA with OP_CHECKSEQUENCEVERIFY (BIP 112).",
               "reason": "This proposal's time-based sequence encoding is explicitly designed to work with OP_CHECKSEQUENCEVERIFY semantics defined by BIP112.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:113",
               "evidence": "All references to median-time-past (MTP) are as defined by BIP113.",
               "reason": "The relative time-lock calculation depends on BIP113's definition of median-time-past.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

@@ -6,10 +6,13 @@ import networkx as nx
 from analysis.dependencies.constants import (
     BODY_EXTRACTED_LLM,
     BODY_EXTRACTED_REGEX,
+    CANONICAL_TYPE_BY_APPROACH_SUBTYPE,
     DEPENDENCY_APPROACH_LABELS,
     DEPENDENCY_APPROACH_ORDER,
     DEPENDENCY_PAIRWISE_COMPARISON_ORDER,
     GROUND_TRUTH_CURATED,
+    INTERRELATION_TYPES,
+    PAIRWISE_TYPE_WILDCARD,
     PREAMBLE_EXTRACTED,
 )
 
@@ -197,9 +200,12 @@ def _safe_weighted_eigenvector(
 ) -> dict[str, float]:
     """Directed weighted eigenvector centrality via power iteration on incoming adjacency.
 
-    Each node's score is the normalised weighted sum of its predecessors' scores -
-    matching the algorithm used in the React front-end
-    (computeDirectedWeightedEigenvectorCentrality in dashboardData.js).
+    Each node's score is the normalised weighted sum of its predecessors' scores.
+    Implemented as a custom, portable iteration (rather than `nx.eigenvector_centrality`,
+    which raises on directed graphs that aren't strongly connected - a common case here
+    given isolated/weakly-connected BIPs) so the same algorithm can be reproduced outside
+    Python if the frontend ever needs to recompute it; today the dashboard avoids that
+    need entirely by displaying this pipeline-computed value directly.
     Edge weight equals the number of parallel edges between the same pair; because
     the underlying DiGraph already deduplicates edges this is always 1, but the
     formula is kept general for correctness.
@@ -258,6 +264,62 @@ def _rank_rows(rows: list[dict[str, Any]], field: str) -> dict[str, int]:
     return ranks
 
 
+def _fixed_typed_edge_keys_for_approach(
+    network_data: dict[str, Any], approach_key: str
+) -> set[tuple[str, str, str]]:
+    """Links whose subtype maps to a real canonical type, keyed by
+    (source, target, canonical_type). Excludes wildcard-typed subtypes (see
+    _wildcard_pairs_for_approach) since those carry no real type to key on.
+    """
+    subtype_map = CANONICAL_TYPE_BY_APPROACH_SUBTYPE.get(approach_key, {})
+    keys: set[tuple[str, str, str]] = set()
+    for link in _links_for_type(network_data, approach_key):
+        canonical_type = subtype_map.get(str(link.get("relation_type") or "").strip())
+        if canonical_type is None or canonical_type == PAIRWISE_TYPE_WILDCARD:
+            continue
+        keys.add((str(link.get("source")), str(link.get("target")), canonical_type))
+    return keys
+
+
+def _wildcard_pairs_for_approach(
+    network_data: dict[str, Any], approach_key: str
+) -> set[tuple[str, str]]:
+    """Directed (source, target) pairs from an approach's wildcard-typed
+    subtype(s) — i.e. regex's single reference subtype, a plain identifier
+    match with no semantic type information of its own.
+    """
+    subtype_map = CANONICAL_TYPE_BY_APPROACH_SUBTYPE.get(approach_key, {})
+    pairs: set[tuple[str, str]] = set()
+    for link in _links_for_type(network_data, approach_key):
+        canonical_type = subtype_map.get(str(link.get("relation_type") or "").strip())
+        if canonical_type == PAIRWISE_TYPE_WILDCARD:
+            pairs.add((str(link.get("source")), str(link.get("target"))))
+    return pairs
+
+
+def _expand_wildcard_pairwise_keys_for_typed_universe(
+    wildcard_pairs: set[tuple[str, str]],
+    other_typed_keys: set[tuple[str, str, str]],
+) -> set[tuple[str, str, str]]:
+    """Resolve wildcard pairs into a strict (source, target, type) universe.
+
+    When the other approach has typed edges for the same pair, the wildcard
+    adopts those concrete types. Otherwise it expands to every canonical
+    relation type, because an untyped edge has no single valid coordinate in a
+    typed candidate universe.
+    """
+    types_by_pair: dict[tuple[str, str], set[str]] = {}
+    for source, target, canonical_type in other_typed_keys:
+        types_by_pair.setdefault((source, target), set()).add(canonical_type)
+
+    all_types = set(INTERRELATION_TYPES)
+    keys: set[tuple[str, str, str]] = set()
+    for source, target in wildcard_pairs:
+        types = types_by_pair.get((source, target)) or all_types
+        keys.update((source, target, canonical_type) for canonical_type in types)
+    return keys
+
+
 def _pairwise_cohens_kappa(
     overlap: int,
     approach_only: int,
@@ -271,6 +333,10 @@ def _pairwise_cohens_kappa(
     from one side, and the remainder no from both. Kappa corrects the
     resulting raw agreement for chance and is ``None`` when undefined
     (no candidate pairs, or no variation between the raters at all).
+
+    Reported as-is, including negative values: a negative kappa means
+    observed agreement is worse than chance (systematic disagreement), which
+    is a distinct and meaningful result from kappa near 0 (no relationship).
     """
     union = overlap + approach_only + baseline_only
     if candidate_pairs <= 0 or union > candidate_pairs:
@@ -287,7 +353,9 @@ def _pairwise_cohens_kappa(
     return float((observed - expected) / (1 - expected))
 
 
-def _build_pairwise_comparisons(network_data: dict[str, Any]) -> dict[str, Any]:
+def _build_pairwise_comparisons(
+    network_data: dict[str, Any], *, type_scope: str = "all"
+) -> dict[str, Any]:
     use_canonical_edges = bool(_canonical_dependency_edges(network_data))
     edge_keys = _network_edge_keys(network_data) if use_canonical_edges else set()
     nodes_by_id = {
@@ -302,48 +370,81 @@ def _build_pairwise_comparisons(network_data: dict[str, Any]) -> dict[str, Any]:
     approach_labels = _approach_labels()
     pairwise: dict[str, Any] = {}
     # Universe for the rater-agreement scores: every ordered pair of distinct
-    # network nodes is a candidate edge each approach implicitly judged.
+    # network nodes is a candidate edge each approach implicitly judged. In
+    # exact-type mode, each directed pair is crossed with the canonical
+    # relation-type vocabulary, so the rated item is (source, target, type).
     node_count = len(nodes_by_id)
     candidate_pairs = node_count * (node_count - 1)
+    candidate_items = (
+        candidate_pairs * len(INTERRELATION_TYPES)
+        if type_scope == "exact_type"
+        else candidate_pairs
+    )
+
+    fixed_keys_by_approach = {
+        key: _fixed_typed_edge_keys_for_approach(network_data, key)
+        for key in DEPENDENCY_PAIRWISE_COMPARISON_ORDER
+    }
+    wildcard_pairs_by_approach = {
+        key: _wildcard_pairs_for_approach(network_data, key)
+        for key in DEPENDENCY_PAIRWISE_COMPARISON_ORDER
+    }
+
+    def _edge_keys_for_pairing(key: str) -> set[tuple[str, ...]]:
+        return {
+            (str(link.get("source")), str(link.get("target")))
+            for link in _links_for_type(network_data, key)
+        }
+
+    def _typed_edge_keys_for_pairing(key: str, other_key: str) -> set[tuple[str, ...]]:
+        fixed = fixed_keys_by_approach[key]
+        wildcard_pairs = wildcard_pairs_by_approach[key]
+        if not wildcard_pairs:
+            return fixed
+        return fixed | _expand_wildcard_pairwise_keys_for_typed_universe(
+            wildcard_pairs, fixed_keys_by_approach[other_key]
+        )
 
     for approach_key in DEPENDENCY_PAIRWISE_COMPARISON_ORDER:
         approach_label = approach_labels[approach_key]
-        approach_links = _links_for_type(network_data, approach_key)
-        approach_edge_keys = {
-            (str(link.get("source")), str(link.get("target")))
-            for link in approach_links
-        }
 
         for baseline_key in DEPENDENCY_PAIRWISE_COMPARISON_ORDER:
             baseline_label = approach_labels[baseline_key]
-            baseline_links = _links_for_type(network_data, baseline_key)
-            baseline_edge_keys = {
-                (str(link.get("source")), str(link.get("target")))
-                for link in baseline_links
-            }
+            if type_scope == "exact_type":
+                approach_edge_keys = _typed_edge_keys_for_pairing(
+                    approach_key, baseline_key
+                )
+                baseline_edge_keys = _typed_edge_keys_for_pairing(
+                    baseline_key, approach_key
+                )
+            else:
+                approach_edge_keys = _edge_keys_for_pairing(approach_key)
+                baseline_edge_keys = _edge_keys_for_pairing(baseline_key)
             overlap_keys = approach_edge_keys & baseline_edge_keys
             approach_only_keys = approach_edge_keys - baseline_edge_keys
             baseline_only_keys = baseline_edge_keys - approach_edge_keys
             baseline_total = len(baseline_edge_keys)
 
             def _edge_rows(
-                keys: set[tuple[str, str]], status: str
+                keys: set[tuple[str, ...]], status: str
             ) -> list[dict[str, Any]]:
                 return [
                     {
-                        "source": source,
-                        "target": target,
-                        "source_title": nodes_by_id.get(source, {}).get("title"),
-                        "target_title": nodes_by_id.get(target, {}).get("title"),
+                        "source": key[0],
+                        "target": key[1],
+                        "source_title": nodes_by_id.get(key[0], {}).get("title"),
+                        "target_title": nodes_by_id.get(key[1], {}).get("title"),
+                        "relation_type": key[2] if len(key) > 2 else None,
                         "status": status,
                     }
-                    for source, target in sorted(
+                    for key in sorted(
                         keys,
                         key=lambda item: (
                             int(item[0]) if item[0].isdigit() else float("inf"),
                             int(item[1]) if item[1].isdigit() else float("inf"),
                             item[0],
                             item[1],
+                            item[2] if len(item) > 2 else "",
                         ),
                     )
                 ]
@@ -367,12 +468,12 @@ def _build_pairwise_comparisons(network_data: dict[str, Any]) -> dict[str, Any]:
                     "missed_rate": float(len(baseline_only_keys) / baseline_total)
                     if baseline_total
                     else 0.0,
-                    "candidate_pairs": candidate_pairs,
+                    "candidate_pairs": candidate_items,
                     "kappa": _pairwise_cohens_kappa(
                         len(overlap_keys),
                         len(approach_only_keys),
                         len(baseline_only_keys),
-                        candidate_pairs,
+                        candidate_items,
                     ),
                 },
                 "edges": (
@@ -440,6 +541,9 @@ def _extract_dependency_metrics_payload(network_data: dict[str, Any]) -> dict[st
     return {
         "by_approach": by_approach,
         "pairwise_comparisons": _build_pairwise_comparisons(network_data),
+        "pairwise_comparisons_exact_type": _build_pairwise_comparisons(
+            network_data, type_scope="exact_type"
+        ),
     }
 
 

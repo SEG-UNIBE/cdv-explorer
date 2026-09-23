@@ -8,7 +8,7 @@ from analysis.utils import parse_date_ymd as _parse_date_ymd
 _GIT_BOTS = {"github-actions[bot]", "dependabot[bot]", "web-flow", "GitHub"}
 
 
-def get_git_history(repo_dir: Path, file_path: Path) -> list[tuple[str, str, str]]:
+def get_git_history(repo_dir: Path, file_path: Path) -> list[tuple[str, str, str, str]]:
     """Retrieve commit history for a file using local Git."""
     try:
         relative_file_path = file_path.relative_to(repo_dir)
@@ -18,7 +18,13 @@ def get_git_history(repo_dir: Path, file_path: Path) -> list[tuple[str, str, str
                 "-C",
                 str(repo_dir),
                 "log",
-                "--pretty=format:%H|%ad|%an",
+                # --follow tracks the file across renames (e.g. the
+                # mediawiki<->md conversions in the BIPs repo); without it,
+                # history silently starts at the rename.
+                "--follow",
+                # Use strict ISO author dates so first-day/created-date
+                # derivation is stable across local Git date-format configs.
+                "--pretty=format:%H|%aI|%an|%ae",
                 "--",
                 str(relative_file_path),
             ],
@@ -27,9 +33,17 @@ def get_git_history(repo_dir: Path, file_path: Path) -> list[tuple[str, str, str
             check=True,
         )
         commits = [
-            line.split("|") for line in result.stdout.strip().split("\n") if line
+            line.split("|", 3) for line in result.stdout.strip().split("\n") if line
         ]
-        return [(commit[0], commit[1], commit[2]) for commit in commits]
+        return [
+            (
+                commit[0],
+                commit[1],
+                commit[2],
+                commit[3] if len(commit) > 3 else "",
+            )
+            for commit in commits
+        ]
     except subprocess.CalledProcessError:
         return []
 
@@ -62,6 +76,27 @@ def get_git_authors_on_first_day(git_history: list) -> list[str]:
             seen.add(author)
             authors.append(author)
     return authors
+
+
+def get_git_contributors(git_history: list) -> list[str]:
+    """Unique non-bot committers over the full history, ordered by first touch.
+
+    Complements `get_git_authors_on_first_day`: this is the "everyone who
+    actually changed the file" view, while the first-day set approximates the
+    original authors.
+    """
+    seen: set = set()
+    contributors: list[str] = []
+    for entry in reversed(list(git_history or [])):  # history is newest-first
+        if len(entry) < 3:
+            continue
+        author = entry[2]
+        if not author or author in _GIT_BOTS:
+            continue
+        if author not in seen:
+            seen.add(author)
+            contributors.append(author)
+    return contributors
 
 
 def _insert_after(d: dict[str, Any], after_key: str, key: str, value: Any) -> None:

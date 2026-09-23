@@ -713,24 +713,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:18:08Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:11",
               "evidence": "This is the standard ''m-of-n'' script defined in [https://github.com/bitcoin/bips/blob/master/bip-0011.mediawiki BIP 11]",
               "reason": "The proposed Version 1 script format explicitly reuses the BIP 11 m-of-n multisig script structure and extends it with a version parameter and new opcode.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:30",
               "evidence": "the coinbase transactions in blocks at heights 91842 and 91880, which are known to be identical<ref>[[https://github.com/bitcoin/bips/blob/master/bip-0030.mediawiki|BIP 30 - Duplicate transactions]]",
               "reason": "The proposal relies on the duplicate-coinbase collision case discussed in BIP 30 when justifying coinbase handling for normalized transaction IDs.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:34",
               "evidence": "which motivated the introduction of BIP 34.",
               "reason": "The proposal treats BIP 34 as the response to the identified coinbase collision issue and uses that history to justify its coinbase normalization rule.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

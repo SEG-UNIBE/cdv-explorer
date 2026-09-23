@@ -1,0 +1,219 @@
+{
+  "meta": {
+    "schema_version": 2,
+    "llm_model": "gpt-5.4-mini",
+    "approach_order": [
+      "preamble_extracted",
+      "body_extracted_llm"
+    ]
+  },
+  "by_approach": {
+    "preamble_extracted": {
+      "key": "preamble_extracted",
+      "label": "Preamble",
+      "dependency": {
+        "edge_count": 0,
+        "cyclic_group_count": 0,
+        "involved_node_count": 0,
+        "self_relation_count": 0,
+        "unresolved_target_count": 0,
+        "cyclic_groups": []
+      },
+      "supersession": {
+        "fact_count": 0,
+        "reciprocal_count": 0,
+        "reciprocal_percentage": 0.0,
+        "one_sided_count": 0,
+        "one_sided_percentage": 0.0,
+        "reciprocal_facts": [],
+        "one_sided_facts": [],
+        "cyclic_group_count": 0,
+        "self_relation_count": 0,
+        "unresolved_target_count": 0,
+        "cyclic_groups": []
+      },
+      "checks": {
+        "self_relation_count": 0,
+        "self_relations": [],
+        "unresolved_target_count": 0,
+        "unresolved_targets": []
+      }
+    },
+    "body_extracted_llm": {
+      "key": "body_extracted_llm",
+      "label": "LLM",
+      "dependency": {
+        "edge_count": 53,
+        "cyclic_group_count": 0,
+        "involved_node_count": 0,
+        "self_relation_count": 0,
+        "unresolved_target_count": 0,
+        "cyclic_groups": []
+      },
+      "supersession": {
+        "fact_count": 0,
+        "reciprocal_count": 0,
+        "reciprocal_percentage": 0.0,
+        "one_sided_count": 0,
+        "one_sided_percentage": 0.0,
+        "reciprocal_facts": [],
+        "one_sided_facts": [],
+        "cyclic_group_count": 0,
+        "self_relation_count": 0,
+        "unresolved_target_count": 0,
+        "cyclic_groups": []
+      },
+      "checks": {
+        "self_relation_count": 0,
+        "self_relations": [],
+        "unresolved_target_count": 0,
+        "unresolved_targets": []
+      }
+    }
+  },
+  "table_rows": [
+    {
+      "group": "Dependency",
+      "metric": "Edges analyzed",
+      "values": {
+        "preamble_extracted": "0",
+        "body_extracted_llm": "53"
+      }
+    },
+    {
+      "group": "Dependency",
+      "metric": "Cyclic groups (SCCs)",
+      "values": {
+        "preamble_extracted": "0",
+        "body_extracted_llm": "0"
+      }
+    },
+    {
+      "group": "Dependency",
+      "metric": "IPs involved",
+      "values": {
+        "preamble_extracted": "0",
+        "body_extracted_llm": "0"
+      }
+    },
+    {
+      "group": "Supersession",
+      "metric": "Distinct relations",
+      "values": {
+        "preamble_extracted": "0",
+        "body_extracted_llm": "0"
+      }
+    },
+    {
+      "group": "Supersession",
+      "metric": "Reciprocally declared",
+      "values": {
+        "preamble_extracted": "0",
+        "body_extracted_llm": "0"
+      }
+    },
+    {
+      "group": "Supersession",
+      "metric": "One-sided declarations",
+      "values": {
+        "preamble_extracted": "0",
+        "body_extracted_llm": "0"
+      }
+    }
+  ],
+  "dashboard_table_rows": [
+    {
+      "group": "Dependency",
+      "metric": "Edges analyzed",
+      "values": {
+        "preamble_extracted": "0",
+        "body_extracted_llm": "53"
+      }
+    },
+    {
+      "group": "Dependency",
+      "metric": "Cyclic groups (SCCs)",
+      "values": {
+        "preamble_extracted": "0",
+        "body_extracted_llm": "0"
+      }
+    },
+    {
+      "group": "Dependency",
+      "metric": "IPs involved",
+      "values": {
+        "preamble_extracted": "0",
+        "body_extracted_llm": "0"
+      }
+    },
+    {
+      "group": "Dependency",
+      "metric": "Self-relations",
+      "values": {
+        "preamble_extracted": "0",
+        "body_extracted_llm": "0"
+      }
+    },
+    {
+      "group": "Supersession",
+      "metric": "Distinct relations",
+      "values": {
+        "preamble_extracted": "0",
+        "body_extracted_llm": "0"
+      }
+    },
+    {
+      "group": "Supersession",
+      "metric": "Reciprocally declared",
+      "values": {
+        "preamble_extracted": "0",
+        "body_extracted_llm": "0"
+      }
+    },
+    {
+      "group": "Supersession",
+      "metric": "One-sided declarations",
+      "values": {
+        "preamble_extracted": "0",
+        "body_extracted_llm": "0"
+      }
+    },
+    {
+      "group": "Supersession",
+      "metric": "Cyclic groups (SCCs)",
+      "values": {
+        "preamble_extracted": "0",
+        "body_extracted_llm": "0"
+      }
+    }
+  ],
+  "structural_check_rows": [
+    {
+      "metric": "Self-relations",
+      "values": {
+        "preamble_extracted": 0,
+        "body_extracted_llm": 0
+      }
+    },
+    {
+      "metric": "Supersession cycles",
+      "values": {
+        "preamble_extracted": 0,
+        "body_extracted_llm": 0
+      }
+    },
+    {
+      "metric": "Unresolved catalog targets",
+      "values": {
+        "preamble_extracted": 0,
+        "body_extracted_llm": 0
+      }
+    }
+  ],
+  "omitted_zero_checks": [
+    "Self-relations",
+    "Supersession cycles",
+    "Unresolved catalog targets"
+  ],
+  "omitted_zero_checks_text": "Neither network contains self-relations, supersession cycles, or unresolved catalog targets."
+}

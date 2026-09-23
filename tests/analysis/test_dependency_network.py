@@ -120,7 +120,7 @@ class BuildNetworkDataTests(unittest.TestCase):
                 edge.get("source") == "bips:1"
                 and edge.get("target") == "slips:132"
                 and edge.get("extraction_method") == "body_extracted_llm"
-                and edge.get("relation_type") == "implicit_dependency"
+                and edge.get("relation_type") == "references"
                 and edge.get("value") == 1
                 and edge.get("llm_model") == "test-model"
                 for edge in result["dependency_edges"]
@@ -145,12 +145,14 @@ class BuildNetworkDataTests(unittest.TestCase):
                         {
                             "model": "gpt-5.4-mini",
                             "timestamp": "2026-06-01T00:00:00Z",
-                            "dependencies": [{"target": "bips:2"}],
+                            "status": "success",
+                            "findings": [{"target": "bips:2"}],
                         },
                         {
                             "model": configured_model,
                             "timestamp": "2026-06-02T00:00:00Z",
-                            "dependencies": [],
+                            "status": "success",
+                            "findings": [],
                         },
                     ],
                     "preamble_extracted": [],
@@ -180,9 +182,12 @@ class BuildNetworkDataTests(unittest.TestCase):
                     "source": "bips:1",
                     "target": "bips:2",
                     "extraction_method": "body_extracted_llm",
-                    "relation_type": "implicit_dependency",
+                    "relation_type": "references",
                     "value": 1,
                     "llm_model": "gpt-5.4-mini",
+                    "evidence": None,
+                    "reason": None,
+                    "confidence": None,
                 }
             ],
         )
@@ -328,7 +333,7 @@ class BuildNetworkDataTests(unittest.TestCase):
         rows = load_ground_truth_curated_entries("bitcoin", strict=False)
 
         self.assertTrue(rows)
-        self.assertEqual(rows[0]["reviewed_at"], "2026-06-22")
+        self.assertEqual(rows[0]["reviewed_at"], "2026-08-07")
         self.assertIn("relation_type", rows[0])
         self.assertNotIn("reviewed_at ", rows[0])
 
@@ -634,6 +639,149 @@ class BuildNetworkDataTests(unittest.TestCase):
         ]["summary"]
         self.assertIsNone(empty["kappa"])
 
+    def test_dependency_metrics_pairwise_exact_type_scope_matches_by_canonical_type(
+        self,
+    ):
+        network_data = {
+            "nodes": [
+                {"id": str(i), "graph_key": f"bips:{i}", "title": f"BIP {i}"}
+                for i in range(1, 4)
+            ],
+            "dependency_edges": [
+                {
+                    "source": "bips:1",
+                    "target": "bips:2",
+                    "extraction_method": "preamble_extracted",
+                    "relation_type": "requires",
+                    "value": 1,
+                },
+                {
+                    "source": "bips:1",
+                    "target": "bips:3",
+                    "extraction_method": "preamble_extracted",
+                    "relation_type": "replaces",
+                    "value": 1,
+                },
+                {
+                    "source": "bips:1",
+                    "target": "bips:2",
+                    "extraction_method": "body_extracted_llm",
+                    "relation_type": "depends_on",
+                    "value": 1,
+                },
+                {
+                    "source": "bips:2",
+                    "target": "bips:3",
+                    "extraction_method": "body_extracted_llm",
+                    "relation_type": "references",
+                    "value": 1,
+                },
+            ],
+        }
+
+        metrics = extract_dependency_metrics(network_data)
+
+        # "All types" ignores relation_type: preamble has 2 edges (requires +
+        # replaces), LLM has 2 (depends_on + references).
+        unscoped = metrics["pairwise_comparisons"][
+            "body_extracted_llm__vs__preamble_extracted"
+        ]["summary"]
+        self.assertEqual(unscoped["approach_total"], 2)
+        self.assertEqual(unscoped["baseline_total"], 2)
+
+        # "Exact type" keeps every subtype but tags each with its canonical
+        # type (requires->depends_on, replaces->supersedes, LLM depends_on/
+        # references pass through unchanged): both approaches keep all their
+        # edges, but only the bips:1->2 depends_on-typed edge matches on both
+        # sides, since preamble's supersedes-typed edge and the LLM's
+        # references-typed edge don't share a canonical type with anything
+        # on the other side.
+        scoped = metrics["pairwise_comparisons_exact_type"][
+            "body_extracted_llm__vs__preamble_extracted"
+        ]["summary"]
+        self.assertEqual(scoped["approach_total"], 2)
+        self.assertEqual(scoped["baseline_total"], 2)
+        self.assertEqual(scoped["overlap"], 1)
+        self.assertEqual(scoped["approach_only"], 1)
+        self.assertEqual(scoped["baseline_only"], 1)
+
+    def test_dependency_metrics_pairwise_exact_type_wildcard_resolves_against_other_side(
+        self,
+    ):
+        network_data = {
+            "nodes": [
+                {"id": str(i), "graph_key": f"bips:{i}", "title": f"BIP {i}"}
+                for i in range(1, 4)
+            ],
+            "dependency_edges": [
+                {
+                    "source": "bips:1",
+                    "target": "bips:2",
+                    "extraction_method": "preamble_extracted",
+                    "relation_type": "requires",
+                    "value": 1,
+                },
+                {
+                    "source": "bips:1",
+                    "target": "bips:2",
+                    "extraction_method": "body_extracted_regex",
+                    "relation_type": "reference",
+                    "value": 1,
+                },
+                {
+                    "source": "bips:2",
+                    "target": "bips:3",
+                    "extraction_method": "body_extracted_regex",
+                    "relation_type": "reference",
+                    "value": 1,
+                },
+            ],
+        }
+
+        metrics = extract_dependency_metrics(network_data)
+
+        # Regex has no real type signal, so its bips:1->2 hit resolves
+        # against whatever canonical type preamble recorded there
+        # (requires -> depends_on) and counts as a match. Its bips:2->3 hit
+        # has nothing to resolve against on the preamble side, so exact-type
+        # comparison expands it to every canonical relation type in the typed
+        # (source, target, type) candidate universe.
+        scoped = metrics["pairwise_comparisons_exact_type"][
+            "body_extracted_regex__vs__preamble_extracted"
+        ]["summary"]
+        self.assertEqual(scoped["candidate_pairs"], 24)
+        self.assertEqual(scoped["approach_total"], 5)
+        self.assertEqual(scoped["baseline_total"], 1)
+        self.assertEqual(scoped["overlap"], 1)
+        self.assertEqual(scoped["approach_only"], 4)
+        self.assertEqual(scoped["baseline_only"], 0)
+        scoped_edges = metrics["pairwise_comparisons_exact_type"][
+            "body_extracted_regex__vs__preamble_extracted"
+        ]["edges"]
+        self.assertTrue(
+            any(
+                edge["source"] == "bips:2"
+                and edge["target"] == "bips:3"
+                and edge["relation_type"] == "references"
+                and edge["status"] == "approach_only"
+                for edge in scoped_edges
+            )
+        )
+
+        # Regex compared against itself: both sides are wildcard-only, so the
+        # same typed expansion happens on both sides and still agrees with
+        # itself perfectly (kappa == 1.0).
+        diagonal = metrics["pairwise_comparisons_exact_type"][
+            "body_extracted_regex__vs__body_extracted_regex"
+        ]["summary"]
+        self.assertEqual(diagonal["candidate_pairs"], 24)
+        self.assertEqual(diagonal["approach_total"], 8)
+        self.assertEqual(diagonal["baseline_total"], 8)
+        self.assertEqual(diagonal["overlap"], 8)
+        self.assertEqual(diagonal["approach_only"], 0)
+        self.assertEqual(diagonal["baseline_only"], 0)
+        self.assertAlmostEqual(diagonal["kappa"], 1.0)
+
     def test_dependency_metrics_preserve_duplicate_ids_across_sources(self):
         network_data = {
             "nodes": [
@@ -678,7 +826,7 @@ class BuildNetworkDataTests(unittest.TestCase):
                     "source": "bips:1",
                     "target": "bips:2",
                     "extraction_method": "body_extracted_llm",
-                    "relation_type": "implicit_dependency",
+                    "relation_type": "depends_on",
                     "value": 1,
                     "llm_model": "gpt-5.4-mini",
                 },
@@ -696,7 +844,7 @@ class BuildNetworkDataTests(unittest.TestCase):
                             "source": "bips:1",
                             "target": "bips:2",
                             "extraction_method": "body_extracted_llm",
-                            "relation_type": "implicit_dependency",
+                            "relation_type": "depends_on",
                             "value": 1,
                             "llm_model": "gpt-5.4-mini",
                         }
@@ -741,7 +889,7 @@ class BuildNetworkDataTests(unittest.TestCase):
                             "source": "bips:1",
                             "target": "bips:2",
                             "extraction_method": "body_extracted_llm",
-                            "relation_type": "implicit_dependency",
+                            "relation_type": "depends_on",
                             "value": 1,
                             "llm_model": "gpt-5.4-mini",
                         }
@@ -836,32 +984,35 @@ class BuildNetworkDataTests(unittest.TestCase):
 
         self.assertEqual(merged["llm_model"], "gpt-5.4-mini")
 
-    def test_merge_source_network_data_rejects_mixed_published_llm_models(self):
-        with self.assertRaises(ValueError):
-            merge_source_network_data(
-                [
-                    (
-                        "bips",
-                        {
-                            "nodes": [
-                                {"id": "1", "graph_key": "bips:1", "title": "BIP 1"}
-                            ],
-                            "dependency_edges": [],
-                            "llm_model": "gpt-5.4-mini",
-                        },
-                    ),
-                    (
-                        "slips",
-                        {
-                            "nodes": [
-                                {"id": "2", "graph_key": "slips:2", "title": "SLIP 2"}
-                            ],
-                            "dependency_edges": [],
-                            "llm_model": "gpt-5.4",
-                        },
-                    ),
-                ]
-            )
+    def test_merge_source_network_data_omits_ambiguous_llm_model_label(self):
+        # Each source's dependency edges are already resolved per-IP, so sources
+        # publishing different default-model labels is expected (not an error) -
+        # the combined artifact simply drops the label rather than picking one.
+        combined = merge_source_network_data(
+            [
+                (
+                    "bips",
+                    {
+                        "nodes": [{"id": "1", "graph_key": "bips:1", "title": "BIP 1"}],
+                        "dependency_edges": [],
+                        "llm_model": "gpt-5.4-mini",
+                    },
+                ),
+                (
+                    "slips",
+                    {
+                        "nodes": [
+                            {"id": "2", "graph_key": "slips:2", "title": "SLIP 2"}
+                        ],
+                        "dependency_edges": [],
+                        "llm_model": "gpt-5.4",
+                    },
+                ),
+            ]
+        )
+
+        self.assertNotIn("llm_model", combined)
+        self.assertEqual(len(combined["nodes"]), 2)
 
     def test_dependency_metrics_can_filter_custom_preamble_relation_type(self):
         network_data = {
@@ -906,10 +1057,10 @@ class BuildNetworkDataTests(unittest.TestCase):
 
     def test_first_day_git_committers_drive_network_author_fallback(self):
         history = [
-            ("c4", "2022-05-04T09:00:00+00:00", "Later Author"),
-            ("c3", "2022-05-01T15:00:00+00:00", "First Day B"),
-            ("c2", "2022-05-01T09:00:00+00:00", "First Day A"),
-            ("c1", "2022-05-01T08:00:00+00:00", "GitHub"),
+            ("c4", "2022-05-04T09:00:00+00:00", "Later Author", "later@example.com"),
+            ("c3", "2022-05-01T15:00:00+00:00", "First Day B", "b@example.com"),
+            ("c2", "2022-05-01T09:00:00+00:00", "First Day A", "a@example.com"),
+            ("c1", "2022-05-01T08:00:00+00:00", "GitHub", "noreply@github.com"),
         ]
         proposal = {
             "raw": {

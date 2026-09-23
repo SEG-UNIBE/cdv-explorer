@@ -884,18 +884,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:42:54Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "a standard for backing up and restoring the master seed of a [https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki BIP-0032] hierarchical deterministic wallet using it",
               "reason": "The proposal is explicitly designed around encoding and recovering BIP-32 HD master seeds.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:173",
               "evidence": "It reuses the base-32 character set from BIP-0173",
               "reason": "The codex32 format and checksum/decoding logic reuse BIP-173's bech32 character set and parsing assumptions.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

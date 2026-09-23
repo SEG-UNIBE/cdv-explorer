@@ -940,24 +940,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:17:23Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "This BIP is a particular application of BIP43 and is intended to supplement HD wallets which implement BIP44.",
               "reason": "The proposal’s key derivation paths and wallet structure rely on hierarchical deterministic wallet derivation from BIP32.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:43",
               "evidence": "This BIP is a particular application of BIP43",
               "reason": "The proposal explicitly adopts BIP43’s purpose-field convention, including the fixed purpose value 47'.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:44",
               "evidence": "and is intended to supplement HD wallets which implement BIP44.",
               "reason": "The proposal aligns payment codes with BIP44 accounts and reuses the BIP44 coin type/account hierarchy.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

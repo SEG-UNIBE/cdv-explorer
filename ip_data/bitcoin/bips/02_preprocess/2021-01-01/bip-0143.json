@@ -842,18 +842,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:59Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:141",
               "evidence": "the introduction of segregated witness softfork offers an opportunity",
               "reason": "The proposal’s new digest semantics are explicitly scoped to version 0 witness programs and are deployed via the Segregated Witness softfork.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:144",
               "evidence": "The new serialization format is described in BIP144",
               "reason": "The proposal depends on the witness transaction serialization format defined by BIP 144 for its signed transaction structure.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

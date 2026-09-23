@@ -756,42 +756,48 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:42:23Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "This BIP defines the two needed steps to derive multiple deterministic addresses based on a [[bip-0032.mediawiki|BIP 32]] master private key.",
               "reason": "The derivation scheme is explicitly built on BIP32 master private key derivation.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:44",
               "evidence": "This BIP uses a similar account-structure as defined in BIP [[bip-0084.mediawiki|44]] but with <tt>change</tt> set to <tt>2</tt>.",
               "reason": "The proposal reuses the BIP44-style account/path structure while changing the change branch semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:49",
               "evidence": "We largely use the same approach used in BIPs 49, 84 and 86 for ease of implementation.",
               "reason": "The proposal is intentionally patterned after BIP49's derivation approach and also cites it for backward-compatibility considerations.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:65",
               "evidence": "Fidelity bonds are created by locking up bitcoins using the `OP_CHECKLOCKTIMEVERIFY` opcode.",
               "reason": "The timelocked output script relies on OP_CHECKLOCKTIMEVERIFY semantics defined by BIP65.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:84",
               "evidence": "We largely use the same approach used in BIPs 49, 84 and 86 for ease of implementation.",
               "reason": "The proposal adopts the same derivation-style approach as BIP84 for account/path design.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:86",
               "evidence": "We largely use the same approach used in BIPs 49, 84 and 86 for ease of implementation.",
               "reason": "The proposal follows the same implementation approach as BIP86 for its HD wallet derivation scheme.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

@@ -5,11 +5,15 @@ from collections.abc import Iterable, Mapping, Sequence
 from pathlib import Path
 from typing import Any
 
-from analysis.authorship.mining import get_git_authors_on_first_day
+from analysis.authorship.mining import (
+    get_git_authors_on_first_day,
+    get_git_contributors,
+)
 from analysis.dependencies.constants import (
     BODY_EXTRACTED_LLM,
     BODY_EXTRACTED_REGEX,
     GROUND_TRUTH_CURATED,
+    INTERRELATION_TYPE_REFERENCES,
     PREAMBLE_EXTRACTED,
 )
 from analysis.proposal_schema import (
@@ -31,7 +35,6 @@ from analysis.validation.ground_truth import (
 from pipeline.source_context import SourceContext
 
 RELATION_REFERENCE = "reference"
-RELATION_IMPLICIT_DEPENDENCY = "implicit_dependency"
 EDGE_BASE_FIELDS = {"source", "target", "extraction_method", "relation_type", "value"}
 
 
@@ -90,18 +93,13 @@ def dependency_edges_from_links(
                     )
             continue
 
-        relation_type = (
-            RELATION_IMPLICIT_DEPENDENCY
-            if link_type == BODY_EXTRACTED_LLM
-            else RELATION_REFERENCE
-        )
         for link in links or []:
             edges.append(
                 make_dependency_edge(
                     _link_endpoint_to_graph_key(link.get("source"), source_slug),
                     _link_endpoint_to_graph_key(link.get("target"), source_slug),
                     link_type,
-                    str(link.get("relation_type") or relation_type),
+                    str(link.get("relation_type") or RELATION_REFERENCE),
                     link.get("value", 1),
                     **{
                         key: value
@@ -316,6 +314,23 @@ def _reference_id_chars(config: Mapping[str, Any]) -> str:
     )
 
 
+_REFERENCE_ITEM_PASSTHROUGH_FIELDS = (
+    "count",
+    "type",
+    "evidence",
+    "reason",
+    "confidence",
+)
+
+
+def _reference_item_extra_fields(item: Mapping[str, Any]) -> dict[str, Any]:
+    return {
+        field: item.get(field)
+        for field in _REFERENCE_ITEM_PASSTHROUGH_FIELDS
+        if item.get(field) is not None
+    }
+
+
 def _resolve_reference_item(
     item: Any,
     reference_configs: list[dict[str, Any]],
@@ -341,8 +356,7 @@ def _resolve_reference_item(
         if raw_source is None and isinstance(raw_id, str):
             resolved = _resolve_reference_item(raw_id, reference_configs, active_config)
             if resolved is not None:
-                if item.get("count") is not None:
-                    resolved["count"] = item.get("count")
+                resolved.update(_reference_item_extra_fields(item))
                 return resolved
         matching_config = next(
             (
@@ -358,7 +372,7 @@ def _resolve_reference_item(
         return {
             "source_slug": str(matching_config.get("source_slug") or ""),
             "proposal_id": normalized_id,
-            **({"count": item.get("count")} if item.get("count") is not None else {}),
+            **_reference_item_extra_fields(item),
         }
 
     text = str(item).strip()
@@ -476,8 +490,8 @@ def build_network_data(
     type_aliases = dict(context.classification_aliases("type"))
     nodes = []
     explicit_reference_links = []
-    implicit_dependency_links = []
-    implicit_dependency_links_by_model: dict[str, list[dict[str, Any]]] = {}
+    llm_finding_links = []
+    llm_finding_links_by_model: dict[str, list[dict[str, Any]]] = {}
     llm_model_stats: dict[str, dict[str, Any]] = {}
     ground_truth_links = []
     explicit_dependency_links: dict[str, list[dict[str, Any]]] = {
@@ -551,6 +565,10 @@ def build_network_data(
                 if first_day_authors:
                     node["author"] = first_day_authors
 
+            # Everyone who ever changed the file, as raw git names; identity
+            # normalization (aliases) happens at metrics time.
+            node["contributors"] = get_git_contributors(git_history)
+
             # Derive created date from oldest git commit when preamble has none
             if not node.get("created") and git_history:
                 _oldest = git_history[-1]  # history is newest-first
@@ -614,9 +632,9 @@ def build_network_data(
                 },
             )
             llm_model_stats[llm_model]["document_count"] += 1
-            model_links = implicit_dependency_links_by_model.setdefault(llm_model, [])
+            model_links = llm_finding_links_by_model.setdefault(llm_model, [])
             for dep in normalize_proposal_references(
-                llm_run.get("dependencies"),
+                llm_run.get("findings"),
                 proposal_label=proposal_label,
                 source_context=context,
             ):
@@ -629,11 +647,16 @@ def build_network_data(
                     dep.get("source_slug"),
                     dep["proposal_id"],
                     llm_model=llm_model,
+                    relation_type=str(dep.get("type") or "").strip()
+                    or INTERRELATION_TYPE_REFERENCES,
+                    evidence=str(dep.get("evidence") or "").strip() or None,
+                    reason=str(dep.get("reason") or "").strip() or None,
+                    confidence=str(dep.get("confidence") or "").strip() or None,
                 )
                 model_links.append(edge)
                 llm_model_stats[llm_model]["edge_count"] += 1
                 if default_llm_run is llm_run:
-                    implicit_dependency_links.append(edge)
+                    llm_finding_links.append(edge)
 
         preamble_interrelations = interrelations.get(PREAMBLE_EXTRACTED, [])
         relation_entries_by_type: dict[str, list[Any]] = {}
@@ -773,7 +796,7 @@ def build_network_data(
     raw_links = {
         BODY_EXTRACTED_REGEX: explicit_reference_links,
         PREAMBLE_EXTRACTED: explicit_dependency_links,
-        BODY_EXTRACTED_LLM: implicit_dependency_links,
+        BODY_EXTRACTED_LLM: llm_finding_links,
         GROUND_TRUTH_CURATED: ground_truth_links,
     }
     dependency_edges = dependency_edges_from_links(
@@ -784,7 +807,7 @@ def build_network_data(
             {BODY_EXTRACTED_LLM: links},
             source_slug=context.source_slug,
         )
-        for model, links in implicit_dependency_links_by_model.items()
+        for model, links in llm_finding_links_by_model.items()
     }
     default_model = str(context.llm_model or "").strip()
     if not default_model and llm_model_stats:

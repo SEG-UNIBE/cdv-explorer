@@ -811,24 +811,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:18:58Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:3",
               "evidence": "Made compliant with [[bip-0003.md|BIP 3]], use cases added.",
               "reason": "The changelog states compliance with BIP 3, indicating the document format/process is constrained by that proposal.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:341",
               "evidence": "NUMS points as described in [[bip-0341.mediawiki|BIP341]] to disable the key spend-path",
               "reason": "BIP 347 discusses the taproot key spend-path and NUMS points in the context of its proposed script-path behavior, so understanding the proposal depends on BIP 341’s taproot semantics.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:342",
               "evidence": "motivated to leverage the tapscript softfork opcode upgrade path introduced in [[bip-0342.mediawiki|BIP342]].",
               "reason": "The proposal relies on BIP 342’s tapscript opcode upgrade path and is defined as a tapscript opcode change within that framework.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

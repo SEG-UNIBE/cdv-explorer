@@ -535,18 +535,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:18:04Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:37",
               "evidence": "The fee filter is additive with a bloom filter for transactions",
               "reason": "The proposal explicitly composes feefilter with the transaction bloom-filter mechanism defined by BIP 37.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:111",
               "evidence": "The concept of a limited mempool was introduced in Bitcoin Core 0.12",
               "reason": "The proposal’s filtering behavior is designed around the limited mempool policy introduced in BIP 111, using mempool minimum fee as the basis for relay suppression.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

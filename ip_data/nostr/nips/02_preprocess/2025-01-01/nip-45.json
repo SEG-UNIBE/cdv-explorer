@@ -188,12 +188,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:58:53Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:01",
               "evidence": "filters as specified in [NIP 01](01.md) for the verb `REQ`",
               "reason": "The COUNT verb reuses NIP-01 filter syntax and the REQ subscription model, so implementing COUNT depends on that message/filter semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

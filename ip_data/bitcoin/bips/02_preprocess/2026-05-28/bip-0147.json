@@ -575,30 +575,34 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:18:14Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:9",
               "evidence": "This BIP will be deployed by \"version bits\" [https://github.com/bitcoin/bips/blob/master/bip-0009.mediawiki BIP9]",
               "reason": "The proposal’s activation mechanism is specifically based on BIP9 version-bits deployment.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:62",
               "evidence": "This document is extracted from the previous [https://github.com/bitcoin/bips/blob/master/bip-0062.mediawiki BIP62] proposal",
               "reason": "The proposal is explicitly extracted from BIP62, indicating it reuses and narrows BIP62's malleability-related rules.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:141",
               "evidence": "also pay-to-witness-script-hash scripts described in BIP141",
               "reason": "The NULLDUMMY rule is extended to P2WSH scripts and is discussed in relation to segregated witness transaction semantics defined by BIP141.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:143",
               "evidence": "using the same parameters for BIP141 and BIP143",
               "reason": "The deployment section explicitly ties this proposal’s activation parameters to BIP143, so adoption depends on that deployment configuration.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

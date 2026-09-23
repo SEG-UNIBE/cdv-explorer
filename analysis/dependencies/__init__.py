@@ -1,3 +1,9 @@
+from .centrality import (
+    build_centrality_comparison_payload,
+    kendalls_tau_b,
+    kendalls_w,
+)
+from .consistency import build_dependency_consistency_payload
 from .constants import (
     BODY_EXTRACTED_LLM,
     BODY_EXTRACTED_REGEX,
@@ -35,12 +41,16 @@ __all__ = [
     "PREAMBLE_EXTRACTED",
     "available_llm_model_entries",
     "build_graph",
+    "build_centrality_comparison_payload",
+    "build_dependency_consistency_payload",
     "build_network_data",
     "collapse_network_data_to_llm_model",
     "compute_graph_depth",
     "compute_top_central_nodes",
     "extract_dependency_metrics",
     "find_circular_dependencies",
+    "kendalls_tau_b",
+    "kendalls_w",
     "load_proposal_json_documents",
     "normalize_proposal_ids",
     "save_network_data_artifacts",

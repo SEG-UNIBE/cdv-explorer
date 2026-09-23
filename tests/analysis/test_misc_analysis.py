@@ -1,25 +1,49 @@
+import subprocess
 import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from analysis.authorship.mining import update_metadata_from_git
+from analysis.authorship.mining import get_git_history, update_metadata_from_git
 from analysis.conformity.metrics import extract_conformity_metrics
 from analysis.dependencies.network import build_network_data
 from analysis.proposal_schema import (
     get_interrelations,
     is_llm_runs_format,
-    latest_llm_dependencies,
+    latest_llm_findings,
 )
 from tests.helpers import proposal as _proposal
 
 
 class UpdateMetadataFromGitTests(unittest.TestCase):
+    def test_git_history_includes_author_email(self):
+        completed = subprocess.CompletedProcess(
+            args=[],
+            returncode=0,
+            stdout=(
+                "c2|2022-05-02T09:00:00+00:00|Alias Name|alias@example.com\n"
+                "c1|2022-05-01T08:00:00+00:00|Real Name|real@example.com"
+            ),
+        )
+
+        with patch("analysis.authorship.mining.subprocess.run", return_value=completed):
+            history = get_git_history(
+                Path("/repo"), Path("/repo/proposals/bip-0001.md")
+            )
+
+        self.assertEqual(
+            history,
+            [
+                ("c2", "2022-05-02T09:00:00+00:00", "Alias Name", "alias@example.com"),
+                ("c1", "2022-05-01T08:00:00+00:00", "Real Name", "real@example.com"),
+            ],
+        )
+
     def test_backfills_authors_from_first_day_committers_only(self):
         history = [
-            ("c4", "2022-05-04T09:00:00+00:00", "Later Author"),
-            ("c3", "2022-05-01T15:00:00+00:00", "First Day B"),
-            ("c2", "2022-05-01T09:00:00+00:00", "First Day A"),
-            ("c1", "2022-05-01T08:00:00+00:00", "GitHub"),
+            ("c4", "2022-05-04T09:00:00+00:00", "Later Author", "later@example.com"),
+            ("c3", "2022-05-01T15:00:00+00:00", "First Day B", "b@example.com"),
+            ("c2", "2022-05-01T09:00:00+00:00", "First Day A", "a@example.com"),
+            ("c1", "2022-05-01T08:00:00+00:00", "GitHub", "noreply@github.com"),
         ]
         document = {
             "raw": {
@@ -95,60 +119,101 @@ class LlmRunsFormatTests(unittest.TestCase):
 
     def test_detects_new_runs_format(self):
         runs = [
-            {"model": "gpt-5", "timestamp": "2026-06-11T10:00:00Z", "dependencies": []}
+            {
+                "model": "gpt-5",
+                "timestamp": "2026-06-11T10:00:00Z",
+                "status": "success",
+                "findings": [],
+            }
         ]
         self.assertTrue(is_llm_runs_format(runs))
 
     def test_does_not_detect_old_flat_format_as_runs(self):
         self.assertFalse(is_llm_runs_format(["BIP 32"]))
         self.assertFalse(is_llm_runs_format([{"target": "bips:32"}]))
+        self.assertFalse(
+            is_llm_runs_format(
+                [
+                    {
+                        "model": "gpt-5",
+                        "timestamp": "2026-06-11T10:00:00Z",
+                        "findings": [],
+                    }
+                ]
+            )
+        )
         self.assertFalse(is_llm_runs_format([]))
 
-    def test_latest_run_dependencies_are_returned(self):
+    def test_rejects_mixed_llm_run_shape(self):
+        self.assertFalse(
+            is_llm_runs_format(
+                [
+                    {
+                        "model": "gpt-5",
+                        "timestamp": "2026-06-11T10:00:00Z",
+                        "status": "success",
+                        "findings": [],
+                    },
+                    {
+                        "model": "gpt-5",
+                        "timestamp": "2026-06-12T10:00:00Z",
+                        "findings": [],
+                    },
+                ]
+            )
+        )
+
+    def test_latest_run_findings_are_returned(self):
         runs = [
             {
                 "model": "gpt-4",
                 "timestamp": "2026-01-01T00:00:00Z",
-                "dependencies": [{"target": "bips:1"}],
+                "status": "success",
+                "findings": [{"target": "bips:1"}],
             },
             {
                 "model": "gpt-5",
                 "timestamp": "2026-06-01T00:00:00Z",
-                "dependencies": [{"target": "bips:32"}],
+                "status": "success",
+                "findings": [{"target": "bips:32"}],
             },
         ]
-        self.assertEqual(latest_llm_dependencies(runs), [{"target": "bips:32"}])
+        self.assertEqual(latest_llm_findings(runs), [{"target": "bips:32"}])
 
     def test_latest_run_is_selected_by_timestamp_not_position(self):
         runs = [
             {
                 "model": "gpt-5",
                 "timestamp": "2026-06-01T00:00:00Z",
-                "dependencies": [{"target": "bips:32"}],
+                "status": "success",
+                "findings": [{"target": "bips:32"}],
             },
             {
                 "model": "gpt-4",
                 "timestamp": "2026-01-01T00:00:00Z",
-                "dependencies": [{"target": "bips:1"}],
+                "status": "success",
+                "findings": [{"target": "bips:1"}],
             },
         ]
-        self.assertEqual(latest_llm_dependencies(runs), [{"target": "bips:32"}])
+        self.assertEqual(latest_llm_findings(runs), [{"target": "bips:32"}])
 
     def test_old_flat_format_is_ignored(self):
         flat = [{"target": "bips:32"}]
-        self.assertEqual(latest_llm_dependencies(flat), [])
+        self.assertEqual(latest_llm_findings(flat), [])
 
     def test_get_interrelations_resolves_latest_run(self):
         runs = [
             {
                 "model": "gpt-4",
                 "timestamp": "2026-01-01T00:00:00Z",
-                "dependencies": [{"target": "bips:1"}],
+                "status": "success",
+                "findings": [{"target": "bips:1"}],
             },
             {
                 "model": "gpt-5",
                 "timestamp": "2026-06-01T00:00:00Z",
-                "dependencies": [{"target": "bips:32"}],
+                "status": "success",
+                "findings": [{"target": "bips:32"}],
             },
         ]
         result = get_interrelations(self._proposal_with_runs(runs))
@@ -159,12 +224,14 @@ class LlmRunsFormatTests(unittest.TestCase):
             {
                 "model": "gpt-4",
                 "timestamp": "2026-01-01T00:00:00Z",
-                "dependencies": [{"target": "bips:99"}],
+                "status": "success",
+                "findings": [{"target": "bips:99", "type": "depends_on"}],
             },
             {
                 "model": "gpt-5",
                 "timestamp": "2026-06-01T00:00:00Z",
-                "dependencies": [{"target": "bips:2"}],
+                "status": "success",
+                "findings": [{"target": "bips:2", "type": "depends_on"}],
             },
         ]
         proposals = [
@@ -196,9 +263,12 @@ class LlmRunsFormatTests(unittest.TestCase):
                     "source": "bips:1",
                     "target": "bips:2",
                     "extraction_method": "body_extracted_llm",
-                    "relation_type": "implicit_dependency",
+                    "relation_type": "depends_on",
                     "value": 1,
                     "llm_model": "gpt-5",
+                    "evidence": None,
+                    "reason": None,
+                    "confidence": None,
                 }
             ],
         )

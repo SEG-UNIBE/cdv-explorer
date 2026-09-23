@@ -921,24 +921,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:43:05Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:65",
               "evidence": "The reference implementation and this BIP was based heavily on work done by Peter Todd for the closely related BIP 65.",
               "reason": "The proposal is modeled on and technically reuses the CLTV-style script opcode design and soft-fork pattern established by BIP 65.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:68",
               "evidence": "in combination with BIP 68 allows execution pathways",
               "reason": "CHECKSEQUENCEVERIFY is explicitly defined and interpreted around BIP 68 relative lock-time semantics and uses the nSequence field rules from that proposal.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:113",
               "evidence": "This BIP must be deployed simultaneously with BIP68 and BIP113 using the same deployment mechanism.",
               "reason": "Adoption is coupled to BIP 113 because the deployment rules require simultaneous activation with it.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

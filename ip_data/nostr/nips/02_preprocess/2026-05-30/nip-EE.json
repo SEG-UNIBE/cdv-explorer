@@ -485,36 +485,41 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:01:03Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:04",
               "evidence": "Originally, one-to-one direct messages (DMs) in Nostr happened via the scheme defined in [NIP-04](04.md).",
               "reason": "The proposal contrasts its messaging approach against NIP-04 DM encryption and uses it as part of the design context for direct-message handling.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "nips:17",
               "evidence": "Most recently, [NIP-17](17.md) combines [NIP-44](44.md) encryption with [NIP-59](59.md) gift-wrapping",
               "reason": "The proposal builds on the NIP-17 approach as prior art for private DMs and metadata hiding when explaining how its own design differs and extends messaging privacy goals.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "nips:44",
               "evidence": "With the addition of [NIP-44](44.md), we have an updated encryption scheme",
               "reason": "The proposal explicitly relies on NIP-44 as the encryption scheme reused for securing group message content and as the basis for its content encryption workflow.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:59",
               "evidence": "combines [NIP-44](44.md) encryption with [NIP-59](59.md) gift-wrapping",
               "reason": "The proposal requires NIP-59 gift-wrapping for Welcome Events to be delivered privately.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:70",
               "evidence": "Read more in [NIP-70](70.md)",
               "reason": "The proposal uses NIP-70's authenticated-author convention for KeyPackage publication and references it as an optional control on publication semantics.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

@@ -118,6 +118,35 @@ class SourceContext:
         return ecosystem if isinstance(ecosystem, Mapping) else {}
 
     @property
+    def author_aliases(self) -> Mapping[str, str]:
+        """Alias -> canonical-name mapping flattened from `authorship.identities`.
+
+        The config lists one entry per unique identity (`name` plus its
+        `aliases`); ecosystem-level (not per-source) because contributor
+        identities span sources, e.g. the same person committing to BIPs and
+        SLIPs.
+        """
+        config = self.ecosystem_config.get("authorship", {})
+        if not isinstance(config, Mapping):
+            return {}
+        identities = config.get("identities", [])
+        if not isinstance(identities, list):
+            return {}
+
+        aliases: dict[str, str] = {}
+        for identity in identities:
+            if not isinstance(identity, Mapping):
+                continue
+            canonical = str(identity.get("name") or "").strip()
+            if not canonical:
+                continue
+            for alias in identity.get("aliases") or []:
+                alias_text = str(alias).strip()
+                if alias_text and alias_text != canonical:
+                    aliases[alias_text] = canonical
+        return aliases
+
+    @property
     def llm_config(self) -> Mapping[str, Any]:
         config = self.ecosystem_config.get("llm", {})
         return config if isinstance(config, Mapping) else {}

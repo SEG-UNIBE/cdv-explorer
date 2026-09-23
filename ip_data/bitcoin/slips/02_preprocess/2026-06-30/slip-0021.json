@@ -1,0 +1,318 @@
+{
+  "raw": {
+    "preamble": {
+      "slip": "21",
+      "title": "Hierarchical derivation of symmetric keys",
+      "author": [
+        "Andrew R. Kozlik <andrew.kozlik@satoshilabs.com>",
+        "Ondrej Vejpustek <ondrej.vejpustek@satoshilabs.com>",
+        "Pavol Rusnak <stick@satoshilabs.com>"
+      ],
+      "status": "Final",
+      "type": "Standard",
+      "created": "2019-06-25"
+    }
+  },
+  "meta": {
+    "last_commit": "2025-07-07T19:31:48+02:00",
+    "total_commits": 5,
+    "git_history": [
+      [
+        "5951d583529d11b7333204dde077bc13f96fa54c",
+        "2025-07-07T19:31:48+02:00",
+        "M1nd3r",
+        "petrsedlacek.km@seznam.cz"
+      ],
+      [
+        "9ade5382d607d9557aa5be00b9c8f03a81557423",
+        "2022-11-08T19:19:44+09:00",
+        "Divam Narula",
+        "dfordivam@protonmail.com"
+      ],
+      [
+        "508968da89aeb23a07d14109207cbd49aa0ca12a",
+        "2021-03-09T17:28:27+01:00",
+        "Andrew Kozlik",
+        "42678794+andrewkozlik@users.noreply.github.com"
+      ],
+      [
+        "25b74c29a6ece27468cb2beae120331fe2e1d054",
+        "2019-07-19T21:17:56+02:00",
+        "Andrew Kozlik",
+        "andrew.kozlik@gmail.com"
+      ],
+      [
+        "b8d0e220c9cd1f0f0ce8041a360397ac2f9d176d",
+        "2019-06-27T16:35:07+02:00",
+        "Andrew Kozlik",
+        "42678794+andrewkozlik@users.noreply.github.com"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 85.71,
+      "passed_checks": 6,
+      "failed_checks": 1,
+      "skipped_checks": 0,
+      "total_checks": 7,
+      "slip": {
+        "score": 85.71,
+        "passed_checks": 6,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 7,
+        "checks": [
+          {
+            "id": "slip.required_field.slip",
+            "label": "Required field 'slip' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.author",
+            "label": "Required field 'author' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.type",
+            "label": "Required field 'type' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.required_field.created",
+            "label": "Required field 'created' is present",
+            "category": "required_field",
+            "standard": "slip",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "slip.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "slip",
+            "passed": false,
+            "details": "Missing: abstract"
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "key": 44,
+      "master": 22,
+      "slip": 19,
+      "node": 17,
+      "derivation": 16,
+      "symmetric": 13,
+      "com": 13,
+      "bip": 12,
+      "https": 11,
+      "child": 11,
+      "nodes": 10,
+      "n": 10,
+      "keys": 9,
+      "satoshilabs": 8,
+      "0032": 8,
+      "github": 8,
+      "blob": 8,
+      "nist": 8,
+      "seed": 7,
+      "length": 7,
+      "0010": 6,
+      "256": 6,
+      "use": 6,
+      "m": 6,
+      "label": 6,
+      "value": 6,
+      "800": 6,
+      "108": 6,
+      "0021": 5,
+      "slips": 5,
+      "md": 5,
+      "derive": 5,
+      "private": 5,
+      "encryption": 5,
+      "defined": 5,
+      "0039": 5,
+      "derived": 5,
+      "hmac": 5,
+      "bit": 5,
+      "32": 5,
+      "sp": 5,
+      "hierarchical": 4,
+      "hierarchy": 4,
+      "secret": 4,
+      "bitcoin": 4,
+      "secp256k1": 4,
+      "example": 4,
+      "0011": 4,
+      "purpose": 4,
+      "deterministic": 4,
+      "string": 4,
+      "sha512": 4,
+      "byte": 4,
+      "integer": 4,
+      "number": 3,
+      "wallets": 3,
+      "bips": 3,
+      "mediawiki": 3,
+      "specification": 3,
+      "designed": 3,
+      "separation": 3,
+      "s": 3,
+      "associated": 3,
+      "variable": 3,
+      "labels": 3,
+      "functions": 3,
+      "standard": 2,
+      "andrew": 2,
+      "kozlik": 2,
+      "ondrej": 2,
+      "vejpustek": 2,
+      "deriving": 2,
+      "pairs": 2,
+      "p": 2,
+      "ed25519": 2,
+      "algorithms": 2,
+      "needed": 2,
+      "implementation": 2,
+      "generation": 2,
+      "domain": 2,
+      "binary": 2,
+      "b": 2,
+      "msg": 2,
+      "level": 2,
+      "ascii": 2,
+      "encoded": 2,
+      "possible": 2,
+      "e": 2,
+      "sufficiently": 2,
+      "avoid": 2,
+      "collisions": 2,
+      "9999": 2,
+      "function": 2,
+      "0": 2,
+      "bytes": 2,
+      "data": 2,
+      "authentication": 2,
+      "doi": 2,
+      "org": 2,
+      "10": 2,
+      "6028": 2,
+      "recommendation": 2,
+      "pseudorandom": 2,
+      "keylength": 2,
+      "uses": 2,
+      "principle": 2,
+      "known": 2,
+      "processes": 2,
+      "scheme": 2,
+      "labeling": 2,
+      "31": 2,
+      "index": 2,
+      "omitted": 2,
+      "input": 2,
+      "message": 2
+    },
+    "changes_in_status": [],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        {
+          "target": "bips:32",
+          "count": 8
+        },
+        {
+          "target": "bips:39",
+          "count": 3
+        },
+        {
+          "target": "slips:10",
+          "count": 6
+        },
+        {
+          "target": "slips:11",
+          "count": 4
+        },
+        {
+          "target": "slips:39",
+          "count": 2
+        },
+        {
+          "target": "slips:9999",
+          "count": 1
+        }
+      ],
+      "body_extracted_llm": [
+        {
+          "run_id": "2026-08-07T12:28:30Z_gpt-5.6-sol_a6f7bf17",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T12:29:07Z",
+          "status": "success",
+          "findings": [
+            {
+              "target": "bips:32",
+              "type": "depends_on",
+              "evidence": "We adapt the master node generation from BIP-0032",
+              "reason": "The proposal's master-node generation directly adapts the derivation procedure defined by BIP-0032, making it part of the specified mechanism.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:39",
+              "type": "references",
+              "evidence": "or the binary seed defined in BIP-0039",
+              "reason": "BIP-0039 is cited as another possible source of input seed material and is used for the example, but the scheme accepts a general master secret and does not depend on it.",
+              "confidence": "low"
+            },
+            {
+              "target": "slips:10",
+              "type": "depends_on",
+              "evidence": "We adapt the master node generation from BIP-0032 and SLIP-0010",
+              "reason": "The master-node generation is also stated to be adapted from SLIP-0010, although the precise contribution of each named source requires some interpretation.",
+              "confidence": "medium"
+            },
+            {
+              "target": "slips:11",
+              "type": "references",
+              "evidence": "SLIP-0011 deals with this problem by first using BIP-0032 to derive a secp256k1 private key and then deriving the symmetric key from this private key",
+              "reason": "SLIP-0011 is discussed as an existing alternative approach motivating the new scheme; the current mechanism does not require its rules or format.",
+              "confidence": "low"
+            },
+            {
+              "target": "slips:39",
+              "type": "references",
+              "evidence": "Let S be the master secret, such as that defined in SLIP-0039",
+              "reason": "SLIP-0039 is cited as one optional source of a master secret, rather than a required part of the derivation scheme.",
+              "confidence": "low"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

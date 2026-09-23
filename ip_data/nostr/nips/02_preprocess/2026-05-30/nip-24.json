@@ -13,7 +13,7 @@
   },
   "meta": {
     "last_commit": "Mon Aug 11 19:37:53 2025 +0900",
-    "total_commits": 21,
+    "total_commits": 19,
     "git_history": [
       [
         "739f3c5263584770f098440855d9364a779e7f9d",
@@ -56,19 +56,9 @@
         "Oscar Merry"
       ],
       [
-        "45351b561dcc15b9d3c09b64967a5e30a80ddabe",
-        "Mon Jun 17 13:38:45 2024 +0100",
-        "Oscar Merry"
-      ],
-      [
         "326ad34690c707b983a28524d85d8da3441ca7b3",
         "Thu Jun 13 21:02:35 2024 +0900",
         "Asai Toshiya"
-      ],
-      [
-        "32004283da0f0893d7b697c9a0b1a1f8611e9929",
-        "Mon May 20 11:12:03 2024 +0100",
-        "Oscar Merry"
       ],
       [
         "caee48316f811f928d92c44892ea173d990b2ebc",
@@ -273,42 +263,48 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:07Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:51",
               "evidence": "`title`: name of [NIP-51] sets",
               "reason": "The `title` tag is assigned a specific meaning for NIP-51 sets, so its interpretation depends on NIP-51.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "nips:52",
               "evidence": "`title`: name of [NIP-51] sets, [NIP-52] calendar event",
               "reason": "The `title` tag’s semantics for calendar events rely on NIP-52.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "nips:53",
               "evidence": "`title`: name of [NIP-51] sets, [NIP-52] calendar event, [NIP-53] live event",
               "reason": "The `title` tag’s semantics for live events rely on NIP-53.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "nips:65",
               "evidence": "[NIP-65](65.md) should be used instead",
               "reason": "The proposal explicitly deprecates a kind-3 relay mapping in favor of NIP-65, making adoption of that field semantics depend on NIP-65.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:73",
               "evidence": "`i`: an external id the event is referring to in some way - see [NIP-73](73.md)",
               "reason": "The meaning of the `i` tag is defined by and refers to NIP-73, so this tag’s semantics depend on that proposal.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:99",
               "evidence": "`title`: name of [NIP-51] sets, [NIP-52] calendar event, [NIP-53] live event or [NIP-99] listing",
               "reason": "The `title` tag’s semantics for listings rely on NIP-99.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

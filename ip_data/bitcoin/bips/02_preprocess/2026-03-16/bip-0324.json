@@ -1340,12 +1340,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:44:23Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:340",
               "evidence": "as in [https://github.com/bitcoin/bips/blob/master/bip-0340.mediawiki#specification BIP340]",
               "reason": "The proposal explicitly uses BIP340's tagged-hash construction in shared-secret derivation.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

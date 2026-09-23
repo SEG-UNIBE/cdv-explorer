@@ -982,18 +982,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:17:36Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "This specification relies on BIP32",
               "reason": "The proposal derives all application entropy from a BIP32 master root key and uses hardened BIP32 paths throughout.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:39",
               "evidence": "BIP39 was designed to solve this problem",
               "reason": "The proposal defines a BIP39 application that truncates derived entropy to BIP39 word-length entropy and converts it into a mnemonic.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

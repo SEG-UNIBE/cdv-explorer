@@ -1,9 +1,28 @@
 from unittest import TestCase
 
-from analysis.authorship.metrics import prepare_authorship_payload
+from analysis.authorship.metrics import (
+    extract_authorship_metrics,
+    prepare_authorship_payload,
+)
+from paper.RQ4.collaboration_common import build_author_bip_map
 
 
 class TestAuthorshipMetrics(TestCase):
+    def test_author_bip_map_applies_identity_aliases(self):
+        network_data = {
+            "nodes": [
+                {"id": "1", "author": ["Greg Maxwell <greg@example.com>"]},
+                {"id": "2", "author": ["Gregory Maxwell"]},
+            ]
+        }
+
+        author_bips = build_author_bip_map(
+            network_data,
+            aliases={"Greg Maxwell": "Gregory Maxwell"},
+        )
+
+        self.assertEqual(author_bips, {"Gregory Maxwell": ["1", "2"]})
+
     def test_prepare_authorship_payload_precomputes_collaboration_metric_ranks(self):
         network_data = {
             "nodes": [
@@ -30,3 +49,60 @@ class TestAuthorshipMetrics(TestCase):
         self.assertIn("collaboration_metrics_summary", payload)
         self.assertIn("collaboration_cluster_size_distribution", payload)
         self.assertIn("collaboration_degree_distribution", payload)
+
+    def test_prepare_authorship_payload_includes_git_contributor_aggregates(self):
+        network_data = {
+            "nodes": [
+                {"id": "1", "author": ["Alice"], "contributors": ["Alice", "Dana"]},
+                {"id": "2", "author": ["Bob"], "contributors": ["Dana", "Eve"]},
+                {"id": "3", "author": ["Alice", "Carol"], "contributors": []},
+            ]
+        }
+        contributor_metrics = extract_authorship_metrics(
+            network_data["nodes"],
+            field="contributors",
+            include_network=False,
+        )
+
+        payload = prepare_authorship_payload(
+            network_data,
+            contributor_metrics=contributor_metrics,
+        )
+
+        contributors = payload["contributors"]
+        self.assertNotIn("collaboration_network", contributors)
+        self.assertEqual(
+            contributors["top_contributors"][0],
+            {"author": "Dana", "count": 2},
+        )
+        self.assertEqual(
+            contributors["coverage"],
+            {
+                "contributor_count": 3,
+                "declared_author_count": 3,
+                "contributors_also_declared": 1,
+                "contributors_never_declared": 2,
+                "proposals_with_git_data": 2,
+                "proposals_with_uncredited": 1,
+            },
+        )
+
+    def test_extract_authorship_metrics_sorts_tied_top_authors_by_name(self):
+        nodes = [
+            {"id": "1", "author": ["Zoe"]},
+            {"id": "2", "author": ["Alice"]},
+            {"id": "3", "author": ["Murch"]},
+            {"id": "4", "author": ["Alice"]},
+            {"id": "5", "author": ["Zoe"]},
+        ]
+
+        metrics = extract_authorship_metrics(nodes)
+
+        self.assertEqual(
+            metrics["top_authors"][:3],
+            [
+                {"author": "Alice", "count": 2},
+                {"author": "Zoe", "count": 2},
+                {"author": "Murch", "count": 1},
+            ],
+        )

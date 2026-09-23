@@ -744,18 +744,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:19:17Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:342",
               "evidence": "all opcodes not explicitly defined here are treated exactly as defined by [[bip-0342.mediawiki|BIP342]]",
               "reason": "The new tapleaf version inherits Tapscript execution semantics from BIP342 except where explicitly overridden.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:440",
               "evidence": "relying on the Varops Budget in [[bip-0440.mediawiki|BIP440]]",
               "reason": "The proposal’s opcode validation and cost accounting are built around BIP440’s varops budget and cost annotations.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

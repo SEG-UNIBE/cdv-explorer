@@ -247,18 +247,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:45Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:44",
               "evidence": "using NIP-44",
               "reason": "The proposal relies on NIP-44 for encrypting the preferred service-provider tag list stored in the content field.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:73",
               "evidence": "Providers can rate books, locations, movies, websites, and hashtags using [NIP-73](73.md) identifiers.",
               "reason": "The external-identifier subject type is defined around NIP-73 identifier semantics and tag usage.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

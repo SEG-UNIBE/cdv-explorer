@@ -694,12 +694,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:18:04Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:68",
               "evidence": "clean up past soft fork changes like BIP68 which reuse existing fields",
               "reason": "The proposal explicitly contrasts its transaction format with BIP68’s field-reuse approach, indicating the new design is intended to replace or supersede that mechanism for locktime-related behavior.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

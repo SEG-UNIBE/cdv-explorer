@@ -771,12 +771,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:42:55Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:116",
               "evidence": "This BIP is used by BIP116 (MERKLEBRANCHVERIFY)[4]",
               "reason": "The proposal is explicitly designed to be consumed by BIP116 for script-level Merkle proof verification, so adopting BIP98 depends on BIP116 as the deployment mechanism.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

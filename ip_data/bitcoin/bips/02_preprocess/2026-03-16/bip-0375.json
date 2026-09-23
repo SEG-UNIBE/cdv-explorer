@@ -654,24 +654,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:45:45Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:352",
               "evidence": "adding support for sending to silent payments as described in BIP352",
               "reason": "The proposal is designed around silent payment addresses and reuses BIP352's output-script creation and notation.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:370",
               "evidence": "for BIP370 PSBTv2",
               "reason": "The proposal extends and modifies PSBTv2 fields and role rules, so implementing it depends on BIP370's PSBTv2 structure and semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:374",
               "evidence": "A BIP374 DLEQ proof computed for the matching ECDH share.",
               "reason": "The proposal defines new PSBT fields for DLEQ proofs and explicitly uses BIP374 proof generation and verification procedures.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

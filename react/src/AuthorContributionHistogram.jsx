@@ -6,7 +6,7 @@ import { renderTooltipCardHtml } from './tooltipHtml';
 const HISTOGRAM_BAR_COLOR = '#2f9e44';
 const HISTOGRAM_BAR_HOVER_COLOR = '#2b8a3e';
 
-export const AuthorContributionHistogram = ({ data, width = 600, height = 400 }) => {
+export const AuthorContributionHistogram = ({ data, width = 600, height = 400, logScale = false }) => {
   const ref = useRef();
 
   useEffect(() => {
@@ -68,10 +68,11 @@ export const AuthorContributionHistogram = ({ data, width = 600, height = 400 })
       .range([0, innerWidth])
       .padding(0.18);
 
-    const y = d3.scaleLinear()
-      .domain([0, d3.max(displayItems, (d) => d.authors) || 0])
-      .nice()
-      .range([innerHeight, 0]);
+    // Log domain starts below 1 so single-count bars keep a visible stub.
+    const yMax = d3.max(displayItems, (d) => d.authors) || 0;
+    const y = logScale
+      ? d3.scaleLog().domain([0.8, Math.max(yMax, 1)]).range([innerHeight, 0])
+      : d3.scaleLinear().domain([0, yMax]).nice().range([innerHeight, 0]);
 
     const g = svg
       .attr('width', width)
@@ -80,7 +81,7 @@ export const AuthorContributionHistogram = ({ data, width = 600, height = 400 })
       .attr('transform', `translate(${margin.left},${margin.top})`);
 
     g.append('g')
-      .call(d3.axisLeft(y).ticks(6))
+      .call(logScale ? d3.axisLeft(y).ticks(5, '~s') : d3.axisLeft(y).ticks(6))
       .call((axis) => axis.selectAll('line').attr('stroke', 'var(--chart-grid)'))
       .call((axis) => axis.selectAll('text').style('font-size', '13px'));
 
@@ -150,7 +151,7 @@ export const AuthorContributionHistogram = ({ data, width = 600, height = 400 })
       svg.selectAll('*').remove();
       d3.select('body').selectAll('.author-histogram-tooltip').remove();
     };
-  }, [data, width, height]);
+  }, [data, width, height, logScale]);
 
   return <svg ref={ref} role="img" aria-label="Author contribution histogram" />;
 };

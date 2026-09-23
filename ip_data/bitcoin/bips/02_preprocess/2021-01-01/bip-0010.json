@@ -562,12 +562,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:11Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:11",
               "evidence": "The following is an example TxDP from Armory, produced while running on the test network.",
               "reason": "The proposal’s multi-signature transaction format and workflow are materially tied to the earlier multisignature transaction feature that enables such transactions in the first place.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

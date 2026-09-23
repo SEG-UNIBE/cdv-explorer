@@ -813,12 +813,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:42:05Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:70",
               "evidence": "[[bip-0070.mediawiki|BIP 0070]] (payment protocol) may be seen as the alternative to Aliases.",
               "reason": "The proposal frames BIP 70 as the alternative payment-protocol mechanism against which alias schemes are evaluated, but it does not reuse BIP 70 semantics or formats.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

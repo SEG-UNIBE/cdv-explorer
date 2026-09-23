@@ -564,18 +564,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:43:52Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:176",
               "evidence": "our approach differs in that it:",
               "reason": "The proposal explicitly contrasts itself with BIP-176 as an alternative denomination proposal, but does not technically rely on its mechanism or format.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:177",
               "evidence": "our approach differs in that it:",
               "reason": "The proposal explicitly contrasts itself with BIP-177 as an alternative base-unit redefinition, but it does not adopt or depend on that proposal's semantics.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

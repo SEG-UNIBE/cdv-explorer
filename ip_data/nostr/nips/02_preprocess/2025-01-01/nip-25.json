@@ -257,12 +257,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:58:42Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:30",
               "evidence": "[NIP-30](30.md) custom emoji",
               "reason": "The proposal explicitly reuses the custom emoji mechanism and its shortcode interpretation for reaction content.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

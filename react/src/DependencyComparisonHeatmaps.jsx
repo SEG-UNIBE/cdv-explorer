@@ -1,10 +1,16 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { positionTooltip } from './tooltipPosition';
 import { Button } from 'primereact/button';
+import { RadioButton } from 'primereact/radiobutton';
 import {
+  BODY_EXTRACTED_LLM,
   BODY_EXTRACTED_REGEX,
   DEFAULT_DEPENDENCY_APPROACH,
   PAIRWISE_LINK_TYPE_OPTIONS,
+  PAIRWISE_MATCH_MODE_ALL,
+  PAIRWISE_MATCH_MODE_EXACT_TYPE,
+  PAIRWISE_MATCH_MODE_OPTIONS,
+  PREAMBLE_EXTRACTED,
   getDependencyApproachLabel,
 } from './dependencyApproaches';
 import { ProposalFilterControl } from './ProposalFilterControl';
@@ -13,6 +19,42 @@ import { useDashboardEcosystem, useDashboardLinkMode, useDashboardSnapshot } fro
 import { parseProposalFilterExpression } from './dashboard/dashboardData';
 import { formatProposalLabel, getProposalUrl, normalizeProposalId } from './proposalLinks';
 import { renderTooltipCardHtml } from './tooltipHtml';
+
+const MATCH_MODE_TOOLTIP = '<strong>Edge Only</strong> compares every extracted edge regardless of relation type.'
+  + '<br /><br /><strong>Exact Type</strong> keeps every extracted subtype but tags each with its canonical relation '
+  + 'type, so two approaches only agree on an edge when both the pair and the type match. Regex has no real type '
+  + 'signal, so it matches <em>any</em> type the other approach recorded for the same pair. Both variants are '
+  + 'precomputed by the Python pipeline.';
+
+const EXACT_TYPE_MODE_TOOLTIP = '<strong>Exact Type κ</strong> treats each '
+  + '<code>(source, target, relation_type)</code> triple as the rated item. Use it as a stricter sensitivity check: '
+  + 'Edge Only remains the cleaner edge-detection agreement metric, while Regex is an untyped detector projected '
+  + 'into the typed relation universe.';
+
+// Sentinel matching PAIRWISE_TYPE_WILDCARD in analysis/dependencies/constants.py.
+const PAIRWISE_TYPE_WILDCARD = '*';
+
+// Mirrors CANONICAL_TYPE_BY_APPROACH_SUBTYPE in analysis/dependencies/constants.py.
+// Static and read-only: Exact Type mode always tags every extracted subtype
+// with this fixed canonical type (or resolves it as a wildcard), precomputed
+// server-side — this map only documents that fixed rule, it never drives a
+// computation here.
+const CANONICAL_TYPE_BY_APPROACH_SUBTYPE = {
+  [PREAMBLE_EXTRACTED]: {
+    requires: 'depends_on',
+    replaces: 'supersedes',
+    proposed_replacement: 'superseded_by',
+  },
+  [BODY_EXTRACTED_REGEX]: {
+    reference: PAIRWISE_TYPE_WILDCARD,
+  },
+  [BODY_EXTRACTED_LLM]: {
+    depends_on: 'depends_on',
+    references: 'references',
+    supersedes: 'supersedes',
+    superseded_by: 'superseded_by',
+  },
+};
 
 function truncateTitle(value, maxLength = 45) {
   const text = String(value || '').trim();
@@ -283,13 +325,22 @@ function ComparisonTable({
 }
 
 export function DependencyComparisonHeatmaps({
-  pairwiseComparisons,
+  pairwiseComparisons: pairwiseComparisonsAll,
+  pairwiseComparisonsExactType,
   proposalShortLabel = 'BIP',
   activeLlmModel = '',
 }) {
   const snapshotLabel = useDashboardSnapshot();
   const linkMode = useDashboardLinkMode();
   const ecosystem = useDashboardEcosystem();
+  const [matchMode, setMatchMode] = useState(PAIRWISE_MATCH_MODE_ALL);
+  const pairwiseComparisons = (
+    matchMode === PAIRWISE_MATCH_MODE_EXACT_TYPE
+      ? pairwiseComparisonsExactType
+      : pairwiseComparisonsAll
+  ) || {};
+  const hasAnyComparisons = Object.keys(pairwiseComparisonsAll || {}).length > 0
+    || Object.keys(pairwiseComparisonsExactType || {}).length > 0;
   const [selectedComparisonKey, setSelectedComparisonKey] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [sourceFilterText, setSourceFilterText] = useState('');
@@ -479,8 +530,8 @@ export function DependencyComparisonHeatmaps({
   const sortedEdges = useMemo(() => {
     const direction = sortDirection === 'desc' ? -1 : 1;
     const getSortableValue = (edge, field) => {
-      if (field === 'status') {
-        return String(edge.status || '').toLowerCase();
+      if (field === 'status' || field === 'relation_type') {
+        return String(edge[field] || '').toLowerCase();
       }
       const normalized = normalizeProposalId(edge[field], ecosystem);
       if (/^\d+$/.test(normalized)) {
@@ -511,6 +562,7 @@ export function DependencyComparisonHeatmaps({
       return String(left[secondaryField] || '').localeCompare(String(right[secondaryField] || ''), undefined, { numeric: true });
     });
   }, [ecosystem, filteredEdges, sortDirection, sortField]);
+  const showRelationTypeColumn = sortedEdges.some((edge) => edge.relation_type);
 
   const handleSortChange = (field) => {
     if (field === sortField) {
@@ -529,7 +581,7 @@ export function DependencyComparisonHeatmaps({
     return sortDirection === 'asc' ? ' ↑' : ' ↓';
   };
 
-  if (!pairwiseComparisons || Object.keys(pairwiseComparisons).length === 0) {
+  if (!hasAnyComparisons) {
     return null;
   }
 
@@ -545,6 +597,129 @@ export function DependencyComparisonHeatmaps({
         onMoveTooltip={moveTooltip}
         onHideTooltip={hideTooltip}
       />
+
+      <CollapsibleControls className="dependency-comparison-controls">
+        <div className="network-layout-picker">
+          <div
+            className="network-layout-picker__label gt-help-label"
+            onMouseEnter={(event) => showTooltip(event, MATCH_MODE_TOOLTIP)}
+            onMouseMove={moveTooltip}
+            onMouseLeave={hideTooltip}
+          >
+            Match Mode
+          </div>
+          <div className="network-layout-picker__options">
+            {PAIRWISE_MATCH_MODE_OPTIONS.map((option) => (
+              <label key={option.value} className="network-layout-picker__option">
+                <RadioButton
+                  inputId={`pairwise-match-mode-${option.value}`}
+                  name="pairwise-match-mode"
+                  value={option.value}
+                  onChange={(event) => setMatchMode(event.value)}
+                  checked={matchMode === option.value}
+                />
+                <span>{option.label}</span>
+                {option.value === PAIRWISE_MATCH_MODE_EXACT_TYPE ? (
+                  <span
+                    className="match-mode-help"
+                    aria-label="Explain exact type match mode"
+                    onMouseEnter={(event) => showTooltip(event, EXACT_TYPE_MODE_TOOLTIP)}
+                    onMouseMove={moveTooltip}
+                    onMouseLeave={hideTooltip}
+                    onClick={(event) => event.preventDefault()}
+                  >
+                    ?
+                  </span>
+                ) : null}
+              </label>
+            ))}
+          </div>
+        </div>
+        {matchMode === PAIRWISE_MATCH_MODE_EXACT_TYPE ? (
+          <div className="gt-type-mapping gt-type-mapping--half">
+            <div className="gt-type-mapping__header">
+              <span className="gt-type-mapping__title">Relation-type mapping</span>
+            </div>
+            <table className="gt-type-mapping__table">
+              <thead>
+                <tr>
+                  <th>Included</th>
+                  <th>Approach</th>
+                  <th>Extracted subtype</th>
+                  <th>Canonical type</th>
+                </tr>
+              </thead>
+              <tbody>
+                {PAIRWISE_LINK_TYPE_OPTIONS.flatMap((option) => (
+                  Object.entries(CANONICAL_TYPE_BY_APPROACH_SUBTYPE[option.value] || {}).map(
+                    ([subtype, canonicalType]) => (
+                      <tr key={`${option.value}:::${subtype}`}>
+                        <td>
+                          <input
+                            type="checkbox"
+                            checked
+                            disabled
+                            aria-label={`${getDependencyApproachLabel(option.value)} ${subtype} is included`}
+                          />
+                        </td>
+                        <td>{getDependencyApproachLabel(option.value, activeLlmModel)}</td>
+                        <td><code>{subtype}</code></td>
+                        <td>
+                          {canonicalType === PAIRWISE_TYPE_WILDCARD
+                            ? <span className="gt-type-mapping__muted">(any)</span>
+                            : <code>{canonicalType}</code>}
+                        </td>
+                      </tr>
+                    )
+                  )
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : null}
+        {selectedComparison ? (
+          <div className="dependency-comparison-controls__grid">
+            <ProposalFilterControl
+              value={sourceFilterText}
+              onChange={setSourceFilterText}
+              ecosystem={ecosystem}
+              ariaLabel="Filter source proposals for dependency comparison details"
+              layout="split"
+              entryLabel="Filter Proposals (Source)"
+              trailingControl={(
+                <Button
+                  type="button"
+                  label="Clear"
+                  severity="secondary"
+                  text
+                  onClick={() => setSourceFilterText('')}
+                  disabled={!sourceFilterText.trim()}
+                />
+              )}
+              className="dependency-comparison-controls__filter"
+            />
+            <ProposalFilterControl
+              value={targetFilterText}
+              onChange={setTargetFilterText}
+              ecosystem={ecosystem}
+              ariaLabel="Filter target proposals for dependency comparison details"
+              layout="split"
+              entryLabel="Filter Proposals (Target)"
+              trailingControl={(
+                <Button
+                  type="button"
+                  label="Clear"
+                  severity="secondary"
+                  text
+                  onClick={() => setTargetFilterText('')}
+                  disabled={!targetFilterText.trim()}
+                />
+              )}
+              className="dependency-comparison-controls__filter"
+            />
+          </div>
+        ) : null}
+      </CollapsibleControls>
 
       {selectedComparison ? (
         <div className="dependency-comparison-detail">
@@ -567,48 +742,6 @@ export function DependencyComparisonHeatmaps({
               ))}
             </div>
           </div>
-          <CollapsibleControls className="dependency-comparison-controls">
-            <div className="dependency-comparison-controls__grid">
-              <ProposalFilterControl
-                value={sourceFilterText}
-                onChange={setSourceFilterText}
-                ecosystem={ecosystem}
-                ariaLabel="Filter source proposals for dependency comparison details"
-                layout="split"
-                entryLabel="Filter Proposals (Source)"
-                trailingControl={(
-                  <Button
-                    type="button"
-                    label="Clear"
-                    severity="secondary"
-                    text
-                    onClick={() => setSourceFilterText('')}
-                    disabled={!sourceFilterText.trim()}
-                  />
-                )}
-                className="dependency-comparison-controls__filter"
-              />
-              <ProposalFilterControl
-                value={targetFilterText}
-                onChange={setTargetFilterText}
-                ecosystem={ecosystem}
-                ariaLabel="Filter target proposals for dependency comparison details"
-                layout="split"
-                entryLabel="Filter Proposals (Target)"
-                trailingControl={(
-                  <Button
-                    type="button"
-                    label="Clear"
-                    severity="secondary"
-                    text
-                    onClick={() => setTargetFilterText('')}
-                    disabled={!targetFilterText.trim()}
-                  />
-                )}
-                className="dependency-comparison-controls__filter"
-              />
-            </div>
-          </CollapsibleControls>
           <div className="dependency-comparison-table-wrap">
             <table className="analysis-table">
               <thead>
@@ -631,6 +764,17 @@ export function DependencyComparisonHeatmaps({
                       {`Target${getSortIndicator('target')}`}
                     </button>
                   </th>
+                  {showRelationTypeColumn ? (
+                    <th>
+                      <button
+                        type="button"
+                        className="analysis-table__sort-button"
+                        onClick={() => handleSortChange('relation_type')}
+                      >
+                        {`Type${getSortIndicator('relation_type')}`}
+                      </button>
+                    </th>
+                  ) : null}
                   <th>
                     <button
                       type="button"
@@ -644,7 +788,7 @@ export function DependencyComparisonHeatmaps({
               </thead>
               <tbody>
                 {sortedEdges.map((edge) => (
-                  <tr key={`${selectedComparisonKey}-${edge.status}-${edge.source}-${edge.target}`}>
+                  <tr key={`${selectedComparisonKey}-${edge.status}-${edge.source}-${edge.target}-${edge.relation_type || ''}`}>
                     <td>
                       <a href={getProposalUrl(edge.source, snapshotLabel, { linkMode }, ecosystem)} target="_blank" rel="noreferrer">
                         {formatProposalLabel(edge.source, ecosystem)}
@@ -657,12 +801,15 @@ export function DependencyComparisonHeatmaps({
                       </a>
                       {edge.target_title ? <span>{` ${truncateTitle(edge.target_title)}`}</span> : null}
                     </td>
+                    {showRelationTypeColumn ? (
+                      <td>{edge.relation_type || ''}</td>
+                    ) : null}
                     <td>{edge.status}</td>
                   </tr>
                 ))}
                 {sortedEdges.length === 0 ? (
                   <tr>
-                    <td colSpan={3}>No edges match the current filters.</td>
+                    <td colSpan={showRelationTypeColumn ? 4 : 3}>No edges match the current filters.</td>
                   </tr>
                 ) : null}
               </tbody>

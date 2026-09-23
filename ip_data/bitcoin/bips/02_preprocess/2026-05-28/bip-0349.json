@@ -552,18 +552,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:18:47Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:341",
               "evidence": "as defined in [BIP 341]",
               "reason": "The opcode semantics depend on BIP 341’s definition of the taproot internal key and x-only representation.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:342",
               "evidence": "having leaf version `0xc0` (as defined in [BIP 342])",
               "reason": "The opcode applies only in the taproot script-path context and leaf-version rules defined by BIP 342.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

@@ -842,36 +842,41 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:42:58Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:9",
               "evidence": "that more efficient use of the version field in block headers",
               "reason": "The proposal proposes modifying the current miner voting mechanism in the manner introduced by version-bits, so implementing its deployment logic depends on BIP9.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:16",
               "evidence": "The first precedent of a softfork was the introduction of P2SH documented in BIP16.",
               "reason": "The proposal uses BIP16 as the historical precedent for softfork deployment and consensus-upgrade taxonomy, implying reliance on its softfork semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:30",
               "evidence": "the voting mechanism and first used for BIP30 and BIP66.",
               "reason": "The proposal explicitly relies on BIP30 as an early instance of the miner voting deployment mechanism for softforks.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:65",
               "evidence": "BIP65 is expected to be deployed with the improved mechanism.",
               "reason": "The proposal depends on the version-bits-style improved softfork deployment mechanism for BIP65.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:66",
               "evidence": "the voting mechanism and first used for BIP30 and BIP66.",
               "reason": "The proposal explicitly relies on BIP66 as an early instance of the miner voting deployment mechanism for softforks.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

@@ -632,12 +632,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:19:17Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:342",
               "evidence": "generalizes the \"sigops budget\" introduced in [[bip-0342.mediawiki|BIP342]] to non-signature operations",
               "reason": "The proposal explicitly extends BIP342’s sigops budget concept into a broader varops budget model.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

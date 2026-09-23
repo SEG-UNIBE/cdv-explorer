@@ -636,12 +636,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:18:56Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "wallets built since its introduction in 2012 have used [[bip-0032.mediawiki|BIP-32]]",
               "reason": "The proposal explicitly relies on BIP-32 hardened derivation as an example of a rescue protocol proving control of funds.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

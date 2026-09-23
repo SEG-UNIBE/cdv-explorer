@@ -603,36 +603,41 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:35Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:9",
               "evidence": "This BIP will be deployed by a \"version bits\"",
               "reason": "The proposal relies on BIP9 version-bits activation mechanics, including signaling bit, window, threshold, and state transitions.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:141",
               "evidence": "between November 15th 2016 and November 15th 2017 to activate BIP141, BIP143 and BIP147.",
               "reason": "The proposal is specifically designed around the existing segwit deployment to activate and cease based on BIP141's deployment state, and its rule enforces segwit signaling.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:143",
               "evidence": "between November 15th 2016 and November 15th 2017 to activate BIP141, BIP143 and BIP147.",
               "reason": "The proposal treats BIP143 as part of the existing segwit deployment being affected by the signaling enforcement.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:147",
               "evidence": "between November 15th 2016 and November 15th 2017 to activate BIP141, BIP143 and BIP147.",
               "reason": "The proposal treats BIP147 as part of the existing segwit deployment being affected by the signaling enforcement.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:148",
               "evidence": "BIP148 Mandatory activation of segwit deployment",
               "reason": "The proposal's mechanism is the same class of mandatory segwit signaling/orphaning behavior and is framed as compatible with that deployment approach.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

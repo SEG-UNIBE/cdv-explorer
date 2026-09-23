@@ -1,0 +1,2208 @@
+{
+  "raw": {
+    "preamble": {
+      "bip": "341",
+      "title": "Taproot: SegWit version 1 spending rules",
+      "author": [
+        "Pieter Wuille <pieter.wuille@gmail.com>",
+        "Jonas Nick <jonasd.nick@gmail.com>",
+        "Anthony Towns <aj@erisian.com.au>"
+      ],
+      "comments_uri": "https://github.com/bitcoin/bips/wiki/Comments:BIP-0341",
+      "status": "Deployed",
+      "type": "Specification",
+      "created": "2020-01-19",
+      "license": [
+        "BSD-3-Clause"
+      ],
+      "layer": "Consensus (soft fork)",
+      "discussions_to": null,
+      "comments_summary": "No comments yet.",
+      "license_code": null,
+      "post_history": null,
+      "requires": "340",
+      "replaces": null,
+      "proposed_replacement": null
+    }
+  },
+  "meta": {
+    "last_commit": "2025-10-08T14:59:36-07:00",
+    "total_commits": 177,
+    "git_history": [
+      [
+        "24e96e870fffaa257b465ce1f0370c14aac588e8",
+        "2025-10-08T14:59:36-07:00",
+        "Murch",
+        "murch@murch.one"
+      ],
+      [
+        "5207ef92a52d0b8902895b0dbb40823a4d698ec9",
+        "2025-04-11T20:08:17-07:00",
+        "Murch",
+        "murch@murch.one"
+      ],
+      [
+        "01352f7f40cb7f61d0aa177341f8804de2f8fed9",
+        "2025-04-11T20:07:37-07:00",
+        "Murch",
+        "murch@murch.one"
+      ],
+      [
+        "a233bde4af52c6a11269e2e6dd9707abce441ffe",
+        "2025-04-11T18:19:21-07:00",
+        "Murch",
+        "murch@murch.one"
+      ],
+      [
+        "5d3ceb37734f80b2ec206fc94245e3bfd6d5b0f0",
+        "2025-04-11T18:08:44-07:00",
+        "Murch",
+        "murch@murch.one"
+      ],
+      [
+        "cd19d89e58b8c9b84f18efb5659220d4755fff0b",
+        "2025-07-10T02:24:55+02:00",
+        "Yuval Kogman",
+        "nothingmuch@woobling.org"
+      ],
+      [
+        "a093c346078e2cba4bc0bbdcea5ebb5e52b2a150",
+        "2025-05-20T08:08:27-06:00",
+        "Jon Atack",
+        "jon@atack.com"
+      ],
+      [
+        "5767f444995df378ad772887b739e84bd9002d95",
+        "2022-06-06T10:35:53-07:00",
+        "David Bakin",
+        "david@bakins-bits.com"
+      ],
+      [
+        "f085cc29221f0f28310804d4482b33bb1afd9e07",
+        "2024-07-25T19:50:08+01:00",
+        "Orfeas Stefanos Thyfronitis Litos",
+        "18602747+OrfeasLitos@users.noreply.github.com"
+      ],
+      [
+        "c0148c872d886d20ea10663febf34691c91badd7",
+        "2023-03-10T22:19:31+01:00",
+        "raphjaph",
+        "raphjaph@protonmail.com"
+      ],
+      [
+        "43fa7cf13d3ed35bcd2dd518c2fa0f41a4d2caa7",
+        "2023-02-19T16:16:13+01:00",
+        "Christian Lewe",
+        "ch_lewe@agdsn.me"
+      ],
+      [
+        "6e7e5a252376e0be46617434bf5d7f8bd2ce4ecb",
+        "2023-01-12T13:50:46+01:00",
+        "Tim Ruffing",
+        "crypto@timruffing.de"
+      ],
+      [
+        "996dd77b10f67059b2f0c958932cffa2e45edd53",
+        "2023-01-12T13:41:06+01:00",
+        "Tim Ruffing",
+        "crypto@timruffing.de"
+      ],
+      [
+        "3d243d8a49cefd16d628b85cc3ef0f54bd71f107",
+        "2022-08-12T08:24:30Z",
+        "Jonas Nick",
+        "jonasd.nick@gmail.com"
+      ],
+      [
+        "e24f6859710a8047931eb68788dce0d0400a1569",
+        "2022-10-09T14:36:32-07:00",
+        "Darius Parvin",
+        "darius@berkeley.edu"
+      ],
+      [
+        "be340277fcaa57a813a898700c1aef9637cfa90e",
+        "2022-10-24T20:33:05Z",
+        "Jonas Nick",
+        "jonasd.nick@gmail.com"
+      ],
+      [
+        "3cdfe1bd16f730b906a27fff3407f550ea2d3db7",
+        "2022-09-28T15:06:32-07:00",
+        "Darius Parvin",
+        "darius@berkeley.edu"
+      ],
+      [
+        "2119931f0169643cb6cd303279749fb2fd1676af",
+        "2022-08-16T15:09:14Z",
+        "Jonas Nick",
+        "jonasd.nick@gmail.com"
+      ],
+      [
+        "9fe72607ce0bacba55f49f315647675dd9a2e459",
+        "2021-11-13T17:04:02+01:00",
+        "MarcoFalke",
+        "falke.marco@gmail.com"
+      ],
+      [
+        "e35a46ecf3031c21dc7f7fdb694986789a3a8144",
+        "2021-10-27T17:31:17-04:00",
+        "Pieter Wuille",
+        "pieter@wuille.net"
+      ],
+      [
+        "fc661ac943d90e2fe5d5263fa38ec515a989da18",
+        "2021-11-12T00:56:35+01:00",
+        "olf",
+        "Olf0@users.noreply.github.com"
+      ],
+      [
+        "da78942dddc66bafd3acd46fa3af83bd5725661d",
+        "2021-11-10T08:23:00-06:00",
+        "Ian Shipman",
+        "ics@gambolingpangolin.com"
+      ],
+      [
+        "592cb6fa0c8e1484488cfc4e43fe1e4825c17132",
+        "2021-11-07T09:45:01+01:00",
+        "Dr. Maxim Orlovsky",
+        "orlovsky@pandoracore.com"
+      ],
+      [
+        "6222dc45a301c9b7d83536e2cd97d42899f5cb85",
+        "2021-10-29T15:01:39-07:00",
+        "Brandon Black",
+        "brandonblack@bitgo.com"
+      ],
+      [
+        "d690408080bbf9c2442502abac9ac0a21db5a378",
+        "2021-10-29T14:49:58-07:00",
+        "Brandon Black",
+        "brandonblack@bitgo.com"
+      ],
+      [
+        "736e79c938f75272717d0f3f44d985036c53f5fe",
+        "2021-10-29T14:49:28-07:00",
+        "Brandon Black",
+        "brandonblack@bitgo.com"
+      ],
+      [
+        "5b9b44cc79a8f9e6370f8f533920d68a50015390",
+        "2021-10-29T14:48:52-07:00",
+        "Brandon Black",
+        "brandonblack@bitgo.com"
+      ],
+      [
+        "9cf5c72b569e321c0fc680b2a1ce0c3dd03c75af",
+        "2021-07-14T16:42:39+02:00",
+        "Riccardo Casatta",
+        "riccardo@casatta.it"
+      ],
+      [
+        "5919ade31c1f55b97c438024b6250aed614514bc",
+        "2021-06-14T09:27:50Z",
+        "Raulo",
+        "630679+Raulo@users.noreply.github.com"
+      ],
+      [
+        "b1dbe62a21381661dff8d670480944c7a70eff61",
+        "2021-04-23T17:32:49-04:00",
+        "eugene",
+        "elzeigel@gmail.com"
+      ],
+      [
+        "93d1b1528592ca129109b4630c17fa5372e4048a",
+        "2021-04-13T10:45:02+10:00",
+        "Anthony Towns",
+        "aj@erisian.com.au"
+      ],
+      [
+        "43b5f171dcf2b3cd8a2f1b0a71f0dfe31946f46a",
+        "2021-04-13T14:52:44Z",
+        "Jonas Nick",
+        "jonasd.nick@gmail.com"
+      ],
+      [
+        "ce5f89fe0ddd99a00bcd1457df407cccd60a9336",
+        "2021-04-08T18:31:04+10:00",
+        "Anthony Towns",
+        "aj@erisian.com.au"
+      ],
+      [
+        "d582d0bd3162ac7a3f6f1aae46daf7eeb24b201e",
+        "2021-04-08T18:30:51+10:00",
+        "Anthony Towns",
+        "aj@erisian.com.au"
+      ],
+      [
+        "0f95720639c743df2546730a5549eb7ead610529",
+        "2021-03-24T20:35:24+10:00",
+        "Anthony Towns",
+        "aj@erisian.com.au"
+      ],
+      [
+        "a516c135ab622dcf0a4ecf204476034cb086d287",
+        "2021-03-25T15:36:51+10:00",
+        "Anthony Towns",
+        "aj@erisian.com.au"
+      ],
+      [
+        "d8531483f53adb39bf2265ea2148a8b05334d747",
+        "2020-08-27T07:56:03+02:00",
+        "MarcoFalke",
+        "falke.marco@gmail.com"
+      ],
+      [
+        "8a3db73a84bf8856e651b40a0df5684992563a3b",
+        "2020-08-18T10:56:05-07:00",
+        "Pieter Wuille",
+        "pieter@wuille.net"
+      ],
+      [
+        "b9ea863727c8e53d69afc1a816feed8944cc1e58",
+        "2020-07-28T13:50:50-07:00",
+        "Pieter Wuille",
+        "pieter@wuille.net"
+      ],
+      [
+        "15fba98cf46a2b5a1ab3122a339e8373a6281a1e",
+        "2020-05-15T12:57:49Z",
+        "Jonas Nick",
+        "jonasd.nick@gmail.com"
+      ],
+      [
+        "dde165749e55c9bcd5e5a8191e87cfd29d615650",
+        "2020-05-14T21:52:25Z",
+        "Jonas Nick",
+        "jonasd.nick@gmail.com"
+      ],
+      [
+        "0916da6594609b811e31c1f666638d15c8bd7381",
+        "2020-03-27T15:13:13Z",
+        "Jonas Nick",
+        "jonasd.nick@gmail.com"
+      ],
+      [
+        "4ea021f28c9f919679ae2774890b3061dd13fd6d",
+        "2020-03-03T12:06:55Z",
+        "Jonas Nick",
+        "jonasd.nick@gmail.com"
+      ],
+      [
+        "6581a87ff25cce0e10a20d40e85442ac5fbd17a4",
+        "2020-01-28T23:19:01-08:00",
+        "Pieter Wuille",
+        "pieter.wuille@gmail.com"
+      ],
+      [
+        "2a122f20c521ad8f678477ebfc251d163685e09c",
+        "2020-01-21T08:46:19+10:00",
+        "Anthony Towns",
+        "aj@erisian.com.au"
+      ],
+      [
+        "983955ffc504b4e5c82361e5d4c784b689584de9",
+        "2020-01-24T22:17:49+09:00",
+        "Nicolas Dorier",
+        "nicolas.dorier@gmail.com"
+      ],
+      [
+        "9cf4038f17cb566bdc79b5ec12dee5338b1122d1",
+        "2020-01-19T14:52:43-08:00",
+        "Pieter Wuille",
+        "pieter.wuille@gmail.com"
+      ],
+      [
+        "c3b91dcc22fbaf976e64d3596c5680eb778e7be8",
+        "2020-01-19T14:24:47-08:00",
+        "Pieter Wuille",
+        "pieter.wuille@gmail.com"
+      ],
+      [
+        "e1914b817311526fffddb21ae84cce5b9a7d5eed",
+        "2020-01-19T14:15:30-08:00",
+        "Pieter Wuille",
+        "pieter.wuille@gmail.com"
+      ],
+      [
+        "1faa4b19bcfaec44a964a665f68a5bdaba85337e",
+        "2020-01-19T14:05:36-08:00",
+        "Pieter Wuille",
+        "pieter.wuille@gmail.com"
+      ],
+      [
+        "57ed6cb342a36209b9ab479ed9084e47c287af33",
+        "2020-01-13T14:10:26-08:00",
+        "Pieter Wuille",
+        "pieter.wuille@gmail.com"
+      ],
+      [
+        "d9ec5f43da4d6f79b96d585204e6652cca7016b4",
+        "2020-01-13T14:39:32-08:00",
+        "Pieter Wuille",
+        "pieter.wuille@gmail.com"
+      ],
+      [
+        "1e99e205a84b73b4d95870aae09d9d81140065e0",
+        "2020-01-10T21:42:34+10:00",
+        "Anthony Towns",
+        "aj@erisian.com.au"
+      ],
+      [
+        "ff8a36200bc270b574916e00fcc33ce8cdd807cb",
+        "2020-01-07T13:17:13-08:00",
+        "Pieter Wuille",
+        "pieter.wuille@gmail.com"
+      ],
+      [
+        "92e3d6ca87b658895d9df6a5f75b6cd9e9574704",
+        "2019-12-17T17:27:36-08:00",
+        "Pieter Wuille",
+        "pieter.wuille@gmail.com"
+      ],
+      [
+        "f4297500367073c2b44dca1313cba1ca2794a37c",
+        "2019-12-17T17:27:22-08:00",
+        "Pieter Wuille",
+        "pieter.wuille@gmail.com"
+      ],
+      [
+        "460163ee0b1268834f707154f6d4056da001ece9",
+        "2019-12-15T14:44:39-08:00",
+        "Pieter Wuille",
+        "pieter.wuille@gmail.com"
+      ],
+      [
+        "94e9c0925a3e132581f6cb6d44923ce3dc540b45",
+        "2019-12-14T16:28:58-08:00",
+        "Pieter Wuille",
+        "pieter.wuille@gmail.com"
+      ],
+      [
+        "84161e187d7f6f14f6baf2582eb0e62d93451966",
+        "2019-12-14T16:28:44-08:00",
+        "Pieter Wuille",
+        "pieter.wuille@gmail.com"
+      ],
+      [
+        "734a859b278270e0080005269c2f55ac465fe64d",
+        "2019-12-15T10:32:33-05:00",
+        "Matthew Zipkin",
+        "pinheadmz@gmail.com"
+      ],
+      [
+        "da3837639fd987e5d25a0abb209700c3d7ff55ed",
+        "2019-11-25T16:25:24Z",
+        "Orfeas Stefanos Thyfronitis Litos",
+        "o.thyfronitis@ed.ac.uk"
+      ],
+      [
+        "8baf6f5952d4a1fe1020de075ab93179e6236a55",
+        "2019-11-28T13:41:28+01:00",
+        "stefanwouldgo",
+        "stefan@sblbs.de"
+      ],
+      [
+        "ca472ed663d32039448560b36ecf1e6467ba4347",
+        "2019-11-26T15:30:12Z",
+        "Orfeas Stefanos Thyfronitis Litos",
+        "o.thyfronitis@ed.ac.uk"
+      ],
+      [
+        "5918b4666c4c4fbf54a2ef8550877f02328a2afc",
+        "2019-11-26T12:43:34Z",
+        "Orfeas Litos",
+        "o.thyfronitis@ed.ac.uk"
+      ],
+      [
+        "66e2931de2f5779847cc47cf9f430908474cf4e6",
+        "2019-11-29T16:32:44Z",
+        "Jonas Nick",
+        "jonasd.nick@gmail.com"
+      ],
+      [
+        "98983e177f20a1c3725eef43f6e21e00f95ac423",
+        "2019-12-10T22:01:43+01:00",
+        "Kalle Rosenbaum",
+        "kalle@rosenbaum.se"
+      ],
+      [
+        "18d1774d81253453d101c9a7e79e21ab4c96e331",
+        "2019-12-09T21:20:40+01:00",
+        "Kalle Rosenbaum",
+        "kalle@rosenbaum.se"
+      ],
+      [
+        "2aa865c33eeae0859132c0e86b9194ca471fa4aa",
+        "2019-11-26T12:39:34Z",
+        "Orfeas Litos",
+        "o.thyfronitis@ed.ac.uk"
+      ],
+      [
+        "3e5a79af88816d1e224c08d82656f24b8a7be5c7",
+        "2019-11-22T20:35:54Z",
+        "Jonas Nick",
+        "jonasd.nick@gmail.com"
+      ],
+      [
+        "28f67764ec3d5286e723f25ddaaa217f43157b69",
+        "2019-11-12T22:37:47+01:00",
+        "Jon Atack",
+        "jon@atack.com"
+      ],
+      [
+        "daff462f9d23d7b7db96137fbdff91ba9a8f594e",
+        "2019-11-13T17:20:09Z",
+        "Orfeas Stefanos Thyfronitis Litos",
+        "o.thyfronitis@ed.ac.uk"
+      ],
+      [
+        "4f67ed25c7704d38c16c7d81a65da2dc663b7729",
+        "2019-11-12T11:41:27Z",
+        "Adam Gibson",
+        "ekaggata@gmail.com"
+      ],
+      [
+        "ba7dd5769758a953853200899289121b52ffb2a2",
+        "2019-11-11T20:09:55+02:00",
+        "Hennadii Stepanov",
+        "32963518+hebasto@users.noreply.github.com"
+      ],
+      [
+        "b2aed3e3fe8f06d3cfd8dd6747cfee127a4f9701",
+        "2019-11-12T15:47:39-05:00",
+        "Anthony",
+        "pyskell@users.noreply.github.com"
+      ],
+      [
+        "4bc42d0f009a789e4ff24d20f4ac55415d8f67db",
+        "2019-11-11T13:40:42-05:00",
+        "Anthony",
+        "pyskell@users.noreply.github.com"
+      ],
+      [
+        "ac33640bf5f694b8493751aa30fd1f5dd563fdca",
+        "2019-11-14T10:55:32-08:00",
+        "Dev Random",
+        "devrandom@users.noreply.github.com"
+      ],
+      [
+        "b80ebbf2876a40e3999b8d2c027bff40dda781f2",
+        "2019-11-13T18:46:05+01:00",
+        "Devrandom",
+        "miron@basezero.com"
+      ],
+      [
+        "758be14a2b1c61d7042d708564bed69ebfc66b62",
+        "2019-11-15T13:46:35-05:00",
+        "Gregory Sanders",
+        "gsanders87@gmail.com"
+      ],
+      [
+        "4e88d4fae7c79abc2acd35f036daceacd8122da8",
+        "2019-11-13T14:00:03Z",
+        "Orfeas Stefanos Thyfronitis Litos",
+        "o.thyfronitis@ed.ac.uk"
+      ],
+      [
+        "b5eb53451f3de6e472cbbcb8621699ccc7775cb8",
+        "2019-11-11T12:39:53+02:00",
+        "Agis Anastasopoulos",
+        "a@xz0.org"
+      ],
+      [
+        "32f364c85c347783d435817142acf35b4ae7db44",
+        "2019-11-11T01:20:28+01:00",
+        "LaurentMT",
+        "LaurentMT@users.noreply.github.com"
+      ],
+      [
+        "e9e23e474f758e9e38e30a71773e15e6bdd3e775",
+        "2019-11-06T23:48:29+05:30",
+        "codeShark149",
+        "rajarshi149@gmail.com"
+      ],
+      [
+        "4774e4d1e8d856567ad2de9a39b2b3a29f35422a",
+        "2019-11-05T14:53:16+01:00",
+        "Fabian Jahr",
+        "fabjahr@gmail.com"
+      ],
+      [
+        "3d97967b97831dc268b39bc8b667d6aace0dc56a",
+        "2019-11-06T05:58:11+01:00",
+        "Max Hillebrand",
+        "30683012+MaxHillebrand@users.noreply.github.com"
+      ],
+      [
+        "ae7122822ac3cd51415f35149ac60e611c3abc40",
+        "2019-11-04T11:56:48-08:00",
+        "Pieter Wuille",
+        "pieter.wuille@gmail.com"
+      ],
+      [
+        "0f9ab0cec993b3fde587c3eda20c7a18327ede92",
+        "2019-11-04T17:46:00+05:00",
+        "Dmitry Petukhov",
+        "dp@simplexum.com"
+      ],
+      [
+        "d87c5c8801932d5363d5cfc02d7f9f65c5e48f1a",
+        "2019-11-04T19:15:12+05:00",
+        "Dmitry Petukhov",
+        "dp@simplexum.com"
+      ],
+      [
+        "feffc4e34d89d03433dad60348c6acbc73392063",
+        "2019-10-18T13:41:00+10:00",
+        "Anthony Towns",
+        "aj@erisian.com.au"
+      ],
+      [
+        "c93e2985185fb730f098d3d1face57c58a7c18e7",
+        "2019-10-08T18:37:58-07:00",
+        "Pieter Wuille",
+        "pieter.wuille@gmail.com"
+      ],
+      [
+        "fb486d7e13153c3d4180dcf396db6d715463b135",
+        "2019-10-07T14:37:41-07:00",
+        "Pieter Wuille",
+        "pieter.wuille@gmail.com"
+      ],
+      [
+        "79f9fc4cc84446fd1002edf7988c6daeb98d9fb5",
+        "2019-09-24T10:36:41-07:00",
+        "Pieter Wuille",
+        "pieter.wuille@gmail.com"
+      ],
+      [
+        "d112f5b0352f404e2cfebd6f3d9bf030c6894917",
+        "2019-09-30T11:15:23Z",
+        "Jonas Nick",
+        "jonasd.nick@gmail.com"
+      ],
+      [
+        "afa5519ade7d1b90d91fb725bf37eecd38cc4eb3",
+        "2019-09-27T15:34:55Z",
+        "Jonas Nick",
+        "jonasd.nick@gmail.com"
+      ],
+      [
+        "1c8bdd75a59a204b63c07e34633e0f53bb1a679e",
+        "2019-09-25T21:02:43Z",
+        "Jonas Nick",
+        "jonasd.nick@gmail.com"
+      ],
+      [
+        "cf8233d39e1ec7bef0d6b1d26ff5d60563ef4604",
+        "2019-09-25T14:14:14+10:00",
+        "Anthony Towns",
+        "aj@erisian.com.au"
+      ],
+      [
+        "4087834c73c013eb38dc896e09d2602a60dee2af",
+        "2019-09-20T15:01:57-07:00",
+        "Pieter Wuille",
+        "pieter.wuille@gmail.com"
+      ],
+      [
+        "972136beb6ca36e4387a2358240cafe22dcb21dc",
+        "2019-09-20T16:14:25-07:00",
+        "Pieter Wuille",
+        "pieter.wuille@gmail.com"
+      ],
+      [
+        "b78b6de4fd432c735ee796574d5843f73dcd0bf7",
+        "2019-09-16T18:47:54-05:00",
+        "Bryan Bishop",
+        "kanzure@gmail.com"
+      ],
+      [
+        "a5112f9f01e6fd63e6985e63e655ea54d2e69cab",
+        "2019-05-10T12:11:07Z",
+        "Jonas Nick",
+        "jonasd.nick@gmail.com"
+      ],
+      [
+        "204b7f13a0cb3d33506a7369e1f131d9f30e98d2",
+        "2019-06-05T13:59:09Z",
+        "Jonas Nick",
+        "jonasd.nick@gmail.com"
+      ],
+      [
+        "8ffea86023048b674c8c540c80ff1ee24ec18bee",
+        "2019-08-23T15:19:28+10:00",
+        "Anthony Towns",
+        "aj@erisian.com.au"
+      ],
+      [
+        "8fd629c3f9c94c48b3d049ec50d1cbba22b02d3c",
+        "2019-08-29T20:46:47Z",
+        "Jonas Nick",
+        "jonasd.nick@gmail.com"
+      ],
+      [
+        "cc962bf84f44a1ac07bdb8c269aee07abde551d4",
+        "2019-08-27T15:13:08Z",
+        "Jonas Nick",
+        "jonasd.nick@gmail.com"
+      ],
+      [
+        "c33c7d0a0c78327e6ca78dd4f6a37296fa49fd2b",
+        "2019-08-26T20:46:08Z",
+        "Jonas Nick",
+        "jonasd.nick@gmail.com"
+      ],
+      [
+        "7f3611d2398f053d4c1a9889cb20d814bd6abedd",
+        "2019-08-26T11:32:04Z",
+        "Jonas Nick",
+        "jonasd.nick@gmail.com"
+      ],
+      [
+        "ba748dcd93896885e41c620f9d1d88aac748ca63",
+        "2019-08-19T14:45:34Z",
+        "Jonas Nick",
+        "jonasd.nick@gmail.com"
+      ],
+      [
+        "16073d0c205889c9f9a59ad2831db8b76921648e",
+        "2019-05-10T13:29:21Z",
+        "Jonas Nick",
+        "jonasd.nick@gmail.com"
+      ],
+      [
+        "f3bef4f459b25d6450fdce3ac07cdd87f09f4c76",
+        "2019-08-21T11:40:42Z",
+        "Jonas Nick",
+        "jonasd.nick@gmail.com"
+      ],
+      [
+        "303ff5fb26fc6ce4d6dfcc6e52a5da3dd6d65e4b",
+        "2019-08-19T14:37:55Z",
+        "Jonas Nick",
+        "jonasd.nick@gmail.com"
+      ],
+      [
+        "08e1b3da7477edc3900e10cec2249f670f47b9e4",
+        "2019-08-02T13:52:29Z",
+        "Jonas Nick",
+        "jonasd.nick@gmail.com"
+      ],
+      [
+        "b2e6d11a6e1bbae2bccd17bd6abd0564d19ae549",
+        "2019-05-10T13:57:12Z",
+        "Jonas Nick",
+        "jonasd.nick@gmail.com"
+      ],
+      [
+        "953dd236650a02aa964049f138513b158463bea4",
+        "2019-05-10T03:09:54+05:00",
+        "Dmitry Petukhov",
+        "dp@simplexum.com"
+      ],
+      [
+        "c7d7034b16f4229e6b723155e1192d4728cffeb1",
+        "2019-05-06T10:46:09-07:00",
+        "Pieter Wuille",
+        "pieter.wuille@gmail.com"
+      ],
+      [
+        "0e3b6c595c2b90eecb969e9bc84314f4b677ac46",
+        "2020-01-14T10:28:49-08:00",
+        "Pieter Wuille",
+        "pieter.wuille@gmail.com"
+      ],
+      [
+        "7497bdecebee902160bf4c98c73942e999be25c6",
+        "2020-01-13T14:39:32-08:00",
+        "Pieter Wuille",
+        "pieter.wuille@gmail.com"
+      ],
+      [
+        "c0d2f93f3c3c3dcee2318ea26f946ae17de37865",
+        "2020-01-13T14:10:26-08:00",
+        "Pieter Wuille",
+        "pieter.wuille@gmail.com"
+      ],
+      [
+        "f978178d6b8738425d27fb1c007cee6ac136efc4",
+        "2020-01-10T21:42:34+10:00",
+        "Anthony Towns",
+        "aj@erisian.com.au"
+      ],
+      [
+        "39a18f4b18c507cf425aa2dc620b7d0d7e3cf1ab",
+        "2020-01-07T13:17:13-08:00",
+        "Pieter Wuille",
+        "pieter.wuille@gmail.com"
+      ],
+      [
+        "17b3f9e01aad881695ac9104f877b07c2cf9a9ce",
+        "2019-12-17T17:27:36-08:00",
+        "Pieter Wuille",
+        "pieter.wuille@gmail.com"
+      ],
+      [
+        "b90b53cd176749f59e3d2784776a6a8aa4801265",
+        "2019-12-17T17:27:22-08:00",
+        "Pieter Wuille",
+        "pieter.wuille@gmail.com"
+      ],
+      [
+        "882e46350d5544088d65cce0356985e21656be3f",
+        "2019-12-15T14:44:39-08:00",
+        "Pieter Wuille",
+        "pieter.wuille@gmail.com"
+      ],
+      [
+        "6b42461f8e83684442494958f5bcd532722a4779",
+        "2019-12-15T10:32:33-05:00",
+        "Matthew Zipkin",
+        "pinheadmz@gmail.com"
+      ],
+      [
+        "1c163188eedeb7159286edd2984b4b907a7e9c96",
+        "2019-12-14T16:28:58-08:00",
+        "Pieter Wuille",
+        "pieter.wuille@gmail.com"
+      ],
+      [
+        "01e5bfbf19c4337f5a6b74cf94c1ebfe19af6817",
+        "2019-12-14T16:28:44-08:00",
+        "Pieter Wuille",
+        "pieter.wuille@gmail.com"
+      ],
+      [
+        "cc6fa25c799fa09b6e486728537eb0cbca46d2fa",
+        "2019-11-28T13:41:28+01:00",
+        "stefanwouldgo",
+        "stefan@sblbs.de"
+      ],
+      [
+        "fd898f118a345f0288e52f9010c00044271ae4c3",
+        "2019-12-10T22:01:43+01:00",
+        "Kalle Rosenbaum",
+        "kalle@rosenbaum.se"
+      ],
+      [
+        "adf4d78e6c4bed77cb5c7ff178403c6ec7693958",
+        "2019-12-09T21:20:40+01:00",
+        "Kalle Rosenbaum",
+        "kalle@rosenbaum.se"
+      ],
+      [
+        "2c6b472e9cc81346145adbaca95e14fc4b12807a",
+        "2019-11-29T16:32:44Z",
+        "Jonas Nick",
+        "jonasd.nick@gmail.com"
+      ],
+      [
+        "2e79be9f72cf3253bbfe4cb362287079c1af1429",
+        "2019-11-26T15:30:12Z",
+        "Orfeas Stefanos Thyfronitis Litos",
+        "o.thyfronitis@ed.ac.uk"
+      ],
+      [
+        "b44d5c95311c017c0829f1febc9c2c44a620085b",
+        "2019-11-26T12:43:34Z",
+        "Orfeas Litos",
+        "o.thyfronitis@ed.ac.uk"
+      ],
+      [
+        "7ec4ce9a8d2b8bf25249b9d372dedac049586e2a",
+        "2019-11-26T12:39:34Z",
+        "Orfeas Litos",
+        "o.thyfronitis@ed.ac.uk"
+      ],
+      [
+        "75d753868c4e4124eb91a018e0d4388fb90d3c91",
+        "2019-11-25T16:25:24Z",
+        "Orfeas Stefanos Thyfronitis Litos",
+        "o.thyfronitis@ed.ac.uk"
+      ],
+      [
+        "9208857b921cebffb7c5902466264cb8b8b1842e",
+        "2019-11-22T20:35:54Z",
+        "Jonas Nick",
+        "jonasd.nick@gmail.com"
+      ],
+      [
+        "8861bd503ab4db81ddaf65bd0f6406e8633f59c8",
+        "2019-11-15T13:46:35-05:00",
+        "Gregory Sanders",
+        "gsanders87@gmail.com"
+      ],
+      [
+        "b8cbd419e6d338bff68afd98be4d52a450e7dff1",
+        "2019-11-14T10:55:32-08:00",
+        "Dev Random",
+        "devrandom@users.noreply.github.com"
+      ],
+      [
+        "1a9c7f948aee96c2deaeade05009c245d417742b",
+        "2019-11-13T18:46:05+01:00",
+        "Devrandom",
+        "miron@basezero.com"
+      ],
+      [
+        "b417bb3c50bbecaa6c00363d02e87cb634939975",
+        "2019-11-13T17:20:09Z",
+        "Orfeas Stefanos Thyfronitis Litos",
+        "o.thyfronitis@ed.ac.uk"
+      ],
+      [
+        "7bce5a0930ec05fa1da9f1109b8139eb606cfc34",
+        "2019-11-13T14:00:03Z",
+        "Orfeas Stefanos Thyfronitis Litos",
+        "o.thyfronitis@ed.ac.uk"
+      ],
+      [
+        "8b92d05be91f5d198e3f924a0ce5d92f92e6bf00",
+        "2019-11-12T22:37:47+01:00",
+        "Jon Atack",
+        "jon@atack.com"
+      ],
+      [
+        "f620c87eb7a04edbe6bedd4a2ede5d40a8d6fda2",
+        "2019-11-12T15:47:39-05:00",
+        "Anthony",
+        "pyskell@users.noreply.github.com"
+      ],
+      [
+        "e5918b3b2952d39a5a8962ee88abddbb0c40328d",
+        "2019-11-12T11:41:27Z",
+        "Adam Gibson",
+        "ekaggata@gmail.com"
+      ],
+      [
+        "5abcbca34330e137de13bf32c9829bf9ffde581a",
+        "2019-11-11T13:40:42-05:00",
+        "Anthony",
+        "pyskell@users.noreply.github.com"
+      ],
+      [
+        "7e98e2fd84ef152d54b4ec7aa5d42d33c53956c4",
+        "2019-11-11T20:09:55+02:00",
+        "Hennadii Stepanov",
+        "32963518+hebasto@users.noreply.github.com"
+      ],
+      [
+        "af1638ce187f09d49e35a2b6eb60bbec2effec36",
+        "2019-11-11T12:39:53+02:00",
+        "Agis Anastasopoulos",
+        "a@xz0.org"
+      ],
+      [
+        "ad4156a39419883a485526908dc8f76965602a3d",
+        "2019-11-11T01:20:28+01:00",
+        "LaurentMT",
+        "LaurentMT@users.noreply.github.com"
+      ],
+      [
+        "de82b3ad26d4fa82fe973a2420ac45c5026ceab0",
+        "2019-11-06T23:48:29+05:30",
+        "codeShark149",
+        "rajarshi149@gmail.com"
+      ],
+      [
+        "78eb015f634ccbac0c557091120de7fe64ee734b",
+        "2019-11-06T05:58:11+01:00",
+        "Max Hillebrand",
+        "30683012+MaxHillebrand@users.noreply.github.com"
+      ],
+      [
+        "08622c94947f909aaf8eb21f70c5eb21a42564fc",
+        "2019-11-05T14:53:16+01:00",
+        "Fabian Jahr",
+        "fabjahr@gmail.com"
+      ],
+      [
+        "0c6a9cffad08ac118137b56ba6ee1cac73e97eac",
+        "2019-11-04T11:56:48-08:00",
+        "Pieter Wuille",
+        "pieter.wuille@gmail.com"
+      ],
+      [
+        "db8d6d426f8fcb0ea5094e20fe6cdc88976a9870",
+        "2019-11-04T17:46:00+05:00",
+        "Dmitry Petukhov",
+        "dp@simplexum.com"
+      ],
+      [
+        "12d8d5baa88f63aaf10c8b4a938aa9e0abf11b21",
+        "2019-11-04T19:15:12+05:00",
+        "Dmitry Petukhov",
+        "dp@simplexum.com"
+      ],
+      [
+        "01e0c43023d3a48c9ecbeded1546b65bf100f119",
+        "2019-10-18T13:41:00+10:00",
+        "Anthony Towns",
+        "aj@erisian.com.au"
+      ],
+      [
+        "6b72dfff51947c45ac73ac50b4d673ddc515d99d",
+        "2019-10-08T18:37:58-07:00",
+        "Pieter Wuille",
+        "pieter.wuille@gmail.com"
+      ],
+      [
+        "15d5aa27323b5a987c02f442b7f00752032af05d",
+        "2019-10-07T14:37:41-07:00",
+        "Pieter Wuille",
+        "pieter.wuille@gmail.com"
+      ],
+      [
+        "a6e5c16821b232d47dfe744fdee2816c7bd30a6d",
+        "2019-09-30T11:15:23Z",
+        "Jonas Nick",
+        "jonasd.nick@gmail.com"
+      ],
+      [
+        "398897cd29fb04da60220358ef05249913e5ff38",
+        "2019-09-27T15:34:55Z",
+        "Jonas Nick",
+        "jonasd.nick@gmail.com"
+      ],
+      [
+        "479fe5f365a416115b8029fca121e59adfaa7e6d",
+        "2019-09-25T21:02:43Z",
+        "Jonas Nick",
+        "jonasd.nick@gmail.com"
+      ],
+      [
+        "f8313861030fb19948434d203d823fa4272cd4cf",
+        "2019-09-25T14:14:14+10:00",
+        "Anthony Towns",
+        "aj@erisian.com.au"
+      ],
+      [
+        "0d5ac28f2c9612b6d7d316d54d601fe1fb0a07e0",
+        "2019-09-24T10:36:41-07:00",
+        "Pieter Wuille",
+        "pieter.wuille@gmail.com"
+      ],
+      [
+        "1ee15f7dd9315f24a681ef3b49f2db49e48298d0",
+        "2019-09-20T16:14:25-07:00",
+        "Pieter Wuille",
+        "pieter.wuille@gmail.com"
+      ],
+      [
+        "77dad346ecf3f789153eede2d54fa7ac3671202a",
+        "2019-09-20T15:01:57-07:00",
+        "Pieter Wuille",
+        "pieter.wuille@gmail.com"
+      ],
+      [
+        "1a8818a4469784ba148dfe22c6f6c7b84d78078c",
+        "2019-09-16T18:47:54-05:00",
+        "Bryan Bishop",
+        "kanzure@gmail.com"
+      ],
+      [
+        "0995c8a5b58b76d6b2a935502afc181d2fae70d1",
+        "2019-05-10T12:11:07Z",
+        "Jonas Nick",
+        "jonasd.nick@gmail.com"
+      ],
+      [
+        "02bdf88ef9c5e180e7bfd408ab900508d549f8e6",
+        "2019-08-29T20:46:47Z",
+        "Jonas Nick",
+        "jonasd.nick@gmail.com"
+      ],
+      [
+        "d3951f63f3886b4942f624f11cc9082b4e6a1be0",
+        "2019-08-23T15:19:28+10:00",
+        "Anthony Towns",
+        "aj@erisian.com.au"
+      ],
+      [
+        "dc6b91c1a913f004ffa306c68295ac0b0f361264",
+        "2019-08-27T15:13:08Z",
+        "Jonas Nick",
+        "jonasd.nick@gmail.com"
+      ],
+      [
+        "775cb2fd903cbfe459081fda49ada744ef3139be",
+        "2019-08-26T20:46:08Z",
+        "Jonas Nick",
+        "jonasd.nick@gmail.com"
+      ],
+      [
+        "7cd53f6eec269c607605af6163eb1a8858ed79e1",
+        "2019-08-26T11:32:04Z",
+        "Jonas Nick",
+        "jonasd.nick@gmail.com"
+      ],
+      [
+        "ed0bb5b0c2b51a1ce0361a5539b58da47cc1dd9e",
+        "2019-06-05T13:59:09Z",
+        "Jonas Nick",
+        "jonasd.nick@gmail.com"
+      ],
+      [
+        "16bdfcf534e7beabcb0c177694364b38b662c2b0",
+        "2019-08-19T14:45:34Z",
+        "Jonas Nick",
+        "jonasd.nick@gmail.com"
+      ],
+      [
+        "0d28b3c37bbb66543900760634fe6e50718a186a",
+        "2019-08-21T11:40:42Z",
+        "Jonas Nick",
+        "jonasd.nick@gmail.com"
+      ],
+      [
+        "112d9c150ab16d3e536e5f29b91776f4f68d46a3",
+        "2019-08-19T14:37:55Z",
+        "Jonas Nick",
+        "jonasd.nick@gmail.com"
+      ],
+      [
+        "9795b7081a39ee8f109cafeb91a4460fa81056e6",
+        "2019-05-10T13:29:21Z",
+        "Jonas Nick",
+        "jonasd.nick@gmail.com"
+      ],
+      [
+        "5793d3d73561a94230b486cfe0ca88ea346568de",
+        "2019-08-02T13:52:29Z",
+        "Jonas Nick",
+        "jonasd.nick@gmail.com"
+      ],
+      [
+        "04b844540e6405e5fd818b273a65c02c96dd5825",
+        "2019-05-10T13:57:12Z",
+        "Jonas Nick",
+        "jonasd.nick@gmail.com"
+      ],
+      [
+        "0c49346c874212014af8338f1d433020199ff439",
+        "2019-05-10T03:09:54+05:00",
+        "Dmitry Petukhov",
+        "dp@simplexum.com"
+      ],
+      [
+        "6733024595ee2affa0977008e020724ddf8903e0",
+        "2019-05-06T10:46:09-07:00",
+        "Pieter Wuille",
+        "pieter.wuille@gmail.com"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 83.33,
+      "passed_checks": 30,
+      "failed_checks": 6,
+      "skipped_checks": 5,
+      "total_checks": 36,
+      "bip2": {
+        "score": 75.0,
+        "passed_checks": 9,
+        "failed_checks": 3,
+        "skipped_checks": 0,
+        "total_checks": 12,
+        "checks": [
+          {
+            "id": "bip2.required_field.bip",
+            "label": "Required field 'bip' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.author",
+            "label": "Required field 'author' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.comments_uri",
+            "label": "Required field 'comments_uri' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.type",
+            "label": "Required field 'type' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.created",
+            "label": "Required field 'created' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.license",
+            "label": "Required field 'license' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "bip2",
+            "passed": false,
+            "details": "Expected level 2, found level 3"
+          },
+          {
+            "id": "bip2.heading.motivation",
+            "label": "Heading 'motivation' exists at level 2",
+            "category": "heading",
+            "standard": "bip2",
+            "passed": false,
+            "details": "Expected level 2, found level 3"
+          },
+          {
+            "id": "bip2.heading.specification",
+            "label": "Heading 'specification' exists at level 2",
+            "category": "heading",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.heading.copyright",
+            "label": "Heading 'copyright' exists at level 2",
+            "category": "heading",
+            "standard": "bip2",
+            "passed": false,
+            "details": "Expected level 2, found level 3"
+          }
+        ]
+      },
+      "bip3": {
+        "score": 87.5,
+        "passed_checks": 21,
+        "failed_checks": 3,
+        "skipped_checks": 5,
+        "total_checks": 24,
+        "checks": [
+          {
+            "id": "bip3.preamble.top_rfc822",
+            "label": "Preamble exists as RFC-822-style metadata at the top",
+            "category": "preamble",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.bip",
+            "label": "Required header 'bip' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.title",
+            "label": "Required header 'title' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.authors",
+            "label": "Required header 'authors' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.status",
+            "label": "Required header 'status' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.type",
+            "label": "Required header 'type' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.assigned",
+            "label": "Required header 'assigned' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.license",
+            "label": "Required header 'license' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_order",
+            "label": "Headers appear in the expected BIP3 order",
+            "category": "header_order",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.bip",
+            "label": "Header 'BIP' is an integer without leading zeros or '?'",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.title",
+            "label": "Header 'Title' is 50 characters or fewer",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.authors",
+            "label": "Header 'authors' uses 'Name <email>' entries",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.deputies",
+            "label": "Header 'deputies' uses 'Name <email>' entries",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.status",
+            "label": "Header 'Status' is one of Draft, Complete, Deployed, Closed",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.type",
+            "label": "Header 'Type' is one of Specification, Informational, Process",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.assigned",
+            "label": "Header 'Assigned' is yyyy-mm-dd or '?'",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.license",
+            "label": "Header 'License' is non-empty",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.discussion",
+            "label": "Header 'Discussion' uses 'yyyy-mm-dd: URL' lines",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": false,
+            "details": "Invalid Discussion entry '2019-05-06: https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2019-May/016914.html [bitcoin-dev] Taproot proposal'"
+          },
+          {
+            "id": "bip3.header_value.version",
+            "label": "Header 'Version' uses MAJOR.MINOR.PATCH",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.requires",
+            "label": "Header 'requires' uses comma+space separated BIP numbers",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.replaces",
+            "label": "Header 'replaces' uses comma+space separated BIP numbers",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.proposed_replacement",
+            "label": "Header 'proposed_replacement' uses comma+space separated BIP numbers",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.required_section.abstract",
+            "label": "Required section 'abstract' is present",
+            "category": "required_section",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_section.motivation",
+            "label": "Required section 'motivation' is present",
+            "category": "required_section",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_section.copyright",
+            "label": "Required section 'copyright' is present",
+            "category": "required_section",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.type_specific.specification_section",
+            "label": "Type 'Specification' includes a 'Specification' section",
+            "category": "type_specific",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.changelog.changelog_section",
+            "label": "Complete/Deployed proposals include a 'Changelog' section",
+            "category": "changelog",
+            "standard": "bip3",
+            "passed": false,
+            "details": "Missing required 'changelog' section"
+          },
+          {
+            "id": "bip3.changelog.version_header",
+            "label": "Complete/Deployed proposals include a 'Version' header",
+            "category": "changelog",
+            "standard": "bip3",
+            "passed": false,
+            "details": "Missing required 'version' header"
+          },
+          {
+            "id": "bip3.changelog.version_matches",
+            "label": "Latest changelog version matches the 'Version' header",
+            "category": "changelog",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "code": 104,
+      "key": 72,
+      "script": 69,
+      "sub": 65,
+      "output": 49,
+      "ref": 46,
+      "signature": 36,
+      "taproot": 34,
+      "path": 34,
+      "byte": 32,
+      "spending": 31,
+      "bip": 30,
+      "bitcoin": 30,
+      "1": 28,
+      "hash": 28,
+      "public": 26,
+      "0": 25,
+      "message": 25,
+      "q": 25,
+      "p": 24,
+      "https": 23,
+      "s": 23,
+      "mediawiki": 23,
+      "version": 22,
+      "merkle": 22,
+      "tree": 22,
+      "witness": 21,
+      "leaf": 21,
+      "h": 21,
+      "transaction": 20,
+      "input": 20,
+      "sha256": 19,
+      "outputs": 18,
+      "32": 18,
+      "bytes": 17,
+      "scripts": 17,
+      "internal": 17,
+      "hash_type": 17,
+      "spent": 16,
+      "annex": 16,
+      "return": 16,
+      "hashes": 15,
+      "bit": 15,
+      "block": 15,
+      "j": 15,
+      "script_tree": 15,
+      "org": 14,
+      "signatures": 14,
+      "data": 14,
+      "c": 14,
+      "keys": 13,
+      "scriptpubkey": 13,
+      "new": 12,
+      "single": 12,
+      "m": 12,
+      "stack": 12,
+      "e": 12,
+      "t": 12,
+      "rules": 11,
+      "com": 11,
+      "dev": 11,
+      "necessary": 11,
+      "validation": 11,
+      "inputs": 11,
+      "order": 11,
+      "spend": 11,
+      "security": 10,
+      "bip340": 10,
+      "g": 10,
+      "let": 10,
+      "use": 10,
+      "different": 10,
+      "defined": 10,
+      "control": 10,
+      "length": 10,
+      "k": 10,
+      "sig": 10,
+      "source": 10,
+      "lists": 9,
+      "linuxfoundation": 9,
+      "pipermail": 9,
+      "html": 9,
+      "wallet": 9,
+      "conditions": 9,
+      "0340": 9,
+      "sighash": 9,
+      "future": 9,
+      "leaves": 9,
+      "element": 9,
+      "function": 9,
+      "leaf_version": 9,
+      "tagged_hash": 9,
+      "branches": 8,
+      "design": 8,
+      "versions": 8,
+      "hashing": 8,
+      "following": 8,
+      "point": 8,
+      "64": 8,
+      "sighash_anyonecanpay": 8,
+      "0x00": 8,
+      "set": 8,
+      "github": 7,
+      "like": 7,
+      "2018": 7,
+      "aggregation": 7,
+      "signing": 7,
+      "construction": 7,
+      "valid": 7,
+      "x": 7,
+      "elements": 7,
+      "0x50": 7,
+      "coordinate": 7,
+      "2": 7,
+      "values": 7,
+      "tapbranch": 7,
+      "taptweak": 7,
+      "sigmsg": 7,
+      "sighash_single": 7,
+      "nsequence": 7,
+      "mallory": 7,
+      "internal_pubkey": 7,
+      "test": 7,
+      "segwit": 6,
+      "schnorr": 6,
+      "privacy": 6,
+      "adding": 6,
+      "non": 6,
+      "note": 6,
+      "number": 6,
+      "possible": 6,
+      "pubkey": 6,
+      "parties": 6,
+      "including": 6,
+      "size": 6,
+      "computed": 6,
+      "condition": 6,
+      "array": 6,
+      "fail": 6,
+      "parity": 6,
+      "y": 6,
+      "value": 6,
+      "int": 6,
+      "common": 6,
+      "ext_flag": 6,
+      "corresponding": 6,
+      "4": 6,
+      "serialization": 6,
+      "instead": 6,
+      "secret": 6,
+      "def": 6,
+      "seckey0": 6,
+      "taproot_tree_helper": 6,
+      "left_h": 6,
+      "right_h": 6,
+      "soft": 5,
+      "0341": 5,
+      "proposal": 5,
+      "requires": 5,
+      "based": 5,
+      "execution": 5,
+      "information": 5,
+      "efficient": 5,
+      "known": 5,
+      "result": 5,
+      "directly": 5,
+      "space": 5,
+      "resulting": 5,
+      "threshold": 5,
+      "extensions": 5,
+      "algorithm": 5,
+      "revealing": 5,
+      "128": 5,
+      "follows": 5,
+      "programs": 5,
+      "tag": 5,
+      "left": 5,
+      "equal": 5,
+      "need": 5,
+      "spends": 5,
+      "tapleaf": 5,
+      "bip342": 5,
+      "sighash_none": 5,
+      "commit": 5,
+      "epoch": 5,
+      "taproot_tweak_pubkey": 5,
+      "taproot_tweak_seckey": 5,
+      "vectors": 5,
+      "represent": 5,
+      "walk": 5,
+      "upgraded": 5,
+      "comments": 4,
+      "3": 4,
+      "2019": 4,
+      "document": 4,
+      "assumptions": 4,
+      "proof": 4,
+      "means": 4,
+      "software": 4,
+      "mechanisms": 4,
+      "long": 4,
+      "root": 4,
+      "index": 4,
+      "likely": 4,
+      "way": 4,
+      "example": 4,
+      "improvements": 4,
+      "actually": 4,
+      "multiple": 4,
+      "party": 4,
+      "unused": 4,
+      "offline": 4,
+      "devices": 4,
+      "tagged": 4,
+      "constructions": 4,
+      "computing": 4,
+      "includes": 4,
+      "apply": 4,
+      "second": 4,
+      "integer": 4,
+      "lift_x": 4,
+      "v": 4,
+      "0xc0": 4,
+      "0x80": 4,
+      "65": 4,
+      "specific": 4,
+      "0342": 4,
+      "present": 4,
+      "define": 4,
+      "case": 4,
+      "encoded": 4,
+      "nversion": 4,
+      "ctxout": 4,
+      "spend_type": 4,
+      "allows": 4,
+      "commits": 4,
+      "tapsighash": 4,
+      "consists": 4,
+      "alice": 4,
+      "compute": 4,
+      "seckey": 4,
+      "lang": 4,
+      "python": 4,
+      "int_from_bytes": 4,
+      "secp256k1_order": 4,
+      "l": 4,
+      "_": 4,
+      "d": 4,
+      "mainnet": 4,
+      "blocks": 4,
+      "min_activation_height": 4,
+      "started": 4,
+      "locked_in": 4,
+      "timestamp": 4,
+      "midnight": 4,
+      "2021": 4,
+      "utc": 4,
+      "consensus": 3,
+      "fork": 3,
+      "authors": 3,
+      "bips": 3,
+      "deployed": 3,
+      "type": 3,
+      "scripting": 3,
+      "capabilities": 3,
+      "unforgeability": 3,
+      "prevent": 3,
+      "model": 3,
+      "discrete": 3,
+      "logarithm": 3,
+      "hard": 3,
+      "standard": 3,
+      "general": 3,
+      "policies": 3,
+      "revealed": 3,
+      "upgrade": 3,
+      "opcodes": 3,
+      "change": 3,
+      "changes": 3,
+      "include": 3,
+      "reveal": 3,
+      "executed": 3,
+      "structure": 3,
+      "chosen": 3,
+      "pay": 3,
+      "making": 3,
+      "permit": 3,
+      "constructed": 3,
+      "support": 3,
+      "cost": 3,
+      "batch": 3,
+      "rationale": 3,
+      "core": 3,
+      "changed": 3,
+      "included": 3,
+      "earlier": 3,
+      "required": 3,
+      "consist": 3,
+      "committed": 3,
+      "inside": 3,
+      "inner": 3,
+      "nodes": 3,
+      "section": 3,
+      "failed": 3,
+      "notation": 3,
+      "lengths": 3,
+      "p2sh": 3,
+      "p2wpkh": 3,
+      "p2wsh": 3,
+      "initial": 3,
+      "called": 3,
+      "indicating": 3,
+      "33": 3,
+      "0xfe": 3,
+      "able": 3,
+      "avoid": 3,
+      "opcode": 3,
+      "implies": 3,
+      "right": 3,
+      "position": 3,
+      "require": 3,
+      "implementation": 3,
+      "secp256k1": 3,
+      "ne": 3,
+      "applicable": 3,
+      "parameter": 3,
+      "8": 3,
+      "sha_prevouts": 3,
+      "amounts": 3,
+      "original": 3,
+      "bip143": 3,
+      "zero": 3,
+      "april": 3,
+      "verify": 3,
+      "algorithms": 3,
+      "pick": 3,
+      "musig": 3,
+      "branch": 3,
+      "blob": 3,
+      "created": 3,
+      "coin": 3,
+      "returns": 3,
+      "tweaked": 3,
+      "raise": 3,
+      "valueerror": 3,
+      "bytes_from_int": 3,
+      "ser_script": 3,
+      "given": 3,
+      "ab": 3,
+      "cde": 3,
+      "cd": 3,
+      "depth": 3,
+      "json": 3,
+      "node": 3,
+      "provided": 3,
+      "deployment": 3,
+      "testnet3": 3,
+      "parent": 3,
+      "starttime": 3,
+      "count": 3,
+      "timeout": 3,
+      "wallets": 3,
+      "pre": 2,
+      "341": 2,
+      "pieter": 2,
+      "wuille": 2,
+      "gmail": 2,
+      "nick": 2,
+      "summary": 2,
+      "status": 2,
+      "specification": 2,
+      "2020": 2,
+      "license": 2,
+      "bsd": 2,
+      "clause": 2,
+      "october": 2,
+      "updates": 2,
+      "efficiency": 2,
+      "random": 2,
+      "nbn": 2,
+      "de": 2,
+      "system": 2,
+      "needs": 2,
+      "exactly": 2,
+      "protocols": 2,
+      "time": 2,
+      "add": 2,
+      "related": 2,
+      "ideas": 2,
+      "january": 2,
+      "cross": 2,
+      "review": 2,
+      "equally": 2,
+      "complex": 2,
+      "ways": 2,
+      "incremental": 2,
+      "scope": 2,
+      "fixes": 2,
+      "added": 2,
+      "independently": 2,
+      "combination": 2,
+      "opposed": 2,
+      "maximizes": 2,
+      "savings": 2,
+      "indistinguishable": 2,
+      "increase": 2,
+      "applications": 2,
+      "eprint": 2,
+      "iacr": 2,
+      "participants": 2,
+      "multi": 2,
+      "private": 2,
+      "n": 2,
+      "efficiently": 2,
+      "compatible": 2,
+      "bits": 2,
+      "reserved": 2,
+      "introduced": 2,
+      "remaining": 2,
+      "additionally": 2,
+      "forks": 2,
+      "semantics": 2,
+      "verification": 2,
+      "typical": 2,
+      "store": 2,
+      "senders": 2,
+      "involved": 2,
+      "guarantee": 2,
+      "verifier": 2,
+      "additional": 2,
+      "2016": 2,
+      "collision": 2,
+      "protection": 2,
+      "best": 2,
+      "transactions": 2,
+      "web": 2,
+      "portion": 2,
+      "actual": 2,
+      "cryptographic": 2,
+      "encodings": 2,
+      "specifies": 2,
+      "validity": 2,
+      "exists": 2,
+      "existing": 2,
+      "collisions": 2,
+      "0141": 2,
+      "bip141": 2,
+      "program": 2,
+      "wrapped": 2,
+      "provides": 2,
+      "low": 2,
+      "remain": 2,
+      "according": 2,
+      "lowest": 2,
+      "indicate": 2,
+      "odd": 2,
+      "available": 2,
+      "knowing": 2,
+      "removed": 2,
+      "probabilities": 2,
+      "huffman": 2,
+      "construct": 2,
+      "probability": 2,
+      "chance": 2,
+      "sup": 2,
+      "addition": 2,
+      "access": 2,
+      "recommended": 2,
+      "undefined": 2,
+      "compact_size": 2,
+      "32j": 2,
+      "compression": 2,
+      "functions": 2,
+      "preferable": 2,
+      "simplicity": 2,
+      "ge": 2,
+      "ffffffff": 2,
+      "commitment": 2,
+      "described": 2,
+      "allow": 2,
+      "messages": 2,
+      "proposals": 2,
+      "enable": 2,
+      "listed": 2,
+      "unsigned": 2,
+      "reused": 2,
+      "sighash_all": 2,
+      "sighash_default": 2,
+      "unknown": 2,
+      "reason": 2,
+      "range": 2,
+      "appended": 2,
+      "mechanism": 2,
+      "extension": 2,
+      "little": 2,
+      "endian": 2,
+      "nlocktime": 2,
+      "serialized": 2,
+      "format": 2,
+      "annex_present": 2,
+      "equals": 2,
+      "previous": 2,
+      "35": 2,
+      "prefix": 2,
+      "total": 2,
+      "types": 2,
+      "expected": 2,
+      "doubling": 2,
+      "attacks": 2,
+      "concern": 2,
+      "computation": 2,
+      "setting": 2,
+      "committing": 2,
+      "implicit": 2,
+      "flag": 2,
+      "prevents": 2,
+      "prove": 2,
+      "helps": 2,
+      "useful": 2,
+      "possibility": 2,
+      "fee": 2,
+      "makes": 2,
+      "respect": 2,
+      "validate": 2,
+      "having": 2,
+      "constructing": 2,
+      "organized": 2,
+      "satisfying": 2,
+      "etc": 2,
+      "src": 2,
+      "pdf": 2,
+      "leaking": 2,
+      "fresh": 2,
+      "r": 2,
+      "aggregate": 2,
+      "multiparty": 2,
+      "randomized": 2,
+      "msdl": 2,
+      "pop": 2,
+      "possession": 2,
+      "binary": 2,
+      "balanced": 2,
+      "consider": 2,
+      "reference": 2,
+      "arrays": 2,
+      "pubkey_gen": 2,
+      "tweak": 2,
+      "point_mul": 2,
+      "has_even_y": 2,
+      "taproot_output_script": 2,
+      "tuple": 2,
+      "ret": 2,
+      "list": 2,
+      "output_pubkey": 2,
+      "consisting": 2,
+      "abcde": 2,
+      "snippet": 2,
+      "internal_seckey": 2,
+      "bip340_aux_rand": 2,
+      "output_seckey": 2,
+      "script_num": 2,
+      "info": 2,
+      "output_pubkey_y_parity": 2,
+      "pubkey_data": 2,
+      "published": 2,
+      "learning": 2,
+      "leaks": 2,
+      "reuse": 2,
+      "particular": 2,
+      "found": 2,
+      "tests": 2,
+      "bip350": 2,
+      "cases": 2,
+      "numbers": 2,
+      "hex": 2,
+      "active": 2,
+      "getmediantimepast": 2,
+      "1619222400": 2,
+      "24": 2,
+      "1628640000": 2,
+      "11": 2,
+      "august": 2,
+      "709632": 2,
+      "activate": 2,
+      "height": 2,
+      "send": 2,
+      "greg": 2,
+      "maxwell": 2,
+      "reviews": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "6733024595ee2affa0977008e020724ddf8903e0",
+        "timestamp": "2019-05-06T10:46:09-07:00",
+        "date": "2019-05-06",
+        "author": "Pieter Wuille",
+        "path": "bip-taproot.mediawiki",
+        "status": "Draft",
+        "standard": "bip2"
+      },
+      {
+        "commit": "43fa7cf13d3ed35bcd2dd518c2fa0f41a4d2caa7",
+        "timestamp": "2023-02-19T16:16:13+01:00",
+        "date": "2023-02-19",
+        "author": "Christian Lewe",
+        "path": "bip-0341.mediawiki",
+        "status": "Final",
+        "standard": "bip2"
+      },
+      {
+        "commit": "5d3ceb37734f80b2ec206fc94245e3bfd6d5b0f0",
+        "timestamp": "2026-01-12T14:22:33-08:00",
+        "date": "2026-01-12",
+        "author": "Murch",
+        "path": "bip-0341.mediawiki",
+        "status": "Deployed",
+        "standard": "bip3"
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [
+        {
+          "target": "bips:340",
+          "type": "requires"
+        }
+      ],
+      "body_extracted_regex": [
+        {
+          "target": "bips:9",
+          "count": 2
+        },
+        {
+          "target": "bips:98",
+          "count": 2
+        },
+        {
+          "target": "bips:114",
+          "count": 2
+        },
+        {
+          "target": "bips:117",
+          "count": 2
+        },
+        {
+          "target": "bips:118",
+          "count": 2
+        },
+        {
+          "target": "bips:141",
+          "count": 4
+        },
+        {
+          "target": "bips:143",
+          "count": 4
+        },
+        {
+          "target": "bips:340",
+          "count": 21
+        },
+        {
+          "target": "bips:342",
+          "count": 9
+        },
+        {
+          "target": "bips:350",
+          "count": 3
+        }
+      ],
+      "body_extracted_llm": [
+        {
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:15:03Z",
+          "status": "success",
+          "findings": [
+            {
+              "target": "bips:9",
+              "type": "depends_on",
+              "evidence": "these BIPs are deployed by \"version bits\" with the name \"taproot\" and bit 2, using [[bip-0009.mediawiki|BIP9]] modified to use a lower threshold",
+              "reason": "BIP341's specified mainnet and testnet deployment builds on BIP9's version-bits activation mechanism, with enumerated modifications.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:16",
+              "type": "references",
+              "evidence": "'''Why is P2SH-wrapping not supported?'''",
+              "reason": "The text discusses and rejects P2SH wrapping. P2SH is the mechanism canonically specified by BIP16, but it is not required by BIP341.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:98",
+              "type": "references",
+              "evidence": "one of which can be avoided in theory (see [[bip-0098.mediawiki|BIP98]]). However, it seems preferable to stick to constructions that can be implemented using standard cryptographic primitives",
+              "reason": "BIP98 is cited as an alternative, more efficient Merkle-node hash construction that BIP341 deliberately does not adopt.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:114",
+              "type": "references",
+              "evidence": "Merkle branches (\"MAST\", [[bip-0114.mediawiki|BIP114]], [[bip-0117.mediawiki|BIP117]])",
+              "reason": "BIP114 is named as an earlier MAST proposal in the related-ideas discussion, without BIP341 requiring its specific rules or format.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:117",
+              "type": "references",
+              "evidence": "Merkle branches (\"MAST\", [[bip-0114.mediawiki|BIP114]], [[bip-0117.mediawiki|BIP117]])",
+              "reason": "BIP117 is named as an earlier MAST proposal in the related-ideas discussion, without BIP341 requiring its specific rules or format.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:118",
+              "type": "references",
+              "evidence": "new sighash modes ([[bip-0118.mediawiki|BIP118]])",
+              "reason": "BIP118 is cited as a previously proposed related idea; BIP341 does not adopt its new sighash modes.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "type": "depends_on",
+              "evidence": "A Taproot output is a native SegWit output (see [[bip-0141.mediawiki|BIP141]]) with version number 1, and a 32-byte witness program.",
+              "reason": "Taproot outputs are defined as native SegWit witness programs, so their output structure and versioning require the mechanism specified by BIP141.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:143",
+              "type": "references",
+              "evidence": "the semantics of the [[bip-0143.mediawiki|BIP143]] sighash types remain unchanged, except the following",
+              "reason": "BIP341 compares its fully specified signature-message algorithm with BIP143 and describes differences; it does not require BIP143's serialization algorithm to operate.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:340",
+              "type": "depends_on",
+              "evidence": "A Taproot signature is a 64-byte Schnorr signature, as defined in [[bip-0340.mediawiki|BIP340]]",
+              "reason": "BIP341 key-path validation requires the Schnorr signature format and verification scheme defined by BIP340.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:342",
+              "type": "depends_on",
+              "evidence": "[[bip-0342.mediawiki|BIP342]] specifies validity rules that apply for leaf version 0xc0",
+              "reason": "BIP341 delegates the executable script rules for its designated leaf version 0xc0 to BIP342, making those rules necessary for script-path validation as deployed.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:350",
+              "type": "references",
+              "evidence": "The first \"scriptPubKey\" tests concern computing the scriptPubKey and (mainnet) BIP350 address",
+              "reason": "BIP350 is cited for address encoding in wallet test vectors, but that address format is not required for BIP341's consensus mechanism.",
+              "confidence": "high"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

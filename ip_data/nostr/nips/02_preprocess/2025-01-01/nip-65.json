@@ -12,14 +12,9 @@
     }
   },
   "meta": {
-    "last_commit": "Thu Sep 19 08:33:11 2024 +0900",
-    "total_commits": 19,
+    "last_commit": "Tue Sep 3 20:41:31 2024 +0330",
+    "total_commits": 18,
     "git_history": [
-      [
-        "ff39a11611a7f4732550e55d03286c5b1d17467e",
-        "Thu Sep 19 08:33:11 2024 +0900",
-        "Asai Toshiya"
-      ],
       [
         "e6552476aa2e5ca7256be572a9aa226ec8a022ee",
         "Tue Sep 3 20:41:31 2024 +0330",
@@ -247,12 +242,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:59:04Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:11",
               "evidence": "support for this NIP in their [NIP-11](11.md) document",
               "reason": "The proposal uses the relay's NIP-11 document as the mechanism for advertising support and acceptance of kind 10002 events.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

@@ -406,36 +406,41 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:46:51Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:21",
               "evidence": "The present specification defines a new query key `slip24sig` for BIP-0021 URIs",
               "reason": "The proposal extends the BIP-0021 URI scheme by adding a new query parameter and associated parsing/encoding rules.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:32",
               "evidence": "The most common way of verifying address ownership by a wallet is to provide the BIP-0032 derivation path leading from the wallet's seed to the address.",
               "reason": "The address-ownership verification logic explicitly relies on BIP-0032 derivation paths as the standard way to describe address provenance.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:70",
               "evidence": "This message can be processed by a payer's wallet in such a way that the payer does not have to inspect the destination address",
               "reason": "The proposal is heavily inspired by and structurally derived from BIP-0070's payment-request concept, using similar signed payment request semantics.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "slips:21",
               "evidence": "Let *k* be a secret *address authentication key* derived from the wallet's master secret using the [SLIP-0021]",
               "reason": "The address authentication code construction depends on SLIP-0021 hierarchical derivation to derive the HMAC key.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "slips:44",
               "evidence": "*coinType* (4 bytes): 32-bit encoding of the SLIP-0044 coin type",
               "reason": "The payment-request digest and output encoding use SLIP-0044 coin types as a required field for identifying the cryptocurrency.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

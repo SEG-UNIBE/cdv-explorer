@@ -353,12 +353,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:59:03Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:31",
               "evidence": "like [`\"alt\"`](https://github.com/nostr-protocol/nips/blob/master/31.md)",
               "reason": "The proposal explicitly reuses the 'alt' tag mechanism from NIP-31 for alternate human-readable representation.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

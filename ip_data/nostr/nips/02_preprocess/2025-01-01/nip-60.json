@@ -231,36 +231,41 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:59:06Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:09",
               "evidence": "the token event should be [[NIP-09]]-deleted",
               "reason": "Token lifecycle management explicitly uses NIP-09 deletion semantics for spent token events.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:40",
               "evidence": "These events should be created with an expiration tag [[NIP-40]] matching the expiration of the bolt11",
               "reason": "Quote-state events depend on NIP-40 expiration tags to define relay discard behavior.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:44",
               "evidence": "Any tag, other than the `d` tag, can be [[NIP-44]] encrypted into the `.content` field.",
               "reason": "The proposal relies on NIP-44 encrypted content for wallet, token, and history event payloads and tag handling.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:61",
               "evidence": "`privkey` - Private key used to unlock P2PK ecash. MUST be stored encrypted in the `.content` field. **This is a different private key exclusively used for the wallet, not associated in any way to the user's nostr private key** -- This is only used when receiving funds from others, described in NIP-61.",
               "reason": "Wallet key storage and the meaning of the privkey field are explicitly tied to the receiving-funds workflow described by NIP-61.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:65",
               "evidence": "If missing, clients should follow [[NIP-65]].",
               "reason": "Relay discovery and fallback behavior are defined in terms of NIP-65 relay lists.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

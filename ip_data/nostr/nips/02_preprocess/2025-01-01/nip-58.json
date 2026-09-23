@@ -222,18 +222,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:59:00Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:01",
               "evidence": "an _addressable event_ with kind `30008`",
               "reason": "The proposal relies on the addressable event structure and its parameterized kind semantics for profile badge events.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:33",
               "evidence": "An `a` tag referencing a kind `30009` Badge Definition event",
               "reason": "The badge award and profile badge references use `a` tag coordinate references, so this proposal depends on the standardized coordinate/address reference format.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

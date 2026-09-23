@@ -183,18 +183,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:20:05Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "BIP-0032 already defines a serialization format for hierarchical deterministic keys.",
               "reason": "The proposal extends and modifies the BIP-32 serialization format, including path encoding and removal of the fingerprint field.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:173",
               "evidence": "This structure is encoded using Bech32 format described in BIP-0173.",
               "reason": "The extended serialization depends on BIP-173 for its wire encoding and human-readable prefixes.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

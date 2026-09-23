@@ -533,12 +533,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:38Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:101",
               "evidence": "[https://github.com/bitcoin/bips/blob/master/bip-0101.mediawiki Increase maximum block size] - by Gavin Andresen",
               "reason": "This proposal is an alternative design for changing the maximum block size and references BIP 101 as the directly related block-size increase proposal, but it does not reuse its mechanism or rules.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

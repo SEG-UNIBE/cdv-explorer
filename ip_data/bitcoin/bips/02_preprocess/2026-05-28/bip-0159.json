@@ -575,12 +575,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:18:20Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:31",
               "evidence": "Bitcoin right now only offers the <code>NODE_NETWORK</code> service bit",
               "reason": "The proposal defines a new service bit in addition to the existing NODE_NETWORK flag, so it depends on that earlier service-bit convention.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

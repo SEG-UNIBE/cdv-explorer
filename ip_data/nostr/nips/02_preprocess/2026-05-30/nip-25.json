@@ -292,18 +292,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:07Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:30",
               "evidence": "or [NIP-30](30.md) custom emoji",
               "reason": "The proposal reuses NIP-30 custom emoji semantics to interpret reaction content and render shortcode-based reactions.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:73",
               "evidence": "MUST include [NIP-73](73.md) external content `k` + `i` tags",
               "reason": "External content reactions are defined around NIP-73's `k` and `i` tag structure for referencing non-native targets.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

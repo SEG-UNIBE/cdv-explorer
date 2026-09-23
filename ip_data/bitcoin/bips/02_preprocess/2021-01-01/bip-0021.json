@@ -649,12 +649,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:18Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:20",
               "evidence": "This BIP is a modification of an earlier [[bip-0020.mediawiki|BIP 0020]]",
               "reason": "The proposal explicitly modifies BIP 20, so its URI scheme semantics are based on and constrained by that earlier specification.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

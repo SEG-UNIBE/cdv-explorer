@@ -802,12 +802,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:17:19Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "See below for a description of the Bloom filter algorithm",
               "reason": "The proposal relies on the Bloom filter algorithm/parameterization to define filter behavior, sizing, and matching semantics, but no specific prior BIP is referenced.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

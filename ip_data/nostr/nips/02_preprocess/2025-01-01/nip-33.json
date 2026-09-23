@@ -183,12 +183,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:58:46Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:01",
               "evidence": "moved to [NIP-01](01.md)",
               "reason": "The proposal is explicitly relocated into NIP-01, indicating it depends on and is integrated with NIP-01’s event model.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

@@ -538,36 +538,41 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:18:17Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:8",
               "evidence": "This BIP will be deployed by BIP8 with the name \"segwit\" and using bit 1.",
               "reason": "The proposal explicitly uses BIP8 deployment parameters and activation mechanics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:9",
               "evidence": "This BIP should only be deployed if BIP9-segwit fails to lock-in or activate before timeout",
               "reason": "The deployment is conditional on the outcome and timing of the BIP9 segwit deployment, so understanding activation depends on BIP9.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:141",
               "evidence": "This document specifies a user activated soft fork for [[bip-0141.mediawiki|BIP141]], [[bip-0143.mediawiki|BIP143]] and [[bip-0147.mediawiki|BIP147]]",
               "reason": "The proposal is a UASF specifically for the segwit-related changes defined by BIP141, so its purpose and effect depend on that proposal.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:143",
               "evidence": "This document specifies a user activated soft fork for [[bip-0141.mediawiki|BIP141]], [[bip-0143.mediawiki|BIP143]] and [[bip-0147.mediawiki|BIP147]]",
               "reason": "The proposal is designed to activate the transaction-signing semantics introduced by BIP143 as part of segwit.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:147",
               "evidence": "This document specifies a user activated soft fork for [[bip-0141.mediawiki|BIP141]], [[bip-0143.mediawiki|BIP143]] and [[bip-0147.mediawiki|BIP147]]",
               "reason": "The proposal depends on the segwit-related rule changes defined by BIP147 as part of the bundled activation set.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

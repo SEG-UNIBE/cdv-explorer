@@ -406,36 +406,41 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:20:06Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:21",
               "evidence": "The present specification defines a new query key `slip24sig` for BIP-0021 URIs",
               "reason": "The proposal extends the BIP-0021 URI scheme by adding a new query parameter and related processing rules.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:32",
               "evidence": "The most common way of verifying address ownership by a wallet is to provide the BIP-0032 derivation path leading from the wallet's seed to the address.",
               "reason": "The address ownership verification section uses the BIP-0032 derivation path as part of the address authentication input.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:70",
               "evidence": "The Trezor payment request format is heavily inspired by the earlier [BIP-0070] specification.",
               "reason": "The proposal is designed as a variant of the BIP-0070 payment protocol and explicitly reuses its conceptual payment-request model.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "slips:21",
               "evidence": "Let *k* be a secret *address authentication key* derived from the wallet's master secret using the [SLIP-0021]",
               "reason": "The address authentication code mechanism depends on SLIP-0021 for hierarchical derivation of the symmetric key used in HMAC computation.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "slips:44",
               "evidence": "*coinType* (4 bytes): 32-bit encoding of the SLIP-0044 coin type",
               "reason": "The payment request digest and memo/output encodings are keyed by SLIP-0044 coin type identifiers.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

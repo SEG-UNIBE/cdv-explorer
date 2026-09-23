@@ -595,18 +595,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:42:29Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:14",
               "evidence": "[[bip-0014.mediawiki|User Agent]]",
               "reason": "The version message payload reuses the user-agent field definition from BIP 14 as part of the required message format.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:37",
               "evidence": "[[BIP 0037]] introduced a new flag to version messages",
               "reason": "The proposal directly modifies the version-message relay flag introduced by BIP 37 and updates its inclusion semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

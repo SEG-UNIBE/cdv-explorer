@@ -954,24 +954,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:30Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:21",
               "evidence": "presents a [[bip-0021.mediawiki|BIP 21 URI]] to the sender with a parameter",
               "reason": "The protocol is carried inside BIP21 URIs and defines new BIP21 parameters, so its wire-level invocation depends on BIP21 URI syntax and parameter handling.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:79",
               "evidence": "Another implementation proposal has been written: [[https://github.com/bitcoin/bips/blob/master/bip-0079.mediawiki|BIP79 Bustapay]].",
               "reason": "The document explicitly compares this proposal to BIP79 and states it is very similar, indicating the earlier payment-join design is the direct predecessor this proposal refines and constrains against.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:174",
               "evidence": "The sender creates a signed, finalized PSBT",
               "reason": "The proposal’s workflow is built around creating, transporting, validating, and modifying PSBTs, so PSBT format and semantics are fundamental to implementation.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

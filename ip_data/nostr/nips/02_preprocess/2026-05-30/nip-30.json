@@ -5,7 +5,7 @@
       "title": "Custom Emoji",
       "status": "Draft",
       "author": null,
-      "created": "2023-04-29",
+      "created": "2023-03-29",
       "type": "Optional",
       "layer": null,
       "kind": null
@@ -13,7 +13,7 @@
   },
   "meta": {
     "last_commit": "Mon Mar 30 11:58:53 2026 -0500",
-    "total_commits": 7,
+    "total_commits": 9,
     "git_history": [
       [
         "d004b4cb4874ca40119aa219b0438d835f712d8d",
@@ -49,6 +49,16 @@
         "e91ce3409e1ce8267fc07a21784d2538621267c3",
         "Sat Apr 29 13:16:58 2023 -0500",
         "Alex Gleason"
+      ],
+      [
+        "800c0d0cd397eb4b043ef0cdaefd0bad18cb1cd5",
+        "Wed Mar 29 18:45:12 2023 -0300",
+        "arthurfranca"
+      ],
+      [
+        "5b1640c64815d9c288dd30b7c690b1afecf48930",
+        "Wed Mar 29 15:43:11 2023 -0300",
+        "arthurfranca"
       ]
     ]
   },
@@ -183,24 +193,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:11Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:25",
               "evidence": "kind 7 ([NIP-25](25.md))",
               "reason": "The proposal extends custom emoji support to kind 7 events defined by NIP-25, so understanding the affected event type depends on that proposal.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "nips:38",
               "evidence": "kind 30315 ([NIP-38](38.md)) events",
               "reason": "The proposal extends custom emoji support to kind 30315 events introduced by NIP-38, making that event kind part of the mechanism.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "nips:51",
               "evidence": "the kind 30030 emoji set ([NIP-51](51.md)) the emoji belongs to",
               "reason": "The emoji tag optionally carries an address pointer to a kind 30030 emoji set defined by NIP-51, so the addressing semantics depend on that proposal.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

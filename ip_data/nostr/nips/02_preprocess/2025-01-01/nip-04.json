@@ -240,12 +240,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:58:29Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:17",
               "evidence": "deprecated in favor of [NIP-17](17.md)",
               "reason": "The proposal is explicitly superseded by NIP-17, indicating adoption and interpretation depend on that replacement standard.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

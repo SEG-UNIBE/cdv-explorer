@@ -796,26 +796,28 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:18:07Z",
           "status": "api_error",
-          "dependencies": [],
-          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 197005, Requested 11552. Please try again in 2.567s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 197005, Requested 11552. Please try again in 2.567s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}",
+          "findings": []
         },
         {
           "run_id": "2026-06-30T11:33:45Z_gpt-5.4-mini_fbc31d5d",
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:33:52Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:173",
               "evidence": "TxRef MUST use the '''Bech32m'''",
               "reason": "The proposal’s serialized representation is defined as Bech32-based and explicitly relies on the Bech32 specification for encoding and parsing.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:350",
               "evidence": "later refined in [https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki BIP-0350]",
               "reason": "The proposal depends on the Bech32m refinement for its required encoding and mandates compatibility with both Bech32 and Bech32m during decoding.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

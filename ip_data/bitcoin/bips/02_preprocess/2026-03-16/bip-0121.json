@@ -629,18 +629,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:43:17Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:21",
               "evidence": "The specification is the same as BIP0021, with the following differences:",
               "reason": "The proposal is defined as a variant of the BIP0021 URI scheme and reuses its query-component rules, extensibility, and req-* semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:120",
               "evidence": "for the Proof of Payment process.",
               "reason": "The URI scheme is explicitly designed for the Proof of Payment workflow introduced by BIP0120, so adopting this scheme depends on that PoP process and terminology.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

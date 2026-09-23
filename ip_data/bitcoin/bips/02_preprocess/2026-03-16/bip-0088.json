@@ -722,42 +722,48 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:42:51Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "BIP32 derivation path format is universal",
               "reason": "The proposal defines templates that constrain and match BIP32 derivation paths, so its semantics are built around BIP32 path structure.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:43",
               "evidence": "schemes for derivation were proposed in BIP43",
               "reason": "The proposal’s motivating use case is to describe and constrain derivation schemes introduced in BIP43 and related BIPs.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:44",
               "evidence": "such as BIPs 44,45,49,84",
               "reason": "The examples and compatibility discussion use BIP44-style paths as concrete instances of the paths that the template format constrains.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:45",
               "evidence": "such as BIPs 44,45,49,84",
               "reason": "The proposal is designed to express and constrain derivation paths of the BIP45 scheme as one of the named supported path families.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:49",
               "evidence": "such as BIPs 44,45,49,84",
               "reason": "The proposal explicitly uses BIP49 paths as an example of derivation paths that can be represented by the template format.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:84",
               "evidence": "such as BIPs 44,45,49,84",
               "reason": "The proposal explicitly uses BIP84 paths as an example of derivation paths that can be represented by the template format.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

@@ -1277,30 +1277,34 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:44:55Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "BIP32 and schemes built on top of it remain usable.",
               "reason": "The public-key conversion and additive-tweak compatibility are designed to preserve usability of BIP32-derived keys.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:118",
               "evidence": "may change with proposals such as SIGHASH_NOINPUT ([[bip-0118.mediawiki|BIP118]])",
               "reason": "The proposal’s key-prefixing rationale and transaction-signing assumptions explicitly account for the SIGHASH_NOINPUT redesign in BIP118.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:327",
               "evidence": "such as [https://eprint.iacr.org/2020/1261.pdf MuSig2] ([[bip-0327.mediawiki|BIP327]])",
               "reason": "The proposal explicitly relies on MuSig2 as a compatible multisignature scheme built for this signature standard.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:341",
               "evidence": "as for example done in [[bip-0341.mediawiki|BIP341]].",
               "reason": "The message-prehashing discussion uses BIP341 as an example of the prior 32-byte-message convention that this proposal relaxes.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

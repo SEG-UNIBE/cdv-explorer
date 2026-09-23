@@ -542,38 +542,42 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:36:04Z",
           "status": "api_error",
-          "dependencies": [],
-          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 200000, Requested 2097. Please try again in 629ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 200000, Requested 2097. Please try again in 629ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}",
+          "findings": []
         },
         {
           "run_id": "2026-06-30T11:38:11Z_gpt-5.4-mini_422651ce",
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:38:20Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:9",
               "evidence": "This BIP will be deployed by \"version bits\"",
               "reason": "The proposal’s activation mechanism is version-bits deployment as defined by BIP9.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:62",
               "evidence": "This document is extracted from the previous BIP62 proposal",
               "reason": "The proposal states it is extracted from BIP62, indicating substantive inheritance from that earlier proposal.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:141",
               "evidence": "also pay-to-witness-script-hash scripts described in BIP141",
               "reason": "The new NULLDUMMY consensus rule explicitly applies to P2WSH scripts defined by BIP141, so implementation must understand that script type and its witness semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:143",
               "evidence": "with the same parameters for BIP141 and BIP143",
               "reason": "The deployment section ties this proposal’s activation parameters to BIP143, making adoption depend on the same version-bits parameterization.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

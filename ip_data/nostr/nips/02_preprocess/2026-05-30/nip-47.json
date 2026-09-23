@@ -13,7 +13,7 @@
   },
   "meta": {
     "last_commit": "Wed Feb 11 20:45:14 2026 +0700",
-    "total_commits": 31,
+    "total_commits": 29,
     "git_history": [
       [
         "e83326e6d45050f323de128e2e0b75ea9e0acde2",
@@ -76,11 +76,6 @@
         "Jesus Christ"
       ],
       [
-        "84aeb10d395d0b9a3379c81aacf5b1ff4d675499",
-        "Wed Nov 20 15:15:10 2024 -0500",
-        "Vitor Pamplona"
-      ],
-      [
         "e6552476aa2e5ca7256be572a9aa226ec8a022ee",
         "Tue Sep 3 20:41:31 2024 +0330",
         "kehiy"
@@ -104,11 +99,6 @@
         "b1f771302a6a1a94c888b619e08a9c302df85fc2",
         "Sat May 11 14:58:40 2024 -0500",
         "Sam Samskies"
-      ],
-      [
-        "ff8e2040614c2f442adb3a16bd31f42d443dee27",
-        "Fri Jan 26 15:56:33 2024 +0000",
-        "Pablo Fernandez"
       ],
       [
         "c2f34817e38353245b17c586946ef2a354bf9a4c",
@@ -562,24 +552,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:21Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:04",
               "evidence": "The initial version of the protocol used [NIP04](04.md).",
               "reason": "The proposal preserves NIP-04 as the legacy fallback encryption mode and defines compatibility behavior around it.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:44",
               "evidence": "The content of requests and responses is encrypted with [NIP44](44.md)",
               "reason": "The proposal uses NIP-44 as the primary encryption scheme for request, response, and notification payloads.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:57",
               "evidence": "a NIP-57 Zap Request event (kind 9734)",
               "reason": "The proposal's metadata format explicitly recognizes and stores NIP-57 zap request events as structured metadata.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

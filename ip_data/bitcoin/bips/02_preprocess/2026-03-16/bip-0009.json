@@ -914,24 +914,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:42:01Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:34",
               "evidence": "BIP 34 introduced a mechanism for doing soft-forking changes",
               "reason": "The proposal builds on BIP 34’s soft-fork deployment concept and uses it as the motivating precursor for the version-bit mechanism.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:65",
               "evidence": "This approach was later reused in [[bip-0065.mediawiki|BIP 65]]",
               "reason": "The proposal’s version-number constraints explicitly account for BIP 65 as part of the allowed nVersion space and deployment history.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:66",
               "evidence": "This approach was later reused in [[bip-0066.mediawiki|BIP 66]]",
               "reason": "The proposal’s version-number constraints explicitly account for BIP 66 as part of the allowed nVersion space and deployment history.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

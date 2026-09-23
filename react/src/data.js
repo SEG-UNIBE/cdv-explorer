@@ -25,7 +25,21 @@ const EMPTY_DATASET = {
   groundTruthReviewedIps: [],
   links: EMPTY_LINKS,
   network: { nodes: [], links: EMPTY_LINKS, ground_truth_reviewed_ips: [] },
-  dependencyMetrics: { by_approach: {}, pairwise_comparisons: {} },
+  dependencyMetrics: { by_approach: {}, pairwise_comparisons: {}, pairwise_comparisons_exact_type: {} },
+  dependencyConsistency: {
+    meta: {},
+    by_approach: {},
+    table_rows: [],
+    dashboard_table_rows: [],
+  },
+  centralityComparison: {
+    meta: {},
+    by_approach: {},
+    concordance: {
+      top: { across_approaches: [], across_measures: [] },
+      all: { across_approaches: [], across_measures: [] },
+    },
+  },
   authorship: { meta: {}, top_authors: [], bips_per_year: [], top_10_share: {} },
   classification: { meta: {}, sankey_grouped: { links: [] }, status_over_time: {} },
   evolution: { meta: {}, status_evolution: { categories: [], rows: [] } },
@@ -209,6 +223,8 @@ function resolveDependencyMetricsForLlmModel(dependencyMetrics, llmModel) {
     ...metrics,
     by_approach: byModel[llmModel].by_approach || metrics.by_approach || {},
     pairwise_comparisons: byModel[llmModel].pairwise_comparisons || metrics.pairwise_comparisons || {},
+    pairwise_comparisons_exact_type: byModel[llmModel].pairwise_comparisons_exact_type
+      || metrics.pairwise_comparisons_exact_type || {},
   };
 }
 
@@ -289,6 +305,7 @@ function ensureSingleSourceShape(snapshotLabel, sourceId, sourceSlug, snapshotDa
     links,
     network: { ...network, nodes, links, llm_models: llmModels, ground_truth_reviewed_ips: groundTruthReviewedIps },
     dependencyMetrics: snapshotData.dependencyMetrics || EMPTY_DATASET.dependencyMetrics,
+    dependencyConsistency: snapshotData.dependencyConsistency || EMPTY_DATASET.dependencyConsistency,
     authorship: snapshotData.authorship || EMPTY_DATASET.authorship,
     classification: snapshotData.classification || EMPTY_DATASET.classification,
     evolution: snapshotData.evolution || EMPTY_DATASET.evolution,
@@ -342,6 +359,7 @@ function ensureCombinedSourceShape(snapshotLabel, sourceEntries, combinationKey,
     links,
     network: { ...network, nodes, links, llm_models: llmModels, ground_truth_reviewed_ips: groundTruthReviewedIps },
     dependencyMetrics: snapshotData.dependencyMetrics || EMPTY_DATASET.dependencyMetrics,
+    dependencyConsistency: snapshotData.dependencyConsistency || EMPTY_DATASET.dependencyConsistency,
     authorship: snapshotData.authorship || EMPTY_DATASET.authorship,
     classification: snapshotData.classification || EMPTY_DATASET.classification,
     evolution: snapshotData.evolution || EMPTY_DATASET.evolution,
@@ -420,10 +438,14 @@ function mergeAuthorship(perSourceDatasets) {
     });
   });
 
+  // No `contributors` block here: the git-contributor tiles are pipeline-
+  // computed only. Combined artifacts provide them server-side; this client
+  // merge fallback hides the tiles rather than recomputing metrics.
   return {
     meta: {
       author_count: top_authors.length,
       node_count: perSourceDatasets.reduce((sum, d) => sum + (d.nodes?.length || 0), 0),
+      author_aliases: Object.assign({}, ...sources.map((s) => s.meta?.author_aliases || {})),
     },
     top_authors,
     bips_per_year,
@@ -530,6 +552,8 @@ function buildMergedDataset(snapshotLabel, entries, combinedDataset = null) {
       meta: { merge_status: 'not_mergeable', sourceIds },
     },
     dependencyMetrics: EMPTY_DATASET.dependencyMetrics,
+    dependencyConsistency: EMPTY_DATASET.dependencyConsistency,
+    centralityComparison: EMPTY_DATASET.centralityComparison,
     isMergedSelection: true,
     meta: {
       node_count: nodes.length,
@@ -624,6 +648,8 @@ function fetchCombinedSourceDataset(ecosystemId, sourceEntries, snapshot) {
 // Deferred payloads, keyed by the dataset field they populate.
 export const SECTION_PAYLOAD_FILES = {
   dependencyMetrics: 'dependencies/dependency_metrics.json',
+  dependencyConsistency: 'dependencies/dependency_consistency.json',
+  centralityComparison: 'centrality/centrality_comparison.json',
   evolution: 'evolution/evolution_payload.json',
   conformity: 'conformity/conformity_metrics.json',
 };

@@ -138,6 +138,13 @@ class CreateReferenceListTests(unittest.TestCase):
 
         self.assertEqual(result, ["BIP 32", "BIP 39", "BIP 44", "SLIP 132"])
 
+    def test_does_not_treat_numeric_filename_path_as_reference_list(self):
+        result = create_reference_list(
+            "See bip-0053/2-BitcoinMerkle.pdf for the diagram."
+        )
+
+        self.assertEqual(result, ["BIP 53"])
+
 
 class CreateReferenceTargetsTests(unittest.TestCase):
     def test_counts_repeated_regex_references_by_target(self):
@@ -187,6 +194,22 @@ class CreateReferenceTargetsTests(unittest.TestCase):
                 {"target": "slips:132", "count": 1},
             ],
         )
+
+    def test_does_not_count_numeric_filename_path_as_second_target(self):
+        context = SourceContext.from_config(
+            ECOSYSTEM_REGISTRY["bitcoin"]["sources"]["bips"],
+            ecosystem_slug="bitcoin",
+            source_slug="bips",
+        )
+
+        result = create_reference_targets(
+            "See bip-0053/2-BitcoinMerkle.pdf for the diagram.",
+            proposal_label="BIP",
+            reference_pattern=r"\bBIP[-#\s]?(\d+)\b",
+            source_context=context,
+        )
+
+        self.assertEqual(result, [{"target": "bips:53", "count": 1}])
 
     def test_detects_sibling_source_targets(self):
         context = SourceContext.from_config(
@@ -320,18 +343,21 @@ class LlmModelConfigTests(unittest.TestCase):
 
         self.assertEqual(record["run_id"], "run-123")
         self.assertEqual(
-            record["method_name"], "llm_assisted_semantic_dependency_extraction"
+            record["method_name"], "llm_assisted_semantic_interrelation_extraction"
         )
         self.assertEqual(
-            record["method_label"], "LLM-Assisted Semantic Dependency Extraction"
+            record["method_label"], "LLM-Assisted Semantic Interrelation Extraction"
         )
-        self.assertEqual(record["method_version"], 4)
+        self.assertEqual(record["method_version"], 7)
         self.assertEqual(record["source_context"]["source_slug"], "bips")
         self.assertIn("{proposal_text}", record["user_prompt_template"])
         self.assertIn("{current_proposal_number}", record["user_prompt_template"])
-        self.assertIn("Do not use outside knowledge", record["system_prompt"])
         self.assertIn(
-            "verbatim contiguous quote copied from the proposal text",
+            "General knowledge may be used only to map",
+            record["system_prompt"],
+        )
+        self.assertIn(
+            "verbatim contiguous passage that contains enough surrounding context",
             record["system_prompt"],
         )
         self.assertIn("MAIN_LABEL", record["system_prompt"])
@@ -341,11 +367,11 @@ class LlmModelConfigTests(unittest.TestCase):
             record["user_prompt_template"],
         )
         self.assertIn(
-            "does not require full MAIN_LABEL 70 support",
+            "which addresses a related but separate problem using its own independent fields, encoding, and validation rules",
             record["user_prompt_template"],
         )
         self.assertIn(
-            "schemes following MAIN_LABEL 44 should use purpose value 44'",
+            "Unlike MAIN_LABEL 44, which defines a symmetric encryption scheme",
             record["user_prompt_template"],
         )
         self.assertIn(
@@ -437,7 +463,7 @@ class LlmModelConfigTests(unittest.TestCase):
             )
 
         self.assertEqual(result["status"], "parse_error")
-        self.assertEqual(result["dependencies"], [])
+        self.assertEqual(result["findings"], [])
         self.assertIn("Expecting property name", result["error_message"])
 
     def test_responses_api_reasoning_path_uses_responses_client_with_default_reasoning(
@@ -461,7 +487,7 @@ class LlmModelConfigTests(unittest.TestCase):
         def create_response(**kwargs):
             calls.append(kwargs)
             return types.SimpleNamespace(
-                output_text='{"dependencies":[{"target":"bips:32"}]}'
+                output_text='{"findings":[{"target":"bips:32","type":"depends_on"}]}'
             )
 
         client = types.SimpleNamespace(

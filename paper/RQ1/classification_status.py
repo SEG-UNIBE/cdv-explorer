@@ -11,8 +11,7 @@ from matplotlib.patches import Patch
 from matplotlib.ticker import MaxNLocator
 
 from analysis.artifact_io import resolve_latest_snapshot_label
-from paper.plot_colors import with_plot_alpha
-from paper.RQ3._plotting import (
+from paper._utils.plotting import (
     BAR_EDGE_COLOR,
     BAR_EDGE_WIDTH,
     bar_style,
@@ -20,6 +19,8 @@ from paper.RQ3._plotting import (
     match_axis_label_fontsize,
     save_figure,
 )
+from paper.config import FIGURE_TITLE_FONT_SIZE
+from paper.plot_colors import with_plot_alpha
 from pipeline.source_context import SourceContext
 
 STATUS_ORDER = [
@@ -46,6 +47,7 @@ STATUS_COLORS = {
     "Final": "#4263eb",
     "Replaced": "#8d6e63",
     "Deployed": "#2f9e44",
+    "Accepted": "#74b816",
     "Complete": "#1971c2",
     "Closed": "#d94841",
     "Rejected": "#868e96",
@@ -228,7 +230,12 @@ def plot_classification_status(
     palette = colors or STATUS_COLORS
     colors = [palette.get(status, "#868e96") for status in ordered_statuses]
     legend_handles = [
-        Patch(facecolor=with_plot_alpha(color), edgecolor="none", label=status)
+        Patch(
+            facecolor=bar_style(color)["color"],
+            edgecolor=BAR_EDGE_COLOR,
+            linewidth=BAR_EDGE_WIDTH,
+            label=status,
+        )
         for status, color in zip(ordered_statuses, colors, strict=True)
     ]
     donut_colors = [bar_style(color)["color"] for color in colors]
@@ -347,7 +354,9 @@ def plot_classification_status(
     axis_right_secondary.spines["top"].set_visible(False)
     axis_right_secondary.spines["left"].set_visible(False)
 
-    figure.suptitle(f"{category_title} ({snapshot_label})", y=0.98)
+    figure.suptitle(
+        f"{category_title} ({snapshot_label})", y=0.98, fontsize=FIGURE_TITLE_FONT_SIZE
+    )
     figure.legend(
         handles=legend_handles,
         loc="upper center",

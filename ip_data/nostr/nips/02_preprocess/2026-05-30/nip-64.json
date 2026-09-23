@@ -358,12 +358,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:37Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:31",
               "evidence": "like [`\"alt\"`](31.md)",
               "reason": "The proposal explicitly relies on the alt tag convention for representing notes to non-supporting clients.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

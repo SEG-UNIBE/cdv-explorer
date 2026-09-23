@@ -3,7 +3,11 @@ import { useDashboardEcosystem, useDashboardLinkMode, useDashboardSnapshot } fro
 import { CollapsibleControls } from './dashboard/CollapsibleControls';
 import { AuthorNetworkCanvas } from './authorNetwork/AuthorNetworkCanvas';
 import { AuthorNetworkToolbar } from './authorNetwork/AuthorNetworkToolbar';
-import { authorNetworkHasCrossSourceRefs, filterCrossSourceAuthorNetwork } from './authorNetwork/authorNetworkUtils';
+import {
+  authorNetworkHasCrossSourceRefs,
+  filterAuthorNetworkByMinAuthoredIps,
+  filterCrossSourceAuthorNetwork,
+} from './authorNetwork/authorNetworkUtils';
 import { useAuthorNetworkState } from './authorNetwork/useAuthorNetworkState';
 
 export const AuthorCollaborationNetwork = ({
@@ -15,6 +19,8 @@ export const AuthorCollaborationNetwork = ({
   setLayoutMode,
   minClusterCollaborations = '0',
   setMinClusterCollaborations,
+  minAuthoredIps = '1',
+  setMinAuthoredIps,
   extraControls = null,
 }) => {
   const snapshotLabel = useDashboardSnapshot();
@@ -27,7 +33,7 @@ export const AuthorCollaborationNetwork = ({
     setMinClusterCollaborations,
     setLayoutMode,
   });
-  const { onlyCrossSource, setOnlyCrossSource } = state;
+  const { onlyCrossSource, setOnlyCrossSource, showAllLabels, setShowAllLabels } = state;
 
   const canFilterCrossSource = useMemo(
     () => authorNetworkHasCrossSourceRefs(data),
@@ -40,11 +46,11 @@ export const AuthorCollaborationNetwork = ({
   }, [canFilterCrossSource, onlyCrossSource, setOnlyCrossSource]);
 
   const graphData = useMemo(() => {
-    if (!onlyCrossSource || !canFilterCrossSource) {
-      return data;
-    }
-    return filterCrossSourceAuthorNetwork(data);
-  }, [canFilterCrossSource, data, onlyCrossSource]);
+    const crossSourceFiltered = onlyCrossSource && canFilterCrossSource
+      ? filterCrossSourceAuthorNetwork(data)
+      : data;
+    return filterAuthorNetworkByMinAuthoredIps(crossSourceFiltered, minAuthoredIps);
+  }, [canFilterCrossSource, data, minAuthoredIps, onlyCrossSource]);
 
   const hasNodes = Array.isArray(graphData?.nodes) && graphData.nodes.length > 0;
 
@@ -64,10 +70,14 @@ export const AuthorCollaborationNetwork = ({
           importInputRef={state.importInputRef}
           minClusterCollaborations={minClusterCollaborations}
           setMinClusterCollaborations={setMinClusterCollaborations}
+          minAuthoredIps={minAuthoredIps}
+          setMinAuthoredIps={setMinAuthoredIps}
           hasNodes={hasNodes}
           onlyCrossSource={onlyCrossSource}
           setOnlyCrossSource={setOnlyCrossSource}
           canFilterCrossSource={canFilterCrossSource}
+          showAllLabels={showAllLabels}
+          setShowAllLabels={setShowAllLabels}
         />
       </CollapsibleControls>
       <AuthorNetworkCanvas
@@ -87,6 +97,7 @@ export const AuthorCollaborationNetwork = ({
         exportPayloadRef={state.exportPayloadRef}
         updateExportPayloadRef={state.updateExportPayloadRef}
         onlyCrossSource={onlyCrossSource}
+        showAllLabels={showAllLabels}
       />
     </div>
   );

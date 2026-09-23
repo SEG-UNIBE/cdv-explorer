@@ -840,12 +840,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:44:17Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:118",
               "evidence": "it is like [https://github.com/bitcoin/bips/blob/master/bip-0118.mediawiki BIP-118]",
               "reason": "The bundle hash format explicitly reuses the blinded-transaction concept described by BIP-118.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

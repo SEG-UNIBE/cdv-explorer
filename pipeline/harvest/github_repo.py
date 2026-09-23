@@ -55,6 +55,7 @@ def _checkout_snapshot(local_dir: Path, snapshot: str) -> None:
             "-C",
             str(local_dir),
             "rev-list",
+            "--first-parent",
             "-1",
             f"--before={snapshot} 23:59:59",
             branch_ref,

@@ -9,11 +9,14 @@ from itertools import combinations
 from pathlib import Path
 from typing import Any
 
+from analysis.dependencies.centrality import build_centrality_comparison_payload
+from analysis.dependencies.consistency import build_dependency_consistency_payload
 from analysis.dependencies.constants import (
     BODY_EXTRACTED_LLM,
     BODY_EXTRACTED_REGEX,
     PREAMBLE_EXTRACTED,
 )
+from analysis.interrelation_types import INTERRELATION_TYPES
 from analysis.proposal_schema import LLM_RUN_STATUS_SUCCESS, LLM_RUN_STATUSES
 from analysis.reference_ids import normalize_reference_id_for_config
 from analysis.utils import parse_date_ymd
@@ -30,12 +33,30 @@ from pipeline.source_context import SourceContext
 
 PAYLOAD_REQUIRED_FILES: dict[str, list[str]] = {
     "dependencies/network_data.json": ["nodes", "dependency_edges"],
-    "dependencies/dependency_metrics.json": ["by_approach", "pairwise_comparisons"],
+    "dependencies/dependency_metrics.json": [
+        "by_approach",
+        "pairwise_comparisons",
+        "pairwise_comparisons_exact_type",
+    ],
+    "centrality/centrality_comparison.json": [
+        "meta",
+        "by_approach",
+        "concordance",
+    ],
+    "dependencies/dependency_consistency.json": [
+        "meta",
+        "by_approach",
+        "table_rows",
+        "dashboard_table_rows",
+        "structural_check_rows",
+        "omitted_zero_checks",
+    ],
     "authorship/authorship_payload.json": [
         "meta",
         "top_authors",
         "bips_per_year",
         "top_10_share",
+        "contributors",
     ],
     "classification/classification_payload.json": [
         "meta",
@@ -53,6 +74,8 @@ PAYLOAD_REQUIRED_FILES: dict[str, list[str]] = {
 PAYLOAD_COLUMN_LABELS: dict[str, str] = {
     "dependencies/network_data.json": "network",
     "dependencies/dependency_metrics.json": "dep_metrics",
+    "centrality/centrality_comparison.json": "centrality",
+    "dependencies/dependency_consistency.json": "dep_consistency",
     "authorship/authorship_payload.json": "authorship",
     "classification/classification_payload.json": "classification",
     "evolution/evolution_payload.json": "evolution",
@@ -464,27 +487,86 @@ def _validate_llm_interrelations(
             result.fail(
                 f"{run_path} has invalid `status` `{status}`; allowed: {allowed}"
             )
-        dependencies = run.get("dependencies")
-        if not isinstance(dependencies, list):
-            result.fail(f"{run_path}.dependencies must be a list")
+        findings = run.get("findings")
+        if not isinstance(findings, list):
+            result.fail(f"{run_path}.findings must be a list")
             continue
-        if status and status != LLM_RUN_STATUS_SUCCESS and dependencies:
-            result.fail(
-                f"{run_path}.dependencies must be empty when status is `{status}`"
-            )
+        if status and status != LLM_RUN_STATUS_SUCCESS and findings:
+            result.fail(f"{run_path}.findings must be empty when status is `{status}`")
         if status and status != LLM_RUN_STATUS_SUCCESS:
             if not str(run.get("error_message") or "").strip():
                 result.fail(
                     f"{run_path} missing non-empty `error_message` for failed run"
                 )
-        for dep_index, dependency in enumerate(dependencies):
+        for finding_index, finding in enumerate(findings):
+            finding_path = f"{run_path}.findings[{finding_index}]"
             _validate_target_entry(
-                dependency,
-                path=f"{run_path}.dependencies[{dep_index}]",
+                finding,
+                path=finding_path,
                 result=result,
                 source_configs=source_configs,
                 active_source_slug=str(context.source_slug or ""),
             )
+            if not isinstance(finding, Mapping):
+                continue
+            finding_type = finding.get("type")
+            if not isinstance(finding_type, str) or not finding_type.strip():
+                result.fail(f"{finding_path} missing `type`")
+            elif finding_type not in INTERRELATION_TYPES:
+                allowed = ", ".join(sorted(INTERRELATION_TYPES))
+                result.fail(
+                    f"{finding_path} has unknown relation type `{finding_type}`; allowed: {allowed}"
+                )
+
+
+def _validate_git_history(
+    proposal: Mapping[str, Any],
+    *,
+    result: SnapshotValidationResult,
+    proposal_path: str,
+) -> None:
+    meta = proposal.get("meta")
+    if not isinstance(meta, Mapping):
+        result.fail(f"{proposal_path}.meta must be an object")
+        return
+
+    git_history = meta.get("git_history")
+    if not isinstance(git_history, list):
+        result.fail(f"{proposal_path}.meta.git_history must be a list")
+        return
+
+    entries_missing_email = 0
+    for entry_index, entry in enumerate(git_history):
+        entry_path = f"{proposal_path}.meta.git_history[{entry_index}]"
+        if not isinstance(entry, list):
+            result.fail(
+                f"{entry_path} must contain commit, author_date, author_name, and author_email"
+            )
+            continue
+        if len(entry) == 3:
+            entries_missing_email += 1
+        elif len(entry) != 4:
+            result.fail(
+                f"{entry_path} must contain commit, author_date, author_name, and author_email"
+            )
+            continue
+        commit, author_date, author_name = entry[:3]
+        if not str(commit or "").strip():
+            result.fail(f"{entry_path}[0] commit must be non-empty")
+        if not str(author_date or "").strip():
+            result.fail(f"{entry_path}[1] author_date must be non-empty")
+        if not str(author_name or "").strip():
+            result.fail(f"{entry_path}[2] author_name must be non-empty")
+        # A present-but-empty author_email is a real git data gap (some commits
+        # genuinely have no configured author email), not an extraction bug —
+        # treat it the same as the legacy 3-element case rather than failing.
+        if len(entry) == 4 and not str(entry[3] or "").strip():
+            entries_missing_email += 1
+
+    if entries_missing_email:
+        result.warn(
+            f"{proposal_path}.meta.git_history has {entries_missing_email} entries missing author_email; regenerate preprocessing to make Git identity resolution auditable"
+        )
 
 
 def validate_preprocess_snapshot(
@@ -523,6 +605,12 @@ def validate_preprocess_snapshot(
         if not isinstance(proposal, Mapping):
             result.fail(f"`{rel_name}` must contain a JSON object")
             continue
+
+        _validate_git_history(
+            proposal,
+            result=result,
+            proposal_path=f"`{rel_name}`",
+        )
 
         interrelations = (
             proposal.get("insights", {})
@@ -566,6 +654,7 @@ def validate_preprocess_snapshot(
 def validate_payload_snapshot(snapshot_dir: Path) -> SnapshotValidationResult:
     """Validate the frontend payloads under a 04_postprocess/<snapshot> directory."""
     result = SnapshotValidationResult()
+    loaded_payloads: dict[str, Mapping[str, Any]] = {}
 
     for rel_path, required_keys in PAYLOAD_REQUIRED_FILES.items():
         label = PAYLOAD_COLUMN_LABELS[rel_path]
@@ -592,6 +681,7 @@ def validate_payload_snapshot(snapshot_dir: Path) -> SnapshotValidationResult:
             continue
 
         result.file_status[label] = "✅"
+        loaded_payloads[rel_path] = data
 
         if rel_path == "dependencies/network_data.json":
             result.stats["proposals"] = len(data.get("nodes", []))
@@ -601,8 +691,112 @@ def validate_payload_snapshot(snapshot_dir: Path) -> SnapshotValidationResult:
                 if isinstance(edge, Mapping)
                 and edge.get("extraction_method") == BODY_EXTRACTED_LLM
             )
+            _validate_network_payload(data, result, rel_path)
+
+        if rel_path == "authorship/authorship_payload.json":
+            _validate_authorship_payload(data, result, rel_path)
+
+    network_data = loaded_payloads.get("dependencies/network_data.json")
+    dependency_metrics = loaded_payloads.get("dependencies/dependency_metrics.json")
+    centrality_payload = loaded_payloads.get(
+        "centrality/centrality_comparison.json"
+    )
+    if (
+        dependency_metrics is not None
+        and centrality_payload is not None
+        and network_data is not None
+    ):
+        expected = build_centrality_comparison_payload(
+            dict(dependency_metrics), network_data=dict(network_data)
+        )
+        if centrality_payload != expected:
+            result.file_status["centrality"] = "❌ stale"
+            result.fail(
+                "`centrality/centrality_comparison.json` does not match "
+                "`dependencies/dependency_metrics.json`; rebuild the snapshot artifacts"
+            )
+
+    consistency_payload = loaded_payloads.get(
+        "dependencies/dependency_consistency.json"
+    )
+    if network_data is not None and consistency_payload is not None:
+        expected = build_dependency_consistency_payload(network_data)
+        if consistency_payload != expected:
+            result.file_status["dep_consistency"] = "❌ stale"
+            result.fail(
+                "`dependencies/dependency_consistency.json` does not match "
+                "`dependencies/network_data.json`; rebuild the snapshot artifacts"
+            )
 
     return result
+
+
+def _validate_network_payload(
+    payload: Mapping[str, Any],
+    result: SnapshotValidationResult,
+    rel_path: str,
+) -> None:
+    nodes = payload.get("nodes")
+    if not isinstance(nodes, list):
+        result.file_status["network"] = "❌ schema"
+        result.fail(f"`{rel_path}` `nodes` must be a list")
+        return
+
+    for index, node in enumerate(nodes, start=1):
+        if not isinstance(node, Mapping):
+            result.file_status["network"] = "❌ schema"
+            result.fail(f"`{rel_path}` node {index} must be an object")
+            continue
+        if "contributors" not in node:
+            node_id = node.get("graph_key") or node.get("id") or index
+            result.file_status["network"] = "❌ schema"
+            result.fail(f"`{rel_path}` node `{node_id}` missing `contributors` list")
+            continue
+        if not isinstance(node.get("contributors"), list):
+            node_id = node.get("graph_key") or node.get("id") or index
+            result.file_status["network"] = "❌ schema"
+            result.fail(f"`{rel_path}` node `{node_id}` `contributors` must be a list")
+
+
+def _validate_authorship_payload(
+    payload: Mapping[str, Any],
+    result: SnapshotValidationResult,
+    rel_path: str,
+) -> None:
+    contributors = payload.get("contributors")
+    if not isinstance(contributors, Mapping):
+        result.file_status["authorship"] = "❌ schema"
+        result.fail(f"`{rel_path}` `contributors` must be an object")
+        return
+
+    list_fields = (
+        "top_contributors",
+        "contribution_histogram",
+        "per_proposal_histogram",
+    )
+    for field_name in list_fields:
+        if not isinstance(contributors.get(field_name), list):
+            result.file_status["authorship"] = "❌ schema"
+            result.fail(f"`{rel_path}` `contributors.{field_name}` must be a list")
+
+    coverage = contributors.get("coverage")
+    if not isinstance(coverage, Mapping):
+        result.file_status["authorship"] = "❌ schema"
+        result.fail(f"`{rel_path}` `contributors.coverage` must be an object")
+        return
+
+    required_coverage_keys = (
+        "contributor_count",
+        "declared_author_count",
+        "contributors_also_declared",
+        "contributors_never_declared",
+        "proposals_with_git_data",
+        "proposals_with_uncredited",
+    )
+    missing = [key for key in required_coverage_keys if key not in coverage]
+    if missing:
+        result.file_status["authorship"] = "❌ schema"
+        result.fail(f"`{rel_path}` `contributors.coverage` missing keys: {missing}")
 
 
 def validate_ground_truth_curated_file(

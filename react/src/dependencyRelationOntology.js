@@ -1,11 +1,14 @@
 // Ecosystem- and IP-source-aware relation-type ontology.
 //
-// Ground-truth curated labels (depends_on / supersedes / references) and the
-// generic Regex (`reference`) and LLM (`implicit_dependency`) labels are the same
-// across every ecosystem, so they live in a single universal map. Only the
-// preamble vocabulary is IP-source specific (e.g. the BIP preamble headers
-// `requires` / `replaces` / `proposed_replacement`), so it is declared per
-// ecosystem and per source and merged in on demand.
+// Ground-truth curated labels (depends_on / supersedes / superseded_by /
+// references) and the generic Regex label (`reference`) are the same across
+// every ecosystem, so they live in a single universal map. The LLM approach
+// classifies findings directly into the depends_on/references/supersedes/
+// superseded_by vocabulary, so its labels resolve via the same ground-truth
+// entries without a separate mapping. Only the preamble vocabulary is
+// IP-source specific (e.g. the BIP preamble headers `requires` / `replaces` /
+// `proposed_replacement`), so it is declared per ecosystem and per source and
+// merged in on demand.
 
 const CANONICAL_TYPE_ORDER = ['DEPENDS_ON', 'SUPERSEDES', 'SUPERSEDED_BY', 'REFERENCES'];
 
@@ -24,9 +27,8 @@ const UNIVERSAL_RELATION_TYPE_MAP = {
   supersedes: 'SUPERSEDES',
   superseded_by: 'SUPERSEDED_BY',
   references: 'REFERENCES',
-  // generic extraction approaches
-  reference: 'REFERENCES', // Regex
-  implicit_dependency: 'REFERENCES', // LLM
+  // generic Regex extraction approach
+  reference: 'REFERENCES',
 };
 
 // IP-source-specific preamble vocabularies, keyed by ecosystem id then source id.

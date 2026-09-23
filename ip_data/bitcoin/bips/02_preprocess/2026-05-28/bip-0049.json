@@ -636,42 +636,48 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:17:24Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:16",
               "evidence": "scriptPubKey: HASH160 <20-byte-script-hash> EQUAL",
               "reason": "The nested witness address is wrapped in a P2SH scriptPubKey, relying on the P2SH mechanism from BIP16.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:32",
               "evidence": "based on a [[bip-0032.mediawiki|BIP 32]] root account",
               "reason": "The proposal’s derivation scheme is built on BIP32 hierarchical deterministic root-account derivation.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:43",
               "evidence": "For the `purpose`-path level it uses `49'`.",
               "reason": "The proposal uses the BIP43 purpose-field path level to encode the wallet type.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:44",
               "evidence": "uses the same account-structure as defined in [[bip-0044.mediawiki|BIP 44]]",
               "reason": "The proposal reuses the BIP44 account/path structure, changing only the purpose value and keeping the remaining path semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:141",
               "evidence": "uses the encapsulation defined in [[bip-0141.mediawiki#p2wpkh-nested-in-bip16-p2sh|BIP 141]]",
               "reason": "The address construction and transaction serialization depend on the nested P2WPKH-in-P2SH encapsulation defined by BIP141.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "slips:132",
               "evidence": "Additional registered version bytes are listed in [[https://github.com/satoshilabs/slips/blob/master/slip-0132.md|SLIP-0132]].",
               "reason": "The proposal’s extended-key serialization uses alternate version bytes, and it explicitly points to SLIP-0132 for the registered prefix values.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

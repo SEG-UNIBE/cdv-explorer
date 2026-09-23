@@ -10,6 +10,8 @@ from analysis.classification import prepare_classification_payload
 from analysis.conformity import extract_conformity_metrics
 from analysis.dependencies import (
     available_llm_model_entries,
+    build_centrality_comparison_payload,
+    build_dependency_consistency_payload,
     build_network_data,
     collapse_network_data_to_llm_model,
     extract_dependency_metrics,
@@ -198,21 +200,20 @@ def merge_source_network_data(
             seen_reviewed_ips.add(graph_key)
             reviewed_ips.append(reviewed_ip)
 
-    if len(published_llm_models) > 1:
-        raise ValueError(
-            "Cannot build combined-source artifacts from mixed published LLM models: "
-            f"{', '.join(sorted(published_llm_models))}. Rebuild the selected sources with the same "
-            "`--artifact-llm-model` value."
-        )
+    # Each source's dependency edges are already resolved per-IP (preferring the
+    # ecosystem-configured model, else falling back to that IP's newest run), so
+    # sources are free to publish different default-model labels here (e.g. bips
+    # has gpt-5.5 runs and prefers them while slips has only been run with
+    # gpt-5.4). The label is informational only, so merge regardless and simply
+    # omit it when it would be ambiguous across sources.
+    combined_llm_model = (
+        next(iter(published_llm_models)) if len(published_llm_models) == 1 else None
+    )
 
     return {
         "nodes": nodes,
         "dependency_edges": edges,
-        **(
-            {"llm_model": next(iter(published_llm_models))}
-            if published_llm_models
-            else {}
-        ),
+        **({"llm_model": combined_llm_model} if combined_llm_model else {}),
         "ground_truth_reviewed_ips": reviewed_ips,
         "meta": {
             "node_count": len(nodes),
@@ -285,14 +286,39 @@ def prepare_combined_source_artifacts(
 
             emit(f"{combo_key}: recomputing dependency metrics", advance=1)
             dependency_metrics = extract_dependency_metrics(network_data)
+            centrality_comparison = build_centrality_comparison_payload(
+                dependency_metrics, network_data=network_data
+            )
+            dependency_consistency = build_dependency_consistency_payload(network_data)
 
             emit(f"{combo_key}: preparing authorship artifacts", advance=1)
+            combined_author_aliases = SourceContext.from_config(
+                source_configs[combo[0]],
+                ecosystem_slug=ecosystem_slug,
+                source_slug=combo[0],
+            ).author_aliases
             authorship_metrics = extract_authorship_metrics(
-                network_data.get("nodes", [])
+                network_data.get("nodes", []),
+                aliases=combined_author_aliases,
             )
             authorship_path = snapshot_root / "authorship" / "authorship_metrics.json"
             _save_json(authorship_metrics, authorship_path)
-            authorship_payload = prepare_authorship_payload(network_data)
+            contributor_metrics = extract_authorship_metrics(
+                network_data.get("nodes", []),
+                field="contributors",
+                aliases=combined_author_aliases,
+                include_network=False,
+            )
+            _save_json(
+                contributor_metrics,
+                snapshot_root / "authorship" / "authorship_metrics_contributors.json",
+            )
+            authorship_payload = prepare_authorship_payload(
+                network_data,
+                aliases=combined_author_aliases,
+                authorship=authorship_metrics,
+                contributor_metrics=contributor_metrics,
+            )
 
             emit(
                 f"{combo_key}: preparing non-mergeable section placeholders", advance=1
@@ -313,6 +339,8 @@ def prepare_combined_source_artifacts(
                 snapshot=snapshot,
                 network_data=network_data,
                 dependency_metrics=dependency_metrics,
+                centrality_comparison=centrality_comparison,
+                dependency_consistency=dependency_consistency,
                 authorship_payload=authorship_payload,
                 classification_payload=classification_payload,
                 evolution_payload=evolution_payload,
@@ -323,6 +351,12 @@ def prepare_combined_source_artifacts(
                 "network_json": payload_paths["payload_network_data_json"],
                 "dependency_metrics_json": payload_paths[
                     "payload_dependency_metrics_json"
+                ],
+                "centrality_comparison_json": payload_paths[
+                    "payload_centrality_comparison_json"
+                ],
+                "dependency_consistency_json": payload_paths[
+                    "payload_dependency_consistency_json"
                 ],
                 "authorship_json": authorship_path,
                 "authorship_payload_json": payload_paths[
@@ -395,6 +429,8 @@ def _trim_conformity_checks(conformity_metrics: dict[str, Any]) -> dict[str, Any
 FRONTEND_PAYLOAD_FILES: dict[str, str] = {
     "network_data": "dependencies/network_data.json",
     "dependency_metrics": "dependencies/dependency_metrics.json",
+    "centrality_comparison": "centrality/centrality_comparison.json",
+    "dependency_consistency": "dependencies/dependency_consistency.json",
     "authorship_payload": "authorship/authorship_payload.json",
     "classification_payload": "classification/classification_payload.json",
     "evolution_payload": "evolution/evolution_payload.json",
@@ -407,6 +443,8 @@ def _save_frontend_payloads(
     snapshot: str,
     network_data: dict[str, Any],
     dependency_metrics: dict[str, Any],
+    centrality_comparison: dict[str, Any],
+    dependency_consistency: dict[str, Any],
     authorship_payload: dict[str, Any],
     classification_payload: dict[str, Any],
     evolution_payload: dict[str, Any],
@@ -416,6 +454,8 @@ def _save_frontend_payloads(
     payloads: dict[str, dict[str, Any]] = {
         "network_data": network_data,
         "dependency_metrics": dependency_metrics,
+        "centrality_comparison": centrality_comparison,
+        "dependency_consistency": dependency_consistency,
         "authorship_payload": authorship_payload,
         "classification_payload": classification_payload,
         "evolution_payload": evolution_payload,
@@ -488,11 +528,15 @@ def prepare_ecosystem_artifacts(
             network_data, available_llm_models[0]
         )
     elif len(available_llm_models) > 1:
-        raise ValueError(
-            "Multiple LLM models are present in the preprocessed data for "
-            f"{context.ecosystem_slug}/{context.source_slug}/{snapshot}: {', '.join(sorted(available_llm_models))}. "
-            "Re-run with `--artifact-llm-model <model>` to choose which model should be published into the web artifacts."
-        )
+        # No explicit override and more than one model's runs are present: keep the
+        # per-IP default already resolved by `_default_llm_run` (prefer the
+        # ecosystem-configured model for that IP, else fall back to whichever
+        # model's run is newest for that IP) instead of forcing a single flat model.
+        network_data = dict(network_data)
+        default_model = str(
+            (network_data.get("llm_models") or {}).get("default_model") or ""
+        ).strip()
+        network_data["llm_model"] = default_model or None
     else:
         network_data = collapse_network_data_to_llm_model(network_data, None)
 
@@ -508,9 +552,24 @@ def prepare_ecosystem_artifacts(
     save_network_data_artifacts(network_data, network_stem, include_json=False)
 
     emit("Preparing authorship artifacts", advance=1)
-    authorship_metrics = extract_authorship_metrics(network_data.get("nodes", []))
+    authorship_metrics = extract_authorship_metrics(
+        network_data.get("nodes", []),
+        aliases=context.author_aliases,
+    )
     authorship_path = snapshot_root / "authorship" / "authorship_metrics.json"
     _save_json(authorship_metrics, authorship_path)
+    # Same metrics over everyone who ever changed a proposal file (full git
+    # history), complementing the declared-author view above.
+    contributor_metrics = extract_authorship_metrics(
+        network_data.get("nodes", []),
+        field="contributors",
+        aliases=context.author_aliases,
+        include_network=False,
+    )
+    _save_json(
+        contributor_metrics,
+        snapshot_root / "authorship" / "authorship_metrics_contributors.json",
+    )
     _save_csv_rows(
         authorship_metrics.get("top_authors", []),
         snapshot_root / "authorship" / "top_authors.csv",
@@ -527,7 +586,12 @@ def prepare_ecosystem_artifacts(
         fieldnames=["bips_written", "authors"],
     )
 
-    authorship_payload = prepare_authorship_payload(network_data)
+    authorship_payload = prepare_authorship_payload(
+        network_data,
+        aliases=context.author_aliases,
+        authorship=authorship_metrics,
+        contributor_metrics=contributor_metrics,
+    )
     _save_csv_rows(
         authorship_payload.get("collaboration_centrality", []),
         snapshot_root / "authorship" / "collaboration_centrality.csv",
@@ -536,6 +600,10 @@ def prepare_ecosystem_artifacts(
 
     emit("Preparing dependency metrics artifacts", advance=1)
     dependency_metrics = extract_dependency_metrics(network_data)
+    centrality_comparison = build_centrality_comparison_payload(
+        dependency_metrics, network_data=network_data
+    )
+    dependency_consistency = build_dependency_consistency_payload(network_data)
 
     emit("Preparing classification artifacts", advance=1)
     classification_payload = prepare_classification_payload(
@@ -597,6 +665,8 @@ def prepare_ecosystem_artifacts(
         snapshot=snapshot,
         network_data=network_data,
         dependency_metrics=dependency_metrics,
+        centrality_comparison=centrality_comparison,
+        dependency_consistency=dependency_consistency,
         authorship_payload=authorship_payload,
         classification_payload=classification_payload,
         evolution_payload=evolution_payload,
@@ -607,6 +677,12 @@ def prepare_ecosystem_artifacts(
         {
             "network_json": payload_paths["payload_network_data_json"],
             "dependency_metrics_json": payload_paths["payload_dependency_metrics_json"],
+            "centrality_comparison_json": payload_paths[
+                "payload_centrality_comparison_json"
+            ],
+            "dependency_consistency_json": payload_paths[
+                "payload_dependency_consistency_json"
+            ],
             "authorship_payload_json": payload_paths["payload_authorship_payload_json"],
             "classification_json": payload_paths["payload_classification_payload_json"],
             "evolution_json": payload_paths["payload_evolution_payload_json"],

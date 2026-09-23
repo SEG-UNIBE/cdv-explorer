@@ -677,36 +677,41 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:42:08Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:11",
               "evidence": "M-of-N Multisignature Transactions [[bip-0011.mediawiki|BIP 11]]",
               "reason": "The proposal is explicitly designed to support multisignature transactions and uses M-of-N multisig as a concrete motivating and compatibility case.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:12",
               "evidence": "This BIP replaces BIPs 12 and 17",
               "reason": "The proposal directly supersedes BIP 12 as an extension to Script that outsources scriptPubKey verification.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:13",
               "evidence": "The Motivation for this BIP (and BIP 13, the pay-to-script-hash address type)",
               "reason": "The proposal is tied to the pay-to-script-hash address type and depends on that address-format concept for deployment and compatibility.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:16",
               "evidence": "It also replaces BIP 16, which is identical in terms of protocol",
               "reason": "The proposal reuses the same pay-to-script-hash protocol semantics while changing implementation and deprecation behavior.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:17",
               "evidence": "This BIP replaces BIPs 12 and 17",
               "reason": "The proposal directly supersedes BIP 17 as an earlier Script extension for outsourced verification.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

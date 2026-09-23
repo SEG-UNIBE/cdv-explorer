@@ -851,20 +851,21 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:36:08Z",
           "status": "api_error",
-          "dependencies": [],
-          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 200000, Requested 11177. Please try again in 3.353s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 200000, Requested 11177. Please try again in 3.353s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}",
+          "findings": []
         },
         {
           "run_id": "2026-06-30T11:38:11Z_gpt-5.4-mini_422651ce",
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:38:22Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:42",
               "evidence": "The Bitcoin network has a maximum number of inbound and outbound connections (125).",
               "reason": "The proposal uses the existing peer-connection limit and defines POW slots as a subdivision of inbound connections, so its behavior depends on the connection-limit model introduced by the referenced proposal.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

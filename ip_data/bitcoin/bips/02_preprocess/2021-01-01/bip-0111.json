@@ -539,12 +539,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:40Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:37",
               "evidence": "This BIP extends BIP 37, Connection Bloom filtering",
               "reason": "The proposal directly modifies BIP 37 by adding a new service-bit advertisement and versioning behavior for bloom-filter support.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

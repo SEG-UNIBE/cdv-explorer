@@ -13,7 +13,7 @@
   },
   "meta": {
     "last_commit": "Wed Dec 24 02:53:38 2025 +0900",
-    "total_commits": 20,
+    "total_commits": 19,
     "git_history": [
       [
         "f5a15ea27e06ce8f5635117931f06318f532a713",
@@ -88,11 +88,6 @@
       [
         "512aba18db9a21c1cb70566bdbfb4b1c0fa9a86c",
         "Mon Dec 12 08:55:57 2022 +0100",
-        "Thomas"
-      ],
-      [
-        "3cfe0ef8acf8528a911a38cbb5ce632234646bcd",
-        "Sat Dec 10 23:51:04 2022 +0100",
         "Thomas"
       ],
       [
@@ -222,12 +217,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:17Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:09",
               "evidence": "Clients SHOULD use the `supported_nips` field",
               "reason": "The proposal’s client-side support detection and relay-compatibility guidance depends on the supported_nips mechanism defined elsewhere.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

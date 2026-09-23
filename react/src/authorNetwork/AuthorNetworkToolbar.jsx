@@ -13,10 +13,14 @@ export function AuthorNetworkToolbar({
   importInputRef,
   minClusterCollaborations,
   setMinClusterCollaborations,
+  minAuthoredIps,
+  setMinAuthoredIps,
   hasNodes,
   onlyCrossSource,
   setOnlyCrossSource,
   canFilterCrossSource,
+  showAllLabels,
+  setShowAllLabels,
 }) {
   return (
     <div className="author-collaboration-toolbar">
@@ -99,6 +103,17 @@ export function AuthorNetworkToolbar({
             />
             <span className="network-layout-threshold__suffix">or more collaborations.</span>
           </div>
+          <div className="network-layout-threshold author-collaboration-threshold">
+            <span className="network-layout-threshold__copy">Only show originators who authored</span>
+            <input
+              value={minAuthoredIps}
+              onChange={(event) => setMinAuthoredIps?.(event.target.value.replace(/[^\d]/g, ''))}
+              placeholder="1"
+              inputMode="numeric"
+              className="p-inputtext p-component network-layout-threshold__input"
+            />
+            <span className="network-layout-threshold__suffix">or more IPs.</span>
+          </div>
           <div className="author-collaboration-switch-row">
             <label htmlFor="author-cross-source-switch">Only show cross-source IPs</label>
             <InputSwitch
@@ -107,6 +122,16 @@ export function AuthorNetworkToolbar({
               onChange={(event) => setOnlyCrossSource?.(event.value)}
               aria-label="Show only cross-source IPs"
               disabled={!canFilterCrossSource}
+              className="author-collaboration-switch"
+            />
+          </div>
+          <div className="author-collaboration-switch-row">
+            <label htmlFor="author-show-all-labels-switch">Show all labels</label>
+            <InputSwitch
+              inputId="author-show-all-labels-switch"
+              checked={Boolean(showAllLabels)}
+              onChange={(event) => setShowAllLabels?.(event.value)}
+              aria-label="Show labels for all originators"
               className="author-collaboration-switch"
             />
           </div>

@@ -926,48 +926,55 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:18:57Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:141",
               "evidence": "A P2MR output is a native SegWit output (see [[bip-0141.mediawiki|BIP 141]]) with version 2 and a 32-byte witness program",
               "reason": "P2MR is specified as a native SegWit witness-program output, relying on the SegWit output structure defined by BIP 141.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:173",
               "evidence": "P2MR outputs use SegWit version 2, resulting in mainnet addresses that start with <code>bc1z</code>, following [[bip-0173.mediawiki|BIP 173]]",
               "reason": "P2MR address encoding depends on BIP 173 Bech32 address formatting conventions.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:340",
               "evidence": "Similar to BIP 341 test vectors, all signatures are created with an all-zero (0x0000...0000) [[bip-0340.mediawiki|BIP 340]] auxiliary randomness array",
               "reason": "The test vectors depend on BIP 340's signature auxiliary-randomness convention.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:341",
               "evidence": "operate with nearly the same functionality as P2TR (Pay-to-Taproot) outputs",
               "reason": "The proposal is designed as a Taproot-like output type and reuses Taproot's script-tree spend model while removing only the key path spend.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:342",
               "evidence": "using the witness stack elements excluding the script 's', the control block 'c', and the annex 'a' if present, as initial stack",
               "reason": "P2MR executes leaf scripts according to the Taproot script execution rules defined by BIP 342.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:347",
               "evidence": "activate OP_CAT [[bip-0347.mediawiki|BIP 347]]",
               "reason": "The proposal discusses an alternative quantum-resistant design path that depends on the OP_CAT upgrade mechanism from BIP 347.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:350",
               "evidence": "Per [[bip-0350.mediawiki|BIP 350]] older wallets should be able to spend funds to SegWit version 2 outputs",
               "reason": "Backward-compatibility behavior for version-2 witness outputs is defined with reference to BIP 350.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

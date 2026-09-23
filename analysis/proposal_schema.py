@@ -131,12 +131,14 @@ def get_changes_in_status(proposal: dict[str, Any]) -> list[Any]:
 
 def is_llm_runs_format(value: Any) -> bool:
     """Return True when value is the timestamped multi-run list format for body_extracted_llm."""
-    return (
-        isinstance(value, list)
-        and bool(value)
-        and isinstance(value[0], dict)
-        and "timestamp" in value[0]
-        and "dependencies" in value[0]
+    if not isinstance(value, list) or not value:
+        return False
+    return all(
+        isinstance(run, dict)
+        and "timestamp" in run
+        and "status" in run
+        and "findings" in run
+        for run in value
     )
 
 
@@ -146,9 +148,6 @@ def llm_run_status(run: dict[str, Any] | Any) -> str:
     status = str(run.get("status") or "").strip().lower()
     if status:
         return status
-    # Legacy runs without an explicit status are treated as successful.
-    if "timestamp" in run and "dependencies" in run:
-        return LLM_RUN_STATUS_SUCCESS
     return ""
 
 
@@ -162,13 +161,13 @@ def latest_llm_run(value: Any) -> dict[str, Any] | None:
     return max(value, key=lambda r: str(r.get("timestamp", "")))
 
 
-def latest_llm_dependencies(value: Any) -> list[Any]:
-    """Resolve body_extracted_llm to the latest run's dependency list."""
+def latest_llm_findings(value: Any) -> list[Any]:
+    """Resolve body_extracted_llm to the latest run's findings list."""
     latest = latest_llm_run(value)
     if latest is not None:
         if not is_successful_llm_run(latest):
             return []
-        return list(latest.get("dependencies") or [])
+        return list(latest.get("findings") or [])
     return []
 
 
@@ -194,7 +193,7 @@ def normalize_interrelations(proposal: dict[str, Any]) -> dict[str, Any]:
 
 def get_interrelations(proposal: dict[str, Any]) -> dict[str, Any]:
     interrelations = normalize_interrelations(proposal)
-    interrelations["body_extracted_llm"] = latest_llm_dependencies(
+    interrelations["body_extracted_llm"] = latest_llm_findings(
         interrelations["body_extracted_llm"]
     )
     return interrelations

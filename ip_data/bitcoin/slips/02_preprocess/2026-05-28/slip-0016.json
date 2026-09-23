@@ -288,18 +288,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:19:52Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "m/10016'/0` (hardened path, see BIP32)",
               "reason": "The proposal’s key-derivation path is explicitly defined as a BIP32 hardened path.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "slips:11",
               "evidence": "CipherKeyValue is defined in [SLIP-0011]",
               "reason": "The proposal’s master-key and entry-key derivation workflow relies on the cipherKeyValue operation defined by SLIP-0011.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

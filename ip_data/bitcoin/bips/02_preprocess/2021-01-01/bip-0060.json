@@ -531,12 +531,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:23Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:37",
               "evidence": "[[BIP 0037]] introduced a new flag to version messages",
               "reason": "This proposal directly extends the version-message relay flag introduced by BIP 0037 and changes its handling in the protocol specification and implementation.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Any
 from xml.etree import ElementTree as ET
 
+from analysis.interrelation_types import INTERRELATION_TYPES
 from analysis.reference_ids import normalize_reference_id_for_config
 
 GROUND_TRUTH_WORKBOOK_FILENAME = "ground_truth.xlsx"
@@ -44,12 +45,7 @@ REVIEWED_IPS_CSV_COLUMNS = (
     "extracted_target_count",
     "note",
 )
-GROUND_TRUTH_ALLOWED_RELATION_TYPES = {
-    "depends_on",
-    "supersedes",
-    "superseded_by",
-    "references",
-}
+GROUND_TRUTH_ALLOWED_RELATION_TYPES = INTERRELATION_TYPES
 GROUND_TRUTH_ALLOWED_CONFIDENCE = {"low", "medium", "high"}
 REVIEWED_IP_ALLOWED_SAMPLING_STRATEGIES = {"sampler", "manual"}
 REVIEWED_IP_ALLOWED_DENSITY_BUCKETS = {"none", "low", "high"}
@@ -63,9 +59,11 @@ GROUND_TRUTH_GRAPH_KEY_RE = re.compile(r"^(?P<source>[A-Za-z0-9_-]+):(?P<id>[^:\
 GROUND_TRUTH_REVIEW_POLICIES: dict[str, dict[str, Any]] = {
     "bitcoin": {
         # Reviewed IPs may come from any source listed here; `required_type`
-        # is enforced per source (SLIPs use `Standard`, so no restriction).
+        # is enforced per source when set. BIPs intentionally sample across
+        # all proposal types (Specification/Informational/Process) to match
+        # catalog-wide ratios, so no type restriction applies here.
         "source_policies": {
-            "bips": {"required_type": "Specification"},
+            "bips": {},
             "slips": {},
         },
     },

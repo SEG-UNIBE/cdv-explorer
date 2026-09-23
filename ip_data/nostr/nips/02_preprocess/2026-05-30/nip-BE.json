@@ -216,18 +216,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:57Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:01",
               "evidence": "All messages will follow [NIP-01](/01.md) message structure.",
               "reason": "The BLE transport serializes and exchanges messages using the NIP-01 event/message structure, so understanding the proposal depends on that format and semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:77",
               "evidence": "it's crucial to define a synchronization process by following [NIP-77](./77.md) but with an adaptation to the limitations of the technology.",
               "reason": "The synchronization workflow is explicitly based on NIP-77 negotiation/message flow, with BLE-specific adaptations, so implementation depends on that protocol's sync semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

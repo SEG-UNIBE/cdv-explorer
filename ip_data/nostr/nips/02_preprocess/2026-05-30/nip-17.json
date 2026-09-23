@@ -348,36 +348,41 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:02Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:21",
               "evidence": "with [NIP-21](21.md)",
               "reason": "The proposal reuses NIP-21 event-address/event-id citation semantics for q tags in chat content.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "nips:25",
               "evidence": "[`kind 7` reactions](./25.md) may be sent to an encrypted chat",
               "reason": "The proposal extends encrypted-chat handling to reaction events defined by NIP-25.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "nips:42",
               "evidence": "using [NIP 42 AUTH](./42.md)",
               "reason": "The proposal's relay access control for serving gift-wrap events depends on NIP-42 authentication.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "nips:44",
               "evidence": "uses [NIP-44](44.md) encryption",
               "reason": "The proposal relies on NIP-44 for encrypting the chat payloads and specifies using its latest version.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:59",
               "evidence": "uses [NIP-59](59.md) seals and gift wraps",
               "reason": "The proposal is built around NIP-59 sealing and gift-wrapping semantics for unsigned chat messages and deletion behavior.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

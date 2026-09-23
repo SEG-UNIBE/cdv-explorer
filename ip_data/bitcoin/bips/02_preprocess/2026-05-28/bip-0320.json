@@ -522,18 +522,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:18:30Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:8",
               "evidence": "removed from BIP8 and BIP9 specifications",
               "reason": "The proposal directly alters the BIP8 signaling rules by excluding reserved bits from its activation/signaling semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:9",
               "evidence": "removed from BIP8 and BIP9 specifications",
               "reason": "The proposal directly alters the BIP9 signaling rules by excluding reserved bits from its activation/signaling semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

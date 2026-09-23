@@ -528,12 +528,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:45:53Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:380",
               "evidence": "combo() descriptors use the format and general operation specified in [[bip-0380.mediawiki|380]].",
               "reason": "The proposal explicitly relies on BIP 380 for descriptor syntax and overall descriptor handling.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

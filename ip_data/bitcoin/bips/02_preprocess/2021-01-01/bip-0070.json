@@ -868,18 +868,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:27Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:71",
               "evidence": "Wallet software sending Payment messages via HTTP must set appropriate\nContent-Type and Accept headers, as specified in BIP 71",
               "reason": "The protocol explicitly depends on BIP 71 for the required HTTP MIME headers used when posting Payment messages.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:72",
               "evidence": "[[bip-0072.mediawiki|BIP 0072]] : Payment Protocol bitcoin: URI extensions",
               "reason": "The proposal’s payment flow is tied to bitcoin: URI handling, and BIP 72 defines the URI extensions for that protocol.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

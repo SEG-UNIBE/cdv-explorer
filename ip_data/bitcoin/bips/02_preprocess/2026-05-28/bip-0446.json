@@ -631,36 +631,41 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:19:22Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:118",
               "evidence": "See [BIP118's rationale][apo-bip-spent-amounts] for more about this.",
               "reason": "The proposal refers to BIP118's rationale as support for committing to spent amounts, indicating reuse of its related signature-design assumptions.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:119",
               "evidence": "The design of `OP_TEMPLATEHASH` was inspired by the design of [BIP119][ctv-bip] `OP_CHECKTEMPLATEVERIFY`",
               "reason": "The proposal explicitly builds on and deviates from BIP119's transaction-commitment primitive, making BIP119 a substantive design dependency.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:340",
               "evidence": "tagged hash as introduced by [BIP340][schnorr-bip]",
               "reason": "The proposal relies on BIP340's tagged-hash construction for computing the template hash.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:341",
               "evidence": "tagged hash as introduced by [BIP340][schnorr-bip] and [BIP341][taproot-bip]",
               "reason": "The proposal uses BIP341's tagged-hash and transaction precomputed fields as part of its hash definition and semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:342",
               "evidence": "This document proposes a new operation for [Tapscript][tapscript-bip]: `OP_TEMPLATEHASH`",
               "reason": "The opcode is defined specifically within the Tapscript execution context, so the proposal depends on BIP342's script environment and opcode behavior.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

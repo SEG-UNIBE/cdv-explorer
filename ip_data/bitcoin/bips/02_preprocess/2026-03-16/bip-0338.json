@@ -572,42 +572,48 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:44:51Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:35",
               "evidence": "## mempool (BIP 35)",
               "reason": "The proposal explicitly forbids mempool messages after disabletx, relying on BIP 35's message semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:37",
               "evidence": "introduced by BIP 37 and also defined in BIP 60",
               "reason": "The proposal relies on BIP 37's transaction relay flag semantics and BIP 37-style filters to define disabletx behavior and prohibited message types.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:60",
               "evidence": "introduced by BIP 37 and also defined in BIP 60",
               "reason": "The proposal explicitly treats BIP 60 as an alternative definition of the transaction relay field whose false value triggers disabletx semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:133",
               "evidence": "## feefilter (BIP 133)",
               "reason": "The proposal constrains feefilter message exchange after disabletx, so implementing its message policy depends on BIP 133's message definition.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:152",
               "evidence": "Note that all messages specified in BIP 152",
               "reason": "The compatibility section defers block-relay message permissibility to BIP 152 feature negotiation.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:155",
               "evidence": "## addrv2 (BIP 155)",
               "reason": "The proposal recommends suppressing addrv2 after disabletx, which depends on BIP 155's address-message format.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

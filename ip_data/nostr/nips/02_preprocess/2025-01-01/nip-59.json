@@ -265,18 +265,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:59:02Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:13",
               "evidence": "tags SHOULD include any information needed to route the event to its intended recipient, including the recipient's `p` tag or [NIP-13](13.md) proof of work.",
               "reason": "The proposal allows and recommends attaching proof-of-work to wrapper events using the NIP-13 mechanism, making that mechanism part of the wrapper workflow.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "nips:44",
               "evidence": "This NIP relies on [NIP-44](./44.md)'s versioned encryption algorithms.",
               "reason": "The proposal directly depends on NIP-44 for the encryption scheme used to encrypt both seals and gift wraps.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

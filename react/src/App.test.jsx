@@ -2,7 +2,7 @@ import { vi } from 'vitest';
 
 vi.mock('d3', () => ({}));
 
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import {
   BODY_EXTRACTED_LLM,
   BODY_EXTRACTED_REGEX,
@@ -60,7 +60,9 @@ import {
 import { ProposalFilterControl } from './ProposalFilterControl';
 import { DependencyComparisonHeatmaps } from './DependencyComparisonHeatmaps';
 import { DependencyGroundTruthEvaluationCharts } from './DependencyGroundTruthEvaluationCharts';
+import { DependencyConsistencyCard } from './DependencyConsistencyCard';
 import { DashboardSnapshotProvider } from './dashboard/DashboardSnapshotContext';
+import { CentralitySection } from './dashboard/sections/CentralitySection';
 import proposalLinkIndex from './generated/proposalLinkIndex.json';
 import bitcoinEcosystem from './ecosystems/bitcoin';
 import nostrEcosystem from './ecosystems/nostr';
@@ -138,6 +140,207 @@ test('renders the selected llm model label in dependency comparison and ground-t
   // Kappa footer in the matrix cell plus the metric badge for the selection.
   expect(screen.getAllByText('0.40').length).toBeGreaterThan(1);
   expect(screen.getByText('Cohen’s κ')).toBeInTheDocument();
+});
+
+test('renders separate consistency tables and copies anomaly proposal filters', async () => {
+  const writeText = vi.fn().mockResolvedValue(undefined);
+  Object.defineProperty(navigator, 'clipboard', {
+    configurable: true,
+    value: { writeText },
+  });
+  const payload = {
+    meta: {
+      approach_order: [PREAMBLE_EXTRACTED, BODY_EXTRACTED_LLM],
+      llm_model: 'gpt-test',
+    },
+    dashboard_table_rows: [
+      {
+        group: 'Dependency',
+        metric: 'Cyclic groups (SCCs)',
+        values: { [PREAMBLE_EXTRACTED]: '1', [BODY_EXTRACTED_LLM]: '0' },
+      },
+      {
+        group: 'Dependency',
+        metric: 'Self-relations',
+        values: { [PREAMBLE_EXTRACTED]: '0', [BODY_EXTRACTED_LLM]: '0' },
+      },
+      {
+        group: 'Supersession',
+        metric: 'One-sided declarations',
+        values: { [PREAMBLE_EXTRACTED]: '1', [BODY_EXTRACTED_LLM]: '0' },
+      },
+    ],
+    by_approach: {
+      [PREAMBLE_EXTRACTED]: {
+        dependency: {
+          cyclic_groups: [{ nodes: [{ id: 'bips:157' }, { id: 'bips:158' }] }],
+        },
+        supersession: {
+          reciprocal_facts: [{
+            successor: { id: 'bips:2' },
+            predecessor: { id: 'bips:1' },
+          }],
+          one_sided_facts: [{
+            successor: { id: 'bips:95' },
+            predecessor: { id: 'bips:94' },
+          }],
+        },
+      },
+      [BODY_EXTRACTED_LLM]: {
+        dependency: { cyclic_groups: [] },
+        supersession: { reciprocal_facts: [], one_sided_facts: [] },
+      },
+    },
+  };
+
+  const view = render(
+    <DashboardSnapshotProvider snapshot="2026-06-30" ecosystem={bitcoinEcosystem}>
+      <DependencyConsistencyCard payload={payload} />
+    </DashboardSnapshotProvider>
+  );
+
+  expect(screen.getAllByRole('table')).toHaveLength(2);
+  expect(screen.getByRole('heading', { name: 'Dependency' })).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: 'Supersession' })).toBeInTheDocument();
+  expect(screen.getAllByText('Self-relations').length).toBeGreaterThan(0);
+  expect(screen.getByText('Reciprocally declared supersessions')).toBeInTheDocument();
+
+  fireEvent.click(screen.getByRole('button', {
+    name: 'Copy BIP2,BIP1 for proposal filtering',
+  }));
+  await waitFor(() => expect(writeText).toHaveBeenCalledWith('BIP2,BIP1'));
+
+  fireEvent.click(screen.getByRole('button', {
+    name: 'Copy BIP157,BIP158 for proposal filtering',
+  }));
+  await waitFor(() => expect(writeText).toHaveBeenCalledWith('BIP157,BIP158'));
+
+  view.rerender(
+    <DashboardSnapshotProvider snapshot="2026-06-30" ecosystem={bitcoinEcosystem}>
+      <DependencyConsistencyCard payload={{
+        ...payload,
+        dashboard_table_rows: undefined,
+        table_rows: payload.dashboard_table_rows,
+      }} />
+    </DashboardSnapshotProvider>
+  );
+  expect(screen.getAllByRole('table')).toHaveLength(2);
+});
+
+test('renders precomputed centrality rankings and concordance', () => {
+  const approaches = [PREAMBLE_EXTRACTED, BODY_EXTRACTED_REGEX, BODY_EXTRACTED_LLM];
+  const metrics = ['in_degree', 'weighted_eigenvector', 'pagerank', 'betweenness'];
+  const payload = {
+    meta: {
+      approach_order: approaches,
+      approach_pairs: [
+        {
+          key: 'preamble_extracted__body_extracted_regex',
+          left_label: 'Preamble',
+          right_label: 'Regex',
+        },
+        {
+          key: 'preamble_extracted__body_extracted_llm',
+          left_label: 'Preamble',
+          right_label: 'LLM',
+        },
+        {
+          key: 'body_extracted_regex__body_extracted_llm',
+          left_label: 'Regex',
+          right_label: 'LLM',
+        },
+      ],
+      metric_order: metrics,
+      metric_labels: {},
+      top_n: 1,
+      node_count: 210,
+      scope_item_counts: {
+        top: 7,
+        all: 210,
+      },
+      llm_model: 'gpt-test',
+    },
+    by_approach: Object.fromEntries(approaches.map((approach, approachIndex) => [
+      approach,
+      {
+        top_by_metric: Object.fromEntries(metrics.map((metric) => [metric, [{
+          id: `bips:${approachIndex + 1}`,
+          title: `Proposal ${approachIndex + 1}`,
+          value: approachIndex + 1,
+          highlight_index: approachIndex,
+        }]])),
+      },
+    ])),
+    concordance: Object.fromEntries(['top', 'all'].map((scope) => [scope, {
+      across_approaches: metrics.map((metric, index) => ({
+        metric,
+        label: metric,
+        kendalls_w: (scope === 'top' ? 0.1 : 0.5) + index / 10,
+        pairwise_kendalls_tau_b: {
+          preamble_extracted__body_extracted_regex: 0.91,
+          preamble_extracted__body_extracted_llm: 0.82,
+          body_extracted_regex__body_extracted_llm: 0.73,
+        },
+      })),
+      across_measures: approaches.map((approach) => ({
+        approach,
+        kendalls_w: scope === 'top' ? 0.25 : 0.75,
+      })),
+    }])),
+  };
+
+  const renderCentrality = (linkMode) => (
+    <DashboardSnapshotProvider
+      snapshot="2026-06-30"
+      linkMode={linkMode}
+      ecosystem={bitcoinEcosystem}
+    >
+      <CentralitySection
+        ecosystem={bitcoinEcosystem}
+        ecosystemBase={bitcoinEcosystem}
+        selectedSourceIds={['bip']}
+        sectionSourceView="bip"
+        setSectionSourceView={() => {}}
+        centralityComparison={payload}
+      />
+    </DashboardSnapshotProvider>
+  );
+  const { rerender } = render(renderCentrality('history'));
+
+  expect(screen.getByRole('heading', { name: 'Centrality' })).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: 'Top Central IPs' })).toBeInTheDocument();
+  expect(screen.getAllByText('LLM (gpt-test)')).toHaveLength(1);
+  expect(screen.getByText(/summarizes agreement across all three/)).toBeInTheDocument();
+  expect(screen.queryByText(/tied centrality values/)).not.toBeInTheDocument();
+  expect(screen.getByRole('columnheader', { name: 'Pairwise agreement (τb)' })).toBeInTheDocument();
+  expect(screen.getByRole('columnheader', { name: 'Regex–LLM' })).toBeInTheDocument();
+  expect(screen.getByRole('columnheader', { name: 'All three' })).toBeInTheDocument();
+  expect(screen.getAllByText('0.910')).toHaveLength(4);
+  expect(screen.getByText('0.100')).toBeInTheDocument();
+  expect(document.querySelectorAll('.centrality-ranking-entry__proposal--highlighted')).toHaveLength(12);
+  expect(screen.getAllByRole('link', { name: 'BIP1' })[0]).toHaveAttribute(
+    'href',
+    expect.stringContaining('github.com/bitcoin/bips/blob/'),
+  );
+  rerender(renderCentrality('current'));
+  expect(screen.getAllByRole('link', { name: 'BIP1' })[0]).toHaveAttribute(
+    'href',
+    'https://bips.dev/1/',
+  );
+  const rankingEntries = document.querySelectorAll('.centrality-ranking-entry');
+  fireEvent.mouseOver(rankingEntries[0]);
+  expect(document.querySelectorAll('.centrality-ranking-entry--highlighted')).toHaveLength(4);
+  expect(document.querySelectorAll('.centrality-ranking-entry--dimmed')).toHaveLength(8);
+  fireEvent.mouseOut(rankingEntries[0]);
+  fireEvent.click(screen.getByText('Controls'));
+  expect(screen.getByRole('radio', { name: 'Top 1' })).toBeChecked();
+  expect(screen.getByText('7 IPs')).toBeInTheDocument();
+  fireEvent.click(screen.getByText('All IPs'));
+  expect(screen.getByText('0.500')).toBeInTheDocument();
+  expect(screen.getByText('210 IPs')).toBeInTheDocument();
+  fireEvent.click(screen.getByText('Top 1'));
+  expect(screen.getByText('0.100')).toBeInTheDocument();
+  expect(screen.getByText('7 IPs')).toBeInTheDocument();
 });
 
 test('normalizes canonical dependency edges into grouped dependency links', () => {
@@ -307,12 +510,39 @@ test('multi-source fetch uses combined dependency metrics when combined artifact
     }
     return { nodes: [{ id: '1' }], dependency_edges: [] };
   };
+  const consistencyPayload = (label) => ({
+    meta: { approach_order: [PREAMBLE_EXTRACTED] },
+    by_approach: { [PREAMBLE_EXTRACTED]: { label: 'Preamble' } },
+    table_rows: [{
+      group: 'Dependency',
+      metric: 'Edges analyzed',
+      values: { [PREAMBLE_EXTRACTED]: label },
+    }],
+  });
+  const centralityPayload = (label) => ({
+    meta: { node_count: 2 },
+    by_approach: {},
+    concordance: {
+      all: { across_approaches: [{ metric: label }], across_measures: [] },
+      top: { across_approaches: [], across_measures: [] },
+    },
+  });
   const payloadForUrl = (url) => {
     if (url.endsWith('/dependencies/network_data.json')) return networkPayload(url);
     if (url.endsWith('/dependencies/dependency_metrics.json')) {
       if (url.includes('/_combined/bips+slips/')) return metricPayload('combined', 99);
       if (url.includes('/bips/')) return metricPayload('bips', 1);
       return metricPayload('slips', 2);
+    }
+    if (url.endsWith('/dependencies/dependency_consistency.json')) {
+      if (url.includes('/_combined/bips+slips/')) return consistencyPayload('combined');
+      if (url.includes('/bips/')) return consistencyPayload('bips');
+      return consistencyPayload('slips');
+    }
+    if (url.endsWith('/centrality/centrality_comparison.json')) {
+      if (url.includes('/_combined/bips+slips/')) return centralityPayload('combined');
+      if (url.includes('/bips/')) return centralityPayload('bips');
+      return centralityPayload('slips');
     }
     if (url.endsWith('/authorship/authorship_payload.json')) return {};
     if (url.endsWith('/classification/classification_payload.json')) return {};
@@ -340,6 +570,8 @@ test('multi-source fetch uses combined dependency metrics when combined artifact
 
     // Section payloads are deferred: the core fetch must not touch them.
     expect(global.fetch).not.toHaveBeenCalledWith(expect.stringContaining('dependency_metrics.json'));
+    expect(global.fetch).not.toHaveBeenCalledWith(expect.stringContaining('dependency_consistency.json'));
+    expect(global.fetch).not.toHaveBeenCalledWith(expect.stringContaining('centrality_comparison.json'));
     expect(global.fetch).not.toHaveBeenCalledWith(expect.stringContaining('evolution_payload.json'));
     expect(global.fetch).not.toHaveBeenCalledWith(expect.stringContaining('conformity_metrics.json'));
 
@@ -350,6 +582,16 @@ test('multi-source fetch uses combined dependency metrics when combined artifact
     expect(withMetrics.bySource.bip.dependencyMetrics.by_approach[BODY_EXTRACTED_REGEX].summary.edge_count).toBe(1);
     expect(withMetrics.bySource.slip.dependencyMetrics.by_approach[BODY_EXTRACTED_REGEX].summary.edge_count).toBe(2);
     expect(global.fetch).toHaveBeenCalledWith(expect.stringContaining('/_combined/bips+slips/04_postprocess/2026-03-16/dependencies/dependency_metrics.json'));
+
+    const consistencyData = await fetchSectionDataForSelection('bitcoin', '2026-03-16', ['bip', 'slip'], 'dependencyConsistency');
+    const withConsistency = applySectionData(withMetrics, 'dependencyConsistency', consistencyData);
+    expect(withConsistency.dependencyConsistency.table_rows[0].values[PREAMBLE_EXTRACTED]).toBe('combined');
+    expect(withConsistency.bySource.bip.dependencyConsistency.table_rows[0].values[PREAMBLE_EXTRACTED]).toBe('bips');
+
+    const centralityData = await fetchSectionDataForSelection('bitcoin', '2026-03-16', ['bip', 'slip'], 'centralityComparison');
+    const withCentrality = applySectionData(withConsistency, 'centralityComparison', centralityData);
+    expect(withCentrality.centralityComparison.concordance.all.across_approaches[0].metric).toBe('combined');
+    expect(withCentrality.bySource.bip.centralityComparison.concordance.all.across_approaches[0].metric).toBe('bips');
   } finally {
     global.fetch = previousFetch;
   }
@@ -368,7 +610,7 @@ test('single-source fetch exposes the published LLM model without extra selectio
               source: 'bips:1',
               target: 'bips:2',
               extraction_method: BODY_EXTRACTED_LLM,
-              relation_type: 'implicit_dependency',
+              relation_type: 'depends_on',
               value: 1,
               llm_model: 'gpt-5.4-mini',
             },
@@ -385,7 +627,7 @@ test('single-source fetch exposes the published LLM model without extra selectio
                   source: 'bips:1',
                   target: 'bips:2',
                   extraction_method: BODY_EXTRACTED_LLM,
-                  relation_type: 'implicit_dependency',
+                  relation_type: 'depends_on',
                   value: 1,
                   llm_model: 'gpt-5.4-mini',
                 },
@@ -545,7 +787,7 @@ test('default type mapping is discovered from data and prefilled from the ontolo
         { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'reference' },
       ],
       [BODY_EXTRACTED_LLM]: [
-        { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'implicit_dependency' },
+        { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'depends_on' },
       ],
       [PREAMBLE_EXTRACTED]: {
         requires: [{ sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'requires' }],
@@ -562,7 +804,7 @@ test('default type mapping is discovered from data and prefilled from the ontolo
     { approach: PREAMBLE_EXTRACTED, subtype: 'replaces', include: true, target: 'supersedes' },
     { approach: PREAMBLE_EXTRACTED, subtype: 'proposed_replacement', include: true, target: 'superseded_by' },
     { approach: BODY_EXTRACTED_REGEX, subtype: 'reference', include: true, target: 'depends_on' },
-    { approach: BODY_EXTRACTED_LLM, subtype: 'implicit_dependency', include: true, target: 'depends_on' },
+    { approach: BODY_EXTRACTED_LLM, subtype: 'depends_on', include: true, target: 'depends_on' },
   ]);
 });
 
@@ -905,7 +1147,7 @@ test('editing the type mapping changes which GT type the LLM edges are scored ag
         { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'depends_on' },
       ],
       [BODY_EXTRACTED_LLM]: [
-        { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'implicit_dependency' },
+        { sourceKey: 'bips:1', targetKey: 'bips:2', relation_type: 'depends_on' },
       ],
     },
   };
@@ -919,7 +1161,7 @@ test('editing the type mapping changes which GT type the LLM edges are scored ag
   const typeMapping = {
     gtTypes: ['depends_on', 'references'],
     rows: [
-      { approach: BODY_EXTRACTED_LLM, subtype: 'implicit_dependency', include: true, target: 'references' },
+      { approach: BODY_EXTRACTED_LLM, subtype: 'depends_on', include: true, target: 'references' },
     ],
   };
   const edited = buildGroundTruthEvaluation(dataset, {
@@ -983,7 +1225,7 @@ test('source-scopes canonical dependency edge graph keys for display', () => {
         source: 'bips:32',
         target: 'slips:44',
         extraction_method: BODY_EXTRACTED_LLM,
-        relation_type: 'implicit_dependency',
+        relation_type: 'depends_on',
         value: 1,
       },
     ],

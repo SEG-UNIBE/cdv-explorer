@@ -572,42 +572,48 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:18:41Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:35",
               "evidence": "mempool (BIP 35)",
               "reason": "The proposal explicitly constrains use of the mempool message when disabletx is in effect.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:37",
               "evidence": "the transaction relay field (introduced by BIP 37 and also defined in BIP 60)",
               "reason": "The proposal relies on the existing transaction-relay field semantics to determine when disabletx may be sent and what relay behavior is suppressed.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:60",
               "evidence": "the transaction relay field (introduced by BIP 37 and also defined in BIP 60)",
               "reason": "The proposal uses the version-message transaction-relay field defined by this proposal as part of its disabletx signaling rules.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:133",
               "evidence": "feefilter (BIP 133)",
               "reason": "The proposal explicitly includes feefilter among the message types that must not be sent after disabletx.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:152",
               "evidence": "all messages specified in BIP 152",
               "reason": "The compatibility section preserves BIP 152 block-relay messages between disabletx peers subject to that protocol’s feature negotiation.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:155",
               "evidence": "addrv2 (BIP 155)",
               "reason": "The proposal recommends suppressing addrv2 under disabletx, so its address-relay guidance depends on this address-format extension.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

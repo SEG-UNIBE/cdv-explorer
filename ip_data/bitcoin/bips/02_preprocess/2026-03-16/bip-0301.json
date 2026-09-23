@@ -603,12 +603,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:44:25Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:9",
               "evidence": "This soft fork can be deployed without modifying Bitcoin Core at all",
               "reason": "The proposal is explicitly a soft-fork deployment, so its activation and enforceability depend on soft-fork behavior rather than a new consensus mechanism defined here.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

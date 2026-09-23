@@ -761,42 +761,48 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:17:23Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "based on a BIP 32 master private key",
               "reason": "The proposal’s deterministic address derivation is built directly from BIP32 hierarchical key derivation.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:44",
               "evidence": "a similar account-structure as defined in BIP [[bip-0084.mediawiki|44]] but with <tt>change</tt> set to <tt>2</tt>",
               "reason": "The derivation path intentionally reuses the BIP44-style account structure and alters its change branch convention.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:49",
               "evidence": "We largely use the same approach used in BIPs 49, 84 and 86 for ease of implementation.",
               "reason": "The proposal explicitly bases its derivation approach on the same structure used by BIP49-family derivation schemes.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:65",
               "evidence": "created by locking up bitcoins using the `OP_CHECKLOCKTIMEVERIFY` opcode",
               "reason": "The timelocked output script relies on CLTV semantics to enforce the locktime in the witness script.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:84",
               "evidence": "We largely use the same approach used in BIPs 49, 84 and 86 for ease of implementation.",
               "reason": "The proposal explicitly reuses the derivation approach from BIP84 as the model for its own HD wallet path design.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:86",
               "evidence": "We largely use the same approach used in BIPs 49, 84 and 86 for ease of implementation.",
               "reason": "The proposal explicitly reuses the derivation approach from BIP86 as the model for its own HD wallet path design.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

@@ -229,30 +229,34 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:58:44Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:10",
               "evidence": "Including [NIP-10](10.md)-style tags",
               "reason": "The optional notification/reply semantics for mentions rely on the event tag format and marker convention defined by NIP-10.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:19",
               "evidence": "raw [NIP-19](19.md) codes into the body of text, then prefix these with `nostr:`",
               "reason": "The proposal explicitly reuses NIP-19 identifier encodings as the payload of inline references.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:21",
               "evidence": "using [NIP-21](21.md) codes",
               "reason": "The proposal standardizes inline references by requiring NIP-21 URL-style codes inside event content.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:23",
               "evidence": "for example, sees, for example, a [`kind:30023`](23.md) `nostr:naddr1...` URL reference",
               "reason": "The proposal includes and interprets references to kind 30023 events using NIP-23's event type context.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

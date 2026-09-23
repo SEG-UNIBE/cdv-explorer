@@ -201,12 +201,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:58:59Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:32",
               "evidence": "`l` and `L` tags MAY be also be used as defined in [NIP-32](32.md)",
               "reason": "The report event optionally reuses the label/tag qualification and querying mechanism defined by NIP-32.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

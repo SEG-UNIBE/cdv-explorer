@@ -173,12 +173,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:59:09Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:57",
               "evidence": "by specifying [`zap` tags](57.md#appendix-g-zap-tag-on-other-events)",
               "reason": "The proposal relies on NIP-57's zap-tag mechanism to associate multiple beneficiary pubkeys with a goal.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

@@ -646,24 +646,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:18:14Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:13",
               "evidence": "The drawbacks of Bitcoin addresses have been extensively discussed in BIP13.",
               "reason": "The proposal is designed as a new address format in the existing Bitcoin address ecosystem defined by BIP13, and it explicitly contrasts and builds on that address-format framework.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:16",
               "evidence": "Segwit-in-P2SH is a BIP16 P2SH redeemScript with a push of version byte followed by a push of witness program",
               "reason": "The proposal relies on BIP16's P2SH redeemScript mechanism as one of the witness-program encoding modes it describes.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:141",
               "evidence": "The new Bitcoin address format defined is for the Pay-to-Witness-Public-Key-Hash (P2WPKH) and Pay-to-Witness-Script-Hash (P2WSH) transaction described in segregated witness soft fork (BIP141).",
               "reason": "The address format is explicitly defined around BIP141 witness-program types and uses its versioned witness-program semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

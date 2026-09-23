@@ -360,18 +360,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:47:14Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "# SLIP-0132 : Registered HD version bytes for BIP-0032",
               "reason": "The proposal defines registered HD version bytes for the extended serialization format introduced by BIP-0032 and depends on that serialization scheme.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "slips:32",
               "evidence": "The [SLIP-0032](https://github.com/satoshilabs/slips/blob/master/slip-0032.md) proposal attempts a remedy by including the full BIP-0032 derivation path within the serialized key.",
               "reason": "The proposal positions its registry as a stopgap until SLIP-0032 implementation and references SLIP-0032's alternative serialization semantics as the related mechanism.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

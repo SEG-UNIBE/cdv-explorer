@@ -269,18 +269,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:46:44Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "We adapt the master node generation from BIP-0032 and SLIP-0010.",
               "reason": "The proposal explicitly reuses and adapts the master-node derivation scheme from BIP-0032.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "slips:10",
               "evidence": "We adapt the master node generation from BIP-0032 and SLIP-0010.",
               "reason": "The proposal explicitly reuses and adapts the master-node derivation scheme from SLIP-0010.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

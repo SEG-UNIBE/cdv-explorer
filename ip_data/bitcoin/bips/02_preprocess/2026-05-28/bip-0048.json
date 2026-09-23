@@ -705,30 +705,34 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:17:24Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "based on an algorithm described in BIP-0032 (BIP32 from now on)",
               "reason": "The proposed path hierarchy and derivation levels are explicitly built on BIP32 child-key derivation and hardened/public derivation semantics.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:43",
               "evidence": "purpose scheme described in BIP-0043 (BIP43 from now on)",
               "reason": "BIP48 uses the BIP43 purpose-field convention and states it is a particular application of BIP43.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:44",
               "evidence": "multi-account hierarchy described in BIP-0044 (BIP44 from now on)",
               "reason": "BIP48 adopts the BIP44 account hierarchy pattern for splitting key space into independent accounts.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:67",
               "evidence": "Any wallet that supports BIP48 inherently supports deterministic key sorting as per BIP67",
               "reason": "BIP48 relies on BIP67 key sorting to deterministically order multisig public keys before address/script derivation.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

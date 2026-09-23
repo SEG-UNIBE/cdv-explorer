@@ -417,12 +417,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:37:32Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:173",
               "evidence": "BIP-0173 defines a new format for segregated witness output addresses",
               "reason": "The proposal assigns registered human-readable parts specifically for Bech32 addresses defined by BIP-0173, so its registry depends on that address format and HRP semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

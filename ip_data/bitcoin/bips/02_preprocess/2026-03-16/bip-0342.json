@@ -859,36 +859,41 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:45:03Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:65",
               "evidence": "including the <code>OP_CHECKLOCKTIMEVERIFY</code> and <code>OP_CHECKSEQUENCEVERIFY</code> opcodes defined in [[bip-0065.mediawiki|BIP65]]",
               "reason": "The tapscript execution rules inherit the locktime opcode semantics defined in BIP65.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:112",
               "evidence": "including the <code>OP_CHECKLOCKTIMEVERIFY</code> and <code>OP_CHECKSEQUENCEVERIFY</code> opcodes defined in [[bip-0112.mediawiki|BIP112]]",
               "reason": "The tapscript execution rules inherit the sequence-verification opcode semantics defined in BIP112.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:141",
               "evidence": "the scriptPubKey contains a witness program as defined in [[bip-0141.mediawiki|BIP141]]",
               "reason": "Tapscript validation applies only to SegWit witness-program spends as defined by BIP141.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:340",
               "evidence": "to verify Schnorr signatures as specified in [[bip-0340.mediawiki|BIP340]]",
               "reason": "Tapscript signature opcodes reuse BIP340 Schnorr signature verification rules and signature encoding semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:341",
               "evidence": "This document specifies the semantics of the initial scripting system under [[bip-0341.mediawiki|BIP341]].",
               "reason": "The proposal is designed as the scripting semantics layer for Taproot and depends on BIP341 for spend conditions, script path processing, common signature message, and deployment context.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

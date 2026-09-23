@@ -610,32 +610,35 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:36:02Z",
           "status": "api_error",
-          "dependencies": [],
-          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 200000, Requested 3028. Please try again in 908ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 200000, Requested 3028. Please try again in 908ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}",
+          "findings": []
         },
         {
           "run_id": "2026-06-30T11:38:11Z_gpt-5.4-mini_422651ce",
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:38:18Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:13",
               "evidence": "similar to existing address formats",
               "reason": "The proposal reuses the existing address-format pattern and explicitly relies on BIP13 P2SH address conventions in its rationale.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:16",
               "evidence": "segwit-in-P2SH is a BIP16 P2SH redeemScript",
               "reason": "The proposal’s compatibility discussion includes segwit-in-P2SH, which is built on the P2SH redeemScript mechanism defined by BIP16.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:141",
               "evidence": "described in segregated witness soft fork (BIP141)",
               "reason": "The proposal defines address encoding specifically for witness programs introduced by BIP141 and relies on its witness program/version semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

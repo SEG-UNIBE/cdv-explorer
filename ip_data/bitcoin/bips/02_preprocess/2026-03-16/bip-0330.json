@@ -782,24 +782,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:44:38Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:141",
               "evidence": "where ''wtxid'' is the transaction hash including witness data as defined by BIP141.",
               "reason": "The short ID algorithm is keyed over the witness transaction identifier defined in BIP-141.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:339",
               "evidence": "support of Erlay should be enabled only if both peers signal [https://github.com/bitcoin/bips/blob/master/bip-0339.mediawiki BIP-339] support",
               "reason": "The protocol’s negotiation and activation are conditioned on BIP-339 signaling, so implementing this proposal depends on that support-signaling mechanism.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:340",
               "evidence": "TaggedHash is specified by [https://github.com/bitcoin/bips/blob/master/bip-0340.mediawiki BIP-340]",
               "reason": "Short transaction ID derivation directly reuses the TaggedHash construction defined by BIP-340.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

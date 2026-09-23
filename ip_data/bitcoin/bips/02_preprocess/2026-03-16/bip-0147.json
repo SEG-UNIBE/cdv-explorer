@@ -575,24 +575,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:43:38Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:9",
               "evidence": "This BIP will be deployed by \"version bits\"",
               "reason": "The proposal depends on the version-bits activation mechanism specified by the target proposal for deployment.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:141",
               "evidence": "also pay-to-witness-script-hash scripts described in BIP141",
               "reason": "The rule is extended to apply within the witness script-hash execution context defined by the target proposal.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:143",
               "evidence": "using the same parameters for BIP141 and BIP143",
               "reason": "Deployment is explicitly coordinated with the target proposal's activation parameters, so implementation follows the same activation schedule as the target.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

@@ -1,0 +1,781 @@
+{
+  "raw": {
+    "preamble": {
+      "bip": "175",
+      "title": "Pay to Contract Protocol",
+      "author": [
+        "Omar Shibli <omar@commerceblock.com>",
+        "Nicholas Gregory <nicholas@commerceblock.com>"
+      ],
+      "comments_uri": null,
+      "status": "Closed",
+      "type": "Informational",
+      "created": "2017-07-17",
+      "license": [
+        "BSD-2-Clause"
+      ],
+      "layer": "Applications",
+      "discussions_to": null,
+      "comments_summary": null,
+      "license_code": null,
+      "post_history": null,
+      "requires": null,
+      "replaces": null,
+      "proposed_replacement": null
+    }
+  },
+  "meta": {
+    "last_commit": "2025-10-08T14:59:36-07:00",
+    "total_commits": 22,
+    "git_history": [
+      [
+        "24e96e870fffaa257b465ce1f0370c14aac588e8",
+        "2025-10-08T14:59:36-07:00",
+        "Murch",
+        "murch@murch.one"
+      ],
+      [
+        "5207ef92a52d0b8902895b0dbb40823a4d698ec9",
+        "2025-04-11T20:08:17-07:00",
+        "Murch",
+        "murch@murch.one"
+      ],
+      [
+        "59730dec4fb641a41589aa1b91d3c452f13e0e36",
+        "2025-04-11T20:05:13-07:00",
+        "Murch",
+        "murch@murch.one"
+      ],
+      [
+        "66defbdc03ad64ccddfd373e1c59af9a41ab990f",
+        "2025-04-11T18:11:55-07:00",
+        "Murch",
+        "murch@murch.one"
+      ],
+      [
+        "ca05d44e640b8d30a07e9edea08cb5a15e70619e",
+        "2025-05-30T12:41:50+02:00",
+        "strmfos",
+        "155266597+strmfos@users.noreply.github.com"
+      ],
+      [
+        "e2cfb55f2fa1c1dbac55ae3ccf0994d3e10aa375",
+        "2021-01-31T21:38:39+02:00",
+        "omar shibli",
+        "omarshib@gmail.com"
+      ],
+      [
+        "b63ed0e17e872b7e7b8634591b0ddfa3dedfdc73",
+        "2017-10-31T05:24:28+02:00",
+        "Omar Shibli",
+        "omarshib@gmail.com"
+      ],
+      [
+        "77437377af4ac2840374e52240fd1364129a7452",
+        "2017-10-03T08:24:16+03:00",
+        "Omar Shibli",
+        "omarshib@gmail.com"
+      ],
+      [
+        "86dffc03bb7cfafe419a77196999302b28831a80",
+        "2017-10-03T08:24:16+03:00",
+        "Omar Shibli",
+        "omarshib@gmail.com"
+      ],
+      [
+        "d8d5a0d8a309356821d48946a3c7f84fa361618b",
+        "2017-09-23T05:13:04+02:00",
+        "Jonathan Cross",
+        "jcross@gmail.com"
+      ],
+      [
+        "d1ad07ee40c6bd200e3a2190360c8e35d17fc932",
+        "2017-09-20T13:47:58+09:00",
+        "Naoto Satoh",
+        "stardustforever012@gmail.com"
+      ],
+      [
+        "5d673da3cbee77747e64dfca86b87c61e4143ff9",
+        "2017-09-19T01:55:27+03:00",
+        "Omar Shibli",
+        "omarshib@gmail.com"
+      ],
+      [
+        "2df903a4a134b5996b220dbb9ad8c503db80a081",
+        "2017-09-19T01:44:42+03:00",
+        "Omar Shibli",
+        "omarshib@gmail.com"
+      ],
+      [
+        "dd18e39624cd15897cebaa738577b87e30bf23ad",
+        "2017-09-18T15:58:21+03:00",
+        "Omar Shibli",
+        "omarshib@gmail.com"
+      ],
+      [
+        "522a0e88f3a3f27d0ec1f34afbce3ba4c225ac49",
+        "2017-09-18T15:49:25+03:00",
+        "Omar Shibli",
+        "omarshib@gmail.com"
+      ],
+      [
+        "689fcdb87896da491dd663bd2b6dc7c2f8637a8a",
+        "2017-09-17T11:03:58+03:00",
+        "Omar Shibli",
+        "omarshib@gmail.com"
+      ],
+      [
+        "3ff47ff64283f273ea48a2d14df4d9e777dba8ca",
+        "2017-09-16T23:17:12+03:00",
+        "Omar Shibli",
+        "omarshib@gmail.com"
+      ],
+      [
+        "10104eb211ca4b1b35963a62c2013f16446f15ed",
+        "2017-09-16T21:38:04+03:00",
+        "Omar Shibli",
+        "omarshib@gmail.com"
+      ],
+      [
+        "dd26d813907297098c32e036599c6d1bf26ff92c",
+        "2017-09-16T10:42:28+03:00",
+        "Omar Shibli",
+        "omarshib@gmail.com"
+      ],
+      [
+        "39a5c1bf7e458f281949e75da691676decaabe86",
+        "2017-09-16T08:55:14+03:00",
+        "Omar Shibli",
+        "omarshib@gmail.com"
+      ],
+      [
+        "3afd4bd57f985ddb5758dbde0fb7ffc11061c8bd",
+        "2017-09-06T18:22:27+03:00",
+        "Omar Shibli",
+        "omarshib@gmail.com"
+      ],
+      [
+        "4ba4fc3f0af1aed964fd3c0539b6ed3728699b5d",
+        "2017-09-06T16:42:37+03:00",
+        "Omar Shibli",
+        "omarshib@gmail.com"
+      ]
+    ]
+  },
+  "insights": {
+    "formal_compliance": {
+      "score": 96.77,
+      "passed_checks": 30,
+      "failed_checks": 1,
+      "skipped_checks": 10,
+      "total_checks": 31,
+      "bip2": {
+        "score": 91.67,
+        "passed_checks": 11,
+        "failed_checks": 1,
+        "skipped_checks": 0,
+        "total_checks": 12,
+        "checks": [
+          {
+            "id": "bip2.required_field.bip",
+            "label": "Required field 'bip' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.title",
+            "label": "Required field 'title' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.author",
+            "label": "Required field 'author' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.comments_uri",
+            "label": "Required field 'comments_uri' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": false,
+            "details": "Missing required field 'comments_uri'"
+          },
+          {
+            "id": "bip2.required_field.status",
+            "label": "Required field 'status' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.type",
+            "label": "Required field 'type' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.created",
+            "label": "Required field 'created' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.required_field.license",
+            "label": "Required field 'license' is present",
+            "category": "required_field",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.heading.abstract",
+            "label": "Heading 'abstract' exists at level 2",
+            "category": "heading",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.heading.motivation",
+            "label": "Heading 'motivation' exists at level 2",
+            "category": "heading",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.heading.specification",
+            "label": "Heading 'specification' exists at level 2",
+            "category": "heading",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip2.heading.copyright",
+            "label": "Heading 'copyright' exists at level 2",
+            "category": "heading",
+            "standard": "bip2",
+            "passed": true,
+            "details": null
+          }
+        ]
+      },
+      "bip3": {
+        "score": 100.0,
+        "passed_checks": 19,
+        "failed_checks": 0,
+        "skipped_checks": 10,
+        "total_checks": 19,
+        "checks": [
+          {
+            "id": "bip3.preamble.top_rfc822",
+            "label": "Preamble exists as RFC-822-style metadata at the top",
+            "category": "preamble",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.bip",
+            "label": "Required header 'bip' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.title",
+            "label": "Required header 'title' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.authors",
+            "label": "Required header 'authors' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.status",
+            "label": "Required header 'status' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.type",
+            "label": "Required header 'type' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.assigned",
+            "label": "Required header 'assigned' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_header.license",
+            "label": "Required header 'license' is present",
+            "category": "required_header",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_order",
+            "label": "Headers appear in the expected BIP3 order",
+            "category": "header_order",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.bip",
+            "label": "Header 'BIP' is an integer without leading zeros or '?'",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.title",
+            "label": "Header 'Title' is 50 characters or fewer",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.authors",
+            "label": "Header 'authors' uses 'Name <email>' entries",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.deputies",
+            "label": "Header 'deputies' uses 'Name <email>' entries",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.status",
+            "label": "Header 'Status' is one of Draft, Complete, Deployed, Closed",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.type",
+            "label": "Header 'Type' is one of Specification, Informational, Process",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.assigned",
+            "label": "Header 'Assigned' is yyyy-mm-dd or '?'",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.license",
+            "label": "Header 'License' is non-empty",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.discussion",
+            "label": "Header 'Discussion' uses 'yyyy-mm-dd: URL' lines",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.version",
+            "label": "Header 'Version' uses MAJOR.MINOR.PATCH",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.requires",
+            "label": "Header 'requires' uses comma+space separated BIP numbers",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.replaces",
+            "label": "Header 'replaces' uses comma+space separated BIP numbers",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.header_value.proposed_replacement",
+            "label": "Header 'proposed_replacement' uses comma+space separated BIP numbers",
+            "category": "header_value",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.required_section.abstract",
+            "label": "Required section 'abstract' is present",
+            "category": "required_section",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_section.motivation",
+            "label": "Required section 'motivation' is present",
+            "category": "required_section",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.required_section.copyright",
+            "label": "Required section 'copyright' is present",
+            "category": "required_section",
+            "standard": "bip3",
+            "passed": true,
+            "details": null
+          },
+          {
+            "id": "bip3.type_specific.specification_section",
+            "label": "Type 'Specification' includes a 'Specification' section",
+            "category": "type_specific",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.changelog.changelog_section",
+            "label": "Complete/Deployed proposals include a 'Changelog' section",
+            "category": "changelog",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.changelog.version_header",
+            "label": "Complete/Deployed proposals include a 'Version' header",
+            "category": "changelog",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          },
+          {
+            "id": "bip3.changelog.version_matches",
+            "label": "Latest changelog version matches the 'Version' header",
+            "category": "changelog",
+            "standard": "bip3",
+            "passed": null,
+            "details": null
+          }
+        ]
+      }
+    },
+    "word_list": {
+      "code": 32,
+      "contract": 26,
+      "address": 24,
+      "derivation": 20,
+      "key": 19,
+      "payment": 19,
+      "hash": 17,
+      "path": 16,
+      "public": 14,
+      "bip": 12,
+      "extended": 12,
+      "compute": 12,
+      "payment_base": 11,
+      "1": 11,
+      "2": 10,
+      "sub": 10,
+      "base": 9,
+      "bip32": 9,
+      "contract_hash": 9,
+      "function": 9,
+      "document": 8,
+      "m": 8,
+      "partial": 8,
+      "pay": 7,
+      "purpose": 7,
+      "merchant": 7,
+      "given": 7,
+      "denoted": 7,
+      "175": 6,
+      "described": 6,
+      "0": 6,
+      "following": 6,
+      "protocol": 5,
+      "scheme": 5,
+      "bitcoin": 5,
+      "payee": 5,
+      "cryptographic": 5,
+      "specification": 5,
+      "customer": 5,
+      "generation": 5,
+      "documents": 5,
+      "h": 5,
+      "hashes": 5,
+      "prepend": 5,
+      "apply": 5,
+      "commerceblock": 4,
+      "com": 4,
+      "type": 4,
+      "deterministic": 4,
+      "wallets": 4,
+      "field": 4,
+      "c": 4,
+      "3": 4,
+      "4": 4,
+      "mapping": 4,
+      "5": 4,
+      "0032": 3,
+      "0043": 3,
+      "parties": 3,
+      "payer": 3,
+      "funds": 3,
+      "requires": 3,
+      "private": 3,
+      "define": 3,
+      "coin_type": 3,
+      "consists": 3,
+      "hardened": 3,
+      "level": 3,
+      "coin": 3,
+      "concatenate": 3,
+      "combined": 3,
+      "6": 3,
+      "step": 3,
+      "7": 3,
+      "p2pkh": 3,
+      "verification": 3,
+      "section": 3,
+      "input": 3,
+      "hex": 3,
+      "number": 3,
+      "12544": 3,
+      "22392": 3,
+      "35936": 3,
+      "29540": 3,
+      "3522": 3,
+      "8774": 3,
+      "27904": 3,
+      "13329": 3,
+      "52572": 3,
+      "7360": 3,
+      "48936": 3,
+      "1020": 3,
+      "28347": 3,
+      "64224": 3,
+      "15595": 3,
+      "17489": 3,
+      "5338": 3,
+      "54412": 3,
+      "19213": 3,
+      "962": 3,
+      "30664": 3,
+      "62597": 3,
+      "11873": 3,
+      "59874": 3,
+      "56779": 3,
+      "24089": 3,
+      "54550": 3,
+      "19585": 3,
+      "28087": 3,
+      "36422": 3,
+      "18666": 3,
+      "17562": 3,
+      "reference": 3,
+      "https": 3,
+      "lib": 3,
+      "mediawiki": 3,
+      "pre": 2,
+      "omar": 2,
+      "nicholas": 2,
+      "license": 2,
+      "bsd": 2,
+      "clause": 2,
+      "hierarchical": 2,
+      "multiparty": 2,
+      "gerhardt": 2,
+      "hanke": 2,
+      "shall": 2,
+      "interaction": 2,
+      "receipt": 2,
+      "items": 2,
+      "invoice": 2,
+      "homomorphic": 2,
+      "addresses": 2,
+      "way": 2,
+      "paid": 2,
+      "derived": 2,
+      "terms": 2,
+      "s": 2,
+      "like": 2,
+      "p2": 2,
+      "w": 2,
+      "redemption": 2,
+      "wallet": 2,
+      "purchase": 2,
+      "request": 2,
+      "specifying": 2,
+      "able": 2,
+      "generating": 2,
+      "levels": 2,
+      "indicates": 2,
+      "identical": 2,
+      "0044": 2,
+      "n": 2,
+      "sort": 2,
+      "lexicographically": 2,
+      "hash_1": 2,
+      "hash_n": 2,
+      "procedure": 2,
+      "inputs": 2,
+      "examples": 2,
+      "master": 2,
+      "use": 2,
+      "fcde2b2edba56bf408601fb721fe9b5c338d10ee429ea04fae5511b68fbf8fb9": 2,
+      "2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae": 2,
+      "contract_base_pub": 2,
+      "1c7f322izqmqlzzzfzkpajxbzprxdi47yf": 2,
+      "example": 2,
+      "github": 2
+    },
+    "changes_in_status": [
+      {
+        "commit": "4ba4fc3f0af1aed964fd3c0539b6ed3728699b5d",
+        "timestamp": "2017-09-06T16:42:37+03:00",
+        "date": "2017-09-06",
+        "author": "Omar Shibli",
+        "path": "bip-draft.mediawiki",
+        "status": "Draft",
+        "standard": "bip2"
+      },
+      {
+        "commit": "e2cfb55f2fa1c1dbac55ae3ccf0994d3e10aa375",
+        "timestamp": "2021-01-31T21:38:39+02:00",
+        "date": "2021-01-31",
+        "author": "omar shibli",
+        "path": "bip-0175.mediawiki",
+        "status": "Rejected",
+        "standard": "bip2"
+      },
+      {
+        "commit": "66defbdc03ad64ccddfd373e1c59af9a41ab990f",
+        "timestamp": "2026-01-12T14:22:36-08:00",
+        "date": "2026-01-12",
+        "author": "Murch",
+        "path": "bip-0175.mediawiki",
+        "status": "Closed",
+        "standard": "bip3"
+      }
+    ],
+    "interrelations": {
+      "preamble_extracted": [],
+      "body_extracted_regex": [
+        {
+          "target": "bips:32",
+          "count": 12
+        },
+        {
+          "target": "bips:43",
+          "count": 4
+        },
+        {
+          "target": "bips:44",
+          "count": 3
+        }
+      ],
+      "body_extracted_llm": [
+        {
+          "run_id": "2026-08-07T07:56:09Z_gpt-5.6-sol_c18c13dc",
+          "model": "gpt-5.6-sol",
+          "timestamp": "2026-08-07T08:11:09Z",
+          "status": "success",
+          "findings": [
+            {
+              "target": "bips:16",
+              "type": "references",
+              "evidence": "the derived address looks like any other P2(W)PKH or P2(W)SH address",
+              "reason": "The P2SH variant included in the compact P2(W)SH notation identifies the address mechanism standardized by BIP 16, but it is mentioned only to describe how derived addresses appear; the specified example and generation procedure use P2PKH.",
+              "confidence": "medium"
+            },
+            {
+              "target": "bips:32",
+              "type": "depends_on",
+              "evidence": "Utilizing hierarchical deterministic wallets as described in BIP-0032",
+              "reason": "The proposal constructs payment-base and payment-address extended keys through BIP32 derivation paths, hardened derivation, and extended-key operations, so its mechanism requires BIP 32.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:43",
+              "type": "depends_on",
+              "evidence": "Purpose is a constant set to <code>175'</code> (or <code>0x800000AF</code>) following the BIP-0043 recommendation.",
+              "reason": "The proposal uses BIP 43's purpose-field convention to designate its deterministic-wallet subtree.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:44",
+              "type": "depends_on",
+              "evidence": "The coin type field is identical to the same field in BIP-0044.",
+              "reason": "The derivation hierarchy directly reuses the coin-type field defined by BIP 44 rather than defining that field independently.",
+              "confidence": "high"
+            },
+            {
+              "target": "bips:141",
+              "type": "references",
+              "evidence": "the derived address looks like any other P2(W)PKH or P2(W)SH address",
+              "reason": "P2WPKH and P2WSH are witness output types defined by BIP 141. They are mentioned as possible indistinguishable address forms, without the proposal requiring their witness rules for its key-derivation mechanism.",
+              "confidence": "medium"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

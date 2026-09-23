@@ -534,12 +534,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:18:02Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:9",
               "evidence": "headers-first\" downloading of blocks in 0.10",
               "reason": "The proposal’s relay behavior and header-based announcements rely on the headers-first block processing model introduced by BIP 9.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

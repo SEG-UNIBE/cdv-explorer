@@ -747,24 +747,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:42:22Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "based on an algorithm described in BIP-0032",
               "reason": "The proposal's wallet hierarchy and path derivation are built on BIP32's deterministic key-derivation algorithm.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:43",
               "evidence": "purpose scheme described in BIP-0043",
               "reason": "The proposal explicitly uses BIP43's purpose-field scheme to define its path structure and purpose value.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "slips:44",
               "evidence": "SLIP-0044 : Registered coin types for BIP-0044",
               "reason": "The proposal relies on the coin-type registry maintained by SLIP-0044 for its level-2 coin-type constants.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

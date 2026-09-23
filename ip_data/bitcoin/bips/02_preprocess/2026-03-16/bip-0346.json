@@ -698,36 +698,41 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:45:06Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:118",
               "evidence": "the proposed sighash flags from [BIP-118](bip-0118.mediawiki)",
               "reason": "The proposal explicitly supports and emulates BIP-118 sighash modes in its TxFieldSelector encoding and intended use with OP_CHECKSIGFROMSTACK.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:119",
               "evidence": "This proposal strictly generalizes BIP-119's `OP_CHECKTEMPLATEVERIFY`",
               "reason": "The proposal’s default TxFieldSelector semantics are intended to reproduce and extend BIP-119’s covenant behavior.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:342",
               "evidence": "Using the same validation budget (\"sigops budget\") introduced in BIP-0342",
               "reason": "The resource-limit accounting directly reuses the validation budget mechanism from BIP-0342.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:347",
               "evidence": "**[BIP-347](bip-0347.mediawiki) (OP_CAT)**: When combined with `OP_CAT`, `OP_TXHASH` enables",
               "reason": "The proposal’s stated interaction depends on concatenation semantics from BIP-347 for advanced introspection constructions.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:348",
               "evidence": "combine with OP_CHECKSIGFROMSTACK (see [BIP-348](bip-0348.md))",
               "reason": "The proposal’s generalized signature-hash construction is designed around OP_CHECKSIGFROMSTACK as specified by BIP-348.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

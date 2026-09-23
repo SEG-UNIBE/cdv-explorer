@@ -184,12 +184,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:37:19Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "Derive the HD node `m/17'/A'/B'/C'/D'` according to BIP32.",
               "reason": "The proposal’s key hierarchy and node derivation explicitly rely on BIP32 HD wallet derivation rules.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

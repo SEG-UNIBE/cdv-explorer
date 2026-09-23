@@ -850,24 +850,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:06Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:34",
               "evidence": "BIP 34 introduced a mechanism for doing soft-forking changes",
               "reason": "The proposal builds on the soft-fork deployment mechanism introduced by BIP 34 and contrasts its version-number signaling model against it.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:65",
               "evidence": "This approach was later reused in BIP 66 and BIP 65",
               "reason": "The proposal explicitly references BIP 65 as a prior soft-fork deployment that reused the version-number restriction pattern being generalized here.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:66",
               "evidence": "This approach was later reused in BIP 66",
               "reason": "The proposal explicitly relies on BIP 66 as another prior use of the integer version-number restriction it discusses and replaces.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

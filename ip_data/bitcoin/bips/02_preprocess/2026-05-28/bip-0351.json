@@ -706,36 +706,41 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:18:51Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "The derivation path for this BIP follows BIP44.",
               "reason": "The proposal uses BIP32-style hierarchical key derivation for Alice's and Bob's keys and child keys.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:43",
               "evidence": "The derivation path for this BIP follows BIP44.",
               "reason": "The proposal uses the BIP43 purpose-field structure as the basis for its derivation path.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:44",
               "evidence": "The derivation path for this BIP follows BIP44.",
               "reason": "The proposal explicitly adopts the BIP44 account hierarchy and path layout.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:47",
               "evidence": "Sharing a BIP47 payment code",
               "reason": "The proposal is designed as a new standard in the same payment-code model and directly contrasts with BIP47 as the prior static-payment-code mechanism it replaces.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:158",
               "evidence": "Compact Block Filters, as formulated in BIP-0158, do not cover OP_RETURN data payloads.",
               "reason": "The proposal's light-wallet scanning workaround depends on the limitations of BIP158 compact block filters.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

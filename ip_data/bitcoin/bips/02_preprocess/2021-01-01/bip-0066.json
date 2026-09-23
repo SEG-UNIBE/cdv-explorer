@@ -613,18 +613,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:25Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:34",
               "evidence": "We reuse the double-threshold switchover mechanism from BIP 34",
               "reason": "The deployment logic explicitly adopts BIP 34's activation mechanism and thresholds for enforcing the new rules.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:62",
               "evidence": "This proposal has the added benefit of reducing transaction malleability (see BIP 62).",
               "reason": "The proposal is designed in part around the malleability-reduction goals discussed in BIP 62, but this is a secondary compatibility/motivation reference rather than a required mechanism.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

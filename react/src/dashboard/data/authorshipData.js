@@ -22,6 +22,26 @@ function computeBySource(refs) {
 }
 
 export function buildAuthorshipDashboardData(dataset, authorship = {}) {
+  // The payload carries the identity alias map the pipeline applied, so local
+  // per-node recomputations (proposal refs, histograms, shared-proposal edges,
+  // git-contributor tiles) resolve to the same canonical names as the
+  // server-computed metrics.
+  const authorAliases = authorship?.meta?.author_aliases || {};
+  const canonicalName = (name) => {
+    const cleaned = cleanAuthorName(name);
+    return authorAliases[cleaned] || cleaned;
+  };
+  const nodeAuthors = (node) => (Array.isArray(node?.author) ? node.author : [])
+    .map(canonicalName)
+    .filter(Boolean);
+  // node.contributors = every non-bot committer in the proposal file's full
+  // git history (mined in the preprocess stage), as raw git author names.
+  const nodeContributors = (node) => Array.from(new Set(
+    (Array.isArray(node?.contributors) ? node.contributors : [])
+      .map(canonicalName)
+      .filter(Boolean)
+  ));
+
   const authorBipsByAuthor = new Map();
   const bipsByYear = new Map();
 
@@ -32,9 +52,7 @@ export function buildAuthorshipDashboardData(dataset, authorship = {}) {
     const ref = makeProposalRef(node);
     const refKey = proposalRefKey(ref);
 
-    const authors = Array.isArray(node.author)
-      ? node.author.map(cleanAuthorName).filter(Boolean)
-      : [];
+    const authors = nodeAuthors(node);
 
     authors.forEach((author) => {
       if (!authorBipsByAuthor.has(author)) {
@@ -96,10 +114,7 @@ export function buildAuthorshipDashboardData(dataset, authorship = {}) {
 
   const sharedBipsByAuthorPair = new Map();
   dataset.nodes.forEach((node) => {
-    const authors = Array.isArray(node.author)
-      ? node.author.map(cleanAuthorName).filter(Boolean)
-      : [];
-    const uniqueAuthors = Array.from(new Set(authors));
+    const uniqueAuthors = Array.from(new Set(nodeAuthors(node)));
 
     if (!node.id || uniqueAuthors.length < 2) {
       return;
@@ -163,10 +178,7 @@ export function buildAuthorshipDashboardData(dataset, authorship = {}) {
   const authorContributionHistogram = (() => {
     const proposalsPerAuthor = new Map();
     dataset.nodes.forEach((node) => {
-      const authors = Array.isArray(node.author)
-        ? node.author.map(cleanAuthorName).filter(Boolean)
-        : [];
-      new Set(authors).forEach((author) => {
+      new Set(nodeAuthors(node)).forEach((author) => {
         proposalsPerAuthor.set(author, (proposalsPerAuthor.get(author) || 0) + 1);
       });
     });
@@ -183,10 +195,7 @@ export function buildAuthorshipDashboardData(dataset, authorship = {}) {
     const bipsByAuthorCount = new Map();
     dataset.nodes.forEach((node) => {
       if (node?.id == null) return;
-      const authors = Array.isArray(node.author)
-        ? node.author.map(cleanAuthorName).filter(Boolean)
-        : [];
-      const n = authors.length;
+      const n = new Set(nodeAuthors(node)).size;
       if (!bipsByAuthorCount.has(n)) bipsByAuthorCount.set(n, new Map());
       const ref = makeProposalRef(node);
       bipsByAuthorCount.get(n).set(proposalRefKey(ref), ref);
@@ -199,11 +208,79 @@ export function buildAuthorshipDashboardData(dataset, authorship = {}) {
       .sort((a, b) => a.authorCount - b.authorCount);
   })();
 
+  // Git-contributor tiles: all numbers come precomputed from the payload's
+  // `contributors` block (pipeline-side, same artifact the paper consumes);
+  // the client only joins proposal refs from node.contributors for tooltips —
+  // the same decoration pattern as topAuthors above.
+  const contributorsPayload = authorship.contributors || null;
+  const {
+    topContributors,
+    contributorContributionHistogram,
+    contributorsPerProposalHistogram,
+    contributorCoverage,
+  } = (() => {
+    if (!contributorsPayload) {
+      return {
+        topContributors: [],
+        contributorContributionHistogram: [],
+        contributorsPerProposalHistogram: [],
+        contributorCoverage: null,
+      };
+    }
+
+    const bipsByContributor = new Map();
+    const bipsByContributorCount = new Map();
+    dataset.nodes.forEach((node) => {
+      if (node?.id == null) return;
+      const contributors = nodeContributors(node);
+      if (contributors.length === 0) return;
+      const ref = makeProposalRef(node);
+      const refKey = proposalRefKey(ref);
+      contributors.forEach((name) => {
+        if (!bipsByContributor.has(name)) bipsByContributor.set(name, new Map());
+        bipsByContributor.get(name).set(refKey, ref);
+      });
+      if (!bipsByContributorCount.has(contributors.length)) {
+        bipsByContributorCount.set(contributors.length, new Map());
+      }
+      bipsByContributorCount.get(contributors.length).set(refKey, ref);
+    });
+
+    const coverage = contributorsPayload.coverage || {};
+    return {
+      topContributors: (contributorsPayload.top_contributors || [])
+        .slice(0, 10)
+        .map((entry) => ({
+          ...entry,
+          bips: collectProposalRefs(bipsByContributor.get(entry.author)),
+        })),
+      contributorContributionHistogram: contributorsPayload.contribution_histogram || [],
+      contributorsPerProposalHistogram: (contributorsPayload.per_proposal_histogram || [])
+        .map((entry) => ({
+          authorCount: entry.author_count,
+          bipCount: entry.bip_count,
+          bips: collectProposalRefs(bipsByContributorCount.get(entry.author_count)),
+        })),
+      contributorCoverage: {
+        contributorCount: coverage.contributor_count ?? 0,
+        declaredAuthorCount: coverage.declared_author_count ?? 0,
+        contributorsAlsoDeclared: coverage.contributors_also_declared ?? 0,
+        contributorsNeverDeclared: coverage.contributors_never_declared ?? 0,
+        proposalsWithGitData: coverage.proposals_with_git_data ?? 0,
+        proposalsWithUncredited: coverage.proposals_with_uncredited ?? 0,
+      },
+    };
+  })();
+
   return {
     yearData,
     topAuthors,
     authorContributionHistogram,
     bipAuthorCountHistogram,
+    topContributors,
+    contributorContributionHistogram,
+    contributorsPerProposalHistogram,
+    contributorCoverage,
     collaborationNetwork,
     collaborationMetricsSummary,
     collaborationMetricsRows,

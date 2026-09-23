@@ -641,30 +641,34 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:17:40Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:9",
               "evidence": "This BIP will be deployed by a \"version bits\"",
               "reason": "The proposal's activation mechanism is explicitly based on BIP9 version-bits deployment and its state/threshold logic.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:141",
               "evidence": "the existing BIP9 \"segwit\" deployment using bit 1",
               "reason": "The proposal is designed to force activation of the existing segwit deployment and ceases when BIP141 is locked-in, active, or failed.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:143",
               "evidence": "to activate BIP141, BIP143 and BIP147.",
               "reason": "The proposal's target deployment includes BIP143 as part of the segwit package it is trying to activate.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:147",
               "evidence": "to activate BIP141, BIP143 and BIP147.",
               "reason": "The proposal's target deployment includes BIP147 as part of the segwit package it is trying to activate.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

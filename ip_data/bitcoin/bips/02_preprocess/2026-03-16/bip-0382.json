@@ -560,12 +560,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:45:48Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:380",
               "evidence": "use the format and general operation specified in [[bip-0380.mediawiki|380]]",
               "reason": "The descriptor syntax and operation are defined as an application of BIP 380’s general descriptor framework.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

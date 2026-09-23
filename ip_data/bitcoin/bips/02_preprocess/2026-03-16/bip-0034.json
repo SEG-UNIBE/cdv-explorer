@@ -553,12 +553,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:42:15Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:31",
               "evidence": "clarify and exercise the mechanism whereby the bitcoin network collectively consents to upgrade transaction or block binary structures",
               "reason": "This proposal relies on the block/version upgrade signaling and activation mechanism for versioned structures introduced by the referenced BIP.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

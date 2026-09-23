@@ -696,44 +696,49 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:18:02Z",
           "status": "api_error",
-          "dependencies": [],
-          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 196076, Requested 6111. Please try again in 656ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 196076, Requested 6111. Please try again in 656ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}",
+          "findings": []
         },
         {
           "run_id": "2026-06-30T11:33:45Z_gpt-5.4-mini_fbc31d5d",
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:33:54Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:65",
               "evidence": "as explained in [[bip-0065.mediawiki|BIP-65]]",
               "reason": "The proposal relies on BIP-65’s nLocktime-based absolute timelock semantics for the recovery-plan motivation and script comparison.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:68",
               "evidence": "following the rules of [[bip-0068.mediawiki|BIP-68]]",
               "reason": "The recovery transaction’s nSequence relative-locktime is defined using BIP-68 rules, including the sequence encoding and units.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:112",
               "evidence": "OP_CHECKSEQUENCEVERIFY ([[bip-0112.mediawiki|BIP-112]])",
               "reason": "The proposal uses relative locktime semantics from BIP-112 as part of the comparison with script-based recovery mechanisms.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:140",
               "evidence": "It is important that the ''Alert Transaction'' will be non-malleable (e.g. by using [[bip-0140.mediawiki|BIP-140]])",
               "reason": "The alert transaction format and validity assumptions depend on non-malleability to keep the recovery transaction’s txid reference valid.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:433",
               "evidence": "P2A addresses (described in [[bip-0433.mediawiki|BIP-433]])",
               "reason": "The proposal allows anchor-addresses to use the P2A address type for CPFP acceleration, so its anchor mechanism is designed around that address format.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

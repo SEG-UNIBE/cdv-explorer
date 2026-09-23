@@ -302,12 +302,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:19Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:01",
               "evidence": "filters as specified in [NIP 01](01.md) for the verb `REQ`",
               "reason": "The COUNT verb reuses the REQ filter syntax and query semantics defined by the referenced proposal.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

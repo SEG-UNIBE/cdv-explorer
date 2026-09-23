@@ -953,36 +953,41 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:17:35Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:21",
               "evidence": "Bitcoin URIs ([BIP 21](https://github.com/bitcoin/bips/blob/master/bip-0021.mediawiki)",
               "reason": "The Payjoin URI is defined as a Bitcoin URI with added parameters, so the proposal depends on BIP 21 URI structure and parameter handling.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:78",
               "evidence": "relative to and described in [BIP 78](bip-0078.mediawiki) (\"Version 1\").",
               "reason": "The proposal is explicitly a backwards-compatible version of BIP 78 and reuses its Payjoin protocol semantics, checklists, error handling, and backward-compatibility behavior.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:174",
               "evidence": "This transaction is serialized as a BIP 174 PSBTv0",
               "reason": "Original and Proposal transactions are carried as PSBTv0 payloads, so the protocol depends on the PSBT serialization and field semantics defined by BIP 174.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:321",
               "evidence": "or [BIP 321](https://github.com/bitcoin/bips/blob/master/bip-0321.mediawiki)",
               "reason": "The proposal allows Payjoin URIs to be formed as Bitcoin URIs under BIP 321 as an alternative URI format.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:324",
               "evidence": "[ElligatorSwift as defined in BIP 324](https://github.com/bitcoin/bips/blob/master/bip-0324.mediawiki#elligatorswift-encoding-of-curve-x-coordinates)",
               "reason": "The protocol uses ElligatorSwift as the wire format for HPKE public keys, relying on BIP 324's encoding definition.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

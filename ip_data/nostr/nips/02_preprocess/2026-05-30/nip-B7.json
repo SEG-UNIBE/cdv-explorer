@@ -13,12 +13,17 @@
   },
   "meta": {
     "last_commit": "Thu Apr 24 13:53:56 2025 -0300",
-    "total_commits": 1,
+    "total_commits": 2,
     "git_history": [
       [
         "473f651b3e714c92bfd236cf5972a7d594aec703",
         "Thu Apr 24 13:53:56 2025 -0300",
         "fiatjaf"
+      ],
+      [
+        "5a371a5b92f497a59ce23eb320a2d5c1cca29eb4",
+        "Thu Apr 24 13:47:04 2025 -0300",
+        "fiatjaf_"
       ]
     ]
   },
@@ -135,12 +140,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:56Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:03",
               "evidence": "most importantly Nostr clients SHOULD make use of [BUD-03][] to fetch `kind:10063` lists of servers for each user",
               "reason": "The proposal’s server-discovery workflow is built around the BUD-03 mechanism for publishing and retrieving per-user Blossom server lists.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

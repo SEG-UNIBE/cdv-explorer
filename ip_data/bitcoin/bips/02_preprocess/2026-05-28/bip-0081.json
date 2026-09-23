@@ -562,30 +562,34 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:17:35Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "based on an algorithm described in BIP-0032",
               "reason": "The proposal’s wallet hierarchy and child-key derivation are built on BIP32 derivation semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:43",
               "evidence": "purpose scheme described in BIP-0043",
               "reason": "The proposal uses the BIP43 purpose-field convention to identify the subtree for this specification.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:44",
               "evidence": "This BIP is a particular application of BIP43 and is based on BIP44.",
               "reason": "The proposal explicitly states that its hierarchy is based on BIP44, implying reuse of that deterministic wallet structure.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:80",
               "evidence": "* [[bip-0080.mediawiki|BIP80 - Hierarchy for Non-Colored Voting Pool Deterministic Multisig Wallets]]",
               "reason": "The proposal appears to be designed as a colored-coin specialization of the non-colored voting pool hierarchy described by BIP80, which is listed as a reference alongside the same wallet domain.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

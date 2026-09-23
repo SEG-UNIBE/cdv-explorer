@@ -489,12 +489,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:54Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:37",
               "evidence": "The fee filter is additive with a bloom filter for transactions",
               "reason": "The proposal’s relay behavior explicitly composes feefilter with the transaction bloom filter mechanism introduced by BIP 37.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

@@ -232,12 +232,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:58:42Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:01",
               "evidence": "Relays should answer requests such as `['REQ', '', {\"authors\": [\"A\"]}]` by querying both the `pubkey` and delegation tags",
               "reason": "This proposal depends on the base event/query model and request filtering semantics defined by the event protocol to specify how relays locate delegated events.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

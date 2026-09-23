@@ -224,18 +224,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:39Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:71",
               "evidence": "\"Picture events might be used with [NIP-71](71.md)'s kind `22` to display short vertical videos in the same feed.\"",
               "reason": "The proposal is explicitly designed to be used alongside NIP-71 kind 22 as part of the same feed workflow.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "nips:94",
               "evidence": "\"x <sha256 hash as specified in NIP 94>\"",
               "reason": "The picture-event `imeta` tag reuses the SHA-256 hash specification from the target NIP for image identification.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

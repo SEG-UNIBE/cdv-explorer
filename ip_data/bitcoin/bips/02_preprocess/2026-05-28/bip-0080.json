@@ -562,24 +562,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:17:34Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "based on an algorithm described in BIP-0032",
               "reason": "The proposed hierarchy and path derivation are built on BIP32's derivation algorithm and hardened/public child-index rules.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:43",
               "evidence": "based on BIP-0043",
               "reason": "The proposal adopts BIP43's purpose-field convention and states that the purpose is set following BIP43.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "bips:44",
               "evidence": "This BIP is a particular application of BIP43 and is based on BIP44.",
               "reason": "The proposal explicitly says it is based on BIP44 and reuses BIP44's coin_type registry and multi-coin hierarchical structure.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

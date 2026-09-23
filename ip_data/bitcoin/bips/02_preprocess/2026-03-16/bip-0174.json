@@ -1717,66 +1717,76 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:44:05Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "The 78 byte serialized extended public key as defined by BIP 32",
               "reason": "PSBT encodes xpubs and BIP32 derivation paths using the formats and fingerprint/path semantics defined by BIP 32.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:143",
               "evidence": "The sighash algorithm for Segwit specified in BIP 143",
               "reason": "The signer behavior and UTXO verification logic rely on the SegWit sighash rules from BIP 143.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:341",
               "evidence": "as specified in BIP 341",
               "reason": "Taproot PSBT fields use BIP 341 control blocks, tapleaf hashes, and taproot signing data semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:352",
               "evidence": "Must be provided in PSBTv2 if not sending to a BIP352 silent payment address",
               "reason": "Silent payment PSBT fields and output-script rules are explicitly designed around BIP 352 addresses.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:353",
               "evidence": "BIP 353 DNSSEC proof",
               "reason": "The output type stores a BIP 353 name and DNSSEC AuthenticationChain proof, depending on BIP 353's address proof format.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:370",
               "evidence": "[[bip-0370.mediawiki|370]]",
               "reason": "PSBTv2 global and input/output fields for transaction versioning, counts, txid/index, sequence, and locktime are introduced as version-370-defined extensions.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:371",
               "evidence": "[[bip-0371.mediawiki|371]]",
               "reason": "Taproot-related PSBT fields are added as BIP 371 extensions to the base PSBT format.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:373",
               "evidence": "[[bip-0373.mediawiki|373]]",
               "reason": "MuSig2 participant key, nonce, and partial-signature PSBT fields are defined as BIP 373 extensions.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:374",
               "evidence": "A BIP374 DLEQ proof",
               "reason": "Silent payment DLEQ proof fields use the BIP 374 proof format for matching ECDH shares.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:375",
               "evidence": "[[bip-0375.mediawiki|375]]",
               "reason": "Silent payment PSBT fields for ECDH shares, proofs, and output data are explicitly defined by BIP 375.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

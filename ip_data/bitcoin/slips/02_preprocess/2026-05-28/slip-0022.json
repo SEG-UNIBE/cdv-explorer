@@ -387,24 +387,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:19:55Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:39",
               "evidence": "such as that defined in [SLIP-0039] or the binary seed defined in [BIP-0039]",
               "reason": "The proposal explicitly treats the BIP-0039 seed as an acceptable master secret source for hierarchical deterministic wallets.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "slips:10",
               "evidence": "derived from a master secret and from the version and authentication tag of the credential ID using the [SLIP-0010] key derivation scheme",
               "reason": "The proposal defines the credential key pair derivation path using SLIP-0010-based key derivation.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             },
             {
               "target": "slips:21",
               "evidence": "The key is derived from the master secret using the [SLIP-0021] method for hierarchical derivation of symmetric keys",
               "reason": "The proposal uses SLIP-0021 as the derivation mechanism for the encryption key and CredRandom values.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

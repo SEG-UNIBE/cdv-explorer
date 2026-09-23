@@ -654,38 +654,42 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:46:28Z",
           "status": "api_error",
-          "dependencies": [],
-          "error_message": "Rate limit: Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 200000, Requested 4936. Please try again in 1.48s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+          "error_message": "Rate limit: Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 200000, Requested 4936. Please try again in 1.48s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}",
+          "findings": []
         },
         {
           "run_id": "2026-06-30T11:47:34Z_gpt-5.4-mini_179c9ca7",
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:47:38Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:35",
               "evidence": "This approach is appropriate for many simple features that define new messages, particularly where an implementation might only implement sending or receiving a message, but not both, eg [BIP 35 (mempool)][BIP35].",
               "reason": "The feature-advertisement pattern is explicitly illustrated with BIP 35 as a model for simple message features supported under this proposal.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:155",
               "evidence": "This approach is appropriate for upgrades to data encoding in P2P messages, eg [BIP 339 (wtxidrelay)][BIP339] or [BIP 155 (addrv2)][BIP155].",
               "reason": "The feature-coordination workflow is also positioned as suitable for BIP 155-like encoding upgrades, implying the proposal is designed to encompass that mechanism.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:324",
               "evidence": "Nodes implementing both this BIP and [BIP 324 (v2 P2P encrypted transport)][BIP324] MUST treat a message with a 1-byte `message_type` equal to `37` that is received prior to `verack` as the `feature` message.",
               "reason": "This proposal defines special handling for a BIP 324 transport message type as an alternate encoding of the new feature-negotiation message.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:339",
               "evidence": "we propose codifying and generalising the mechanism used by [BIP 339][BIP339] for future P2P upgrades",
               "reason": "The proposal explicitly generalizes the negotiation mechanism introduced by BIP 339 into a reusable feature-negotiation framework.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

@@ -9,6 +9,7 @@ import { NetworkDiagram } from '../../NetworkDiagram';
 import { ProposalGraphMetricsTable } from '../../ProposalGraphMetricsTable';
 import { DependencyComparisonHeatmaps } from '../../DependencyComparisonHeatmaps';
 import { DependencyGroundTruthEvaluationCharts } from '../../DependencyGroundTruthEvaluationCharts';
+import { DependencyConsistencyCard } from '../../DependencyConsistencyCard';
 import { ProposalFilterControl } from '../../ProposalFilterControl';
 import {
   buildDefaultTypeMapping,
@@ -33,7 +34,7 @@ import { renderTooltipCardHtml } from '../../tooltipHtml';
 import { useAnalysisMetricTooltip } from '../../useAnalysisMetricTooltip';
 import { ExportableCard } from '../ExportableCard';
 import { CollapsibleControls } from '../CollapsibleControls';
-import { SectionSourceToggle } from './SectionSourceToggle';
+import { SectionSourceToggle, SECTION_VIEW_MERGED } from './SectionSourceToggle';
 
 const MATCH_MODE_TOOLTIP = '<strong>Edge Only</strong> matches directed source-target pairs regardless of relation type.'
   + '<br /><br /><strong>Exact Type</strong> additionally requires the relation type to match. Choose which extracted '
@@ -42,7 +43,8 @@ const MATCH_MODE_TOOLTIP = '<strong>Edge Only</strong> matches directed source-t
 const SCOPE_TOOLTIP = 'Reviewed scores only completed benchmark reviews from ips.csv, while All scores every extracted source IP in the dataset.';
 
 const CROSS_SOURCE_TARGETS_TOOLTIP = 'When enabled (default), GT edges and extracted edges whose <em>target</em> belongs to a different IP source (e.g. a BIP referencing a SLIP) are included in the evaluation. '
-  + 'Disable this to restrict scoring to same-source edges only.';
+  + 'Disable this to restrict scoring to same-source edges only. '
+  + 'Only meaningful in a single-source view (e.g. BIPs only): in a merged multi-source view every source\'s nodes are already loaded, so this has no effect on the scored edges.';
 
 const GT_CUTOFF_TOOLTIP = '<strong>All completed reviews</strong>: use the full reviewed benchmark scope and all curated GT edges.'
   + '<br /><br /><strong>Reviewed on or before</strong>: include only reviewed IPs and curated GT edges whose '
@@ -124,7 +126,7 @@ function DependencyMetricsCard({
         {' '}Preamble, Regex, and LLM.{' '}
         <strong>In Degree</strong> measures how many other proposals refer to a given one (incoming relation).{' '}
         <strong>Out Degree</strong> measures how many other proposals a given one refers to (outgoing relation).{' '}
-        <strong>Weighted Eigenvector</strong> measures how central a proposal is by considering how well-connected the ones it is linked to are.{' '}
+        <strong>Weighted Eigenvector</strong> measures how central a proposal is by considering how well-connected the ones it is linked to are (edge weights are uniformly 1 here, since duplicate links between the same pair are collapsed, so this reduces to standard eigenvector centrality (EV)).{' '}
         <strong>PageRank</strong> is similar, but additionally accounts for direction and distributes importance across outgoing links.{' '}
         <strong>Betweenness</strong> measures how often a proposal lies on the shortest paths between others, indicating its role in connecting otherwise separate parts of the dependency graph.
       </p>
@@ -212,6 +214,7 @@ export function DependenciesSection({
   selectedDependencyProposalIds,
   activeDependencyLlmModel,
   dependencyMetrics,
+  dependencyConsistency,
   showExperimentalFeatures,
 }) {
   const [groundTruthMatchMode, setGroundTruthMatchMode] = useState(GROUND_TRUTH_MATCH_MODE_EDGE_ONLY);
@@ -432,8 +435,15 @@ export function DependenciesSection({
     return `Nodes=${nodeCount}`;
   }, [groundTruthEvaluation, restrictToReviewedSources]);
 
+  // The toggle filters GT edges by whether their target node is loaded in the
+  // current network. In a merged multi-source view every selected source's
+  // nodes are already loaded, so the filter never removes anything there —
+  // it only has a real effect when viewing a single source (e.g. BIPs only).
+  const isCrossSourceToggleInert = sectionSourceView === SECTION_VIEW_MERGED
+    && selectedSourceIds.length > 1;
+
   const crossSourceTargetsStats = useMemo(() => {
-    if (!groundTruthEvaluation) {
+    if (!groundTruthEvaluation || isCrossSourceToggleInert) {
       return '';
     }
     const pairs = groundTruthEvaluation.goldEdgesBySourcePair || {};
@@ -444,7 +454,7 @@ export function DependenciesSection({
       })
       .reduce((sum, [, count]) => sum + count, 0);
     return `Edges=${allowCrossSourceTargets ? groundTruthEvaluation.goldEdgeCount : groundTruthEvaluation.goldEdgeCount - crossCount}`;
-  }, [allowCrossSourceTargets, groundTruthEvaluation]);
+  }, [allowCrossSourceTargets, groundTruthEvaluation, isCrossSourceToggleInert]);
 
   return (
     <section className="dashboard-section">
@@ -536,6 +546,7 @@ export function DependenciesSection({
         moveMetricTooltip={moveMetricTooltip}
         hideMetricTooltip={hideMetricTooltip}
       />
+      <DependencyConsistencyCard payload={dependencyConsistency} />
       <ExportableCard className="mb-4" exportTitle="Comparison of Pairwise Interrelation Extraction Approach">
         <h3>Comparison of Pairwise Interrelation Extraction Approach</h3>
         <p>
@@ -548,6 +559,7 @@ export function DependenciesSection({
         </p>
         <DependencyComparisonHeatmaps
           pairwiseComparisons={dependencyMetrics?.pairwise_comparisons || {}}
+          pairwiseComparisonsExactType={dependencyMetrics?.pairwise_comparisons_exact_type || {}}
           proposalShortLabel={ecosystem.acronym || 'BIP'}
           activeLlmModel={activeDependencyLlmModel}
         />
@@ -721,12 +733,17 @@ export function DependenciesSection({
                     <InputSwitch
                       inputId="ground-truth-cross-source-toggle"
                       checked={allowCrossSourceTargets}
+                      disabled={isCrossSourceToggleInert}
                       onChange={(event) => setAllowCrossSourceTargets(event.value)}
                     />
-                    <span className={`ground-truth-scope__label${allowCrossSourceTargets ? '' : ' is-muted'}`}>
+                    <span className={`ground-truth-scope__label${allowCrossSourceTargets && !isCrossSourceToggleInert ? '' : ' is-muted'}`}>
                       {allowCrossSourceTargets ? 'Allowed' : 'Same source only'}
                     </span>
-                    {crossSourceTargetsStats ? <span className="ground-truth-scope__stats">{crossSourceTargetsStats}</span> : null}
+                    {isCrossSourceToggleInert ? (
+                      <span className="ground-truth-scope__stats">No effect in merged view</span>
+                    ) : (
+                      crossSourceTargetsStats ? <span className="ground-truth-scope__stats">{crossSourceTargetsStats}</span> : null
+                    )}
                   </div>
                 </div>
                 <div className="network-layout-picker">

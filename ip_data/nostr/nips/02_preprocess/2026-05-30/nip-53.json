@@ -339,12 +339,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T12:00:25Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:19",
               "evidence": "The activity MUST be linked to using the [NIP-19](19.md) `naddr` code",
               "reason": "The proposal explicitly relies on NIP-19's naddr encoding for linking live activities, so implementation and addressing depend on that format.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

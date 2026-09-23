@@ -653,24 +653,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:17:45Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:9",
               "evidence": "the version number scheme is designed to be compatible with Pieter's Wuille's proposed \"Version bits\" BIP",
               "reason": "The proposal's activation signaling uses a version-bit scheme and is explicitly designed for compatibility with the version-bits proposal.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:34",
               "evidence": "similar to the technique used in BIP34",
               "reason": "The proposal adopts the same hash-power supermajority activation technique as BIP34 for deployment.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:100",
               "evidence": "Jeff Garzik's proposed BIP100 block size increase",
               "reason": "The deployment plan is explicitly taken from BIP100, indicating reliance on its block-size increase proposal for activation planning context.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

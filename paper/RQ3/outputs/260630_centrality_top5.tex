@@ -1,0 +1,162 @@
+{%
+    \newcommand\mydots{\hbox to 1em{.\hss.\hss.}}%
+    \setlength{\abovetopsep}{0pt}%
+    \setlength{\belowbottomsep}{0pt}%
+    \setlength{\aboverulesep}{0pt}%
+    \setlength{\belowrulesep}{0pt}%
+    \setlength{\fboxsep}{1.5pt}%
+    \newlength{\BadgeWidthTmp}%
+    \newlength{\BadgeIdWidth}%
+    \setlength{\BadgeIdWidth}{0pt}%
+    \settowidth{\BadgeWidthTmp}{\BIPC{380}{white}}%
+    \ifdim\BadgeWidthTmp>\BadgeIdWidth \setlength{\BadgeIdWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\BIPC{20}{black}}%
+    \ifdim\BadgeWidthTmp>\BadgeIdWidth \setlength{\BadgeIdWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\BIPC{352}{black}}%
+    \ifdim\BadgeWidthTmp>\BadgeIdWidth \setlength{\BadgeIdWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\BIPC{340}{white}}%
+    \ifdim\BadgeWidthTmp>\BadgeIdWidth \setlength{\BadgeIdWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\BIPC{321}{white}}%
+    \ifdim\BadgeWidthTmp>\BadgeIdWidth \setlength{\BadgeIdWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\BIPC{21}{violet!70!black}}%
+    \ifdim\BadgeWidthTmp>\BadgeIdWidth \setlength{\BadgeIdWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\BIPC{350}{black}}%
+    \ifdim\BadgeWidthTmp>\BadgeIdWidth \setlength{\BadgeIdWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\BIPC{341}{white}}%
+    \ifdim\BadgeWidthTmp>\BadgeIdWidth \setlength{\BadgeIdWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\BIPC{1}{black}}%
+    \ifdim\BadgeWidthTmp>\BadgeIdWidth \setlength{\BadgeIdWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\BIPC{78}{black}}%
+    \ifdim\BadgeWidthTmp>\BadgeIdWidth \setlength{\BadgeIdWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\BIPC{173}{black}}%
+    \ifdim\BadgeWidthTmp>\BadgeIdWidth \setlength{\BadgeIdWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\BIPC{32}{green!55!black}}%
+    \ifdim\BadgeWidthTmp>\BadgeIdWidth \setlength{\BadgeIdWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\BIPC{2}{white}}%
+    \ifdim\BadgeWidthTmp>\BadgeIdWidth \setlength{\BadgeIdWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\BIPC{79}{black}}%
+    \ifdim\BadgeWidthTmp>\BadgeIdWidth \setlength{\BadgeIdWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\BIPC{174}{black}}%
+    \ifdim\BadgeWidthTmp>\BadgeIdWidth \setlength{\BadgeIdWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\BIPC{3}{black}}%
+    \ifdim\BadgeWidthTmp>\BadgeIdWidth \setlength{\BadgeIdWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\BIPC{9}{blue!70!black}}%
+    \ifdim\BadgeWidthTmp>\BadgeIdWidth \setlength{\BadgeIdWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\BIPC{141}{red!75!black}}%
+    \ifdim\BadgeWidthTmp>\BadgeIdWidth \setlength{\BadgeIdWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\BIPC{112}{red!75!black}}%
+    \ifdim\BadgeWidthTmp>\BadgeIdWidth \setlength{\BadgeIdWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\BIPC{39}{black}}%
+    \ifdim\BadgeWidthTmp>\BadgeIdWidth \setlength{\BadgeIdWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\BIPC{68}{blue!70!black}}%
+    \ifdim\BadgeWidthTmp>\BadgeIdWidth \setlength{\BadgeIdWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\BIPC{65}{green!55!black}}%
+    \ifdim\BadgeWidthTmp>\BadgeIdWidth \setlength{\BadgeIdWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\BIPC{34}{black}}%
+    \ifdim\BadgeWidthTmp>\BadgeIdWidth \setlength{\BadgeIdWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\BIPC{70}{violet!70!black}}%
+    \ifdim\BadgeWidthTmp>\BadgeIdWidth \setlength{\BadgeIdWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\BIPC{16}{teal!85!black}}%
+    \ifdim\BadgeWidthTmp>\BadgeIdWidth \setlength{\BadgeIdWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\BIPC{113}{black}}%
+    \ifdim\BadgeWidthTmp>\BadgeIdWidth \setlength{\BadgeIdWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\BIPC{123}{black}}%
+    \ifdim\BadgeWidthTmp>\BadgeIdWidth \setlength{\BadgeIdWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\BIPC{12}{black}}%
+    \ifdim\BadgeWidthTmp>\BadgeIdWidth \setlength{\BadgeIdWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\BIPC{13}{black}}%
+    \ifdim\BadgeWidthTmp>\BadgeIdWidth \setlength{\BadgeIdWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\BIPC{11}{black}}%
+    \ifdim\BadgeWidthTmp>\BadgeIdWidth \setlength{\BadgeIdWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\BIPC{351}{black}}%
+    \ifdim\BadgeWidthTmp>\BadgeIdWidth \setlength{\BadgeIdWidth}{\BadgeWidthTmp}\fi%
+    \newlength{\BadgeTitleWidth}%
+    \setlength{\BadgeTitleWidth}{0pt}%
+    \settowidth{\BadgeWidthTmp}{\textcolor{white}{Output Sc\mydots}}%
+    \ifdim\BadgeWidthTmp>\BadgeTitleWidth \setlength{\BadgeTitleWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\textcolor{black}{URI Schem\mydots}}%
+    \ifdim\BadgeWidthTmp>\BadgeTitleWidth \setlength{\BadgeTitleWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\textcolor{black}{Silent Pa\mydots}}%
+    \ifdim\BadgeWidthTmp>\BadgeTitleWidth \setlength{\BadgeTitleWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\textcolor{white}{Schnorr S\mydots}}%
+    \ifdim\BadgeWidthTmp>\BadgeTitleWidth \setlength{\BadgeTitleWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\textcolor{white}{URI Schem\mydots}}%
+    \ifdim\BadgeWidthTmp>\BadgeTitleWidth \setlength{\BadgeTitleWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\textcolor{violet!70!black}{URI Schem\mydots}}%
+    \ifdim\BadgeWidthTmp>\BadgeTitleWidth \setlength{\BadgeTitleWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\textcolor{black}{Bech32m f\mydots}}%
+    \ifdim\BadgeWidthTmp>\BadgeTitleWidth \setlength{\BadgeTitleWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\textcolor{white}{Taproot:\mydots}}%
+    \ifdim\BadgeWidthTmp>\BadgeTitleWidth \setlength{\BadgeTitleWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\textcolor{black}{BIP Purpo\mydots}}%
+    \ifdim\BadgeWidthTmp>\BadgeTitleWidth \setlength{\BadgeTitleWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\textcolor{black}{A Simple\mydots}}%
+    \ifdim\BadgeWidthTmp>\BadgeTitleWidth \setlength{\BadgeTitleWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\textcolor{black}{Base32 ad\mydots}}%
+    \ifdim\BadgeWidthTmp>\BadgeTitleWidth \setlength{\BadgeTitleWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\textcolor{green!55!black}{Hierarchi\mydots}}%
+    \ifdim\BadgeWidthTmp>\BadgeTitleWidth \setlength{\BadgeTitleWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\textcolor{white}{BIP proce\mydots}}%
+    \ifdim\BadgeWidthTmp>\BadgeTitleWidth \setlength{\BadgeTitleWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\textcolor{black}{Bustapay\mydots}}%
+    \ifdim\BadgeWidthTmp>\BadgeTitleWidth \setlength{\BadgeTitleWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\textcolor{black}{Partially\mydots}}%
+    \ifdim\BadgeWidthTmp>\BadgeTitleWidth \setlength{\BadgeTitleWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\textcolor{black}{Updated B\mydots}}%
+    \ifdim\BadgeWidthTmp>\BadgeTitleWidth \setlength{\BadgeTitleWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\textcolor{blue!70!black}{Version b\mydots}}%
+    \ifdim\BadgeWidthTmp>\BadgeTitleWidth \setlength{\BadgeTitleWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\textcolor{red!75!black}{Segregate\mydots}}%
+    \ifdim\BadgeWidthTmp>\BadgeTitleWidth \setlength{\BadgeTitleWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\textcolor{red!75!black}{CHECKSE\mydots}}%
+    \ifdim\BadgeWidthTmp>\BadgeTitleWidth \setlength{\BadgeTitleWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\textcolor{black}{Mnemonic\mydots}}%
+    \ifdim\BadgeWidthTmp>\BadgeTitleWidth \setlength{\BadgeTitleWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\textcolor{blue!70!black}{Relative\mydots}}%
+    \ifdim\BadgeWidthTmp>\BadgeTitleWidth \setlength{\BadgeTitleWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\textcolor{green!55!black}{OP\_CHEC\mydots}}%
+    \ifdim\BadgeWidthTmp>\BadgeTitleWidth \setlength{\BadgeTitleWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\textcolor{black}{Block v2,\mydots}}%
+    \ifdim\BadgeWidthTmp>\BadgeTitleWidth \setlength{\BadgeTitleWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\textcolor{violet!70!black}{Payment P\mydots}}%
+    \ifdim\BadgeWidthTmp>\BadgeTitleWidth \setlength{\BadgeTitleWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\textcolor{teal!85!black}{Pay to Sc\mydots}}%
+    \ifdim\BadgeWidthTmp>\BadgeTitleWidth \setlength{\BadgeTitleWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\textcolor{black}{Median ti\mydots}}%
+    \ifdim\BadgeWidthTmp>\BadgeTitleWidth \setlength{\BadgeTitleWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\textcolor{black}{BIP Class\mydots}}%
+    \ifdim\BadgeWidthTmp>\BadgeTitleWidth \setlength{\BadgeTitleWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\textcolor{black}{OP\_EVAL\mydots}}%
+    \ifdim\BadgeWidthTmp>\BadgeTitleWidth \setlength{\BadgeTitleWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\textcolor{black}{Address F\mydots}}%
+    \ifdim\BadgeWidthTmp>\BadgeTitleWidth \setlength{\BadgeTitleWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\textcolor{black}{M-of-N St\mydots}}%
+    \ifdim\BadgeWidthTmp>\BadgeTitleWidth \setlength{\BadgeTitleWidth}{\BadgeWidthTmp}\fi%
+    \settowidth{\BadgeWidthTmp}{\textcolor{black}{Private P\mydots}}%
+    \ifdim\BadgeWidthTmp>\BadgeTitleWidth \setlength{\BadgeTitleWidth}{\BadgeWidthTmp}\fi%
+    \setlength{\tabcolsep}{4pt}%
+    \renewcommand{\arraystretch}{1.15}%
+    \begin{tabular}{c@{\;}c|l@{\,}l@{\quad}r|l@{\,}l@{\quad}r|l@{\,}l@{\quad}r|l@{\,}l@{\quad}r}
+        \toprule
+        \multicolumn{2}{c|}{\textbf{Approach}} & \multicolumn{3}{c|}{\textbf{In-Degree}} & \multicolumn{3}{c|}{\textbf{WEV}} & \multicolumn{3}{c|}{\textbf{PageRank}} & \multicolumn{3}{c}{\textbf{BC}} \\
+        \midrule%
+        \multirow{5}{*}{\textbf{Preamble}} & \textit{\textcolor{gray}{(1)}} & \multicolumn{2}{l}{\colorbox{green!55!black}{\makebox[\BadgeIdWidth][l]{\BIPC{380}{white}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{white}{Output Sc\mydots}}}} & 13 & \multicolumn{2}{l}{\colorbox{white}{\makebox[\BadgeIdWidth][l]{\BIPC{20}{black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{black}{URI Schem\mydots}}}} & 0.507 & \multicolumn{2}{l}{\colorbox{green!55!black}{\makebox[\BadgeIdWidth][l]{\BIPC{380}{white}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{white}{Output Sc\mydots}}}} & 0.035 & \multicolumn{2}{l}{\colorbox{white}{\makebox[\BadgeIdWidth][l]{\BIPC{352}{black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{black}{Silent Pa\mydots}}}} & 0.0002 \\
+         & \textit{\textcolor{gray}{(2)}} & \multicolumn{2}{l}{\colorbox{violet!70!black}{\makebox[\BadgeIdWidth][l]{\BIPC{340}{white}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{white}{Schnorr S\mydots}}}} & 8 & \multicolumn{2}{l}{\colorbox{blue!70!black}{\makebox[\BadgeIdWidth][l]{\BIPC{321}{white}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{white}{URI Schem\mydots}}}} & 0.507 & \multicolumn{2}{l}{\colorbox{violet!12}{\makebox[\BadgeIdWidth][l]{\BIPC{21}{violet!70!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{violet!70!black}{URI Schem\mydots}}}} & 0.032 & \multicolumn{2}{l}{\colorbox{white}{\makebox[\BadgeIdWidth][l]{\BIPC{350}{black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{black}{Bech32m f\mydots}}}} & 0.0002 \\
+         & \textit{\textcolor{gray}{(3)}} & \multicolumn{2}{l}{\colorbox{red!75!black}{\makebox[\BadgeIdWidth][l]{\BIPC{341}{white}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{white}{Taproot:\mydots}}}} & 8 & \multicolumn{2}{l}{\colorbox{white}{\makebox[\BadgeIdWidth][l]{\BIPC{1}{black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{black}{BIP Purpo\mydots}}}} & 0.338 & \multicolumn{2}{l}{\colorbox{white}{\makebox[\BadgeIdWidth][l]{\BIPC{78}{black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{black}{A Simple\mydots}}}} & 0.023 & \multicolumn{2}{l}{\colorbox{white}{\makebox[\BadgeIdWidth][l]{\BIPC{173}{black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{black}{Base32 ad\mydots}}}} & 0.0002 \\
+         & \textit{\textcolor{gray}{(4)}} & \multicolumn{2}{l}{\colorbox{green!13}{\makebox[\BadgeIdWidth][l]{\BIPC{32}{green!55!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{green!55!black}{Hierarchi\mydots}}}} & 5 & \multicolumn{2}{l}{\colorbox{teal!85!black}{\makebox[\BadgeIdWidth][l]{\BIPC{2}{white}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{white}{BIP proce\mydots}}}} & 0.338 & \multicolumn{2}{l}{\colorbox{white}{\makebox[\BadgeIdWidth][l]{\BIPC{79}{black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{black}{Bustapay\mydots}}}} & 0.023 & \multicolumn{2}{l}{\colorbox{violet!12}{\makebox[\BadgeIdWidth][l]{\BIPC{21}{violet!70!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{violet!70!black}{URI Schem\mydots}}}} & 0.0001 \\
+         & \textit{\textcolor{gray}{(5)}} & \multicolumn{2}{l}{\colorbox{white}{\makebox[\BadgeIdWidth][l]{\BIPC{174}{black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{black}{Partially\mydots}}}} & 5 & \multicolumn{2}{l}{\colorbox{white}{\makebox[\BadgeIdWidth][l]{\BIPC{3}{black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{black}{Updated B\mydots}}}} & 0.338 & \multicolumn{2}{l}{\colorbox{violet!70!black}{\makebox[\BadgeIdWidth][l]{\BIPC{340}{white}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{white}{Schnorr S\mydots}}}} & 0.022 & \multicolumn{2}{l}{\colorbox{teal!85!black}{\makebox[\BadgeIdWidth][l]{\BIPC{2}{white}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{white}{BIP proce\mydots}}}} & 0.0001 \\
+        \midrule%
+        \multirow{5}{*}{\textbf{Regex}} & \textit{\textcolor{gray}{(1)}} & \multicolumn{2}{l}{\colorbox{green!13}{\makebox[\BadgeIdWidth][l]{\BIPC{32}{green!55!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{green!55!black}{Hierarchi\mydots}}}} & 44 & \multicolumn{2}{l}{\colorbox{blue!10}{\makebox[\BadgeIdWidth][l]{\BIPC{9}{blue!70!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{blue!70!black}{Version b\mydots}}}} & 0.457 & \multicolumn{2}{l}{\colorbox{green!13}{\makebox[\BadgeIdWidth][l]{\BIPC{32}{green!55!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{green!55!black}{Hierarchi\mydots}}}} & 0.107 & \multicolumn{2}{l}{\colorbox{red!12}{\makebox[\BadgeIdWidth][l]{\BIPC{141}{red!75!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{red!75!black}{Segregate\mydots}}}} & 0.0880 \\
+         & \textit{\textcolor{gray}{(2)}} & \multicolumn{2}{l}{\colorbox{red!12}{\makebox[\BadgeIdWidth][l]{\BIPC{141}{red!75!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{red!75!black}{Segregate\mydots}}}} & 31 & \multicolumn{2}{l}{\colorbox{blue!10}{\makebox[\BadgeIdWidth][l]{\BIPC{112}{red!75!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{red!75!black}{CHECKSE\mydots}}}} & 0.368 & \multicolumn{2}{l}{\colorbox{white}{\makebox[\BadgeIdWidth][l]{\BIPC{39}{black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{black}{Mnemonic\mydots}}}} & 0.095 & \multicolumn{2}{l}{\colorbox{violet!12}{\makebox[\BadgeIdWidth][l]{\BIPC{21}{violet!70!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{violet!70!black}{URI Schem\mydots}}}} & 0.0646 \\
+         & \textit{\textcolor{gray}{(3)}} & \multicolumn{2}{l}{\colorbox{red!75!black}{\makebox[\BadgeIdWidth][l]{\BIPC{341}{white}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{white}{Taproot:\mydots}}}} & 28 & \multicolumn{2}{l}{\colorbox{green!13}{\makebox[\BadgeIdWidth][l]{\BIPC{68}{blue!70!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{blue!70!black}{Relative\mydots}}}} & 0.367 & \multicolumn{2}{l}{\colorbox{blue!10}{\makebox[\BadgeIdWidth][l]{\BIPC{9}{blue!70!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{blue!70!black}{Version b\mydots}}}} & 0.038 & \multicolumn{2}{l}{\colorbox{blue!70!black}{\makebox[\BadgeIdWidth][l]{\BIPC{321}{white}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{white}{URI Schem\mydots}}}} & 0.0621 \\
+         & \textit{\textcolor{gray}{(4)}} & \multicolumn{2}{l}{\colorbox{blue!10}{\makebox[\BadgeIdWidth][l]{\BIPC{9}{blue!70!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{blue!70!black}{Version b\mydots}}}} & 25 & \multicolumn{2}{l}{\colorbox{violet!12}{\makebox[\BadgeIdWidth][l]{\BIPC{65}{green!55!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{green!55!black}{OP\_CHEC\mydots}}}} & 0.366 & \multicolumn{2}{l}{\colorbox{white}{\makebox[\BadgeIdWidth][l]{\BIPC{34}{black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{black}{Block v2,\mydots}}}} & 0.033 & \multicolumn{2}{l}{\colorbox{teal!12}{\makebox[\BadgeIdWidth][l]{\BIPC{70}{violet!70!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{violet!70!black}{Payment P\mydots}}}} & 0.0527 \\
+         & \textit{\textcolor{gray}{(5)}} & \multicolumn{2}{l}{\colorbox{teal!12}{\makebox[\BadgeIdWidth][l]{\BIPC{16}{teal!85!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{teal!85!black}{Pay to Sc\mydots}}}} & 24 & \multicolumn{2}{l}{\colorbox{white}{\makebox[\BadgeIdWidth][l]{\BIPC{113}{black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{black}{Median ti\mydots}}}} & 0.318 & \multicolumn{2}{l}{\colorbox{red!12}{\makebox[\BadgeIdWidth][l]{\BIPC{141}{red!75!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{red!75!black}{Segregate\mydots}}}} & 0.030 & \multicolumn{2}{l}{\colorbox{white}{\makebox[\BadgeIdWidth][l]{\BIPC{123}{black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{black}{BIP Class\mydots}}}} & 0.0496 \\
+        \midrule%
+        \multirow{5}{*}{\textbf{LLM}} & \textit{\textcolor{gray}{(1)}} & \multicolumn{2}{l}{\colorbox{red!12}{\makebox[\BadgeIdWidth][l]{\BIPC{141}{red!75!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{red!75!black}{Segregate\mydots}}}} & 58 & \multicolumn{2}{l}{\colorbox{blue!10}{\makebox[\BadgeIdWidth][l]{\BIPC{9}{blue!70!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{blue!70!black}{Version b\mydots}}}} & 0.403 & \multicolumn{2}{l}{\colorbox{white}{\makebox[\BadgeIdWidth][l]{\BIPC{12}{black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{black}{OP\_EVAL\mydots}}}} & 0.097 & \multicolumn{2}{l}{\colorbox{red!12}{\makebox[\BadgeIdWidth][l]{\BIPC{141}{red!75!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{red!75!black}{Segregate\mydots}}}} & 0.1139 \\
+         & \textit{\textcolor{gray}{(2)}} & \multicolumn{2}{l}{\colorbox{teal!12}{\makebox[\BadgeIdWidth][l]{\BIPC{16}{teal!85!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{teal!85!black}{Pay to Sc\mydots}}}} & 48 & \multicolumn{2}{l}{\colorbox{teal!12}{\makebox[\BadgeIdWidth][l]{\BIPC{16}{teal!85!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{teal!85!black}{Pay to Sc\mydots}}}} & 0.378 & \multicolumn{2}{l}{\colorbox{white}{\makebox[\BadgeIdWidth][l]{\BIPC{13}{black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{black}{Address F\mydots}}}} & 0.066 & \multicolumn{2}{l}{\colorbox{violet!12}{\makebox[\BadgeIdWidth][l]{\BIPC{21}{violet!70!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{violet!70!black}{URI Schem\mydots}}}} & 0.0733 \\
+         & \textit{\textcolor{gray}{(3)}} & \multicolumn{2}{l}{\colorbox{green!13}{\makebox[\BadgeIdWidth][l]{\BIPC{32}{green!55!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{green!55!black}{Hierarchi\mydots}}}} & 48 & \multicolumn{2}{l}{\colorbox{blue!10}{\makebox[\BadgeIdWidth][l]{\BIPC{112}{red!75!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{red!75!black}{CHECKSE\mydots}}}} & 0.324 & \multicolumn{2}{l}{\colorbox{white}{\makebox[\BadgeIdWidth][l]{\BIPC{11}{black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{black}{M-of-N St\mydots}}}} & 0.065 & \multicolumn{2}{l}{\colorbox{blue!70!black}{\makebox[\BadgeIdWidth][l]{\BIPC{321}{white}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{white}{URI Schem\mydots}}}} & 0.0701 \\
+         & \textit{\textcolor{gray}{(4)}} & \multicolumn{2}{l}{\colorbox{red!75!black}{\makebox[\BadgeIdWidth][l]{\BIPC{341}{white}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{white}{Taproot:\mydots}}}} & 37 & \multicolumn{2}{l}{\colorbox{green!13}{\makebox[\BadgeIdWidth][l]{\BIPC{68}{blue!70!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{blue!70!black}{Relative\mydots}}}} & 0.323 & \multicolumn{2}{l}{\colorbox{teal!12}{\makebox[\BadgeIdWidth][l]{\BIPC{16}{teal!85!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{teal!85!black}{Pay to Sc\mydots}}}} & 0.059 & \multicolumn{2}{l}{\colorbox{teal!12}{\makebox[\BadgeIdWidth][l]{\BIPC{70}{violet!70!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{violet!70!black}{Payment P\mydots}}}} & 0.0685 \\
+         & \textit{\textcolor{gray}{(5)}} & \multicolumn{2}{l}{\colorbox{blue!10}{\makebox[\BadgeIdWidth][l]{\BIPC{9}{blue!70!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{blue!70!black}{Version b\mydots}}}} & 26 & \multicolumn{2}{l}{\colorbox{violet!12}{\makebox[\BadgeIdWidth][l]{\BIPC{65}{green!55!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{green!55!black}{OP\_CHEC\mydots}}}} & 0.322 & \multicolumn{2}{l}{\colorbox{red!12}{\makebox[\BadgeIdWidth][l]{\BIPC{141}{red!75!black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{red!75!black}{Segregate\mydots}}}} & 0.035 & \multicolumn{2}{l}{\colorbox{white}{\makebox[\BadgeIdWidth][l]{\BIPC{351}{black}}\,\makebox[\BadgeTitleWidth][l]{\textcolor{black}{Private P\mydots}}}} & 0.0529 \\
+        \bottomrule
+    \end{tabular}%
+}

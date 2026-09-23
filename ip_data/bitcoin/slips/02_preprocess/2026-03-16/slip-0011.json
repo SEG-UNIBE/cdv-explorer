@@ -246,12 +246,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:46:36Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "BIP 32 path",
               "reason": "The proposal requires a BIP32 derivation path and derives the encryption key from the private node at that path.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

@@ -269,24 +269,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:58:40Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "nips:21",
               "evidence": "with [NIP-21](21.md)",
               "reason": "The proposal relies on NIP-21 for citing events in content and mentioning pubkeys, which affects how comments reference related entities.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:73",
               "evidence": "The possible values for `i` tags – and `k` tags, when related to an extenal identity – are listed on [NIP-73](73.md).",
               "reason": "The proposal explicitly depends on NIP-73 for the value set and semantics of `i`/`k` tags when scoped to external identifiers.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "nips:94",
               "evidence": "A comment on a [NIP-94](94.md) file looks like this:",
               "reason": "The proposal defines comment threading behavior that specifically reuses NIP-94 file events as a supported root/parent scope example and format.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             }
           ]
         }

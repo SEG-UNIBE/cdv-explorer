@@ -598,12 +598,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:43:25Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:1",
               "evidence": "The first BIP champion named in the proposal can call a \"submit for comments\"",
               "reason": "The proposal relies on the BIP-0001 champion and BIP-number assignment workflow as the trigger for its review process.",
-              "confidence": "low"
+              "confidence": "low",
+              "type": "depends_on"
             }
           ]
         }

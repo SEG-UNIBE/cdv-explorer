@@ -30,6 +30,7 @@ export function AuthorNetworkCanvas({
   exportPayloadRef,
   updateExportPayloadRef,
   onlyCrossSource,
+  showAllLabels,
 }) {
   const svgRef = useRef();
 
@@ -165,7 +166,8 @@ export function AuthorNetworkCanvas({
       return curve.direction * orientationMatches * curve.strength;
     };
     const shouldShowNodeLabel = (entry) => (
-      matchedIds.has(entry.id)
+      showAllLabels
+      || matchedIds.has(entry.id)
       || Number(entry.bips?.length || 0) >= 3
       || Number(entry.degree || 0) >= 3
     );
@@ -508,11 +510,17 @@ export function AuthorNetworkCanvas({
         filter: {
           min_cluster_collaborations: collaborationThreshold,
           only_cross_source: Boolean(onlyCrossSource),
+          show_all_labels: Boolean(showAllLabels),
         },
         meta: { width, height, node_count: visibleNodes.length, edge_count: visibleLinks.length },
         positions,
         edge_curves: edgeCurves,
-        nodes: Object.entries(positions).map(([id, [xCoord, yCoord]]) => ({ id, x: xCoord, y: yCoord })),
+        nodes: visibleNodes.map((entry) => ({
+          id: String(entry.id),
+          x: Number.isFinite(entry.x) ? entry.x : (width / 2),
+          y: Number.isFinite(entry.y) ? entry.y : (height / 2),
+          labeled: shouldShowNodeLabel(entry),
+        })),
       };
     };
 
@@ -605,7 +613,7 @@ export function AuthorNetworkCanvas({
       svg.selectAll('*').remove();
       d3.select('body').selectAll('.author-network-tooltip').remove();
     };
-  }, [data, ecosystem, height, highlightAuthor, importedLayout, layoutMode, linkMode, minClusterCollaborations, onlyCrossSource, snapshotLabel, width, exportPayloadRef, physicsEnabledRef, redrawGraphRef, simulationRef, updateExportPayloadRef]);
+  }, [data, ecosystem, height, highlightAuthor, importedLayout, layoutMode, linkMode, minClusterCollaborations, onlyCrossSource, showAllLabels, snapshotLabel, width, exportPayloadRef, physicsEnabledRef, redrawGraphRef, simulationRef, updateExportPayloadRef]);
 
   return <svg ref={svgRef} role="img" />;
 }

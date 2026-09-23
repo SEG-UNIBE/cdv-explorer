@@ -691,12 +691,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:17:14Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:13",
               "evidence": "The Motivation for this BIP (and BIP 13, the pay-to-script-hash address type)",
               "reason": "The proposal explicitly pairs itself with BIP 13 as the address-format counterpart for pay-to-script-hash, so adopting this proposal depends on that address type convention.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

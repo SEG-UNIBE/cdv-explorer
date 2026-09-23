@@ -598,12 +598,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:44:11Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:141",
               "evidence": "the block weight defined by [[bip-0141.mediawiki|BIP 141]]",
               "reason": "The proposal’s weight calculation is explicitly based on BIP 141’s block-weight definition and therefore depends on it for semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

@@ -582,44 +582,49 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:19:09Z",
           "status": "api_error",
-          "dependencies": [],
-          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 200000, Requested 4212. Please try again in 1.263s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"
+          "error_message": "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-5.4-mini in organization org-gihA8m02yvi5c1D5BsOtt1Bu on tokens per min (TPM): Limit 200000, Used 200000, Requested 4212. Please try again in 1.263s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}",
+          "findings": []
         },
         {
           "run_id": "2026-06-30T11:33:45Z_gpt-5.4-mini_fbc31d5d",
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:34:14Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:32",
               "evidence": "The 78-byte serialized extended public key, as defined by BIP 32.",
               "reason": "The key type and its metadata encoding rely on BIP 32 extended public key and fingerprint/path definitions.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:174",
               "evidence": "Based on key-value maps as defined by [[bip-0174.mediawiki|BIP 174]]",
               "reason": "The container structure, keypair encoding, and map parsing are directly reused from BIP 174.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:380",
               "evidence": "encoding an output descriptor as defined by [[bip-0380.mediawiki|BIP 380]] and its extensions",
               "reason": "The proposal’s payload format is explicitly built around BIP 380 descriptors and its extension semantics.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:388",
               "evidence": "This specification builds upon the draft BIP 388 by specifying",
               "reason": "The proposal states it builds upon BIP 388 and reuses its indexed key references.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:389",
               "evidence": "may be followed by derivation paths as specified in [[bip-0389.mediawiki#specification|BIP 389]]",
               "reason": "Key-reference syntax is extended to allow derivation paths according to BIP 389.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

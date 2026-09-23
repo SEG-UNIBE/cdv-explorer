@@ -28,6 +28,7 @@ export function buildDashboardData(dataset, ecosystem = {}) {
   const complianceStandards = ecosystem.complianceStandards || [{ key: 'bip2' }, { key: 'bip3' }];
   const authorship = dataset.authorship || {};
   const dependencyMetrics = dataset.dependencyMetrics || { by_approach: {} };
+  const dependencyConsistency = dataset.dependencyConsistency || { meta: {}, by_approach: {}, table_rows: [] };
   const conformity = dataset.conformity || {};
 
   const classificationDistributions = Object.fromEntries(
@@ -61,5 +62,6 @@ export function buildDashboardData(dataset, ecosystem = {}) {
     classificationRelationRows,
     evolutionPayload,
     dependencyMetrics,
+    dependencyConsistency,
   };
 }

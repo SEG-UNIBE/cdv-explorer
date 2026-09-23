@@ -596,12 +596,13 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:17:11Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:12",
               "evidence": "will be used in combination with OP_EVAL (see the OP_EVAL BIP)",
               "reason": "The proposal explicitly anticipates that multisig transactions will be combined with OP_EVAL, creating a technical dependency on that mechanism for the cited counting and evaluation model.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

@@ -837,24 +837,27 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:43:06Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:9",
               "evidence": "will be deployed by version-bits [[bip-0009.mediawiki|BIP9]]",
               "reason": "The deployment mechanism is explicitly based on BIP9 version-bits activation.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:112",
               "evidence": "The following is the \"Escrow with Timeout\" example in [[bip-0112.mediawiki|BIP112]]",
               "reason": "The proposal reuses and restructures script patterns built around CHECKSEQUENCEVERIFY and CHECKLOCKTIMEVERIFY examples from BIP112.",
-              "confidence": "medium"
+              "confidence": "medium",
+              "type": "depends_on"
             },
             {
               "target": "bips:141",
               "evidence": "This BIP depends on [[bip-0141.mediawiki|BIP141]]",
               "reason": "The proposal’s witness-program type, versioning, and deployment assume the Segregated Witness rules introduced by BIP141.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

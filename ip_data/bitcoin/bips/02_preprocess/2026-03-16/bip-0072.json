@@ -561,18 +561,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:42:39Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:21",
               "evidence": "This BIP describes an extension to the bitcoin: URI scheme (BIP 21)",
               "reason": "The proposal directly extends the bitcoin URI format defined by BIP 21, so implementation depends on BIP 21 semantics and encoding rules.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:70",
               "evidence": "support the payment protocol (BIP 70).",
               "reason": "The added URI parameter points to a PaymentRequest and the wallet is instructed to follow the payment protocol defined in BIP 70.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

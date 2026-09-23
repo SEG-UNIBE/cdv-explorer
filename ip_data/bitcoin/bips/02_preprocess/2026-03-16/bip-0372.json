@@ -656,18 +656,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:45:35Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:174",
               "evidence": "This document proposes additional fields for BIP 174 PSBTv0",
               "reason": "The proposal extends the PSBTv0 format defined by BIP 174 by adding a new per-input field.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:370",
               "evidence": "and BIP 370 PSBTv2",
               "reason": "The proposal extends PSBTv2 by adding the same new P2C-related input field to that PSBT version as well.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

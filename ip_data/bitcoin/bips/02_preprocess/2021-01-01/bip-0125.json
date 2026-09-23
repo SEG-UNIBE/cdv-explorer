@@ -612,18 +612,20 @@
           "model": "gpt-5.4-mini",
           "timestamp": "2026-06-30T11:35:52Z",
           "status": "success",
-          "dependencies": [
+          "findings": [
             {
               "target": "bips:68",
               "evidence": "compatible with consensus-enforced locktime as provided in the Bitcoin 0.1 implementation, draft BIP68",
               "reason": "The proposal explicitly states compatibility with BIP68’s sequence-number-based relative locktime semantics, which constrain how nSequence can be used alongside opt-in replacement signaling.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             },
             {
               "target": "bips:112",
               "evidence": "draft BIP112 (CHECKSEQUENCEVERIFY)",
               "reason": "The proposal explicitly states compatibility with BIP112, which uses sequence numbers and therefore shares the transaction input semantics the proposal relies on.",
-              "confidence": "high"
+              "confidence": "high",
+              "type": "depends_on"
             }
           ]
         }

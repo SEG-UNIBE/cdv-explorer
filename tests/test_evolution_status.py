@@ -1,6 +1,7 @@
 import subprocess
 import tempfile
 import unittest
+from os import environ
 from pathlib import Path
 from unittest.mock import patch
 
@@ -10,6 +11,77 @@ from pipeline.source_context import SourceContext
 
 
 class EvolutionStatusTests(unittest.TestCase):
+    def test_extract_status_timeline_follows_integrated_mainline_history(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            repo_dir = Path(tmp_dir)
+
+            def git(*args: str, date: str | None = None) -> str:
+                env = environ.copy()
+                if date:
+                    env["GIT_AUTHOR_DATE"] = date
+                    env["GIT_COMMITTER_DATE"] = date
+                result = subprocess.run(
+                    ["git", "-C", str(repo_dir), *args],
+                    check=True,
+                    capture_output=True,
+                    text=True,
+                    env=env,
+                )
+                return result.stdout.strip()
+
+            subprocess.run(
+                ["git", "init", "--initial-branch=main", str(repo_dir)],
+                check=True,
+                capture_output=True,
+            )
+            git("config", "user.name", "Test User")
+            git("config", "user.email", "test@example.com")
+
+            proposal_path = repo_dir / "bip-0085.mediawiki"
+            draft_content = "<pre>\n  BIP: 85\n  Status: Draft\n</pre>\nBody.\n"
+            proposal_path.write_text(draft_content, encoding="utf-8")
+            git("add", proposal_path.name)
+            git("commit", "-m", "Add proposal", date="2024-10-01T12:00:00Z")
+            common_commit = git("rev-parse", "HEAD")
+
+            git("checkout", "-b", "status-change")
+            proposal_path.write_text(
+                draft_content.replace("Draft", "Final"), encoding="utf-8"
+            )
+            git("commit", "-am", "Mark Final", date="2024-10-05T12:00:00Z")
+
+            git("checkout", "main")
+            git("checkout", "-b", "test-vector-fix", common_commit)
+            proposal_path.write_text(
+                draft_content.replace("Body.", "Corrected body."), encoding="utf-8"
+            )
+            git("commit", "-am", "Correct test vector", date="2024-10-13T12:00:00Z")
+
+            git("checkout", "main")
+            git(
+                "merge",
+                "--no-ff",
+                "test-vector-fix",
+                "-m",
+                "Merge test-vector fix",
+                date="2024-10-15T12:00:00Z",
+            )
+            git(
+                "merge",
+                "--no-ff",
+                "status-change",
+                "-m",
+                "Merge status change",
+                date="2024-10-25T12:00:00Z",
+            )
+
+            timeline = extract_status_timeline(repo_dir, proposal_path)
+
+        self.assertEqual(
+            [(event["date"], event["status"]) for event in timeline],
+            [("2024-10-01", "Draft"), ("2024-10-25", "Final")],
+        )
+
     def test_extract_status_timeline_parses_nip_tag_history_without_affecting_bitcoin_path(
         self,
     ) -> None:

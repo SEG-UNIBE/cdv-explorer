@@ -23,6 +23,7 @@ METRICS: list[tuple[str, str]] = [
 TOP_N = 5
 TITLE_CHARS = 9
 TITLE_CHARS_UPPER = 7  # uppercase letters are ~1.4x wider; 10/1.4 ≈ 7
+UNAVAILABLE_VALUE = r"\textemdash"
 
 # Foreground and background colors are each individually distinctive to the
 # eye and deliberately spread across the hue wheel (no two warm hues, e.g.
@@ -145,17 +146,33 @@ def _build_header_line() -> str:
 def _build_global_color_map(
     centrality_comparison: dict[str, Any], approach_order: list[str]
 ) -> dict[str, tuple[str, str]]:
-    """Map the payload's global highlight indexes to LaTeX badge colors."""
+    """Map valid recurring entries to the payload's stable badge colors."""
+    displayed_counts: dict[str, int] = {}
+    for approach in approach_order:
+        for metric, _ in METRICS:
+            if approach == PREAMBLE_EXTRACTED and metric == "weighted_eigenvector":
+                continue
+            for entry in centrality_comparison["by_approach"][approach][
+                "top_by_metric"
+            ][metric]:
+                bip_id = str(entry["id"])
+                displayed_counts[bip_id] = displayed_counts.get(bip_id, 0) + 1
+
     color_map: dict[str, tuple[str, str]] = {}
     for approach in approach_order:
         for metric, _ in METRICS:
+            if approach == PREAMBLE_EXTRACTED and metric == "weighted_eigenvector":
+                continue
             entries = centrality_comparison["by_approach"][approach][
                 "top_by_metric"
             ][metric]
             for entry in entries:
                 bip_id = str(entry["id"])
                 highlight_index = entry.get("highlight_index")
-                if isinstance(highlight_index, int):
+                if (
+                    displayed_counts.get(bip_id, 0) > 1
+                    and isinstance(highlight_index, int)
+                ):
                     color_map[bip_id] = HIGHLIGHT_COLOR_PAIRS[
                         highlight_index % len(HIGHLIGHT_COLOR_PAIRS)
                     ]
@@ -180,6 +197,9 @@ def _build_approach_rows(
             cells.append("")
         cells.append(_rank_cell(rank_idx + 1))
         for metric, _ in METRICS:
+            if approach == PREAMBLE_EXTRACTED and metric == "weighted_eigenvector":
+                cells.append(rf"\multicolumn{{3}}{{c|}}{{{UNAVAILABLE_VALUE}}}")
+                continue
             entry = top_by_metric[metric][rank_idx]
             raw_id = str(entry["id"])
             fg, bg = color_map.get(raw_id, ("black", "white"))

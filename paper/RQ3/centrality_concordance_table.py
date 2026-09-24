@@ -1,12 +1,30 @@
 from pathlib import Path
 from typing import Any
 
+from analysis.dependencies.constants import PREAMBLE_EXTRACTED
+
 METRIC_HEADERS = {
     "in_degree": "In-Degree",
     "weighted_eigenvector": "WEV",
     "pagerank": "PageRank",
     "betweenness": "BC",
 }
+WEV_METRIC = "weighted_eigenvector"
+UNAVAILABLE_VALUE = r"\textemdash"
+
+
+def _pair_involves_preamble(pair: dict[str, Any]) -> bool:
+    approaches = {
+        str(pair.get("left_approach") or ""),
+        str(pair.get("right_approach") or ""),
+    }
+    return PREAMBLE_EXTRACTED in approaches or PREAMBLE_EXTRACTED in str(
+        pair.get("key") or ""
+    )
+
+
+def _is_reported_pairwise(metric: str, pair: dict[str, Any]) -> bool:
+    return metric != WEV_METRIC or not _pair_involves_preamble(pair)
 
 
 def _latex_escape(value: object) -> str:
@@ -70,42 +88,56 @@ def export_centrality_concordance_latex_table(
         float(rows_by_metric[metric]["pairwise_kendalls_tau_b"][pair["key"]])
         for pair in approach_pairs
         for metric in metric_order
+        if _is_reported_pairwise(metric, pair)
     )
     body_lines = []
     for pair in approach_pairs:
         pair_label = _latex_escape(
             f"{pair['left_label']} vs. {pair['right_label']}"
         )
-        values = [
-            float(rows_by_metric[metric]["pairwise_kendalls_tau_b"][pair["key"]])
+        values = {
+            metric: float(
+                rows_by_metric[metric]["pairwise_kendalls_tau_b"][pair["key"]]
+            )
             for metric in metric_order
-        ]
+            if _is_reported_pairwise(metric, pair)
+        }
         body_lines.append(
             "        "
             + " & ".join(
                 [rf"{pair_label} ($\tau_b$)"]
                 + [
-                    rf"\textbf{{{value:.3f}}}"
-                    if value == pairwise_maximum
-                    else f"{value:.3f}"
-                    for value in values
+                    UNAVAILABLE_VALUE
+                    if metric not in values
+                    else (
+                        rf"\textbf{{{values[metric]:.3f}}}"
+                        if values[metric] == pairwise_maximum
+                        else f"{values[metric]:.3f}"
+                    )
+                    for metric in metric_order
                 ]
             )
             + r" \\"
         )
-    collective_values = [
-        float(rows_by_metric[metric]["kendalls_w"]) for metric in metric_order
-    ]
-    collective_maximum = max(collective_values)
+    collective_values = {
+        metric: float(rows_by_metric[metric]["kendalls_w"])
+        for metric in metric_order
+        if metric != WEV_METRIC
+    }
+    collective_maximum = max(collective_values.values())
     collective_line = (
         "        "
         + " & ".join(
             [r"All approaches ($W$)"]
             + [
-                rf"\textbf{{{value:.3f}}}"
-                if value == collective_maximum
-                else f"{value:.3f}"
-                for value in collective_values
+                UNAVAILABLE_VALUE
+                if metric not in collective_values
+                else (
+                    rf"\textbf{{{collective_values[metric]:.3f}}}"
+                    if collective_values[metric] == collective_maximum
+                    else f"{collective_values[metric]:.3f}"
+                )
+                for metric in metric_order
             ]
         )
         + r" \\"

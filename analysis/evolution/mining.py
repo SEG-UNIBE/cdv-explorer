@@ -525,6 +525,12 @@ def extract_status_timeline(
                 "-C",
                 str(repo_dir),
                 "log",
+                # Model the catalog's published history, not a date-sorted walk
+                # through every parent of merged pull requests. Without
+                # --first-parent, sibling branch commits can look like status
+                # reversals even though neither state followed the other on the
+                # default branch.
+                "--first-parent",
                 "--follow",
                 "--format=__COMMIT__%H|%cI|%an",
                 "--name-status",

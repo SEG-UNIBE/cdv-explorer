@@ -29,12 +29,25 @@ def _canonical_dependency_edges(network_data: dict[str, Any]) -> list[dict[str, 
     edges = network_data.get("dependency_edges")
     if not isinstance(edges, list):
         return []
+    # A single-source network's nodes only cover that source's catalog, but body
+    # text can reference identifiers from other catalogs (e.g. a BIP mentioning a
+    # SLIP), which extraction records as edges anyway. Without this guard,
+    # `build_graph` silently materializes those out-of-catalog targets as extra
+    # dangling nodes (via `DiGraph.add_edge`), skewing centrality for every real
+    # node and leaking cross-catalog edges into the BIP-only comparison universe.
+    node_graph_keys = {
+        str(node.get("graph_key") or node.get("id"))
+        for node in network_data.get("nodes", [])
+        if node.get("id") is not None
+    }
     return [
         edge
         for edge in edges
         if isinstance(edge, dict)
         and edge.get("source") is not None
         and edge.get("target") is not None
+        and str(edge["source"]) in node_graph_keys
+        and str(edge["target"]) in node_graph_keys
     ]
 
 

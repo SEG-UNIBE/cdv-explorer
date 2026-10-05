@@ -6,7 +6,7 @@ export function ExportableCard({
   style,
 }) {
   return (
-    <div className={className} style={style}>
+    <div className={`exportable-card-shell${className ? ` ${className}` : ''}`} style={style}>
       <Card className="exportable-card">
         {children}
       </Card>

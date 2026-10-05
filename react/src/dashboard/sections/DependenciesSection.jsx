@@ -635,58 +635,60 @@ export function DependenciesSection({
                       />
                     </div>
                     {typeMapping.rows.length ? (
-                      <table className="gt-type-mapping__table">
-                        <thead>
-                          <tr>
-                            <th>Use</th>
-                            <th>Approach</th>
-                            <th>Extracted subtype</th>
-                            <th>Treat as GT type</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {typeMapping.rows.map((row, index) => (
-                            row.empty ? (
-                              <tr key={`${row.approach}:::empty`} className="gt-type-mapping__row--empty">
-                                <td>
-                                  <input type="checkbox" checked={false} disabled aria-label="No relations extracted" />
-                                </td>
-                                <td>{getDependencyApproachLabel(row.approach, activeDependencyLlmModel)}</td>
-                                <td colSpan={2}><span className="gt-type-mapping__muted">no relations extracted</span></td>
-                              </tr>
-                            ) : (
-                              <tr key={`${row.approach}:::${row.subtype}`}>
-                                <td>
-                                  <input
-                                    type="checkbox"
-                                    checked={row.include}
-                                    aria-label={`Include ${row.subtype}`}
-                                    onChange={(event) => updateTypeMappingRow(index, { include: event.target.checked })}
-                                  />
-                                </td>
-                                <td>{getDependencyApproachLabel(row.approach, activeDependencyLlmModel)}</td>
-                                <td><code>{row.subtype}</code></td>
-                                <td>
-                                  <select
-                                    className="gt-type-mapping__select"
-                                    value={row.target || ''}
-                                    disabled={!row.include || !typeMapping.gtTypes.length}
-                                    onChange={(event) => updateTypeMappingRow(index, { target: event.target.value })}
-                                  >
-                                    <option value="" disabled>
-                                      No default GT type
-                                    </option>
-                                    {typeMapping.gtTypes.map((gtType) => (
-                                      <option key={gtType} value={gtType}>{gtType}</option>
-                                    ))}
-                                    <option value={GT_TYPE_ALL}>(all types)</option>
-                                  </select>
-                                </td>
-                              </tr>
-                            )
-                          ))}
-                        </tbody>
-                      </table>
+                      <div className="gt-type-mapping__table-wrap">
+                        <table className="gt-type-mapping__table">
+                          <thead>
+                            <tr>
+                              <th>Use</th>
+                              <th>Approach</th>
+                              <th>Extracted subtype</th>
+                              <th>Treat as GT type</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {typeMapping.rows.map((row, index) => (
+                              row.empty ? (
+                                <tr key={`${row.approach}:::empty`} className="gt-type-mapping__row--empty">
+                                  <td>
+                                    <input type="checkbox" checked={false} disabled aria-label="No relations extracted" />
+                                  </td>
+                                  <td>{getDependencyApproachLabel(row.approach, activeDependencyLlmModel)}</td>
+                                  <td colSpan={2}><span className="gt-type-mapping__muted">no relations extracted</span></td>
+                                </tr>
+                              ) : (
+                                <tr key={`${row.approach}:::${row.subtype}`}>
+                                  <td>
+                                    <input
+                                      type="checkbox"
+                                      checked={row.include}
+                                      aria-label={`Include ${row.subtype}`}
+                                      onChange={(event) => updateTypeMappingRow(index, { include: event.target.checked })}
+                                    />
+                                  </td>
+                                  <td>{getDependencyApproachLabel(row.approach, activeDependencyLlmModel)}</td>
+                                  <td><code>{row.subtype}</code></td>
+                                  <td>
+                                    <select
+                                      className="gt-type-mapping__select"
+                                      value={row.target || ''}
+                                      disabled={!row.include || !typeMapping.gtTypes.length}
+                                      onChange={(event) => updateTypeMappingRow(index, { target: event.target.value })}
+                                    >
+                                      <option value="" disabled>
+                                        No default GT type
+                                      </option>
+                                      {typeMapping.gtTypes.map((gtType) => (
+                                        <option key={gtType} value={gtType}>{gtType}</option>
+                                      ))}
+                                      <option value={GT_TYPE_ALL}>(all types)</option>
+                                    </select>
+                                  </td>
+                                </tr>
+                              )
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
                     ) : (
                       <p className="ground-truth-evaluation-controls__note">
                         The selected dataset has no extracted relation subtypes to map.

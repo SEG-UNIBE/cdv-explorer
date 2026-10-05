@@ -640,41 +640,43 @@ export function DependencyComparisonHeatmaps({
             <div className="gt-type-mapping__header">
               <span className="gt-type-mapping__title">Relation-type mapping</span>
             </div>
-            <table className="gt-type-mapping__table">
-              <thead>
-                <tr>
-                  <th>Included</th>
-                  <th>Approach</th>
-                  <th>Extracted subtype</th>
-                  <th>Canonical type</th>
-                </tr>
-              </thead>
-              <tbody>
-                {PAIRWISE_LINK_TYPE_OPTIONS.flatMap((option) => (
-                  Object.entries(CANONICAL_TYPE_BY_APPROACH_SUBTYPE[option.value] || {}).map(
-                    ([subtype, canonicalType]) => (
-                      <tr key={`${option.value}:::${subtype}`}>
-                        <td>
-                          <input
-                            type="checkbox"
-                            checked
-                            disabled
-                            aria-label={`${getDependencyApproachLabel(option.value)} ${subtype} is included`}
-                          />
-                        </td>
-                        <td>{getDependencyApproachLabel(option.value, activeLlmModel)}</td>
-                        <td><code>{subtype}</code></td>
-                        <td>
-                          {canonicalType === PAIRWISE_TYPE_WILDCARD
-                            ? <span className="gt-type-mapping__muted">(any)</span>
-                            : <code>{canonicalType}</code>}
-                        </td>
-                      </tr>
+            <div className="gt-type-mapping__table-wrap">
+              <table className="gt-type-mapping__table">
+                <thead>
+                  <tr>
+                    <th>Included</th>
+                    <th>Approach</th>
+                    <th>Extracted subtype</th>
+                    <th>Canonical type</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {PAIRWISE_LINK_TYPE_OPTIONS.flatMap((option) => (
+                    Object.entries(CANONICAL_TYPE_BY_APPROACH_SUBTYPE[option.value] || {}).map(
+                      ([subtype, canonicalType]) => (
+                        <tr key={`${option.value}:::${subtype}`}>
+                          <td>
+                            <input
+                              type="checkbox"
+                              checked
+                              disabled
+                              aria-label={`${getDependencyApproachLabel(option.value)} ${subtype} is included`}
+                            />
+                          </td>
+                          <td>{getDependencyApproachLabel(option.value, activeLlmModel)}</td>
+                          <td><code>{subtype}</code></td>
+                          <td>
+                            {canonicalType === PAIRWISE_TYPE_WILDCARD
+                              ? <span className="gt-type-mapping__muted">(any)</span>
+                              : <code>{canonicalType}</code>}
+                          </td>
+                        </tr>
+                      )
                     )
-                  )
-                ))}
-              </tbody>
-            </table>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         ) : null}
         {selectedComparison ? (
